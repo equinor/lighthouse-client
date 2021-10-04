@@ -9,7 +9,7 @@ resources:
         - repository: templates
           type: github
           name: equinor/lighthouse-infra
-          endpoint: 'equinor (2)'
+          endpoint: 'equinor'
           ref: feature/lighthouse-client-web-sandbox
 
 # Global variables for the pipeline
@@ -23,7 +23,7 @@ variables:
 stages:
     # build_stage stage. Docker build, tag and push
     - stage: build
-      displayName: 'Build Stage'
+      displayName: 'Docker - Build and Push'
       variables:
           envName: 'build'
           envRg: '${{ variables.envRgName }}'
