@@ -9,22 +9,23 @@ resources:
         - repository: templates
           type: github
           name: equinor/lighthouse-infra
-          endpoint: 'equinor'
+          endpoint: 'equinor (2)'
+          ref: feature/lighthouse-client-web-sandbox
 
 # Global variables for the pipeline
 variables:
-    - template: /src/lighthouse-client-web/lighthouse-client-web-variables.yml@templates
+    - template: /src/resources/web-client/web-client-variables.yml@templates
     - template: /src/variables/global-variables.yml@templates
 
     - name: 'repositoryName'
-      value: lighthouse/frontend
+      value: lighthouse-client
 
 stages:
-    # build_and_test stage. Yarn test, Docker build, tag and push
-    - stage: build_and_test
-      displayName: 'Build & Test'
+    # build_stage stage. Docker build, tag and push
+    - stage: build
+      displayName: 'Build Stage'
       variables:
-          envName: 'build_and_test'
+          envName: 'build'
           envRg: '${{ variables.envRgName }}'
           serviceConnection: '${{ variables.nonProdServiceConnection }}'
           containerRegistry: '${{ variables.containerRegistryName }}'
@@ -32,22 +33,22 @@ stages:
           dockerfilePath: '/.docker/Dockerfile'
           dockerRegistryServiceConnection: '$(dockerRegistryServiceConnectionName)'
 
+      # Docker Build
       jobs:
-          - template: /src/lighthouse-client-web/jobs/dockerbuild.yml@templates
+          - template: /src/resources/web-client/jobs/client-dockerbuild.yml@templates
             parameters:
                 deploymentName: 'docker_build_push'
                 dependsOn: ''
                 env: '${{ variables.envName }}'
                 envGroup: '${{ variables.envGroupName }}'
                 dockerfilePath: ${{ variables.dockerfilePath }}
-                buildContext: '$(Build.SourcesDirectory)'
                 repository: ${{ variables.repositoryName }}
                 dockerRegistryServiceConnection: $(dockerRegistryServiceConnectionName)
 
     # Deploy to dev environment
     - stage: dev
       displayName: 'Deploy to dev'
-      dependsOn: 'build_and_test'
+      dependsOn: 'build'
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       variables:
           envName: 'dev'
@@ -55,73 +56,19 @@ stages:
           envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
           serviceConnection: '${{ variables.nonProdServiceConnection }}'
           containerRegistry: '${{ variables.containerRegistryName }}'
+          appName: '$(appName)'
 
       jobs:
-          - template: /src/lighthouse-client-web/jobs/deploy.yml@templates
+          - template: /src/resources/web-client/jobs/client-deploy.yml@templates
             parameters:
-                deploymentName: 'deploy_to_k8s'
+                deploymentName: 'deploy-web'
                 dependsOn: ''
                 serviceConnection: '${{ variables.serviceConnection }}'
                 env: '${{ variables.envName }}'
                 envRg: '$(globalPrefix)-hosting-rg'
                 envGroup: '${{ variables.envGroupName }}'
-                dockerImage: 'lighthouse.azurecr.io/procosys/frontend:$(Build.BuildId)'
-                clusterName: '$(globalPrefix)-aks-test'
-                kvName: '$(globalPrefix)-frontend-${{ variables.envName }}-kv'
-                kvRgName: '$(globalPrefix)-frontend-${{ variables.envName }}-rg'
-                replicas: 2
+                repository: '${{ variables.repositoryName }}'
+                containerRegistry: '${{ variables.containerRegistry }}'
+                appName: '${{ variables.appName }}'
 
-    # Deploy to test environment
-    - stage: test
-      displayName: 'Deploy to test'
-      dependsOn: 'build_and_test'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-      variables:
-          envName: 'test'
-          envRg: '${{ variables.envRgName }}'
-          envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
-          serviceConnection: '${{ variables.nonProdServiceConnection }}'
-          containerRegistry: '${{ variables.containerRegistryName }}'
 
-      jobs:
-          - template: /templates/pipelines/kubernetes/frontend-deploy.yml@templates
-            parameters:
-                deploymentName: 'deploy_to_k8s'
-                dependsOn: ''
-                serviceConnection: '${{ variables.serviceConnection }}'
-                env: '${{ variables.envName }}'
-                envRg: '$(globalPrefix)-hosting-rg'
-                envGroup: '${{ variables.envGroupName }}'
-                dockerImage: 'procosys.azurecr.io/procosys/frontend:$(Build.BuildId)'
-                clusterName: '$(globalPrefix)-aks-test'
-                kvName: '$(globalPrefix)-frontend-${{ variables.envName }}-kv'
-                kvRgName: '$(globalPrefix)-frontend-${{ variables.envName }}-rg'
-                replicas: 2
-
-                # deploy to test environment
-    # Deploy to production environment
-    - stage: production
-      displayName: 'Deploy to production'
-      dependsOn: 'build_and_test'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-      variables:
-          envName: 'prod'
-          envRg: '${{ variables.envRgName }}'
-          envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
-          serviceConnection: '${{ variables.prodServiceConnection }}'
-          containerRegistry: '${{ variables.containerRegistryName }}'
-
-      jobs:
-          - template: /templates/pipelines/kubernetes/frontend-deploy.yml@templates
-            parameters:
-                deploymentName: 'deploy_to_k8s'
-                dependsOn: ''
-                serviceConnection: '${{ variables.serviceConnection }}'
-                env: '${{ variables.envName }}'
-                envRg: '$(globalPrefix)-hosting-rg'
-                envGroup: '${{ variables.envGroupName }}'
-                dockerImage: 'lighthouse.azurecr.io/procosys/frontend:$(Build.BuildId)'
-                clusterName: '$(globalPrefix)-aks-prod'
-                kvName: '$(globalPrefix)-frontend-${{ variables.envName }}-kv'
-                kvRgName: '$(globalPrefix)-frontend-${{ variables.envName }}-rg'
-                replicas: 3
