@@ -6,7 +6,7 @@ import { Configuration } from 'webpack';
 
 const extensions = ['.ts', '.tsx', '.js', '.jsx'];
 const publicPath = path.join(__dirname, 'public');
-const distPath = path.resolve(__dirname, 'dist');
+const buildPath = path.resolve(__dirname, 'build');
 const template = path.resolve(__dirname, './public/index.html');
 
 const serverConfig = {
@@ -16,7 +16,7 @@ const serverConfig = {
         port: 3000,
         static: [
             {
-                directory: distPath,
+                directory: buildPath,
                 watch: true
             },
             {
@@ -48,7 +48,7 @@ const webpackConfig: Configuration = {
     mode: 'production',
     entry: './src/index.tsx',
     output: {
-        path: distPath,
+        path: buildPath,
         filename: '[name].bundle.js',
         // library: 'someLibName',
         // libraryTarget: 'commonjs',
@@ -86,10 +86,22 @@ const webpackConfig: Configuration = {
     resolve: {
         extensions,
         alias: {
-            '@equinor/lighthouse-core': path.resolve(__dirname, 'src/packages/core/'),
-            '@equinor/lighthouse-hooks': path.resolve(__dirname, 'src/packages/hooks/'),
-            '@equinor/lighthouse-components': path.resolve(__dirname, 'src/packages/components/'),
-            '@equinor/lighthouse-util': path.resolve(__dirname, 'src/packages/util/')
+            '@equinor/lighthouse-core': path.resolve(
+                __dirname,
+                'src/packages/core/'
+            ),
+            '@equinor/lighthouse-hooks': path.resolve(
+                __dirname,
+                'src/packages/hooks/'
+            ),
+            '@equinor/lighthouse-components': path.resolve(
+                __dirname,
+                'src/packages/components/'
+            ),
+            '@equinor/lighthouse-util': path.resolve(
+                __dirname,
+                'src/packages/util/'
+            )
         }
     },
     devtool: 'source-map',
