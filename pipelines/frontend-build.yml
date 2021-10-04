@@ -28,7 +28,7 @@ stages:
           envName: 'build'
           envRg: '${{ variables.envRgName }}'
           serviceConnection: '${{ variables.nonProdServiceConnection }}'
-           containerRegistry: '${{ variables.containerRegistryName }}'
+          containerRegistry: '${{ variables.containerRegistryName }}'
           envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
           dockerfilePath: '/.docker/Dockerfile'
           dockerRegistryServiceConnection: '$(dockerRegistryServiceConnectionName)'
