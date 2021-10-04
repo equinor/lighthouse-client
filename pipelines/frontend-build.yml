@@ -9,7 +9,7 @@ resources:
         - repository: templates
           type: github
           name: equinor/lighthouse-infra
-          endpoint: 'equinor (3)'
+          endpoint: 'equinor (2)'
           ref: feature/lighthouse-client-web-sandbox
 
 # Global variables for the pipeline
