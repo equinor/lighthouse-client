@@ -9,7 +9,7 @@ resources:
         - repository: templates
           type: github
           name: equinor/lighthouse-infra
-          endpoint: 'equinor'
+          endpoint: 'equinor (3)'
           ref: feature/lighthouse-client-web-sandbox
 
 # Global variables for the pipeline
@@ -28,7 +28,7 @@ stages:
           envName: 'build'
           envRg: '${{ variables.envRgName }}'
           serviceConnection: '${{ variables.nonProdServiceConnection }}'
-          containerRegistry: '${{ variables.containerRegistryName }}'
+           containerRegistry: '${{ variables.containerRegistryName }}'
           envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
           dockerfilePath: '/.docker/Dockerfile'
           dockerRegistryServiceConnection: '$(dockerRegistryServiceConnectionName)'
