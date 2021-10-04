@@ -52,7 +52,8 @@ stages:
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
       variables:
           envName: 'dev'
-          envRg: '${{ variables.envRgName }}'
+          envLabel: 'non-prod'
+          rgName: '${{ variables.envRgName }}'
           envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
           serviceConnection: '${{ variables.nonProdServiceConnection }}'
           containerRegistry: '${{ variables.containerRegistryName }}'
@@ -61,11 +62,11 @@ stages:
       jobs:
           - template: /src/resources/web-client/jobs/client-deploy.yml@templates
             parameters:
-                deploymentName: 'deploy-web'
+                deploymentName: 'deploy_web'
                 dependsOn: ''
                 serviceConnection: '${{ variables.serviceConnection }}'
                 env: '${{ variables.envName }}'
-                envRg: '$(globalPrefix)-hosting-rg'
+                rgName: '${{variables.rgName}}'
                 envGroup: '${{ variables.envGroupName }}'
                 repository: '${{ variables.repositoryName }}'
                 containerRegistry: '${{ variables.containerRegistry }}'
