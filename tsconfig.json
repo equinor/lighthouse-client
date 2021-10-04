@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "jsx": "react-jsx",
+        "target": "es6",
+        "outDir": "dist",
+        "skipLibCheck": true,
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "types": ["node"],
+        "sourceMap": false,
+        "paths": {
+            "@equinor/lighthouse-core": ["./src/packages/core"],
+            "@equinor/lighthouse-hooks": ["./src/packages/hooks"],
+            "@equinor/lighthouse-components": ["./src/packages/components"],
+            "@equinor/lighthouse-util": ["./src/packages/util"]
+        }
+    },
+    "compileOnSave": true,
+    "exclude": ["node_modules"],
+    "include": ["./src", "jest.config.js", "loader/moduleLoader.js"],
+    "typedocOptions": {
+        "entryPoints": ["src/index.ts"],
+        "out": "docs"
+    }
+}
