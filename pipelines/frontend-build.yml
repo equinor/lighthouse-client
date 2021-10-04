@@ -41,8 +41,8 @@ stages:
                 dependsOn: ''
                 env: '${{ variables.envName }}'
                 envGroup: '${{ variables.envGroupName }}'
-                dockerfilePath: ${{ variables.dockerfilePath }}
-                repository: ${{ variables.repositoryName }}
+                dockerfilePath: '${{ variables.dockerfilePath }}'
+                repository: '${{ variables.repositoryName }}'
                 dockerRegistryServiceConnection: $(dockerRegistryServiceConnectionName)
 
     # Deploy to dev environment
