@@ -8,12 +8,17 @@
 name: Labeler
 on: [pull_request]
 
-jobs:
-  label:
-    runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/labeler@v2
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        sync-labels: true
+stages: 
+ - stage: labeler
+  displayName: "Apply Labels" 
+  condition:  ${{ github.actor !== 'dependabot[bot]' }}
+  jobs:
+    label:
+      runs-on: ubuntu-latest
+
+      steps:
+      - uses: actions/labeler@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          sync-labels: true
