@@ -1,0 +1,9 @@
+client:
+    - ./src/**
+
+configuration:
+    - ./*
+
+dependencies:
+    - package.json
+    - yarn.lock
