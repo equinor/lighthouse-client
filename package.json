@@ -18,7 +18,7 @@
     "docker-build": "docker build -f ./.docker/Dockerfile -t lighthouse:dev ."
   },
   "dependencies": {
-    "@equinor/eds-core-react": "^0.13.1",
+    "@equinor/eds-core-react": "^0.14.0",
     "@equinor/eds-icons": "^0.7.0",
     "@equinor/eds-tokens": "^0.6.0",
     "@types/styled-components": "^5.1.14",
