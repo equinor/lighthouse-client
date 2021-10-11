@@ -1,3 +1,22 @@
+# Contributions 
+
+## Table of content
+
+- [Contributions](#contributions)
+  - [Table of content](#table-of-content)
+  - [Code Conventions](#code-conventions)
+  - [Testing](#testing)
+  - [External dependencies](#external-dependencies)
+  - [Component size:](#component-size)
+  - [Folder structure:](#folder-structure)
+  - [Linting:](#linting)
+    - [VSCode plugins for better code](#vscode-plugins-for-better-code)
+
+
+These are the guiding principles for contributing to the ProCoSys frontend solutions and libraries.  
+If a topic is not covered in this document, please follow the established practice in whatever file or project you’re working on. 
+
+
 ## Code Conventions
 
 -   Strive for **clean code** (and what to look for in code reviews/PRs)
@@ -16,12 +35,28 @@
 -   **Fix** all **eslint warnings and errors** in your files.
 -   Always checkin the code in better shape than you found it, fix/cleanup smaller things as you edit a file.
 
+
+## Testing
+
+Tests shall be implemented for components containing business logic and/or dynamic rendering. Examples: Forms, filtered content, checklists. 
+No tests are required for rendering of static content. Examples: Information pages, static visual elements. 
+Tests shall be implemented for helper functions/util functions. 
+
+## External dependencies
+Keep the use of non-Equinor packages to an absolute minimum.  
+
+## Component size:  
+Keep your components small. If your .tsx-file is  
+
+## Folder structure: 
+File/folder naming conventions: 
+
+## Linting: 
+
 ### VSCode plugins for better code
 
 We use several extensions that helps keeping the code clean. Visual studio Code will give suggestions on which plugins should be installed with this project.
-
-We have enabled strict eslint rules, which will give errors/warnings if the code doesn't follow our standard guidlines. All these must be fixed before merge to dev.
-
+We have enabled strict eslint rules, which will give errors/warnings if the code doesn't follow our standard guidelines. All these must be fixed before merge to dev.
 Must have plugins:
 
 -   Code Spell Checker: https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker
@@ -35,3 +70,4 @@ Other usefull plugins:
 -   Import Cost: https://marketplace.visualstudio.com/items?itemName=wix.vscode-import-cost
 -   Azure App Service https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureappservice
 -   Docker: https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker
+

@@ -1,0 +1,53 @@
+{
+  "name": "project-lighthouse",
+  "version": "1.0.0",
+  "description": "Project Lighthouse ProCoSys Client",
+  "main": "Index.ts",
+  "author": "ProCoSys Team",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "webpack serve --mode development --env development --open --hot",
+    "build": "webpack",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
+    "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx src --color --fix",
+    "lint-strict": "eslint --ext .js,.jsx,.ts,.tsx src --color --max-warnings=0",
+    "test": "jest",
+    "test-watch": "npm ci & jest --watchAll",
+    "test-coverage": "npm ci & jest --coverage",
+    "docker-build": "docker build -f ./.docker/Dockerfile -t lighthouse:dev ."
+  },
+  "dependencies": {
+    "@azure/app-configuration": "^1.3.0",
+    "@azure/msal-browser": "^2.18.0",
+    "@equinor/eds-core-react": "^0.14.0",
+    "@equinor/eds-icons": "^0.7.0",
+    "@equinor/eds-tokens": "^0.7.0",
+    "@types/styled-components": "^5.1.14",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.3.0",
+    "styled-components": "^5.3.1",
+    "ts-node": "^10.2.1",
+    "typesafe-actions": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.10.3",
+    "@types/react": "^17.0.20",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-router-dom": "^5.3.0",
+    "@types/webpack": "^5.28.0",
+    "clean-webpack-plugin": "^4.0.0",
+    "eslint": "^7.32.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.2",
+    "prettier": "^2.4.1",
+    "terser-webpack-plugin": "^5.2.4",
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.4.3",
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.3.1"
+  }
+}
