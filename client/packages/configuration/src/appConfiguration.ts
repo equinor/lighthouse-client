@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-import axios from 'axios';
+import { isOfType } from '@equinor/lighthouse-typeGuard';
 
 const Settings = require('../settings.json');
 
@@ -42,17 +41,16 @@ type AppConfigResponse = {
     featureFlags: FeatureFlags;
 };
 
-export const getAuthConfig = async () => {
-    const { data } = await axios.get<AuthConfigResponse>(
-        Settings.authSettingsEndpoint
-    );
-    // Todo: TypeGuard authsettings
+export async function getAuthConfig() {
+    const data = await fetch(Settings.authSettingsEndpoint);
+    if (!isOfType<AuthConfigResponse>(data, 'clientId')) return;
+
     const clientSettings = {
         auth: {
             clientId: data.clientId,
             authority: data.authority,
-            redirectUri: window.location.origin + '/mc',
-        },
+            redirectUri: window.location.origin + '/mc'
+        }
     };
     const scopes = data.scopes;
     const configurationScope = data.configurationScope;
@@ -62,16 +60,19 @@ export const getAuthConfig = async () => {
         clientSettings,
         scopes,
         configurationScope,
-        configurationEndpoint,
+        configurationEndpoint
     };
-};
+}
 
 export const getAppConfig = async (endpoint: string, accessToken: string) => {
-    const { data } = await axios.get<AppConfigResponse>(endpoint, {
-        headers: {
-            Authorization: 'Bearer ' + accessToken,
-        },
-    });
+    const data = isOfType<AppConfigResponse>(
+        await fetch(endpoint, {
+            headers: {
+                Authorization: 'Bearer ' + accessToken
+            }
+        }),
+        'configuration'
+    );
 
     const appConfig: AppConfig = data.configuration;
     const featureFlags: FeatureFlags = data.featureFlags;

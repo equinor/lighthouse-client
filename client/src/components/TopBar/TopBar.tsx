@@ -1,7 +1,9 @@
 import { Avatar, TopBar } from "@equinor/eds-core-react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useClientContext from "../../context/clientContext";
 import AppsIcon from "../../icons/Apps";
+import { graph } from "../../ProCoSysAppClient";
 import Icon from "../Icon/Icon";
 import Logo from "./Logo/Logo";
 
@@ -33,8 +35,14 @@ const TopBarWrapper = styled.div`
     }
 `
 
+
 const ProCoSysTopBar = (): JSX.Element => {
-    const { toggleAppPanel, appsPanelActive } = useClientContext();
+    const { toggleAppPanel } = useClientContext();
+    const [image, setImage] = useState<string | undefined>(undefined)
+    useEffect(() => {
+
+        graph.graphGetProfilePicture().then(img => setImage(img));
+    }, [])
     return (
         <TopBarWrapper>
             <TopBar>
@@ -52,7 +60,7 @@ const ProCoSysTopBar = (): JSX.Element => {
                 </TopBar.CustomContent>
                 <TopBar.Actions>
                     <Icons>
-                        <Avatar alt="User avatar" size={16} src="https://i.imgur.com/UM3mrju.jpg" />
+                        {image && <Avatar alt="User avatar" size={16} src={image} />}
                         <Icon name="notifications" size={16} />
                     </Icons>
                 </TopBar.Actions>

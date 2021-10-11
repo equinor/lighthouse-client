@@ -1,6 +1,6 @@
 import { NavigationView } from "@equinor/lighthouse-components";
 import styled from "styled-components";
-import { DataView } from "../DataView/DataView";
+
 
 const Wrapper = styled.div`
     display: flex;
@@ -16,9 +16,12 @@ export const HomePage = () => {
         <Wrapper>
             <NavigationView />
             {/* <Dashboard /> */}
-            <DataView />
+            {/* <DataView /> */}
+            {/* <Garden /> */}
         </Wrapper>
 
     </>
     );
 }
+
+

@@ -86,21 +86,33 @@ const webpackConfig: Configuration = {
     resolve: {
         extensions,
         alias: {
+            '@equinor/authentication': path.resolve(
+                __dirname,
+                './packages/authentication/'
+            ),
+            '@equinor/httpClient': path.resolve(
+                __dirname,
+                './packages/httpClient/'
+            ),
             '@equinor/lighthouse-core': path.resolve(
                 __dirname,
-                './../packages/core/'
+                './packages/core/'
             ),
             '@equinor/lighthouse-hooks': path.resolve(
                 __dirname,
-                './../packages/hooks/'
+                './packages/hooks/'
             ),
             '@equinor/lighthouse-components': path.resolve(
                 __dirname,
-                './../packages/components/'
+                './packages/components/'
             ),
             '@equinor/lighthouse-util': path.resolve(
                 __dirname,
-                './../packages/util/'
+                './packages/util/'
+            ),
+            '@equinor/lighthouse-typeGuard': path.resolve(
+                __dirname,
+                './packages/typeGuard/'
             )
         }
     },

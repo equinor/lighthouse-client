@@ -12,15 +12,18 @@
         "types": ["node"],
         "sourceMap": false,
         "paths": {
-            "@equinor/lighthouse-core": ["./../packages/core"],
-            "@equinor/lighthouse-hooks": ["./../packages/hooks"],
-            "@equinor/lighthouse-components": ["./../packages/components"],
-            "@equinor/lighthouse-util": ["./../packages/util"]
+            "@equinor/authentication": ["./packages/authentication"],
+            "@equinor/httpClient": ["./packages/httpClient"],
+            "@equinor/lighthouse-core": ["./packages/core"],
+            "@equinor/lighthouse-hooks": ["./packages/hooks"],
+            "@equinor/lighthouse-components": ["./packages/components"],
+            "@equinor/lighthouse-util": ["./packages/util"],
+            "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"]
         }
     },
     "compileOnSave": true,
     "exclude": ["node_modules"],
-    "include": ["./src", "../packages/components/Garden", "../packages/components/NavigationView/TreeMoc.ts"],
+    "include": ["./src", "packages/components/Garden", "packages/components/NavigationView/TreeMoc.ts"],
     "typedocOptions": {
         "entryPoints": ["src/index.ts"],
         "out": "docs"

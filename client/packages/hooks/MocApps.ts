@@ -1,18 +1,18 @@
-import ActionIcon from '../../client/src/images/Action';
-import ChecklistIcon from '../../client/src/images/Checklist';
-import ConfigIcon from '../../client/src/images/Config';
-import ConstructionIcon from '../../client/src/images/Construction';
-import HandoverIcon from '../../client/src/images/Handover';
-import HeatTraceIcon from '../../client/src/images/HeatTrace';
-import LoopIcon from '../../client/src/images/Loop';
-import MilestoneIcon from '../../client/src/images/Milestone';
-import PoIcon from '../../client/src/images/PO';
-import PreservationIcon from '../../client/src/images/Preservation';
-import PunchIcon from '../../client/src/images/Punch';
-import QueryIcon from '../../client/src/images/Query';
-import ScopingIcon from '../../client/src/images/Scoping';
-import SoftwareChangeIcon from '../../client/src/images/SoftwareChange';
-import WorkOrderIcon from '../../client/src/images/WorkOrder';
+import ActionIcon from '../../src/images/Action';
+import ChecklistIcon from '../../src/images/Checklist';
+import ConfigIcon from '../../src/images/Config';
+import ConstructionIcon from '../../src/images/Construction';
+import HandoverIcon from '../../src/images/Handover';
+import HeatTraceIcon from '../../src/images/HeatTrace';
+import LoopIcon from '../../src/images/Loop';
+import MilestoneIcon from '../../src/images/Milestone';
+import PoIcon from '../../src/images/PO';
+import PreservationIcon from '../../src/images/Preservation';
+import PunchIcon from '../../src/images/Punch';
+import QueryIcon from '../../src/images/Query';
+import ScopingIcon from '../../src/images/Scoping';
+import SoftwareChangeIcon from '../../src/images/SoftwareChange';
+import WorkOrderIcon from '../../src/images/WorkOrder';
 
 export const appsSquare = [
     {
