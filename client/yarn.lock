@@ -308,6 +308,11 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz"
   integrity sha512-wdppn25U8z/2yiaT6YGquE6X8sSv7hNMWSXYSSU1jGv/yd6XqjXgTDJ8KP4NgjTXfJ3GbRjeeb8RTV7a/VpM+w==
 
+"@microsoft/microsoft-graph-types@^2.7.0":
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/microsoft-graph-types/-/microsoft-graph-types-2.7.0.tgz#ee2b2870b11f6f8d0ca64f7191f33fb233610836"
+  integrity sha512-jWdWUmemK2BrC/ddiY10uvOFWmvY5rV283hpyfARfXsNk/Q/Xs6INHJhd7oXH6KalC2mLx8RCFqM+oPsAUPeVA==
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz"
