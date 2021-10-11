@@ -11,7 +11,6 @@ resources:
           type: github
           name: equinor/lighthouse-infra
           endpoint: 'equinor'
-          ref: feature/lighthouse-client-web-sandbox
 
 # Global variables for the pipeline
 variables:
