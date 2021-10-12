@@ -1,6 +1,5 @@
-import { NavigationView } from "@equinor/lighthouse-components";
 import styled from "styled-components";
-import { PowerBI } from "../../modules/powerBI";
+import { CompletionView } from "../CompletionView/src/CompletionView";
 
 
 const Wrapper = styled.div`
@@ -17,11 +16,12 @@ export const HomePage = () => {
 
     return (<>
         <Wrapper>
-            <NavigationView />
+            {/* <NavigationView /> */}
             {/* <Dashboard /> */}
             {/* <DataView /> */}
             {/* <Garden /> */}
-            {<PowerBI />}
+            {/* {<PowerBI />} */}
+            <CompletionView />
         </Wrapper>
 
     </>
