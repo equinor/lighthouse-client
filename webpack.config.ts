@@ -72,6 +72,11 @@ const webpackConfig: Configuration = {
                 options: {
                     name: 'images/[name].[ext]'
                 }
+            },
+            {
+                test: /\.css$/,
+                use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+                exclude: /\.module\.css$/
             }
         ]
     },
@@ -90,7 +95,7 @@ const webpackConfig: Configuration = {
                 __dirname,
                 './packages/authentication/'
             ),
-            '@equinor/httpClient': path.resolve(
+            '@equinor/http-client': path.resolve(
                 __dirname,
                 './packages/httpClient/'
             ),

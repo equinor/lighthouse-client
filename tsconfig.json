@@ -13,7 +13,7 @@
         "sourceMap": false,
         "paths": {
             "@equinor/authentication": ["./packages/authentication"],
-            "@equinor/httpClient": ["./packages/httpClient"],
+            "@equinor/http-client": ["./packages/httpClient"],
             "@equinor/lighthouse-core": ["./packages/core"],
             "@equinor/lighthouse-hooks": ["./packages/hooks"],
             "@equinor/lighthouse-components": ["./packages/components"],

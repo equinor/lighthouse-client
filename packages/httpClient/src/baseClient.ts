@@ -1,4 +1,3 @@
-import { AccountInfo, SilentRequest } from '@azure/msal-browser';
 import { AuthenticationProvider } from '../../authentication';
 import ArgumentError from './argumentError';
 import { BaseError } from './baseError';
@@ -18,17 +17,10 @@ export class AuthenticationError extends BaseError {}
 
 export function baseClient(
     newAuthProvider: AuthenticationProvider,
-    scopes: string[]
+    newScopes?: string[]
 ) {
     const authProvider: AuthenticationProvider = newAuthProvider;
-
-    function getSilentRequest(user: AccountInfo): SilentRequest {
-        return {
-            account: user,
-            forceRefresh: false,
-            scopes
-        };
-    }
+    const scopes = newScopes;
 
     /**
      * Returns true if user is authenticated
@@ -45,7 +37,6 @@ export function baseClient(
             throw new ArgumentError({
                 argumentName: 'authProvider.userProperties.account'
             });
-
         try {
             return await authProvider.getAccessToken(scopes);
         } catch (exception) {
@@ -53,34 +44,6 @@ export function baseClient(
                 message: 'failed to authenticate'
             });
         }
-    }
-
-    /**
-     * Fetch with accessToken from authProvider.
-     *
-     * @return {*}  {Promise<Response>}
-     * @memberof BaseClient
-     */
-    async function fetch(
-        url: string,
-        headerOptions: Record<string, unknown> = {},
-        method = 'GET',
-        body?: BodyInit,
-        signal?: AbortSignal
-    ): Promise<Response> {
-        if (!authProvider.getCurrentUser())
-            throw new ArgumentError({
-                argumentName: 'authProvider.userProperties.account'
-            });
-        const accessToken = await getAccessToken();
-        return await fetchWithToken(
-            url,
-            accessToken,
-            headerOptions,
-            method,
-            body,
-            signal
-        );
     }
 
     /**
@@ -136,8 +99,37 @@ export function baseClient(
         }
     }
 
+    /**
+     * Fetch with accessToken from authProvider.
+     *
+     * @return {*}  {Promise<Response>}
+     * @memberof BaseClient
+     */
+    async function get(
+        url: string,
+        headerOptions: Record<string, unknown> = {},
+        method = 'GET',
+        body?: BodyInit,
+        signal?: AbortSignal
+    ): Promise<Response> {
+        if (!authProvider.getCurrentUser())
+            throw new ArgumentError({
+                argumentName: 'authProvider.userProperties.account'
+            });
+        const accessToken = await getAccessToken();
+
+        return await fetchWithToken(
+            url,
+            accessToken,
+            headerOptions,
+            method,
+            body,
+            signal
+        );
+    }
+
     return {
-        fetch,
+        get,
         fetchWithToken,
         isAuthenticated
     };
