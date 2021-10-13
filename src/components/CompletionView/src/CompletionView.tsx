@@ -8,10 +8,10 @@ const CompletionViewWarper = styled.section`
 `
 
 
-export const CompletionView = () => {
+export const CompletionView = (props) => {
     return (
         <CompletionViewWarper>
-            <CompletionViewHeader />
+            <CompletionViewHeader {...props} />
             <CompletionViewTabs />
         </CompletionViewWarper>
     );

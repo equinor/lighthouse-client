@@ -1,23 +1,32 @@
-import { Breadcrumbs, SingleSelect } from "@equinor/eds-core-react";
-import React from "react";
+import { Breadcrumbs, Button, SingleSelect } from "@equinor/eds-core-react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Icon from "../../../Icon/Icon";
 
 
 const { Breadcrumb } = Breadcrumbs;
 
 const HeaderWrapper = styled.section`
     height: 100%;
-    width: 100vw;
     display: flex;
     flex-direction: column;
 `
-const BreadcrumbWrapper = styled.section`
+
+const BreadcrumbWrapper = styled.div`
     padding: .5rem;
 `
-const ActionWrapper = styled.section`
+const ActionWrapper = styled.div`
     padding: .5rem;
-    width: 40%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 `
+const SelectionWrapper = styled.div`
+  width: 40%;
+`
+
+
 
 
 /**
@@ -29,12 +38,19 @@ const ActionWrapper = styled.section`
 
 
 const items = [
-    "Commissioning packages",
-    "Mechanical Completion packages"
+    "Checklist",
+    "Handover",
+    "Heat trace installation",
+    "Loop",
+    "N2He",
+    "Punch",
+    "Swcr"
+
 ]
 
-export const CompletionViewHeader = () => {
+export const CompletionViewHeader = ({ groupe, title }) => {
 
+    const [selectedDataSet, setSelectedDataSet] = useState("Commissioning packages")
     function handleClick() {
         console.log("click")
     }
@@ -44,26 +60,38 @@ export const CompletionViewHeader = () => {
             <BreadcrumbWrapper>
 
                 <Breadcrumbs>
-                    <Breadcrumb href="#" onClick={handleClick}>
-                        Completion management
-                    </Breadcrumb>
+                    {
+                        groupe !== "Top" && <Breadcrumb href="#" onClick={handleClick}>
+                            {groupe}
+                        </Breadcrumb>
+                    }
 
                     <Breadcrumb
                         href="#"
                         onClick={handleClick}
                         aria-current="page"
                     >
-                        Handover
+                        {title}
                     </Breadcrumb>
+
                 </Breadcrumbs>
             </BreadcrumbWrapper>
             <ActionWrapper>
+                <SelectionWrapper>
+                    <SingleSelect
+                        value={selectedDataSet}
+                        label="Select data set"
+                        initialSelectedItem="Commissioning packages"
+                        items={items}
+                        handleSelectedItemChange={(changes) => setSelectedDataSet(changes.selectedItem || "")}
+                    />
+                </SelectionWrapper>
 
-                <SingleSelect
-                    label="Select data set"
-                    initialSelectedItem="Commissioning packages"
-                    items={items}
-                />
+
+                <Button variant="ghost_icon" color="secondary">
+                    <Icon name="filter_list" title="filter"></Icon>
+                </Button>
+
             </ActionWrapper>
         </HeaderWrapper>
     )

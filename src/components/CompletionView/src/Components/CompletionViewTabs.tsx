@@ -42,32 +42,30 @@ const tabs = [
     {
         title: "Tree",
         icon: "tree",
-        component: TreeTab,
-        data: {}
+        viewComponent: TreeTab,
     },
     {
         title: "List",
         icon: "list",
-        component: ListTab,
-        data: {}
+        viewComponent: ListTab,
     },
     {
         title: "Garden",
         icon: "garden",
-        component: GardenTab,
-        data: {}
+        viewComponent: GardenTab,
+
     },
     {
         title: "Timeline",
         icon: "timeline",
-        component: TimelineTab,
-        data: {}
+        viewComponent: TimelineTab,
+
     },
     {
         title: "Analytics",
         icon: "Analytics",
-        component: AnalyticsTab,
-        data: {}
+        viewComponent: AnalyticsTab,
+
     },
 
 ]
@@ -85,13 +83,12 @@ export const CompletionViewTabs = () => {
                 <List>
                     {tabs.map(tab => <Tab key={`tab-${tab.title}`}>{tab.title}</Tab>)}
                 </List>
-
                 <Panels>
                     {
                         tabs.map((tab, index) => {
-                            const Component = tab.component;
+                            const ViewComponent = tab.viewComponent;
                             return (<Panel key={`panel-${tab.title}`}>
-                                {activeTab == index && <Component {...tab.data} />}
+                                {activeTab == index && <ViewComponent />}
                             </Panel>);
                         })
                     }

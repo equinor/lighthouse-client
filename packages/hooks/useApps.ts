@@ -1,3 +1,4 @@
+import { menuList } from '../../src/components/Menu/MainMenu';
 import {
     appsAdministration,
     appsCompletionProcesses,
@@ -8,6 +9,7 @@ export function useApps() {
     return {
         appsCompletionProcesses,
         appsAdministration,
-        appsSupportCapabilities
+        appsSupportCapabilities,
+        menuList
     };
 }

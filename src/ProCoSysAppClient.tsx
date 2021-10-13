@@ -2,9 +2,10 @@
 import { authProvider, useAuthenticate } from "@equinor/authentication";
 import { graphClint } from "@equinor/http-client";
 import { BrowserRouter as Router } from 'react-router-dom';
-import styled, { createGlobalStyle } from 'styled-components';
-import AppsPanel from './components/AppPanel/AppPanel';
+import { createGlobalStyle } from 'styled-components';
+import { MainLayout } from "./components/Layouts/MainLayout";
 import LoadingPage from './components/Loading/LoadingPage';
+import AppsPanel from './components/Menu/AppPanel';
 import { Routes } from './components/Routes/Routes';
 import ProCoSysTopBar from "./components/TopBar/TopBar";
 import { ClientContextProvider } from './context/clientContext';
@@ -25,14 +26,6 @@ body {
   }
 `
 
-const Wrapper = styled.div`
-    position: fixed;
-    width: 100%;
-    margin-top: 64px;
-    overflow: auto;
-    height: calc(100vh - 64px);
-`
-
 
 
 export const graph = graphClint(authProvider)
@@ -48,9 +41,9 @@ const ProCoSysAppClient: React.FC = (): JSX.Element => {
                 <GlobalStyle />
                 <ProCoSysTopBar />
                 <AppsPanel />
-                <Wrapper>
+                <MainLayout>
                     <Routes />
-                </Wrapper>
+                </MainLayout>
             </Router>
         </ClientContextProvider>
     ) : (
