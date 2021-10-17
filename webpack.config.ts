@@ -45,7 +45,7 @@ const serverConfig = {
 };
 
 const webpackConfig: Configuration = {
-    mode: 'production',
+    mode: 'development',
     entry: './src/index.tsx',
     output: {
         path: buildPath,

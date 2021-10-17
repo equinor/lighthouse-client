@@ -100,9 +100,7 @@ export function authenticationProvider(
         if (!authProperties.account) return '';
         const { accessToken } = await publicClient.acquireTokenSilent({
             account: authProperties.account,
-            scopes: scopes
-                ? scopes
-                : ['openid', 'profile', 'User.Read', 'offline_access']
+            scopes: scopes ? scopes : defaultLoginRequest.scopes
         });
         if (accessToken) {
             return accessToken;

@@ -1,6 +1,10 @@
 import { Tabs } from "@equinor/eds-core-react"
 import React, { useState } from "react"
 import styled from "styled-components"
+import { PowerBI } from "../../../../modules/powerBI"
+import { ListView } from "../../../DataView/DataView"
+import { Filter } from "../../../Filter/Index"
+
 const { Tab, List, Panels, Panel } = Tabs
 
 const CompletionViewWarper = styled.section`
@@ -10,16 +14,24 @@ const CompletionViewWarper = styled.section`
     flex-direction: column;
 `
 
+const PanelWrapper = styled.div`
+    height: calc(100vh - 230px);
+    width: calc(100vw - 360px);
+    overflow: scroll;
+`;
+
 
 const TreeTab = () => {
+
     return (
-        <h1>Tree</h1>
+        <Filter />
     );
 }
 
 const ListTab = () => {
+
     return (
-        <h1>List</h1>
+        <ListView />
     );
 }
 const GardenTab = () => {
@@ -29,7 +41,7 @@ const GardenTab = () => {
 }
 const AnalyticsTab = () => {
     return (
-        <h1>Analytics</h1>
+        <PowerBI />
     );
 }
 const TimelineTab = () => {
@@ -72,7 +84,7 @@ const tabs = [
 
 export const CompletionViewTabs = () => {
 
-    const [activeTab, setActiveTab] = useState(0)
+    const [activeTab, setActiveTab] = useState(0);
 
     const handleChange = (index: number) => {
         setActiveTab(index)
@@ -88,12 +100,16 @@ export const CompletionViewTabs = () => {
                         tabs.map((tab, index) => {
                             const ViewComponent = tab.viewComponent;
                             return (<Panel key={`panel-${tab.title}`}>
-                                {activeTab == index && <ViewComponent />}
+                                <PanelWrapper>
+                                    {activeTab == index && <ViewComponent />}
+                                </PanelWrapper>
                             </Panel>);
                         })
                     }
                 </Panels>
+
             </Tabs>
         </CompletionViewWarper>
     )
 }
+

@@ -1,7 +1,8 @@
 import { Breadcrumbs, Button, SingleSelect } from "@equinor/eds-core-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Icon from "../../../Icon/Icon";
+import { useDataContext } from "../Context/DataProvider";
 
 
 const { Breadcrumb } = Breadcrumbs;
@@ -49,6 +50,11 @@ const items = [
 ]
 
 export const CompletionViewHeader = ({ groupe, title }) => {
+    const { getData } = useDataContext();
+
+    useEffect(() => {
+        // getData();
+    }, [])
 
     const [selectedDataSet, setSelectedDataSet] = useState("Commissioning packages")
     function handleClick() {

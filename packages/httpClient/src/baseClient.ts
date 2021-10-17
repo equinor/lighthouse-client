@@ -55,31 +55,28 @@ export function baseClient(
     async function fetchWithToken(
         endpoint: string,
         token: string,
-        headerOptions: Record<string, unknown> = {
-            'Content-Type': 'application/json'
-        },
-        method = 'GET',
-        body?: BodyInit,
-        signal?: AbortSignal
+        init?: RequestInit
     ): Promise<Response> {
         let statusCode = 0;
-        try {
-            const headers = {
-                Authorization: 'Bearer ' + token,
-                ...headerOptions
-            };
 
-            const response: Response = await fetch(endpoint, {
-                method,
-                headers,
-                body,
-                signal
-            });
+        try {
+            init = {
+                method: 'GET',
+                ...init,
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token,
+                    ...init?.headers
+                }
+            };
+            const response: Response = await fetch(endpoint, init);
 
             if (response.status) statusCode = response.status;
 
             if (response && !response.ok) {
                 const contentType = response.headers.get('content-type');
+
                 if (
                     contentType &&
                     contentType.indexOf('application/json') !== -1
@@ -105,12 +102,9 @@ export function baseClient(
      * @return {*}  {Promise<Response>}
      * @memberof BaseClient
      */
-    async function get(
+    async function clientFetch(
         url: string,
-        headerOptions: Record<string, unknown> = {},
-        method = 'GET',
-        body?: BodyInit,
-        signal?: AbortSignal
+        init?: RequestInit
     ): Promise<Response> {
         if (!authProvider.getCurrentUser())
             throw new ArgumentError({
@@ -118,18 +112,11 @@ export function baseClient(
             });
         const accessToken = await getAccessToken();
 
-        return await fetchWithToken(
-            url,
-            accessToken,
-            headerOptions,
-            method,
-            body,
-            signal
-        );
+        return await fetchWithToken(url, accessToken, init);
     }
 
     return {
-        get,
+        fetch: clientFetch,
         fetchWithToken,
         isAuthenticated
     };

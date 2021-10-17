@@ -7,10 +7,10 @@ const fusionClient = baseClient(authProvider, scope);
 
 export async function getEmbedInfo() {
     try {
-        const response = await fusionClient.get(
-            'https://pro-s-reports-fprd.azurewebsites.net/reports/punch-analytics-rls/config/embedinfo'
+        const response = await fusionClient.fetch(
+            // 'https://pro-s-reports-fprd.azurewebsites.net/reports/punch-analytics-rls/config/embedinfo'
             // 'https://pro-s-reports-fprd.azurewebsites.net/reports/query-analytics-rls/config/embedinfo'
-            //'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/config/embedinfo'
+            'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/config/embedinfo'
         );
 
         const data = await response.json();
@@ -23,10 +23,10 @@ export async function getEmbedInfo() {
 
 export async function getPowerBiToken() {
     try {
-        const response = await fusionClient.get(
-            'https://pro-s-reports-fprd.azurewebsites.net/reports/punch-analytics-rls/token'
+        const response = await fusionClient.fetch(
+            // 'https://pro-s-reports-fprd.azurewebsites.net/reports/punch-analytics-rls/token'
             // 'https://pro-s-reports-fprd.azurewebsites.net/reports/query-analytics-rls/token'
-            // 'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/token'
+            'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/token'
         );
         return await response.json();
     } catch (error) {
@@ -58,12 +58,11 @@ export async function getConfig(): Promise<IReportEmbedConfiguration> {
                 $schema: 'http://powerbi.com/product/schema#basic',
                 target: {
                     column: 'FACILITY',
-                    table: 'Fact_Query'
+                    table: 'Commpkg'
                 },
                 operator: 'In',
                 values: ['JCA'],
-                filterType: 1,
-                requireSingleSelection: true
+                filterType: 1
             }
         ]
     };

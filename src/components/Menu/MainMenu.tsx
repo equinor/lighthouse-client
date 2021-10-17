@@ -71,18 +71,7 @@ export const MainMenu = () => {
             </SearchWrapper>
             <TopItems>
                 <Divider />
-                {
-                    Object.keys(filteredList).map(key => {
-                        if (key === "Top") {
-                            return (
-                                <>
-                                    {filteredList[key].map(item => (<Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >{item.title}</Link>))}
-                                </>
-                            )
-                        }
-                    })
-                }
-
+                {filteredList["Top"].map(item => (<Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >{item.title}</Link>))}
                 <Divider />
             </TopItems>
             <Accordion chevronPosition="right">
@@ -90,8 +79,9 @@ export const MainMenu = () => {
                     if (key === "Top") {
                         return null
                     }
-                    return (<>
-                        <Item key={`item-${key}`} isExpanded={isExpanded} >
+                    return (
+
+                        <Item isExpanded={isExpanded} key={`item-${key}`}>
                             <Header className="noBorder">
                                 {key}
                             </Header>
@@ -100,10 +90,6 @@ export const MainMenu = () => {
                             </Panel>
                         </Item>
 
-                        {
-                            Object.keys(filteredList).length - 1 > index && < Divider />
-                        }
-                    </>
                     );
                 })
                 }

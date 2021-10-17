@@ -23,7 +23,7 @@
     },
     "compileOnSave": true,
     "exclude": ["node_modules"],
-    "include": ["./src", "packages/components/Garden", "packages/components/NavigationView/TreeMoc.ts"],
+    "include": ["./src", "src/components/Garden", "packages/components/NavigationView/TreeMoc.ts"],
     "typedocOptions": {
         "entryPoints": ["src/index.ts"],
         "out": "docs"
