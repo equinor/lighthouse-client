@@ -1,4 +1,4 @@
-import { menuList } from '../../src/components/Menu/MainMenu';
+import { apps } from '../../src/apps/apps';
 import {
     appsAdministration,
     appsCompletionProcesses,
@@ -10,6 +10,6 @@ export function useApps() {
         appsCompletionProcesses,
         appsAdministration,
         appsSupportCapabilities,
-        menuList
+        apps
     };
 }

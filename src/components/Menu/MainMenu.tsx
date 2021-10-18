@@ -2,6 +2,8 @@ import { Accordion, Divider, Search } from "@equinor/eds-core-react"
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import { apps } from "../../apps/apps"
+
 
 const { Item, Header, Panel } = Accordion
 
@@ -45,7 +47,7 @@ const SearchWrapper = styled.div`
     padding: 1rem;
 `
 
-export const MainMenu = () => {
+export const MainMenu = (): JSX.Element => {
 
     const [searchValue, setSearchValue] = useState("");
 
@@ -71,11 +73,11 @@ export const MainMenu = () => {
             </SearchWrapper>
             <TopItems>
                 <Divider />
-                {filteredList["Top"].map(item => (<Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >{item.title}</Link>))}
-                <Divider />
+                {filteredList["Top"] && filteredList["Top"].map(item => (<Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >{item.title}</Link>))}
+                {filteredList["Top"] && <Divider />}
             </TopItems>
             <Accordion chevronPosition="right">
-                {Object.keys(filteredList).map((key, index) => {
+                {Object.keys(filteredList).map((key) => {
                     if (key === "Top") {
                         return null
                     }
@@ -100,46 +102,7 @@ export const MainMenu = () => {
 }
 
 
-export const menuList = [
-    {
-        title: 'Meeting',
-        shortName: 'HO',
-        color: '#0364B8',
-        groupe: "Collaboration",
-        tags: []
-
-    },
-    {
-        title: 'Review',
-        shortName: 'CL',
-        color: '#28A8EA',
-        groupe: "Collaboration",
-        tags: ["tag"]
-    },
-    {
-        title: 'Home',
-        shortName: 'PU',
-        color: '#C43E1C',
-        groupe: "Top",
-        tags: []
-    },
-    {
-        title: 'Change request',
-        shortName: 'PR',
-        color: '#21A366',
-        groupe: "Scope and Change",
-        tags: ["work order"]
-    },
-    {
-        title: 'Project change proposal',
-        shortName: 'QU',
-        color: '#F7DA60',
-        groupe: "Scope and Change",
-        tags: ["home", "tag"]
-    }
-
-];
-const GroupedMenu = groupeByKey(menuList, "groupe")
+const GroupedMenu = groupeByKey(apps, "groupe")
 
 function filterByValue<T, K extends keyof T>(list: Record<string, T[]>, value: string, key: K): Record<string, T[]> {
     let filteredList: Record<string, T[]> = {};
@@ -169,7 +132,7 @@ function filterByValue<T, K extends keyof T>(list: Record<string, T[]>, value: s
 }
 
 
-function objectContainsValue<T extends Object>(object: T, value: string): boolean {
+function objectContainsValue<T>(object: T, value: string): boolean {
     let contains = false;
     Object.keys(object).map(key => {
         const item = object[key]
@@ -189,8 +152,15 @@ function objectContainsValue<T extends Object>(object: T, value: string): boolea
 
 function groupeByKey<T, K extends keyof T>(list: T[], key: K) {
     return list.reduce((acc: Record<string, T[]>, item: T) => {
-        acc[item[`${key}`]] = acc[item[`${key}`]] || [];
-        acc[item[`${key}`]].push(item);
+        if (Array.isArray(item[`${key}`])) {
+            item[`${key}`].forEach(groupeKey => {
+                acc[groupeKey] = acc[groupeKey] || [];
+                acc[groupeKey].push(item);
+            });
+        } else {
+            acc[item[`${key}`]] = acc[item[`${key}`]] || [];
+            acc[item[`${key}`]].push(item);
+        }
         return acc;
     }, {} as Record<string, T[]>)
 

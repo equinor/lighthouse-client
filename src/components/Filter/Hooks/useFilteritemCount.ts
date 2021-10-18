@@ -5,4 +5,5 @@ export function useFilterItemCount(type: string, key: string): number {
 
     // const itemsCountList = filteredData.filter((item) => (item[type] = key));
     // return;
+    return 1;
 }
