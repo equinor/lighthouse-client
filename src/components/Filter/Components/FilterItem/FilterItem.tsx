@@ -16,8 +16,8 @@ export const FilterItemComponent = ({ filterItem, getCount, filterItemCheck, ind
     return (
         <FilterItemWrapper aria-label={filterItem.value} title={filterItem.value}>
             <FilterItemGroupe>
-                <Checkbox indeterminate={indeterminate} title={filterItem.value} checked={filterItem.checked} onChange={() => { filterItemCheck(filterItem, true) }} />
-                <FilterItemLabel onClick={() => { filterItemCheck(filterItem) }}>
+                <Checkbox indeterminate={indeterminate} title={filterItem.value} checked={filterItem.checked} onChange={() => { filterItemCheck(filterItem) }} />
+                <FilterItemLabel onClick={() => { filterItemCheck(filterItem, true) }}>
                     {filterItem.value}
                 </FilterItemLabel>
             </FilterItemGroupe>

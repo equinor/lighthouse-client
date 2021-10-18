@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import { FilterItemComponent } from "./Components/FilterItem/FilterItem";
 import { Garden } from "./Garden";
+import { FilterData, FilterItem, FilterItemCheck } from "./Types/FilterItem";
 
 
 function arrayToDict<T, K extends keyof T>(arr: T[], key: K): Record<string, T> {
@@ -15,11 +16,11 @@ function arrayToDict<T, K extends keyof T>(arr: T[], key: K): Record<string, T> 
 }
 
 
-type FilterItem = { value: string, type: string, checked: boolean, count: number, show: boolean }
-type FilterGroupe = { all: boolean, type: string, value: Record<string, FilterItem> }
-type FilterDict = Record<string, FilterGroupe>
+// type FilterItem = { value: string, type: string, checked: boolean, count: number, show: boolean }
+// type FilterGroupe = { all: boolean, type: string, value: Record<string, FilterItem> }
+// type FilterDict = Record<string, FilterGroupe>
 
-function arrayFilterDict<T>(arr: T[], exclude?: string[], filterDict?: FilterDict): FilterDict {
+function arrayFilterDict<T>(arr: T[], exclude?: string[], filterDict?: FilterData): FilterData {
     if (arr.length === 0) return {};
     const newFilterDict = arr.reduce((a, i) => {
         Object.keys(i).map((typeKey: string) => {
@@ -30,36 +31,33 @@ function arrayFilterDict<T>(arr: T[], exclude?: string[], filterDict?: FilterDic
 
 
             if (!obj.value[value]) {
-                obj.value[value] = { ...obj.value[value], value, show: true, checked: true, count: 1, type: typeKey }
+                obj.value[value] = { ...obj.value[value], value, checked: true, type: typeKey }
             } else {
-                obj.value[value] = { ...obj.value[value], value, count: obj.value[value].count + 1 }
+                obj.value[value] = { ...obj.value[value], value, }
             }
-
         })
         return a
-    }, {} as FilterDict);
-
-
-
-
-
+    }, {} as FilterData);
     return newFilterDict;
 }
 
 
-function updateFilterItemCount<T>(arr: T[], filterDict: FilterDict): FilterDict {
-
-    Object.keys(filterDict).forEach((key: string) => {
-        Object.keys(filterDict[key].value).forEach(valueKey => {
-            filterDict[key].value[valueKey].count = 0
-            // filterDict[key].value[valueKey].checked = true
-        })
-    })
-
-    return arrayFilterDict(arr, [], filterDict)
 
 
-}
+
+// function updateFilterItemCount<T>(arr: T[], filterDict: FilterDict): FilterDict {
+
+//     Object.keys(filterDict).forEach((key: string) => {
+//         Object.keys(filterDict[key].value).forEach(valueKey => {
+//             filterDict[key].value[valueKey].count = 0
+//             // filterDict[key].value[valueKey].checked = true
+//         })
+//     })
+
+//     return arrayFilterDict(arr, [], filterDict)
+
+
+// }
 
 function dictToArray<T>(dict: Record<string, T>): T[] {
     return Object.keys(dict).map((k => dict[k.toString()]))
@@ -112,7 +110,7 @@ function createGarden<T, K extends keyof T>(arr: T[], key: K): Garden<T> {
 }
 type Garden<T> = Record<string, T[]>
 
-function filterGarden<T>(filter: FilterDict, data: T[]): T[] {
+function filterGarden<T>(filter: FilterData, data: T[]): T[] {
 
     const newData = data.filter(item => {
         let isDisplay = true;
@@ -140,7 +138,7 @@ export const Filter = () => {
 
     const [garden, setGarden] = useState({});
     const [data, setData] = useState<Item[]>([]);
-    const [filterDict, setFilterDict] = useState<FilterDict>({})
+    const [filterDict, setFilterDict] = useState<FilterData>({})
 
 
     useEffect(() => {
@@ -157,19 +155,19 @@ export const Filter = () => {
         getData()
     }, [])
 
-    const filterItemCheck = useCallback((item: FilterItem, singleClick?: boolean): void => {
+    const filterItemCheck: FilterItemCheck = useCallback((filterItem: FilterItem, singleClick?: boolean): void => {
 
         if (singleClick) {
-            Object.keys(filterDict[item.type].value).forEach(key => {
-                filterDict[item.type].value[key].checked = key === item.value ? true : false
+            Object.keys(filterDict[filterItem.type].value).forEach(key => {
+                filterDict[filterItem.type].value[key].checked = key === filterItem.value ? true : false
             })
         } else {
-            filterDict[item.type].value[item.value].checked = !filterDict[item.type].value[item.value].checked;
+            filterDict[filterItem.type].value[filterItem.value].checked = !filterDict[filterItem.type].value[filterItem.value].checked;
         }
         const gardenData = filterGarden(filterDict, data)
         setGarden(createGarden(gardenData, "CheckList__TagFormularType__Tag__McPkg__CommPkg__CommPkgNo"))
-        const newFilterDict = updateFilterItemCount(gardenData, filterDict)
-        setFilterDict(newFilterDict)
+        // const newFilterDict = updateFilterItemCount(gardenData, filterDict)
+        // setFilterDict(newFilterDict)
     }, [filterDict, data])
 
 
@@ -184,9 +182,8 @@ export const Filter = () => {
                             const item = i.value[key];
                             return (
                                 <>
-                                    {item.show && <FilterItemComponent
+                                    {<FilterItemComponent
                                         key={item.value}
-                                        count={item.count}
                                         filterItem={item}
                                         filterItemCheck={filterItemCheck}
                                     />}
@@ -202,3 +199,4 @@ export const Filter = () => {
     </>
     );
 }
+
