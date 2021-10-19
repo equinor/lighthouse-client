@@ -45,7 +45,7 @@ const serverConfig = {
 };
 
 const webpackConfig: Configuration = {
-    mode: 'production',
+    mode: 'development',
     entry: './src/index.tsx',
     output: {
         path: buildPath,
@@ -72,6 +72,11 @@ const webpackConfig: Configuration = {
                 options: {
                     name: 'images/[name].[ext]'
                 }
+            },
+            {
+                test: /\.css$/,
+                use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
+                exclude: /\.module\.css$/
             }
         ]
     },
@@ -90,7 +95,7 @@ const webpackConfig: Configuration = {
                 __dirname,
                 './packages/authentication/'
             ),
-            '@equinor/httpClient': path.resolve(
+            '@equinor/http-client': path.resolve(
                 __dirname,
                 './packages/httpClient/'
             ),
@@ -113,6 +118,10 @@ const webpackConfig: Configuration = {
             '@equinor/lighthouse-typeGuard': path.resolve(
                 __dirname,
                 './packages/typeGuard/'
+            ),
+            '@equinor/lighthouse-conf': path.resolve(
+                __dirname,
+                './packages/configuration/'
             )
         }
     },

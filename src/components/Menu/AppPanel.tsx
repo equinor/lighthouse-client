@@ -22,7 +22,7 @@ const AppsPanelWrapper = styled.div`
     box-shadow: 4px 0px 10px rgba(0, 0, 0, 0.25);
     left:  ${({ panelActive }: AppsPanelWrapperProps) => panelActive ? "0px" : "-400px"};
     opacity:  ${({ panelActive }: AppsPanelWrapperProps) => panelActive ? 1 : 0};
-    transition: all 0.5s ease;
+    transition: all 0.2s ease;
     background: #ffffff;
     z-index: 1;
 `

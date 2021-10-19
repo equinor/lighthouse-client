@@ -31,7 +31,7 @@ const Component = ({ icon, title }: { icon: React.FC, title: string }) => {
 
 
 export const Routes = () => {
-    const { appsAdministration, appsCompletionProcesses, appsSupportCapabilities } = useApps();
+    const { appsAdministration, appsCompletionProcesses, appsSupportCapabilities, apps } = useApps();
     const allRoutes = [...appsAdministration, ...appsCompletionProcesses, ...appsSupportCapabilities]
 
     return (
@@ -40,6 +40,7 @@ export const Routes = () => {
             <Route exact path={'/'} component={HomePage} />
             <Route exact path={'/mc'} component={HomePage} />
             {allRoutes.map((route, index) => <Route exact key={route.title + index} path={`/${route.title}`} render={() => <Component title={route.title} icon={route.icon} />} />)}
+            {apps.map((route, index) => <Route exact key={route.shortName + index} path={`/${route.shortName}`} render={() => <HomePage {...route} />} />)}
             <Route render={(): JSX.Element => <Redirect to="/" />} />
         </Switch>
     );

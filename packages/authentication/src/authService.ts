@@ -23,7 +23,7 @@ export interface AuthenticationProvider {
     getCurrentUser: () => AccountInfo | null;
     handleLogin: (logRequest?: LoggingFunction) => Promise<void>;
     isAuthenticated: () => boolean;
-    getAccessToken: (scope: string[]) => Promise<string>;
+    getAccessToken: (scope?: string[]) => Promise<string>;
     getUserName: () => string;
 }
 export interface IAuthServiceProps {
@@ -86,36 +86,46 @@ export function authenticationProvider(
         };
     }
 
-    function setCurrentUserAccount(): void {
-        authProperties.account = publicClient.getAllAccounts()[0];
-    }
-
     function getCurrentUser(): AccountInfo | null {
-        setCurrentUserAccount();
+        authProperties.account = publicClient.getAllAccounts()[0];
         return authProperties.account;
     }
 
-    const getUserName = (): string => {
+    function getUserName(): string {
         if (!authProperties.account) return '';
         return authProperties.account.username;
-    };
+    }
 
-    const getAccessToken = async (scope?: string[]): Promise<string> => {
+    const getAccessToken = async (scopes?: string[]): Promise<string> => {
         if (!authProperties.account) return '';
         const { accessToken } = await publicClient.acquireTokenSilent({
             account: authProperties.account,
-            scopes: scope
-                ? scope
-                : ['openid', 'profile', 'User.Read', 'offline_access']
+            scopes: scopes ? scopes : defaultLoginRequest.scopes
         });
         if (accessToken) {
-            return Promise.resolve(accessToken);
+            return accessToken;
         } else {
             console.log('Token acquisition failed, redirecting');
             publicClient.acquireTokenRedirect(authProperties.loginRequest);
             return '';
         }
     };
+
+    // async function acquireTokenPopup(scopes: string[]) {
+    //     if (!authProperties.account) return '';
+    //     const { accessToken } = await publicClient.acquireTokenPopup({
+    //         account: authProperties.account,
+    //         scopes: scopes
+    //     });
+
+    //     if (accessToken) {
+    //         return Promise.resolve(accessToken);
+    //     } else {
+    //         console.log('Token acquisition failed, redirecting');
+    //         publicClient.acquireTokenRedirect(authProperties.loginRequest);
+    //         return '';
+    //     }
+    // }
 
     function isAuthenticated(): boolean {
         return authProperties.isAuthenticated;

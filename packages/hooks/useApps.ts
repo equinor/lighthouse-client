@@ -1,3 +1,4 @@
+import { apps } from '../../src/apps/apps';
 import {
     appsAdministration,
     appsCompletionProcesses,
@@ -8,6 +9,7 @@ export function useApps() {
     return {
         appsCompletionProcesses,
         appsAdministration,
-        appsSupportCapabilities
+        appsSupportCapabilities,
+        apps
     };
 }
