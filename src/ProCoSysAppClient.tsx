@@ -1,21 +1,16 @@
 
-import { authProvider, useAuthenticate } from "@equinor/authentication";
-import { graphClint } from "@equinor/http-client";
+import { AuthenticationProvider, useAuthenticate } from "@equinor/authentication";
+import { AppConfig } from "@equinor/lighthouse-conf";
 import { BrowserRouter as Router } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { MainLayout } from "./components/Layouts/MainLayout";
-import LoadingPage from './components/Loading/LoadingPage';
-import AppsPanel from './components/Menu/AppPanel';
-import { Routes } from './components/Routes/Routes';
+import { Routes } from "./components/Routes/Routes";
 import ProCoSysTopBar from "./components/TopBar/TopBar";
 import { ClientContextProvider } from './context/clientContext';
 
 
-async function getConfig() {
-    const response = await fetch("https://pcs-config-non-prod-func.azurewebsites.net/api/MCWebApp/Auth?");
-    const data = await response.json();
-    console.log(data)
-}
+
+
 
 
 
@@ -26,21 +21,26 @@ body {
   }
 `
 
+interface ProCoSysAppClientProps {
+    appConfig: AppConfig;
+    authProvider: AuthenticationProvider
+}
 
 
-export const graph = graphClint(authProvider)
 
 
-const ProCoSysAppClient: React.FC = (): JSX.Element => {
+
+const ProCoSysAppClient: React.FC<ProCoSysAppClientProps> = ({ appConfig, authProvider }: ProCoSysAppClientProps): JSX.Element => {
+
 
     const isAuthenticated = useAuthenticate(authProvider)
 
     return isAuthenticated ? (
-        <ClientContextProvider>
+        <ClientContextProvider {...{ appConfig, authProvider }}>
             <Router>
                 <GlobalStyle />
                 <ProCoSysTopBar />
-                <AppsPanel />
+                {/* <AppsPanel /> */}
                 <MainLayout>
                     <Routes />
                 </MainLayout>
@@ -48,8 +48,9 @@ const ProCoSysAppClient: React.FC = (): JSX.Element => {
         </ClientContextProvider>
     ) : (
         <>
-            <GlobalStyle />
-            <LoadingPage />
+            Hello
+            {/* <GlobalStyle />
+            <LoadingPage /> */}
         </>
     );
 };

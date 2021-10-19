@@ -1,13 +1,14 @@
 import { IReportEmbedConfiguration, models } from 'powerbi-client';
 import 'powerbi-report-authoring';
 import { useEffect, useState } from 'react';
-import { getConfig } from './Api/fusionApi';
+import { useFusionClient } from './Api/fusionApi';
 
 interface PowerBIResult {
     config: IReportEmbedConfiguration;
 }
 
 export function usePowerBI(): PowerBIResult {
+    const { getConfig } = useFusionClient();
     const [config, setReportConfig] = useState<IReportEmbedConfiguration>({
         type: 'report',
         embedUrl: undefined,

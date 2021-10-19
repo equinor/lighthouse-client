@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import useClientContext from "../../context/clientContext"
 import { MainMenu } from "../Menu/MainMenu"
 
 const Wrapper = styled.div`
@@ -9,23 +10,31 @@ display: flex;
 width: 100vw;
 `
 const ChildrenWrapper = styled.div`
-   width: calc(100vw - 360px);
+   width: calc(100vw - ${({ panelActive }: CssProps) => panelActive ? "350px" : "55px"});
+   transition: width 0.2s ease;
 `
 const MainMenuWrapper = styled.div`
-   width: 360px;
+   width:  ${({ panelActive }: CssProps) => panelActive ? "374px" : "74px"};
+   transition: width 0.2s ease;
 `
 
 interface MainLayoutProps {
     children: React.ReactNode;
 }
 
+interface CssProps {
+    panelActive: boolean;
+}
+
+
 export const MainLayout = ({ children }: MainLayoutProps) => {
+    const { appsPanelActive } = useClientContext()
     return (
         <Wrapper>
-            <MainMenuWrapper>
+            <MainMenuWrapper panelActive={appsPanelActive}>
                 <MainMenu />
             </MainMenuWrapper>
-            <ChildrenWrapper>
+            <ChildrenWrapper panelActive={appsPanelActive}>
                 {children}
             </ChildrenWrapper>
 

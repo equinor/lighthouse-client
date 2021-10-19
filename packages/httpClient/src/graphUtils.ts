@@ -1,10 +1,11 @@
+import { AuthenticationProvider } from '@equinor/authentication';
 import { User } from '@microsoft/microsoft-graph-types';
-import { AuthenticationProvider } from '../../authentication';
 import { graphApiRequest, graphConfig } from './graphConfig';
 
-export function graphClint(baseAuthProvider: AuthenticationProvider) {
-    const authProvider: AuthenticationProvider = baseAuthProvider;
+export type GraphClient = ReturnType<typeof useGraphClient>;
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function useGraphClient(authProvider: AuthenticationProvider) {
     /**
      * Graph method for fetching a users profile
      * Method authenticates user based on EchoAuthProvider user information
@@ -74,12 +75,10 @@ export function graphClint(baseAuthProvider: AuthenticationProvider) {
             headers: headers
         };
 
-        if (true) {
-            console.log(
-                'request for user profile made to Graph API at: ' +
-                    new Date().toString()
-            );
-        }
+        console.log(
+            'request for user profile made to Graph API at: ' +
+                new Date().toString()
+        );
 
         const response: Response = await fetch(endpoint, options);
         if (response && response.ok) {
@@ -109,12 +108,10 @@ export function graphClint(baseAuthProvider: AuthenticationProvider) {
             headers: headers
         };
 
-        if (true) {
-            console.log(
-                'request for user profile picture made to Graph API at: ' +
-                    new Date().toString()
-            );
-        }
+        console.log(
+            'request for user profile picture made to Graph API at: ' +
+                new Date().toString()
+        );
 
         const response: Response = await fetch(endpoint, options);
         if (response && response.ok) {

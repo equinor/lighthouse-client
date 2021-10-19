@@ -1,5 +1,7 @@
 
 
+import { AuthenticationProvider } from '@equinor/authentication';
+import { AppConfig } from '@equinor/lighthouse-conf';
 import { createContext, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 
@@ -10,10 +12,15 @@ interface ClientState {
 
 interface ClientContextState extends ClientState {
     toggleAppPanel: VoidFunction;
+    appConfig: AppConfig;
+
+    authProvider: AuthenticationProvider;
 }
 
 interface ClientContextProviderProps {
     children: React.ReactNode;
+    appConfig: AppConfig;
+    authProvider: AuthenticationProvider;
 }
 
 type VoidFunction = () => void;
@@ -47,10 +54,11 @@ export function ClientReducer(state: ClientState, action: Action): ClientState {
 }
 
 const initialState: ClientState = {
-    appsPanelActive: false
+    appsPanelActive: false,
+
 }
 
-export const ClientContextProvider = ({ children }: ClientContextProviderProps) => {
+export const ClientContextProvider = ({ children, appConfig, authProvider }: ClientContextProviderProps): JSX.Element => {
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
@@ -60,7 +68,7 @@ export const ClientContextProvider = ({ children }: ClientContextProviderProps) 
 
     return (
         <ClientContext.Provider value={{
-            ...state, toggleAppPanel
+            ...state, appConfig, authProvider, toggleAppPanel
         }}>{children}</ClientContext.Provider>
     )
 }

@@ -29,14 +29,14 @@ export const ListView = () => {
     const { data } = useDataContext();
     const [key, setKey] = useState<string>("")
     const [sortDirection, setSortDirection] = useState(false);
-
+    const maxLength = 50;
     return (
         <EdsProvider density={"compact"}>
             {data.length > 0 && < Table >
                 <Table.Head>
                     <Table.Row>
                         {Object.keys(data[0]).map((col, index) => (
-                            <Table.Cell style={{ backgroundColor: col === key ? tokens.colors.ui.background__info.rgba : "" }} key={index + col} rowSpan={1} onClick={() => {
+                            <Table.Cell width={500} style={{ backgroundColor: col === key ? tokens.colors.ui.background__info.rgba : "" }} key={index + col} rowSpan={1} onClick={() => {
                                 setKey(col)
                                 col === key && setSortDirection(d => !d)
                             }
@@ -57,9 +57,9 @@ export const ListView = () => {
                 </Table.Head>
                 <Table.Body >
                     {[...sortByKey(data, key, sortDirection)].splice(0, 50).map((itemRow, index) => (
-                        <Table.Row key={itemRow.toString() + index}>
+                        <Table.Row key={itemRow.toString() + index} style={{ height: "35px" }}>
                             {Object.keys(itemRow).map((cellKey: string, index: number) => (
-                                <Table.Cell width={100} key={cellKey + index}>{itemRow[cellKey]}</Table.Cell>
+                                <Table.Cell title={itemRow[cellKey]} variant="text" style={{ width: "125px !important" }} key={cellKey + index}>{`${itemRow[cellKey] || "-"}`.slice(0, maxLength).concat((`${itemRow[cellKey]}`.length > maxLength) ? "..." : "")}</Table.Cell>
                             ))}
                         </Table.Row>
                     ))}

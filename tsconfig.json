@@ -17,6 +17,7 @@
             "@equinor/lighthouse-core": ["./packages/core"],
             "@equinor/lighthouse-hooks": ["./packages/hooks"],
             "@equinor/lighthouse-components": ["./packages/components"],
+            "@equinor/lighthouse-conf": ["./packages/configuration"],
             "@equinor/lighthouse-util": ["./packages/util"],
             "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"]
         }

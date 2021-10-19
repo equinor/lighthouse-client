@@ -24,7 +24,7 @@ const PanelWrapper = styled.div`
 const TreeTab = () => {
 
     return (
-        <Filter />
+        <h1>Tree</h1>
     );
 }
 
@@ -36,7 +36,7 @@ const ListTab = () => {
 }
 const GardenTab = () => {
     return (
-        <h1>Garden</h1>
+        <Filter />
     );
 }
 const AnalyticsTab = () => {

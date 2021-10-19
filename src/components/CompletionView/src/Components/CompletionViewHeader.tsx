@@ -53,7 +53,7 @@ export const CompletionViewHeader = ({ groupe, title }) => {
     const { getData } = useDataContext();
 
     useEffect(() => {
-        // getData();
+        getData();
     }, [])
 
     const [selectedDataSet, setSelectedDataSet] = useState("Commissioning packages")

@@ -118,6 +118,10 @@ const webpackConfig: Configuration = {
             '@equinor/lighthouse-typeGuard': path.resolve(
                 __dirname,
                 './packages/typeGuard/'
+            ),
+            '@equinor/lighthouse-conf': path.resolve(
+                __dirname,
+                './packages/configuration/'
             )
         }
     },

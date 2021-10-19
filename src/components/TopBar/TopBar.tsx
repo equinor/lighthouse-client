@@ -1,9 +1,9 @@
 import { Avatar, TopBar } from "@equinor/eds-core-react";
+import { useGraphClient } from "@equinor/http-client";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useClientContext from "../../context/clientContext";
 import AppsIcon from "../../icons/Apps";
-import { graph } from "../../ProCoSysAppClient";
 import Icon from "../Icon/Icon";
 import Logo from "./Logo/Logo";
 
@@ -37,7 +37,9 @@ const TopBarWrapper = styled.div`
 
 
 const ProCoSysTopBar = (): JSX.Element => {
-    const { toggleAppPanel } = useClientContext();
+
+    const { toggleAppPanel, authProvider } = useClientContext();
+    const graph = useGraphClient(authProvider)
     const [image, setImage] = useState<string | undefined>(undefined)
     useEffect(() => {
 

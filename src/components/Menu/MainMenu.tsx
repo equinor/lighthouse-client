@@ -1,54 +1,150 @@
-import { Accordion, Divider, Search } from "@equinor/eds-core-react"
-import { useState } from "react"
+import { Accordion, Divider, Popover, Search } from "@equinor/eds-core-react"
+import { tokens } from "@equinor/eds-tokens"
+import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
-import { apps } from "../../apps/apps"
+import { appGroups, apps, Apps } from "../../apps/apps"
+import useClientContext from "../../context/clientContext"
+import Icon from "../Icon/Icon"
+
 
 
 const { Item, Header, Panel } = Accordion
 
+interface AppsPanelWrapperProps {
+    panelActive: boolean;
+}
+
 const Wrapper = styled.div`
-height: calc(100vh - 64px); 
-display: flex;
-flex-direction: column;
-border-right: 1.5px solid #efefef;
-padding: 8px;
-transition: all 0.2s ease;
-background: #ffffff;
-z-index: 1;
+    height: calc(100vh - 64px); 
+    display: flex;
+    flex-direction: column;
+    border-right: 1.5px solid #efefef;
+    padding: 8px;
+    transition: all 0.2s ease;
+    background: #ffffff;
+    z-index: 1;
+    width:  ${({ panelActive }: AppsPanelWrapperProps) => panelActive ? "350px" : "55px"};
+    
+    .heading {
+        
+        :hover{
+        ::before {
+            content: " ";
+            display: block;
+            background:${tokens.colors.interactive.focus.rgba};
+            position: absolute;
+            left: 0;
+            
+            
+            width: 6px;
+            height: 48px;
+            transition: height .3s ease;
+        }
+    }
+        ::before {
+            height: 0px;
+            content: " ";
+        }
+  
+    }
 
    .noBorder {
         border: 0px;
         padding-top: 0px;
         padding-bottom: 0px;
-        min-height: fit-content;
+       
 
+   
         p {
             padding-left: 1rem;
         }
-    }
-    .link{
-        color: #030303;
-        text-decoration: none;
-        display: block;
-        padding-bottom:1rem;
-
-        :hover{
-            opacity: .5;
+        svg {
+            padding: 1rem;
+            padding-left: 0px;
+        }
+        
+        .link{
+            color: #030303;
+            text-decoration: none;
+            display: block;
+            padding-bottom:1rem;
+            padding-left: 2.5rem;
+            :hover{
+                opacity: .5;
+          
+            }
+           
         }
     }
+    
 `
 
 const TopItems = styled.div`
     padding-left: 1rem;
+ 
+    
+    .link{
+            color: #030303;
+            text-decoration: none;
+            display: block;
+            padding-bottom:.5rem;
+            display: flex;
+            align-items: center;
+            :hover{
+                opacity: .5;
+            }
+        }
+    svg {
+            padding: 1rem;
+            padding-left: 0px;
+        }
 `
 
 const SearchWrapper = styled.div`
     padding: 1rem;
 `
+const SmallItem = styled.div`
+ :hover{
+        background-color: ${tokens.colors.ui.background__light.rgba};
+    }
+`;
+
+const Title = styled.div`
+font-weight: 800;
+`;
+
+const Content = styled.div`
+    .link{
+            color: #030303;
+            text-decoration: none;
+            display: block;
+            padding-bottom:1rem;            
+            :hover{
+                opacity: .5;
+          
+            }
+           
+        }
+`;
+
+const SmallButton = styled.h2`
+    height: 48px;
+    margin: 0;
+    border: 0px;
+    padding: 0px 16px;
+    cursor: pointer;
+
+`
+const PopoverWrapper = styled.span`
+
+    > div > button  {
+        display: none !important;
+    }
+`
 
 export const MainMenu = (): JSX.Element => {
-
+    const { appsPanelActive } = useClientContext()
     const [searchValue, setSearchValue] = useState("");
 
     const handleOnChange = (
@@ -58,11 +154,28 @@ export const MainMenu = (): JSX.Element => {
         setSearchValue(value)
     }
 
+    const anchorRef = useRef<HTMLHeadingElement[]>([])
+
+    const [isOpen, setIsOpen] = useState<string>("")
+    const openPopover = (type: string) => setIsOpen(type)
+    const closePopover = () => setIsOpen("")
+
+    // const handleHover = () => {
+
+    //     openPopover()
+
+    // }
+
+    const handleClose = () => {
+
+        closePopover()
+    }
+
     const filteredList = filterByValue(GroupedMenu, searchValue, "title");
     const isExpanded = searchValue.length > 1 ? true : false;
     return (
-        <Wrapper>
-            <SearchWrapper>
+        <Wrapper panelActive={appsPanelActive}>
+            {appsPanelActive && <SearchWrapper>
                 <Search
 
                     aria-label="sitewide"
@@ -70,32 +183,79 @@ export const MainMenu = (): JSX.Element => {
                     placeholder="Search"
                     onChange={handleOnChange}
                 />
-            </SearchWrapper>
+            </SearchWrapper>}
+            {/* It's own component */}
             <TopItems>
-                <Divider />
-                {filteredList["Top"] && filteredList["Top"].map(item => (<Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >{item.title}</Link>))}
+                {appsPanelActive && <Divider />}
+                {filteredList[Apps.Top] && filteredList[Apps.Top].map(item => (
+                    <Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >
+                        {item.icon && (<Icon name={item.icon} title={item.title} color={tokens.colors.text.static_icons__secondary.rgba} />)}
+                        {appsPanelActive && <span>{item.title}</span>}
+                    </Link>)
+                )}
                 {filteredList["Top"] && <Divider />}
             </TopItems>
+
             <Accordion chevronPosition="right">
-                {Object.keys(filteredList).map((key) => {
-                    if (key === "Top") {
-                        return null
-                    }
-                    return (
+                {
+                    Object.keys(filteredList).map((key, i) => {
+                        if (key === "Top") {
+                            return null
+                        }
 
-                        <Item isExpanded={isExpanded} key={`item-${key}`}>
-                            <Header className="noBorder">
-                                {key}
-                            </Header>
-                            <Panel className="noBorder" >
-                                {filteredList[key].map(item => (<Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >{item.title}</Link>))}
-                            </Panel>
-                        </Item>
+                        if (appsPanelActive) return (
 
-                    );
-                })
+
+
+                            <Item key={`item-${key}`} isExpanded={isExpanded} >
+                                <Header className="noBorder heading">
+                                    <Icon name={appGroups[key].icon} title={appGroups[key].name} color={tokens.colors.text.static_icons__secondary.rgba} />
+                                    {appGroups[key].name}
+                                </Header>
+                                <Panel className="noBorder">
+                                    {filteredList[key].map(item => (
+                                        <Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >
+                                            {item.title}
+                                        </Link>
+                                    ))}
+                                </Panel>
+                            </Item>
+                        )
+
+                        return (
+                            <SmallItem>
+
+                                < SmallButton id="hover-popover-anchor" ref={el => anchorRef.current[i] = el as HTMLHeadingElement} className="noBorder heading" onFocus={() => openPopover(appGroups[key].name)} onMouseOver={() => openPopover(appGroups[key].name)}
+                                    onBlur={handleClose}>
+                                    <Icon name={appGroups[key].icon} title={appGroups[key].name} color={tokens.colors.text.static_icons__secondary.rgba} />
+
+                                </SmallButton>
+                                <PopoverWrapper>
+                                    <Popover
+                                        anchorEl={anchorRef.current[i]}
+                                        aria-controls="hover-popover"
+                                        onClose={handleClose}
+                                        open={isOpen === appGroups[key].name}
+                                        placement="right-start"
+                                        onMouseLeave={handleClose}
+
+                                    >
+                                        <Title> {appGroups[key].name}</Title>
+                                        <Content>
+                                            {filteredList[key].map(item => (
+                                                <Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >
+                                                    {item.title}
+                                                </Link>))}
+                                        </Content>
+                                    </Popover>
+                                </PopoverWrapper>
+                            </SmallItem>
+                        )
+
+                    })
+
                 }
-            </Accordion>
+            </Accordion >
 
         </Wrapper >
     )
