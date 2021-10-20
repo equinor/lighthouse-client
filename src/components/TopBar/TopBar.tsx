@@ -3,7 +3,6 @@ import { useGraphClient } from "@equinor/http-client";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useClientContext from "../../context/clientContext";
-import AppsIcon from "../../icons/Apps";
 import Icon from "../Icon/Icon";
 import Logo from "./Logo/Logo";
 
@@ -50,7 +49,7 @@ const ProCoSysTopBar = (): JSX.Element => {
             <TopBar>
                 <TopBar.Header>
                     <div onClick={() => toggleAppPanel()} style={{ cursor: "pointer" }}>
-                        <AppsIcon />
+                        <Icon name="menu" />
                     </div>
                     <Logo />
                 </TopBar.Header>

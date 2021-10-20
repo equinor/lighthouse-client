@@ -16,6 +16,7 @@ interface AppsPanelWrapperProps {
 }
 
 const Wrapper = styled.div`
+    overflow-y: auto;
     height: calc(100vh - 64px); 
     display: flex;
     flex-direction: column;
@@ -159,13 +160,6 @@ export const MainMenu = (): JSX.Element => {
     const [isOpen, setIsOpen] = useState<string>("")
     const openPopover = (type: string) => setIsOpen(type)
     const closePopover = () => setIsOpen("")
-
-    // const handleHover = () => {
-
-    //     openPopover()
-
-    // }
-
     const handleClose = () => {
 
         closePopover()
@@ -187,12 +181,20 @@ export const MainMenu = (): JSX.Element => {
             {/* It's own component */}
             <TopItems>
                 {appsPanelActive && <Divider />}
-                {filteredList[Apps.Top] && filteredList[Apps.Top].map(item => (
-                    <Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >
-                        {item.icon && (<Icon name={item.icon} title={item.title} color={tokens.colors.text.static_icons__secondary.rgba} />)}
-                        {appsPanelActive && <span>{item.title}</span>}
-                    </Link>)
-                )}
+                {filteredList[Apps.Top] && filteredList[Apps.Top].map(item => {
+                    const CustomIcon = item.icon;
+                    return (
+                        <Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >
+                            {(CustomIcon && typeof CustomIcon !== "string") ? (
+                                <CustomIcon />
+                            ) : (
+                                <Icon name={CustomIcon} title={item.title} color={tokens.colors.text.static_icons__secondary.rgba} />
+                            )}
+                            {appsPanelActive && <span>{item.title}</span>}
+                        </Link>)
+
+                })
+                }
                 {filteredList["Top"] && <Divider />}
             </TopItems>
 

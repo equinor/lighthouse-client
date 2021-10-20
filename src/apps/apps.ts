@@ -1,5 +1,6 @@
 import React from 'react';
 import { DataView } from '../components/CompletionView/src/DataView';
+import { HomeIcon } from '../icons/Home icon';
 
 type HEXColor = `#${string}`;
 
@@ -9,7 +10,7 @@ export interface AppManifest {
     color: HEXColor;
     groupe: Apps | Apps[];
     tags: string[];
-    icon?: string;
+    icon?: string | React.FC;
     uri?: string;
     component?: React.FC<Partial<AppManifest>>;
     imageUri?: string;
@@ -17,7 +18,7 @@ export interface AppManifest {
 
 export interface AppGroupe {
     name: string;
-    icon: string;
+    icon: string | React.FC;
 }
 
 export enum Apps {
@@ -33,6 +34,7 @@ export enum Apps {
     QueriesAndRequests = 'QueriesAndRequests',
     QualityAndCompliance = 'QualityAndCompliance',
     ProjectControl = 'ProjectControl',
+    Reports = 'Reports',
     SSU = 'SSU'
 }
 
@@ -90,6 +92,10 @@ export const appGroups: AppGroups = {
     CompletionManagement: {
         name: 'Completion management',
         icon: 'swap_horizontal_circle'
+    },
+    Reports: {
+        name: 'Reports',
+        icon: 'swap_horizontal_circle'
     }
 };
 export const apps: AppManifest[] = [
@@ -101,6 +107,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: '',
+        imageUri: './images/Business case.jpg',
         tags: []
     },
     {
@@ -152,7 +159,7 @@ export const apps: AppManifest[] = [
     },
     {
         title: 'Engineering',
-        shortName: 'Engineering',
+        shortName: 'engineering',
         color: '#0364B8',
         groupe: Apps.Dashboard,
         icon: '',
@@ -161,7 +168,7 @@ export const apps: AppManifest[] = [
     },
     {
         title: 'Fabrication',
-        shortName: 'Engineering',
+        shortName: 'fabrication',
         color: '#0364B8',
         groupe: Apps.Dashboard,
         icon: '',
@@ -170,7 +177,7 @@ export const apps: AppManifest[] = [
     },
     {
         title: 'Installation',
-        shortName: 'commissioning',
+        shortName: 'installation',
         color: '#0364B8',
         groupe: Apps.Dashboard,
         icon: '',
@@ -195,28 +202,64 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: []
     },
-
-    // Collaboration
+    // Engineering management
     {
-        title: 'Meeting',
-        shortName: 'meeting',
+        title: 'Control object status',
+        shortName: 'object-status',
         color: '#0364B8',
-        groupe: Apps.Collaboration,
-        icon: 'tag',
+        groupe: Apps.EngineeringManagement,
+        icon: '',
         uri: '',
-        tags: [],
-        imageUri: './images/image-test.png'
+        tags: []
     },
     {
-        title: 'Review',
-        shortName: 'rev',
+        title: 'LCI hanging garden',
+        shortName: 'lic-garden',
         color: '#0364B8',
-        groupe: Apps.Collaboration,
-        icon: 'tag',
+        groupe: Apps.EngineeringManagement,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    {
+        title: 'LCI portal',
+        shortName: 'lci-portal',
+        color: '#0364B8',
+        groupe: Apps.EngineeringManagement,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    {
+        title: 'MDR analytics',
+        shortName: 'mdr',
+        color: '#0364B8',
+        groupe: Apps.EngineeringManagement,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    // Construction management
+    {
+        title: 'Work order',
+        shortName: 'work-order',
+        color: '#0364B8',
+        groupe: Apps.ConstructionManagement,
+        icon: '',
         uri: '',
         tags: []
     },
     // CompletionManagement
+    {
+        title: 'Project explorer',
+        shortName: 'project-explorer',
+        color: '#0364B8',
+        groupe: Apps.CompletionManagement,
+        icon: '',
+        uri: '',
+        tags: [],
+        imageUri: './images/Project explorer.jpg'
+    },
     {
         title: 'Checklist',
         shortName: 'checklist',
@@ -297,54 +340,46 @@ export const apps: AppManifest[] = [
         tags: [],
         component: DataView
     },
-    // Construction management
+    // Queries and requests
     {
-        title: 'Work order',
-        shortName: 'work-order',
+        title: 'ATS request',
+        shortName: 'ats',
         color: '#0364B8',
-        groupe: Apps.ConstructionManagement,
-        icon: '',
-        uri: '',
-        tags: []
-    },
-    // Engineering management
-    {
-        title: 'Control object status',
-        shortName: 'object-status',
-        color: '#0364B8',
-        groupe: Apps.EngineeringManagement,
+        groupe: Apps.QueriesAndRequests,
         icon: '',
         uri: '',
         tags: []
     },
     {
-        title: 'LCI hanging garden',
-        shortName: 'lic-garden',
+        title: 'Change request',
+        shortName: 'change',
         color: '#0364B8',
-        groupe: Apps.EngineeringManagement,
+        groupe: Apps.QueriesAndRequests,
+        icon: '',
+        uri: '',
+        imageUri: './images/Scope change request.jpg',
+        tags: []
+    },
+    // ProjectControl
+    {
+        title: 'Project change proposal',
+        shortName: 'pcp',
+        color: '#0364B8',
+        groupe: Apps.ProjectControl,
         icon: '',
         uri: '',
         tags: []
     },
     {
-        title: 'LCI portal',
-        shortName: 'lci-portal',
+        title: 'Scope change control',
+        shortName: 'sca',
         color: '#0364B8',
-        groupe: Apps.EngineeringManagement,
+        groupe: Apps.ProjectControl,
         icon: '',
         uri: '',
+        imageUri: './images/Scope change control.jpg',
         tags: []
     },
-    {
-        title: 'MDR analytics',
-        shortName: 'mdr',
-        color: '#0364B8',
-        groupe: Apps.EngineeringManagement,
-        icon: '',
-        uri: '',
-        tags: []
-    },
-
     // QualityAndCompliance
     {
         title: 'Dispensations',
@@ -391,25 +426,7 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: []
     },
-    // Queries and requests
-    {
-        title: 'ATS request',
-        shortName: 'ats',
-        color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
-        icon: '',
-        uri: '',
-        tags: []
-    },
-    {
-        title: 'Change request',
-        shortName: 'change',
-        color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
-        icon: '',
-        uri: '',
-        tags: []
-    },
+
     {
         title: 'Overtime request',
         shortName: 'overtime',
@@ -428,22 +445,34 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: []
     },
-    // ProjectControl
+    // Reports
     {
-        title: 'Project change proposal',
-        shortName: 'pcp',
+        title: 'temp-link',
+        shortName: 'temp-link2',
         color: '#0364B8',
-        groupe: Apps.ProjectControl,
+        groupe: Apps.Reports,
         icon: '',
         uri: '',
         tags: []
     },
+
+    // Collaboration
     {
-        title: 'Scope change control',
-        shortName: 'sca',
+        title: 'Meeting',
+        shortName: 'meeting',
         color: '#0364B8',
-        groupe: Apps.ProjectControl,
-        icon: '',
+        groupe: Apps.Collaboration,
+        icon: 'tag',
+        uri: '',
+        tags: [],
+        imageUri: './images/image-test.png'
+    },
+    {
+        title: 'Review',
+        shortName: 'rev',
+        color: '#0364B8',
+        groupe: Apps.Collaboration,
+        icon: 'tag',
         uri: '',
         tags: []
     },
@@ -453,7 +482,7 @@ export const apps: AppManifest[] = [
         shortName: '3dm',
         color: '#0364B8',
         groupe: Apps.Top,
-        icon: 'home',
+        icon: HomeIcon,
         uri: '',
         tags: []
     },

@@ -22,6 +22,7 @@ const Wrapper = styled.div`
 `
 
 export const HomePage: React.FC<Partial<AppManifest>> = ({ imageUri, title, icon, tags }: Partial<AppManifest>) => {
+    const CustomIcon = icon
     return (
         <>
 
@@ -37,7 +38,7 @@ export const HomePage: React.FC<Partial<AppManifest>> = ({ imageUri, title, icon
 
                 <Wrapper>
                     <IconWrapper>
-                        {icon && <Icon name={icon} />}
+                        {(CustomIcon && typeof CustomIcon !== "string") ? <CustomIcon /> : CustomIcon && <Icon name={CustomIcon} />}
                     </IconWrapper>
                     <h1>{title}</h1>
                     <p>{tags && tags.join("-")}</p>

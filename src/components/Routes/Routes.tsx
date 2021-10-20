@@ -14,7 +14,7 @@ export const Routes = () => {
 
     return (
         <Switch>
-            <Route exact path={'/'} render={() => <HomePage title="Johan Casperg Dashboard" icon="home" />} />
+            <Route exact path={'/'} render={() => <HomePage title="Johan Castberg Dashboard" icon="home" />} />
             {
                 apps.map((route, index) => {
                     const Component = route.component || HomePage

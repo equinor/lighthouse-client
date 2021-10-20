@@ -1,5 +1,6 @@
 
 import { AuthenticationProvider, useAuthenticate } from "@equinor/authentication";
+import { tokens } from "@equinor/eds-tokens";
 import { AppConfig } from "@equinor/lighthouse-conf";
 import { BrowserRouter as Router } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
@@ -14,6 +15,26 @@ const GlobalStyle = createGlobalStyle`
         font-family: Equinor;
         margin: 0;
     };
+
+    ::-webkit-scrollbar {
+        width: .3rem;
+    }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+        background: none; 
+        }
+        
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+        background: ${tokens.colors.interactive.primary__resting.rgba}; 
+        border-radius: 5px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+        background:${tokens.colors.interactive.primary__hover.rgba}; 
+        }
 `
 interface ProCoSysAppClientProps {
     appConfig: AppConfig;
