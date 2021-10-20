@@ -25,12 +25,15 @@ export enum Apps {
     Top = 'Top',
     Collaboration = 'Collaboration',
     ProgressAndStatus = 'ProgressAndStatus',
+    CompletionManagement = 'CompletionManagement',
     ConstructionManagement = 'ConstructionManagement',
     EngineeringManagement = 'EngineeringManagement',
     ProjectInformation = 'ProjectInformation',
+    Dashboard = 'Dashboard',
     QueriesAndRequests = 'QueriesAndRequests',
-    Quality = 'Quality',
-    ScopeChange = 'ScopeChange'
+    QualityAndCompliance = 'QualityAndCompliance',
+    ProjectControl = 'ProjectControl',
+    SSU = 'SSU'
 }
 
 type AppGroups = Record<Apps, AppGroupe>;
@@ -64,21 +67,135 @@ export const appGroups: AppGroups = {
         name: 'Project information',
         icon: 'assignment'
     },
-
     QueriesAndRequests: {
         name: 'Queries and requests',
         icon: 'comment_discussion'
     },
-    Quality: {
-        name: 'Quality',
+    QualityAndCompliance: {
+        name: 'Quality and compliance',
         icon: 'check_circle_outlined'
     },
-    ScopeChange: {
-        name: 'Scope and change',
+    ProjectControl: {
+        name: 'Project control',
+        icon: 'swap_horizontal_circle'
+    },
+    SSU: {
+        name: 'SSU',
+        icon: 'swap_horizontal_circle'
+    },
+    Dashboard: {
+        name: 'Dashboard',
+        icon: 'swap_horizontal_circle'
+    },
+    CompletionManagement: {
+        name: 'Completion management',
         icon: 'swap_horizontal_circle'
     }
 };
 export const apps: AppManifest[] = [
+    // Project information
+    {
+        title: 'Business case',
+        shortName: 'business-case',
+        color: '#0364B8',
+        groupe: Apps.ProjectInformation,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    {
+        title: 'Milestone',
+        shortName: 'milestone',
+        color: '#0364B8',
+        groupe: Apps.ProjectInformation,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    {
+        title: 'Org chart',
+        shortName: 'org-chart',
+        color: '#0364B8',
+        groupe: Apps.ProjectInformation,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    {
+        title: 'Work processes',
+        shortName: 'work-processes',
+        color: '#0364B8',
+        groupe: Apps.ProjectInformation,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    //SSU
+    {
+        title: 'temp link',
+        shortName: 'temp-link',
+        color: '#0364B8',
+        groupe: Apps.SSU,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    // Dashboard
+    {
+        title: 'Overall',
+        shortName: 'overall',
+        color: '#0364B8',
+        groupe: Apps.Dashboard,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    {
+        title: 'Engineering',
+        shortName: 'Engineering',
+        color: '#0364B8',
+        groupe: Apps.Dashboard,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    {
+        title: 'Fabrication',
+        shortName: 'Engineering',
+        color: '#0364B8',
+        groupe: Apps.Dashboard,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    {
+        title: 'Installation',
+        shortName: 'commissioning',
+        color: '#0364B8',
+        groupe: Apps.Dashboard,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    {
+        title: 'Mechanical Completion',
+        shortName: 'mc',
+        color: '#0364B8',
+        groupe: Apps.Dashboard,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+    {
+        title: 'Commissioning',
+        shortName: 'commissioning',
+        color: '#0364B8',
+        groupe: Apps.Dashboard,
+        icon: '',
+        uri: '',
+        tags: []
+    },
+
     // Collaboration
     {
         title: 'Meeting',
@@ -99,12 +216,12 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: []
     },
-    // ProgressAndStatus
+    // CompletionManagement
     {
         title: 'Checklist',
         shortName: 'checklist',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.CompletionManagement,
         icon: '',
         uri: '',
         tags: [],
@@ -114,7 +231,7 @@ export const apps: AppManifest[] = [
         title: 'Handover',
         shortName: 'handover',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.CompletionManagement,
         icon: '',
         uri: '',
         tags: [],
@@ -124,7 +241,7 @@ export const apps: AppManifest[] = [
         title: 'Heat trace installation',
         shortName: 'heat-trace',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.CompletionManagement,
         icon: '',
         uri: '',
         tags: [],
@@ -134,7 +251,7 @@ export const apps: AppManifest[] = [
         title: 'Loop',
         shortName: 'loop',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.CompletionManagement,
         icon: '',
         uri: '',
         imageUri: './images/Loop.png',
@@ -144,34 +261,27 @@ export const apps: AppManifest[] = [
         title: 'N2He',
         shortName: 'N2He',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.CompletionManagement,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
+        component: DataView
     },
     {
         title: 'Preservation',
         shortName: 'preservation',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.CompletionManagement,
         icon: '',
         uri: '',
-        tags: []
-    },
-    {
-        title: 'ProCoSys',
-        shortName: 'pcs',
-        color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
-        icon: '',
-        uri: '',
-        tags: []
+        tags: [],
+        component: DataView
     },
     {
         title: 'Punch',
         shortName: 'punch',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.CompletionManagement,
         icon: '',
         uri: '',
         tags: [],
@@ -181,7 +291,7 @@ export const apps: AppManifest[] = [
         title: 'SWCR',
         shortName: 'swcr',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.CompletionManagement,
         icon: '',
         uri: '',
         tags: [],
@@ -234,49 +344,13 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: []
     },
-    // Project information
-    {
-        title: 'Business case',
-        shortName: 'business-case',
-        color: '#0364B8',
-        groupe: Apps.ProjectInformation,
-        icon: '',
-        uri: '',
-        tags: []
-    },
-    {
-        title: 'Milestone',
-        shortName: 'milestone',
-        color: '#0364B8',
-        groupe: Apps.ProjectInformation,
-        icon: '',
-        uri: '',
-        tags: []
-    },
-    {
-        title: 'Org chart',
-        shortName: 'org-chart',
-        color: '#0364B8',
-        groupe: Apps.ProjectInformation,
-        icon: '',
-        uri: '',
-        tags: []
-    },
-    {
-        title: 'Work processes',
-        shortName: 'work-processes',
-        color: '#0364B8',
-        groupe: Apps.ProjectInformation,
-        icon: '',
-        uri: '',
-        tags: []
-    },
-    // Quality
+
+    // QualityAndCompliance
     {
         title: 'Dispensations',
         shortName: 'dispensations',
         color: '#0364B8',
-        groupe: Apps.Quality,
+        groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
         tags: []
@@ -285,7 +359,7 @@ export const apps: AppManifest[] = [
         title: 'Dispensations',
         shortName: 'dispensations',
         color: '#0364B8',
-        groupe: Apps.Quality,
+        groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
         tags: []
@@ -294,7 +368,7 @@ export const apps: AppManifest[] = [
         title: 'N-comformacy request',
         shortName: 'n-comformacy-request',
         color: '#0364B8',
-        groupe: Apps.Quality,
+        groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
         tags: []
@@ -303,7 +377,7 @@ export const apps: AppManifest[] = [
         title: 'Non-comformacy',
         shortName: 'non-comformacy',
         color: '#0364B8',
-        groupe: Apps.Quality,
+        groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
         tags: []
@@ -312,7 +386,7 @@ export const apps: AppManifest[] = [
         title: 'Quality deviation',
         shortName: 'quality-deviation',
         color: '#0364B8',
-        groupe: Apps.Quality,
+        groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
         tags: []
@@ -354,21 +428,21 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: []
     },
-    // Scope and change
+    // ProjectControl
     {
         title: 'Project change proposal',
         shortName: 'pcp',
         color: '#0364B8',
-        groupe: Apps.ScopeChange,
+        groupe: Apps.ProjectControl,
         icon: '',
         uri: '',
         tags: []
     },
     {
-        title: 'Scope control analytics',
+        title: 'Scope change control',
         shortName: 'sca',
         color: '#0364B8',
-        groupe: Apps.ScopeChange,
+        groupe: Apps.ProjectControl,
         icon: '',
         uri: '',
         tags: []

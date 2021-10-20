@@ -32,7 +32,7 @@ const Logo = () => {
         <LogoWrapper onClick={() => handleClick()}>
             <LogoIcon />
             <LogoTitle>
-                Johan Casberg
+                Johan Castberg
             </LogoTitle>
         </LogoWrapper>
     )
