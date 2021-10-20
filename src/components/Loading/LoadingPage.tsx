@@ -1,5 +1,7 @@
+import { tokens } from "@equinor/eds-tokens";
 import styled from "styled-components";
-import LogoIcon from "../../images/ProCoSys";
+import LogoIcon from "../../icons/ProX_logo";
+
 
 
 
@@ -24,7 +26,7 @@ const Page = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background-image:linear-gradient(42deg, rgba(30,45,57,1) 0%, rgba(58,88,119,1) 35%, rgba(219,255,251,1) 100%);
+    background-image:linear-gradient(42deg, ${tokens.colors.ui.background__info.rgba} 0%, ${tokens.colors.ui.background__default.rgba} 100%);
     opacity: .7;
 }
     
@@ -67,9 +69,9 @@ const LoadingPage = () => {
     return (
         <Page>
             <Wrapper>
-                <LogoIcon size={128} />
-                <H1>ProCoSys</H1>
-                <H3>Project Lighthouse</H3>
+                <LogoIcon width={200} height={140} />
+                <H1>Johan Casberg</H1>
+                <H3>Project Lighthouse Portal</H3>
             </Wrapper>
         </Page>
     );

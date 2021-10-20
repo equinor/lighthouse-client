@@ -1,4 +1,5 @@
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
@@ -17,10 +18,7 @@ const serverConfig = {
         static: [
             {
                 directory: buildPath,
-                watch: true
-            },
-            {
-                directory: publicPath,
+                watch: true,
                 serveIndex: true
             }
         ],
@@ -52,7 +50,8 @@ const webpackConfig: Configuration = {
         filename: '[name].bundle.js',
         // library: 'someLibName',
         // libraryTarget: 'commonjs',
-        chunkFilename: `[name].[contenthash].chunk.js`
+        chunkFilename: `[name].[contenthash].chunk.js`,
+        publicPath: './'
     },
     module: {
         rules: [
@@ -67,16 +66,21 @@ const webpackConfig: Configuration = {
                 }
             },
             {
-                test: /\.(png|jpe?g|gif)$/i,
-                loader: 'file-loader',
-                options: {
-                    name: 'images/[name].[ext]'
-                }
-            },
-            {
                 test: /\.css$/,
                 use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
                 exclude: /\.module\.css$/
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/i,
+                loader: 'file-loader',
+                options: {
+                    name: './images/[name].[ext]',
+                    publicPath: `./images`
+                }
+            },
+            {
+                test: /\.(png|jpg)$/,
+                loader: 'url-loader'
             }
         ]
     },
@@ -86,7 +90,10 @@ const webpackConfig: Configuration = {
         new HtmlWebpackPlugin({
             template
         }),
-        new TerserPlugin({})
+        new TerserPlugin({}),
+        new CopyPlugin({
+            patterns: [{ from: './public/images', to: './images' }]
+        })
     ],
     resolve: {
         extensions,
