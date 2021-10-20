@@ -185,11 +185,10 @@ export const MainMenu = (): JSX.Element => {
                     const CustomIcon = item.icon;
                     return (
                         <Link className="link" key={`link-${item.shortName}`} to={`/${item.shortName}`} >
-                            {(CustomIcon && typeof CustomIcon !== "string") ? (
-                                <CustomIcon />
-                            ) : (
-                                <Icon name={CustomIcon} title={item.title} color={tokens.colors.text.static_icons__secondary.rgba} />
-                            )}
+                            {CustomIcon && typeof CustomIcon !== "string" && <CustomIcon />}
+
+                            {CustomIcon && typeof CustomIcon === "string" && < Icon name={CustomIcon} title={item.title} color={tokens.colors.text.static_icons__secondary.rgba} />}
+
                             {appsPanelActive && <span>{item.title}</span>}
                         </Link>)
 
@@ -205,13 +204,17 @@ export const MainMenu = (): JSX.Element => {
                             return null
                         }
 
+                        const CustomIcon = appGroups[key].icon;
                         if (appsPanelActive) return (
 
 
 
                             <Item key={`item-${key}`} isExpanded={isExpanded} >
                                 <Header className="noBorder heading">
-                                    <Icon name={appGroups[key].icon} title={appGroups[key].name} color={tokens.colors.text.static_icons__secondary.rgba} />
+                                    {CustomIcon && typeof CustomIcon !== "string" && <CustomIcon />}
+
+                                    {CustomIcon && typeof CustomIcon === "string" && < Icon name={CustomIcon} title={appGroups[key].name} color={tokens.colors.text.static_icons__secondary.rgba} />}
+
                                     {appGroups[key].name}
                                 </Header>
                                 <Panel className="noBorder">

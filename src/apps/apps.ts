@@ -1,6 +1,18 @@
 import React from 'react';
 import { DataView } from '../components/CompletionView/src/DataView';
+import { AssetDataIcon } from '../icons/Asset data icon';
+import { CollaborationIcon } from '../icons/Collaboration icon';
+import { CompletionManagementIcon } from '../icons/Completion management icon';
+import { ConstructionManagementIcon } from '../icons/construction management icon';
+import { EngineeringManagementIcon } from '../icons/Engineering management icon';
 import { HomeIcon } from '../icons/Home icon';
+import { ProgressAndStatusIcon } from '../icons/Progress and status icon';
+import { ProjectInformationIcon } from '../icons/ProjectInformationIcon';
+import { QualityIcon } from '../icons/Quality icon';
+import { QueriesAndRequests } from '../icons/Queries and requests icon';
+import { ReportIcon } from '../icons/Report icon';
+import { ScopeAndChange } from '../icons/Scope and change icon';
+import { SSUIcon } from '../icons/SSUIcon';
 
 type HEXColor = `#${string}`;
 
@@ -43,59 +55,59 @@ type AppGroups = Record<Apps, AppGroupe>;
 export const appGroups: AppGroups = {
     AssetData: {
         name: 'Asset data',
-        icon: 'tag'
+        icon: AssetDataIcon
     },
     Top: {
         name: 'Top',
-        icon: 'home'
+        icon: HomeIcon
     },
     Collaboration: {
         name: 'Collaboration',
-        icon: 'group'
+        icon: CollaborationIcon
     },
     ProgressAndStatus: {
         name: 'Progress and status',
-        icon: 'dashboard'
+        icon: ProgressAndStatusIcon
     },
     ConstructionManagement: {
         name: 'Construction management',
-        icon: 'build_wrench'
+        icon: ConstructionManagementIcon
     },
     EngineeringManagement: {
         name: 'Engineering management',
-        icon: 'swap_horizontal_circle'
+        icon: EngineeringManagementIcon
     },
     ProjectInformation: {
         name: 'Project information',
-        icon: 'assignment'
+        icon: ProjectInformationIcon
     },
     QueriesAndRequests: {
         name: 'Queries and requests',
-        icon: 'comment_discussion'
+        icon: QueriesAndRequests
     },
     QualityAndCompliance: {
         name: 'Quality and compliance',
-        icon: 'check_circle_outlined'
+        icon: QualityIcon
     },
     ProjectControl: {
         name: 'Project control',
-        icon: 'swap_horizontal_circle'
+        icon: ScopeAndChange
     },
     SSU: {
         name: 'SSU',
-        icon: 'swap_horizontal_circle'
+        icon: SSUIcon
     },
     Dashboard: {
         name: 'Dashboard',
-        icon: 'swap_horizontal_circle'
+        icon: ProgressAndStatusIcon
     },
     CompletionManagement: {
         name: 'Completion management',
-        icon: 'swap_horizontal_circle'
+        icon: CompletionManagementIcon
     },
     Reports: {
         name: 'Reports',
-        icon: 'swap_horizontal_circle'
+        icon: ReportIcon
     }
 };
 export const apps: AppManifest[] = [
