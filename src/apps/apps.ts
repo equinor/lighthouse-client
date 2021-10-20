@@ -1,4 +1,5 @@
 import React from 'react';
+import { CompletionView } from '../components/CompletionView/src/CompletionView';
 
 type HEXColor = `#${string}`;
 
@@ -10,7 +11,8 @@ export interface AppManifest {
     tags: string[];
     icon?: string;
     uri?: string;
-    component?: React.FC;
+    component?: React.FC<Partial<AppManifest>>;
+    imageUri?: string;
 }
 
 export interface AppGroupe {
@@ -85,7 +87,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.Collaboration,
         icon: 'tag',
         uri: '',
-        tags: []
+        tags: [],
+        imageUri: './images/image-test.png'
     },
     {
         title: 'Review',
@@ -104,7 +107,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
+        component: CompletionView
     },
     {
         title: 'Handover',
@@ -113,7 +117,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
+        component: CompletionView
     },
     {
         title: 'Heat trace installation',
@@ -122,7 +127,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
+        component: CompletionView
     },
     {
         title: 'Loop',
@@ -167,7 +173,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
+        component: CompletionView
     },
     {
         title: 'SWCR',
@@ -176,7 +183,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
+        component: CompletionView
     },
     // Construction management
     {

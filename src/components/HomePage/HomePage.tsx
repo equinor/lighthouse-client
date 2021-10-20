@@ -1,24 +1,45 @@
+
 import styled from "styled-components";
-import { CompletionView } from "../CompletionView/src/CompletionView";
+import { AppManifest } from "../../apps/apps";
+import Icon from "../Icon/Icon";
 
 
-const Wrapper = styled.div`
+const ImageWrapper = styled.div`
  
 `
 
-export const HomePage = (props) => {
+const IconWrapper = styled.div`
+    padding: 18px;
 
+`
+
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 28px;
+`
+
+export const HomePage: React.FC<Partial<AppManifest>> = ({ imageUri, title, icon, tags }: Partial<AppManifest>) => {
     return (
         <>
-            <Wrapper>
-                {/* <NavigationView /> */}
-                {/* <Dashboard /> */}
-                {/* <DataView /> */}
-                {/* <Garden /> */}
-                {/* {<PowerBI />} */}
-                <CompletionView {...props} />
-            </Wrapper>
 
+            {imageUri ? (
+                <ImageWrapper>
+                    <img src={imageUri} />
+                </ImageWrapper>
+            ) : (
+
+                <Wrapper>
+                    <IconWrapper>
+                        {icon && <Icon name={icon} />}
+                    </IconWrapper>
+                    <h1>{title}</h1>
+                    <p>{tags && tags.join("-")}</p>
+                </Wrapper>
+
+            )}
         </>
     );
 }
