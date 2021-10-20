@@ -1,7 +1,6 @@
-import { Breadcrumbs, Button, SingleSelect } from "@equinor/eds-core-react";
+import { Breadcrumbs } from "@equinor/eds-core-react";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Icon from "../../../Icon/Icon";
 import { useDataContext } from "../Context/DataProvider";
 
 
@@ -82,7 +81,7 @@ export const CompletionViewHeader = ({ groupe, title }) => {
 
                 </Breadcrumbs>
             </BreadcrumbWrapper>
-            <ActionWrapper>
+            {/* <ActionWrapper>
                 <SelectionWrapper>
                     <SingleSelect
                         value={selectedDataSet}
@@ -98,7 +97,7 @@ export const CompletionViewHeader = ({ groupe, title }) => {
                     <Icon name="filter_list" title="filter"></Icon>
                 </Button>
 
-            </ActionWrapper>
+            </ActionWrapper> */}
         </HeaderWrapper>
     )
 }

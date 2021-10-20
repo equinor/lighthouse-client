@@ -92,7 +92,10 @@ const webpackConfig: Configuration = {
         }),
         new TerserPlugin({}),
         new CopyPlugin({
-            patterns: [{ from: './public/images', to: './images' }]
+            patterns: [
+                { from: './public/images', to: './images' },
+                { from: './public/data', to: './' }
+            ]
         })
     ],
     resolve: {

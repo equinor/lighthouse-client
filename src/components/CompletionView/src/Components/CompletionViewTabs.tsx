@@ -4,6 +4,7 @@ import styled from "styled-components"
 import { PowerBI } from "../../../../modules/powerBI"
 import { ListView } from "../../../DataView/DataView"
 import { Filter } from "../../../Filter/Index"
+import Icon from "../../../Icon/Icon"
 
 const { Tab, List, Panels, Panel } = Tabs
 
@@ -93,7 +94,7 @@ export const CompletionViewTabs = () => {
         <CompletionViewWarper>
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <List>
-                    {tabs.map(tab => <Tab key={`tab-${tab.title}`}>{tab.title}</Tab>)}
+                    {tabs.map(tab => <Tab key={`tab-${tab.icon}`}><Icon name={tab.icon} /></Tab>)}
                 </List>
                 <Panels>
                     {
