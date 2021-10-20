@@ -14,14 +14,14 @@ const LogoWrapper = styled.div`
 const LogoTitle = styled.h4`
     font-family: Equinor;
     font-style:  16px;
-    line-height: 24px;
+    line-height: 0px;
     letter-spacing: 0.2px;
     padding-left: 18px;
     margin: 0;
 `
 
 const Logo = () => {
-    let history = useHistory();
+    const history = useHistory();
     function handleClick() {
 
         history.push("/");
@@ -32,7 +32,7 @@ const Logo = () => {
         <LogoWrapper onClick={() => handleClick()}>
             <LogoIcon />
             <LogoTitle>
-                ProX
+                Johan Casberg
             </LogoTitle>
         </LogoWrapper>
     )
