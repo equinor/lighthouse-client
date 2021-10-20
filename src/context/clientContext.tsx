@@ -54,7 +54,7 @@ export function ClientReducer(state: ClientState, action: Action): ClientState {
 }
 
 const initialState: ClientState = {
-    appsPanelActive: false,
+    appsPanelActive: true,
 
 }
 

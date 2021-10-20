@@ -1,5 +1,5 @@
 import React from 'react';
-import { CompletionView } from '../components/CompletionView/src/CompletionView';
+import { DataView } from '../components/CompletionView/src/DataView';
 
 type HEXColor = `#${string}`;
 
@@ -108,7 +108,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: CompletionView
+        component: DataView
     },
     {
         title: 'Handover',
@@ -118,7 +118,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: CompletionView
+        component: DataView
     },
     {
         title: 'Heat trace installation',
@@ -128,7 +128,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: CompletionView
+        component: DataView
     },
     {
         title: 'Loop',
@@ -137,6 +137,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
+        imageUri: './images/Loop.png',
         tags: []
     },
     {
@@ -174,7 +175,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: CompletionView
+        component: DataView
     },
     {
         title: 'SWCR',
@@ -184,7 +185,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: CompletionView
+        component: DataView
     },
     // Construction management
     {

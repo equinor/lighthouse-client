@@ -27,7 +27,11 @@ export const HomePage: React.FC<Partial<AppManifest>> = ({ imageUri, title, icon
 
             {imageUri ? (
                 <ImageWrapper>
-                    <img src={imageUri} />
+                    <img src={imageUri} style={{
+                        width: "-webkit-fill-available",
+                        maxWidth: "100%",
+                        height: "auto"
+                    }} />
                 </ImageWrapper>
             ) : (
 

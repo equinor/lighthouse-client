@@ -1,4 +1,3 @@
-import { arrayBuffer } from 'stream/consumers';
 import { FilterData, FilterDataOptions } from '../Types/FilterItem';
 
 /**
@@ -8,7 +7,7 @@ export function createFilterData<T, K extends keyof T>(
     dataArray: T[],
     options?: FilterDataOptions<T, K>
 ): FilterData {
-    if (arrayBuffer.length === 0) return {};
+    if (dataArray.length === 0) return {};
     return dataArray.reduce((filterData, dataItem) => {
         Object.keys(dataItem).forEach((typeKey: string) => {
             if (options?.excludeKeys?.includes(typeKey as K)) return filterData;

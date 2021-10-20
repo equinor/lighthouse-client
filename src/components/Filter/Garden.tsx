@@ -5,7 +5,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-
+    overflow: scroll;
     align-items: flex-start;
 `
 const Col = styled.div`

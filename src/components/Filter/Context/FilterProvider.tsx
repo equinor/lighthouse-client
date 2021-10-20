@@ -27,7 +27,7 @@ export interface FilterState {
 
 const Context = createContext({} as FilterContext)
 
-export default function useFilterContext(): FilterContext {
+export function useFilterContext(): FilterContext {
     return useContext(Context)
 }
 
@@ -52,7 +52,9 @@ export const FilterProvider = <T, K extends keyof T>({ children, data, options }
 
     return (
         < Context.Provider value={{ ...state, dispatch }
-        }>{children}</Context.Provider >
+        }>
+            {children}
+        </Context.Provider >
     )
 
 }
