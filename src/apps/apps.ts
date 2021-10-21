@@ -403,15 +403,6 @@ export const apps: AppManifest[] = [
         tags: []
     },
     {
-        title: 'Dispensations',
-        shortName: 'dispensations',
-        color: '#0364B8',
-        groupe: Apps.QualityAndCompliance,
-        icon: '',
-        uri: '',
-        tags: []
-    },
-    {
         title: 'N-comformacy request',
         shortName: 'n-comformacy-request',
         color: '#0364B8',
@@ -491,7 +482,7 @@ export const apps: AppManifest[] = [
     // Asset Data
     {
         title: 'Home',
-        shortName: '3dm',
+        shortName: '',
         color: '#0364B8',
         groupe: Apps.Top,
         icon: HomeIcon,

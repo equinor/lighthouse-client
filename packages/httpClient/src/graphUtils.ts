@@ -75,10 +75,12 @@ export function useGraphClient(authProvider: AuthenticationProvider) {
             headers: headers
         };
 
-        console.log(
-            'request for user profile made to Graph API at: ' +
-                new Date().toString()
-        );
+        if (false) {
+            console.log(
+                'request for user profile made to Graph API at: ' +
+                    new Date().toString()
+            );
+        }
 
         const response: Response = await fetch(endpoint, options);
         if (response && response.ok) {
@@ -108,10 +110,12 @@ export function useGraphClient(authProvider: AuthenticationProvider) {
             headers: headers
         };
 
-        console.log(
-            'request for user profile picture made to Graph API at: ' +
-                new Date().toString()
-        );
+        if (false) {
+            console.log(
+                'request for user profile picture made to Graph API at: ' +
+                    new Date().toString()
+            );
+        }
 
         const response: Response = await fetch(endpoint, options);
         if (response && response.ok) {

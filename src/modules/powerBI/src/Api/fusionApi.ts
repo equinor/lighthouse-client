@@ -9,9 +9,9 @@ export function useFusionClient() {
     async function getEmbedInfo() {
         try {
             const response = await fusionClient.fetch(
-                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/punch-analytics-rls/config/embedinfo'
+                'https://lih-proxy.azurewebsites.net/fusion/reports/punch-analytics-rls/config/embedinfo'
                 // 'https://pro-s-reports-fprd.azurewebsites.net/reports/query-analytics-rls/config/embedinfo'
-                'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/config/embedinfo'
+                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/config/embedinfo'
             );
 
             const data = await response.json();
@@ -25,9 +25,9 @@ export function useFusionClient() {
     async function getPowerBiToken() {
         try {
             const response = await fusionClient.fetch(
-                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/punch-analytics-rls/token'
+                'https://lih-proxy.azurewebsites.net/fusion/reports/punch-analytics-rls/token'
                 // 'https://pro-s-reports-fprd.azurewebsites.net/reports/query-analytics-rls/token'
-                'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/token'
+                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/token'
             );
             return await response.json();
         } catch (error) {

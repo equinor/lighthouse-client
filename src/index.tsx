@@ -2,6 +2,7 @@
 import { Configuration } from '@azure/msal-browser';
 import { authenticationProvider } from '@equinor/authentication';
 import { fetchConfig } from '@equinor/lighthouse-conf';
+import React from 'react';
 import { render } from 'react-dom';
 import moduleLoader from './moduleLoader';
 import ProCoSysAppClient from './ProCoSysAppClient';
@@ -9,8 +10,6 @@ import ProCoSysAppClient from './ProCoSysAppClient';
 
 
 fetchConfig().then((appConfig) => {
-
-
     const clientId = appConfig.clientId;
     const tenant = appConfig.tenant;
     const authority = `https://login.microsoftonline.com/${tenant}`;
@@ -27,7 +26,6 @@ fetchConfig().then((appConfig) => {
             storeAuthStateInCookie: true
         }
     };
-    console.log(authConfig)
 
     const authProvider = authenticationProvider(authConfig);
 
@@ -36,5 +34,3 @@ fetchConfig().then((appConfig) => {
         render(<ProCoSysAppClient {...{ appConfig, authProvider }} />, document.getElementById('root'));
     }
 })
-
-
