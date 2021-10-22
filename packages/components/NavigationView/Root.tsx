@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { tree } from './TreeMoc';
 
 export interface TreeNode {
     items: TreeNode[];
@@ -72,13 +71,95 @@ const Item = styled.div`
 
 `;
 
+
+type Data<T, K extends keyof T> = {
+    [key: string]: {
+        groupKey: K,
+        value: string,
+        subGroups: Data<T, K>,
+        items: T[],
+        count: number,
+        customRenderFunction?: RenderFunction<T, K>
+    }
+}
+
+interface Item {
+    CheckList__TagFormularType__Tag__McPkg__CommPkg__CommPkgNo: string;
+    Id: number;
+    Status__Id: string | string[];
+    CheckList__TagFormularType__Tag__TagNo: string;
+}
+
+
+
+type RenderFunction<T, K extends keyof T> = (data: Data<T, K>) => React.FC<{ data: Data<T, K> }>
+
+type CustomRender<T, K extends keyof T> = {
+    [key in keyof T]: RenderFunction<T, K>;
+};
+
+function groupBy<T, K extends keyof T>(arr: T[], keys: K[], renderFunction?: CustomRender<T, K>): Data<T, K> {
+    const key = keys[0] && keys[0].toString() || undefined
+    if (!key) return {} as Data<T, K>;
+
+    const data = arr.reduce((acc, item) => {
+        const itemKeys: [] = Array.isArray(item[key]) ? item[key] : [item[key]];
+
+        itemKeys.forEach((valueKey: string) => {
+
+            acc[valueKey] = acc[valueKey] || {
+                groupKey: key,
+                value: valueKey,
+                subGroups: {},
+                items: [],
+                count: 0,
+                renderFunction: renderFunction && renderFunction[key]
+            };
+            acc[valueKey].items.push(item)
+            acc[valueKey].count = acc[valueKey].count + 1
+        });
+        return acc
+
+    }, {} as Data<T, K>);
+
+    if (keys.length === 0) return data;
+
+    const nextKeys = keys.slice(1)
+    Object.keys(data).forEach(key => {
+        data[key].subGroups = groupBy(data[key].items, nextKeys);
+        if (nextKeys.length > 0)
+            data[key].items = [];
+    });
+
+    return data
+
+}
+
 export const TreeRoot = () => {
+    const [data, setData] = useState<Data<Item, keyof Item>>({});
+    useEffect(() => {
+        async function run() {
+
+            const response = await fetch("./data.json");
+            const data: Item[] = await response.json();
+
+            const d = data.map(item => {
+                if (typeof item.Status__Id === "string")
+                    item.Status__Id = [item.Status__Id, "PC"]
+                return item
+            })
+
+            setData(groupBy(d, ["CheckList__TagFormularType__Tag__McPkg__CommPkg__CommPkgNo", "Status__Id", "CheckList__TagFormularType__Tag__TagNo"]))
+
+        };
+        run()
+    }, [])
 
 
     return (
         <Tree>
-            {tree.map((node, index) => (
-                <ItemNode key={node.id + index} {...node} />
+            {Object.keys(data).map((key: string, index: number) => (
+                <ItemNode key={data[key].groupKey + index} data={data[key].subGroups} />
             ))}
         </Tree>
     );
@@ -90,30 +171,31 @@ const icon = {
     commpkg: 'C'
 };
 
-export const ItemNode: React.FC<TreeNode> = (node: TreeNode): JSX.Element => {
+export const ItemNode: React.FC<{ data: Data<Item, keyof Item> }> = ({ data }: { data: Data<Item, keyof Item> }): JSX.Element => {
     const [expand, setExpand] = useState(false);
     const [selected, setSelects] = useState("");
     const handleExpand = () => {
         setExpand((expand: boolean) => !expand);
-        setSelects(node.id !== selected ? node.id : '');
+        // setSelects(data. !== selected ? data.groupKey : '');
     };
 
     return (
         <>
-            <Wrapper id={node.id} selected={selected}>
-                <H3>{icon[node.type]}</H3>
-                <Title {...{ ...node, selected }} onClick={handleExpand}>
-                    {node.title}
+            test
+            {/* <Wrapper id={data.groupKey} selected={selected}>
+                <H3>{icon[data.groupKey]}</H3>
+                <Title {...{ selected }} onClick={handleExpand}>
+                    {data.value}
                 </Title>
             </Wrapper>
-            <HeightWrapper active={node.id !== selected}>
+            <HeightWrapper active={data.groupKey !== selected}>
                 {expand &&
-                    node.items.map((childNode, index) => (
-                        <Item key={childNode.id + index}>
-                            <ItemNode {...childNode} />
+                    Object.keys(data).map((key: string, index: number) => (
+                        <Item key={data[key].groupeKey + index}>
+                            <ItemNode {...data[key]} />
                         </Item>
                     ))}
-            </HeightWrapper>
+            </HeightWrapper> */}
         </>
     );
 };

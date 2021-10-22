@@ -194,7 +194,8 @@ export const MainMenu = (): JSX.Element => {
 
                 })
                 }
-                {filteredList["Top"] && <Divider />}
+                {filteredList[Apps.Top] && <Divider />}
+
             </TopItems>
 
             <Accordion chevronPosition="right">
