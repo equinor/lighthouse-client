@@ -1,5 +1,4 @@
 import { useHistory } from "react-router-dom";
-import { Filter } from "../../../Filter/Index";
 import { ImageTab } from "./ImageTab";
 
 export const GardenTab = () => {
@@ -18,6 +17,7 @@ export const GardenTab = () => {
         );
     }
     return (
-        <Filter />
+        <>hello</>
+        // <Garden garden={garden} />
     );
 }

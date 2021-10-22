@@ -1,37 +1,57 @@
-import { useEffect, useState } from "react";
+import { tokens } from "@equinor/eds-tokens";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 16px;
+    overflow: scroll;
     align-items: flex-start;
 `
-const Row = styled.div`
+const Col = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 4px;
 `
 
+const Title = styled.p`
+    padding: .5rem;
+    font-weight: 600;
+    color: ${tokens.colors.text.static_icons__default.rgba};
+    `
+const Groupe = styled.div`
+    padding: .1rem;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    position: relative;
 
-
-const P = styled.p`
-    margin: 4px;
-    padding: 1rem;
-    background-color: #333;
-    color: #fff;
-    width: 100px;
+    ::after{
+        content: " ";
+        position: absolute;
+        bottom: 10px;
+        width: 100%;
+        height: 2px;
+        background-color: ${tokens.colors.ui.background__info.rgba};
+    }
 `
+
+const Count = styled.span`
+    color: ${tokens.colors.text.static_icons__default.rgba};
+    font-weight: 300;
+    font-size: .8rem;
+`
+
 
 const Pack = styled.p`
     padding: .5rem 1rem;
     margin: 0;
     margin-bottom: 4px;
-    background-color: #666;
-    color: #fff;
-    width: 100px;
+    border: 1px solid ${tokens.colors.text.static_icons__tertiary.rgba};
+    border-radius: 5px;
+    color: ${tokens.colors.text.static_icons__default.rgba};
+    min-width: 200px;
     cursor: pointer;
 
     :hover{
@@ -39,53 +59,21 @@ const Pack = styled.p`
     }
 `
 
-
-interface Item {
-
-    CheckList__TagFormularType__Tag__McPkg__CommPkg__CommPkgNo: string;
-    Id: number;
-    Status__Id: string;
-    CheckList__TagFormularType__Tag__TagNo: string;
-}
-
-function groupeByKey<T, K extends keyof T>(array: T[], key: K) {
-    return array.reduce((results: any, org: T) => {
-        (results[org[key]] = results[org[key]] || []).push(org);
-        return results;
-    }, {});
-}
-
-const keys = ["CheckList__TagFormularType__Tag__Project__Name", "CheckList__TagFormularType__Tag__McPkg__CommPkg__CommPhase__Id", "PunchListItemNo", "CheckList__TagFormularType__FormularType__Discipline__Id", "Status__Id", "CheckList__TagFormularType__Tag__McPkg__CommPkg__CommPkgNo"]
-
-
-export const Garden = () => {
-    const [state, setState] = useState<Record<string, Item[]>>({})
-    const [key, seKey] = useState<string>("Status__Id")
-
-
-    useEffect(() => {
-        async function getData() {
-            const response = await fetch("./data.json");
-            const data: Item[] = await response.json();
-            setState(groupeByKey(data, key as keyof Item))
-        }
-        getData();
-    }, [key])
-    return (<>
-        <select value={key} onChange={(e) => {
-            seKey(e.currentTarget.value)
-        }}>
-            {keys.map(optionKey => <option key={optionKey} value={optionKey}>{optionKey}</option>)}
-        </select>
-        <Wrapper>
-            {Object.keys(state).map(rowItem => (<Row key={rowItem}><P>{rowItem}</P>
-                {state[rowItem].map(colItem => <Pack onClick={() => {
-                    console.log(colItem)
-                }} key={colItem.Id}>{colItem.CheckList__TagFormularType__Tag__TagNo}</Pack>)}
-            </Row>))}
-
-
-        </Wrapper>
-    </>
-    );
+export const Garden = ({ garden }) => {
+    return (<Wrapper>
+        {Object.keys(garden).map((key, index) => (
+            <Col key={`col-${index}`}>
+                <Groupe>
+                    <Title>
+                        {key}
+                    </Title>
+                    <Count>
+                        ({garden[key].length})
+                    </Count>
+                </Groupe>
+                {
+                    garden[key].map((item, index) => <Pack key={key + index}>{item["CheckList__TagFormularType__Tag__TagNo"]}</Pack>)
+                }
+            </Col>))}
+    </Wrapper>);
 }

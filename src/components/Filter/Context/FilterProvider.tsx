@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
-import { createFilterData } from '../Services/CreatFilterData';
+import { createFilterData } from '../Services/creatFilterData';
 import { FilterData, FilterDataOptions } from '../Types/FilterItem';
 import { FilterActions, filterReducer } from './FilterReducer';
 

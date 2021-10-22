@@ -11,15 +11,15 @@ export type FilterItemCheck = (
     singleClick?: boolean
 ) => void;
 
-export type FilterGroupe = {
+export type FilterGroup = {
     all: boolean;
     type: string;
     value: Record<string, FilterItem>;
 };
-export type FilterData = Record<string, FilterGroupe>;
+export type FilterData = Record<string, FilterGroup>;
 
-export interface FilterDataOptions<T, K extends keyof T> {
-    excludeKeys?: K[];
-    typeMap?: Record<K, string>;
-    groupeValue?: Record<K, (item: T) => string>;
+export interface FilterDataOptions<T> {
+    excludeKeys?: (keyof T)[];
+    typeMap?: Record<keyof T, string>;
+    groupeValue?: Record<keyof T, (item: T) => string>;
 }
