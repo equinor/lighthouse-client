@@ -7,7 +7,7 @@ import {
 
 export interface FilterProviderProps<T> {
     children: React.ReactNode;
-    data: T[];
+    initialData: T[];
     options?: FilterDataOptions<T>;
 }
 
@@ -16,6 +16,7 @@ export interface Context extends FilterState {
 }
 export interface FilterState {
     data: unknown[];
+    filteredData: unknown[];
     filterData: FilterData;
 }
 
