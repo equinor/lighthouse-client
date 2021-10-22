@@ -38,36 +38,3 @@ export function createFilterData<T>(
         return filterData;
     }, {} as FilterData);
 }
-
-export function arrayFilterDict<T>(
-    arr: T[],
-    exclude?: string[],
-    filterDict?: FilterData
-): FilterData {
-    if (arr.length === 0) return {};
-    const newFilterDict = arr.reduce((a, i) => {
-        Object.keys(i).map((typeKey: string) => {
-            if (exclude && exclude.includes(typeKey)) return;
-            if (filterDict && !filterDict[typeKey]) return;
-            const value: string = i[typeKey];
-            const obj =
-                a[typeKey] ||
-                (a[typeKey] = filterDict
-                    ? filterDict[typeKey]
-                    : { value: {}, all: true, type: typeKey });
-
-            if (!obj.value[value]) {
-                obj.value[value] = {
-                    ...obj.value[value],
-                    value,
-                    checked: true,
-                    type: typeKey
-                };
-            } else {
-                obj.value[value] = { ...obj.value[value], value };
-            }
-        });
-        return a;
-    }, {} as FilterData);
-    return newFilterDict;
-}

@@ -1,39 +1,11 @@
-import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
+import { checkItem } from '../Services/checkItem';
 import { createFilterData } from '../Services/creatFilterData';
-import { FilterData, FilterDataOptions } from '../Types/FilterItem';
+import { FilterItem, FilterItemCheck } from '../Types/FilterItem';
+import { Context, FilterProviderProps, FilterState } from './FilterContext';
 import { FilterActions, filterReducer } from './FilterReducer';
 
-
-interface FilterProviderProps<T, K extends keyof T> {
-    children: React.ReactNode;
-    data: T[],
-    options?: FilterDataOptions<T, K>
-}
-
-export interface FilterContext extends FilterState {
-    dispatch: React.Dispatch<{
-        type: FilterActions.setFilterData;
-        filterData: FilterData;
-    }>
-}
-
-
-export interface FilterState {
-    data: unknown[];
-    filterData: FilterData;
-}
-
-
-
-const Context = createContext({} as FilterContext)
-
-export function useFilterContext(): FilterContext {
-    return useContext(Context)
-}
-
-
-
-export const FilterProvider = <T, K extends keyof T>({ children, data, options }: FilterProviderProps<T, K>): JSX.Element => {
+export function FilterProvider<T>({ children, data, options }: FilterProviderProps<T>): JSX.Element {
     const initial = useRef(true);
 
     const initialState: FilterState = {
@@ -44,15 +16,20 @@ export const FilterProvider = <T, K extends keyof T>({ children, data, options }
 
     useEffect(() => {
         if (initial.current) {
-            const filterData = createFilterData(data, options)
-            dispatch({ type: FilterActions.setFilterData, filterData })
+            const filter = createFilterData(data, options)
+            dispatch({ type: FilterActions.setFilterData, filter })
             initial.current = false;
         }
-    }, [options, data])
+    }, [data, options])
+
+    const filterItemCheck: FilterItemCheck = useCallback(
+        (filterItem: FilterItem, singleClick?: boolean): void => {
+            const filter = checkItem(state.filterData, filterItem, singleClick);
+            dispatch({ type: FilterActions.setFilterData, filter });
+        }, [state]);
 
     return (
-        < Context.Provider value={{ ...state, dispatch }
-        }>
+        < Context.Provider value={{ ...state, filterItemCheck }}>
             {children}
         </Context.Provider >
     )

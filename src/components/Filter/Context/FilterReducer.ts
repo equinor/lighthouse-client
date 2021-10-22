@@ -1,6 +1,6 @@
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { FilterData } from '../Types/FilterItem';
-import { FilterState } from './FilterProvider';
+import { FilterState } from './FilterContext';
 
 export enum FilterActions {
     setFilterData = 'setFilterData'
@@ -9,8 +9,8 @@ export enum FilterActions {
 export const actions = {
     setFilterData: createCustomAction(
         FilterActions.setFilterData,
-        (filterData: FilterData) => ({
-            filterData
+        (filter: FilterData) => ({
+            filter
         })
     )
 };
@@ -20,7 +20,7 @@ export type Action = ActionType<typeof actions>;
 export function filterReducer(state: FilterState, action: Action): FilterState {
     switch (action.type) {
         case getType(actions.setFilterData):
-            return { ...state, filterData: action.filterData };
+            return { ...state, filterData: action.filter };
         default:
             return state;
     }

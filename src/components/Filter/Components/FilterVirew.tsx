@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { useDataContext } from "../../CompletionView/src/Context/DataProvider"
 import { useFilter } from "../Hooks/useFilter"
 import { FilterGroup } from "../Types/FilterItem"
 import { FilterGroupeComponent } from "./FilterGroupeComponent"
@@ -13,9 +12,7 @@ const Wrapper = styled.div`
 `
 
 export const FilterView = () => {
-    const { data } = useDataContext()
-
-    const { filter, filterItemCheck } = useFilter(data)
+    const { filter, filterItemCheck } = useFilter()
     return (
         <Wrapper>
             {
