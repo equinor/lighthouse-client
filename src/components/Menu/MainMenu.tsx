@@ -230,10 +230,10 @@ export const MainMenu = (): JSX.Element => {
 
                         return (
                             <SmallItem>
-
                                 < SmallButton id="hover-popover-anchor" ref={el => anchorRef.current[i] = el as HTMLHeadingElement} className="noBorder heading" onFocus={() => openPopover(appGroups[key].name)} onMouseOver={() => openPopover(appGroups[key].name)}
                                     onBlur={handleClose}>
-                                    <Icon name={appGroups[key].icon} title={appGroups[key].name} color={tokens.colors.text.static_icons__secondary.rgba} />
+                                    {CustomIcon && typeof CustomIcon !== "string" && <CustomIcon />}
+                                    {CustomIcon && typeof CustomIcon === "string" && < Icon name={CustomIcon} title={appGroups[key].name} color={tokens.colors.text.static_icons__secondary.rgba} />}
 
                                 </SmallButton>
                                 <PopoverWrapper>

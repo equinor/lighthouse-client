@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface FilterItem {
     value: string;
     type: string;
@@ -7,7 +9,7 @@ export interface FilterItem {
 export type FilerItemCount = (key: string) => number;
 
 export type FilterItemCheck = (
-    filterItem: FilterItem,
+    filterItem: FilterItem | FilterItem[],
     singleClick?: boolean
 ) => void;
 
@@ -20,6 +22,7 @@ export type FilterData = Record<string, FilterGroup>;
 
 export interface FilterDataOptions<T> {
     excludeKeys?: (keyof T)[];
-    typeMap?: Record<keyof T, string>;
-    groupeValue?: Record<keyof T, (item: T) => string>;
+    typeMap?: Partial<Record<keyof T, string>>;
+    groupValue?: Record<string, (item: T) => string>;
+    customRender?: Record<keyof T | string, React.FC<T>>;
 }

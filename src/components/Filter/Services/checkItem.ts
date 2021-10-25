@@ -2,17 +2,61 @@ import { FilterData, FilterItem } from '../Types/FilterItem';
 
 export function checkItem(
     filterDataState: FilterData,
-    filterItem: FilterItem,
+    filterItem: FilterItem | FilterItem[],
     singleClick?: boolean
 ) {
-    if (singleClick) {
-        Object.keys(filterDataState[filterItem.type].value).forEach((key) => {
-            filterDataState[filterItem.type].value[key].checked =
-                key === filterItem.value ? true : false;
+    const items = Array.isArray(filterItem) ? filterItem : [filterItem];
+    if (singleClick && items.length === 1) {
+        items.forEach((item) => {
+            Object.keys(filterDataState[item.type].value).forEach((key) => {
+                filterDataState[item.type].value[key].checked =
+                    key === item.value.toString() ? true : false;
+            });
         });
+    } else if (singleClick && items.length > 1) {
+        const type = items[0].type;
+        if (isAll(items, filterDataState, items[0])) {
+            const isAllTrue = Object.keys(filterDataState[type].value).every(
+                (key) => filterDataState[type].value[key].checked
+            );
+            items.forEach((item) => {
+                filterDataState[type].value[item.value].checked = isAllTrue
+                    ? false
+                    : true;
+            });
+        } else {
+            filterDataState = setItemsActive(filterDataState, type, items);
+        }
     } else {
-        filterDataState[filterItem.type].value[filterItem.value].checked =
-            !filterDataState[filterItem.type].value[filterItem.value].checked;
+        items.forEach((item) => {
+            filterDataState[item.type].value[item.value].checked =
+                !filterDataState[item.type].value[item.value].checked;
+        });
     }
     return { ...filterDataState };
+}
+
+function setItemsActive(
+    filterDataState: FilterData,
+    type: string,
+    _filterItems: FilterItem[]
+) {
+    Object.keys(filterDataState[type].value).forEach(
+        (key) => (filterDataState[type].value[key].checked = false)
+    );
+    _filterItems.forEach((item) => {
+        filterDataState[type].value[item.value].checked = true;
+    });
+    return filterDataState;
+}
+
+function isAll(
+    _filterItems: FilterItem[],
+    filterDataState: FilterData,
+    item: FilterItem
+) {
+    return (
+        _filterItems.length ===
+        Object.keys(filterDataState[item.type].value).length
+    );
 }

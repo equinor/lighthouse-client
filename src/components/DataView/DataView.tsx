@@ -2,7 +2,6 @@ import { EdsProvider, Table } from "@equinor/eds-core-react";
 import { tokens } from "@equinor/eds-tokens";
 import { useState } from "react";
 import styled from "styled-components";
-import { useDataContext } from "../CompletionView/src/Context/DataProvider";
 import Icon from "../Icon/Icon";
 
 const TableHeaderTitle = styled.p`
@@ -10,6 +9,12 @@ const TableHeaderTitle = styled.p`
         text-transform:capitalize;
     }
 `;
+
+const Cell = styled.span`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`
 
 function sortByKey<T, K extends keyof T>(list: T[], key: K, direction: boolean) {
     if (key === "") return list;
@@ -25,10 +30,11 @@ function sortByKey<T, K extends keyof T>(list: T[], key: K, direction: boolean) 
     });
 }
 
-export const ListView = () => {
-    const { data } = useDataContext();
+export function ListView<T extends Object>({ data, }: { data: T[], initialKey: keyof T }) {
     const [key, setKey] = useState<string>("")
     const [sortDirection, setSortDirection] = useState(false);
+    const [activeRow, setActiveRow] = useState("")
+
     const maxLength = 50;
     return (
         <EdsProvider density={"compact"}>
@@ -56,12 +62,28 @@ export const ListView = () => {
                     </Table.Row>
                 </Table.Head>
                 <Table.Body >
-                    {[...sortByKey(data, key, sortDirection)].splice(0, 50).map((itemRow, index) => (
-                        <Table.Row key={itemRow.toString() + index} style={{ height: "35px" }}>
-                            {Object.keys(itemRow).map((cellKey: string, index: number) => (
-                                <Table.Cell title={itemRow[cellKey]} variant="text" style={{ width: "125px !important" }} key={cellKey + index}>{`${itemRow[cellKey] || "-"}`.slice(0, maxLength).concat((`${itemRow[cellKey]}`.length > maxLength) ? "..." : "")}</Table.Cell>
-                            ))}
-                        </Table.Row>
+                    {[...sortByKey(data, key as keyof T, sortDirection)].splice(0, 50).map((itemRow, rowindex) => (
+                        <>
+                            <Table.Row key={itemRow.toString() + rowindex} style={{ height: "35px" }} onClick={() => { setActiveRow(state => state == itemRow.toString() + rowindex ? "" : itemRow.toString() + rowindex) }}>
+                                {Object.keys(itemRow).map((cellKey: string, index: number) => (
+                                    <>
+                                        <Table.Cell title={itemRow[cellKey]} variant="text" style={{ height: "125px !important" }} key={cellKey + index}>
+                                            <Cell>
+                                                {`${itemRow[cellKey] || "-"}`.slice(0, maxLength).concat((`${itemRow[cellKey]}`.length > maxLength) ? "..." : "")}
+                                            </Cell>
+                                        </Table.Cell>
+                                    </>
+                                ))}
+                            </Table.Row>
+                            {
+                                (activeRow == (itemRow.toString() + rowindex)) && (
+                                    <Table.Row>
+                                        <Table.Cell colSpan={Object.keys(itemRow).length} variant="text">
+                                            Dette er en test å di!!!
+                                        </Table.Cell>
+                                    </Table.Row>)
+                            }
+                        </>
                     ))}
                 </Table.Body>
             </Table >}

@@ -6,13 +6,13 @@ import { FilterGroupeComponent } from "./FilterGroupeComponent"
 const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
-    height: 200px;
+    max-height: 200px;
     overflow: scroll;
     
 `
 
 export const FilterView = () => {
-    const { filter, filterItemCheck } = useFilter()
+    const { filter, filterItemCheck } = useFilter();
     return (
         <Wrapper>
             {

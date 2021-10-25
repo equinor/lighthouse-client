@@ -10,11 +10,12 @@ interface FilterItemComponentProps {
     filterItemCheck: FilterItemCheck;
     indeterminate?: boolean;
     count?: number;
+    key: string;
 }
 
-export const FilterItemComponent = ({ filterItem, getCount, filterItemCheck, indeterminate, count }: FilterItemComponentProps): JSX.Element => {
+export const FilterItemComponent = ({ filterItem, getCount, filterItemCheck, indeterminate, count, key }: FilterItemComponentProps): JSX.Element => {
     return (
-        <FilterItemWrapper aria-label={filterItem.value} title={filterItem.value}>
+        <FilterItemWrapper key={key} aria-label={filterItem.value} title={filterItem.value}>
             <FilterItemGroupe>
                 <Checkbox indeterminate={indeterminate} title={filterItem.value} checked={filterItem.checked} onChange={() => { filterItemCheck(filterItem) }} />
                 <FilterItemLabel onClick={() => { filterItemCheck(filterItem, true) }}>

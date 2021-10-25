@@ -1,6 +1,6 @@
-import { Checkbox } from "@equinor/eds-core-react"
+import { Checkbox, Search } from "@equinor/eds-core-react"
 import { tokens } from "@equinor/eds-tokens"
-import React from "react"
+import React, { useMemo, useState } from "react"
 import styled from "styled-components"
 import { FilterGroup, FilterItemCheck } from "../Types/FilterItem"
 import { FilterItemComponent } from "./FilterItem/FilterItem"
@@ -31,14 +31,68 @@ interface FilterGroupeComponentProps {
     filterItemCheck: FilterItemCheck
 }
 
+function searchByValue(items: string[], value: string) {
+    return items.filter(item => item.toLocaleLowerCase().includes(value.toLocaleLowerCase()))
+}
+
+function allChecked(filterGroup: FilterGroup): boolean {
+    return checkedCount(filterGroup) === Object.keys(filterGroup.value).length;
+}
+
+function checkedCount(filterGroup: FilterGroup): number {
+    return Object.keys(filterGroup.value).filter(key => filterGroup.value[key].checked).length;
+}
+
+function checkIsIndeterminate(filterGroup: FilterGroup) {
+    const maxCount = Object.keys(filterGroup.value).length;
+    const count = checkedCount(filterGroup)
+    return count > 0 && count < maxCount;
+}
 
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ filterGroup, filterItemCheck }: FilterGroupeComponentProps) => {
+    const [filterSearchValue, setFilterSearchValue] = useState("");
+
+
+    function handleOnChange(
+        event: React.ChangeEvent<HTMLInputElement>
+    ) {
+        const value = event.target.value
+        setFilterSearchValue(value)
+    }
+    function handleOnKeyPress(
+        event: React.KeyboardEvent<HTMLInputElement>,
+    ) {
+        if (event.code === "Enter") {
+            const filterItems = group.map(key => filterGroup.value[key])
+            filterItemCheck(filterItems, true)
+            setFilterSearchValue("");
+        }
+    }
+
+    function handleOnAllChange() {
+        filterItemCheck(Object.keys(filterGroup.value).map(key => filterGroup.value[key]), true)
+    }
+
+    const group = useMemo(() => searchByValue(Object.keys(filterGroup.value), filterSearchValue), [filterSearchValue]);
+    const isAllChecked = allChecked(filterGroup);
+    const isIndeterminate = checkIsIndeterminate(filterGroup)
 
     return (
         <Wrapper>
-            <Checkbox title={"All"} label={"All"} checked={filterGroup.all} onChange={() => { console.log("check") }} />
+            <h4>{filterGroup.type}</h4>
+            <div>
+                <Search
+
+                    aria-label="in filer group"
+                    id="search-normal"
+                    placeholder="Search"
+                    onChange={handleOnChange}
+                    onKeyPress={handleOnKeyPress}
+                />
+            </div>
+            <Checkbox title={"All"} label={"All"} checked={isAllChecked} indeterminate={isIndeterminate} onChange={handleOnAllChange} />
             {
-                Object.keys(filterGroup.value).map((key) => {
+                group.map((key) => {
                     const item = filterGroup.value[key];
                     return (
                         <>

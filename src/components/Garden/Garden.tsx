@@ -1,5 +1,7 @@
 import { tokens } from "@equinor/eds-tokens";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { createGarden, Garden } from "./Services/createGarden";
 
 const Wrapper = styled.div`
     display: flex;
@@ -59,9 +61,15 @@ const Pack = styled.p`
     }
 `
 
-export const Garden = ({ garden }) => {
+export function Garden<T>({ data, groupeKey, itemKey }: { data: T[] | undefined, groupeKey: keyof T, itemKey: keyof T }) {
+    const [garden, setGarden] = useState<Garden<T>>()
+
+    useEffect(() => {
+        data && setGarden(createGarden(data, groupeKey))
+    }, [data, groupeKey])
+
     return (<Wrapper>
-        {Object.keys(garden).map((key, index) => (
+        {garden && Object.keys(garden).map((key, index) => (
             <Col key={`col-${index}`}>
                 <Groupe>
                     <Title>
@@ -72,7 +80,7 @@ export const Garden = ({ garden }) => {
                     </Count>
                 </Groupe>
                 {
-                    garden[key].map((item, index) => <Pack key={key + index}>{item["CheckList__TagFormularType__Tag__TagNo"]}</Pack>)
+                    garden[key].map((item, index) => <Pack key={key + index}>{item[itemKey]}</Pack>)
                 }
             </Col>))}
     </Wrapper>);

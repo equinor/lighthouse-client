@@ -67,9 +67,28 @@ export const DataProvider = ({ children }: DataProviderProps) => {
         const response = await api.fetch(`https://procosyswebapitest.equinor.com/api/Search?plantId=${plantId}&savedSearchId=96128&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`, { body: JSON.stringify([]), method: "POST" })
 
         const data = JSON.parse(await response.text());
-        console.log("DATA", data);
         dispatch(actions.getData(data));
     }
+    const getChecklist = async (plantId = "PCS$JOHAN_CASTBERG") => {
+        const response = await api.fetch(`https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=96128&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`, { body: JSON.stringify([]), method: "POST" })
+
+        const data = JSON.parse(await response.text());
+        dispatch(actions.getData(data));
+    }
+
+    // const getData = async (plantId = "PCS$JOHAN_CASTBERG") => {
+    //     const response = await api.fetch(`https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=78359&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`, {
+    //         body: JSON.stringify([
+    //             {
+    //                 "Key": "WO.Is cancelled",
+    //                 "Value": "no"
+    //             }
+    //         ]), method: "POST"
+    //     })
+
+    //     const data = JSON.parse(await response.text());
+    //     dispatch(actions.getData(data));
+    // }
 
     return (
         <DataContext.Provider value={{

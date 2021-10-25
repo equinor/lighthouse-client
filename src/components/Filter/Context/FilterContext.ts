@@ -16,8 +16,8 @@ export interface Context extends FilterState {
 }
 export interface FilterState {
     data: unknown[];
-    filteredData: unknown[];
     filterData: FilterData;
+    options?: FilterDataOptions<unknown>;
 }
 
 export const Context = createContext({} as Context);

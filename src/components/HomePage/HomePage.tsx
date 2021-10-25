@@ -51,6 +51,40 @@ export const HomePage: React.FC<Partial<AppManifest>> = ({ imageUri, title, icon
                         <p>{tags && tags.join("-")}</p>
                     </TitleWrapper>
                     <iframe name="embed-feed" title="Yammer" src="https://web.yammer.com/embed/groups/eyJfdHlwZSI6Ikdyb3VwIiwiaWQiOiIxMDA2NTk2NiJ9" style={{ border: "0px", overflow: "hidden", width: "100%", height: "100%", minHeight: "400px" }}></iframe>
+
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Test</td>
+                                <td>Test2</td>
+                                <td>Test3</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td colSpan={3}>
+                                    Dette er en test
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </Wrapper>
 
             )}

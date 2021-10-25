@@ -1,13 +1,29 @@
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
+import { dictToArray } from '../Components/Utils/dictToArray';
 import { Context } from '../Context/FilterContext';
-import { FilterGroup } from '../Types/FilterItem';
-import { dictToArray } from '../Utils/dictToArray';
+import { filter } from '../Services/filter';
+import { FilterDataOptions, FilterGroup } from '../Types/FilterItem';
 
-interface FilterContext extends Context {
+interface FilterContext<T> extends Context {
     filter: FilterGroup[];
+    data: T[];
+    filteredData: T[];
 }
 
-export function useFilter(): FilterContext {
+export function useFilter<T>(): FilterContext<T> {
     const state = useContext(Context);
-    return { ...state, filter: dictToArray(state.filterData) };
+    const data = state.data as T[];
+    const options = state.options as FilterDataOptions<T>;
+
+    const filteredData = useMemo(
+        () => filter(data, state.filterData, options),
+        [data, state.filterData]
+    );
+
+    return {
+        ...state,
+        data,
+        filter: dictToArray(state.filterData),
+        filteredData
+    };
 }

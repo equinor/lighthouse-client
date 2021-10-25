@@ -10,12 +10,22 @@ export function createFilterData<T>(
     options?: FilterDataOptions<T>
 ): FilterData {
     if (dataArray.length === 0) return {};
-    return dataArray.reduce((filterData, dataItem) => {
+
+    return dataArray.reduce((filterData, item) => {
+        const dataItem = options?.groupValue
+            ? { ...item, ...options.groupValue }
+            : item;
+
         Object.keys(dataItem).forEach((typeKey: string) => {
             if (options?.excludeKeys?.includes(typeKey as keyof T))
                 return filterData;
 
-            if (options?.typeMap) {
+            let valueKey: string = getObjectValue(dataItem, typeKey);
+
+            if (
+                options?.typeMap &&
+                Object.keys(options.typeMap).includes(typeKey)
+            ) {
                 typeKey = options.typeMap[typeKey];
             }
 
@@ -23,10 +33,11 @@ export function createFilterData<T>(
                 filterData[typeKey] ||
                 (filterData[typeKey] = { value: {}, all: true, type: typeKey });
 
-            let valueKey: string = getObjectValue(dataItem, typeKey);
-
-            if (options?.groupeValue) {
-                valueKey = options.groupeValue[typeKey](dataItem);
+            if (
+                options?.groupValue &&
+                typeof options.groupValue[typeKey] === 'function'
+            ) {
+                valueKey = options.groupValue[typeKey](dataItem);
             }
 
             filterObject.value[valueKey] = {
