@@ -120,7 +120,8 @@ const Content = styled.div`
             color: #030303;
             text-decoration: none;
             display: block;
-            padding-bottom:1rem;            
+            padding-bottom:1rem;  
+            font-size: 14px;
             :hover{
                 opacity: .5;
           

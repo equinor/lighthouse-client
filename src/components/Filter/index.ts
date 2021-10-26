@@ -1,6 +1,6 @@
 // View Components
-export * from './Components/FilterGroupeComponent';
-export * from './Components/FilterView';
+export * from './Components/FilterGroup/FilterGroup';
+export * from './Components/FilterView/FilterView';
 // Context Provider
 export * from './Context/FilterProvider';
 // Hooks

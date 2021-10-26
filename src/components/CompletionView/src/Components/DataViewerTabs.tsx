@@ -11,28 +11,26 @@ const CompletionViewWarper = styled.section`
     flex-direction: column;
 `
 
-const PanelWrapper = styled.div`
-    height: calc(100vh - 230px);
-    width: calc(100vw - 360px);
+const PanelWrapper = styled.section`
     overflow: scroll;
 `;
 
 export const CompletionViewTabs = ({ tabs, activeTab, handleChange }) => {
 
     return (
+        <PanelWrapper>
+            <Panels>
+                {
+                    tabs.map((tab, index) => {
+                        const ViewComponent = tab.viewComponent;
+                        return (<Panel key={`panel-${tab.title}`} style={{ paddingTop: 0 }}>
+                            {activeTab == index && <ViewComponent />}
+                        </Panel>);
+                    })
+                }
+            </Panels>
 
-
-        <Panels>
-            {
-                tabs.map((tab, index) => {
-                    const ViewComponent = tab.viewComponent;
-                    return (<Panel key={`panel-${tab.title}`} style={{ paddingTop: 0 }}>
-                        {activeTab == index && <ViewComponent />}
-                    </Panel>);
-                })
-            }
-        </Panels>
-
+        </PanelWrapper>
 
     )
 }

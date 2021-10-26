@@ -18,7 +18,7 @@ const Col = styled.div`
 `
 
 const Title = styled.p`
-    padding: .5rem;
+    padding-bottom: .5rem;
     font-weight: 600;
     color: ${tokens.colors.text.static_icons__default.rgba};
     `
@@ -28,6 +28,7 @@ const Groupe = styled.div`
     display: flex;
     align-items: center;
     position: relative;
+    height: 32px;
 
     ::after{
         content: " ";
@@ -43,6 +44,7 @@ const Count = styled.span`
     color: ${tokens.colors.text.static_icons__default.rgba};
     font-weight: 300;
     font-size: .8rem;
+    padding-bottom: .5rem;
 `
 
 

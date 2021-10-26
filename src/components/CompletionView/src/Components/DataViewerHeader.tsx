@@ -1,4 +1,4 @@
-import { Breadcrumbs, Tabs } from "@equinor/eds-core-react";
+import { Breadcrumbs, Button, Icon, Tabs } from "@equinor/eds-core-react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDataContext } from "../Context/DataProvider";
@@ -14,11 +14,15 @@ const HeaderWrapper = styled.section`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    width:;
     
 `
 
 const BreadcrumbWrapper = styled.div`
-    padding-left: 1rem;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 `
 const ActionWrapper = styled.div`
     padding: .5rem;
@@ -60,7 +64,7 @@ const TabTitle = styled.span`
 
 
 
-export const CompletionViewHeader = ({ groupe, title, tabs }) => {
+export const CompletionViewHeader = ({ groupe, title, tabs, handleFilter }) => {
     const { getData } = useDataContext();
 
     useEffect(() => {
@@ -75,6 +79,9 @@ export const CompletionViewHeader = ({ groupe, title, tabs }) => {
     return (
         <HeaderWrapper>
             <BreadcrumbWrapper>
+                <Button variant="ghost_icon" onClick={handleFilter}>
+                    <Icon name={"filter_list"} />
+                </Button>
                 <Breadcrumbs>
                     {
                         groupe !== "Top" && <Breadcrumb href="#" onClick={handleClick}>

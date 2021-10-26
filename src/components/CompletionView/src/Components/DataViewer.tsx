@@ -56,58 +56,63 @@ const CompletionViewWarper = styled.section`
 export const DataViewer = (props) => {
     const { data } = useDataContext();
     const [activeTab, setActiveTab] = useState(0);
+    const [activeFilter, setActiveFilter] = useState(false);
 
     const handleChange = (index: number) => {
         setActiveTab(index)
     }
 
+    function handleFilter() {
+        setActiveFilter(state => !state)
+    }
+
     return (
-        <CompletionViewWarper>
-            <FilterProvider<Checklist> initialData={data} options={{
-                excludeKeys: checklist,
-                typeMap: {
-                    Responsible__Id: "Responsible Id",
-                },
-                groupValue: {
-                    start: (item: Checklist) => {
-                        switch (new Date(item.PlannedStartup).getMonth()) {
-                            case 0:
-                                return "January";
-                            case 1:
-                                return "February";
-                            case 2:
-                                return "March";
-                            case 3:
-                                return "April";
-                            case 4:
-                                return "May";
-                            case 5:
-                                return "June";
-                            case 6:
-                                return "July";
-                            case 7:
-                                return "August";
-                            case 8:
-                                return "September";
-                            case 9:
-                                return "October";
-                            case 10:
-                                return "November";
-                            case 11:
-                                return "December"
-                            default:
-                                return "Unknown"
-                        }
+
+        <FilterProvider<Checklist> initialData={data} options={{
+            excludeKeys: checklist,
+            typeMap: {
+                Responsible__Id: "Responsible Id",
+            },
+            groupValue: {
+                start: (item: Checklist) => {
+                    switch (new Date(item.PlannedStartup).getMonth()) {
+                        case 0:
+                            return "January";
+                        case 1:
+                            return "February";
+                        case 2:
+                            return "March";
+                        case 3:
+                            return "April";
+                        case 4:
+                            return "May";
+                        case 5:
+                            return "June";
+                        case 6:
+                            return "July";
+                        case 7:
+                            return "August";
+                        case 8:
+                            return "September";
+                        case 9:
+                            return "October";
+                        case 10:
+                            return "November";
+                        case 11:
+                            return "December"
+                        default:
+                            return "Unknown"
                     }
                 }
             }
-            } >
-                <FilterView />
-                <Tabs activeTab={activeTab} onChange={handleChange}>
-                    <CompletionViewHeader {...props} tabs={tabsConfig} />
-                    <CompletionViewTabs tabs={tabsConfig} activeTab={activeTab} handleChange={handleChange} />
-                </Tabs>
-            </FilterProvider>
-        </CompletionViewWarper >
+        }
+        } >
+            {activeFilter && <FilterView />}
+            <Tabs activeTab={activeTab} onChange={handleChange} >
+                <CompletionViewHeader {...props} tabs={tabsConfig} handleFilter={handleFilter} />
+                <CompletionViewTabs tabs={tabsConfig} activeTab={activeTab} handleChange={handleChange} />
+            </Tabs>
+        </FilterProvider>
+
     );
 }

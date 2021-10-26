@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
 
     ::-webkit-scrollbar {
         width: .3rem;
+        height: .3rem;
     }
 
         /* Track */

@@ -10,7 +10,7 @@ display: flex;
 width: 100vw;
 `
 const ChildrenWrapper = styled.div`
-   width: calc(100vw - ${({ panelActive }: CssProps) => panelActive ? "350px" : "55px"});
+   width: calc(100vw - ${({ panelActive }: CssProps) => panelActive ? "374px" : "74px"});
    transition: width 0.2s ease;
 `
 const MainMenuWrapper = styled.div`

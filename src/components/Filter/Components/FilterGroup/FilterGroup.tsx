@@ -1,34 +1,13 @@
 import { Checkbox, Search } from "@equinor/eds-core-react"
-import { tokens } from "@equinor/eds-tokens"
 import React, { useMemo, useState } from "react"
-import styled from "styled-components"
-import { FilterGroup, FilterItemCheck } from "../Types/FilterItem"
-import { FilterItemComponent } from "./FilterItem/FilterItem"
+import { FilterGroup, FilterItemCheck } from "../../Types/FilterItem"
+import { FilterItemComponent } from "../FilterItem/FilterItem"
+import { FilterGroupWrapper, FilterItemWrapper, Title, Wrapper } from "./FilterGroup-Styles"
 
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding: .5em;
-    max-width: 200px;
-    word-wrap: break-word;
-    background-color: ${tokens.colors.ui.background__light.rgba};
 
-    label{
-        font-size: 1rem;
-        padding: 0;
-        span {
-            padding: .1rem;
-
-        }
-        svg{
-            height: 16px;
-            width: 16px;
-        }
-    }
-`
 interface FilterGroupeComponentProps {
     filterGroup: FilterGroup,
-    filterItemCheck: FilterItemCheck
+    filterItemCheck: FilterItemCheck,
 }
 
 function searchByValue(items: string[], value: string) {
@@ -51,6 +30,7 @@ function checkIsIndeterminate(filterGroup: FilterGroup) {
 
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ filterGroup, filterItemCheck }: FilterGroupeComponentProps) => {
     const [filterSearchValue, setFilterSearchValue] = useState("");
+    const group = useMemo(() => searchByValue(Object.keys(filterGroup.value), filterSearchValue), [filterSearchValue, filterGroup]);
 
 
     function handleOnChange(
@@ -73,38 +53,39 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ fi
         filterItemCheck(Object.keys(filterGroup.value).map(key => filterGroup.value[key]), true)
     }
 
-    const group = useMemo(() => searchByValue(Object.keys(filterGroup.value), filterSearchValue), [filterSearchValue]);
     const isAllChecked = allChecked(filterGroup);
     const isIndeterminate = checkIsIndeterminate(filterGroup)
 
     return (
         <Wrapper>
-            <h4>{filterGroup.type}</h4>
-            <div>
-                <Search
+            <Title>{filterGroup.type}</Title>
+            <Search
+                aria-label="in filer group"
+                id="search-normal"
+                placeholder="Search"
+                onChange={handleOnChange}
+                onKeyPress={handleOnKeyPress}
+            />
+            <FilterGroupWrapper>
+                <FilterItemWrapper>
+                    <Checkbox title={"All"} label={"All"} checked={isAllChecked} indeterminate={isIndeterminate} onChange={handleOnAllChange} />
+                    {
 
-                    aria-label="in filer group"
-                    id="search-normal"
-                    placeholder="Search"
-                    onChange={handleOnChange}
-                    onKeyPress={handleOnKeyPress}
-                />
-            </div>
-            <Checkbox title={"All"} label={"All"} checked={isAllChecked} indeterminate={isIndeterminate} onChange={handleOnAllChange} />
-            {
-                group.map((key) => {
-                    const item = filterGroup.value[key];
-                    return (
-                        <>
-                            {<FilterItemComponent
-                                key={item.value}
-                                filterItem={item}
-                                filterItemCheck={filterItemCheck}
-                            />}
-                        </>
-                    );
-                })
-            }
+                        group.map((key) => {
+                            const item = filterGroup.value[key];
+                            return (
+                                <div key={item.value}>
+                                    {<FilterItemComponent
+                                        itemKey={item.value}
+                                        filterItem={item}
+                                        filterItemCheck={filterItemCheck}
+                                    />}
+                                </div>
+                            );
+                        })
+                    }
+                </FilterItemWrapper>
+            </FilterGroupWrapper>
         </Wrapper>
     )
 }

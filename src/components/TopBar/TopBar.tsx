@@ -29,6 +29,7 @@ const TopBarWrapper = styled.div`
     position: fixed;
     width: 100%;
     z-index: 2;
+    height: 48px 
     > header {
         padding-left: 16px;
     }
