@@ -1,19 +1,10 @@
-import { useHistory } from "react-router";
-import { ImageTab } from "./ImageTab";
+import { TreeRoot } from "../../../../../packages/components/NavigationView/Root";
 
 export const TreeTab = () => {
-    const history = useHistory();
-    console.log(history.location.pathname)
 
-    if (history.location.pathname === "/handover") {
-        return (
-            <ImageTab imageUri="./images/Handover tree view.jpg" />
-        );
-    }
 
     return (
-        <ImageTab imageUri="./images/Handover tree view.jpg" />
-        // <TreeRoot />
+        <TreeRoot />
     );
 }
 

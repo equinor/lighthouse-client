@@ -122,6 +122,7 @@ const Content = styled.div`
             display: block;
             padding-bottom:1rem;  
             font-size: 14px;
+            
             :hover{
                 opacity: .5;
           
