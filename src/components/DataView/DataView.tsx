@@ -30,7 +30,9 @@ function sortByKey<T, K extends keyof T>(list: T[], key: K, direction: boolean) 
     });
 }
 
-export function ListView<T extends Object>({ data, }: { data: T[], initialKey: keyof T }) {
+interface ListViewProps<T> { data: T[], initialKey: keyof T }
+
+export function ListView<T extends Object>({ data, }: ListViewProps<T>) {
     const [key, setKey] = useState<string>("")
     const [sortDirection, setSortDirection] = useState(false);
     const [activeRow, setActiveRow] = useState("")

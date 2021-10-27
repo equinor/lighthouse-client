@@ -29,6 +29,7 @@ interface TitleProps {
     isSelected: boolean;
 
 }
+
 const Title = styled.h5`
     margin: 0;
     padding: 0.2rem;
@@ -38,9 +39,6 @@ const Title = styled.h5`
     background-color: ${tokens.colors.ui.background__light.rgba};
 `;
 
-const H3 = styled.h3`
-    margin: 0;
-`;
 
 const Wrapper = styled.span`
     display: flex;
@@ -69,8 +67,7 @@ const Item = styled.div`
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box; 
-    }
-        
+            
     &:after {
         position: absolute;
         top: 0;
@@ -85,7 +82,6 @@ const Item = styled.div`
     :last-child:after {
         height: 0;
     }
-
 `;
 
 
@@ -101,17 +97,6 @@ type DataSet<T> = {
     count: number,
     customRenderFunction?: RenderFunction<T>
 }
-
-interface Item {
-    CheckList__TagFormularType__Tag__McPkg__CommPkg__CommPkgNo: string;
-    Id: number;
-    Status__Id: string | string[];
-    CheckList__TagFormularType__Tag__TagNo: string;
-    CheckList__TagFormularType__Tag__Project__Name: string;
-    CheckList__TagFormularType__FormularType__Discipline__Id: string;
-    CheckList__TagFormularType__Tag__McPkg__CommPkg__CommPhase__Id: string;
-}
-
 
 
 type RenderFunction<T> = (data: Data<T>) => React.FC<{ data: Data<T> }>
@@ -158,40 +143,22 @@ function groupBy<T, K extends keyof T>(arr: T[], keys: K[], renderFunction?: Cus
 
 }
 
-export const TreeRoot = () => {
-    const [data, setData] = useState<Data<Item>>({});
+interface TreeRootProps<T> { data: T[], rootNode: keyof T, groupByKeys: (keyof T)[] }
+
+export function TreeRoot<T>({ data, groupByKeys, rootNode }: TreeRootProps<T>) {
+    const [treeData, setTreeData] = useState<Data<T>>({});
+
     useEffect(() => {
-        async function run() {
-
-            const response = await fetch("./data.json");
-            const data: Item[] = await response.json();
-
-            const d = data.map(item => {
-                if (typeof item.Status__Id === "string")
-                    item.Status__Id = [item.Status__Id, "PC"]
-                return item
-            })
-
-            setData(groupBy(d, ["Status__Id", "CheckList__TagFormularType__Tag__McPkg__CommPkg__CommPhase__Id", "CheckList__TagFormularType__Tag__McPkg__CommPkg__CommPkgNo"]))
-
-        };
-        run()
-    }, [])
-
+        setTreeData(groupBy(data, [rootNode, ...groupByKeys]))
+    }, [data, groupByKeys])
 
     return (
         <Tree>
-            {Object.keys(data).map((key: string, index: number) => (
-                <ItemNode key={data[key].groupKey + index} data={data[key]} />
+            {Object.keys(treeData).map((key: string, index: number) => (
+                <ItemNode<T> key={treeData[key].groupKey.toString() + index} data={treeData[key]} />
             ))}
         </Tree>
     );
-};
-
-const icon = {
-    plant: 'P',
-    system: 'S',
-    commpkg: 'C'
 };
 
 export function ItemNode<T>({ data }: { data: DataSet<T> }): JSX.Element {
@@ -212,7 +179,7 @@ export function ItemNode<T>({ data }: { data: DataSet<T> }): JSX.Element {
                     <Icon name={data.groupKey.toString() === selected ? "remove_outlined" : "add_circle_outlined"} />
                 }
                 <Title {...{ selected }} >
-                    {data.value}
+                    {data.value || "Unknown"}
                 </Title>
             </Wrapper>
             <HeightWrapper active={data.groupKey !== selected}>
