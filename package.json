@@ -13,8 +13,8 @@
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx src --color --fix",
     "lint-strict": "eslint --ext .js,.jsx,.ts,.tsx src --color --max-warnings=0",
     "test": "jest",
-    "test-watch": "npm ci & jest --watchAll",
-    "test-coverage": "npm ci & jest --coverage",
+    "test-watch": "yarn  ci & jest --watchAll",
+    "test-coverage": "yarn ci & jest --coverage",
     "docker-build": "docker build -f ./.docker/Dockerfile -t lighthouse:dev ."
   },
   "dependencies": {
