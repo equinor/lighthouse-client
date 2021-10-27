@@ -21,7 +21,6 @@ export function usePowerBI(): PowerBIResult {
         async function setupReportConfig() {
             try {
                 const fusionConfig = await getConfig();
-                console.log('config:', fusionConfig);
                 setReportConfig((config) => ({ ...config, ...fusionConfig }));
             } catch (error) {
                 console.error(error);

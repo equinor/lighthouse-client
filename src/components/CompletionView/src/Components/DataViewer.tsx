@@ -53,6 +53,15 @@ const wo: (keyof WorkOrder)[] = ["WoNo", "DescriptionShort"]
 const CompletionViewWarper = styled.section`
 
 `
+
+type DataTypes = Checklist | WorkOrder
+
+
+function getDataType<T = DataTypes>(data: any[]): T[] {
+    return []
+}
+
+
 export const DataViewer = (props) => {
     const { data } = useDataContext();
     const [activeTab, setActiveTab] = useState(0);
@@ -68,7 +77,7 @@ export const DataViewer = (props) => {
 
     return (
 
-        <FilterProvider<Checklist> initialData={data} options={{
+        <FilterProvider initialData={data} options={{
             excludeKeys: checklist,
             typeMap: {
                 Responsible__Id: "Responsible Id",
@@ -113,6 +122,7 @@ export const DataViewer = (props) => {
                 <CompletionViewHeader {...props} tabs={tabsConfig} handleFilter={handleFilter} />
                 {activeFilter && <FilterView />}
                 <CompletionViewTabs tabs={tabsConfig} activeTab={activeTab} handleChange={handleChange} />
+                {/* <DataView /> */}
             </Tabs>
         </FilterProvider>
 

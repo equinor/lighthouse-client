@@ -97,21 +97,24 @@ export function authenticationProvider(
     }
 
     const getAccessToken = async (scopes?: string[]): Promise<string> => {
-        if (!authProperties.account) return '';
-        const { accessToken } = await publicClient.acquireTokenSilent({
-            account: authProperties.account,
-            scopes: scopes ? scopes : defaultLoginRequest.scopes
-        });
-        if (accessToken) {
-            return accessToken;
-        } else {
-            console.log('Token acquisition failed, redirecting');
-            await acquireTokenPopup(
+        try {
+            if (!authProperties.account) return '';
+            const { accessToken } = await publicClient.acquireTokenSilent({
+                account: authProperties.account,
+                scopes: scopes ? scopes : defaultLoginRequest.scopes
+            });
+            if (accessToken) {
+                return accessToken;
+            } else {
+                console.log('Token acquisition failed, redirecting');
+                publicClient.acquireTokenRedirect(authProperties.loginRequest);
+                return '';
+            }
+        } catch (error) {
+            return await acquireTokenPopup(
                 scopes ? scopes : defaultLoginRequest.scopes
             );
-            return '';
         }
-        return '';
     };
 
     async function acquireTokenPopup(scopes: string[]) {

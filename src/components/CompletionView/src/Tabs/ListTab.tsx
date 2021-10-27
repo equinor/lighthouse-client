@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { ListView } from "../../../DataView/DataView";
 import { useFilteredData } from "../../../Filter";
+import { ListView } from "../../../TableView/TableView";
 
 const Wrapper = styled.section`
     overflow: scroll;
