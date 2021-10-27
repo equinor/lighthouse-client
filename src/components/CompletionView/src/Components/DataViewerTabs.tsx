@@ -1,6 +1,5 @@
-import { Tabs } from "@equinor/eds-core-react"
-import React from "react"
-import styled from "styled-components"
+import { Tabs } from "@equinor/eds-core-react";
+import styled from "styled-components";
 
 const { Panels, Panel } = Tabs
 
