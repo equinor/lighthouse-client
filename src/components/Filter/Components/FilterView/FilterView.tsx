@@ -3,9 +3,10 @@ import { useEffect, useMemo, useState } from "react"
 import Icon from "../../../Icon/Icon"
 import { useFilter } from "../../Hooks/useFilter"
 import { FilterGroup } from "../../Types/FilterItem"
+import { FilterGroupeComponent } from "../FilterGroup/FilterGroup"
 import { Title } from "../FilterGroup/FilterGroup-Styles"
-import { FilterGroupeComponent } from "./../FilterGroup/FilterGroup"
 import { FilterGroups, FilterGroupWrapper, FilterSelect, SelectBar, Wrapper } from "./FilterView-style"
+
 
 
 

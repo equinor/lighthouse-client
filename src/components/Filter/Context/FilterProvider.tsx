@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useReducer } from 'react';
 import { checkItem } from '../Services/checkItem';
-import { createFilterData } from '../Services/creatFilterData';
+import { createFilterData } from '../Services/creatFilter';
 import { FilterDataOptions, FilterItem, FilterItemCheck } from '../Types/FilterItem';
 import { Context, FilterProviderProps, FilterState } from './FilterContext';
 import { actions, filterReducer } from './FilterReducer';
