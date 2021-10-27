@@ -97,13 +97,11 @@ export function authenticationProvider(
     }
 
     const getAccessToken = async (scopes?: string[]): Promise<string> => {
-        console.log(scopes);
         if (!authProperties.account) return '';
         const { accessToken } = await publicClient.acquireTokenSilent({
             account: authProperties.account,
             scopes: scopes ? scopes : defaultLoginRequest.scopes
         });
-        console.log(accessToken);
         if (accessToken) {
             return accessToken;
         } else {
