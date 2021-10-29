@@ -1,3 +1,4 @@
+
 import { Tabs } from "@equinor/eds-core-react"
 import { useState } from "react"
 import styled from "styled-components"
@@ -7,6 +8,7 @@ import { useDataContext } from "../Context/DataProvider"
 import { tabsConfig } from "../Tabs/tabsConfig"
 import { CompletionViewHeader } from "./DataViewerHeader"
 import { CompletionViewTabs } from "./DataViewerTabs"
+import { DataView } from "./DeraultDataView"
 
 
 interface WorkOrder {
@@ -122,8 +124,8 @@ export const DataViewer = (props) => {
                 <CompletionViewHeader {...props} tabs={tabsConfig} handleFilter={handleFilter} />
                 {activeFilter && <FilterView />}
                 <CompletionViewTabs tabs={tabsConfig} activeTab={activeTab} handleChange={handleChange} />
-                {/* <DataView /> */}
             </Tabs>
+            <DataView />
         </FilterProvider>
 
     );

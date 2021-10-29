@@ -1,6 +1,7 @@
 import { tokens } from "@equinor/eds-tokens";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useDataContext } from "../CompletionView/src/Context/DataProvider";
 import { createGarden, Garden } from "./Services/createGarden";
 
 const Wrapper = styled.div`
@@ -63,7 +64,8 @@ const Pack = styled.p`
     }
 `
 
-export function Garden<T>({ data, groupeKey, itemKey }: { data: T[] | undefined, groupeKey: keyof T, itemKey: keyof T }) {
+export function Garden<T>({ data, groupeKey, itemKey }: { data: T[] | undefined, groupeKey: keyof T, itemKey: string }) {
+    const { setSelected } = useDataContext()
     const [garden, setGarden] = useState<Garden<T>>()
 
     useEffect(() => {
@@ -82,7 +84,7 @@ export function Garden<T>({ data, groupeKey, itemKey }: { data: T[] | undefined,
                     </Count>
                 </Groupe>
                 {
-                    garden[key].map((item, index) => <Pack key={key + index}>{item[itemKey]}</Pack>)
+                    garden[key].map((item, index) => <Pack onClick={() => setSelected(item[itemKey])} key={key + index}>{item[itemKey]}</Pack>)
                 }
             </Col>))}
     </Wrapper>);

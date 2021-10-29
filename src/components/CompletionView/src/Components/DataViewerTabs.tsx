@@ -12,6 +12,8 @@ const CompletionViewWarper = styled.section`
 
 const PanelWrapper = styled.section`
     overflow: scroll;
+    height: 100%;
+    width: 100%;
 `;
 
 export const CompletionViewTabs = ({ tabs, activeTab, handleChange }) => {

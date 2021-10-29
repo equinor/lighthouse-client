@@ -2,6 +2,7 @@ import { EdsProvider, Table } from "@equinor/eds-core-react";
 import { tokens } from "@equinor/eds-tokens";
 import { useState } from "react";
 import styled from "styled-components";
+import { useDataContext } from "../CompletionView/src/Context/DataProvider";
 import Icon from "../Icon/Icon";
 
 const TableHeaderTitle = styled.p`
@@ -33,11 +34,17 @@ function sortByKey<T, K extends keyof T>(list: T[], key: K, direction: boolean) 
 interface ListViewProps<T> { data: T[], initialKey: keyof T }
 
 export function ListView<T extends Object>({ data, }: ListViewProps<T>) {
+    const { setSelected } = useDataContext()
     const [key, setKey] = useState<string>("")
     const [sortDirection, setSortDirection] = useState(false);
     const [activeRow, setActiveRow] = useState("")
 
     const maxLength = 50;
+
+    function handleOnClick<T extends Object>(item: T, index: number) {
+        setActiveRow(state => state == item.toString() + index ? "" : item.toString() + index);
+        setSelected(item["CommPkgNo"])
+    }
     return (
         <EdsProvider density={"compact"}>
             {data.length > 0 && < Table >
@@ -66,7 +73,7 @@ export function ListView<T extends Object>({ data, }: ListViewProps<T>) {
                 <Table.Body >
                     {[...sortByKey(data, key as keyof T, sortDirection)].splice(0, 50).map((itemRow, rowindex) => (
                         <>
-                            <Table.Row key={itemRow.toString() + rowindex} style={{ height: "35px" }} onClick={() => { setActiveRow(state => state == itemRow.toString() + rowindex ? "" : itemRow.toString() + rowindex) }}>
+                            <Table.Row key={itemRow.toString() + rowindex} style={{ height: "35px" }} onClick={() => handleOnClick(itemRow, rowindex)}>
                                 {Object.keys(itemRow).map((cellKey: string, index: number) => (
                                     <>
                                         <Table.Cell title={itemRow[cellKey]} variant="text" style={{ height: "125px !important" }} key={cellKey + index}>
