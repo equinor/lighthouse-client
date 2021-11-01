@@ -2,54 +2,27 @@
 
 import { createContext, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
-import useClientContext from '../../../../context/clientContext';
 import { useDataViewerKey } from '../Components/DeraultDataView/Hooks/useDataViewerKey';
+import { DataViewerProps, ViewOptions } from '../DataViewerApi/DataViewerTypes';
+import { FilterOptions, GardenOptions, TableOptions, TreeOptions } from '../DataViewerApi/DataViewState';
 import { useDataViewer } from '../DataViewerApi/useDataViewer';
 
 
-type DataTypes = Checklist | WorkOrder
 
-
-interface WorkOrder {
-    CommPkg__CommPkgNo: string;
-    CommPkg__CommPriority1__Id: string;
-    CommPkg__CommPriority2__Id: string;
-    CommPkg__Description: string;
-    DescriptionShort: string;
-    Hyperlink_WoNo: string;
-    IccMilestone__Id: string;
-    IccSubmilestone__Description: string;
-    JobStatus__Id: string;
-    MaterialStatus__Id: string;
-    ProjectProgress: string;
-    Project__Name: string;
-    RemainingManhours__Sum: string;
-    WoEstimates__EstimatedMhrs__Sum: string;
-    WoNo: string;
-    WoPlannedStartupDate: string;
-    WoResponsible__Id: string;
-}
-
-interface Checklist {
-    Area__Id: string;
-    CommPhase__Id: string;
-    CommPkgNo: string;
-    CommPriority1__Id: string;
-    CommPriority2__Id: string;
-    CommPriority3__Id: string;
-    CommissioningHandoverStatus: number
-    Description: string;
-    Id: number
-    McStatus__Id: string;
-    OperationHandoverStatus: string;
-    PlannedCompleted: string;
-    PlannedStartup: string;
-    Responsible__Id: string;
-    Status__Id: string;
-}
 interface DataState {
+    key: string;
+    name: string;
     data: any[];
-    itemId: string
+    itemId: string;
+    viewComponent?: React.FC<DataViewerProps<unknown>>;
+    viewOptions?: ViewOptions<unknown>;
+    filterOptions?: FilterOptions<unknown>;
+    tableOptions?: TableOptions<unknown>;
+    treeOptions?: TreeOptions<unknown>;
+    timelineOptions?: any;
+    gardenOptions?: GardenOptions<unknown>;
+    analyticsOptions?: any;
+    powerBiOptions?: any;
 }
 
 interface DataContextState extends DataState {
@@ -99,17 +72,22 @@ export function ClientReducer(state: DataState, action: Action): DataState {
     }
 }
 
-const initialState: DataState = {
-    data: [],
-    itemId: ""
-}
 
 export const DataProvider = ({ children }: DataProviderProps) => {
     const key = useDataViewerKey()
-    const { name, viewComponent, validator, viewOptions, filterOptions, dataFetcher } = useDataViewer(key)
-
-    const { appConfig, authProvider } = useClientContext();
-
+    const { name, viewComponent, validator, viewOptions, tableOptions, filterOptions, dataFetcher, treeOptions, gardenOptions } = useDataViewer()
+    const initialState: DataState = {
+        key,
+        name,
+        data: [],
+        itemId: "",
+        viewComponent,
+        viewOptions,
+        filterOptions,
+        treeOptions,
+        tableOptions,
+        gardenOptions
+    }
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
@@ -137,18 +115,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
 }
 
 export function useDataContext() {
-    return useContext(DataContext)
+    return useContext(DataContext);
+
 }
 
-// const api = baseClient(authProvider, [appConfig.procosys])
-
-  // const response = await api.fetch(`https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=96128&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`, { body: JSON.stringify([]), method: "POST" })
-
-    // const data = JSON.parse(await response.text());
-    // dispatch(actions.getData(data));
-    // const getChecklist = async (plantId = "PCS$JOHAN_CASTBERG") => {
-    //     const response = await api.fetch(`https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=96128&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`, { body: JSON.stringify([]), method: "POST" })
-
-    //     const data = JSON.parse(await response.text());
-    //     dispatch(actions.getData(data));
-    // }

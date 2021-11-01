@@ -5,13 +5,38 @@ export interface DataViewState {
     [key: string]: ViewConfig<unknown>;
 }
 
+export interface TreeOptions<T> {
+    rootNode: keyof T;
+    groupByKeys: (keyof T)[];
+}
+export interface FilterOptions<T> {
+    excludeKeys?: (keyof T)[];
+    typeMap?: Partial<Record<keyof T, string>>;
+    groupValue?: Record<string, (item: T) => string>;
+    customRender?: Record<keyof T | string, React.FC<T>>;
+}
+
+export interface TableOptions<T> {
+    objectIdentifierKey: keyof T;
+}
+export interface GardenOptions<T> {
+    groupeKey: keyof T;
+    itemKey: keyof T;
+}
+
 export interface ViewConfig<T> {
     name: string;
     dataFetcher?: DataFetcher<T>;
     validator?: (data: unknown[]) => T[];
-    filterOptions?: any;
     viewComponent?: React.FC<DataViewerProps<T>>;
     viewOptions?: ViewOptions<T>;
+    filterOptions?: FilterOptions<T>;
+    tableOptions?: TableOptions<T>;
+    treeOptions?: TreeOptions<T>;
+    timelineOptions?: any;
+    gardenOptions?: GardenOptions<T>;
+    analyticsOptions?: any;
+    powerBiOptions?: any;
 }
 
 export function createGlobalState(

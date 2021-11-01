@@ -5,10 +5,12 @@ import styled from "styled-components"
 import { FilterView } from "../../../Filter"
 import { FilterProvider } from "../../../Filter/Context/FilterProvider"
 import { useDataContext } from "../Context/DataProvider"
-import { tabsConfig } from "../Tabs/tabsConfig"
+import { useDataViewer } from "../DataViewerApi/useDataViewer"
+import { useConfiguredTabs } from "../Tabs/tabsConfig"
 import { CompletionViewHeader } from "./DataViewerHeader"
 import { CompletionViewTabs } from "./DataViewerTabs"
 import { DataView } from "./DeraultDataView"
+import { useDataViewerKey } from "./DeraultDataView/Hooks/useDataViewerKey"
 
 
 interface WorkOrder {
@@ -56,6 +58,8 @@ const CompletionViewWarper = styled.section`
 
 `
 
+
+
 type DataTypes = Checklist | WorkOrder
 
 
@@ -65,7 +69,11 @@ function getDataType<T = DataTypes>(data: any[]): T[] {
 
 
 export const DataViewer = (props) => {
-    const { data } = useDataContext();
+    const viewerId = useDataViewerKey()
+    const { treeOptions, tableOptions, gardenOptions, timelineOptions, analyticsOptions, powerBiOptions, name } = useDataViewer();
+    const { data } = useDataContext()
+
+    const { tabs, viewIsActive } = useConfiguredTabs(treeOptions, tableOptions, gardenOptions, timelineOptions, analyticsOptions, powerBiOptions)
     const [activeTab, setActiveTab] = useState(0);
     const [activeFilter, setActiveFilter] = useState(false);
 
@@ -79,7 +87,7 @@ export const DataViewer = (props) => {
 
     return (
 
-        <FilterProvider initialData={data} options={{
+        viewIsActive ? <FilterProvider initialData={data} options={{
             excludeKeys: checklist,
             typeMap: {
                 Responsible__Id: "Responsible Id",
@@ -121,12 +129,18 @@ export const DataViewer = (props) => {
         }
         } >
             <Tabs activeTab={activeTab} onChange={handleChange} >
-                <CompletionViewHeader {...props} tabs={tabsConfig} handleFilter={handleFilter} />
+                <CompletionViewHeader {...props} tabs={tabs} handleFilter={handleFilter} />
                 {activeFilter && <FilterView />}
-                <CompletionViewTabs tabs={tabsConfig} activeTab={activeTab} handleChange={handleChange} />
+                <CompletionViewTabs tabs={tabs} activeTab={activeTab} handleChange={handleChange} />
             </Tabs>
             <DataView />
         </FilterProvider>
+            :
+            <div>
+                <h1>No data viewer is configured for {viewerId}</h1>
+                <p>{name}</p>
+
+            </div>
 
     );
 }

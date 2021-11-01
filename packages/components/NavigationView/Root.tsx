@@ -145,6 +145,8 @@ function groupBy<T, K extends keyof T>(arr: T[], keys: K[], renderFunction?: Cus
 
 interface TreeRootProps<T> { data: T[], rootNode: keyof T, groupByKeys: (keyof T)[] }
 
+
+
 export function TreeRoot<T>({ data, groupByKeys, rootNode }: TreeRootProps<T>) {
     const [treeData, setTreeData] = useState<Data<T>>({});
 

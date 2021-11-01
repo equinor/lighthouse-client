@@ -7,6 +7,7 @@ import { TreeIcon } from '../../../../icons/Tree';
 import { AnalyticsTab } from './AnalyticsTab';
 import { GardenTab } from './GardenTab';
 import { ListTab } from './ListTab';
+import { PowerBiTab } from './PowerBiTab';
 import { TimelineTab } from './TimeLineTAb';
 import { TreeTab } from './TreeTab';
 
@@ -16,7 +17,7 @@ interface TabsConfigItem {
     viewComponent: React.FC;
 }
 
-export const tabsConfig: TabsConfigItem[] = [
+const tabsConfig: TabsConfigItem[] = [
     {
         title: 'Tree',
         icon: TreeIcon,
@@ -41,5 +42,42 @@ export const tabsConfig: TabsConfigItem[] = [
         title: 'Analytics',
         icon: AnalyticsIcon,
         viewComponent: AnalyticsTab
+    },
+    {
+        title: 'PowerBI',
+        icon: AnalyticsIcon,
+        viewComponent: PowerBiTab
     }
 ];
+
+interface ActiveTabs {
+    tabs: TabsConfigItem[];
+    viewIsActive: boolean;
+}
+
+function getTabConfig(tabsConfig: TabsConfigItem[]) {
+    return function useConfiguredTabs<Config extends Object>(
+        tree?: Config,
+        list?: Config,
+        garden?: Config,
+        timeline?: Config,
+        analytics?: Config,
+        powerBI?: Config
+    ): ActiveTabs {
+        const tabs = tabsConfig.filter((item) => {
+            if (tree && item.title === 'Tree') return true;
+            if (list && item.title === 'List') return true;
+            if (garden && item.title === 'Garden') return true;
+            if (timeline && item.title === 'Timeline') return true;
+            if (analytics && item.title === 'Analytics') return true;
+            if (powerBI && item.title === 'PowerBI') return true;
+            return false;
+        });
+        return {
+            tabs,
+            viewIsActive: tabs.length > 0
+        };
+    };
+}
+
+export const useConfiguredTabs = getTabConfig(tabsConfig);

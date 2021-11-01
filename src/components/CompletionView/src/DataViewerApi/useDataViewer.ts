@@ -1,14 +1,16 @@
 import { useAtom } from '@dbeining/react-atom';
+import { useDataViewerKey } from '../Components/DeraultDataView/Hooks/useDataViewerKey';
 import { getContext, ViewConfig } from './DataViewState';
 
-export function useDataViewer<T>(key: string): ViewConfig<T> {
+export function useDataViewer<T>(): ViewConfig<T> {
+    const key = useDataViewerKey()
     const state = useAtom(getContext());
     if (state[key]) {
         return state[key] as ViewConfig<T>;
     } else {
         console.warn(`No DataView registered on path/key:  ${key}`);
         return {
-            name: `unknown DataView with ${key}`
+            name: `Unknown DataView ${key}`
         };
     }
 }

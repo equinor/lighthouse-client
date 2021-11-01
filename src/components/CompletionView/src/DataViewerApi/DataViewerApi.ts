@@ -7,7 +7,13 @@ import {
     ViewerOptions,
     ViewOptions
 } from './DataViewerTypes';
-import { DataViewState, getContext } from './DataViewState';
+import {
+    DataViewState,
+    GardenOptions,
+    getContext,
+    TableOptions,
+    TreeOptions
+} from './DataViewState';
 
 /**
  * The Data
@@ -67,6 +73,15 @@ export function createDataViewer<T>(
                 }
             }));
         },
+        registerViewOptions(viewOptions: ViewOptions<T>) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    viewOptions: viewOptions as ViewOptions<unknown>
+                }
+            }));
+        },
         registerFilterOptions(filterOptions: any) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
@@ -81,30 +96,50 @@ export function createDataViewer<T>(
          * View option Registration
          *
          */
-        registerTableOptions(
-            {
-                /** Some table options here*/
-            }
-        ) {},
-        registerTreeOptions(
-            {
-                /** Some tree options here*/
-            }
-        ) {},
-        registerGanttOptions(
-            {
-                /** Some gantt options here*/
-            }
-        ) {},
-        registerGardenOptions(
-            {
-                /** Some garden options here*/
-            }
-        ) {},
-        registerAnalyticsOptions(
-            {
-                /** Some garden options here*/
-            }
-        ) {}
+        registerTableOptions<T>(tableOptions: TableOptions<T>) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    tableOptions: tableOptions as TableOptions<unknown>
+                }
+            }));
+        },
+        registerTreeOptions<T>(treeOptions: TreeOptions<T>) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    treeOptions: treeOptions as TreeOptions<unknown>
+                }
+            }));
+        },
+        registerGanttOptions(ganttOptions: any) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    ganttOptions
+                }
+            }));
+        },
+        registerGardenOptions<T>(gardenOptions: GardenOptions<T>) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    gardenOptions: gardenOptions as GardenOptions<unknown>
+                }
+            }));
+        },
+        registerAnalyticsOptions(analyticsOptions: any) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    analyticsOptions
+                }
+            }));
+        }
     };
 }

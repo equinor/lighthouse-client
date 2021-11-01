@@ -13,9 +13,16 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
+import { setup } from './checklistApp';
 
 type HEXColor = `#${string}`;
 
+type AppType = 'DataViewer' | 'SomeApp' | 'CustomApp';
+interface App {
+    appType: AppType;
+    setup?: (appManifest: AppManifest) => void;
+    customAppComponent?: React.FC<Partial<AppManifest>>;
+}
 export interface AppManifest {
     title: string;
     shortName: string;
@@ -26,6 +33,7 @@ export interface AppManifest {
     uri?: string;
     component?: React.FC<Partial<AppManifest>>;
     imageUri?: string;
+    app?: App;
 }
 
 export interface AppGroupe {
@@ -280,7 +288,11 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView
+        component: DataView,
+        app: {
+            appType: 'DataViewer',
+            setup: setup
+        }
     },
     {
         title: 'Handover',

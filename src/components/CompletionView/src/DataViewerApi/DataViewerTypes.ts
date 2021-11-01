@@ -1,3 +1,10 @@
+import {
+    FilterOptions,
+    GardenOptions,
+    TableOptions,
+    TreeOptions
+} from './DataViewState';
+
 export type DataFetcher<T> = () => Promise<T[]>;
 export type Validator<T> = (data: unknown[]) => T[];
 
@@ -12,6 +19,7 @@ export interface DataViewerProps<T> extends ViewOptions<T> {
 }
 
 export interface ViewOptions<T> {
+    objectIdentifierKey: keyof T;
     title?: {
         key: keyof T;
         label: string;
@@ -29,10 +37,11 @@ export interface DataViewerApi<T> {
         viewComponent: React.FC<DataViewerProps<T>>,
         viewOptions: ViewOptions<T>
     ) => void;
-    registerFilterOptions: (options: any) => void;
-    registerTableOptions: (options: any) => void;
-    registerTreeOptions: (options: any) => void;
+    registerViewOptions: (viewOptions: ViewOptions<T>) => void;
+    registerFilterOptions: (options: FilterOptions<T>) => void;
+    registerTableOptions: (options: TableOptions<T>) => void;
+    registerTreeOptions: (options: TreeOptions<T>) => void;
     registerGanttOptions: (options: any) => void;
-    registerGardenOptions: (options: any) => void;
+    registerGardenOptions: (options: GardenOptions<T>) => void;
     registerAnalyticsOptions: (options: any) => void;
 }

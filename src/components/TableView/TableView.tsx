@@ -31,10 +31,10 @@ function sortByKey<T, K extends keyof T>(list: T[], key: K, direction: boolean) 
     });
 }
 
-interface ListViewProps<T> { data: T[], initialKey: keyof T }
+interface ListViewProps<T> { data: T[] }
 
-export function ListView<T extends Object>({ data, }: ListViewProps<T>) {
-    const { setSelected } = useDataContext()
+export function ListView<T>({ data, }: ListViewProps<T>) {
+    const { setSelected, tableOptions } = useDataContext()
     const [key, setKey] = useState<string>("")
     const [sortDirection, setSortDirection] = useState(false);
     const [activeRow, setActiveRow] = useState("")
@@ -42,8 +42,8 @@ export function ListView<T extends Object>({ data, }: ListViewProps<T>) {
     const maxLength = 50;
 
     function handleOnClick<T extends Object>(item: T, index: number) {
-        setActiveRow(state => state == item.toString() + index ? "" : item.toString() + index);
-        setSelected(item["CommPkgNo"])
+        setActiveRow(state => state == item[tableOptions?.objectIdentifierKey || ""] + index ? "" : item[tableOptions?.objectIdentifierKey || ""] + index);
+        setSelected(item[tableOptions?.objectIdentifierKey || ""])
     }
     return (
         <EdsProvider density={"compact"}>
@@ -73,7 +73,7 @@ export function ListView<T extends Object>({ data, }: ListViewProps<T>) {
                 <Table.Body >
                     {[...sortByKey(data, key as keyof T, sortDirection)].splice(0, 50).map((itemRow, rowindex) => (
                         <>
-                            <Table.Row key={itemRow.toString() + rowindex} style={{ height: "35px" }} onClick={() => handleOnClick(itemRow, rowindex)}>
+                            <Table.Row key={itemRow[tableOptions?.objectIdentifierKey || ""] + rowindex} style={{ height: "35px" }} onClick={() => handleOnClick(itemRow, rowindex)}>
                                 {Object.keys(itemRow).map((cellKey: string, index: number) => (
                                     <>
                                         <Table.Cell title={itemRow[cellKey]} variant="text" style={{ height: "125px !important" }} key={cellKey + index}>
@@ -85,7 +85,7 @@ export function ListView<T extends Object>({ data, }: ListViewProps<T>) {
                                 ))}
                             </Table.Row>
                             {
-                                (activeRow == (itemRow.toString() + rowindex)) && (
+                                (activeRow == (itemRow[tableOptions?.objectIdentifierKey || ""] + rowindex)) && (
                                     <Table.Row>
                                         <Table.Cell colSpan={Object.keys(itemRow).length} variant="text">
                                             Dette er en test å di!!!
