@@ -24,7 +24,7 @@
     "@equinor/eds-icons": "^0.7.0",
     "@equinor/eds-tokens": "^0.7.0",
     "@microsoft/microsoft-graph-types": "^2.7.0",
-    "@types/styled-components": "^5.1.14",
+    "@types/styled-components": "^5.1.15",
     "frappe-gantt-react": "^0.2.2",
     "install": "^0.13.0",
     "lodash": "^4.17.21",
