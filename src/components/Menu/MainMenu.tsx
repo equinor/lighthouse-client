@@ -209,9 +209,6 @@ export const MainMenu = (): JSX.Element => {
 
                         const CustomIcon = appGroups[key].icon;
                         if (appsPanelActive) return (
-
-
-
                             <Item key={`item-${key}`} isExpanded={isExpanded} >
                                 <Header className="noBorder heading">
                                     {CustomIcon && typeof CustomIcon !== "string" && <CustomIcon />}
@@ -231,7 +228,7 @@ export const MainMenu = (): JSX.Element => {
                         )
 
                         return (
-                            <SmallItem>
+                            <SmallItem key={`item-${key}`}>
                                 < SmallButton id="hover-popover-anchor" ref={el => anchorRef.current[i] = el as HTMLHeadingElement} className="noBorder heading" onFocus={() => openPopover(appGroups[key].name)} onMouseOver={() => openPopover(appGroups[key].name)}
                                     onBlur={handleClose}>
                                     {CustomIcon && typeof CustomIcon !== "string" && <CustomIcon />}

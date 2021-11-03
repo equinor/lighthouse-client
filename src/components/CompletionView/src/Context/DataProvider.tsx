@@ -17,7 +17,7 @@ interface DataState {
     viewComponent?: React.FC<DataViewerProps<unknown>>;
     viewOptions?: ViewOptions<unknown>;
     filterOptions?: FilterOptions<unknown>;
-    tableOptions?: TableOptions<unknown>;
+    tableOptions?: TableOptions;
     treeOptions?: TreeOptions<unknown>;
     timelineOptions?: any;
     gardenOptions?: GardenOptions<unknown>;

@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { DataTable } from "../../../DataTable/Components/Table";
 import { useFilteredData } from "../../../Filter";
-import { ListView } from "../../../TableView/TableView";
+import { useDataContext } from "../Context/DataProvider";
 
 const Wrapper = styled.section`
     overflow: scroll;
@@ -10,10 +11,11 @@ const Wrapper = styled.section`
 export const ListTab = () => {
 
     const data = useFilteredData();
+    const { setSelected, tableOptions } = useDataContext()
 
     return (
         <Wrapper>
-            <ListView data={data} />
+            <DataTable data={data} setSelected={setSelected} tableOptions={tableOptions} />
         </Wrapper>
     );
 }

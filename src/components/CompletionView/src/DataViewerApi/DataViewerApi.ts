@@ -96,12 +96,12 @@ export function createDataViewer<T>(
          * View option Registration
          *
          */
-        registerTableOptions<T>(tableOptions: TableOptions<T>) {
+        registerTableOptions<T>(tableOptions: TableOptions) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    tableOptions: tableOptions as TableOptions<unknown>
+                    tableOptions
                 }
             }));
         },

@@ -13,7 +13,8 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
-import { setup } from './checklistApp';
+import { setup as handoverSetup } from './handoverApp';
+import { setup as loopSetup } from './loopApp';
 
 type HEXColor = `#${string}`;
 
@@ -288,11 +289,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView,
-        app: {
-            appType: 'DataViewer',
-            setup: setup
-        }
+        component: DataView
     },
     {
         title: 'Handover',
@@ -302,7 +299,11 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView
+        component: DataView,
+        app: {
+            appType: 'DataViewer',
+            setup: handoverSetup
+        }
     },
     {
         title: 'Heat trace installation',
@@ -321,8 +322,12 @@ export const apps: AppManifest[] = [
         groupe: Apps.CompletionManagement,
         icon: '',
         uri: '',
-        imageUri: './images/Loop.png',
-        tags: []
+        tags: [],
+        component: DataView,
+        app: {
+            appType: 'DataViewer',
+            setup: loopSetup
+        }
     },
     {
         title: 'N2He',

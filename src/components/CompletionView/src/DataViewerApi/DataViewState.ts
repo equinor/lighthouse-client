@@ -1,4 +1,5 @@
 import { Atom } from '@dbeining/react-atom';
+import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
 
 export interface DataViewState {
@@ -16,8 +17,9 @@ export interface FilterOptions<T> {
     customRender?: Record<keyof T | string, React.FC<T>>;
 }
 
-export interface TableOptions<T> {
-    objectIdentifierKey: keyof T;
+export interface TableOptions {
+    objectIdentifierKey: string;
+    headers?: HeaderData[];
 }
 export interface GardenOptions<T> {
     groupeKey: keyof T;
@@ -31,7 +33,7 @@ export interface ViewConfig<T> {
     viewComponent?: React.FC<DataViewerProps<T>>;
     viewOptions?: ViewOptions<T>;
     filterOptions?: FilterOptions<T>;
-    tableOptions?: TableOptions<T>;
+    tableOptions?: TableOptions;
     treeOptions?: TreeOptions<T>;
     timelineOptions?: any;
     gardenOptions?: GardenOptions<T>;

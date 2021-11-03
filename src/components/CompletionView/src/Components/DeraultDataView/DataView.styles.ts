@@ -5,16 +5,16 @@ export const Wrapper = styled.section`
     position: fixed;
     right: 0;
     top: 20%;
-    width: 550px;
+    width: 650px;
     z-index: 100;
     background: #fff;
 `;
 
 export const Section = styled.section`
-    width: 100%;
     background-color: ${tokens.colors.ui.background__default.rgba};
-    padding: 2rem;
-    padding-bottom: 1rem;
+    margin: 2rem;
+    margin-bottom: 1rem;
+    overflow: auto;
 `;
 
 export const DataGrid = styled.div`

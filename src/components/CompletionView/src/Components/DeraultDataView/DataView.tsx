@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { DataTable } from "../../../../DataTable/Components/Table";
 import { useDataContext } from "../../Context/DataProvider";
 import { DataEntry, DataGrid, Description, Section, Title, Wrapper } from "./DataView.styles";
 
@@ -35,6 +36,7 @@ export function DataView(): JSX.Element {
 
                                 {Object.keys(selectedData).map(key => {
                                     if (key === viewOptions.title?.key || key === viewOptions.description?.key) return null
+                                    if (Array.isArray(selectedData[key])) return null
                                     return (
                                         <DataEntry>
                                             <strong>{key}:</strong>
@@ -44,10 +46,29 @@ export function DataView(): JSX.Element {
                                 })}
                             </DataGrid>
                         </Section>
+
+
+                        {Object.keys(selectedData).map(key => {
+                            const data = selectedData[key]
+                            if (Array.isArray(data) && data.length > 0) return (
+                                <Section>
+                                    <>
+                                        <strong>{key}:</strong>
+                                        {typeof data[0] === "object" ?
+                                            <DataTable data={data} /> :
+                                            <div>{
+                                                data.map((item, index) => <p key={item + index}>{item}</p>)}
+                                            </div>
+                                        }
+                                    </>
+                                </Section>
+                            )
+                        })}
+
                     </Wrapper>
 
                 </>
             }
-        </div>
+        </div >
     );
 }
