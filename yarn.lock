@@ -1360,10 +1360,10 @@
   resolved "https://registry.npmjs.org/@emotion/unitless/-/unitless-0.7.5.tgz"
   integrity sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==
 
-"@equinor/eds-core-react@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.npmjs.org/@equinor/eds-core-react/-/eds-core-react-0.14.0.tgz"
-  integrity sha512-lm3pi8cjEbq+jcx50T0RoyLFr6TU+0cpPe+XlUTzkm3M6H1BeS5A4N1ShmkaOtc1atwgUlAtf0ZNpLW9QzW+eQ==
+"@equinor/eds-core-react@^0.14.2":
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/@equinor/eds-core-react/-/eds-core-react-0.14.2.tgz#b2469550cc98b1082ba034b1c3724229c46622ed"
+  integrity sha512-upp46xX601fhhqnWkq4TB4IKbK0QRmEjRUqPnDkHISPgId+e0TXixCB4OwdO3IxJHBdTwD1MW8Z66H5EpqyxZw==
   dependencies:
     "@equinor/eds-icons" "0.7.0"
     "@equinor/eds-tokens" "0.7.0"
