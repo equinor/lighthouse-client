@@ -3,22 +3,13 @@ import { tokens } from "@equinor/eds-tokens";
 import { useRef, useState } from "react";
 import Icon from "../../Icon/Icon";
 import { useTableContext } from "../Context/TableProvider";
-import { SetState } from "../Types/ReactWrappers";
 import { ColumSelector } from "./ColumSelector";
 
 
 const { Head, Row, Cell } = Table;
 
-interface HeaderProps<T> {
-    // data: T;
-    activeCellKey: string;
-    sortDirection: boolean;
-    setActiveCellKey: SetState<string>;
-    setSortDirection: SetState<boolean>;
-}
-
-export function Header<T>({ setSortDirection, sortDirection, activeCellKey, setActiveCellKey }: HeaderProps<T>) {
-    const { headers, awaitableHeaders, setHeaderData } = useTableContext();
+export function Header() {
+    const { headers, awaitableHeaders, activeHeader, toggleSortDirection, sortDirection, setSelectedColum } = useTableContext();
     const addButtonRef = useRef<HTMLButtonElement>(null)
     const [isOpen, setIsOpen] = useState(false)
     return (
@@ -26,13 +17,13 @@ export function Header<T>({ setSortDirection, sortDirection, activeCellKey, setA
         <Head>
             <Row>
                 {headers.map(({ title, key }, index) => (
-                    <Cell width={500} style={{ backgroundColor: key === activeCellKey ? tokens.colors.ui.background__info.rgba : "" }} key={`Heading-${key}-${index}`} rowSpan={1} onClick={() => {
-                        setActiveCellKey(key)
-                        key === activeCellKey && setSortDirection(d => !d)
+                    <Cell width={500} style={{ backgroundColor: key === activeHeader ? tokens.colors.ui.background__info.rgba : "" }} key={`Heading-${key}-${index}`} rowSpan={1} onClick={() => {
+                        setSelectedColum(key)
+                        key === activeHeader && toggleSortDirection(!sortDirection)
                     }
                     }>
                         {title}
-                        {key === activeCellKey && <Icon
+                        {key === activeHeader && <Icon
                             name={
                                 sortDirection
                                     ? 'chevron_up'

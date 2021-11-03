@@ -18,6 +18,9 @@ interface TableState {
 
 interface TableContextState extends TableState {
     setHeaderData: (headers: HeaderData[]) => void;
+    setSelectedColum: (culmKey: string) => void;
+    toggleSortDirection: (sortDirection: boolean) => void;
+
 }
 
 interface TableProviderProps<T> {
@@ -71,6 +74,10 @@ export function tableReducer(state: TableState, action: Action): TableState {
             return { ...state, awaitableHeaders: action.headers };
         case getType(actions.setHeaderData):
             return { ...state, headers: action.headers };
+        case getType(actions.setActiveHeader):
+            return { ...state, activeHeader: action.activeHeader };
+        case getType(actions.setSortDirection):
+            return { ...state, sortDirection: action.sortDirection };
 
         default:
             return state;
@@ -91,7 +98,17 @@ export function TableProvider<T>({ children, headerOptions, defaultHeaderItem }:
 
     const [state, dispatch] = useReducer(tableReducer, initialSate);
 
+
     useEffect(() => {
+        const newHeaderData = headerOptions
+            ? headerOptions
+            : generateDefaultHeader(defaultHeaderItem);
+        dispatch(actions.setAwaitableHeaders(newHeaderData));
+    }, [headerOptions, defaultHeaderItem]);
+
+
+    useEffect(() => {
+        if (state.headers.length > 0) return;
         const localHeaders =
             storage.getItem<HeaderData[]>(headerLocationKey);
 
@@ -103,33 +120,29 @@ export function TableProvider<T>({ children, headerOptions, defaultHeaderItem }:
             console.log("localHeaders", localHeaders);
             dispatch(actions.setLocalHeader(localHeaders));
             dispatch(actions.setHeaderData(localHeaders));
+        } else {
+
+            dispatch(actions.setHeaderData(state.awaitableHeaders));
+            storage.setItem<HeaderData[]>(headerLocationKey, state.awaitableHeaders);
         }
-    }, []);
+    }, [state]);
 
-    useEffect(() => {
-        const newHeaderData = headerOptions
-            ? headerOptions
-            : generateDefaultHeader(defaultHeaderItem);
-        dispatch(actions.setAwaitableHeaders(newHeaderData));
-        // dispatch(actions.setHeaderData(newHeaderData));
-    }, [headerOptions, defaultHeaderItem]);
-
-    // useEffect(() => {
-    //     if (!state.localHeaderData && state.headers.length === 0) {
-    //         dispatch(actions.setHeaderData(state.awaitableHeaders));
-    //     } else if (state.localHeaderData) {
-    //         dispatch(actions.setHeaderData(state.localHeaderData));
-    //     }
-    // }, [state.awaitableHeaders, state.localHeaderData, state.headers]);
-
-    function setHeaderData(headers: HeaderData[]) {
+    function setHeaderData(headers: HeaderData[]): void {
         dispatch(actions.setHeaderData(headers));
         storage.setItem<HeaderData[]>(headerLocationKey, headers);
     }
 
+    function setSelectedColum(culmKey: string): void {
+        dispatch(actions.setActiveHeader(culmKey));
+    }
+
+    function toggleSortDirection(sortDirection: boolean): void {
+        dispatch(actions.setSortDirection(sortDirection));
+    }
+
     return (
         <TableContext.Provider value={{
-            ...state, setHeaderData,
+            ...state, setHeaderData, toggleSortDirection, setSelectedColum
         }}>{children}</TableContext.Provider>
     )
 }
