@@ -12,3 +12,7 @@ export const FilterItemLabel = styled.label`
 `;
 
 export const FilterItemGroupe = styled.span``;
+export const Count = styled.span`
+    padding: 0.2rem;
+    font-size: 12px;
+`;

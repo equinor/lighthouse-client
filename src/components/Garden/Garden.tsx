@@ -84,7 +84,7 @@ export function Garden<T>({ data, groupeKey, itemKey }: { data: T[] | undefined,
                     </Count>
                 </Groupe>
                 {
-                    garden[key].map((item, index) => <Pack onClick={() => setSelected(item[itemKey])} key={key + index}>{item[itemKey]}</Pack>)
+                    garden[key].slice(0, 500).map((item, index) => <Pack onClick={() => setSelected(item[itemKey])} key={key + index}>{item[itemKey]}</Pack>)
                 }
             </Col>))}
     </Wrapper>);

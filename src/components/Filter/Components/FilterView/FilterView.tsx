@@ -1,5 +1,5 @@
 import { Button, Checkbox, Search } from "@equinor/eds-core-react"
-import { useEffect, useMemo, useState } from "react"
+import { memo, useEffect, useMemo, useState } from "react"
 import Icon from "../../../Icon/Icon"
 import { useFilter } from "../../Hooks/useFilter"
 import { FilterGroup } from "../../Types/FilterItem"
@@ -20,11 +20,14 @@ function SearchFilterKeys(keys: string[], filerValue: string): string[] {
 }
 
 
+interface FilterViewProps {
+    isActive: boolean
+}
 
-
-export const FilterView = () => {
+export const FilterView = memo(({ isActive }: FilterViewProps) => {
     const { filter, filterItemCheck } = useFilter();
     const filterKeys = useMemo(() => createTypeKeys(filter), [filter])
+    
     const [activeFilterData, setActiveFilterData] = useState<string[]>([])
     const [activeFilter, setActiveFilter] = useState<FilterGroup[]>([]);
     const [filterSearchValue, setFilterSearchValue] = useState("");
@@ -65,6 +68,8 @@ export const FilterView = () => {
     function handleToggleFilerSelect() {
         setIsFilterSelectActive(state => !state)
     }
+
+    if (!isActive) return null;
 
     return (
         <Wrapper>
@@ -107,4 +112,4 @@ export const FilterView = () => {
             </FilterGroups>
         </Wrapper>
     )
-}
+});

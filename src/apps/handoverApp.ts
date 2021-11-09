@@ -1,7 +1,6 @@
 import { baseClient } from '@equinor/http-client';
 import { createDataViewer } from '../components/CompletionView/src/DataViewerApi/DataViewerApi';
-import useClientContext from '../context/clientContext';
-import { AppManifest } from './apps';
+import { AppApi } from './apps';
 
 interface CommPkg {
     Area__Id: string;
@@ -60,13 +59,12 @@ function start(item: CommPkg): string {
     }
 }
 
-export function setup(appManifest: AppManifest) {
-    const { appConfig, authProvider } = useClientContext();
-    const api = baseClient(authProvider, [appConfig.procosys]);
+export function setup(appApi: AppApi) {
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const commPkg = createDataViewer<CommPkg>({
         initialState: [],
         primaryViewKey: 'CommPkgNo',
-        viewerId: appManifest.shortName
+        viewerId: appApi.shortName
     });
 
     commPkg.registerDataFetcher(async () => {

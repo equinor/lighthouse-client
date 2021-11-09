@@ -1,3 +1,4 @@
+import { Button, Icon } from "@equinor/eds-core-react";
 import { useEffect, useState } from "react";
 import { DataTable } from "../../../../DataTable/Components/Table";
 import { useDataContext } from "../../Context/DataProvider";
@@ -13,17 +14,21 @@ export function DataView(): JSX.Element {
     }, [data, itemId])
 
     return (
-        <div>
+        <>
             {
                 selectedData && viewOptions && <>
                     <Wrapper>
-                        {
-                            viewOptions.title && <Section>
-                                <label>{viewOptions.title.label}</label>
-                                <Title>{selectedData[viewOptions.title.key]}</Title>
-                            </Section>
-                        }
-
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            {
+                                viewOptions.title && <Section>
+                                    <label>{viewOptions.title.label}</label>
+                                    <Title>{selectedData[viewOptions.title.key]}</Title>
+                                </Section>
+                            }
+                            <Button variant="ghost_icon" onClick={() => { setSelectedData(undefined) }}>
+                                <Icon name='close' />
+                            </Button>
+                        </div>
                         {
                             viewOptions.description && <Description>
                                 <strong>{viewOptions.description.label}</strong>
@@ -39,7 +44,7 @@ export function DataView(): JSX.Element {
                                     if (Array.isArray(selectedData[key])) return null
                                     return (
                                         <DataEntry>
-                                            <strong>{key}:</strong>
+                                            <strong>{key}: </strong>
                                             <p>{selectedData[key] || "-"} </p>
                                         </DataEntry>
                                     )
@@ -53,7 +58,7 @@ export function DataView(): JSX.Element {
                             if (Array.isArray(data) && data.length > 0) return (
                                 <Section>
                                     <>
-                                        <strong>{key}:</strong>
+                                        <strong>{key}: </strong>
                                         {typeof data[0] === "object" ?
                                             <DataTable data={data} /> :
                                             <div>{
@@ -69,6 +74,6 @@ export function DataView(): JSX.Element {
 
                 </>
             }
-        </div >
+        </ >
     );
 }

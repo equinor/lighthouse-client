@@ -1,4 +1,4 @@
-import { Accordion, Divider, Popover, Search } from "@equinor/eds-core-react"
+import { Accordion, Popover, Search } from "@equinor/eds-core-react"
 import { tokens } from "@equinor/eds-tokens"
 import { useRef, useState } from "react"
 import { Link } from "react-router-dom"
@@ -81,9 +81,15 @@ const Wrapper = styled.div`
     
 `
 
+interface TopItemsProps {
+    topDivider: boolean;
+    bottomDivider: boolean;
+}
+
 const TopItems = styled.div`
     padding-left: 1rem;
- 
+    border-top: ${({ topDivider }: TopItemsProps) => topDivider ? `1px solid #EFEFEF` : "none"};
+    border-bottom: ${({ bottomDivider }: TopItemsProps) => bottomDivider ? `1px solid #EFEFEF` : "none"};
     
     .link{
             color: #030303;
@@ -181,8 +187,8 @@ export const MainMenu = (): JSX.Element => {
                 />
             </SearchWrapper>}
             {/* It's own component */}
-            <TopItems>
-                {appsPanelActive && <Divider />}
+            <TopItems topDivider={appsPanelActive} bottomDivider={!!filteredList[Apps.Top]}>
+                {/* {appsPanelActive && <Divider />} */}
                 {filteredList[Apps.Top] && filteredList[Apps.Top].map(item => {
                     const CustomIcon = item.icon;
                     return (
@@ -196,7 +202,7 @@ export const MainMenu = (): JSX.Element => {
 
                 })
                 }
-                {filteredList[Apps.Top] && <Divider />}
+                {/* {filteredList[Apps.Top] && <Divider />} */}
 
             </TopItems>
 

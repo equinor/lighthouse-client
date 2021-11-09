@@ -115,13 +115,12 @@ export function TableProvider<T>({ children, headerOptions, defaultHeaderItem }:
         if (
             localHeaders &&
             Array.isArray(localHeaders) &&
+            localHeaders.length > 0 &&
             typeof localHeaders !== 'string'
         ) {
-            console.log("localHeaders", localHeaders);
             dispatch(actions.setLocalHeader(localHeaders));
             dispatch(actions.setHeaderData(localHeaders));
-        } else {
-
+        } else if (state.awaitableHeaders.length > 0) {
             dispatch(actions.setHeaderData(state.awaitableHeaders));
             storage.setItem<HeaderData[]>(headerLocationKey, state.awaitableHeaders);
         }

@@ -7,23 +7,23 @@ const ContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
 `
-function getHeaderDataKeys(HeaderData: HeaderData[]) {
-    return HeaderData.map(i => i.key)
+interface ColumSelectorProps {
+    anchorEl: HTMLButtonElement | null,
+    isOpen: boolean,
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>,
 
 }
 
-export function ColumSelector({ anchorEl, isOpen, setIsOpen, headerData, }: { anchorEl: HTMLButtonElement | null, isOpen: boolean, setIsOpen: React.Dispatch<React.SetStateAction<boolean>>, awaitableHeaders: HeaderData[], headerData: HeaderData[] }) {
+export function ColumSelector({ anchorEl, isOpen, setIsOpen, }: ColumSelectorProps) {
     const { headers, awaitableHeaders, setHeaderData } = useTableContext();
 
     function handleCheckChange(header: HeaderData) {
-        if (headerData.includes(header)) {
-            setHeaderData(headerData.filter(item => item.key !== header.key))
+        if (headers.includes(header)) {
+            setHeaderData(headers.filter(item => item.key !== header.key))
         } else {
-            setHeaderData([...headerData, header])
+            setHeaderData([...headers, header])
         }
     }
-
-    console.log(headers, awaitableHeaders)
 
     return (
         <Popover
@@ -34,7 +34,7 @@ export function ColumSelector({ anchorEl, isOpen, setIsOpen, headerData, }: { an
             placement="bottom-end"
         >
             <Popover.Title>
-                Select data rows
+                Add columns
             </Popover.Title>
             <Popover.Content>
                 <ContentWrapper>

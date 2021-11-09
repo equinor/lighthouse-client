@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useReducer } from 'react';
+import { useLocationKey } from '../Hooks/useLocationKey';
 import { checkItem } from '../Services/checkItem';
 import { createFilterData } from '../Services/creatFilter';
-import { FilterDataOptions, FilterItem, FilterItemCheck } from '../Types/FilterItem';
+import { FilterData, FilterDataOptions, FilterItem, FilterItemCheck } from '../Types/FilterItem';
+import { objectHasKeys } from '../Utils/objectHasKeys';
+import { storage } from '../Utils/storage';
 import { Context, FilterProviderProps, FilterState } from './FilterContext';
 import { actions, filterReducer } from './FilterReducer';
 
 
 export function FilterProvider<T>({ children, initialData, options }: FilterProviderProps<T>): JSX.Element {
+    const locationKey = useLocationKey();
+    const filterLocationKey = `filer-${locationKey}`;
 
     const initialState: FilterState = {
         data: [],
@@ -17,8 +22,14 @@ export function FilterProvider<T>({ children, initialData, options }: FilterProv
     const { filterData } = state;
 
     useEffect(() => {
-        const filter = createFilterData(initialData, options)
-        dispatch(actions.setFilter(filter))
+        const localFilter = storage.getItem<FilterData>(filterLocationKey);
+        if (localFilter && typeof localFilter !== "string" && objectHasKeys(localFilter)) {
+            dispatch(actions.setFilter(localFilter));
+        } else {
+            const filter = createFilterData(initialData, options)
+            dispatch(actions.setFilter(filter));
+            storage.setItem<FilterData>(filterLocationKey, filter)
+        }
     }, [initialData])
 
     useEffect(() => {

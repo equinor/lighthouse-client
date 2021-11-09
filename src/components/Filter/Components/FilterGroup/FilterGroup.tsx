@@ -8,6 +8,7 @@ import { FilterGroupWrapper, FilterItemWrapper, Title, Wrapper } from "./FilterG
 interface FilterGroupeComponentProps {
     filterGroup: FilterGroup,
     filterItemCheck: FilterItemCheck,
+    hideTitle?: boolean;
 }
 
 function searchByValue(items: string[], value: string) {
@@ -28,7 +29,7 @@ function checkIsIndeterminate(filterGroup: FilterGroup) {
     return count > 0 && count < maxCount;
 }
 
-export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ filterGroup, filterItemCheck }: FilterGroupeComponentProps) => {
+export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ filterGroup, filterItemCheck, hideTitle }: FilterGroupeComponentProps) => {
     const [filterSearchValue, setFilterSearchValue] = useState("");
     const group = useMemo(() => searchByValue(Object.keys(filterGroup.value), filterSearchValue), [filterSearchValue, filterGroup]);
 
@@ -58,7 +59,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ fi
 
     return (
         <Wrapper>
-            <Title>{filterGroup.type}</Title>
+            {!hideTitle && <Title>{filterGroup.type}</Title>}
             <Search
                 aria-label="in filer group"
                 id="search-normal"

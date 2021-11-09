@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
     height: fit-content;
     word-wrap: break-word;
     max-height: 180px;
-    background-color: ${tokens.colors.ui.background__light.rgba};
+    /* background-color: ${tokens.colors.ui.background__light.rgba}; */
 
     label {
         font-size: 1rem;
@@ -34,6 +34,7 @@ export const Wrapper = styled.div`
 `;
 
 export const FilterGroupWrapper = styled.div`
+    margin-top: 0.5rem;
     overflow-x: hidden;
     overflow-y: scroll;
 `;

@@ -1,7 +1,6 @@
 import { baseClient } from '@equinor/http-client';
 import { createDataViewer } from '../components/CompletionView/src/DataViewerApi/DataViewerApi';
-import useClientContext from '../context/clientContext';
-import { AppManifest } from './apps';
+import { AppApi } from './apps';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 
@@ -20,7 +19,7 @@ interface LoopContentChecklist {
     signedAt: string;
 }
 
-interface Loop {
+export interface Loop {
     tagNo: string;
     commPk: string;
     mcPk: string;
@@ -46,13 +45,12 @@ const loopKeys: (keyof Loop)[] = [
     'createdAt'
 ];
 
-export function setup(appManifest: AppManifest) {
-    const { appConfig, authProvider } = useClientContext();
-    const api = baseClient(authProvider, [appConfig.procosys]);
+export function setup(appApi: AppApi) {
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const commPkg = createDataViewer<Loop>({
         initialState: [],
         primaryViewKey: 'tagNo',
-        viewerId: appManifest.shortName
+        viewerId: appApi.shortName
     });
 
     commPkg.registerDataFetcher(async () => {

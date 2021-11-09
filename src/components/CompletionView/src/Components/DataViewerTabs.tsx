@@ -19,20 +19,17 @@ const PanelWrapper = styled.section`
 export const CompletionViewTabs = ({ tabs, activeTab, handleChange }) => {
 
     return (
-        <PanelWrapper>
-            <Panels>
-                {
-                    tabs.map((tab, index) => {
-                        const ViewComponent = tab.viewComponent;
-                        return (<Panel key={`panel-${tab.title}`} style={{ paddingTop: 0 }}>
-                            {activeTab == index && <ViewComponent />}
-                        </Panel>);
-                    })
-                }
-            </Panels>
 
-        </PanelWrapper>
-
+        <Panels>
+            {
+                tabs.map((tab, index) => {
+                    const ViewComponent = tab.viewComponent;
+                    return (<Panel key={`panel-${tab.title}`} style={{ paddingTop: 0 }}>
+                        {activeTab == index && <ViewComponent />}
+                    </Panel>);
+                })
+            }
+        </Panels>
     )
 }
 

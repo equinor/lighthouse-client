@@ -2,13 +2,10 @@
 
 import { createContext, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
-import { useDataViewerKey } from '../Components/DeraultDataView/Hooks/useDataViewerKey';
+import { useDataViewerKey } from '../Components/DefaultDataView/Hooks/useDataViewerKey';
 import { DataViewerProps, ViewOptions } from '../DataViewerApi/DataViewerTypes';
 import { FilterOptions, GardenOptions, TableOptions, TreeOptions } from '../DataViewerApi/DataViewState';
 import { useDataViewer } from '../DataViewerApi/useDataViewer';
-
-
-
 interface DataState {
     key: string;
     name: string;
@@ -24,19 +21,15 @@ interface DataState {
     analyticsOptions?: any;
     powerBiOptions?: any;
 }
-
 interface DataContextState extends DataState {
     getData: VoidFunction;
     setSelected: (itemId: string) => void;
 }
-
 interface DataProviderProps {
     children: React.ReactNode;
 }
 
-
 type VoidFunction = () => void;
-
 
 export enum DataAction {
     getData = 'getData',
@@ -104,7 +97,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     }
 
     const setSelected = (itemId: string) => {
-        dispatch(actions.setSelectedItem(itemId));
+        dispatch(actions.setSelectedItem(itemId !== state.itemId ? itemId : ""));
     }
 
     return (

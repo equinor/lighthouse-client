@@ -8,8 +8,10 @@ import { ColumSelector } from "./ColumSelector";
 
 const { Head, Row, Cell } = Table;
 
+
+
 export function Header() {
-    const { headers, awaitableHeaders, activeHeader, toggleSortDirection, sortDirection, setSelectedColum } = useTableContext();
+    const { headers, activeHeader, toggleSortDirection, sortDirection, setSelectedColum } = useTableContext();
     const addButtonRef = useRef<HTMLButtonElement>(null)
     const [isOpen, setIsOpen] = useState(false)
     return (
@@ -32,16 +34,16 @@ export function Header() {
                         />}
                     </Cell>
                 ))}
-
-                <Button variant="ghost_icon" ref={addButtonRef} onClick={() => { setIsOpen(s => !s) }}>
-                    <Icon name='add' />
-                </Button>
-                <ColumSelector
-                    anchorEl={addButtonRef.current}
-                    isOpen={isOpen}
-                    setIsOpen={setIsOpen}
-                    awaitableHeaders={awaitableHeaders}
-                    headerData={headers} />
+                <td>
+                    <Button variant="ghost_icon" ref={addButtonRef} onClick={() => { setIsOpen(s => !s) }}>
+                        <Icon name='add' />
+                    </Button>
+                    <ColumSelector
+                        anchorEl={addButtonRef.current}
+                        isOpen={isOpen}
+                        setIsOpen={setIsOpen}
+                    />
+                </td>
             </Row>
         </Head>
     );

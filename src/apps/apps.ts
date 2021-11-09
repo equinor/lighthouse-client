@@ -1,3 +1,5 @@
+import { AuthenticationProvider } from '@equinor/authentication';
+import { AppConfig } from '@equinor/lighthouse-conf';
 import React from 'react';
 import { DataView } from '../components/CompletionView/src/DataView';
 import { AssetDataIcon } from '../icons/Asset data icon';
@@ -13,15 +15,21 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
+import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
 
 type HEXColor = `#${string}`;
 
 type AppType = 'DataViewer' | 'SomeApp' | 'CustomApp';
+
+export interface AppApi extends AppManifest {
+    appConfig: AppConfig;
+    authProvider: AuthenticationProvider;
+}
 interface App {
     appType: AppType;
-    setup?: (appManifest: AppManifest) => void;
+    setup?: (api: AppApi) => void;
     customAppComponent?: React.FC<Partial<AppManifest>>;
 }
 export interface AppManifest {
@@ -289,7 +297,11 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView
+        component: DataView,
+        app: {
+            appType: 'DataViewer',
+            setup: checklistSetup
+        }
     },
     {
         title: 'Handover',

@@ -1,21 +1,22 @@
 import styled from "styled-components";
-import { DataTable } from "../../../DataTable/Components/Table";
+// import { DataTable } from "../../../DataTable/Components/Table";
 import { useFilteredData } from "../../../Filter";
-import { useDataContext } from "../Context/DataProvider";
+import { DataTable } from "../../../Table/Components/Table";
+import { useColumns } from "../../../Table/Hooks/useColumns";
 
 const Wrapper = styled.section`
-    overflow: scroll;
+    /* overflow: scroll; */
 `
 
 
 export const ListTab = () => {
 
-    const data = useFilteredData();
-    const { setSelected, tableOptions } = useDataContext()
+    const data = useFilteredData<Record<string, Object>>();
+    const columns = useColumns(data[0])
 
     return (
         <Wrapper>
-            <DataTable data={data} setSelected={setSelected} tableOptions={tableOptions} />
+            <DataTable data={data} columns={columns} />
         </Wrapper>
     );
 }

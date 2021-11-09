@@ -12,16 +12,8 @@ const Icons = styled.div`
       flex-direction: row-reverse;
       > * {
         margin-left: 40px;
+       
       }
-    `
-
-const CustomContentWrapper = styled.div`
-display: flex;
-align-items: center;
-flex-direction: row;
-> * {
-  margin-left: 40px;
-}
 `
 
 
@@ -29,9 +21,9 @@ const TopBarWrapper = styled.div`
     position: fixed;
     width: 100%;
     z-index: 2;
-    height: 48px 
+    height: 48px;
     > header {
-        padding-left: 16px;
+        padding-left: 1.5rem;
     }
 `
 

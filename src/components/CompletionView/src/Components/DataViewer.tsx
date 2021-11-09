@@ -9,15 +9,25 @@ import { useDataViewer } from "../DataViewerApi/useDataViewer"
 import { useConfiguredTabs } from "../Tabs/tabsConfig"
 import { CompletionViewHeader } from "./DataViewerHeader"
 import { CompletionViewTabs } from "./DataViewerTabs"
-import { DataView } from "./DeraultDataView"
-import { useDataViewerKey } from "./DeraultDataView/Hooks/useDataViewerKey"
+import { DataView } from "./DefaultDataView"
+import { NoDataViewer } from "./NoDataViewer"
 
 
-const CompletionViewWarper = styled.section``;
+const DataViewWrapper = styled.section`
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-areas: "main sidebar";
+`;
+
+const TabsWrapper = styled.section`
+    grid-area: main;
+    overflow: scroll;
+    height: 100%;
+    width: auto;
+`;
 
 export const DataViewer = (props) => {
-    const viewerId = useDataViewerKey()
-    const { treeOptions, tableOptions, gardenOptions, timelineOptions, analyticsOptions, powerBiOptions, name, filterOptions } = useDataViewer();
+    const { treeOptions, tableOptions, gardenOptions, timelineOptions, analyticsOptions, powerBiOptions, filterOptions } = useDataViewer();
     const { data } = useDataContext()
 
     const { tabs, viewIsActive } = useConfiguredTabs(treeOptions, tableOptions, gardenOptions, timelineOptions, analyticsOptions, powerBiOptions)
@@ -32,22 +42,23 @@ export const DataViewer = (props) => {
         setActiveFilter(state => !state)
     }
 
+    if (!viewIsActive) return (
+        <NoDataViewer />
+    );
+
+
     return (
-
-        viewIsActive ? <FilterProvider initialData={data} options={filterOptions} >
-            <Tabs activeTab={activeTab} onChange={handleChange} >
-                <CompletionViewHeader {...props} tabs={tabs} handleFilter={handleFilter} />
-                {activeFilter && <FilterView />}
-                <CompletionViewTabs tabs={tabs} activeTab={activeTab} handleChange={handleChange} />
-            </Tabs>
-            <DataView />
+        <FilterProvider initialData={data} options={filterOptions} >
+            <DataViewWrapper>
+                <TabsWrapper>
+                    <Tabs activeTab={activeTab} onChange={handleChange} >
+                        <CompletionViewHeader {...props} tabs={tabs} handleFilter={handleFilter} />
+                        <FilterView isActive={activeFilter} />
+                        <CompletionViewTabs tabs={tabs} activeTab={activeTab} handleChange={handleChange} />
+                    </Tabs>
+                </TabsWrapper>
+                <DataView />
+            </DataViewWrapper>
         </FilterProvider>
-            :
-            <div>
-                <h1>No data viewer is configured for {viewerId}</h1>
-                <p>{name}</p>
-
-            </div>
-
     );
 }

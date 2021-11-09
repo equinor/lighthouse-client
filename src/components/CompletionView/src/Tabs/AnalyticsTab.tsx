@@ -1,10 +1,11 @@
 import Chart from "react-apexcharts";
+import { Loop } from "../../../../apps/loopApp";
 import { useFilteredData } from "../../../Filter";
 export const AnalyticsTab = () => {
     const data = useFilteredData()
 
-    const [series, categories] = createSeriesByKeys(data, "column", "status", "responsible");
-    const [series2, categories2] = createSeriesByKeys(data, "line", "status", "phase");
+    const [series, categories] = createSeriesByKeys<Loop>(data as Loop[], "column", "responsible", "status",);
+    const [series2, categories2] = createSeriesByKeys<Loop>(data as Loop[], "line", "status", "responsible");
 
     const options = {
         chart: {
@@ -134,3 +135,4 @@ function createSeriesByKeys<T>(dataItem: T[], type: string, nameKey: string, cat
 
     return [result, categories];
 }
+

@@ -1,5 +1,5 @@
 import { useAtom } from '@dbeining/react-atom';
-import { useDataViewerKey } from '../Components/DeraultDataView/Hooks/useDataViewerKey';
+import { useDataViewerKey } from '../Components/DefaultDataView/Hooks/useDataViewerKey';
 import { getContext, ViewConfig } from './DataViewState';
 
 export function useDataViewer<T>(): ViewConfig<T> {

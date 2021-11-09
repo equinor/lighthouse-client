@@ -1,6 +1,7 @@
 import { Checkbox } from "@equinor/eds-core-react"
+import { useCount } from "../../Hooks/useCount"
 import { FilerItemCount, FilterItem, FilterItemCheck } from "../../Types/FilterItem"
-import { FilterItemGroupe, FilterItemLabel, FilterItemWrapper } from "./FilterItem-Styles"
+import { Count, FilterItemGroupe, FilterItemLabel, FilterItemWrapper } from "./FilterItem-Styles"
 
 
 
@@ -13,7 +14,11 @@ interface FilterItemComponentProps {
     itemKey: string;
 }
 
-export const FilterItemComponent = ({ filterItem, getCount, filterItemCheck, indeterminate, count, itemKey }: FilterItemComponentProps): JSX.Element => {
+export const FilterItemComponent = ({ filterItem, filterItemCheck, indeterminate, itemKey }: FilterItemComponentProps): JSX.Element => {
+
+    const count = useCount(filterItem);
+    if (count === 0 && filterItem.checked) return (<></>)
+
     return (
         <FilterItemWrapper key={itemKey} aria-label={filterItem.value} title={filterItem.value}>
             <FilterItemGroupe>
@@ -23,9 +28,13 @@ export const FilterItemComponent = ({ filterItem, getCount, filterItemCheck, ind
                 </FilterItemLabel>
             </FilterItemGroupe>
             <FilterItemGroupe>
-                {getCount && getCount(filterItem.value)} {count}
+                <Count>
+                    ({count})
+                </Count>
             </FilterItemGroupe>
         </FilterItemWrapper>
 
     )
+
+
 }
