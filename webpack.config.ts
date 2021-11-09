@@ -3,7 +3,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
-import { Configuration, SourceMapDevToolPlugin } from 'webpack';
+import { Configuration } from 'webpack';
 
 const extensions = ['.ts', '.tsx', '.js', '.jsx'];
 const publicPath = path.join(__dirname, 'public');
@@ -97,7 +97,7 @@ const webpackConfig: Configuration = {
     },
     plugins: [
         /* Deletes our build directory when building */
-        new SourceMapDevToolPlugin({}),
+        // new SourceMapDevToolPlugin({}),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template
