@@ -43,8 +43,7 @@
     "react-window": "^1.8.6",
     "styled-components": "^5.3.1",
     "ts-node": "^10.2.1",
-    "typesafe-actions": "^5.1.0",
-    "typescript-require": "^0.3.0"
+    "typesafe-actions": "^5.1.0"
   },
   "devDependencies": {
     "@types/node": "^16.10.3",

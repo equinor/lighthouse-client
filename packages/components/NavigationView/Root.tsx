@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../../src/components/Icon/Icon';
 
