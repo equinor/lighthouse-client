@@ -1,3 +1,4 @@
+import { Checkbox } from "@equinor/eds-core-react";
 import { Hooks } from "react-table";
 import styled from "styled-components";
 
@@ -27,7 +28,7 @@ export function useSelector<T>(hooks: Hooks<Record<string, T>>): void {
             // Header: ({ getToggleAllPageRowsSelectedProps }: UseRowSelectInstanceProps<Record<string, unknown>>): JSX.Element => (
             //     <HeaderCheckbox  {...getToggleAllPageRowsSelectedProps()} />
             // ),
-            Cell: ({ row }): JSX.Element => row.original?.noCheckbox ? <></> : <Div> <RowCheckbox disabled={row.original?.disableCheckbox} {...row.getToggleRowSelectedProps()} /></Div>,
+            Cell: ({ row }): JSX.Element => row.original?.noCheckbox ? <></> : <Div> <Checkbox disabled={row.original?.disableCheckbox} {...row.getToggleRowSelectedProps()} /></Div>,
         },
         ...columns,
     ]);
