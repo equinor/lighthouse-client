@@ -1,4 +1,3 @@
-import { Checkbox } from '@equinor/eds-core-react';
 import styled, { css } from 'styled-components';
 
 export const Table = styled.div`
@@ -131,25 +130,4 @@ export const HeaderItem = styled.div`
 
 export const HeaderActions = styled.div`
     display: flex;
-`;
-
-export const HeaderCheckbox = styled(Checkbox)`
-    padding: 0;
-    margin-top: -4px;
-    > span {
-        padding: 0;
-    }
-`;
-
-export const RowCheckbox = styled(Checkbox)`
-    padding: 0px;
-    margin-top: -2px;
-    > span {
-        padding: 0;
-
-        > svg {
-            width: 18px;
-            height: 18px;
-        }
-    }
 `;

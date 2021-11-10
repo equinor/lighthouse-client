@@ -18,6 +18,7 @@ import { SSUIcon } from '../icons/SSUIcon';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
+import { TestApp } from './testApp';
 
 type HEXColor = `#${string}`;
 
@@ -136,7 +137,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: '',
-        imageUri: './images/Business case.jpg',
+        // imageUri: './images/Business case.jpg',
+        component: TestApp,
         tags: []
     },
     {
