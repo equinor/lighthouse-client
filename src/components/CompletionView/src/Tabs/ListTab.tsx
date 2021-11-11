@@ -1,6 +1,7 @@
 import styled from "styled-components";
 // import { DataTable } from "../../../DataTable/Components/Table";
 import { useFilteredData } from "../../../Filter";
+import { PopupFilter } from "../../../Filter/Components/PopoutFilter/PopupFilter";
 import { DataTable } from "../../../Table/Components/Table";
 import { useColumns } from "../../../Table/Hooks/useColumns";
 
@@ -16,7 +17,7 @@ export const ListTab = () => {
 
     return (
         <Wrapper>
-            <DataTable data={data} columns={columns} />
+            <DataTable data={data} columns={columns} FilterComponent={PopupFilter} />
         </Wrapper>
     );
 }

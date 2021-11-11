@@ -10,7 +10,6 @@ interface FilterItemComponentProps {
     getCount?: FilerItemCount;
     filterItemCheck: FilterItemCheck;
     indeterminate?: boolean;
-    count?: number;
     itemKey: string;
 }
 

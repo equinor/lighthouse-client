@@ -18,6 +18,7 @@ export interface HeaderCellProps {
     canResize: boolean;
     Header: string;
     id: string
+    FilterComponent?: React.FC<{ filterId: string }>
 }
 
 
@@ -36,6 +37,7 @@ export const HeaderCell = (column: HeaderCellProps) => {
 
     const [isOpen, setIsOpen] = useState(false)
     const headerCellRef = useRef<HTMLDivElement | null>(null)
+
 
     return (
         <TableHeadCell {...column.getHeaderProps()} ref={headerCellRef}>

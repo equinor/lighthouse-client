@@ -12,12 +12,13 @@ interface DataTableProps<T extends Record<string, unknown>> extends TableOptions
     data: T[],
     onSelectedChange?: (args: T[], ids: Record<string, boolean>) => void;
     selectedRows?: Record<string, boolean>;
+    FilterComponent?: React.FC<{ filterId: string }>
 }
 
 const topBarHeight = 64;
 const itemSize = 35;
 
-export function DataTable<T extends Object>({ data, columns }: PropsWithChildren<DataTableProps<Record<string, T>>>) {
+export function DataTable<T extends Object>({ data, columns, FilterComponent }: PropsWithChildren<DataTableProps<Record<string, T>>>) {
 
     const hooks = RegisterReactTableHooks<T>();
 
@@ -71,7 +72,7 @@ export function DataTable<T extends Object>({ data, columns }: PropsWithChildren
                 {headerGroups.map(headerGroup => (
                     <div {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map((column) => (
-                            <HeaderCell {...column} />
+                            <HeaderCell {...column} FilterComponent={FilterComponent} />
                         ))}
                     </div>
                 ))}

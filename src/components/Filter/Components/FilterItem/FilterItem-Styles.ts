@@ -11,8 +11,20 @@ export const FilterItemLabel = styled.label`
     cursor: pointer;
 `;
 
-export const FilterItemGroupe = styled.span``;
-export const Count = styled.span`
-    padding: 0.2rem;
+export const FilterItemGroupe = styled.span`
+    padding: 2px;
+    height: 20px;
+    > span {
+        padding: 0px;
+
+        > svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+`;
+
+export const Count = styled.div`
+    padding: 0.5rem;
     font-size: 12px;
 `;

@@ -29,10 +29,9 @@ export interface AppApi extends AppManifest {
     authProvider: AuthenticationProvider;
 }
 interface App {
-    appType: AppType;
+    appType?: AppType;
     setup?: (api: AppApi) => void;
     component?: React.FC<Partial<AppManifest>>;
-    customAppComponent?: React.FC<Partial<AppManifest>>;
 }
 export interface AppManifest {
     title: string;
