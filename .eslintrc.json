@@ -1,0 +1,40 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:prettier/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:react-hooks/recommended",
+        "prettier",
+        "@equinor/eslint-config-fusion/react"
+    ],
+    "plugins": [
+        "@typescript-eslint",
+        "react-hooks",
+        "prettier"
+    ],
+    "ignorePatterns": [
+        "**/*.test.tsx",
+        "**/*.test.ts",
+        "**/*.github",
+        "**/*.d.ts",
+        "**/*.docs"
+    ],
+    "rules": {
+        "prettier/prettier": [
+            "error",
+            {
+                "endOfLine": "crlf"
+            }
+        ],
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "error",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "no-undef": "off",
+        "no-console": "warn",
+        "no-unreachable": "warn"
+    }
+}
