@@ -1,9 +1,5 @@
-import { IdTokenEntity } from "@azure/msal-common";
 import { Menu, Typography } from "@equinor/eds-core-react";
-import { useMemo } from "react";
 import styled from "styled-components";
-import { FilterGroupeComponent } from "../../Filter";
-import { useFilter } from "../../Filter/Hooks/useFilter";
 import { HeaderCellProps } from "./HeaderCell";
 
 
@@ -15,13 +11,11 @@ interface HeaderCellMenuProps extends HeaderCellProps {
     anchorEl: HTMLDivElement | null;
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    FilterComponent?: React.FC<{ filterId: string }>
 }
 
-export function HeaderCellMenu({ anchorEl, isOpen, setIsOpen, Header, canGroupBy, getGroupByToggleProps, getSortByToggleProps, canSort, id }: HeaderCellMenuProps) {
+export function HeaderCellMenu({ anchorEl, isOpen, setIsOpen, Header, canGroupBy, getGroupByToggleProps, getSortByToggleProps, canSort, id, FilterComponent }: HeaderCellMenuProps) {
 
-
-    const { filterData, filterItemCheck } = useFilter();
-    const filter = useMemo(() => filterData[id], [filterData, IdTokenEntity]);
     return (
         <Menu
             open={isOpen}
@@ -46,8 +40,8 @@ export function HeaderCellMenu({ anchorEl, isOpen, setIsOpen, Header, canGroupBy
                 </Menu.Item>
             }
             {
-                filter ? <Menu.Section title="Filter">
-                    <FilterGroupeComponent filterGroup={filter} filterItemCheck={filterItemCheck} hideTitle={true} />
+                FilterComponent ? <Menu.Section title="Filter">
+                    <FilterComponent filterId={id} />
                 </Menu.Section> : <></>
             }
 

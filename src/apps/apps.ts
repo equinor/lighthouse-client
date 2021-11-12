@@ -29,9 +29,9 @@ export interface AppApi extends AppManifest {
     authProvider: AuthenticationProvider;
 }
 interface App {
-    appType: AppType;
+    appType?: AppType;
     setup?: (api: AppApi) => void;
-    customAppComponent?: React.FC<Partial<AppManifest>>;
+    component?: React.FC<Partial<AppManifest>>;
 }
 export interface AppManifest {
     title: string;
@@ -41,7 +41,6 @@ export interface AppManifest {
     tags: string[];
     icon?: string | React.FC;
     uri?: string;
-    component?: React.FC<Partial<AppManifest>>;
     imageUri?: string;
     app?: App;
 }
@@ -138,7 +137,10 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         // imageUri: './images/Business case.jpg',
-        component: TestApp,
+        app: {
+            appType: 'CustomApp',
+            component: TestApp
+        },
         tags: []
     },
     {
@@ -299,9 +301,9 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView,
         app: {
             appType: 'DataViewer',
+            component: DataView,
             setup: checklistSetup
         }
     },
@@ -313,9 +315,9 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView,
         app: {
             appType: 'DataViewer',
+            component: DataView,
             setup: handoverSetup
         }
     },
@@ -327,7 +329,10 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView
+        app: {
+            appType: 'DataViewer',
+            component: DataView
+        }
     },
     {
         title: 'Loop',
@@ -337,9 +342,9 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView,
         app: {
             appType: 'DataViewer',
+            component: DataView,
             setup: loopSetup
         }
     },
@@ -351,7 +356,10 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView
+        app: {
+            appType: 'DataViewer',
+            component: DataView
+        }
     },
     {
         title: 'Preservation',
@@ -361,7 +369,10 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView
+        app: {
+            appType: 'DataViewer',
+            component: DataView
+        }
     },
     {
         title: 'Punch',
@@ -371,7 +382,10 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView
+        app: {
+            appType: 'DataViewer',
+            component: DataView
+        }
     },
     {
         title: 'SWCR',
@@ -381,7 +395,10 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        component: DataView
+        app: {
+            appType: 'DataViewer',
+            component: DataView
+        }
     },
     // Queries and requests
     {
