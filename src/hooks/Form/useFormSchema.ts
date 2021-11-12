@@ -79,7 +79,6 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
                     return data[fieldKey];
                 },
 
-                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
                 set value(newValue) {
                     mutateField(fieldKey, newValue);
                 },
@@ -110,17 +109,15 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
 
             return undefined;
         },
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+
         getSetter: <TValue>(field?: Value<TValue>, checkBeforeSave?: () => Promise<boolean>) => {
             if (field) {
-                // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
                 return async (value: TValue) => {
                     if (!checkBeforeSave || (checkBeforeSave && (await checkBeforeSave())))
                         field.value = value;
                 };
             }
 
-            // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
             return async (value: TValue) => {
                 value;
             };
