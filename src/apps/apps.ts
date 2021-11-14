@@ -31,7 +31,7 @@ export interface AppApi extends AppManifest {
 interface App {
     appType?: AppType;
     setup?: (api: AppApi) => void;
-    component?: React.FC<Partial<AppManifest>>;
+    component?: React.FC<AppApi>;
 }
 export interface AppManifest {
     title: string;

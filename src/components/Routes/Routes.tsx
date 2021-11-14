@@ -32,7 +32,9 @@ export const Routes = () => {
                                     authProvider
                                 });
 
-                            return <Component {...route} />
+                            const api = { ...route, authProvider, appConfig }
+
+                            return <Component {...api} />
                         }
                         } />
                     )

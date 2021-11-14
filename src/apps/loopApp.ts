@@ -126,9 +126,9 @@ export function setup(appApi: AppApi) {
         itemKey: 'tagNo'
     });
     commPkg.registerAnalyticsOptions({});
-    // commPkg.registerTreeOptions({
-    //     groupByKeys: ['responsible', 'status', 'tagNo'],
-    //     rootNode: 'phase'
-    // });
+    commPkg.registerTreeOptions({
+        groupByKeys: ['responsible', 'status', 'tagNo'],
+        rootNode: 'phase'
+    });
     // console.info(`Config for ${appManifest.shortName} done! `);
 }

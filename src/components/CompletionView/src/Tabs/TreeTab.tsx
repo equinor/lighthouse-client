@@ -1,10 +1,12 @@
 import { TreeRoot } from "../../../../../packages/components/NavigationView/Root";
+import { useFilteredData } from "../../../Filter";
 import { useDataContext } from "../Context/DataProvider";
 
 export const TreeTab = () => {
 
 
-    const { data, treeOptions } = useDataContext();
+    const { treeOptions } = useDataContext();
+    const data = useFilteredData()
     console.log("treeOptions___>", treeOptions)
 
     return (
