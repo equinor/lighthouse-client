@@ -6,14 +6,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build a Docker image
-      run: docker build . -f /.docker/Dockerfile -t "snyk"
+      run: docker build /.docker/Dockerfile -t Snyk
     - name: Run Snyk to check Docker image for vulnerabilities
       continue-on-error: true
       uses: snyk/actions/docker@0.3.0
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TEST }}
       with:
-        image: "snyk"
+        image: Snyk
         args: --file=Dockerfile
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v1
