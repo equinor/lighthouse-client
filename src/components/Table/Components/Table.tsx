@@ -62,7 +62,7 @@ export function DataTable<T extends Object>({ data, columns, FilterComponent }: 
     };
 
     useEffect(() => {
-        selectedFlatRows && console.log(selectedFlatRows)
+        // selectedFlatRows && console.log(selectedFlatRows)
     }, [selectedFlatRows])
 
 
