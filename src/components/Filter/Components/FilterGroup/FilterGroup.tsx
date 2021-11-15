@@ -1,8 +1,9 @@
 import { Checkbox, Search } from "@equinor/eds-core-react"
 import React, { useMemo, useState } from "react"
+import Icon from "../../../Icon/Icon"
 import { FilterGroup, FilterItemCheck } from "../../Types/FilterItem"
 import { FilterItemComponent } from "../FilterItem/FilterItem"
-import { FilterGroupWrapper, FilterItemWrapper, Title, Wrapper } from "./FilterGroup-Styles"
+import { FilterGroupWrapper, FilterHeaderGroup, FilterItemWrapper, SearchButton, Title, Wrapper } from "./FilterGroup-Styles"
 
 
 interface FilterGroupeComponentProps {
@@ -31,6 +32,7 @@ function checkIsIndeterminate(filterGroup: FilterGroup) {
 
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ filterGroup, filterItemCheck, hideTitle }: FilterGroupeComponentProps) => {
     const [filterSearchValue, setFilterSearchValue] = useState("");
+    const [searchActive, setSearchActive] = useState(false);
     const group = useMemo(() => searchByValue(Object.keys(filterGroup.value), filterSearchValue), [filterSearchValue, filterGroup]);
 
 
@@ -57,16 +59,29 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ fi
     const isAllChecked = allChecked(filterGroup);
     const isIndeterminate = checkIsIndeterminate(filterGroup)
 
+    function handleSearchButtonClick() {
+        setSearchActive(isActive => !isActive);
+    }
+
     return (
         <Wrapper>
-            {!hideTitle && <Title>{filterGroup.type}</Title>}
-            <Search
-                aria-label="in filer group"
-                id="search-normal"
-                placeholder="Search"
-                onChange={handleOnChange}
-                onKeyPress={handleOnKeyPress}
-            />
+            <FilterHeaderGroup >
+
+                {
+                    searchActive ? <Search
+                        autoFocus={searchActive}
+                        aria-label="in filer group"
+                        id="search-normal"
+                        placeholder="Search"
+                        onChange={handleOnChange}
+                        onKeyPress={handleOnKeyPress}
+                    /> : <Title>{filterGroup.type}</Title>
+                }
+                <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
+                    <Icon name={searchActive ? "chevron_right" : "search"} size={24} />
+                </SearchButton>
+
+            </FilterHeaderGroup>
             <FilterGroupWrapper>
                 <FilterItemWrapper>
                     <Checkbox title={"All"} label={"All"} checked={isAllChecked} indeterminate={isIndeterminate} onChange={handleOnAllChange} />

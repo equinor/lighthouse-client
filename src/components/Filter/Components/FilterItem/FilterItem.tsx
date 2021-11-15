@@ -28,11 +28,9 @@ export const FilterItemComponent = ({ filterItem, filterItemCheck, indeterminate
                     {filterItem.value}
                 </FilterItemLabel>
             </FilterItemGroupe>
-            <FilterItemGroupe>
-                <Count>
-                    ({count})
-                </Count>
-            </FilterItemGroupe>
+            <Count>
+                ({count})
+            </Count>
         </FilterItemWrapper>
 
     )
