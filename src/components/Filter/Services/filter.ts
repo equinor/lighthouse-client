@@ -1,18 +1,36 @@
-import { FilterData, FilterDataOptions, FilterItem } from '../Types/FilterItem';
+import JSONfn from 'json-fn';
+import { FilterData, FilterItem } from '../Types/FilterItem';
+import { GrouperFunctions, ProxyFunction } from './filterApi';
 
-function InternalFilter<T>(
+async function InternalFilter<T>(
     data: T[],
     filterItems: FilterItem[],
-    options?: FilterDataOptions<T>
-): T[] {
+    groupValue?: Record<string, (item: T) => string>
+    // options?: FilterDataOptions<T>
+): Promise<T[]> {
     const filterItem = filterItems[0];
     if (!filterItem) return data;
 
+    // const filteredData: T[] = [];
+    // for await (let item of data) {
+    //     // const item = data[index];
+
+    //     const getValue =
+    //         groupValue &&
+    //         typeof groupValue[filterItem.type] === 'function' &&
+    //         groupValue[filterItem.type];
+
+    //     if (getValue && (await getValue(item)) !== filterItem.value)
+    //         filteredData.push(item);
+
+    //     if (item[filterItem.type] !== filterItem.value) filteredData.push(item);
+    // }
+
     const filteredData = data.filter((i) => {
         const getValue =
-            options?.groupValue &&
-            typeof options.groupValue[filterItem.type] === 'function' &&
-            options.groupValue[filterItem.type];
+            groupValue &&
+            typeof groupValue[filterItem.type] === 'function' &&
+            groupValue[filterItem.type];
         return getValue
             ? getValue(i) !== filterItem.value
             : i[filterItem.type] !== filterItem.value;
@@ -21,17 +39,34 @@ function InternalFilter<T>(
     filterItems.shift();
 
     if (filterItems.length !== 0 && filteredData.length > 0) {
-        return InternalFilter(filteredData, filterItems, options);
+        return await InternalFilter(filteredData, filterItems, groupValue);
     }
     return filteredData;
 }
 
-export function filter<T>(
+function createGroupValueFunctionMap(
+    groupValue: ProxyFunction[],
+    groupValueMap?: string[]
+): GrouperFunctions {
+    return (
+        groupValueMap?.reduce((acc, key: string, index: number) => {
+            acc[key] = groupValue[index];
+            return acc;
+        }, {}) || {}
+    );
+}
+
+export async function filter<T>(
     data: T[],
     filter: FilterData,
-    options?: FilterDataOptions<T>
-): T[] {
+    options?: string,
+    groupValueMap?: string[]
+    // ...groupValue: ProxyFunction[]
+): Promise<T[]> {
     if (data.length === 0) return [];
+    const fns = options && JSONfn.parse(options);
+    // const opt = createGroupValueFunctionMap(fns, groupValueMap);
+
     const filterItems = Object.keys(filter)
         .map((filterKey) => {
             const items: FilterItem[] = [];
@@ -46,6 +81,8 @@ export function filter<T>(
         })
         .flat();
 
-    const filteredData = [...InternalFilter(data, filterItems, options)];
+    // const groups = await createGroupValueFunctionMap(groupValue, groupValueMap);
+    // console.log(groups);
+    const filteredData = [...(await InternalFilter(data, filterItems, fns))];
     return filteredData.length === 0 ? data : filteredData;
 }
