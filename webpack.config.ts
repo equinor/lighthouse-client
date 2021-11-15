@@ -48,13 +48,15 @@ const webpackConfig: Configuration = {
     output: {
         path: buildPath,
         filename: '[name].bundle.js',
-        // library: 'someLibName',
-        // libraryTarget: 'commonjs',
         chunkFilename: `[name].[contenthash].chunk.js`,
         publicPath: './'
     },
     module: {
         rules: [
+            {
+                test: /\.worker\.(js|ts)$/,
+                use: { loader: 'worker-loader' }
+            },
             {
                 test: /\.(ts|tsx)$/,
                 loader: 'ts-loader',
@@ -98,6 +100,7 @@ const webpackConfig: Configuration = {
     plugins: [
         /* Deletes our build directory when building */
         // new SourceMapDevToolPlugin({}),
+        // new WorkerPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template

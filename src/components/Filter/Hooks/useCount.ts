@@ -7,9 +7,16 @@ export function useCount({ type, value, checked }: FilterItem): number {
     const [count, setCount] = useState<number>(0);
     const data = filteredData as Record<string, unknown>[];
 
+    // const updateCount = (): void => {
+    //     workerGetCount(filteredData, value, type, options).then((count) => {
+    //         setCount(count);
+    //     });
+    // };
+
     useEffect(() => {
         if (!checked) return;
 
+        // updateCount();
         const getGroupeValue =
             options && options.groupValue && options.groupValue[type];
 
