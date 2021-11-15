@@ -1,0 +1,26 @@
+name: Snyk Container
+on: push
+jobs:
+  snyk:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Snyk
+      uses: snyk/actions@0.3.0
+      with:
+        # Which Snyk command to run, defaults to test
+        command: test
+    - name: Build a Docker image
+      run: docker build /.docker/Dockerfile -t "snyk"
+    - name: Run Snyk to check Docker image for vulnerabilities
+      continue-on-error: true
+      uses: snyk/actions/docker@snyk
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TEST }}
+      with:
+        image: "snyk"
+        args: --file=Dockerfile
+    - name: Upload result to GitHub Code Scanning
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        sarif_file: snyk.sarif
