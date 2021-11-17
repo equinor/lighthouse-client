@@ -15,25 +15,36 @@ interface FilterItemComponentProps {
 
 export const FilterItemComponent = ({ filterItem, filterItemCheck, indeterminate, itemKey }: FilterItemComponentProps): JSX.Element => {
 
-    const count = useCount(filterItem);
-    if (count === 0 && filterItem.checked) return (<></>)
+    const { count, isActive } = useCount(filterItem);
 
+
+
+    const debouncedFilterItemCheck = debounceFilterItemCheck(filterItemCheck, 500)
+
+    if (!isActive) return (<></>)
     return (
         <FilterItemWrapper key={itemKey} aria-label={filterItem.value} title={filterItem.value}>
             <FilterItemGroupe>
-                <Checkbox indeterminate={indeterminate} title={filterItem.value} checked={filterItem.checked} onChange={() => { filterItemCheck(filterItem) }} />
-                <FilterItemLabel onClick={() => { filterItemCheck(filterItem, true) }}>
+                <Checkbox indeterminate={indeterminate} title={filterItem.value} checked={filterItem.checked} onChange={() => { debouncedFilterItemCheck(filterItem) }} />
+                <FilterItemLabel onClick={() => { debouncedFilterItemCheck(filterItem, true) }}>
                     {filterItem.value}
                 </FilterItemLabel>
             </FilterItemGroupe>
-            <FilterItemGroupe>
-                <Count>
-                    ({count})
-                </Count>
-            </FilterItemGroupe>
+            <Count>
+                ({count})
+            </Count>
         </FilterItemWrapper>
 
     )
 
+}
 
+function debounceFilterItemCheck(filterItemCheck: FilterItemCheck, delay: number) {
+    let id: NodeJS.Timeout;
+    return (filterItem: FilterItem | FilterItem[], singleClick?: boolean | undefined) => {
+        if (id) clearTimeout(id);
+        id = setTimeout(() => {
+            filterItemCheck(filterItem, singleClick)
+        }, delay)
+    }
 }

@@ -62,7 +62,7 @@ export function DataTable<T extends Object>({ data, columns, FilterComponent }: 
     };
 
     useEffect(() => {
-        selectedFlatRows && console.log(selectedFlatRows)
+        // selectedFlatRows && console.log(selectedFlatRows)
     }, [selectedFlatRows])
 
 
@@ -72,7 +72,7 @@ export function DataTable<T extends Object>({ data, columns, FilterComponent }: 
                 {headerGroups.map(headerGroup => (
                     <div {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map((column) => (
-                            <HeaderCell {...column} FilterComponent={FilterComponent} />
+                            <HeaderCell {...column} FilterComponent={FilterComponent} key={column.getHeaderProps().key} />
                         ))}
                     </div>
                 ))}

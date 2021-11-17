@@ -1,8 +1,7 @@
 import { useContext, useMemo } from 'react';
 import { dictToArray } from '../Components/Utils/dictToArray';
 import { Context } from '../Context/FilterContext';
-import { filter } from '../Services/filter';
-import { FilterDataOptions, FilterGroup } from '../Types/FilterItem';
+import { FilterGroup } from '../Types/FilterItem';
 
 interface FilterContext<T> extends Context {
     filter: FilterGroup[];
@@ -13,14 +12,9 @@ interface FilterContext<T> extends Context {
 export function useFilter<T>(): FilterContext<T> {
     const state = useContext(Context);
     const data = useMemo(() => state.data as T[], [state.data]);
-    const options = useMemo(
-        () => state.options as FilterDataOptions<T>,
-        [state.options]
-    );
-
     const filteredData = useMemo(
-        () => filter(data, state.filterData, options),
-        [data, state.filterData]
+        () => state.filteredData as T[],
+        [state.filteredData]
     );
 
     const context = useMemo(
