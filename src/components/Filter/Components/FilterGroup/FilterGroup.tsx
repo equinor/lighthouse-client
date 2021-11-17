@@ -33,7 +33,7 @@ function checkIsIndeterminate(filterGroup: FilterGroup) {
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ filterGroup, filterItemCheck, hideTitle }: FilterGroupeComponentProps) => {
     const [filterSearchValue, setFilterSearchValue] = useState("");
     const [searchActive, setSearchActive] = useState(false);
-    const group = useMemo(() => searchByValue(Object.keys(filterGroup.value), filterSearchValue), [filterSearchValue, filterGroup]);
+    const group = useMemo(() => searchByValue(Object.keys(filterGroup.value), filterSearchValue), [filterSearchValue]);
 
 
     function handleOnChange(

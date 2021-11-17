@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\christopher.hove\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add JSONfn
+  C:\Program Files\nodejs\node.exe C:\Users\christopher.hove\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @types/use-dexie --dev
 
 PATH: 
   C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Program Files\Graphviz 2.44.1\bin;C:\Program Files\Graphviz\bin;C:\Program Files\dotnet\;C:\Openssl\bin;;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\christopher.hove\AppData\Local\Microsoft\WindowsApps;C:\Users\christopher.hove\AppData\Local\GitHubDesktop\bin;C:\Users\christopher.hove\AppData\Roaming\npm;C:\Users\christopher.hove\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\christopher.hove\.dotnet\tools
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/JSONfn: Not found
+  Error: https://registry.yarnpkg.com/@types%2fuse-dexie: Not found
       at Request.params.callback [as _callback] (C:\Users\christopher.hove\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66992:18)
       at Request.self.callback (C:\Users\christopher.hove\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140763:22)
       at Request.emit (events.js:315:20)
@@ -59,6 +59,7 @@ npm manifest:
       "comlink": "^4.3.1",
       "frappe-gantt-react": "^0.2.2",
       "install": "^0.13.0",
+      "json-fn": "^1.1.1",
       "lodash": "^4.17.21",
       "npm": "^8.1.3",
       "powerbi-client": "^2.18.5",
@@ -74,6 +75,7 @@ npm manifest:
       "styled-components": "^5.3.3",
       "ts-node": "^10.2.1",
       "typesafe-actions": "^5.1.0",
+      "use-dexie": "^1.2.2",
       "worker-loader": "^3.0.8",
       "worker-plugin": "^5.0.1"
     },
@@ -4896,6 +4898,16 @@ Lockfile:
       address "^1.0.1"
       debug "^2.6.0"
   
+  dexie-observable@^3.0.0-beta.10:
+    version "3.0.0-beta.11"
+    resolved "https://registry.yarnpkg.com/dexie-observable/-/dexie-observable-3.0.0-beta.11.tgz#2ab39e81f0fd2a8a040e014279d07b4c13c9100f"
+    integrity sha512-mKwSYy54Kj73Njp3Rs+GoldLxyDJK1LF7niBkZxSenGAlBCXB5RxafH2Mg6Ay0B1pLlDYvJCWH31s88/Uz0WSg==
+  
+  dexie@^3.0.3:
+    version "3.0.3"
+    resolved "https://registry.yarnpkg.com/dexie/-/dexie-3.0.3.tgz#ede63849dfe5f07e13e99bb72a040e8ac1d29dab"
+    integrity sha512-BSFhGpngnCl1DOr+8YNwBDobRMH0ziJs2vts69VilwetHYOtEDcLqo7d/XiIphM0tJZ2rPPyAGd31lgH2Ln3nw==
+  
   dezalgo@^1.0.0:
     version "1.0.3"
     resolved "https://registry.yarnpkg.com/dezalgo/-/dezalgo-1.0.3.tgz#7f742de066fc748bc8db820569dddce49bf0d456"
@@ -5521,7 +5533,7 @@ Lockfile:
       table "^5.2.3"
       text-table "^0.2.0"
   
-  eslint@^7.32.0:
+  eslint@^7.14.0, eslint@^7.32.0:
     version "7.32.0"
     resolved "https://registry.yarnpkg.com/eslint/-/eslint-7.32.0.tgz#c6d328a14be3fb08c8d1d21e12c02fdb7a2a812d"
     integrity sha512-VHZ8gX+EDfz+97jGcgyGCyRia/dPOd6Xh9yPv8Bl1+SoaIwD+a/vlrOmGRUyOYu7MwUhc7CxqeaDZU13S4+EpA==
@@ -8122,6 +8134,11 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
     integrity sha1-597mbjXW/Bb3EP6R1c9p9w8IkR0=
   
+  json-fn@^1.1.1:
+    version "1.1.1"
+    resolved "https://registry.yarnpkg.com/json-fn/-/json-fn-1.1.1.tgz#4293c9198a482d6697d334a6e32cd0d221121e80"
+    integrity sha1-QpPJGYpILWaX0zSm4yzQ0iESHoA=
+  
   json-parse-better-errors@^1.0.1, json-parse-better-errors@^1.0.2:
     version "1.0.2"
     resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
@@ -9091,7 +9108,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/nan/-/nan-2.15.0.tgz#3f34a473ff18e15c1b5626b62903b5ad6e665fee"
     integrity sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==
   
-  nanoid@^3.1.30:
+  nanoid@^3.1.20, nanoid@^3.1.30:
     version "3.1.30"
     resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.1.30.tgz#63f93cc548d2a113dc5dfbc63bfa09e2b9b64362"
     integrity sha512-zJpuPDwOv8D2zq2WRoMe1HsfZthVewpel9CAvTfc/2mBD1uUT/agc5f7GHGWXlYkFvi1mVxe4IjvP2HNrop7nQ==
@@ -13481,6 +13498,17 @@ Lockfile:
     dependencies:
       punycode "1.3.2"
       querystring "0.2.0"
+  
+  use-dexie@^1.2.2:
+    version "1.2.2"
+    resolved "https://registry.yarnpkg.com/use-dexie/-/use-dexie-1.2.2.tgz#42a2c0973cec2c0c467aee45844195a46342dbb1"
+    integrity sha512-uo0ey/133s797ng7aNbaGhWZu/uaUMHC5+GtR2+fiZ6aMj/dztKgBHQvc8EnpCUVsYku6cd/9vPI7wugfzklJw==
+    dependencies:
+      dexie "^3.0.3"
+      dexie-observable "^3.0.0-beta.10"
+      eslint "^7.14.0"
+      lodash.isequal "^4.5.0"
+      nanoid "^3.1.20"
   
   use@^3.1.0:
     version "3.1.1"

@@ -16,15 +16,6 @@ export function useFilter<T>(): FilterContext<T> {
         () => state.filteredData as T[],
         [state.filteredData]
     );
-    // const options = useMemo(
-    //     () => state.options as FilterDataOptions<T>,
-    //     [state.options]
-    // );
-
-    // const filteredData = useMemo(
-    //     () => filter(data, state.filterData, options),
-    //     [data, state.filterData]
-    // );
 
     const context = useMemo(
         () => ({

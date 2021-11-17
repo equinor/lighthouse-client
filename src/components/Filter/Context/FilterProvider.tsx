@@ -15,6 +15,7 @@ export function FilterProvider<T>({ children, initialData, options }: FilterProv
     const filterLocationKey = `filer-${locationKey}`;
 
     const initialState: FilterState = {
+        isLoading: false,
         data: [],
         filteredData: [],
         filterData: {},
@@ -31,7 +32,6 @@ export function FilterProvider<T>({ children, initialData, options }: FilterProv
             const filter = createFilterData(initialData, options)
             dispatch(actions.setFilter(filter));
             storage.setItem<FilterData>(filterLocationKey, filter)
-
         }
     }, [initialData])
 
@@ -49,8 +49,10 @@ export function FilterProvider<T>({ children, initialData, options }: FilterProv
 
 
     const setFilter = (state, filterData): void => {
+        dispatch(actions.setIsLoading(true));
         workerFilter(state, filterData, options as FilterDataOptions<unknown>).then(data => {
             dispatch(actions.setFilteredData(data));
+            dispatch(actions.setIsLoading(false));
         });
     };
 

@@ -5,7 +5,8 @@ import { FilterState } from './FilterContext';
 export enum FilterActions {
     setFilteredData = 'setFilteredData',
     setFilter = 'setFilter',
-    setData = 'setData'
+    setData = 'setData',
+    setIsLoading = 'setIsLoading'
 }
 
 export const actions = {
@@ -23,6 +24,12 @@ export const actions = {
         (filteredData) => ({
             filteredData
         })
+    ),
+    setIsLoading: createCustomAction(
+        FilterActions.setIsLoading,
+        (isLoading: boolean) => ({
+            isLoading
+        })
     )
 };
 
@@ -36,6 +43,8 @@ export function filterReducer(state: FilterState, action: Action): FilterState {
             return { ...state, filterData: action.filter };
         case getType(actions.setFilteredData):
             return { ...state, filteredData: action.filteredData };
+        case getType(actions.setIsLoading):
+            return { ...state, isLoading: action.isLoading };
         default:
             return state;
     }

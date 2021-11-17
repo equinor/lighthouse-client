@@ -15,11 +15,13 @@ interface FilterItemComponentProps {
 
 export const FilterItemComponent = ({ filterItem, filterItemCheck, indeterminate, itemKey }: FilterItemComponentProps): JSX.Element => {
 
-    const count = useCount(filterItem);
-    if (count === 0 && filterItem.checked) return (<></>)
+    const { count, isActive } = useCount(filterItem);
+
+
 
     const debouncedFilterItemCheck = debounceFilterItemCheck(filterItemCheck, 500)
 
+    if (!isActive) return (<></>)
     return (
         <FilterItemWrapper key={itemKey} aria-label={filterItem.value} title={filterItem.value}>
             <FilterItemGroupe>

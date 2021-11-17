@@ -7,19 +7,13 @@ import { FilterGroupeComponent } from "../FilterGroup/FilterGroup"
 import { Title } from "../FilterGroup/FilterGroup-Styles"
 import { AddButton, FilterGroups, FilterGroupWrapper, FilterSelect, FilterSelectHeaderGroup, SearchButton, SearchFilterWrapper, SelectBar, Wrapper } from "./FilterView-style"
 
-
-
-
 function createTypeKeys(filter: FilterGroup[]): string[] {
     return filter.map(item => item.type)
 }
 
-
 function SearchFilterKeys(keys: string[], filerValue: string): string[] {
     return keys.filter(key => key.toLowerCase().includes(filerValue.toLowerCase()))
 }
-
-
 interface FilterViewProps {
     isActive: boolean
 }
@@ -42,9 +36,6 @@ export const FilterView = memo(({ isActive }: FilterViewProps) => {
     useEffect(() => {
         setActiveFilter(filter.filter(i => activeFilterData.includes(i.type)));
     }, [filter, activeFilterData])
-
-
-
 
     function handleOnChange(
         event: React.ChangeEvent<HTMLInputElement>
