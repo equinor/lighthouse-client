@@ -6,8 +6,9 @@ import { workerFilter } from '../Services/filterApi';
 import { FilterData, FilterDataOptions, FilterItem, FilterItemCheck } from '../Types/FilterItem';
 import { objectHasKeys } from '../Utils/objectHasKeys';
 import { storage } from '../Utils/storage';
+import { actions } from './FilterActions';
 import { Context, FilterProviderProps, FilterState } from './FilterContext';
-import { actions, filterReducer } from './FilterReducer';
+import { filterReducer } from './FilterReducer';
 
 
 export function FilterProvider<T>({ children, initialData, options }: FilterProviderProps<T>): JSX.Element {
