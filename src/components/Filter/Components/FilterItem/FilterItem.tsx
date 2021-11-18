@@ -29,7 +29,5 @@ export const FilterItemComponent = ({ filterItem, filterItemCheck, indeterminate
                 ({count})
             </Count>
         </FilterItemWrapper>
-
     )
-
 }
