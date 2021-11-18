@@ -12,13 +12,10 @@ export function useCount({ type, value, checked }: FilterItem): {
     const data = filteredData as Record<string, unknown>[];
 
     const updateCount = useCallback(() => {
-        const getGroupeValue =
-            options && options.groupValue && options.groupValue[type];
+        const getGroupeValue = options && options.groupValue && options.groupValue[type];
 
         const currentCount = data.filter((item) =>
-            getGroupeValue
-                ? getGroupeValue(item) === value
-                : item[type] === value
+            getGroupeValue ? getGroupeValue(item) === value : item[type] === value
         )?.length;
 
         setCount((oldCount) => {
@@ -45,13 +42,5 @@ export function useCount({ type, value, checked }: FilterItem): {
         updateCount();
     }, [data, isLoading]);
 
-    // const isActive = useMemo(
-    //     () => count === 0 && checked && !isLoading,
-    //     [count, checked, isLoading]
-    // );
     return { count, isActive };
 }
-
-// count > 0 && checked === true
-// count === 0 && !checked === true
-// count === 0 && checked && isLoading === true

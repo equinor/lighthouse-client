@@ -1,5 +1,5 @@
 import { Tooltip } from '@equinor/eds-core-react';
-import React, { PropsWithChildren, useEffect, useMemo } from 'react';
+import React, { PropsWithChildren, useMemo } from 'react';
 import { Cell, TableOptions, useTable } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 import { RegisterReactTableHooks } from '../Utils/registerReactTableHooks';
@@ -61,9 +61,6 @@ export function DataTable<T extends Object>({ data, columns, FilterComponent }: 
         // data.onClick && cell.column.id !== 'selection' && data.onClick(cell.row);
     };
 
-    useEffect(() => {
-        // selectedFlatRows && console.log(selectedFlatRows)
-    }, [selectedFlatRows])
 
 
     return (

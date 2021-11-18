@@ -6,10 +6,6 @@
         "outDir": "dist",
         "skipLibCheck": true,
         "module": "commonjs",
-        // "lib": [
-        //     "webworker",
-        //     "esnext"
-        //   ],
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": false,
