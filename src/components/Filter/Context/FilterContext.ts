@@ -15,7 +15,9 @@ export interface Context extends FilterState {
     filterItemCheck: FilterItemCheck;
 }
 export interface FilterState {
+    isLoading: boolean;
     data: unknown[];
+    filteredData: unknown[];
     filterData: FilterData;
     options?: FilterDataOptions<unknown>;
 }

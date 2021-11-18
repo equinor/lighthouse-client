@@ -1,3 +1,7 @@
 node_modules
 dist
 build
+
+
+# Remove yarn logs
+yarn-error.log

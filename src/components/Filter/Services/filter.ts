@@ -1,18 +1,19 @@
-import { FilterData, FilterDataOptions, FilterItem } from '../Types/FilterItem';
+import { FilterData, FilterItem } from '../Types/FilterItem';
+import { parseGroupValueFunctions } from '../Utils/optionParse';
 
 function InternalFilter<T>(
     data: T[],
     filterItems: FilterItem[],
-    options?: FilterDataOptions<T>
+    groupValue?: Record<string, (item: T) => string>
 ): T[] {
     const filterItem = filterItems[0];
     if (!filterItem) return data;
 
     const filteredData = data.filter((i) => {
         const getValue =
-            options?.groupValue &&
-            typeof options.groupValue[filterItem.type] === 'function' &&
-            options.groupValue[filterItem.type];
+            groupValue &&
+            typeof groupValue[filterItem.type] === 'function' &&
+            groupValue[filterItem.type];
         return getValue
             ? getValue(i) !== filterItem.value
             : i[filterItem.type] !== filterItem.value;
@@ -21,24 +22,21 @@ function InternalFilter<T>(
     filterItems.shift();
 
     if (filterItems.length !== 0 && filteredData.length > 0) {
-        return InternalFilter(filteredData, filterItems, options);
+        return InternalFilter(filteredData, filterItems, groupValue);
     }
     return filteredData;
 }
 
-export function filter<T>(
-    data: T[],
-    filter: FilterData,
-    options?: FilterDataOptions<T>
-): T[] {
+export function filter<T>(data: T[], filter: FilterData, groupValue?: string): T[] {
     if (data.length === 0) return [];
-    const filterItems = Object.keys(filter)
-        .map((filterKey) => {
+
+    const filterItems = Object.values(filter)
+        .map((item) => {
             const items: FilterItem[] = [];
 
-            Object.keys(filter[filterKey].value).forEach((itemKey) => {
-                if (!filter[filterKey].value[itemKey].checked) {
-                    items.push(filter[filterKey].value[itemKey]);
+            Object.keys(item.value).forEach((itemKey) => {
+                if (!item.value[itemKey].checked) {
+                    items.push(item.value[itemKey]);
                 }
             });
 
@@ -46,6 +44,7 @@ export function filter<T>(
         })
         .flat();
 
-    const filteredData = [...InternalFilter(data, filterItems, options)];
+    const groupValueFunctions = parseGroupValueFunctions(groupValue);
+    const filteredData = [...InternalFilter(data, filterItems, groupValueFunctions)];
     return filteredData.length === 0 ? data : filteredData;
 }
