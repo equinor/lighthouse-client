@@ -128,7 +128,6 @@ export function ThreeDViewerApi(domElement: HTMLElement, baseUrl?: string) {
         client,
         viewer,
         scene,
-
         createBox
     };
 }

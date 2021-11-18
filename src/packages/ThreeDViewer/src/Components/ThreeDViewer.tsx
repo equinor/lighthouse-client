@@ -1,7 +1,7 @@
 import { Cognite3DViewer, THREE } from "@cognite/reveal";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { createBox, ObjectData, ThreeDViewerApi } from "../Api/ThreeDViewerApi";
+import { createBox, ObjectData, ThreeDViewerApi } from "../Api/ReferenceForFuture";
 
 
 

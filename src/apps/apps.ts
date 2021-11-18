@@ -15,6 +15,7 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
+import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
@@ -544,7 +545,10 @@ export const apps: AppManifest[] = [
         groupe: [Apps.AssetData],
         icon: '',
         uri: '',
-        tags: ['3D', 'Asset', 'Map']
+        tags: ['3D', 'Asset', 'Map'],
+        app: {
+            component: ModelViewer
+        }
     },
     {
         title: 'Documents and drawings',

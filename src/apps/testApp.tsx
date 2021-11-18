@@ -2,9 +2,10 @@ import { THREE, ThreeDContextProvider, ViewerInstance } from "@equinor/ThreeDVie
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { threeD, ThreeDConfig, ThreeDInstance } from "../packages/ThreeDViewer/src/Api/threeD";
-import { ObjectData } from "../packages/ThreeDViewer/src/Api/ThreeDViewerApi";
+import { ObjectData } from "../packages/ThreeDViewer/src/Types/objectData";
 import { AppApi } from "./apps";
 import { status } from "./mockData/status";
+
 
 const Viewer = styled.div`
     height: 500px;
@@ -89,9 +90,9 @@ export function TestApp(appApi: AppApi): JSX.Element {
             instance.viewer.fitCameraToBoundingBox(new THREE.Box3(new THREE.Vector3(80, 260, -1), new THREE.Vector3(420, 340, 120)), 0);
 
             // Loading Johan Castberg
-            if (isAuthenticated) {
-                await instance.loadModel(114, 4, geometryFilter)
-            }
+            // if (isAuthenticated) {
+            //     await instance.loadModel(114, 4, geometryFilter)
+            // }
 
         }
 
