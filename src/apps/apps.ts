@@ -15,10 +15,10 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
+import { StatusBarApp } from '../packages/StatusBar/src';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
-import { TestApp } from './testApp';
 
 type HEXColor = `#${string}`;
 
@@ -139,7 +139,7 @@ export const apps: AppManifest[] = [
         // imageUri: './images/Business case.jpg',
         app: {
             appType: 'CustomApp',
-            component: TestApp
+            component: StatusBarApp
         },
         tags: []
     },
