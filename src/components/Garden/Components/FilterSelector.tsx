@@ -37,7 +37,7 @@ export const FilterSelector: FC<FilterSelectorProps> = ({ groupingOptions, rootK
             <div style={{ width: "200px" }}>
                 <SingleSelect
                     items={groupingOptions}
-                    label={"Group by"}
+                    label={""}
                     initialSelectedItem={rootKey}
                     handleSelectedItemChange={(changes) => {
                         if (changes.selectedItem === null) {
