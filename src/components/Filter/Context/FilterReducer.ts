@@ -17,7 +17,13 @@ export const actions = {
     ),
     setData: createCustomAction(FilterActions.setData, (data) => ({
         data
-    }))
+    })),
+    setFilteredData: createCustomAction(
+        FilterActions.setFilteredData,
+        (filteredData) => ({
+            filteredData
+        })
+    )
 };
 
 export type Action = ActionType<typeof actions>;
@@ -28,6 +34,8 @@ export function filterReducer(state: FilterState, action: Action): FilterState {
             return { ...state, data: action.data };
         case getType(actions.setFilter):
             return { ...state, filterData: action.filter };
+        case getType(actions.setFilteredData):
+            return { ...state, filteredData: action.filteredData };
         default:
             return state;
     }

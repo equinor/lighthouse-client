@@ -2,6 +2,7 @@ import { useCallback, useEffect, useReducer } from 'react';
 import { useLocationKey } from '../Hooks/useLocationKey';
 import { checkItem } from '../Services/checkItem';
 import { createFilterData } from '../Services/creatFilter';
+import { workerFilter } from '../Services/filterApi';
 import { FilterData, FilterDataOptions, FilterItem, FilterItemCheck } from '../Types/FilterItem';
 import { objectHasKeys } from '../Utils/objectHasKeys';
 import { storage } from '../Utils/storage';
@@ -15,6 +16,7 @@ export function FilterProvider<T>({ children, initialData, options }: FilterProv
 
     const initialState: FilterState = {
         data: [],
+        filteredData: [],
         filterData: {},
         options: options as FilterDataOptions<unknown>
     }
@@ -29,18 +31,30 @@ export function FilterProvider<T>({ children, initialData, options }: FilterProv
             const filter = createFilterData(initialData, options)
             dispatch(actions.setFilter(filter));
             storage.setItem<FilterData>(filterLocationKey, filter)
+
         }
     }, [initialData])
 
     useEffect(() => {
         dispatch(actions.setData(initialData))
+        dispatch(actions.setFilteredData(initialData))
     }, [initialData])
 
     const filterItemCheck: FilterItemCheck = useCallback(
         (filterItem: FilterItem | FilterItem[], singleClick?: boolean): void => {
-            const filter = checkItem(filterData, filterItem, singleClick);
-            dispatch(actions.setFilter(filter));
-        }, [filterData]);
+            const currentFilter = checkItem(filterData, filterItem, singleClick);
+            dispatch(actions.setFilter(currentFilter));
+            setFilter(state.data, filterData);
+        }, [filterData, state.data]);
+
+
+    const setFilter = (state, filterData): void => {
+        workerFilter(state, filterData, options as FilterDataOptions<unknown>).then(data => {
+            dispatch(actions.setFilteredData(data));
+        });
+    };
+
+
 
     return (
         < Context.Provider value={{ ...state, filterItemCheck }}>
