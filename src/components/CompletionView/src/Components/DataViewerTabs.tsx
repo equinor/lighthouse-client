@@ -16,11 +16,15 @@ const PanelWrapper = styled.section`
     width: 100%;
 `;
 
+const PanelsView = styled(Panels)`
+    grid-area: main;
+`
+
 export const CompletionViewTabs = ({ tabs, activeTab, handleChange }) => {
 
     return (
 
-        <Panels>
+        <PanelsView>
             {
                 tabs.map((tab, index) => {
                     const ViewComponent = tab.viewComponent;
@@ -29,7 +33,7 @@ export const CompletionViewTabs = ({ tabs, activeTab, handleChange }) => {
                     </Panel>);
                 })
             }
-        </Panels>
+        </PanelsView>
     )
 }
 
