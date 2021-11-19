@@ -7,10 +7,12 @@ import { Filter } from './models/filter'
 
 interface PowerBIResult {
     config: IReportEmbedConfiguration;
+    error: boolean;
 }
 
 export function usePowerBI(resource: string, filterOptions?: Filter[]): PowerBIResult {
     const { getConfig } = useFusionClient(resource, filterOptions);
+    const [error, setError] = useState<boolean>(false);
     const [config, setReportConfig] = useState<IReportEmbedConfiguration>({
         type: 'report',
         embedUrl: undefined,
@@ -25,6 +27,8 @@ export function usePowerBI(resource: string, filterOptions?: Filter[]): PowerBIR
                 const fusionConfig = await getConfig();
                 setReportConfig((config) => ({ ...config, ...fusionConfig }));
             } catch (error) {
+                setError(true);
+                console.log(error)
                 console.error(error);
             }
         }
@@ -32,6 +36,7 @@ export function usePowerBI(resource: string, filterOptions?: Filter[]): PowerBIR
     }, [resource, filterOptions]);
 
     return {
-        config
+        config,
+        error
     };
 }
