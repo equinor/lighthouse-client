@@ -1,6 +1,7 @@
 import {
     FilterOptions,
     GardenOptions,
+    PowerBiOptions,
     TableOptions,
     TreeOptions
 } from './DataViewState';
@@ -44,4 +45,5 @@ export interface DataViewerApi<T> {
     registerGanttOptions: (options: any) => void;
     registerGardenOptions: (options: GardenOptions<T>) => void;
     registerAnalyticsOptions: (options: any) => void;
+    registerPowerBIOptions: (options: PowerBiOptions) => void;
 }
