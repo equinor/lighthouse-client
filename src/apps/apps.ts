@@ -150,6 +150,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: '',
+
         tags: []
     },
     {

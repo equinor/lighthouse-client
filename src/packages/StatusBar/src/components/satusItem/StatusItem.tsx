@@ -11,7 +11,7 @@ export interface StatusItem {
 
 }
 
-interface Status {
+export interface Status {
     waring: string;
     info: string;
     ok: string;

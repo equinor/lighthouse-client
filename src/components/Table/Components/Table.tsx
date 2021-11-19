@@ -11,6 +11,7 @@ import { Table, TableCell, TableRow } from "./Styles";
 interface DataTableProps<T extends Record<string, unknown>> extends TableOptions<T> {
     data: T[],
     onSelectedChange?: (args: T[], ids: Record<string, boolean>) => void;
+    setSelected?: (itemId: string) => void
     selectedRows?: Record<string, boolean>;
     FilterComponent?: React.FC<{ filterId: string }>
 }
@@ -18,7 +19,7 @@ interface DataTableProps<T extends Record<string, unknown>> extends TableOptions
 const topBarHeight = 64;
 const itemSize = 35;
 
-export function DataTable<T extends Object>({ data, columns, FilterComponent }: PropsWithChildren<DataTableProps<Record<string, T>>>) {
+export function DataTable<T extends Object>({ data, columns, FilterComponent, setSelected }: PropsWithChildren<DataTableProps<Record<string, T>>>) {
 
     const hooks = RegisterReactTableHooks<T>();
 
@@ -83,7 +84,7 @@ export function DataTable<T extends Object>({ data, columns, FilterComponent }: 
                     itemCount={rows.length}
                     width={totalColumnsWidth + 10}
                     itemSize={itemSize}
-                    itemData={{ rows, prepareRow }}
+                    itemData={{ rows, prepareRow, setSelected }}
                 >
                     {RenderRow}
                 </List>
@@ -100,11 +101,14 @@ const RenderRow = ({ data, index, style }): JSX.Element | null => {
 
     return (
 
-        <TableRow  {...row.getRowProps({ style })}>
+        <TableRow  {...row.getRowProps({ style })} onClick={() => {
+            console.log(row.values["tagNo"], data.setSelected);
+            data.setSelected && data.setSelected(row.values["tagNo"])
+        }}>
             {row.cells.map((cell) => {
 
                 return (
-                    <TableCell align={cell.column.align} {...cell.getCellProps()} key={cell.getCellProps().key} onClick={() => { }}>
+                    <TableCell align={cell.column.align} {...cell.getCellProps()} key={cell.getCellProps().key} >
                         {cell.isGrouped ? (
                             <GroupCell row={row} cell={cell} />
                         ) : cell.isAggregated && cell.value ? (

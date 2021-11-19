@@ -3,7 +3,7 @@ import { tokens } from "@equinor/eds-tokens";
 import styled from "styled-components";
 import { Loop } from "../../../../apps/loopApp";
 import { useFilteredData } from "../../../../components/Filter";
-import { StatusItem } from "../../../StatusBar/src/components/satusItem/StatusItem";
+import { Status, StatusItem } from "../../../StatusBar/src/components/satusItem/StatusItem";
 import { StatusBar } from "../../../StatusBar/src/components/statusBar/StatusBar";
 import { BarChart, BarChartOptions } from "./BarChart";
 import { LineChart, LineChartOptions } from "./LineChart";
@@ -11,7 +11,7 @@ import { LineChart, LineChartOptions } from "./LineChart";
 const WrapperCharts = styled(Card)`
     width: 100%;
     height: 350px;
-    margin: 0rem 1rem;
+    margin: 0rem 0.5rem;
 `;
 const Wrapper = styled.div`
     display: flex;
@@ -25,39 +25,87 @@ const Page = styled.section`
     `
 
 
-export const statusBarData: StatusItem[] = [
-    {
-        title: "Status",
-        value: () => "50%",
-        description: "This is not good!",
-        status: "waring"
-    },
-    {
-        title: "Home",
-        value: () => "60%",
-        description: "Im about way there.",
-        status: "ok"
-    },
-    {
-        title: "Status",
-        value: () => "1",
-        description: "This is not good!",
-        status: "info"
-    },
-    {
-        title: "Signed",
-        value: () => "5344",
-        description: "This is not good!",
-        status: "default"
+
+function getStatus<T, K extends keyof T>(data: T[], key: K, value: T[K], swap?: boolean): keyof Status {
+
+    const percentage = getPercentageNum(data, key, value);
+
+    if (percentage < 25) {
+        return swap ? "ok" : "waring"
     }
-]
+    if (percentage > 25 && percentage < 75) {
+        return "info"
+    }
+    if (percentage > 80) {
+        return swap ? "waring" : "ok"
+    }
+    return "default"
+
+}
+function getDateStatus<T, K extends keyof T>(data: T[], key: K, swap?: boolean): keyof Status {
+
+    const percentage = data.filter(i => i[key]).length / data.length * 100;
+    console.log(percentage);
+    if (percentage < 25) {
+        return swap ? "ok" : "waring"
+    }
+    if (percentage > 25 && percentage < 75) {
+        return "info"
+    }
+    if (percentage > 80) {
+        return swap ? "waring" : "ok"
+    }
+    return "default"
+
+}
+
+function getPercentageNum<T, K extends keyof T>(data: T[], key: K, value: T[K]): number {
+    return Math.round(data.filter(i => i[key] === value).length / data.length * 100);
+}
+
+function getPercentage<T, K extends keyof T>(data: T[], key: K, value: T[K]): string {
+    return (Math.round(data.filter(i => i[key] === value).length / data.length * 100)).toString() + "%";
+}
+function getDatePercentage<T, K extends keyof T>(data: T[], key: K): string {
+    return (Math.round(data.filter(i => i[key]).length / data.length * 100)).toString() + "%";
+}
+
+
 
 export function AnalyticsView() {
     const data = useFilteredData() as Loop[]
+
+    const statusBarData: StatusItem[] = [
+        {
+            title: "Status OK",
+            value: () => getPercentage(data, "status", "OK"),
+            description: "Status",
+            status: getStatus(data, "status", "OK")
+        },
+        {
+            title: "Status OS",
+            value: () => data.filter(i => i.status === "OS").length.toString(),
+            description: "Status",
+            status: getStatus(data, "status", "OS")
+        },
+        {
+            title: "Signed",
+            value: () => getDatePercentage(data, "signedAt"),
+            description: "Status",
+            status: getDateStatus(data, "signedAt")
+        },
+        {
+            title: "Status PB",
+            value: () => data.filter(i => i.status === "PB").length.toString(),
+            description: "Status",
+            status: getStatus(data, "status", "PB", true)
+        },
+
+    ]
     const option: BarChartOptions<Loop> = {
         stacked: true,
-        nameKey: "responsible",
-        categoryKey: "status",
+        nameKey: "status",
+        categoryKey: "responsible",
         colors: ['#F44336', '#E91E63', '#9C27B0'],
     }
     const option2: LineChartOptions<Loop> = {

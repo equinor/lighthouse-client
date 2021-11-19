@@ -12,7 +12,7 @@ export const StatusCard = styled(Card)`
     flex-direction: row;
     justify-content: space-between;
     border-bottom: ${({ color }: StatusCardProps) => `0.25rem solid ${color}`};
-    margin: 1rem;
+    margin: 0.5rem;
 `;
 export const Title = styled.h4`
     margin: 0;
