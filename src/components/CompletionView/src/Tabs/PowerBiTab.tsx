@@ -1,7 +1,14 @@
 import { PowerBI } from "../../../../modules/powerBI";
+import { useFilteredData } from "../../../Filter";
+import { useDataContext } from "../Context/DataProvider";
 
 export const PowerBiTab = () => {
-    return (
-        <PowerBI />
-    );
+    const { powerBiOptions } = useDataContext();
+
+    if (powerBiOptions) {
+        return (
+            <PowerBI reportUri={powerBiOptions?.reportId} filterOptions={powerBiOptions.filterOptions} />
+        );
+    }
+    return null;
 }

@@ -1,17 +1,37 @@
 import { baseClient } from '@equinor/http-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
 import useClientContext from '../../../../context/clientContext';
+import { Filter, PowerBiFilter } from '../models/filter';
 
-export function useFusionClient() {
+const filterBuilder = (filter: Filter): PowerBiFilter => {
+    return {
+        $schema: 'http://powerbi.com/product/schema#basic',
+        target: {
+            table: filter.target.table,
+            column: filter.target.column,
+        },
+        filterType: 1,
+        operator: filter.operator,
+        values: filter.values,
+    };
+}
+
+
+export function useFusionClient(resource: string, filterOptions?: Filter[]) {
     const { appConfig, authProvider } = useClientContext();
     const scope = [appConfig.fusion];
     const fusionClient = baseClient(authProvider, scope);
+    const baseUri = 'https://lih-proxy.azurewebsites.net/fusion/reports';
+    let filters: PowerBiFilter[] = []
+    filterOptions?.forEach((filterOption) => {
+        filters.push(filterBuilder(filterOption))
+    })
+
     async function getEmbedInfo() {
         try {
+            const embedUri = `${baseUri}/${resource}/config/embedinfo`
             const response = await fusionClient.fetch(
-                'https://lih-proxy.azurewebsites.net/fusion/reports/punch-analytics-rls/config/embedinfo'
-                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/query-analytics-rls/config/embedinfo'
-                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/config/embedinfo'
+                embedUri
             );
 
             const data = await response.json();
@@ -24,10 +44,9 @@ export function useFusionClient() {
 
     async function getPowerBiToken() {
         try {
+            const tokenUri = `${baseUri}/${resource}/token`
             const response = await fusionClient.fetch(
-                'https://lih-proxy.azurewebsites.net/fusion/reports/punch-analytics-rls/token'
-                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/query-analytics-rls/token'
-                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/token'
+                tokenUri
             );
             return await response.json();
         } catch (error) {
@@ -35,10 +54,10 @@ export function useFusionClient() {
         }
     }
 
+
     async function getConfig(): Promise<IReportEmbedConfiguration> {
         const { embedConfig } = await getEmbedInfo();
         const { token } = await getPowerBiToken();
-
         return {
             accessToken: token,
             embedUrl: embedConfig.embedUrl,
@@ -54,18 +73,7 @@ export function useFusionClient() {
                     }
                 }
             },
-            filters: [
-                {
-                    $schema: 'http://powerbi.com/product/schema#basic',
-                    target: {
-                        column: 'FACILITY',
-                        table: 'Commpkg'
-                    },
-                    operator: 'In',
-                    values: ['JCA'],
-                    filterType: 1
-                }
-            ]
+            filters: filters ?? undefined
         };
     }
 
@@ -73,3 +81,4 @@ export function useFusionClient() {
         getConfig
     };
 }
+

@@ -1,6 +1,7 @@
 import { AuthenticationProvider } from '@equinor/authentication';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import React from 'react';
+
 import { DataView } from '../components/CompletionView/src/DataView';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
@@ -15,14 +16,24 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
+import { PowerBI } from '../modules/powerBI';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
 import { TestApp } from './testApp';
+import {
+    BusinessCaseReport,
+    LCIReport,
+    QueryReport,
+    QualityDeviationReport,
+    NonConformityReport,
+    SafetyPerformanceReport,
+    MDRReport
+} from './PowerBI';
 
 type HEXColor = `#${string}`;
 
-type AppType = 'DataViewer' | 'SomeApp' | 'CustomApp';
+type AppType = 'DataViewer' | 'SomeApp' | 'CustomApp' | 'PowerBI';
 
 export interface AppApi extends AppManifest {
     appConfig: AppConfig;
@@ -138,10 +149,10 @@ export const apps: AppManifest[] = [
         uri: '',
         // imageUri: './images/Business case.jpg',
         app: {
-            appType: 'CustomApp',
-            component: TestApp
+            appType: "PowerBI",
+            component: BusinessCaseReport
         },
-        tags: []
+        tags: ["PowerBI"]
     },
     {
         title: 'Milestone',
@@ -172,13 +183,17 @@ export const apps: AppManifest[] = [
     },
     //SSU
     {
-        title: 'temp link',
-        shortName: 'temp-link',
+        title: 'Safety Performance',
+        shortName: 'safety-performance',
         color: '#0364B8',
         groupe: Apps.SSU,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: "PowerBI",
+            component: SafetyPerformanceReport
+        },
+        tags: ["PowerBI"]
     },
     // Dashboard
     {
@@ -247,12 +262,16 @@ export const apps: AppManifest[] = [
     },
     {
         title: 'LCI hanging garden',
-        shortName: 'lic-garden',
+        shortName: 'lci-garden',
         color: '#0364B8',
         groupe: Apps.EngineeringManagement,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: "PowerBI",
+            component: LCIReport
+        },
+        tags: ["PowerBI"]
     },
     {
         title: 'LCI portal',
@@ -270,7 +289,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.EngineeringManagement,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: "PowerBI",
+            component: MDRReport
+        },
+        tags: ["PowerBI"]
     },
     // Construction management
     {
@@ -466,7 +489,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: "PowerBI",
+            component: NonConformityReport
+        },
+        tags: ["PowerBI"]
     },
     {
         title: 'Quality deviation',
@@ -475,7 +502,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: "PowerBI",
+            component: QualityDeviationReport
+        },
+        tags: ["PowerBI"]
     },
 
     {
@@ -494,7 +525,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.QueriesAndRequests,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: "PowerBI",
+            component: QueryReport
+        },
+        tags: ["PowerBI"]
     },
     // Reports
     {

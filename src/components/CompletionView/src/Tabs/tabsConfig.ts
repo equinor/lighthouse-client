@@ -45,6 +45,7 @@ const tabsConfig: TabsConfigItem[] = [
     },
     {
         title: 'PowerBI',
+        //Todo add PowerBI icon
         icon: AnalyticsIcon,
         viewComponent: PowerBiTab
     }

@@ -2,13 +2,15 @@ import { IReportEmbedConfiguration, models } from 'powerbi-client';
 import 'powerbi-report-authoring';
 import { useEffect, useState } from 'react';
 import { useFusionClient } from './Api/fusionApi';
+import { Filter } from './models/filter'
+
 
 interface PowerBIResult {
     config: IReportEmbedConfiguration;
 }
 
-export function usePowerBI(): PowerBIResult {
-    const { getConfig } = useFusionClient();
+export function usePowerBI(resource: string, filterOptions?: Filter[]): PowerBIResult {
+    const { getConfig } = useFusionClient(resource, filterOptions);
     const [config, setReportConfig] = useState<IReportEmbedConfiguration>({
         type: 'report',
         embedUrl: undefined,
@@ -27,7 +29,7 @@ export function usePowerBI(): PowerBIResult {
             }
         }
         setupReportConfig();
-    }, []);
+    }, [resource, filterOptions]);
 
     return {
         config

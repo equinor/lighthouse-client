@@ -4,9 +4,8 @@ import 'powerbi-report-authoring';
 import { useState } from "react";
 import styled from "styled-components";
 import { usePowerBI } from "./api";
+import { Filter } from "./models/filter";
 import "./style.css";
-
-
 
 const Wrapper = styled.div`
 position: relative;
@@ -14,9 +13,13 @@ position: relative;
     height: calc(100vh - 110px);
 `;
 
+interface PowerBiProps {
+    reportUri: string;
+    filterOptions?: Filter[];
+}
 
-export const PowerBI = () => {
-    const { config } = usePowerBI();
+export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps) => {
+    const { config } = usePowerBI(reportUri, filterOptions);
     const [report, setReport] = useState<Report>();
 
     const eventHandlersMap = new Map([
