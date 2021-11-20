@@ -33,7 +33,7 @@ function checkIsIndeterminate(filterGroup: FilterGroup) {
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ filterGroup, filterItemCheck, hideTitle }: FilterGroupeComponentProps) => {
     const [filterSearchValue, setFilterSearchValue] = useState("");
     const [searchActive, setSearchActive] = useState(false);
-    const group = useMemo(() => searchByValue(Object.keys(filterGroup.value), filterSearchValue), [filterSearchValue]);
+    const group = useMemo(() => searchByValue(Object.keys(filterGroup.value), filterSearchValue), [filterSearchValue, filterGroup.value]);
 
 
     function handleOnChange(
@@ -66,7 +66,6 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ fi
     return (
         <Wrapper>
             <FilterHeaderGroup >
-
                 {
                     searchActive ? <Search
                         autoFocus={searchActive}
@@ -86,7 +85,6 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({ fi
                 <FilterItemWrapper>
                     <Checkbox title={"All"} label={"All"} checked={isAllChecked} indeterminate={isIndeterminate} onChange={handleOnAllChange} />
                     {
-
                         group.map((key) => {
                             const item = filterGroup.value[key];
                             return (

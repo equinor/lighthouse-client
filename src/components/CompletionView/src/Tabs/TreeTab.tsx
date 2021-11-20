@@ -3,12 +3,8 @@ import { useFilteredData } from "../../../Filter";
 import { useDataContext } from "../Context/DataProvider";
 
 export const TreeTab = () => {
-
-
     const { treeOptions } = useDataContext();
     const data = useFilteredData()
-    console.log("treeOptions___>", treeOptions)
-
     return (
 
         <>
