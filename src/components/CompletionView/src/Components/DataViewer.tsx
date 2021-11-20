@@ -20,7 +20,6 @@ const DataViewWrapper = styled.section`
 `;
 
 const TabsWrapper = styled.section`
-    grid-area: main;
     overflow: scroll;
     height: 100%;
     width: auto;
@@ -49,16 +48,16 @@ export const DataViewer = (props) => {
 
     return (
         <FilterProvider initialData={data} options={filterOptions} >
-            <DataViewWrapper>
-                <TabsWrapper>
-                    <Tabs activeTab={activeTab} onChange={handleChange} >
-                        <CompletionViewHeader {...props} tabs={tabs} handleFilter={handleFilter} />
-                        <FilterView isActive={activeFilter} />
+            <TabsWrapper>
+                <Tabs activeTab={activeTab} onChange={handleChange} >
+                    <CompletionViewHeader {...props} tabs={tabs} handleFilter={handleFilter} />
+                    <FilterView isActive={activeFilter} />
+                    <DataViewWrapper>
                         <CompletionViewTabs tabs={tabs} activeTab={activeTab} handleChange={handleChange} />
-                    </Tabs>
-                </TabsWrapper>
-                <DataView />
-            </DataViewWrapper>
+                        <DataView />
+                    </DataViewWrapper>
+                </Tabs>
+            </TabsWrapper>
         </FilterProvider>
     );
 }

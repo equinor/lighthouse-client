@@ -1,3 +1,4 @@
+import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
@@ -5,9 +6,8 @@ export const Wrapper = styled.section`
     display: flex;
     flex-direction: row;
     max-height: 200px;
-    overflow: hidden;
-    overflow-x: auto;
     background-color: ${tokens.colors.ui.background__light.rgba};
+    border-bottom: 1.5px solid ${tokens.colors.ui.background__medium.rgba};
 `;
 
 interface FilterSelectProps {
@@ -39,16 +39,36 @@ export const FilterGroups = styled.div`
     flex-direction: row;
     overflow-y: hidden;
     overflow-x: scroll;
+    width: -webkit-fill-available;
     background-color: ${tokens.colors.ui.background__light.rgba};
 `;
 
 export const FilterGroupWrapper = styled.div``;
 
+export const SearchFilterWrapper = styled.div`
+    overflow-x: scroll;
+    height: -webkit-fill-available;
+`;
+
 export const SelectBar = styled.div`
     display: flex;
     flex-direction: row;
-    overflow-x: scroll;
     min-width: max-content;
     background-color: ${tokens.colors.ui.background__light.rgba};
     border-right: 2px solid ${tokens.colors.ui.background__medium.rgba};
+`;
+
+export const AddButton = styled(Button)`
+    width: 36px;
+    height: 36px;
+`;
+export const SearchButton = styled(Button)`
+    width: 36px;
+    height: 36px;
+`;
+
+export const FilterSelectHeaderGroup = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;

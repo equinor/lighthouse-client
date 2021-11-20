@@ -6,7 +6,7 @@ import {
 import { useApps } from "../../apps/useApps";
 import useClientContext from "../../context/clientContext";
 import { HomePage } from "../HomePage/HomePage";
-import { DefaultRouteComponent } from "./defaultRouteComponent";
+import { DefaultRouteComponent } from "./DefaultRouteComponent";
 
 
 
