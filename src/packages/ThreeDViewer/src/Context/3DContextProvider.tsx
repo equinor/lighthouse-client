@@ -27,8 +27,6 @@ export const ThreeDContextProvider: React.FunctionComponent<ThreeDContextProvide
     threeDInstance
 }: ThreeDContextProviderProps): JSX.Element => {
 
-
-
     const [state, dispatch] = useReducer(ThreeDReducer, { ...initialThreeDState } as ThreeDState);
 
     useEffect(() => {

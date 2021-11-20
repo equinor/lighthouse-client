@@ -1,10 +1,7 @@
 import { Cognite3DViewer, THREE } from "@cognite/reveal";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { createBox, ObjectData, ThreeDViewerApi } from "../Api/ReferenceForFuture";
-
-
-
+import { createBox, ObjectData } from "../Api/ReferenceForFuture";
 
 const Viewer = styled.div`
     height: 500px;
@@ -12,7 +9,6 @@ const Viewer = styled.div`
         display: none;;
     }
 `;
-
 
 async function setupBoxes(viewer: Cognite3DViewer) {
     const response = await fetch("./data/boxes.json")
@@ -27,58 +23,16 @@ async function setupBoxes(viewer: Cognite3DViewer) {
 
     const scene = viewer.getScene()
 
-
     // setColorByName(Object.keys(data)[1], "#ff4400")
     // setColorByName(Object.keys(data)[6], () => "#97ca0a")
     // setColorByName(Object.keys(data)[0], () => "#003366")
     // setColorByName(Object.keys(data)[2], () => "#e02c95")
-
-
-}
-
-function viewerSetup(domElement: HTMLElement) {
-    const { viewer, } = ThreeDViewerApi(domElement);
-    // login(getToken);
-
-
-
-
-
-    // setupBoxes(viewer).then(() => {
-    //     setStatus(new Date('2021-08-01').getTime(), new Date('2021-05-01').getTime(), status);
-    // });
-    // viewer.fitCameraToBoundingBox(new THREE.Box3(new THREE.Vector3(80, 260, -1), new THREE.Vector3(420, 340, 120)), 0);
-
-    // const model = await addModelById();
-
-    // viewer.fitCameraToModel(model)
-    // model.setDefaultNodeAppearance(DefaultNodeAppearance.Outlined)
-    // const selectedNodes = new TreeIndexNodeCollection();
-    // model.assignStyledNodeCollection(selectedNodes, DefaultNodeAppearance.Highlighted);
-
-
-    // return setStatus
-
-
-
-
-    // viewer.on('click', event => {
-    //     const name = getIntersectedObjectName(event)
-    //     const color = getObjectColorByName(name).r === 1 ? "#f3a30f" : "#ff4400";
-    //     console.log(name)
-    //     setColorByName(name, color);
-    //     setStatus(new Date(), new Date(5), status);
-    // });
-
 
 }
 
 const getUnixTime = (iso: string | number | Date) => {
     return new Date(iso).getTime()
 }
-
-
-
 export const ThreeDViewer = React.forwardRef<HTMLDivElement>(({ }, ref): JSX.Element => {
 
 
@@ -89,18 +43,6 @@ export const ThreeDViewer = React.forwardRef<HTMLDivElement>(({ }, ref): JSX.Ele
             date: Date;
         }>) => void | undefined
     }>();
-
-    // useEffect(() => {
-    //     // TODO: -Add new scope for echo 3d api
-    //     if (ref !== null && !state) {
-    //         const func = viewerSetup(ref)
-    //         seState({ setDate: func })
-    //     }
-    //     // return () => {
-
-    //     //     seState(undefined)
-    //     // }
-    // }, [ref])
 
     const outputFunction = (value) => {
         const date = new Date(parseInt(value, 10))

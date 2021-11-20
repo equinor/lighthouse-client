@@ -2,7 +2,7 @@
  *  Custom Selector events that can be added to the events.
  *  The event is used fo selecting any objects in the 3D scene.
  *  The Cognite3DViewer does not support selection of all types of objects,
- *  hens the implementation if this event.
+ *  hence the implementation if this event.
  */
 
 import { THREE } from '@cognite/reveal';
