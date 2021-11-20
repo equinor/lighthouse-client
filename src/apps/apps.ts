@@ -15,10 +15,10 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
+import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
-import { TestApp } from './testApp';
 
 type HEXColor = `#${string}`;
 
@@ -31,7 +31,7 @@ export interface AppApi extends AppManifest {
 interface App {
     appType?: AppType;
     setup?: (api: AppApi) => void;
-    component?: React.FC<Partial<AppManifest>>;
+    component?: React.FC<AppApi>;
 }
 export interface AppManifest {
     title: string;
@@ -137,10 +137,6 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         // imageUri: './images/Business case.jpg',
-        app: {
-            appType: 'CustomApp',
-            component: TestApp
-        },
         tags: []
     },
     {
@@ -544,7 +540,10 @@ export const apps: AppManifest[] = [
         groupe: [Apps.AssetData],
         icon: '',
         uri: '',
-        tags: ['3D', 'Asset', 'Map']
+        tags: ['3D', 'Asset', 'Map'],
+        app: {
+            component: ModelViewer
+        }
     },
     {
         title: 'Documents and drawings',
