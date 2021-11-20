@@ -3,7 +3,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
-import { Configuration } from 'webpack';
+import { Configuration, ProvidePlugin } from 'webpack';
 
 const extensions = ['.ts', '.tsx', '.js', '.jsx'];
 const publicPath = path.join(__dirname, 'public');
@@ -104,17 +104,26 @@ const webpackConfig: Configuration = {
         new HtmlWebpackPlugin({
             template,
         }),
+        new ProvidePlugin({
+            process: 'process/browser',
+        }),
         new TerserPlugin({}),
         new CopyPlugin({
             patterns: [
                 { from: './public/images', to: './images' },
+                { from: './public/data', to: './data' },
                 { from: './doc/dataView.md', to: './' },
+                {
+                    from: './node_modules/@cognite/reveal-parser-worker/dist/local',
+                    to: './reveal-worker',
+                },
             ],
         }),
     ],
     resolve: {
         extensions,
         alias: {
+            '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),
             '@equinor/authentication': path.resolve(__dirname, './packages/authentication/'),
             '@equinor/http-client': path.resolve(__dirname, './packages/httpClient/'),
             '@equinor/lighthouse-core': path.resolve(__dirname, './packages/core/'),

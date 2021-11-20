@@ -42,7 +42,7 @@ const loopKeys: (keyof Loop)[] = [
     'commPk',
     'mcPk',
     'signedAt',
-    'createdAt'
+    'createdAt',
 ];
 
 export function setup(appApi: AppApi) {
@@ -50,7 +50,7 @@ export function setup(appApi: AppApi) {
     const commPkg = createDataViewer<Loop>({
         initialState: [],
         primaryViewKey: 'tagNo',
-        viewerId: appApi.shortName
+        viewerId: appApi.shortName,
     });
 
     commPkg.registerDataFetcher(async () => {
@@ -104,31 +104,31 @@ export function setup(appApi: AppApi) {
                 if (itemDate < new Date(955).getDate()) return 'This week';
 
                 return 'Other';
-            }
-        }
+            },
+        },
     });
 
     commPkg.registerViewOptions({
         objectIdentifierKey: 'tagNo',
         title: {
             key: 'tagNo',
-            label: 'Tag No'
+            label: 'Tag No',
         },
         description: {
             key: 'description',
-            label: 'Description'
-        }
+            label: 'Description',
+        },
     });
 
     commPkg.registerTableOptions({ objectIdentifierKey: 'tagNo' });
     commPkg.registerGardenOptions({
         groupeKey: 'phase',
-        itemKey: 'tagNo'
+        itemKey: 'tagNo',
     });
     commPkg.registerAnalyticsOptions({});
     commPkg.registerTreeOptions({
         groupByKeys: ['status', 'responsible', 'tagNo'],
-        rootNode: 'phase'
+        rootNode: 'phase',
     });
     // console.info(`Config for ${appManifest.shortName} done! `);
 }
