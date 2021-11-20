@@ -16,6 +16,7 @@ import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { StatusBarApp } from '../packages/StatusBar/src';
+import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
@@ -31,7 +32,7 @@ export interface AppApi extends AppManifest {
 interface App {
     appType?: AppType;
     setup?: (api: AppApi) => void;
-    component?: React.FC<Partial<AppManifest>>;
+    component?: React.FC<AppApi>;
 }
 export interface AppManifest {
     title: string;
@@ -545,7 +546,10 @@ export const apps: AppManifest[] = [
         groupe: [Apps.AssetData],
         icon: '',
         uri: '',
-        tags: ['3D', 'Asset', 'Map']
+        tags: ['3D', 'Asset', 'Map'],
+        app: {
+            component: ModelViewer
+        }
     },
     {
         title: 'Documents and drawings',

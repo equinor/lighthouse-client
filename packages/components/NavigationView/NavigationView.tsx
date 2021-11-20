@@ -2,7 +2,7 @@ import { Chip, Tabs } from "@equinor/eds-core-react";
 import { useState } from "react";
 import styled from "styled-components";
 import { TreeRoot } from ".";
-import { Garden } from "../Garden/Garden";
+
 
 const Wrapper = styled.div`
     display: flex;

@@ -10,4 +10,6 @@ export interface AppConfig {
     procosys: string;
     clientId: string;
     tenant: string;
+    echoModelDistUrl: string;
+    echoModelDistClient: string;
 }
