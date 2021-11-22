@@ -52,7 +52,6 @@ export function useFusionClient(resource: string, filterOptions?: Filter[]): use
             return await response.json();
         } catch (error: any) {
             const networkError = error as NetworkError;
-            console.log('This is the most important of everything', networkError.httpStatusCode);
             setError(networkError);
         }
     }

@@ -56,25 +56,29 @@ export function baseClient(newAuthProvider: AuthenticationProvider, newScopes?: 
     ): Promise<Response> {
         let statusCode = 0;
 
-        init = {
-            method: 'GET',
-            ...init,
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + token,
-                ...init?.headers,
-            },
-        };
-        const response: Response = await fetch(endpoint, init);
+        try {
+            init = {
+                method: 'GET',
+                ...init,
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + token,
+                    ...init?.headers,
+                },
+            };
+            const response: Response = await fetch(endpoint, init);
 
-        if (response.status) statusCode = response.status;
+            if (response.status) statusCode = response.status;
 
-        if (response && !response.ok) {
+            if (response && !response.ok) {
+                initializeError(NetworkError, { httpStatusCode: statusCode, url: endpoint });
+            }
+            return response;
+        } catch (Exception) {
             initializeError(NetworkError, { httpStatusCode: statusCode, url: endpoint });
+            throw Exception;
         }
-
-        return response;
     }
 
     /**

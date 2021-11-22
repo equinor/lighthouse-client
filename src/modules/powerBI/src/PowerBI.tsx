@@ -40,6 +40,7 @@ export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element
     const { config, error } = usePowerBI(reportUri, filterOptions);
     const [report, setReport] = useState<Report>();
 
+    //TODO custom loading
     const eventHandlersMap = new Map([
         [
             'loaded',
@@ -66,9 +67,6 @@ export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element
         ],
     ]);
 
-    // const [displayMessage, setMessage] = useState(
-    //     `The report is bootstrapped. Click the Embed Report button to set the access token`
-    // );
     return (
         <>
             {error ? (
