@@ -10,15 +10,12 @@ import {
     NetworkErrorArgs,
     NotFoundError,
     UnauthorizedError,
-    ValidationError
+    ValidationError,
 } from './networkError';
 
-export class AuthenticationError extends BaseError {}
+export class AuthenticationError extends BaseError { }
 
-export function baseClient(
-    newAuthProvider: AuthenticationProvider,
-    newScopes?: string[]
-) {
+export function baseClient(newAuthProvider: AuthenticationProvider, newScopes?: string[]) {
     const authProvider: AuthenticationProvider = newAuthProvider;
     const scopes = newScopes;
 
@@ -35,13 +32,13 @@ export function baseClient(
     async function getAccessToken(): Promise<string> {
         if (!authProvider.getCurrentUser())
             throw new ArgumentError({
-                argumentName: 'authProvider.userProperties.account'
+                argumentName: 'authProvider.userProperties.account',
             });
         try {
             return await authProvider.getAccessToken(scopes);
         } catch (exception) {
             throw new AuthenticationError({
-                message: 'failed to authenticate'
+                message: 'failed to authenticate',
             });
         }
     }
@@ -59,41 +56,25 @@ export function baseClient(
     ): Promise<Response> {
         let statusCode = 0;
 
-        try {
-            init = {
-                method: 'GET',
-                ...init,
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + token,
-                    ...init?.headers
-                }
-            };
-            const response: Response = await fetch(endpoint, init);
+        init = {
+            method: 'GET',
+            ...init,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + token,
+                ...init?.headers,
+            },
+        };
+        const response: Response = await fetch(endpoint, init);
 
-            if (response.status) statusCode = response.status;
+        if (response.status) statusCode = response.status;
 
-            if (response && !response.ok) {
-                const contentType = response.headers.get('content-type');
-
-                if (
-                    contentType &&
-                    contentType.indexOf('application/json') !== -1
-                ) {
-                    throw await response.json();
-                } else {
-                    throw await response.text();
-                }
-            }
-            return response;
-        } catch (exception) {
-            const errorInstance = initializeError(NetworkError, {
-                httpStatusCode: statusCode,
-                url: endpoint
-            });
-            throw errorInstance;
+        if (response && !response.ok) {
+            initializeError(NetworkError, { httpStatusCode: statusCode, url: endpoint });
         }
+
+        return response;
     }
 
     /**
@@ -102,13 +83,10 @@ export function baseClient(
      * @return {*}  {Promise<Response>}
      * @memberof BaseClient
      */
-    async function clientFetch(
-        url: string,
-        init?: RequestInit
-    ): Promise<Response> {
+    async function clientFetch(url: string, init?: RequestInit): Promise<Response> {
         if (!authProvider.getCurrentUser())
             throw new ArgumentError({
-                argumentName: 'authProvider.userProperties.account'
+                argumentName: 'authProvider.userProperties.account',
             });
         const accessToken = await getAccessToken();
 
@@ -118,36 +96,34 @@ export function baseClient(
     return {
         fetch: clientFetch,
         fetchWithToken,
-        isAuthenticated
+        isAuthenticated,
     };
 }
 
-const initializeError: ErrorInitializerFunction<
-    NetworkError,
-    NetworkErrorArgs
-> = (ErrorType, args): BaseError => {
+const initializeError: ErrorInitializerFunction<NetworkError, NetworkErrorArgs> = (
+    ErrorType,
+    args
+): NetworkError => {
     switch (args.httpStatusCode) {
         case 400:
             if (
                 args.exception?.title &&
-                (args.exception?.title as string)
-                    .toLowerCase()
-                    .includes('validation')
+                (args.exception?.title as string).toLowerCase().includes('validation')
             )
-                return new ValidationError(args);
+                throw new ValidationError(args);
             break;
         case 401:
-            return new UnauthorizedError(args);
+            throw new UnauthorizedError(args);
         case 403:
-            return new ForbiddenError(args);
+            throw new ForbiddenError(args);
 
         case 404:
-            return new NotFoundError(args);
+            throw new NotFoundError(args);
     }
 
     if (args.httpStatusCode > 0 && args.httpStatusCode < 550 && args.exception)
-        return new BackendError(args); //our backEnd return a json property called exception.
-    if (args.httpStatusCode == 400) return new BadRequestError(args);
+        throw new BackendError(args); //our backEnd return a json property called exception.
+    if (args.httpStatusCode == 400) throw new BadRequestError(args);
 
     return new ErrorType(args);
 };

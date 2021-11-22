@@ -1,9 +1,7 @@
-import { PowerBI } from "../../modules/powerBI";
+import { PowerBI } from '../../modules/powerBI';
 
-export function QueryReport() {
-    const reportUri = "query-analytics-rls"
+export const QueryReport = (): JSX.Element => {
+    const reportUri = 'query-analytics-rls';
 
-    return (
-        <PowerBI reportUri={reportUri} />
-    );
-}
+    return <PowerBI reportUri={reportUri} />;
+};

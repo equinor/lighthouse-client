@@ -1,5 +1,6 @@
-import { baseClient } from '@equinor/http-client';
+import { baseClient, NetworkError } from '@equinor/http-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
+import { useState } from 'react';
 import useClientContext from '../../../../context/clientContext';
 import { Filter, PowerBiFilter } from '../models/filter';
 
@@ -14,25 +15,27 @@ const filterBuilder = (filter: Filter): PowerBiFilter => {
         operator: filter.operator,
         values: filter.values,
     };
+};
+
+interface useFusionClientReturn {
+    getConfig: () => Promise<IReportEmbedConfiguration>;
+    error: NetworkError | undefined;
 }
-
-
-export function useFusionClient(resource: string, filterOptions?: Filter[]) {
+export function useFusionClient(resource: string, filterOptions?: Filter[]): useFusionClientReturn {
     const { appConfig, authProvider } = useClientContext();
+    const [error, setError] = useState<NetworkError>();
     const scope = [appConfig.fusion];
     const fusionClient = baseClient(authProvider, scope);
     const baseUri = 'https://lih-proxy.azurewebsites.net/fusion/reports';
-    let filters: PowerBiFilter[] = []
+    const filters: PowerBiFilter[] = [];
     filterOptions?.forEach((filterOption) => {
-        filters.push(filterBuilder(filterOption))
-    })
+        filters.push(filterBuilder(filterOption));
+    });
 
     async function getEmbedInfo() {
         try {
-            const embedUri = `${baseUri}/${resource}/config/embedinfo`
-            const response = await fusionClient.fetch(
-                embedUri
-            );
+            const embedUri = `${baseUri}/${resource}/config/embedinfo`;
+            const response = await fusionClient.fetch(embedUri);
 
             const data = await response.json();
             window['embedInfo'] = data;
@@ -44,16 +47,15 @@ export function useFusionClient(resource: string, filterOptions?: Filter[]) {
 
     async function getPowerBiToken() {
         try {
-            const tokenUri = `${baseUri}/${resource}/token`
-            const response = await fusionClient.fetch(
-                tokenUri
-            );
+            const tokenUri = `${baseUri}/${resource}/token`;
+            const response = await fusionClient.fetch(tokenUri);
             return await response.json();
-        } catch (error) {
-            console.error(error);
+        } catch (error: any) {
+            const networkError = error as NetworkError;
+            console.log('This is the most important of everything', networkError.httpStatusCode);
+            setError(networkError);
         }
     }
-
 
     async function getConfig(): Promise<IReportEmbedConfiguration> {
         const { embedConfig } = await getEmbedInfo();
@@ -66,19 +68,19 @@ export function useFusionClient(resource: string, filterOptions?: Filter[]) {
                 panes: {
                     filters: {
                         expanded: false,
-                        visible: false
+                        visible: false,
                     },
                     pageNavigation: {
-                        visible: false
-                    }
-                }
+                        visible: false,
+                    },
+                },
             },
-            filters: filters ?? undefined
+            filters: filters ?? undefined,
         };
     }
 
     return {
-        getConfig
+        getConfig,
+        error,
     };
 }
-
