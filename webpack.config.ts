@@ -3,7 +3,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
-import { Configuration } from 'webpack';
+import { Configuration, ProvidePlugin } from 'webpack';
 
 const extensions = ['.ts', '.tsx', '.js', '.jsx'];
 const publicPath = path.join(__dirname, 'public');
@@ -19,8 +19,8 @@ const serverConfig = {
             {
                 directory: buildPath,
                 watch: true,
-                serveIndex: true
-            }
+                serveIndex: true,
+            },
         ],
         compress: true,
         hot: true,
@@ -30,16 +30,16 @@ const serverConfig = {
             writeToDisk: true,
             publicPath,
             index: true,
-            stats: 'errors-warnings'
+            stats: 'errors-warnings',
         },
         client: {
             overlay: {
                 warnings: true,
-                errors: true
+                errors: true,
             },
-            logging: 'none'
-        }
-    }
+            logging: 'none',
+        },
+    },
 };
 
 const webpackConfig: Configuration = {
@@ -48,35 +48,37 @@ const webpackConfig: Configuration = {
     output: {
         path: buildPath,
         filename: '[name].bundle.js',
-        // library: 'someLibName',
-        // libraryTarget: 'commonjs',
         chunkFilename: `[name].[contenthash].chunk.js`,
-        publicPath: './'
+        publicPath: './',
     },
     module: {
         rules: [
+            {
+                test: /\.worker\.(js|ts)$/,
+                use: { loader: 'worker-loader' },
+            },
             {
                 test: /\.(ts|tsx)$/,
                 loader: 'ts-loader',
                 exclude: /node_modules/,
                 options: {
                     compilerOptions: {
-                        noImplicitAny: false
-                    }
-                }
+                        noImplicitAny: false,
+                    },
+                },
             },
             {
                 test: /\.css$/,
                 use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
-                exclude: /\.module\.css$/
+                exclude: /\.module\.css$/,
             },
             {
                 test: /\.(png|jpe?g|gif)$/i,
                 loader: 'file-loader',
                 options: {
                     name: './images/[name].[ext]',
-                    publicPath: `./images`
-                }
+                    publicPath: `./images`,
+                },
             },
             {
                 test: /\.s[ac]ss$/i,
@@ -86,66 +88,51 @@ const webpackConfig: Configuration = {
                     // Translates CSS into CommonJS
                     'css-loader',
                     // Compiles Sass to CSS
-                    'sass-loader'
-                ]
+                    'sass-loader',
+                ],
             },
             {
                 test: /\.(png|jpg)$/,
-                loader: 'url-loader'
-            }
-        ]
+                loader: 'url-loader',
+            },
+        ],
     },
     plugins: [
         /* Deletes our build directory when building */
         // new SourceMapDevToolPlugin({}),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            template
+            template,
+        }),
+        new ProvidePlugin({
+            process: 'process/browser',
         }),
         new TerserPlugin({}),
         new CopyPlugin({
             patterns: [
                 { from: './public/images', to: './images' },
-                { from: './doc/dataView.md', to: './' }
-            ]
-        })
+                { from: './public/data', to: './data' },
+                { from: './doc/dataView.md', to: './' },
+                {
+                    from: './node_modules/@cognite/reveal-parser-worker/dist/local',
+                    to: './reveal-worker',
+                },
+            ],
+        }),
     ],
     resolve: {
         extensions,
         alias: {
-            '@equinor/authentication': path.resolve(
-                __dirname,
-                './packages/authentication/'
-            ),
-            '@equinor/http-client': path.resolve(
-                __dirname,
-                './packages/httpClient/'
-            ),
-            '@equinor/lighthouse-core': path.resolve(
-                __dirname,
-                './packages/core/'
-            ),
-            '@equinor/lighthouse-hooks': path.resolve(
-                __dirname,
-                './packages/hooks/'
-            ),
-            '@equinor/lighthouse-components': path.resolve(
-                __dirname,
-                './packages/components/'
-            ),
-            '@equinor/lighthouse-util': path.resolve(
-                __dirname,
-                './packages/util/'
-            ),
-            '@equinor/lighthouse-typeGuard': path.resolve(
-                __dirname,
-                './packages/typeGuard/'
-            ),
-            '@equinor/lighthouse-conf': path.resolve(
-                __dirname,
-                './packages/configuration/'
-            )
-        }
+            '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),
+            '@equinor/authentication': path.resolve(__dirname, './packages/authentication/'),
+            '@equinor/http-client': path.resolve(__dirname, './packages/httpClient/'),
+            '@equinor/lighthouse-core': path.resolve(__dirname, './packages/core/'),
+            '@equinor/lighthouse-hooks': path.resolve(__dirname, './packages/hooks/'),
+            '@equinor/lighthouse-components': path.resolve(__dirname, './packages/components/'),
+            '@equinor/lighthouse-util': path.resolve(__dirname, './packages/util/'),
+            '@equinor/lighthouse-typeGuard': path.resolve(__dirname, './packages/typeGuard/'),
+            '@equinor/lighthouse-conf': path.resolve(__dirname, './packages/configuration/'),
+        },
     },
     devtool: 'source-map',
     optimization: {
@@ -154,20 +141,20 @@ const webpackConfig: Configuration = {
                 terserOptions: {
                     ie8: false,
                     output: {
-                        comments: /^@lighthouse-client/
-                    }
-                }
-            })
+                        comments: /^@lighthouse-client/,
+                    },
+                },
+            }),
         ],
         splitChunks: {
-            chunks: 'all'
-        }
-    }
+            chunks: 'all',
+        },
+    },
 };
 
 const config = {
     ...webpackConfig,
-    ...serverConfig
+    ...serverConfig,
 };
 
 export default config;
