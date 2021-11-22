@@ -11,6 +11,7 @@ import {
     DataViewState,
     GardenOptions,
     getContext,
+    PowerBiOptions,
     TableOptions,
     TreeOptions
 } from './DataViewState';
@@ -138,6 +139,15 @@ export function createDataViewer<T>(
                 [options.viewerId]: {
                     ...state[options.viewerId],
                     analyticsOptions
+                }
+            }));
+        },
+        registerPowerBIOptions(powerBiOptions: PowerBiOptions) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    powerBiOptions
                 }
             }));
         }

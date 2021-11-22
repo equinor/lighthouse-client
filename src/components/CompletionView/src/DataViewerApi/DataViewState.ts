@@ -1,4 +1,5 @@
 import { Atom } from '@dbeining/react-atom';
+import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
 
@@ -24,6 +25,11 @@ export interface TableOptions {
 export interface GardenOptions<T> {
     groupeKey: keyof T;
     itemKey: keyof T;
+}
+
+export interface PowerBiOptions {
+    reportId: string;
+    filterOptions?: Filter[];
 }
 
 export interface ViewConfig<T> {
