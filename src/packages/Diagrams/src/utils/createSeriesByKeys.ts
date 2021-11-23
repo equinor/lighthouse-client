@@ -37,11 +37,7 @@ export function createSeriesByKeys<T>(
     const result = names.map((name) => {
         const data: number[] = [];
         categories.forEach((k) => {
-            data.push(
-                dataItem.filter(
-                    (i) => i[categoryKey] === k && i[nameKey] === name
-                ).length
-            );
+            data.push(dataItem.filter((i) => i[categoryKey] === k && i[nameKey] === name).length);
         });
         return { name, type, data };
     });

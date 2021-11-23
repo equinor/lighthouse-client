@@ -5,8 +5,9 @@ import { Loop } from "../../../../apps/loopApp";
 import { useFilteredData } from "../../../../components/Filter";
 import { Status, StatusItem } from "../../../StatusBar/src/components/satusItem/StatusItem";
 import { StatusBar } from "../../../StatusBar/src/components/statusBar/StatusBar";
-import { BarChart, BarChartOptions } from "./BarChart";
-import { LineChart, LineChartOptions } from "./LineChart";
+import { BarChartOptions } from "./BarChart";
+import { LineChartOptions } from "./LineChart";
+import { TimeBarChart, TimeBarChartOptions } from "./TimeBarChart";
 
 const WrapperCharts = styled(Card)`
     width: 100%;
@@ -45,7 +46,7 @@ function getStatus<T, K extends keyof T>(data: T[], key: K, value: T[K], swap?: 
 function getDateStatus<T, K extends keyof T>(data: T[], key: K, swap?: boolean): keyof Status {
 
     const percentage = data.filter(i => i[key]).length / data.length * 100;
-    console.log(percentage);
+    // console.log(percentage);
     if (percentage < 25) {
         return swap ? "ok" : "waring"
     }
@@ -113,16 +114,38 @@ export function AnalyticsView() {
         categoryKey: "phase",
         colors: ['#F44336', '#E91E63', '#9C27B0'],
     }
+    const option3: TimeBarChartOptions<Loop> = {
+        timeChartOptions: {
+            categoriesKey: "createdAt",
+            title: "Created At",
+            type: 'line',
+            series: {
+                os: {
+                    type: "line",
+                    key: "status",
+                    // value: "OS"
+                }
+            }
+            // accenting?: boolean;
+            // filter: (data: SeriesItem) => data.date.includes("2021")
+
+        }
+        //  colors: ['#F44336', '#E91E63', '#9C27B0'],
+    }
+
+
+
+    // createCumulativeSeries(data, "column", "createdAt", "status");
 
     return (
         <Page>
             <StatusBar data={statusBarData} />;
             <Wrapper>
-                <WrapperCharts>
+                {/* <WrapperCharts>
                     {data?.length && <BarChart<Loop> data={data} options={option} />}
-                </WrapperCharts>
+                </WrapperCharts> */}
                 <WrapperCharts>
-                    {data?.length && <LineChart<Loop> data={data} options={option2} />}
+                    {data?.length && <TimeBarChart<Loop> data={data} options={option3} />}
                 </WrapperCharts>
             </Wrapper>
         </Page>
