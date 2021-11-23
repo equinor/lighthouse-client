@@ -11,7 +11,7 @@ const Viewer = styled.div`
     }
 `;
 
-export const ModelViewer = (appApi: AppApi): JSX.Element => {
+export const ModelViewer: React.FC<AppApi> = (appApi: AppApi): JSX.Element => {
 
     const viewerRef = useRef<HTMLDivElement>(null);
     const [threeDInstance, setThreeDInstance] = useState<ThreeDInstance>()
