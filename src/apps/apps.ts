@@ -1,7 +1,6 @@
 import { AuthenticationProvider } from '@equinor/authentication';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import React from 'react';
-
 import { DataView } from '../components/CompletionView/src/DataView';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
@@ -16,17 +15,18 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
+import { ModelViewer } from './3DModel/src';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
 import {
     BusinessCaseReport,
     LCIReport,
-    QueryReport,
-    QualityDeviationReport,
-    NonConformityReport,
-    SafetyPerformanceReport,
     MDRReport,
+    NonConformityReport,
+    QualityDeviationReport,
+    QueryReport,
+    SafetyPerformanceReport,
 } from './PowerBI';
 
 type HEXColor = `#${string}`;
@@ -40,7 +40,7 @@ export interface AppApi extends AppManifest {
 interface App {
     appType?: AppType;
     setup?: (api: AppApi) => void;
-    component?: React.FC<Partial<AppManifest>>;
+    component?: React.FC<AppApi>;
 }
 export interface AppManifest {
     title: string;
@@ -578,6 +578,9 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: ['3D', 'Asset', 'Map'],
+        app: {
+            component: ModelViewer,
+        },
     },
     {
         title: 'Documents and drawings',
