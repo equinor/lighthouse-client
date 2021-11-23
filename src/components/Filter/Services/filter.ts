@@ -1,28 +1,13 @@
 import { FilterData, FilterItem } from '../Types/FilterItem';
 import { parseGroupValueFunctions } from '../Utils/optionParse';
 
-async function InternalFilter<T>(
+function InternalFilter<T>(
     data: T[],
     filterItems: FilterItem[],
     groupValue?: Record<string, (item: T) => string>
 ): T[] {
     const filterItem = filterItems[0];
     if (!filterItem) return data;
-
-    // const filteredData: T[] = [];
-    // for await (let item of data) {
-    //     // const item = data[index];
-
-    //     const getValue =
-    //         groupValue &&
-    //         typeof groupValue[filterItem.type] === 'function' &&
-    //         groupValue[filterItem.type];
-
-    //     if (getValue && (await getValue(item)) !== filterItem.value)
-    //         filteredData.push(item);
-
-    //     if (item[filterItem.type] !== filterItem.value) filteredData.push(item);
-    // }
 
     const filteredData = data.filter((i) => {
         const getValue =
