@@ -121,9 +121,10 @@ export function AnalyticsView() {
             type: 'line',
             series: {
                 os: {
+                    title: "PB",
                     type: "line",
                     key: "status",
-                    // value: "OS"
+                    value: "PB"
                 }
             }
             // accenting?: boolean;
