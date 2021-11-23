@@ -113,10 +113,10 @@ const webpackConfig: Configuration = {
                 { from: './public/images', to: './images' },
                 { from: './public/data', to: './data' },
                 { from: './doc/dataView.md', to: './' },
-                {
-                    from: './node_modules/@cognite/reveal-parser-worker/dist/local',
-                    to: './reveal-worker',
-                },
+                // {
+                //     from: './node_modules/@cognite/reveal-parser-worker/dist/local',
+                //     to: './reveal-worker',
+                // },
             ],
         }),
     ],

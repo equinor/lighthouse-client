@@ -3,7 +3,7 @@
         "strict": true,
         "jsx": "react-jsx",
         "target": "es6",
-        "outDir": "dist",
+        // "outDir": "dist",
         "skipLibCheck": true,
         "module": "commonjs",
         "esModuleInterop": true,
