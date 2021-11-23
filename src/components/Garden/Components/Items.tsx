@@ -1,20 +1,41 @@
-import { useDataContext } from "../../CompletionView/src/Context/DataProvider";
-import { Pack } from "../Styles/gardenStyle";
+import { useDataContext } from '../../CompletionView/src/Context/DataProvider';
+import { Dot, Pack } from '../Styles/gardenStyle';
 
 interface RenderItemsProps<T> {
     data: T[];
     itemKey: string;
+    customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
+    statusFunc?: (data: T) => string;
 }
 
-export function Items<T>({ data, itemKey }: RenderItemsProps<T>): JSX.Element {
-    const { setSelected } = useDataContext()
+export function Items<T>({
+    data,
+    itemKey,
+    customItemView,
+    statusFunc,
+}: RenderItemsProps<T>): JSX.Element {
+    const { setSelected } = useDataContext();
+    const CustomRender = customItemView;
+
     return (
         <>
-            {
-                Object.keys(data).map((key, index) => (
-                    <Pack key={data[key][itemKey] + index} onClick={() => setSelected(data[key][itemKey])}>{data[key][itemKey]}</Pack>
-                ))
-            }
+            {Object.keys(data).map((key, index) =>
+                CustomRender ? (
+                    <CustomRender
+                        data={data[key]}
+                        itemKey={itemKey}
+                        key={data[key] + index}
+                        onClick={() => setSelected(data[key][itemKey])}
+                    >
+                        {data[key][itemKey]}
+                    </CustomRender>
+                ) : (
+                    <Pack key={data[key] + index} onClick={() => setSelected(data[key][itemKey])}>
+                        {statusFunc && <Dot color={statusFunc(data[key])} />}
+                        {data[key][itemKey]}
+                    </Pack>
+                )
+            )}
         </>
     );
 }

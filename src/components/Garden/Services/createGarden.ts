@@ -9,9 +9,7 @@ export function createGarden<T>(dataSet: T[], groupKey: keyof T, groupingKeys?: 
     if (groupingKeys) {
         allGroupingKeys = [...allGroupingKeys, ...groupingKeys];
     }
-    console.log(allGroupingKeys.length, allGroupingKeys);
     groupedData = groupBy(dataSet, allGroupingKeys);
-    console.log(groupedData);
     return groupedData;
 }
 
