@@ -22,17 +22,33 @@ export class NetworkError extends BaseError {
     constructor({ message, httpStatusCode, url, exception }: NetworkErrorArgs) {
         super({ message: message || '', exception });
         this.addProperties({ url, httpStatusCode });
-        !message && (this.message = `${this.name} ${httpStatusCode} ${url}`);
+        !message &&
+            (this.message = `${httpStatusCode}: ${this.generateErrorMessage(httpStatusCode)}`);
     }
+
+    httpStatusCode = this.properties.httpStatusCode;
+
+    generateErrorMessage = (statusCode: number): string => {
+        switch (statusCode) {
+            case 401:
+            case 403:
+                return 'You do not have access to the requested resource';
+            case 404:
+                return 'The requested resource could not be found';
+            case 500:
+            default:
+                return 'Something went wrong';
+        }
+    };
 
     getUrl = (): string => {
         return this.properties.url as string;
     };
 }
 
-export class BadRequestError extends NetworkError {}
-export class BackendError extends NetworkError {}
-export class ForbiddenError extends NetworkError {}
-export class UnauthorizedError extends ForbiddenError {}
-export class NotFoundError extends NetworkError {}
-export class ValidationError extends NetworkError {}
+export class BadRequestError extends NetworkError { }
+export class BackendError extends NetworkError { }
+export class ForbiddenError extends NetworkError { }
+export class UnauthorizedError extends ForbiddenError { }
+export class NotFoundError extends NetworkError { }
+export class ValidationError extends NetworkError { }

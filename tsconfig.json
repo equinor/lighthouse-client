@@ -3,7 +3,7 @@
         "strict": true,
         "jsx": "react-jsx",
         "target": "es6",
-        "outDir": "dist",
+        // "outDir": "dist",
         "skipLibCheck": true,
         "module": "commonjs",
         // "lib": [
@@ -16,6 +16,7 @@
         "types": ["node"],
         "sourceMap": true,
         "paths": {
+            "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
             "@equinor/authentication": ["./packages/authentication"],
             "@equinor/http-client": ["./packages/httpClient"],
             "@equinor/lighthouse-core": ["./packages/core"],

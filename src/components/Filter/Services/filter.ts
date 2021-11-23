@@ -1,13 +1,11 @@
-import JSONfn from 'json-fn';
 import { FilterData, FilterItem } from '../Types/FilterItem';
-import { GrouperFunctions, ProxyFunction } from './filterApi';
+import { parseGroupValueFunctions } from '../Utils/optionParse';
 
 async function InternalFilter<T>(
     data: T[],
     filterItems: FilterItem[],
     groupValue?: Record<string, (item: T) => string>
-    // options?: FilterDataOptions<T>
-): Promise<T[]> {
+): T[] {
     const filterItem = filterItems[0];
     if (!filterItem) return data;
 
@@ -39,41 +37,21 @@ async function InternalFilter<T>(
     filterItems.shift();
 
     if (filterItems.length !== 0 && filteredData.length > 0) {
-        return await InternalFilter(filteredData, filterItems, groupValue);
+        return InternalFilter(filteredData, filterItems, groupValue);
     }
     return filteredData;
 }
 
-function createGroupValueFunctionMap(
-    groupValue: ProxyFunction[],
-    groupValueMap?: string[]
-): GrouperFunctions {
-    return (
-        groupValueMap?.reduce((acc, key: string, index: number) => {
-            acc[key] = groupValue[index];
-            return acc;
-        }, {}) || {}
-    );
-}
-
-export async function filter<T>(
-    data: T[],
-    filter: FilterData,
-    options?: string,
-    groupValueMap?: string[]
-    // ...groupValue: ProxyFunction[]
-): Promise<T[]> {
+export function filter<T>(data: T[], filter: FilterData, groupValue?: string): T[] {
     if (data.length === 0) return [];
-    const fns = options && JSONfn.parse(options);
-    // const opt = createGroupValueFunctionMap(fns, groupValueMap);
 
-    const filterItems = Object.keys(filter)
-        .map((filterKey) => {
+    const filterItems = Object.values(filter)
+        .map((item) => {
             const items: FilterItem[] = [];
 
-            Object.keys(filter[filterKey].value).forEach((itemKey) => {
-                if (!filter[filterKey].value[itemKey].checked) {
-                    items.push(filter[filterKey].value[itemKey]);
+            Object.keys(item.value).forEach((itemKey) => {
+                if (!item.value[itemKey].checked) {
+                    items.push(item.value[itemKey]);
                 }
             });
 
@@ -81,8 +59,7 @@ export async function filter<T>(
         })
         .flat();
 
-    // const groups = await createGroupValueFunctionMap(groupValue, groupValueMap);
-    // console.log(groups);
-    const filteredData = [...(await InternalFilter(data, filterItems, fns))];
+    const groupValueFunctions = parseGroupValueFunctions(groupValue);
+    const filteredData = [...InternalFilter(data, filterItems, groupValueFunctions)];
     return filteredData.length === 0 ? data : filteredData;
 }

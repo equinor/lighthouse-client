@@ -1,5 +1,6 @@
 import { Atom } from '@dbeining/react-atom';
 import React from 'react';
+import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
 import { DataSet } from '../../../Garden/Models/data';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
@@ -29,6 +30,11 @@ export interface GardenOptions<T> {
     customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
     statusFunc?: (data: T) => string;
     customGroupView?: React.FC<{ data: DataSet<T>; onClick: () => void }>;
+}
+
+export interface PowerBiOptions {
+    reportId: string;
+    filterOptions?: Filter[];
 }
 
 export interface ViewConfig<T> {

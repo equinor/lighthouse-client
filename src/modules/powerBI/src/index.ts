@@ -1,1 +1,1 @@
-export * from './powerBI';
+export * from './PowerBI';

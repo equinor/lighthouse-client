@@ -15,14 +15,23 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
+import { ModelViewer } from './3DModel/src';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
-import { TestApp } from './testApp';
+import {
+    BusinessCaseReport,
+    LCIReport,
+    MDRReport,
+    NonConformityReport,
+    QualityDeviationReport,
+    QueryReport,
+    SafetyPerformanceReport,
+} from './PowerBI';
 
 type HEXColor = `#${string}`;
 
-type AppType = 'DataViewer' | 'SomeApp' | 'CustomApp';
+type AppType = 'DataViewer' | 'SomeApp' | 'CustomApp' | 'PowerBI';
 
 export interface AppApi extends AppManifest {
     appConfig: AppConfig;
@@ -31,7 +40,7 @@ export interface AppApi extends AppManifest {
 interface App {
     appType?: AppType;
     setup?: (api: AppApi) => void;
-    component?: React.FC<Partial<AppManifest>>;
+    component?: React.FC<AppApi>;
 }
 export interface AppManifest {
     title: string;
@@ -64,7 +73,7 @@ export enum Apps {
     QualityAndCompliance = 'QualityAndCompliance',
     ProjectControl = 'ProjectControl',
     Reports = 'Reports',
-    SSU = 'SSU'
+    SSU = 'SSU',
 }
 
 type AppGroups = Record<Apps, AppGroupe>;
@@ -72,60 +81,60 @@ type AppGroups = Record<Apps, AppGroupe>;
 export const appGroups: AppGroups = {
     AssetData: {
         name: 'Asset data',
-        icon: AssetDataIcon
+        icon: AssetDataIcon,
     },
     Top: {
         name: 'Top',
-        icon: HomeIcon
+        icon: HomeIcon,
     },
     Collaboration: {
         name: 'Collaboration',
-        icon: CollaborationIcon
+        icon: CollaborationIcon,
     },
     ProgressAndStatus: {
         name: 'Progress and status',
-        icon: ProgressAndStatusIcon
+        icon: ProgressAndStatusIcon,
     },
     ConstructionManagement: {
         name: 'Construction management',
-        icon: ConstructionManagementIcon
+        icon: ConstructionManagementIcon,
     },
     EngineeringManagement: {
         name: 'Engineering management',
-        icon: EngineeringManagementIcon
+        icon: EngineeringManagementIcon,
     },
     ProjectInformation: {
         name: 'Project information',
-        icon: ProjectInformationIcon
+        icon: ProjectInformationIcon,
     },
     QueriesAndRequests: {
         name: 'Queries and requests',
-        icon: QueriesAndRequests
+        icon: QueriesAndRequests,
     },
     QualityAndCompliance: {
         name: 'Quality and compliance',
-        icon: QualityIcon
+        icon: QualityIcon,
     },
     ProjectControl: {
         name: 'Project control',
-        icon: ScopeAndChange
+        icon: ScopeAndChange,
     },
     SSU: {
         name: 'SSU',
-        icon: SSUIcon
+        icon: SSUIcon,
     },
     Dashboard: {
         name: 'Dashboard',
-        icon: ProgressAndStatusIcon
+        icon: ProgressAndStatusIcon,
     },
     CompletionManagement: {
         name: 'Completion management',
-        icon: CompletionManagementIcon
+        icon: CompletionManagementIcon,
     },
     Reports: {
         name: 'Reports',
-        icon: ReportIcon
-    }
+        icon: ReportIcon,
+    },
 };
 export const apps: AppManifest[] = [
     // Project information
@@ -138,10 +147,10 @@ export const apps: AppManifest[] = [
         uri: '',
         // imageUri: './images/Business case.jpg',
         app: {
-            appType: 'CustomApp',
-            component: TestApp
+            appType: 'PowerBI',
+            component: BusinessCaseReport,
         },
-        tags: []
+        tags: ['PowerBI'],
     },
     {
         title: 'Milestone',
@@ -150,7 +159,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Org chart',
@@ -159,7 +168,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Work processes',
@@ -168,17 +177,21 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     //SSU
     {
-        title: 'temp link',
-        shortName: 'temp-link',
+        title: 'Safety Performance',
+        shortName: 'safety-performance',
         color: '#0364B8',
         groupe: Apps.SSU,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: 'PowerBI',
+            component: SafetyPerformanceReport,
+        },
+        tags: ['PowerBI'],
     },
     // Dashboard
     {
@@ -188,7 +201,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.Dashboard,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Engineering',
@@ -197,7 +210,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.Dashboard,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Fabrication',
@@ -206,7 +219,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.Dashboard,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Installation',
@@ -215,7 +228,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.Dashboard,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Mechanical Completion',
@@ -224,7 +237,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.Dashboard,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Commissioning',
@@ -233,7 +246,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.Dashboard,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     // Engineering management
     {
@@ -243,16 +256,20 @@ export const apps: AppManifest[] = [
         groupe: Apps.EngineeringManagement,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'LCI hanging garden',
-        shortName: 'lic-garden',
+        shortName: 'lci-garden',
         color: '#0364B8',
         groupe: Apps.EngineeringManagement,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: 'PowerBI',
+            component: LCIReport,
+        },
+        tags: ['PowerBI'],
     },
     {
         title: 'LCI portal',
@@ -261,7 +278,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.EngineeringManagement,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'MDR analytics',
@@ -270,7 +287,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.EngineeringManagement,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: 'PowerBI',
+            component: MDRReport,
+        },
+        tags: ['PowerBI'],
     },
     // Construction management
     {
@@ -280,7 +301,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.ConstructionManagement,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     // CompletionManagement
     {
@@ -291,7 +312,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         tags: [],
-        imageUri: './images/Project explorer.jpg'
+        imageUri: './images/Project explorer.jpg',
     },
     {
         title: 'Checklist',
@@ -304,8 +325,8 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'DataViewer',
             component: DataView,
-            setup: checklistSetup
-        }
+            setup: checklistSetup,
+        },
     },
     {
         title: 'Handover',
@@ -318,8 +339,8 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'DataViewer',
             component: DataView,
-            setup: handoverSetup
-        }
+            setup: handoverSetup,
+        },
     },
     {
         title: 'Heat trace installation',
@@ -331,8 +352,8 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView
-        }
+            component: DataView,
+        },
     },
     {
         title: 'Loop',
@@ -345,8 +366,8 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'DataViewer',
             component: DataView,
-            setup: loopSetup
-        }
+            setup: loopSetup,
+        },
     },
     {
         title: 'N2He',
@@ -358,8 +379,8 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView
-        }
+            component: DataView,
+        },
     },
     {
         title: 'Preservation',
@@ -371,8 +392,8 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView
-        }
+            component: DataView,
+        },
     },
     {
         title: 'Punch',
@@ -384,8 +405,8 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView
-        }
+            component: DataView,
+        },
     },
     {
         title: 'SWCR',
@@ -397,8 +418,8 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView
-        }
+            component: DataView,
+        },
     },
     // Queries and requests
     {
@@ -408,7 +429,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.QueriesAndRequests,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Change request',
@@ -418,7 +439,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         imageUri: './images/Scope change request.jpg',
-        tags: []
+        tags: [],
     },
     // ProjectControl
     {
@@ -428,7 +449,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectControl,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Scope change control',
@@ -438,7 +459,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         imageUri: './images/Scope change control.jpg',
-        tags: []
+        tags: [],
     },
     // QualityAndCompliance
     {
@@ -448,7 +469,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'N-comformacy request',
@@ -457,7 +478,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Non-comformacy',
@@ -466,7 +487,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: 'PowerBI',
+            component: NonConformityReport,
+        },
+        tags: ['PowerBI'],
     },
     {
         title: 'Quality deviation',
@@ -475,7 +500,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.QualityAndCompliance,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: 'PowerBI',
+            component: QualityDeviationReport,
+        },
+        tags: ['PowerBI'],
     },
 
     {
@@ -485,7 +514,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.QueriesAndRequests,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: 'Queries',
@@ -494,7 +523,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.QueriesAndRequests,
         icon: '',
         uri: '',
-        tags: []
+        app: {
+            appType: 'PowerBI',
+            component: QueryReport,
+        },
+        tags: ['PowerBI'],
     },
     // Reports
     {
@@ -504,7 +537,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.Reports,
         icon: '',
         uri: '',
-        tags: []
+        tags: [],
     },
 
     // Collaboration
@@ -516,7 +549,7 @@ export const apps: AppManifest[] = [
         icon: 'tag',
         uri: '',
         tags: [],
-        imageUri: './images/image-test.png'
+        imageUri: './images/image-test.png',
     },
     {
         title: 'Review',
@@ -525,7 +558,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.Collaboration,
         icon: 'tag',
         uri: '',
-        tags: []
+        tags: [],
     },
     // Asset Data
     {
@@ -535,7 +568,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.Top,
         icon: HomeIcon,
         uri: '',
-        tags: []
+        tags: [],
     },
     {
         title: '3D Model',
@@ -544,7 +577,10 @@ export const apps: AppManifest[] = [
         groupe: [Apps.AssetData],
         icon: '',
         uri: '',
-        tags: ['3D', 'Asset', 'Map']
+        tags: ['3D', 'Asset', 'Map'],
+        app: {
+            component: ModelViewer,
+        },
     },
     {
         title: 'Documents and drawings',
@@ -553,7 +589,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.AssetData,
         icon: '',
         uri: '',
-        tags: ['3D', 'Asset', 'Map']
+        tags: ['3D', 'Asset', 'Map'],
     },
     {
         title: 'Tags',
@@ -562,6 +598,6 @@ export const apps: AppManifest[] = [
         groupe: Apps.AssetData,
         icon: 'tag',
         uri: '',
-        tags: ['Tag', 'Data', 'Functional Location']
-    }
+        tags: ['Tag', 'Data', 'Functional Location'],
+    },
 ];

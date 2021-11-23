@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="755px" preserveAspectRatio="none" style="width:1225px;height:755px;background:#FFFFFF;" version="1.1" viewBox="0 0 1225 755" width="1225px" zoomAndPan="magnify"><defs/><g><!--MD5=[41639cd3294ad60b86d131b8aaf027c7]
+cluster fam--><rect fill="#FFFFFF" height="337" style="stroke:#444444;stroke-width:1.0;stroke-dasharray:7.0,7.0;" width="401" x="325" y="412.5"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="76" x="487.5" y="429.0332">«boundary»</text><text fill="#444444" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="34" x="508.5" y="448.7188">FAM</text><!--MD5=[0592f60a967d6dcdc1996848a93f93e6]
+cluster lightgouse--><rect fill="#FFFFFF" height="157" style="stroke:#444444;stroke-width:1.0;stroke-dasharray:7.0,7.0;" width="469" x="750" y="405"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="76" x="946.5" y="421.5332">«boundary»</text><text fill="#444444" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="87" x="941" y="441.2188">Lighthouse</text><!--MD5=[c37bdbbe731ae8553031b8184c96eb80]
+cluster extenals--><rect fill="#FFFFFF" height="142" style="stroke:#444444;stroke-width:1.0;stroke-dasharray:7.0,7.0;" width="305" x="163" y="7"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="53" x="289" y="23.5332">«group»</text><text fill="#444444" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="72" x="279.5" y="43.2188">Externals</text><!--MD5=[0889d1ab41b94a1abff955a8955c3f37]
+cluster externalsEquinor--><rect fill="#FFFFFF" height="355.5" style="stroke:#444444;stroke-width:1.0;stroke-dasharray:7.0,7.0;" width="286" x="7" y="207"/><text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing" textLength="53" x="123.5" y="223.5332">«group»</text><text fill="#444444" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="137" x="81.5" y="243.2188">Externals Equinor</text><!--MD5=[3a020d1336b17159fbcded9814819434]
+entity scopeChangeControlDB--><path d="M512,652 C512,642 611,642 611,642 C611,642 710,642 710,652 L710,716.3438 C710,726.3438 611,726.3438 611,726.3438 C611,726.3438 512,726.3438 512,716.3438 L512,652 " fill="#1168BD" style="stroke:#3C7FC0;stroke-width:1.5;"/><path d="M512,652 C512,662 611,662 611,662 C611,662 710,662 710,652 " fill="none" style="stroke:#3C7FC0;stroke-width:1.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="53" x="584.5" y="678.457">«system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="174" x="522" y="697.7031">Scope Change Control</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="24" x="599" y="717.8281">DB</text><!--MD5=[3b86de37c1b3c748dbfcdda94f1f3178]
+entity lighthouseDB--><path d="M341.5,644.5 C341.5,634.5 409,634.5 409,634.5 C409,634.5 476.5,634.5 476.5,644.5 L476.5,723.9375 C476.5,733.9375 409,733.9375 409,733.9375 C409,733.9375 341.5,733.9375 341.5,723.9375 L341.5,644.5 " fill="#1168BD" style="stroke:#3C7FC0;stroke-width:1.5;"/><path d="M341.5,644.5 C341.5,654.5 409,654.5 409,654.5 C409,654.5 476.5,654.5 476.5,644.5 " fill="none" style="stroke:#3C7FC0;stroke-width:1.5;"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="53" x="382.5" y="670.957">«system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="115" x="351.5" y="690.2031">Lighthouse DB</text><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="0" x="411" y="708.252"/><text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="106" x="358" y="725.8613">ProCoSys | MIPS</text><!--MD5=[86f467829d624630c26f6f3d6722d299]
+entity famApi--><rect fill="#438DD5" height="70.3125" style="stroke:#3C7FC0;stroke-width:1.5;" width="147" x="532.5" y="468.5"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="65" x="573.5" y="490.957">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="62" x="575" y="510.2031">Fam Api</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="127" x="542.5" y="526.1758">[web Api | out of Scope]</text><!--MD5=[8fa4126ca1e3aa3ba7880d6428ff808d]
+entity dataAdapter--><rect fill="#1168BD" height="55.2188" style="stroke:#3C7FC0;stroke-width:1.5;" width="119" x="349.5" y="476"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="53" x="382.5" y="498.457">«system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="99" x="359.5" y="517.7031">Data Adapter</text><!--MD5=[cda886beeef6f01e276084ba4fac84c2]
+entity scopeChangeControl--><rect fill="#438DD5" height="70.3125" style="stroke:#3C7FC0;stroke-width:1.5;" width="194" x="1009" y="468.5"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="65" x="1073.5" y="490.957">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="174" x="1019" y="510.2031">Scope Change Control</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52" x="1080" y="526.1758">[web API]</text><!--MD5=[5786b6515a451247dca22a677fd9c3f5]
+entity lighthouseApi--><rect fill="#438DD5" height="85.4063" style="stroke:#3C7FC0;stroke-width:1.5;" width="208" x="766" y="461"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="65" x="837.5" y="483.457">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="116" x="812" y="502.7031">Lighthouse Api</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="185" x="776" y="518.6758">[web API | Construction Progress |</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="60" x="840" y="533.7695">HeatTrace]</text><!--MD5=[b7481651942d849451435c1ead78e17e]
+entity mips--><rect fill="#438DD5" height="70.3125" style="stroke:#3C7FC0;stroke-width:1.5;" width="85" x="366.5" y="63"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="65" x="376.5" y="85.457">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="39" x="389.5" y="104.7031">MIPS</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="24" x="397" y="120.6758">[Api]</text><!--MD5=[37f1ec37e53024e788725a077f335007]
+entity mipsTIEAdapter--><rect fill="#438DD5" height="70.3125" style="stroke:#3C7FC0;stroke-width:1.5;" width="152" x="179" y="63"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="65" x="222.5" y="85.457">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="132" x="189" y="104.7031">MIPS TIE Adapter</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="48" x="231" y="120.6758">[adapter]</text><!--MD5=[c8a7f0327f3aac03893c805e8c52e7d5]
+entity stid--><rect fill="#438DD5" height="70.3125" style="stroke:#3C7FC0;stroke-width:1.5;" width="85" x="31.5" y="271"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="65" x="41.5" y="293.457">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="37" x="55.5" y="312.7031">STID</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="24" x="62" y="328.6758">[Api]</text><!--MD5=[c28a165b64b99264d79db90e3af02860]
+entity procosys--><rect fill="#438DD5" height="70.3125" style="stroke:#3C7FC0;stroke-width:1.5;" width="98" x="152" y="271"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="65" x="168.5" y="293.457">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="78" x="162" y="312.7031">ProCoSys</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="24" x="189" y="328.6758">[Api]</text><!--MD5=[55a15db588724b81817b73af63ef110d]
+entity commonLib--><rect fill="#438DD5" height="70.3125" style="stroke:#3C7FC0;stroke-width:1.5;" width="114" x="31" y="468.5"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="65" x="55.5" y="490.957">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="94" x="41" y="510.2031">CommonLib</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="24" x="76" y="526.1758">[Api]</text><!--MD5=[9d5d8f7b7fc5fdf144b813412fbdebc4]
+entity webClient--><rect fill="#438DD5" height="70.3125" style="stroke:#3C7FC0;stroke-width:1.5;" width="98" x="939" y="271"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="65" x="955.5" y="293.457">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="78" x="949" y="312.7031">WebClient</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="61" x="957.5" y="328.6758">[webClient]</text><!--MD5=[e29493a8775effcafa538aa0485107d1]
+entity auth--><rect fill="#438DD5" height="70.3125" style="stroke:#3C7FC0;stroke-width:1.5;" width="85" x="486.5" y="63"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="65" x="496.5" y="85.457">«container»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="36" x="511" y="104.7031">Auth</text><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="52" x="503" y="120.6758">[web API]</text><!--MD5=[9c49359c11e9480cb680ef414a032d0b]
+entity tie--><rect fill="#1168BD" height="55.2188" style="stroke:#3C7FC0;stroke-width:1.5;" width="130" x="344" y="278.5"/><text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="53" x="382.5" y="300.957">«system»</text><text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="110" x="354" y="320.2031">TIE1.5 / TIE 2.0</text><!--MD5=[97c0765eae42e049884605aeee00ab01]
+link dataAdapter to scopeChangeControlDB--><path d="M439.24,531.22 C471.21,559.47 522.17,604.5 560.3,638.19 " fill="none" id="dataAdapter-to-scopeChangeControlDB" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="564.41,641.83,560.3238,632.8688,560.6667,638.5153,555.0202,638.8582,564.41,641.83" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="34" x="523" y="600.9951">Write</text><!--MD5=[eff63841bd8098e5f70a2d89e287e933]
+link dataAdapter to lighthouseDB--><path d="M409,531.22 C409,556.98 409,596.7 409,629.04 " fill="none" id="dataAdapter-to-lighthouseDB" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="409,634.17,413,625.17,409,629.17,405,625.17,409,634.17" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="34" x="410" y="600.9951">Write</text><!--MD5=[7e585e2db355a17b3dccbae9de55f8d3]
+link scopeChangeControl to scopeChangeControlDB--><path d="M1060.71,538.51 C1040.5,552.44 1015.9,567.78 992,578.5 C902.29,618.75 793.58,646.69 715.28,663.48 " fill="none" id="scopeChangeControl-to-scopeChangeControlDB" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="710.17,664.57,719.8067,666.6031,715.0598,663.5263,718.1367,658.7794,710.17,664.57" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="79" x="973" y="600.9951">Read / Write</text><!--MD5=[21aa2ed8e909bed44a6a63e1aa0fe413]
+link lighthouseApi to lighthouseDB--><path d="M797.16,546.17 C774.82,557.78 749.84,569.63 726,578.5 C626.99,615.35 593.27,595.74 495,634.5 C490.46,636.29 485.86,638.29 481.27,640.42 " fill="none" id="lighthouseApi-to-lighthouseDB" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="476.7,642.59,486.5461,642.3562,481.2196,640.4514,483.1243,635.1249,476.7,642.59" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="33" x="699" y="600.9951">Read</text><!--MD5=[ccb8f88d77bb175346f9ad530ccdeda6]
+link webClient to scopeChangeControl--><path d="M1008.55,341.05 C1029.16,375.18 1060.83,427.67 1082.44,463.46 " fill="none" id="webClient-to-scopeChangeControl" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="1085.29,468.18,1084.0895,458.4046,1082.7175,463.8925,1077.2296,462.5205,1085.29,468.18" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="0" x="1041" y="385.4951"/><!--MD5=[4284bebc671cbdca6833f48111c729e6]
+link webClient to lighthouseApi--><path d="M967.45,341.05 C948.24,372.88 919.39,420.67 898.07,456 " fill="none" id="webClient-to-lighthouseApi" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="895.24,460.68,903.3088,455.0324,897.8188,456.3963,896.4549,450.9064,895.24,460.68" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="0" x="951" y="385.4951"/><!--MD5=[7f785087d2596083552712bb52291fd8]
+link tie to dataAdapter--><path d="M409,333.77 C409,369.36 409,432.17 409,470.3 " fill="none" id="tie-to-dataAdapter" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="409,475.74,413,466.74,409,470.74,405,466.74,409,475.74" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="34" x="410" y="385.4951">Write</text><!--MD5=[a18c28acaffb86d7323857bfe15f2146]
+link mips to tie--><path d="M409,133.02 C409,171.9 409,235.06 409,273.06 " fill="none" id="mips-to-tie" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="409,278.47,413,269.47,409,273.47,405,269.47,409,278.47" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="34" x="410" y="179.4951">Write</text><!--MD5=[2186daf3d0c7e4a07e7a7e9900bfd945]
+link externalsEquinor to dataAdapter--><path d="M293.0706,319.7231 C293.1637,319.8698 293.2575,320.0176 293.3519,320.1665 C293.5408,320.4643 293.7324,320.7665 293.9268,321.073 C294.3156,321.6859 294.7152,322.3159 295.1253,322.9626 C295.9455,324.2558 296.8078,325.6152 297.7091,327.0363 C304.9194,338.4044 314.6287,353.7125 325.3225,370.5725 C346.71,404.2925 372.035,444.22 389.18,471.25 " fill="none" id="externalsEquinor-to-dataAdapter" style="stroke:#666666;stroke-width:1.0;"/><polygon fill="#666666" points="391.99,475.68,390.5413,465.9383,389.3093,471.4593,383.7882,470.2274,391.99,475.68" style="stroke:#666666;stroke-width:1.0;"/><text fill="#666666" font-family="sans-serif" font-size="13" font-weight="bold" lengthAdjust="spacing" textLength="34" x="336" y="385.4951">Write</text><!--MD5=[796d6eef8605ea38cd0ef8f50bf98cb1]
+link stid to procosys--><!--MD5=[a466c71ab9e5edbd30c6b4d5ef4d3dde]
+link stid to commonLib--><!--MD5=[cc30763389625b712378038d5d96dd1a]
+@startuml Search-Component-Structure
+!includeurl /Style/C4-Style.puml
+
+LAYOUT_TOP_DOWN
+
+Container(webClient, "WebClient", "webClient")  
+
+Boundary(fam, "FAM") {
+    SystemDb(scopeChangeControlDB, "Scope Change Control DB")  
+    SystemDb(lighthouseDB, "Lighthouse DB", "ProCoSys | MIPS") 
+    Container(famApi, "Fam Api", "web Api | out of Scope")  
+
+    System(dataAdapter, "Data Adapter")
+        
+    Rel(dataAdapter, scopeChangeControlDB, "Write")
+    Rel(dataAdapter, lighthouseDB, "Write")
+ 
+}
+
+Boundary(lightgouse, "Lighthouse") {
+    Container(scopeChangeControl, "Scope Change Control", "web API")
+    Container(lighthouseApi, "Lighthouse Api", "web API | Construction Progress | HeatTrace")
+    ' Rel(extenals, SCCApi, " ")
+    
+    Rel(scopeChangeControl, scopeChangeControlDB, "Read / Write")
+    Rel(lighthouseApi, lighthouseDB, "Read")
+
+
+    Rel(webClient, scopeChangeControl, " ")
+    Rel(webClient, lighthouseApi, " ")
+}
+
+    Container(auth, "Auth", "web API")
+
+Group(extenals, 'Externals') {
+    Container(mips, "MIPS", "Api") 
+    Container(mipsTIEAdapter, "MIPS TIE Adapter", "adapter") 
+}
+Group(externalsEquinor, 'Externals Equinor') {
+    Container(stid, "STID", "Api")  
+
+    Container(procosys, "ProCoSys", "Api")  
+    Container(commonLib, "CommonLib", "Api")  
+}
+
+System(tie, "TIE1.5 / TIE 2.0")
+Rel(tie, dataAdapter, "Write")
+
+Rel(mips, tie, "Write")
+Rel(externalsEquinor, dataAdapter, "Write")
+
+
+
+@enduml
+
+@startuml Search-Component-Structure
+
+
+
+
+
+skinparam defaultTextAlignment center
+
+skinparam wrapWidth 200
+skinparam maxMessageSize 150
+
+skinparam rectangle {
+    StereotypeFontSize 12
+    shadowing false
+}
+
+skinparam database {
+    StereotypeFontSize 12
+    shadowing false
+}
+
+skinparam Arrow {
+    Color #666666
+    FontColor #666666
+    FontSize 12
+}
+
+skinparam rectangle<<boundary>> {
+    Shadowing false
+    StereotypeFontSize 0
+    FontColor #444444
+    BorderColor #444444
+    BorderStyle dashed
+}
+
+skinparam rectangle<<group>> {
+    Shadowing false
+    StereotypeFontSize 0
+    FontColor #444444
+    BorderColor #444444
+    BorderStyle dashed
+}
+
+skinparam rectangle<<factory>> {
+    Shadowing false
+    StereotypeFontSize 0
+    FontColor #444444
+    BorderColor #444444
+    BorderStyle dashed
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+skinparam rectangle<<person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #08427B
+    BorderColor #073B6F
+}
+
+skinparam rectangle<<external_person>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #686868
+    BorderColor #8A8A8A
+}
+
+skinparam rectangle<<system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #1168BD
+    BorderColor #3C7FC0
+}
+
+skinparam rectangle<<external_system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #999999
+    BorderColor #8A8A8A
+}
+
+skinparam database<<system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #1168BD
+    BorderColor #3C7FC0
+}
+
+skinparam database<<external_system>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #999999
+    BorderColor #8A8A8A
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+skinparam rectangle<<container>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #438DD5
+    BorderColor #3C7FC0
+}
+skinparam rectangle<<function>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #438DD5
+    BorderColor #3C7FC0
+}
+
+skinparam database<<container>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #438DD5
+    BorderColor #3C7FC0
+}
+
+skinparam rectangle<<Higer order component>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #119DA4
+    BorderColor #3C7FC0
+}
+
+skinparam rectangle<<Stateless Functional Component>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #13505B
+    BorderColor #3C7FC0
+}
+
+skinparam rectangle<<Class Component>> {
+    StereotypeFontColor #FFFFFF
+    FontColor #FFFFFF
+    BackgroundColor #43e3ff
+    BorderColor #3C7FC0
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+top to bottom direction
+
+rectangle "==WebClient\n//<size:12>[webClient]</size>//" <<container>> as webClient  
+
+rectangle "==FAM" <<boundary>> as fam {
+    database "==Scope Change Control DB" <<system>> as scopeChangeControlDB  
+    database "==Lighthouse DB\n\n ProCoSys | MIPS" <<system>> as lighthouseDB 
+    rectangle "==Fam Api\n//<size:12>[web Api | out of Scope]</size>//" <<container>> as famApi  
+
+    rectangle "==Data Adapter" <<system>> as dataAdapter
+        
+    dataAdapter - -> scopeChangeControlDB : "===Write"
+    dataAdapter - -> lighthouseDB : "===Write"
+ 
+}
+
+rectangle "==Lighthouse" <<boundary>> as lightgouse {
+    rectangle "==Scope Change Control\n//<size:12>[web API]</size>//" <<container>> as scopeChangeControl
+    rectangle "==Lighthouse Api\n//<size:12>[web API | Construction Progress | HeatTrace]</size>//" <<container>> as lighthouseApi
+    
+    scopeChangeControl - -> scopeChangeControlDB : "===Read / Write"
+    lighthouseApi - -> lighthouseDB : "===Read"
+
+
+    webClient - -> scopeChangeControl : "=== "
+    webClient - -> lighthouseApi : "=== "
+}
+
+    rectangle "==Auth\n//<size:12>[web API]</size>//" <<container>> as auth
+
+rectangle "==Externals" <<group>> as extenals {
+    rectangle "==MIPS\n//<size:12>[Api]</size>//" <<container>> as mips 
+    rectangle "==MIPS TIE Adapter\n//<size:12>[adapter]</size>//" <<container>> as mipsTIEAdapter 
+}
+rectangle "==Externals Equinor" <<group>> as externalsEquinor {
+    rectangle "==STID\n//<size:12>[Api]</size>//" <<container>> as stid  
+
+    rectangle "==ProCoSys\n//<size:12>[Api]</size>//" <<container>> as procosys  
+    rectangle "==CommonLib\n//<size:12>[Api]</size>//" <<container>> as commonLib  
+}
+
+rectangle "==TIE1.5 / TIE 2.0" <<system>> as tie
+tie - -> dataAdapter : "===Write"
+
+mips - -> tie : "===Write"
+externalsEquinor - -> dataAdapter : "===Write"
+
+
+
+@enduml
+
+PlantUML version 1.2021.7(Sun May 23 14:40:07 CEST 2021)
+(GPL source distribution)
+Java Runtime: Java(TM) SE Runtime Environment
+JVM: Java HotSpot(TM) Client VM
+Default Encoding: Cp1252
+Language: en
+Country: US
+--></g></svg>
