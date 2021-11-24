@@ -13,7 +13,7 @@ export async function workerFilter<T>(
 
     const comlinkWorker = wrap<FilterWorker>(worker, {
         name: 'filter-worker',
-        type: 'module'
+        type: 'module',
     });
 
     const filteredData = (await comlinkWorker.filter(
