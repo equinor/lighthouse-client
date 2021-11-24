@@ -13,6 +13,7 @@ export const GardenTab = (): JSX.Element => {
             statusFunc={gardenOptions.statusFunc}
             data={data}
             groupeKey={gardenOptions.groupeKey}
+            groupByKeys={gardenOptions.groupByKeys}
             itemKey={gardenOptions.itemKey}
         />
     ) : (

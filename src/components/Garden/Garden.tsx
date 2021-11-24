@@ -10,6 +10,7 @@ import { Items } from './Components/Items';
 interface GardenProps<T> {
     data: T[] | undefined;
     groupeKey: keyof T;
+    groupByKeys: (keyof T)[] | undefined;
     itemKey: string;
     customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
     statusFunc?: (data: T) => string;
@@ -19,15 +20,18 @@ interface GardenProps<T> {
 export function Garden<T>({
     data,
     groupeKey,
+    groupByKeys,
     itemKey,
     customItemView,
     statusFunc,
     customGroupView,
-}: GardenProps<T>) {
+}: GardenProps<T>): JSX.Element | null {
     const [garden, setGarden] = useState<Data<T>>();
     const [rootKey, setRootKey] = useState<string>(groupeKey.toString());
-    const [groupKeys, setGroupKeys] = useState<string[]>([]);
-
+    if (!groupByKeys) {
+        groupByKeys = [];
+    }
+    const [groupKeys, setGroupKeys] = useState<string[]>(groupByKeys.flatMap((x) => x.toString()));
     const groupingOptions = useMemo(() => {
         if (data) {
             //exclude rootkey, itemkey and all keys present in groupKeys
