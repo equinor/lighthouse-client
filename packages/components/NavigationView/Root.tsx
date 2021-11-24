@@ -94,6 +94,7 @@ type DataSet<T> = {
     value: string,
     subGroups: Data<T>,
     items: T[],
+    isExpanded: false,
     count: number,
     customRenderFunction?: RenderFunction<T>
 }
@@ -110,7 +111,7 @@ function groupBy<T, K extends keyof T>(arr: T[], keys: K[], renderFunction?: Cus
     const key = keys[0] && keys[0].toString() || undefined
     if (!key) return {} as Data<T>;
 
-    const data = arr.reduce((acc, item) => {
+    const data = arr.reduce((acc: Data<T>, item) => {
         const itemKeys: [] = Array.isArray(item[key]) ? item[key] : [item[key]];
 
         itemKeys.forEach((valueKey: string) => {
@@ -121,6 +122,7 @@ function groupBy<T, K extends keyof T>(arr: T[], keys: K[], renderFunction?: Cus
                 subGroups: {},
                 items: [],
                 count: 0,
+                isExpanded: false,
                 renderFunction: renderFunction && renderFunction[key]
             };
             acc[valueKey].items.push(item)

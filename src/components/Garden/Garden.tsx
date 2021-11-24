@@ -1,91 +1,107 @@
-import { tokens } from "@equinor/eds-tokens";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import { useDataContext } from "../CompletionView/src/Context/DataProvider";
-import { createGarden, Garden } from "./Services/createGarden";
+import React, { useEffect, useMemo, useState } from 'react';
 
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    overflow: scroll;
-    align-items: flex-start;
-`
-const Col = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 4px;
-`
+import { FilterSelector } from './Components/FilterSelector';
+import { Col, Count, Groupe, Title, Wrapper } from './Styles/gardenStyle';
+import { createGarden, Garden } from './Services/createGarden';
+import { Data, DataSet } from './Models/data';
+import { Group } from './Components/Group';
+import { Items } from './Components/Items';
 
-const Title = styled.p`
-    padding-bottom: .5rem;
-    font-weight: 600;
-    color: ${tokens.colors.text.static_icons__default.rgba};
-    `
-const Groupe = styled.div`
-    padding: .1rem;
-    min-width: 200px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    height: 32px;
+interface GardenProps<T> {
+    data: T[] | undefined;
+    groupeKey: keyof T;
+    groupByKeys: (keyof T)[] | undefined;
+    itemKey: string;
+    customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
+    statusFunc?: (data: T) => string;
+    customGroupView?: React.FC<{ data: DataSet<T>; onClick: () => void }>;
+}
 
-    ::after{
-        content: " ";
-        position: absolute;
-        bottom: 10px;
-        width: 100%;
-        height: 2px;
-        background-color: ${tokens.colors.ui.background__info.rgba};
+export function Garden<T>({
+    data,
+    groupeKey,
+    groupByKeys,
+    itemKey,
+    customItemView,
+    statusFunc,
+    customGroupView,
+}: GardenProps<T>): JSX.Element | null {
+    const [garden, setGarden] = useState<Data<T>>();
+    const [rootKey, setRootKey] = useState<string>(groupeKey.toString());
+    if (!groupByKeys) {
+        groupByKeys = [];
     }
-`
-
-const Count = styled.span`
-    color: ${tokens.colors.text.static_icons__default.rgba};
-    font-weight: 300;
-    font-size: .8rem;
-    padding-bottom: .5rem;
-`
-
-
-const Pack = styled.p`
-    padding: .5rem 1rem;
-    margin: 0;
-    margin-bottom: 4px;
-    border: 1px solid ${tokens.colors.text.static_icons__tertiary.rgba};
-    border-radius: 5px;
-    color: ${tokens.colors.text.static_icons__default.rgba};
-    min-width: 200px;
-    cursor: pointer;
-
-    :hover{
-        opacity: .5;
-    }
-`
-
-export function Garden<T>({ data, groupeKey, itemKey }: { data: T[] | undefined, groupeKey: keyof T, itemKey: string }) {
-    const { setSelected } = useDataContext()
-    const [garden, setGarden] = useState<Garden<T>>()
+    const [groupKeys, setGroupKeys] = useState<string[]>(groupByKeys.flatMap((x) => x.toString()));
+    const groupingOptions = useMemo(() => {
+        if (data) {
+            //exclude rootkey, itemkey and all keys present in groupKeys
+            const options: string[] = [];
+            Object.keys(data[0]).map((x) => {
+                if (x !== rootKey && x !== itemKey && !groupKeys.includes(x)) {
+                    options.push(x);
+                }
+            });
+            return options;
+        }
+        return null;
+    }, [data, rootKey, groupKeys, itemKey]);
 
     useEffect(() => {
-        data && setGarden(createGarden(data, groupeKey))
-    }, [data, groupeKey])
+        data &&
+            setGarden(
+                createGarden(
+                    data,
+                    rootKey as unknown as keyof T,
+                    groupKeys as unknown as (keyof T)[]
+                )
+            );
+    }, [data, groupeKey, rootKey, groupKeys]);
 
-    return (<Wrapper>
-        {garden && Object.keys(garden).map((key, index) => (
-            <Col key={`col-${index}`}>
-                <Groupe>
-                    <Title>
-                        {key}
-                    </Title>
-                    <Count>
-                        ({garden[key].length})
-                    </Count>
-                </Groupe>
-                {
-                    garden[key].slice(0, 500).map((item, index) => <Pack onClick={() => setSelected(item[itemKey])} key={key + index}>{item[itemKey]}</Pack>)
-                }
-            </Col>))}
-    </Wrapper>);
+    if (!data || !groupingOptions) {
+        return null;
+    }
+
+    return (
+        <>
+            <FilterSelector
+                groupingOptions={groupingOptions}
+                setGroupKeys={setGroupKeys}
+                groupKeys={groupKeys}
+                rootKey={rootKey}
+                setRootKey={setRootKey}
+            />
+            <Wrapper>
+                {garden &&
+                    Object.keys(garden).map((key, index) => (
+                        <Col key={`col-${index}`}>
+                            <Groupe>
+                                <Title>{garden[key].value}</Title>
+                                <Count>({garden[key].count})</Count>
+                            </Groupe>
+                            {garden[key].items[0] != null ? (
+                                <Items
+                                    key={key + index}
+                                    customItemView={customItemView}
+                                    statusFunc={statusFunc}
+                                    data={garden[key].items}
+                                    itemKey={itemKey}
+                                />
+                            ) : (
+                                <>
+                                    {Object.keys(garden[key].subGroups).map((groupKey, index) => (
+                                        <Group
+                                            key={groupKey + index}
+                                            statusFunc={statusFunc}
+                                            customGroupView={customGroupView}
+                                            group={garden[key].subGroups[groupKey]}
+                                            itemKey={itemKey}
+                                        />
+                                    ))}
+                                </>
+                            )}
+                        </Col>
+                    ))}
+            </Wrapper>
+        </>
+    );
 }
