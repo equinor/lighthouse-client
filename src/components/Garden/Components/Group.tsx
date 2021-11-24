@@ -9,6 +9,7 @@ interface GroupProps<T> {
     group: DataSet<T>;
     itemKey: string;
     customGroupView?: React.FC<{ data: DataSet<T>; onClick: () => void }>;
+    customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
     statusFunc?: (data: T) => string;
 }
 
@@ -16,6 +17,7 @@ export function Group<T>({
     group,
     itemKey,
     customGroupView,
+    customItemView,
     statusFunc,
 }: GroupProps<T>): JSX.Element {
     const [isExpanded, setIsExpanded] = useState(group.isExpanded);
@@ -41,7 +43,12 @@ export function Group<T>({
 
             {group.isExpanded &&
                 (group.items[0] != null ? (
-                    <Items data={group.items} statusFunc={statusFunc} itemKey={itemKey} />
+                    <Items
+                        customItemView={customItemView}
+                        data={group.items}
+                        statusFunc={statusFunc}
+                        itemKey={itemKey}
+                    />
                 ) : (
                     <>
                         {Object.values(group.subGroups).map((x) => (

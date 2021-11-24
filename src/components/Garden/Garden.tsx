@@ -93,6 +93,7 @@ export function Garden<T>({
                                             key={groupKey + index}
                                             statusFunc={statusFunc}
                                             customGroupView={customGroupView}
+                                            customItemView={customItemView}
                                             group={garden[key].subGroups[groupKey]}
                                             itemKey={itemKey}
                                         />
