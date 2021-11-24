@@ -62,6 +62,22 @@ export const Pack = styled.p`
     }
 `;
 
+export const Item = styled.p`
+    padding: 0.5rem 1rem;
+    margin: 0;
+    margin-bottom: 4px;
+    border: 1px solid ${tokens.colors.text.static_icons__tertiary.rgba};
+    border-radius: 5px;
+    color: ${tokens.colors.text.static_icons__default.rgba};
+    min-width: 200px;
+    cursor: pointer;
+    background-color: white;
+
+    :hover {
+        opacity: 0.5;
+    }
+`;
+
 interface DotProps {
     color: string;
 }
@@ -71,4 +87,9 @@ export const Dot = styled.p`
     width: 1rem;
     background-color: ${(p: DotProps) => p.color};
     border-radius: 50%;
+`;
+
+export const SubGroup = styled.p`
+    margin-left: 10px;
+    margin-bottom: 0px;
 `;

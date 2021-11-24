@@ -1,7 +1,5 @@
 import { SingleSelect } from '@equinor/eds-core-react';
-import { FC, useEffect, useState } from 'react';
-import { Wrapper } from '../../Filter/Components/FilterGroup/FilterGroup-Styles';
-
+import { FC, useState } from 'react';
 
 interface FilterSelectorProps {
     groupingOptions: string[];
@@ -9,16 +7,20 @@ interface FilterSelectorProps {
     setRootKey: React.Dispatch<React.SetStateAction<string>>;
     setGroupKeys: React.Dispatch<React.SetStateAction<string[]>>;
     groupKeys: string[];
-
 }
 
-export const FilterSelector: FC<FilterSelectorProps> = ({ groupingOptions, rootKey, setRootKey, setGroupKeys, groupKeys }: FilterSelectorProps): JSX.Element => {
-    const [selectedOption, setSelectedOption] = useState<string>("");
-
+export const FilterSelector: FC<FilterSelectorProps> = ({
+    groupingOptions,
+    rootKey,
+    setRootKey,
+    setGroupKeys,
+    groupKeys,
+}: FilterSelectorProps): JSX.Element => {
+    const [selectedOption, setSelectedOption] = useState<string>('');
 
     const handleSelectedItemsChanged = (newValue: string | null | undefined, index: number) => {
         if (newValue === null) {
-            let newKeys: string[] = [];
+            const newKeys: string[] = [];
 
             for (let i = 0; i < index; i++) {
                 newKeys.push(groupKeys[i]);
@@ -27,17 +29,20 @@ export const FilterSelector: FC<FilterSelectorProps> = ({ groupingOptions, rootK
         } else {
             newValue && setGroupKeys([...groupKeys, newValue]);
         }
-    }
+    };
 
     return (
-        <div style={{
-            display: "flex", justifyContent: "left"
-        }}>
-            <p> Group by</p >
-            <div style={{ width: "200px" }}>
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'left',
+            }}
+        >
+            <p> Group by</p>
+            <div style={{ width: '200px' }}>
                 <SingleSelect
                     items={groupingOptions}
-                    label={""}
+                    label={''}
                     initialSelectedItem={rootKey}
                     handleSelectedItemChange={(changes) => {
                         if (changes.selectedItem === null) {
@@ -48,34 +53,31 @@ export const FilterSelector: FC<FilterSelectorProps> = ({ groupingOptions, rootK
                     }}
                 />
             </div>
-            {
-
-                groupKeys.map((x, index) => {
-                    return (
-                        <>
-                            <p>then</p>
-                            <SingleSelect
-                                items={groupingOptions}
-                                label={""}
-                                initialSelectedItem={x}
-                                handleSelectedItemChange={(changes) => {
-                                    handleSelectedItemsChanged(changes.selectedItem, index);
-                                }}
-                            />
-                        </>);
-                })
-            }
+            {groupKeys.map((x, index) => {
+                return (
+                    <>
+                        <p>then</p>
+                        <SingleSelect
+                            items={groupingOptions}
+                            label={''}
+                            initialSelectedItem={x}
+                            handleSelectedItemChange={(changes) => {
+                                handleSelectedItemsChanged(changes.selectedItem, index);
+                            }}
+                        />
+                    </>
+                );
+            })}
             <p>then </p>
             <SingleSelect
                 items={groupingOptions}
-                label={""}
+                label={''}
                 selectedOption={selectedOption}
                 handleSelectedItemChange={(changes) => {
                     changes.selectedItem && setGroupKeys([...groupKeys, changes.selectedItem]);
-                    setSelectedOption("");
+                    setSelectedOption('');
                 }}
             />
-        </div >
-    )
-}
-
+        </div>
+    );
+};

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Count, Pack } from '../Styles/gardenStyle';
+import { Count, Pack, SubGroup } from '../Styles/gardenStyle';
 import { ChevronUp, ChevronDown } from '../Icons/Chevron';
 import { DataSet } from '../Models/data';
 import { Items } from '../Components/Items';
@@ -26,7 +26,7 @@ export function Group<T>({
     const CustomRender = customGroupView;
 
     return (
-        <>
+        <SubGroup>
             {CustomRender ? (
                 <CustomRender key={group.value} data={group} onClick={handleClick}>
                     {group.value}{' '}
@@ -54,6 +54,6 @@ export function Group<T>({
                         ))}
                     </>
                 ))}
-        </>
+        </SubGroup>
     );
 }

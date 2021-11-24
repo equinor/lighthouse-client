@@ -27,6 +27,7 @@ export interface TableOptions {
 export interface GardenOptions<T> {
     groupeKey: keyof T;
     itemKey: keyof T;
+    groupByKeys?: (keyof T)[];
     customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
     statusFunc?: (data: T) => string;
     customGroupView?: React.FC<{ data: DataSet<T>; onClick: () => void }>;
