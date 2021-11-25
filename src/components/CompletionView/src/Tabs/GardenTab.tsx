@@ -2,6 +2,7 @@ import { useFilteredData } from '../../../Filter';
 import { GardenView } from '../../../Garden/Components/GardenView';
 import { GardenProvider } from '../../../Garden/Context/GardenProvider';
 import { useDataContext } from '../Context/DataProvider';
+import { NoGardenOptions } from '../Components/NoGardenOptions';
 
 export const GardenTab = (): JSX.Element => {
     const data = useFilteredData();
@@ -12,6 +13,6 @@ export const GardenTab = (): JSX.Element => {
             <GardenView />
         </GardenProvider>
     ) : (
-        <p> No options provided.</p>
+        <NoGardenOptions />
     );
 };
