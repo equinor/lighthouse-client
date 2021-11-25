@@ -1,23 +1,21 @@
-import { useState } from 'react';
-
 import { Count } from '../Styles/common';
 import { Pack, SubGroup } from '../Styles/group';
 import { ChevronUp, ChevronDown } from '../Icons/Chevron';
 import { DataSet } from '../Models/data';
 import { Items } from '../Components/Items';
-import React from 'react';
-import { GardenContext } from '../Context/GardenContext';
+import { useGardenContext } from '../Context/GardenProvider';
+import { useRefresh } from '../hooks/useRefresh';
 
 interface GroupProps<T> {
     group: DataSet<T>;
 }
 
 export function Group<T>({ group }: GroupProps<T>): JSX.Element {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const { customGroupView } = React.useContext(GardenContext);
+    const refresh = useRefresh();
+    const { customGroupView } = useGardenContext<T>();
 
     const handleClick = () => {
-        setIsExpanded((prev) => !prev);
+        refresh();
         group.isExpanded = !group.isExpanded;
     };
     const CustomRender = customGroupView;

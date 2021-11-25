@@ -6,12 +6,11 @@ import { Wrapper, Col, Groupe, Title, Count } from '../Styles/common';
 import { Data } from '../Models/data';
 import { Group } from './Group';
 import { Items } from './Items';
-import { GardenContext } from '../Context/GardenContext';
 import { getExcludeKeys } from '../Utils/excludeKeys';
+import { useGardenContext } from '../Context/GardenProvider';
 
 export function GardenView<T>(): JSX.Element | null {
-    const { groupKeys, data, groupeKey, excludeKeys, setExcludeKeys } =
-        React.useContext(GardenContext);
+    const { data, groupByKeys, groupeKey, excludeKeys, setExcludeKeys } = useGardenContext<T>();
     const [garden, setGarden] = useState<Data<T>>();
 
     if (!excludeKeys && data) {
@@ -24,10 +23,10 @@ export function GardenView<T>(): JSX.Element | null {
                 createGarden(
                     data,
                     groupeKey as unknown as keyof T,
-                    groupKeys as unknown as (keyof T)[]
+                    groupByKeys as unknown as (keyof T)[]
                 )
             );
-    }, [data, groupeKey, groupKeys]);
+    }, [data, groupeKey, groupByKeys]);
 
     if (!data) {
         return null;
@@ -35,7 +34,7 @@ export function GardenView<T>(): JSX.Element | null {
 
     return (
         <>
-            <FilterSelector />
+            <FilterSelector<T> />
             <Wrapper>
                 {garden &&
                     Object.keys(garden).map((key, index) => (

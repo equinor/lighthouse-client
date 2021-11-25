@@ -1,9 +1,11 @@
 import { useContext, useReducer } from 'react';
 import {
+    CustomGroupViewProps,
+    CustomItemViewProps,
     GardenContext,
-    GardenContextState,
     GardenProviderProps,
     GardenState,
+    StatusFunc,
 } from './GardenContext';
 import { actions } from './GardenActions';
 import { GardenReducer } from './GardenReducer';
@@ -13,21 +15,21 @@ export function GardenProvider<T>({
     data,
     gardenOptions,
 }: GardenProviderProps<T>): JSX.Element {
-    const initialState: GardenState<any> = {
-        groupKeys: gardenOptions.groupByKeys as string[],
-        groupeKey: gardenOptions.groupeKey,
-        itemKey: gardenOptions.itemKey,
-        customGroupView: gardenOptions.customGroupView,
-        customItemView: gardenOptions.customItemView,
-        excludeKeys: gardenOptions.excludeKeys,
-        groupByKeys: gardenOptions.groupByKeys,
-        statusFunc: gardenOptions.statusFunc,
+    const initialState: GardenState = {
+        groupeKey: gardenOptions.groupeKey.toString(),
+        itemKey: gardenOptions.itemKey.toString(),
+        customGroupView: gardenOptions.customGroupView as React.FC<CustomGroupViewProps<unknown>>,
+        customItemView: gardenOptions.customItemView as React.FC<CustomItemViewProps<unknown>>,
+        excludeKeys: gardenOptions.excludeKeys as string[],
+        groupByKeys: (gardenOptions.groupByKeys as string[]) || [],
+        statusFunc: gardenOptions.statusFunc as StatusFunc<unknown>,
         data: data,
     };
     const [state, dispatch] = useReducer(GardenReducer, initialState);
 
     function setGroupKeys(groupKeys: string[]): void {
-        dispatch(actions.setGroupKeys(groupKeys));
+        const keys = groupKeys;
+        dispatch(actions.setGroupKeys(keys));
     }
 
     function setGroupeKey(groupeKey: string): void {
@@ -52,6 +54,23 @@ export function GardenProvider<T>({
     );
 }
 
-export function useGardenContext(): GardenContextState<any> {
-    return useContext(GardenContext);
+export function useGardenContext<T>() {
+    const gardenContext = useContext(GardenContext);
+
+    return {
+        ...gardenContext,
+        groupeKey: gardenContext.groupeKey as keyof T,
+        itemKey: gardenContext.itemKey as keyof T,
+        customGroupView: gardenContext.customGroupView as React.FC<CustomGroupViewProps<T>>,
+        customItemView: gardenContext.customItemView as React.FC<CustomItemViewProps<T>>,
+        excludeKeys: gardenContext.excludeKeys as (keyof T)[],
+        groupByKeys: gardenContext.groupByKeys as (keyof T)[],
+        statusFunc: gardenContext.statusFunc as StatusFunc<T>,
+        data: gardenContext.data as T[],
+    };
 }
+
+type Hex = `#${string}`;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const a: Hex = '#1233';

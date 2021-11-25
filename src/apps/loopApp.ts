@@ -1,6 +1,8 @@
 import { baseClient } from '@equinor/http-client';
 import { createDataViewer } from '../components/CompletionView/src/DataViewerApi/DataViewerApi';
 import { AppApi } from './apps';
+import { CustomGroupView } from './CustomGroupsView';
+import { CustomItemsView } from './CustomItemsView';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 
@@ -124,11 +126,33 @@ export function setup(appApi: AppApi) {
     commPkg.registerGardenOptions({
         groupeKey: 'phase',
         itemKey: 'tagNo',
+        groupByKeys: ['commPk'],
+        statusFunc: statusFunc,
+        //customItemView: CustomItemsView,
+        //excludeKeys: [],
+        //customGroupView: CustomGroupView,
     });
+
     commPkg.registerAnalyticsOptions({});
     commPkg.registerTreeOptions({
         groupByKeys: ['status', 'responsible', 'tagNo'],
         rootNode: 'phase',
     });
     // console.info(`Config for ${appManifest.shortName} done! `);
+}
+
+function statusFunc<T>(data: T) {
+    switch (data['status']) {
+        case 'OS':
+            return 'yellow';
+
+        case 'OK':
+            return 'green';
+
+        case 'PB':
+            return 'pink';
+
+        default:
+            return 'black';
+    }
 }

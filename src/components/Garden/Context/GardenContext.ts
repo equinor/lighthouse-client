@@ -2,19 +2,31 @@ import { createContext } from 'react';
 import { DataSet } from '../Models/data';
 import { GardenOptions } from '../../CompletionView/src/DataViewerApi/DataViewState';
 
-export interface GardenState<T> {
-    groupeKey: keyof T;
-    itemKey: keyof T;
-    groupByKeys?: (keyof T)[];
-    excludeKeys?: (keyof T)[];
-    customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
-    statusFunc?: (data: T) => string;
-    customGroupView?: React.FC<{ data: DataSet<any>; onClick: () => void }>;
-    groupKeys: string[];
-    data: T[] | undefined;
+export interface CustomItemViewProps<T> {
+    data: T;
+    itemKey: string;
+    onClick: () => void;
 }
 
-export interface GardenContextState<T> extends GardenState<T> {
+export interface CustomGroupViewProps<T> {
+    data: DataSet<T>;
+    onClick: () => void;
+}
+
+export type StatusFunc<T> = (data: T) => string;
+
+export interface GardenState {
+    groupeKey: string;
+    itemKey: string;
+    groupByKeys: string[];
+    excludeKeys?: string[];
+    customItemView?: React.FC<CustomItemViewProps<unknown>>;
+    statusFunc?: StatusFunc<unknown>;
+    customGroupView?: React.FC<CustomGroupViewProps<unknown>>;
+    data: unknown[] | undefined;
+}
+
+export interface GardenContextState extends GardenState {
     setGroupKeys: (groupKeys: string[]) => void;
     setExcludeKeys: (excludeKeys: string[]) => void;
     setGroupeKey: (groupeKey: string) => void;
@@ -32,4 +44,4 @@ export enum DataAction {
     setExcludeKeys = 'setExcludeKeys',
 }
 
-export const GardenContext = createContext({} as GardenContextState<any>);
+export const GardenContext = createContext({} as GardenContextState);

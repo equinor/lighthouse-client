@@ -1,13 +1,14 @@
 import { SingleSelect } from '@equinor/eds-core-react';
 import React, { useMemo } from 'react';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { GardenContext } from '../Context/GardenContext';
+import { useGardenContext } from '../Context/GardenProvider';
 
-export const FilterSelector: FC = (): JSX.Element => {
+export function FilterSelector<T>(): JSX.Element {
     const [selectedOption, setSelectedOption] = useState<string>('');
-    const { groupKeys, setGroupKeys, setGroupeKey, data, groupeKey, excludeKeys, itemKey } =
-        React.useContext(GardenContext);
+
+    const { groupByKeys, setGroupKeys, setGroupeKey, data, groupeKey, excludeKeys, itemKey } =
+        useGardenContext<T>();
 
     const groupingOptions = useMemo(() => {
         if (data) {
@@ -17,8 +18,8 @@ export const FilterSelector: FC = (): JSX.Element => {
                 if (
                     x !== groupeKey &&
                     x !== itemKey &&
-                    !groupKeys.includes(x) &&
-                    !excludeKeys?.includes(x)
+                    !groupByKeys.includes(x as keyof T) &&
+                    !excludeKeys?.includes(x as keyof T)
                 ) {
                     options.push(x);
                 }
@@ -26,18 +27,18 @@ export const FilterSelector: FC = (): JSX.Element => {
             return options;
         }
         return null;
-    }, [data, groupeKey, groupKeys, itemKey, excludeKeys]);
+    }, [data, groupeKey, groupByKeys, itemKey, excludeKeys]);
 
     const handleSelectedItemsChanged = (newValue: string | null | undefined, index: number) => {
         if (newValue === null) {
             const newKeys: string[] = [];
 
             for (let i = 0; i < index; i++) {
-                newKeys.push(groupKeys[i]);
+                newKeys.push(groupByKeys[i] as string);
             }
             setGroupKeys([...newKeys]);
         } else {
-            newValue && setGroupKeys([...groupKeys, newValue]);
+            newValue && setGroupKeys([...(groupByKeys as string[]), newValue]);
         }
     };
 
@@ -56,43 +57,43 @@ export const FilterSelector: FC = (): JSX.Element => {
                     setGroupKeys([]);
                 }}
             />
-            {groupKeys.map((x, index) => {
+            {groupByKeys.map((x, index) => {
                 return (
-                    <>
+                    <SelectRowWrapper key={x.toString()}>
                         <Separator>then</Separator>
                         <SingleSelect
                             items={groupingOptions || []}
                             label={''}
-                            initialSelectedItem={x}
+                            initialSelectedItem={x.toString()}
                             handleSelectedItemChange={(changes) => {
                                 handleSelectedItemsChanged(changes.selectedItem, index);
                             }}
                         />
-                    </>
+                    </SelectRowWrapper>
                 );
             })}
             {groupingOptions && groupingOptions.length > 0 && (
                 <>
-                    <Separator>then </Separator>
+                    <Separator>then</Separator>
                     <SingleSelect
                         items={groupingOptions}
                         label={''}
                         selectedOption={selectedOption}
                         handleSelectedItemChange={(changes) => {
-                            changes.selectedItem &&
-                                setGroupKeys([...groupKeys, changes.selectedItem]);
                             setSelectedOption('');
+                            changes.selectedItem &&
+                                setGroupKeys([...(groupByKeys as string[]), changes.selectedItem]);
                         }}
                     />
                 </>
             )}
         </SelectRowWrapper>
     );
-};
+}
 
 const SelectRowWrapper = styled.div`
     display: flex;
-    align-items: left;
+    align-items: center;
 `;
 
 const Separator = styled.p`

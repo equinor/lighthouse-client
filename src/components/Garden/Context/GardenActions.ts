@@ -2,15 +2,15 @@ import { ActionType, createCustomAction } from 'typesafe-actions';
 import { DataAction } from './GardenContext';
 
 export const actions = {
-    setGroupKeys: createCustomAction(DataAction.setGroupKeys, (groupKeys) => ({
+    setGroupKeys: createCustomAction(DataAction.setGroupKeys, (groupKeys: string[]) => ({
         groupKeys,
     })),
 
-    setExcludeKeys: createCustomAction(DataAction.setExcludeKeys, (excludeKeys) => ({
+    setExcludeKeys: createCustomAction(DataAction.setExcludeKeys, (excludeKeys: string[]) => ({
         excludeKeys,
     })),
 
-    setGroupeKey: createCustomAction(DataAction.setGroupeKey, (groupeKey) => ({
+    setGroupeKey: createCustomAction(DataAction.setGroupeKey, (groupeKey: string) => ({
         groupeKey,
     })),
 };

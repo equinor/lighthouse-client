@@ -2,7 +2,7 @@ import { useDataContext } from '../../CompletionView/src/Context/DataProvider';
 import { Item } from '../Styles/item';
 import { Dot } from '../Styles/dot';
 import React from 'react';
-import { GardenContext } from '../Context/GardenContext';
+import { useGardenContext } from '../Context/GardenProvider';
 
 interface RenderItemsProps<T> {
     data: T[];
@@ -10,7 +10,7 @@ interface RenderItemsProps<T> {
 
 export function Items<T>({ data }: RenderItemsProps<T>): JSX.Element | null {
     const { setSelected } = useDataContext();
-    const { itemKey, customItemView, statusFunc } = React.useContext(GardenContext);
+    const { itemKey, customItemView, statusFunc } = useGardenContext<T>();
 
     const CustomRender = customItemView;
 
