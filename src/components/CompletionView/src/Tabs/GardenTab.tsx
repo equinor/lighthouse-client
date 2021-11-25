@@ -1,16 +1,17 @@
-import { useFilteredData } from "../../../Filter";
-import { Garden } from "../../../Garden";
-import { useDataContext } from "../Context/DataProvider";
+import { useFilteredData } from '../../../Filter';
+import { GardenView } from '../../../Garden/Components/GardenView';
+import { GardenProvider } from '../../../Garden/Context/GardenProvider';
+import { useDataContext } from '../Context/DataProvider';
 
-
-
-
-
-export const GardenTab = () => {
-    const data = useFilteredData()
+export const GardenTab = (): JSX.Element => {
+    const data = useFilteredData();
     const { gardenOptions } = useDataContext();
 
-    return (
-        gardenOptions ? <Garden data={data} groupeKey={gardenOptions.groupeKey} itemKey={gardenOptions.itemKey} /> : <p> No options provided.</p>
+    return gardenOptions ? (
+        <GardenProvider gardenOptions={gardenOptions} data={data}>
+            <GardenView />
+        </GardenProvider>
+    ) : (
+        <p> No options provided.</p>
     );
-}
+};
