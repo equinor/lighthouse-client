@@ -1,5 +1,4 @@
 import { ApexOptions } from "apexcharts";
-import moment from "moment";
 import { useMemo } from "react";
 import Chart from "react-apexcharts";
 import AutoSizer from "react-virtualized-auto-sizer";
@@ -18,6 +17,7 @@ export interface TimeBarChartOptions<T> {
 export function TimeBarChart<T>({ data, options: { timeChartOptions } }: TimeBarChartProps<T>): JSX.Element {
 
 
+
     const { series, categories } = useMemo(() => cumulativeSeries(data, timeChartOptions), [data]);
 
 
@@ -25,7 +25,7 @@ export function TimeBarChart<T>({ data, options: { timeChartOptions } }: TimeBar
         chart: {
             id: 'chart2',
             height: 350,
-            // type: 'line',
+
             toolbar: {
                 autoSelected: 'pan',
                 show: false
@@ -90,45 +90,45 @@ export function TimeBarChart<T>({ data, options: { timeChartOptions } }: TimeBar
         }
     }), [categories])
 
-    var optionsLine: ApexOptions = {
+    // var optionsLine: ApexOptions = {
 
-        chart: {
-            id: 'chart1',
-            brush: {
-                target: 'chart2',
-                enabled: true
-            },
-            toolbar: {
-                show: false
-            },
-            selection: {
-                enabled: true,
-                xaxis: {
-                    min: new Date(moment(new Date()).subtract(30, 'days').calendar()).getTime(),
-                }
-            },
-        },
-        colors: ['#008FFB'],
-        fill: {
-            type: 'gradient',
-            gradient: {
-                opacityFrom: 0.91,
-                opacityTo: 0.5,
-            }
-        },
-        xaxis: {
-            type: 'datetime',
-            categories,
+    //     chart: {
+    //         id: 'chart1',
+    //         brush: {
+    //             target: 'chart2',
+    //             enabled: true
+    //         },
+    //         toolbar: {
+    //             show: false
+    //         },
+    //         selection: {
+    //             enabled: true,
+    //             xaxis: {
+    //                 min: new Date(moment(new Date()).subtract(30, 'days').calendar()).getTime(),
+    //             }
+    //         },
+    //     },
+    //     colors: ['#008FFB'],
+    //     fill: {
+    //         type: 'gradient',
+    //         gradient: {
+    //             opacityFrom: 0.91,
+    //             opacityTo: 0.5,
+    //         }
+    //     },
+    //     xaxis: {
+    //         type: 'datetime',
+    //         categories,
 
-            tooltip: {
-                enabled: false
-            }
-        },
-        yaxis: {
-            tickAmount: 1,
-            show: false
-        }
-    };
+    //         tooltip: {
+    //             enabled: false
+    //         }
+    //     },
+    //     yaxis: {
+    //         tickAmount: 1,
+    //         show: false
+    //     }
+    // };
 
     return (
         <AutoSizer>
@@ -138,17 +138,17 @@ export function TimeBarChart<T>({ data, options: { timeChartOptions } }: TimeBar
                     <Chart
                         options={options}
                         series={series}
-                        type="line"
+                        type="bar"
                         height={`${300}px`}
                         width={`${width}px`}
                     />
-                    <Chart
+                    {/* <Chart
                         options={optionsLine}
                         series={[series[0]]}
                         type="line"
                         height={`${100}px`}
                         width={`${width}px`}
-                    />
+                    /> */}
                 </>
             )}
         </AutoSizer>

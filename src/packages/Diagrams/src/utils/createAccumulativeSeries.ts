@@ -120,5 +120,3 @@ export function cumulativeSeries<T>(dataItem: T[], options: CumulativeSeriesOpti
 //         categories,
 //     };
 // }
-
-

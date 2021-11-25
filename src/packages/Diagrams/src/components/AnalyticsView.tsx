@@ -7,7 +7,9 @@ import { Status, StatusItem } from "../../../StatusBar/src/components/satusItem/
 import { StatusBar } from "../../../StatusBar/src/components/statusBar/StatusBar";
 import { BarChartOptions } from "./BarChart";
 import { LineChartOptions } from "./LineChart";
-import { TimeBarChart, TimeBarChartOptions } from "./TimeBarChart";
+import { TableVisual } from "./TableVisual/TableVisual";
+import { TimeChart } from "./TimeVisual/TimeVisual";
+import { TimeBarChartOptions } from "./TimeVisual/Types/timeVisualOptions";
 
 const WrapperCharts = styled(Card)`
     width: 100%;
@@ -16,14 +18,18 @@ const WrapperCharts = styled(Card)`
 `;
 const Wrapper = styled.div`
     display: flex;
+    height: auto;
     flex-direction: row;
-`;
+    margin-bottom: 1rem;
+    width: 100%;
+    `;
 
 const Page = styled.section`
     background-color: ${tokens.colors.ui.background__light.rgba};
-    height: 100vh;
+    height: 100%;
     width: 100%;
-    `
+    margin-bottom: 1rem;
+`
 
 
 
@@ -114,23 +120,50 @@ export function AnalyticsView() {
         categoryKey: "phase",
         colors: ['#F44336', '#E91E63', '#9C27B0'],
     }
-    const option3: TimeBarChartOptions<Loop> = {
+    const o2: TimeBarChartOptions<Loop> = {
+        title: "Punch B",
         timeChartOptions: {
             categoriesKey: "createdAt",
-            title: "Created At",
-            type: 'line',
-            series: {
-                os: {
-                    title: "PB",
-                    type: "line",
-                    key: "status",
-                    value: "PB"
-                }
-            }
+            title: "PB",
+            type: 'bar',
+            key: "status",
+            value: "PB"
             // accenting?: boolean;
             // filter: (data: SeriesItem) => data.date.includes("2021")
 
-        }
+        },
+        colors: ['#36f4f4', '#fb548c', '#9C27B0', "#eeb752"],
+        //  colors: ['#F44336', '#E91E63', '#9C27B0'],
+    }
+    const o3: TimeBarChartOptions<Loop> = {
+        title: "Outstanding",
+        timeChartOptions: {
+            categoriesKey: "createdAt",
+            title: "OS",
+            type: 'bar',
+            key: "status",
+            value: "OS"
+            // accenting?: boolean;
+            // filter: (data: SeriesItem) => data.date.includes("2021")
+
+        },
+        colors: ['#36f4f4', '#fb548c', '#9C27B0', "#eeb752"],
+        //  colors: ['#F44336', '#E91E63', '#9C27B0'],
+    }
+
+    const o1: TimeBarChartOptions<Loop> = {
+        title: "Loops Created",
+        timeChartOptions: {
+            categoriesKey: "createdAt",
+            title: "Created",
+            type: 'bar',
+            // key: "status",
+            // value: "PB"
+            // accenting?: boolean;
+            // filter: (data: SeriesItem) => data.date.includes("2021")
+
+        },
+        colors: ['#36f4f4', '#fb548c', '#9C27B0', "#eeb752"],
         //  colors: ['#F44336', '#E91E63', '#9C27B0'],
     }
 
@@ -146,7 +179,20 @@ export function AnalyticsView() {
                     {data?.length && <BarChart<Loop> data={data} options={option} />}
                 </WrapperCharts> */}
                 <WrapperCharts>
-                    {data?.length && <TimeBarChart<Loop> data={data} options={option3} />}
+                    {data?.length && <TimeChart<Loop> data={data} options={o1} />}
+                </WrapperCharts>
+            </Wrapper>
+            <Wrapper>
+                <WrapperCharts>
+                    {data?.length && <TimeChart<Loop> data={data} options={o2} />}
+                </WrapperCharts>
+                <WrapperCharts>
+                    {data?.length && <TimeChart<Loop> data={data} options={o3} />}
+                </WrapperCharts>
+            </Wrapper>
+            <Wrapper>
+                <WrapperCharts>
+                    {data?.length && <TableVisual data={data} options={{ initialGroup: "status" }} />}
                 </WrapperCharts>
             </Wrapper>
         </Page>

@@ -13,5 +13,7 @@ export interface CumulativeSeriesOptions<T> {
     type: 'column' | 'line' | 'bar';
     series?: Record<string, SeriesItemOptions<T>>;
     accenting?: boolean;
+    key?: keyof T;
+    value?: T[keyof T];
     filter?: (data: SeriesItem<T>) => boolean;
 }
