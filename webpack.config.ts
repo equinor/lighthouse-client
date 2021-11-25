@@ -100,6 +100,7 @@ const webpackConfig: Configuration = {
     plugins: [
         /* Deletes our build directory when building */
         // new SourceMapDevToolPlugin({}),
+        // new WorkerPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template,
