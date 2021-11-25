@@ -1,6 +1,8 @@
 import { Atom } from '@dbeining/react-atom';
+import React from 'react';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
+import { DataSet } from '../../../Garden/Models/data';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
 
 export interface DataViewState {
@@ -25,6 +27,11 @@ export interface TableOptions {
 export interface GardenOptions<T> {
     groupeKey: keyof T;
     itemKey: keyof T;
+    groupByKeys?: (keyof T)[];
+    excludeKeys?: (keyof T)[];
+    customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
+    statusFunc?: (data: T) => string;
+    customGroupView?: React.FC<{ data: DataSet<any>; onClick: () => void }>;
 }
 
 export interface PowerBiOptions {
@@ -47,9 +54,7 @@ export interface ViewConfig<T> {
     powerBiOptions?: any;
 }
 
-export function createGlobalState(
-    defaultState: DataViewState
-): Atom<DataViewState> {
+export function createGlobalState(defaultState: DataViewState): Atom<DataViewState> {
     return Atom.of(defaultState);
 }
 
