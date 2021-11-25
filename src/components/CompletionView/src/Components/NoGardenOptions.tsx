@@ -23,14 +23,6 @@ const Info = styled.p`
     font-weight: 500;
 `;
 
-const Iframe = styled.iframe`
-    background-color: ${tokens.colors.ui.background__medium.rgba};
-    border: none;
-    border-radius: 5px;
-    width: 50%;
-    height: 500px;
-`;
-
 export const NoGardenOptions = (): JSX.Element => {
     const { name } = useDataViewer();
     return (
