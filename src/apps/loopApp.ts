@@ -1,8 +1,6 @@
 import { baseClient } from '@equinor/http-client';
 import { createDataViewer } from '../components/CompletionView/src/DataViewerApi/DataViewerApi';
 import { AppApi } from './apps';
-import { CustomGroupView } from './CustomGroupsView';
-import { CustomItemsView } from './CustomItemsView';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 
