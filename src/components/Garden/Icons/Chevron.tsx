@@ -1,10 +1,10 @@
 import { Icon } from '@equinor/eds-core-react';
-import { tokens } from "@equinor/eds-tokens";
+import { tokens } from '@equinor/eds-tokens';
 
 export const ChevronUp = () => (
-    <Icon name={"chevron_up"} color={tokens.colors.interactive.primary__resting.rgba} />
-)
+    <Icon name={'chevron_up'} color={tokens.colors.interactive.primary__resting.rgba} />
+);
 
 export const ChevronDown = () => (
-    <Icon name={"chevron_down"} color={tokens.colors.interactive.primary__resting.rgba} />
-)
+    <Icon name={'chevron_down'} color={tokens.colors.interactive.primary__resting.rgba} />
+);

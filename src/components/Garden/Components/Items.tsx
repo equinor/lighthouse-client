@@ -1,20 +1,17 @@
 import { useDataContext } from '../../CompletionView/src/Context/DataProvider';
-import { Dot, Item } from '../Styles/gardenStyle';
+import { Item } from '../Styles/item';
+import { Dot } from '../Styles/dot';
+import React from 'react';
+import { GardenContext } from '../Context/GardenContext';
 
 interface RenderItemsProps<T> {
     data: T[];
-    itemKey: string;
-    customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
-    statusFunc?: (data: T) => string;
 }
 
-export function Items<T>({
-    data,
-    itemKey,
-    customItemView,
-    statusFunc,
-}: RenderItemsProps<T>): JSX.Element {
+export function Items<T>({ data }: RenderItemsProps<T>): JSX.Element | null {
     const { setSelected } = useDataContext();
+    const { itemKey, customItemView, statusFunc } = React.useContext(GardenContext);
+
     const CustomRender = customItemView;
 
     return (
@@ -23,7 +20,7 @@ export function Items<T>({
                 CustomRender ? (
                     <CustomRender
                         data={data[key]}
-                        itemKey={itemKey}
+                        itemKey={itemKey.toString()}
                         key={data[key] + index}
                         onClick={() => setSelected(data[key][itemKey])}
                     >

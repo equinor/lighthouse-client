@@ -28,9 +28,10 @@ export interface GardenOptions<T> {
     groupeKey: keyof T;
     itemKey: keyof T;
     groupByKeys?: (keyof T)[];
+    excludeKeys?: (keyof T)[];
     customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
     statusFunc?: (data: T) => string;
-    customGroupView?: React.FC<{ data: DataSet<T>; onClick: () => void }>;
+    customGroupView?: React.FC<{ data: DataSet<any>; onClick: () => void }>;
 }
 
 export interface PowerBiOptions {

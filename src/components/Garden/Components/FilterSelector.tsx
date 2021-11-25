@@ -1,22 +1,32 @@
 import { SingleSelect } from '@equinor/eds-core-react';
+import React, { useMemo } from 'react';
 import { FC, useState } from 'react';
+import styled from 'styled-components';
+import { GardenContext } from '../Context/GardenContext';
 
-interface FilterSelectorProps {
-    groupingOptions: string[];
-    rootKey: string;
-    setRootKey: React.Dispatch<React.SetStateAction<string>>;
-    setGroupKeys: React.Dispatch<React.SetStateAction<string[]>>;
-    groupKeys: string[];
-}
-
-export const FilterSelector: FC<FilterSelectorProps> = ({
-    groupingOptions,
-    rootKey,
-    setRootKey,
-    setGroupKeys,
-    groupKeys,
-}: FilterSelectorProps): JSX.Element => {
+export const FilterSelector: FC = (): JSX.Element => {
     const [selectedOption, setSelectedOption] = useState<string>('');
+    const { groupKeys, setGroupKeys, setGroupeKey, data, groupeKey, excludeKeys, itemKey } =
+        React.useContext(GardenContext);
+
+    const groupingOptions = useMemo(() => {
+        if (data) {
+            //exclude rootkey, itemkey and all keys present in groupKeys
+            const options: string[] = [];
+            Object.keys(data[0]).map((x) => {
+                if (
+                    x !== groupeKey &&
+                    x !== itemKey &&
+                    !groupKeys.includes(x) &&
+                    !excludeKeys?.includes(x)
+                ) {
+                    options.push(x);
+                }
+            });
+            return options;
+        }
+        return null;
+    }, [data, groupeKey, groupKeys, itemKey, excludeKeys]);
 
     const handleSelectedItemsChanged = (newValue: string | null | undefined, index: number) => {
         if (newValue === null) {
@@ -32,33 +42,26 @@ export const FilterSelector: FC<FilterSelectorProps> = ({
     };
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'left',
-            }}
-        >
-            <p> Group by</p>
-            <div style={{ width: '200px' }}>
-                <SingleSelect
-                    items={groupingOptions}
-                    label={''}
-                    initialSelectedItem={rootKey}
-                    handleSelectedItemChange={(changes) => {
-                        if (changes.selectedItem === null) {
-                            return;
-                        }
-                        changes.selectedItem && setRootKey(changes.selectedItem);
-                        setGroupKeys([]);
-                    }}
-                />
-            </div>
+        <SelectRowWrapper>
+            <Separator> Group by</Separator>
+            <SingleSelect
+                items={groupingOptions || []}
+                label={''}
+                initialSelectedItem={groupeKey.toString()}
+                handleSelectedItemChange={(changes) => {
+                    if (changes.selectedItem === null) {
+                        return;
+                    }
+                    changes.selectedItem && setGroupeKey(changes.selectedItem);
+                    setGroupKeys([]);
+                }}
+            />
             {groupKeys.map((x, index) => {
                 return (
                     <>
-                        <p>then</p>
+                        <Separator>then</Separator>
                         <SingleSelect
-                            items={groupingOptions}
+                            items={groupingOptions || []}
                             label={''}
                             initialSelectedItem={x}
                             handleSelectedItemChange={(changes) => {
@@ -68,16 +71,31 @@ export const FilterSelector: FC<FilterSelectorProps> = ({
                     </>
                 );
             })}
-            <p>then </p>
-            <SingleSelect
-                items={groupingOptions}
-                label={''}
-                selectedOption={selectedOption}
-                handleSelectedItemChange={(changes) => {
-                    changes.selectedItem && setGroupKeys([...groupKeys, changes.selectedItem]);
-                    setSelectedOption('');
-                }}
-            />
-        </div>
+            {groupingOptions && groupingOptions.length > 0 && (
+                <>
+                    <Separator>then </Separator>
+                    <SingleSelect
+                        items={groupingOptions}
+                        label={''}
+                        selectedOption={selectedOption}
+                        handleSelectedItemChange={(changes) => {
+                            changes.selectedItem &&
+                                setGroupKeys([...groupKeys, changes.selectedItem]);
+                            setSelectedOption('');
+                        }}
+                    />
+                </>
+            )}
+        </SelectRowWrapper>
     );
 };
+
+const SelectRowWrapper = styled.div`
+    display: flex;
+    align-items: left;
+`;
+
+const Separator = styled.p`
+    margin-right: 0.5em;
+    margin-left: 0.5em;
+`;

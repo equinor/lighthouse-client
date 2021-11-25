@@ -1,5 +1,6 @@
 import { useFilteredData } from '../../../Filter';
-import { Garden } from '../../../Garden';
+import { GardenView } from '../../../Garden/Components/GardenView';
+import { GardenProvider } from '../../../Garden/Context/GardenProvider';
 import { useDataContext } from '../Context/DataProvider';
 
 export const GardenTab = (): JSX.Element => {
@@ -7,15 +8,9 @@ export const GardenTab = (): JSX.Element => {
     const { gardenOptions } = useDataContext();
 
     return gardenOptions ? (
-        <Garden
-            customGroupView={gardenOptions.customGroupView}
-            customItemView={gardenOptions.customItemView}
-            statusFunc={gardenOptions.statusFunc}
-            data={data}
-            groupeKey={gardenOptions.groupeKey}
-            groupByKeys={gardenOptions.groupByKeys}
-            itemKey={gardenOptions.itemKey}
-        />
+        <GardenProvider gardenOptions={gardenOptions} data={data}>
+            <GardenView />
+        </GardenProvider>
     ) : (
         <p> No options provided.</p>
     );
