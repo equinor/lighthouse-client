@@ -42,8 +42,6 @@ export const NoGardenOptions = (): JSX.Element => {
             />
             <Heading>No garden options supplied!</Heading>
             <Info>{name}</Info>
-
-            <Iframe src="./dataView.md"></Iframe>
         </Wrapper>
     );
 };
