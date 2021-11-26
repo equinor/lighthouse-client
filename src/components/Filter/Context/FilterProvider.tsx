@@ -10,7 +10,6 @@ import { actions } from './FilterActions';
 import { Context, FilterProviderProps, FilterState } from './FilterContext';
 import { filterReducer } from './FilterReducer';
 
-
 export function FilterProvider<T>({ children, initialData, options }: FilterProviderProps<T>): JSX.Element {
     const locationKey = useLocationKey();
     const filterLocationKey = `filer-${locationKey}`;
