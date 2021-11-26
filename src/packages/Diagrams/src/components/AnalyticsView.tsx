@@ -5,11 +5,13 @@ import { Loop } from "../../../../apps/loopApp";
 import { useFilteredData } from "../../../../components/Filter";
 import { Status, StatusItem } from "../../../StatusBar/src/components/satusItem/StatusItem";
 import { StatusBar } from "../../../StatusBar/src/components/statusBar/StatusBar";
-import { BarChartOptions } from "./BarChart";
-import { LineChartOptions } from "./LineChart";
+import { BarChartVisual } from "./BarVisual/BarVisual";
+import { BarChartOptions } from "./BarVisual/Types/barVisualOptions";
+import { LineChartOptions } from "./LineVisual/LineChartVisual";
 import { TableVisual } from "./TableVisual/TableVisual";
 import { TimeChart } from "./TimeVisual/TimeVisual";
 import { TimeBarChartOptions } from "./TimeVisual/Types/timeVisualOptions";
+
 
 const WrapperCharts = styled(Card)`
     width: 100%;
@@ -175,9 +177,9 @@ export function AnalyticsView() {
         <Page>
             <StatusBar data={statusBarData} />;
             <Wrapper>
-                {/* <WrapperCharts>
-                    {data?.length && <BarChart<Loop> data={data} options={option} />}
-                </WrapperCharts> */}
+                <WrapperCharts>
+                    {data?.length && <BarChartVisual<Loop> data={data} options={option} />}
+                </WrapperCharts>
                 <WrapperCharts>
                     {data?.length && <TimeChart<Loop> data={data} options={o1} />}
                 </WrapperCharts>

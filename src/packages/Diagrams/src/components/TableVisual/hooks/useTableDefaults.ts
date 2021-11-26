@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { TableState } from 'react-table';
-import { CustomTableState } from '../types/table';
+import { CustomTableState } from '../Types/table';
 
 export interface TableDefaults {
     initialState: Partial<TableState<CustomTableState>>;
