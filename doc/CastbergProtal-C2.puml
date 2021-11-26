@@ -18,27 +18,34 @@ Container(auth, "Auth", " ")
 
 ' Facility Asset Model Section 
 System_Boundary(fam, "Facility Asset Model | Lighhouse") {
-    ContainerDb(scopeChangeControlDB, "Scope Change Control DB",  $sprite="database")  
-    ContainerDb(lighthouseDB, "Lighthouse DB", "ProCoSys | MIPS", $sprite="database") 
-    Container(famApi, "Fam Api", "web Api | out of Scope")  
+
+ 
+    Container(famEventHub, "FamEvenHub", " ")  
 
     System(dataAdapter, "Lighthouse Adapter", "Data Adapter")
+    Rel(famEventHub, dataAdapter, " ")
         
-    Rel(dataAdapter, scopeChangeControlDB, "Write")
-    Rel(dataAdapter, lighthouseDB, "Write")
  
 }
+
 ' Facility Asset Model Section 
 Boundary(lightgouse, "Lighthouse | API") {
-    Container(scopeChangeControl, "Scope Change Control", "web API", $sprite="dotnet")
-    Container(lighthouseApi, "Lighthouse Api", "web API | Construction Progress | HeatTrace", $sprite="dotnet")
+    ContainerDb(scopeChangeControlDB, "Scope Change Control", "New Data", $sprite="database")  
+    ContainerDb(constructionProgressDB, "Construction Progress", "MIPS", $sprite="database") 
+    ContainerDb(heatTraceDB, "Heat Trace", "ProCoSys", $sprite="database") 
+
+    Container(scopeChangeControlApi, "Scope Change Control", "web API", $sprite="dotnet")
+    Container(constructionProgressApi, "Construction Progress", "web API", $sprite="dotnet")
+    Container(heatTraceApi, "HeatTrace", "web API", $sprite="dotnet")
     
-    Rel(scopeChangeControl, scopeChangeControlDB, "Read / Write")
-    Rel(lighthouseApi, lighthouseDB, "Read")
+    Rel(scopeChangeControlApi, scopeChangeControlDB, "Read / Write")
+    Rel(constructionProgressApi, constructionProgressDB, "Read")
+    Rel(heatTraceApi, heatTraceDB, "Read")
 
-
-    Rel(webClient, scopeChangeControl, " ")
-    Rel(webClient, lighthouseApi, " ")
+    Rel(dataAdapter, scopeChangeControlDB, "Write")
+    Rel(webClient, scopeChangeControlApi, " ")
+    Rel(webClient, constructionProgressApi, " ")
+    Rel(webClient, heatTraceApi, " ")
 }
 
  
@@ -56,12 +63,12 @@ Boundary(externalsEquinor, 'Externals Equinor') {
 }
 
 Container(tie, "TIE", "TIE1.5 / TIE 2.0")
-Rel(tie, dataAdapter, "Write")
+Rel(tie, famEventHub, "Write")
 
 Rel(mips, tie, "Write")
-Rel(stid, dataAdapter, "Write")
-Rel(procosys, dataAdapter, "Write")
-Rel(commonLib, dataAdapter, "Write")
+Rel(stid, famEventHub, "Write")
+Rel(procosys, famEventHub, "Write")
+Rel(commonLib, famEventHub, "Write")
 
 
 
