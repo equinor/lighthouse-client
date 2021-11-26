@@ -13,7 +13,7 @@ const Wrapper = styled.section`
 
 export const ListTab = () => {
 
-    const data = useFilteredData<Record<string, Object>>();
+    const { data } = useFilteredData<Record<string, Object>>();
     const { setSelected } = useDataContext()
     const columns = useColumns(data[0])
 

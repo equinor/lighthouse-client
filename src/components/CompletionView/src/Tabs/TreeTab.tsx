@@ -4,7 +4,7 @@ import { useDataContext } from "../Context/DataProvider";
 
 export const TreeTab = () => {
     const { treeOptions } = useDataContext();
-    const data = useFilteredData()
+    const { data } = useFilteredData()
     return (
 
         <>

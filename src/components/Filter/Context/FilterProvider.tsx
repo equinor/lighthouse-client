@@ -29,24 +29,27 @@ export function FilterProvider<T>({ children, initialData, options }: FilterProv
         const localFilter = storage.getItem<FilterData>(filterLocationKey);
         if (localFilter && typeof localFilter !== "string" && objectHasKeys(localFilter)) {
             dispatch(actions.setFilter(localFilter));
+            setFilter(initialData, localFilter);
         } else {
             const filter = createFilterData(initialData, options)
             dispatch(actions.setFilter(filter));
             storage.setItem<FilterData>(filterLocationKey, filter)
+            setFilter(initialData, filter);
         }
     }, [initialData])
 
     useEffect(() => {
         dispatch(actions.setData(initialData))
-        dispatch(actions.setFilteredData(initialData))
     }, [initialData])
 
     const filterItemCheck: FilterItemCheck = useCallback(
         (filterItem: FilterItem | FilterItem[], singleClick?: boolean): void => {
             const currentFilter = checkItem(filterData, filterItem, singleClick);
             dispatch(actions.setFilter(currentFilter));
+            storage.setItem<FilterData>(filterLocationKey, currentFilter)
             setFilter(state.data, filterData);
         }, [filterData, state.data]);
+
 
 
     const setFilter = (state, filterData): void => {

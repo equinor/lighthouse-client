@@ -14,7 +14,7 @@ interface FilterItemComponentProps {
 export const FilterItemComponent = ({ filterItem, filterItemCheck, indeterminate, itemKey }: FilterItemComponentProps): JSX.Element => {
 
     const { count, isActive } = useCount(filterItem);
-    const debouncedFilterItemCheck = debounceFilterItemCheck(filterItemCheck, 500)
+    const debouncedFilterItemCheck = debounceFilterItemCheck(filterItemCheck, 0)
 
     if (!isActive) return (<></>)
     return (

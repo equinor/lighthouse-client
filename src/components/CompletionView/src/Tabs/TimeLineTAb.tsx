@@ -78,7 +78,7 @@ export function TimelineTab() {
         name: "CommPkgNo"
     }
     const [tasks, setTasks] = useState<Task[]>([])
-    const data = useFilteredData<Checklist>()
+    const { data } = useFilteredData<Checklist>()
 
     useEffect(() => {
         if (data.length > 0) {

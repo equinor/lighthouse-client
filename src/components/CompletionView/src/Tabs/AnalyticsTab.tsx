@@ -1,4 +1,4 @@
-import { AnalyticsView } from "../../../../packages/Diagrams/src/components/AnalyticsView";
+import { AnalyticsView } from "../../../../packages/Diagrams/src/Components/AnalyticsView";
 
 export const AnalyticsTab = () => {
 

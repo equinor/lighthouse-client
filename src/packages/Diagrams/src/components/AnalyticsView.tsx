@@ -1,16 +1,15 @@
 import { Card } from "@equinor/eds-core-react";
 import { tokens } from "@equinor/eds-tokens";
+import { useMemo } from "react";
 import styled from "styled-components";
 import { Loop } from "../../../../apps/loopApp";
 import { useFilteredData } from "../../../../components/Filter";
 import { Status, StatusItem } from "../../../StatusBar/src/components/satusItem/StatusItem";
 import { StatusBar } from "../../../StatusBar/src/components/statusBar/StatusBar";
-import { BarChartVisual } from "./BarVisual/BarVisual";
-import { BarChartOptions } from "./BarVisual/Types/barVisualOptions";
-import { LineChartOptions } from "./LineVisual/LineChartVisual";
-import { TableVisual } from "./TableVisual/TableVisual";
-import { TimeChart } from "./TimeVisual/TimeVisual";
-import { TimeBarChartOptions } from "./TimeVisual/Types/timeVisualOptions";
+import { AnalyticsOptions, getChart, getSections } from "../types/analyticsOptions";
+import { BarChartOptions } from "../Visuals/BarVisual/Types/barVisualOptions";
+import { LineChartOptions } from "../Visuals/LineVisual/LineChartVisual";
+import { TimeBarChartOptions } from "../Visuals/TimeVisual/Types/timeVisualOptions";
 
 
 const WrapperCharts = styled(Card)`
@@ -81,8 +80,8 @@ function getDatePercentage<T, K extends keyof T>(data: T[], key: K): string {
 
 
 
-export function AnalyticsView() {
-    const data = useFilteredData() as Loop[]
+export function AnalyticsView({ loading }: { loading?: boolean }) {
+    const { data, isLoading } = (useFilteredData<Loop>())
 
     const statusBarData: StatusItem[] = [
         {
@@ -95,7 +94,7 @@ export function AnalyticsView() {
             title: "Status OS",
             value: () => data.filter(i => i.status === "OS").length.toString(),
             description: "Status",
-            status: getStatus(data, "status", "OS")
+            status: getStatus(data, "status", "OS", true)
         },
         {
             title: "Signed",
@@ -111,7 +110,7 @@ export function AnalyticsView() {
         },
 
     ]
-    const option: BarChartOptions<Loop> = {
+    const option5: BarChartOptions<Loop> = {
         stacked: true,
         nameKey: "status",
         categoryKey: "responsible",
@@ -173,30 +172,69 @@ export function AnalyticsView() {
 
     // createCumulativeSeries(data, "column", "createdAt", "status");
 
+    const opt: AnalyticsOptions<Loop> = {
+        section1: {
+            chart1: {
+                type: 'timeBarChart',
+                options: {
+                    title: "Loops Created",
+                    defaultTime: "year",
+                    timeChartOptions: {
+                        categoriesKey: "createdAt",
+                        title: "Created",
+                        type: 'bar',
+                    },
+                },
+            },
+        },
+        section2: {
+            chart1: {
+                type: "barChart",
+                options: {
+                    stacked: true,
+                    nameKey: "status",
+                    categoryKey: "responsible",
+                    colors: ['#F44336', '#E91E63', '#9C27B0'],
+                },
+            },
+            chart2: {
+                type: 'timeBarChart',
+                options: {
+                    title: 'Punch A',
+                    defaultTime: "quarter",
+                    timeChartOptions: {
+                        categoriesKey: "createdAt",
+                        title: "PB",
+                        type: 'bar',
+                        key: "status",
+                        value: "PB"
+                    },
+                },
+            },
+        },
+    };
+
+    const sections = useMemo(() => getSections(opt), [])
+
     return (
         <Page>
-            <StatusBar data={statusBarData} />;
-            <Wrapper>
-                <WrapperCharts>
-                    {data?.length && <BarChartVisual<Loop> data={data} options={option} />}
-                </WrapperCharts>
-                <WrapperCharts>
-                    {data?.length && <TimeChart<Loop> data={data} options={o1} />}
-                </WrapperCharts>
+            <StatusBar data={statusBarData} />
+            <Wrapper >
+                {getChart(data, sections.section1.chart1, isLoading)}
+                {getChart(data, sections.section1.chart2, isLoading)}
+                {getChart(data, sections.section1.chart3, isLoading)}
             </Wrapper>
-            <Wrapper>
-                <WrapperCharts>
-                    {data?.length && <TimeChart<Loop> data={data} options={o2} />}
-                </WrapperCharts>
-                <WrapperCharts>
-                    {data?.length && <TimeChart<Loop> data={data} options={o3} />}
-                </WrapperCharts>
+            <Wrapper >
+                {getChart(data, sections.section2.chart1, isLoading)}
+                {getChart(data, sections.section2.chart2, isLoading)}
+                {getChart(data, sections.section2.chart3, isLoading)}
             </Wrapper>
-            <Wrapper>
-                <WrapperCharts>
-                    {data?.length && <TableVisual data={data} options={{ initialGroup: "status" }} />}
-                </WrapperCharts>
+            <Wrapper >
+                {getChart(data, sections.section3.chart1, isLoading)}
+                {getChart(data, sections.section3.chart2, isLoading)}
+                {getChart(data, sections.section3.chart3, isLoading)}
             </Wrapper>
+
         </Page>
     )
 }

@@ -7,7 +7,7 @@ import { useDataContext } from "../Context/DataProvider";
 
 
 export const GardenTab = () => {
-    const data = useFilteredData()
+    const { data } = useFilteredData()
     const { gardenOptions } = useDataContext();
 
     return (

@@ -11,9 +11,9 @@ import { TimeBarChartProps } from "./Types/timeVisualOptions";
 
 
 
-export function TimeChart<T>({ data, options: { title, timeChartOptions, colors } }: TimeBarChartProps<T>): JSX.Element {
+export function TimeChart<T>({ data, options: { title, timeChartOptions, colors, defaultTime } }: TimeBarChartProps<T>): JSX.Element {
 
-    const [time, setTime] = useState<TimeDimension>("month")
+    const [time, setTime] = useState<TimeDimension>(defaultTime || "month")
     const { series, categories } = useMemo(() => timeChartSeries(data, timeChartOptions, time), [data, time]);
 
 
