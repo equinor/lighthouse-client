@@ -2,8 +2,8 @@ import { Count } from '../Styles/common';
 import { Pack, SubGroup } from '../Styles/group';
 import { ChevronUp, ChevronDown } from '../Icons/Chevron';
 import { DataSet } from '../Models/data';
-import { Items } from '../Components/Items';
-import { useGardenContext } from '../Context/GardenProvider';
+import { Items } from './Items';
+import { useParkViewContext } from '../Context/ParkViewProvider';
 import { useRefresh } from '../hooks/useRefresh';
 
 interface GroupProps<T> {
@@ -12,24 +12,23 @@ interface GroupProps<T> {
 
 export function Group<T>({ group }: GroupProps<T>): JSX.Element {
     const refresh = useRefresh();
-    const { customGroupView } = useGardenContext<T>();
+    const { customView } = useParkViewContext<T>();
 
     const handleClick = () => {
         refresh();
         group.isExpanded = !group.isExpanded;
     };
-    const CustomRender = customGroupView;
 
     return (
         <SubGroup>
-            {CustomRender ? (
-                <CustomRender key={group.value} data={group} onClick={handleClick}>
-                    {group.value}
-                </CustomRender>
+            {customView?.CustomGroupView ? (
+                <customView.CustomGroupView key={group.value} data={group} onClick={handleClick} />
             ) : (
                 <Pack key={group.value + group.groupKey} onClick={() => handleClick()}>
-                    <div>
+                    <div style={{ display: 'flex' }}>
+                        {group.status?.statusElement}
                         {group.value}
+                        {group.description && ' - ' + group.description}
                         <Count>({group.count})</Count>
                     </div>
                     {group.isExpanded ? <ChevronUp /> : <ChevronDown />}

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
-import Icon from '../../../Icon/Icon';
-import { useDataViewer } from '../DataViewerApi/useDataViewer';
+import Icon from '../../Icon/Icon';
+import { useDataViewer } from '../../CompletionView/src/DataViewerApi/useDataViewer';
 
 const Wrapper = styled.div`
     margin-top: 100px;
