@@ -1,30 +1,18 @@
 import { Tabs } from "@equinor/eds-core-react";
 import styled from "styled-components";
 
+
 const { Panels, Panel } = Tabs
 
-const CompletionViewWarper = styled.section`
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-`
-
-const PanelWrapper = styled.section`
-    overflow: scroll;
-    height: 100%;
-    width: 100%;
-`;
-
 const PanelsView = styled(Panels)`
-    grid-area: main;
+    overflow: auto;
 `
 
 export const CompletionViewTabs = ({ tabs, activeTab, handleChange }) => {
 
     return (
 
-        <PanelsView>
+        <PanelsView >
             {
                 tabs.map((tab, index) => {
                     const ViewComponent = tab.viewComponent;
@@ -35,5 +23,7 @@ export const CompletionViewTabs = ({ tabs, activeTab, handleChange }) => {
             }
         </PanelsView>
     )
+
+
 }
 

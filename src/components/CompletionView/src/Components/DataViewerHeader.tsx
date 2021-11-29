@@ -13,9 +13,7 @@ const HeaderWrapper = styled.section`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    width:;
-    
+    align-items: flex-end;   
 `
 
 const BreadcrumbWrapper = styled.div`
@@ -23,6 +21,8 @@ const BreadcrumbWrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    width: -webkit-fill-available;
+    border-bottom: 2px solid var(--eds_ui_background__medium,rgba(220,220,220,1));
 `
 const ActionWrapper = styled.div`
     padding: .5rem;

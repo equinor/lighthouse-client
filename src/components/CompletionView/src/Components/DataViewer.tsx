@@ -14,16 +14,12 @@ import { NoDataViewer } from "./NoDataViewer"
 
 
 const DataViewWrapper = styled.section`
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-areas: "main sidebar";
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: space-between;
 `;
 
-const TabsWrapper = styled.section`
-    overflow: scroll;
-    height: 100%;
-    width: auto;
-`;
 
 export const DataViewer = (props) => {
     const { treeOptions, tableOptions, gardenOptions, timelineOptions, analyticsOptions, powerBiOptions, filterOptions } = useDataViewer();
@@ -48,16 +44,14 @@ export const DataViewer = (props) => {
 
     return (
         <FilterProvider initialData={data} options={filterOptions} >
-            <TabsWrapper>
-                <Tabs activeTab={activeTab} onChange={handleChange} >
-                    <CompletionViewHeader {...props} tabs={tabs} handleFilter={handleFilter} />
-                    <FilterView isActive={activeFilter} />
-                    <DataViewWrapper>
-                        <CompletionViewTabs tabs={tabs} activeTab={activeTab} handleChange={handleChange} />
-                        <DataView />
-                    </DataViewWrapper>
-                </Tabs>
-            </TabsWrapper>
+            <Tabs activeTab={activeTab} onChange={handleChange} >
+                <CompletionViewHeader {...props} tabs={tabs} handleFilter={handleFilter} />
+                <FilterView isActive={activeFilter} />
+                <DataViewWrapper>
+                    <CompletionViewTabs tabs={tabs} activeTab={activeTab} handleChange={handleChange} />
+                    <DataView />
+                </DataViewWrapper>
+            </Tabs>
         </FilterProvider>
     );
 }
