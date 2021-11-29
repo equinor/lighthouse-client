@@ -6,6 +6,8 @@ const { Panels, Panel } = Tabs
 
 const PanelsView = styled(Panels)`
     overflow: auto;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
 `
 
 export const CompletionViewTabs = ({ tabs, activeTab, handleChange }) => {

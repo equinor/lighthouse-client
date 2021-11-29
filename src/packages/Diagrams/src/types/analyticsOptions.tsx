@@ -53,6 +53,7 @@ export function getSections<T>(options: Partial<AnalyticsOptions<T>>) {
         section2: section,
         section3: section,
         section4: section,
+        section5: section,
         ...options,
     };
 }

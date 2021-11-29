@@ -23,7 +23,7 @@ const Wrapper = styled.div`
     border-right: 1.5px solid #efefef;
     padding: 8px;
     transition: all 0.2s ease;
-    background: #ffffff;
+    background: ${tokens.colors.ui.background__light.rgba};
     z-index: 1;
     width:  ${({ panelActive }: AppsPanelWrapperProps) => panelActive ? "350px" : "55px"};
     

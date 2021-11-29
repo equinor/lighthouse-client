@@ -234,7 +234,16 @@ export function AnalyticsView({ loading }: { loading?: boolean }) {
                 {getChart(data, sections.section3.chart2, isLoading)}
                 {getChart(data, sections.section3.chart3, isLoading)}
             </Wrapper>
-
+            <Wrapper >
+                {getChart(data, sections.section4.chart1, isLoading)}
+                {getChart(data, sections.section4.chart2, isLoading)}
+                {getChart(data, sections.section4.chart3, isLoading)}
+            </Wrapper>
+            <Wrapper >
+                {getChart(data, sections.section5.chart1, isLoading)}
+                {getChart(data, sections.section5.chart2, isLoading)}
+                {getChart(data, sections.section5.chart3, isLoading)}
+            </Wrapper>
         </Page>
     )
 }
