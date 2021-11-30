@@ -45,7 +45,7 @@ export const DataViewer = (props) => {
     return (
         <FilterProvider initialData={data} options={filterOptions} >
             <Tabs activeTab={activeTab} onChange={handleChange} >
-                <CompletionViewHeader {...props} tabs={tabs} handleFilter={handleFilter} />
+                <CompletionViewHeader {...props} tabs={tabs} handleFilter={handleFilter} activeFilter={activeFilter} />
                 <FilterView isActive={activeFilter} />
                 <DataViewWrapper>
                     <CompletionViewTabs tabs={tabs} activeTab={activeTab} handleChange={handleChange} />

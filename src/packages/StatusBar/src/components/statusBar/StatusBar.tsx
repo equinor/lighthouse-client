@@ -1,5 +1,5 @@
 
-import { Item, StatusItem } from "../satusItem/StatusItem";
+import { Item, StatusItem } from "../StatusItem/StatusItem";
 import { StatusWrapper } from "./StatusBar-Styles";
 
 interface StatusBarProps {

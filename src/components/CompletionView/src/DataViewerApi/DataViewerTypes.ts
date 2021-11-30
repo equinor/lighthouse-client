@@ -1,5 +1,11 @@
 import { AnalyticsOptions } from '../../../../packages/Diagrams/src/types/analyticsOptions';
-import { FilterOptions, GardenOptions, TableOptions, TreeOptions } from './DataViewState';
+import {
+    FilterOptions,
+    GardenOptions,
+    StatusFunc,
+    TableOptions,
+    TreeOptions,
+} from './DataViewState';
 
 export type DataFetcher<T> = () => Promise<T[]>;
 export type Validator<T> = (data: unknown[]) => T[];
@@ -40,4 +46,5 @@ export interface DataViewerApi<T> {
     registerGanttOptions: (options: any) => void;
     registerGardenOptions: (options: GardenOptions<T>) => void;
     registerAnalyticsOptions: (options: AnalyticsOptions<T>) => void;
+    registerStatusItems: (options: StatusFunc<T>) => void;
 }

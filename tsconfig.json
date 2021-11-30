@@ -12,6 +12,8 @@
         "types": ["node"],
         "sourceMap": true,
         "paths": {
+            "@equinor/StatusBar": ["./src/packages/StatusBar"],
+            "@equinor/Diagrams": ["./src/packages/Diagrams"],
             "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
             "@equinor/authentication": ["./packages/authentication"],
             "@equinor/http-client": ["./packages/httpClient"],

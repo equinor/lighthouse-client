@@ -1,11 +1,14 @@
-import { Breadcrumbs, Button, Icon, Tabs } from "@equinor/eds-core-react";
+import { Breadcrumbs, Tabs, Typography } from "@equinor/eds-core-react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useFilteredData } from "../../../Filter";
+import Icon from "../../../Icon/Icon";
 import { useDataContext } from "../Context/DataProvider";
+import { TabButton } from "./ToggleButton";
 
 
 
-const { Tab, List, Panels, Panel } = Tabs
+const { Tab, List } = Tabs
 const { Breadcrumb } = Breadcrumbs;
 
 const HeaderWrapper = styled.section`
@@ -16,23 +19,35 @@ const HeaderWrapper = styled.section`
     align-items: flex-end;   
 `
 
-const BreadcrumbWrapper = styled.div`
+const LeftSection = styled.div`
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
     width: -webkit-fill-available;
     border-bottom: 2px solid var(--eds_ui_background__medium,rgba(220,220,220,1));
 `
-const ActionWrapper = styled.div`
-    padding: .5rem;
+const RightSection = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
 `
-const SelectionWrapper = styled.div`
-  width: 40%;
+
+
+const Title = styled(Typography)`
+    padding: 1rem;
+`
+
+const Divider = styled.div`
+ padding: 0.5rem;
+ border-bottom: 2px solid var(--eds_ui_background__medium,rgba(220,220,220,1));
+ 
+ ::before {
+    content: " ";
+    display: block;
+    width: 2px;
+    height: 30px;
+    background: var(--eds_ui_background__medium,rgba(220,220,220,1));
+ }
 `
 
 
@@ -64,8 +79,9 @@ const TabTitle = styled.span`
 
 
 
-export const CompletionViewHeader = ({ groupe, title, tabs, handleFilter }) => {
-    const { getData } = useDataContext();
+export const CompletionViewHeader = ({ groupe, title, tabs, handleFilter, activeFilter }) => {
+    const { getData, statusFunc } = useDataContext();
+    const { data } = useFilteredData()
 
     useEffect(() => {
         getData();
@@ -78,58 +94,32 @@ export const CompletionViewHeader = ({ groupe, title, tabs, handleFilter }) => {
 
     return (
         <HeaderWrapper>
-            <BreadcrumbWrapper>
-                <Button variant="ghost_icon" onClick={handleFilter}>
-                    <Icon name={"filter_list"} />
-                </Button>
-                <Breadcrumbs>
-                    {
-                        groupe !== "Top" && <Breadcrumb href="#" onClick={handleClick}>
-                            {groupe}
-                        </Breadcrumb>
+            <LeftSection>
+                <Title variant="h3">{title}</Title>
+                {/* {statusFunc && <StatusBar data={statusFunc(data)} />} */}
+            </LeftSection>
+            <RightSection>
+                <List>
+                    {tabs.map(tab => {
+                        const Icon = tab.icon;
+                        return (
+                            <Tab key={`tab-${tab.icon}`}>
+                                <Icon />
+                                <TabTitle>
+                                    {tab.title}
+                                </TabTitle>
+                            </Tab>)
+                    }
+                    )
                     }
 
-                    <Breadcrumb
-                        href="#"
-                        onClick={handleClick}
-                        aria-current="page"
-                    >
-                        {title}
-                    </Breadcrumb>
+                </List>
+                <Divider />
+                <TabButton onClick={handleFilter} aria-selected={activeFilter}>
+                    <Icon name={"filter_alt"} />
+                </TabButton>
+            </RightSection>
 
-                </Breadcrumbs>
-            </BreadcrumbWrapper>
-            <List>
-                {tabs.map(tab => {
-                    const Icon = tab.icon;
-                    return (
-                        <Tab key={`tab-${tab.icon}`}>
-                            <Icon />
-                            <TabTitle>
-                                {tab.title}
-                            </TabTitle>
-                        </Tab>)
-                }
-                )
-                }
-            </List>
-            {/* <ActionWrapper>
-                <SelectionWrapper>
-                    <SingleSelect
-                        value={selectedDataSet}
-                        label="Select data set"
-                        initialSelectedItem="Commissioning packages"
-                        items={items}
-                        handleSelectedItemChange={(changes) => setSelectedDataSet(changes.selectedItem || "")}
-                    />
-                </SelectionWrapper>
-
-
-                <Button variant="ghost_icon" color="secondary">
-                    <Icon name="filter_list" title="filter"></Icon>
-                </Button>
-
-            </ActionWrapper> */}
         </HeaderWrapper>
     )
 }

@@ -1,7 +1,7 @@
-import { Status } from '../components/satusItem/StatusItem';
+import { Status } from '../components/StatusItem/StatusItem';
 import { getPercentageNum } from './getPercentage';
 
-function getStatus<T, K extends keyof T>(
+export function getStatus<T, K extends keyof T>(
     data: T[],
     key: K,
     value: T[K],
@@ -20,7 +20,12 @@ function getStatus<T, K extends keyof T>(
     }
     return 'default';
 }
-function getDateStatus<T, K extends keyof T>(data: T[], key: K, swap?: boolean): keyof Status {
+
+export function getDateStatus<T, K extends keyof T>(
+    data: T[],
+    key: K,
+    swap?: boolean
+): keyof Status {
     const percentage = (data.filter((i) => i[key]).length / data.length) * 100;
     // console.log(percentage);
     if (percentage < 25) {

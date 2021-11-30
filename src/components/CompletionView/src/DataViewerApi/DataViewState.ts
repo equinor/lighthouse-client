@@ -1,4 +1,5 @@
 import { Atom } from '@dbeining/react-atom';
+import { StatusItem } from '@equinor/StatusBar';
 import { AnalyticsOptions } from '../../../../packages/Diagrams/src/types/analyticsOptions';
 import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
@@ -27,6 +28,8 @@ export interface GardenOptions<T> {
     itemKey: keyof T;
 }
 
+export type StatusFunc<T> = (data: T[]) => StatusItem[];
+
 export interface ViewConfig<T> {
     name: string;
     dataFetcher?: DataFetcher<T>;
@@ -39,6 +42,7 @@ export interface ViewConfig<T> {
     timelineOptions?: any;
     gardenOptions?: GardenOptions<T>;
     analyticsOptions?: AnalyticsOptions<T>;
+    statusFunc?: StatusFunc<T>;
     powerBiOptions?: any;
 }
 

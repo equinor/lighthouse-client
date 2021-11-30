@@ -12,6 +12,7 @@ import {
     DataViewState,
     GardenOptions,
     getContext,
+    StatusFunc,
     TableOptions,
     TreeOptions,
 } from './DataViewState';
@@ -135,6 +136,15 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
                 [options.viewerId]: {
                     ...state[options.viewerId],
                     analyticsOptions: analyticsOptions as AnalyticsOptions<unknown>,
+                },
+            }));
+        },
+        registerStatusItems<T>(statusFunc: StatusFunc<T>) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    statusFunc: statusFunc as StatusFunc<unknown>,
                 },
             }));
         },

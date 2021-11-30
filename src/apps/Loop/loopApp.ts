@@ -1,7 +1,7 @@
 import { baseClient } from '@equinor/http-client';
 import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
 import { AppApi } from '../apps';
-import { analyticsOptions } from './Sections/AnalycticsConfig';
+import { analyticsOptions, statusBarData } from './Sections/AnalycticsConfig';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 
@@ -131,5 +131,6 @@ export function setup(appApi: AppApi) {
         groupByKeys: ['status', 'responsible', 'tagNo'],
         rootNode: 'phase',
     });
+    commPkg.registerStatusItems(statusBarData);
     // console.info(`Config for ${appManifest.shortName} done! `);
 }
