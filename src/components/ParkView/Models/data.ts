@@ -1,3 +1,5 @@
+import { Status } from '../../CompletionView/src/DataViewerApi/DataViewState';
+
 export type DataSet<T> = {
     groupKey: keyof T;
     value: string;
@@ -5,6 +7,8 @@ export type DataSet<T> = {
     items: T[];
     isExpanded: boolean;
     count: number;
+    status?: Status;
+    description?: string | undefined;
 };
 
 export type Data<T> = {

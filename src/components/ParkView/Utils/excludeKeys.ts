@@ -3,9 +3,12 @@ export function getExcludeKeys<T>(data: T[], percentage?: number): string[] {
 
     const uniqueItems = data.reduce((items, item) => {
         Object.keys(item).forEach((key) => {
-            items[key] = items[key] || new Set(item[key]);
-            items[key].add(item[key]);
+            if (item[key]) {
+                items[key] = items[key] || new Set(item[key].toString());
+                items[key].add(item[key]);
+            }
         });
+
         return items;
     }, {} as Record<string, Set<unknown>>);
 

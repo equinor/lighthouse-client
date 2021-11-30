@@ -1,18 +1,10 @@
-import { TreeRoot } from "../../../../../packages/components/NavigationView/Root";
-import { useFilteredData } from "../../../Filter";
-import { useDataContext } from "../Context/DataProvider";
+import { useFilteredData } from '../../../Filter';
+import { Tree } from '../../../ParkView/Components/Tree';
+import { useDataContext } from '../Context/DataProvider';
 
-export const TreeTab = () => {
+export const TreeTab = (): JSX.Element => {
+    const data = useFilteredData();
     const { treeOptions } = useDataContext();
-    const data = useFilteredData()
-    return (
 
-        <>
-            {
-                treeOptions ? <TreeRoot data={data} rootNode={treeOptions.rootNode} groupByKeys={treeOptions.groupByKeys} /> : null
-            }
-        </>
-
-    );
-}
-
+    return <Tree data={data} treeOptions={treeOptions} />;
+};

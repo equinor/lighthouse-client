@@ -1,5 +1,5 @@
 import { ActionType, createCustomAction } from 'typesafe-actions';
-import { DataAction } from './GardenContext';
+import { DataAction } from './ParkViewContext';
 
 export const actions = {
     setGroupKeys: createCustomAction(DataAction.setGroupKeys, (groupKeys: string[]) => ({
@@ -10,8 +10,12 @@ export const actions = {
         excludeKeys,
     })),
 
-    setGroupeKey: createCustomAction(DataAction.setGroupeKey, (groupeKey: string) => ({
-        groupeKey,
+    setGardenKey: createCustomAction(DataAction.setGardenKey, (gardenKey?: string) => ({
+        gardenKey,
+    })),
+
+    setData: createCustomAction(DataAction.setData, (data: unknown[]) => ({
+        data,
     })),
 };
 
