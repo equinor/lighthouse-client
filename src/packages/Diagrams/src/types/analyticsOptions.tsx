@@ -2,7 +2,7 @@ import { Card, Progress } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { BarChartVisual } from '../Visuals/BarVisual/BarVisual';
 import { BarChartOptions } from '../Visuals/BarVisual/Types/barVisualOptions';
-import { TimeBarChart } from '../Visuals/ControledTimeVisual/ControledTimeVisual';
+import { ControlledTimeBarChart } from '../Visuals/ControledTimeVisual/ControlledTimeVisual';
 import { LineChartOptions, LineChartVisual } from '../Visuals/LineVisual/LineChartVisual';
 import { TimeChart } from '../Visuals/TimeVisual/TimeVisual';
 import { TimeBarChartOptions } from '../Visuals/TimeVisual/Types/timeVisualOptions';
@@ -16,7 +16,7 @@ interface LineChart<T> {
     options: LineChartOptions<T>;
 }
 
-interface TimeBarChart<T> {
+interface ControlledTimeBarChart<T> {
     type: 'timeBarChart';
     options: TimeBarChartOptions<T>;
 }
@@ -25,7 +25,7 @@ interface Default {
     type: 'default';
 }
 
-type Options<T> = BarChart<T> | LineChart<T> | TimeBarChart<T> | Default;
+type Options<T> = BarChart<T> | LineChart<T> | ControlledTimeBarChart<T> | Default;
 
 interface Section<T> {
     chart1?: Options<T>;
@@ -57,6 +57,9 @@ export function getSections<T>(options: Partial<AnalyticsOptions<T>>) {
         ...options,
     };
 }
+
+
+// TODO Move all below to components
 const WrapperCharts = styled(Card)`
     width: 100%;
     height: 350px;
@@ -77,7 +80,7 @@ const Circular = styled(Progress.Circular)`
 
 
 
-export function getChart<T>(data: T[], options: Options<T> = { type: 'default' }, isLoading: boolean) {
+export function getChart<T>(data: T[], options: Options<T> = { type: 'default' }, isLoading?: boolean) {
 
     switch (options.type) {
         case 'barChart':

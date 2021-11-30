@@ -1,4 +1,5 @@
 import { Atom } from '@dbeining/react-atom';
+import { AnalyticsOptions } from '../../../../packages/Diagrams/src/types/analyticsOptions';
 import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
 
@@ -37,13 +38,11 @@ export interface ViewConfig<T> {
     treeOptions?: TreeOptions<T>;
     timelineOptions?: any;
     gardenOptions?: GardenOptions<T>;
-    analyticsOptions?: any;
+    analyticsOptions?: AnalyticsOptions<T>;
     powerBiOptions?: any;
 }
 
-export function createGlobalState(
-    defaultState: DataViewState
-): Atom<DataViewState> {
+export function createGlobalState(defaultState: DataViewState): Atom<DataViewState> {
     return Atom.of(defaultState);
 }
 

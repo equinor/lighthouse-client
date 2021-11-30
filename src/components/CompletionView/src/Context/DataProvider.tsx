@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
+import { AnalyticsOptions } from '../../../../packages/Diagrams/src/types/analyticsOptions';
 import { useDataViewerKey } from '../Components/DefaultDataView/Hooks/useDataViewerKey';
 import { DataViewerProps, ViewOptions } from '../DataViewerApi/DataViewerTypes';
 import { FilterOptions, GardenOptions, TableOptions, TreeOptions } from '../DataViewerApi/DataViewState';
@@ -18,7 +19,7 @@ interface DataState {
     treeOptions?: TreeOptions<unknown>;
     timelineOptions?: any;
     gardenOptions?: GardenOptions<unknown>;
-    analyticsOptions?: any;
+    analyticsOptions?: AnalyticsOptions<unknown>;
     powerBiOptions?: any;
 }
 interface DataContextState extends DataState {
@@ -68,7 +69,7 @@ export function ClientReducer(state: DataState, action: Action): DataState {
 
 export const DataProvider = ({ children }: DataProviderProps) => {
     const key = useDataViewerKey()
-    const { name, viewComponent, validator, viewOptions, tableOptions, filterOptions, dataFetcher, treeOptions, gardenOptions } = useDataViewer()
+    const { name, viewComponent, validator, viewOptions, tableOptions, filterOptions, dataFetcher, treeOptions, gardenOptions, analyticsOptions } = useDataViewer()
     const initialState: DataState = {
         key,
         name,
@@ -79,7 +80,8 @@ export const DataProvider = ({ children }: DataProviderProps) => {
         filterOptions,
         treeOptions,
         tableOptions,
-        gardenOptions
+        gardenOptions,
+        analyticsOptions
     }
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);

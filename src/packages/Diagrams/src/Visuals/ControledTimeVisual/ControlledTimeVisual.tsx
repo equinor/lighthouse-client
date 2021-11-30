@@ -5,16 +5,16 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { CumulativeSeriesOptions } from "../../types/cumulativeSeriesOptions";
 import { cumulativeSeries } from "../../utils/createAccumulativeSeries";
 
-export interface TimeBarChartProps<T> {
+export interface ControlledTimeBarChartProps<T> {
     data: T[]
-    options: TimeBarChartOptions<T>
+    options: ControlledTimeBarChartOptions<T>
 }
-export interface TimeBarChartOptions<T> {
+export interface ControlledTimeBarChartOptions<T> {
     timeChartOptions: CumulativeSeriesOptions<T>
 }
 
 
-export function TimeBarChart<T>({ data, options: { timeChartOptions } }: TimeBarChartProps<T>): JSX.Element {
+export function ControlledTimeBarChart<T>({ data, options: { timeChartOptions } }: ControlledTimeBarChartProps<T>): JSX.Element {
 
 
 
