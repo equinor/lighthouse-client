@@ -1,13 +1,22 @@
 import { Button } from '@equinor/eds-core-react';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { DataViewer } from '../../components/CompletionView/src/Components/DataViewer';
 import { DataProvider } from '../../components/CompletionView/src/Context/DataProvider';
 import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
+//import { Title } from '../../styles/header';
 import { AppApi } from '../apps';
 import { ScopeChangeForm } from './Components/ScopeChangeForm';
 import { mockRequests } from './Data/MockData';
+import { Stats } from './Components/Stats';
 
 export interface Tag {
+    id: string;
+    name: string;
+    description: string;
+}
+
+export interface Document {
     id: string;
     name: string;
     description: string;
@@ -27,7 +36,7 @@ export interface ScopeChangeRequest {
     actualHrs: string;
     responsible: string;
     tags?: Tag[];
-    documents?: Tag[];
+    documents?: Document[];
     comments?: string[];
     //workflow
 }
@@ -66,10 +75,15 @@ export function setup(appApi: AppApi): void {
 
     request.registerTableOptions({ objectIdentifierKey: 'id' });
     request.registerGardenOptions({
-        gardenKey: 'state',
+        groupeKey: 'state',
         itemKey: 'id',
         //groupByKeys: ['phase'],
         excludeKeys: [],
+    });
+
+    request.registerTreeOptions({
+        groupByKeys: ['origin', 'id'],
+        rootNode: 'state',
     });
 
     // request.registerAnalyticsOptions({});
@@ -87,13 +101,19 @@ export const ScopeChangeRequestApp = (props) => {
 
     return (
         <div>
+            <Header>
+                <Title>Scope change control</Title>
+                <Stats />
+            </Header>
             {showForm ? (
                 <ScopeChangeForm visible={setShowForm} />
             ) : (
                 <>
-                    <Button onClick={handleClick} color={'primary'}>
-                        + New change request
-                    </Button>
+                    <ButtonContainer>
+                        <Button variant={'outlined'} onClick={handleClick}>
+                            + New change request
+                        </Button>
+                    </ButtonContainer>
                     <DataProvider>
                         <DataViewer {...props} />
                     </DataProvider>
@@ -102,3 +122,18 @@ export const ScopeChangeRequestApp = (props) => {
         </div>
     );
 };
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
+
+const Title = styled.h1`
+    opacity: 0.7;
+`;
+
+const Header = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-left: 1.5em;
+`;

@@ -39,7 +39,9 @@ export const ScopeChangeForm: FC<ScopeChangeFormProps> = ({
     return (
         <>
             <ButtonContainer>
-                <Button onClick={() => visible(false)}>x</Button>
+                <Button variant={'ghost'} onClick={() => visible(false)}>
+                    x
+                </Button>
             </ButtonContainer>
 
             <FormContainer>
@@ -124,11 +126,11 @@ export const ScopeChangeForm: FC<ScopeChangeFormProps> = ({
                     </InputSection>
                     <LinkedInfoSection>
                         <p>Tag</p>
-                        <Button>+ Add tag</Button>
+                        <Button variant={'outlined'}>+ Add tag</Button>
                         <p>Documents</p>
-                        <Button>+ Add document</Button>
+                        <Button variant={'outlined'}>+ Add document</Button>
                         <p>Attachments</p>
-                        <Button>+ Add attachment</Button>
+                        <Button variant={'outlined'}>+ Add attachment</Button>
                     </LinkedInfoSection>
                     <WorkflowSection>
                         <p>Submit by originator</p>
@@ -144,7 +146,16 @@ export const ScopeChangeForm: FC<ScopeChangeFormProps> = ({
             </FormContainer>
             <ButtonContainer>
                 <Button
-                    color={'primary'}
+                    variant="ghost_icon"
+                    style={{ margin: '5px' }}
+                    color="secondary"
+                    onClick={() => visible(false)}
+                >
+                    Cancel
+                </Button>
+                <Button
+                    style={{ margin: '5px', backgroundColor: '#0584c2' }}
+                    disabled={!isValidForm}
                     onClick={() => {
                         console.log('Form is valid', isValidForm);
                         if (isValidForm) {
@@ -152,10 +163,7 @@ export const ScopeChangeForm: FC<ScopeChangeFormProps> = ({
                         }
                     }}
                 >
-                    Create
-                </Button>
-                <Button color={'danger'} onClick={() => visible(false)}>
-                    Cancel
+                    Submit
                 </Button>
             </ButtonContainer>
         </>
@@ -173,6 +181,7 @@ const ButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
     margin-right: 5em;
+    align-items: center;
 `;
 
 const SelectRow = styled.div`
