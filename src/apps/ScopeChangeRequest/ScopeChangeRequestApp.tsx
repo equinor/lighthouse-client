@@ -9,6 +9,7 @@ import { AppApi } from '../apps';
 import { ScopeChangeForm } from './Components/ScopeChangeForm';
 import { mockRequests } from './Data/MockData';
 import { Stats } from './Components/Stats';
+import { SideSheet } from '@equinor/fusion-components';
 
 export interface Tag {
     id: string;
@@ -74,27 +75,13 @@ export function setup(appApi: AppApi): void {
     });
 
     request.registerTableOptions({ objectIdentifierKey: 'id' });
-    request.registerGardenOptions({
-        groupeKey: 'state',
-        itemKey: 'id',
-        //groupByKeys: ['phase'],
-        excludeKeys: [],
-    });
 
-    request.registerTreeOptions({
-        groupByKeys: ['origin', 'id'],
-        rootNode: 'state',
-    });
-
-    // request.registerAnalyticsOptions({});
-    // request.registerTreeOptions({
-    //     groupByKeys: ['Id', 'Phase'],
-    //     rootNode: 'Id',
-    // });
+    request.registerAnalyticsOptions({});
 }
 
 export const ScopeChangeRequestApp = (props) => {
     const [showForm, setShowForm] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const handleClick = () => {
         setShowForm(true);
     };
@@ -106,7 +93,17 @@ export const ScopeChangeRequestApp = (props) => {
                 <Stats />
             </Header>
             {showForm ? (
-                <ScopeChangeForm visible={setShowForm} />
+                <SideSheet
+                    isOpen={isOpen}
+                    onClose={(open) => {
+                        setIsOpen(open);
+                    }}
+                    id="discussion"
+                    title=""
+                    size="large"
+                >
+                    <ScopeChangeForm />
+                </SideSheet>
             ) : (
                 <>
                     <ButtonContainer>
