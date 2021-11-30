@@ -25,7 +25,7 @@ const commPkgKeys: (keyof CommPkg)[] = [
     'CommPriority1__Id',
     'CommPkgNo',
     'Description',
-    'PlannedStartup'
+    'PlannedStartup',
 ];
 
 function start(item: CommPkg): string {
@@ -64,7 +64,7 @@ export function setup(appApi: AppApi) {
     const commPkg = createDataViewer<CommPkg>({
         initialState: [],
         primaryViewKey: 'CommPkgNo',
-        viewerId: appApi.shortName
+        viewerId: appApi.shortName,
     });
 
     commPkg.registerDataFetcher(async () => {
@@ -77,7 +77,6 @@ export function setup(appApi: AppApi) {
         );
 
         const data = JSON.parse(await response.text());
-        console.log(data);
         return data;
     });
 
@@ -86,29 +85,29 @@ export function setup(appApi: AppApi) {
         typeMap: {
             Responsible__Id: 'Responsible Id',
             Area__Id: 'Area',
-            McStatus__Id: 'Mc Status'
+            McStatus__Id: 'Mc Status',
         },
         groupValue: {
-            start
-        }
+            start,
+        },
     });
 
     commPkg.registerViewOptions({
         objectIdentifierKey: 'CommPkgNo',
         title: {
             key: 'CommPkgNo',
-            label: 'Comm. Package:'
+            label: 'Comm. Package:',
         },
         description: {
             key: 'Description',
-            label: 'Description'
-        }
+            label: 'Description',
+        },
     });
 
     commPkg.registerTableOptions({ objectIdentifierKey: 'CommPkgNo' });
     commPkg.registerGardenOptions({
-        groupeKey: 'Responsible__Id',
-        itemKey: 'CommPkgNo'
+        gardenKey: 'Responsible__Id',
+        itemKey: 'CommPkgNo',
     });
     // commPkg.registerTreeOptions({
     //     groupByKeys: ['Status__Id', 'CommPkgNo'],

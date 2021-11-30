@@ -1,8 +1,6 @@
 import { useDataContext } from '../../CompletionView/src/Context/DataProvider';
 import { Item } from '../Styles/item';
-import { Dot } from '../Styles/dot';
-import React from 'react';
-import { useGardenContext } from '../Context/GardenProvider';
+import { useParkViewContext } from '../Context/ParkViewProvider';
 
 interface RenderItemsProps<T> {
     data: T[];
@@ -10,25 +8,23 @@ interface RenderItemsProps<T> {
 
 export function Items<T>({ data }: RenderItemsProps<T>): JSX.Element | null {
     const { setSelected } = useDataContext();
-    const { itemKey, customItemView, statusFunc } = useGardenContext<T>();
-
-    const CustomRender = customItemView;
+    const { itemKey, customView, status } = useParkViewContext<T>();
 
     return (
         <>
             {Object.keys(data).map((key, index) =>
-                CustomRender ? (
-                    <CustomRender
+                customView?.CustomItemView ? (
+                    <customView.CustomItemView
                         data={data[key]}
                         itemKey={itemKey.toString()}
                         key={data[key] + index}
                         onClick={() => setSelected(data[key][itemKey])}
                     >
                         {data[key][itemKey]}
-                    </CustomRender>
+                    </customView.CustomItemView>
                 ) : (
                     <Item key={data[key] + index} onClick={() => setSelected(data[key][itemKey])}>
-                        {statusFunc && <Dot color={statusFunc(data[key])} />}
+                        {status?.statusItemFunc(data[key]).statusElement}
                         {data[key][itemKey]}
                     </Item>
                 )
