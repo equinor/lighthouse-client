@@ -22,7 +22,7 @@ export interface TableOptions {
 }
 
 export interface Status {
-    severity: number;
+    rating: number;
     statusElement?: JSX.Element;
     status?: string;
 }

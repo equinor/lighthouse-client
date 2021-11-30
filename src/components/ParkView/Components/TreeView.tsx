@@ -18,7 +18,6 @@ export function TreeView<T>(): JSX.Element | null {
     }
 
     useEffect(() => {
-        console.log(data);
         data &&
             setTree(
                 createTree(

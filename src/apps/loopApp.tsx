@@ -127,11 +127,9 @@ export function setup(appApi: AppApi) {
         gardenKey: 'phase',
         itemKey: 'tagNo',
         groupByKeys: ['commPk'],
-        status: { statusItemFunc, shouldAggregate: false },
-        //statusFunc: statusFunc,
-        //customItemView: CustomItemsView,
-        //excludeKeys: [],
-        //customGroupView: CustomGroupView,
+        status: { statusItemFunc, shouldAggregate: true },
+        //options: { groupDescriptionFunc },
+        excludeKeys: [],
     });
 
     commPkg.registerAnalyticsOptions({});
@@ -145,21 +143,21 @@ export function setup(appApi: AppApi) {
 function statusItemFunc<T>(data: T): Status {
     switch (data['status']) {
         case 'OK':
-            return { severity: 4, status: 'Good', statusElement: <StatusDot color={'green'} /> };
+            return { rating: 4, status: 'Good', statusElement: <StatusDot color={'green'} /> };
 
         case 'OS':
-            return { severity: 3, status: 'Medium', statusElement: <StatusDot color={'blue'} /> };
+            return { rating: 3, status: 'Medium', statusElement: <StatusDot color={'blue'} /> };
 
         case 'PB':
-            return { severity: 2, status: 'Bad', statusElement: <StatusDot color={'yellow'} /> };
+            return { rating: 2, status: 'Bad', statusElement: <StatusDot color={'yellow'} /> };
 
         case 'PA':
-            return { severity: 1, status: 'Bad', statusElement: <StatusDot color={'red'} /> };
+            return { rating: 1, status: 'Bad', statusElement: <StatusDot color={'red'} /> };
 
         default:
             return {
                 status: 'Default',
-                severity: 0,
+                rating: 0,
                 statusElement: <StatusDot color={'black'} />,
             };
     }
@@ -176,9 +174,3 @@ export const StatusDot = styled.span`
     border-radius: 50%;
     margin-right: 1em;
 `;
-
-// , statusElement: <StatusDot color={ 'green' } />
-// statusElement: <StatusDot color={ 'blue' } />
-//     , statusElement: <Dot color={ 'yellow' }
-// , statusElement: <Dot color={ 'red' } />
-// statusElement: <Dot color={ 'black' } />,

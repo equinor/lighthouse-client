@@ -15,7 +15,6 @@ export function groupBy<T, K extends keyof T>(
     const data = arr.reduce((acc, item) => {
         const itemKeys: [] = Array.isArray(item[key]) ? item[key] : [item[key]];
 
-        //check if function description: function (item) ?? item[description],
         itemKeys.forEach((valueKey: string) => {
             acc[valueKey] = acc[valueKey] || {
                 groupKey: key,
@@ -37,8 +36,6 @@ export function groupBy<T, K extends keyof T>(
     const nextKeys = keys.slice(1);
     Object.keys(data).forEach((key) => {
         {
-            //group = data[key]
-
             if (status) {
                 if (status.statusGroupFunc) {
                     data[key].status = status.statusGroupFunc(data[key]);
@@ -47,7 +44,7 @@ export function groupBy<T, K extends keyof T>(
 
                     data[key].items.map((x) => {
                         const itemStatus = status.statusItemFunc(x);
-                        if (itemStatus.severity < worstStatus.severity) {
+                        if (itemStatus.rating < worstStatus.rating) {
                             worstStatus = itemStatus;
                         }
                     });

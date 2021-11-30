@@ -19,7 +19,6 @@ export function createTree<T>(
         });
     }
 
-    //No keys to sort on
     if (allGroupingKeys.length <= 0) {
         //Wrap in rootGroup
         const rootGroup: Data<T> = {};

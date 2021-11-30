@@ -13,9 +13,6 @@ export function createGarden<T>(
     groupDescriptionFunc?: GroupDescriptionFunc<T>
 ): Data<T> {
     const allGroupingKeys: (keyof T)[] = [gardenKey];
-    // if (gardenKey) {
-    //     allGroupingKeys = [gardenKey];
-    // }
     if (groupingKeys) {
         groupingKeys.map((x) => {
             allGroupingKeys.push(x);
