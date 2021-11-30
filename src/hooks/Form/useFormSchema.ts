@@ -142,7 +142,9 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
             const values = Object.values(fields) as any[];
 
             if (
-                values.filter((v): boolean => (requiredOnly ? v.isRequired : true)).every((v): boolean => v.isDirty)
+                values
+                    .filter((v): boolean => (requiredOnly ? v.isRequired : true))
+                    .every((v): boolean => v.isDirty)
             ) {
                 return true;
             }
