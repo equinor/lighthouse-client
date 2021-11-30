@@ -55,7 +55,7 @@ const commPkgKeys: (keyof Checklist)[] = [
     'TagFormularType__Tag__McPkg__CommPkg__OperationHandoverStatus',
     'TagFormularType__Tag__TagNo',
     'VerifiedAt',
-    'WorkOrders__WoNo'
+    'WorkOrders__WoNo',
 ];
 
 export function setup(appApi: AppApi) {
@@ -63,7 +63,7 @@ export function setup(appApi: AppApi) {
     const checklist = createDataViewer<Checklist>({
         initialState: [],
         primaryViewKey: 'TagFormularType__Tag__TagNo',
-        viewerId: appApi.shortName
+        viewerId: appApi.shortName,
     });
 
     checklist.registerDataFetcher(async () => {
@@ -83,25 +83,25 @@ export function setup(appApi: AppApi) {
     checklist.registerFilterOptions({
         excludeKeys: commPkgKeys,
         typeMap: {},
-        groupValue: {}
+        groupValue: {},
     });
 
     checklist.registerViewOptions({
         objectIdentifierKey: 'Id',
         title: {
             key: 'TagFormularType__Tag__TagNo',
-            label: 'TagNo:'
+            label: 'TagNo:',
         },
         description: {
             key: 'TagFormularType__FormularType__FormularGroup__Description',
-            label: 'Description'
-        }
+            label: 'Description',
+        },
     });
 
     checklist.registerTableOptions({ objectIdentifierKey: 'Id' });
     checklist.registerGardenOptions({
-        groupeKey: 'Responsible__Id',
-        itemKey: 'TagFormularType__Tag__TagNo'
+        gardenKey: 'Responsible__Id',
+        itemKey: 'TagFormularType__Tag__TagNo',
     });
     checklist.registerAnalyticsOptions({});
 }

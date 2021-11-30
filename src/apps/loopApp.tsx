@@ -1,5 +1,7 @@
 import { baseClient } from '@equinor/http-client';
+import styled from 'styled-components';
 import { createDataViewer } from '../components/CompletionView/src/DataViewerApi/DataViewerApi';
+import { Status } from '../components/CompletionView/src/DataViewerApi/DataViewState';
 import { AppApi } from './apps';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
@@ -122,35 +124,53 @@ export function setup(appApi: AppApi) {
 
     commPkg.registerTableOptions({ objectIdentifierKey: 'tagNo' });
     commPkg.registerGardenOptions({
-        groupeKey: 'phase',
+        gardenKey: 'phase',
         itemKey: 'tagNo',
         groupByKeys: ['commPk'],
-        statusFunc: statusFunc,
-        //customItemView: CustomItemsView,
-        //excludeKeys: [],
-        //customGroupView: CustomGroupView,
+        status: { statusItemFunc, shouldAggregate: true },
+        //options: { groupDescriptionFunc },
+        excludeKeys: [],
     });
 
     commPkg.registerAnalyticsOptions({});
     commPkg.registerTreeOptions({
         groupByKeys: ['status', 'responsible', 'tagNo'],
-        rootNode: 'phase',
+        itemKey: 'tagNo',
     });
     // console.info(`Config for ${appManifest.shortName} done! `);
 }
 
-function statusFunc<T>(data: T) {
+function statusItemFunc<T>(data: T): Status {
     switch (data['status']) {
-        case 'OS':
-            return 'yellow';
-
         case 'OK':
-            return 'green';
+            return { rating: 4, status: 'Good', statusElement: <StatusDot color={'green'} /> };
+
+        case 'OS':
+            return { rating: 3, status: 'Medium', statusElement: <StatusDot color={'blue'} /> };
 
         case 'PB':
-            return 'pink';
+            return { rating: 2, status: 'Bad', statusElement: <StatusDot color={'yellow'} /> };
+
+        case 'PA':
+            return { rating: 1, status: 'Bad', statusElement: <StatusDot color={'red'} /> };
 
         default:
-            return 'black';
+            return {
+                status: 'Default',
+                rating: 0,
+                statusElement: <StatusDot color={'black'} />,
+            };
     }
 }
+
+interface DotProps {
+    color: string;
+}
+
+export const StatusDot = styled.span`
+    height: 1rem;
+    width: 1rem;
+    background-color: ${(p: DotProps) => p.color};
+    border-radius: 50%;
+    margin-right: 1em;
+`;
