@@ -77,7 +77,6 @@ export function setup(appApi: AppApi) {
         );
 
         const data = JSON.parse(await response.text());
-        console.log(data);
         return data;
     });
 

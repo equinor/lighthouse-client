@@ -127,7 +127,7 @@ export function setup(appApi: AppApi) {
         gardenKey: 'phase',
         itemKey: 'tagNo',
         groupByKeys: ['commPk'],
-        status: { statusItemFunc, shouldAggregate: true },
+        status: { statusItemFunc, shouldAggregate: false },
         //statusFunc: statusFunc,
         //customItemView: CustomItemsView,
         //excludeKeys: [],
