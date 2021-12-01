@@ -126,7 +126,7 @@ export const ScopeChangeRequestApp = (props) => {
             <Header>
                 <Title>Scope change control</Title>
                 <Stats />
-                <RequestDetailView request={exampleRequest} />
+                {/* <RequestDetailView request={exampleRequest} /> */}
             </Header>
             {showForm ? (
                 <ScopeChangeForm visible={setShowForm} />
