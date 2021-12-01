@@ -1,4 +1,5 @@
 import { Breadcrumbs, Tabs, Typography } from "@equinor/eds-core-react";
+import { StatusBar } from "@equinor/StatusBar";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useFilteredData } from "../../../Filter";
@@ -23,7 +24,7 @@ const LeftSection = styled.div`
 
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     width: -webkit-fill-available;
     border-bottom: 2px solid var(--eds_ui_background__medium,rgba(220,220,220,1));
 `
@@ -49,9 +50,6 @@ const Divider = styled.div`
     background: var(--eds_ui_background__medium,rgba(220,220,220,1));
  }
 `
-
-
-
 
 /**
  * Implementation Speck
@@ -96,23 +94,22 @@ export const CompletionViewHeader = ({ groupe, title, tabs, handleFilter, active
         <HeaderWrapper>
             <LeftSection>
                 <Title variant="h3">{title}</Title>
-                {/* {statusFunc && <StatusBar data={statusFunc(data)} />} */}
+                {statusFunc && <StatusBar data={statusFunc(data)} />}
             </LeftSection>
             <RightSection>
                 <List>
-                    {tabs.map(tab => {
-                        const Icon = tab.icon;
-                        return (
-                            <Tab key={`tab-${tab.icon}`}>
-                                <Icon />
-                                <TabTitle>
-                                    {tab.title}
-                                </TabTitle>
-                            </Tab>)
+                    {
+                        tabs.map(tab => {
+                            const Icon = tab.icon;
+                            return (
+                                <Tab key={`tab-${tab.icon}`}>
+                                    <Icon />
+                                    <TabTitle>
+                                        {tab.title}
+                                    </TabTitle>
+                                </Tab>)
+                        })
                     }
-                    )
-                    }
-
                 </List>
                 <Divider />
                 <TabButton onClick={handleFilter} aria-selected={activeFilter}>

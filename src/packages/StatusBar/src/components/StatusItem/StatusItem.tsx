@@ -1,6 +1,6 @@
 import { tokens } from "@equinor/eds-tokens";
 import { useMemo } from "react";
-import { Description, StatusCard, Title, Value } from "./StatusItem-Styles";
+import { StatusCard, Title, Value } from "./StatusItem-Styles";
 
 
 export interface StatusItem {
@@ -8,7 +8,6 @@ export interface StatusItem {
     value: () => string;
     description?: string;
     status: keyof Status
-
 }
 
 export interface Status {
@@ -34,9 +33,6 @@ export function Item({ status, title, value, description }: React.PropsWithChild
                 <Title>
                     {title}
                 </Title>
-                <Description >
-                    {description}
-                </Description>
             </div>
             <Value >
                 {value()}

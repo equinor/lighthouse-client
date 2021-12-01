@@ -7,7 +7,7 @@ interface StatusCardProps {
 }
 
 export const StatusCard = styled(Card)`
-    height: 100px;
+    height: 50px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -20,7 +20,6 @@ export const Title = styled.h4`
 `;
 
 export const Value = styled.h1`
-    font-size: 2.5rem;
     margin: 0;
     padding: 0;
 `;

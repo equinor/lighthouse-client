@@ -1,16 +1,18 @@
 
 
+import { AnalyticsOptions } from '@equinor/Diagrams';
 import { createContext, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
-import { AnalyticsOptions } from '../../../../packages/Diagrams/src/types/analyticsOptions';
 import { useDataViewerKey } from '../Components/DefaultDataView/Hooks/useDataViewerKey';
 import { DataViewerProps, ViewOptions } from '../DataViewerApi/DataViewerTypes';
 import { FilterOptions, GardenOptions, StatusFunc, TableOptions, TreeOptions } from '../DataViewerApi/DataViewState';
 import { useDataViewer } from '../DataViewerApi/useDataViewer';
+
 interface DataState {
     key: string;
     name: string;
     data: any[];
+    subData: Record<string, any[]>;
     itemId: string;
     viewComponent?: React.FC<DataViewerProps<unknown>>;
     viewOptions?: ViewOptions<unknown>;
@@ -75,6 +77,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
         key,
         name,
         data: [],
+        subData: {},
         itemId: "",
         viewComponent,
         viewOptions,

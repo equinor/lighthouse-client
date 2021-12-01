@@ -63,6 +63,7 @@ export function setup(appApi: AppApi) {
 
         return JSON.parse(await response.text());
     });
+    // commPkg.registerDataValidator()
 
     commPkg.registerFilterOptions({
         excludeKeys: loopKeys,
