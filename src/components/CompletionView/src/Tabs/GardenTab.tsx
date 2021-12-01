@@ -1,12 +1,10 @@
-import { useFilteredData } from "../../../Filter";
-import { Garden } from "../../../Garden";
-import { useDataContext } from "../Context/DataProvider";
+import { useFilteredData } from '../../../Filter';
+import { Garden } from '../../../ParkView/Components/Garden';
+import { useDataContext } from '../Context/DataProvider';
 
-export const GardenTab = () => {
-    const { data } = useFilteredData()
+export const GardenTab = (): JSX.Element => {
+    const { data } = useFilteredData();
     const { gardenOptions } = useDataContext();
 
-    return (
-        gardenOptions ? <Garden data={data} groupeKey={gardenOptions.groupeKey} itemKey={gardenOptions.itemKey} /> : <p> No options provided.</p>
-    );
-}
+    return <Garden data={data} gardenOptions={gardenOptions} />;
+};

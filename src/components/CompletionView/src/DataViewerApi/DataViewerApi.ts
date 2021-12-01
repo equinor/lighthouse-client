@@ -12,6 +12,7 @@ import {
     DataViewState,
     GardenOptions,
     getContext,
+    PowerBiOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
@@ -28,6 +29,7 @@ import {
 export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T> {
     dispatch(getContext(), (state: DataViewState) => {
         if (state[options.viewerId]) {
+            // eslint-disable-next-line no-console
             console.warn(`${options.viewerId} is already registered DataView.`);
         }
         return {
@@ -94,7 +96,7 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
          * View option Registration
          *
          */
-        registerTableOptions<T>(tableOptions: TableOptions) {
+        registerTableOptions(tableOptions: TableOptions) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
@@ -145,6 +147,15 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
                 [options.viewerId]: {
                     ...state[options.viewerId],
                     statusFunc: statusFunc as StatusFunc<unknown>,
+                },
+            }));
+        },
+        registerPowerBIOptions(powerBiOptions: PowerBiOptions) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    powerBiOptions,
                 },
             }));
         },

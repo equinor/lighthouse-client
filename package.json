@@ -50,7 +50,10 @@
     "react-virtualized-auto-sizer": "^1.0.6",
     "react-window": "^1.8.6",
     "styled-components": "^5.3.3",
-    "typesafe-actions": "^5.1.0"
+    "ts-node": "^10.2.1",
+    "typesafe-actions": "^5.1.0",
+    "worker-loader": "^3.0.8",
+    "worker-plugin": "^5.0.1"
   },
   "devDependencies": {
     "@equinor/eslint-config-fusion": "^0.1.2",
@@ -62,6 +65,7 @@
     "@types/react-table": "^7.7.7",
     "@types/react-window": "^1.8.5",
     "@types/webpack": "^5.28.0",
+    "@types/worker-plugin": "^5.0.1",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
     "clean-webpack-plugin": "^4.0.0",

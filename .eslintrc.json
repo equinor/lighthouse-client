@@ -34,7 +34,8 @@
         "@typescript-eslint/no-unused-vars": "error",
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
-        "react/no-multi-comp": false,
+        "react/no-multi-comp": 0,
+        "react/function-component-definition": 0,
         "no-undef": "off",
         "no-console": "warn",
         "no-unreachable": "warn"

@@ -1,18 +1,41 @@
-import { baseClient } from '@equinor/http-client';
+import { baseClient, NetworkError } from '@equinor/http-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
+import { useState } from 'react';
 import useClientContext from '../../../../context/clientContext';
+import { Filter, PowerBiFilter } from '../models/filter';
 
-export function useFusionClient() {
+const filterBuilder = (filter: Filter): PowerBiFilter => {
+    return {
+        $schema: 'http://powerbi.com/product/schema#basic',
+        target: {
+            table: filter.target.table,
+            column: filter.target.column,
+        },
+        filterType: 1,
+        operator: filter.operator,
+        values: filter.values,
+    };
+};
+
+interface useFusionClientReturn {
+    getConfig: () => Promise<IReportEmbedConfiguration>;
+    error: NetworkError | undefined;
+}
+export function useFusionClient(resource: string, filterOptions?: Filter[]): useFusionClientReturn {
     const { appConfig, authProvider } = useClientContext();
+    const [error, setError] = useState<NetworkError>();
     const scope = [appConfig.fusion];
     const fusionClient = baseClient(authProvider, scope);
+    const baseUri = 'https://lih-proxy.azurewebsites.net/fusion/reports';
+    const filters: PowerBiFilter[] = [];
+    filterOptions?.forEach((filterOption) => {
+        filters.push(filterBuilder(filterOption));
+    });
+
     async function getEmbedInfo() {
         try {
-            const response = await fusionClient.fetch(
-                'https://lih-proxy.azurewebsites.net/fusion/reports/punch-analytics-rls/config/embedinfo'
-                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/query-analytics-rls/config/embedinfo'
-                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/config/embedinfo'
-            );
+            const embedUri = `${baseUri}/${resource}/config/embedinfo`;
+            const response = await fusionClient.fetch(embedUri);
 
             const data = await response.json();
             window['embedInfo'] = data;
@@ -24,21 +47,18 @@ export function useFusionClient() {
 
     async function getPowerBiToken() {
         try {
-            const response = await fusionClient.fetch(
-                'https://lih-proxy.azurewebsites.net/fusion/reports/punch-analytics-rls/token'
-                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/query-analytics-rls/token'
-                // 'https://pro-s-reports-fprd.azurewebsites.net/reports/handover-analytics-rls/token'
-            );
+            const tokenUri = `${baseUri}/${resource}/token`;
+            const response = await fusionClient.fetch(tokenUri);
             return await response.json();
-        } catch (error) {
-            console.error(error);
+        } catch (error: any) {
+            const networkError = error as NetworkError;
+            setError(networkError);
         }
     }
 
     async function getConfig(): Promise<IReportEmbedConfiguration> {
         const { embedConfig } = await getEmbedInfo();
         const { token } = await getPowerBiToken();
-
         return {
             accessToken: token,
             embedUrl: embedConfig.embedUrl,
@@ -47,29 +67,19 @@ export function useFusionClient() {
                 panes: {
                     filters: {
                         expanded: false,
-                        visible: false
+                        visible: false,
                     },
                     pageNavigation: {
-                        visible: false
-                    }
-                }
-            },
-            filters: [
-                {
-                    $schema: 'http://powerbi.com/product/schema#basic',
-                    target: {
-                        column: 'FACILITY',
-                        table: 'Commpkg'
+                        visible: false,
                     },
-                    operator: 'In',
-                    values: ['JCA'],
-                    filterType: 1
-                }
-            ]
+                },
+            },
+            filters: filters ?? undefined,
         };
     }
 
     return {
-        getConfig
+        getConfig,
+        error,
     };
 }

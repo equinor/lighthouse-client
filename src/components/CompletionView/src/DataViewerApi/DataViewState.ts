@@ -1,17 +1,15 @@
 import { Atom } from '@dbeining/react-atom';
 import { StatusItem } from '@equinor/StatusBar';
+import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { AnalyticsOptions } from '../../../../packages/Diagrams/src/types/analyticsOptions';
 import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
+import { DataSet } from '../../../ParkView/Models/data';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
 
 export interface DataViewState {
     [key: string]: ViewConfig<unknown>;
 }
 
-export interface TreeOptions<T> {
-    rootNode: keyof T;
-    groupByKeys: (keyof T)[];
-}
 export interface FilterOptions<T> {
     excludeKeys?: (keyof T)[];
     typeMap?: Partial<Record<keyof T, string>>;
@@ -23,9 +21,51 @@ export interface TableOptions {
     objectIdentifierKey: string;
     headers?: HeaderData[];
 }
-export interface GardenOptions<T> {
-    groupeKey: keyof T;
+
+export interface Status {
+    rating: number;
+    statusElement?: JSX.Element;
+    status?: string;
+}
+
+interface StatusView<T> {
+    statusItemFunc: (data: T) => Status;
+    statusGroupFunc?: (group: DataSet<T>) => Status;
+    shouldAggregate: boolean;
+}
+
+interface Options<T> {
+    groupDescriptionFunc?: (data: T, groupingKey: string) => string;
+}
+
+interface CustomView<T> {
+    customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
+    customGroupView?: React.FC<{ data: DataSet<any>; onClick: () => void }>;
+}
+
+//update TreeOptions;;
+export interface TreeOptions<T> {
+    groupByKeys?: (keyof T)[];
     itemKey: keyof T;
+    excludeKeys?: (keyof T)[];
+    customViews?: CustomView<T>;
+    options?: Options<T>;
+    status?: StatusView<T>;
+}
+
+export interface GardenOptions<T> {
+    gardenKey: keyof T;
+    itemKey: keyof T;
+    groupByKeys?: (keyof T)[];
+    excludeKeys?: (keyof T)[];
+    customViews?: CustomView<T>;
+    options?: Options<T>;
+    status?: StatusView<T>;
+}
+
+export interface PowerBiOptions {
+    reportId: string;
+    filterOptions?: Filter[];
 }
 
 export type StatusFunc<T> = (data: T[]) => StatusItem[];
@@ -52,6 +92,6 @@ export function createGlobalState(defaultState: DataViewState): Atom<DataViewSta
 
 export const CoreContext = createGlobalState({});
 
-export function getContext() {
+export function getContext(): Atom<DataViewState> {
     return CoreContext;
 }

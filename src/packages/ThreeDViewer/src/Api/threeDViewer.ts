@@ -1,16 +1,9 @@
-import {
-    Cognite3DViewer,
-    Cognite3DViewerOptions,
-    GeometryFilter,
-    revealEnv,
-    THREE
-} from '@cognite/reveal';
+import { Cognite3DViewer, Cognite3DViewerOptions, GeometryFilter, THREE } from '@cognite/reveal';
 import { ClientInstance, ViewerInstance } from '../Context/3DContextProvider';
 import { ModelData } from '../Context/3DState';
-revealEnv.publicPath = `/reveal-worker/`;
+// revealEnv.publicPath = `/reveal-worker/`;
 
-export interface ThreeDViewerOptions
-    extends Omit<Cognite3DViewerOptions, 'sdk'> {
+export interface ThreeDViewerOptions extends Omit<Cognite3DViewerOptions, 'sdk'> {
     defaultSceneColor?: THREE.ColorRepresentation;
 }
 
@@ -32,11 +25,9 @@ export function threeDViewer(
     const viewer = new Cognite3DViewer({
         sdk: client,
         logMetrics: false,
-        ...options
+        ...options,
     });
-    viewer.setBackgroundColor(
-        new THREE.Color(options.defaultSceneColor || '#5EA4E0')
-    );
+    viewer.setBackgroundColor(new THREE.Color(options.defaultSceneColor || '#5EA4E0'));
     const scene = viewer.getScene();
     const camera = viewer.getCamera();
 
@@ -48,13 +39,13 @@ export function threeDViewer(
         const model = await viewer.addCadModel({
             modelId,
             revisionId,
-            geometryFilter
+            geometryFilter,
         });
         viewer.fitCameraToModel(model);
         return {
             modelId,
             revisionId,
-            model
+            model,
         };
     }
 

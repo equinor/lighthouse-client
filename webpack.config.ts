@@ -54,10 +54,6 @@ const webpackConfig: Configuration = {
     module: {
         rules: [
             {
-                test: /\.worker\.(js|ts)$/,
-                use: { loader: 'worker-loader' },
-            },
-            {
                 test: /\.(ts|tsx)$/,
                 loader: 'ts-loader',
                 exclude: /node_modules/,
@@ -66,6 +62,10 @@ const webpackConfig: Configuration = {
                         noImplicitAny: false,
                     },
                 },
+            },
+            {
+                test: /\.worker\.(js|ts)$/,
+                use: { loader: 'worker-loader' },
             },
             {
                 test: /\.css$/,
@@ -113,10 +113,10 @@ const webpackConfig: Configuration = {
                 { from: './public/images', to: './images' },
                 { from: './public/data', to: './data' },
                 { from: './doc/dataView.md', to: './' },
-                {
-                    from: './node_modules/@cognite/reveal-parser-worker/dist/local',
-                    to: './reveal-worker',
-                },
+                // {
+                //     from: './node_modules/@cognite/reveal-parser-worker/dist/local',
+                //     to: './reveal-worker',
+                // },
             ],
         }),
     ],

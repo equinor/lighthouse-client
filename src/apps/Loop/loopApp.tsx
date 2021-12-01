@@ -1,7 +1,9 @@
 import { baseClient } from '@equinor/http-client';
+import styled from 'styled-components';
 import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
+import { Status } from '../../components/CompletionView/src/DataViewerApi/DataViewState';
 import { AppApi } from '../apps';
-import { analyticsOptions, statusBarData } from './Sections/AnalycticsConfig';
+import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 
@@ -124,14 +126,53 @@ export function setup(appApi: AppApi) {
 
     commPkg.registerTableOptions({ objectIdentifierKey: 'tagNo' });
     commPkg.registerGardenOptions({
-        groupeKey: 'phase',
+        gardenKey: 'phase',
         itemKey: 'tagNo',
+        groupByKeys: ['commPk'],
+        status: { statusItemFunc, shouldAggregate: true },
+        //options: { groupDescriptionFunc },
+        excludeKeys: [],
     });
     commPkg.registerAnalyticsOptions(analyticsOptions);
     commPkg.registerTreeOptions({
         groupByKeys: ['status', 'responsible', 'tagNo'],
-        rootNode: 'phase',
+        itemKey: 'tagNo',
     });
     commPkg.registerStatusItems(statusBarData);
     // console.info(`Config for ${appManifest.shortName} done! `);
+}
+
+interface DotProps {
+    color: string;
+}
+
+export const StatusDot = styled.span`
+    height: 1rem;
+    width: 1rem;
+    background-color: ${(p: DotProps) => p.color};
+    border-radius: 50%;
+    margin-right: 1em;
+`;
+
+function statusItemFunc<T>(data: T): Status {
+    switch (data['status']) {
+        case 'OK':
+            return { rating: 4, status: 'Good', statusElement: <StatusDot color={'green'} /> };
+
+        case 'OS':
+            return { rating: 3, status: 'Medium', statusElement: <StatusDot color={'blue'} /> };
+
+        case 'PB':
+            return { rating: 2, status: 'Bad', statusElement: <StatusDot color={'yellow'} /> };
+
+        case 'PA':
+            return { rating: 1, status: 'Bad', statusElement: <StatusDot color={'red'} /> };
+
+        default:
+            return {
+                status: 'Default',
+                rating: 0,
+                statusElement: <StatusDot color={'black'} />,
+            };
+    }
 }

@@ -23,9 +23,8 @@ interface ControlledTimeBarChart<T> {
 
 interface CustomVisual<T> {
     type: 'customVisual';
-    options: CustomVisualOptions<T>
+    options: CustomVisualOptions<T>;
 }
-
 
 interface CustomVisualOptions<T> {
     component: React.FC<{ data: T[] }>;
@@ -34,7 +33,12 @@ interface Default {
     type: 'default';
 }
 
-type Options<T> = BarChart<T> | LineChart<T> | ControlledTimeBarChart<T> | CustomVisual<T> | Default;
+type Options<T> =
+    | BarChart<T>
+    | LineChart<T>
+    | ControlledTimeBarChart<T>
+    | CustomVisual<T>
+    | Default;
 
 interface Section<T> {
     chart1?: Options<T>;
@@ -47,11 +51,12 @@ interface AnalyticsSections<T> {
     section2: Section<T>;
     section3: Section<T>;
     section4: Section<T>;
+    section5: Section<T>;
 }
 
 export type AnalyticsOptions<T> = Partial<AnalyticsSections<T>>;
 
-export function getSections<T>(options: Partial<AnalyticsOptions<T>>) {
+export function getSections<T>(options: Partial<AnalyticsOptions<T>>): AnalyticsSections<T> {
     const section: Section<T> = {
         chart1: { type: 'default' },
         chart2: { type: 'default' },
@@ -87,32 +92,75 @@ const Circular = styled(Progress.Circular)`
     padding: 1rem;
 `;
 
-
-
-export function getChart<T>(data: T[], config: Options<T> = { type: 'default' }, isLoading?: boolean) {
-
+export function getChart<T>(
+    data: T[],
+    config: Options<T> = { type: 'default' },
+    isLoading?: boolean
+): JSX.Element {
+    let Component: React.FC<{ data: T[] }> = () => <></>;
+    if (config.type === 'customVisual') {
+        Component = config.options.component;
+    }
     switch (config.type) {
         case 'barChart':
-            return <WrapperCharts>
-                {!isLoading ? <BarChartVisual data={data} options={config.options} /> : <Loading> <Circular />Loading...</Loading>}
-            </WrapperCharts>
+            return (
+                <WrapperCharts>
+                    {!isLoading ? (
+                        <BarChartVisual data={data} options={config.options} />
+                    ) : (
+                        <Loading>
+                            {' '}
+                            <Circular />
+                            Loading...
+                        </Loading>
+                    )}
+                </WrapperCharts>
+            );
         case 'lineChart':
-            return <WrapperCharts>
-                {!isLoading ? <LineChartVisual data={data} options={config.options} /> : <Loading> <Circular />Loading...</Loading>}
-            </WrapperCharts>
+            return (
+                <WrapperCharts>
+                    {!isLoading ? (
+                        <LineChartVisual data={data} options={config.options} />
+                    ) : (
+                        <Loading>
+                            {' '}
+                            <Circular />
+                            Loading...
+                        </Loading>
+                    )}
+                </WrapperCharts>
+            );
         case 'timeBarChart':
-            return <WrapperCharts>
-                {!isLoading ? <TimeChart<T> data={data} options={config.options} /> : <Loading> <Circular />Loading...</Loading>}
-            </WrapperCharts>
-        case "customVisual":
-            const Component = config.options.component;
-            return <WrapperCharts>
-                {!isLoading ? <Component data={data} /> : <Loading> <Circular />Loading...</Loading>}
-            </WrapperCharts>
+            return (
+                <WrapperCharts>
+                    {!isLoading ? (
+                        <TimeChart<T> data={data} options={config.options} />
+                    ) : (
+                        <Loading>
+                            {' '}
+                            <Circular />
+                            Loading...
+                        </Loading>
+                    )}
+                </WrapperCharts>
+            );
+        case 'customVisual':
+            return (
+                <WrapperCharts>
+                    {!isLoading ? (
+                        <Component data={data} />
+                    ) : (
+                        <Loading>
+                            {' '}
+                            <Circular />
+                            Loading...
+                        </Loading>
+                    )}
+                </WrapperCharts>
+            );
         case 'default':
-            return <></>
+            return <></>;
         default:
-            return <></>
+            return <></>;
     }
 }
-

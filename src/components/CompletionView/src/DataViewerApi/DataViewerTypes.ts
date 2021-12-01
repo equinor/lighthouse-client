@@ -2,6 +2,7 @@ import { AnalyticsOptions } from '../../../../packages/Diagrams/src/types/analyt
 import {
     FilterOptions,
     GardenOptions,
+    PowerBiOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
@@ -47,4 +48,5 @@ export interface DataViewerApi<T> {
     registerGardenOptions: (options: GardenOptions<T>) => void;
     registerAnalyticsOptions: (options: AnalyticsOptions<T>) => void;
     registerStatusItems: (options: StatusFunc<T>) => void;
+    registerPowerBIOptions: (options: PowerBiOptions) => void;
 }

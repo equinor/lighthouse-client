@@ -1,0 +1,75 @@
+@startuml Lighthouse
+' !includeurl /Style/C4-Style.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/react.puml
+!include DEVICONS/dotnet.puml
+!include DEVICONS/msql_server.puml
+!include DEVICONS/database.puml
+!include FONTAWESOME/users.puml
+
+
+Person(user, "User", $sprite="users")  
+Container(webClient, "WebClient", "webClient", $sprite="react")  
+Rel(user, webClient, " ")
+Container(auth, "Auth", " ")
+
+' Facility Asset Model Section 
+System_Boundary(fam, "Facility Asset Model | Lighhouse") {
+
+ 
+    Container(famEventHub, "FamEvenHub", " ")  
+
+    System(dataAdapter, "Lighthouse Adapter", "Data Adapter")
+    Rel(famEventHub, dataAdapter, " ")
+        
+ 
+}
+
+' Facility Asset Model Section 
+Boundary(lightgouse, "Lighthouse | API") {
+    ContainerDb(scopeChangeControlDB, "Scope Change Control", "New Data", $sprite="database")  
+    ContainerDb(constructionProgressDB, "Construction Progress", "MIPS", $sprite="database") 
+    ContainerDb(heatTraceDB, "Heat Trace", "ProCoSys", $sprite="database") 
+
+    Container(scopeChangeControlApi, "Scope Change Control", "web API", $sprite="dotnet")
+    Container(constructionProgressApi, "Construction Progress", "web API", $sprite="dotnet")
+    Container(heatTraceApi, "HeatTrace", "web API", $sprite="dotnet")
+    
+    Rel(scopeChangeControlApi, scopeChangeControlDB, "Read / Write")
+    Rel(constructionProgressApi, constructionProgressDB, "Read")
+    Rel(heatTraceApi, heatTraceDB, "Read")
+
+    Rel(dataAdapter, scopeChangeControlDB, "Write")
+    Rel(webClient, scopeChangeControlApi, " ")
+    Rel(webClient, constructionProgressApi, " ")
+    Rel(webClient, heatTraceApi, " ")
+}
+
+ 
+
+Boundary(extenals, 'Externals') {
+    Container(mips, "MIPS", "Api") 
+    Container(mipsTIEAdapter, "MIPS TIE Adapter", "adapter") 
+}
+
+Boundary(externalsEquinor, 'Externals Equinor') {
+    Container(stid, "STID", "Api")  
+    Container(procosys, "ProCoSys", "Api") 
+
+    Container(commonLib, "CommonLib", "Api")  
+}
+
+Container(tie, "TIE", "TIE1.5 / TIE 2.0")
+Rel(tie, famEventHub, "Write")
+
+Rel(mips, tie, "Write")
+Rel(stid, famEventHub, "Write")
+Rel(procosys, famEventHub, "Write")
+Rel(commonLib, famEventHub, "Write")
+
+
+
+@enduml
