@@ -9,7 +9,7 @@ import { AppApi } from '../apps';
 import { ScopeChangeForm } from './Components/ScopeChangeForm';
 import { mockRequests } from './Data/MockData';
 import { Stats } from './Components/Stats';
-import { SideSheet } from '@equinor/fusion-components';
+import { RequestDetailView } from './Components/DetailView/RequestDetailView';
 
 export interface Tag {
     id: string;
@@ -17,7 +17,13 @@ export interface Tag {
     description: string;
 }
 
-export interface Document {
+export interface StidDocument {
+    id: string;
+    name: string;
+    description: string;
+}
+
+export interface Attachment {
     id: string;
     name: string;
     description: string;
@@ -37,7 +43,7 @@ export interface ScopeChangeRequest {
     actualHrs: string;
     responsible: string;
     tags?: Tag[];
-    documents?: Document[];
+    documents?: StidDocument[];
     comments?: string[];
     //workflow
 }
@@ -81,9 +87,38 @@ export function setup(appApi: AppApi): void {
 
 export const ScopeChangeRequestApp = (props) => {
     const [showForm, setShowForm] = useState<boolean>(false);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
     const handleClick = () => {
         setShowForm(true);
+    };
+
+    const exampleRequest: ScopeChangeRequest = {
+        id: '056bc600-e722-4243-8d5f-8c5bd238e509',
+        title: 'Scope change request',
+        description: 'Modification of support',
+        created: new Date().toDateString(),
+        state: 'Closed',
+        phase: 'IC',
+        milestone: 'MIL010',
+        origin: 'Query',
+        category: 'Hidden carryover',
+        guesstimateHrs: '300',
+        actualHrs: '200',
+        comments: ['', ''],
+        responsible: '???',
+        tags: [
+            {
+                description: 'Something',
+                id: '101',
+                name: 'Comm',
+            },
+        ],
+        documents: [
+            {
+                description: 'Stid document',
+                id: '202x3',
+                name: '0387408734',
+            },
+        ],
     };
 
     return (
@@ -91,19 +126,10 @@ export const ScopeChangeRequestApp = (props) => {
             <Header>
                 <Title>Scope change control</Title>
                 <Stats />
+                <RequestDetailView request={exampleRequest} />
             </Header>
             {showForm ? (
-                <SideSheet
-                    isOpen={isOpen}
-                    onClose={(open) => {
-                        setIsOpen(open);
-                    }}
-                    id="discussion"
-                    title=""
-                    size="large"
-                >
-                    <ScopeChangeForm />
-                </SideSheet>
+                <ScopeChangeForm visible={setShowForm} />
             ) : (
                 <>
                     <ButtonContainer>
