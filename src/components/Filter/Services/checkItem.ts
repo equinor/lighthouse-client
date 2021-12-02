@@ -1,12 +1,14 @@
-import { FilterData, FilterItem } from '../Types/FilterItem';
+import { FilterData, FilterGroup, FilterItem } from '../Types/FilterItem';
+
+interface CheckItem {
+    [key: string]: FilterGroup;
+}
 
 export function checkItem(
     filterDataState: FilterData,
-
     filterItem: FilterItem | FilterItem[],
-
     singleClick?: boolean
-) {
+): CheckItem {
     const items = Array.isArray(filterItem) ? filterItem : [filterItem];
 
     if (singleClick && items.length === 1) {
@@ -40,7 +42,11 @@ export function checkItem(
     return { ...filterDataState };
 }
 
-function setItemsActive(filterDataState: FilterData, type: string, _filterItems: FilterItem[]) {
+function setItemsActive(
+    filterDataState: FilterData,
+    type: string,
+    _filterItems: FilterItem[]
+): FilterData {
     Object.keys(filterDataState[type].value).forEach(
         (key) => (filterDataState[type].value[key].checked = false)
     );
@@ -52,6 +58,6 @@ function setItemsActive(filterDataState: FilterData, type: string, _filterItems:
     return filterDataState;
 }
 
-function isAll(_filterItems: FilterItem[], filterDataState: FilterData, item: FilterItem) {
+function isAll(_filterItems: FilterItem[], filterDataState: FilterData, item: FilterItem): boolean {
     return _filterItems.length === Object.keys(filterDataState[item.type].value).length;
 }
