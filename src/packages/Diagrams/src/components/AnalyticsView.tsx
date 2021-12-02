@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { AnalyticsOptions, getChart, getSections } from '../types/analyticsOptions';
-import { Page, Wrapper } from './analyticsView-styles';
+import { Page, Wrapper } from './analyticsViewStyles';
 
 export interface AnalyticsViewProps<T> {
     data: T[];
@@ -9,7 +9,7 @@ export interface AnalyticsViewProps<T> {
 }
 
 export function AnalyticsView<T>({ isLoading, data, options }: AnalyticsViewProps<T>): JSX.Element {
-    const sections = useMemo(() => getSections(options), [data, options]);
+    const sections = useMemo(() => getSections(options), [options]);
 
     return (
         <Page>

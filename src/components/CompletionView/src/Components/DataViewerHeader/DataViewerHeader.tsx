@@ -1,6 +1,6 @@
 import { Divider, Tabs } from '@equinor/eds-core-react';
 import { StatusBar } from '@equinor/StatusBar';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFilteredData } from '../../../../Filter';
 import Icon from '../../../../Icon/Icon';
 import { useDataContext } from '../../Context/DataProvider';
@@ -37,9 +37,11 @@ export const CompletionViewHeader = ({
 }: CompletionViewHeaderProps): JSX.Element => {
     const { getData, statusFunc } = useDataContext();
     const { data } = useFilteredData();
+    const isMounted = useRef(false);
 
     useEffect(() => {
-        getData();
+        !isMounted.current && getData();
+        isMounted.current = true;
     }, [getData]);
 
     return (

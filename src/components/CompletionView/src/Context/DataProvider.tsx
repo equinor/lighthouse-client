@@ -1,5 +1,5 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useCallback, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { useDataViewerKey } from '../Components/DefaultDataView/Hooks/useDataViewerKey';
 import { DataViewerProps, ViewOptions } from '../DataViewerApi/DataViewerTypes';
@@ -102,7 +102,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
-    const getData = async () => {
+    const getData = useCallback(async () => {
         if (dataFetcher) {
             const data = await dataFetcher();
             if (validator) {
@@ -113,7 +113,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
             console.warn(`Data may not be valid. Data validator is not registered for ${name}.`);
             dispatch(actions.getData(data));
         }
-    };
+    }, [dataFetcher, name, validator]);
 
     const setSelected = (itemId: string) => {
         dispatch(actions.setSelectedItem(itemId !== state.itemId ? itemId : ''));

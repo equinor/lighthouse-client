@@ -1,11 +1,10 @@
-import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { useApps } from '../../apps/useApps';
 import useClientContext from '../../context/clientContext';
 import { HomePage } from '../HomePage/HomePage';
 import { DefaultRouteComponent } from './DefaultRouteComponent';
 
-export const Routes = () => {
+export function Routes(): JSX.Element {
     const apps = useApps();
     const { appConfig, authProvider } = useClientContext();
 
@@ -41,4 +40,4 @@ export const Routes = () => {
             <Route render={(): JSX.Element => <Redirect to="/" />} />
         </Switch>
     );
-};
+}
