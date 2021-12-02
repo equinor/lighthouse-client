@@ -16,3 +16,14 @@ export interface SeriesItem<T> {
 export interface CumulativeSeries<T> {
     [key: string]: SeriesItem<T>;
 }
+
+export interface SeriesData {
+    data: number[];
+    name: string;
+    type: 'column' | 'line' | 'bar';
+}
+
+export interface ChartData {
+    series: SeriesData[];
+    categories: string[];
+}

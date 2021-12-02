@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
-import { CumulativeSeries } from '../types/cumulativeSeries';
+import { ChartData, CumulativeSeries } from '../types/cumulativeSeries';
 import { CumulativeSeriesOptions } from '../types/cumulativeSeriesOptions';
-import { sortDate } from './sortDate';
+import { sortDateByKey } from './sortDate';
 
 export type TimeDimension = 'month' | 'week' | 'year' | 'quarter';
 
@@ -24,9 +24,11 @@ function getInitialTimeDecimation<T>(
     }
 }
 
+const DummyData = null;
+
 function getQuarter(years: number[], categoriesKey: string) {
     return years.reduce((quarters, year) => {
-        Array.apply(null, Array(4)).forEach((_, index) => {
+        Array.apply(DummyData, Array(4)).forEach((_, index) => {
             index++;
             quarters[`${index}-${year}`] = {
                 categoriesKey,
@@ -40,7 +42,7 @@ function getQuarter(years: number[], categoriesKey: string) {
 }
 function getMoths(years: number[], categoriesKey: string) {
     return years.reduce((months, year) => {
-        Array.apply(null, Array(12)).forEach((_, index) => {
+        Array.apply(DummyData, Array(12)).forEach((_, index) => {
             index++;
             months[`${index}-${year}`] = {
                 categoriesKey,
@@ -55,7 +57,7 @@ function getMoths(years: number[], categoriesKey: string) {
 function getWeeks(years: number[], categoriesKey: string) {
     return years.reduce((weeks, year) => {
         const weeksCount = DateTime.local(year).weeksInWeekYear;
-        Array.apply(null, Array(weeksCount)).forEach((_, index) => {
+        Array.apply(DummyData, Array(weeksCount)).forEach((_, index) => {
             index++;
             weeks[`${index}-${year}`] = {
                 categoriesKey,
@@ -128,20 +130,6 @@ function dataReducer<T>(sortedData: T[], options: CumulativeSeriesOptions<T>, ti
         }
 
         return acc;
-        // if (options.series) {
-        //     Object.values(options.series).forEach((series: SeriesItemOptions<T>) => {
-        //         acc[key].series[series.key.toString()] = acc[key].series[series.key.toString()] || {
-        //             key: series.key,
-        //             type: series.type,
-        //             value: 0,
-        //         };
-
-        //         if (item[series.key] === series.value) {
-        //             acc[key].series[series.key.toString()].value =
-        //                 acc[key].series[series.key.toString()].value + 1;
-        //         }
-        //     });
-        // }
     }, initialData as CumulativeSeries<T>);
     return Object.values(reducedData).filter(options.filter ? options.filter : () => true);
 }
@@ -150,8 +138,8 @@ export function timeChartSeries<T>(
     dataItem: T[],
     options: CumulativeSeriesOptions<T>,
     time: TimeDimension
-) {
-    const sortedData = sortDate(dataItem, options.categoriesKey);
+): ChartData {
+    const sortedData = sortDateByKey(dataItem, options.categoriesKey);
 
     const reducedData = dataReducer<T>(sortedData, options, time);
     const data = reducedData.map((i) => i.value);
@@ -162,24 +150,6 @@ export function timeChartSeries<T>(
     series.push({ data: cumulativeData, name: `${options.title} accumulated`, type: 'line' });
 
     const categories = reducedData.map((i) => i.date);
-
-    // if (options.series) {
-    //     Object.values(options.series).forEach((seriesItem: SeriesItemOptions<T>) => {
-    //         const currentData = reducedData.map((i: SeriesItem<T>) => {
-    //             if (i.series[seriesItem.key.toString()]) {
-    //                 return i.series[seriesItem.key.toString()].value;
-    //             } else {
-    //                 return 0;
-    //             }
-    //         });
-
-    //         series.push({
-    //             data: currentData,
-    //             name: seriesItem.title.toString(),
-    //             type: seriesItem.type,
-    //         });
-    //     });
-    // }
 
     return {
         series,

@@ -1,21 +1,21 @@
+interface SeriesData {
+    name: string;
+    type: string;
+    data: number[];
+}
+
+type BarLineData = [SeriesData[], string[]];
+
 /**
- * Will creat a series and categories form a data set for configuring
- * Bar and Line Chart
- *
- * @export
- * @template T
- * @param {T[]} dataItem
- * @param {string} type
- * @param {string} nameKey
- * @param {string} categoryKey
- * @return {*}
+ * createSeriesByKeys creat's a series and categories form a data set for
+ * basic Bar and Line Chart.
  */
 export function createSeriesByKeys<T>(
     dataItem: T[],
     type: string,
     nameKey: string,
     categoryKey: string
-) {
+): BarLineData {
     const categories = dataItem.reduce((acc, item) => {
         acc = acc || [];
         const index = acc.findIndex((i) => i === item[categoryKey]);

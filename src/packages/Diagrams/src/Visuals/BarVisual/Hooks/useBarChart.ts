@@ -2,13 +2,32 @@ import { useMemo } from 'react';
 import { BarChartOptions } from '../Types/barVisualOptions';
 import { createSeriesByKeys } from '../Utils/createSeriesByKeys';
 
+interface BarChart {
+    barChartOptions: {
+        chart: { id: string; stacked: boolean | undefined; toolbar: { show: boolean } };
+        plotOptions: { bar: { columnWidth: string } };
+        stroke: { width: number[] };
+        colors: string[];
+        xaxis: { categories: string[] | { name: string; type: string; data: number[] }[] };
+        markers: {
+            size: number;
+            strokeWidth: number;
+            fillOpacity: number;
+            strokeOpacity: number;
+            hover: { size: number };
+        };
+        yaxis: { tickAmount: number; min: number };
+    };
+    series: string[] | { name: string; type: string; data: number[] }[];
+}
+
 export function useBarChart<T>(
-    data,
+    data: T[],
     { stacked, nameKey, categoryKey, colors }: BarChartOptions<T>
-) {
-    const [series, categories] = useMemo(
+): BarChart {
+    const { series, categories } = useMemo(
         () => createSeriesByKeys(data, 'column', nameKey as string, categoryKey as string),
-        [data]
+        [categoryKey, data, nameKey]
     );
 
     const barChartOptions = useMemo(
@@ -46,7 +65,7 @@ export function useBarChart<T>(
                 min: 0,
             },
         }),
-        [series, categories]
+        [stacked, colors, categories]
     );
 
     return {
