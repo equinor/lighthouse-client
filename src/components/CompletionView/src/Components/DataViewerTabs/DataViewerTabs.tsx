@@ -1,14 +1,8 @@
 import { Tabs } from '@equinor/eds-core-react';
-import styled from 'styled-components';
-import { TabsConfigItem } from '../Tabs/tabsConfig';
+import { TabsConfigItem } from '../../Tabs/tabsConfig';
+import { Panels } from './DataViewerTabsStyles';
 
-const { Panels, Panel } = Tabs;
-
-const PanelsView = styled(Panels)`
-    overflow: auto;
-    width: -webkit-fill-available;
-    height: -webkit-fill-available;
-`;
+const { Panel } = Tabs;
 
 interface CompletionViewTabsProps {
     tabs: TabsConfigItem[];
@@ -17,7 +11,7 @@ interface CompletionViewTabsProps {
 
 export const CompletionViewTabs = ({ tabs, activeTab }: CompletionViewTabsProps): JSX.Element => {
     return (
-        <PanelsView>
+        <Panels>
             {tabs.map((tab, index) => {
                 const ViewComponent = tab.viewComponent;
                 return (
@@ -26,6 +20,6 @@ export const CompletionViewTabs = ({ tabs, activeTab }: CompletionViewTabsProps)
                     </Panel>
                 );
             })}
-        </PanelsView>
+        </Panels>
     );
 };

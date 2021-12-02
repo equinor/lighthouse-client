@@ -1,18 +1,18 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { AppApi } from '../../../../apps/apps';
-import { FilterView } from '../../../Filter';
-import { FilterProvider } from '../../../Filter/Context/FilterProvider';
-import { useDataContext } from '../Context/DataProvider';
-import { useDataViewer } from '../DataViewerApi/useDataViewer';
-import { useConfiguredTabs } from '../Tabs/tabsConfig';
-import { CompletionViewHeader } from './DataViewerHeader';
-import { CompletionViewTabs } from './DataViewerTabs';
-import { DataView } from './DefaultDataView';
-import { DataViewWrapper } from './DefaultDataView/DataView.styles';
-import { NoDataViewer } from './NoDataViewer/NoDataViewer';
+import { AppApi } from '../../../../../apps/apps';
+import { FilterView } from '../../../../Filter';
+import { FilterProvider } from '../../../../Filter/Context/FilterProvider';
+import { useDataContext } from '../../Context/DataProvider';
+import { useDataViewer } from '../../DataViewerApi/useDataViewer';
+import { useConfiguredTabs } from '../../Tabs/tabsConfig';
+import { CompletionViewHeader } from '../DataViewerHeader/DataViewerHeader';
+import { CompletionViewTabs } from '../DataViewerTabs/DataViewerTabs';
+import { DataView } from '../DefaultDataView/DataView';
+import { NoDataViewer } from '../NoDataViewer/NoDataViewer';
+import { DataViewWrapper } from './DataViewerStyles';
 
-export const DataViewer = (props: AppApi): JSX.Element => {
+export function DataViewer(props: AppApi): JSX.Element {
     const {
         treeOptions,
         tableOptions,
@@ -62,4 +62,4 @@ export const DataViewer = (props: AppApi): JSX.Element => {
             </Tabs>
         </FilterProvider>
     );
-};
+}

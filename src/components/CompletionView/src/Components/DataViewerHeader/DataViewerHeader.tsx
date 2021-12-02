@@ -1,17 +1,17 @@
 import { Divider, Tabs } from '@equinor/eds-core-react';
 import { StatusBar } from '@equinor/StatusBar';
 import { useEffect } from 'react';
-import { useFilteredData } from '../../../Filter';
-import Icon from '../../../Icon/Icon';
-import { useDataContext } from '../Context/DataProvider';
+import { useFilteredData } from '../../../../Filter';
+import Icon from '../../../../Icon/Icon';
+import { useDataContext } from '../../Context/DataProvider';
+import { TabButton } from '../ToggleButton';
 import {
     HeaderWrapper,
     LeftSection,
     RightSection,
     TabTitle,
     Title
-} from './DataViewerHeader-Styles';
-import { TabButton } from './ToggleButton';
+} from './DataViewerHeaderStyles';
 
 const { Tab, List } = Tabs;
 

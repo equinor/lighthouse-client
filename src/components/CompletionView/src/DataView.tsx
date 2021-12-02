@@ -1,5 +1,5 @@
 import { AppApi } from '../../../apps/apps';
-import { DataViewer } from './Components/DataViewer';
+import { DataViewer } from './Components/DataViewer/DataViewer';
 import { DataProvider } from './Context/DataProvider';
 
 export const DataView = (props: AppApi): JSX.Element => {
