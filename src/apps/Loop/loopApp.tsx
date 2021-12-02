@@ -65,7 +65,6 @@ export function setup(appApi: AppApi) {
 
         return JSON.parse(await response.text());
     });
-    // commPkg.registerDataValidator()
 
     commPkg.registerFilterOptions({
         excludeKeys: loopKeys,
@@ -142,18 +141,6 @@ export function setup(appApi: AppApi) {
     // console.info(`Config for ${appManifest.shortName} done! `);
 }
 
-interface DotProps {
-    color: string;
-}
-
-export const StatusDot = styled.span`
-    height: 1rem;
-    width: 1rem;
-    background-color: ${(p: DotProps) => p.color};
-    border-radius: 50%;
-    margin-right: 1em;
-`;
-
 function statusItemFunc<T>(data: T): Status {
     switch (data['status']) {
         case 'OK':
@@ -176,3 +163,15 @@ function statusItemFunc<T>(data: T): Status {
             };
     }
 }
+
+interface DotProps {
+    color: string;
+}
+
+export const StatusDot = styled.span`
+    height: 1rem;
+    width: 1rem;
+    background-color: ${(p: DotProps) => p.color};
+    border-radius: 50%;
+    margin-right: 1em;
+`;

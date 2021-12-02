@@ -16,16 +16,12 @@ Container(webClient, "WebClient", "webClient", $sprite="react")
 Rel(user, webClient, " ")
 Container(auth, "Auth", " ")
 
+System(dataAdapter, "Lighthouse Adapter", "Data Adapter")
+
 ' Facility Asset Model Section 
 System_Boundary(fam, "Facility Asset Model | Lighhouse") {
-
- 
     Container(famEventHub, "FamEvenHub", " ")  
-
-    System(dataAdapter, "Lighthouse Adapter", "Data Adapter")
-    Rel(famEventHub, dataAdapter, " ")
-        
- 
+    Rel(famEventHub, dataAdapter, " ") 
 }
 
 ' Facility Asset Model Section 
@@ -39,10 +35,14 @@ Boundary(lightgouse, "Lighthouse | API") {
     Container(heatTraceApi, "HeatTrace", "web API", $sprite="dotnet")
     
     Rel(scopeChangeControlApi, scopeChangeControlDB, "Read / Write")
+
+    Rel(dataAdapter, heatTraceDB, "Write")
+    Rel(dataAdapter, constructionProgressDB, "Write")
+    ' Rel(dataAdapter, scopeChangeControlDB, "Write")
+    
     Rel(constructionProgressApi, constructionProgressDB, "Read")
     Rel(heatTraceApi, heatTraceDB, "Read")
 
-    Rel(dataAdapter, scopeChangeControlDB, "Write")
     Rel(webClient, scopeChangeControlApi, " ")
     Rel(webClient, constructionProgressApi, " ")
     Rel(webClient, heatTraceApi, " ")
@@ -57,8 +57,7 @@ Boundary(extenals, 'Externals') {
 
 Boundary(externalsEquinor, 'Externals Equinor') {
     Container(stid, "STID", "Api")  
-    Container(procosys, "ProCoSys", "Api") 
-
+    Container(procosys, "ProCoSys", "Api")
     Container(commonLib, "CommonLib", "Api")  
 }
 

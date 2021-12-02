@@ -1,6 +1,13 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
+export const DataViewWrapper = styled.section`
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: space-between;
+`;
+
 export const Wrapper = styled.div`
     position: relative;
     height: calc(100vh - 64px);

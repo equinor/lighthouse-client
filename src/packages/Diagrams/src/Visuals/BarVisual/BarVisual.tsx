@@ -1,8 +1,7 @@
-import Chart from "react-apexcharts";
-import AutoSizer from "react-virtualized-auto-sizer";
-import { useBarChart } from "./Hooks/useBarChart";
-import { BarChartOptions } from "./Types/barVisualOptions";
-
+import Chart from 'react-apexcharts';
+import AutoSizer from 'react-virtualized-auto-sizer';
+import { useBarChart } from './Hooks/useBarChart';
+import { BarChartOptions } from './Types/barVisualOptions';
 
 interface BarChartVisualProps<T> {
     data: T[];
@@ -10,8 +9,8 @@ interface BarChartVisualProps<T> {
 }
 
 /**
- * A Simple BarChart Visual 
- * 
+ * A Simple BarChart Visual
+ *
  * Exported Options from barChartVisual
  * ```
  *  interface BarChartOptions<T> {
@@ -20,8 +19,8 @@ interface BarChartVisualProps<T> {
  *  categoryKey: keyof T;
  *  colors?: string[];
  * ```
- * 
- * usage: 
+ *
+ * usage:
  * ```
  * interface DataItem {
  *  id: string
@@ -30,29 +29,27 @@ interface BarChartVisualProps<T> {
  *  value: number
  *  description: string
  * }
- * 
+ *
  * const data: DataItem[] = [...]
- * 
+ *
  * const options: BarChartOptions<DataItem> = {
  *   stacked: true,
  *   nameKey: "name",
  *   categoryKey: "value",
  *   colors: ["#ff3400"]
  * }
- * 
+ *
  * <BarChartVisual {...{data, options}} />
  *
- * 
+ *
  * ```
  */
 export function BarChartVisual<T>({ data, options }: BarChartVisualProps<T>): JSX.Element {
-
-    const { barChartOptions, series } = useBarChart(data, options)
+    const { barChartOptions, series } = useBarChart(data, options);
 
     return (
         <AutoSizer>
-            {(
-                { width }) => (
+            {({ width }) => (
                 <Chart
                     options={barChartOptions}
                     series={series}
@@ -62,5 +59,5 @@ export function BarChartVisual<T>({ data, options }: BarChartVisualProps<T>): JS
                 />
             )}
         </AutoSizer>
-    )
+    );
 }

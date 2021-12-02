@@ -1,4 +1,3 @@
-import React from 'react';
 import { GardenOptions } from '../../CompletionView/src/DataViewerApi/DataViewState';
 import { ParkViewProvider } from '../Context/ParkViewProvider';
 import { GardenView } from './GardenView';

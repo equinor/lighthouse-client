@@ -1,8 +1,6 @@
-import { useMemo } from "react";
-import { AnalyticsOptions, getChart, getSections } from "../types/analyticsOptions";
-import { Page, Wrapper } from "./analyticsView-styles";
-
-
+import { useMemo } from 'react';
+import { AnalyticsOptions, getChart, getSections } from '../types/analyticsOptions';
+import { Page, Wrapper } from './analyticsView-styles';
 
 export interface AnalyticsViewProps<T> {
     data: T[];
@@ -10,37 +8,36 @@ export interface AnalyticsViewProps<T> {
     options: AnalyticsOptions<T>;
 }
 
-export function AnalyticsView<T>({ isLoading, data, options }: AnalyticsViewProps<T>) {
-    console.log(options);
-    const sections = useMemo(() => getSections(options), [data, options])
+export function AnalyticsView<T>({ isLoading, data, options }: AnalyticsViewProps<T>): JSX.Element {
+    const sections = useMemo(() => getSections(options), [data, options]);
 
     return (
         <Page>
-            <Wrapper >
+            <Wrapper>
                 {getChart(data, sections.section1.chart1, isLoading)}
                 {getChart(data, sections.section1.chart2, isLoading)}
                 {getChart(data, sections.section1.chart3, isLoading)}
             </Wrapper>
-            <Wrapper >
+            <Wrapper>
                 {getChart(data, sections.section2.chart1, isLoading)}
                 {getChart(data, sections.section2.chart2, isLoading)}
                 {getChart(data, sections.section2.chart3, isLoading)}
             </Wrapper>
-            <Wrapper >
+            <Wrapper>
                 {getChart(data, sections.section3.chart1, isLoading)}
                 {getChart(data, sections.section3.chart2, isLoading)}
                 {getChart(data, sections.section3.chart3, isLoading)}
             </Wrapper>
-            <Wrapper >
+            <Wrapper>
                 {getChart(data, sections.section4.chart1, isLoading)}
                 {getChart(data, sections.section4.chart2, isLoading)}
                 {getChart(data, sections.section4.chart3, isLoading)}
             </Wrapper>
-            <Wrapper >
+            <Wrapper>
                 {getChart(data, sections.section5.chart1, isLoading)}
                 {getChart(data, sections.section5.chart2, isLoading)}
                 {getChart(data, sections.section5.chart3, isLoading)}
             </Wrapper>
         </Page>
-    )
+    );
 }

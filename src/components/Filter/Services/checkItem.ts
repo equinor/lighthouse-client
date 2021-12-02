@@ -2,10 +2,13 @@ import { FilterData, FilterItem } from '../Types/FilterItem';
 
 export function checkItem(
     filterDataState: FilterData,
+
     filterItem: FilterItem | FilterItem[],
+
     singleClick?: boolean
 ) {
     const items = Array.isArray(filterItem) ? filterItem : [filterItem];
+
     if (singleClick && items.length === 1) {
         items.forEach((item) => {
             Object.keys(filterDataState[item.type].value).forEach((key) => {
@@ -15,14 +18,14 @@ export function checkItem(
         });
     } else if (singleClick && items.length > 1) {
         const type = items[0].type;
+
         if (isAll(items, filterDataState, items[0])) {
             const isAllTrue = Object.keys(filterDataState[type].value).every(
                 (key) => filterDataState[type].value[key].checked
             );
+
             items.forEach((item) => {
-                filterDataState[type].value[item.value].checked = isAllTrue
-                    ? false
-                    : true;
+                filterDataState[type].value[item.value].checked = isAllTrue ? false : true;
             });
         } else {
             filterDataState = setItemsActive(filterDataState, type, items);
@@ -33,30 +36,22 @@ export function checkItem(
                 !filterDataState[item.type].value[item.value].checked;
         });
     }
+
     return { ...filterDataState };
 }
 
-function setItemsActive(
-    filterDataState: FilterData,
-    type: string,
-    _filterItems: FilterItem[]
-) {
+function setItemsActive(filterDataState: FilterData, type: string, _filterItems: FilterItem[]) {
     Object.keys(filterDataState[type].value).forEach(
         (key) => (filterDataState[type].value[key].checked = false)
     );
+
     _filterItems.forEach((item) => {
         filterDataState[type].value[item.value].checked = true;
     });
+
     return filterDataState;
 }
 
-function isAll(
-    _filterItems: FilterItem[],
-    filterDataState: FilterData,
-    item: FilterItem
-) {
-    return (
-        _filterItems.length ===
-        Object.keys(filterDataState[item.type].value).length
-    );
+function isAll(_filterItems: FilterItem[], filterDataState: FilterData, item: FilterItem) {
+    return _filterItems.length === Object.keys(filterDataState[item.type].value).length;
 }
