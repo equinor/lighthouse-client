@@ -26,6 +26,7 @@ const Wrapper = styled.div`
     width: ${({ panelActive }: AppsPanelWrapperProps) => (panelActive ? '350px' : '55px')};
 
     .heading {
+        background-color: transparent;
         :hover {
             ::before {
                 content: ' ';
@@ -50,6 +51,7 @@ const Wrapper = styled.div`
         padding-top: 0px;
         padding-bottom: 0px;
         min-height: 0px;
+        background-color: transparent;
 
         p {
             padding-left: 1rem;
@@ -63,7 +65,8 @@ const Wrapper = styled.div`
             color: #030303;
             text-decoration: none;
             display: block;
-            padding-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            padding-top: 0.5rem;
             padding-left: 2.5rem;
             :hover {
                 opacity: 0.5;

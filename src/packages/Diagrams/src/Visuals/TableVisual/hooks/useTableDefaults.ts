@@ -16,7 +16,7 @@ export function useTableDefaults(initialGroupBy: string): TableDefaults {
         () => ({
             groupBy: [initialGroupBy],
         }),
-        []
+        [initialGroupBy]
     );
 
     const defaultColumn = useMemo(

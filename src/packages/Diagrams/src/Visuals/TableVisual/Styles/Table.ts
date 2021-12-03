@@ -42,10 +42,6 @@ export const TableHeadCell = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-
-    /* :last-child {
-        border-right: none;
-    } */
 `;
 
 export const TypeChip = styled(Chip)`
