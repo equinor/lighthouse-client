@@ -1,4 +1,4 @@
-import { AnalyticsOptions } from '../../../../packages/Diagrams/src/2types/analyticsOptions';
+import { AnalyticsOptions } from '@equinor/Diagrams';
 import { dispatch } from './DataViewerCoreActions';
 import {
     DataFetcher,

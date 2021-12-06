@@ -1,4 +1,4 @@
-import { Status } from '../2Components/StatusItem/StatusItem';
+import { Status } from '../Components/StatusItem/StatusItem';
 import { getPercentageNum } from './getPercentage';
 
 export function getStatus<T, K extends keyof T>(

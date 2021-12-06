@@ -3,7 +3,7 @@ import moment from 'moment';
 import { useMemo } from 'react';
 import Chart from 'react-apexcharts';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { CumulativeSeriesOptions } from '../../2types/cumulativeSeriesOptions';
+import { CumulativeSeriesOptions } from '../../Types';
 import { cumulativeSeries } from '../../Utils/createAccumulativeSeries';
 
 export interface ControlledTimeBarChartProps<T> {

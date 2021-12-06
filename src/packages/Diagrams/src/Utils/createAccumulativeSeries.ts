@@ -1,6 +1,11 @@
 import moment from 'moment';
-import { ChartData, CumulativeSeries, SeriesItem } from '../2types/cumulativeSeries';
-import { CumulativeSeriesOptions, SeriesItemOptions } from '../2types/cumulativeSeriesOptions';
+import {
+    ChartData,
+    CumulativeSeries,
+    CumulativeSeriesOptions,
+    SeriesItem,
+    SeriesItemOptions,
+} from '../Types';
 import { sortDateByKey } from './sortDate';
 
 function createCumulativeSeries<T>(sortedData: T[], options: CumulativeSeriesOptions<T>) {

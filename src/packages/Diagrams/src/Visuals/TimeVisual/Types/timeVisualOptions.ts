@@ -1,4 +1,4 @@
-import { CumulativeSeriesOptions } from '../../../2types/cumulativeSeriesOptions';
+import { CumulativeSeriesOptions } from '../../../Types';
 import { TimeDimension } from '../../../Utils/createTime';
 
 export interface TimeBarChartProps<T> {
