@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Column, useFlexLayout, useGroupBy, useTable } from 'react-table';
-import { useColumns } from './Hooks/useColumns';
-import { useTableDefaults } from './Hooks/useTableDefaults';
+import { useColumns } from './2Hooks/useColumns';
+import { useTableDefaults } from './2Hooks/useTableDefaults';
 import {
     FooterRow,
     TableCell,
@@ -10,9 +10,9 @@ import {
     TableWrapper,
     TypeChip,
     TypeWrapper
-} from './Styles/Table';
-import { Table } from './Types/table';
-import { TableVisualOptions } from './Types/tableVisualOptions';
+} from './2Styles/Table';
+import { Table } from './2Types/table';
+import { TableVisualOptions } from './2Types/tableVisualOptions';
 
 interface TableVisualProps<T> {
     data: T[];
