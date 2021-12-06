@@ -5,27 +5,18 @@ const getObjectValue = <T>(item: T, key: string): string => item[key];
 /**
  * Creates a object representing the det tilter data based on the objects own properties.
  */
-export function createFilterData<T>(
-    dataArray: T[],
-    options?: FilterDataOptions<T>
-): FilterData {
+export function createFilterData<T>(dataArray: T[], options?: FilterDataOptions<T>): FilterData {
     if (dataArray.length === 0) return {};
 
     return dataArray.reduce((filterData, item) => {
-        const dataItem = options?.groupValue
-            ? { ...item, ...options.groupValue }
-            : item;
+        const dataItem = options?.groupValue ? { ...item, ...options.groupValue } : item;
 
         Object.keys(dataItem).forEach((typeKey: string) => {
-            if (options?.excludeKeys?.includes(typeKey as keyof T))
-                return filterData;
+            if (options?.excludeKeys?.includes(typeKey as keyof T)) return filterData;
 
             let valueKey: string = getObjectValue(dataItem, typeKey);
 
-            if (
-                options?.typeMap &&
-                Object.keys(options.typeMap).includes(typeKey)
-            ) {
+            if (options?.typeMap && Object.keys(options.typeMap).includes(typeKey)) {
                 typeKey = options.typeMap[typeKey];
             }
 
@@ -33,17 +24,14 @@ export function createFilterData<T>(
                 filterData[typeKey] ||
                 (filterData[typeKey] = { value: {}, all: true, type: typeKey });
 
-            if (
-                options?.groupValue &&
-                typeof options.groupValue[typeKey] === 'function'
-            ) {
+            if (options?.groupValue && typeof options.groupValue[typeKey] === 'function') {
                 valueKey = options.groupValue[typeKey](dataItem);
             }
 
             filterObject.value[valueKey] = {
                 value: valueKey,
                 checked: true,
-                type: typeKey
+                type: typeKey,
             };
         });
         return filterData;

@@ -11,7 +11,7 @@ import { PowerBiTab } from './PowerBiTab';
 import { TimelineTab } from './TimeLineTAb';
 import { TreeTab } from './TreeTab';
 
-interface TabsConfigItem {
+export interface TabsConfigItem {
     title: string;
     icon: React.FC;
     viewComponent: React.FC;
@@ -21,34 +21,34 @@ const tabsConfig: TabsConfigItem[] = [
     {
         title: 'Tree',
         icon: TreeIcon,
-        viewComponent: TreeTab
+        viewComponent: TreeTab,
     },
     {
         title: 'List',
         icon: ListIcon,
-        viewComponent: ListTab
+        viewComponent: ListTab,
     },
     {
         title: 'Garden',
         icon: BoardsIcon,
-        viewComponent: GardenTab
+        viewComponent: GardenTab,
     },
     {
         title: 'Timeline',
         icon: GantIcon,
-        viewComponent: TimelineTab
+        viewComponent: TimelineTab,
     },
     {
         title: 'Analytics',
         icon: AnalyticsIcon,
-        viewComponent: AnalyticsTab
+        viewComponent: AnalyticsTab,
     },
     {
         title: 'PowerBI',
         //Todo add PowerBI icon
         icon: AnalyticsIcon,
-        viewComponent: PowerBiTab
-    }
+        viewComponent: PowerBiTab,
+    },
 ];
 
 interface ActiveTabs {
@@ -57,7 +57,7 @@ interface ActiveTabs {
 }
 
 function getTabConfig(tabsConfig: TabsConfigItem[]) {
-    return function useConfiguredTabs<Config extends Object>(
+    return function useConfiguredTabs<Config extends Record<string, unknown>>(
         tree?: Config,
         list?: Config,
         garden?: Config,
@@ -76,7 +76,7 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
         });
         return {
             tabs,
-            viewIsActive: tabs.length > 0
+            viewIsActive: tabs.length > 0,
         };
     };
 }

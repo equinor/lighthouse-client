@@ -1,14 +1,13 @@
-import React from 'react';
-import { NoGardenOptions } from './NoGardenOptions';
 import { GardenOptions } from '../../CompletionView/src/DataViewerApi/DataViewState';
 import { ParkViewProvider } from '../Context/ParkViewProvider';
 import { GardenView } from './GardenView';
+import { NoGardenOptions } from './NoGardenOptions';
 
 interface GardenProps<T> {
-    data: unknown[];
+    data: T[];
     gardenOptions: GardenOptions<T> | undefined;
 }
-export const Garden = ({ gardenOptions, data }: GardenProps<unknown>): JSX.Element => {
+export function Garden<T>({ gardenOptions, data }: GardenProps<T>): JSX.Element {
     if (!gardenOptions) {
         return <NoGardenOptions />;
     }
@@ -17,4 +16,4 @@ export const Garden = ({ gardenOptions, data }: GardenProps<unknown>): JSX.Eleme
             <GardenView />
         </ParkViewProvider>
     );
-};
+}

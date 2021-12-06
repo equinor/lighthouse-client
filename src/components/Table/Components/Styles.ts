@@ -49,8 +49,7 @@ export const TableHeadCell = styled.div<{ align?: string }>`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    text-align: ${(props): string =>
-        props.align === 'right' ? 'right' : 'left'};
+    text-align: ${(props): string => (props.align === 'right' ? 'right' : 'left')};
     :last-child {
         border-right: none;
     }

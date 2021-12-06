@@ -3,19 +3,17 @@
         "strict": true,
         "jsx": "react-jsx",
         "target": "es6",
-        // "outDir": "dist",
+        "outDir": "dist",
         "skipLibCheck": true,
         "module": "commonjs",
-        // "lib": [
-        //     "webworker",
-        //     "esnext"
-        //   ],
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": false,
         "types": ["node"],
         "sourceMap": true,
         "paths": {
+            "@equinor/StatusBar": ["./src/packages/2StatusBar"],
+            "@equinor/Diagrams": ["./src/packages/Diagrams"],
             "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
             "@equinor/authentication": ["./packages/authentication"],
             "@equinor/http-client": ["./packages/httpClient"],
