@@ -1,5 +1,5 @@
 export * from './BarVisual';
-export * from './ControledTimeVisual';
+export * from './ControlledTimeVisual';
 export * from './LineVisual';
 export * from './TableVisual';
 export * from './TimeVisual';

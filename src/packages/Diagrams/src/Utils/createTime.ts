@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon';
-import { ChartData, CumulativeSeries } from '../types/cumulativeSeries';
-import { CumulativeSeriesOptions } from '../types/cumulativeSeriesOptions';
+import { ChartData, CumulativeSeries, CumulativeSeriesOptions } from '../2types';
 import { sortDateByKey } from './sortDate';
 
 export type TimeDimension = 'month' | 'week' | 'year' | 'quarter';

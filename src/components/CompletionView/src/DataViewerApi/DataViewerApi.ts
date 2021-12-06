@@ -1,4 +1,4 @@
-import { AnalyticsOptions } from '../../../../packages/Diagrams/src/types/analyticsOptions';
+import { AnalyticsOptions } from '../../../../packages/Diagrams/src/2types/analyticsOptions';
 import { dispatch } from './DataViewerCoreActions';
 import {
     DataFetcher,
