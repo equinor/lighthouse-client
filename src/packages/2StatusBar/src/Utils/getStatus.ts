@@ -1,5 +1,5 @@
 import { Status } from '../2Components/2StatusItem/2StatusItem';
-import { getPercentageNum } from './2getPercentage';
+import { getPercentageNum } from './getPercentage';
 
 export function getStatus<T, K extends keyof T>(
     data: T[],
