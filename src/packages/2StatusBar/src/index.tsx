@@ -1,5 +1,5 @@
-import { StatusBar } from './2Components/2StatusBar/2StatusBar';
-import { StatusItem } from './2Components/2StatusItem/2StatusItem';
+import { StatusBar } from './2Components/StatusBar/StatusBar';
+import { StatusItem } from './2Components/StatusItem/StatusItem';
 
 export const data: StatusItem[] = [
     {

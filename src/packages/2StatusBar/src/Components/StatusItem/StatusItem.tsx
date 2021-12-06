@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import { useMemo } from 'react';
-import { StatusCard, Title, Value } from './2StatusItemStyles';
+import { StatusCard, Title, Value } from './StatusItemStyles';
 
 export interface StatusItem {
     title: string;
