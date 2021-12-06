@@ -1,7 +1,7 @@
 import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
-import { StatusItem } from '../../../../packages/2StatusBar';
+import { StatusItem } from '../../../../packages/StatusBar';
 import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
 import { DataSet } from '../../../ParkView/Models/data';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';

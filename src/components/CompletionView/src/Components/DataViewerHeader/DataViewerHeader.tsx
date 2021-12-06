@@ -1,6 +1,6 @@
 import { Divider, Tabs } from '@equinor/eds-core-react';
 import { useEffect, useRef } from 'react';
-import { StatusBar } from '../../../../../packages/2StatusBar';
+import { StatusBar } from '../../../../../packages/StatusBar';
 import { useFilteredData } from '../../../../Filter';
 import Icon from '../../../../Icon/Icon';
 import { useDataContext } from '../../Context/DataProvider';

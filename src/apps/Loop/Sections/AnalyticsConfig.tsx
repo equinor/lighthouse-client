@@ -1,13 +1,13 @@
 import { GardenOptions } from '../../../components/CompletionView/src/DataViewerApi/DataViewState';
 import { Garden } from '../../../components/ParkView/Components/Garden';
+import { AnalyticsOptions } from '../../../packages/Diagrams/src/types/analyticsOptions';
 import {
     getDatePercentage,
     getDateStatus,
     getPercentage,
     getStatus,
     StatusItem
-} from '../../../packages/2StatusBar';
-import { AnalyticsOptions } from '../../../packages/Diagrams/src/types/analyticsOptions';
+} from '../../../packages/StatusBar';
 import { Loop } from '../loopApp';
 
 function Component({ data }: { data: Loop[] }): JSX.Element {
