@@ -1,12 +1,12 @@
+import { GardenOptions } from '../../../components/CompletionView/src/DataViewerApi/DataViewState';
+import { Garden } from '../../../components/ParkView/Components/Garden';
 import {
     getDatePercentage,
     getDateStatus,
     getPercentage,
     getStatus,
     StatusItem
-} from '@equinor/StatusBar';
-import { GardenOptions } from '../../../components/CompletionView/src/DataViewerApi/DataViewState';
-import { Garden } from '../../../components/ParkView/Components/Garden';
+} from '../../../packages/2StatusBar';
 import { AnalyticsOptions } from '../../../packages/Diagrams/src/types/analyticsOptions';
 import { Loop } from '../loopApp';
 
