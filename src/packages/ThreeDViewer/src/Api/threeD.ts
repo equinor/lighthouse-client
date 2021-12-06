@@ -10,19 +10,16 @@ export interface ThreeDConfig extends ThreeDViewerOptions {
     project?: string;
 }
 
-export type ThreeDInstance = ThreeDClientInstance &
-    ThreeDViewerInstance &
-    ThreeDApi;
+export type ThreeDInstance = ThreeDClientInstance & ThreeDViewerInstance & ThreeDApi;
 
-export type ThreeDApiOptions = ThreeDConfig &
-    ThreeDViewerInstance & { domElement?: HTMLElement };
+export type ThreeDApiOptions = ThreeDConfig & ThreeDViewerInstance & { domElement?: HTMLElement };
 
 type ThreeDApi = ReturnType<typeof createThreeDApi>;
 
 function createThreeDApi(options: ThreeDApiOptions) {
     return {
         ...threeDActionsApi(options),
-        ...ThreeDSelectorApi(options)
+        ...ThreeDSelectorApi(options),
     };
 }
 
@@ -34,6 +31,6 @@ export async function threeD(options: ThreeDConfig): Promise<ThreeDInstance> {
     return {
         ...clientInstance,
         ...viewerInstance,
-        ...threeDApi
+        ...threeDApi,
     };
 }

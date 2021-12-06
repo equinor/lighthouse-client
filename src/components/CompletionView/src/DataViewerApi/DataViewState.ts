@@ -1,6 +1,7 @@
 import { Atom } from '@dbeining/react-atom';
-import React from 'react';
+import { AnalyticsOptions } from '@equinor/Diagrams';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
+import { StatusItem } from '../../../../packages/StatusBar';
 import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
 import { DataSet } from '../../../ParkView/Models/data';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
@@ -67,6 +68,8 @@ export interface PowerBiOptions {
     filterOptions?: Filter[];
 }
 
+export type StatusFunc<T> = (data: T[]) => StatusItem[];
+
 export interface ViewConfig<T> {
     name: string;
     dataFetcher?: DataFetcher<T>;
@@ -78,7 +81,8 @@ export interface ViewConfig<T> {
     treeOptions?: TreeOptions<T>;
     timelineOptions?: any;
     gardenOptions?: GardenOptions<T>;
-    analyticsOptions?: any;
+    analyticsOptions?: AnalyticsOptions<T>;
+    statusFunc?: StatusFunc<T>;
     powerBiOptions?: any;
 }
 
@@ -88,6 +92,6 @@ export function createGlobalState(defaultState: DataViewState): Atom<DataViewSta
 
 export const CoreContext = createGlobalState({});
 
-export function getContext() {
+export function getContext(): Atom<DataViewState> {
     return CoreContext;
 }

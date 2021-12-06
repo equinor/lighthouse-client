@@ -15,10 +15,10 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
-import { ModelViewer } from './3DModel/src';
+import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
-import { setup as loopSetup } from './loopApp';
+import { setup as loopSetup } from './Loop/loopApp';
 import {
     BusinessCaseReport,
     LCIReport,

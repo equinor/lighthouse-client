@@ -1,8 +1,9 @@
 import { baseClient } from '@equinor/http-client';
 import styled from 'styled-components';
-import { createDataViewer } from '../components/CompletionView/src/DataViewerApi/DataViewerApi';
-import { Status } from '../components/CompletionView/src/DataViewerApi/DataViewState';
-import { AppApi } from './apps';
+import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
+import { Status } from '../../components/CompletionView/src/DataViewerApi/DataViewState';
+import { AppApi } from '../apps';
+import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 
@@ -131,12 +132,12 @@ export function setup(appApi: AppApi) {
         //options: { groupDescriptionFunc },
         excludeKeys: [],
     });
-
-    commPkg.registerAnalyticsOptions({});
+    commPkg.registerAnalyticsOptions(analyticsOptions);
     commPkg.registerTreeOptions({
         groupByKeys: ['status', 'responsible', 'tagNo'],
         itemKey: 'tagNo',
     });
+    commPkg.registerStatusItems(statusBarData);
     // console.info(`Config for ${appManifest.shortName} done! `);
 }
 

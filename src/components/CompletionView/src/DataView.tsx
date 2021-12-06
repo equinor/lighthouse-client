@@ -1,15 +1,11 @@
-import styled from "styled-components";
-import { DataViewer } from "./Components/DataViewer";
-import { DataProvider } from "./Context/DataProvider";
+import { AppApi } from '../../../apps/apps';
+import { DataViewer } from './Components/DataViewer/DataViewer';
+import { DataProvider } from './Context/DataProvider';
 
-
-const CompletionViewWarper = styled.section``;
-
-export const DataView = (props) => {
-
+export const DataView = (props: AppApi): JSX.Element => {
     return (
         <DataProvider>
             <DataViewer {...props} />
-        </DataProvider >
+        </DataProvider>
     );
-}
+};

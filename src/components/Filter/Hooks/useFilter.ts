@@ -12,10 +12,7 @@ interface FilterContext<T> extends Context {
 export function useFilter<T>(): FilterContext<T> {
     const state = useContext(Context);
     const data = useMemo(() => state.data as T[], [state.data]);
-    const filteredData = useMemo(
-        () => state.filteredData as T[],
-        [state.filteredData]
-    );
+    const filteredData = useMemo(() => state.filteredData as T[], [state.filteredData]);
     // const options = useMemo(
     //     () => state.options as FilterDataOptions<T>,
     //     [state.options]
@@ -31,7 +28,7 @@ export function useFilter<T>(): FilterContext<T> {
             ...state,
             data,
             filter: dictToArray(state.filterData),
-            filteredData
+            filteredData,
         }),
         [state, data, filteredData]
     );
