@@ -10,42 +10,49 @@
 !include DEVICONS/database.puml
 !include FONTAWESOME/users.puml
 
+skinparam roundCorner 15
+' skinparam linetype ortho
 
 Person(user, "User", $sprite="users")  
 Container(webClient, "WebClient", "webClient", $sprite="react")  
 Rel(user, webClient, " ")
 Container(auth, "Auth", " ")
 
-System(dataAdapter, "Lighthouse Adapter", "Data Adapter")
 
 ' Facility Asset Model Section 
 System_Boundary(fam, "Facility Asset Model | Lighhouse") {
-    Container(famEventHub, "FamEvenHub", " ")  
-    Rel(famEventHub, dataAdapter, " ") 
+    Container(famEventHub, "FamEvenHub", "EvenHub")  
+    Container(famApi, "Fam Api", "web API")  
+    ContainerDb(famDb, "Fam DB", "MIPS | Procosys | Stid  | osv...", $sprite="database") 
+    Rel_R(famEventHub, famDb, " ") 
+    Rel_R(famDb, "famApi", " ")  
 }
 
 ' Facility Asset Model Section 
-Boundary(lightgouse, "Lighthouse | API") {
+Boundary(lightgouse, "Lighthouse | API's") {
     ContainerDb(scopeChangeControlDB, "Scope Change Control", "New Data", $sprite="database")  
-    ContainerDb(constructionProgressDB, "Construction Progress", "MIPS", $sprite="database") 
-    ContainerDb(heatTraceDB, "Heat Trace", "ProCoSys", $sprite="database") 
+    ContainerDb(pipeTestDB, "Heat Trace", "New Data", $sprite="database") 
 
     Container(scopeChangeControlApi, "Scope Change Control", "web API", $sprite="dotnet")
     Container(constructionProgressApi, "Construction Progress", "web API", $sprite="dotnet")
-    Container(heatTraceApi, "HeatTrace", "web API", $sprite="dotnet")
+    Container(pipeTest, "Pipe Test Release Control", "web API", $sprite="dotnet")
     
-    Rel(scopeChangeControlApi, scopeChangeControlDB, "Read / Write")
 
-    Rel(dataAdapter, heatTraceDB, "Write")
-    Rel(dataAdapter, constructionProgressDB, "Write")
-    ' Rel(dataAdapter, scopeChangeControlDB, "Write")
+    Container(dataAdapter, "Lighthouse", "Adapter")
+
     
-    Rel(constructionProgressApi, constructionProgressDB, "Read")
-    Rel(heatTraceApi, heatTraceDB, "Read")
+    ' Rel(constructionProgressApi, constructionProgressDB, "Read")
+    Rel_L(pipeTest, pipeTestDB, "Read / Write")
+    Rel_R(scopeChangeControlApi, scopeChangeControlDB, "Read / Write")
 
     Rel(webClient, scopeChangeControlApi, " ")
     Rel(webClient, constructionProgressApi, " ")
-    Rel(webClient, heatTraceApi, " ")
+    Rel(webClient, pipeTest, " ")
+
+    Rel(famApi, scopeChangeControlApi, " ") 
+    Rel(famApi, constructionProgressApi, " ") 
+    Rel(famApi, pipeTest, " ") 
+
 }
 
  
@@ -55,20 +62,30 @@ Boundary(extenals, 'Externals') {
     Container(mipsTIEAdapter, "MIPS TIE Adapter", "adapter") 
 }
 
-Boundary(externalsEquinor, 'Externals Equinor') {
-    Container(stid, "STID", "Api")  
-    Container(procosys, "ProCoSys", "Api")
-    Container(commonLib, "CommonLib", "Api")  
+Container(tie, "TIE", "TIE1.5 / TIE 2.0")
+
+
+Boundary(externalEquinorAdapters, 'Equinor Data Adapters') {
+    Container(stid, "STID", "Adapter")  
+    Container(procosys, "ProCoSys", "Adapter")
+    Container(commonLib, "CommonLib", "Adapter")  
+    Container(mipsAdapter, "Mips", "Adapter")  
 }
 
-Container(tie, "TIE", "TIE1.5 / TIE 2.0")
-Rel(tie, famEventHub, "Write")
+
+Rel(tie, mipsAdapter, "Write")
 
 Rel(mips, tie, "Write")
 Rel(stid, famEventHub, "Write")
 Rel(procosys, famEventHub, "Write")
 Rel(commonLib, famEventHub, "Write")
+Rel(dataAdapter, famEventHub, "Write")
+Rel(mipsAdapter, famEventHub, "Write")
 
+Rel( scopeChangeControlApi, dataAdapter, " ")
+Rel( constructionProgressApi, dataAdapter, " ")
+Rel_R( pipeTest, dataAdapter, " ")
 
+  
 
 @enduml
