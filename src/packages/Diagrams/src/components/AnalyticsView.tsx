@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 import { AnalyticsOptions, getSections } from '../types/analyticsOptions';
-import { Page, Wrapper } from './AnalyticsViewStyles';
+import { Page, Wrapper } from './analyticsViewStyles';
 import { getChart } from './GetCharts';
+
 
 export interface AnalyticsViewProps<T> {
     data: T[];

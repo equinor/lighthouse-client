@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { generateDefaultColumns } from '../utils/generateDefaultColumns';
+import { generateDefaultColumns } from '../Utils/generateDefaultColumns';
 
 interface Columns<D> {
     accessor: keyof D;

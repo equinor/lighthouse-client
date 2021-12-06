@@ -1,11 +1,33 @@
 import { useMemo } from 'react';
 import { LineChartOptions } from '../LineChartVisual';
-import { createSeriesByKeys } from '../utils/createSeriesByKeys';
+import { createSeriesByKeys } from '../Utils/createSeriesByKeys';
 
-export function useLineChart<T>(data: T[], { nameKey, categoryKey }: LineChartOptions<T>) {
+interface LineChart {
+    series: string[] | { name: string; type: string; data: number[] }[];
+    lineChartOptions: {
+        chart: { id: string; stacked: boolean; toolbar: { show: boolean } };
+        plotOptions: { bar: { columnWidth: string } };
+        stroke: { width: number[] };
+        colors: string[];
+        xaxis: { categories: string[] | { name: string; type: string; data: number[] }[] };
+        markers: {
+            size: number;
+            strokeWidth: number;
+            fillOpacity: number;
+            strokeOpacity: number;
+            hover: { size: number };
+        };
+        yaxis: { tickAmount: number; min: number };
+    };
+}
+
+export function useLineChart<T>(
+    data: T[],
+    { nameKey, categoryKey }: LineChartOptions<T>
+): LineChart {
     const [series, categories] = useMemo(
         () => createSeriesByKeys(data, 'line', nameKey as string, categoryKey as string),
-        [data]
+        [categoryKey, data, nameKey]
     );
 
     const lineChartOptions = useMemo(
@@ -43,7 +65,7 @@ export function useLineChart<T>(data: T[], { nameKey, categoryKey }: LineChartOp
                 min: 0,
             },
         }),
-        [series, categories]
+        [categories]
     );
 
     return {

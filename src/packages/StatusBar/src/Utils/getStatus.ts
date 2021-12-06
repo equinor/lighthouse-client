@@ -27,7 +27,6 @@ export function getDateStatus<T, K extends keyof T>(
     swap?: boolean
 ): keyof Status {
     const percentage = (data.filter((i) => i[key]).length / data.length) * 100;
-    // console.log(percentage);
     if (percentage < 25) {
         return swap ? 'ok' : 'waring';
     }

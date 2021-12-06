@@ -1,2 +1,2 @@
 export * from './TableVisual';
-export * from './types/tableVisualOptions';
+export * from './Types/tableVisualOptions';
