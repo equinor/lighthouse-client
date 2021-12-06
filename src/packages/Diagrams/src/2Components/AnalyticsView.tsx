@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { AnalyticsOptions, getSections } from '../types/analyticsOptions';
+import { AnalyticsOptions, getSections } from '../2types/analyticsOptions';
 import { Page, Wrapper } from './analyticsViewStyles';
 import { getChart } from './GetCharts';
 

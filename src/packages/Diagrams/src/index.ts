@@ -1,3 +1,3 @@
-export * from './Components/AnalyticsView';
-export * from './types/analyticsOptions';
-export * from './Visuals';
+export * from './2Components/AnalyticsView';
+export * from './2types/analyticsOptions';
+export * from './2Visuals';

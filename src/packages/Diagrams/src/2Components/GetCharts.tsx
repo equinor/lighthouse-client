@@ -1,5 +1,5 @@
 import { BarChartVisual, LineChartVisual, TimeChart } from '@equinor/Diagrams';
-import { Options } from '../types/analyticsOptions';
+import { Options } from '../2types/analyticsOptions';
 import { ChartsWrapper, Circular, Loading } from './GetChartsStyles';
 
 export function getChart<T>(

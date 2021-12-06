@@ -1,7 +1,7 @@
-import { BarChartOptions } from '../Visuals/BarVisual/Types/barVisualOptions';
-import { ControlledTimeBarChart } from '../Visuals/ControledTimeVisual/ControlledTimeVisual';
-import { LineChartOptions } from '../Visuals/LineVisual/LineChartVisual';
-import { TimeBarChartOptions } from '../Visuals/TimeVisual/Types/timeVisualOptions';
+import { BarChartOptions } from '../2Visuals/BarVisual/Types/barVisualOptions';
+import { ControlledTimeBarChart } from '../2Visuals/ControledTimeVisual/ControlledTimeVisual';
+import { LineChartOptions } from '../2Visuals/LineVisual/LineChartVisual';
+import { TimeBarChartOptions } from '../2Visuals/TimeVisual/Types/timeVisualOptions';
 
 interface BarChart<T> {
     type: 'barChart';
