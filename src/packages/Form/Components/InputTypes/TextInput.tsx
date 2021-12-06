@@ -1,4 +1,3 @@
-import React from 'react';
 import { Value } from '../../Types/value';
 import { Input } from '@equinor/eds-core-react';
 

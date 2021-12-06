@@ -4,13 +4,14 @@ import { Form } from '../Types/form';
 import { GeneratedField } from './GeneratedField';
 import { useFormValidation } from '../Hooks/useFormValidation';
 import { Value } from '../Types/value';
+import { SectionRow } from '../Styles/Section';
 
 interface Events {
     onCancel: () => void;
     onSubmit: () => void;
 }
 
-interface Behaviour {
+export interface Behaviour {
     hideDisabledFields?: (() => boolean) | boolean;
 }
 
@@ -38,29 +39,49 @@ export function GeneratedForm<T>({
     behaviour,
 }: FormProps<T>): JSX.Element {
     const { isValidForm } = useFormValidation(formData, editMode);
-    console.log(behaviour?.hideDisabledFields);
+    const allItems: Value<unknown>[][] = [];
+    const ids = new Set();
+    const fields: Value<unknown>[] = [];
+
+    Object.keys(formData.fields).map((fieldName) => {
+        ids.add(formData.fields[fieldName]['order']);
+        fields.push(formData.fields[fieldName]);
+    });
+
+    ids.forEach((id) => {
+        allItems.push(fields.filter((x) => x['order'] == id));
+    });
+
     return (
         <>
             <h1>{title}</h1>
 
-            {Object.keys(formData.fields).map((key: string) => {
-                const field: Value<string> = formData.fields[key];
-                if (behaviour?.hideDisabledFields && !field.editable) {
-                    return <></>;
-                }
-                return (
-                    field && (
-                        <GeneratedField
-                            key={field.label}
-                            inputType={field.inputType}
-                            setter={formData.getSetter(field)}
-                            field={field}
-                            editMode={editMode}
-                            customComponents={customComponents}
-                        />
-                    )
-                );
-            })}
+            <>
+                {allItems.map((x) => {
+                    return (
+                        <SectionRow key={Math.random()}>
+                            {x.map((field) => {
+                                if (behaviour?.hideDisabledFields && !field.editable && editMode) {
+                                    return <></>;
+                                }
+                                return (
+                                    <>
+                                        <GeneratedField
+                                            field={field as Value<string>}
+                                            key={field.label}
+                                            inputType={field.inputType}
+                                            setter={formData.getSetter(field)}
+                                            editMode={editMode}
+                                            customComponents={customComponents}
+                                        />
+                                    </>
+                                );
+                            })}
+                        </SectionRow>
+                    );
+                })}
+            </>
+
             <ButtonContainer>
                 <Button onClick={onCancel} variant={'outlined'} color={'danger'}>
                     Cancel

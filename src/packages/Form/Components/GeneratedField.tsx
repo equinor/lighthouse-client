@@ -1,4 +1,3 @@
-import React from 'react';
 import { Value } from '../Types/value';
 import { Field } from './Field';
 import { Input } from '@equinor/eds-core-react';
@@ -7,9 +6,7 @@ import { Components } from './Form';
 import { TextInput } from './InputTypes/TextInput';
 import { SingleSelect } from './InputTypes/SingleSelect';
 import { MultiSelect } from './InputTypes/MultiSelect';
-import { MultiSelectObject } from './InputTypes/MultiSelectObject';
 import { MultiSelect as MultiSelectInterface } from '../Types/inputType';
-import { MultiSelectObject as MultiSelectObjectInterface } from '../Types/inputType';
 import { SingleSelect as SingleSelectInterface } from '../Types/inputType';
 import { Custom as CustomInterface } from '../Types/inputType';
 import { TextInput as TextInputInterface } from '../Types/inputType';
@@ -110,32 +107,6 @@ export const GeneratedField = ({
                             <multiSelectField.CustomInputType options={selectOptions} />
                         ) : (
                             <MultiSelect
-                                setter={setter as unknown as (value: string[]) => Promise<void>}
-                                field={field as unknown as Value<string[]>}
-                                editMode={editMode}
-                                selectItems={selectOptions}
-                                inputType={multiSelectField}
-                            />
-                        )
-                    }
-                />
-            );
-        }
-
-        case 'MultiSelectObject': {
-            const multiSelectField = field.inputType as MultiSelectObjectInterface;
-            const selectOptions = Array.isArray(multiSelectField.selectOptions)
-                ? multiSelectField.selectOptions
-                : multiSelectField.selectOptions();
-            return (
-                <Field
-                    label={field.label || ''}
-                    customLabel={{ faded: true }}
-                    value={
-                        multiSelectField.CustomInputType ? (
-                            <multiSelectField.CustomInputType options={selectOptions} />
-                        ) : (
-                            <MultiSelectObject
                                 setter={setter as unknown as (value: string[]) => Promise<void>}
                                 field={field as unknown as Value<string[]>}
                                 editMode={editMode}

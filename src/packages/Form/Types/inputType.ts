@@ -3,7 +3,6 @@ export type InputType =
     | TextArea
     | SingleSelect
     | MultiSelect
-    | MultiSelectObject
     | SearchableDropdown
     | NumberInput
     | Custom;
@@ -27,14 +26,6 @@ export interface SingleSelect {
 export interface MultiSelect {
     type: 'MultiSelect';
     selectOptions: (() => string[]) | string[];
-    CustomInputType?: React.FC<{ options: string[] }>;
-}
-
-export interface MultiSelectObject {
-    type: 'MultiSelectObject';
-    selectOptions: (() => string[]) | string[];
-    toStringArrayFunction: (field: any[]) => string[];
-    toObjectArrayFunction: (values: string[]) => any[];
     CustomInputType?: React.FC<{ options: string[] }>;
 }
 
