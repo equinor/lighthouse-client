@@ -248,9 +248,7 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'PageView',
-            setup: (): void => {
-                console.log('commissioning');
-            },
+            setup: constructionSetup,
             component: PageView,
         },
     },
