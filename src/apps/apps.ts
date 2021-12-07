@@ -19,7 +19,6 @@ import { ModelViewer } from './3DModel/src';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
-import { ScopeChangeRequestApp, setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import {
     BusinessCaseReport,
     LCIReport,
@@ -29,6 +28,7 @@ import {
     QueryReport,
     SafetyPerformanceReport,
 } from './PowerBI';
+import { TestApp } from './testApp';
 
 type HEXColor = `#${string}`;
 
@@ -160,6 +160,10 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: '',
+        app: {
+            appType: 'CustomApp',
+            component: TestApp,
+        },
         tags: [],
     },
     {
@@ -439,11 +443,6 @@ export const apps: AppManifest[] = [
         groupe: Apps.QueriesAndRequests,
         icon: '',
         uri: '',
-        app: {
-            appType: 'CustomApp',
-            component: ScopeChangeRequestApp,
-            setup: scopeChangeSetup,
-        },
         imageUri: './images/Scope change request.jpg',
         tags: [],
     },
