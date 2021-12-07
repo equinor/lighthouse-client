@@ -1,7 +1,6 @@
 import { useDataContext } from '../../CompletionView/src/Context/DataProvider';
 import { Item } from '../Styles/item';
 import { Dot } from '../Styles/dot';
-import React from 'react';
 import { useGardenContext } from '../Context/GardenProvider';
 
 interface RenderItemsProps<T> {
@@ -27,7 +26,7 @@ export function Items<T>({ data }: RenderItemsProps<T>): JSX.Element | null {
                         {data[key][itemKey]}
                     </CustomRender>
                 ) : (
-                    <Item key={data[key] + index} onClick={() => setSelected(data[key][itemKey])}>
+                    <Item key={data[key] + index} onClick={() => setSelected(data[key])}>
                         {statusFunc && <Dot color={statusFunc(data[key])} />}
                         {data[key][itemKey]}
                     </Item>

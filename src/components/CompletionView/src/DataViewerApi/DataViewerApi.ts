@@ -5,15 +5,16 @@ import {
     DataViewerProps,
     Validator,
     ViewerOptions,
-    ViewOptions
+    ViewOptions,
 } from './DataViewerTypes';
 import {
+    DataViewSideSheetOptions,
     DataViewState,
     GardenOptions,
     getContext,
     PowerBiOptions,
     TableOptions,
-    TreeOptions
+    TreeOptions,
 } from './DataViewState';
 
 /**
@@ -24,9 +25,7 @@ import {
  * @param {ViewerOptions<T>} options
  * @return {*}  {DataViewerApi<T>}
  */
-export function createDataViewer<T>(
-    options: ViewerOptions<T>
-): DataViewerApi<T> {
+export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T> {
     dispatch(getContext(), (state: DataViewState) => {
         if (state[options.viewerId]) {
             console.warn(`${options.viewerId} is already registered DataView.`);
@@ -35,8 +34,8 @@ export function createDataViewer<T>(
             ...state,
             [options.viewerId]: {
                 name: options.viewerId,
-                initialState: options.initialState
-            }
+                initialState: options.initialState,
+            },
         };
     });
 
@@ -46,8 +45,8 @@ export function createDataViewer<T>(
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    dataFetcher
-                }
+                    dataFetcher,
+                },
             }));
         },
         registerDataValidator(validator: Validator<T>) {
@@ -55,8 +54,8 @@ export function createDataViewer<T>(
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    validator
-                }
+                    validator,
+                },
             }));
         },
         registerCustomContentView(
@@ -67,11 +66,9 @@ export function createDataViewer<T>(
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    viewComponent: viewComponent as React.FC<
-                        DataViewerProps<unknown>
-                    >,
-                    viewOptions: viewOptions as ViewOptions<unknown>
-                }
+                    viewComponent: viewComponent as React.FC<DataViewerProps<unknown>>,
+                    viewOptions: viewOptions as ViewOptions<unknown>,
+                },
             }));
         },
         registerViewOptions(viewOptions: ViewOptions<T>) {
@@ -79,8 +76,8 @@ export function createDataViewer<T>(
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    viewOptions: viewOptions as ViewOptions<unknown>
-                }
+                    viewOptions: viewOptions as ViewOptions<unknown>,
+                },
             }));
         },
         registerFilterOptions(filterOptions: any) {
@@ -88,8 +85,8 @@ export function createDataViewer<T>(
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    filterOptions
-                }
+                    filterOptions,
+                },
             }));
         },
 
@@ -97,13 +94,13 @@ export function createDataViewer<T>(
          * View option Registration
          *
          */
-        registerTableOptions<T>(tableOptions: TableOptions) {
+        registerTableOptions(tableOptions: TableOptions) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    tableOptions
-                }
+                    tableOptions,
+                },
             }));
         },
         registerTreeOptions<T>(treeOptions: TreeOptions<T>) {
@@ -111,8 +108,8 @@ export function createDataViewer<T>(
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    treeOptions: treeOptions as TreeOptions<unknown>
-                }
+                    treeOptions: treeOptions as TreeOptions<unknown>,
+                },
             }));
         },
         registerGanttOptions(ganttOptions: any) {
@@ -120,8 +117,8 @@ export function createDataViewer<T>(
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    ganttOptions
-                }
+                    ganttOptions,
+                },
             }));
         },
         registerGardenOptions<T>(gardenOptions: GardenOptions<T>) {
@@ -129,8 +126,8 @@ export function createDataViewer<T>(
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    gardenOptions: gardenOptions as GardenOptions<unknown>
-                }
+                    gardenOptions: gardenOptions as GardenOptions<unknown>,
+                },
             }));
         },
         registerAnalyticsOptions(analyticsOptions: any) {
@@ -138,8 +135,8 @@ export function createDataViewer<T>(
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    analyticsOptions
-                }
+                    analyticsOptions,
+                },
             }));
         },
         registerPowerBIOptions(powerBiOptions: PowerBiOptions) {
@@ -147,9 +144,19 @@ export function createDataViewer<T>(
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    powerBiOptions
-                }
+                    powerBiOptions,
+                },
             }));
-        }
+        },
+        registerDataViewSideSheetOptions(dataViewSideSheetOptions: DataViewSideSheetOptions<T>) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    dataViewSideSheetOptions:
+                        dataViewSideSheetOptions as DataViewSideSheetOptions<unknown>,
+                },
+            }));
+        },
     };
 }

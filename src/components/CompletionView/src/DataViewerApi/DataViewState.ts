@@ -39,6 +39,10 @@ export interface PowerBiOptions {
     filterOptions?: Filter[];
 }
 
+export interface DataViewSideSheetOptions<T> {
+    CustomRender?: React.FC<{ item: T; onClose: () => void }>;
+}
+
 export interface ViewConfig<T> {
     name: string;
     dataFetcher?: DataFetcher<T>;
@@ -52,6 +56,7 @@ export interface ViewConfig<T> {
     gardenOptions?: GardenOptions<T>;
     analyticsOptions?: any;
     powerBiOptions?: any;
+    dataViewSideSheetOptions?: DataViewSideSheetOptions<T>;
 }
 
 export function createGlobalState(defaultState: DataViewState): Atom<DataViewState> {

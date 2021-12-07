@@ -1,9 +1,10 @@
 import {
+    DataViewSideSheetOptions,
     FilterOptions,
     GardenOptions,
     PowerBiOptions,
     TableOptions,
-    TreeOptions
+    TreeOptions,
 } from './DataViewState';
 
 export type DataFetcher<T> = () => Promise<T[]>;
@@ -46,4 +47,5 @@ export interface DataViewerApi<T> {
     registerGardenOptions: (options: GardenOptions<T>) => void;
     registerAnalyticsOptions: (options: any) => void;
     registerPowerBIOptions: (options: PowerBiOptions) => void;
+    registerDataViewSideSheetOptions: (options: DataViewSideSheetOptions<T>) => void;
 }
