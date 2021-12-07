@@ -3,7 +3,6 @@ import { AppConfig } from '@equinor/lighthouse-conf';
 import React from 'react';
 import { DataView } from '../components/CompletionView/src/DataView';
 import PageView from '../Core/PageViwer';
-import { createPageViewer } from '../Core/PageViwer/Api/pageViewerApi';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -19,6 +18,7 @@ import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
+import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
@@ -234,21 +234,7 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'PageView',
-            setup: (api: AppApi): void => {
-                const construction = createPageViewer({
-                    viewerId: api.shortName,
-                    title: api.title,
-                });
-
-                construction.registerFusionPowerBi('test', {
-                    title: 'test',
-                    reportURI: 'lci-hanging-gardens',
-                });
-                construction.registerFusionPowerBi('test2', {
-                    title: 'test2',
-                    reportURI: 'lci-hanging-gardens',
-                });
-            },
+            setup: constructionSetup,
             component: PageView,
         },
     },
