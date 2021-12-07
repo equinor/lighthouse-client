@@ -1,5 +1,6 @@
-import { MultiSelect as Select, Chip, Button } from '@equinor/eds-core-react';
+import { MultiSelect as Select, Chip } from '@equinor/eds-core-react';
 
+import { ChipContainer } from './Styles/ChipContainer';
 import { Value } from '../../Types/value';
 import { MultiSelectObject as MultiSelectObjectInterface } from '../../Types/inputType';
 import { useMemo, useState } from 'react';
@@ -27,7 +28,17 @@ export const MultiSelectObject = ({
     CustomComponent,
     inputType,
 }: MultiSelectObjectProps): JSX.Element => {
-    const [selectedOptions, setSelectedOptions] = useState<string[] | undefined>();
+    const initialSelected = useMemo(() => {
+        const templist: string[] = [];
+        Object.keys(field.value).map((x) => {
+            templist.push(field.value[x][inputType.objectIdentifier]);
+        });
+        return templist;
+    }, [field.value, inputType.objectIdentifier]);
+
+    const [selectedOptions, setSelectedOptions] = useState<string[] | undefined>(
+        field.value ? initialSelected : []
+    );
 
     const selectOptions: string[] = useMemo(() => {
         return selectItems.map((x) => x[inputType.objectIdentifier].toString());
@@ -59,15 +70,7 @@ export const MultiSelectObject = ({
         }
 
         setSelectedOptions(list);
-        updateField();
-    };
-
-    const updateField = () => {
-        if (!selectedOptions) {
-            setter([]);
-            return;
-        }
-        const objects = findObjectsByIds(selectedOptions);
+        const objects = findObjectsByIds(list);
         setter(objects);
     };
 
@@ -91,14 +94,19 @@ export const MultiSelectObject = ({
                         placeholder={`Select ${field.label}`}
                         handleSelectedItemsChange={(select) => {
                             setSelectedOptions(select.selectedItems);
-                            updateField();
+                            if (!select.selectedItems) {
+                                setter([]);
+                            } else {
+                                const objects = findObjectsByIds(select.selectedItems);
+                                setter(objects);
+                            }
                         }}
                     />
                     <ChipContainer>
                         {selectedOptions &&
                             selectedOptions.map((x) => {
                                 return (
-                                    <Chip unselectable={'on'} key={x}>
+                                    <Chip key={x}>
                                         {x}
                                         <RemoveButton onClick={() => handleRemove(x)}>
                                             x
@@ -116,11 +124,6 @@ export const MultiSelectObject = ({
 const MultiSelectObjectContainer = styled.div`
     display: flex;
     flex-direction: column;
-`;
-
-const ChipContainer = styled.div`
-    display: flex;
-    flex-direction: row;
 `;
 
 const RemoveButton = styled.div`
