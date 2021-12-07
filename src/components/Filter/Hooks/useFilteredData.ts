@@ -1,6 +1,11 @@
 import { useFilter } from './useFilter';
 
-export function useFilteredData<T>(): T[] {
-    const { filteredData } = useFilter<T>();
-    return filteredData;
+interface FilteredData<T> {
+    data: T[];
+    isLoading: boolean;
+}
+
+export function useFilteredData<T>(): FilteredData<T> {
+    const { filteredData, isLoading } = useFilter<T>();
+    return { data: filteredData, isLoading };
 }

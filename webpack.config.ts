@@ -3,7 +3,7 @@ import CopyPlugin from 'copy-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as path from 'path';
 import TerserPlugin from 'terser-webpack-plugin';
-import { Configuration, ProvidePlugin } from 'webpack';
+import { Configuration, ProvidePlugin, SourceMapDevToolPlugin } from 'webpack';
 
 const extensions = ['.ts', '.tsx', '.js', '.jsx'];
 const publicPath = path.join(__dirname, 'public');
@@ -54,10 +54,6 @@ const webpackConfig: Configuration = {
     module: {
         rules: [
             {
-                test: /\.worker\.(js|ts)$/,
-                use: { loader: 'worker-loader' },
-            },
-            {
                 test: /\.(ts|tsx)$/,
                 loader: 'ts-loader',
                 exclude: /node_modules/,
@@ -66,6 +62,10 @@ const webpackConfig: Configuration = {
                         noImplicitAny: false,
                     },
                 },
+            },
+            {
+                test: /\.worker\.(js|ts)$/,
+                use: { loader: 'worker-loader' },
             },
             {
                 test: /\.css$/,
@@ -99,8 +99,7 @@ const webpackConfig: Configuration = {
     },
     plugins: [
         /* Deletes our build directory when building */
-        // new SourceMapDevToolPlugin({}),
-        // new WorkerPlugin(),
+        new SourceMapDevToolPlugin({}),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template,
@@ -124,6 +123,8 @@ const webpackConfig: Configuration = {
     resolve: {
         extensions,
         alias: {
+            '@equinor/StatusBar': path.resolve(__dirname, './src/packages/StatusBar'),
+            '@equinor/Diagrams': path.resolve(__dirname, './src/packages/Diagrams'),
             '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),
             '@equinor/authentication': path.resolve(__dirname, './packages/authentication/'),
             '@equinor/http-client': path.resolve(__dirname, './packages/httpClient/'),

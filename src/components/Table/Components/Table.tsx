@@ -1,6 +1,5 @@
-import { Tooltip } from '@equinor/eds-core-react';
-import React, { PropsWithChildren, useMemo } from 'react';
-import { Cell, TableOptions, useTable } from 'react-table';
+import React, { PropsWithChildren } from 'react';
+import { TableOptions, useTable } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 import { RegisterReactTableHooks } from '../Utils/registerReactTableHooks';
 import { GroupCell } from './GoupedCell';
@@ -10,6 +9,7 @@ import { Table, TableCell, TableRow } from './Styles';
 interface DataTableProps<T extends Record<string, unknown>> extends TableOptions<T> {
     data: T[];
     onSelectedChange?: (args: T[], ids: Record<string, boolean>) => void;
+    setSelected?: (itemId: string) => void;
     selectedRows?: Record<string, boolean>;
     FilterComponent?: React.FC<{ filterId: string }>;
 }
@@ -17,25 +17,13 @@ interface DataTableProps<T extends Record<string, unknown>> extends TableOptions
 const topBarHeight = 64;
 const itemSize = 35;
 
-export function DataTable<T extends Object>({
+export function DataTable<T extends Record<string, unknown>>({
     data,
     columns,
     FilterComponent,
-}: PropsWithChildren<DataTableProps<Record<string, T>>>) {
+    setSelected,
+}: PropsWithChildren<DataTableProps<Record<string, T>>>): JSX.Element {
     const hooks = RegisterReactTableHooks<T>();
-
-    const test = useMemo(
-        () =>
-            (row): JSX.Element => {
-                const cell = row.cell;
-                return (
-                    <Tooltip title={cell.value || ''} enterDelay={200}>
-                        <div>{cell.value}</div>
-                    </Tooltip>
-                );
-            },
-        []
-    );
 
     const defaultColumn = React.useMemo(
         () => ({
@@ -53,19 +41,16 @@ export function DataTable<T extends Object>({
         getTableBodyProps,
         headerGroups,
         totalColumnsWidth,
-        selectedFlatRows,
-        setPageSize,
     }: any = useTable<Record<string, T>>({ columns, data, defaultColumn }, ...hooks);
-
-    const cellClickHandler = (cell: Cell<Record<string, unknown>>) => (): void => {
-        // data.onClick && cell.column.id !== 'selection' && data.onClick(cell.row);
-    };
 
     return (
         <Table {...getTableProps()}>
             <div>
                 {headerGroups.map((headerGroup) => (
-                    <div {...headerGroup.getHeaderGroupProps()}>
+                    <div
+                        {...headerGroup.getHeaderGroupProps()}
+                        key={headerGroup.getHeaderGroupProps().key}
+                    >
                         {headerGroup.headers.map((column) => (
                             <HeaderCell
                                 {...column}
@@ -82,7 +67,7 @@ export function DataTable<T extends Object>({
                     itemCount={rows.length}
                     width={totalColumnsWidth + 10}
                     itemSize={itemSize}
-                    itemData={{ rows, prepareRow }}
+                    itemData={{ rows, prepareRow, setSelected }}
                 >
                     {RenderRow}
                 </List>
@@ -91,20 +76,29 @@ export function DataTable<T extends Object>({
     );
 }
 
-const RenderRow = ({ data, index, style }): JSX.Element | null => {
+interface RenderRowProps {
+    data: any;
+    index: number;
+    style: any;
+}
+
+const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null => {
     const row = data.rows[index];
     if (!row) return null;
     data.prepareRow(row);
 
+    const handleClick = () => {
+        data.setSelected && data.setSelected(row.values['tagNo']);
+    };
+
     return (
-        <TableRow {...row.getRowProps({ style })}>
+        <TableRow {...row.getRowProps({ style })} onClick={handleClick}>
             {row.cells.map((cell) => {
                 return (
                     <TableCell
                         align={cell.column.align}
                         {...cell.getCellProps()}
                         key={cell.getCellProps().key}
-                        onClick={() => { }}
                     >
                         {cell.isGrouped ? (
                             <GroupCell row={row} cell={cell} />

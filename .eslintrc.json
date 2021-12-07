@@ -9,18 +9,8 @@
         "prettier",
         "@equinor/eslint-config-fusion/react"
     ],
-    "plugins": [
-        "@typescript-eslint",
-        "react-hooks",
-        "prettier"
-    ],
-    "ignorePatterns": [
-        "**/*.test.tsx",
-        "**/*.test.ts",
-        "**/*.github",
-        "**/*.d.ts",
-        "**/*.docs"
-    ],
+    "plugins": ["@typescript-eslint", "react-hooks", "prettier"],
+    "ignorePatterns": ["**/*.test.tsx", "**/*.test.ts", "**/*.github", "**/*.d.ts", "**/*.docs"],
     "rules": {
         "prettier/prettier": [
             "warn",
@@ -35,6 +25,7 @@
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "react/no-multi-comp": 0,
+        "react/no-array-index-key": 0,
         "react/function-component-definition": 0,
         "no-undef": "off",
         "no-console": "warn",
