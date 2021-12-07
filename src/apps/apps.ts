@@ -2,6 +2,8 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import React from 'react';
 import { DataView } from '../components/CompletionView/src/DataView';
+import PageView from '../Core/PageViwer';
+import { createPageViewer } from '../Core/PageViwer/Api/pageViewerApi';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -31,7 +33,7 @@ import {
 
 type HEXColor = `#${string}`;
 
-type AppType = 'DataViewer' | 'SomeApp' | 'CustomApp' | 'PowerBI';
+type AppType = 'DataViewer' | 'PageView' | 'CustomApp' | 'PowerBI';
 
 export interface AppApi extends AppManifest {
     appConfig: AppConfig;
@@ -68,7 +70,6 @@ export enum Apps {
     ConstructionManagement = 'ConstructionManagement',
     EngineeringManagement = 'EngineeringManagement',
     ProjectInformation = 'ProjectInformation',
-    Dashboard = 'Dashboard',
     QueriesAndRequests = 'QueriesAndRequests',
     QualityAndCompliance = 'QualityAndCompliance',
     ProjectControl = 'ProjectControl',
@@ -123,10 +124,7 @@ export const appGroups: AppGroups = {
         name: 'SSU',
         icon: SSUIcon,
     },
-    Dashboard: {
-        name: 'Dashboard',
-        icon: ProgressAndStatusIcon,
-    },
+
     CompletionManagement: {
         name: 'Completion management',
         icon: CompletionManagementIcon,
@@ -193,60 +191,82 @@ export const apps: AppManifest[] = [
         },
         tags: ['PowerBI'],
     },
-    // Dashboard
+    // ProgressAndStatus
     {
-        title: 'Overall',
-        shortName: 'overall',
+        title: 'Overview',
+        shortName: 'overview',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
+        app: {
+            appType: 'PageView',
+            setup: (): void => {
+                console.log('overview');
+            },
+            component: PageView,
+        },
     },
     {
         title: 'Engineering',
         shortName: 'engineering',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
+        app: {
+            appType: 'PageView',
+            setup: (): void => {
+                console.log('engineering');
+            },
+            component: PageView,
+        },
     },
     {
-        title: 'Fabrication',
-        shortName: 'fabrication',
+        title: 'Construction',
+        shortName: 'construction',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
-    },
-    {
-        title: 'Installation',
-        shortName: 'installation',
-        color: '#0364B8',
-        groupe: Apps.Dashboard,
-        icon: '',
-        uri: '',
-        tags: [],
-    },
-    {
-        title: 'Mechanical Completion',
-        shortName: 'mc',
-        color: '#0364B8',
-        groupe: Apps.Dashboard,
-        icon: '',
-        uri: '',
-        tags: [],
+        app: {
+            appType: 'PageView',
+            setup: (api: AppApi): void => {
+                const construction = createPageViewer({
+                    viewerId: api.shortName,
+                    title: api.title,
+                });
+
+                construction.registerFusionPowerBi('test', {
+                    title: 'test',
+                    reportURI: 'lci-hanging-gardens',
+                });
+                construction.registerFusionPowerBi('test2', {
+                    title: 'test2',
+                    reportURI: 'lci-hanging-gardens',
+                });
+            },
+            component: PageView,
+        },
     },
     {
         title: 'Commissioning',
         shortName: 'commissioning',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
+        app: {
+            appType: 'PageView',
+            setup: (): void => {
+                console.log('commissioning');
+            },
+            component: PageView,
+        },
     },
     // Engineering management
     {
