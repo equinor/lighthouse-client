@@ -13,6 +13,7 @@ const createEmptyScopeChange = (): ScopeChangeRequestFormModel => ({
     phase: '',
     guesstimateHrs: 0,
     state: 'Closed',
+    trigger: '',
 });
 
 export default (initialState?: ScopeChangeRequest): Form<ScopeChangeRequestFormModel> => {

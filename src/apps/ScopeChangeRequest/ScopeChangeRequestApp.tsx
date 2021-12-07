@@ -6,6 +6,7 @@ import { Wrapper } from '../../components/CompletionView/src/Components/DefaultD
 import { RequestSideSheet } from './Components/RequestSideSheet';
 import { ScopeChangeRequest } from './Types/scopeChangeRequest';
 import { baseClient } from '@equinor/http-client';
+import { statusBarData } from './Sections/AnalyticsConfig';
 
 export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
@@ -41,9 +42,11 @@ export function setup(appApi: AppApi): void {
         objectIdentifierKey: 'id',
     });
 
-    request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'id', excludeKeys: [] });
+    request.registerGardenOptions({ gardenKey: 'trigger', itemKey: 'id', excludeKeys: [] });
 
     request.registerAnalyticsOptions({});
+
+    request.registerStatusItems(statusBarData);
 
     interface CustomViewFunctionProps<T> {
         item: T;

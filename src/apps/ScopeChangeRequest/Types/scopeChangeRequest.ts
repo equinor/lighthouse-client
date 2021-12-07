@@ -10,6 +10,7 @@ export interface ScopeChangeRequest {
     phase: string;
     milestone: string;
     origin: string;
+    trigger: string;
     category: string;
     guesstimateHrs: number;
     actualHrs: string;
