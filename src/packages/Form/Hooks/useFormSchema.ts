@@ -1,42 +1,9 @@
 import { useState, useCallback, useMemo } from 'react';
 
-export interface Value<T> {
-    value: T;
-    isDirty: boolean;
-    isValid: boolean;
-    isRequired: boolean;
-    errorMessage: string | undefined;
-}
-
-export interface Field {
-    label: string;
-    isRequired: boolean;
-}
-
-export type Schema<T> = {
-    [P in keyof T]?: Field;
-};
-
-export type Fields<T> = {
-    [P in keyof T]?: Value<T[P]>;
-};
-
-export interface Form<T> {
-    fields: Fields<T>;
-    getData: () => T;
-    getChangedData: () => Partial<T>;
-    getErrorMessage: <TValue>(field?: Value<TValue>) => string | undefined;
-    getSetter: <TValue>(
-        field?: Value<TValue>,
-        checkBeforeSave?: () => Promise<boolean>
-    ) => (value: TValue) => Promise<void>;
-    getValue: <TValue>(field: Value<TValue> | undefined, defaultValue: TValue) => TValue;
-    isAllValid: () => boolean;
-    isAllDirty: (requiredOnly: boolean) => boolean;
-    isDirty: () => boolean;
-    isValid: <TValue>(field?: Value<TValue>) => boolean;
-    reset: (state?: T) => void;
-}
+import { Field, Fields } from '../Types/field';
+import { Form } from '../Types/form';
+import { Schema } from '../Types/schema';
+import { Value } from '../Types/value';
 
 const validateField = <TValue>(field: Field, value: TValue): string | undefined => {
     if (field.isRequired && !value) {
@@ -46,7 +13,7 @@ const validateField = <TValue>(field: Field, value: TValue): string | undefined 
     return undefined;
 };
 
-export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
+export const useFormSchema = <T>(schema: Schema<T>, initialState: T): Form<T> => {
     const [data, setData] = useState<T>(initialState);
     const [resetState, setResetState] = useState<T>(initialState);
 
@@ -73,7 +40,13 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
                 errorMessage,
                 isDirty,
                 isRequired: field.isRequired,
-                isValid: !errorMessage,
+                label: field.label,
+                editable: field.editable,
+                order: field.order,
+                inputType: field.inputType,
+                isValid: field.validationFunction
+                    ? field.validationFunction(data[fieldKey])
+                    : !errorMessage,
 
                 get value(): T[Extract<keyof T, string>] {
                     return data[fieldKey];
@@ -84,14 +57,13 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
                 },
             };
         }
-
         return newFields;
     }, [data, mutateField, resetState, schema]);
 
     return {
         fields,
         getData: (): T => {
-            return { ...data };
+            return { ...data } as T;
         },
         getChangedData: (): Partial<T> => {
             const changedData = {};
@@ -131,7 +103,6 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
         },
         isAllValid: (): boolean => {
             const values = Object.values(fields) as any[];
-
             if (values.filter((v): boolean => v.isRequired).every((v): boolean => v.isValid)) {
                 return true;
             }
@@ -156,6 +127,9 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
             return values.some((v): boolean => v.isDirty);
         },
         isValid: <TValue>(field?: Value<TValue>): boolean => {
+            if (field?.validationFunction) {
+                return field.validationFunction(field.value);
+            }
             if (!field) {
                 return true;
             }

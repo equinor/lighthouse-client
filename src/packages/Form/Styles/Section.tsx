@@ -23,4 +23,8 @@ export const SectionText = styled.div`
 
 export const SectionRow = styled.div`
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-start;
 `;

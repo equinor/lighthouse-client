@@ -29,6 +29,7 @@ import {
     QueryReport,
     SafetyPerformanceReport,
 } from './PowerBI';
+import { TestApp } from './testApp';
 
 type HEXColor = `#${string}`;
 
@@ -160,6 +161,10 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: '',
+        app: {
+            appType: 'CustomApp',
+            component: TestApp,
+        },
         tags: [],
     },
     {
@@ -440,7 +445,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         app: {
-            appType: 'CustomApp',
+            appType: 'DataViewer',
             component: DataView,
             setup: scopeChangeSetup,
         },
