@@ -1,4 +1,3 @@
-
 import { Configuration } from '@azure/msal-browser';
 import { authenticationProvider } from '@equinor/authentication';
 import { fetchConfig } from '@equinor/lighthouse-conf';
@@ -16,20 +15,21 @@ fetchConfig().then((appConfig) => {
             clientId,
             redirectUri: window.location.origin,
             postLogoutRedirectUri: window.location.origin,
-            navigateToLoginRequestUrl: true
+            navigateToLoginRequestUrl: true,
         },
         cache: {
             cacheLocation: 'localStorage',
-            storeAuthStateInCookie: true
-        }
+            storeAuthStateInCookie: true,
+        },
     };
 
     const authProvider = authenticationProvider(authConfig);
 
     if (authProvider && !(window !== window.parent && !window.opener)) {
-        moduleLoader.register()
-        render(<ProCoSysAppClient {...{ appConfig, authProvider }} />, document.getElementById('root'));
+        moduleLoader.register();
+        render(
+            <ProCoSysAppClient {...{ appConfig, authProvider }} />,
+            document.getElementById('root')
+        );
     }
-})
-
-
+});

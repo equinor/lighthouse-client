@@ -1,16 +1,16 @@
-import { useHistory } from 'react-router';
+import { useLocation } from 'react-router';
 
 function getDataViewerKey(pathname: string): string {
     const pathNames = pathname.split('/');
 
-    if (pathNames[1]) {
-        return pathNames[1];
+    if (pathNames[2]) {
+        return pathNames[2];
     }
 
     return 'unknown';
 }
 
 export function useDataViewerKey(): string {
-    const history = useHistory();
-    return getDataViewerKey(history.location.pathname);
+    const location = useLocation();
+    return getDataViewerKey(location.pathname);
 }

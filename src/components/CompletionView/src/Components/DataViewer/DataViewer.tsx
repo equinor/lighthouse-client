@@ -1,5 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router';
 import { AppApi } from '../../../../../apps/apps';
 import { FilterView } from '../../../../Filter';
 import { FilterProvider } from '../../../../Filter/Context/FilterProvider';
@@ -23,6 +24,10 @@ export function DataViewer(props: AppApi): JSX.Element {
         filterOptions,
     } = useDataViewer();
     const { data } = useDataContext();
+    const { id } = useParams();
+    const currentId = useMemo(() => id && `/${id}`, [id]);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const { tabs, viewIsActive } = useConfiguredTabs(
         treeOptions,
@@ -32,11 +37,13 @@ export function DataViewer(props: AppApi): JSX.Element {
         analyticsOptions,
         powerBiOptions
     );
-    const [activeTab, setActiveTab] = useState(0);
+    const [activeTab, setActiveTab] = useState(Number(id) || 0);
     const [activeFilter, setActiveFilter] = useState(false);
 
     const handleChange = (index: number) => {
         setActiveTab(index);
+
+        navigate(`${location.pathname.replace(currentId || '', '')}/${index}`, { replace: true });
     };
 
     function handleFilter() {

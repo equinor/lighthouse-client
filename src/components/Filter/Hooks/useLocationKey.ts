@@ -1,14 +1,15 @@
-import { useHistory } from 'react-router';
+import { useLocation } from 'react-router-dom';
 
 function getLocationKeyKey(pathname: string): string {
     const pathNames = pathname.split('/');
-    if (pathNames[1]) {
-        return pathNames[1];
+
+    if (pathNames[2]) {
+        return pathNames[2];
     }
     return 'unknown';
 }
 
 export function useLocationKey(): string {
-    const history = useHistory();
-    return getLocationKeyKey(history.location.pathname);
+    const location = useLocation();
+    return getLocationKeyKey(location.pathname);
 }

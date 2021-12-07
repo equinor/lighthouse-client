@@ -1,5 +1,5 @@
-import { apps } from './apps';
+import { appGroups, apps } from './apps';
 
 export function useApps() {
-    return apps;
+    return { apps, appGroups };
 }

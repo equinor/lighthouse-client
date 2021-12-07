@@ -1,5 +1,5 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { createContext, useCallback, useContext, useReducer } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { useDataViewerKey } from '../Components/DefaultDataView/Hooks/useDataViewerKey';
 import { DataViewerProps, ViewOptions } from '../DataViewerApi/DataViewerTypes';
@@ -43,11 +43,13 @@ type VoidFunction = () => void;
 export enum DataAction {
     getData = 'getData',
     setSelected = 'setSelected',
+    setState = 'setState',
 }
 
 export const actions = {
     getData: createCustomAction(DataAction.getData, (data: any[]) => ({ data })),
     setSelectedItem: createCustomAction(DataAction.setSelected, (itemId: string) => ({ itemId })),
+    setState: createCustomAction(DataAction.setState, (state) => ({ state })),
 };
 
 export type OfflineDocumentsActionType = typeof DataAction;
@@ -83,24 +85,46 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         statusFunc,
         powerBiOptions,
     } = useDataViewer();
+
+    const options = useMemo(
+        () => ({
+            viewComponent,
+            viewOptions,
+            filterOptions,
+            treeOptions,
+            tableOptions,
+            gardenOptions,
+            analyticsOptions,
+            statusFunc,
+            powerBiOptions,
+        }),
+        [
+            analyticsOptions,
+            filterOptions,
+            gardenOptions,
+            powerBiOptions,
+            statusFunc,
+            tableOptions,
+            treeOptions,
+            viewComponent,
+            viewOptions,
+        ]
+    );
+
     const initialState: DataState = {
         key,
         name,
         data: [],
         subData: {},
         itemId: '',
-        viewComponent,
-        viewOptions,
-        filterOptions,
-        treeOptions,
-        tableOptions,
-        gardenOptions,
-        analyticsOptions,
-        statusFunc,
-        powerBiOptions,
+        ...options,
     };
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
+
+    useEffect(() => {
+        dispatch(actions.setState(options));
+    }, [options]);
 
     const getData = useCallback(async () => {
         if (dataFetcher) {
