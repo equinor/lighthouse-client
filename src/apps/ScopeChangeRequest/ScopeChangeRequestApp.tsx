@@ -2,13 +2,13 @@ import { Button } from '@equinor/eds-core-react';
 
 import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
 import { AppApi } from '../apps';
-import { mockRequests } from './Data/MockData';
 import { Wrapper } from '../../components/CompletionView/src/Components/DefaultDataView/DataView.styles';
 import { RequestSideSheet } from './Components/RequestSideSheet';
 import { ScopeChangeRequest } from './Types/scopeChangeRequest';
+import { baseClient } from '@equinor/http-client';
 
 export function setup(appApi: AppApi): void {
-    // const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const request = createDataViewer<ScopeChangeRequest>({
         initialState: [],
         primaryViewKey: 'id',
@@ -18,12 +18,11 @@ export function setup(appApi: AppApi): void {
     request.registerDataFetcher(async () => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const project = 'L.O532C.002';
-        // const response = await api
-        //     .fetch
-        //     // `https://api-lighthouse-production.playground.radix.equinor.com/loops/${plantId}/${project}`
-        //     ();
-        //return JSON.parse(await response.text());
-        return mockRequests();
+        const response = await api.fetch(
+            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`
+        );
+
+        return JSON.parse(await response.text());
     });
 
     request.registerFilterOptions({
@@ -67,8 +66,4 @@ export function setup(appApi: AppApi): void {
             </>
         );
     };
-
-    request.registerDataViewSideSheetOptions({
-        CustomRender: CustomViewFunction,
-    });
 }

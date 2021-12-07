@@ -14,6 +14,12 @@
         ],
         "sourceMap": true,
         "paths": {
+            "@equinor/StatusBar": [
+                "./src/packages/2StatusBar"
+            ],
+            "@equinor/Diagrams": [
+                "./src/packages/Diagrams"
+            ],
             "@equinor/ThreeDViewer": [
                 "./src/packages/ThreeDViewer"
             ],
