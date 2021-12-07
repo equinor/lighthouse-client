@@ -3,7 +3,7 @@ import { Field } from './Components/Field';
 import { Attachments } from './Components/Attachments';
 import { Documents } from './Components/Documents';
 import { Tags } from './Components/Tags';
-import { SectionRow } from './Styles/Section';
+import { SectionRow } from '../../Styles/Section';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 
 interface RequestDetailViewProps {

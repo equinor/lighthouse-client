@@ -1,4 +1,4 @@
-import useFormSchema from '../../../packages/Form/Hooks/useFormSchema';
+import { useFormSchema } from '@equinor/form';
 import { Form } from '../../../packages/Form/Types/form';
 import { scopeChangeRequestSchema } from '../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';

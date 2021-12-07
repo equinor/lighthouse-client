@@ -1,8 +1,6 @@
 import styled from 'styled-components';
 import { StidDocument } from '../../../Types/stidDocument';
 
-import { DocumentIcon } from '../Styles/DocumentIcon';
-
 interface DocumentsProps {
     documents?: StidDocument[];
 }
@@ -10,7 +8,6 @@ interface DocumentsProps {
 export const Documents = ({ documents }: DocumentsProps): JSX.Element => {
     return (
         <DocumentContainer>
-            <DocumentIcon />
             {documents &&
                 documents.map((x) => (
                     <div key={x.id}>

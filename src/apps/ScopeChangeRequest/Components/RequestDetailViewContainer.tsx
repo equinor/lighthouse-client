@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { GeneratedForm } from '../../../packages/Form/Components/Form';
 import { RequestDetailView } from './DetailView/RequestDetailView';
-import { EditPenIcon } from './DetailView/Styles/EditPen';
 import useScopeChangeSchema from '../Hooks/useScopeChangeSchema';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
@@ -27,7 +26,6 @@ export const RequestViewContainer = ({
 
     return (
         <>
-            <EditPenIcon clickEvent={() => setEditMode((editMode) => !editMode)} />
             {editMode ? (
                 <GeneratedForm
                     formData={formData}
