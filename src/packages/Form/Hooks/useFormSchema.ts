@@ -13,7 +13,7 @@ const validateField = <TValue>(field: Field, value: TValue): string | undefined 
     return undefined;
 };
 
-export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
+export const useFormSchema = <T>(schema: Schema<T>, initialState: T): Form<T> => {
     const [data, setData] = useState<T>(initialState);
     const [resetState, setResetState] = useState<T>(initialState);
 

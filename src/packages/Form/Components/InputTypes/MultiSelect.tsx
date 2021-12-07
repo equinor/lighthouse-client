@@ -6,8 +6,7 @@ interface MultiSelectProps {
     setter: (value: string[]) => Promise<void>;
     field: Value<string[]>;
     editMode: boolean;
-    viewKey?: string;
-    selectItems?: string[];
+    selectItems: string[];
     inputType: MultiSelectInterface;
     CustomComponent?: React.FC<{
         setter: (value: string[]) => Promise<void>;
