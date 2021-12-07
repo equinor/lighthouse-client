@@ -1,5 +1,4 @@
 Add
-MultiSelectObject
 SearchableDropdown
 SearchableDropdownLiveSearch
 DatePicker
