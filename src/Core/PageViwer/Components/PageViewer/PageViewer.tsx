@@ -16,9 +16,9 @@ export function PageViewer(props: ViewState): JSX.Element {
     if (Object.values(props.pages).length === 0) return <NoPages />;
     return (
         <Tabs activeTab={activePage} onChange={handleChange}>
-            <PageViewerHeader {...props} pages={props} />
+            <PageViewerHeader {...props} viewState={props} />
             <PageViewWrapper>
-                <PageViewerPages pages={props} activePage={activePage} />
+                <PageViewerPages viewState={props} activePage={activePage} />
             </PageViewWrapper>
         </Tabs>
     );

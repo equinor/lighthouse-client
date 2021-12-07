@@ -1,4 +1,5 @@
 import React from 'react';
+import { Filter } from '../../../modules/powerBI/src/models/filter';
 
 export interface CoreViewState {
     [key: string]: ViewState;
@@ -7,23 +8,25 @@ export interface CoreViewState {
 export interface ViewState {
     title: string;
     shortName: string;
+    icon?: React.FC;
     pages: {
         [key: string]: PageConfig;
     };
 }
 
-export type PageConfig = PowerBiConfig | FusionPowerBiConfig | CustomView;
+export type PageConfig = PowerBiConfig | FusionPowerBiConfig | CustomPage;
 
-interface PowerBiConfig extends PageBase {
+export interface PowerBiConfig extends PageBase {
     type: 'PowerBi';
     test1: string;
 }
 
-interface FusionPowerBiConfig extends PageBase {
+export interface FusionPowerBiConfig extends PageBase {
     type: 'FusionPowerBi';
-    test2: string;
+    reportURI: string;
+    filter?: Filter[];
 }
-interface CustomView extends PageBase {
+export interface CustomPage extends PageBase {
     type: 'Custom';
     component: React.FC;
 }

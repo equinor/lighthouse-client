@@ -12,10 +12,10 @@ const { Tab, List } = Tabs;
 
 interface PageViewerHeaderProps {
     title: string;
-    pages: ViewState;
+    viewState: ViewState;
 }
 
-export const PageViewerHeader = ({ title, pages }: PageViewerHeaderProps): JSX.Element => {
+export const PageViewerHeader = ({ title, viewState }: PageViewerHeaderProps): JSX.Element => {
     return (
         <HeaderWrapper>
             <LeftSection>
@@ -23,7 +23,7 @@ export const PageViewerHeader = ({ title, pages }: PageViewerHeaderProps): JSX.E
             </LeftSection>
             <RightSection>
                 <List>
-                    {Object.values(pages).map((page) => {
+                    {Object.values(viewState.pages).map((page) => {
                         const Icon = page.icon;
                         return (
                             <Tab key={`pages-${page.title}`}>
