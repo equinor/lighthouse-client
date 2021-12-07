@@ -1,4 +1,4 @@
-import { Tag } from '../../../ScopeChangeRequestApp';
+import { Tag } from '../../../Types/tag';
 
 interface TagsProps {
     tags?: Tag[];
@@ -10,7 +10,9 @@ export const Tags = ({ tags }: TagsProps): JSX.Element => {
             {tags &&
                 tags.map((x) => (
                     <div key={x.id}>
-                        <p>{x.name}</p>
+                        <div>
+                            {x.name} - {x.description}
+                        </div>
                     </div>
                 ))}
         </>

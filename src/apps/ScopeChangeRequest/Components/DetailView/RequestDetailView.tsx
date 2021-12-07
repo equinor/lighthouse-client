@@ -1,11 +1,10 @@
 import styled from 'styled-components';
 import { Field } from './Components/Field';
-import { ScopeChangeRequest } from '../../ScopeChangeRequestApp';
 import { Attachments } from './Components/Attachments';
 import { Documents } from './Components/Documents';
 import { Tags } from './Components/Tags';
 import { SectionRow } from './Styles/Section';
-import { EditPenIcon } from './Styles/EditPen';
+import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -14,11 +13,7 @@ interface RequestDetailViewProps {
 export const RequestDetailView = ({ request }: RequestDetailViewProps): JSX.Element => {
     return (
         <div>
-            <Header>
-                <Title>Review scope change request </Title>
-                <EditPenIcon />
-            </Header>
-            <FormContainer>
+            <DetailViewContainer>
                 <Field label={'Title'} value={request.title} />
                 <SectionRow>
                     <Field label={'Phase'} value={request.phase} />
@@ -30,11 +25,7 @@ export const RequestDetailView = ({ request }: RequestDetailViewProps): JSX.Elem
                 </SectionRow>
                 <Field label={'Description'} value={request.description} />
 
-                <Field
-                    customLabel={{ bold: true, fontSize: 'xx-large' }}
-                    label={'Tags'}
-                    value={<Tags tags={request.tags} />}
-                />
+                <Field label={'Tags'} value={<Tags tags={request.tags} />} />
 
                 <Field
                     customLabel={{ bold: true, fontSize: 'xx-large' }}
@@ -53,21 +44,12 @@ export const RequestDetailView = ({ request }: RequestDetailViewProps): JSX.Elem
                     label={'Workflow'}
                     value={'No workflow linked'}
                 />
-            </FormContainer>
+            </DetailViewContainer>
         </div>
     );
 };
 
-const Header = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin: 0.2em;
-    align-items: center;
-`;
-
-const Title = styled.h2``;
-
-const FormContainer = styled.div`
+const DetailViewContainer = styled.div`
     display: flex;
     flex-direction: column;
 `;

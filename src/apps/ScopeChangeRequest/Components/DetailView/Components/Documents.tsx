@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { StidDocument } from '../../../ScopeChangeRequestApp';
+import { StidDocument } from '../../../Types/stidDocument';
+
 import { DocumentIcon } from '../Styles/DocumentIcon';
 
 interface DocumentsProps {

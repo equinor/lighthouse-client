@@ -1,4 +1,4 @@
-import { Attachment } from '../../../ScopeChangeRequestApp';
+import { Attachment } from '@microsoft/microsoft-graph-types';
 
 interface AttachmentsProps {
     attachments?: Attachment[];
