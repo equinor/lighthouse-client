@@ -1,6 +1,5 @@
 import { Value } from '../Types/value';
 import { Field } from './Field';
-import { Input } from '@equinor/eds-core-react';
 import { InputType } from '../Types/inputType';
 import { Components } from './Form';
 import { TextInput } from './InputTypes/TextInput';
@@ -14,11 +13,12 @@ import { NumberInput as NumberInputInterface } from '../Types/inputType';
 import { SearchableDropdown as SearchableDropdownInterface } from '../Types/inputType';
 import { TextArea as TextAreaInterface } from '../Types/inputType';
 import { TextArea } from './InputTypes/TextArea';
+import { NumberInput } from './InputTypes/NumberInput';
 
 interface GeneratedFieldProps {
     inputType: InputType;
-    setter: (value: string) => Promise<void>;
-    field: Value<string>;
+    setter: (value: string | number) => Promise<void>;
+    field: Value<string | number | string[]>;
     editMode: boolean;
     customComponents?: Components;
 }
@@ -34,13 +34,19 @@ export const GeneratedField = ({
             const textInputField = field.inputType as TextInputInterface;
             return (
                 <Field
+                    key={field.label + 'field'}
                     label={field.label || ''}
                     customLabel={{ faded: true }}
                     value={
                         textInputField.CustomInputType ? (
                             <textInputField.CustomInputType />
                         ) : (
-                            <TextInput setter={setter} field={field} editMode={editMode} />
+                            <TextInput
+                                key={field.label + 'input'}
+                                setter={setter}
+                                field={field as Value<string>}
+                                editMode={editMode}
+                            />
                         )
                     }
                 />
@@ -51,24 +57,18 @@ export const GeneratedField = ({
             const numberField = field.inputType as NumberInputInterface;
             return (
                 <Field
+                    key={field.label + 'field'}
                     label={field.label || ''}
                     customLabel={{ faded: true }}
                     value={
                         numberField.CustomInputType ? (
                             <numberField.CustomInputType />
                         ) : (
-                            <Input
-                                style={{ marginBottom: '0.2em' }}
-                                disabled={editMode ? !field?.editable : false}
-                                placeholder={`Enter ${field.label}`}
-                                defaultValue={field?.value}
-                                type="number"
-                                onChange={(e) => {
-                                    if (!e.target.value) {
-                                        setter('');
-                                    }
-                                    e.target.value && setter(e.target.value);
-                                }}
+                            <NumberInput
+                                key={field.label + 'input'}
+                                setter={setter}
+                                field={field as Value<number>}
+                                editMode={false}
                             />
                         )
                     }
@@ -80,13 +80,19 @@ export const GeneratedField = ({
             const textAreaField = field.inputType as TextAreaInterface;
             return (
                 <Field
+                    key={field.label + 'field'}
                     label={field.label || ''}
                     customLabel={{ faded: true }}
                     value={
                         textAreaField.CustomInputType ? (
                             <textAreaField.CustomInputType />
                         ) : (
-                            <TextArea setter={setter} field={field} editMode={editMode} />
+                            <TextArea
+                                key={field.label + 'input'}
+                                setter={setter}
+                                field={field as Value<string>}
+                                editMode={editMode}
+                            />
                         )
                     }
                 />
@@ -100,6 +106,7 @@ export const GeneratedField = ({
                 : multiSelectField.selectOptions();
             return (
                 <Field
+                    key={field.label + 'field'}
                     label={field.label || ''}
                     customLabel={{ faded: true }}
                     value={
@@ -107,6 +114,7 @@ export const GeneratedField = ({
                             <multiSelectField.CustomInputType options={selectOptions} />
                         ) : (
                             <MultiSelect
+                                key={field.label + 'input'}
                                 setter={setter as unknown as (value: string[]) => Promise<void>}
                                 field={field as unknown as Value<string[]>}
                                 editMode={editMode}
@@ -126,6 +134,7 @@ export const GeneratedField = ({
                 : singleSelectField.selectOptions(field.value as unknown as any[]);
             return (
                 <Field
+                    key={field.label + 'field'}
                     label={field.label || ''}
                     customLabel={{ faded: true }}
                     value={
@@ -133,8 +142,9 @@ export const GeneratedField = ({
                             <singleSelectField.CustomInputType options={selectOptions} />
                         ) : (
                             <SingleSelect
+                                key={field.label + 'input'}
                                 setter={setter}
-                                field={field}
+                                field={field as Value<string>}
                                 editMode={editMode}
                                 selectItems={selectOptions}
                             />
@@ -151,6 +161,7 @@ export const GeneratedField = ({
                 : searchableDropdownField.selectOptions();
             return (
                 <Field
+                    key={field.label + 'field'}
                     label={field.label || ''}
                     customLabel={{ faded: true }}
                     value={

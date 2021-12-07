@@ -3,12 +3,12 @@ import { Value } from '../../Types/value';
 import { Input } from '@equinor/eds-core-react';
 
 interface NumberInputProps {
-    setter: (value: string) => Promise<void>;
-    field: Value<string>;
+    setter: (value: number) => Promise<void>;
+    field: Value<number>;
     editMode: boolean;
     CustomComponent?: React.FC<{
-        setter: (value: string) => Promise<void>;
-        field: Value<string>;
+        setter: (value: number) => Promise<void>;
+        field: Value<number>;
         editMode: boolean;
     }>;
 }
@@ -28,13 +28,14 @@ export const NumberInput = ({
                     style={{ marginBottom: '0.2em' }}
                     disabled={editMode ? !field?.editable : false}
                     placeholder={`Enter ${field.label}`}
-                    defaultValue={field?.value}
+                    defaultValue={field?.value === 0 ? '' : field.value}
                     type="number"
                     onChange={(e) => {
                         if (!e.target.value) {
-                            setter('');
+                            setter(0);
                         }
-                        e.target.value && setter(e.target.value);
+
+                        e.target.value && setter(e.target.valueAsNumber);
                     }}
                 />
             )}

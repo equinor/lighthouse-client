@@ -57,18 +57,18 @@ export function GeneratedForm<T>({
             <h1>{title}</h1>
 
             <>
-                {allItems.map((x) => {
+                {allItems.map((fieldArray) => {
                     return (
-                        <SectionRow key={Math.random()}>
-                            {x.map((field) => {
+                        <SectionRow key={fieldArray.map((x) => x.label).toString()}>
+                            {fieldArray.map((field) => {
                                 if (behaviour?.hideDisabledFields && !field.editable && editMode) {
                                     return <></>;
                                 }
                                 return (
                                     <>
                                         <GeneratedField
-                                            field={field as Value<string>}
-                                            key={field.label}
+                                            field={field as Value<any>}
+                                            key={field.order}
                                             inputType={field.inputType}
                                             setter={formData.getSetter(field)}
                                             editMode={editMode}

@@ -44,7 +44,9 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
                 editable: field.editable,
                 order: field.order,
                 inputType: field.inputType,
-                isValid: !errorMessage,
+                isValid: field.validationFunction
+                    ? field.validationFunction(data[fieldKey])
+                    : !errorMessage,
 
                 get value(): T[Extract<keyof T, string>] {
                     return data[fieldKey];
@@ -55,14 +57,13 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
                 },
             };
         }
-
         return newFields;
     }, [data, mutateField, resetState, schema]);
 
     return {
         fields,
         getData: (): T => {
-            return { ...data };
+            return { ...data } as T;
         },
         getChangedData: (): Partial<T> => {
             const changedData = {};
@@ -102,7 +103,6 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
         },
         isAllValid: (): boolean => {
             const values = Object.values(fields) as any[];
-
             if (values.filter((v): boolean => v.isRequired).every((v): boolean => v.isValid)) {
                 return true;
             }
@@ -127,6 +127,9 @@ export default <T>(schema: Schema<T>, initialState: T): Form<T> => {
             return values.some((v): boolean => v.isDirty);
         },
         isValid: <TValue>(field?: Value<TValue>): boolean => {
+            if (field?.validationFunction) {
+                return field.validationFunction(field.value);
+            }
             if (!field) {
                 return true;
             }

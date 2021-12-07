@@ -7,6 +7,7 @@ export interface Field {
     editable: (() => boolean) | boolean;
     order: number;
     inputType: InputType;
+    validationFunction?: (value) => boolean;
 }
 
 export type Fields<T> = {
