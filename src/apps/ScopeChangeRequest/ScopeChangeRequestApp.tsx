@@ -42,7 +42,7 @@ export function setup(appApi: AppApi): void {
         objectIdentifierKey: 'id',
     });
 
-    request.registerGardenOptions({ groupeKey: 'origin', itemKey: 'id', excludeKeys: [] });
+    request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'id', excludeKeys: [] });
 
     request.registerAnalyticsOptions({});
 
