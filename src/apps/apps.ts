@@ -19,7 +19,7 @@ import { ModelViewer } from './3DModel/src';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './loopApp';
-import { ScopeChangeRequestApp, setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
+import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import {
     BusinessCaseReport,
     LCIReport,
@@ -441,7 +441,7 @@ export const apps: AppManifest[] = [
         uri: '',
         app: {
             appType: 'CustomApp',
-            component: ScopeChangeRequestApp,
+            component: DataView,
             setup: scopeChangeSetup,
         },
         imageUri: './images/Scope change request.jpg',
