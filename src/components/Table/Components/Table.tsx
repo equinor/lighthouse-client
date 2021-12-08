@@ -1,13 +1,13 @@
 import React, { PropsWithChildren, useCallback } from 'react';
 import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
-import { useTable } from './Hooks/useTable';
-import { TableData } from './types';
-import { useDefaultColumn } from './Utils/ColumnDefault';
-import { RegisterReactTableHooks } from './Utils/registerReactTableHooks';
-import { GroupCell } from './Components/GoupedCell';
-import { HeaderCell } from './Components/HeaderCell';
-import { Table, TableCell, TableRow } from './Components/Styles';
+import { useTable } from '../Hooks/useTable';
+import { TableData } from '../types';
+import { useDefaultColumn } from '../Utils/ColumnDefault';
+import { RegisterReactTableHooks } from '../Utils/registerReactTableHooks';
+import { GroupCell } from './GoupedCell';
+import { HeaderCell } from './HeaderCell';
+import { Table, TableCell, TableRow } from './Styles';
 
 interface DataTableProps<TData extends TableData> {
     options: TableOptions<TData>;
@@ -59,7 +59,7 @@ export function DataTable<T extends TableData = TableData>({
                     itemCount={rows.length}
                     width={totalColumnsWidth + 10}
                     itemSize={itemSize}
-                    itemData={{ rows, prepareRow, onCellClick }}
+                    itemData={{ rows, prepareRow, onCellClick, setSelected: options?.setSelected }}
                 >
                     {RenderRow}
                 </List>
@@ -71,6 +71,7 @@ interface RenderRowData {
     rows: Row<TableData>[];
     prepareRow: (row: Row<TableData>) => void;
     onCellClick: (cell: Cell) => void;
+    setSelected?: (item: any) => void;
 }
 interface RenderRowProps {
     data: RenderRowData;
@@ -82,19 +83,19 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     if (!row) return null;
     data.prepareRow(row);
 
-    // const handleClick = () => {
-    //     data.setSelected && data.setSelected(row.values['tagNo']);
-    // };
+    const handleClick = useCallback(() => {
+        data.setSelected && data.setSelected(row.values['tagNo']);
+    }, [data.setSelected, row]);
 
     return (
-        <TableRow {...row.getRowProps({ style })}>
+        <TableRow {...row.getRowProps({ style })} onClick={handleClick}>
             {row.cells.map((cell: Cell) => {
                 return (
                     <TableCell
                         align={cell.column.align}
                         {...cell.getCellProps()}
                         key={cell.getCellProps().key}
-                        onClick={() => data.onCellClick(cell)}
+                        // onClick={() => data.onCellClick(cell)}
                     >
                         {cell.isGrouped ? (
                             <GroupCell row={row} cell={cell} />

@@ -38,6 +38,7 @@ declare module 'react-table' {
             TableData {
         enableSelectRow?: boolean;
         onCellClick?: (cell: Cell) => void;
+        setSelected?: (item: any) => void;
     }
 
     //@ts-ignore

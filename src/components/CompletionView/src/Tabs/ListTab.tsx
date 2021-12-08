@@ -2,7 +2,7 @@ import styled from 'styled-components';
 // import { DataTable } from "../../../DataTable/Components/Table";
 import { useFilteredData } from '../../../Filter';
 import { PopupFilter } from '../../../Filter/Components/PopoutFilter/PopupFilter';
-import { DataTable } from '../../../Table/Table';
+import { DataTable } from '../../../Table/Components/Table';
 import { useColumns } from '../../../Table/Hooks/useColumns';
 import { TableData } from '../../../Table/types';
 import { useDataContext } from '../Context/DataProvider';
@@ -13,7 +13,7 @@ const Wrapper = styled.section`
 
 export const ListTab = () => {
     const { data } = useFilteredData<TableData>();
-    const { tableOptions } = useDataContext();
+    const { tableOptions, setSelected } = useDataContext();
     const columns = useColumns(data[0], tableOptions?.customColumns);
     const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
     return (
@@ -27,6 +27,7 @@ export const ListTab = () => {
                     initialState: {
                         hiddenColumns: hiddenCols,
                     },
+                    setSelected,
                 }}
                 FilterComponent={PopupFilter}
             />
