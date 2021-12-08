@@ -1,5 +1,5 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from 'react';
+import { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { useDataViewerKey } from '../Components/DefaultDataView/Hooks/useDataViewerKey';
 import { DataViewerProps, ViewOptions } from '../DataViewerApi/DataViewerTypes';
@@ -43,13 +43,13 @@ type VoidFunction = () => void;
 export enum DataAction {
     getData = 'getData',
     setSelected = 'setSelected',
-    setState = 'setState',
+    setOptions = 'setOptions',
 }
 
 export const actions = {
     getData: createCustomAction(DataAction.getData, (data: any[]) => ({ data })),
     setSelectedItem: createCustomAction(DataAction.setSelected, (itemId: string) => ({ itemId })),
-    setState: createCustomAction(DataAction.setState, (state) => ({ state })),
+    setOptions: createCustomAction(DataAction.setOptions, (options) => ({ options })),
 };
 
 export type OfflineDocumentsActionType = typeof DataAction;
@@ -64,6 +64,8 @@ export function ClientReducer(state: DataState, action: Action): DataState {
             return { ...state, data: action.data };
         case getType(actions.setSelectedItem):
             return { ...state, itemId: action.itemId };
+        case getType(actions.setOptions):
+            return { ...state, ...action.options };
         default:
             return state;
     }
@@ -86,45 +88,41 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         powerBiOptions,
     } = useDataViewer();
 
-    const options = useMemo(
-        () => ({
-            viewComponent,
-            viewOptions,
-            filterOptions,
-            treeOptions,
-            tableOptions,
-            gardenOptions,
-            analyticsOptions,
-            statusFunc,
-            powerBiOptions,
-        }),
-        [
-            analyticsOptions,
-            filterOptions,
-            gardenOptions,
-            powerBiOptions,
-            statusFunc,
-            tableOptions,
-            treeOptions,
-            viewComponent,
-            viewOptions,
-        ]
-    );
-
     const initialState: DataState = {
         key,
         name,
         data: [],
         subData: {},
         itemId: '',
-        ...options,
+        viewComponent,
+        viewOptions,
+        filterOptions,
+        treeOptions,
+        tableOptions,
+        gardenOptions,
+        analyticsOptions,
+        statusFunc,
+        powerBiOptions,
     };
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
     useEffect(() => {
-        dispatch(actions.setState(options));
-    }, [options]);
+        dispatch(
+            actions.setOptions({
+                viewComponent,
+                viewOptions,
+                filterOptions,
+                treeOptions,
+                tableOptions,
+                gardenOptions,
+                analyticsOptions,
+                statusFunc,
+                powerBiOptions,
+            })
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [key]);
 
     const getData = useCallback(async () => {
         if (dataFetcher) {

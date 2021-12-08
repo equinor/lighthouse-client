@@ -1,7 +1,6 @@
 import { AuthenticationProvider } from '@equinor/authentication';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import React from 'react';
-import { DataView } from '../components/CompletionView/src/DataView';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -324,7 +323,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: checklistSetup,
         },
     },
@@ -338,7 +336,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: handoverSetup,
         },
     },
@@ -352,7 +349,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -365,7 +361,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: loopSetup,
         },
     },
@@ -379,7 +374,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -392,7 +386,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -405,7 +398,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -418,7 +410,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     // Queries and requests
