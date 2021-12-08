@@ -8,6 +8,8 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "vitebuild": "vite build",
+    "serve": "vite serve",
     "start": "webpack serve --mode development --env development --open --hot",
     "build": "webpack",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
