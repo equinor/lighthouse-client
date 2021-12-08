@@ -1,4 +1,5 @@
-import { createContext, useContext, useReducer } from 'react';
+import { AnalyticsOptions } from '@equinor/Diagrams';
+import { createContext, useCallback, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { useDataViewerKey } from '../Components/DefaultDataView/Hooks/useDataViewerKey';
 import { DataViewerProps, ViewOptions } from '../DataViewerApi/DataViewerTypes';
@@ -6,14 +7,17 @@ import {
     FilterOptions,
     GardenOptions,
     PowerBiOptions,
+    StatusFunc,
     TableOptions,
     TreeOptions,
 } from '../DataViewerApi/DataViewState';
 import { useDataViewer } from '../DataViewerApi/useDataViewer';
+
 interface DataState {
     key: string;
     name: string;
     data: any[];
+    subData: Record<string, any[]>;
     itemId: string;
     viewComponent?: React.FC<DataViewerProps<unknown>>;
     viewOptions?: ViewOptions<unknown>;
@@ -22,7 +26,8 @@ interface DataState {
     treeOptions?: TreeOptions<unknown>;
     timelineOptions?: any;
     gardenOptions?: GardenOptions<unknown>;
-    analyticsOptions?: any;
+    analyticsOptions?: AnalyticsOptions<unknown>;
+    statusFunc?: StatusFunc<unknown>;
     powerBiOptions?: PowerBiOptions;
 }
 interface DataContextState extends DataState {
@@ -62,7 +67,7 @@ export function ClientReducer(state: DataState, action: Action): DataState {
     }
 }
 
-export const DataProvider = ({ children }: DataProviderProps) => {
+export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useDataViewerKey();
     const {
         name,
@@ -74,12 +79,15 @@ export const DataProvider = ({ children }: DataProviderProps) => {
         dataFetcher,
         treeOptions,
         gardenOptions,
+        analyticsOptions,
+        statusFunc,
         powerBiOptions,
     } = useDataViewer();
     const initialState: DataState = {
         key,
         name,
         data: [],
+        subData: {},
         itemId: '',
         viewComponent,
         viewOptions,
@@ -87,22 +95,25 @@ export const DataProvider = ({ children }: DataProviderProps) => {
         treeOptions,
         tableOptions,
         gardenOptions,
+        analyticsOptions,
+        statusFunc,
         powerBiOptions,
     };
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
-    const getData = async () => {
+    const getData = useCallback(async () => {
         if (dataFetcher) {
             const data = await dataFetcher();
             if (validator) {
                 dispatch(actions.getData(validator(data)));
                 return;
             }
+            // eslint-disable-next-line no-console
             console.warn(`Data may not be valid. Data validator is not registered for ${name}.`);
             dispatch(actions.getData(data));
         }
-    };
+    }, [dataFetcher, name, validator]);
 
     const setSelected = (itemId: string) => {
         dispatch(actions.setSelectedItem(itemId !== state.itemId ? itemId : ''));
@@ -121,6 +132,6 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     );
 };
 
-export function useDataContext() {
+export function useDataContext(): DataContextState {
     return useContext(DataContext);
 }

@@ -12,7 +12,7 @@ const Wrapper = styled.section`
 `;
 
 export const ListTab = () => {
-    const data = useFilteredData<TableData>();
+    const { data } = useFilteredData<TableData>();
     const { tableOptions } = useDataContext();
     const columns = useColumns(data[0], tableOptions?.customColumns);
     const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;

@@ -1,7 +1,9 @@
+import { AnalyticsOptions } from '@equinor/Diagrams';
 import {
     FilterOptions,
     GardenOptions,
     PowerBiOptions,
+    StatusFunc,
     TableOptions,
     TreeOptions,
 } from './DataViewState';
@@ -44,6 +46,7 @@ export interface DataViewerApi<T> {
     registerTreeOptions: (options: TreeOptions<T>) => void;
     registerGanttOptions: (options: any) => void;
     registerGardenOptions: (options: GardenOptions<T>) => void;
-    registerAnalyticsOptions: (options: any) => void;
+    registerAnalyticsOptions: (options: AnalyticsOptions<T>) => void;
+    registerStatusItems: (options: StatusFunc<T>) => void;
     registerPowerBIOptions: (options: PowerBiOptions) => void;
 }

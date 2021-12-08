@@ -1,3 +1,4 @@
+import { AnalyticsOptions } from '@equinor/Diagrams';
 import { dispatch } from './DataViewerCoreActions';
 import {
     DataFetcher,
@@ -12,6 +13,7 @@ import {
     GardenOptions,
     getContext,
     PowerBiOptions,
+    StatusFunc,
     TableOptions,
     TreeOptions,
 } from './DataViewState';
@@ -27,6 +29,7 @@ import {
 export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T> {
     dispatch(getContext(), (state: DataViewState) => {
         if (state[options.viewerId]) {
+            // eslint-disable-next-line no-console
             console.warn(`${options.viewerId} is already registered DataView.`);
         }
         return {
@@ -129,12 +132,21 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
                 },
             }));
         },
-        registerAnalyticsOptions(analyticsOptions: any) {
+        registerAnalyticsOptions<T>(analyticsOptions: AnalyticsOptions<T>) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    analyticsOptions,
+                    analyticsOptions: analyticsOptions as AnalyticsOptions<unknown>,
+                },
+            }));
+        },
+        registerStatusItems<T>(statusFunc: StatusFunc<T>) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    statusFunc: statusFunc as StatusFunc<unknown>,
                 },
             }));
         },

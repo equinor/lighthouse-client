@@ -39,7 +39,10 @@ export function DataTable<T extends TableData = TableData>({
         <Table {...getTableProps()}>
             <div>
                 {headerGroups.map((headerGroup) => (
-                    <div {...headerGroup.getHeaderGroupProps()}>
+                    <div
+                        {...headerGroup.getHeaderGroupProps()}
+                        key={headerGroup.getHeaderGroupProps().key}
+                    >
                         {headerGroup.headers.map((column) => (
                             <HeaderCell
                                 {...column}
@@ -78,6 +81,10 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     const row = data.rows[index];
     if (!row) return null;
     data.prepareRow(row);
+
+    // const handleClick = () => {
+    //     data.setSelected && data.setSelected(row.values['tagNo']);
+    // };
 
     return (
         <TableRow {...row.getRowProps({ style })}>
