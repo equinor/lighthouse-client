@@ -123,7 +123,30 @@ export function setup(appApi: AppApi) {
         },
     });
 
-    commPkg.registerTableOptions({ objectIdentifierKey: 'tagNo' });
+    commPkg.registerTableOptions({
+        objectIdentifierKey: 'tagNo',
+        enableSelectRows: true,
+        onCellClick: (cell) => {
+            console.log(cell.value);
+        },
+        hiddenColumns: ['functionTags', 'signedAt', 'commPk', 'description'],
+        customColumns: [
+            {
+                Header: 'Test',
+                accessor: (row) => row.status,
+
+                Aggregated: (cell) => {
+                    return 'hoi';
+                },
+            },
+            {
+                Header: 'Foo',
+                accessor: (row) => {
+                    return 1 + 1;
+                },
+            },
+        ],
+    });
     commPkg.registerGardenOptions({
         gardenKey: 'phase',
         itemKey: 'tagNo',

@@ -7,16 +7,19 @@ import {
     usePagination,
     useResizeColumns,
     useRowSelect,
-    useSortBy
+    useSortBy,
 } from 'react-table';
 import { useSelector } from '../Components/Cell';
+import { TableData } from '../types';
 
 interface HooksOptions {
     rowSelect: boolean;
 }
 
-export function RegisterReactTableHooks<T>(options?: HooksOptions) {
-    const hooks: PluginHook<Record<string, T>>[] = [];
+export function RegisterReactTableHooks<TData extends TableData>(
+    options?: HooksOptions
+): PluginHook<TData>[] {
+    const hooks: Array<PluginHook<TData>> = [];
 
     hooks.push(
         useFlexLayout,
@@ -26,9 +29,10 @@ export function RegisterReactTableHooks<T>(options?: HooksOptions) {
         useExpanded,
         usePagination,
         useRowSelect,
-        useResizeColumns,
-        useSelector
+        useResizeColumns
     );
+    // TODO : disable checkboxes for whole table. conditional hook?
+    options?.rowSelect && hooks.push(useSelector);
 
     return hooks;
 }
