@@ -39,7 +39,7 @@ export function setup(appApi: AppApi): void {
         objectIdentifierKey: 'id',
     });
 
-    request.registerGardenOptions({ gardenKey: 'trigger', itemKey: 'id' });
+    request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'id' });
 
     request.registerAnalyticsOptions({});
 

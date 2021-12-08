@@ -16,12 +16,12 @@ export const RequestDetailView = ({ request }: RequestDetailViewProps): JSX.Elem
             <DetailViewContainer>
                 <Field label={'Title'} value={request.title} />
                 <SectionRow>
-                    {/* <Field label={'Phase'} value={request.phase} />
-                    <Field label={'Status'} value={request.state} /> */}
+                    <Field label={'Phase'} value={request.phase} />
+                    <Field label={'Status'} value={request.state} />
                 </SectionRow>
                 <SectionRow>
                     <Field label={'Change category'} value={request.category} />
-                    <Field label={'Change trigger'} value={request.trigger} />
+                    <Field label={'Change origin'} value={request.origin} />
                     {/* <Field label={'Change origin'} value={request.origin} /> */}
                 </SectionRow>
                 <Field label={'Description'} value={request.description} />

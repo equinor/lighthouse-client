@@ -1,21 +1,16 @@
-import { StidDocument } from './stidDocument';
-import { Tag } from './tag';
-
 export interface ScopeChangeRequest {
     id: string;
     title: string;
     description: string;
-    created: string;
-    state: 'Closed' | 'Open';
     phase: string;
-    milestone: string;
     origin: string;
-    trigger: string;
     category: string;
-    guesstimateHrs: number;
-    actualHrs: string;
-    responsible: string;
-    tags?: Tag[];
-    documents?: StidDocument[];
+    estimatedChangeHours: number;
+    actualChangeHours: number;
+    created: string;
+    createdBy: string;
+    lastModified: string;
+    lastModifiedBy: string;
+    state: string;
     //workflow
 }
