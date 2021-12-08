@@ -3,7 +3,7 @@ import {
     GardenOptions,
     PowerBiOptions,
     TableOptions,
-    TreeOptions
+    TreeOptions,
 } from './DataViewState';
 
 export type DataFetcher<T> = () => Promise<T[]>;
@@ -40,7 +40,7 @@ export interface DataViewerApi<T> {
     ) => void;
     registerViewOptions: (viewOptions: ViewOptions<T>) => void;
     registerFilterOptions: (options: FilterOptions<T>) => void;
-    registerTableOptions: (options: TableOptions) => void;
+    registerTableOptions: (options: TableOptions<T>) => void;
     registerTreeOptions: (options: TreeOptions<T>) => void;
     registerGanttOptions: (options: any) => void;
     registerGardenOptions: (options: GardenOptions<T>) => void;

@@ -3,6 +3,7 @@ import React from 'react';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
 import { DataSet } from '../../../Garden/Models/data';
+import { Cell, CustomColumn } from '../../../Table/types';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
 
 export interface DataViewState {
@@ -20,9 +21,13 @@ export interface FilterOptions<T> {
     customRender?: Record<keyof T | string, React.FC<T>>;
 }
 
-export interface TableOptions {
+export interface TableOptions<T> {
     objectIdentifierKey: string;
     headers?: HeaderData[];
+    enableSelectRows?: boolean;
+    onCellClick?: (cell: Cell) => void;
+    hiddenColumns?: (keyof T)[];
+    customColumns?: CustomColumn[];
 }
 export interface GardenOptions<T> {
     groupeKey: keyof T;
@@ -46,7 +51,7 @@ export interface ViewConfig<T> {
     viewComponent?: React.FC<DataViewerProps<T>>;
     viewOptions?: ViewOptions<T>;
     filterOptions?: FilterOptions<T>;
-    tableOptions?: TableOptions;
+    tableOptions?: TableOptions<T>;
     treeOptions?: TreeOptions<T>;
     timelineOptions?: any;
     gardenOptions?: GardenOptions<T>;
