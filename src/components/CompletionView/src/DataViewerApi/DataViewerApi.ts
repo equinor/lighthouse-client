@@ -9,6 +9,7 @@ import {
     ViewOptions,
 } from './DataViewerTypes';
 import {
+    DataViewSideSheetOptions,
     DataViewState,
     GardenOptions,
     getContext,
@@ -156,6 +157,16 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
                 [options.viewerId]: {
                     ...state[options.viewerId],
                     powerBiOptions,
+                },
+            }));
+        },
+        registerDataViewSideSheetOptions(dataViewSideSheetOptions: DataViewSideSheetOptions<T>) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    dataViewSideSheetOptions:
+                        dataViewSideSheetOptions as DataViewSideSheetOptions<unknown>,
                 },
             }));
         },

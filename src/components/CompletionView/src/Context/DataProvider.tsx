@@ -9,7 +9,8 @@ import {
     PowerBiOptions,
     StatusFunc,
     TableOptions,
-    TreeOptions
+    TreeOptions,
+    DataViewSideSheetOptions,
 } from '../DataViewerApi/DataViewState';
 import { useDataViewer } from '../DataViewerApi/useDataViewer';
 
@@ -18,7 +19,7 @@ interface DataState {
     name: string;
     data: any[];
     subData: Record<string, any[]>;
-    itemId: string;
+    item: any;
     viewComponent?: React.FC<DataViewerProps<unknown>>;
     viewOptions?: ViewOptions<unknown>;
     filterOptions?: FilterOptions<unknown>;
@@ -29,10 +30,11 @@ interface DataState {
     analyticsOptions?: AnalyticsOptions<unknown>;
     statusFunc?: StatusFunc<unknown>;
     powerBiOptions?: PowerBiOptions;
+    dataViewSideSheetOptions?: DataViewSideSheetOptions<unknown>;
 }
 interface DataContextState extends DataState {
     getData: VoidFunction;
-    setSelected: (itemId: string) => void;
+    setSelected: (item: any) => void;
 }
 interface DataProviderProps {
     children: React.ReactNode;
@@ -47,7 +49,7 @@ export enum DataAction {
 
 export const actions = {
     getData: createCustomAction(DataAction.getData, (data: any[]) => ({ data })),
-    setSelectedItem: createCustomAction(DataAction.setSelected, (itemId: string) => ({ itemId })),
+    setSelectedItem: createCustomAction(DataAction.setSelected, (item: any) => ({ item })),
 };
 
 export type OfflineDocumentsActionType = typeof DataAction;
@@ -61,7 +63,7 @@ export function ClientReducer(state: DataState, action: Action): DataState {
         case getType(actions.getData):
             return { ...state, data: action.data };
         case getType(actions.setSelectedItem):
-            return { ...state, itemId: action.itemId };
+            return { ...state, item: action.item };
         default:
             return state;
     }
@@ -82,13 +84,14 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         analyticsOptions,
         statusFunc,
         powerBiOptions,
+        dataViewSideSheetOptions,
     } = useDataViewer();
     const initialState: DataState = {
         key,
         name,
         data: [],
         subData: {},
-        itemId: '',
+        item: {},
         viewComponent,
         viewOptions,
         filterOptions,
@@ -98,6 +101,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         analyticsOptions,
         statusFunc,
         powerBiOptions,
+        dataViewSideSheetOptions,
     };
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
@@ -113,10 +117,10 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
             console.warn(`Data may not be valid. Data validator is not registered for ${name}.`);
             dispatch(actions.getData(data));
         }
-    }, [dataFetcher, name, validator]);
+    }, []);
 
-    const setSelected = (itemId: string) => {
-        dispatch(actions.setSelectedItem(itemId !== state.itemId ? itemId : ''));
+    const setSelected = (item: any) => {
+        dispatch(actions.setSelectedItem(item));
     };
 
     return (

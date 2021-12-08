@@ -1,12 +1,9 @@
-import { Button } from '@equinor/eds-core-react';
-
 import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
 import { AppApi } from '../apps';
-import { Wrapper } from '../../components/CompletionView/src/Components/DefaultDataView/DataView.styles';
-import { RequestSideSheet } from './Components/RequestSideSheet';
 import { ScopeChangeRequest } from './Types/scopeChangeRequest';
 import { baseClient } from '@equinor/http-client';
 import { statusBarData } from './Sections/AnalyticsConfig';
+import { CustomSidesheet } from './Components/CustomSidesheet';
 
 export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
@@ -42,31 +39,11 @@ export function setup(appApi: AppApi): void {
         objectIdentifierKey: 'id',
     });
 
-    request.registerGardenOptions({ gardenKey: 'trigger', itemKey: 'id', excludeKeys: [] });
+    request.registerGardenOptions({ gardenKey: 'trigger', itemKey: 'id' });
 
     request.registerAnalyticsOptions({});
 
     request.registerStatusItems(statusBarData);
 
-    interface CustomViewFunctionProps<T> {
-        item: T;
-        onClose: () => void;
-    }
-
-    const CustomViewFunction = ({ item, onClose }: CustomViewFunctionProps<ScopeChangeRequest>) => {
-        return (
-            <>
-                {item && !!Object.keys(item).length && (
-                    <>
-                        <Wrapper>
-                            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                <Button onClick={() => onClose()}>X</Button>
-                            </div>
-                            <RequestSideSheet close={onClose} request={item} />
-                        </Wrapper>
-                    </>
-                )}
-            </>
-        );
-    };
+    request.registerDataViewSideSheetOptions({ CustomRender: CustomSidesheet });
 }

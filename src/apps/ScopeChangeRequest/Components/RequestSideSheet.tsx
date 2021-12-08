@@ -1,7 +1,8 @@
 import useScopeChangeSchema from '../Hooks/useScopeChangeSchema';
 import { RequestViewContainer } from './RequestDetailViewContainer';
-import { GeneratedForm } from '../../../packages/Form/Components/Form';
+import { GeneratedForm } from '../../../packages/Form/src/Components/Form';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
+import { useDataContext } from '../../../components/CompletionView/src/Context/DataProvider';
 
 interface RequestSideSheetProps {
     request?: ScopeChangeRequest;
@@ -9,27 +10,41 @@ interface RequestSideSheetProps {
 }
 
 export const RequestSideSheet = ({ request, close }: RequestSideSheetProps): JSX.Element => {
-    const formData = useScopeChangeSchema();
+    const newScopeChange = useScopeChangeSchema();
+    const { getData } = useDataContext();
 
     const onSubmit = () => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newScopeChange.getData()),
+        };
+        fetch(
+            'https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests',
+            requestOptions
+        )
+            .then((response) => response.json())
+            .then((data) => console.log(data));
         console.log('Form submitted');
-        console.log(formData.getChangedData());
-        console.log(formData.getData());
-        console.log(formData.getValue(formData.fields.guesstimateHrs, 0));
+        setTimeout(getData, 4000);
         close();
     };
     const onCancel = () => {
-        console.log('Cancelled');
         close();
     };
 
     return (
         <>
-            {request?.created ? (
+            <GeneratedForm
+                formData={newScopeChange}
+                editMode={false}
+                events={{ onSubmit, onCancel }}
+            />
+            {request?.id ? (
                 <RequestViewContainer close={close} request={request} />
             ) : (
                 <GeneratedForm
-                    formData={formData}
+                    formData={newScopeChange}
                     editMode={false}
                     events={{ onSubmit, onCancel }}
                 />

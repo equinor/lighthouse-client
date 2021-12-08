@@ -70,6 +70,10 @@ export interface PowerBiOptions {
 
 export type StatusFunc<T> = (data: T[]) => StatusItem[];
 
+export interface DataViewSideSheetOptions<T> {
+    CustomRender?: React.FC<{ item: T; onClose: () => void }>;
+}
+
 export interface ViewConfig<T> {
     name: string;
     dataFetcher?: DataFetcher<T>;
@@ -84,6 +88,7 @@ export interface ViewConfig<T> {
     analyticsOptions?: AnalyticsOptions<T>;
     statusFunc?: StatusFunc<T>;
     powerBiOptions?: any;
+    dataViewSideSheetOptions?: DataViewSideSheetOptions<T>;
 }
 
 export function createGlobalState(defaultState: DataViewState): Atom<DataViewState> {
