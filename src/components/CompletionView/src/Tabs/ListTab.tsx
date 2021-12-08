@@ -1,23 +1,35 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 // import { DataTable } from "../../../DataTable/Components/Table";
-import { useFilteredData } from "../../../Filter";
-import { PopupFilter } from "../../../Filter/Components/PopoutFilter/PopupFilter";
-import { DataTable } from "../../../Table/Components/Table";
-import { useColumns } from "../../../Table/Hooks/useColumns";
+import { useFilteredData } from '../../../Filter';
+import { PopupFilter } from '../../../Filter/Components/PopoutFilter/PopupFilter';
+import { DataTable } from '../../../Table/Table';
+import { useColumns } from '../../../Table/Hooks/useColumns';
+import { TableData } from '../../../Table/types';
+import { useDataContext } from '../Context/DataProvider';
 
 const Wrapper = styled.section`
     /* overflow: scroll; */
-`
-
+`;
 
 export const ListTab = () => {
-
-    const data = useFilteredData<Record<string, Object>>();
-    const columns = useColumns(data[0])
-
+    const data = useFilteredData<TableData>();
+    const { tableOptions } = useDataContext();
+    const columns = useColumns(data[0], tableOptions?.customColumns);
+    const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
     return (
         <Wrapper>
-            <DataTable data={data} columns={columns} FilterComponent={PopupFilter} />
+            <DataTable
+                options={{
+                    data,
+                    columns,
+                    enableSelectRow: tableOptions?.enableSelectRows,
+                    onCellClick: tableOptions?.onCellClick,
+                    initialState: {
+                        hiddenColumns: hiddenCols,
+                    },
+                }}
+                FilterComponent={PopupFilter}
+            />
         </Wrapper>
     );
-}
+};
