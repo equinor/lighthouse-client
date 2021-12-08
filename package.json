@@ -7,6 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "dev": "vite",
     "start": "webpack serve --mode development --env development --open --hot",
     "build": "webpack",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
@@ -21,7 +22,7 @@
   "dependencies": {
     "@azure/app-configuration": "^1.3.0",
     "@azure/msal-browser": "^2.18.0",
-    "@cognite/reveal": "2.1.2",
+    "@cognite/reveal": "^2.2.2",
     "@cognite/sdk": "5.6.1",
     "@dbeining/react-atom": "^4.1.21",
     "@equinor/eds-core-react": "^0.14.2",
@@ -68,6 +69,7 @@
     "@types/worker-plugin": "^5.0.1",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
+    "@vitejs/plugin-react": "^1.1.1",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^9.0.1",
     "css-loader": "^6.4.0",
@@ -88,6 +90,7 @@
     "ts-node": "^10.2.1",
     "typescript": "^4.4.4",
     "url-loader": "^4.1.1",
+    "vite": "^2.7.1",
     "webpack": "^5.59.0",
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.3.1",
