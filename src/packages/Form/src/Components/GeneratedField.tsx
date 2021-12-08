@@ -2,24 +2,28 @@ import { Value } from '../Types/value';
 import { Field } from './Field';
 import { InputType } from '../Types/inputType';
 import { Components } from './Form';
-import { TextInput } from './InputTypes/TextInput';
-import { SingleSelect } from './InputTypes/SingleSelect';
-import { MultiSelect } from './InputTypes/MultiSelect';
-import { MultiSelectObject } from './InputTypes/MultiSelectObject';
-import { MultiSelect as MultiSelectInterface } from '../Types/inputType';
-import { MultiSelectObject as MultiSelectObjectInterface } from '../Types/inputType';
-import { SingleSelect as SingleSelectInterface } from '../Types/inputType';
-import { Custom as CustomInterface } from '../Types/inputType';
-import { TextInput as TextInputInterface } from '../Types/inputType';
-import { NumberInput as NumberInputInterface } from '../Types/inputType';
-import { SearchableDropdown as SearchableDropdownInterface } from '../Types/inputType';
+import {
+    SingleSelect,
+    MultiSelect,
+    MultiSelectObject,
+    NumberInput,
+    TextArea,
+    TextInput,
+} from './InputTypes';
+import {
+    SearchableDropdown as SearchableDropdownInterface,
+    MultiSelect as MultiSelectInterface,
+    NumberInput as NumberInputInterface,
+    TextInput as TextInputInterface,
+    Custom as CustomInterface,
+    SingleSelect as SingleSelectInterface,
+    MultiSelectObject as MultiSelectObjectInterface,
+} from '../Types/inputType';
 import { TextArea as TextAreaInterface } from '../Types/inputType';
-import { TextArea } from './InputTypes/TextArea';
-import { NumberInput } from './InputTypes/NumberInput';
 
 interface GeneratedFieldProps {
-    inputType: InputType;
     setter: (value: string | number) => Promise<void>;
+    inputType: InputType;
     field: Value<string | number | string[]>;
     editMode: boolean;
     customComponents?: Components;
@@ -103,9 +107,6 @@ export const GeneratedField = ({
 
         case 'MultiSelect': {
             const multiSelectField = field.inputType as MultiSelectInterface;
-            const selectOptions = Array.isArray(multiSelectField.selectOptions)
-                ? multiSelectField.selectOptions
-                : multiSelectField.selectOptions();
             return (
                 <Field
                     key={field.label + 'field'}
@@ -113,14 +114,16 @@ export const GeneratedField = ({
                     customLabel={{ faded: true }}
                     value={
                         multiSelectField.CustomInputType ? (
-                            <multiSelectField.CustomInputType options={selectOptions} />
+                            <multiSelectField.CustomInputType
+                                selectOptions={inputType.selectOptions}
+                            />
                         ) : (
                             <MultiSelect
                                 key={field.label + 'input'}
                                 setter={setter as unknown as (value: string[]) => Promise<void>}
                                 field={field as unknown as Value<string[]>}
                                 editMode={editMode}
-                                selectItems={selectOptions}
+                                selectItems={inputType.selectOptions}
                                 inputType={multiSelectField}
                             />
                         )
@@ -131,9 +134,6 @@ export const GeneratedField = ({
 
         case 'MultiSelectObject': {
             const multiSelectField = field.inputType as MultiSelectObjectInterface;
-            const selectOptions = Array.isArray(multiSelectField.selectOptions)
-                ? multiSelectField.selectOptions
-                : multiSelectField.selectOptions();
             return (
                 <Field
                     key={field.label + 'field'}
@@ -141,14 +141,15 @@ export const GeneratedField = ({
                     customLabel={{ faded: true }}
                     value={
                         multiSelectField.CustomInputType ? (
-                            <multiSelectField.CustomInputType options={selectOptions} />
+                            <multiSelectField.CustomInputType
+                                selectOptions={inputType.selectOptions}
+                            />
                         ) : (
                             <MultiSelectObject
                                 key={field.label + 'input'}
                                 setter={setter as unknown as (value: string[]) => Promise<void>}
                                 field={field as unknown as Value<string[]>}
                                 editMode={editMode}
-                                selectItems={selectOptions}
                                 inputType={multiSelectField}
                             />
                         )
@@ -159,9 +160,6 @@ export const GeneratedField = ({
 
         case 'SingleSelect': {
             const singleSelectField = field.inputType as SingleSelectInterface;
-            const selectOptions = Array.isArray(singleSelectField.selectOptions)
-                ? singleSelectField.selectOptions
-                : singleSelectField.selectOptions(field.value as unknown as any[]);
             return (
                 <Field
                     key={field.label + 'field'}
@@ -169,14 +167,16 @@ export const GeneratedField = ({
                     customLabel={{ faded: true }}
                     value={
                         singleSelectField.CustomInputType ? (
-                            <singleSelectField.CustomInputType options={selectOptions} />
+                            <singleSelectField.CustomInputType
+                                selectOptions={inputType.selectOptions}
+                            />
                         ) : (
                             <SingleSelect
                                 key={field.label + 'input'}
                                 setter={setter}
                                 field={field as Value<string>}
                                 editMode={editMode}
-                                selectItems={selectOptions}
+                                selectItems={inputType.selectOptions}
                             />
                         )
                     }
@@ -186,9 +186,6 @@ export const GeneratedField = ({
 
         case 'SearchableDropdown': {
             const searchableDropdownField = field.inputType as SearchableDropdownInterface;
-            const selectOptions = Array.isArray(searchableDropdownField.selectOptions)
-                ? searchableDropdownField.selectOptions
-                : searchableDropdownField.selectOptions();
             return (
                 <Field
                     key={field.label + 'field'}
@@ -196,7 +193,9 @@ export const GeneratedField = ({
                     customLabel={{ faded: true }}
                     value={
                         searchableDropdownField.CustomInputType ? (
-                            <searchableDropdownField.CustomInputType options={selectOptions} />
+                            <searchableDropdownField.CustomInputType
+                                selectOptions={inputType.selectOptions}
+                            />
                         ) : (
                             <p>Not implemented</p>
                         )

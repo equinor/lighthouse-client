@@ -20,27 +20,27 @@ export interface TextArea {
 
 export interface SingleSelect {
     type: 'SingleSelect';
-    selectOptions: ((field: any[]) => string[]) | string[];
-    CustomInputType?: React.FC<{ options: string[] }>;
+    selectOptions: StringSelectOptions;
+    CustomInputType?: React.FC<{ selectOptions: StringSelectOptions }>;
 }
 
 export interface MultiSelect {
     type: 'MultiSelect';
-    selectOptions: (() => string[]) | string[];
-    CustomInputType?: React.FC<{ options: string[] }>;
+    selectOptions: StringSelectOptions;
+    CustomInputType?: React.FC<{ selectOptions: StringSelectOptions }>;
 }
 
 export interface MultiSelectObject {
     type: 'MultiSelectObject';
-    selectOptions: (() => any[]) | any[];
+    selectOptions: ObjectSelectOptions;
     objectIdentifier: string;
-    CustomInputType?: React.FC<{ options: any[] }>;
+    CustomInputType?: React.FC<{ selectOptions: ObjectSelectOptions }>;
 }
 
 export interface SearchableDropdown {
     type: 'SearchableDropdown';
-    selectOptions: (() => string[]) | string[];
-    CustomInputType?: React.FC<{ options: string[] }>;
+    selectOptions: StringSelectOptions;
+    CustomInputType?: React.FC<{ selectOptions: StringSelectOptions }>;
 }
 
 export interface NumberInput {
@@ -52,3 +52,6 @@ export interface Custom {
     type: 'Custom';
     CustomInputType?: React.FC;
 }
+
+type ObjectSelectOptions = (() => Promise<any[]>) | any[];
+type StringSelectOptions = (() => Promise<string[]>) | string[];

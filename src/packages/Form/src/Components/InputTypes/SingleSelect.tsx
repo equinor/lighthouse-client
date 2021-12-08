@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Value } from '../../Types/value';
 import { SingleSelect as Select } from '@equinor/eds-core-react';
 
@@ -6,7 +6,7 @@ interface SingleSelectProps {
     setter: (value: string) => Promise<void>;
     field: Value<string>;
     editMode: boolean;
-    selectItems?: string[];
+    selectItems: (() => Promise<string[]>) | string[];
     CustomComponent?: React.FC<{
         setter: (value: string) => Promise<void>;
         field: Value<string>;
@@ -22,7 +22,24 @@ export const SingleSelect = ({
     selectItems,
     CustomComponent,
 }: SingleSelectProps): JSX.Element => {
-    !selectItems ? (selectItems = ['No options provided']) : selectItems;
+    const [items, setItems] = useState<string[]>([]);
+
+    useEffect(() => {
+        const asyncSelectItems = async (): Promise<string[]> => {
+            if (typeof selectItems === 'function') {
+                const items = await selectItems();
+                setItems(items);
+            }
+            return [];
+        };
+
+        if (typeof selectItems === 'function') {
+            asyncSelectItems();
+        } else {
+            setItems(selectItems);
+        }
+    }, []);
+
     return (
         <>
             {CustomComponent ? (
@@ -30,13 +47,13 @@ export const SingleSelect = ({
                     setter={setter}
                     field={field}
                     editMode={editMode}
-                    selectItems={selectItems}
+                    selectItems={items}
                 />
             ) : (
                 <Select
                     style={{ marginBottom: '0.2em' }}
                     disabled={editMode ? !field?.editable : false}
-                    items={selectItems}
+                    items={items}
                     label={''}
                     placeholder={`Select ${field.label}`}
                     initialSelectedItem={field?.value}

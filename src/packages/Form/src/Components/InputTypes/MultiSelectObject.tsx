@@ -3,14 +3,13 @@ import { MultiSelect as Select, Chip } from '@equinor/eds-core-react';
 import { ChipContainer } from './Styles/ChipContainer';
 import { Value } from '../../Types/value';
 import { MultiSelectObject as MultiSelectObjectInterface } from '../../Types/inputType';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 interface MultiSelectObjectProps {
     setter: (value: any[]) => Promise<void>;
     field: Value<any[]>;
     editMode: boolean;
-    selectItems: any[];
     inputType: MultiSelectObjectInterface;
     CustomComponent?: React.FC<{
         setter: (value: any[]) => Promise<void>;
@@ -24,10 +23,13 @@ export const MultiSelectObject = ({
     setter,
     field,
     editMode,
-    selectItems,
-    CustomComponent,
     inputType,
+    CustomComponent,
 }: MultiSelectObjectProps): JSX.Element => {
+    const [objectOptions, setObjectOptions] = useState<any[]>([]);
+    const [items, setItems] = useState<string[]>([]);
+
+    //check if initially selected matches a record in selectoptions
     const initialSelected = useMemo(() => {
         const templist: string[] = [];
         Object.keys(field.value).map((x) => {
@@ -40,16 +42,12 @@ export const MultiSelectObject = ({
         field.value ? initialSelected : []
     );
 
-    const selectOptions: string[] = useMemo(() => {
-        return selectItems.map((x) => x[inputType.objectIdentifier].toString());
-    }, [inputType.objectIdentifier, selectItems]);
-
     const findObjectsByIds = (ids: string[]): any[] => {
         const tempArray: any[] = [];
 
-        selectItems.forEach((x) => {
+        objectOptions.forEach((x) => {
             ids.forEach((y) => {
-                if (x.id.toString() === y) {
+                if (x[inputType.objectIdentifier].toString() === y) {
                     tempArray.push(x);
                 }
             });
@@ -74,6 +72,30 @@ export const MultiSelectObject = ({
         setter(objects);
     };
 
+    useEffect(() => {
+        const getItems = async (): Promise<string[]> => {
+            if (typeof inputType.selectOptions === 'function') {
+                const items = await inputType.selectOptions();
+                setObjectOptions(items);
+                setItems(items.map((x) => x[inputType.objectIdentifier].toString()));
+            }
+            return [];
+        };
+
+        if (typeof inputType.selectOptions === 'function') {
+            getItems();
+        } else {
+            setObjectOptions(inputType.selectOptions);
+            const options = inputType.selectOptions.map((x) =>
+                x[inputType.objectIdentifier].toString()
+            );
+            setItems(options);
+        }
+        if (field.value) {
+            setSelectedOptions(initialSelected);
+        }
+    }, [field.value, initialSelected, inputType]);
+
     return (
         <>
             {CustomComponent ? (
@@ -81,14 +103,14 @@ export const MultiSelectObject = ({
                     setter={setter}
                     field={field}
                     editMode={editMode}
-                    selectItems={selectOptions}
+                    selectItems={items}
                 />
             ) : (
                 <MultiSelectObjectContainer>
                     <Select
                         style={{ marginBottom: '0.2em' }}
                         disabled={editMode ? !field?.editable : false}
-                        items={selectOptions}
+                        items={items}
                         label={''}
                         initialSelectedItems={selectedOptions}
                         placeholder={`Select ${field.label}`}
