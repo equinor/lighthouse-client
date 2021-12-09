@@ -8,8 +8,8 @@
   "private": true,
   "scripts": {
     "start": "vite",
-    "build": "vite build",
-    "serve": "vite serve",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx src --color --fix",
     "lint-strict": "eslint --ext .js,.jsx,.ts,.tsx src --color --max-warnings=0",

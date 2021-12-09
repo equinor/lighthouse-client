@@ -3,7 +3,9 @@
 ### vite config
 Vite comes with opinionated configs for both esbuild and rollup and supports typescript, jsx, css, svgs, workers out of the box.
 Plugins can be added to support specific frameworks or libraries, i.e. HMR and fast refresh with React. 
-To copy certain files when building, use the "rollup-plugin-copy" package and add it as a plugin for rolllup plugins.
+To copy certain files when building, use the "rollup-plugin-copy" package and add it as a plugin for rolllup plugins. 
+Both esbuild and rollup uses ES modules instead of CommonJS and others, and will transform CommonJS modules into ES modules. However, sometimes packages are weird and uses a mix of everything, which might cause rollup to break and not transform it into esmodules. `transformMixedEsModules: true` will help with transforming modules which are mixed. 
+See [here](https://github.com/rollup/plugins/tree/master/packages/commonjs#transformmixedesmodules) for more.
 
 ```ts
 import { defineConfig } from 'vite';
@@ -31,7 +33,11 @@ export default defineConfig({
         },
     },
     build: {
+        commonjsOptions: {
+            transformMixedEsModules: true,
+        },
         rollupOptions: {
+                
             plugins: [
                 copy({
                     targets: [
@@ -163,6 +169,7 @@ Also note that vite (esbuild) does not do any typescript checks, it should be ha
 + "build": "tsc & vite build"
 - "start": "webpack serve --mode development --env development --open --hot",
 - "build": "webpack",
++ "serve": "vite preview",
 }
 ```
 
@@ -178,3 +185,16 @@ Also note that vite (esbuild) does not do any typescript checks, it should be ha
 + RUN yarn build
 - RUN yarn build --mode=production
 ```
+
+### Misc
+Removed `moduleLoader.ts` from `index.tsx` when using Vite. With webpack, use it like this:
+```jsx
+if (authProvider && !(window !== window.parent && !window.opener)) {
+	moduleLoader.register();
+        render(
+            <ProCoSysAppClient {...{ appConfig, authProvider }} />,
+            document.getElementById('root')
+        );
+    }
+```
+Commented out the `umd.js` file in `public` folder.

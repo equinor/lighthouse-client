@@ -4,6 +4,10 @@ import * as path from 'path';
 import copy from 'rollup-plugin-copy';
 export default defineConfig({
     plugins: [react()],
+
+    preview: {
+        port: 3000,
+    },
     define: {
         'process.env': {},
     },
@@ -23,6 +27,9 @@ export default defineConfig({
         },
     },
     build: {
+        commonjsOptions: {
+            transformMixedEsModules: true,
+        },
         rollupOptions: {
             plugins: [
                 copy({
