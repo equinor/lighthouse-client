@@ -172,3 +172,9 @@ Also note that vite (esbuild) does not do any typescript checks, it should be ha
 + "vite": "^2.7.1"
 }
 ```
+
+### docker
+```diff
++ RUN yarn build
+- RUN yarn build --mode=production
+```
