@@ -1524,10 +1524,10 @@
     eslint-plugin-react "^7.26.1"
     eslint-plugin-react-hooks "^4.2.0"
 
-"@equinor/fusion-components@^2.4.34":
-  version "2.4.36"
-  resolved "https://registry.npmjs.org/@equinor/fusion-components/-/fusion-components-2.4.36.tgz"
-  integrity sha512-7Q+V6e9pMJZlkSPbnJTOLecbTt3v/FKT7ZCyCs31yFIbY47ifa8YzP/v26GlmvO2JrEjiNc6AqCzjrTQcuIn7Q==
+"@equinor/fusion-components@^2.4.41":
+  version "2.4.41"
+  resolved "https://registry.yarnpkg.com/@equinor/fusion-components/-/fusion-components-2.4.41.tgz#1cf2603f15e026f5e32176673b196ce6a27b40d1"
+  integrity sha512-/SfuvkwUbmgA7Cc67v/m776Aebw5x8JdrllkWXuIJ5SeV4UqhxnIPBqQ3rRis7LyFgfcHms0SXuXjEJjafoyQQ==
   dependencies:
     "@babel/plugin-proposal-nullish-coalescing-operator" "^7.12.13"
     "@equinor/fusion-react-checkbox" "^0.4.0"
