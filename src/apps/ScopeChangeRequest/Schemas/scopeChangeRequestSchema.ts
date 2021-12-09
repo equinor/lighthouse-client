@@ -1,6 +1,5 @@
 import { Schema } from '@equinor/form';
 import { ScopeChangeRequestFormModel } from '../Types/scopeChangeRequestFormModel';
-import { getOrigins } from '../Api/getOrigins';
 
 interface Category {
     name: string;
@@ -14,6 +13,9 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequestFormModel> = {
         inputType: { type: 'TextInput' },
         order: 0,
         validationFunction: (value: string) => {
+            if (!value) {
+                return false;
+            }
             if (value.length > 2) {
                 return true;
             } else {
@@ -44,35 +46,32 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequestFormModel> = {
         isRequired: true,
         label: 'Origin',
         editable: true,
-        inputType: { type: 'SingleSelect', selectOptions: getOrigins() },
+        inputType: {
+            type: 'SingleSelect',
+            selectOptions: async () => {
+                return await getOrigins();
+            },
+        },
         order: 3,
     },
     phase: {
         isRequired: true,
         label: 'Phase',
         editable: true,
-        inputType: { type: 'TextInput' },
+        inputType: {
+            type: 'SingleSelect',
+            selectOptions: async () => {
+                return await getPhases();
+            },
+        },
         order: 4,
-    }, // origin: {
-    //     isRequired: true,
-    //     label: 'Origin',
-    //     editable: true,
-    //     inputType: { type: 'SingleSelect', selectOptions: getOrigins() },
-    //     order: 2,
-    // },
+    },
     // responsible: {
     //     isRequired: true,
     //     label: 'Responsible',
     //     editable: true,
     //     inputType: { type: 'SingleSelect', selectOptions: getResponsibles() },
     //     order: 3,
-    // },
-    // phase: {
-    //     isRequired: true,
-    //     label: 'Phase',
-    //     editable: false,
-    //     inputType: { type: 'TextInput' },
-    //     order: 4,
     // },
     // guesstimateHrs: {
     //     isRequired: true,
@@ -103,6 +102,42 @@ const getCategories = async (): Promise<string[]> => {
     };
     await fetch(
         `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/categories`,
+        requestOptions
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            selectOptions = data.map((x: Category) => x.name);
+        });
+
+    return selectOptions;
+};
+
+const getOrigins = async (): Promise<string[]> => {
+    let selectOptions: string[] = [];
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    };
+    await fetch(
+        `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/origins`,
+        requestOptions
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            selectOptions = data.map((x: Category) => x.name);
+        });
+
+    return selectOptions;
+};
+
+const getPhases = async (): Promise<string[]> => {
+    let selectOptions: string[] = [];
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    };
+    await fetch(
+        `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/phases`,
         requestOptions
     )
         .then((response) => response.json())

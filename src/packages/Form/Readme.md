@@ -38,13 +38,7 @@ export const testSchema: Schema<Test> = {
 
 In your .tsx file
 
-const intialTest = {
-    id: "",
-    name: "",
-    email: "",
-}
-
-const formData = useFormSchema(initialTest, testSchema);
+const formData = useFormSchema(testSchema);
 
 <GeneratedForm formData={formData} editMode={false} events={{onSubmit, onCancel}}>
 

@@ -1,8 +1,9 @@
-import useScopeChangeSchema from '../Hooks/useScopeChangeSchema';
 import { RequestViewContainer } from './RequestDetailViewContainer';
 import { GeneratedForm } from '../../../packages/Form/src/Components/Form';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { useDataContext } from '../../../components/CompletionView/src/Context/DataProvider';
+import { useFormSchema } from '@equinor/form';
+import { scopeChangeRequestSchema } from '../Schemas/scopeChangeRequestSchema';
 
 interface RequestSideSheetProps {
     request?: ScopeChangeRequest;
@@ -10,10 +11,11 @@ interface RequestSideSheetProps {
 }
 
 export const RequestSideSheet = ({ request, close }: RequestSideSheetProps): JSX.Element => {
-    const newScopeChange = useScopeChangeSchema();
+    const newScopeChange = useFormSchema(scopeChangeRequestSchema);
     const { getData } = useDataContext();
 
     const onSubmit = () => {
+        console.log(newScopeChange);
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

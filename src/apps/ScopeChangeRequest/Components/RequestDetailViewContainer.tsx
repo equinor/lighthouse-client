@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { GeneratedForm } from '../../../packages/Form/src/Components/Form';
 import { RequestDetailView } from './DetailView/RequestDetailView';
-import useScopeChangeSchema from '../Hooks/useScopeChangeSchema';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { Button } from '@equinor/eds-core-react';
 import { useDataContext } from '../../../components/CompletionView/src/Context/DataProvider';
+import { useFormSchema } from '@equinor/form';
+import { scopeChangeRequestSchema } from '../Schemas/scopeChangeRequestSchema';
 
 interface RequestViewContainerProps {
     request: ScopeChangeRequest;
@@ -16,7 +17,7 @@ export const RequestViewContainer = ({
     close,
 }: RequestViewContainerProps): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(false);
-    const formData = useScopeChangeSchema(request);
+    const formData = useFormSchema(scopeChangeRequestSchema, request);
     const { getData } = useDataContext();
 
     const onSubmit = () => {

@@ -13,9 +13,9 @@ const validateField = <TValue>(field: Field, value: TValue): string | undefined 
     return undefined;
 };
 
-export const useFormSchema = <T>(schema: Schema<T>, initialState: T): Form<T> => {
-    const [data, setData] = useState<T>(initialState);
-    const [resetState, setResetState] = useState<T>(initialState);
+export const useFormSchema = <T>(schema: Schema<T>, initialState?: T): Form<T> => {
+    const [data, setData] = useState<T>(initialState ? initialState : ({} as T));
+    const [resetState, setResetState] = useState<T>(initialState ? initialState : ({} as T));
 
     const mutateField = useCallback(<TKey extends keyof T>(key: TKey, value: T[TKey]): void => {
         setData((existingData) => ({ ...existingData, [key]: value }));
@@ -136,7 +136,7 @@ export const useFormSchema = <T>(schema: Schema<T>, initialState: T): Form<T> =>
 
             return field.isValid;
         },
-        reset: (state: T = initialState): void => {
+        reset: (state: T = initialState || ({} as T)): void => {
             setResetState(state);
             setData(state);
         },

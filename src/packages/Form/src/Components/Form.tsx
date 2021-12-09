@@ -38,7 +38,7 @@ export function GeneratedForm<T>({
     customComponents,
     behaviour,
 }: FormProps<T>): JSX.Element {
-    const { isValidForm } = useFormValidation(formData, editMode);
+    const { isValidForm } = useFormValidation(formData);
     const allItems: Value<unknown>[][] = [];
     const ids = new Set();
     const fields: Value<unknown>[] = [];
