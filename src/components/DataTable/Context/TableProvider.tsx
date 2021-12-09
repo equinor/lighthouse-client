@@ -1,12 +1,9 @@
-
-
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
+import { CustomHeader as HeaderData } from '../../Table/types';
 import { useLocationKey } from '../Hooks/useLocationKey';
-import { generateDefaultHeader, HeaderData } from '../Utils/generateHeaderKeys';
+import { generateDefaultHeader } from '../Utils/generateHeaderKeys';
 import { storage } from '../Utils/storage';
-
-
 
 interface TableState {
     activeHeader: string;
@@ -20,51 +17,46 @@ interface TableContextState extends TableState {
     setHeaderData: (headers: HeaderData[]) => void;
     setSelectedColum: (culmKey: string) => void;
     toggleSortDirection: (sortDirection: boolean) => void;
-
 }
 
 interface TableProviderProps<T> {
     children: React.ReactNode;
-    defaultHeaderItem: Object,
-    headerOptions?: HeaderData[]
+    defaultHeaderItem: Object;
+    headerOptions?: HeaderData[];
 }
-
 
 export enum DataAction {
     addLocalHeader = 'addLocalHeader',
     setHeaderData = 'setHeaderData',
-    setAwaitableHeaders = "setAwaitableHeaders",
-    setActiveHeader = "setActiveHeader",
-    setSortDirection = "setSortDirection",
+    setAwaitableHeaders = 'setAwaitableHeaders',
+    setActiveHeader = 'setActiveHeader',
+    setSortDirection = 'setSortDirection',
 }
 
 export const actions = {
-    setLocalHeader: createCustomAction(
-        DataAction.addLocalHeader, (headers: HeaderData[]) => ({ headers })
-    ),
-    setHeaderData: createCustomAction(
-        DataAction.setHeaderData, (headers: HeaderData[]) => ({ headers })
-    ),
+    setLocalHeader: createCustomAction(DataAction.addLocalHeader, (headers: HeaderData[]) => ({
+        headers,
+    })),
+    setHeaderData: createCustomAction(DataAction.setHeaderData, (headers: HeaderData[]) => ({
+        headers,
+    })),
     setAwaitableHeaders: createCustomAction(
-        DataAction.setAwaitableHeaders, (headers: HeaderData[]) => ({ headers })
+        DataAction.setAwaitableHeaders,
+        (headers: HeaderData[]) => ({ headers })
     ),
-    setActiveHeader: createCustomAction(
-        DataAction.setActiveHeader, (activeHeader: string) => ({ activeHeader })
-    ),
-    setSortDirection: createCustomAction(
-        DataAction.setSortDirection, (sortDirection: boolean) => ({ sortDirection })
-    ),
-
-}
+    setActiveHeader: createCustomAction(DataAction.setActiveHeader, (activeHeader: string) => ({
+        activeHeader,
+    })),
+    setSortDirection: createCustomAction(DataAction.setSortDirection, (sortDirection: boolean) => ({
+        sortDirection,
+    })),
+};
 
 export type OfflineDocumentsActionType = typeof DataAction;
 
-
 export type Action = ActionType<typeof actions>;
 
-
-const TableContext = createContext({} as TableContextState)
-
+const TableContext = createContext({} as TableContextState);
 
 export function tableReducer(state: TableState, action: Action): TableState {
     switch (action.type) {
@@ -84,20 +76,22 @@ export function tableReducer(state: TableState, action: Action): TableState {
     }
 }
 const initialSate: TableState = {
-    activeHeader: "",
+    activeHeader: '',
     sortDirection: false,
     headers: [],
     localHeaderData: undefined,
     awaitableHeaders: [],
-}
+};
 
-
-export function TableProvider<T>({ children, headerOptions, defaultHeaderItem }: TableProviderProps<T>) {
+export function TableProvider<T>({
+    children,
+    headerOptions,
+    defaultHeaderItem,
+}: TableProviderProps<T>) {
     const locationKey = useLocationKey();
     const headerLocationKey = `table-header-${locationKey}`;
 
     const [state, dispatch] = useReducer(tableReducer, initialSate);
-
 
     useEffect(() => {
         const newHeaderData = headerOptions
@@ -106,11 +100,9 @@ export function TableProvider<T>({ children, headerOptions, defaultHeaderItem }:
         dispatch(actions.setAwaitableHeaders(newHeaderData));
     }, [headerOptions, defaultHeaderItem]);
 
-
     useEffect(() => {
         if (state.headers.length > 0) return;
-        const localHeaders =
-            storage.getItem<HeaderData[]>(headerLocationKey);
+        const localHeaders = storage.getItem<HeaderData[]>(headerLocationKey);
 
         if (
             localHeaders &&
@@ -140,14 +132,19 @@ export function TableProvider<T>({ children, headerOptions, defaultHeaderItem }:
     }
 
     return (
-        <TableContext.Provider value={{
-            ...state, setHeaderData, toggleSortDirection, setSelectedColum
-        }}>{children}</TableContext.Provider>
-    )
+        <TableContext.Provider
+            value={{
+                ...state,
+                setHeaderData,
+                toggleSortDirection,
+                setSelectedColum,
+            }}
+        >
+            {children}
+        </TableContext.Provider>
+    );
 }
 
 export function useTableContext() {
     return useContext(TableContext);
-
 }
-
