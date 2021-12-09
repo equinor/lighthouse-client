@@ -2,6 +2,7 @@ import { baseClient } from '@equinor/http-client';
 import styled from 'styled-components';
 import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
 import { Status } from '../../components/CompletionView/src/DataViewerApi/DataViewState';
+import { createDataFactory } from '../../Core/DataFactory';
 import { AppApi } from '../apps';
 import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
 
@@ -49,6 +50,18 @@ const loopKeys: (keyof Loop)[] = [
 ];
 
 export function setup(appApi: AppApi) {
+    createDataFactory({
+        factoryId: 'loop',
+        tile: 'Creat Loop',
+        component: (scope: any) => <div>Creat Loop {scope.test}</div>,
+    });
+    createDataFactory({
+        factoryId: 'swcr',
+        tile: 'Create SWCR',
+        component: (scope: any) => <div>Create SWCR {scope.test}</div>,
+    });
+    console.log('done');
+
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const commPkg = createDataViewer<Loop>({
         initialState: [],
