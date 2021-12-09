@@ -7,7 +7,7 @@ COPY . /app
 
 # Build 
 RUN yarn install
-RUN yarn build --mode=production
+RUN yarn build 
 
 # production environment
 FROM nginx:stable-alpine

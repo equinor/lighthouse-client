@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import * as path from 'path';
+import copy from 'rollup-plugin-copy';
 export default defineConfig({
     plugins: [react()],
     define: {
@@ -19,6 +20,21 @@ export default defineConfig({
             '@equinor/lighthouse-util': path.resolve(__dirname, './packages/util/'),
             '@equinor/lighthouse-typeGuard': path.resolve(__dirname, './packages/typeGuard/'),
             '@equinor/lighthouse-conf': path.resolve(__dirname, './packages/configuration/'),
+        },
+    },
+    build: {
+        rollupOptions: {
+            plugins: [
+                copy({
+                    targets: [
+                        {
+                            src: './doc/dataView.md',
+                            dest: 'dist/',
+                        },
+                    ],
+                    hook: 'writeBundle',
+                }),
+            ],
         },
     },
 });
