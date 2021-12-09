@@ -1,13 +1,13 @@
+import { tokens } from '@equinor/eds-tokens';
 import { Embed, Report, service } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
 import { useState } from 'react';
 import styled from 'styled-components';
+import Icon from '../../../components/Icon/Icon';
 import { usePowerBI } from './api';
 import { Filter } from './models/filter';
 import './style.css';
-import { tokens } from '@equinor/eds-tokens';
-import Icon from '../../../components/Icon/Icon';
 
 const Wrapper = styled.div`
     position: relative;
