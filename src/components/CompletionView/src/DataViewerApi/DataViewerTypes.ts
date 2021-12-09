@@ -1,5 +1,6 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import {
+    DataViewSideSheetOptions,
     FilterOptions,
     GardenOptions,
     PowerBiOptions,
@@ -49,4 +50,5 @@ export interface DataViewerApi<T> {
     registerAnalyticsOptions: (options: AnalyticsOptions<T>) => void;
     registerStatusItems: (options: StatusFunc<T>) => void;
     registerPowerBIOptions: (options: PowerBiOptions) => void;
+    registerDataViewSideSheetOptions: (options: DataViewSideSheetOptions<T>) => void;
 }
