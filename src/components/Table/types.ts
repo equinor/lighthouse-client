@@ -11,6 +11,25 @@ import {
 } from 'react-table';
 
 export type TableData = Record<string | number, unknown>;
+
+export type CustomColumn<TData extends TableData = TableData> = {
+    Header: Renderer<HeaderProps<TData>>;
+    accessor: (row: TData) => CellValue;
+    Aggregated?: Renderer<CellProps<TData>>;
+};
+
+export type CellType = 'Date' | 'Description' | 'Status';
+
+export type CustomCell<TData extends TableData = TableData> = {
+    key: keyof TData;
+    type: CellType;
+};
+
+export type CustomHeader<TData extends TableData = TableData> = {
+    key: keyof TData;
+    title: string;
+};
+
 export type Column<TData extends TableData = TableData> = ColumnDefault<TData> &
     UseSortByColumnOptions<TData> &
     UseGroupByColumnOptions<TData> &
@@ -18,11 +37,7 @@ export type Column<TData extends TableData = TableData> = ColumnDefault<TData> &
         columns?: Array<Column<TData>>;
         //ColumnHeader?: Renderer<HeaderProps<TData>>;
     };
-export type CustomColumn<TData extends TableData = TableData> = {
-    Header: Renderer<HeaderProps<TData>>;
-    accessor: (row: TData) => CellValue;
-    Aggregated?: Renderer<CellProps<TData>>;
-};
+
 declare module 'react-table' {
     //@ts-ignore
     export interface TableOptions<TData extends TableData = TableData>
