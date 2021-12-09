@@ -5,6 +5,7 @@ import { Attachments } from './Components/Attachments';
 // import { Tags } from './Components/Tags';
 import { SectionRow } from '../../Styles/Section';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { Workflow } from '../Workflow/Workflow';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -45,6 +46,8 @@ export const RequestDetailView = ({ request }: RequestDetailViewProps): JSX.Elem
                     label={'Workflow'}
                     value={'No workflow linked'}
                 />
+                <Field label={'Active step'} value={request.currentWorkflowStep.name} />
+                <Field label={'Workflow'} value={<Workflow steps={request.workflowSteps} />} />
             </DetailViewContainer>
         </div>
     );

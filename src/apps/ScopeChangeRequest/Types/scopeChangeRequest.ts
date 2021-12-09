@@ -12,5 +12,14 @@ export interface ScopeChangeRequest {
     lastModified: string;
     lastModifiedBy: string;
     state: string;
+    currentWorkflowStep: WorkflowStep;
+    workflowSteps: WorkflowStep[];
     //workflow
+}
+
+export interface WorkflowStep {
+    id: string;
+    name: string;
+    order: number;
+    isCompleted: boolean;
 }

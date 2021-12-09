@@ -4,6 +4,7 @@ import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { useDataContext } from '../../../components/CompletionView/src/Context/DataProvider';
 import { useFormSchema } from '@equinor/form';
 import { scopeChangeRequestSchema } from '../Schemas/scopeChangeRequestSchema';
+import { WorkflowEditor } from './WorkflowEditor/WorkflowEditor';
 
 interface RequestSideSheetProps {
     request?: ScopeChangeRequest;
@@ -37,11 +38,12 @@ export const RequestSideSheet = ({ request, close }: RequestSideSheetProps): JSX
 
     return (
         <>
+            {/* <WorkflowEditor />
             <GeneratedForm
                 formData={newScopeChange}
                 editMode={false}
                 events={{ onSubmit, onCancel }}
-            />
+            /> */}
             {request?.id ? (
                 <RequestViewContainer close={close} request={request} />
             ) : (
