@@ -7,25 +7,24 @@ export function setup(api: AppApi): void {
         title: api.title,
     });
 
-    construction.registerFusionPowerBi('test', {
-        title: 'test',
-        reportURI: '7a8be422-7446-488a-9aa6-1d1e52bf93ce',
+    construction.registerFusionPowerBi('swcr-analytics-rls', {
+        title: 'SWCR Analytics',
+        reportURI: 'swcr-analytics-rls',
     });
-    construction.registerFusionPowerBi('test2', {
-        title: 'Test2',
-        reportURI: '7a8be422-7446-488a-9aa6-1d1e52bf93ce',
+    construction.registerFusionPowerBi('lci-hanging-gardens', {
+        title: 'LCI Hanging Garden',
+        reportURI: 'lci-hanging-gardens',
     });
-    construction.registerCustom('test3', {
-        title: 'Test3',
-        component: () => (
-            <iframe
-                title="Scaffolding analytics - Overview"
-                width="100%"
-                height="800"
-                src="https://app.powerbi.com/reportEmbed?reportId=7a8be422-7446-488a-9aa6-1d1e52bf93ce&autoAuth=true&ctid=3aa4a235-b6e2-48d5-9195-7fcf05b459b0&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLW5vcnRoLWV1cm9wZS1oLXByaW1hcnktcmVkaXJlY3QuYW5hbHlzaXMud2luZG93cy5uZXQvIn0%3D"
-                frameBorder="0"
-                allowFullScreen={true}
-            ></iframe>
-        ),
+    construction.registerFusionPowerBi('checklist-analytics-rls', {
+        title: 'Checklist Analytics',
+        reportURI: 'checklist-analytics-rls',
+    });
+    construction.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
+        title: 'Punch Analytics',
+        reportURI: 'punch-analytics-rls',
+    });
+    construction.registerFusionPowerBi('fd4052a9-641b-47b4-92d6-4876ecb8cdba', {
+        title: 'WO Analytics',
+        reportURI: 'wo-analytics-rls',
     });
 }
