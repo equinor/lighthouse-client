@@ -5,12 +5,18 @@
         "target": "es6",
         "outDir": "dist",
         "skipLibCheck": true,
-        "module": "commonjs",
-        "esModuleInterop": true,
+        "module": "es6",
+        "moduleResolution": "node",
+        "esModuleInterop": false,
         "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
         "noImplicitAny": false,
         "types": [
-            "node"
+            "node",
+            "vite/client"
         ],
         "sourceMap": true,
         "paths": {
