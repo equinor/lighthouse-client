@@ -2,8 +2,7 @@ import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { StatusItem } from '../../../../packages/StatusBar';
-import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
-import { Cell, CustomColumn } from '../../../Table/types';
+import { Cell, Column, CustomCell, CustomHeader } from '../../../Table/types';
 import { DataSet } from '../../../ParkView/Models/data';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
 
@@ -20,11 +19,12 @@ export interface FilterOptions<T> {
 
 export interface TableOptions<T> {
     objectIdentifierKey: string;
-    headers?: HeaderData[];
     enableSelectRows?: boolean;
     onCellClick?: (cell: Cell) => void;
     hiddenColumns?: (keyof T)[];
-    customColumns?: CustomColumn[];
+    headers?: CustomHeader[];
+    customCellView?: CustomCell[];
+    customColumns?: Column[];
 }
 
 export interface Status {

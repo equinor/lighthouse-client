@@ -129,20 +129,34 @@ export function setup(appApi: AppApi) {
         onCellClick: (cell) => {
             console.log(cell.value);
         },
-        hiddenColumns: ['functionTags', 'signedAt', 'commPk', 'description'],
-        customColumns: [
+        hiddenColumns: ['functionTags', 'signedAt', 'commPk'],
+        headers: [
+            { key: 'formType', title: 'Form' },
+            { key: 'createdAt', title: 'Created Date' },
+        ],
+        customCellView: [
             {
-                Header: 'Test',
-                accessor: (row) => row.status,
-
-                Aggregated: (cell) => {
-                    return 'hoi';
-                },
+                key: 'createdAt',
+                type: 'Date',
             },
+            {
+                key: 'description',
+                type: 'Description',
+            },
+            {
+                key: 'status',
+                type: 'Status',
+            },
+        ],
+        customColumns: [
             {
                 Header: 'Foo',
                 accessor: (row) => {
-                    return 1 + 1;
+                    return <div>1 + 1</div>;
+                },
+                aggregate: 'count',
+                Aggregated: (cell) => {
+                    return <div>{cell.value}</div>;
                 },
             },
         ],

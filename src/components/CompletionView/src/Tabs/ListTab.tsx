@@ -14,7 +14,12 @@ const Wrapper = styled.section`
 export const ListTab = () => {
     const { data } = useFilteredData<TableData>();
     const { tableOptions, setSelected } = useDataContext();
-    const columns = useColumns(data[0], tableOptions?.customColumns);
+    const columns = useColumns(
+        data[0],
+        tableOptions?.customColumns,
+        tableOptions?.headers,
+        tableOptions?.customCellView
+    );
     const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
     return (
         <Wrapper>
@@ -27,6 +32,7 @@ export const ListTab = () => {
                     initialState: {
                         hiddenColumns: hiddenCols,
                     },
+
                     setSelected,
                 }}
                 FilterComponent={PopupFilter}

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { TableData, Column, CustomColumn } from '../types';
+import { TableData, Column, CustomCell, CustomHeader } from '../types';
+import { findCustomHeader, findCustomCell, hasCustomCell } from './utils';
 
 export interface HeaderData {
     key: string;
@@ -12,15 +13,27 @@ const Count = styled.span`
 `;
 export const generateHeaderKeys = <D extends TableData>(
     headerItem?: D,
-    customColumns?: CustomColumn<D>[]
+    customColumns?: Column<D>[],
+    headers?: CustomHeader[],
+    customCellView?: CustomCell[]
 ): Array<Column<D>> => {
     if (!headerItem) return [];
 
-    const defaultCols = Object.keys(headerItem).map((key): Column<D> => {
+    const defaultCols: Column<D>[] = Object.keys(headerItem).map((key): Column<D> => {
+        if (hasCustomCell(key, customCellView)) {
+            return {
+                accessor: (keys) => ({ content: keys, currentKey: key }),
+                Header: findCustomHeader(key, headers),
+                minWidth: 30,
+                width: 150,
+                maxWidth: 400,
+                Cell: findCustomCell(key, customCellView!),
+            } as Column<D>;
+        }
         if (Array.isArray(headerItem[key])) {
             return {
                 accessor: key as keyof D,
-                Header: key,
+                Header: findCustomHeader(key, headers),
                 minWidth: 30,
                 width: 150,
                 maxWidth: 400,
@@ -36,7 +49,7 @@ export const generateHeaderKeys = <D extends TableData>(
         if (typeof headerItem[key] === 'object') {
             return {
                 accessor: key as keyof D,
-                Header: key,
+                Header: findCustomHeader(key, headers),
                 aggregate: 'count',
                 Cell: () => {
                     return null;
@@ -46,20 +59,10 @@ export const generateHeaderKeys = <D extends TableData>(
                 },
             };
         }
-        //use Date.parse to check if valid date
-        if (typeof headerItem[key] === 'string' && Date.parse(headerItem[key] as string) > 0) {
-            return {
-                accessor: key as keyof D,
-                Header: key,
-                Cell: () => {
-                    return <div>{new Date(headerItem[key] as Date).toLocaleDateString()}</div>;
-                },
-            };
-        }
 
         return {
             accessor: key as keyof D,
-            Header: key,
+            Header: findCustomHeader(key, headers),
             minWidth: 30,
             width: 150,
             maxWidth: 400,
@@ -74,5 +77,5 @@ export const generateHeaderKeys = <D extends TableData>(
             },
         };
     });
-    return customColumns ? defaultCols.concat(customColumns as Column<D>[]) : defaultCols;
+    return customColumns ? defaultCols.concat(customColumns) : defaultCols;
 };
