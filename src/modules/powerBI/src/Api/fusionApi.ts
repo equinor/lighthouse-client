@@ -24,9 +24,10 @@ interface useFusionClientReturn {
 export function useFusionClient(resource: string, filterOptions?: Filter[]): useFusionClientReturn {
     const { appConfig, authProvider } = useClientContext();
     const [error, setError] = useState<NetworkError>();
-    const scope = [appConfig.fusion];
+    const scope = [appConfig.scope.fusion];
     const fusionClient = baseClient(authProvider, scope);
-    const baseUri = 'https://lih-proxy.azurewebsites.net/fusion/reports';
+    const baseUri = `${process.env.baseUrlProxy}/fusion/reports`;
+    console.log(baseUri);
     const filters: PowerBiFilter[] = [];
     filterOptions?.forEach((filterOption) => {
         filters.push(filterBuilder(filterOption));

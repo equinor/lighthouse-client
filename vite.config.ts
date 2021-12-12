@@ -1,15 +1,21 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import * as path from 'path';
 import copy from 'rollup-plugin-copy';
+import { defineConfig } from 'vite';
+import { env } from './setting';
 export default defineConfig({
     plugins: [react()],
 
     preview: {
         port: 3000,
     },
+    server: {
+        // https: true,
+    },
     define: {
-        'process.env': {},
+        'process.env': {
+            ...env,
+        },
     },
     resolve: {
         alias: {

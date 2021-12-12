@@ -1,15 +1,19 @@
 export async function fetchConfig(): Promise<AppConfig> {
-    const response = await fetch(
-        'https://lighthouse-func.azurewebsites.net/api/LighthouseConfig'
-    );
+    const response = await fetch(process.env.funcUrl || '');
     return await response.json();
 }
 
 export interface AppConfig {
-    fusion: string;
-    procosys: string;
-    clientId: string;
-    tenant: string;
-    echoModelDistUrl: string;
-    echoModelDistClient: string;
+    settings: {
+        clientId: string;
+        tenantId: string;
+    };
+    scope: {
+        fusion: string;
+        procosys: string;
+        echoModelDistClient: string;
+    };
+    urls: {
+        echoModelDistUrl: string;
+    };
 }

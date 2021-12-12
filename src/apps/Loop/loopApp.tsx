@@ -49,7 +49,7 @@ const loopKeys: (keyof Loop)[] = [
 ];
 
 export function setup(appApi: AppApi) {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
     const commPkg = createDataViewer<Loop>({
         initialState: [],
         primaryViewKey: 'tagNo',

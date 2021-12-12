@@ -59,7 +59,7 @@ const commPkgKeys: (keyof Checklist)[] = [
 ];
 
 export function setup(appApi: AppApi) {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
     const checklist = createDataViewer<Checklist>({
         initialState: [],
         primaryViewKey: 'TagFormularType__Tag__TagNo',

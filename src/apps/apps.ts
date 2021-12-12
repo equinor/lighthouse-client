@@ -26,7 +26,7 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
 
 type HEXColor = `#${string}`;

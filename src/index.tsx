@@ -5,9 +5,9 @@ import { render } from 'react-dom';
 import ProCoSysAppClient from './ProCoSysAppClient';
 
 fetchConfig().then((appConfig) => {
-    const clientId = appConfig.clientId;
-    const tenant = appConfig.tenant;
-    const authority = `https://login.microsoftonline.com/${tenant}`;
+    const clientId = appConfig.settings.clientId;
+    const tenantId = appConfig.settings.tenantId;
+    const authority = `https://login.microsoftonline.com/${tenantId}`;
     const authConfig: Configuration = {
         auth: {
             authority: authority,

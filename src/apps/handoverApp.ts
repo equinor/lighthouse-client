@@ -60,7 +60,7 @@ function start(item: CommPkg): string {
 }
 
 export function setup(appApi: AppApi) {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
     const commPkg = createDataViewer<CommPkg>({
         initialState: [],
         primaryViewKey: 'CommPkgNo',
