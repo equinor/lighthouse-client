@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
-import { CustomHeader as HeaderData } from '../../Table/types';
 import { useLocationKey } from '../Hooks/useLocationKey';
 import { generateDefaultHeader } from '../Utils/generateHeaderKeys';
 import { storage } from '../Utils/storage';
+import { HeaderData } from '../Utils/generateHeaderKeys';
 
 interface TableState {
     activeHeader: string;
