@@ -1,25 +1,41 @@
-import { DateCell, DescriptionCell, StatusCell } from '../Components/cells';
-import { CustomCell, CustomHeader, TableData } from '../types';
+import { SortByFn } from 'react-table';
+import { DateCell, DescriptionCell, StatusCell } from '../Components/Cells';
+import { CellType, CustomCell, CustomCellType, CustomHeader, TableData } from '../types';
 
 // export function getRowHeight(index: number): number {}
 
 export const findCustomHeader = <T extends TableData>(
     key: keyof T,
-    headers?: CustomHeader[]
+    headers?: CustomHeader<T>[]
 ): string | keyof T => {
     if (headers === undefined || headers.length === 0) return key;
 
-    const customHeader = headers.findIndex((header) => header.key === key);
+    const customHeaderIndex = headers.findIndex((header) => header.key === key);
 
-    if (customHeader > -1) {
-        return headers[customHeader].title;
+    if (customHeaderIndex > -1) {
+        return headers[customHeaderIndex].title;
     } else return key;
 };
 
-export const findCustomCell = <T extends TableData>(key: keyof T, customCellView: CustomCell[]) => {
-    const customCell = customCellView.findIndex((cell) => cell.key === key);
-    if (customCell > -1) {
-        switch (customCellView[customCell].type) {
+const isCustomCell = <T, D extends TableData>(arg: CellType<T>): arg is CustomCellType<T, D> => {
+    return (arg as CustomCellType<T, D>).Cell !== undefined;
+};
+
+/**
+ * Function to find the correct cell type if there are any.
+ * @returns Predefined cell components or custom cell component for the column containing keyof T.
+ */
+export const findCustomCell = <T extends TableData>(
+    key: keyof T,
+    customCellView: CustomCell<T>[]
+) => {
+    const customCellIndex = customCellView.findIndex((cell) => cell.key === key);
+    if (customCellIndex > -1) {
+        const customCellType = customCellView[customCellIndex].type;
+        if (isCustomCell(customCellType)) {
+            return customCellType.Cell;
+        }
+        switch (customCellType) {
             case 'Date':
                 return DateCell;
             case 'Description':
@@ -27,14 +43,14 @@ export const findCustomCell = <T extends TableData>(key: keyof T, customCellView
             case 'Status':
                 return StatusCell;
             default:
-                break;
+                return 'Incorrect cell type given';
         }
-    } else return null;
+    } else return 'Oops';
 };
 
 export const hasCustomCell = <T extends TableData = TableData>(
     key: keyof T,
-    customCells?: CustomCell[]
+    customCells?: CustomCell<T>[]
 ): boolean => {
     if (
         customCells !== undefined &&
@@ -45,3 +61,34 @@ export const hasCustomCell = <T extends TableData = TableData>(
     }
     return false;
 };
+
+export const findCellFn = <D extends TableData>(
+    customCellView: CustomCell<D>[] | undefined,
+    key: keyof D
+) => {
+    if (customCellView) {
+        const currentIndex = customCellView.findIndex((c) => c.key === key);
+
+        if (
+            currentIndex !== undefined &&
+            currentIndex > -1 &&
+            customCellView[currentIndex].cellFn
+        ) {
+            return customCellView[currentIndex].cellFn;
+        } else {
+            return undefined;
+        }
+    } else return undefined;
+};
+
+/** Custom sort function because default sort uses what the accessor returns.
+ * In the case of when the accessor returns a complex object (it should return primitive(!)),
+ * we need to handle the sorting logic.
+ */
+export const sortFn =
+    <T extends TableData>(key: string): SortByFn<T> =>
+    (objA, objB, id, _desc) => {
+        const a = objA.values[id].content[key];
+        const b = objB.values[id].content[key];
+        return a === b ? 0 : a > b ? 1 : -1;
+    };

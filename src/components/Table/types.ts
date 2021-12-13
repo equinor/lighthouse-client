@@ -1,32 +1,55 @@
+import { HTMLAttributes } from 'react';
 import {
     Column as ColumnDefault,
     PluginHook as PluginHookDefault,
-    HeaderProps,
     Renderer,
     UseFiltersColumnOptions,
     UseSortByColumnOptions,
     UseGroupByColumnOptions,
-    CellValue,
     CellProps,
 } from 'react-table';
 
 export type TableData = Record<string | number, unknown>;
 
-export type CustomColumn<TData extends TableData = TableData> = {
-    Header: Renderer<HeaderProps<TData>>;
-    accessor: (row: TData) => CellValue;
-    Aggregated?: Renderer<CellProps<TData>>;
+export type CellFn<TData> = (content: TData) => HTMLAttributes<HTMLDivElement>;
+
+/**
+ * Types for what the accessor property method in the column object can accept as arguments
+ * and added to the value property of the table data model.
+ */
+export type CellRenderProps<TData> = {
+    content: TData;
+    currentKey: string;
+    cellFn?: CellFn<TData>;
 };
 
-export type CellType = 'Date' | 'Description' | 'Status';
-
-export type CustomCell<TData extends TableData = TableData> = {
-    key: keyof TData;
-    type: CellType;
+export type CustomCellType<TData, D extends TableData> = {
+    /** Custom cell to be display. Has access to table data object when used as a method */
+    Cell: Renderer<CellProps<D, CellRenderProps<TData>>>;
 };
 
-export type CustomHeader<TData extends TableData = TableData> = {
+export type CellType<TData, D extends TableData = TableData> =
+    | 'Date'
+    | 'Description'
+    | 'Status'
+    | CustomCellType<TData, D>;
+
+export type CustomCell<TData> = {
+    /** Unique key to specify which column the custom cell is added to */
     key: keyof TData;
+
+    /** What type of Cell view is wanted. Custom type is also possible by making type an object*/
+    type: CellType<TData>;
+
+    /** Function that returns HTML attributes that are added to the custom cell, i.e. styling */
+    cellFn?: CellFn<TData>;
+};
+
+export type CustomHeader<TData> = {
+    /** Unique key to specify which column the custom header is added to */
+    key: keyof TData;
+
+    /** Title which is shown instead of default header title */
     title: string;
 };
 

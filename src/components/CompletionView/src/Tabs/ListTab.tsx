@@ -11,6 +11,17 @@ const Wrapper = styled.section`
     /* overflow: scroll; */
 `;
 
+function defaultGroupByFn(rows, columnId) {
+    return rows.reduce((prev, row, i) => {
+        const resKey =
+            typeof row.values[columnId] === 'object'
+                ? `${row.values[columnId].content[columnId]}`
+                : `${row.values[columnId]}`;
+        prev[resKey] = Array.isArray(prev[resKey]) ? prev[resKey] : [];
+        prev[resKey].push(row);
+        return prev;
+    }, {});
+}
 export const ListTab = () => {
     const { data } = useFilteredData<TableData>();
     const { tableOptions, setSelected } = useDataContext();
@@ -32,8 +43,8 @@ export const ListTab = () => {
                     initialState: {
                         hiddenColumns: hiddenCols,
                     },
-
                     setSelected,
+                    groupByFn: defaultGroupByFn,
                 }}
                 FilterComponent={PopupFilter}
             />

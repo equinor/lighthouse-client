@@ -19,11 +19,23 @@ export interface FilterOptions<T> {
 
 export interface TableOptions<T> {
     objectIdentifierKey: string;
+
+    /** Set to true if checkboxes should be shown */
     enableSelectRows?: boolean;
+
+    /** Click handler for cells */
     onCellClick?: (cell: Cell) => void;
+
+    /** Hide certain columns based on key */
     hiddenColumns?: (keyof T)[];
-    headers?: CustomHeader[];
-    customCellView?: CustomCell[];
+
+    /** Change the default header */
+    headers?: CustomHeader<T>[];
+
+    /** Change the default cell view */
+    customCellView?: CustomCell<T>[];
+
+    /** Add extra columns that are not part of the dataset */
     customColumns?: Column[];
 }
 
