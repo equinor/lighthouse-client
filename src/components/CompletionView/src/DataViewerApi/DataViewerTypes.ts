@@ -5,7 +5,7 @@ import {
     PowerBiOptions,
     StatusFunc,
     TableOptions,
-    TreeOptions,
+    TreeOptions
 } from './DataViewState';
 
 export type DataFetcher<T> = () => Promise<T[]>;
@@ -15,6 +15,7 @@ export interface ViewerOptions<T> {
     initialState: T[];
     primaryViewKey: keyof T;
     viewerId: string;
+    // dataFactoryCreator: (factory: Factory) => void;
 }
 
 export interface DataViewerProps<T> extends ViewOptions<T> {

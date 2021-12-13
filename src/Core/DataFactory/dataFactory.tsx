@@ -129,6 +129,7 @@ export function setActiveFactoryById(factoryId?: string, scope?: Record<string, 
         };
     });
 }
+
 export function clearComponent(): void {
     dispatch(getFactoryContext(), (state: DataFactoryState) => {
         return {
