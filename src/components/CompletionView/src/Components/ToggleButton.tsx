@@ -1,8 +1,10 @@
-import { tokens } from "@equinor/eds-tokens";
-import { PropsWithChildren } from "react";
-import styled from "styled-components";
+import { tokens } from '@equinor/eds-tokens';
+import { PropsWithChildren } from 'react';
+import styled from 'styled-components';
 
 const Button = styled.button`
+    display: flex;
+    align-items: center;
     background: transparent;
     position: relative;
     white-space: nowrap;
@@ -18,26 +20,33 @@ const Button = styled.button`
     padding-left: 16px;
     padding-right: 16px;
     color: ${tokens.colors.text.static_icons__tertiary.rgba};
-    border-bottom: ${({ "aria-selected": selected }) => (selected ? `2px solid ${tokens.colors.interactive.primary__resting.rgba}` : `2px solid ${tokens.colors.ui.background__medium.rgba}`)};
+    border-bottom: ${({ 'aria-selected': selected }) =>
+        selected
+            ? `2px solid ${tokens.colors.interactive.primary__resting.rgba}`
+            : `2px solid ${tokens.colors.ui.background__medium.rgba}`};
     cursor: pointer;
 
     > svg > path {
-     fill:  rgb(150, 150, 150);
- }
+        fill: rgb(150, 150, 150);
+    }
 
     :hover {
-    color: ${tokens.colors.text.static_icons__secondary.rgba};
-    background: ${tokens.colors.interactive.primary__hover_alt.rgba};
+        color: ${tokens.colors.text.static_icons__secondary.rgba};
+        background: ${tokens.colors.interactive.primary__hover_alt.rgba};
 
-    > svg > path {
-     fill: ${tokens.colors.text.static_icons__secondary.rgba};
- }
-}
-
+        > svg > path {
+            fill: ${tokens.colors.text.static_icons__secondary.rgba};
+        }
+    }
 `;
 
-
-
-export const TabButton = ({ children, ...rest }: PropsWithChildren<React.HTMLAttributes<HTMLButtonElement>>) => {
-    return (<Button aria-selected {...rest}>{children}</Button>)
-}
+export const TabButton = ({
+    children,
+    ...rest
+}: PropsWithChildren<React.HTMLAttributes<HTMLButtonElement>>): JSX.Element => {
+    return (
+        <Button aria-selected {...rest}>
+            {children}
+        </Button>
+    );
+};
