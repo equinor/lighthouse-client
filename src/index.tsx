@@ -4,6 +4,7 @@ import { fetchConfig } from '@equinor/lighthouse-conf';
 import { render } from 'react-dom';
 import ProCoSysAppClient from './ProCoSysAppClient';
 
+
 fetchConfig().then((appConfig) => {
     const clientId = appConfig.clientId;
     const tenant = appConfig.tenant;
