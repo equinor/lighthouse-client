@@ -1,3 +1,4 @@
+import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import {
     FilterOptions,
@@ -5,17 +6,18 @@ import {
     PowerBiOptions,
     StatusFunc,
     TableOptions,
-    TreeOptions
+    TreeOptions,
 } from './DataViewState';
 
 export type DataFetcher<T> = () => Promise<T[]>;
 export type Validator<T> = (data: unknown[]) => T[];
+export type FactoryOptions = Omit<Factory, 'factoryId'>;
 
 export interface ViewerOptions<T> {
     initialState: T[];
     primaryViewKey: keyof T;
     viewerId: string;
-    // dataFactoryCreator: (factory: Factory) => void;
+    dataFactoryCreator?: (factory: Factory) => void;
 }
 
 export interface DataViewerProps<T> extends ViewOptions<T> {
@@ -35,6 +37,7 @@ export interface ViewOptions<T> {
 }
 
 export interface DataViewerApi<T> {
+    registerDataCreator: (factory: FactoryOptions) => void;
     registerDataFetcher: (dataFetcher: DataFetcher<T>) => void;
     registerDataValidator: (validator: Validator<T>) => void;
     registerCustomContentView: (

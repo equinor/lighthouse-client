@@ -3,16 +3,16 @@
 import { useAtom } from '@dbeining/react-atom';
 import { Menu, Scrim } from '@equinor/eds-core-react';
 import { Atom, deref, swap } from '@libre/atom';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-interface Factory {
+export interface Factory {
     factoryId: string;
     tile: string;
     icon?: React.FC;
     component: React.FC<unknown>;
 }
 
-interface DataFactoryState {
+export interface DataFactoryState {
     isActiveFactory?: Factory;
     factoryScope?: Record<string, unknown>;
     factories: {
@@ -55,6 +55,8 @@ export function readState<S>(
 export function getFactoryByFactoryId(factoryId: string): Factory | undefined {
     return readState(getFactoryContext(), (state) => state.factories[factoryId]);
 }
+
+// Option
 export function getAllFactories(): Factory[] {
     return Object.values(readState(getFactoryContext(), (state) => state.factories)) || [];
 }
@@ -70,7 +72,7 @@ export function getFactoriesByFactoryIds(factoryIds: string[]): Factory[] {
     return factories;
 }
 
-interface Factories {
+export interface Factories {
     factories: Factory[];
     activeFactory?: Factory;
     scope?: Record<string, unknown>;
@@ -105,6 +107,7 @@ export function createDataFactory(factory: Factory): void {
         if (state.factories[factory.factoryId]) {
             // eslint-disable-next-line no-console
             console.warn('Factory already is Registered!');
+            return state;
         }
         const factories = state.factories;
         factories[factory.factoryId] = {
@@ -117,6 +120,8 @@ export function createDataFactory(factory: Factory): void {
         };
     });
 }
+
+// Selectors
 
 export function setActiveFactoryById(factoryId?: string, scope?: Record<string, unknown>): void {
     if (!factoryId) return;
@@ -141,19 +146,24 @@ export function clearComponent(): void {
 }
 // Hooks
 
-export function useFactory(
-    factoryId?: string,
-    scope?: Record<string, unknown>
-): { onClick(): void } {
-    const onClick = useMemo(
-        () => () => {
-            setActiveFactoryById(factoryId, scope);
-        },
-        [factoryId, scope]
-    );
-    return {
-        onClick,
-    };
+export function useSelectFactory(factoryId?: string, scope?: Record<string, unknown>): () => void {
+    const onClick = useCallback(() => {
+        setActiveFactoryById(factoryId, scope);
+    }, [factoryId, scope]);
+    return onClick;
+}
+
+interface FactoryData {
+    factory?: Factory;
+    setSelected: () => void;
+}
+
+export function useFactory(factoryId: string): FactoryData {
+    function setSelected(): void {
+        setActiveFactoryById(factoryId);
+    }
+
+    return { factory: getFactoryByFactoryId(factoryId), setSelected };
 }
 
 // Components
@@ -164,7 +174,7 @@ interface AddButtonProps {
 }
 
 export function AddButton({ factory, scope }: AddButtonProps): JSX.Element {
-    const { onClick } = useFactory(factory?.factoryId, scope);
+    const onClick = useSelectFactory(factory?.factoryId, scope);
     return <button onClick={onClick}>+</button>;
 }
 
@@ -204,7 +214,7 @@ export function AddMenu({
 }
 
 export function AddMenuButton({ factory, scope }: AddButtonProps): JSX.Element {
-    const { onClick } = useFactory(factory?.factoryId, scope);
+    const onClick = useSelectFactory(factory?.factoryId, scope);
     return <Menu.Item onClick={onClick}>{factory?.tile}</Menu.Item>;
 }
 
