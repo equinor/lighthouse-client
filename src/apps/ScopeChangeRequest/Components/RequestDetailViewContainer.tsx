@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { GeneratedForm } from '../../../packages/Form/src/Components/Form';
+import { useFormSchema } from '../../../packages/Form/index';
 import { RequestDetailView } from './DetailView/RequestDetailView';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { Button } from '@equinor/eds-core-react';
 import { useDataContext } from '../../../components/CompletionView/src/Context/DataProvider';
-import { useFormSchema } from '@equinor/form';
 import { scopeChangeRequestSchema } from '../Schemas/scopeChangeRequestSchema';
+import styled from 'styled-components';
 
 interface RequestViewContainerProps {
     request: ScopeChangeRequest;
@@ -37,8 +38,8 @@ export const RequestViewContainer = ({
         close();
     };
     const onCancel = () => {
-        console.log('Cancelled');
-        close();
+        setEditMode(false);
+        //close();
     };
 
     const onDelete = () => {
@@ -61,10 +62,14 @@ export const RequestViewContainer = ({
 
     return (
         <>
-            <Button onClick={() => setEditMode(true)}>Edit</Button>
-            <Button onClick={() => onDelete()} color={'danger'}>
-                Delete
-            </Button>
+            <ButtonContainer>
+                <Button variant={'ghost_icon'} onClick={() => setEditMode((prev) => !prev)}>
+                    Edit
+                </Button>
+                {/* <Button variant={'ghost_icon'} onClick={() => onDelete()} color={'danger'}>
+                    Delete
+                </Button> */}
+            </ButtonContainer>
             {editMode ? (
                 <GeneratedForm
                     formData={formData}
@@ -77,3 +82,10 @@ export const RequestViewContainer = ({
         </>
     );
 };
+
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-right: 2em;
+`;

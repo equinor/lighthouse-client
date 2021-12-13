@@ -1,7 +1,7 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { dispatch } from './DataViewerCoreActions';
 import {
-    DataFetcher,
+    DataSource,
     DataViewerApi,
     DataViewerProps,
     Validator,
@@ -17,6 +17,7 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
+    VisualEditorOptions,
 } from './DataViewState';
 
 /**
@@ -43,12 +44,12 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
     });
 
     return {
-        registerDataFetcher(dataFetcher: DataFetcher<T>) {
+        registerDataSource(dataSource: DataSource<T>) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    dataFetcher,
+                    dataSource: dataSource,
                 },
             }));
         },
@@ -167,6 +168,15 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
                     ...state[options.viewerId],
                     dataViewSideSheetOptions:
                         dataViewSideSheetOptions as DataViewSideSheetOptions<unknown>,
+                },
+            }));
+        },
+        registerVisualEditorOptions(visualEditorOptions: VisualEditorOptions) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    visualEditorOptions,
                 },
             }));
         },

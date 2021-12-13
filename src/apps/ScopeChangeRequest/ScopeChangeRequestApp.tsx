@@ -13,7 +13,7 @@ export function setup(appApi: AppApi): void {
         viewerId: appApi.shortName,
     });
 
-    request.registerDataFetcher(async () => {
+    request.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
         const project = 'L.O532C.002';
         const response = await api.fetch(
@@ -78,9 +78,9 @@ export function setup(appApi: AppApi): void {
         },
     });
 
-    // request.registerTableOptions({
-    //     objectIdentifierKey: 'id',
-    // });
+    request.registerTableOptions({
+        objectIdentifierKey: 'id',
+    });
 
     request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'id' });
 
@@ -89,4 +89,9 @@ export function setup(appApi: AppApi): void {
     request.registerStatusItems(statusBarData);
 
     request.registerDataViewSideSheetOptions({ CustomRender: CustomSidesheet });
+
+    const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
+    request.registerVisualEditorOptions({
+        endpoint: `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflowId}/templates`,
+    });
 }

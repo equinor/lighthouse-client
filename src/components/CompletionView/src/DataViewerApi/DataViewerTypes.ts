@@ -7,9 +7,10 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
+    VisualEditorOptions,
 } from './DataViewState';
 
-export type DataFetcher<T> = () => Promise<T[]>;
+export type DataSource<T> = () => Promise<T[]>;
 export type Validator<T> = (data: unknown[]) => T[];
 
 export interface ViewerOptions<T> {
@@ -35,7 +36,7 @@ export interface ViewOptions<T> {
 }
 
 export interface DataViewerApi<T> {
-    registerDataFetcher: (dataFetcher: DataFetcher<T>) => void;
+    registerDataSource: (dataSource: DataSource<T>) => void;
     registerDataValidator: (validator: Validator<T>) => void;
     registerCustomContentView: (
         viewComponent: React.FC<DataViewerProps<T>>,
@@ -51,4 +52,5 @@ export interface DataViewerApi<T> {
     registerStatusItems: (options: StatusFunc<T>) => void;
     registerPowerBIOptions: (options: PowerBiOptions) => void;
     registerDataViewSideSheetOptions: (options: DataViewSideSheetOptions<T>) => void;
+    registerVisualEditorOptions: (options: VisualEditorOptions) => void;
 }

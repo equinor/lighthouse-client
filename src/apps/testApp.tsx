@@ -1,4 +1,3 @@
-import { GeneratedForm, Schema, useFormSchema } from '@equinor/form';
 import { THREE, ThreeDContextProvider, ViewerInstance } from '@equinor/ThreeDViewer';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
@@ -103,64 +102,9 @@ export function TestApp(appApi: AppApi): JSX.Element {
         setup();
     }, [viewerRef]);
 
-    interface Person {
-        id: string;
-        name: string;
-        age: number;
-    }
-
-    interface Test {
-        id: string;
-        person: Person;
-    }
-
-    const testSchema: Schema<Test> = {
-        id: {
-            isRequired: true,
-            editable: true,
-            inputType: { type: 'TextInput' },
-            order: 1,
-            label: 'id',
-        },
-        person: {
-            isRequired: true,
-            editable: true,
-            order: 2,
-            inputType: {
-                type: 'MultiSelectObject',
-                objectIdentifier: 'id',
-                selectOptions: [
-                    { id: 1, name: 'Torbjørn', age: 32 },
-                    { id: 2, name: 'Kjetil', age: 17 },
-                ],
-            },
-        },
-    };
-
-    const initialState: Test = {
-        id: '1',
-        person: {
-            age: 0,
-            id: '',
-            name: '',
-        },
-    };
-
-    const formData = useFormSchema(testSchema, initialState);
-
     return (
-        <>
-            <GeneratedForm
-                formData={formData}
-                editMode={false}
-                events={{
-                    onCancel: () => console.log(formData.getChangedData()),
-                    onSubmit: () => console.log('Submitted'),
-                }}
-            />
-            {/* <ThreeDContextProvider threeDInstance={threeDInstance}>
-                <Viewer ref={viewerRef} />
-            </ThreeDContextProvider> */}
-        </>
+        <ThreeDContextProvider threeDInstance={threeDInstance}>
+            <Viewer ref={viewerRef} />
+        </ThreeDContextProvider>
     );
 }

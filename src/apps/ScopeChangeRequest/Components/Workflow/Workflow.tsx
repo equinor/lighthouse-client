@@ -1,31 +1,52 @@
 import React from 'react';
 import { WorkflowDot } from './WorkflowDot';
 import { WorkflowContainer } from './Styles/WorkflowContainer';
+import styled from 'styled-components';
 
-interface WorkflowProps {
-    steps: WorkflowStep[];
-    hideStepNames?: boolean;
+interface WorkflowProps<T> {
+    steps: T[];
+    statusDotFunc: (item: T) => 'Completed' | 'Inactive' | 'Active';
+    stepName?: keyof T;
+    spanDirection?: 'vertical' | 'horizontal';
+    dotSize?: number;
 }
 
-export const Workflow = ({ steps }: WorkflowProps): JSX.Element => {
-    console.log(steps);
-    const sortedSteps = steps.sort((a, b) => a.order - b.order);
-    console.log(sortedSteps);
+export function Workflow<T>({
+    steps,
+    statusDotFunc,
+    stepName,
+    spanDirection,
+    dotSize,
+}: WorkflowProps<T>): JSX.Element {
+    console.log(dotSize);
     return (
         <>
-            <WorkflowContainer>
-                {sortedSteps.map((x) => {
+            <WorkflowContainer direction={spanDirection === 'horizontal' ? 'row' : 'column'}>
+                {steps.map((x) => {
                     return (
                         <>
-                            <p>{x.name}</p>
-                            <WorkflowDot state={x.isCompleted ? 'Completed' : 'Inactive'} />
+                            <WorkflowStep>
+                                <WorkflowDot
+                                    height={dotSize}
+                                    width={dotSize}
+                                    state={statusDotFunc(x)}
+                                />
+                                {stepName && x[stepName]}
+                            </WorkflowStep>
                         </>
                     );
                 })}
             </WorkflowContainer>
         </>
     );
-};
+}
+
+const WorkflowStep = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px;
+`;
 
 export interface WorkflowStep {
     id: string;

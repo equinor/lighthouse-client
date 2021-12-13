@@ -11,6 +11,7 @@ import {
     TableOptions,
     TreeOptions,
     DataViewSideSheetOptions,
+    VisualEditorOptions,
 } from '../DataViewerApi/DataViewState';
 import { useDataViewer } from '../DataViewerApi/useDataViewer';
 
@@ -31,6 +32,7 @@ interface DataState {
     statusFunc?: StatusFunc<unknown>;
     powerBiOptions?: PowerBiOptions;
     dataViewSideSheetOptions?: DataViewSideSheetOptions<unknown>;
+    visualEditorOptions?: VisualEditorOptions;
 }
 interface DataContextState extends DataState {
     getData: VoidFunction;
@@ -78,13 +80,14 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         viewOptions,
         tableOptions,
         filterOptions,
-        dataFetcher,
+        dataSource,
         treeOptions,
         gardenOptions,
         analyticsOptions,
         statusFunc,
         powerBiOptions,
         dataViewSideSheetOptions,
+        visualEditorOptions,
     } = useDataViewer();
     const initialState: DataState = {
         key,
@@ -102,13 +105,14 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         statusFunc,
         powerBiOptions,
         dataViewSideSheetOptions,
+        visualEditorOptions,
     };
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
     const getData = useCallback(async () => {
-        if (dataFetcher) {
-            const data = await dataFetcher();
+        if (dataSource) {
+            const data = await dataSource();
             if (validator) {
                 dispatch(actions.getData(validator(data)));
                 return;

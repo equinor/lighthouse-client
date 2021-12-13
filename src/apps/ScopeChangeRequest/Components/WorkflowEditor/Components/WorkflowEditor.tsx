@@ -1,9 +1,8 @@
 import { Button } from '@equinor/eds-core-react';
-import { stringify } from 'querystring';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { WorkflowStep } from '../../Types/scopeChangeRequest';
-import { DraggableItem, DraggableItemsWrapper } from './Utils/DraggableItemsWrapper';
+import { WorkflowStep } from '../../../Types/scopeChangeRequest';
+import { DraggableItem, DraggableItemsContainer } from '@equinor/VisualEditor';
 
 interface Workflow {
     created: string;
@@ -19,7 +18,7 @@ interface WorkflowSteps {
     StepTemplates: TemplateStep[];
 }
 
-type TemplateStep = Omit<WorkflowStep, 'isCompleted' | 'id'>;
+type TemplateStep = Omit<WorkflowStep, 'isCompleted' | 'id' | 'isCurrent'>;
 
 export const WorkflowEditor = (): JSX.Element | null => {
     const tempWorkflowID = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
@@ -122,10 +121,10 @@ export const WorkflowEditor = (): JSX.Element | null => {
             <h1>Workflow editor</h1>
             <p>{workflow?.id}</p>
 
-            <DraggableItemsWrapper<TemplateStep>
+            <DraggableItemsContainer<TemplateStep>
                 onChange={onChange}
                 items={steps}
-                objectIdentifier={'name'}
+                viewKey={'name'}
             />
 
             <WorkflowStepsOutline>

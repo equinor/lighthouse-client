@@ -20,6 +20,12 @@
         ],
         "sourceMap": true,
         "paths": {
+            "@equinor/VisualEditor": [
+                "./src/packages/VisualEditor"
+            ],
+            "@equinor/Form": [
+                "./src/packages/Form"
+            ],
             "@equinor/StatusBar": [
                 "./src/packages/2StatusBar"
             ],

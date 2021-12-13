@@ -6,10 +6,25 @@ import { Attachments } from './Components/Attachments';
 import { SectionRow } from '../../Styles/Section';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { Workflow } from '../Workflow/Workflow';
+import { WorkflowStep } from '../../Types/scopeChangeRequest';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
 }
+
+const statusDotFunc = (item: WorkflowStep) => {
+    if (item.isCurrent) {
+        return 'Active';
+    }
+
+    switch (item.isCompleted) {
+        case true:
+            return 'Completed';
+
+        case false:
+            return 'Inactive';
+    }
+};
 
 export const RequestDetailView = ({ request }: RequestDetailViewProps): JSX.Element => {
     return (
@@ -26,28 +41,25 @@ export const RequestDetailView = ({ request }: RequestDetailViewProps): JSX.Elem
                     {/* <Field label={'Change origin'} value={request.origin} /> */}
                 </SectionRow>
                 <Field label={'Description'} value={request.description} />
-                {/* 
-                <Field label={'Tags'} value={<Tags tags={request.tags} />} />
-
-                <Field
-                    customLabel={{ bold: true, fontSize: 'xx-large' }}
-                    label={'Documents'}
-                    value={<Documents documents={request.documents} />}
-                /> */}
-
                 <Field
                     customLabel={{ bold: true, fontSize: 'xx-large' }}
                     label={'Attachments'}
                     value={<Attachments />}
                 />
 
-                <Field
+                {/* <Field
                     customLabel={{ bold: true, fontSize: 'xx-large' }}
                     label={'Workflow'}
-                    value={'No workflow linked'}
+                    value={
+                        <Workflow
+                            statusDotFunc={statusDotFunc}
+                            steps={request.workflowSteps}
+                            stepName={'name'}
+                            spanDirection={'vertical'}
+                        />
+                    }
                 />
-                <Field label={'Active step'} value={request.currentWorkflowStep.name} />
-                <Field label={'Workflow'} value={<Workflow steps={request.workflowSteps} />} />
+                <Field label={'Active step'} value={request.currentWorkflowStep.name} /> */}
             </DetailViewContainer>
         </div>
     );

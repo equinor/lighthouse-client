@@ -22,4 +22,5 @@ export interface WorkflowStep {
     name: string;
     order: number;
     isCompleted: boolean;
+    isCurrent: boolean;
 }

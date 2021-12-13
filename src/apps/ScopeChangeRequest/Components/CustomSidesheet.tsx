@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button } from '@equinor/eds-core-react';
-import { RequestSideSheet } from './RequestSideSheet';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { Wrapper } from '../Styles/SidesheetWrapper';
+import { RequestViewContainer } from './RequestDetailViewContainer';
 
 interface CustomSidesheetProps<T> {
     item: T;
@@ -20,7 +20,7 @@ export const CustomSidesheet = ({
                         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                             <Button onClick={() => onClose()}>X</Button>
                         </div>
-                        <RequestSideSheet close={onClose} request={item} />
+                        <RequestViewContainer close={onClose} request={item} />
                     </Wrapper>
                 </>
             )}
