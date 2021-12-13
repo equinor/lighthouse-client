@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react';
 import styled, { css } from 'styled-components';
 
 export const Table = styled.div`
@@ -5,7 +6,7 @@ export const Table = styled.div`
     border-spacing: 0;
 `;
 
-export const TableRow = styled.div<{ selected: boolean }>`
+export const TableRow = styled.div<{ selected?: boolean }>`
     color: inherit;
     outline: 0;
     vertical-align: middle;

@@ -1,7 +1,7 @@
-import { Checkbox } from "@equinor/eds-core-react";
-import { Hooks } from "react-table";
-import styled from "styled-components";
-
+import { Checkbox } from '@equinor/eds-core-react';
+import { Hooks } from 'react-table';
+import styled from 'styled-components';
+import { TableData } from '../types';
 
 export const Div = styled.div`
     padding: 0px;
@@ -9,17 +9,16 @@ export const Div = styled.div`
 
     height: 10px;
     > span {
-            padding: 0px;
+        padding: 0px;
 
-            > svg {
-                width: 18px;
-                height: 18px;
-            }
+        > svg {
+            width: 18px;
+            height: 18px;
         }
+    }
 `;
 
-
-export function useSelector<T>(hooks: Hooks<Record<string, T>>): void {
+export function useSelector<T extends TableData>(hooks: Hooks<T>): void {
     hooks.visibleColumns.push((columns) => [
         {
             id: 'selection',
@@ -28,8 +27,20 @@ export function useSelector<T>(hooks: Hooks<Record<string, T>>): void {
             // Header: ({ getToggleAllPageRowsSelectedProps }: UseRowSelectInstanceProps<Record<string, unknown>>): JSX.Element => (
             //     <HeaderCheckbox  {...getToggleAllPageRowsSelectedProps()} />
             // ),
-            Cell: ({ row }): JSX.Element => row.original?.noCheckbox ? <></> : <Div> <Checkbox disabled={row.original?.disableCheckbox} {...row.getToggleRowSelectedProps()} /></Div>,
+            // TODO : row.original doesnt contain the property noCheckbox
+            Cell: ({ row }): JSX.Element => {
+                return row.original?.noCheckbox ? (
+                    <></>
+                ) : (
+                    <Div onClick={() => console.log(row)}>
+                        <Checkbox
+                            disabled={row.original?.disableCheckbox}
+                            {...row.getToggleRowSelectedProps()}
+                        />
+                    </Div>
+                );
+            },
         },
         ...columns,
     ]);
-};
+}

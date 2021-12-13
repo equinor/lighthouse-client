@@ -2,7 +2,7 @@ import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { StatusItem } from '../../../../packages/StatusBar';
-import { HeaderData } from '../../../DataTable/Utils/generateHeaderKeys';
+import { Cell, CustomCell, CustomColumn, CustomHeader } from '../../../Table/types';
 import { DataSet } from '../../../ParkView/Models/data';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
 
@@ -17,9 +17,26 @@ export interface FilterOptions<T> {
     customRender?: Record<keyof T | string, React.FC<T>>;
 }
 
-export interface TableOptions {
+export interface TableOptions<T> {
     objectIdentifierKey: string;
-    headers?: HeaderData[];
+
+    /** Set to true if checkboxes should be shown */
+    enableSelectRows?: boolean;
+
+    /** Click handler for cells */
+    onCellClick?: (cell: Cell) => void;
+
+    /** Hide certain columns based on key */
+    hiddenColumns?: (keyof T)[];
+
+    /** Change the default header */
+    headers?: CustomHeader<T>[];
+
+    /** Change the default cell view */
+    customCellView?: CustomCell<T>[];
+
+    /** Add extra columns that are not part of the dataset */
+    customColumns?: CustomColumn[];
 }
 
 export interface Status {
@@ -77,7 +94,7 @@ export interface ViewConfig<T> {
     viewComponent?: React.FC<DataViewerProps<T>>;
     viewOptions?: ViewOptions<T>;
     filterOptions?: FilterOptions<T>;
-    tableOptions?: TableOptions;
+    tableOptions?: TableOptions<T>;
     treeOptions?: TreeOptions<T>;
     timelineOptions?: any;
     gardenOptions?: GardenOptions<T>;

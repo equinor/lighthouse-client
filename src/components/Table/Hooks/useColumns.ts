@@ -1,10 +1,16 @@
 import { useMemo } from 'react';
-import { generateDefaultColumns } from '../Utils/generateHeaderKeys';
+import { TableData, Column, CustomCell, CustomHeader } from '../types';
+import { generateHeaderKeys } from '../Utils/generateHeaderKeys';
 
-export function useColumns<D extends Object = {}>(dataObject: D) {
+export function useColumns<D extends TableData>(
+    dataObject: D,
+    customColumns?: Column<D>[],
+    headers?: CustomHeader<D>[],
+    customCellView?: CustomCell<D>[]
+) {
     const columns = useMemo(
-        () => generateDefaultColumns(dataObject),
-        [dataObject]
+        () => generateHeaderKeys(dataObject, customColumns, headers, customCellView),
+        [dataObject, customColumns]
     );
     return columns;
 }

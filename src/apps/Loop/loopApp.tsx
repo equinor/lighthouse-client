@@ -123,7 +123,70 @@ export function setup(appApi: AppApi) {
         },
     });
 
-    commPkg.registerTableOptions({ objectIdentifierKey: 'tagNo' });
+    commPkg.registerTableOptions({
+        objectIdentifierKey: 'tagNo',
+        enableSelectRows: false,
+        hiddenColumns: ['functionTags', 'signedAt', 'commPk'],
+        headers: [
+            { key: 'formType', title: 'Form' },
+            { key: 'createdAt', title: 'Created Date' },
+        ],
+        customCellView: [
+            {
+                key: 'createdAt',
+                type: 'Date',
+            },
+            {
+                key: 'description',
+                type: 'Description',
+            },
+
+            {
+                key: 'status',
+                type: 'Status',
+                cellFn: (content) => {
+                    let bgcolor = '';
+
+                    if (content.status === 'OK') {
+                        bgcolor = 'green';
+                    } else if (content.status === 'OS') {
+                        bgcolor = 'blue';
+                    } else if (content.status === 'PA') {
+                        bgcolor = 'red';
+                    } else {
+                        bgcolor = 'yellow';
+                    }
+
+                    return {
+                        style: {
+                            backgroundColor: bgcolor,
+                            color: bgcolor === 'blue' ? 'white' : 'black',
+                        },
+                    };
+                },
+            },
+            {
+                key: 'formType',
+                type: {
+                    Cell: ({ cell }) => {
+                        return <div style={{ fontWeight: 500 }}>{cell.value.content.formType}</div>;
+                    },
+                },
+            },
+        ],
+        customColumns: [
+            {
+                Header: 'Foo',
+                accessor: (row) => {
+                    return (row as unknown as Loop)['contentChecklists'].length + 1;
+                },
+                aggregate: 'count',
+                Aggregated: (cell) => {
+                    return <div>{cell.value}</div>;
+                },
+            },
+        ],
+    });
     commPkg.registerGardenOptions({
         gardenKey: 'phase',
         itemKey: 'tagNo',

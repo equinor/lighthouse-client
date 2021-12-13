@@ -96,12 +96,12 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
          * View option Registration
          *
          */
-        registerTableOptions(tableOptions: TableOptions) {
+        registerTableOptions<T>(tableOptions: TableOptions<T>) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    tableOptions,
+                    tableOptions: tableOptions as TableOptions<unknown>,
                 },
             }));
         },
