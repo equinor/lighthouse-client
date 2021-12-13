@@ -71,5 +71,3 @@ stages:
                 repository: '${{ variables.repositoryName }}'
                 containerRegistry: '${{ variables.containerRegistry }}'
                 appName: '$(appName)'
-                appConfigName: '${{ variables.appConfigName }}'
-                configPath: '/src/resources/web-client/config/appConfig-${{ variables.envName }}.json@templates'
