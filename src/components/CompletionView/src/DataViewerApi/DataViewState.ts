@@ -2,7 +2,7 @@ import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { StatusItem } from '../../../../packages/StatusBar';
-import { Cell, Column, CustomCell, CustomHeader } from '../../../Table/types';
+import { Cell, CustomCell, CustomColumn, CustomHeader } from '../../../Table/types';
 import { DataSet } from '../../../ParkView/Models/data';
 import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
 
@@ -36,7 +36,7 @@ export interface TableOptions<T> {
     customCellView?: CustomCell<T>[];
 
     /** Add extra columns that are not part of the dataset */
-    customColumns?: Column[];
+    customColumns?: CustomColumn[];
 }
 
 export interface Status {

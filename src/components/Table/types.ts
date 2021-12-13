@@ -16,12 +16,15 @@ export type CellFn<TData> = (content: TData) => HTMLAttributes<HTMLDivElement>;
 /**
  * Types for what the accessor property method in the column object can accept as arguments
  * and added to the value property of the table data model.
+ * Note that accessors should return primitive values, so only use this when needed.
  */
 export type CellRenderProps<TData> = {
     content: TData;
     currentKey: string;
     cellFn?: CellFn<TData>;
 };
+
+export type CustomColumn = Column & Required<Pick<Column, 'Aggregated' | 'aggregate' | 'Header'>>;
 
 export type CustomCellType<TData, D extends TableData> = {
     /** Custom cell to be display. Has access to table data object when used as a method */

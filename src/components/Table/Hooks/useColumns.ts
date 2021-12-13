@@ -5,8 +5,8 @@ import { generateHeaderKeys } from '../Utils/generateHeaderKeys';
 export function useColumns<D extends TableData>(
     dataObject: D,
     customColumns?: Column<D>[],
-    headers?: CustomHeader[],
-    customCellView?: CustomCell[]
+    headers?: CustomHeader<D>[],
+    customCellView?: CustomCell<D>[]
 ) {
     const columns = useMemo(
         () => generateHeaderKeys(dataObject, customColumns, headers, customCellView),
