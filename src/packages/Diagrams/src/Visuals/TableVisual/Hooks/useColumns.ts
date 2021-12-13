@@ -1,17 +1,15 @@
 import { useMemo } from 'react';
+import { Column } from 'react-table';
+
 import { generateDefaultColumns } from '../Utils/generateDefaultColumns';
 
-interface Columns<D> {
-    accessor: keyof D;
-    Header: string;
-    minWidth: number;
-    maxWidth: number;
-    aggregate: string;
-    Aggregated: (cell: any) => JSX.Element;
-    Footer: (data: any) => JSX.Element;
-}
-
-export function useColumns<D>(dataObject: D): Columns<D>[] {
-    const columns = useMemo(() => generateDefaultColumns(dataObject), [dataObject]);
-    return columns;
+export function useColumns<D extends Record<string, unknown>>(
+    dataObject: D,
+    columns?: Column<D>[]
+): Column<D>[] {
+    const generatedColumns = useMemo(
+        () => (columns ? columns : generateDefaultColumns(dataObject)),
+        [dataObject, columns]
+    );
+    return generatedColumns;
 }
