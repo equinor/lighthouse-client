@@ -66,13 +66,12 @@ export function setup(appApi: AppApi) {
         initialState: [],
         primaryViewKey: 'tagNo',
         viewerId: appApi.shortName,
-        dataFactoryCreator: createDataFactory,
     });
 
-    commPkg.registerDataCreator({
-        tile: 'Create Loop',
-        component: (scope: any) => <div>Create Loop {scope.test}</div>,
-    });
+    // commPkg.registerDataCreator({
+    //     title: 'Create Loop',
+    //     component: (scope: any) => <div>Create Loop {scope.test}</div>,
+    // });
 
     commPkg.registerDataFetcher(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';

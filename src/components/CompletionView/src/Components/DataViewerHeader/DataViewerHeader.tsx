@@ -1,6 +1,5 @@
 import { useFactory } from '@equinor/DataFactory';
 import { Tabs } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useRef } from 'react';
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { useFilteredData } from '../../../../Filter';
@@ -13,7 +12,7 @@ import {
     LeftSection,
     RightSection,
     TabTitle,
-    Title
+    Title,
 } from './DataViewerHeaderStyles';
 
 const { Tab, List } = Tabs;
@@ -58,8 +57,8 @@ export const CompletionViewHeader = ({
                 {factory && (
                     <>
                         <TabButton onClick={setSelected} aria-selected={false}>
-                            <Icon name={'add'} color={tokens.colors.ui.background__default.rgba} />
-                            {factory.tile}
+                            <Icon name={'add'} />
+                            {factory.title}
                         </TabButton>
                         <Divider />
                     </>

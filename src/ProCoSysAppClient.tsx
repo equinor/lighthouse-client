@@ -8,7 +8,7 @@ import LoadingPage from './components/Loading/LoadingPage';
 import { Routes } from './components/Routes/Routes';
 import ProCoSysTopBar from './components/TopBar/TopBar';
 import { ClientContextProvider } from './context/clientContext';
-import { FactoryComponent } from './Core/DataFactory/dataFactory';
+import { FactoryComponent } from './Core/DataFactory';
 
 const GlobalStyle = createGlobalStyle`
     body {
