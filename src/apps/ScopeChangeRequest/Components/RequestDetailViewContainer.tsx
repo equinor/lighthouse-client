@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { RequestDetailView } from './DetailView/RequestDetailView';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
-import { Button } from '@equinor/eds-core-react';
 import { ScopeChangeRequestEditForm } from './Form/ScopeChangeRequestEditForm';
 import styled from 'styled-components';
 
@@ -18,7 +17,7 @@ export const RequestViewContainer = ({ request }: RequestViewContainerProps): JS
             {editMode ? (
                 <ScopeChangeRequestEditForm request={request} cancel={() => setEditMode(false)} />
             ) : (
-                <RequestDetailView request={request} />
+                <RequestDetailView request={request} setEditMode={() => setEditMode(true)} />
             )}
             {/* <ButtonContainer>
                 <Button variant={'ghost_icon'} onClick={() => setEditMode((prev) => !prev)}>
