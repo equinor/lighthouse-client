@@ -84,7 +84,7 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     data.prepareRow(row);
 
     const handleClick = useCallback(() => {
-        data.setSelected && data.setSelected(row.values['tagNo']);
+        data.setSelected && data.setSelected(row.original);
     }, [data.setSelected, row]);
 
     return (
