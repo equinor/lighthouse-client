@@ -142,6 +142,20 @@ export function setup(appApi: AppApi) {
 
     commPkg.registerTableOptions({
         objectIdentifierKey: 'tagNo',
+        // columnOrder: ['custom', 'status', 'formType'],
+        // customColumns: [
+        //     {
+        //         id: 'custom',
+        //         Header: 'Custom',
+        //         accessor: (row) => {
+        //             return row['contentChecklists'].length + 1;
+        //         },
+        //         aggregate: 'count',
+        //         Aggregated: (cell) => {
+        //             return <div>{cell.value}</div>;
+        //         },
+        //     },
+        // ],
         // hiddenColumns: ['functionTags', 'signedAt', 'commPk'],
         // headers: [
         //     { key: 'formType', title: 'Form' },
@@ -191,18 +205,6 @@ export function setup(appApi: AppApi) {
         //                     </div>
         //                 );
         //             },
-        //         },
-        //     },
-        // ],
-        // customColumns: [
-        //     {
-        //         Header: 'Custom',
-        //         accessor: (row) => {
-        //             return row['contentChecklists'].length + 1;
-        //         },
-        //         aggregate: 'count',
-        //         Aggregated: (cell) => {
-        //             return <div>{cell.value}</div>;
         //         },
         //     },
         // ],

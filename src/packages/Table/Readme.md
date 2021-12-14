@@ -24,6 +24,9 @@ Optional. Change default cell view to either predefined cell views or custom cel
 ### customColumns
 Optional. Add custom columns to the table, i.e. computed columns
 
+### columnOrder
+Optional. Decide the order of columns displayed. The array has to contain id strings equal to column id.
+
 ## Example usage
 ```ts
  commPkg.registerTableOptions({
@@ -34,6 +37,7 @@ Optional. Add custom columns to the table, i.e. computed columns
         },
         enableSelectRows: false,
         hiddenColumns: ['functionTags', 'signedAt', 'commPk'],
+        columnOrder: ["formType", "createdAt"],
         headers: [
             { key: 'formType', title: 'Form' },
             { key: 'createdAt', title: 'Created Date' },
@@ -126,6 +130,7 @@ export const ListTab = () => {
                     },
                     setSelected,
                     groupByFn: defaultGroupByFn,
+                    columnOrder: talbeOptions?.columnOrder
                 }}
                 FilterComponent={PopupFilter}
             />

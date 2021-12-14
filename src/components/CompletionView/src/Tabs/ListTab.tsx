@@ -28,6 +28,7 @@ export const ListTab = () => {
                     initialState: {
                         hiddenColumns: hiddenCols,
                     },
+                    columnOrder: tableOptions?.columnOrder,
                     setSelected,
                     groupByFn: defaultGroupByFn,
                 }}
