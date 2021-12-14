@@ -17,6 +17,7 @@ export default defineConfig({
             '@equinor/StatusBar': path.resolve(__dirname, './src/packages/StatusBar'),
             '@equinor/Diagrams': path.resolve(__dirname, './src/packages/Diagrams'),
             '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),
+            '@equinor/Table': path.resolve(__dirname, './src/packages/Table'),
             '@equinor/authentication': path.resolve(__dirname, './packages/authentication/'),
             '@equinor/http-client': path.resolve(__dirname, './packages/httpClient/'),
             '@equinor/lighthouse-core': path.resolve(__dirname, './packages/core/'),
