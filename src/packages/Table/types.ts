@@ -31,8 +31,13 @@ export type CellRenderProps<T> = {
     cellAttributeFn?: CellAttributeFn<T>;
 };
 
-export type CustomColumn<T extends TableData = TableData> = Column<T> &
-    Required<Pick<Column<T>, 'Aggregated' | 'aggregate' | 'Header'>>;
+/**
+ * Makes it possible to pass any generic T to CustomColumn which requires a T extending object.
+ */
+type ObjectOrTableData<T> = T extends object ? T : TableData;
+
+export type CustomColumn<T> = Column<ObjectOrTableData<T>> &
+    Required<Pick<Column<ObjectOrTableData<T>>, 'Aggregated' | 'aggregate' | 'Header'>>;
 
 export type CustomCellType<T, D extends TableData> = {
     /** Custom cell to be display. Has access to table data object when used as a method */
@@ -73,7 +78,7 @@ export type Column<T extends object = TableData> = ColumnDefault<T> &
     };
 
 export type CellClickHandler<D extends TableData> = (
-    cell: Cell<D, Pick<CellRenderProps<D>, 'content' | 'currentKey'>>,
+    cell: Cell<D, Partial<Pick<CellRenderProps<D>, 'content' | 'currentKey'>>>,
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => void;
 

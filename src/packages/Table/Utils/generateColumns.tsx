@@ -35,5 +35,8 @@ export const generateHeaderKeys = <D extends TableData>(
 
         return generateOthersColumn({ headers: options?.headers, key });
     });
-    return options?.customColumns ? defaultColumns.concat(options.customColumns) : defaultColumns;
+
+    return options?.customColumns
+        ? defaultColumns.concat(options.customColumns as unknown as Column<D>)
+        : defaultColumns;
 };

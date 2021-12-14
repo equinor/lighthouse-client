@@ -33,7 +33,7 @@ export type TableOptions<T> = Pick<
     /** Change the default cell view */
     customCellView?: CustomCell<T>[];
     /** Add extra columns that are not part of the dataset */
-    customColumns?: CustomColumn[];
+    customColumns?: CustomColumn<T>[];
 };
 
 export interface Status {
