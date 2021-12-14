@@ -16,10 +16,10 @@ interface HooksOptions {
     rowSelect: boolean;
 }
 
-export function RegisterReactTableHooks<TData extends TableData>(
+export function RegisterReactTableHooks<T extends TableData>(
     options?: HooksOptions
-): PluginHook<TData>[] {
-    const hooks: Array<PluginHook<TData>> = [];
+): PluginHook<T>[] {
+    const hooks: Array<PluginHook<T>> = [];
 
     hooks.push(
         useFlexLayout,

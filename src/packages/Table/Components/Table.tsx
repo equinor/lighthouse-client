@@ -2,12 +2,12 @@ import React, { PropsWithChildren, useCallback } from 'react';
 import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 import { useTable } from '../Hooks/useTable';
-import { TableData } from '../types';
+import { CellClickHandler, TableData } from '../types';
 import { useDefaultColumn } from '../Utils/ColumnDefault';
 import { RegisterReactTableHooks } from '../Utils/registerReactTableHooks';
 import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
-import { Table, TableCell, TableRow } from './Styles';
+import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
 interface DataTableProps<TData extends TableData> {
     options: TableOptions<TData>;
@@ -17,26 +17,26 @@ interface DataTableProps<TData extends TableData> {
 const topBarHeight = 64;
 const itemSize = 35;
 
-export function DataTable<T extends TableData = TableData>({
+export function Table<TData extends TableData = TableData>({
     options,
     FilterComponent,
-}: PropsWithChildren<DataTableProps<T>>): JSX.Element {
-    const hooks = RegisterReactTableHooks<T>({ rowSelect: options.enableSelectRow || false });
+}: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
+    const hooks = RegisterReactTableHooks<TData>({ rowSelect: options.enableSelectRows || false });
 
     const defaultColumn = useDefaultColumn(options);
 
     const { prepareRow, rows, getTableProps, getTableBodyProps, headerGroups, totalColumnsWidth } =
         useTable({ ...options, defaultColumn }, hooks) as TableInstance<TableData>;
 
-    const onCellClick = useCallback(
-        (cell: Cell) => {
-            options?.onCellClick && options.onCellClick(cell);
+    const onCellClick: CellClickHandler<TableData> = useCallback(
+        (cell, e) => {
+            options?.onCellClick && options.onCellClick(cell, e);
         },
         [options.onCellClick]
     );
 
     return (
-        <Table {...getTableProps()}>
+        <TableWrapper {...getTableProps()}>
             <div>
                 {headerGroups.map((headerGroup) => (
                     <div
@@ -64,13 +64,13 @@ export function DataTable<T extends TableData = TableData>({
                     {RenderRow}
                 </List>
             </div>
-        </Table>
+        </TableWrapper>
     );
 }
 interface RenderRowData {
     rows: Row<TableData>[];
     prepareRow: (row: Row<TableData>) => void;
-    onCellClick: (cell: Cell) => void;
+    onCellClick: CellClickHandler<TableData>;
     setSelected?: (item: any) => void;
 }
 interface RenderRowProps {
@@ -95,7 +95,7 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
                         align={cell.column.align}
                         {...cell.getCellProps()}
                         key={cell.getCellProps().key}
-                        // onClick={() => data.onCellClick(cell)}
+                        onClick={(e) => data.onCellClick(cell, e)}
                     >
                         {cell.isGrouped ? (
                             <GroupCell row={row} cell={cell} />

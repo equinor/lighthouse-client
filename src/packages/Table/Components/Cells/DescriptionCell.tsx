@@ -11,9 +11,12 @@ const Description = styled.div`
 
 export const DescriptionCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
     const {
-        value: { content, currentKey, cellFn },
+        value: { content, currentKey, cellAttributeFn },
     } = props;
 
-    const attr = useMemo(() => (cellFn ? cellFn(content) : undefined), [cellFn]);
+    const attr = useMemo(
+        () => (cellAttributeFn ? cellAttributeFn(content) : undefined),
+        [cellAttributeFn]
+    );
     return <Description {...attr}>{content[currentKey] as string}</Description>;
 };

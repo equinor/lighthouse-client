@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react';
+import React, { HTMLAttributes } from 'react';
 import {
     Column as ColumnDefault,
     PluginHook as PluginHookDefault,
@@ -7,62 +7,75 @@ import {
     UseSortByColumnOptions,
     UseGroupByColumnOptions,
     CellProps,
+    Cell,
 } from 'react-table';
 
 export type TableData = Record<string | number, unknown>;
 
-export type CellFn<TData> = (content: TData) => HTMLAttributes<HTMLDivElement>;
+export type CellAttributeFn<T> = (content: T) => HTMLAttributes<HTMLDivElement>;
+
+export type ColumnOptions<T extends TableData> = {
+    customColumns?: CustomColumn<T>[];
+    headers?: CustomHeader<T>[];
+    customCellView?: CustomCell<T>[];
+};
 
 /**
- * Types for what the accessor property method in the column object can accept as arguments
+ * Type for what the accessor property method in the column object can accept as arguments
  * and added to the value property of the table data model.
  * Note that accessors should return primitive values, so only use this when needed.
  */
-export type CellRenderProps<TData> = {
-    content: TData;
+export type CellRenderProps<T> = {
+    content: T;
     currentKey: string;
-    cellFn?: CellFn<TData>;
+    cellAttributeFn?: CellAttributeFn<T>;
 };
 
-export type CustomColumn = Column & Required<Pick<Column, 'Aggregated' | 'aggregate' | 'Header'>>;
+export type CustomColumn<T extends TableData = TableData> = Column<T> &
+    Required<Pick<Column<T>, 'Aggregated' | 'aggregate' | 'Header'>>;
 
-export type CustomCellType<TData, D extends TableData> = {
+export type CustomCellType<T, D extends TableData> = {
     /** Custom cell to be display. Has access to table data object when used as a method */
-    Cell: Renderer<CellProps<D, CellRenderProps<TData>>>;
+    Cell: Renderer<CellProps<D, CellRenderProps<T>>>;
 };
 
-export type CellType<TData, D extends TableData = TableData> =
+export type CellType<T, D extends TableData = TableData> =
     | 'Date'
     | 'Description'
     | 'Status'
-    | CustomCellType<TData, D>;
+    | CustomCellType<T, D>;
 
-export type CustomCell<TData> = {
+export type CustomCell<T> = {
     /** Unique key to specify which column the custom cell is added to */
-    key: keyof TData;
+    key: keyof T;
 
     /** What type of Cell view is wanted. Custom type is also possible by making type an object*/
-    type: CellType<TData>;
+    type: CellType<T>;
 
     /** Function that returns HTML attributes that are added to the custom cell, i.e. styling */
-    cellFn?: CellFn<TData>;
+    cellAttributeFn?: CellAttributeFn<T>;
 };
 
-export type CustomHeader<TData> = {
+export type CustomHeader<T> = {
     /** Unique key to specify which column the custom header is added to */
-    key: keyof TData;
+    key: keyof T;
 
     /** Title which is shown instead of default header title */
     title: string;
 };
 
-export type Column<TData extends TableData = TableData> = ColumnDefault<TData> &
-    UseSortByColumnOptions<TData> &
-    UseGroupByColumnOptions<TData> &
-    UseFiltersColumnOptions<TData> & {
-        columns?: Array<Column<TData>>;
+export type Column<T extends object = TableData> = ColumnDefault<T> &
+    UseSortByColumnOptions<T> &
+    UseGroupByColumnOptions<T> &
+    UseFiltersColumnOptions<T> & {
+        columns?: Array<Column<T>>;
         //ColumnHeader?: Renderer<HeaderProps<TData>>;
     };
+
+export type CellClickHandler<D extends TableData> = (
+    cell: Cell<D, Pick<CellRenderProps<D>, 'content' | 'currentKey'>>,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+) => void;
 
 declare module 'react-table' {
     //@ts-ignore
@@ -77,8 +90,10 @@ declare module 'react-table' {
             UseRowStateOptions<TData>,
             UseSortByOptions<TData>,
             TableData {
-        enableSelectRow?: boolean;
-        onCellClick?: (cell: Cell) => void;
+        /** Set to true if checkboxes should be shown */
+        enableSelectRows?: boolean;
+        /** Click handler for cells */
+        onCellClick?: CellClickHandler<TData>;
         setSelected?: (item: any) => void;
     }
 

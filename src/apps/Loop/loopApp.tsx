@@ -125,6 +125,11 @@ export function setup(appApi: AppApi) {
 
     commPkg.registerTableOptions({
         objectIdentifierKey: 'tagNo',
+        onCellClick: (a, b) => {
+            b.stopPropagation();
+
+            alert(a.column.canFilter);
+        },
         enableSelectRows: false,
         hiddenColumns: ['functionTags', 'signedAt', 'commPk'],
         headers: [
@@ -144,7 +149,7 @@ export function setup(appApi: AppApi) {
             {
                 key: 'status',
                 type: 'Status',
-                cellFn: (content) => {
+                cellAttributeFn: (content) => {
                     let bgcolor = '';
 
                     if (content.status === 'OK') {
@@ -169,7 +174,11 @@ export function setup(appApi: AppApi) {
                 key: 'formType',
                 type: {
                     Cell: ({ cell }) => {
-                        return <div style={{ fontWeight: 500 }}>{cell.value.content.formType}</div>;
+                        return (
+                            <div style={{ fontWeight: 500 }}>
+                                {cell.row.original.formType as string}
+                            </div>
+                        );
                     },
                 },
             },

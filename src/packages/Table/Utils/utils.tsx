@@ -2,8 +2,6 @@ import { SortByFn } from 'react-table';
 import { DateCell, DescriptionCell, StatusCell } from '../Components/Cells';
 import { CellType, CustomCell, CustomCellType, CustomHeader, TableData } from '../types';
 
-// export function getRowHeight(index: number): number {}
-
 export const findCustomHeader = <T extends TableData>(
     key: keyof T,
     headers?: CustomHeader<T>[]
@@ -62,9 +60,9 @@ export const hasCustomCell = <T extends TableData = TableData>(
     return false;
 };
 
-export const findCellFn = <D extends TableData>(
-    customCellView: CustomCell<D>[] | undefined,
-    key: keyof D
+export const findCellFn = <T extends TableData>(
+    customCellView: CustomCell<T>[] | undefined,
+    key: keyof T
 ) => {
     if (customCellView) {
         const currentIndex = customCellView.findIndex((c) => c.key === key);
@@ -72,9 +70,9 @@ export const findCellFn = <D extends TableData>(
         if (
             currentIndex !== undefined &&
             currentIndex > -1 &&
-            customCellView[currentIndex].cellFn
+            customCellView[currentIndex].cellAttributeFn
         ) {
-            return customCellView[currentIndex].cellFn;
+            return customCellView[currentIndex].cellAttributeFn;
         } else {
             return undefined;
         }

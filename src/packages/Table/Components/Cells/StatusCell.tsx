@@ -14,9 +14,12 @@ const Status = styled.div`
 
 export const StatusCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
     const {
-        value: { content, currentKey, cellFn },
+        value: { content, currentKey, cellAttributeFn },
     } = props;
 
-    const attr = useMemo(() => (cellFn ? cellFn(content) : undefined), [cellFn, content]);
+    const attr = useMemo(
+        () => (cellAttributeFn ? cellAttributeFn(content) : undefined),
+        [cellAttributeFn, content]
+    );
     return <Status {...attr}>{content[currentKey] as string}</Status>;
 };

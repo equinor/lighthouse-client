@@ -1,18 +1,12 @@
-import { ReactNode, useRef, useState } from 'react';
-import {
-    HeaderGroup,
-    HeaderPropGetter,
-    TableGroupByToggleProps,
-    TableHeaderProps,
-    TableSortByToggleProps,
-} from 'react-table';
-import { useFilter } from '../../Filter/Hooks/useFilter';
-import Icon from '../../Icon/Icon';
+import { Icon } from '@equinor/eds-core-react';
+import { useRef, useState } from 'react';
+import { HeaderGroup } from 'react-table';
+// TODO : alias import for filter?
+import { useFilter } from '../../../components/Filter/Hooks/useFilter';
 import { TableData } from '../types';
 import { HeaderCellMenu } from './HeaderCellMenu';
 import { ResizeHandle } from './ResizeHandle';
 import { HeaderActions, HeaderItem, TableHeadCell } from './Styles';
-
 export interface HeaderCellProps extends HeaderGroup<TableData> {
     FilterComponent?: React.FC<{ filterId: string }>;
 }
