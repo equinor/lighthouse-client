@@ -1,5 +1,6 @@
 import {
     PluginHook,
+    useColumnOrder,
     useExpanded,
     useFilters,
     useFlexLayout,
@@ -24,6 +25,7 @@ export function RegisterReactTableHooks<T extends TableData>(
     hooks.push(
         useFlexLayout,
         useFilters,
+        useColumnOrder,
         useGroupBy,
         useSortBy,
         useExpanded,

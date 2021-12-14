@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback } from 'react';
+import React, { PropsWithChildren, useCallback, useEffect, useLayoutEffect } from 'react';
 import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 import { useTable } from '../Hooks/useTable';
@@ -25,8 +25,15 @@ export function Table<TData extends TableData = TableData>({
 
     const defaultColumn = useDefaultColumn(options);
 
-    const { prepareRow, rows, getTableProps, getTableBodyProps, headerGroups, totalColumnsWidth } =
-        useTable({ ...options, defaultColumn }, hooks) as TableInstance<TableData>;
+    const {
+        prepareRow,
+        rows,
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        totalColumnsWidth,
+        setColumnOrder,
+    } = useTable({ ...options, defaultColumn }, hooks) as TableInstance<TableData>;
 
     const onCellClick: CellClickHandler<TableData> = useCallback(
         (cell, e) => {
@@ -34,6 +41,10 @@ export function Table<TData extends TableData = TableData>({
         },
         [options.onCellClick]
     );
+
+    useLayoutEffect(() => {
+        options?.columnOrder && setColumnOrder(options.columnOrder);
+    }, [options?.columnOrder]);
 
     return (
         <TableWrapper {...getTableProps()}>
