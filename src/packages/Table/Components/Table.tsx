@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback, useEffect, useLayoutEffect } from 'react';
+import React, { PropsWithChildren, useCallback, useLayoutEffect } from 'react';
 import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 import { useTable } from '../Hooks/useTable';
