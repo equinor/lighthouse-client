@@ -33,7 +33,7 @@ export interface ViewOptions<T> {
     };
 }
 
-export interface DataViewerApi<T extends object> {
+export interface DataViewerApi<T> {
     registerDataFetcher: (dataFetcher: DataFetcher<T>) => void;
     registerDataValidator: (validator: Validator<T>) => void;
     registerCustomContentView: (
