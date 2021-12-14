@@ -35,7 +35,6 @@ export function FactoryComponent({ onClose }: FactoryComponentProps): JSX.Elemen
         <>
             {Component && (
                 <Scrim
-                    //style={{ height: '100%', top: 0, right: 0, position: 'fixed' }}
                     onClose={() => {
                         if (hasUnsavedChanges) {
                             setShowDialog(true);
@@ -48,25 +47,25 @@ export function FactoryComponent({ onClose }: FactoryComponentProps): JSX.Elemen
                     <ScrimContainer>
                         <Container>
                             {showDialog && (
-                                <Scrim isDismissable={false}>
-                                    <ConfirmationDialog
-                                        dialogTitle={'Unsaved changes'}
-                                        dialogText={
-                                            'By clicking Ok, you will cancel creation and lose the information filled in.'
-                                        }
-                                        onConfirm={() => {
-                                            close();
-                                        }}
-                                        onReject={() => {
-                                            setShowDialog(false);
-                                        }}
-                                    />
-                                </Scrim>
+                                <ConfirmationDialog
+                                    dialogTitle={'Unsaved changes'}
+                                    dialogText={
+                                        'By clicking Ok, you will cancel creation and lose the information filled in.'
+                                    }
+                                    onConfirm={() => {
+                                        close();
+                                    }}
+                                    onReject={() => {
+                                        setShowDialog(false);
+                                    }}
+                                />
                             )}
                             <Component
                                 {...scope}
                                 closeScrim={closeScrim}
-                                setHasUnsavedChanges={() => setHasUnsavedChanges(true)}
+                                setHasUnsavedChanges={(value: boolean) =>
+                                    setHasUnsavedChanges(value)
+                                }
                             />
                         </Container>
                     </ScrimContainer>

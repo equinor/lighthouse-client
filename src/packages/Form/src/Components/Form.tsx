@@ -92,6 +92,5 @@ export function GeneratedForm<T>({
 const ButtonContainer = styled.div`
     display: flex;
     justify-content: flex-end;
-    margin-right: 5em;
     align-items: center;
 `;

@@ -6,17 +6,17 @@ interface WorkflowDotProps {
     state: 'Active' | 'Completed' | 'Inactive';
 }
 
-export const WorkflowDot = ({ state, height = 12, width = 12 }: WorkflowDotProps): JSX.Element => {
+export const WorkflowDot = ({ state, height = 15, width = 15 }: WorkflowDotProps): JSX.Element => {
     const color = useMemo(() => {
         switch (state) {
             case 'Active':
-                return '#00977B';
+                return '#78C0FF';
 
             case 'Completed':
                 return '#00977B';
 
             case 'Inactive':
-                return '#00977B';
+                return '##FFFFFF';
         }
     }, [state]);
 
@@ -28,7 +28,7 @@ export const WorkflowDot = ({ state, height = 12, width = 12 }: WorkflowDotProps
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <circle cx="6" cy="6" r="6" fill={color} />
+            <circle cx="6" cy="6" r="5.5" stroke="#6F6F6F" fill={color} />
         </svg>
     );
 };

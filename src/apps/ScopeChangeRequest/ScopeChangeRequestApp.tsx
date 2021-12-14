@@ -31,53 +31,55 @@ export function setup(appApi: AppApi): void {
         );
 
         return JSON.parse(await response.text());
-
-        // const a: ScopeChangeRequest = {
-        //     id: '1',
-        //     actualChangeHours: 2,
-        //     category: 'IC',
-        //     created: '',
-        //     createdBy: '',
-        //     description: '',
-        //     estimatedChangeHours: 2,
-        //     lastModified: '',
-        //     lastModifiedBy: '',
-        //     origin: '',
-        //     phase: '',
-        //     state: '',
-        //     title: '',
-        //     currentWorkflowStep: {
-        //         id: '1',
-        //         isCompleted: false,
-        //         name: 'initiator',
-        //         order: 1,
-        //     },
-        //     workflowSteps: [
-        //         {
-        //             id: '2',
-        //             isCompleted: false,
-        //             name: 'Coordinator',
-        //             order: 2,
-        //         },
-        //         {
-        //             id: '1',
-        //             isCompleted: false,
-        //             name: 'initiator',
-        //             order: 14,
-        //         },
-        //         {
-        //             id: '1',
-        //             isCompleted: false,
-        //             name: 'initiator',
-        //             order: 1,
-        //         },
-        //     ],
-        // };
-        // return [a];
     });
 
+    const scopeChangeExcludeKeys: (keyof ScopeChangeRequest)[] = [
+        'createdBy',
+        'created',
+        'lastModified',
+        'lastModifiedBy',
+        'description',
+        'id',
+        'currentWorkflowStep',
+        'workflowSteps',
+    ];
+
     request.registerFilterOptions({
-        excludeKeys: ['currentWorkflowStep', 'workflowSteps'],
+        excludeKeys: scopeChangeExcludeKeys,
+        typeMap: {},
+        groupValue: {
+            signedAtDate: (item: ScopeChangeRequest): string => {
+                if (item.created === '') return 'unknown';
+                switch (new Date(item.created).getMonth()) {
+                    case 0:
+                        return 'January';
+                    case 1:
+                        return 'February';
+                    case 2:
+                        return 'March';
+                    case 3:
+                        return 'April';
+                    case 4:
+                        return 'May';
+                    case 5:
+                        return 'June';
+                    case 6:
+                        return 'July';
+                    case 7:
+                        return 'August';
+                    case 8:
+                        return 'September';
+                    case 9:
+                        return 'October';
+                    case 10:
+                        return 'November';
+                    case 11:
+                        return 'December';
+                    default:
+                        return 'Unknown';
+                }
+            },
+        },
     });
 
     request.registerViewOptions({
@@ -97,6 +99,16 @@ export function setup(appApi: AppApi): void {
             { key: 'actualChangeHours', title: 'Actual hours' },
             { key: 'category', title: 'Category' },
             { key: 'workflowSteps', title: 'Workflow' },
+            { key: 'title', title: 'Title' },
+            { key: 'description', title: 'Description' },
+            { key: 'phase', title: 'Phase' },
+            { key: 'createdBy', title: 'Created by' },
+            { key: 'estimatedChangeHours', title: 'Estimate hours' },
+            { key: 'lastModified', title: 'Last modified' },
+            { key: 'lastModifiedBy', title: 'Last modified by' },
+            { key: 'origin', title: 'Origin' },
+            { key: 'state', title: 'State' },
+            { key: 'created', title: 'Created' },
         ],
         customCellView: [
             {
@@ -112,7 +124,7 @@ export function setup(appApi: AppApi): void {
                 type: {
                     Cell: ({ cell }) => {
                         return (
-                            <div style={{ width: '100%' }}>
+                            <div>
                                 <Workflow
                                     steps={cell.value.content.workflowSteps}
                                     statusDotFunc={statusDotFunc}

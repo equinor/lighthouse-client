@@ -2,7 +2,6 @@ import { Button } from '@equinor/eds-core-react';
 import { GeneratedForm, useFormSchema, useFormValidation } from '@equinor/Form';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useDataContext } from '../../../../components/CompletionView/src/Context/DataProvider';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 
 interface ScopeChangeRequestFormProps {

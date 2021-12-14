@@ -21,9 +21,9 @@ export function Workflow<T>({
     return (
         <>
             <WorkflowContainer direction={spanDirection === 'horizontal' ? 'row' : 'column'}>
-                {steps.map((x) => {
+                {steps.map((x, id) => {
                     return (
-                        <>
+                        <div key={id}>
                             <WorkflowStep>
                                 <WorkflowDot
                                     height={dotSize}
@@ -32,7 +32,7 @@ export function Workflow<T>({
                                 />
                                 {stepName && x[stepName]}
                             </WorkflowStep>
-                        </>
+                        </div>
                     );
                 })}
             </WorkflowContainer>

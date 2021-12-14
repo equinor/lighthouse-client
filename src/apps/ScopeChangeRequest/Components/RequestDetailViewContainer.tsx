@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { RequestDetailView } from './DetailView/RequestDetailView';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { ScopeChangeRequestEditForm } from './Form/ScopeChangeRequestEditForm';
-import styled from 'styled-components';
 
 interface RequestViewContainerProps {
     request: ScopeChangeRequest;
@@ -30,13 +29,6 @@ export const RequestViewContainer = ({ request }: RequestViewContainerProps): JS
         </>
     );
 };
-
-const ButtonContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    padding-right: 2em;
-`;
 
 // const onDelete = () => {
 //     const requestOptions = {

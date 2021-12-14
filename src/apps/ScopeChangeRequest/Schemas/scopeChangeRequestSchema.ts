@@ -67,33 +67,6 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequestFormModel> = {
         inputType: { type: 'TextArea' },
         order: 4,
     },
-
-    // responsible: {
-    //     isRequired: true,
-    //     label: 'Responsible',
-    //     editable: true,
-    //     inputType: { type: 'SingleSelect', selectOptions: getResponsibles() },
-    //     order: 3,
-    // },
-    // guesstimateHrs: {
-    //     isRequired: true,
-    //     label: 'Guesstimate',
-    //     editable: true,
-    //     inputType: { type: 'NumberInput' },
-    //     order: 5,
-    // },
-    // tags: {
-    //     isRequired: true,
-    //     label: 'Tags',
-    //     editable: true,
-    //     inputType: {
-    //         type: 'MultiSelect',
-    //         selectOptions: () => {
-    //             return ['1', '2'];
-    //         },
-    //     },
-    //     order: 6,
-    // },
 };
 
 const getCategories = async (): Promise<string[]> => {

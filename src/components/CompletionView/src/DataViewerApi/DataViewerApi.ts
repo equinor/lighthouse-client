@@ -62,7 +62,7 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    dataSource: dataSource,
+                    dataSource,
                 },
             }));
         },

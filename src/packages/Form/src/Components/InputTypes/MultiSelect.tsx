@@ -44,7 +44,6 @@ export const MultiSelect = ({
 
     return (
         <>
-            {/* Global multiSelect custom component */}
             {CustomComponent ? (
                 <CustomComponent
                     setter={setter}
