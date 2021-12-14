@@ -1,15 +1,9 @@
-import { Button } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { Form } from '../Types/form';
 import { GeneratedField } from './GeneratedField';
-import { useFormValidation } from '../Hooks/useFormValidation';
 import { Value } from '../Types/value';
 import { SectionRow } from '../Styles/Section';
-
-interface Events {
-    onCancel: () => void;
-    onSubmit: () => void;
-}
+import React from 'react';
 
 export interface Behaviour {
     hideDisabledFields?: (() => boolean) | boolean;
@@ -25,20 +19,19 @@ export interface Components {
 interface FormProps<T> {
     formData: Form<T>;
     editMode: boolean;
-    events: Events;
     title?: string;
     behaviour?: Behaviour;
     customComponents?: Components;
+    buttons?: React.FC[];
 }
 export function GeneratedForm<T>({
     formData,
     editMode,
-    events: { onCancel, onSubmit },
     title,
     customComponents,
     behaviour,
+    buttons,
 }: FormProps<T>): JSX.Element {
-    const { isValidForm } = useFormValidation(formData);
     const allItems: Value<unknown>[][] = [];
     const ids = new Set();
     const fields: Value<unknown>[] = [];
@@ -54,7 +47,7 @@ export function GeneratedForm<T>({
 
     return (
         <>
-            <h1>{title}</h1>
+            {title && <h1>{title}</h1>}
 
             <>
                 {allItems.map((fieldArray) => {
@@ -83,13 +76,14 @@ export function GeneratedForm<T>({
             </>
 
             <ButtonContainer>
-                <Button onClick={onCancel} variant={'outlined'} color={'danger'}>
-                    Cancel
-                </Button>
-                <HorizontalSpacer />
-                <Button onClick={onSubmit} type={'submit'} disabled={!isValidForm}>
-                    {editMode ? 'Save' : 'Submit'}
-                </Button>
+                {buttons &&
+                    buttons.map((Component, index) => {
+                        return (
+                            <div key={index} style={{ margin: '0.2em' }}>
+                                <Component />
+                            </div>
+                        );
+                    })}
             </ButtonContainer>
         </>
     );
@@ -100,8 +94,4 @@ const ButtonContainer = styled.div`
     justify-content: flex-end;
     margin-right: 5em;
     align-items: center;
-`;
-const HorizontalSpacer = styled.div`
-    margin-right: 0.2em;
-    margin-left: 0.2em;
 `;

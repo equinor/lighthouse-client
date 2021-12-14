@@ -18,7 +18,9 @@ export const CustomSidesheet = ({
                 <>
                     <Wrapper>
                         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                            <Button onClick={() => onClose()}>X</Button>
+                            <Button variant="ghost_icon" onClick={onClose}>
+                                <h2>x</h2>
+                            </Button>
                         </div>
                         <RequestViewContainer close={onClose} request={item} />
                     </Wrapper>

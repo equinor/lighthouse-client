@@ -20,6 +20,9 @@
         ],
         "sourceMap": true,
         "paths": {
+            "@equinor/DataFactory": [
+                "./src/Core/DataFactory"
+            ],
             "@equinor/VisualEditor": [
                 "./src/packages/VisualEditor"
             ],

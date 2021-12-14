@@ -5,7 +5,7 @@ export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
     return [
         {
             title: 'Open requests',
-            value: () => data.length.toString(),
+            value: () => data.filter((x) => x.state === 'Open').length.toString(),
             status: 'default',
         },
         {

@@ -1,3 +1,4 @@
+import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import {
     DataViewSideSheetOptions,
@@ -12,11 +13,13 @@ import {
 
 export type DataSource<T> = () => Promise<T[]>;
 export type Validator<T> = (data: unknown[]) => T[];
+export type FactoryOptions = Omit<Factory, 'factoryId'>;
 
 export interface ViewerOptions<T> {
     initialState: T[];
     primaryViewKey: keyof T;
     viewerId: string;
+    dataFactoryCreator?: (factory: Factory) => void;
 }
 
 export interface DataViewerProps<T> extends ViewOptions<T> {
@@ -37,6 +40,7 @@ export interface ViewOptions<T> {
 
 export interface DataViewerApi<T> {
     registerDataSource: (dataSource: DataSource<T>) => void;
+    registerDataCreator: (factory: FactoryOptions) => void;
     registerDataValidator: (validator: Validator<T>) => void;
     registerCustomContentView: (
         viewComponent: React.FC<DataViewerProps<T>>,

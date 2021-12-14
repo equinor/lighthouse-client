@@ -5,6 +5,7 @@ export const Section = styled.div`
     flex-direction: column;
     margin: 1em;
     align-items: flex-start;
+    width: 100%;
 `;
 
 interface SectionTitleProps {
@@ -19,12 +20,12 @@ export const SectionText = styled.div`
     margin: 0.2rem;
     font-size: ${(x: SectionTitleProps) => x.fontSize};
     font-weight: ${(x: SectionTitleProps) => (x.bold ? 'bold' : '')};
+    width: 100%;
 `;
 
 export const SectionRow = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 100%;
     justify-content: flex-start;
 `;

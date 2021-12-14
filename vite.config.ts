@@ -1,7 +1,7 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import * as path from 'path';
 import copy from 'rollup-plugin-copy';
+import { defineConfig } from 'vite';
 export default defineConfig({
     plugins: [react()],
 
@@ -15,6 +15,7 @@ export default defineConfig({
         alias: {
             '@equinor/VisualEditor': path.resolve(__dirname, './src/packages/VisualEditor'),
             '@equinor/Form': path.resolve(__dirname, './src/packages/Form'),
+            '@equinor/DataFactory': path.resolve(__dirname, './src/Core/DataFactory'),
             '@equinor/StatusBar': path.resolve(__dirname, './src/packages/StatusBar'),
             '@equinor/Diagrams': path.resolve(__dirname, './src/packages/Diagrams'),
             '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),

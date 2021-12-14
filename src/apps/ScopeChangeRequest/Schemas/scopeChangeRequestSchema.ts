@@ -11,7 +11,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequestFormModel> = {
         label: 'Title',
         editable: true,
         inputType: { type: 'TextInput' },
-        order: 0,
+        order: 1,
         validationFunction: (value: string) => {
             if (!value) {
                 return false;
@@ -23,13 +23,19 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequestFormModel> = {
             }
         },
     },
-    description: {
+    phase: {
         isRequired: true,
-        label: 'Description',
+        label: 'Phase',
         editable: true,
-        inputType: { type: 'TextArea' },
-        order: 1,
+        inputType: {
+            type: 'SingleSelect',
+            selectOptions: async () => {
+                return await getPhases();
+            },
+        },
+        order: 2,
     },
+
     category: {
         isRequired: true,
         label: 'Category',
@@ -40,7 +46,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequestFormModel> = {
                 return await getCategories();
             },
         },
-        order: 2,
+        order: 3,
     },
     origin: {
         isRequired: true,
@@ -54,18 +60,14 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequestFormModel> = {
         },
         order: 3,
     },
-    phase: {
+    description: {
         isRequired: true,
-        label: 'Phase',
+        label: 'Description',
         editable: true,
-        inputType: {
-            type: 'SingleSelect',
-            selectOptions: async () => {
-                return await getPhases();
-            },
-        },
+        inputType: { type: 'TextArea' },
         order: 4,
     },
+
     // responsible: {
     //     isRequired: true,
     //     label: 'Responsible',

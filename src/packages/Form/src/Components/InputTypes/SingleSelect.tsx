@@ -41,7 +41,7 @@ export const SingleSelect = ({
     }, []);
 
     return (
-        <>
+        <div style={{ width: '100%' }}>
             {CustomComponent ? (
                 <CustomComponent
                     setter={setter}
@@ -51,7 +51,7 @@ export const SingleSelect = ({
                 />
             ) : (
                 <Select
-                    style={{ marginBottom: '0.2em' }}
+                    style={{ marginBottom: '0.2em', width: '100%' }}
                     disabled={editMode ? !field?.editable : false}
                     items={items}
                     label={''}
@@ -65,6 +65,6 @@ export const SingleSelect = ({
                     }}
                 />
             )}
-        </>
+        </div>
     );
 };
