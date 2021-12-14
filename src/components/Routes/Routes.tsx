@@ -16,6 +16,12 @@ export function Routes(): JSX.Element {
                 render={() => <HomePage title="Johan Castberg Dashboard" icon="home" />}
             />
             {apps.map((route) => {
+                route.app?.setup &&
+                    route.app.setup({
+                        ...route,
+                        appConfig,
+                        authProvider,
+                    });
                 return (
                     <Route
                         exact
@@ -23,12 +29,6 @@ export function Routes(): JSX.Element {
                         path={`/${route.shortName}`}
                         render={() => {
                             const Component = route.app?.component || DefaultRouteComponent;
-                            route.app?.setup &&
-                                route.app.setup({
-                                    ...route,
-                                    appConfig,
-                                    authProvider,
-                                });
 
                             const api = { ...route, authProvider, appConfig };
 
