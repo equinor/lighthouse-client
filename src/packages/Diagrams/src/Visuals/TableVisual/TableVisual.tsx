@@ -48,8 +48,8 @@ export function TableVisual<T extends Record<string, unknown>>({
             defaultColumn,
             initialState,
         },
-        useGroupBy,
-        useExpanded
+        useFlexLayout,
+        useGroupBy
     ) as Table;
 
     const { styles } = options;
@@ -71,7 +71,7 @@ export function TableVisual<T extends Record<string, unknown>>({
                     </TypeChip>
                 ))}
             </TypeWrapper>
-            <TableWrapper {...getTableProps({ style: { ...(styles?.table || {}) } })}>
+            <TableWrapper {...getTableProps({ style: { ...styles?.table } })}>
                 <TableHeader style={{ ...(styles?.tableHeader || {}) }}>
                     {headerGroups.map((group) => {
                         const { style, key } = group.getHeaderGroupProps({
@@ -92,7 +92,7 @@ export function TableVisual<T extends Record<string, unknown>>({
                         );
                     })}
                 </TableHeader>
-                <TableRows {...getTableBodyProps({ style: { ...(styles?.tableRows || {}) } })}>
+                <TableRows {...getTableBodyProps({ style: { ...styles?.tableRows } })}>
                     {rows.map((row) => {
                         prepareRow(row);
                         const { style, key } = row.getRowProps({
@@ -120,10 +120,10 @@ export function TableVisual<T extends Record<string, unknown>>({
                         );
                     })}
                 </TableRows>
-                <TableFooter style={{ ...(styles?.tableFooter || {}) }}>
+                <TableFooter style={{ ...styles?.tableFooter }}>
                     {footerGroups.map((group) => {
                         const { key, style } = group.getFooterGroupProps({
-                            style: { ...(styles?.tableFooterRow || {}) },
+                            style: { ...styles?.tableFooterRow },
                         });
 
                         return (
