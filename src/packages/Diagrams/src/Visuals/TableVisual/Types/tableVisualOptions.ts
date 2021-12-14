@@ -8,9 +8,11 @@ export type TableStyles = {
     tableFooter?: React.CSSProperties;
     tableFooterRow?: React.CSSProperties;
 };
+
+export type GroupBy<T extends Record<string, unknown>> = { key: keyof T; title?: string };
 export interface TableVisualOptions<T extends Record<string, unknown>> {
     initialGroupBy: keyof T;
-    groupBy?: (keyof T)[];
+    groupBy?: GroupBy<T>[];
     columns?: Column<T>[];
     styles?: TableStyles;
 }

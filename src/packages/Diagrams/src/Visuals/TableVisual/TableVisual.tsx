@@ -59,15 +59,15 @@ export function TableVisual<T extends Record<string, unknown>>({
             <TypeWrapper>
                 {options?.groupBy?.map((groupBy) => (
                     <TypeChip
-                        key={groupBy.toString()}
-                        onClick={() => setGroupBy([groupBy.toString()])}
+                        key={groupBy.key.toString()}
+                        onClick={() => setGroupBy([groupBy.key.toString()])}
                         variant={
-                            (state as any)?.groupBy.includes(groupBy.toString())
+                            (state as any)?.groupBy.includes(groupBy.key.toString())
                                 ? 'active'
                                 : 'default'
                         }
                     >
-                        {groupBy.toString()}
+                        {groupBy?.title || groupBy.key}
                     </TypeChip>
                 ))}
             </TypeWrapper>
