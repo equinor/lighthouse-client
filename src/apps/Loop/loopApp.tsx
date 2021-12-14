@@ -68,12 +68,7 @@ export function setup(appApi: AppApi) {
         viewerId: appApi.shortName,
     });
 
-    // commPkg.registerDataCreator({
-    //     title: 'Create Loop',
-    //     component: (scope: any) => <div>Create Loop {scope.test}</div>,
-    // });
-
-    commPkg.registerDataFetcher(async () => {
+    commPkg.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
         const project = 'L.O532C.002';
         const response = await api.fetch(

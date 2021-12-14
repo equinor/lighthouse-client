@@ -14,49 +14,83 @@ export function FactoryComponent({ onClose }: FactoryComponentProps): JSX.Elemen
     const { activeFactory, scope } = useFactories();
     const [showDialog, setShowDialog] = useState<boolean>(false);
     const Component = activeFactory?.component;
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+
+    const closeScrim = () => {
+        if (hasUnsavedChanges) {
+            setShowDialog(true);
+        } else {
+            close();
+        }
+    };
+
+    const close = () => {
+        clearActiveFactory();
+        onClose && onClose;
+        setShowDialog(false);
+        setHasUnsavedChanges(false);
+    };
 
     return (
         <>
             {Component && (
                 <Scrim
                     onClose={() => {
-                        setShowDialog(true);
-                        onClose && onClose();
+                        if (hasUnsavedChanges) {
+                            setShowDialog(true);
+                        } else {
+                            close();
+                        }
                     }}
                     isDismissable={true}
                 >
-                    <Container>
-                        {showDialog && (
-                            <Scrim isDismissable={false}>
+                    <ScrimContainer>
+                        <Container>
+                            {showDialog && (
                                 <ConfirmationDialog
                                     dialogTitle={'Unsaved changes'}
                                     dialogText={
                                         'By clicking Ok, you will cancel creation and lose the information filled in.'
                                     }
                                     onConfirm={() => {
-                                        clearActiveFactory();
-                                        setShowDialog(false);
+                                        close();
                                     }}
                                     onReject={() => {
                                         setShowDialog(false);
                                     }}
                                 />
-                            </Scrim>
-                        )}
-                        <Component {...scope} />
-                    </Container>
+                            )}
+                            <Component
+                                {...scope}
+                                closeScrim={closeScrim}
+                                setHasUnsavedChanges={(value: boolean) =>
+                                    setHasUnsavedChanges(value)
+                                }
+                            />
+                        </Container>
+                    </ScrimContainer>
                 </Scrim>
             )}
         </>
     );
 }
 
+const ScrimContainer = styled.div`
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    max-width: 90vh;
+`;
+
 const Container = styled.div`
-    height: 40vh;
-    width: 90vh;
+    min-width: 60vh;
     background: #ffffff;
-    display: flex;
+    overflow: hidden;
     align-content: stretch;
     align-items: center;
     justify-content: center;
+    padding: 2em;
+    height: 100%;
+    overflow: hidden;
 `;

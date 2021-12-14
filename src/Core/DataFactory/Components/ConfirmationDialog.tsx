@@ -1,4 +1,4 @@
-import { Button, Dialog } from '@equinor/eds-core-react';
+import { Button, Dialog, Scrim } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 
 interface ConfirmationDialogProps {
@@ -16,32 +16,34 @@ export const ConfirmationDialog = ({
 }: ConfirmationDialogProps): JSX.Element => {
     return (
         <>
-            <Dialog style={{ width: 'auto' }}>
-                <DialogPadding>
-                    <h2>{dialogTitle}</h2>
-                    <p>{dialogText}</p>
-                    <ButtonContainer>
-                        <Button
-                            onClick={() => {
-                                onReject && onReject();
-                            }}
-                            variant={'ghost_icon'}
-                            color={'danger'}
-                        >
-                            Cancel
-                        </Button>
-                        <HorizontalDivider />
-                        <Button
-                            variant={'ghost_icon'}
-                            onClick={() => {
-                                onConfirm && onConfirm();
-                            }}
-                        >
-                            Ok
-                        </Button>
-                    </ButtonContainer>
-                </DialogPadding>
-            </Dialog>
+            <Scrim isDismissable={false}>
+                <Dialog style={{ width: 'auto' }}>
+                    <DialogPadding>
+                        <h2>{dialogTitle}</h2>
+                        <p>{dialogText}</p>
+                        <ButtonContainer>
+                            <Button
+                                onClick={() => {
+                                    onReject && onReject();
+                                }}
+                                variant={'ghost_icon'}
+                                color={'danger'}
+                            >
+                                Cancel
+                            </Button>
+                            <HorizontalDivider />
+                            <Button
+                                variant={'ghost_icon'}
+                                onClick={() => {
+                                    onConfirm && onConfirm();
+                                }}
+                            >
+                                Ok
+                            </Button>
+                        </ButtonContainer>
+                    </DialogPadding>
+                </Dialog>
+            </Scrim>
         </>
     );
 };
