@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Column, useExpanded, useFlexLayout, useGroupBy, useTable } from 'react-table';
+import { useFlexLayout, useGroupBy, useTable } from 'react-table';
 import { useColumns } from './Hooks/useColumns';
 import { useTableDefaults } from './Hooks/useTableDefaults';
 import {
@@ -22,7 +22,30 @@ interface TableVisualProps<T extends Record<string, unknown>> {
     data: T[];
     options: TableVisualOptions<T>;
 }
+/**
+ * Table Visual - a grouped table 
+ * Use if you want to show a table with specified columns, that needs computation or special look. 
+ * 
+ * @param data dataset for the table. 
+ * @param options Table configuration. 
+ * @param initialGroupBy column to group the table by initially. 
+ * @param groupBy Array off columns that can be selected as group by. 
+ * @param columns configuration for columns to display. If omitted all fields in data is displayed
+ * @param styles override or change style of the Table 
+ * @returns Grouped tabled based on data and options. Built with React Table
+ * @example  
+ *     
+ *   <TableVisual<Package>
+            data={data}
+            options={{
+                initialGroupBy: 'PackageField',
+                groupBy,
+                columns,
+            }}
+        />
 
+
+ */
 export function TableVisual<T extends Record<string, unknown>>({
     data,
     options,
