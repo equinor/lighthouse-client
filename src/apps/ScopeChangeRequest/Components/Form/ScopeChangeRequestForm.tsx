@@ -1,17 +1,26 @@
 import { Button } from '@equinor/eds-core-react';
 import { GeneratedForm, useFormSchema, useFormValidation } from '@equinor/Form';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: () => void;
+    setHasUnsavedChanges: () => void;
 }
 
 export const ScopeChangeRequestForm = ({
     closeScrim,
+    setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
     const formData = useFormSchema(scopeChangeRequestSchema);
     const { isValidForm } = useFormValidation(formData);
+
+    useEffect(() => {
+        if (Object.keys(formData.getChangedData()).length > 0) {
+            setHasUnsavedChanges();
+        }
+    });
 
     const SubmitButton = () => {
         return (
@@ -43,9 +52,7 @@ export const ScopeChangeRequestForm = ({
         fetch(
             `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`,
             requestOptions
-        )
-            .then((response) => response.json())
-            .then((data) => console.log(data));
+        );
         console.log('Form submitted');
     };
 
@@ -66,7 +73,6 @@ export const ScopeChangeRequestForm = ({
         )
             .then((response) => response.json())
             .then((data) => console.log(data));
-        console.log('Form submitted');
     };
 
     return (
@@ -81,7 +87,6 @@ export const ScopeChangeRequestForm = ({
                 formData={formData}
                 editMode={false}
                 buttons={[SubmitButton, SaveButton]}
-            //events={{ onSubmit, onCancel: () => console.log('cancelled') }}
             />
         </>
     );

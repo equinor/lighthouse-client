@@ -1,12 +1,13 @@
 import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
 import { AppApi } from '../apps';
-import { ScopeChangeRequest } from './Types/scopeChangeRequest';
+import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 import { baseClient } from '@equinor/http-client';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { CustomSidesheet } from './Components/CustomSidesheet';
 import { createDataFactory } from '@equinor/DataFactory';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { Workflow } from './Components/Workflow/Workflow';
 
 export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
@@ -89,8 +90,55 @@ export function setup(appApi: AppApi): void {
 
     request.registerTableOptions({
         objectIdentifierKey: 'id',
+        enableSelectRows: true,
+        hiddenColumns: ['currentWorkflowStep', 'createdBy', 'lastModified', 'lastModifiedBy'],
+        headers: [
+            { key: 'id', title: 'Id' },
+            { key: 'actualChangeHours', title: 'Actual hours' },
+            { key: 'category', title: 'Category' },
+            { key: 'workflowSteps', title: 'Workflow' },
+        ],
+        customCellView: [
+            {
+                key: 'created',
+                type: 'Date',
+            },
+            {
+                key: 'description',
+                type: 'Description',
+            },
+            {
+                key: 'workflowSteps',
+                type: {
+                    Cell: ({ cell }) => {
+                        return (
+                            <div style={{ width: '100%' }}>
+                                <Workflow
+                                    steps={cell.value.content.workflowSteps}
+                                    statusDotFunc={statusDotFunc}
+                                    spanDirection={'horizontal'}
+                                />
+                            </div>
+                        );
+                    },
+                },
+            },
+        ],
     });
 
+    const statusDotFunc = (item: WorkflowStep) => {
+        if (item.isCurrent) {
+            return 'Active';
+        }
+
+        switch (item.isCompleted) {
+            case true:
+                return 'Completed';
+
+            case false:
+                return 'Inactive';
+        }
+    };
     //request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'id' });
 
     request.registerAnalyticsOptions(analyticsOptions);

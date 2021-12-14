@@ -18,7 +18,6 @@ export function Workflow<T>({
     spanDirection,
     dotSize,
 }: WorkflowProps<T>): JSX.Element {
-    console.log(dotSize);
     return (
         <>
             <WorkflowContainer direction={spanDirection === 'horizontal' ? 'row' : 'column'}>
@@ -45,7 +44,7 @@ const WorkflowStep = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px;
+    margin: 2px;
 `;
 
 export interface WorkflowStep {

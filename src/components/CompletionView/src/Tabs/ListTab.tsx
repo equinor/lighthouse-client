@@ -1,27 +1,37 @@
 import styled from 'styled-components';
-// import { DataTable } from "../../../DataTable/Components/Table";
+import { defaultGroupByFn, Table, TableData, useColumns } from '@equinor/Table';
 import { useFilteredData } from '../../../Filter';
 import { PopupFilter } from '../../../Filter/Components/PopoutFilter/PopupFilter';
-import { DataTable } from '../../../Table/Components/Table';
-import { useColumns } from '../../../Table/Hooks/useColumns';
 import { useDataContext } from '../Context/DataProvider';
 
 const Wrapper = styled.section`
     /* overflow: scroll; */
 `;
 
-export const ListTab = (): JSX.Element => {
-    const { data } = useFilteredData<Record<string, Record<string, unknown>>>();
-    const { setSelected } = useDataContext();
-    const columns = useColumns(data[0]);
-
+export const ListTab = () => {
+    const { data } = useFilteredData<TableData>();
+    const { tableOptions, setSelected } = useDataContext();
+    const columns = useColumns(data[0], {
+        customCellView: tableOptions?.customCellView,
+        headers: tableOptions?.headers,
+        customColumns: tableOptions?.customColumns,
+    });
+    const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
     return (
         <Wrapper>
-            <DataTable
-                data={data}
-                columns={columns}
+            <Table<TableData>
+                options={{
+                    data,
+                    columns,
+                    enableSelectRow: tableOptions?.enableSelectRows,
+                    onCellClick: tableOptions?.onCellClick,
+                    initialState: {
+                        hiddenColumns: hiddenCols,
+                    },
+                    setSelected,
+                    groupByFn: defaultGroupByFn,
+                }}
                 FilterComponent={PopupFilter}
-                setSelected={setSelected}
             />
         </Wrapper>
     );

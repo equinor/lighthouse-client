@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-
 import { useDataContext } from '../../Context/DataProvider';
 import { DefaultDataView } from './DefaultView';
 
 export function DataView(): JSX.Element {
-    const { item, viewOptions, dataViewSideSheetOptions } = useDataContext();
+    const { data, item, viewOptions, dataViewSideSheetOptions } = useDataContext();
+
     const [selectedData, setSelectedData] = useState<any>(undefined);
 
     const handleClose = () => {
@@ -24,6 +24,7 @@ export function DataView(): JSX.Element {
                     viewOptions={viewOptions}
                     selectedData={selectedData}
                     onClose={handleClose}
+                    data={data}
                 />
             )}
         </>

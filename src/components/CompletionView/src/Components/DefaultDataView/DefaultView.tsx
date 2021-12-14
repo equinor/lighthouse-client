@@ -2,18 +2,21 @@ import { Button, Icon } from '@equinor/eds-core-react';
 import React from 'react';
 import { ViewOptions } from '../../DataViewerApi/DataViewerTypes';
 import { DataEntry, DataGrid, Description, Section, Title, Wrapper } from './DataView.styles';
-import { DataTable } from '../../../../DataTable/Components/Table';
+import { Table, useColumns } from '@equinor/Table';
 
 interface DefaultDataViewProps {
     selectedData: any;
     onClose: () => void;
     viewOptions?: ViewOptions<unknown>;
+    data: any[];
 }
 export const DefaultDataView = ({
     viewOptions,
     selectedData,
     onClose,
+    data,
 }: DefaultDataViewProps): JSX.Element => {
+    const columns = useColumns(data[0]);
     return (
         <>
             {selectedData && viewOptions && !!Object.keys(selectedData).length && (
@@ -63,13 +66,15 @@ export const DefaultDataView = ({
 
                         {Object.keys(selectedData).map((key) => {
                             const data = selectedData[key];
+
                             if (Array.isArray(data) && data.length > 0)
                                 return (
                                     <Section>
                                         <>
                                             <strong>{key}: </strong>
+
                                             {typeof data[0] === 'object' ? (
-                                                <DataTable data={data} />
+                                                <Table options={{ data, columns }} />
                                             ) : (
                                                 <div>
                                                     {data.map((item, index) => (

@@ -26,6 +26,9 @@
             "@equinor/VisualEditor": [
                 "./src/packages/VisualEditor"
             ],
+            "@equinor/Table": [
+                "./src/packages/Table"
+            ],
             "@equinor/Form": [
                 "./src/packages/Form"
             ],

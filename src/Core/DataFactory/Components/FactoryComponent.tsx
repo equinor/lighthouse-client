@@ -14,10 +14,21 @@ export function FactoryComponent({ onClose }: FactoryComponentProps): JSX.Elemen
     const { activeFactory, scope } = useFactories();
     const [showDialog, setShowDialog] = useState<boolean>(false);
     const Component = activeFactory?.component;
+    const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
     const closeScrim = () => {
-        setShowDialog(true);
-        onClose && onClose();
+        if (hasUnsavedChanges) {
+            setShowDialog(true);
+        } else {
+            close();
+        }
+    };
+
+    const close = () => {
+        clearActiveFactory();
+        onClose && onClose;
+        setShowDialog(false);
+        setHasUnsavedChanges(false);
     };
 
     return (
@@ -26,8 +37,11 @@ export function FactoryComponent({ onClose }: FactoryComponentProps): JSX.Elemen
                 <Scrim
                     //style={{ height: '100%', top: 0, right: 0, position: 'fixed' }}
                     onClose={() => {
-                        setShowDialog(true);
-                        onClose && onClose();
+                        if (hasUnsavedChanges) {
+                            setShowDialog(true);
+                        } else {
+                            close();
+                        }
                     }}
                     isDismissable={true}
                 >
@@ -41,8 +55,7 @@ export function FactoryComponent({ onClose }: FactoryComponentProps): JSX.Elemen
                                             'By clicking Ok, you will cancel creation and lose the information filled in.'
                                         }
                                         onConfirm={() => {
-                                            clearActiveFactory();
-                                            setShowDialog(false);
+                                            close();
                                         }}
                                         onReject={() => {
                                             setShowDialog(false);
@@ -50,7 +63,11 @@ export function FactoryComponent({ onClose }: FactoryComponentProps): JSX.Elemen
                                     />
                                 </Scrim>
                             )}
-                            <Component {...scope} closeScrim={closeScrim} />
+                            <Component
+                                {...scope}
+                                closeScrim={closeScrim}
+                                setHasUnsavedChanges={() => setHasUnsavedChanges(true)}
+                            />
                         </Container>
                     </ScrimContainer>
                 </Scrim>

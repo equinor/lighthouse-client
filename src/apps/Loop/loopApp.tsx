@@ -135,7 +135,73 @@ export function setup(appApi: AppApi) {
         },
     });
 
-    commPkg.registerTableOptions({ objectIdentifierKey: 'tagNo' });
+    commPkg.registerTableOptions({
+        objectIdentifierKey: 'tagNo',
+        // hiddenColumns: ['functionTags', 'signedAt', 'commPk'],
+        // headers: [
+        //     { key: 'formType', title: 'Form' },
+        //     { key: 'createdAt', title: 'Created Date' },
+        // ],
+        // customCellView: [
+        //     {
+        //         key: 'createdAt',
+        //         type: 'Date',
+        //     },
+        //     {
+        //         key: 'description',
+        //         type: 'Description',
+        //     },
+
+        //     {
+        //         key: 'status',
+        //         type: 'Status',
+        //         cellAttributeFn: (content) => {
+        //             let bgcolor = '';
+
+        //             if (content.status === 'OK') {
+        //                 bgcolor = 'green';
+        //             } else if (content.status === 'OS') {
+        //                 bgcolor = 'blue';
+        //             } else if (content.status === 'PA') {
+        //                 bgcolor = 'red';
+        //             } else {
+        //                 bgcolor = 'yellow';
+        //             }
+
+        //             return {
+        //                 style: {
+        //                     backgroundColor: bgcolor,
+        //                     color: bgcolor === 'blue' ? 'white' : 'black',
+        //                 },
+        //             };
+        //         },
+        //     },
+        //     {
+        //         key: 'formType',
+        //         type: {
+        //             Cell: ({ cell }) => {
+        //                 return (
+        //                     <div style={{ fontWeight: 500 }}>
+        //                         {cell.row.original.formType as string}
+        //                     </div>
+        //                 );
+        //             },
+        //         },
+        //     },
+        // ],
+        // customColumns: [
+        //     {
+        //         Header: 'Custom',
+        //         accessor: (row) => {
+        //             return row['contentChecklists'].length + 1;
+        //         },
+        //         aggregate: 'count',
+        //         Aggregated: (cell) => {
+        //             return <div>{cell.value}</div>;
+        //         },
+        //     },
+        // ],
+    });
     commPkg.registerGardenOptions({
         gardenKey: 'phase',
         itemKey: 'tagNo',

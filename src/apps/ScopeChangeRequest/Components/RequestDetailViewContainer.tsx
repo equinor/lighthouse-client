@@ -15,19 +15,19 @@ export const RequestViewContainer = ({ request }: RequestViewContainerProps): JS
 
     return (
         <>
-            <ButtonContainer>
-                <Button variant={'ghost_icon'} onClick={() => setEditMode((prev) => !prev)}>
-                    Edit
-                </Button>
-                {/* <Button variant={'ghost_icon'} onClick={() => onDelete()} color={'danger'}>
-                    Delete
-                </Button> */}
-            </ButtonContainer>
             {editMode ? (
                 <ScopeChangeRequestEditForm request={request} cancel={() => setEditMode(false)} />
             ) : (
                 <RequestDetailView request={request} />
             )}
+            {/* <ButtonContainer>
+                <Button variant={'ghost_icon'} onClick={() => setEditMode((prev) => !prev)}>
+                    Edit
+                </Button>
+                <Button variant={'ghost_icon'} onClick={() => onDelete()} color={'danger'}>
+                    Delete
+                </Button>
+            </ButtonContainer> */}
         </>
     );
 };
