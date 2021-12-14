@@ -1,5 +1,5 @@
 import { wrap } from 'comlink';
-import Worker from 'worker-loader!./filterWorker.ts';
+import Worker from './filterWorker?worker';
 import { FilterData, FilterDataOptions } from '../Types/FilterItem';
 import { groupValueTopString } from '../Utils/optionParse';
 import { FilterWorker } from './filterWorker';

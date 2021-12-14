@@ -1,4 +1,5 @@
-import { Divider, Tabs } from '@equinor/eds-core-react';
+import { useFactory } from '@equinor/DataFactory';
+import { Tabs } from '@equinor/eds-core-react';
 import { useEffect, useRef } from 'react';
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { useFilteredData } from '../../../../Filter';
@@ -6,11 +7,12 @@ import Icon from '../../../../Icon/Icon';
 import { useDataContext } from '../../Context/DataProvider';
 import { TabButton } from '../ToggleButton';
 import {
+    Divider,
     HeaderWrapper,
     LeftSection,
     RightSection,
     TabTitle,
-    Title
+    Title,
 } from './DataViewerHeaderStyles';
 
 const { Tab, List } = Tabs;
@@ -35,7 +37,8 @@ export const CompletionViewHeader = ({
     handleFilter,
     activeFilter,
 }: CompletionViewHeaderProps): JSX.Element => {
-    const { getData, statusFunc } = useDataContext();
+    const { getData, statusFunc, key } = useDataContext();
+    const { factory, setSelected } = useFactory(key);
     const { data } = useFilteredData();
     const isMounted = useRef(false);
 
@@ -51,6 +54,15 @@ export const CompletionViewHeader = ({
                 {statusFunc && <StatusBar data={statusFunc(data)} />}
             </LeftSection>
             <RightSection>
+                {factory && (
+                    <>
+                        <TabButton onClick={setSelected} aria-selected={false}>
+                            <Icon name={'add'} />
+                            {factory.title}
+                        </TabButton>
+                        <Divider />
+                    </>
+                )}
                 <List>
                     {tabs.map((tab) => {
                         const Icon = tab.icon;

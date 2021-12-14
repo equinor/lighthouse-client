@@ -2,6 +2,7 @@ import { baseClient } from '@equinor/http-client';
 import styled from 'styled-components';
 import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
 import { Status } from '../../components/CompletionView/src/DataViewerApi/DataViewState';
+import { createDataFactory } from '../../Core/DataFactory';
 import { AppApi } from '../apps';
 import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
 
@@ -49,12 +50,28 @@ const loopKeys: (keyof Loop)[] = [
 ];
 
 export function setup(appApi: AppApi) {
+    // createDataFactory({
+    //     factoryId: 'loop',
+    //     tile: 'Creat Loop',
+    //     component: (scope: any) => <div>Creat Loop {scope.test}</div>,
+    // });
+    // createDataFactory({
+    //     factoryId: 'swcr',
+    //     tile: 'Create SWCR',
+    //     component: (scope: any) => <div>Create SWCR {scope.test}</div>,
+    // });
+
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const commPkg = createDataViewer<Loop>({
         initialState: [],
         primaryViewKey: 'tagNo',
         viewerId: appApi.shortName,
     });
+
+    // commPkg.registerDataCreator({
+    //     title: 'Create Loop',
+    //     component: (scope: any) => <div>Create Loop {scope.test}</div>,
+    // });
 
     commPkg.registerDataFetcher(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
@@ -123,7 +140,75 @@ export function setup(appApi: AppApi) {
         },
     });
 
-    commPkg.registerTableOptions({ objectIdentifierKey: 'tagNo' });
+    commPkg.registerTableOptions({
+        objectIdentifierKey: 'tagNo',
+        // columnOrder: ['custom', 'status', 'formType'],
+        // customColumns: [
+        //     {
+        //         id: 'custom',
+        //         Header: 'Custom',
+        //         accessor: (row) => {
+        //             return row['contentChecklists'].length + 1;
+        //         },
+        //         aggregate: 'count',
+        //         Aggregated: (cell) => {
+        //             return <div>{cell.value}</div>;
+        //         },
+        //     },
+        // ],
+        // hiddenColumns: ['functionTags', 'signedAt', 'commPk'],
+        // headers: [
+        //     { key: 'formType', title: 'Form' },
+        //     { key: 'createdAt', title: 'Created Date' },
+        // ],
+        // customCellView: [
+        //     {
+        //         key: 'createdAt',
+        //         type: 'Date',
+        //     },
+        //     {
+        //         key: 'description',
+        //         type: 'Description',
+        //     },
+
+        //     {
+        //         key: 'status',
+        //         type: 'Status',
+        //         cellAttributeFn: (content) => {
+        //             let bgcolor = '';
+
+        //             if (content.status === 'OK') {
+        //                 bgcolor = 'green';
+        //             } else if (content.status === 'OS') {
+        //                 bgcolor = 'blue';
+        //             } else if (content.status === 'PA') {
+        //                 bgcolor = 'red';
+        //             } else {
+        //                 bgcolor = 'yellow';
+        //             }
+
+        //             return {
+        //                 style: {
+        //                     backgroundColor: bgcolor,
+        //                     color: bgcolor === 'blue' ? 'white' : 'black',
+        //                 },
+        //             };
+        //         },
+        //     },
+        //     {
+        //         key: 'formType',
+        //         type: {
+        //             Cell: ({ cell }) => {
+        //                 return (
+        //                     <div style={{ fontWeight: 500 }}>
+        //                         {cell.row.original.formType as string}
+        //                     </div>
+        //                 );
+        //             },
+        //         },
+        //     },
+        // ],
+    });
     commPkg.registerGardenOptions({
         gardenKey: 'phase',
         itemKey: 'tagNo',

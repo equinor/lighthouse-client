@@ -2,6 +2,7 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import React from 'react';
 import { DataView } from '../components/CompletionView/src/DataView';
+import PageView from '../Core/PageViwer';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -17,6 +18,7 @@ import { ScopeAndChange } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
+import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
@@ -32,7 +34,7 @@ import { SwcrApp } from './swcr/swcrApp';
 
 type HEXColor = `#${string}`;
 
-type AppType = 'DataViewer' | 'SomeApp' | 'CustomApp' | 'PowerBI';
+type AppType = 'DataViewer' | 'PageView' | 'CustomApp' | 'PowerBI';
 
 export interface AppApi extends AppManifest {
     appConfig: AppConfig;
@@ -69,7 +71,6 @@ export enum Apps {
     ConstructionManagement = 'ConstructionManagement',
     EngineeringManagement = 'EngineeringManagement',
     ProjectInformation = 'ProjectInformation',
-    Dashboard = 'Dashboard',
     QueriesAndRequests = 'QueriesAndRequests',
     QualityAndCompliance = 'QualityAndCompliance',
     ProjectControl = 'ProjectControl',
@@ -124,10 +125,7 @@ export const appGroups: AppGroups = {
         name: 'SSU',
         icon: SSUIcon,
     },
-    Dashboard: {
-        name: 'Dashboard',
-        icon: ProgressAndStatusIcon,
-    },
+
     CompletionManagement: {
         name: 'Completion management',
         icon: CompletionManagementIcon,
@@ -194,60 +192,66 @@ export const apps: AppManifest[] = [
         },
         tags: ['PowerBI'],
     },
-    // Dashboard
+    // ProgressAndStatus
     {
-        title: 'Overall',
-        shortName: 'overall',
+        title: 'Overview',
+        shortName: 'overview',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
+        app: {
+            appType: 'PageView',
+            setup: (): void => {
+                console.log('overview');
+            },
+            component: PageView,
+        },
     },
     {
         title: 'Engineering',
         shortName: 'engineering',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
+        app: {
+            appType: 'PageView',
+            setup: (): void => {
+                console.log('engineering');
+            },
+            component: PageView,
+        },
     },
     {
-        title: 'Fabrication',
-        shortName: 'fabrication',
+        title: 'Construction',
+        shortName: 'construction',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
-    },
-    {
-        title: 'Installation',
-        shortName: 'installation',
-        color: '#0364B8',
-        groupe: Apps.Dashboard,
-        icon: '',
-        uri: '',
-        tags: [],
-    },
-    {
-        title: 'Mechanical Completion',
-        shortName: 'mc',
-        color: '#0364B8',
-        groupe: Apps.Dashboard,
-        icon: '',
-        uri: '',
-        tags: [],
+        app: {
+            appType: 'PageView',
+            setup: constructionSetup,
+            component: PageView,
+        },
     },
     {
         title: 'Commissioning',
         shortName: 'commissioning',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
+        app: {
+            appType: 'PageView',
+            setup: constructionSetup,
+            component: PageView,
+        },
     },
     // Engineering management
     {

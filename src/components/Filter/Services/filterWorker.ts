@@ -3,8 +3,8 @@ import ctx from '../../../packages/WebWorkers/setup';
 import { FilterData } from '../Types/FilterItem';
 import { filter } from './filter';
 
-const filterWorker = {
-    filter
+export const filterWorker = {
+    filter,
 };
 
 export interface FilterWorker extends Worker {

@@ -1,9 +1,11 @@
+import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { dispatch } from './DataViewerCoreActions';
 import {
     DataFetcher,
     DataViewerApi,
     DataViewerProps,
+    FactoryOptions,
     Validator,
     ViewerOptions,
     ViewOptions,
@@ -42,6 +44,17 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
     });
 
     return {
+        registerDataCreator(factoryOptions: FactoryOptions) {
+            if (!options.dataFactoryCreator) {
+                // eslint-disable-next-line no-console
+                console.warn(
+                    'No data dataFactoryCreator is registered. Add when creating the data viewer.'
+                );
+                return;
+            }
+            const factory: Factory = { ...factoryOptions, factoryId: options.viewerId };
+            options.dataFactoryCreator(factory);
+        },
         registerDataFetcher(dataFetcher: DataFetcher<T>) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
@@ -96,12 +109,12 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
          * View option Registration
          *
          */
-        registerTableOptions(tableOptions: TableOptions) {
+        registerTableOptions<T>(tableOptions: TableOptions<T>) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    tableOptions,
+                    tableOptions: tableOptions as TableOptions<unknown>,
                 },
             }));
         },

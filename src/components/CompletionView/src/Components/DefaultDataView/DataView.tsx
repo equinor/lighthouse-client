@@ -1,12 +1,12 @@
 import { Button, Icon } from '@equinor/eds-core-react';
+import { Table, useColumns } from '@equinor/Table';
 import { useEffect, useState } from 'react';
-import { DataTable } from '../../../../DataTable/Components/Table';
 import { useDataContext } from '../../Context/DataProvider';
 import { DataEntry, DataGrid, Description, Section, Title, Wrapper } from './DataView.styles';
 
 export function DataView(): JSX.Element {
     const { data, itemId, viewOptions } = useDataContext();
-
+    const columns = useColumns(data[0]);
     const [selectedData, setSelectedData] = useState<any>(undefined);
 
     useEffect(() => {
@@ -78,7 +78,7 @@ export function DataView(): JSX.Element {
                                             <strong>{key}: </strong>
 
                                             {typeof data[0] === 'object' ? (
-                                                <DataTable data={data} />
+                                                <Table options={{ data, columns }} />
                                             ) : (
                                                 <div>
                                                     {data.map((item, index) => (
