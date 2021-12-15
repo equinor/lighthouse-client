@@ -17,6 +17,8 @@
         "types": ["node", "vite/client"],
         "sourceMap": true,
         "paths": {
+            "@equinor/worker": ["./src/packages/WebWorkers"],
+            "@equinor/filter": ["./src/packages/Filter"],
             "@equinor/DataFactory": ["./src/Core/DataFactory"],
             "@equinor/StatusBar": ["./src/packages/2StatusBar"],
             "@equinor/Diagrams": ["./src/packages/Diagrams"],
@@ -29,7 +31,7 @@
             "@equinor/lighthouse-components": ["./packages/components"],
             "@equinor/lighthouse-conf": ["./packages/configuration"],
             "@equinor/lighthouse-util": ["./packages/util"],
-            "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"],
+            "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"]
         }
     },
     "compileOnSave": true,

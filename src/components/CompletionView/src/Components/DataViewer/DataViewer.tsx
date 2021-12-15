@@ -1,8 +1,7 @@
 import { Tabs } from '@equinor/eds-core-react';
+import { FilterProvider, FilterView } from '@equinor/filter';
 import { useState } from 'react';
 import { AppApi } from '../../../../../apps/apps';
-import { FilterView } from '../../../../Filter';
-import { FilterProvider } from '../../../../Filter/Context/FilterProvider';
 import { useDataContext } from '../../Context/DataProvider';
 import { useDataViewer } from '../../DataViewerApi/useDataViewer';
 import { useConfiguredTabs } from '../../Tabs/tabsConfig';

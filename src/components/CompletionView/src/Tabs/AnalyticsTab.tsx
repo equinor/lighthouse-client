@@ -1,5 +1,5 @@
 import { AnalyticsView } from '@equinor/Diagrams';
-import { useFilteredData } from '../../../Filter';
+import { useFilteredData } from '@equinor/filter';
 import { useDataContext } from '../Context/DataProvider';
 
 export const AnalyticsTab = (): JSX.Element => {

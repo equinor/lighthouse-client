@@ -1,10 +1,10 @@
 import { Checkbox, Search } from '@equinor/eds-core-react';
 import { useEffect, useMemo, useState } from 'react';
-import Icon from '../../../Icon/Icon';
 import { useFilter } from '../../Hooks/useFilter';
 import { FilterGroup } from '../../Types/FilterItem';
 import { FilterGroupeComponent } from '../FilterGroup/FilterGroup';
 import { Title } from '../FilterGroup/FilterGroup-Styles';
+import Icon from '../Icon/Icon';
 import {
     AddButton,
     FilterGroups,
@@ -28,7 +28,7 @@ interface FilterViewProps {
     isActive: boolean;
 }
 
-export const FilterView = ({ isActive }: FilterViewProps) => {
+export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
     const { filter, filterItemCheck } = useFilter();
     const filterKeys = useMemo(() => createTypeKeys(filter), [filter]);
     const [searchActive, setSearchActive] = useState(false);
