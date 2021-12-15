@@ -1,4 +1,6 @@
+import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { useDataContext } from '../../Context/DataProvider';
 import { DefaultDataView } from './DefaultView';
 
@@ -16,7 +18,7 @@ export function DataView(): JSX.Element {
     }, [item]);
 
     return (
-        <>
+        <Wrapper>
             {dataViewSideSheetOptions?.CustomRender ? (
                 <dataViewSideSheetOptions.CustomRender item={selectedData} onClose={handleClose} />
             ) : (
@@ -27,6 +29,10 @@ export function DataView(): JSX.Element {
                     data={data}
                 />
             )}
-        </>
+        </Wrapper>
     );
 }
+
+const Wrapper = styled.div`
+    border-left: 2px solid ${tokens.colors.ui.background__medium.rgba};
+`;
