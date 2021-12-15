@@ -1,21 +1,14 @@
 import { useMemo } from 'react';
+import { Column } from 'react-table';
 
 export interface HeaderData {
     key: string;
     title: string;
 }
 
-interface DefaultColumn<D> {
-    accessor: keyof D;
-    Header: string;
-    minWidth: number;
-    maxWidth: number;
-    aggregate: string;
-    Aggregated: (cell: any) => JSX.Element;
-    Footer: (data: any) => JSX.Element;
-}
-
-export function generateDefaultColumns<D>(headerItem?: D): DefaultColumn<D>[] {
+export function generateDefaultColumns<D extends Record<string, unknown>>(
+    headerItem?: D
+): Column<D>[] {
     if (!headerItem) return [];
     const filteredHeaderItem = Object.keys(headerItem).filter((key) => {
         if (Array.isArray(headerItem[key]) || typeof headerItem[key] === 'object') return false;
@@ -37,7 +30,7 @@ export function generateDefaultColumns<D>(headerItem?: D): DefaultColumn<D>[] {
                     [data.rows]
                 );
 
-                if (data.state.groupBy.includes(key)) {
+                if ((data as any).state?.groupBy?.includes(key)) {
                     return <div>Total: </div>;
                 }
                 return <div> {total}</div>;

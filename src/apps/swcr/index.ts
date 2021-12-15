@@ -1,0 +1,1 @@
+export { SwcrApp } from './swcrApp';
