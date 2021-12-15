@@ -13,6 +13,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
+            '@equinor/Form': path.resolve(__dirname, './src/packages/Form'),
             '@equinor/DataFactory': path.resolve(__dirname, './src/Core/DataFactory'),
             '@equinor/StatusBar': path.resolve(__dirname, './src/packages/StatusBar'),
             '@equinor/Diagrams': path.resolve(__dirname, './src/packages/Diagrams'),

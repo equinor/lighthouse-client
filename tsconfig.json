@@ -14,29 +14,69 @@
         "isolatedModules": true,
         "noEmit": true,
         "noImplicitAny": false,
-        "types": ["node", "vite/client"],
+        "types": [
+            "node",
+            "vite/client"
+        ],
         "sourceMap": true,
         "paths": {
-            "@equinor/DataFactory": ["./src/Core/DataFactory"],
-            "@equinor/StatusBar": ["./src/packages/2StatusBar"],
-            "@equinor/Diagrams": ["./src/packages/Diagrams"],
-            "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
-            "@equinor/Table": ["./src/packages/Table"],
-            "@equinor/authentication": ["./packages/authentication"],
-            "@equinor/http-client": ["./packages/httpClient"],
-            "@equinor/lighthouse-core": ["./packages/core"],
-            "@equinor/lighthouse-hooks": ["./packages/hooks"],
-            "@equinor/lighthouse-components": ["./packages/components"],
-            "@equinor/lighthouse-conf": ["./packages/configuration"],
-            "@equinor/lighthouse-util": ["./packages/util"],
-            "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"],
+            "@equinor/Form": [
+                "./src/packages/Form"
+            ],
+            "@equinor/DataFactory": [
+                "./src/Core/DataFactory"
+            ],
+            "@equinor/StatusBar": [
+                "./src/packages/2StatusBar"
+            ],
+            "@equinor/Diagrams": [
+                "./src/packages/Diagrams"
+            ],
+            "@equinor/ThreeDViewer": [
+                "./src/packages/ThreeDViewer"
+            ],
+            "@equinor/Table": [
+                "./src/packages/Table"
+            ],
+            "@equinor/authentication": [
+                "./packages/authentication"
+            ],
+            "@equinor/http-client": [
+                "./packages/httpClient"
+            ],
+            "@equinor/lighthouse-core": [
+                "./packages/core"
+            ],
+            "@equinor/lighthouse-hooks": [
+                "./packages/hooks"
+            ],
+            "@equinor/lighthouse-components": [
+                "./packages/components"
+            ],
+            "@equinor/lighthouse-conf": [
+                "./packages/configuration"
+            ],
+            "@equinor/lighthouse-util": [
+                "./packages/util"
+            ],
+            "@equinor/lighthouse-typeGuard": [
+                "./packages/typeGuard"
+            ],
         }
     },
     "compileOnSave": true,
-    "exclude": ["node_modules"],
-    "include": ["./src", "src/components/Garden", "packages/components/NavigationView/TreeMoc.ts"],
+    "exclude": [
+        "node_modules"
+    ],
+    "include": [
+        "./src",
+        "src/components/Garden",
+        "packages/components/NavigationView/TreeMoc.ts"
+    ],
     "typedocOptions": {
-        "entryPoints": ["src/index.ts"],
+        "entryPoints": [
+            "src/index.ts"
+        ],
         "out": "docs"
     }
 }
