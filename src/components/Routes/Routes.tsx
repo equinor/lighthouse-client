@@ -5,9 +5,9 @@ import { HomePage } from '../HomePage/HomePage';
 import { DefaultRouteComponent } from './DefaultRouteComponent';
 
 export function Routes(): JSX.Element {
-    const apps = useApps();
     const { appConfig, authProvider } = useClientContext();
-
+    const apps = useApps(authProvider, appConfig);
+    console.log('rendered!');
     return (
         <Switch>
             <Route
@@ -16,12 +16,6 @@ export function Routes(): JSX.Element {
                 render={() => <HomePage title="Johan Castberg Dashboard" icon="home" />}
             />
             {apps.map((route) => {
-                route.app?.setup &&
-                    route.app.setup({
-                        ...route,
-                        appConfig,
-                        authProvider,
-                    });
                 return (
                     <Route
                         exact
