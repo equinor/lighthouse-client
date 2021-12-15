@@ -39,7 +39,7 @@ interface FilterViewProps {
     isActive: boolean;
 }
 
-export const FilterView = ({ isActive }: FilterViewProps): JSX.Element | null => {
+export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
     const { filter, filterItemCheck, activeFiltersTypes, setActiveFiltersTypes } = useFilter();
     const filterKeys = useMemo(() => createTypeKeys(filter), [filter]);
     const activeFilters = useMemo(() => getActiveFilters(filter), [filter]);
@@ -87,62 +87,70 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element | null =>
         setSearchActive((isActive) => !isActive);
     }
 
-    if (!isActive) return null;
-
     return (
-        <Wrapper>
-            {/* TODO move SelectBar to its own component when more buttons are added*/}
-            <SelectBar>
-                <AddButton variant="ghost_icon" onClick={handleToggleFilerSelect}>
-                    <Icon name={isFilterSelectActive ? 'close' : 'add'} />
-                </AddButton>
-            </SelectBar>
-            {/* TODO move FilterSelect to its own component*/}
-            {isFilterSelectActive && (
-                <FilterSelect>
-                    <FilterSelectHeaderGroup>
-                        {searchActive ? (
-                            <Search
-                                autoFocus={searchActive}
-                                aria-label="filer group"
-                                id="search-normal"
-                                placeholder="Search Filter Type"
-                                onChange={handleOnSearchChange}
-                            />
-                        ) : (
-                            <Title>Select Filter Type</Title>
-                        )}
-                        <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
-                            <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
-                        </SearchButton>
-                    </FilterSelectHeaderGroup>
+        <Wrapper isActive={isActive}>
+            {isActive && (
+                <>
+                    {/* TODO move SelectBar to its own component when more buttons are added*/}
+                    <SelectBar>
+                        <AddButton variant="ghost_icon" onClick={handleToggleFilerSelect}>
+                            <Icon name={isFilterSelectActive ? 'close' : 'add'} />
+                        </AddButton>
+                    </SelectBar>
+                    {/* TODO move FilterSelect to its own component*/}
+                    {isFilterSelectActive && (
+                        <FilterSelect>
+                            <FilterSelectHeaderGroup>
+                                {searchActive ? (
+                                    <Search
+                                        autoFocus={searchActive}
+                                        aria-label="filer group"
+                                        id="search-normal"
+                                        placeholder="Search Filter Type"
+                                        onChange={handleOnSearchChange}
+                                    />
+                                ) : (
+                                    <Title>Select Filter Type</Title>
+                                )}
+                                <SearchButton
+                                    variant="ghost_icon"
+                                    onClick={handleSearchButtonClick}
+                                >
+                                    <Icon
+                                        name={searchActive ? 'chevron_right' : 'search'}
+                                        size={24}
+                                    />
+                                </SearchButton>
+                            </FilterSelectHeaderGroup>
 
-                    <SearchFilterWrapper>
-                        {SearchFilterKeys(filterKeys, filterSearchValue).map((key, i) => (
-                            <div key={key + i}>
-                                <Checkbox
-                                    title={key}
-                                    label={key}
-                                    value={key}
-                                    disabled={activeFilters.includes(key)}
-                                    checked={activeFiltersTypes.includes(key)}
-                                    onChange={handleOnChange}
+                            <SearchFilterWrapper>
+                                {SearchFilterKeys(filterKeys, filterSearchValue).map((key, i) => (
+                                    <div key={key + i}>
+                                        <Checkbox
+                                            title={key}
+                                            label={key}
+                                            value={key}
+                                            disabled={activeFilters.includes(key)}
+                                            checked={activeFiltersTypes.includes(key)}
+                                            onChange={handleOnChange}
+                                        />
+                                    </div>
+                                ))}
+                            </SearchFilterWrapper>
+                        </FilterSelect>
+                    )}
+                    <FilterGroups>
+                        {activeFilter.map((filterGroup: FilterGroup, index) => (
+                            <FilterGroupWrapper key={`col-${filterGroup}-${index}`}>
+                                <FilterGroupeComponent
+                                    filterGroup={filterGroup}
+                                    filterItemCheck={filterItemCheck}
                                 />
-                            </div>
+                            </FilterGroupWrapper>
                         ))}
-                    </SearchFilterWrapper>
-                </FilterSelect>
+                    </FilterGroups>
+                </>
             )}
-            <FilterGroups>
-                {activeFilter.map((filterGroup: FilterGroup, index) => (
-                    <FilterGroupWrapper key={`col-${filterGroup}-${index}`}>
-                        <FilterGroupeComponent
-                            filterGroup={filterGroup}
-                            filterItemCheck={filterItemCheck}
-                        />
-                    </FilterGroupWrapper>
-                ))}
-            </FilterGroups>
         </Wrapper>
     );
 };
