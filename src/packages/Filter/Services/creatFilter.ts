@@ -21,8 +21,7 @@ export function createFilterData<T>(dataArray: T[], options?: FilterDataOptions<
             }
 
             const filterObject =
-                filterData[typeKey] ||
-                (filterData[typeKey] = { value: {}, all: true, type: typeKey });
+                filterData[typeKey] || (filterData[typeKey] = { value: {}, type: typeKey });
 
             if (options?.groupValue && typeof options.groupValue[typeKey] === 'function') {
                 valueKey = options.groupValue[typeKey](dataItem);

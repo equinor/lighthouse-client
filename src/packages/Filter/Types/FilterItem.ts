@@ -14,7 +14,6 @@ export type FilterItemCheck = (
 ) => void;
 
 export type FilterGroup = {
-    all: boolean;
     type: string;
     value: Record<string, FilterItem>;
 };
