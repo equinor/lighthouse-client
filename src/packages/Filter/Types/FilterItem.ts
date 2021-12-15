@@ -19,9 +19,15 @@ export type FilterGroup = {
 };
 export type FilterData = Record<string, FilterGroup>;
 
-export interface FilterDataOptions<T> {
+export interface FilterOptions<T> {
     excludeKeys?: (keyof T)[];
     typeMap?: Partial<Record<keyof T, string>>;
     groupValue?: Record<string, (item: T) => string>;
     customRender?: Record<keyof T | string, React.FC<T>>;
+    initialFilters?: InitialFilter[];
+}
+
+export interface InitialFilter {
+    key: string;
+    valueKey: string;
 }

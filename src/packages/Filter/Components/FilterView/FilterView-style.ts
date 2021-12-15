@@ -10,10 +10,6 @@ export const Wrapper = styled.section`
     border-bottom: 1.5px solid ${tokens.colors.ui.background__medium.rgba};
 `;
 
-interface FilterSelectProps {
-    isActive: boolean;
-}
-
 export const FilterSelect = styled.div`
     display: flex;
     flex-direction: column;

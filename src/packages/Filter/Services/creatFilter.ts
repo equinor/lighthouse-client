@@ -1,11 +1,11 @@
-import { FilterData, FilterDataOptions } from '../Types/FilterItem';
+import { FilterData, FilterOptions } from '../Types/FilterItem';
 
 const getObjectValue = <T>(item: T, key: string): string => item[key];
 
 /**
  * Creates a object representing the det tilter data based on the objects own properties.
  */
-export function createFilterData<T>(dataArray: T[], options?: FilterDataOptions<T>): FilterData {
+export function createFilterData<T>(dataArray: T[], options?: FilterOptions<T>): FilterData {
     if (dataArray.length === 0) return {};
 
     return dataArray.reduce((filterData, item) => {

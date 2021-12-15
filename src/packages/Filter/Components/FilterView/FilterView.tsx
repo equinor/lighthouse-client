@@ -24,36 +24,54 @@ function createTypeKeys(filter: FilterGroup[]): string[] {
 function SearchFilterKeys(keys: string[], filerValue: string): string[] {
     return keys.filter((key) => key.toLowerCase().includes(filerValue.toLowerCase()));
 }
+
+function getActiveFilters(filter: FilterGroup[]): string[] {
+    const activeFilters: string[] = [];
+    filter.forEach((item) => {
+        const isActive = Object.values(item.value).some((filterItem) => !filterItem.checked);
+        if (isActive) {
+            activeFilters.push(item.type);
+        }
+    });
+    return activeFilters;
+}
 interface FilterViewProps {
     isActive: boolean;
 }
 
-export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
-    const { filter, filterItemCheck } = useFilter();
+export const FilterView = ({ isActive }: FilterViewProps): JSX.Element | null => {
+    const { filter, filterItemCheck, activeFiltersTypes, setActiveFiltersTypes } = useFilter();
     const filterKeys = useMemo(() => createTypeKeys(filter), [filter]);
+    const activeFilters = useMemo(() => getActiveFilters(filter), [filter]);
     const [searchActive, setSearchActive] = useState(false);
-    const [activeFilterData, setActiveFilterData] = useState<string[]>([]);
+    // const [activeFilterData, setActiveFilterData] = useState<string[]>([]);
     const [activeFilter, setActiveFilter] = useState<FilterGroup[]>([]);
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [isFilterSelectActive, setIsFilterSelectActive] = useState(false);
 
     useEffect(() => {
-        if (activeFilterData.length === 0) {
-            setActiveFilterData(filterKeys);
+        if (activeFilters.length > activeFiltersTypes.length) {
+            setActiveFiltersTypes(activeFilters);
         }
-    }, [filterKeys]);
+    }, [activeFilters, activeFiltersTypes.length, setActiveFiltersTypes]);
+
+    // useEffect(() => {
+    //     if (activeFiltersTypes.length === 0) {
+    //         setActiveFiltersTypes(filterKeys);
+    //     }
+    // }, [activeFiltersTypes.length, filterKeys, setActiveFiltersTypes]);
 
     useEffect(() => {
-        setActiveFilter(filter.filter((i) => activeFilterData.includes(i.type)));
-    }, [filter, activeFilterData]);
+        setActiveFilter(filter.filter((i) => activeFiltersTypes.includes(i.type)));
+    }, [filter, activeFiltersTypes]);
 
     function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
-        setActiveFilterData((activeFilterData) => {
-            if (activeFilterData.includes(value))
-                return activeFilterData.filter((k) => k !== value);
-            else return [...activeFilterData, value];
-        });
+        setActiveFiltersTypes(
+            activeFiltersTypes.includes(value)
+                ? activeFiltersTypes.filter((k) => k !== value)
+                : [...activeFiltersTypes, value]
+        );
     }
 
     function handleOnSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -106,7 +124,8 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                                     title={key}
                                     label={key}
                                     value={key}
-                                    checked={activeFilterData.includes(key)}
+                                    disabled={activeFilters.includes(key)}
+                                    checked={activeFiltersTypes.includes(key)}
                                     onChange={handleOnChange}
                                 />
                             </div>

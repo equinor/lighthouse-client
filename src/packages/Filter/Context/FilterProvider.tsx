@@ -2,7 +2,7 @@ import { useCallback, useEffect, useReducer } from 'react';
 import { checkItem } from '../Services/checkItem';
 import { createFilterData } from '../Services/creatFilter';
 import { workerFilter } from '../Services/filterApi';
-import { FilterDataOptions, FilterItem, FilterItemCheck } from '../Types/FilterItem';
+import { FilterItem, FilterItemCheck, FilterOptions } from '../Types/FilterItem';
 import { objectHasKeys } from '../Utils/objectHasKeys';
 import { actions } from './FilterActions';
 import { Context, FilterProviderProps, FilterState } from './FilterContext';
@@ -14,12 +14,15 @@ export function FilterProvider<T>({
     options,
     persistOptions,
 }: FilterProviderProps<T>): JSX.Element {
+    const activeFilterTypes =
+        options?.initialFilters && options.initialFilters.map((initialFilter) => initialFilter.key);
     const initialState: FilterState = {
         isLoading: false,
         data: [],
         filteredData: [],
         filterData: {},
-        options: options as FilterDataOptions<unknown>,
+        options: options as FilterOptions<unknown>,
+        activeFiltersTypes: activeFilterTypes ? activeFilterTypes : [],
     };
     const [state, dispatch] = useReducer(filterReducer, initialState);
     const { filterData } = state;
@@ -27,13 +30,17 @@ export function FilterProvider<T>({
     const setFilter = useCallback(
         (state, filterData): void => {
             dispatch(actions.setIsLoading(true));
-            workerFilter(state, filterData, options as FilterDataOptions<unknown>).then((data) => {
+            workerFilter(state, filterData, options as FilterOptions<unknown>).then((data) => {
                 dispatch(actions.setFilteredData(data));
                 dispatch(actions.setIsLoading(false));
             });
         },
         [options]
     );
+
+    const setActiveFiltersTypes = useCallback((filterTypes: string[]): void => {
+        dispatch(actions.setActiveFiltersTypes(filterTypes));
+    }, []);
 
     useEffect(() => {
         const localFilter = persistOptions && persistOptions.getFilter();
@@ -62,5 +69,9 @@ export function FilterProvider<T>({
         [filterData, persistOptions, setFilter, state.data]
     );
 
-    return <Context.Provider value={{ ...state, filterItemCheck }}>{children}</Context.Provider>;
+    return (
+        <Context.Provider value={{ ...state, filterItemCheck, setActiveFiltersTypes }}>
+            {children}
+        </Context.Provider>
+    );
 }
