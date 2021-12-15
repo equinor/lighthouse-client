@@ -1,4 +1,5 @@
-import { CoreViewState, CustomPage, FusionPowerBiConfig } from '../Types/State';
+import { createDashboard, DashboardApiInstance } from '../../Dashboard/Api/dashboardApi';
+import { CoreViewState, CustomPage, DashboardOptions, FusionPowerBiOptions } from '../Types/State';
 import { dispatch, getContext } from './pageViewerState';
 
 export interface PageViewerOptions {
@@ -6,13 +7,17 @@ export interface PageViewerOptions {
     viewerId: string;
 }
 
-type FusionPowerBi = Omit<FusionPowerBiConfig, 'type'>;
+interface PageViewerInstance {
+    registerFusionPowerBi(reportId: string, options: FusionPowerBi): void;
+    registerDashboard<T>(pageId: string, options: DashboardConfig): DashboardApiInstance<T>;
+    registerCustom(pageId: string, options: CustomConfig): void;
+}
+
+type FusionPowerBi = Omit<FusionPowerBiOptions, 'type'>;
+type DashboardConfig = Omit<DashboardOptions, 'type' | 'dashboardId'>;
 type CustomConfig = Omit<CustomPage, 'type'>;
 
-export function createPageViewer({ viewerId, title }: PageViewerOptions): {
-    registerFusionPowerBi(reportId: string, options: FusionPowerBi): void;
-    registerCustom(pageId: string, options: CustomConfig): void;
-} {
+export function createPageViewer({ viewerId, title }: PageViewerOptions): PageViewerInstance {
     dispatch(getContext(), (state: CoreViewState) => {
         if (state[viewerId]) {
             // eslint-disable-next-line no-console
@@ -35,7 +40,7 @@ export function createPageViewer({ viewerId, title }: PageViewerOptions): {
                 pages[pageId] = {
                     type: 'FusionPowerBi',
                     ...options,
-                } as FusionPowerBiConfig;
+                } as FusionPowerBiOptions;
 
                 return {
                     ...state,
@@ -46,6 +51,32 @@ export function createPageViewer({ viewerId, title }: PageViewerOptions): {
                         },
                     },
                 };
+            });
+        },
+        registerDashboard<T>(pageId: string, options: DashboardConfig) {
+            dispatch(getContext(), (state: CoreViewState) => {
+                const pages = state[viewerId].pages;
+                pages[pageId] = {
+                    type: 'Dashboard',
+                    dashboardId: pageId,
+                    ...options,
+                };
+
+                return {
+                    ...state,
+                    [viewerId]: {
+                        ...state[viewerId],
+                        pages: {
+                            ...pages,
+                        },
+                    },
+                };
+            });
+
+            return createDashboard<T>({
+                dashboardId: pageId,
+                title: options.title,
+                description: options.description,
             });
         },
         registerCustom(pageId: string, options: CustomConfig) {

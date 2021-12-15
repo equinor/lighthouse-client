@@ -38,6 +38,22 @@ export function useBarChart<T>(
                 toolbar: {
                     show: true,
                 },
+                events: {
+                    click: function (event, chartContext, config) {
+                        // The last parameter config contains additional information like `seriesIndex` and `dataPointIndex` for cartesian charts
+                        console.log(config.globals.labels[config.dataPointIndex]);
+                        console.log(config.globals.initialSeries[config.seriesIndex]);
+                        console.log(
+                            data.filter(
+                                (d) =>
+                                    d[nameKey] ===
+                                        config.globals.initialSeries[config.seriesIndex].name &&
+                                    d[categoryKey] === config.globals.labels[config.dataPointIndex]
+                            )
+                        );
+                        // console.log(event, chartContext, config);
+                    },
+                },
             },
             plotOptions: {
                 bar: {

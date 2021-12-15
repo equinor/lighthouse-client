@@ -1,6 +1,10 @@
 import { Tabs } from '@equinor/eds-core-react';
+import { useState } from 'react';
+import Icon from '../../../../components/Icon/Icon';
 import { ViewState } from '../../Types/State';
+import { HeaderButton } from '../HeaderButton/HeaderButton';
 import {
+    Divider,
     HeaderWrapper,
     LeftSection,
     RightSection,
@@ -10,12 +14,24 @@ import {
 
 const { Tab, List } = Tabs;
 
+type HandleFilter = () => void;
 interface PageViewerHeaderProps {
     title: string;
     viewState: ViewState;
+    activePage: number;
+    handleFilter: HandleFilter;
+    activeFilter: boolean;
 }
 
-export const PageViewerHeader = ({ title, viewState }: PageViewerHeaderProps): JSX.Element => {
+export const PageViewerHeader = ({
+    title,
+    viewState,
+    handleFilter,
+    activeFilter,
+    activePage,
+}: PageViewerHeaderProps): JSX.Element => {
+    const [showFilter] = useState(true);
+
     return (
         <HeaderWrapper>
             <LeftSection>
@@ -33,6 +49,14 @@ export const PageViewerHeader = ({ title, viewState }: PageViewerHeaderProps): J
                         );
                     })}
                 </List>
+                {showFilter && (
+                    <>
+                        <Divider />
+                        <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
+                            <Icon name={'filter_alt'} />
+                        </HeaderButton>
+                    </>
+                )}
             </RightSection>
         </HeaderWrapper>
     );

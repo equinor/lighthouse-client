@@ -14,18 +14,24 @@ export interface ViewState {
     };
 }
 
-export type PageConfig = PowerBiConfig | FusionPowerBiConfig | CustomPage;
+export type PageConfig = PowerBiOptions | FusionPowerBiOptions | DashboardOptions | CustomPage;
 
-export interface PowerBiConfig extends PageBase {
+export interface PowerBiOptions extends PageBase {
     type: 'PowerBi';
     test1: string;
 }
 
-export interface FusionPowerBiConfig extends PageBase {
+export interface FusionPowerBiOptions extends PageBase {
     type: 'FusionPowerBi';
     reportURI: string;
     filter?: Filter[];
 }
+export interface DashboardOptions extends PageBase {
+    type: 'Dashboard';
+    dashboardId: string;
+    description?: string;
+}
+
 export interface CustomPage extends PageBase {
     type: 'Custom';
     component: React.FC;
