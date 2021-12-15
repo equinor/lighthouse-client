@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { CellValue, Row, Column, TableInstance } from 'react-table';
+import { CellValue, Column, TableInstance } from 'react-table';
 import { GroupBy, TableVisual } from '../../packages/Diagrams/src/Visuals/TableVisual';
 import { createData, SwcrPackage, SwcrStatus } from './mockData';
 
@@ -102,7 +102,8 @@ export function SwcrApp(): JSX.Element {
                         () => data.rows.reduce((sum, row) => sum + row.values['Closed'], 0),
                         [data.rows]
                     );
-                    const totalPercent = Math.floor((closed / (data as any).data.length) * 100);
+
+                    const totalPercent = Math.floor((closed / data.data.length) * 100);
                     return <PercentBarColumn percent={totalPercent} />;
                 },
             },

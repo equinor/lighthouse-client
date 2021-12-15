@@ -30,7 +30,7 @@ export function generateDefaultColumns<D extends Record<string, unknown>>(
                     [data.rows]
                 );
 
-                if ((data as any).state?.groupBy?.includes(key)) {
+                if (data.state.groupBy?.includes(key)) {
                     return <div>Total: </div>;
                 }
                 return <div> {total}</div>;
