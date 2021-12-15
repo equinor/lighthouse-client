@@ -2,7 +2,6 @@ import { baseClient } from '@equinor/http-client';
 import styled from 'styled-components';
 import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
 import { Status } from '../../components/CompletionView/src/DataViewerApi/DataViewState';
-import { createDataFactory } from '../../Core/DataFactory';
 import { AppApi } from '../apps';
 import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
 

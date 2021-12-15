@@ -1,13 +1,12 @@
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useApps } from '../../apps/useApps';
+import { AppManifest } from '../../apps/apps';
 import useClientContext from '../../context/clientContext';
 import { HomePage } from '../HomePage/HomePage';
 import { DefaultRouteComponent } from './DefaultRouteComponent';
 
-export function Routes(): JSX.Element {
+export function Routes({ apps }: { apps: AppManifest[] }): JSX.Element {
     const { appConfig, authProvider } = useClientContext();
-    const apps = useApps(authProvider, appConfig);
-    console.log('rendered!');
+
     return (
         <Switch>
             <Route
