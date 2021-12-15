@@ -9,10 +9,15 @@ export function createFilterData<T>(dataArray: T[], options?: FilterDataOptions<
     if (dataArray.length === 0) return {};
 
     return dataArray.reduce((filterData, item) => {
+        /**Adding the custom groupeValues configured if present to dataItem */
         const dataItem = options?.groupValue ? { ...item, ...options.groupValue } : item;
 
         Object.keys(dataItem).forEach((typeKey: string) => {
-            if (options?.excludeKeys?.includes(typeKey as keyof T)) return filterData;
+            if (
+                options?.excludeKeys?.includes(typeKey as keyof T) ||
+                typeof dataItem[typeKey] === 'object'
+            )
+                return filterData;
 
             let valueKey: string = getObjectValue(dataItem, typeKey);
 
