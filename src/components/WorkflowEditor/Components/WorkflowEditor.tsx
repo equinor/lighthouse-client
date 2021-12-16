@@ -6,10 +6,10 @@ import { Step, Workflow } from '../Types/Workflow';
 import { publishTemplate } from '../API/publishTemplate';
 import { saveTemplate } from '../API/saveTemplate';
 import { createTemplate } from '../API/createTemplate';
-import { VisualEditorOptions } from '../../CompletionView/src/DataViewerApi/DataViewState';
+import { WorkflowEditorOptions } from '../../CompletionView/src/DataViewerApi/DataViewState';
 
 interface WorkflowEditorProps {
-    options: VisualEditorOptions;
+    options: WorkflowEditorOptions;
 }
 export const WorkflowEditor = ({
     options: { endpoint },

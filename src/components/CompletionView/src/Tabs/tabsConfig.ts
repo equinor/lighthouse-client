@@ -1,5 +1,4 @@
 import React from 'react';
-import { toEditorSettings } from 'typescript';
 import { AnalyticsIcon } from '../../../../icons/Analytics';
 import { BoardsIcon } from '../../../../icons/Board';
 import { GantIcon } from '../../../../icons/Gant';
@@ -53,6 +52,7 @@ const tabsConfig: TabsConfigItem[] = [
     },
     {
         title: 'Editor',
+        //Todo add Editor icon
         icon: GantIcon,
         viewComponent: VisualEditorTab,
     },

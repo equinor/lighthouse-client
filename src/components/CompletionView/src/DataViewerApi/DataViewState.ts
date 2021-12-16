@@ -86,10 +86,10 @@ export interface PowerBiOptions {
 export type StatusFunc<T> = (data: T[]) => StatusItem[];
 
 export interface DataViewSideSheetOptions<T> {
-    CustomRender?: React.FC<{ item: T; onClose: () => void }>;
+    CustomComponent?: React.FC<{ item: T; onClose: () => void }>;
 }
 
-export interface VisualEditorOptions {
+export interface WorkflowEditorOptions {
     endpoint: string;
 }
 
@@ -108,7 +108,7 @@ export interface ViewConfig<T> {
     statusFunc?: StatusFunc<T>;
     powerBiOptions?: any;
     dataViewSideSheetOptions?: DataViewSideSheetOptions<T>;
-    visualEditorOptions?: VisualEditorOptions;
+    workflowEditorOptions?: WorkflowEditorOptions;
 }
 
 export function createGlobalState(defaultState: DataViewState): Atom<DataViewState> {

@@ -21,7 +21,7 @@ export function DataViewer(props: AppApi): JSX.Element {
         analyticsOptions,
         powerBiOptions,
         filterOptions,
-        visualEditorOptions,
+        workflowEditorOptions,
     } = useDataViewer();
     const { data } = useDataContext();
 
@@ -32,7 +32,7 @@ export function DataViewer(props: AppApi): JSX.Element {
         timelineOptions,
         analyticsOptions,
         powerBiOptions,
-        visualEditorOptions
+        workflowEditorOptions
     );
     const [activeTab, setActiveTab] = useState(0);
     const [activeFilter, setActiveFilter] = useState(false);

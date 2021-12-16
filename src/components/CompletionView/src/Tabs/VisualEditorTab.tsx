@@ -2,12 +2,12 @@ import { useDataContext } from '../Context/DataProvider';
 import { WorkflowEditor } from '../../../WorkflowEditor/Components/WorkflowEditor';
 
 export const VisualEditorTab = (): JSX.Element => {
-    const { visualEditorOptions } = useDataContext();
+    const { workflowEditorOptions } = useDataContext();
 
     return (
         <>
-            {visualEditorOptions ? (
-                <WorkflowEditor options={visualEditorOptions} />
+            {workflowEditorOptions ? (
+                <WorkflowEditor options={workflowEditorOptions} />
             ) : (
                 <p>No options configured</p>
             )}

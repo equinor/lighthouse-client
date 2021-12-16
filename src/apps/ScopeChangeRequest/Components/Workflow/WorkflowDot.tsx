@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import { useMemo } from 'react';
 
 interface WorkflowDotProps {
@@ -10,13 +11,16 @@ export const WorkflowDot = ({ state, height = 15, width = 15 }: WorkflowDotProps
     const color = useMemo(() => {
         switch (state) {
             case 'Active':
-                return '#78C0FF';
+                return tokens.colors.infographic.substitute__blue_sky.hex;
+            // figma color: return '#78C0FF';
 
             case 'Completed':
-                return '#00977B';
+                return tokens.colors.infographic.substitute__green_succulent.hex;
+            // figma color: return '#00977B';
 
             case 'Inactive':
-                return '##FFFFFF';
+                return tokens.colors.ui.background__default.hex;
+            // figma color: return '##FFFFFF';
         }
     }, [state]);
 

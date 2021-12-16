@@ -26,11 +26,11 @@ export function FactoryComponent({ onClose }: FactoryComponentProps): JSX.Elemen
 
     const close = () => {
         clearActiveFactory();
-        onClose && onClose;
+        onClose && onClose();
         setShowDialog(false);
         setHasUnsavedChanges(false);
     };
-
+    //Todo refactor confirmation scrim out to a global event scrim
     return (
         <>
             {Component && (

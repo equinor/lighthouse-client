@@ -157,7 +157,7 @@ export function setup(appApi: AppApi): void {
 
     request.registerStatusItems(statusBarData);
 
-    request.registerDataViewSideSheetOptions({ CustomRender: CustomSidesheet });
+    request.registerDataViewSideSheetOptions({ CustomComponent: CustomSidesheet });
 
     // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
     // request.registerVisualEditorOptions({

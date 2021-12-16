@@ -8,7 +8,7 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
-    VisualEditorOptions,
+    WorkflowEditorOptions,
 } from './DataViewState';
 
 export type DataSource<T> = () => Promise<T[]>;
@@ -56,5 +56,5 @@ export interface DataViewerApi<T> {
     registerStatusItems: (options: StatusFunc<T>) => void;
     registerPowerBIOptions: (options: PowerBiOptions) => void;
     registerDataViewSideSheetOptions: (options: DataViewSideSheetOptions<T>) => void;
-    registerVisualEditorOptions: (options: VisualEditorOptions) => void;
+    registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => void;
 }

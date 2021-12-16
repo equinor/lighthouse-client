@@ -11,7 +11,7 @@ import {
     TableOptions,
     TreeOptions,
     DataViewSideSheetOptions,
-    VisualEditorOptions,
+    WorkflowEditorOptions,
 } from '../DataViewerApi/DataViewState';
 import { useDataViewer } from '../DataViewerApi/useDataViewer';
 
@@ -20,7 +20,7 @@ interface DataState {
     name: string;
     data: any[];
     subData: Record<string, any[]>;
-    item: any;
+    item: Record<string, unknown>;
     viewComponent?: React.FC<DataViewerProps<unknown>>;
     viewOptions?: ViewOptions<unknown>;
     filterOptions?: FilterOptions<unknown>;
@@ -32,7 +32,7 @@ interface DataState {
     statusFunc?: StatusFunc<unknown>;
     powerBiOptions?: PowerBiOptions;
     dataViewSideSheetOptions?: DataViewSideSheetOptions<unknown>;
-    visualEditorOptions?: VisualEditorOptions;
+    workflowEditorOptions?: WorkflowEditorOptions;
 }
 interface DataContextState extends DataState {
     getData: VoidFunction;
@@ -87,7 +87,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         statusFunc,
         powerBiOptions,
         dataViewSideSheetOptions,
-        visualEditorOptions,
+        workflowEditorOptions,
     } = useDataViewer();
     const initialState: DataState = {
         key,
@@ -105,7 +105,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         statusFunc,
         powerBiOptions,
         dataViewSideSheetOptions,
-        visualEditorOptions,
+        workflowEditorOptions,
     };
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
@@ -124,7 +124,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     }, []);
 
     const setSelected = (item: any) => {
-        dispatch(actions.setSelectedItem(item));
+        dispatch(actions.setSelectedItem(item !== state.item ? item : {}));
     };
 
     return (

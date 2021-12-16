@@ -19,8 +19,11 @@ export function DataView(): JSX.Element {
 
     return (
         <Wrapper>
-            {dataViewSideSheetOptions?.CustomRender ? (
-                <dataViewSideSheetOptions.CustomRender item={selectedData} onClose={handleClose} />
+            {dataViewSideSheetOptions?.CustomComponent ? (
+                <dataViewSideSheetOptions.CustomComponent
+                    item={selectedData}
+                    onClose={handleClose}
+                />
             ) : (
                 <DefaultDataView
                     viewOptions={viewOptions}

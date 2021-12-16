@@ -19,7 +19,7 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
-    VisualEditorOptions,
+    WorkflowEditorOptions,
 } from './DataViewState';
 
 /**
@@ -184,12 +184,12 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
                 },
             }));
         },
-        registerVisualEditorOptions(visualEditorOptions: VisualEditorOptions) {
+        registerWorkflowEditorOptions(workflowEditorOptions: WorkflowEditorOptions) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    visualEditorOptions,
+                    workflowEditorOptions,
                 },
             }));
         },

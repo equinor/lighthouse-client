@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@equinor/eds-core-react';
+import { Button, Icon } from '@equinor/eds-core-react';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { Wrapper } from '../Styles/SidesheetWrapper';
 import { RequestViewContainer } from './RequestDetailViewContainer';
@@ -26,7 +26,7 @@ export const CustomSidesheet = ({
                                 customLabel={{ fontSize: 'xx-large' }}
                             />
                             <Button variant="ghost_icon" onClick={onClose}>
-                                <h2>x</h2>
+                                <Icon name="close" />
                             </Button>
                         </TitleHeader>
 
