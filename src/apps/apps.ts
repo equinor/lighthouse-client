@@ -30,6 +30,7 @@ import {
     QueryReport,
     SafetyPerformanceReport,
 } from './PowerBI';
+import { SwcrApp } from './swcr/swcrApp';
 
 type HEXColor = `#${string}`;
 
@@ -421,8 +422,8 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: [],
         app: {
-            appType: 'DataViewer',
-            component: DataView,
+            appType: 'CustomApp',
+            component: SwcrApp,
         },
     },
     // Queries and requests

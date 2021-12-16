@@ -1,29 +1,59 @@
 import { useMemo } from 'react';
-import { Column, useFlexLayout, useGroupBy, useTable } from 'react-table';
+import { useFlexLayout, useGroupBy, useTable } from 'react-table';
 import { useColumns } from './Hooks/useColumns';
 import { useTableDefaults } from './Hooks/useTableDefaults';
 import {
-    FooterRow,
     TableCell,
+    TableFooter,
+    TableFooterRow,
     TableHeadCell,
+    TableHeader,
     TableRow,
+    TableRows,
+    TableVisualWrapper,
     TableWrapper,
     TypeChip,
-    TypeWrapper
+    TypeWrapper,
 } from './Styles/Table';
 import { Table } from './Types/table';
 import { TableVisualOptions } from './Types/tableVisualOptions';
 
-interface TableVisualProps<T> {
+interface TableVisualProps<T extends Record<string, unknown>> {
     data: T[];
     options: TableVisualOptions<T>;
 }
+/**
+ * Table Visual - a grouped table 
+ * Use if you want to show a table with specified columns, that needs computation or special look. 
+ * 
+ * @param data dataset for the table. 
+ * @param options Table configuration. 
+ * @param initialGroupBy column to group the table by initially. 
+ * @param groupBy Array off columns that can be selected as group by. 
+ * @param columns configuration for columns to display. If omitted all fields in data is displayed
+ * @param styles override or change style of the Table 
+ * @returns Grouped tabled based on data and options. Built with React Table
+ * @example  
+ *     
+ *   <TableVisual<Package>
+            data={data}
+            options={{
+                initialGroupBy: 'PackageField',
+                groupBy,
+                columns,
+            }}
+        />
 
-export function TableVisual<T>({ data, options }: TableVisualProps<T>): JSX.Element {
-    const { initialState, defaultColumn } = useTableDefaults(options.initialGroup.toString());
 
-    const columns = useColumns<T>(data[0]) as readonly Column<Record<string, unknown>>[];
-    const tableSate = useMemo(() => data as Record<string, unknown>[], [data]);
+ */
+export function TableVisual<T extends Record<string, unknown>>({
+    data,
+    options,
+}: TableVisualProps<T>): JSX.Element {
+    const { initialState, defaultColumn } = useTableDefaults(options.initialGroupBy.toString());
+
+    const columns = useColumns<T>(data[0], options?.columns);
+    const tableState = useMemo(() => data, [data]);
 
     const {
         getTableProps,
@@ -33,10 +63,11 @@ export function TableVisual<T>({ data, options }: TableVisualProps<T>): JSX.Elem
         rows,
         prepareRow,
         setGroupBy,
-    } = useTable<Record<string, unknown>>(
+        state,
+    } = useTable<T>(
         {
-            columns,
-            data: tableSate,
+            columns: columns,
+            data: tableState,
             defaultColumn,
             initialState,
         },
@@ -44,37 +75,59 @@ export function TableVisual<T>({ data, options }: TableVisualProps<T>): JSX.Elem
         useGroupBy
     ) as Table;
 
+    const { styles } = options;
+
     return (
-        <>
+        <TableVisualWrapper>
             <TypeWrapper>
-                <TypeChip onClick={() => setGroupBy(['phase'])}>phase</TypeChip>
-                <TypeChip onClick={() => setGroupBy(['status'])}>status</TypeChip>
+                {options?.groupBy?.map((groupBy) => (
+                    <TypeChip
+                        key={groupBy.key.toString()}
+                        onClick={() => setGroupBy([groupBy.key.toString()])}
+                        variant={
+                            (state as any)?.groupBy.includes(groupBy.key.toString())
+                                ? 'active'
+                                : 'default'
+                        }
+                    >
+                        {groupBy?.title || groupBy.key}
+                    </TypeChip>
+                ))}
             </TypeWrapper>
-            <TableWrapper {...getTableProps()}>
-                <div>
-                    {headerGroups.map((group) => (
-                        <div {...group.getHeaderGroupProps()} key={group.getHeaderGroupProps().key}>
-                            {group.headers.map((column) => (
-                                <TableHeadCell
-                                    {...column.getHeaderProps()}
-                                    key={column.getHeaderProps().key}
-                                >
-                                    {column.render('Header')}
-                                </TableHeadCell>
-                            ))}
-                        </div>
-                    ))}
-                </div>
-                <div {...getTableBodyProps()}>
+            <TableWrapper {...getTableProps({ style: { ...styles?.table } })}>
+                <TableHeader style={{ ...(styles?.tableHeader || {}) }}>
+                    {headerGroups.map((group) => {
+                        const { style, key } = group.getHeaderGroupProps({
+                            style: { ...(styles?.tableRow || {}) },
+                        });
+
+                        return (
+                            <div style={style} key={key}>
+                                {group.headers.map((column) => (
+                                    <TableHeadCell
+                                        {...column.getHeaderProps()}
+                                        key={column.getHeaderProps().key}
+                                    >
+                                        {column.render('Header')}
+                                    </TableHeadCell>
+                                ))}
+                            </div>
+                        );
+                    })}
+                </TableHeader>
+                <TableRows {...getTableBodyProps({ style: { ...styles?.tableRows } })}>
                     {rows.map((row) => {
                         prepareRow(row);
+                        const { style, key } = row.getRowProps({
+                            style: { ...(styles?.tableRow || {}) },
+                        });
+
                         return (
-                            <TableRow {...row.getRowProps()} key={row.getRowProps().key}>
+                            <TableRow style={style} key={key}>
                                 {row.cells.map((cell: any) => {
                                     if (cell.isAggregated) {
                                         return (
                                             <TableCell {...cell.getCellProps()}>
-                                                {' '}
                                                 {cell.render('Aggregated')}
                                             </TableCell>
                                         );
@@ -89,25 +142,28 @@ export function TableVisual<T>({ data, options }: TableVisualProps<T>): JSX.Elem
                             </TableRow>
                         );
                     })}
-                </div>
-                <div>
-                    {footerGroups.map((group) => (
-                        <FooterRow
-                            {...group.getFooterGroupProps()}
-                            key={group.getFooterGroupProps().key}
-                        >
-                            {group.headers.map((column) => (
-                                <TableCell
-                                    {...column.getFooterProps()}
-                                    key={column.getFooterProps().key}
-                                >
-                                    {column.render('Footer')}
-                                </TableCell>
-                            ))}
-                        </FooterRow>
-                    ))}
-                </div>
+                </TableRows>
+                <TableFooter style={{ ...styles?.tableFooter }}>
+                    {footerGroups.map((group) => {
+                        const { key, style } = group.getFooterGroupProps({
+                            style: { ...styles?.tableFooterRow },
+                        });
+
+                        return (
+                            <TableFooterRow style={style} key={key}>
+                                {group.headers.map((column) => (
+                                    <TableCell
+                                        {...column.getFooterProps()}
+                                        key={column.getFooterProps().key}
+                                    >
+                                        {column.render('Footer')}
+                                    </TableCell>
+                                ))}
+                            </TableFooterRow>
+                        );
+                    })}
+                </TableFooter>
             </TableWrapper>
-        </>
+        </TableVisualWrapper>
     );
 }

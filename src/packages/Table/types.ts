@@ -118,6 +118,7 @@ declare module 'react-table' {
         extends UsePaginationInstanceProps<D>,
             UseColumnOrderInstanceProps<D> {
         pageSizes?: number[];
+        data: D[];
     }
 
     //@ts-ignore
@@ -130,6 +131,9 @@ declare module 'react-table' {
 
     //@ts-ignore
     export type PluginHook<TData extends TableData> = PluginHookDefault<TData>;
+
+    //@ts-ignore
+    export interface TableState<D extends TableData> extends Partial<UseGroupByState<D>> {}
 }
 
 export type { TableOptions, Cell } from 'react-table';
