@@ -1,11 +1,10 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { FilterData, FilterPersistOptions, FilterProvider, FilterView } from '@equinor/filter';
-import { useMemo, useState } from 'react';
+import { FilterProvider, FilterView } from '@equinor/filter';
+import { useState } from 'react';
 import { AppApi } from '../../../../../apps/apps';
 import { useDataContext } from '../../Context/DataProvider';
 import { useDataViewer } from '../../DataViewerApi/useDataViewer';
 import { useConfiguredTabs } from '../../Tabs/tabsConfig';
-import { storage } from '../../Util/storage';
 import { CompletionViewHeader } from '../DataViewerHeader/DataViewerHeader';
 import { CompletionViewTabs } from '../DataViewerTabs/DataViewerTabs';
 import { DataView } from '../DefaultDataView/DataView';
@@ -36,22 +35,22 @@ export function DataViewer(props: AppApi): JSX.Element {
     const [activeTab, setActiveTab] = useState(0);
     const [activeFilter, setActiveFilter] = useState(false);
 
-    const filterLocationKey = useMemo(() => `filer-${props.shortName}`, [props.shortName]);
-    const persistOptions: FilterPersistOptions = useMemo(
-        () => ({
-            getFilter() {
-                const filter = storage.getItem<FilterData>(filterLocationKey);
-                if (typeof filter === 'object') {
-                    return filter;
-                }
-                return;
-            },
-            setFilter(filterData: FilterData) {
-                return storage.setItem(filterLocationKey, filterData);
-            },
-        }),
-        [filterLocationKey]
-    );
+    // const filterLocationKey = useMemo(() => `filer-${props.shortName}`, [props.shortName]);
+    // const persistOptions: FilterPersistOptions = useMemo(
+    //     () => ({
+    //         getFilter() {
+    //             const filter = storage.getItem<FilterData>(filterLocationKey);
+    //             if (typeof filter === 'object') {
+    //                 return filter;
+    //             }
+    //             return;
+    //         },
+    //         setFilter(filterData: FilterData) {
+    //             return storage.setItem(filterLocationKey, filterData);
+    //         },
+    //     }),
+    //     [filterLocationKey]
+    // );
 
     const handleChange = (index: number) => {
         setActiveTab(index);
@@ -64,7 +63,7 @@ export function DataViewer(props: AppApi): JSX.Element {
     if (!viewIsActive) return <NoDataViewer />;
 
     return (
-        <FilterProvider initialData={data} options={filterOptions} persistOptions={persistOptions}>
+        <FilterProvider initialData={data} options={filterOptions}>
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <CompletionViewHeader
                     {...props}
