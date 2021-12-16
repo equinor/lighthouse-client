@@ -1,5 +1,5 @@
 import { baseClient } from '@equinor/http-client';
-import { createDataViewer } from '../components/CompletionView/src/DataViewerApi/DataViewerApi';
+import { createWorkSpace } from '@equinor/WorkSpace';
 import { AppApi } from './apps';
 
 export interface Checklist {
@@ -58,9 +58,9 @@ const commPkgKeys: (keyof Checklist)[] = [
     'WorkOrders__WoNo',
 ];
 
-export function setup(appApi: AppApi) {
+export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const checklist = createDataViewer<Checklist>({
+    const checklist = createWorkSpace<Checklist>({
         initialState: [],
         primaryViewKey: 'TagFormularType__Tag__TagNo',
         viewerId: appApi.shortName,
@@ -68,7 +68,7 @@ export function setup(appApi: AppApi) {
 
     checklist.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
-        const project = 'L.O532C.002';
+        // const project = 'L.O532C.002';
         const response = await api.fetch(
             `https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=103425&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`,
             { body: JSON.stringify([]), method: 'POST' }

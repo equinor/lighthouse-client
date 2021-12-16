@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Apps, Manifests } from '../../apps/apps';
 import useClientContext from '../../context/clientContext';
 import PageView from '../../Core/PageViewer';
-import { DataView } from '../CompletionView/src/DataView';
+import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
 import { HomePage } from '../HomePage/HomePage';
 import { ComponentWrapper } from './ComponentWrapper';
 import { GroupComponentWrapper } from './GroupComponentWrapper';
@@ -41,12 +41,12 @@ export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesPro
                             <Route
                                 key={route.shortName}
                                 path={`${route.groupe.toString()}/${route.shortName}`}
-                                element={<DataView {...api} />}
+                                element={<WorkSpace {...api} />}
                             />
                             <Route
                                 key={route.shortName + 'id'}
                                 path={`${route.groupe.toString()}/${route.shortName}/:id`}
-                                element={<DataView {...api} />}
+                                element={<WorkSpace {...api} />}
                             />
                         </>
                     );

@@ -1,4 +1,4 @@
-import { GardenOptions } from '../../CompletionView/src/DataViewerApi/DataViewState';
+import { GardenOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { ParkViewProvider } from '../Context/ParkViewProvider';
 import { GardenView } from './GardenView';
 import { NoGardenOptions } from './NoGardenOptions';

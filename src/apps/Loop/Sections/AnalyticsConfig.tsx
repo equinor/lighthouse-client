@@ -1,6 +1,6 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { GardenOptions } from '../../../components/CompletionView/src/DataViewerApi/DataViewState';
 import { Garden } from '../../../components/ParkView/Components/Garden';
+import { GardenOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import {
     getDatePercentage,
     getDateStatus,

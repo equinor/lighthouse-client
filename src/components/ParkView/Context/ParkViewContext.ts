@@ -1,10 +1,6 @@
 import { createContext } from 'react';
+import { GardenOptions, Status, TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { DataSet } from '../Models/data';
-import {
-    GardenOptions,
-    Status,
-    TreeOptions,
-} from '../../CompletionView/src/DataViewerApi/DataViewState';
 
 export interface CustomItemViewProps<T> {
     data: T;
