@@ -20,6 +20,7 @@ import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
+import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
     BusinessCaseReport,
@@ -443,6 +444,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.QueriesAndRequests,
         icon: '',
         uri: '',
+        app: {
+            appType: 'DataViewer',
+            component: DataView,
+            setup: scopeChangeSetup,
+        },
         imageUri: './images/Scope change request.jpg',
         tags: [],
     },
