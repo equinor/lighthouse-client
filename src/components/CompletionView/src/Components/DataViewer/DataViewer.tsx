@@ -8,7 +8,6 @@ import { useConfiguredTabs } from '../../Tabs/tabsConfig';
 import { CompletionViewHeader } from '../DataViewerHeader/DataViewerHeader';
 import { CompletionViewTabs } from '../DataViewerTabs/DataViewerTabs';
 import { DataView } from '../DefaultDataView/DataView';
-// import { useDataViewerKey } from '../DefaultDataView/Hooks/useDataViewerKey';
 import { NoDataViewer } from '../NoDataViewer/NoDataViewer';
 import { DataViewWrapper } from './DataViewerStyles';
 
