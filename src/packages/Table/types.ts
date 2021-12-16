@@ -37,7 +37,7 @@ export type CellRenderProps<T> = {
 type ObjectOrTableData<T> = T extends object ? T : TableData;
 
 export type CustomColumn<T> = Column<ObjectOrTableData<T>> &
-    Required<Pick<Column<ObjectOrTableData<T>>, 'Aggregated' | 'aggregate' | 'Header'>>;
+    Required<Pick<Column<ObjectOrTableData<T>>, 'Aggregated' | 'aggregate' | 'Header' | 'id'>>;
 
 export type CustomCellType<T, D extends TableData> = {
     /** Custom cell to be display. Has access to table data object when used as a method */
@@ -100,6 +100,8 @@ declare module 'react-table' {
         /** Click handler for cells */
         onCellClick?: CellClickHandler<TData>;
         setSelected?: (item: any) => void;
+        /** Order columns. Has to be an array of id's (keyof T) */
+        columnOrder?: string[];
     }
 
     //@ts-ignore
@@ -112,8 +114,11 @@ declare module 'react-table' {
     }
 
     //@ts-ignore
-    export interface TableInstance<D extends TableData> extends UsePaginationInstanceProps<D> {
+    export interface TableInstance<D extends TableData>
+        extends UsePaginationInstanceProps<D>,
+            UseColumnOrderInstanceProps<D> {
         pageSizes?: number[];
+        data: D[];
     }
 
     //@ts-ignore
@@ -126,6 +131,9 @@ declare module 'react-table' {
 
     //@ts-ignore
     export type PluginHook<TData extends TableData> = PluginHookDefault<TData>;
+
+    //@ts-ignore
+    export interface TableState<D extends TableData> extends Partial<UseGroupByState<D>> {}
 }
 
 export type { TableOptions, Cell } from 'react-table';

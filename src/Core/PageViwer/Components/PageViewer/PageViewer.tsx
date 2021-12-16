@@ -13,12 +13,28 @@ export function PageViewer(props: ViewState): JSX.Element {
         setActivePage(index);
     };
 
+    const [isFilterActive, setIsFilterActive] = useState(false);
+
+    function handleFilter() {
+        setIsFilterActive((s) => !s);
+    }
+
     if (Object.values(props.pages).length === 0) return <NoPages />;
     return (
         <Tabs activeTab={activePage} onChange={handleChange}>
-            <PageViewerHeader {...props} viewState={props} />
+            <PageViewerHeader
+                {...props}
+                viewState={props}
+                activePage={activePage}
+                activeFilter={isFilterActive}
+                handleFilter={handleFilter}
+            />
             <PageViewWrapper>
-                <PageViewerPages viewState={props} activePage={activePage} />
+                <PageViewerPages
+                    viewState={props}
+                    activePage={activePage}
+                    isFilterActive={isFilterActive}
+                />
             </PageViewWrapper>
         </Tabs>
     );

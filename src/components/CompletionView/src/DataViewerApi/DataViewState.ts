@@ -21,7 +21,7 @@ export interface FilterOptions<T> {
 export type TableOptions<T> = Pick<
     //@ts-ignore
     ReactTableOptions<T>,
-    'enableSelectRows' | 'onCellClick' | 'setSelected'
+    'enableSelectRows' | 'onCellClick' | 'setSelected' | 'columnOrder'
 > & {
     objectIdentifierKey: string;
 
