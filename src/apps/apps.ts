@@ -76,7 +76,12 @@ export enum Apps {
     SSU = 'SSU',
 }
 
-type AppGroups = Record<Apps, AppGroupe>;
+export type AppGroups = Record<Apps, AppGroupe>;
+
+export interface Manifests {
+    apps: AppManifest[];
+    appGroups: AppGroups;
+}
 
 export const appGroups: AppGroups = {
     AssetData: {

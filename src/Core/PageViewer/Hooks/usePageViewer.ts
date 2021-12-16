@@ -2,10 +2,10 @@
 import { useAtom } from '@dbeining/react-atom';
 import { getContext } from '../Api/pageViewerState';
 import { ViewState } from '../Types/State';
-import { useDataViewerKey } from './useDataViewerKey';
+import { useLocationKey } from './useDataViewerKey';
 
 export function usePageViewer(): ViewState {
-    const key = useDataViewerKey();
+    const key = useLocationKey();
     const state = useAtom(getContext());
 
     if (state[key]) {
