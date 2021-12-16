@@ -24,10 +24,5 @@ export interface FilterOptions<T> {
     typeMap?: Partial<Record<keyof T, string>>;
     groupValue?: Record<string, (item: T) => string>;
     customRender?: Record<keyof T | string, React.FC<T>>;
-    initialFilters?: InitialFilter[];
-}
-
-export interface InitialFilter {
-    key: string;
-    valueKey: string;
+    initialFilters?: string[];
 }

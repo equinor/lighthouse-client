@@ -3,10 +3,19 @@ import { checkItem } from '../Services/checkItem';
 import { createFilterData } from '../Services/creatFilter';
 import { workerFilter } from '../Services/filterApi';
 import { FilterItem, FilterItemCheck, FilterOptions } from '../Types/FilterItem';
+import { FilterPersistOptions, PersistCustomFilters } from '../Types/PersistFilter';
 import { objectHasKeys } from '../Utils/objectHasKeys';
 import { actions } from './FilterActions';
-import { Context, FilterProviderProps, FilterState } from './FilterContext';
+import { Context, FilterState } from './FilterContext';
 import { filterReducer } from './FilterReducer';
+
+export interface FilterProviderProps<T> {
+    children: React.ReactNode;
+    initialData: T[];
+    options?: FilterOptions<T>;
+    persistOptions?: FilterPersistOptions;
+    persistCustomOptions?: PersistCustomFilters;
+}
 
 export function FilterProvider<T>({
     children,
@@ -14,15 +23,13 @@ export function FilterProvider<T>({
     options,
     persistOptions,
 }: FilterProviderProps<T>): JSX.Element {
-    const activeFilterTypes =
-        options?.initialFilters && options.initialFilters.map((initialFilter) => initialFilter.key);
     const initialState: FilterState = {
         isLoading: false,
         data: [],
         filteredData: [],
         filterData: {},
         options: options as FilterOptions<unknown>,
-        activeFiltersTypes: activeFilterTypes ? activeFilterTypes : [],
+        activeFiltersTypes: options?.initialFilters ? options.initialFilters : [],
     };
     const [state, dispatch] = useReducer(filterReducer, initialState);
     const { filterData } = state;

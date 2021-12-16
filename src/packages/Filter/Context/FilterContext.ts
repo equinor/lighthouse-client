@@ -1,14 +1,5 @@
 import { createContext } from 'react';
 import { FilterData, FilterItemCheck, FilterOptions } from '../Types/FilterItem';
-import { FilterPersistOptions, PersistCustomFilters } from '../Types/PersistFilter';
-
-export interface FilterProviderProps<T> {
-    children: React.ReactNode;
-    initialData: T[];
-    options?: FilterOptions<T>;
-    persistOptions?: FilterPersistOptions;
-    persistCustomOptions?: PersistCustomFilters;
-}
 
 export interface Context extends FilterState {
     filterItemCheck: FilterItemCheck;

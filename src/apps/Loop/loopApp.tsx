@@ -48,7 +48,7 @@ const loopKeys: (keyof Loop)[] = [
     'createdAt',
 ];
 
-export function setup(appApi: AppApi) {
+export function setup(appApi: AppApi): void {
     // createDataFactory({
     //     factoryId: 'loop',
     //     tile: 'Creat Loop',
@@ -84,6 +84,7 @@ export function setup(appApi: AppApi) {
 
     commPkg.registerFilterOptions({
         excludeKeys: loopKeys,
+        initialFilters: ['status', 'signedAtDate', 'phase'],
         typeMap: {},
         groupValue: {
             signedAtDate: (item: Loop): string => {
