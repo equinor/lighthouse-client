@@ -7,3 +7,5 @@ export * from './Context/FilterProvider';
 export * from './Hooks/useFilteredData';
 // Filter
 export * from './Services/filter';
+// Types
+export * from './Types';

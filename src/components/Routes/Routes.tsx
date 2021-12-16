@@ -1,11 +1,10 @@
 import { Redirect, Route, Switch } from 'react-router-dom';
-import { useApps } from '../../apps/useApps';
+import { AppManifest } from '../../apps/apps';
 import useClientContext from '../../context/clientContext';
 import { HomePage } from '../HomePage/HomePage';
 import { DefaultRouteComponent } from './DefaultRouteComponent';
 
-export function Routes(): JSX.Element {
-    const apps = useApps();
+export function Routes({ apps }: { apps: AppManifest[] }): JSX.Element {
     const { appConfig, authProvider } = useClientContext();
 
     return (
@@ -16,12 +15,6 @@ export function Routes(): JSX.Element {
                 render={() => <HomePage title="Johan Castberg Dashboard" icon="home" />}
             />
             {apps.map((route) => {
-                route.app?.setup &&
-                    route.app.setup({
-                        ...route,
-                        appConfig,
-                        authProvider,
-                    });
                 return (
                     <Route
                         exact
