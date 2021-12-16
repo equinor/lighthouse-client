@@ -6,14 +6,7 @@ import Icon from '../../../../../components/Icon/Icon';
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { useDataContext } from '../../Context/DataProvider';
 import { TabButton } from '../ToggleButton';
-import {
-    Divider,
-    HeaderWrapper,
-    LeftSection,
-    RightSection,
-    TabTitle,
-    Title
-} from './DataViewerHeaderStyles';
+import { Divider, HeaderWrapper, LeftSection, RightSection, TabTitle, Title } from './HeaderStyles';
 
 const { Tab, List } = Tabs;
 

@@ -1,9 +1,9 @@
 import { tokens } from '@equinor/eds-tokens';
 import Icon from '../../../../../components/Icon/Icon';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
-import { Heading, Iframe, Info, Wrapper } from './NoDataViewer-Styles';
+import { Heading, Iframe, Info, Wrapper } from './NoDataStyles';
 
-export const NoDataViewer = (): JSX.Element => {
+export const NoDataView = (): JSX.Element => {
     const { name } = useWorkSpace();
     return (
         <Wrapper>

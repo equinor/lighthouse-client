@@ -7,13 +7,13 @@ import { FilterProvider } from '../../../../../components/Filter/Context/FilterP
 import { useDataContext } from '../../Context/DataProvider';
 import { useConfiguredTabs } from '../../Tabs/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
-import { CompletionViewHeader } from '../DataViewerHeader/DataViewerHeader';
-import { CompletionViewTabs } from '../DataViewerTabs/DataViewerTabs';
-import { DataView } from '../DefaultDataView/DataView';
-import { NoDataViewer } from '../NoDataViewer/NoDataViewer';
-import { DataViewWrapper } from './DataViewerStyles';
+import { CompletionViewHeader } from '../DataViewerHeader/Header';
+import { DataView } from '../DefaultView/DataView';
+import { NoDataView } from '../NoDataViewer/NoData';
+import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
+import { DataViewWrapper } from './WorkSpaceViewStyles';
 
-export function DataViewer(props: AppApi): JSX.Element {
+export function WorkSpaceView(props: AppApi): JSX.Element {
     const {
         treeOptions,
         tableOptions,
@@ -52,7 +52,7 @@ export function DataViewer(props: AppApi): JSX.Element {
         setActiveFilter((state) => !state);
     }
 
-    if (!viewIsActive) return <NoDataViewer />;
+    if (!viewIsActive) return <NoDataView />;
     return (
         <FilterProvider initialData={data} options={filterOptions}>
             <Tabs activeTab={activeTab} onChange={handleChange}>
@@ -64,7 +64,7 @@ export function DataViewer(props: AppApi): JSX.Element {
                 />
                 <FilterView isActive={activeFilter} />
                 <DataViewWrapper>
-                    <CompletionViewTabs tabs={tabs} activeTab={activeTab} />
+                    <WorkSpaceTabs tabs={tabs} activeTab={activeTab} />
                     <DataView />
                 </DataViewWrapper>
             </Tabs>

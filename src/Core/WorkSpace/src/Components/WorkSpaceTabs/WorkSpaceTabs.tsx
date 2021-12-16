@@ -1,6 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { TabsConfigItem } from '../../Tabs/tabsConfig';
-import { Panels } from './DataViewerTabsStyles';
+import { Panels } from './WorkSpaceTabsStyles';
 
 const { Panel } = Tabs;
 
@@ -9,7 +9,7 @@ interface CompletionViewTabsProps {
     activeTab: number;
 }
 
-export const CompletionViewTabs = ({ tabs, activeTab }: CompletionViewTabsProps): JSX.Element => {
+export const WorkSpaceTabs = ({ tabs, activeTab }: CompletionViewTabsProps): JSX.Element => {
     return (
         <Panels>
             {tabs.map((tab, index) => {

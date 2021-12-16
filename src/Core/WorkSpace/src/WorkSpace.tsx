@@ -1,11 +1,11 @@
 import { AppApi } from '../../../apps/apps';
-import { DataViewer } from './Components/DataViewer/DataViewer';
+import { WorkSpaceView } from './Components/WorkSpace/WorkSpaceView';
 import { DataProvider } from './Context/DataProvider';
 
 export const WorkSpace = (props: AppApi): JSX.Element => {
     return (
         <DataProvider>
-            <DataViewer {...props} />
+            <WorkSpaceView {...props} />
         </DataProvider>
     );
 };
