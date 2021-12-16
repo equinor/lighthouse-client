@@ -1,11 +1,10 @@
+import { GroupView } from '@equinor/GroupView';
 import { Route, Routes } from 'react-router-dom';
 import { Apps, Manifests } from '../../apps/apps';
 import useClientContext from '../../context/clientContext';
 import PageView from '../../Core/PageViewer';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
-import { HomePage } from '../HomePage/HomePage';
 import { ComponentWrapper } from './ComponentWrapper';
-import { GroupComponentWrapper } from './GroupComponentWrapper';
 
 interface ClientRoutesProps {
     manifests: Manifests;
@@ -16,7 +15,16 @@ export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesPro
 
     return (
         <Routes>
-            <Route path={'/'} element={<HomePage title="Johan Castberg Dashboard" icon="home" />} />
+            <Route
+                path={'/'}
+                element={
+                    <GroupView
+                        group={{ name: 'Johan Castberg Home', icon: '' }}
+                        groups={appGroups}
+                        groupeId={'key'}
+                    />
+                }
+            />
             {Object.keys(appGroups).map((key) => {
                 const group = appGroups[key];
                 const links = apps.filter((app) => {
@@ -29,7 +37,7 @@ export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesPro
                     <Route
                         key={key}
                         path={`${key}`}
-                        element={<GroupComponentWrapper {...group} links={links} groupeId={key} />}
+                        element={<GroupView group={group} links={links} groupeId={key} />}
                     />
                 );
             })}
