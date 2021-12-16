@@ -1,8 +1,6 @@
 import { AuthenticationProvider } from '@equinor/authentication';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import React from 'react';
-import { DataView } from '../components/CompletionView/src/DataView';
-import PageView from '../Core/PageViwer';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -20,7 +18,6 @@ import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
-import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
     BusinessCaseReport,
@@ -31,7 +28,7 @@ import {
     QueryReport,
     SafetyPerformanceReport,
 } from './PowerBI';
-import { SwcrApp } from './swcr/swcrApp';
+import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 
 type HEXColor = `#${string}`;
 
@@ -79,7 +76,12 @@ export enum Apps {
     SSU = 'SSU',
 }
 
-type AppGroups = Record<Apps, AppGroupe>;
+export type AppGroups = Record<Apps, AppGroupe>;
+
+export interface Manifests {
+    apps: AppManifest[];
+    appGroups: AppGroups;
+}
 
 export const appGroups: AppGroups = {
     AssetData: {
@@ -207,7 +209,6 @@ export const apps: AppManifest[] = [
             setup: (): void => {
                 console.log('overview');
             },
-            component: PageView,
         },
     },
     {
@@ -223,7 +224,6 @@ export const apps: AppManifest[] = [
             setup: (): void => {
                 console.log('engineering');
             },
-            component: PageView,
         },
     },
     {
@@ -237,7 +237,6 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'PageView',
             setup: constructionSetup,
-            component: PageView,
         },
     },
     {
@@ -251,7 +250,6 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'PageView',
             setup: constructionSetup,
-            component: PageView,
         },
     },
     // Engineering management
@@ -330,7 +328,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: checklistSetup,
         },
     },
@@ -344,7 +341,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: handoverSetup,
         },
     },
@@ -358,7 +354,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -371,7 +366,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: loopSetup,
         },
     },
@@ -385,7 +379,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -398,7 +391,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -411,7 +403,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -423,8 +414,7 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: [],
         app: {
-            appType: 'CustomApp',
-            component: SwcrApp,
+            appType: 'DataViewer',
         },
     },
     // Queries and requests
@@ -446,10 +436,8 @@ export const apps: AppManifest[] = [
         uri: '',
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: scopeChangeSetup,
         },
-        imageUri: './images/Scope change request.jpg',
         tags: [],
     },
     // ProjectControl

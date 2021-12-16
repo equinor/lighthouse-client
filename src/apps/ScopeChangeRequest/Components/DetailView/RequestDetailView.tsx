@@ -1,9 +1,9 @@
+import { Button } from '@equinor/eds-core-react';
 import styled from 'styled-components';
-import { Field } from './Components/Field';
+import { useDataContext } from '../../../../Core/WorkSpace/src/Context/DataProvider';
 import { SectionRow } from '../../Styles/Section';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { Button } from '@equinor/eds-core-react';
-import { useDataContext } from '../../../../components/CompletionView/src/Context/DataProvider';
+import { Field } from './Components/Field';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;

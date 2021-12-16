@@ -1,6 +1,6 @@
-import { useDataContext } from '../../CompletionView/src/Context/DataProvider';
-import { Item } from '../Styles/item';
+import { useDataContext } from '../../../Core/WorkSpace/src/Context/DataProvider';
 import { useParkViewContext } from '../Context/ParkViewProvider';
+import { Item } from '../Styles/item';
 
 interface RenderItemsProps<T> {
     data: T[];

@@ -1,5 +1,5 @@
 import { baseClient } from '@equinor/http-client';
-import { createDataViewer } from '../components/CompletionView/src/DataViewerApi/DataViewerApi';
+import { createWorkSpace } from '@equinor/WorkSpace';
 import { AppApi } from './apps';
 
 interface CommPkg {
@@ -59,9 +59,9 @@ function start(item: CommPkg): string {
     }
 }
 
-export function setup(appApi: AppApi) {
+export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const commPkg = createDataViewer<CommPkg>({
+    const commPkg = createWorkSpace<CommPkg>({
         initialState: [],
         primaryViewKey: 'CommPkgNo',
         viewerId: appApi.shortName,
@@ -69,7 +69,7 @@ export function setup(appApi: AppApi) {
 
     commPkg.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
-        const project = 'L.O532C.002';
+        // const project = 'L.O532C.002';
         const response = await api.fetch(
             // `https://api-lighthouse-production.playground..equinor.com/commpks/${plantId}/${project}`
             `https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=96128&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`,

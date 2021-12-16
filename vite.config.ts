@@ -15,6 +15,8 @@ export default defineConfig({
         alias: {
             '@equinor/VisualEditor': path.resolve(__dirname, './src/packages/VisualEditor'),
             '@equinor/Form': path.resolve(__dirname, './src/packages/Form'),
+            '@equinor/WorkSpace': path.resolve(__dirname, './src/Core/WorkSpace'),
+            '@equinor/GroupView': path.resolve(__dirname, './src/Core/GroupView'),
             '@equinor/DataFactory': path.resolve(__dirname, './src/Core/DataFactory'),
             '@equinor/StatusBar': path.resolve(__dirname, './src/packages/StatusBar'),
             '@equinor/Diagrams': path.resolve(__dirname, './src/packages/Diagrams'),

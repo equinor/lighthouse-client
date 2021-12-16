@@ -1,12 +1,12 @@
-import { VisualEditor } from '@equinor/VisualEditor';
 import { Button, SingleSelect } from '@equinor/eds-core-react';
+import { VisualEditor } from '@equinor/VisualEditor';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Step, Workflow } from '../Types/Workflow';
+import { WorkflowEditorOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { createTemplate } from '../API/createTemplate';
 import { publishTemplate } from '../API/publishTemplate';
 import { saveTemplate } from '../API/saveTemplate';
-import { createTemplate } from '../API/createTemplate';
-import { WorkflowEditorOptions } from '../../CompletionView/src/DataViewerApi/DataViewState';
+import { Step, Workflow } from '../Types/Workflow';
 
 interface WorkflowEditorProps {
     options: WorkflowEditorOptions;

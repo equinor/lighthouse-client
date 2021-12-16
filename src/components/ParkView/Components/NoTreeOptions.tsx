@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
+import styled from 'styled-components';
+import { useWorkSpace } from '../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
 import Icon from '../../Icon/Icon';
-import { useDataViewer } from '../../CompletionView/src/DataViewerApi/useDataViewer';
 
 const Wrapper = styled.div`
     margin-top: 100px;
@@ -24,7 +24,7 @@ const Info = styled.p`
 `;
 
 export const NoTreeOptions = (): JSX.Element => {
-    const { name } = useDataViewer();
+    const { name } = useWorkSpace();
     return (
         <Wrapper>
             <Icon
