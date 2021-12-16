@@ -4,12 +4,14 @@ import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { useDataViewerKey } from '../Components/DefaultDataView/Hooks/useDataViewerKey';
 import { DataViewerProps, ViewOptions } from '../DataViewerApi/DataViewerTypes';
 import {
+    DataViewSideSheetOptions,
     FilterOptions,
     GardenOptions,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
-    TreeOptions
+    TreeOptions,
+    WorkflowEditorOptions
 } from '../DataViewerApi/DataViewState';
 import { useDataViewer } from '../DataViewerApi/useDataViewer';
 
@@ -18,21 +20,23 @@ interface DataState {
     name: string;
     data: any[];
     subData: Record<string, any[]>;
-    itemId: string;
+    item: Record<string, unknown>;
     viewComponent?: React.FC<DataViewerProps<unknown>>;
     viewOptions?: ViewOptions<unknown>;
     filterOptions?: FilterOptions<unknown>;
-    tableOptions?: TableOptions;
+    tableOptions?: TableOptions<unknown>;
     treeOptions?: TreeOptions<unknown>;
     timelineOptions?: any;
     gardenOptions?: GardenOptions<unknown>;
     analyticsOptions?: AnalyticsOptions<unknown>;
     statusFunc?: StatusFunc<unknown>;
     powerBiOptions?: PowerBiOptions;
+    dataViewSideSheetOptions?: DataViewSideSheetOptions<unknown>;
+    workflowEditorOptions?: WorkflowEditorOptions;
 }
 interface DataContextState extends DataState {
     getData: VoidFunction;
-    setSelected: (itemId: string) => void;
+    setSelected: (item: any) => void;
 }
 interface DataProviderProps {
     children: React.ReactNode;
@@ -48,8 +52,8 @@ export enum DataAction {
 
 export const actions = {
     getData: createCustomAction(DataAction.getData, (data: any[]) => ({ data })),
-    setSelectedItem: createCustomAction(DataAction.setSelected, (itemId: string) => ({ itemId })),
     setOptions: createCustomAction(DataAction.setOptions, (options) => ({ options })),
+    setSelected: createCustomAction(DataAction.setSelected, (item: any) => ({ item })),
 };
 
 export type OfflineDocumentsActionType = typeof DataAction;
@@ -62,8 +66,8 @@ export function ClientReducer(state: DataState, action: Action): DataState {
     switch (action.type) {
         case getType(actions.getData):
             return { ...state, data: action.data };
-        case getType(actions.setSelectedItem):
-            return { ...state, itemId: action.itemId };
+        case getType(actions.setSelected):
+            return { ...state, item: action.item };
         case getType(actions.setOptions):
             return { ...state, ...action.options };
         default:
@@ -80,12 +84,14 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         viewOptions,
         tableOptions,
         filterOptions,
-        dataFetcher,
+        dataSource,
         treeOptions,
         gardenOptions,
         analyticsOptions,
         statusFunc,
         powerBiOptions,
+        dataViewSideSheetOptions,
+        workflowEditorOptions,
     } = useDataViewer();
 
     const initialState: DataState = {
@@ -93,7 +99,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         name,
         data: [],
         subData: {},
-        itemId: '',
+        item: {},
         viewComponent,
         viewOptions,
         filterOptions,
@@ -103,6 +109,8 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         analyticsOptions,
         statusFunc,
         powerBiOptions,
+        dataViewSideSheetOptions,
+        workflowEditorOptions,
     };
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
@@ -125,8 +133,8 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     }, [key]);
 
     const getData = useCallback(async () => {
-        if (dataFetcher) {
-            const data = await dataFetcher();
+        if (dataSource) {
+            const data = await dataSource();
             if (validator) {
                 dispatch(actions.getData(validator(data)));
                 return;
@@ -135,10 +143,10 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
             console.warn(`Data may not be valid. Data validator is not registered for ${name}.`);
             dispatch(actions.getData(data));
         }
-    }, [dataFetcher, name, validator]);
+    }, []);
 
-    const setSelected = (itemId: string) => {
-        dispatch(actions.setSelectedItem(itemId !== state.itemId ? itemId : ''));
+    const setSelected = (item: any) => {
+        dispatch(actions.setSelected(item !== state.item ? item : {}));
     };
 
     return (

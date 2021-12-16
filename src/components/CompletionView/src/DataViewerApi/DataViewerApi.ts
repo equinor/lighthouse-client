@@ -1,14 +1,17 @@
+import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { dispatch } from './DataViewerCoreActions';
 import {
-    DataFetcher,
+    DataSource,
     DataViewerApi,
     DataViewerProps,
+    FactoryOptions,
     Validator,
     ViewerOptions,
     ViewOptions,
 } from './DataViewerTypes';
 import {
+    DataViewSideSheetOptions,
     DataViewState,
     GardenOptions,
     getContext,
@@ -16,6 +19,7 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
+    WorkflowEditorOptions,
 } from './DataViewState';
 
 /**
@@ -42,12 +46,23 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
     });
 
     return {
-        registerDataFetcher(dataFetcher: DataFetcher<T>) {
+        registerDataCreator(factoryOptions: FactoryOptions) {
+            if (!options.dataFactoryCreator) {
+                // eslint-disable-next-line no-console
+                console.warn(
+                    'No data dataFactoryCreator is registered. Add when creating the data viewer.'
+                );
+                return;
+            }
+            const factory: Factory = { ...factoryOptions, factoryId: options.viewerId };
+            options.dataFactoryCreator(factory);
+        },
+        registerDataSource(dataSource: DataSource<T>) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    dataFetcher,
+                    dataSource,
                 },
             }));
         },
@@ -96,12 +111,12 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
          * View option Registration
          *
          */
-        registerTableOptions(tableOptions: TableOptions) {
+        registerTableOptions<T>(tableOptions: TableOptions<T>) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    tableOptions,
+                    tableOptions: tableOptions as TableOptions<unknown>,
                 },
             }));
         },
@@ -156,6 +171,25 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
                 [options.viewerId]: {
                     ...state[options.viewerId],
                     powerBiOptions,
+                },
+            }));
+        },
+        registerDataViewSideSheetOptions(dataViewSideSheetOptions: DataViewSideSheetOptions<T>) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    dataViewSideSheetOptions:
+                        dataViewSideSheetOptions as DataViewSideSheetOptions<unknown>,
+                },
+            }));
+        },
+        registerWorkflowEditorOptions(workflowEditorOptions: WorkflowEditorOptions) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    workflowEditorOptions,
                 },
             }));
         },

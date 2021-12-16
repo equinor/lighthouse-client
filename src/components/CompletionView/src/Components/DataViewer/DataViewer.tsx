@@ -22,6 +22,7 @@ export function DataViewer(props: AppApi): JSX.Element {
         analyticsOptions,
         powerBiOptions,
         filterOptions,
+        workflowEditorOptions,
     } = useDataViewer();
     const { data } = useDataContext();
     const { id } = useParams();
@@ -35,7 +36,8 @@ export function DataViewer(props: AppApi): JSX.Element {
         gardenOptions,
         timelineOptions,
         analyticsOptions,
-        powerBiOptions
+        powerBiOptions,
+        workflowEditorOptions
     );
     const [activeTab, setActiveTab] = useState(Number(id) || 0);
     const [activeFilter, setActiveFilter] = useState(false);
@@ -51,7 +53,6 @@ export function DataViewer(props: AppApi): JSX.Element {
     }
 
     if (!viewIsActive) return <NoDataViewer />;
-
     return (
         <FilterProvider initialData={data} options={filterOptions}>
             <Tabs activeTab={activeTab} onChange={handleChange}>
