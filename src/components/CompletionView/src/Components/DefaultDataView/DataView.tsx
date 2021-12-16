@@ -6,7 +6,6 @@ import { DataEntry, DataGrid, Description, Section, Title, Wrapper } from './Dat
 
 export function DataView(): JSX.Element {
     const { data, itemId, viewOptions } = useDataContext();
-    const columns = useColumns(data[0]);
     const [selectedData, setSelectedData] = useState<any>(undefined);
 
     useEffect(() => {
@@ -78,7 +77,7 @@ export function DataView(): JSX.Element {
                                             <strong>{key}: </strong>
 
                                             {typeof data[0] === 'object' ? (
-                                                <Table options={{ data, columns }} />
+                                                <TableWrapper data={data} />
                                             ) : (
                                                 <div>
                                                     {data.map((item, index) => (
@@ -95,4 +94,9 @@ export function DataView(): JSX.Element {
             )}
         </>
     );
+}
+
+function TableWrapper({ data }: { data: any }) {
+    const columns = useColumns(data[0]);
+    return <Table options={{ data, columns }} />;
 }
