@@ -1,23 +1,10 @@
 import { useMemo } from 'react';
+import { ApexOptions } from 'apexcharts';
 import { BarChartOptions } from '../Types/barVisualOptions';
 import { createSeriesByKeys } from '../Utils/createSeriesByKeys';
 
 interface BarChart {
-    barChartOptions: {
-        chart: { id: string; stacked: boolean | undefined; toolbar: { show: boolean } };
-        plotOptions: { bar: { columnWidth: string; horizontal?: boolean } };
-        stroke: { width: number[] };
-        colors: string[];
-        xaxis: { categories: string[] | { name: string; type: string; data: number[] }[] };
-        markers: {
-            size: number;
-            strokeWidth: number;
-            fillOpacity: number;
-            strokeOpacity: number;
-            hover: { size: number };
-        };
-        yaxis: { tickAmount: number; min: number };
-    };
+    barChartOptions: ApexOptions;
     series: string[] | { name: string; type: string; data: number[] }[];
 }
 
@@ -30,7 +17,7 @@ export function useHorizontalBarChart<T>(
         [categoryKey, data, nameKey]
     );
 
-    const barChartOptions = useMemo(
+    const barChartOptions: ApexOptions = useMemo(
         () => ({
             chart: {
                 id: 'basic-bar',
