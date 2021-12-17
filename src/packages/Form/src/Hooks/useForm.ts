@@ -4,7 +4,7 @@ import { Schema } from '../Types/schema';
 import { Form } from '../Types/form';
 import { Fields, Field } from '../Types/field';
 
-const validateField = <TValue>(field: FieldConfig, value?: TValue): boolean => {
+const validateField = <TValue>(field: FieldConfig<TValue>, value?: TValue): boolean => {
     if (field.validationFunction) {
         return field.validationFunction(value);
     }
@@ -16,19 +16,15 @@ const validateField = <TValue>(field: FieldConfig, value?: TValue): boolean => {
     return true;
 };
 
-interface LooseObject {
-    [key: string]: any;
-}
-
 const buildObject = <T>(schema: Schema<T>, initialState?: Partial<T>): T => {
-    let object: LooseObject = {} as T;
+    let object = {} as T;
 
     for (const [key] of Object.entries(schema)) {
         object[key] = undefined;
     }
     object = { ...object, ...initialState };
 
-    return object as T;
+    return object;
 };
 
 export const useForm = <T>(schema: Schema<T>, initialState?: Partial<T>): Form<T> => {
@@ -50,7 +46,7 @@ export const useForm = <T>(schema: Schema<T>, initialState?: Partial<T>): Form<T
                 continue;
             }
 
-            const fieldConfig = schema[fieldKey] as FieldConfig;
+            const fieldConfig = schema[fieldKey] as FieldConfig<T[typeof fieldKey]>;
 
             if (!fieldConfig) {
                 continue;
@@ -106,11 +102,3 @@ export const getChangedData = <T>(
     }
     return Object.keys(changedData).length > 0 ? changedData : undefined;
 };
-
-export function isAllValid<T>(fields: Fields<T>): boolean {
-    const values = Object.values(fields) as any[];
-    if (values.filter((v): boolean => v.isRequired).every((v): boolean => v.isValid)) {
-        return true;
-    }
-    return false;
-}
