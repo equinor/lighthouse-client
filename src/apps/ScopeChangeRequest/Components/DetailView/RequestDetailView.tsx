@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { Field } from './Components/Field';
 import { SectionRow } from '../../Styles/Section';
-import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
 import { Button } from '@equinor/eds-core-react';
 import { useDataContext } from '../../../../components/CompletionView/src/Context/DataProvider';
+import { Workflow } from '../Workflow/Workflow';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -32,6 +33,18 @@ export const RequestDetailView = ({
         setTimeout(getData, 200);
     };
 
+    const statusFunc = (item: WorkflowStep): 'Completed' | 'Inactive' | 'Active' => {
+        console.log(item);
+        if (item.isCompleted) {
+            return 'Completed';
+        }
+        if (item.isCurrent) {
+            return 'Active';
+        } else {
+            return 'Inactive';
+        }
+    };
+
     return (
         <div>
             <DetailViewContainer>
@@ -45,6 +58,10 @@ export const RequestDetailView = ({
                     <Field label={'Change origin'} value={request.origin} />
                 </SectionRow>
                 <Field label={'Description'} value={request.description} />
+                <Field
+                    label={'Workflow'}
+                    value={<Workflow steps={request.workflowSteps} statusFunc={statusFunc} />}
+                />
             </DetailViewContainer>
             <ButtonContainer>
                 {request.state === 'Draft' && (

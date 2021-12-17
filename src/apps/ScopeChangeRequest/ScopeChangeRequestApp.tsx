@@ -7,7 +7,7 @@ import { CustomSidesheet } from './Components/CustomSidesheet';
 import { createDataFactory } from '@equinor/DataFactory';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { Workflow } from './Components/Workflow/Workflow';
+import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 
 export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
@@ -125,7 +125,7 @@ export function setup(appApi: AppApi): void {
                     Cell: ({ cell }) => {
                         return (
                             <div>
-                                <Workflow
+                                <WorkflowCompact
                                     steps={cell.value.content.workflowSteps}
                                     statusDotFunc={statusDotFunc}
                                     spanDirection={'horizontal'}
