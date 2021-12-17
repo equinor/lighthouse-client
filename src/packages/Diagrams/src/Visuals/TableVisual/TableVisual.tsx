@@ -77,6 +77,8 @@ export function TableVisual<T extends Record<string, unknown>>({
 
     const { styles } = options;
 
+    console.log(rows, headerGroups);
+
     return (
         <TableVisualWrapper>
             <TypeWrapper>

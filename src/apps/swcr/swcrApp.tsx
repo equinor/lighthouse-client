@@ -1,22 +1,15 @@
 import { useMemo } from 'react';
 import { CellValue, Column, TableInstance } from 'react-table';
 import { GroupBy, TableVisual } from '../../packages/Diagrams/src/Visuals/TableVisual';
-import { createData, SwcrPackage, SwcrStatus } from './mockData';
+
+import { mockData, Job } from './mockData';
 
 type FooterProps<T extends Record<string, unknown>> = {
     data: TableInstance<T>;
     columnId: string;
 };
 
-const groupBy: GroupBy<SwcrPackage>[] = [
-    { key: 'controlSystem', title: 'Control System' },
-    { key: 'supplier', title: 'Supplier' },
-    { key: 'swcrId', title: 'SWCR' },
-];
-
-const isClosed = (status: SwcrStatus) => status === 'Closed';
-
-const SumColumnFooter = ({ data, columnId }: FooterProps<SwcrPackage>): JSX.Element => {
+const SumColumnFooter = ({ data, columnId }: FooterProps<Job>): JSX.Element => {
     const total = useMemo(
         () =>
             data.rows.reduce((sum, row) => {
@@ -31,94 +24,74 @@ const SumColumnFooter = ({ data, columnId }: FooterProps<SwcrPackage>): JSX.Elem
         <div> {total}</div>
     );
 };
-
+/* 
 const sumClosedPackageInPercent = (
     columnValues: CellValue<SwcrStatus>[]
     // rows: Array<Row<SwcrPackage>>
 ): number => Math.floor((columnValues.filter(isClosed).length / columnValues.length) * 100);
 
-const sumClosedPackage = (
-    columnValues: CellValue<SwcrStatus>[]
-    // rows: Array<Row<SwcrPackage>>
-): number => columnValues.reduce((sum, v) => (isClosed(v) ? sum + 1 : sum), 0);
-
-const sumOpenPackage = (
-    columnValues: CellValue<SwcrStatus>[]
-    // rows: Array<Row<SwcrPackage>>
-): number => columnValues.reduce((sum, v) => (!isClosed(v) ? sum + 1 : sum), 0);
-
-const PercentBarColumn = ({ percent }: { percent: number }): JSX.Element => (
-    <div
-        style={{
-            background: `linear-gradient(90deg,${'#2cd51c'} ${percent}%,${'white'} ${percent}%)`,
-        }}
-    >
-        <span>{percent}%</span>
-    </div>
-);
+ */
 
 export function SwcrApp(): JSX.Element {
-    const data = createData(1000);
+    const data = useMemo(() => mockData().filter((j) => j.jobStatus.startsWith('E')), []);
 
-    const columns: Column<SwcrPackage>[] = useMemo(
+    const columnsGroupedByDiscipline: Column<Job>[] = useMemo(
         () => [
             {
-                Header: 'Control System',
-                accessor: 'controlSystem',
+                Header: 'Discipline',
+                accessor: 'disciplineDescription',
                 aggregate: 'uniqueCount',
-                Footer: (data) => <SumColumnFooter data={data} columnId={'controlSystem'} />,
+                Footer: (data) => (
+                    <SumColumnFooter data={data} columnId={'disciplineDescription'} />
+                ),
             },
             {
-                Header: 'Suppliers',
-                accessor: 'supplier',
+                Header: 'WOs',
+                accessor: 'job',
                 aggregate: 'uniqueCount',
-                Footer: (data) => <SumColumnFooter data={data} columnId={'supplier'} />,
+                Footer: (data) => <SumColumnFooter data={data} columnId={'job'} />,
             },
             {
-                Header: 'SWCRs',
-                accessor: 'swcrId',
-                aggregate: 'count',
-                Footer: (data) => <SumColumnFooter data={data} columnId={'swcrId'} />,
+                Header: 'Est mhrs',
+                accessor: 'jobEstimatedHours',
+                aggregate: 'sum',
+                Footer: (data) => <SumColumnFooter data={data} columnId={'jobEstimatedHours'} />,
             },
-            {
-                Header: 'Open',
-                accessor: (pkg) => pkg.status,
-                aggregate: sumOpenPackage,
-                Footer: (data) => <SumColumnFooter data={data} columnId={'Open'} />,
-            },
-            {
-                Header: 'Closed',
-                accessor: (pkg) => pkg.status,
-                aggregate: sumClosedPackage,
-                Footer: (data) => <SumColumnFooter data={data} columnId={'Closed'} />,
-            },
-            {
-                Header: 'Closed %',
-                accessor: (pkg) => pkg.status,
-                aggregate: sumClosedPackageInPercent,
-                Aggregated: (cell) => <PercentBarColumn percent={cell.value} />,
-                Footer: (data) => {
-                    const closed = useMemo(
-                        () => data.rows.reduce((sum, row) => sum + row.values['Closed'], 0),
-                        [data.rows]
-                    );
+        ],
+        []
+    );
 
-                    const totalPercent = Math.floor((closed / data.data.length) * 100);
-                    return <PercentBarColumn percent={totalPercent} />;
-                },
+    const columnsGroupedByDiscplineAndJobStatus: Column<Job>[] = useMemo(
+        () => [
+            {
+                Header: 'Job Status',
+                accessor: 'jobStatus',
+                aggregate: 'unique',
             },
         ],
         []
     );
 
     return (
-        <TableVisual<SwcrPackage>
-            data={data}
-            options={{
-                initialGroupBy: 'controlSystem',
-                groupBy,
-                columns,
-            }}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {
+                <TableVisual<Job>
+                    data={data}
+                    options={{
+                        initialGroupBy: 'disciplineDescription',
+                        columns: columnsGroupedByDiscipline,
+                    }}
+                />
+            }
+            {
+                <TableVisual<Job>
+                    data={data}
+                    options={{
+                        initialGroupBy: 'jobStatus',
+                        columns: columnsGroupedByDiscplineAndJobStatus,
+                    }}
+                />
+            }
+        </div>
     );
 }
