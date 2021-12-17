@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { SingleSelect as Select } from '@equinor/eds-core-react';
 import { Field } from '../Types/field';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 interface SingleSelectProps<T> {
     field: Field<T>;
     editMode: boolean;
-    selectItems: string[];
+    selectItems: string[] | (() => Promise<string[]>);
 }
 
 export function SingleSelect<T>({
@@ -15,12 +15,26 @@ export function SingleSelect<T>({
     editMode,
     selectItems,
 }: SingleSelectProps<T>): JSX.Element {
+    const [selectOptions, setSelectItems] = useState<string[]>();
+
+    useEffect(() => {
+        const loadSelectItems = async () => {
+            if (typeof selectItems === 'function') {
+                setSelectItems(await selectItems());
+            } else {
+                setSelectItems(selectItems);
+            }
+        };
+
+        loadSelectItems();
+    }, [selectItems]);
+
     if (typeof field.value === 'string' || typeof field.value === 'undefined') {
         return (
             <SingleSelectContainer>
                 <Select
                     disabled={editMode ? !field?.editable : false}
-                    items={selectItems}
+                    items={selectOptions || ['']}
                     label={''}
                     placeholder={`Select ${field.title}`}
                     initialSelectedItem={field?.value}
