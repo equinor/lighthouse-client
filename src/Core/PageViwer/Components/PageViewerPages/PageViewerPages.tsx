@@ -1,4 +1,5 @@
 import { PowerBI } from '../../../../modules/powerBI';
+import { DashboardPage } from '../../../Dashboard/Components/DashboardPage/DashboardPage';
 import { PageConfig, ViewState } from '../../Types/State';
 import { Page, PageWrapper } from './PageViewerPagesStyles';
 
@@ -11,9 +12,14 @@ export interface Page {
 interface PageViewerPagesProps {
     viewState: ViewState;
     activePage: number;
+    isFilterActive: boolean;
 }
 
-export const PageViewerPages = ({ viewState, activePage }: PageViewerPagesProps): JSX.Element => {
+export const PageViewerPages = ({
+    viewState,
+    activePage,
+    isFilterActive,
+}: PageViewerPagesProps): JSX.Element => {
     return (
         <PageWrapper>
             {Object.keys(viewState.pages).map((key: string, index) => {
@@ -31,6 +37,18 @@ export const PageViewerPages = ({ viewState, activePage }: PageViewerPagesProps)
                         <Page key={`panel-${key}`} style={{ paddingTop: 0 }}>
                             {activePage == index && (
                                 <PowerBI reportUri={page.reportURI} filterOptions={page.filter} />
+                            )}
+                        </Page>
+                    );
+                }
+                if (page.type === 'Dashboard') {
+                    return (
+                        <Page key={`panel-${key}`} style={{ paddingTop: 0 }}>
+                            {activePage == index && (
+                                <DashboardPage
+                                    dashboardId={page.dashboardId}
+                                    isFilterActive={isFilterActive}
+                                />
                             )}
                         </Page>
                     );

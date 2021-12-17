@@ -18,12 +18,12 @@ export function Items<T>({ data }: RenderItemsProps<T>): JSX.Element | null {
                         data={data[key]}
                         itemKey={itemKey.toString()}
                         key={data[key] + index}
-                        onClick={() => setSelected(data[key][itemKey])}
+                        onClick={() => setSelected(data[key])}
                     >
                         {data[key][itemKey]}
                     </customView.CustomItemView>
                 ) : (
-                    <Item key={data[key] + index} onClick={() => setSelected(data[key][itemKey])}>
+                    <Item key={data[key] + index} onClick={() => setSelected(data[key])}>
                         {status?.statusItemFunc(data[key]).statusElement}
                         {data[key][itemKey]}
                     </Item>

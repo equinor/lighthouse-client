@@ -2,7 +2,7 @@ import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { dispatch } from './DataViewerCoreActions';
 import {
-    DataFetcher,
+    DataSource,
     DataViewerApi,
     DataViewerProps,
     FactoryOptions,
@@ -11,6 +11,7 @@ import {
     ViewOptions,
 } from './DataViewerTypes';
 import {
+    DataViewSideSheetOptions,
     DataViewState,
     GardenOptions,
     getContext,
@@ -18,6 +19,7 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
+    WorkflowEditorOptions,
 } from './DataViewState';
 
 /**
@@ -55,12 +57,12 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
             const factory: Factory = { ...factoryOptions, factoryId: options.viewerId };
             options.dataFactoryCreator(factory);
         },
-        registerDataFetcher(dataFetcher: DataFetcher<T>) {
+        registerDataSource(dataSource: DataSource<T>) {
             dispatch(getContext(), (state: DataViewState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    dataFetcher,
+                    dataSource,
                 },
             }));
         },
@@ -169,6 +171,25 @@ export function createDataViewer<T>(options: ViewerOptions<T>): DataViewerApi<T>
                 [options.viewerId]: {
                     ...state[options.viewerId],
                     powerBiOptions,
+                },
+            }));
+        },
+        registerDataViewSideSheetOptions(dataViewSideSheetOptions: DataViewSideSheetOptions<T>) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    dataViewSideSheetOptions:
+                        dataViewSideSheetOptions as DataViewSideSheetOptions<unknown>,
+                },
+            }));
+        },
+        registerWorkflowEditorOptions(workflowEditorOptions: WorkflowEditorOptions) {
+            dispatch(getContext(), (state: DataViewState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    workflowEditorOptions,
                 },
             }));
         },

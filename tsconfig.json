@@ -20,11 +20,17 @@
         ],
         "sourceMap": true,
         "paths": {
-            "@equinor/Form": [
-                "./src/packages/Form"
-            ],
             "@equinor/DataFactory": [
                 "./src/Core/DataFactory"
+            ],
+            "@equinor/VisualEditor": [
+                "./src/packages/VisualEditor"
+            ],
+            "@equinor/Table": [
+                "./src/packages/Table"
+            ],
+            "@equinor/Form": [
+                "./src/packages/Form"
             ],
             "@equinor/StatusBar": [
                 "./src/packages/2StatusBar"
@@ -34,9 +40,6 @@
             ],
             "@equinor/ThreeDViewer": [
                 "./src/packages/ThreeDViewer"
-            ],
-            "@equinor/Table": [
-                "./src/packages/Table"
             ],
             "@equinor/authentication": [
                 "./packages/authentication"

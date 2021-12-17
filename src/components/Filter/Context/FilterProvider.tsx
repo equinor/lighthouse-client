@@ -40,7 +40,8 @@ export function FilterProvider<T>({
     );
 
     useEffect(() => {
-        const localFilter = storage.getItem<FilterData>(filterLocationKey);
+        // TODO Extracte denne funsjonaliteten og ta den inn som options for filter.
+        const localFilter = {}; //storage.getItem<FilterData>(filterLocationKey);
         if (localFilter && typeof localFilter !== 'string' && objectHasKeys(localFilter)) {
             dispatch(actions.setFilter(localFilter));
             setFilter(initialData, localFilter);
