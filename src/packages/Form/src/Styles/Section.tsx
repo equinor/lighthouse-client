@@ -21,6 +21,7 @@ export const SectionText = styled.div`
     font-size: ${(x: SectionTitleProps) => x.fontSize};
     font-weight: ${(x: SectionTitleProps) => (x.bold ? 'bold' : '')};
     width: 100%;
+    justify-content: space-between;
 `;
 
 export const SectionRow = styled.div`

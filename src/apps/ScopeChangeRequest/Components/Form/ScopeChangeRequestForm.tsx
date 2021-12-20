@@ -1,5 +1,5 @@
 import { Button } from '@equinor/eds-core-react';
-import { GeneratedForm, useFormSchema, useFormValidation } from '@equinor/Form';
+import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
@@ -13,16 +13,15 @@ export const ScopeChangeRequestForm = ({
     closeScrim,
     setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const formData = useFormSchema(scopeChangeRequestSchema);
-    const { isValidForm } = useFormValidation(formData);
+    const formData = useForm(scopeChangeRequestSchema);
 
     useEffect(() => {
-        setHasUnsavedChanges(Object.keys(formData.getChangedData()).length > 0);
+        setHasUnsavedChanges(formData.getChangedData() !== undefined);
     }, [formData]);
 
     const SubmitButton = () => {
         return (
-            <Button disabled={!isValidForm} onClick={onSubmit}>
+            <Button disabled={!formData.isValidForm()} onClick={onSubmit}>
                 Initiate request
             </Button>
         );
@@ -30,7 +29,7 @@ export const ScopeChangeRequestForm = ({
 
     const SaveButton = () => {
         return (
-            <Button disabled={!isValidForm} variant={'outlined'} onClick={onSave}>
+            <Button disabled={!formData.isValidForm()} variant={'outlined'} onClick={onSave}>
                 Save as draft
             </Button>
         );
@@ -38,7 +37,7 @@ export const ScopeChangeRequestForm = ({
 
     const onSave = () => {
         const payload = {
-            ...formData.getData(),
+            ...formData.data,
             setAsOpen: false,
         };
 
@@ -56,7 +55,7 @@ export const ScopeChangeRequestForm = ({
 
     const onSubmit = () => {
         const payload = {
-            ...formData.getData(),
+            ...formData.data,
             setAsOpen: true,
         };
 
