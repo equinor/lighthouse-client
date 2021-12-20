@@ -14,7 +14,7 @@ export function NumberInput<T>({ field, editMode }: NumberInputProps<T>): JSX.El
                 <Input
                     disabled={editMode ? !field?.editable : false}
                     placeholder={`Enter ${field.title}`}
-                    defaultValue={isNaN(field.value as unknown as number) ? undefined : field.value}
+                    value={isNaN(field.value as unknown as number) ? undefined : field.value}
                     type="number"
                     onChange={(e) => {
                         if (isNaN(e.target.valueAsNumber)) {

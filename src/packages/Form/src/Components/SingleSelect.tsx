@@ -37,7 +37,8 @@ export function SingleSelect<T>({
                     items={selectOptions || ['']}
                     label={''}
                     placeholder={`Select ${field.title}`}
-                    initialSelectedItem={field?.value}
+                    // initialSelectedItem={field?.value}
+                    value={field?.value}
                     handleSelectedItemChange={(select) => {
                         field.setValue(
                             !select.selectedItem

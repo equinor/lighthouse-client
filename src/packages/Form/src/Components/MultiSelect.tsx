@@ -33,7 +33,7 @@ export function MultiSelect<T>({ field, editMode, selectItems }: MultiSelectProp
                     items={selectOptions || ['']}
                     label={''}
                     placeholder={`Select ${field.title}`}
-                    initialSelectedItems={field?.value as unknown as string[]}
+                    value={field?.value as unknown as string[]}
                     handleSelectedItemsChange={(select) => {
                         field.setValue(
                             !select.selectedItems || select.selectedItems.length < 1

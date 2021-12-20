@@ -31,7 +31,7 @@ export const useForm = <T>(schema: Schema<T>, initialState?: Partial<T>): Form<T
     const state: T = buildObject(schema, initialState);
 
     const [data, setData] = useState<T>(state);
-    const originalState: T = state;
+    const originalState: T = useMemo(() => state, [state]);
 
     const mutateField = useCallback(<TKey extends keyof T>(key: TKey, value: T[TKey]): void => {
         setData((existingData) => ({ ...existingData, [key]: value }));
@@ -67,11 +67,11 @@ export const useForm = <T>(schema: Schema<T>, initialState?: Partial<T>): Form<T
             };
         }
         return newFields;
-    }, [data, mutateField, schema]);
+    }, [data, mutateField, originalState, schema]);
 
     const form: Form<T> = {
         fields,
-        data: data,
+        data,
         isValidForm: (): boolean => {
             const values = Object.values(fields) as Field<T>[];
             if (values.every((v): boolean => v.isValid)) {

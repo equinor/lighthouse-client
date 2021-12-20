@@ -14,7 +14,7 @@ export function TextArea<T>({ field, editMode }: TextAreaProps<T>): JSX.Element 
                     id={field.toString()}
                     multiline
                     disabled={editMode ? !field?.editable : false}
-                    defaultValue={field?.value}
+                    value={field?.value}
                     onChange={(e) => {
                         if (!e.target.value || e.target.value.length < 1) {
                             field.setValue(undefined as unknown as T);
