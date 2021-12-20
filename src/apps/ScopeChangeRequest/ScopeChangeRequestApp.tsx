@@ -5,7 +5,7 @@ import { baseClient } from '@equinor/http-client';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { CustomSidesheet } from './Components/CustomSidesheet';
 import { createDataFactory } from '@equinor/DataFactory';
-import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
+import { FormWrapper } from './Components/Form/ScopeChangeRequestForm';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 
@@ -20,7 +20,7 @@ export function setup(appApi: AppApi): void {
 
     request.registerDataCreator({
         title: 'Scope change',
-        component: ScopeChangeRequestForm,
+        component: FormWrapper,
     });
 
     request.registerDataSource(async () => {

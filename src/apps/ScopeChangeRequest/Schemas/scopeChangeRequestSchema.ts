@@ -1,11 +1,11 @@
 import { Schema } from '@equinor/form';
-import { ScopeChangeRequestFormModel } from '../Types/scopeChangeRequestFormModel';
+import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
 interface Category {
     name: string;
 }
 
-export const scopeChangeRequestSchema: Schema<ScopeChangeRequestFormModel> = {
+export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
     title: {
         isRequired: true,
         label: 'Title',
