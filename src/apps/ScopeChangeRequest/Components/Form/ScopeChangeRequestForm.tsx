@@ -30,10 +30,14 @@ export const ScopeChangeRequestForm = ({
     const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
     const [scID, setScID] = useState<string | undefined>(undefined);
     const [scopeChange, setScopeChange] = useState<ScopeChangeRequest | undefined>(undefined);
-    const { mutate: createScopeChangeAsDraft, error } = useMutation(createDraftScopeChange, {
-        retry: 2,
-    });
-    const { mutate: createScopeChangeAsOpen } = useMutation(createOpenScopeChange, {
+    const onSave = async (): Promise<void> => {
+        setScID(await postScopeChange(formData.data, true));
+    };
+    const onSubmit = async (): Promise<void> => {
+        setScID(await postScopeChange(formData.data, false));
+    };
+    const { mutate: createScopeChangeAsDraft, error } = useMutation(onSave);
+    const { mutate: createScopeChangeAsOpen } = useMutation(onSubmit, {
         retry: 2,
     });
 
@@ -52,14 +56,6 @@ export const ScopeChangeRequestForm = ({
     useEffect(() => {
         refetch();
     }, [scID]);
-
-    async function createDraftScopeChange() {
-        setScID(await onSave());
-    }
-
-    async function createOpenScopeChange() {
-        setScID(await onSubmit());
-    }
 
     useEffect(() => {
         setHasUnsavedChanges(formData.getChangedData() !== undefined);
@@ -85,12 +81,6 @@ export const ScopeChangeRequestForm = ({
         );
     };
 
-    const onSave = async (): Promise<string> => {
-        return await postScopeChange(formData.data, true);
-    };
-    const onSubmit = async (): Promise<string> => {
-        return await postScopeChange(formData.data, false);
-    };
     async function refetchScopeChange(): Promise<void> {
         if (scID) {
             console.log('Refetching scope change');
