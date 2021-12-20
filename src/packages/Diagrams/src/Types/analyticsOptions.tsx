@@ -1,6 +1,7 @@
 import { BarChartOptions } from '../Visuals/BarVisual/Types/barVisualOptions';
 import { ControlledTimeBarChart } from '../Visuals/ControlledTimeVisual/ControlledTimeVisual';
 import { LineChartOptions } from '../Visuals/LineVisual/LineChartVisual';
+import { TableVisualOptions } from '../Visuals/TableVisual/Types/tableVisualOptions';
 import { TimeBarChartOptions } from '../Visuals/TimeVisual/Types/timeVisualOptions';
 
 interface BarChart<T> {
@@ -15,6 +16,13 @@ interface LineChart<T> {
 interface ControlledTimeBarChart<T> {
     type: 'timeBarChart';
     options: TimeBarChartOptions<T>;
+}
+
+interface Table<T> {
+    type: 'table';
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    options: TableVisualOptions<T>;
 }
 
 interface CustomVisual<T> {
@@ -34,6 +42,7 @@ export type Options<T> =
     | LineChart<T>
     | ControlledTimeBarChart<T>
     | CustomVisual<T>
+    | Table<T>
     | Default;
 
 interface Section<T> {

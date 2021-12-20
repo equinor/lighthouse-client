@@ -13,7 +13,7 @@ import {
     TableVisualWrapper,
     TableWrapper,
     TypeChip,
-    TypeWrapper,
+    TypeWrapper
 } from './Styles/Table';
 import { Table } from './Types/table';
 import { TableVisualOptions } from './Types/tableVisualOptions';
@@ -54,7 +54,6 @@ export function TableVisual<T extends Record<string, unknown>>({
 
     const columns = useColumns<T>(data[0], options?.columns);
     const tableState = useMemo(() => data, [data]);
-
     const {
         getTableProps,
         getTableBodyProps,
@@ -77,7 +76,7 @@ export function TableVisual<T extends Record<string, unknown>>({
 
     const { styles } = options;
 
-    console.log(rows, headerGroups);
+    // console.log(rows, headerGroups);
 
     return (
         <TableVisualWrapper>

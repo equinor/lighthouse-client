@@ -1,85 +1,53 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { baseClient } from '../../../packages/httpClient/src';
 import { createPageViewer } from '../../Core/PageViwer/Api/pageViewerApi';
 import { AppApi } from '../apps';
+import { tableColumns } from './DetailsPage/tableConfig';
+import { Job, mockData } from './mocData/mockData';
 
-type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
-interface Checklist {
-    loopTag: string;
-    tagNo: string;
-    description: string;
-    register: string;
-    commPk: string;
-    mcPk: string;
-    responsible: string;
-    type: string;
-    status: LoopStatus;
-    phase: string;
-    createdAt: string;
-    signedAt: string;
-}
-
-export interface WP {
-    tagNo: string;
-    commPk: string;
-    mcPk: string;
-    description: string;
-    responsible: string;
-    formType: string;
-    status: LoopStatus;
-    phase: string;
-    createdAt: string;
-    signedAt: string;
-    contentChecklists: Checklist[];
-    functionTags: string[];
-}
-
-const analyticsOptions: AnalyticsOptions<WP> = {
+const analyticsOptions: AnalyticsOptions<Job> = {
     section2: {
         chart1: {
             type: 'timeBarChart',
             options: {
-                title: 'Loops Created',
+                title: 'Job Cards',
                 defaultTime: 'year',
                 timeChartOptions: {
-                    categoriesKey: 'createdAt',
-                    title: 'Created',
+                    categoriesKey: 'jobStatus',
+                    title: 'Job Cards',
                     type: 'bar',
                 },
             },
         },
     },
 };
-const analyticsOptions2: AnalyticsOptions<WP> = {
-    section2: {
+const detailsPage: AnalyticsOptions<Job> = {
+    section1: {
         chart1: {
-            type: 'barChart',
+            type: 'table',
             options: {
-                stacked: true,
-                nameKey: 'status',
-                categoryKey: 'responsible',
-                colors: ['#F44336', '#E91E63', '#9C27B0'],
+                initialGroupBy: 'disciplineDescription',
+                columns: tableColumns,
             },
         },
-        chart2: {
-            type: 'timeBarChart',
-            options: {
-                title: 'Punch A',
-                defaultTime: 'quarter',
-                timeChartOptions: {
-                    categoriesKey: 'createdAt',
-                    title: 'PB',
-                    type: 'bar',
-                    key: 'status',
-                    value: 'PB',
-                },
-            },
-        },
+        // chart2: {
+        //     type: 'timeBarChart',
+        //     options: {
+        //         title: 'Punch A',
+        //         defaultTime: 'quarter',
+        //         timeChartOptions: {
+        //             categoriesKey: 'createdAt',
+        //             title: 'PB',
+        //             type: 'bar',
+        //             key: 'status',
+        //             value: 'PB',
+        //         },
+        //     },
+        // },
     },
 };
 
 export function setup(appApi: AppApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    // const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const construction = createPageViewer({
         viewerId: appApi.shortName,
         title: appApi.title,
@@ -90,31 +58,24 @@ export function setup(appApi: AppApi): void {
         reportURI: 'swcr-analytics-rls',
     });
 
-    const workPreparation = construction.registerDashboard<WP>('work-preparation', {
+    const workPreparation = construction.registerDashboard<Job>('work-preparation', {
         title: 'Work Preparation',
     });
 
     // Loop Data Test for testing system..
     workPreparation.registerDataSource(async () => {
-        const plantId = 'PCS$JOHAN_CASTBERG';
-        const project = 'L.O532C.002';
-        const response = await api.fetch(
-            `https://api-lighthouse-production.playground.radix.equinor.com/loops/${plantId}/${project}`
-        );
+        // const plantId = 'PCS$JOHAN_CASTBERG';
+        // const project = 'L.O532C.002';
+        // const response = await api.fetch(
+        //     `https://api-lighthouse-production.playground.radix.equinor.com/loops/${plantId}/${project}`
+        // );
 
-        return JSON.parse(await response.text());
+        // return JSON.parse(await response.text());
+        const data = mockData().filter((j) => j.jobStatus.startsWith('E'));
+        return data;
     });
 
-    const excludeKeys: (keyof WP)[] = [
-        'tagNo',
-        'functionTags',
-        'contentChecklists',
-        'description',
-        'commPk',
-        'mcPk',
-        'signedAt',
-        'createdAt',
-    ];
+    const excludeKeys: (keyof Job)[] = ['job', 'jobName', 'jobEstimatedHours'];
 
     workPreparation.registerFilterOptions({ excludeKeys });
 
@@ -129,19 +90,19 @@ export function setup(appApi: AppApi): void {
         title: 'Hours',
         pageId: 'workPreparationHours',
         type: 'AnalyticsPage',
-        ...analyticsOptions2,
+        ...analyticsOptions,
     });
     workPreparation.registerPage({
         title: 'Details',
         pageId: 'workPreparationDetails',
         type: 'AnalyticsPage',
-        ...analyticsOptions,
+        ...detailsPage,
     });
     workPreparation.registerPage({
         title: 'Hold',
         pageId: 'workPreparationDetailsHold',
         type: 'AnalyticsPage',
-        ...analyticsOptions2,
+        ...analyticsOptions,
     });
 
     construction.registerFusionPowerBi('lci-hanging-gardens', {
