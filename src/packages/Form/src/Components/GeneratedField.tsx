@@ -1,212 +1,91 @@
-import { Value } from '../Types/value';
+import { NumberInput } from './NumberInput';
+import { SingleSelect } from './SingleSelect';
+import { MultiSelect } from './MultiSelect';
+import { TextArea } from './TextArea';
+import { TextInput } from './TextInput';
+import { Behaviour } from './Form';
 import { Field } from './Field';
-import { InputType } from '../Types/inputType';
-import { Components } from './Form';
-import {
-    SingleSelect,
-    MultiSelect,
-    MultiSelectObject,
-    NumberInput,
-    TextArea,
-    TextInput,
-} from './InputTypes';
-import {
-    SearchableDropdown as SearchableDropdownInterface,
-    MultiSelect as MultiSelectInterface,
-    NumberInput as NumberInputInterface,
-    TextInput as TextInputInterface,
-    Custom as CustomInterface,
-    SingleSelect as SingleSelectInterface,
-    MultiSelectObject as MultiSelectObjectInterface,
-} from '../Types/inputType';
-import { TextArea as TextAreaInterface } from '../Types/inputType';
+import { Field as FieldType } from '../Types/field';
 
-interface GeneratedFieldProps {
-    setter: (value: string | number) => Promise<void>;
-    inputType: InputType;
-    field: Value<string | number | string[]>;
+interface GenerateFieldProps<T> {
+    field: FieldType<T>;
     editMode: boolean;
-    customComponents?: Components;
+    behaviour?: Behaviour;
 }
 
-export const GeneratedField = ({
-    inputType,
-    setter,
+export function GeneratedField<T>({
     field,
     editMode,
-}: GeneratedFieldProps): JSX.Element => {
-    switch (inputType.type) {
-        case 'TextInput': {
-            const textInputField = field.inputType as TextInputInterface;
-            return (
-                <Field
-                    key={field.label + 'field'}
-                    label={field.label || ''}
-                    customLabel={{ faded: true }}
-                    value={
-                        textInputField.CustomInputType ? (
-                            <textInputField.CustomInputType />
-                        ) : (
-                            <TextInput
-                                key={field.label + 'input'}
-                                setter={setter}
-                                field={field as Value<string>}
-                                editMode={editMode}
-                            />
-                        )
-                    }
-                />
-            );
-        }
+    behaviour,
+}: GenerateFieldProps<T>): JSX.Element {
+    const metaTag =
+        !behaviour?.hideMetaTags && !field.optional ? { meta: '(Required)' } : undefined;
 
-        case 'NumberInput': {
-            const numberField = field.inputType as NumberInputInterface;
+    if (editMode && behaviour?.hideDisabledFields && !field.editable) {
+        return <></>;
+    }
+
+    switch (field.inputType.type) {
+        case 'TextInput': {
             return (
                 <Field
-                    key={field.label + 'field'}
-                    label={field.label || ''}
-                    customLabel={{ faded: true }}
-                    value={
-                        numberField.CustomInputType ? (
-                            <numberField.CustomInputType />
-                        ) : (
-                            <NumberInput
-                                key={field.label + 'input'}
-                                setter={setter}
-                                field={field as Value<number>}
-                                editMode={false}
-                            />
-                        )
-                    }
+                    label={field.title}
+                    customLabel={metaTag}
+                    value={<TextInput field={field} editMode={editMode} />}
                 />
             );
         }
 
         case 'TextArea': {
-            const textAreaField = field.inputType as TextAreaInterface;
             return (
                 <Field
-                    key={field.label + 'field'}
-                    label={field.label || ''}
-                    customLabel={{ faded: true }}
+                    label={field.title}
+                    customLabel={metaTag}
+                    value={<TextArea field={field} editMode={editMode} />}
+                />
+            );
+        }
+
+        case 'NumberInput': {
+            return (
+                <Field
+                    label={field.title}
+                    customLabel={metaTag}
+                    value={<NumberInput field={field} editMode={editMode} />}
+                />
+            );
+        }
+
+        case 'SingleSelect': {
+            return (
+                <Field
+                    label={field.title}
+                    customLabel={metaTag}
                     value={
-                        textAreaField.CustomInputType ? (
-                            <textAreaField.CustomInputType />
-                        ) : (
-                            <TextArea
-                                key={field.label + 'input'}
-                                setter={setter}
-                                field={field as Value<string>}
-                                editMode={editMode}
-                            />
-                        )
+                        <SingleSelect
+                            editMode={editMode}
+                            field={field}
+                            selectItems={field.inputType.selectOptions}
+                        />
                     }
                 />
             );
         }
 
         case 'MultiSelect': {
-            const multiSelectField = field.inputType as MultiSelectInterface;
             return (
                 <Field
-                    key={field.label + 'field'}
-                    label={field.label || ''}
-                    customLabel={{ faded: true }}
+                    label={field.title}
+                    customLabel={metaTag}
                     value={
-                        multiSelectField.CustomInputType ? (
-                            <multiSelectField.CustomInputType
-                                selectOptions={inputType.selectOptions}
-                            />
-                        ) : (
-                            <MultiSelect
-                                key={field.label + 'input'}
-                                setter={setter as unknown as (value: string[]) => Promise<void>}
-                                field={field as unknown as Value<string[]>}
-                                editMode={editMode}
-                                selectItems={inputType.selectOptions}
-                                inputType={multiSelectField}
-                            />
-                        )
+                        <MultiSelect
+                            editMode={editMode}
+                            field={field}
+                            selectItems={field.inputType.selectOptions}
+                        />
                     }
                 />
             );
-        }
-
-        case 'MultiSelectObject': {
-            const multiSelectField = field.inputType as MultiSelectObjectInterface;
-            return (
-                <Field
-                    key={field.label + 'field'}
-                    label={field.label || ''}
-                    customLabel={{ faded: true }}
-                    value={
-                        multiSelectField.CustomInputType ? (
-                            <multiSelectField.CustomInputType
-                                selectOptions={inputType.selectOptions}
-                            />
-                        ) : (
-                            <MultiSelectObject
-                                key={field.label + 'input'}
-                                setter={setter as unknown as (value: string[]) => Promise<void>}
-                                field={field as unknown as Value<string[]>}
-                                editMode={editMode}
-                                inputType={multiSelectField}
-                            />
-                        )
-                    }
-                />
-            );
-        }
-
-        case 'SingleSelect': {
-            const singleSelectField = field.inputType as SingleSelectInterface;
-            return (
-                <Field
-                    key={field.label + 'field'}
-                    label={field.label || ''}
-                    customLabel={{ faded: true }}
-                    value={
-                        singleSelectField.CustomInputType ? (
-                            <singleSelectField.CustomInputType
-                                selectOptions={inputType.selectOptions}
-                            />
-                        ) : (
-                            <SingleSelect
-                                key={field.label + 'input'}
-                                setter={setter}
-                                field={field as Value<string>}
-                                editMode={editMode}
-                                selectItems={inputType.selectOptions}
-                            />
-                        )
-                    }
-                />
-            );
-        }
-
-        case 'SearchableDropdown': {
-            const searchableDropdownField = field.inputType as SearchableDropdownInterface;
-            return (
-                <Field
-                    key={field.label + 'field'}
-                    label={field.label || ''}
-                    customLabel={{ faded: true }}
-                    value={
-                        searchableDropdownField.CustomInputType ? (
-                            <searchableDropdownField.CustomInputType
-                                selectOptions={inputType.selectOptions}
-                            />
-                        ) : (
-                            <p>Not implemented</p>
-                        )
-                    }
-                />
-            );
-        }
-
-        case 'Custom': {
-            const customField = field.inputType as CustomInterface;
-            return <>{customField.CustomInputType && <customField.CustomInputType />}</>;
         }
     }
-};
+}
