@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { Section, SectionText } from '../Styles/Section';
 
 interface FieldProps {
@@ -11,6 +12,7 @@ interface labelConfig {
     bold?: boolean;
     fontSize?: 'x-large' | 'large' | 'xx-large' | 'x-small';
     faded?: boolean;
+    meta: string;
 }
 
 interface valueConfig {
@@ -27,7 +29,8 @@ export const Field = ({ label, value, customLabel, customValue }: FieldProps): J
                 bold={customLabel?.bold}
                 faded={customLabel?.faded}
             >
-                {label}
+                <span>{label}</span>
+                <MetaText>{customLabel?.meta}</MetaText>
             </SectionText>
             <SectionText
                 fontSize={customValue?.fontSize ?? 'x-large'}
@@ -39,3 +42,7 @@ export const Field = ({ label, value, customLabel, customValue }: FieldProps): J
         </Section>
     );
 };
+
+const MetaText = styled.span`
+    font-size: 0.7em;
+`;
