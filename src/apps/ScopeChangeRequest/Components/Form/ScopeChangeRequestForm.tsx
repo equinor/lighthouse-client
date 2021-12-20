@@ -30,7 +30,12 @@ export const ScopeChangeRequestForm = ({
     const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
     const [scID, setScID] = useState<string | undefined>(undefined);
     const [scopeChange, setScopeChange] = useState<ScopeChangeRequest | undefined>(undefined);
-    const { mutate, error } = useMutation(createScopeChange, { retry: 3 });
+    const { mutate: createScopeChangeAsDraft, error } = useMutation(createDraftScopeChange, {
+        retry: 2,
+    });
+    const { mutate: createScopeChangeAsOpen } = useMutation(createOpenScopeChange, {
+        retry: 2,
+    });
 
     const { isLoading, refetch } = useQuery('fetchScopeChange', fetchScopeChange, {
         refetchOnWindowFocus: false,
@@ -39,6 +44,7 @@ export const ScopeChangeRequestForm = ({
 
     async function fetchScopeChange() {
         if (scID && !scopeChange && !isLoading) {
+            formData.reset();
             setScopeChange(await getScopeChangeById(scID));
         }
     }
@@ -47,8 +53,12 @@ export const ScopeChangeRequestForm = ({
         refetch();
     }, [scID]);
 
-    async function createScopeChange() {
+    async function createDraftScopeChange() {
         setScID(await onSave());
+    }
+
+    async function createOpenScopeChange() {
+        setScID(await onSubmit());
     }
 
     useEffect(() => {
@@ -57,7 +67,7 @@ export const ScopeChangeRequestForm = ({
 
     const SubmitButton = () => {
         return (
-            <Button disabled={!formData.isValidForm()} onClick={onSubmit}>
+            <Button disabled={!formData.isValidForm()} onClick={() => createScopeChangeAsOpen()}>
                 Initiate request
             </Button>
         );
@@ -68,7 +78,7 @@ export const ScopeChangeRequestForm = ({
             <Button
                 disabled={!formData.isValidForm()}
                 variant={'outlined'}
-                onClick={() => mutate()}
+                onClick={() => createScopeChangeAsDraft()}
             >
                 Save as draft
             </Button>
@@ -81,10 +91,20 @@ export const ScopeChangeRequestForm = ({
     const onSubmit = async (): Promise<string> => {
         return await postScopeChange(formData.data, false);
     };
+    async function refetchScopeChange(): Promise<void> {
+        if (scID) {
+            console.log('Refetching scope change');
+            setScopeChange(await getScopeChangeById(scID));
+        }
+    }
     return (
         <>
             {scopeChange ? (
-                <RequestDetailView request={scopeChange} setEditMode={() => console.log()} />
+                <RequestDetailView
+                    request={scopeChange}
+                    setEditMode={() => console.log()}
+                    refetch={refetchScopeChange}
+                />
             ) : (
                 <>
                     <TitleHeader>
