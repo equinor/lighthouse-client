@@ -1,4 +1,4 @@
-import { Schema } from '@equinor/form';
+import { Schema } from '@equinor/Form';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
 interface Category {
@@ -7,12 +7,10 @@ interface Category {
 
 export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
     title: {
-        isRequired: true,
-        label: 'Title',
-        editable: true,
+        title: 'Title',
         inputType: { type: 'TextInput' },
         order: 1,
-        validationFunction: (value: string) => {
+        validationFunction: (value: string | undefined) => {
             if (!value) {
                 return false;
             }
@@ -24,9 +22,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         },
     },
     phase: {
-        isRequired: true,
-        label: 'Phase',
-        editable: true,
+        title: 'Phase',
         inputType: {
             type: 'SingleSelect',
             selectOptions: async () => {
@@ -37,9 +33,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
     },
 
     category: {
-        isRequired: true,
-        label: 'Category',
-        editable: true,
+        title: 'Category',
         inputType: {
             type: 'SingleSelect',
             selectOptions: async () => {
@@ -49,9 +43,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         order: 3,
     },
     origin: {
-        isRequired: true,
-        label: 'Origin',
-        editable: true,
+        title: 'Origin',
         inputType: {
             type: 'SingleSelect',
             selectOptions: async () => {
@@ -61,9 +53,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         order: 3,
     },
     description: {
-        isRequired: true,
-        label: 'Description',
-        editable: true,
+        title: 'Description',
         inputType: { type: 'TextArea' },
         order: 4,
     },

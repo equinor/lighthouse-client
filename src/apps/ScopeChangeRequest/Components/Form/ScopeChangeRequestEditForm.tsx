@@ -1,5 +1,5 @@
 import { Button } from '@equinor/eds-core-react';
-import { GeneratedForm, useFormSchema } from '@equinor/Form';
+import { GeneratedForm, useForm } from '@equinor/Form';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { patchScopeChange } from '../../Api/patchScopeChange';
@@ -13,10 +13,10 @@ export const ScopeChangeRequestEditForm = ({
     request,
     cancel,
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
-    const formData = useFormSchema(scopeChangeRequestSchema, request);
+    const formData = useForm(scopeChangeRequestSchema, request);
 
     const onSubmit = async () => {
-        patchScopeChange(formData.getData());
+        patchScopeChange(formData.data);
     };
 
     const SaveButton = () => {

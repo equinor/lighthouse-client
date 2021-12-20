@@ -1,5 +1,5 @@
-import { Field } from './field';
+import { FieldConfig } from './fieldConfig';
 
 export type Schema<T> = {
-    [P in keyof T]?: Field;
+    [P in keyof T]?: FieldConfig<T[P]>;
 };

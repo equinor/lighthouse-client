@@ -78,11 +78,9 @@ export const ScopeChangeRequestForm = ({
     const onSave = async (): Promise<string> => {
         return await postScopeChange(formData.data, true);
     };
-
     const onSubmit = async (): Promise<string> => {
         return await postScopeChange(formData.data, false);
     };
-
     return (
         <>
             {scopeChange ? (
