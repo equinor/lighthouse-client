@@ -25,5 +25,5 @@ export function TextInput<T>({ field, editMode }: TextInputProps<T>): JSX.Elemen
             </>
         );
     }
-    return <></>;
+    return <p style={{ color: 'red' }}>{field} is not of type string or undefined</p>;
 }

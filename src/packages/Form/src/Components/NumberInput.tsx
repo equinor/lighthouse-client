@@ -27,6 +27,5 @@ export function NumberInput<T>({ field, editMode }: NumberInputProps<T>): JSX.El
             </>
         );
     }
-    console.warn(field, ' is not of type number or undefined');
-    return <></>;
+    return <p style={{ color: 'red' }}>{field} is not of type number or undefined</p>;
 }

@@ -84,6 +84,9 @@ export const useForm = <T>(schema: Schema<T>, initialState?: Partial<T>): Form<T
         reset: () => {
             setData(originalState);
         },
+        set: (state: Partial<T>) => {
+            setData({ ...data, ...state });
+        },
     };
     return form;
 };

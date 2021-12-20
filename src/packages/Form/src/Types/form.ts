@@ -6,4 +6,5 @@ export interface Form<T> {
     isValidForm: () => boolean;
     getChangedData: () => Partial<T> | undefined;
     reset: () => void;
+    set: (state: Partial<T>) => void;
 }

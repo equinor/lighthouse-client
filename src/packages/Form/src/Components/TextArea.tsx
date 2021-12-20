@@ -26,5 +26,5 @@ export function TextArea<T>({ field, editMode }: TextAreaProps<T>): JSX.Element 
             </>
         );
     }
-    return <></>;
+    return <p style={{ color: 'red' }}>{field} is not of type string or undefined</p>;
 }

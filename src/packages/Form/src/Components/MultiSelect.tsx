@@ -45,8 +45,7 @@ export function MultiSelect<T>({ field, editMode, selectItems }: MultiSelectProp
             </MultiSelectContainer>
         );
     }
-    console.warn(field, ' is not of type string[] or undefined');
-    return <></>;
+    return <p style={{ color: 'red' }}>{field} is not of type string[] or undefined</p>;
 }
 
 const MultiSelectContainer = styled.div`

@@ -49,8 +49,7 @@ export function SingleSelect<T>({
             </SingleSelectContainer>
         );
     }
-    console.warn(field, ' is not of type string or undefined');
-    return <></>;
+    return <p style={{ color: 'red' }}>{field} is not of type string or undefined</p>;
 }
 
 const SingleSelectContainer = styled.div`
