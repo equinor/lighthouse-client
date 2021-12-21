@@ -1,5 +1,5 @@
 import { BarChartOptions } from '../Visuals/BarVisual/Types/barVisualOptions';
-import { ControlledTimeBarChart } from '../Visuals/ControlledTimeVisual/ControlledTimeVisual';
+import { HorizontalBarChartOptions } from '../Visuals/HorizontalBarVisual/Types/barVisualOptions';
 import { LineChartOptions } from '../Visuals/LineVisual/LineChartVisual';
 import { TableVisualOptions } from '../Visuals/TableVisual/Types/tableVisualOptions';
 import { TimeBarChartOptions } from '../Visuals/TimeVisual/Types/timeVisualOptions';
@@ -25,6 +25,11 @@ interface Table<T> {
     options: TableVisualOptions<T>;
 }
 
+interface HorizontalBarChart<T> {
+    type: 'horizontalBarChart';
+    options: HorizontalBarChartOptions<T>;
+}
+
 interface CustomVisual<T> {
     type: 'customVisual';
     options: CustomVisualOptions<T>;
@@ -42,6 +47,7 @@ export type Options<T> =
     | LineChart<T>
     | ControlledTimeBarChart<T>
     | CustomVisual<T>
+    | HorizontalBarChart<T>
     | Table<T>
     | Default;
 

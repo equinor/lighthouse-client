@@ -1,5 +1,6 @@
 import { BarChartVisual, LineChartVisual, TableVisual, TimeChart } from '@equinor/Diagrams';
 import { Options } from '../Types';
+import { HorizontalBarVisual } from '../Visuals/HorizontalBarVisual/HorizontalBarVisual';
 import { ChartsWrapper, Circular, Loading } from './GetChartsStyles';
 
 export function getChart<T>(
@@ -55,18 +56,29 @@ export function getChart<T>(
             // console.log(config.options);
             return (
                 <ChartsWrapper>
-                    {!isLoading ? (
-                        <div
-                            style={{ display: 'flex', flexDirection: 'column', overflow: 'scroll' }}
-                        >
-                            <TableVisual<any> data={data} options={config.options} />
-                        </div>
-                    ) : (
+                    {/* {!isLoading ? ( */}
+                    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'scroll' }}>
+                        <TableVisual<any> data={data} options={config.options} />
+                    </div>
+                    {/* ) : (
                         <Loading>
                             <Circular />
                             Loading...
                         </Loading>
-                    )}
+                    )} */}
+                </ChartsWrapper>
+            );
+        case 'horizontalBarChart':
+            return (
+                <ChartsWrapper>
+                    {/* {!isLoading ? ( */}
+                    <HorizontalBarVisual data={data} options={config.options} />
+                    {/* ) : (
+                        <Loading>
+                            <Circular />
+                            Loading...
+                        </Loading>
+                    )} */}
                 </ChartsWrapper>
             );
         case 'customVisual':

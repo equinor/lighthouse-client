@@ -1,5 +1,6 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { createPageViewer } from '../../Core/PageViwer/Api/pageViewerApi';
+import { HorizontalBarChartOptions } from '../../packages/Diagrams/src/Visuals/HorizontalBarVisual';
 import { AppApi } from '../apps';
 import { tableColumns } from './DetailsPage/tableConfig';
 import { Job, mockData } from './mocData/mockData';
@@ -7,16 +8,11 @@ import { Job, mockData } from './mocData/mockData';
 const analyticsOptions: AnalyticsOptions<Job> = {
     section2: {
         chart1: {
-            type: 'timeBarChart',
+            type: 'horizontalBarChart',
             options: {
-                title: 'Job Cards',
-                defaultTime: 'year',
-                timeChartOptions: {
-                    categoriesKey: 'jobStatus',
-                    title: 'Job Cards',
-                    type: 'bar',
-                },
-            },
+                nameKey: 'disciplineDescription',
+                categoryKey: 'disciplineDescription',
+            } as HorizontalBarChartOptions<Job>,
         },
     },
 };
