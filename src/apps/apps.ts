@@ -20,7 +20,6 @@ import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
-import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
     BusinessCaseReport,
@@ -31,7 +30,9 @@ import {
     QueryReport,
     SafetyPerformanceReport,
 } from './PowerBI';
+import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { SwcrApp } from './swcr/swcrApp';
+import { setup as WorkOrderSetup } from './WorkOrder';
 
 type HEXColor = `#${string}`;
 
@@ -307,7 +308,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.ConstructionManagement,
         icon: '',
         uri: '',
-        tags: [],
+        app: {
+            component: DataView,
+            setup: WorkOrderSetup,
+        },
+        tags: ['Job'],
     },
     // CompletionManagement
     {
