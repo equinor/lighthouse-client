@@ -19,6 +19,7 @@ import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as constructionSetup } from './Construction';
+import { setup as commissioningSetup } from './Commissioning';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as loopSetup } from './Loop/loopApp';
@@ -250,7 +251,7 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'PageView',
-            setup: constructionSetup,
+            setup: commissioningSetup,
             component: PageView,
         },
     },
