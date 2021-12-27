@@ -14,12 +14,13 @@ interface Test{
 
 export const testSchema: Schema<Test> = {
     id: {
-        isRequired: true,
-        label: 'Id',
-        editable: true,
+        title: 'Id',
         inputType: { type: 'TextInput' },
-        order: 0,
-        validationFunction: (value: string) => {
+        order: 1,
+        validationFunction: (value: string | undefined) => {
+            if (!value) {
+                return false;
+            }
             if (value.length > 2) {
                 return true;
             } else {
@@ -28,18 +29,47 @@ export const testSchema: Schema<Test> = {
         },
     },
     name: {
-        isRequired: true,
-        label: 'Description',
-        editable: true,
-        inputType: { type: 'TextArea' },
-        order: 1,
+        title: 'Name',
+        inputType: {
+            type: 'SingleSelect',
+            selectOptions: async () => {
+                return await getNames();
+            },
+        },
+        order: 2,
     },
+
 };
 
 In your .tsx file
+ const formData = useForm(testSchema);
 
-const formData = useFormSchema(testSchema);
+    useEffect(() => {
+        setHasUnsavedChanges(formData.getChangedData() !== undefined);
+    }, [formData]);
 
-<GeneratedForm formData={formData} editMode={false} events={{onSubmit, onCancel}}>
+    const SubmitButton = () => {
+        return (
+            <Button disabled={!formData.isValidForm()} onClick={onSubmit}>
+                Submit form
+            </Button>
+        );
+    };
 
+    const SaveButton = () => {
+        return (
+            <Button disabled={!formData.isValidForm()} variant={'outlined'} onClick={onSave}>
+                Save
+            </Button>
+        );
+    };
+
+return (
+            <GeneratedForm
+                formData={formData}
+                editMode={false}
+                buttons={[SubmitButton, SaveButton]}
+            />
+);
 ```
+
