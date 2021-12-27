@@ -3,6 +3,12 @@ import { useEffect, useRef, useState } from 'react';
 import { FilterDataOptions, FilterItem } from '../Types/FilterItem';
 import { createFilterGroups, createFilterItems } from '../Services/createFilter';
 import { filter } from '../Services/filter';
+import { updateCount } from '../Utils/updateCount';
+import {
+    deselectAllButOne,
+    filterCheckboxChange,
+    selectAllCheckBoxes,
+} from '../Utils/checkboxOperations';
 
 export type HandleFilterItemClick = (
     filterGroupName: string,
@@ -17,7 +23,6 @@ export interface Filter<T> {
     filterGroups: string[];
     handleFilterItemClick: HandleFilterItemClick;
     isFiltering: boolean;
-    //filterItemLookup: (filterItem: FilterItem) => FilterItem | undefined;
     getFilterGroup: (groupName: string) => FilterItem[] | undefined;
     filterOptions: FilterDataOptions<T> | undefined;
 }
@@ -205,86 +210,6 @@ export const useFiltering = <T>(
     return returnFilter;
 };
 
-const filterCheckboxChange = (selfValue: string, filterGroup: FilterItem[]): FilterItem[] => {
-    /**
-     * Manipulate the box that was checked/unchecked and leave the rest as is
-     */
-    const changedItemIndex = filterGroup.findIndex((x) => x.value === selfValue);
-    const changedItem = filterGroup[changedItemIndex];
-    const newItem = { ...changedItem, checked: !changedItem.checked };
-
-    filterGroup[changedItemIndex] = newItem;
-
-    return filterGroup;
-};
-
-const deselectAllButOne = (selfValue: string, filterGroup: FilterItem[]): FilterItem[] => {
-    const newGroup: FilterItem[] = [];
-
-    /**
-     * foreach uncheck everything
-     * Then check filterItem
-     */
-    filterGroup.forEach((element) => {
-        if (element.value === selfValue) {
-            newGroup.push({ ...element, checked: true });
-        } else {
-            newGroup.push({ ...element, checked: false });
-        }
-    });
-    return newGroup;
-};
-
-const selectAllCheckBoxes = (filterGroup: FilterItem[]): FilterItem[] => {
-    /**
-     * foreach check everything
-     */
-    const newGroup: FilterItem[] = [];
-    filterGroup.forEach((element) => {
-        newGroup.push({ ...element, checked: true });
-    });
-
-    return newGroup;
-};
-
 function removeFromRejectedRecords<T>(rejectedRecords: T[], toBeRemoved: T[]): T[] {
     return rejectedRecords.filter((x) => !toBeRemoved.includes(x));
-}
-
-/**
- * Updates the count for every value it encounters
- * subtracts for items removed from the dataset
- * adds for items added to the dataset
- * @param data
- * @param setFilterItems
- * @param filterItems
- * @param action
- * @returns void
- */
-function updateCount<T>(
-    data: T[],
-    setFilterItems: React.Dispatch<React.SetStateAction<Map<string, FilterItem[]>>>,
-    filterItems: Map<string, FilterItem[]>,
-    action: 'add' | 'subtract'
-): void {
-    if (data.length <= 0) return;
-    Object.keys(data[0]).forEach((key) => {
-        data.forEach((element) => {
-            const filterSection = filterItems.get(key);
-            if (!filterSection) return;
-            const objectIndex = filterSection.findIndex((x) => x.value === element[key]);
-            if (objectIndex === -1) return;
-            let object = filterSection[objectIndex];
-            if (!object) return;
-            if (action === 'add') {
-                object = { ...object, count: object.count + 1 };
-            } else {
-                object = { ...object, count: object.count - 1 };
-            }
-
-            filterSection[objectIndex] = object;
-            filterItems.set(key, filterSection);
-        });
-    });
-    setFilterItems(filterItems);
 }
