@@ -1,50 +1,59 @@
 import { Checkbox } from '@equinor/eds-core-react';
-import { useCount } from '../../Hooks/useCount';
-import { FilerItemCount, FilterItem, FilterItemCheck } from '../../Types/FilterItem';
-import { debounceFilterItemCheck } from '../Utils/debounceFilterItemCheck';
+import { HandleFilterItemClick } from '../../Hooks/useFiltering';
+import { FilterItem } from '../../Types/FilterItem';
 import { Count, FilterItemGroupe, FilterItemLabel, FilterItemWrapper } from './FilterItem-Styles';
+
 interface FilterItemComponentProps {
     filterItem: FilterItem;
-    getCount?: FilerItemCount;
-    filterItemCheck: FilterItemCheck;
-    indeterminate?: boolean;
-    itemKey: string;
+    filterItemCheck: HandleFilterItemClick;
+    isLoading: boolean;
 }
 
 export const FilterItemComponent = ({
     filterItem,
     filterItemCheck,
-    indeterminate,
-    itemKey,
+    isLoading,
 }: FilterItemComponentProps): JSX.Element => {
-    const { count, isActive } = useCount(filterItem);
-    const debouncedFilterItemCheck = debounceFilterItemCheck(filterItemCheck, 0);
+    if (!filterItem) return <></>;
+    /**
+     * Value null is an object?!
+     */
+    // if (typeof filterItem.value === 'object' ) {
+    //     return <></>;
+    // }
 
-    if (typeof filterItem.value === 'object') {
-        return <></>;
-    }
+    const displayName = filterItem.value !== null ? filterItem.value : '(Blank)';
 
-    if (!isActive) return <></>;
     return (
-        <FilterItemWrapper key={itemKey} aria-label={filterItem.value} title={filterItem.value}>
+        <FilterItemWrapper
+            key={filterItem.value}
+            aria-label={filterItem.value}
+            title={filterItem.value}
+        >
             <FilterItemGroupe>
                 <Checkbox
-                    indeterminate={indeterminate}
-                    title={filterItem.value}
+                    title={displayName}
                     checked={filterItem.checked}
+                    // disabled={lastCheckedInGroup(filterItem.value)}
                     onChange={() => {
-                        debouncedFilterItemCheck(filterItem);
+                        filterItemCheck(filterItem.filterGroupName, filterItem.value, 'box');
+                        // if (!lastCheckedInGroup(filterItem.value)) {
+                        //     filterItemCheck(filterItem, 'box');
+                        // }
                     }}
                 />
                 <FilterItemLabel
                     onClick={() => {
-                        debouncedFilterItemCheck(filterItem, true);
+                        filterItemCheck(filterItem.filterGroupName, filterItem.value, 'label');
+                        // if (!lastCheckedInGroup(filterItem.value)) {
+                        //     filterItemCheck(filterItem, 'label');
+                        // }
                     }}
                 >
-                    {filterItem.value}
+                    {displayName}
                 </FilterItemLabel>
             </FilterItemGroupe>
-            <Count>({count})</Count>
+            <Count>{filterItem.checked && `( ${filterItem.count} )`}</Count>
         </FilterItemWrapper>
     );
 };

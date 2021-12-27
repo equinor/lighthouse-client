@@ -1,6 +1,6 @@
-import { FrappeGantt, Task, ViewMode } from "frappe-gantt-react";
-import { useEffect, useState } from "react";
-import { useFilteredData } from "../../../Filter";
+import { FrappeGantt, Task, ViewMode } from 'frappe-gantt-react';
+import { useEffect, useState } from 'react';
+import { useFilter } from '../../../Filter/Hooks/useFilter';
 
 interface GnatTask {
     id: string;
@@ -22,14 +22,13 @@ interface GnatTaskMapper<T> {
     dependencies?: keyof T;
 }
 
-const toString = (data) => (`${data}`)
+const toString = (data) => `${data}`;
 const toDataString = (data) => {
-    const year = new Date(data).getFullYear()
-    const month = new Date(data).getMonth()
-    const day = new Date(data).getDay()
-    return `${day}-${month}-${year}`
-
-}
+    const year = new Date(data).getFullYear();
+    const month = new Date(data).getMonth();
+    const day = new Date(data).getDay();
+    return `${day}-${month}-${year}`;
+};
 
 function createGnatData<T>(data: T[], mapper: GnatTaskMapper<T>): Task[] {
     return data.reduce((tasks, taskItem: T) => {
@@ -38,17 +37,16 @@ function createGnatData<T>(data: T[], mapper: GnatTaskMapper<T>): Task[] {
             name: toString(taskItem[mapper.name]),
             start: toDataString(taskItem[mapper.start]),
             end: toDataString(taskItem[mapper.end]),
-            custom_class: mapper.custom_class && toString(taskItem[mapper.custom_class])
-        })
+            custom_class: mapper.custom_class && toString(taskItem[mapper.custom_class]),
+        });
         if (mapper.dependencies) {
             const dependencies = taskItem[mapper.dependencies];
-            typeof dependencies === "string" && task.setDependencies([dependencies])
-            Array.isArray(dependencies) && task.setDependencies(dependencies)
+            typeof dependencies === 'string' && task.setDependencies([dependencies]);
+            Array.isArray(dependencies) && task.setDependencies(dependencies);
         }
-        if (task.start && task.end)
-            tasks.push(task)
-        return tasks
-    }, [] as Task[])
+        if (task.start && task.end) tasks.push(task);
+        return tasks;
+    }, [] as Task[]);
 }
 
 interface Checklist {
@@ -58,9 +56,9 @@ interface Checklist {
     CommPriority1__Id: string;
     CommPriority2__Id: string;
     CommPriority3__Id: string;
-    CommissioningHandoverStatus: number
+    CommissioningHandoverStatus: number;
     Description: string;
-    Id: number
+    Id: number;
     McStatus__Id: string;
     OperationHandoverStatus: string;
     PlannedCompleted: string;
@@ -71,29 +69,31 @@ interface Checklist {
 
 export function TimelineTab() {
     const mapper: GnatTaskMapper<Checklist> = {
-        id: "Id",
-        end: "PlannedCompleted",
-        start: "PlannedStartup",
+        id: 'Id',
+        end: 'PlannedCompleted',
+        start: 'PlannedStartup',
         progress: (i) => 50,
-        name: "CommPkgNo"
-    }
-    const [tasks, setTasks] = useState<Task[]>([])
-    const { data } = useFilteredData<Checklist>()
+        name: 'CommPkgNo',
+    };
+    const [tasks, setTasks] = useState<Task[]>([]);
+    const { filteredData: data } = useFilter();
 
     useEffect(() => {
         if (data.length > 0) {
-            setTasks(createGnatData(data, mapper))
+            setTasks(createGnatData(data as Checklist[], mapper));
         }
-    }, [data])
+    }, [data]);
 
-    return (
-        tasks.length > 0 ? <FrappeGantt
+    return tasks.length > 0 ? (
+        <FrappeGantt
             tasks={tasks}
             viewMode={ViewMode.Month}
-            onClick={task => console.log(task)}
+            onClick={(task) => console.log(task)}
             onDateChange={(task, start, end) => console.log(task, start, end)}
             onProgressChange={(task, progress) => console.log(task, progress)}
-            onTasksChange={tasks => console.log(tasks)}
-        /> : <div>No tasks awaitable!</div>
+            onTasksChange={(tasks) => console.log(tasks)}
+        />
+    ) : (
+        <div>No tasks awaitable!</div>
     );
 }
