@@ -12,6 +12,7 @@ import { createFilterActionGroups } from '../Services/createFilterActionGroups';
 function internalFilter<T>(
     data: T[],
     filterActionGroups: FilterActionGroup[],
+    keepRejectedData: boolean,
     groupValue?: Record<string, (item: T) => string>,
     rejectedData?: T[]
 ): FilterReturn<T> {
@@ -33,16 +34,34 @@ function internalFilter<T>(
 
     let filter;
     if (filterSection.action === 'Checked') {
-        filter = filterOnCheckedItems(data, filterSection.type, filterSection.items, getValue);
+        filter = filterOnCheckedItems(
+            data,
+            filterSection.type,
+            filterSection.items,
+            getValue,
+            keepRejectedData
+        );
     } else {
-        filter = filterOnUncheckedItems(data, filterSection.type, filterSection.items, getValue);
+        filter = filterOnUncheckedItems(
+            data,
+            filterSection.type,
+            filterSection.items,
+            getValue,
+            keepRejectedData
+        );
     }
     filteredData = filter.filteredData;
     rejected = filter.rejectedData;
     filterActionGroups.shift();
 
     if (filterActionGroups.length !== 0) {
-        return internalFilter(filteredData, filterActionGroups, groupValue, rejected);
+        return internalFilter(
+            filteredData,
+            filterActionGroups,
+            keepRejectedData,
+            groupValue,
+            rejected
+        );
     }
 
     return {
@@ -61,17 +80,21 @@ function internalFilter<T>(
 export function filter<T>(
     data: T[],
     filterGroups: Map<string, FilterItem[]>,
-    groupValue: Record<string, (item: T) => string> | undefined
+    groupValue: Record<string, (item: T) => string> | undefined,
+    discardRejectedData?: boolean
 ): FilterReturn<T> {
     const filters = createFilterActionGroups(filterGroups);
-
+    let keepRejectedData = true;
+    if (discardRejectedData) {
+        keepRejectedData = false;
+    }
     let filteredData;
     let rejectedData;
     if (filters.length <= 0) {
         filteredData = data;
         rejectedData = [];
     } else {
-        const filter = internalFilter(data, filters, groupValue);
+        const filter = internalFilter(data, filters, keepRejectedData, groupValue, []);
         filteredData = [...filter.filteredData];
         rejectedData = filter.rejectedData;
     }
@@ -93,7 +116,8 @@ export function filterOnUncheckedItems<T>(
     data: T[],
     filterKey: string,
     filterValues: string[],
-    getValue: false | '' | ((item: T) => string) | undefined
+    getValue: false | '' | ((item: T) => string) | undefined,
+    keepRejectedData: boolean
 ): FilterReturn<T> {
     /**
      * Data you want
@@ -108,12 +132,12 @@ export function filterOnUncheckedItems<T>(
             if (!filterValues.includes(getValue(data[i]))) {
                 filteredData.push(data[i]);
             } else {
-                rejectedData.push(data[i]);
+                keepRejectedData && rejectedData.push(data[i]);
             }
         } else if (!filterValues.includes(data[i][filterKey])) {
             filteredData.push(data[i]);
         } else {
-            rejectedData.push(data[i]);
+            keepRejectedData && rejectedData.push(data[i]);
         }
     }
     return {
@@ -134,7 +158,8 @@ export function filterOnCheckedItems<T>(
     data: T[],
     filterKey: string,
     filterValues: string[],
-    getValue: ((item: T) => string) | undefined
+    getValue: ((item: T) => string) | undefined,
+    keepRejectedData: boolean
 ): FilterReturn<T> {
     /**
      * Data you wanted
@@ -150,12 +175,12 @@ export function filterOnCheckedItems<T>(
             if (filterValues.includes(getValue(data[i]))) {
                 filteredData.push(data[i]);
             } else {
-                rejectedData.push(data[i]);
+                keepRejectedData && rejectedData.push(data[i]);
             }
         } else if (filterValues.includes(data[i][filterKey])) {
             filteredData.push(data[i]);
         } else {
-            rejectedData.push(data[i]);
+            keepRejectedData && rejectedData.push(data[i]);
         }
     }
 

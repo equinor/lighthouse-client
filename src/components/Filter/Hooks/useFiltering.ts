@@ -63,6 +63,10 @@ export const useFiltering = <T>(
         }
     }, [initialData, options]);
 
+    useEffect(() => {
+        console.log('Filter items changed');
+    }, [filterItems]);
+
     const getFilterGroup = (groupName: string) => filterItems.get(groupName);
 
     const handleFilterItemClick = (
@@ -166,13 +170,20 @@ export const useFiltering = <T>(
             const resolvedRecords = filter(
                 rejectedData,
                 activeFilters.current,
-                options?.groupValue
+                options?.groupValue,
+                true
             );
 
             /**
              * FilterItems state is not updated at this point
              */
-            updateCount(resolvedRecords.filteredData, setFilterItems, currentFilterItems, 'add');
+            updateCount(
+                resolvedRecords.filteredData,
+                setFilterItems,
+                currentFilterItems,
+                'add',
+                filterGroupName
+            );
             /**
              * ResolvedRecords.filtered data needs to be removed from rejectedData
              */
@@ -192,7 +203,13 @@ export const useFiltering = <T>(
          * Count selected columns
          * use rejected data to update count for all sections except filtergroupname
          */
-        updateCount(newFilteredData.rejectedData, setFilterItems, currentFilterItems, 'subtract');
+        updateCount(
+            newFilteredData.rejectedData,
+            setFilterItems,
+            currentFilterItems,
+            'subtract',
+            filterGroupName
+        );
 
         setIsFiltering(false);
     };

@@ -13,10 +13,14 @@ export function updateCount<T>(
     data: T[],
     setFilterItems: React.Dispatch<React.SetStateAction<Map<string, FilterItem[]>>>,
     filterItems: Map<string, FilterItem[]>,
-    action: 'add' | 'subtract'
+    action: 'add' | 'subtract',
+    excludeSelf: string
 ): void {
     if (data.length <= 0) return;
     Object.keys(data[0]).forEach((key) => {
+        if (key === excludeSelf) {
+            return;
+        }
         data.forEach((element) => {
             const filterSection = filterItems.get(key);
             if (!filterSection) return;
