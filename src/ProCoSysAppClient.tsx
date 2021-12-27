@@ -9,6 +9,8 @@ import { Routes } from './components/Routes/Routes';
 import ProCoSysTopBar from './components/TopBar/TopBar';
 import { ClientContextProvider } from './context/clientContext';
 import { FactoryComponent } from './Core/DataFactory';
+import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
+import { PopupScrim } from './Core/PopupScrim/PopupScrim';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -58,6 +60,8 @@ const ProCoSysAppClient: React.FC<ProCoSysAppClientProps> = ({
                 </MainLayout>
             </Router>
             <FactoryComponent />
+            <PopupScrim />
+            <ConfirmationDialog />
         </ClientContextProvider>
     ) : (
         <>
