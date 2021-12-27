@@ -4,6 +4,7 @@ How to use this package
 2. Define schema (omit the fields you dont want in the form)
 3. Invoke hook and call GenerateForm
 
+
 ```TS
 interface Test{
     id: string;
