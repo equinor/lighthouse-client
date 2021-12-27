@@ -1,5 +1,5 @@
 import { AnalyticsView } from '@equinor/Diagrams';
-import { useFilteredData } from '../../../../components/Filter';
+import { useFilter } from '../../../../components/Filter/Hooks/useFilter';
 import { DashboardInstance, PageConfig } from '../../Types/State';
 import { Page, PageWrapper } from './PagesStyles';
 
@@ -8,7 +8,7 @@ interface PagesProps<T> extends DashboardInstance<T> {
 }
 
 export function Pages<T>({ pages, activePage }: PagesProps<T>): JSX.Element {
-    const { data, isLoading } = useFilteredData<T>();
+    const { filteredData, isLoading } = useFilter();
 
     return (
         <PageWrapper>
@@ -27,7 +27,7 @@ export function Pages<T>({ pages, activePage }: PagesProps<T>): JSX.Element {
                         <Page key={`page-${key}`} style={{ paddingTop: 0 }}>
                             {activePage == page.pageId && (
                                 <AnalyticsView<T>
-                                    data={data}
+                                    data={filteredData as T[]}
                                     isLoading={isLoading}
                                     options={page}
                                 />

@@ -26,10 +26,11 @@ const commPkgKeys: (keyof CommPkg)[] = [
     'CommPkgNo',
     'Description',
     'PlannedStartup',
+    'Area__Id',
 ];
 
 function start(item: CommPkg): string {
-    switch (new Date(item.PlannedStartup).getMonth()) {
+    switch (new Date(item.PlannedCompleted).getMonth()) {
         case 0:
             return 'January';
         case 1:
@@ -69,7 +70,7 @@ export function setup(appApi: AppApi) {
 
     commPkg.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
-        const project = 'L.O532C.002';
+        //const project = 'L.O532C.002';
         const response = await api.fetch(
             // `https://api-lighthouse-production.playground..equinor.com/commpks/${plantId}/${project}`
             `https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=96128&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`,
@@ -83,12 +84,16 @@ export function setup(appApi: AppApi) {
     commPkg.registerFilterOptions({
         excludeKeys: commPkgKeys,
         typeMap: {
-            Responsible__Id: 'Responsible Id',
+            Responsible__Id: 'Responsible',
             Area__Id: 'Area',
             McStatus__Id: 'Mc Status',
+            CommPriority3__Id: 'CommPriority 3',
+            CommPriority2__Id: 'CommPriority 2',
+            Status__Id: 'Status',
+            CommPhase__Id: 'Comm phase',
         },
         groupValue: {
-            start,
+            PlannedCompleted: start,
         },
     });
 

@@ -2,7 +2,6 @@ import { Icon } from '@equinor/eds-core-react';
 import { useRef, useState } from 'react';
 import { HeaderGroup } from 'react-table';
 // TODO : alias import for filter?
-import { useFilter } from '../../../components/Filter/Hooks/useFilter';
 import { TableData } from '../types';
 import { HeaderCellMenu } from './HeaderCellMenu';
 import { ResizeHandle } from './ResizeHandle';
@@ -12,7 +11,6 @@ export interface HeaderCellProps extends HeaderGroup<TableData> {
 }
 
 export const HeaderCell = (column: HeaderCellProps) => {
-    const { filterData } = useFilter();
     // const filter = useMemo(() => filterData[column.id], [filterData, column.id]);
     // const hasFilter = useMemo(() => {
     //     let hasFilter = false;

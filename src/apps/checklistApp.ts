@@ -82,7 +82,21 @@ export function setup(appApi: AppApi) {
 
     checklist.registerFilterOptions({
         excludeKeys: commPkgKeys,
-        typeMap: {},
+        typeMap: {
+            Status__Id: 'Status',
+            TagFormularType__SheetNo: 'Tag sheet',
+            Hyperlink_Status__Id: 'Hyperlink status',
+            SignedAt: 'Signed',
+            Hyperlink_TagFormularType__FormularType__Id: 'Hyperlink formular type',
+            McPhase__Id: 'MC phase',
+            Responsible__Id: 'Responsible',
+            TagFormularType__FormularType__Id: 'Tag type ID',
+            TagFormularType__Tag__McPkg__CommPkg__CommPkgNo: 'Tag Mcpkg commpkg commpkgNo',
+            TagFormularType__FormularType__Discipline__Description: 'Tag discipline',
+            TagFormularType__Tag__McPkg__CommPkg__Area__Id: 'Area id',
+            TagFormularType__Tag__McPkg__CommPkg__CommissioningHandoverStatus:
+                'Commissioning handover status',
+        },
         groupValue: {},
     });
 
