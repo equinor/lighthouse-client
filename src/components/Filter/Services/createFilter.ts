@@ -1,5 +1,6 @@
 import { FilterItem } from '../Types/FilterItem';
 
+const benchmarkEnabled = false;
 /**
  * Finds all object keys to use as column headers in filtering
  * @param data
@@ -7,7 +8,7 @@ import { FilterItem } from '../Types/FilterItem';
  * @returns Filter group names
  */
 export function createFilterGroups<T>(data: T, excludeKeys?: (keyof T)[]): string[] {
-    console.time('CreateFilterGroups');
+    if (benchmarkEnabled) console.time('CreateFilterGroups');
     const filterGroups: string[] = [];
     Object.keys(data).forEach((filterGroupKey) => {
         if (excludeKeys) {
@@ -18,7 +19,7 @@ export function createFilterGroups<T>(data: T, excludeKeys?: (keyof T)[]): strin
             filterGroups.push(filterGroupKey);
         }
     });
-    console.timeEnd('CreateFilterGroups');
+    if (benchmarkEnabled) console.timeEnd('CreateFilterGroups');
     return filterGroups;
 }
 
@@ -33,7 +34,7 @@ export function createFilterItems<T>(
     filterGroups: string[],
     groupValue?: Record<string, (item: T) => string> | undefined
 ): Map<string, FilterItem[]> {
-    console.time('CreateFilterItems');
+    if (benchmarkEnabled) console.time('CreateFilterItems');
     const filters = new Map<string, FilterItem[]>();
 
     //iterate over dataset and make a map over all the filtegroups, map structure, string, filterItem[]. where string is name of filterGroup Remember to ignore excludeKeys from options
@@ -44,6 +45,30 @@ export function createFilterItems<T>(
         filterGroups.map((objectKey) => {
             const existingFilter = filters.get(objectKey);
             if (!existingFilter) return;
+
+            // if (element[objectKey] === null) {
+            //     const blank = '(Blank)';
+            //     const index = existingFilter.findIndex((existing) => existing.value === blank);
+            //     if (index !== -1) {
+            //         /**
+            //          * Item already exists
+            //          */
+            //         const item = existingFilter[index];
+            //         existingFilter[index] = { ...item, count: item.count + 1 };
+            //     } else {
+            //         /**
+            //          * Item doesnt exist
+            //          */
+            //         existingFilter.push({
+            //             checked: true,
+            //             count: 1,
+            //             filterGroupName: objectKey,
+            //             value: blank,
+            //         });
+            //     }
+            //     filters.set(objectKey, existingFilter);
+            //     return;
+            // }
 
             const currentValue =
                 groupValue && groupValue[objectKey]
@@ -77,7 +102,7 @@ export function createFilterItems<T>(
             filters.set(objectKey, existingFilter);
         });
     });
-    console.timeEnd('CreateFilterItems');
+    if (benchmarkEnabled) console.timeEnd('CreateFilterItems');
 
     return filters;
 }

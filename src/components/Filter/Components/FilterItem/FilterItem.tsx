@@ -15,9 +15,14 @@ export const FilterItemComponent = ({
     isLoading,
 }: FilterItemComponentProps): JSX.Element => {
     if (!filterItem) return <></>;
-    if (typeof filterItem.value === 'object') {
-        return <></>;
-    }
+    /**
+     * Value null is an object?!
+     */
+    // if (typeof filterItem.value === 'object' ) {
+    //     return <></>;
+    // }
+
+    const displayName = filterItem.value !== null ? filterItem.value : '(Blank)';
 
     return (
         <FilterItemWrapper
@@ -27,7 +32,7 @@ export const FilterItemComponent = ({
         >
             <FilterItemGroupe>
                 <Checkbox
-                    title={filterItem.value}
+                    title={displayName}
                     checked={filterItem.checked}
                     // disabled={lastCheckedInGroup(filterItem.value)}
                     onChange={() => {
@@ -45,10 +50,10 @@ export const FilterItemComponent = ({
                         // }
                     }}
                 >
-                    {filterItem.value}
+                    {displayName}
                 </FilterItemLabel>
             </FilterItemGroupe>
-            <Count>( {isLoading ? '-' : filterItem.count})</Count>
+            <Count>{filterItem.checked && `( ${filterItem.count} )`}</Count>
         </FilterItemWrapper>
     );
 };

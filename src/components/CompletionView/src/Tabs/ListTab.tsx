@@ -32,10 +32,7 @@ export const ListTab = () => {
                     setSelected,
                     groupByFn: defaultGroupByFn,
                 }}
-            /**
-             * Temporary disabled
-             */
-            //FilterComponent={PopupFilter}
+                FilterComponent={PopupFilter}
             />
         </Wrapper>
     );

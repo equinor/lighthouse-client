@@ -29,7 +29,10 @@ const commPkgKeys: (keyof CommPkg)[] = [
     'Area__Id',
 ];
 
-function start(item: CommPkg): string {
+function start(item: CommPkg): string | null {
+    if (item.PlannedCompleted === null) {
+        return 'Null';
+    }
     switch (new Date(item.PlannedCompleted).getMonth()) {
         case 0:
             return 'January';

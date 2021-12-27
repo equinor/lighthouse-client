@@ -64,10 +64,6 @@ export const FilterView = ({ isActive }: FilterViewProps) => {
 
     return (
         <Wrapper>
-            <h1>Data count:{filter.filteredData.length}</h1>
-            <h1>Omitted count:{filter.rejectedData.length}</h1>
-            <h1>Sum: {filter.rejectedData.length + filter.filteredData.length}</h1>
-            {/* TODO move SelectBar to its own component when more buttons are added*/}
             <SelectBar>
                 <AddButton variant="ghost_icon" onClick={handleToggleFilerSelect}>
                     <Icon name={isFilterSelectActive ? 'close' : 'add'} />
@@ -112,48 +108,10 @@ export const FilterView = ({ isActive }: FilterViewProps) => {
                 {filter.filterGroups.map((group, index) => {
                     return (
                         <FilterGroupWrapper key={`${group.toString()}-${index}`}>
-                            <FilterGroupeComponent
-                                filterGroupName={group}
-                                filterItemCheck={filter.handleFilterItemClick}
-                                isLoading={filter.isLoading}
-                            />
+                            <FilterGroupeComponent filterGroupName={group} />
                         </FilterGroupWrapper>
                     );
                 })}
-
-                {/* {Object.keys(filter.allFilters).map((groupName, index) => {
-                    console.log(groupName);
-                    const group = filter.allFilters.get(groupName);
-                    if (!group) return;
-                    return (
-                        <FilterGroupWrapper key={`col-${groupName}-${index}`}>
-                            <h1>Am a filter group</h1>
-                            <FilterGroupeComponent
-                                filterGroup={group}
-                                filterItemCheck={filter.handleFilterItemClick}
-                                isLoading={filter.isLoading}
-                            />
-                        </FilterGroupWrapper>
-                    );
-                })} */}
-                {/* {Object.values(filter.allFilters).map((group, index) => (
-                    <FilterGroupWrapper key={`col-${group}-${index}`}>
-                        <FilterGroupeComponent
-                            filterGroup={group}
-                            filterItemCheck={filter.handleFilterItemClick}
-                            isLoading={filter.isLoading}
-                        />
-                    </FilterGroupWrapper>
-                ))} */}
-
-                {/* {activeFilter.map((filterGroup: FilterGroup, index) => (
-                    <FilterGroupWrapper key={`col-${filterGroup}-${index}`}>
-                        <FilterGroupeComponent
-                            filterGroup={filterGroup}
-                            filterItemCheck={filterItemCheck}
-                        />
-                    </FilterGroupWrapper>
-                ))} */}
             </FilterGroups>
         </Wrapper>
     );

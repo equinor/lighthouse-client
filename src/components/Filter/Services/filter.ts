@@ -1,6 +1,15 @@
-import { FilterItem } from '../Types/FilterItem';
+import { FilterActionGroup, FilterItem } from '../Types/FilterItem';
+import { createFilterActionGroups } from '../Services/createFilterActionGroups';
 
-function InternalFilter<T>(
+/**
+ * Recursively filters for every object key in active filters
+ * @param data
+ * @param filterActionGroups
+ * @param groupValue
+ * @param rejectedData
+ * @returns
+ */
+function internalFilter<T>(
     data: T[],
     filterActionGroups: FilterActionGroup[],
     groupValue?: Record<string, (item: T) => string>,
@@ -10,8 +19,10 @@ function InternalFilter<T>(
         return { filteredData: data, rejectedData: [] };
     }
 
+    /**
+     * Current objectKey to filter on
+     */
     const filterSection = filterActionGroups[0];
-    console.log(filterSection);
 
     //calculated filter value
     const getValue =
@@ -31,7 +42,7 @@ function InternalFilter<T>(
     filterActionGroups.shift();
 
     if (filterActionGroups.length !== 0) {
-        return InternalFilter(filteredData, filterActionGroups, groupValue, rejected);
+        return internalFilter(filteredData, filterActionGroups, groupValue, rejected);
     }
 
     return {
@@ -40,48 +51,19 @@ function InternalFilter<T>(
     };
 }
 
+/**
+ *
+ * @param data
+ * @param filterGroups
+ * @param groupValue
+ * @returns
+ */
 export function filter<T>(
     data: T[],
     filterGroups: Map<string, FilterItem[]>,
     groupValue: Record<string, (item: T) => string> | undefined
 ): FilterReturn<T> {
-    console.warn(filterGroups.size, ' is this correct????');
-
-    const filters: FilterActionGroup[] = [];
-
-    filterGroups.forEach((filterItems, filterGroupName) => {
-        const checked: string[] = [];
-        const unchecked: string[] = [];
-
-        filterItems.forEach((element) => {
-            if (element.checked) {
-                checked.push(element.value);
-            } else {
-                unchecked.push(element.value);
-            }
-        });
-
-        if (unchecked.length === 0 || checked.length === 0) {
-            return;
-        }
-        let actionGroup: FilterActionGroup;
-
-        if (unchecked.length < checked.length) {
-            actionGroup = {
-                action: 'Unchecked',
-                items: unchecked,
-                type: filterGroupName,
-            };
-        } else {
-            actionGroup = {
-                action: 'Checked',
-                items: checked,
-                type: filterGroupName,
-            };
-        }
-
-        filters.push(actionGroup);
-    });
+    const filters = createFilterActionGroups(filterGroups);
 
     let filteredData;
     let rejectedData;
@@ -89,7 +71,7 @@ export function filter<T>(
         filteredData = data;
         rejectedData = [];
     } else {
-        const filter = InternalFilter(data, filters, groupValue);
+        const filter = internalFilter(data, filters, groupValue);
         filteredData = [...filter.filteredData];
         rejectedData = filter.rejectedData;
     }
@@ -99,64 +81,14 @@ export function filter<T>(
     };
 }
 
-// console.log(filter[currentFilterKey].type);
-
-//Find lowest amount of values to filter on
-
-// for (let i = 0; i < filterKeys.length; i++) {
-//     const currentFilterKey = filterKeys[i];
-//     //FilterSection
-//     const checked: string[] = [];
-//     const unChecked: string[] = [];
-//     //console.log(filter[currentFilterKey]);
-//     /**
-//      * Trying to determine if there are more checked boxes than unchecked. Makes the filtering faster
-//      */
-//     Object.keys(filter[currentFilterKey].value).map((filterValueKey) => {
-//         //console.log(filterValueKey);
-//         if (filterValueKey === undefined) {
-//             return;
-//         }
-//         if (filter[currentFilterKey].value[filterValueKey].checked) {
-//             checked.push(filter[currentFilterKey].value[filterValueKey].value);
-//             filter[currentFilterKey].type;
-//         } else {
-//             unChecked.push(filter[currentFilterKey].value[filterValueKey].value);
-//         }
-//     });
-//     let actionGroup: FilterActionGroup;
-
-//     //If a sections has all boxes unchecked or checked there is nothing to do
-//     if (unChecked.length === 0 || checked.length === 0) {
-//         //console.log('All boxes either checked or unchecked');
-//         continue;
-//     }
-//     // console.log(filter[currentFilterKey].type);
-
-//     //Find lowest amount of values to filter on
-//     if (unChecked.length < checked.length) {
-//         actionGroup = {
-//             action: 'Unchecked',
-//             items: unChecked,
-//             type: filter[currentFilterKey].type,
-//         };
-//     } else {
-//         actionGroup = {
-//             action: 'Checked',
-//             items: checked,
-//             type: filter[currentFilterKey].type,
-//         };
-//     }
-
-//     filters.push(actionGroup);
-// }
-
-export interface FilterActionGroup {
-    action: 'Checked' | 'Unchecked';
-    type: string;
-    items: string[];
-}
-
+/**
+ * Finds data that matches the unchecked items
+ * @param data
+ * @param filterKey
+ * @param filterValues
+ * @param getValue
+ * @returns
+ */
 export function filterOnUncheckedItems<T>(
     data: T[],
     filterKey: string,
@@ -190,6 +122,14 @@ export function filterOnUncheckedItems<T>(
     };
 }
 
+/**
+ * Finds data that matches the checked items
+ * @param data
+ * @param filterKey
+ * @param filterValues
+ * @param getValue
+ * @returns
+ */
 export function filterOnCheckedItems<T>(
     data: T[],
     filterKey: string,

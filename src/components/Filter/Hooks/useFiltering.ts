@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { FilterDataOptions, FilterItem } from '../Types/FilterItem';
-import { createFilterGroups, createFilterItems } from '../Services/creatFilter';
+import { createFilterGroups, createFilterItems } from '../Services/createFilter';
 import { filter } from '../Services/filter';
 
 export type HandleFilterItemClick = (
@@ -16,8 +16,7 @@ export interface Filter<T> {
     rejectedData: T[];
     filterGroups: string[];
     handleFilterItemClick: HandleFilterItemClick;
-    isLoading: boolean;
-    onChange: boolean;
+    isFiltering: boolean;
     //filterItemLookup: (filterItem: FilterItem) => FilterItem | undefined;
     getFilterGroup: (groupName: string) => FilterItem[] | undefined;
     filterOptions: FilterDataOptions<T> | undefined;
@@ -31,57 +30,51 @@ export const useFiltering = <T>(
     initialData: T[],
     options: FilterDataOptions<T> | undefined
 ): Filter<T> => {
+    const benchmarkEnabled = false;
     //const [data, setData] = useState<T[]>(initialData);
     const [filteredData, setFilteredData] = useState<T[]>([]);
     const [rejectedData, setRejectedData] = useState<T[]>([]);
     const [filterGroups, setFilterGroups] = useState<string[]>([]);
     const [filterItems, setFilterItems] = useState<Map<string, FilterItem[]>>(new Map());
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [onChange, setOnChange] = useState<boolean>(false);
+    const [isFiltering, setIsFiltering] = useState<boolean>(false);
+
     /**
      * All groups where one or more checkbox is deselected
      */
-
-    /**
-     * Todo change from useState to something mutable
-     */
-    const [activeFilters, setActiveFilters] = useState<Map<string, FilterItem[]>>(new Map());
+    const activeFilters = useRef(new Map<string, FilterItem[]>());
 
     useEffect(() => {
         if (initialData.length > 0) {
-            //setData(initialData);
             setFilteredData(initialData);
-            console.log('Data changed', initialData.length);
-
             const filterGroups = createFilterGroups(initialData[0], options?.excludeKeys);
             setFilterGroups(filterGroups);
-            const filterItems = createFilterItems(initialData, filterGroups, options?.groupValue);
-            setFilterItems(filterItems);
+            const generatedFilterItems = createFilterItems(
+                initialData,
+                filterGroups,
+                options?.groupValue
+            );
+
+            setFilterItems(generatedFilterItems);
         }
     }, [initialData, options]);
 
     const getFilterGroup = (groupName: string) => filterItems.get(groupName);
-
-    // const filterItemLookup = (filterItem: FilterItem): FilterItem | undefined => {
-    //     return allFilters.get(filterItem.filterGroupName)?.get(filterItem.value);
-    // };
 
     const handleFilterItemClick = (
         filterGroupName: string,
         selfValue: string,
         action: 'label' | 'box' | 'all'
     ) => {
-        setIsLoading(true);
-        setOnChange((prev) => !prev);
-        console.log('Filter clicked');
+        setIsFiltering(true);
         let filterGroup: FilterItem[];
 
         const oldFilterGroup = filterItems.get(filterGroupName);
         if (!oldFilterGroup) return;
-        //Boxes that was checked but is now unchecked
-        //const deselected: FilterItem[] = [];
-        //boxes that changed from unchecked to checked
-        //Keys that needs to be resolved
+
+        /**
+         * Boxes that changed from unchecked to checked,
+         * records that needs to be resolved
+         */
         const selected: FilterItem[] = [];
 
         switch (action) {
@@ -95,7 +88,7 @@ export const useFiltering = <T>(
                 filterGroup = selectAllCheckBoxes(oldFilterGroup);
 
                 //Remove filtergroup from activeFilters
-                activeFilters.delete(filterGroupName);
+                activeFilters.current.delete(filterGroupName);
                 break;
             }
 
@@ -115,9 +108,9 @@ export const useFiltering = <T>(
                     /**
                      * Section is no longer active
                      */
-                    activeFilters.delete(filterGroupName);
+                    activeFilters.current.delete(filterGroupName);
                 } else {
-                    activeFilters.set(filterGroupName, filterGroup);
+                    activeFilters.current.set(filterGroupName, filterGroup);
                 }
 
                 //update activefilters
@@ -135,61 +128,68 @@ export const useFiltering = <T>(
                 });
 
                 filterGroup = deselectAllButOne(selfValue, oldFilterGroup);
-                activeFilters.set(filterGroupName, filterGroup);
+                activeFilters.current.set(filterGroupName, filterGroup);
                 //update activeFilters
                 break;
             }
         }
+        const currentFilterItems = filterItems;
+        currentFilterItems.set(filterGroupName, filterGroup);
 
         setFilterItems((prev) => prev.set(filterGroupName, filterGroup));
-        if (activeFilters.size === 0) {
-            console.log('No active filters');
-            // setFilteredData(data);
+
+        /**
+         * Nothing to filter on, just overwrite with initial data
+         */
+        if (activeFilters.current.size === 0) {
             setFilteredData(initialData);
             setRejectedData([]);
-            setIsLoading(false);
+            /**
+             * Todo store from initial createFilterItems
+             * Capture initialFilteritems from useeffect on mount
+             */
+            setFilterItems(createFilterItems(initialData, filterGroups, options?.groupValue));
+            setIsFiltering(false);
             return;
         }
 
-        console.time('Filtering');
-        const newFilteredData = filter(filteredData, activeFilters, options?.groupValue);
-        console.timeEnd('Filtering');
+        if (benchmarkEnabled) console.time('Filtering');
+        const newFilteredData = filter(filteredData, activeFilters.current, options?.groupValue);
+        if (benchmarkEnabled) console.timeEnd('Filtering');
         if (selected.length > 0) {
-            console.time('Recovering records');
-            const resolvedRecords = filter(rejectedData, activeFilters, options?.groupValue);
+            if (benchmarkEnabled) console.time('Recovering records');
+            const resolvedRecords = filter(
+                rejectedData,
+                activeFilters.current,
+                options?.groupValue
+            );
+
+            /**
+             * FilterItems state is not updated at this point
+             */
+            updateCount(resolvedRecords.filteredData, setFilterItems, currentFilterItems, 'add');
+            /**
+             * ResolvedRecords.filtered data needs to be removed from rejectedData
+             */
             setRejectedData(removeFromRejectedRecords(rejectedData, resolvedRecords.filteredData));
-            console.timeEnd('Recovering records');
+            if (benchmarkEnabled) console.timeEnd('Recovering records');
             const mergedFilteredData = [
                 ...newFilteredData.filteredData,
                 ...resolvedRecords.filteredData,
             ];
             setFilteredData(mergedFilteredData);
-            /**
-             * Count selected columns
-             * use rejected data to update count for all sections except filtergroupname
-             * Should be async function
-             */
-
-            /**
-             * ResolvedRecords.filtered data needs to be removed from rejectedData
-             */
-
-            //setFilteredData([...newFilteredData.filteredData, ...resolvedRecords.filteredData]);
         } else {
             setFilteredData(newFilteredData.filteredData);
         }
         setRejectedData((prev) => [...prev, ...newFilteredData.rejectedData]);
         /**
-         * All keys to resolve are now in selected array, activeFilters are also updated
+         * Filter items state is not updated at this point
+         * Count selected columns
+         * use rejected data to update count for all sections except filtergroupname
          */
+        updateCount(newFilteredData.rejectedData, setFilterItems, currentFilterItems, 'subtract');
 
-        //maybe add to existing rejectedData???
-        //setRejectedData((prev) => [...prev, ...newFilteredData.rejectedData]);
-        //console.log(filterGroup);
-        /**
-         * Should happen after filtering is done
-         */
-        setIsLoading(false);
+        setIsFiltering(false);
     };
 
     const returnFilter: Filter<T> = {
@@ -199,8 +199,7 @@ export const useFiltering = <T>(
         filterGroups,
         handleFilterItemClick,
         getFilterGroup,
-        isLoading,
-        onChange,
+        isFiltering,
         filterOptions: options,
     };
     return returnFilter;
@@ -250,4 +249,42 @@ const selectAllCheckBoxes = (filterGroup: FilterItem[]): FilterItem[] => {
 
 function removeFromRejectedRecords<T>(rejectedRecords: T[], toBeRemoved: T[]): T[] {
     return rejectedRecords.filter((x) => !toBeRemoved.includes(x));
+}
+
+/**
+ * Updates the count for every value it encounters
+ * subtracts for items removed from the dataset
+ * adds for items added to the dataset
+ * @param data
+ * @param setFilterItems
+ * @param filterItems
+ * @param action
+ * @returns void
+ */
+function updateCount<T>(
+    data: T[],
+    setFilterItems: React.Dispatch<React.SetStateAction<Map<string, FilterItem[]>>>,
+    filterItems: Map<string, FilterItem[]>,
+    action: 'add' | 'subtract'
+): void {
+    if (data.length <= 0) return;
+    Object.keys(data[0]).forEach((key) => {
+        data.forEach((element) => {
+            const filterSection = filterItems.get(key);
+            if (!filterSection) return;
+            const objectIndex = filterSection.findIndex((x) => x.value === element[key]);
+            if (objectIndex === -1) return;
+            let object = filterSection[objectIndex];
+            if (!object) return;
+            if (action === 'add') {
+                object = { ...object, count: object.count + 1 };
+            } else {
+                object = { ...object, count: object.count - 1 };
+            }
+
+            filterSection[objectIndex] = object;
+            filterItems.set(key, filterSection);
+        });
+    });
+    setFilterItems(filterItems);
 }
