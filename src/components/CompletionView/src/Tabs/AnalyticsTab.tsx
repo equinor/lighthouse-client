@@ -3,7 +3,7 @@ import { useFilter } from '../../../Filter/Hooks/useFilter';
 import { useDataContext } from '../Context/DataProvider';
 
 export const AnalyticsTab = (): JSX.Element => {
-    const { filteredData, isLoading } = useFilter();
+    const { filteredData, isFiltering: isLoading } = useFilter();
     const { analyticsOptions } = useDataContext();
 
     return analyticsOptions ? (

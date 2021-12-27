@@ -8,7 +8,7 @@ interface PagesProps<T> extends DashboardInstance<T> {
 }
 
 export function Pages<T>({ pages, activePage }: PagesProps<T>): JSX.Element {
-    const { filteredData, isLoading } = useFilter();
+    const { filteredData, isFiltering: isLoading } = useFilter();
 
     return (
         <PageWrapper>
