@@ -1,6 +1,11 @@
+import { title } from 'process';
+
 export interface Step {
     id: string;
-    name: string;
+    title: string;
+    type: string;
+    functionalRole: string;
+    canAddContributors: boolean;
     order: number;
 }
 

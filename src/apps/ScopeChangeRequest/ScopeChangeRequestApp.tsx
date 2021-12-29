@@ -159,10 +159,10 @@ export function setup(appApi: AppApi): void {
 
     request.registerDataViewSideSheetOptions({ CustomComponent: CustomSidesheet });
 
-    // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
-    // request.registerVisualEditorOptions({
-    //     endpoint: `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflowId}/templates`,
-    // });
+    const workflowId = '563fc1b7-7327-40c2-02a6-08d9c48772b1';
+    request.registerWorkflowEditorOptions({
+        endpoint: `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflowId}/templates`,
+    });
 }
 
 export const analyticsOptions: AnalyticsOptions<ScopeChangeRequest> = {

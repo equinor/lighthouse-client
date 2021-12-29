@@ -2,20 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { ReactSortable } from 'react-sortablejs';
 import { DragElement } from './DragElement';
 import { DraggableItem } from '../Types/DraggableItem';
+import { Button, Checkbox, Icon, Input, SingleSelect, TextField } from '@equinor/eds-core-react';
+import styled from 'styled-components';
 
 const DraggableHandleSelector = 'globalDraggableHandle';
 
 interface DraggableItemsContainerProps<T> {
     onChange: (newDragItems: DraggableItem<T>[]) => void;
     items: T[];
-    viewKey: keyof T;
+    updateDragItem: (dragItem: T, index: number) => void;
     CustomComponent?: React.FC<{ displayName: T[keyof T] }>;
 }
 
 export function DraggableItemsContainer<T>({
     onChange,
     items,
-    viewKey,
+    updateDragItem,
     CustomComponent,
 }: DraggableItemsContainerProps<T>): JSX.Element {
     const [dragItems, setDragItems] = useState<DraggableItem<T>[]>(
@@ -30,7 +32,7 @@ export function DraggableItemsContainer<T>({
                 return { id, item };
             })
         );
-    }, [items]);
+    }, [items.length]);
 
     const deleteFunc = (id: number) => {
         onChange(dragItems.filter((item) => item.id !== id));
@@ -40,6 +42,7 @@ export function DraggableItemsContainer<T>({
         <>
             {dragItems.length > 0 && (
                 <ReactSortable
+                    style={{ width: '100%' }}
                     animation={200}
                     handle={`.${DraggableHandleSelector}`}
                     list={dragItems}
@@ -48,21 +51,16 @@ export function DraggableItemsContainer<T>({
                     }}
                     setList={setDragItems}
                 >
-                    {dragItems.map((dragItem) => (
-                        <div
-                            key={dragItem.id}
-                            style={{ padding: '20px' }}
-                            className={DraggableHandleSelector}
-                        >
-                            {CustomComponent ? (
-                                <CustomComponent displayName={dragItem.item[viewKey]} />
-                            ) : (
-                                <DragElement
-                                    displayName={dragItem.item[viewKey]}
-                                    id={dragItem.id}
-                                    deleteFunc={deleteFunc}
-                                />
-                            )}
+                    {dragItems.map((dragItem, index) => (
+                        <div key={dragItem.id}>
+                            <DragElement
+                                item={dragItem.item}
+                                dragItemId={dragItem.id}
+                                deleteFunc={deleteFunc}
+                                updateDragItem={updateDragItem}
+                                index={index}
+                                dragHandleName={DraggableHandleSelector}
+                            />
                         </div>
                     ))}
                 </ReactSortable>
@@ -70,3 +68,11 @@ export function DraggableItemsContainer<T>({
         </>
     );
 }
+
+export const DragElementBox = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    padding: 0.2em;
+`;

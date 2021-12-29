@@ -18,8 +18,15 @@ export const WorkflowEditor = ({
     const [selectedWorkflowTemplate, setSelectedWorkflowTemplate] = useState<Workflow>();
     const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
 
+    interface MakeWorkflowStep {
+        title: string;
+        type: string;
+        functionalRole: string;
+        canAddContributors: boolean;
+    }
+
     useEffect(() => {
-        // loadData(endpoint ?? '');
+        loadData(endpoint ?? '');
     }, [endpoint]);
 
     const loadData = async (endpoint: string) => {
@@ -49,7 +56,7 @@ export const WorkflowEditor = ({
         );
     };
 
-    const SaveButton = ({ items }: { items: Step[] }) => {
+    const SaveButton = ({ items }: { items: MakeWorkflowStep[] }) => {
         if (
             !selectedWorkflowTemplate ||
             !selectedWorkflowTemplate.id ||
@@ -58,24 +65,41 @@ export const WorkflowEditor = ({
             return <></>;
         }
         return (
-            <Button onClick={() => saveTemplate(workflowId, selectedWorkflowTemplate.id, items)}>
+            <Button
+                onClick={() =>
+                    saveTemplate(
+                        workflowId,
+                        selectedWorkflowTemplate.id,
+                        items as unknown as Step[]
+                    )
+                }
+            >
                 Save
             </Button>
         );
     };
 
-    const CreateButton = ({ items }: { items: Step[] }) => {
+    const CreateButton = ({ items }: { items: MakeWorkflowStep[] }) => {
         if (selectedWorkflowTemplate?.id) {
             return <></>;
         }
-        return <Button onClick={() => createTemplate(workflowId, items)}>Create</Button>;
+        return (
+            <Button
+                onClick={() => {
+                    debugger;
+                    createTemplate(workflowId, items as unknown as Step[]);
+                }}
+            >
+                Create
+            </Button>
+        );
     };
 
     // if (!selectedWorkflowTemplate) {
     //     return null;
     // }
     return (
-        <>
+        <Wrapper>
             <Header>
                 <TemplatePublished>
                     {selectedWorkflowTemplate && selectedWorkflowTemplate.isPublished && (
@@ -116,7 +140,16 @@ export const WorkflowEditor = ({
                         createdBy: '',
                         id: '',
                         isPublished: false,
-                        steps: [],
+                        steps: [
+                            {
+                                functionalRole: '',
+                                id: '',
+                                title: '',
+                                order: 0,
+                                canAddContributors: false,
+                                type: '',
+                            },
+                        ],
                         lastModified: null,
                         lastModifiedBy: null,
                     })
@@ -125,16 +158,20 @@ export const WorkflowEditor = ({
                 Create new template
             </Button>
             {selectedWorkflowTemplate && (
-                <VisualEditor<Step>
+                <VisualEditor<MakeWorkflowStep>
                     buttons={[PublishButton, CreateButton, SaveButton]}
                     items={selectedWorkflowTemplate?.steps}
                     newItemFunction={() => {
-                        return { id: '', name: 'new step', order: 2 };
+                        return {
+                            title: '',
+                            type: '',
+                            canAddContributors: false,
+                            functionalRole: '',
+                        };
                     }}
-                    viewKey={'name'}
                 />
             )}
-        </>
+        </Wrapper>
     );
 };
 
@@ -147,4 +184,8 @@ const Header = styled.div`
 const TemplatePublished = styled.div`
     display: flex;
     flex-direction: column;
+`;
+
+const Wrapper = styled.div`
+    min-height: 100vh;
 `;
