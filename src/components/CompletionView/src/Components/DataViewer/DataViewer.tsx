@@ -1,5 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { AppApi } from '../../../../../apps/apps';
 import { FilterView } from '../../../../Filter';
 import { FilterProvider } from '../../../../Filter/Context/FilterProvider';
@@ -46,6 +47,7 @@ export function DataViewer(props: AppApi): JSX.Element {
     }
 
     if (!viewIsActive) return <NoDataViewer />;
+
     return (
         <FilterProvider initialData={data} options={filterOptions}>
             <Tabs activeTab={activeTab} onChange={handleChange}>
@@ -58,9 +60,23 @@ export function DataViewer(props: AppApi): JSX.Element {
                 <FilterView isActive={activeFilter} />
                 <DataViewWrapper>
                     <CompletionViewTabs tabs={tabs} activeTab={activeTab} />
-                    <DataView />
+                    {data.length === 0 ? (
+                        <LoadingWrapper>
+                            <p>Loading....</p>
+                        </LoadingWrapper>
+                    ) : (
+                        <DataView />
+                    )}
                 </DataViewWrapper>
             </Tabs>
         </FilterProvider>
     );
 }
+
+export const LoadingWrapper = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+`;
