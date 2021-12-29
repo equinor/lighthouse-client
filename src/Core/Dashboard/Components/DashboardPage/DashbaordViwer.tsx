@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { FilterProvider, FilterView } from '../../../../components/Filter';
+import { FilterView } from '../../../../components/Filter';
+import { FilterProvider } from '../../../../components/Filter/Context/FilterProvider';
 import { useDashboardDataContext } from '../../Context/DataProvider';
 import { Dashboard } from '../DashboardView/Dashboard';
 

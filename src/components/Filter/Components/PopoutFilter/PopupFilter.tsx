@@ -8,22 +8,12 @@
  *  filter will be displayed if not the component wil return an empty JSX. element.
  */
 
-import { useMemo } from "react";
-import { useFilter } from "../../Hooks/useFilter";
-import { FilterGroupeComponent } from "../FilterGroup/FilterGroup";
+import { FilterGroupeComponent } from '../..';
 
 export interface PopupFilterProps {
     filterId: string;
 }
 
 export function PopupFilter({ filterId }: PopupFilterProps): JSX.Element {
-
-    const { filterData, filterItemCheck } = useFilter();
-    const filter = useMemo(() => filterData[filterId], [filterData, filterId]);
-
-    if (!filter) return <></>
-
-    return (
-        <FilterGroupeComponent filterGroup={filter} filterItemCheck={filterItemCheck} hideTitle={true} />
-    )
+    return <FilterGroupeComponent filterGroupName={filterId} hideTitle={true} />;
 }

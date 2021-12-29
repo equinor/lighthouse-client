@@ -1,9 +1,7 @@
 // View Components
 export * from './Components/FilterGroup/FilterGroup';
 export * from './Components/FilterView/FilterView';
-// Context Provider
-export * from './Context/FilterProvider';
 // Hooks
-export * from './Hooks/useFilteredData';
+export * from './Hooks/useFiltering';
 // Filter
 export * from './Services/filter';

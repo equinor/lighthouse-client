@@ -2,7 +2,7 @@ import { useFactory } from '@equinor/DataFactory';
 import { Tabs } from '@equinor/eds-core-react';
 import { useEffect, useRef } from 'react';
 import { StatusBar } from '../../../../../packages/StatusBar';
-import { useFilteredData } from '../../../../Filter';
+import { useFilter } from '../../../../Filter/Hooks/useFilter';
 import Icon from '../../../../Icon/Icon';
 import { useDataContext } from '../../Context/DataProvider';
 import { TabButton } from '../ToggleButton';
@@ -39,7 +39,7 @@ export const CompletionViewHeader = ({
 }: CompletionViewHeaderProps): JSX.Element => {
     const { getData, statusFunc, key } = useDataContext();
     const { factory, setSelected } = useFactory(key);
-    const { data } = useFilteredData();
+    const { filteredData } = useFilter();
     const isMounted = useRef(false);
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export const CompletionViewHeader = ({
         <HeaderWrapper>
             <LeftSection>
                 <Title variant="h3">{title}</Title>
-                {statusFunc && <StatusBar data={statusFunc(data)} />}
+                {statusFunc && <StatusBar data={statusFunc(filteredData)} />}
             </LeftSection>
             <RightSection>
                 {factory && (

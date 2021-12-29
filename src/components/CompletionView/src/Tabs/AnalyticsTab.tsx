@@ -1,13 +1,13 @@
 import { AnalyticsView } from '@equinor/Diagrams';
-import { useFilteredData } from '../../../Filter';
+import { useFilter } from '../../../Filter/Hooks/useFilter';
 import { useDataContext } from '../Context/DataProvider';
 
 export const AnalyticsTab = (): JSX.Element => {
-    const { data, isLoading } = useFilteredData();
+    const { filteredData, isFiltering: isLoading } = useFilter();
     const { analyticsOptions } = useDataContext();
 
     return analyticsOptions ? (
-        <AnalyticsView data={data} isLoading={isLoading} options={analyticsOptions} />
+        <AnalyticsView data={filteredData} isLoading={isLoading} options={analyticsOptions} />
     ) : (
         <p> No options provided.</p>
     );

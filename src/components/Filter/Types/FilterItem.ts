@@ -1,28 +1,20 @@
-import React from 'react';
-
 export interface FilterItem {
     value: string;
-    type: string;
+    filterGroupName: string;
     checked: boolean;
+    count: number;
 }
 
-export type FilerItemCount = (key: string) => number;
-
-export type FilterItemCheck = (
-    filterItem: FilterItem | FilterItem[],
-    singleClick?: boolean
-) => void;
-
-export type FilterGroup = {
-    all: boolean;
+export interface FilterActionGroup {
+    action: 'Checked' | 'Unchecked';
     type: string;
-    value: Record<string, FilterItem>;
-};
-export type FilterData = Record<string, FilterGroup>;
+    items: string[];
+}
 
 export interface FilterDataOptions<T> {
     excludeKeys?: (keyof T)[];
     typeMap?: Partial<Record<keyof T, string>>;
     groupValue?: Record<string, (item: T) => string>;
-    customRender?: Record<keyof T | string, React.FC<T>>;
 }
+
+export type HandleFilterClick = (filterItem: FilterItem, clickedOn: 'box' | 'label') => void;
