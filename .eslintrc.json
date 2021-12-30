@@ -28,7 +28,7 @@
         "react/no-array-index-key": 0,
         "react/function-component-definition": 0,
         "no-undef": "off",
-        "no-console": "warn",
+        "no-console": 1,
         "no-unreachable": "warn",
         "@typescript-eslint/no-empty-interface": "off"
     }
