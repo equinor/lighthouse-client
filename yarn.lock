@@ -9,10 +9,10 @@
   dependencies:
     tslib "^2.0.0"
 
-"@azure/app-configuration@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.npmjs.org/@azure/app-configuration/-/app-configuration-1.3.0.tgz"
-  integrity sha512-KeA0RF/AzsDFU9t1jkjavaVA6hxQaI6gvuStC/x1RPwyEgb2uiLNvm+vh0yW4iiEVz+FfOipaXgk86VNg+XnRw==
+"@azure/app-configuration@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@azure/app-configuration/-/app-configuration-1.3.1.tgz#ae176728c182d95dfdb8421565305de939126e90"
+  integrity sha512-QNP0TsYoX3qtdKFJsQVrGWSPLW5/aF3MxgPg52RgGdnkGfRAPfYHIe2E5O83Q+iTd/pUxJAntaRx6UOblhLpgQ==
   dependencies:
     "@azure/abort-controller" "^1.0.0"
     "@azure/core-asynciterator-polyfill" "^1.0.0"
