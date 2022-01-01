@@ -1,5 +1,5 @@
 # build environment
-FROM node:16.10.0 as build
+FROM node:17.3.0 as build
 
 # Copy App
 WORKDIR /app
