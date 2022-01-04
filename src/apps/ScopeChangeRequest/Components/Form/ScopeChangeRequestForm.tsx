@@ -1,11 +1,25 @@
-import { Button } from '@equinor/eds-core-react';
+import { Button, Icon } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
+import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { QueryClient, QueryClientProvider, useMutation, useQuery } from 'react-query';
+import { RequestDetailView } from '../DetailView/RequestDetailView';
+import { getScopeChangeById } from '../../Api/getScopeChange';
+import { postScopeChange } from '../../Api/postScopeChange';
+
+export const FormWrapper = (props) => {
+    const queryClient = new QueryClient();
+    return (
+        <QueryClientProvider client={queryClient}>
+            <ScopeChangeRequestForm {...props} />
+        </QueryClientProvider>
+    );
+};
 
 interface ScopeChangeRequestFormProps {
-    closeScrim: () => void;
+    closeScrim: (force?: boolean) => void;
     setHasUnsavedChanges: (value: boolean) => void;
 }
 
@@ -13,15 +27,43 @@ export const ScopeChangeRequestForm = ({
     closeScrim,
     setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const formData = useForm(scopeChangeRequestSchema);
+    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
+    const [scID, setScID] = useState<string | undefined>(undefined);
+    const [scopeChange, setScopeChange] = useState<ScopeChangeRequest | undefined>(undefined);
+    const onSave = async (): Promise<void> => {
+        setScID(await postScopeChange(formData.data, true));
+    };
+    const onSubmit = async (): Promise<void> => {
+        setScID(await postScopeChange(formData.data, false));
+    };
+    const { mutate: createScopeChangeAsDraft, error } = useMutation(onSave);
+    const { mutate: createScopeChangeAsOpen } = useMutation(onSubmit, {
+        retry: 2,
+    });
+
+    const { isLoading, refetch } = useQuery('fetchScopeChange', fetchScopeChange, {
+        refetchOnWindowFocus: false,
+        enabled: false,
+    });
+
+    async function fetchScopeChange() {
+        if (scID && !scopeChange && !isLoading) {
+            formData.reset();
+            setScopeChange(await getScopeChangeById(scID));
+        }
+    }
+
+    useEffect(() => {
+        refetch();
+    }, [scID]);
 
     useEffect(() => {
         setHasUnsavedChanges(formData.getChangedData() !== undefined);
-    }, [formData]);
+    }, [formData, setHasUnsavedChanges]);
 
     const SubmitButton = () => {
         return (
-            <Button disabled={!formData.isValidForm()} onClick={onSubmit}>
+            <Button disabled={!formData.isValidForm()} onClick={() => createScopeChangeAsOpen()}>
                 Initiate request
             </Button>
         );
@@ -29,60 +71,46 @@ export const ScopeChangeRequestForm = ({
 
     const SaveButton = () => {
         return (
-            <Button disabled={!formData.isValidForm()} variant={'outlined'} onClick={onSave}>
+            <Button
+                disabled={!formData.isValidForm()}
+                variant={'outlined'}
+                onClick={() => createScopeChangeAsDraft()}
+            >
                 Save as draft
             </Button>
         );
     };
 
-    const onSave = () => {
-        const payload = {
-            ...formData.data,
-            setAsOpen: false,
-        };
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        };
-        fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`,
-            requestOptions
-        );
-        console.log('Form submitted');
-    };
-
-    const onSubmit = () => {
-        const payload = {
-            ...formData.data,
-            setAsOpen: true,
-        };
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        };
-        fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`,
-            requestOptions
-        );
-    };
-
+    async function refetchScopeChange(): Promise<void> {
+        if (scID) {
+            console.log('Refetching scope change');
+            setScopeChange(await getScopeChangeById(scID));
+        }
+    }
     return (
         <>
-            <TitleHeader>
-                <h2>Create scope change request</h2>
-                <Button variant={'ghost_icon'} onClick={closeScrim}>
-                    <h2>x</h2>
-                </Button>
-            </TitleHeader>
-            <GeneratedForm
-                formData={formData}
-                editMode={false}
-                buttons={[SubmitButton, SaveButton]}
-            />
+            {scopeChange ? (
+                <RequestDetailView
+                    request={scopeChange}
+                    setEditMode={() => console.log()}
+                    refetch={refetchScopeChange}
+                />
+            ) : (
+                <>
+                    <TitleHeader>
+                        <h2>Create scope change request</h2>
+                        <Icon onClick={() => closeScrim()} name="close" />
+                    </TitleHeader>
+                    <GeneratedForm
+                        formData={formData}
+                        editMode={false}
+                        buttons={[SubmitButton, SaveButton]}
+                    />
+                    {error && (
+                        <p> Something went wrong, please check your connection and try again</p>
+                    )}
+                </>
+            )}
         </>
     );
 };

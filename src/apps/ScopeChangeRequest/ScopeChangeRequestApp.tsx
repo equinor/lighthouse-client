@@ -5,9 +5,9 @@ import { baseClient } from '@equinor/http-client';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { CustomSidesheet } from './Components/CustomSidesheet';
 import { createDataFactory } from '@equinor/DataFactory';
-import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
+import { FormWrapper } from './Components/Form/ScopeChangeRequestForm';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { Workflow } from './Components/Workflow/Workflow';
+import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 
 export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
@@ -20,7 +20,7 @@ export function setup(appApi: AppApi): void {
 
     request.registerDataCreator({
         title: 'Scope change',
-        component: ScopeChangeRequestForm,
+        component: FormWrapper,
     });
 
     request.registerDataSource(async () => {
@@ -93,39 +93,54 @@ export function setup(appApi: AppApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'id',
         enableSelectRows: true,
-        hiddenColumns: ['currentWorkflowStep', 'createdBy', 'lastModified', 'lastModifiedBy'],
+        hiddenColumns: [
+            'currentWorkflowStep',
+            'createdBy',
+            'lastModifiedBy',
+            'id',
+            'state',
+            'created',
+            'description',
+        ],
+        columnOrder: [
+            'title',
+            'phase',
+            'workflowSteps',
+            'estimatedChangeHours',
+            'actualChangeHours',
+            'category',
+            'origin',
+            'lastModified',
+        ],
         headers: [
-            { key: 'id', title: 'Id' },
-            { key: 'actualChangeHours', title: 'Actual hours' },
-            { key: 'category', title: 'Category' },
-            { key: 'workflowSteps', title: 'Workflow' },
             { key: 'title', title: 'Title' },
-            { key: 'description', title: 'Description' },
             { key: 'phase', title: 'Phase' },
-            { key: 'createdBy', title: 'Created by' },
+            { key: 'workflowSteps', title: 'Workflow' },
             { key: 'estimatedChangeHours', title: 'Estimate hours' },
-            { key: 'lastModified', title: 'Last modified' },
-            { key: 'lastModifiedBy', title: 'Last modified by' },
-            { key: 'origin', title: 'Origin' },
-            { key: 'state', title: 'State' },
-            { key: 'created', title: 'Created' },
+            { key: 'actualChangeHours', title: 'Actual' },
+            { key: 'category', title: 'Change category' },
+            { key: 'origin', title: 'Change origin' },
+            { key: 'lastModified', title: 'Last updated' },
+            // { key: 'createdBy', title: 'Created by' },
+            // { key: 'state', title: 'State' },
+            // { key: 'description', title: 'Description' },
+            // { key: 'id', title: 'Id' },
+            // { key: 'created', title: 'Created' },
+            // { key: 'lastModifiedBy', title: 'Last modified by' },
         ],
         customCellView: [
             {
-                key: 'created',
+                key: 'lastModified',
                 type: 'Date',
             },
-            {
-                key: 'description',
-                type: 'Description',
-            },
+
             {
                 key: 'workflowSteps',
                 type: {
                     Cell: ({ cell }) => {
                         return (
                             <div>
-                                <Workflow
+                                <WorkflowCompact
                                     steps={cell.value.content.workflowSteps}
                                     statusDotFunc={statusDotFunc}
                                     spanDirection={'horizontal'}

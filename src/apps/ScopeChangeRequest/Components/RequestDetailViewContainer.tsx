@@ -6,9 +6,13 @@ import { ScopeChangeRequestEditForm } from './Form/ScopeChangeRequestEditForm';
 interface RequestViewContainerProps {
     request: ScopeChangeRequest;
     close: () => void;
+    refetch: () => Promise<void>;
 }
 
-export const RequestViewContainer = ({ request }: RequestViewContainerProps): JSX.Element => {
+export const RequestViewContainer = ({
+    request,
+    refetch,
+}: RequestViewContainerProps): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(false);
 
     return (
@@ -16,7 +20,11 @@ export const RequestViewContainer = ({ request }: RequestViewContainerProps): JS
             {editMode ? (
                 <ScopeChangeRequestEditForm request={request} cancel={() => setEditMode(false)} />
             ) : (
-                <RequestDetailView request={request} setEditMode={() => setEditMode(true)} />
+                <RequestDetailView
+                    request={request}
+                    setEditMode={() => setEditMode(true)}
+                    refetch={refetch}
+                />
             )}
             {/* <ButtonContainer>
                 <Button variant={'ghost_icon'} onClick={() => setEditMode((prev) => !prev)}>
