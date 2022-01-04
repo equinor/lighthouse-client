@@ -59,7 +59,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
         if (!group) return [];
 
         return searchByValue(group, filterSearchValue);
-    }, [filterSearchValue]);
+    }, [filterSearchValue, group]);
 
     function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
@@ -128,17 +128,36 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                     />
                 </div>
 
-                {searchGroup.map((item, index) => {
-                    return (
-                        <div key={`${item.count}-${index}`}>
-                            <FilterItemComponent
-                                filterItem={item}
-                                filterItemCheck={filter.handleFilterItemClick}
-                                isLoading={filter.isFiltering}
-                            />
-                        </div>
-                    );
-                })}
+                {/* Temp fix */}
+                {searchActive ? (
+                    <>
+                        {searchGroup.map((item, index) => {
+                            return (
+                                <div key={`${item.count}-${index}`}>
+                                    <FilterItemComponent
+                                        filterItem={item}
+                                        filterItemCheck={filter.handleFilterItemClick}
+                                        isLoading={filter.isFiltering}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </>
+                ) : (
+                    <>
+                        {group.map((item, index) => {
+                            return (
+                                <div key={`${item.count}-${index}`}>
+                                    <FilterItemComponent
+                                        filterItem={item}
+                                        filterItemCheck={filter.handleFilterItemClick}
+                                        isLoading={filter.isFiltering}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </>
+                )}
             </FilterGroupWrapper>
         </Wrapper>
     );
