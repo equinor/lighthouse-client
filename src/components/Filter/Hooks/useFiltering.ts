@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { FilterDataOptions, FilterItem } from '../Types/FilterItem';
+import { FilterItem } from '../Types/FilterItem';
+import { FilterOptions } from '../../CompletionView/src/DataViewerApi/DataViewState';
 import { createFilterGroups, createFilterItems } from '../Services/createFilter';
 import { filter } from '../Services/filter';
-import { updateCount } from '../Utils/updateCount';
+import { count } from '../Utils/count';
+import { mergeArrays } from '../Utils/mergeArrays';
 import {
     deselectAllButOne,
     filterCheckboxChange,
@@ -24,7 +26,9 @@ export interface Filter<T> {
     handleFilterItemClick: HandleFilterItemClick;
     isFiltering: boolean;
     getFilterGroup: (groupName: string) => FilterItem[] | undefined;
-    filterOptions: FilterDataOptions<T> | undefined;
+    filterOptions: FilterOptions<T> | undefined;
+    resetFilters: () => void;
+    activeFilters: Map<string, FilterItem[]>;
 }
 /**
  *
@@ -33,15 +37,37 @@ export interface Filter<T> {
  */
 export const useFiltering = <T>(
     initialData: T[],
-    options: FilterDataOptions<T> | undefined
+    options: FilterOptions<T> | undefined
 ): Filter<T> => {
     const benchmarkEnabled = false;
-    //const [data, setData] = useState<T[]>(initialData);
+    /**
+     * Data that matches the active filters
+     */
     const [filteredData, setFilteredData] = useState<T[]>([]);
+    /**
+     * The data that was removed from the dataset to produce filtered data
+     */
     const [rejectedData, setRejectedData] = useState<T[]>([]);
+    /**
+     * List of string for every filtergroup
+     */
     const [filterGroups, setFilterGroups] = useState<string[]>([]);
     const [filterItems, setFilterItems] = useState<Map<string, FilterItem[]>>(new Map());
     const [isFiltering, setIsFiltering] = useState<boolean>(false);
+    /**
+     * Add groupvalues and customfilterFunctions together
+     */
+    let calculatedValues: Record<string, (item: T) => string>;
+    if (options) {
+        if (options.groupValue) {
+            calculatedValues = options.groupValue;
+        }
+
+        options.calculatedFilter &&
+            options.calculatedFilter.forEach((x) => {
+                calculatedValues[x.uniqueName] = x.groupValue;
+            });
+    }
 
     /**
      * All groups where one or more checkbox is deselected
@@ -51,12 +77,17 @@ export const useFiltering = <T>(
     useEffect(() => {
         if (initialData.length > 0) {
             setFilteredData(initialData);
-            const filterGroups = createFilterGroups(initialData[0], options?.excludeKeys);
+            const filterGroups = createFilterGroups(
+                initialData[0],
+                options?.excludeKeys,
+                options?.calculatedFilter?.map((x) => x.uniqueName)
+            );
             setFilterGroups(filterGroups);
+
             const generatedFilterItems = createFilterItems(
                 initialData,
                 filterGroups,
-                options?.groupValue
+                calculatedValues
             );
 
             setFilterItems(generatedFilterItems);
@@ -74,56 +105,32 @@ export const useFiltering = <T>(
         activeFilters.current.clear();
         /**
          * Todo store from initial createFilterItems
-         * Capture initialFilteritems from useEffect on mount
+         * Capture initialFilterItems from useEffect on mount
          * Potential performance pitfall
          */
         setFilterItems(createFilterItems(initialData, filterGroups, options?.groupValue));
         setIsFiltering(false);
     };
 
-    const updateFilterItems = (filterGroupName: string, filterGroup: FilterItem[]) => {
-        const currentFilterItems = filterItems;
-        currentFilterItems.set(filterGroupName, filterGroup);
-
+    const updateFilterItems = (filterGroupName: string, filterGroup: FilterItem[]): void =>
         setFilterItems((prev) => prev.set(filterGroupName, filterGroup));
-        return currentFilterItems;
-    };
 
-    const recoverOnly = (
-        currentFilterItems: Map<string, FilterItem[]>,
-        filterGroupName: string
-    ) => {
+    const recoverOnly = (): T[] => {
         /**
          * Recover records
          */
 
-        const resolvedRecords = filter(
-            rejectedData,
-            activeFilters.current,
-            options?.groupValue,
-            true
-        );
+        const resolvedRecords = filter(rejectedData, activeFilters.current, options?.groupValue);
 
-        /**
-         * FilterItems state is not updated at this point
-         * Update count for the records that got resolved
-         */
-        updateCount(
-            resolvedRecords.filteredData,
-            setFilterItems,
-            currentFilterItems,
-            'add',
-            filterGroupName
-        );
-        /**
-         * ResolvedRecords.filtered data needs to be removed from rejectedData
-         */
-        setRejectedData(removeFromRejectedRecords(rejectedData, resolvedRecords.filteredData));
+        setRejectedData(resolvedRecords.rejectedData);
 
-        /**
-         * Check here if something goes wrong, maybe use prev??
-         */
-        setFilteredData([...filteredData, ...resolvedRecords.filteredData]);
+        if (benchmarkEnabled) console.time('merge data');
+
+        const merged = mergeArrays(filteredData, resolvedRecords.filteredData);
+
+        setFilteredData(merged);
+        if (benchmarkEnabled) console.timeEnd('merge data');
+        return merged;
     };
 
     const handleFilterItemClick = (
@@ -133,16 +140,16 @@ export const useFiltering = <T>(
     ) => {
         //Can this happen?
         if (isFiltering) {
-            console.error(
+            throw new Error(
                 'Cannot start a new filtering operation before the previous one is completed'
             );
-            throw new Error('Click cooldown');
         }
         setIsFiltering(true);
         let filterGroup: FilterItem[];
 
         const oldFilterGroup = filterItems.get(filterGroupName);
         if (!oldFilterGroup) return;
+        let updatedFilteredData: T[] = [];
 
         /**
          * Boxes that changed from unchecked to checked,
@@ -159,7 +166,7 @@ export const useFiltering = <T>(
                     }
                 });
                 filterGroup = selectAllCheckBoxes(oldFilterGroup);
-                const currentFilterItems = updateFilterItems(filterGroupName, filterGroup);
+                updateFilterItems(filterGroupName, filterGroup);
 
                 //Remove filtergroup from activeFilters
                 activeFilters.current.delete(filterGroupName);
@@ -169,11 +176,12 @@ export const useFiltering = <T>(
                  */
                 if (activeFilters.current.size === 0) {
                     resetFilters();
+                    setIsFiltering(false);
                     return;
                 }
 
                 if (selected.length > 0) {
-                    recoverOnly(currentFilterItems, filterGroupName);
+                    recoverOnly();
                 }
                 /**
                  * Only resolving of keys, never filter here
@@ -197,8 +205,11 @@ export const useFiltering = <T>(
                  */
 
                 filterGroup = filterCheckboxChange(selfValue, oldFilterGroup);
-                const currentFilterItems = updateFilterItems(filterGroupName, filterGroup);
+                updateFilterItems(filterGroupName, filterGroup);
 
+                /**
+                 * Check if all is checked in filtergroup
+                 */
                 if (filterGroup.every((x) => x.checked)) {
                     /**
                      * Section is no longer active
@@ -210,11 +221,12 @@ export const useFiltering = <T>(
 
                 if (activeFilters.current.size === 0) {
                     resetFilters();
+                    setIsFiltering(false);
                     return;
                 }
 
                 if (selected.length > 0) {
-                    recoverOnly(currentFilterItems, filterGroupName);
+                    updatedFilteredData = recoverOnly();
                 } else {
                     /**
                      * Filter and done
@@ -225,14 +237,12 @@ export const useFiltering = <T>(
                         options?.groupValue
                     );
                     setFilteredData(newFilteredData.filteredData);
-                    setRejectedData((prev) => [...prev, ...newFilteredData.rejectedData]);
-                    updateCount(
-                        newFilteredData.rejectedData,
-                        setFilterItems,
-                        currentFilterItems,
-                        'subtract',
-                        filterGroupName
+                    updatedFilteredData = newFilteredData.filteredData;
+                    const mergedRejectedData = mergeArrays(
+                        rejectedData,
+                        newFilteredData.rejectedData
                     );
+                    setRejectedData(mergedRejectedData);
                 }
                 /**
                  * Done, setIsFiltering(false)
@@ -241,94 +251,19 @@ export const useFiltering = <T>(
             }
 
             case 'label': {
-                const selected: FilterItem[] = [];
-                const unselected: FilterItem[] = [];
-                //if self value was checked add to checked, rest becomes unchecked anyways
-                oldFilterGroup.forEach((element) => {
-                    if (element.value === selfValue) {
-                        if (!element.checked) {
-                            selected.push(element);
-                        }
-                    } else {
-                        /**
-                         * Everything but self
-                         * if anything is added you have to filter
-                         */
-                        if (element.checked) {
-                            unselected.push(element);
-                        }
-                    }
-                });
-                /**
-                 * Worst case you have to do both, check both selected and unselected array
-                 */
+                let wasItemChecked = false;
+                const checkBox = oldFilterGroup.find((x) => x.value === selfValue);
+                if (!checkBox) return;
+
                 filterGroup = deselectAllButOne(selfValue, oldFilterGroup);
-                const currentFilterItems = updateFilterItems(filterGroupName, filterGroup);
+                updateFilterItems(filterGroupName, filterGroup);
                 activeFilters.current.set(filterGroupName, filterGroup);
 
-                if (selected.length > 0 && unselected.length > 0) {
-                    /**
-                     * Recover and filter
-                     */
-                    const newFilteredData = filter(
-                        filteredData,
-                        activeFilters.current,
-                        options?.groupValue
-                    );
+                if (checkBox.checked) {
+                    wasItemChecked = true;
+                }
 
-                    const resolvedRecords = filter(
-                        rejectedData,
-                        activeFilters.current,
-                        options?.groupValue,
-                        true
-                    );
-
-                    /**
-                     * FilterItems state is not updated at this point
-                     */
-                    updateCount(
-                        resolvedRecords.filteredData,
-                        setFilterItems,
-                        currentFilterItems,
-                        'add',
-                        filterGroupName
-                    );
-                    /**
-                     * ResolvedRecords.filtered data needs to be removed from rejectedData
-                     */
-                    const rejectedDataMinusTheNewlyResolvedRecords = removeFromRejectedRecords(
-                        rejectedData,
-                        resolvedRecords.filteredData
-                    );
-
-                    const mergedFilteredData = [
-                        ...newFilteredData.filteredData,
-                        ...resolvedRecords.filteredData,
-                    ];
-                    setFilteredData(mergedFilteredData);
-
-                    setRejectedData([
-                        ...rejectedDataMinusTheNewlyResolvedRecords,
-                        ...newFilteredData.rejectedData,
-                    ]);
-                    /**
-                     * Filter items state is not updated at this point
-                     * Count selected columns
-                     * use rejected data to update count for all sections except filtergroupname
-                     */
-                    updateCount(
-                        newFilteredData.rejectedData,
-                        setFilterItems,
-                        currentFilterItems,
-                        'subtract',
-                        filterGroupName
-                    );
-                } else if (selected.length > 0) {
-                    /**
-                     * Recover only
-                     */
-                    recoverOnly(currentFilterItems, filterGroupName);
-                } else if (unselected.length > 0) {
+                if (wasItemChecked) {
                     /**
                      * Filter and done
                      */
@@ -338,21 +273,53 @@ export const useFiltering = <T>(
                         options?.groupValue
                     );
                     setFilteredData(newFilteredData.filteredData);
-                    setRejectedData((prev) => [...prev, ...newFilteredData.rejectedData]);
-                    updateCount(
-                        newFilteredData.rejectedData,
-                        setFilterItems,
-                        currentFilterItems,
-                        'subtract',
-                        filterGroupName
+                    updatedFilteredData = newFilteredData.filteredData;
+                    const mergedRejectedData = mergeArrays(
+                        rejectedData,
+                        newFilteredData.rejectedData
                     );
+                    setRejectedData(mergedRejectedData);
+                } else {
+                    /**
+                     * Recover data
+                     * Combine newRejectedData and oldFilteredData
+                     * set filteredData to recovered data
+                     * Either recount all or run both count functions
+                     */
+                    const resolvedRecords = filter(
+                        rejectedData,
+                        activeFilters.current,
+                        options?.groupValue
+                    );
+
+                    /**
+                     * Remove from rejectedData first
+                     */
+                    const combinedRejectedData = mergeArrays(
+                        resolvedRecords.rejectedData,
+                        filteredData
+                    );
+                    setRejectedData(combinedRejectedData);
+
+                    setFilteredData(resolvedRecords.filteredData);
+                    updatedFilteredData = resolvedRecords.filteredData;
                 }
 
-                //update activeFilters
                 break;
             }
         }
 
+        const updatedFilterItems = filterItems;
+
+        updatedFilterItems.set(filterGroupName, filterGroup);
+
+        count(
+            updatedFilteredData,
+            setFilterItems,
+            updatedFilterItems,
+            calculatedValues,
+            filterGroups
+        );
         setIsFiltering(false);
     };
 
@@ -365,10 +332,8 @@ export const useFiltering = <T>(
         getFilterGroup,
         isFiltering,
         filterOptions: options,
+        resetFilters,
+        activeFilters: activeFilters.current,
     };
     return returnFilter;
 };
-
-function removeFromRejectedRecords<T>(rejectedRecords: T[], toBeRemoved: T[]): T[] {
-    return rejectedRecords.filter((x) => !toBeRemoved.includes(x));
-}

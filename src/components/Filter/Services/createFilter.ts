@@ -1,3 +1,4 @@
+import { CalculatedFilter } from '../../CompletionView/src/DataViewerApi/DataViewState';
 import { FilterItem } from '../Types/FilterItem';
 
 const benchmarkEnabled = false;
@@ -7,7 +8,11 @@ const benchmarkEnabled = false;
  * @param excludeKeys
  * @returns Filter group names
  */
-export function createFilterGroups<T>(data: T, excludeKeys?: (keyof T)[]): string[] {
+export function createFilterGroups<T>(
+    data: T,
+    excludeKeys?: (keyof T)[],
+    calculatedFilter?: string[] | undefined
+): string[] {
     if (benchmarkEnabled) console.time('CreateFilterGroups');
     const filterGroups: string[] = [];
     Object.keys(data).forEach((filterGroupKey) => {
@@ -19,6 +24,11 @@ export function createFilterGroups<T>(data: T, excludeKeys?: (keyof T)[]): strin
             filterGroups.push(filterGroupKey);
         }
     });
+
+    calculatedFilter?.forEach((x) => {
+        filterGroups.push(x);
+    });
+
     if (benchmarkEnabled) console.timeEnd('CreateFilterGroups');
     return filterGroups;
 }
@@ -46,39 +56,10 @@ export function createFilterItems<T>(
             const existingFilter = filters.get(objectKey);
             if (!existingFilter) return;
 
-            // if (element[objectKey] === null) {
-            //     const blank = '(Blank)';
-            //     const index = existingFilter.findIndex((existing) => existing.value === blank);
-            //     if (index !== -1) {
-            //         /**
-            //          * Item already exists
-            //          */
-            //         const item = existingFilter[index];
-            //         existingFilter[index] = { ...item, count: item.count + 1 };
-            //     } else {
-            //         /**
-            //          * Item doesnt exist
-            //          */
-            //         existingFilter.push({
-            //             checked: true,
-            //             count: 1,
-            //             filterGroupName: objectKey,
-            //             value: blank,
-            //         });
-            //     }
-            //     filters.set(objectKey, existingFilter);
-            //     return;
-            // }
-
             const currentValue =
                 groupValue && groupValue[objectKey]
                     ? groupValue[objectKey](element)
                     : element[objectKey];
-
-            // let currentValue = element[objectKey];
-            // if (currentValue === null) {
-            //     currentValue = 'Blank';
-            // }
 
             const index = existingFilter.findIndex((existing) => existing.value === currentValue);
             if (index !== -1) {
