@@ -99,7 +99,6 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                 <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
                     <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
                 </SearchButton> */}
-                <p>{totalCount}</p>
             </FilterHeaderGroup>
             <FilterGroupWrapper>
                 <div>
