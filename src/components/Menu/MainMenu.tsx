@@ -308,7 +308,7 @@ export const MainMenu = (): JSX.Element => {
                     <Icon
                         name={'add'}
                         title={'Add Item'}
-                        color={tokens.colors.text.static_icons__secondary.rgba}
+                        color={tokens.colors.interactive.primary__resting.hex}
                     />
                 </SmallButton>
                 <AddMenu
