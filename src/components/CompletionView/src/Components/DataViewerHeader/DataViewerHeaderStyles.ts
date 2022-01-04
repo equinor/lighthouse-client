@@ -41,5 +41,5 @@ export const Divider = styled.div`
 
 export const TabTitle = styled.span`
     padding-left: 0.5rem;
-    font-size: 0.8rem;
+    font-size: 16px;
 `;
