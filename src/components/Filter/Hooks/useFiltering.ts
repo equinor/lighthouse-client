@@ -133,7 +133,7 @@ export const useFiltering = <T>(
         return merged;
     };
 
-    const handleFilterItemClick = (
+    const handleFilterItemClick = async (
         filterGroupName: string,
         selfValue: string,
         action: 'label' | 'box' | 'all'
@@ -313,7 +313,7 @@ export const useFiltering = <T>(
 
         updatedFilterItems.set(filterGroupName, filterGroup);
 
-        count(
+        await count(
             updatedFilteredData,
             setFilterItems,
             updatedFilterItems,

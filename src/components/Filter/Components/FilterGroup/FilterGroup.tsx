@@ -11,16 +11,25 @@ import {
 } from './FilterGroup-Styles';
 
 import { FilterItemGroupe, FilterItemWrapper } from '../FilterItem/FilterItem-Styles';
-import { Item } from '../../../../packages/StatusBar';
+import { FilterItem } from '../../Types/FilterItem';
 
 interface FilterGroupeComponentProps {
     filterGroupName: string;
     hideTitle?: boolean;
 }
 
-// function searchByValue(items: string[], value: string) {
-//     return items.filter((item) => item.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
-// }
+function searchByValue(items: FilterItem[], value: string): FilterItem[] {
+    if (typeof value !== 'string') {
+        return items;
+    }
+    return items.filter((item) => {
+        if (item.value === null) {
+            return false;
+        }
+        const currentItem = item.value.toString().toLocaleLowerCase();
+        return currentItem.startsWith(value.toLocaleLowerCase());
+    });
+}
 
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     filterGroupName,
@@ -28,6 +37,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
 }: FilterGroupeComponentProps) => {
     const filter = useFilter();
     const group = filter.getFilterGroup(filterGroupName);
+    // if (!group) return;
 
     const isAllChecked: boolean = useMemo(() => {
         if (group) {
@@ -41,38 +51,42 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     group?.map((item) => {
         totalCount += item.count;
     });
-    if (!group) {
-        return <></>;
+
+    const [filterSearchValue, setFilterSearchValue] = useState('');
+    const [searchActive, setSearchActive] = useState(false);
+
+    const searchGroup = useMemo(() => {
+        if (!group) return [];
+
+        return searchByValue(group, filterSearchValue);
+    }, [filterSearchValue]);
+
+    function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const value = event.target.value;
+        setFilterSearchValue(value);
     }
 
-    // const [filterSearchValue, setFilterSearchValue] = useState('');
-    // const [searchActive, setSearchActive] = useState(false);
-
-    // const searchGroup = useMemo(() => {
-    //     if (!group) return [];
-
-    //     return searchByValue(Object.keys(group?.map((x) => x.value)), filterSearchValue);
-    // }, [filterSearchValue]);
-
-    // function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    //     const value = event.target.value;
-    //     setFilterSearchValue(value);
-    // }
+    /**
+     * Currently not supported
+     */
     // function handleOnKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     //     if (event.code === 'Enter') {
-    //         const filterItems = searchGroup.map((key) => filterGroup.value[key]);
-    //         filter.handleFilterItemClick(filterItems, true, filteredData, rejectedData, filterKeys);
+    //         const filterItems = searchGroup;
+    //         filter.handleFilterItemClick(filterItems, true, filter.filteredData, rejectedData, filterKeys);
     //         setFilterSearchValue('');
     //     }
     // }
 
+    if (!group) {
+        return <></>;
+    }
     const handleOnAllChange = () => {
         filter.handleFilterItemClick(filterGroupName, group[0].value, 'all');
     };
 
-    // function handleSearchButtonClick() {
-    //     setSearchActive((isActive) => !isActive);
-    // }
+    function handleSearchButtonClick() {
+        setSearchActive((isActive) => !isActive);
+    }
 
     const headerColumnDisplayName =
         filter?.filterOptions?.headerNames && filter.filterOptions.headerNames[filterGroupName]
@@ -82,23 +96,23 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     return (
         <Wrapper>
             <FilterHeaderGroup>
-                {!hideTitle && <Title>{headerColumnDisplayName}</Title>}
-                {/* {searchActive ? (
+                {/* {!hideTitle && <Title>{headerColumnDisplayName}</Title>} */}
+                {searchActive ? (
                     <Search
                         autoFocus={searchActive}
-                        aria-label="in filer group"
+                        aria-label="in filter group"
                         id="search-normal"
                         placeholder="Search"
                         onChange={handleOnChange}
-
-                    //onKeyPress={handleOnKeyPress}
+                    // onKeyPress={handleOnKeyPress}
                     />
                 ) : (
                     !hideTitle && <Title>{headerColumnDisplayName}</Title>
                 )}
+
                 <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
                     <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
-                </SearchButton> */}
+                </SearchButton>
             </FilterHeaderGroup>
             <FilterGroupWrapper>
                 <div>
@@ -114,7 +128,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                     />
                 </div>
 
-                {group.map((item, index) => {
+                {searchGroup.map((item, index) => {
                     return (
                         <div key={`${item.count}-${index}`}>
                             <FilterItemComponent

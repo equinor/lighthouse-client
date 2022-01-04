@@ -1,11 +1,11 @@
 import { FilterItem } from '../Types/FilterItem';
-export function count<T>(
+export async function count<T>(
     data: T[],
     setFilterItems: React.Dispatch<React.SetStateAction<Map<string, FilterItem[]>>>,
     filterItems: Map<string, FilterItem[]>,
     calculatedValues: Record<string, (item: T) => string>,
     filterGroups: string[]
-): void {
+): Promise<void> {
     if (data.length <= 0) return;
 
     filterGroups.map((key) => {
