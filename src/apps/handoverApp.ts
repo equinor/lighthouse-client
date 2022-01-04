@@ -104,7 +104,16 @@ export function setup(appApi: AppApi) {
         },
     });
 
-    commPkg.registerTableOptions({ objectIdentifierKey: 'CommPkgNo' });
+    commPkg.registerTableOptions({
+        objectIdentifierKey: 'CommPkgNo',
+        hiddenColumns: [
+            'PlannedCompleted',
+            'OperationHandoverStatus',
+            'McStatus__Id',
+            'CommissioningHandoverStatus',
+            'Responsible__Id',
+        ],
+    });
     commPkg.registerGardenOptions({
         gardenKey: 'Responsible__Id',
         itemKey: 'CommPkgNo',

@@ -79,6 +79,7 @@ export function setup(appApi: AppApi): void {
         title: 'Jobcards',
         pageId: 'workPreparationJobCards',
         type: 'AnalyticsPage',
+
         ...analyticsOptions,
     });
 
