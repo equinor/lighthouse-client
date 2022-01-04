@@ -14,7 +14,7 @@ import { ProjectInformationIcon } from '../icons/ProjectInformationIcon';
 import { QualityIcon } from '../icons/Quality icon';
 import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
-import { ScopeAndChange } from '../icons/Scope and change icon';
+import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
@@ -122,7 +122,7 @@ export const appGroups: AppGroups = {
     },
     ProjectControl: {
         name: 'Project control',
-        icon: ScopeAndChange,
+        icon: ProjectControlIcon,
     },
     SSU: {
         name: 'SSU',

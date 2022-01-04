@@ -2,11 +2,11 @@ import React from 'react';
 import { AnalyticsIcon } from '../../../../icons/Analytics';
 import { BoardsIcon } from '../../../../icons/Board';
 import { GantIcon } from '../../../../icons/Gant';
-import { ListIcon } from '../../../../icons/List';
+import { TableIcon } from '../../../../icons/TableIcon';
 import { TreeIcon } from '../../../../icons/Tree';
 import { AnalyticsTab } from './AnalyticsTab';
 import { GardenTab } from './GardenTab';
-import { ListTab } from './ListTab';
+import { ListTab as TableTab } from './ListTab';
 import { PowerBiTab } from './PowerBiTab';
 import { TimelineTab } from './TimeLineTAb';
 import { TreeTab } from './TreeTab';
@@ -25,9 +25,9 @@ const tabsConfig: TabsConfigItem[] = [
         viewComponent: TreeTab,
     },
     {
-        title: 'List',
-        icon: ListIcon,
-        viewComponent: ListTab,
+        title: 'Table',
+        icon: TableIcon,
+        viewComponent: TableTab,
     },
     {
         title: 'Garden',
@@ -75,7 +75,7 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
     ): ActiveTabs {
         const tabs = tabsConfig.filter((item) => {
             if (tree && item.title === 'Tree') return true;
-            if (list && item.title === 'List') return true;
+            if (list && item.title === 'Table') return true;
             if (garden && item.title === 'Garden') return true;
             if (timeline && item.title === 'Timeline') return true;
             if (analytics && item.title === 'Analytics') return true;
