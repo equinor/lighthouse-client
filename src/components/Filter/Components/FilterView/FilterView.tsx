@@ -1,3 +1,4 @@
+import { Button } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import Icon from '../../../Icon/Icon';
 import { useFilter } from '../../Hooks/useFilter';
@@ -68,6 +69,9 @@ export const FilterView = ({ isActive }: FilterViewProps) => {
                 <AddButton variant="ghost_icon" onClick={handleToggleFilerSelect}>
                     <Icon name={isFilterSelectActive ? 'close' : 'add'} />
                 </AddButton>
+                {/* <Button variant="ghost_icon" onClick={filter.resetFilters}>
+                    Reset filters
+                </Button> */}
             </SelectBar>
             {/* TODO move FilterSelect to its own component*/}
             {/* {isFilterSelectActive && (

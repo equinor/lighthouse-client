@@ -9,8 +9,7 @@ export const FilterItemWrapper = styled.span`
     align-items: center;
 
     :hover {
-        background-color: ${tokens.colors.interactive.primary__selected_hover
-            .rgba};
+        background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
     }
 `;
 

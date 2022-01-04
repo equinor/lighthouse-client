@@ -1,7 +1,7 @@
 import { FilterItem } from '../Types/FilterItem';
 
 /**
- * Handles when you click a checkbox, updates the state.
+ * Handles when you click a checkbox
  * @param selfValue
  * @param filterGroup
  * @returns
@@ -46,7 +46,7 @@ export const deselectAllButOne = (selfValue: string, filterGroup: FilterItem[]):
 };
 
 /**
- * Handles when you press "All" checkbox on a group
+ * Handles when you click the "All" checkbox on a group
  * @param filterGroup
  * @returns
  */

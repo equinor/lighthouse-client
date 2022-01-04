@@ -46,7 +46,7 @@ export function setup(appApi: AppApi): void {
 
     request.registerFilterOptions({
         excludeKeys: scopeChangeExcludeKeys,
-        typeMap: {},
+        headerNames: {},
         groupValue: {
             signedAtDate: (item: ScopeChangeRequest): string => {
                 if (item.created === '') return 'unknown';

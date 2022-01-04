@@ -1,18 +1,20 @@
-import { Checkbox } from '@equinor/eds-core-react';
-import { useMemo } from 'react';
+import { Checkbox, Icon, Search } from '@equinor/eds-core-react';
+import { useMemo, useState } from 'react';
 import { useFilter } from '../../Hooks/useFilter';
 import { FilterItemComponent } from '../FilterItem/FilterItem';
 import {
     FilterGroupWrapper,
     FilterHeaderGroup,
-    FilterItemWrapper,
+    SearchButton,
     Title,
     Wrapper,
 } from './FilterGroup-Styles';
 
+import { FilterItemGroupe, FilterItemWrapper } from '../FilterItem/FilterItem-Styles';
+import { Item } from '../../../../packages/StatusBar';
+
 interface FilterGroupeComponentProps {
     filterGroupName: string;
-    //filterItemCheck: HandleFilterItemClick;
     hideTitle?: boolean;
 }
 
@@ -35,16 +37,22 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
         }
     }, [group?.every((x) => x.checked), group]);
 
+    let totalCount = 0;
+    group?.map((item) => {
+        totalCount += item.count;
+    });
     if (!group) {
         return <></>;
     }
+
     // const [filterSearchValue, setFilterSearchValue] = useState('');
     // const [searchActive, setSearchActive] = useState(false);
 
-    // const group = useMemo(
-    //     () => searchByValue(Object.keys(filterGroup.value), filterSearchValue),
-    //     [filterSearchValue, filterGroup.value]
-    // );
+    // const searchGroup = useMemo(() => {
+    //     if (!group) return [];
+
+    //     return searchByValue(Object.keys(group?.map((x) => x.value)), filterSearchValue);
+    // }, [filterSearchValue]);
 
     // function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     //     const value = event.target.value;
@@ -52,9 +60,8 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     // }
     // function handleOnKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     //     if (event.code === 'Enter') {
-    //         const filterItems = group.map((key) => filterGroup.value[key]);
-    //         filterItemCheck(filterItems, true, filteredData, rejectedData, filterKeys);
-    //         filter.handleFilterItemClick();
+    //         const filterItems = searchGroup.map((key) => filterGroup.value[key]);
+    //         filter.handleFilterItemClick(filterItems, true, filteredData, rejectedData, filterKeys);
     //         setFilterSearchValue('');
     //     }
     // }
@@ -68,8 +75,8 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     // }
 
     const headerColumnDisplayName =
-        filter?.filterOptions?.typeMap && filter.filterOptions.typeMap[filterGroupName]
-            ? filter.filterOptions.typeMap[filterGroupName]
+        filter?.filterOptions?.headerNames && filter.filterOptions.headerNames[filterGroupName]
+            ? filter.filterOptions.headerNames[filterGroupName]
             : filterGroupName;
 
     return (
@@ -92,28 +99,33 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                 <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
                     <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
                 </SearchButton> */}
+                <p>{totalCount}</p>
             </FilterHeaderGroup>
             <FilterGroupWrapper>
-                <FilterItemWrapper>
-                    <Checkbox
-                        title={'All'}
-                        label={'All'}
-                        checked={isAllChecked}
-                        onChange={() => handleOnAllChange()}
+                <div>
+                    <FilterItemComponent
+                        filterItem={{
+                            checked: isAllChecked,
+                            count: totalCount,
+                            filterGroupName: filterGroupName,
+                            value: 'All',
+                        }}
+                        filterItemCheck={handleOnAllChange}
+                        isLoading={filter.isFiltering}
                     />
+                </div>
 
-                    {group.map((item, index) => {
-                        return (
-                            <div key={`${item.count}-${index}`}>
-                                <FilterItemComponent
-                                    filterItem={item}
-                                    filterItemCheck={filter.handleFilterItemClick}
-                                    isLoading={filter.isFiltering}
-                                />
-                            </div>
-                        );
-                    })}
-                </FilterItemWrapper>
+                {group.map((item, index) => {
+                    return (
+                        <div key={`${item.count}-${index}`}>
+                            <FilterItemComponent
+                                filterItem={item}
+                                filterItemCheck={filter.handleFilterItemClick}
+                                isLoading={filter.isFiltering}
+                            />
+                        </div>
+                    );
+                })}
             </FilterGroupWrapper>
         </Wrapper>
     );

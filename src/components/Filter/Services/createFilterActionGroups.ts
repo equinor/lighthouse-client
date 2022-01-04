@@ -1,6 +1,7 @@
 import { FilterItem, FilterActionGroup } from '../Types/FilterItem';
 /**
  * Creates filter action groups based on the fastest way to filter items
+ * Might be overkill performance wise
  *
  * @param filterGroups
  * @returns

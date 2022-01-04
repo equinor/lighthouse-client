@@ -11,9 +11,15 @@ export interface DataViewState {
     [key: string]: ViewConfig<unknown>;
 }
 
+export interface CalculatedFilter<T> {
+    uniqueName: string;
+    groupValue: (item: T) => string;
+}
+
 export interface FilterOptions<T> {
     excludeKeys?: (keyof T)[];
-    typeMap?: Partial<Record<keyof T, string>>;
+    headerNames?: Partial<Record<keyof T, string>>;
+    calculatedFilter?: CalculatedFilter<T>[];
     groupValue?: Record<string, (item: T) => string>;
     customRender?: Record<keyof T | string, React.FC<T>>;
 }

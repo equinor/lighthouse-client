@@ -85,8 +85,14 @@ export function setup(appApi: AppApi) {
     });
 
     commPkg.registerFilterOptions({
+        calculatedFilter: [
+            {
+                uniqueName: 'Customfilter',
+                groupValue: start,
+            },
+        ],
         excludeKeys: commPkgKeys,
-        typeMap: {
+        headerNames: {
             Responsible__Id: 'Responsible',
             Area__Id: 'Area',
             McStatus__Id: 'Mc Status',

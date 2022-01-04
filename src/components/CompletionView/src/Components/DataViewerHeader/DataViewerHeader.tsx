@@ -1,5 +1,6 @@
 import { useFactory } from '@equinor/DataFactory';
 import { Tabs } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useRef } from 'react';
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { useFilter } from '../../../../Filter/Hooks/useFilter';
@@ -39,7 +40,7 @@ export const CompletionViewHeader = ({
 }: CompletionViewHeaderProps): JSX.Element => {
     const { getData, statusFunc, key } = useDataContext();
     const { factory, setSelected } = useFactory(key);
-    const { filteredData } = useFilter();
+    const { filteredData, activeFilters, resetFilters } = useFilter();
     const isMounted = useRef(false);
 
     useEffect(() => {

@@ -12,15 +12,14 @@ interface FilterItemComponentProps {
 export const FilterItemComponent = ({
     filterItem,
     filterItemCheck,
-    isLoading,
 }: FilterItemComponentProps): JSX.Element => {
     if (!filterItem) return <></>;
     /**
      * Value null is an object?!
      */
-    // if (typeof filterItem.value === 'object' ) {
-    //     return <></>;
-    // }
+    if (typeof filterItem.value === 'object' && filterItem.value !== null) {
+        return <></>;
+    }
 
     const displayName = filterItem.value !== null ? filterItem.value : '(Blank)';
 
@@ -34,20 +33,13 @@ export const FilterItemComponent = ({
                 <Checkbox
                     title={displayName}
                     checked={filterItem.checked}
-                    // disabled={lastCheckedInGroup(filterItem.value)}
                     onChange={() => {
                         filterItemCheck(filterItem.filterGroupName, filterItem.value, 'box');
-                        // if (!lastCheckedInGroup(filterItem.value)) {
-                        //     filterItemCheck(filterItem, 'box');
-                        // }
                     }}
                 />
                 <FilterItemLabel
                     onClick={() => {
                         filterItemCheck(filterItem.filterGroupName, filterItem.value, 'label');
-                        // if (!lastCheckedInGroup(filterItem.value)) {
-                        //     filterItemCheck(filterItem, 'label');
-                        // }
                     }}
                 >
                     {displayName}

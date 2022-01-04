@@ -82,7 +82,7 @@ export function setup(appApi: AppApi) {
 
     checklist.registerFilterOptions({
         excludeKeys: commPkgKeys,
-        typeMap: {
+        headerNames: {
             Status__Id: 'Status',
             TagFormularType__SheetNo: 'Tag sheet',
             Hyperlink_Status__Id: 'Hyperlink status',
