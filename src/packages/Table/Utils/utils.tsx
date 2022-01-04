@@ -102,7 +102,7 @@ export const defaultGroupByFn = (rows: Row<TableData>[], columnId: string) => {
     return rows.reduce((prev, row, _i) => {
         // TODO investigate if content[columnId] (original value) is good enough
         const resKey =
-            typeof row.values[columnId] === 'object'
+            typeof row.values[columnId] === 'object' && row.values[columnId] !== null
                 ? `${row.values[columnId].content[columnId]}`
                 : `${row.values[columnId]}`;
         prev[resKey] = Array.isArray(prev[resKey]) ? prev[resKey] : [];
