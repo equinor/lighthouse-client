@@ -1,7 +1,7 @@
-import { TreeOptions } from '../../CompletionView/src/DataViewerApi/DataViewState';
+import { TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { ParkViewProvider } from '../Context/ParkViewProvider';
-import { TreeView } from './TreeView';
 import { NoTreeOptions } from './NoTreeOptions';
+import { TreeView } from './TreeView';
 
 interface TreeProps<T> {
     treeOptions: TreeOptions<T> | undefined;

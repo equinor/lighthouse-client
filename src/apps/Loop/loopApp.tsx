@@ -1,7 +1,7 @@
 import { baseClient } from '@equinor/http-client';
+import { createWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
-import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
-import { Status } from '../../components/CompletionView/src/DataViewerApi/DataViewState';
+import { Status } from '../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { AppApi } from '../apps';
 import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
 
@@ -61,7 +61,7 @@ export function setup(appApi: AppApi): void {
     // });
 
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const commPkg = createDataViewer<Loop>({
+    const commPkg = createWorkSpace<Loop>({
         initialState: [],
         primaryViewKey: 'tagNo',
         viewerId: appApi.shortName,
