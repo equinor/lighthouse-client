@@ -1,4 +1,4 @@
-import { Status } from '../../CompletionView/src/DataViewerApi/DataViewState';
+import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 
 export type DataSet<T> = {
     groupKey: keyof T;

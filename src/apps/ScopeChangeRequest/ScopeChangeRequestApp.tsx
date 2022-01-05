@@ -1,17 +1,17 @@
-import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
-import { AppApi } from '../apps';
-import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
-import { baseClient } from '@equinor/http-client';
-import { statusBarData } from './Sections/AnalyticsConfig';
-import { CustomSidesheet } from './Components/CustomSidesheet';
 import { createDataFactory } from '@equinor/DataFactory';
-import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { baseClient } from '@equinor/http-client';
+import { createWorkSpace } from '@equinor/WorkSpace';
+import { AppApi } from '../apps';
+import { CustomSidesheet } from './Components/CustomSidesheet';
+import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
+import { statusBarData } from './Sections/AnalyticsConfig';
+import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
 export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const request = createDataViewer<ScopeChangeRequest>({
+    const request = createWorkSpace<ScopeChangeRequest>({
         initialState: [],
         primaryViewKey: 'id',
         viewerId: appApi.shortName,
@@ -134,7 +134,7 @@ export function setup(appApi: AppApi): void {
             {
                 key: 'workflowSteps',
                 type: {
-                    Cell: ({ cell }) => {
+                    Cell: ({ cell }: any) => {
                         return (
                             <div>
                                 <WorkflowCompact

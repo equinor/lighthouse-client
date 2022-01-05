@@ -1,10 +1,10 @@
+import { Button } from '@equinor/eds-core-react';
 import styled from 'styled-components';
-import { Field } from './Components/Field';
 import { SectionRow } from '../../Styles/Section';
 import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
-import { Button } from '@equinor/eds-core-react';
 import { Workflow } from '../Workflow/Workflow';
 import { patchWorkflowStep } from '../../Api/patchWorkflowStep';
+import { Field } from './Components/Field';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;

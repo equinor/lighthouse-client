@@ -2,7 +2,8 @@ import { Configuration } from '@azure/msal-browser';
 import { authenticationProvider } from '@equinor/authentication';
 import { fetchConfig } from '@equinor/lighthouse-conf';
 import { render } from 'react-dom';
-import HttpClient from './HttpClient';
+import Client from './AppClient';
+import { appGroups, apps } from './apps/apps';
 
 fetchConfig().then((appConfig) => {
     const clientId = appConfig.clientId;
@@ -25,6 +26,20 @@ fetchConfig().then((appConfig) => {
     const authProvider = authenticationProvider(authConfig);
 
     if (authProvider && !(window !== window.parent && !window.opener)) {
-        render(<HttpClient {...{ appConfig, authProvider }} />, document.getElementById('root'));
+        apps.forEach((manifest) => {
+            manifest.app?.setup &&
+                manifest.app.setup({
+                    ...manifest,
+                    appConfig,
+                    authProvider,
+                });
+        });
+
+        const manifests = { apps, appGroups };
+
+        render(
+            <Client {...{ appConfig, authProvider, manifests }} />,
+            document.getElementById('root')
+        );
     }
 });

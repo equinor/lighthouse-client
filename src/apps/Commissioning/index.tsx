@@ -1,7 +1,8 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { baseClient } from '../../../packages/httpClient/src';
-import { createPageViewer } from '../../Core/PageViwer/Api/pageViewerApi';
+import { createPageViewer } from '../../Core/PageViewer/Api/pageViewerApi';
 import { AppApi } from '../apps';
+
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 interface Checklist {
