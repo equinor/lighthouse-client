@@ -1,6 +1,7 @@
 import { AuthenticationProvider, useAuthenticate } from '@equinor/authentication';
 import { tokens } from '@equinor/eds-tokens';
 import { AppConfig } from '@equinor/lighthouse-conf';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { Manifests } from './apps/apps';
@@ -51,17 +52,20 @@ const Client: React.FC<ClientProps> = ({
     manifests,
 }: ClientProps): JSX.Element => {
     const isAuthenticated = useAuthenticate(authProvider);
+    const queryClient = new QueryClient();
 
     return isAuthenticated ? (
         <ClientContextProvider {...{ appConfig, authProvider }}>
-            <BrowserRouter>
-                <GlobalStyle />
-                <ProCoSysTopBar />
-                <MainLayout>
-                    <ClientRoutes manifests={manifests} />
-                </MainLayout>
-            </BrowserRouter>
-            <FactoryComponent />
+            <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                    <GlobalStyle />
+                    <ProCoSysTopBar />
+                    <MainLayout>
+                        <ClientRoutes manifests={manifests} />
+                    </MainLayout>
+                </BrowserRouter>
+                <FactoryComponent />
+            </QueryClientProvider>
         </ClientContextProvider>
     ) : (
         <>

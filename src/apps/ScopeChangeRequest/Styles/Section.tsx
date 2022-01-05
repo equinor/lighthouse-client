@@ -10,7 +10,7 @@ export const Section = styled.div`
 interface SectionTitleProps {
     faded?: boolean;
     bold?: boolean;
-    fontSize?: 'x-large' | 'large' | 'xx-large' | 'x-small';
+    fontSize?: string;
 }
 
 export const SectionText = styled.div`
