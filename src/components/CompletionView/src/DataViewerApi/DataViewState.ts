@@ -1,24 +1,19 @@
 import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { FilterOptions } from '@equinor/filter';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
+import { TableOptions as ReactTableOptions } from 'react-table';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { StatusItem } from '../../../../packages/StatusBar';
 import { DataSet } from '../../../ParkView/Models/data';
 import { DataSource, DataViewerProps, ViewOptions } from './DataViewerTypes';
-import { TableOptions as ReactTableOptions } from 'react-table';
 export interface DataViewState {
     [key: string]: ViewConfig<unknown>;
 }
 
-export interface FilterOptions<T> {
-    excludeKeys?: (keyof T)[];
-    typeMap?: Partial<Record<keyof T, string>>;
-    groupValue?: Record<string, (item: T) => string>;
-    customRender?: Record<keyof T | string, React.FC<T>>;
-}
-
 export type TableOptions<T> = Pick<
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     ReactTableOptions<T>,
     'enableSelectRows' | 'onCellClick' | 'setSelected' | 'columnOrder'

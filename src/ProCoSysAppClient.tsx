@@ -3,6 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
+import { AppManifest } from './apps/apps';
 import { MainLayout } from './components/Layouts/MainLayout';
 import LoadingPage from './components/Loading/LoadingPage';
 import { Routes } from './components/Routes/Routes';
@@ -40,11 +41,13 @@ const GlobalStyle = createGlobalStyle`
 interface ProCoSysAppClientProps {
     appConfig: AppConfig;
     authProvider: AuthenticationProvider;
+    apps: AppManifest[];
 }
 
 const ProCoSysAppClient: React.FC<ProCoSysAppClientProps> = ({
     appConfig,
     authProvider,
+    apps,
 }: ProCoSysAppClientProps): JSX.Element => {
     const isAuthenticated = useAuthenticate(authProvider);
 
@@ -54,7 +57,7 @@ const ProCoSysAppClient: React.FC<ProCoSysAppClientProps> = ({
                 <GlobalStyle />
                 <ProCoSysTopBar />
                 <MainLayout>
-                    <Routes />
+                    <Routes apps={apps} />
                 </MainLayout>
             </Router>
             <FactoryComponent />

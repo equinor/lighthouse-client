@@ -1,5 +1,5 @@
 export const storage = {
-    setItem: <T>(key: string, data: T) => {
+    setItem<T>(key: string, data: T): void {
         if (typeof data === 'string') {
             localStorage.setItem(key, data);
         } else {
@@ -7,7 +7,7 @@ export const storage = {
         }
     },
 
-    getItem: <T>(key: string) => {
+    getItem<T>(key: string): string | T | undefined {
         const data = localStorage.getItem(key);
         if (!data) return undefined;
 
@@ -18,7 +18,7 @@ export const storage = {
         }
     },
 
-    removeItem: (key: string) => {
+    removeItem(key: string): void {
         localStorage.removeItem(key);
-    }
+    },
 };

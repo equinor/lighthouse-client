@@ -12,6 +12,8 @@ export function filterReducer(state: FilterState, action: Actions): FilterState 
             return { ...state, filteredData: action.filteredData };
         case getType(actions.setIsLoading):
             return { ...state, isLoading: action.isLoading };
+        case getType(actions.setActiveFiltersTypes):
+            return { ...state, activeFiltersTypes: action.activeFiltersTypes };
         default:
             return state;
     }

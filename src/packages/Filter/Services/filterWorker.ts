@@ -1,5 +1,5 @@
+import ctx from '@equinor/worker';
 import { expose } from 'comlink';
-import ctx from '../../../packages/WebWorkers/setup';
 import { FilterData } from '../Types/FilterItem';
 import { filter } from './filter';
 

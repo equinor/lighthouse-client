@@ -2,6 +2,7 @@ import { Configuration } from '@azure/msal-browser';
 import { authenticationProvider } from '@equinor/authentication';
 import { fetchConfig } from '@equinor/lighthouse-conf';
 import { render } from 'react-dom';
+import { apps } from './apps/apps';
 import ProCoSysAppClient from './ProCoSysAppClient';
 
 fetchConfig().then((appConfig) => {
@@ -25,8 +26,16 @@ fetchConfig().then((appConfig) => {
     const authProvider = authenticationProvider(authConfig);
 
     if (authProvider && !(window !== window.parent && !window.opener)) {
+        apps.forEach((manifest) => {
+            manifest.app?.setup &&
+                manifest.app.setup({
+                    ...manifest,
+                    appConfig,
+                    authProvider,
+                });
+        });
         render(
-            <ProCoSysAppClient {...{ appConfig, authProvider }} />,
+            <ProCoSysAppClient {...{ appConfig, authProvider, apps }} />,
             document.getElementById('root')
         );
     }

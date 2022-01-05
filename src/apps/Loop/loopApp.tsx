@@ -2,7 +2,6 @@ import { baseClient } from '@equinor/http-client';
 import styled from 'styled-components';
 import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
 import { Status } from '../../components/CompletionView/src/DataViewerApi/DataViewState';
-import { createDataFactory } from '../../Core/DataFactory';
 import { AppApi } from '../apps';
 import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
 
@@ -49,7 +48,7 @@ const loopKeys: (keyof Loop)[] = [
     'createdAt',
 ];
 
-export function setup(appApi: AppApi) {
+export function setup(appApi: AppApi): void {
     // createDataFactory({
     //     factoryId: 'loop',
     //     tile: 'Creat Loop',
@@ -80,6 +79,7 @@ export function setup(appApi: AppApi) {
 
     commPkg.registerFilterOptions({
         excludeKeys: loopKeys,
+        initialFilters: ['status', 'signedAtDate', 'phase'],
         typeMap: {},
         groupValue: {
             signedAtDate: (item: Loop): string => {

@@ -1,4 +1,4 @@
-import { useFilteredData } from '../../../Filter';
+import { useFilteredData } from '@equinor/filter';
 import { Garden } from '../../../ParkView/Components/Garden';
 import { useDataContext } from '../Context/DataProvider';
 

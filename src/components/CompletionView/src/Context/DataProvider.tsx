@@ -1,17 +1,17 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { FilterOptions } from '@equinor/filter';
 import { createContext, useCallback, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { useDataViewerKey } from '../Components/DefaultDataView/Hooks/useDataViewerKey';
 import { DataViewerProps, ViewOptions } from '../DataViewerApi/DataViewerTypes';
 import {
-    FilterOptions,
+    DataViewSideSheetOptions,
     GardenOptions,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
-    DataViewSideSheetOptions,
-    WorkflowEditorOptions,
+    WorkflowEditorOptions
 } from '../DataViewerApi/DataViewState';
 import { useDataViewer } from '../DataViewerApi/useDataViewer';
 
