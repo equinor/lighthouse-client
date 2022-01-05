@@ -7,8 +7,10 @@ export interface ScopeChangeRequest {
     category: string;
     estimatedChangeHours: number;
     actualChangeHours: number;
-    created: string;
-    createdBy: string;
+    createdAtUtc: string;
+    createdById: string;
+    modifiedAtUtc: string;
+    modifiedById: string;
     lastModified: string;
     lastModifiedBy: string;
     state: string;

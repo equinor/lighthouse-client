@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Icon } from '@equinor/eds-core-react';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { Wrapper } from '../Styles/SidesheetWrapper';
 import { RequestViewContainer } from './RequestDetailViewContainer';
 import styled from 'styled-components';
 import { Field } from './DetailView/Components/Field';
+import { getScopeChangeById } from '../Api/getScopeChange';
 
 interface CustomSidesheetProps<T> {
     item: T;
@@ -14,9 +15,21 @@ export const CustomSidesheet = ({
     item,
     onClose,
 }: CustomSidesheetProps<ScopeChangeRequest>): JSX.Element => {
+    const [scopeChange, setScopeChange] = useState<ScopeChangeRequest>();
+
+    const refetch = async () => {
+        if (scopeChange?.id) {
+            setScopeChange(await getScopeChangeById(scopeChange.id));
+        }
+    };
+
+    useEffect(() => {
+        setScopeChange(item);
+    }, [item]);
+
     return (
         <>
-            {item && !!Object.keys(item).length && (
+            {scopeChange && !!Object.keys(scopeChange).length && (
                 <>
                     <Wrapper>
                         <TitleHeader>
@@ -30,7 +43,11 @@ export const CustomSidesheet = ({
                             </Button>
                         </TitleHeader>
 
-                        <RequestViewContainer close={onClose} request={item} />
+                        <RequestViewContainer
+                            close={onClose}
+                            request={scopeChange}
+                            refetch={refetch}
+                        />
                     </Wrapper>
                 </>
             )}
