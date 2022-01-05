@@ -1,12 +1,8 @@
 import { AuthenticationProvider, useAuthenticate } from '@equinor/authentication';
 import { tokens } from '@equinor/eds-tokens';
 import { AppConfig } from '@equinor/lighthouse-conf';
-<<<<<<< HEAD:src/HttpClient.tsx
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { BrowserRouter as Router } from 'react-router-dom';
-=======
 import { BrowserRouter } from 'react-router-dom';
->>>>>>> dev:src/AppClient.tsx
 import { createGlobalStyle } from 'styled-components';
 import { Manifests } from './apps/apps';
 import { MainLayout } from './components/Layouts/MainLayout';
@@ -43,55 +39,33 @@ const GlobalStyle = createGlobalStyle`
         background:${tokens.colors.interactive.primary__hover.rgba}; 
         }
 `;
-<<<<<<< HEAD:src/HttpClient.tsx
-interface HttpClientProps {
-=======
 
 interface ClientProps {
->>>>>>> dev:src/AppClient.tsx
     appConfig: AppConfig;
     authProvider: AuthenticationProvider;
     manifests: Manifests;
 }
 
-<<<<<<< HEAD:src/HttpClient.tsx
-const HttpClient: React.FC<HttpClientProps> = ({
-    appConfig,
-    authProvider,
-}: HttpClientProps): JSX.Element => {
-=======
 const Client: React.FC<ClientProps> = ({
     appConfig,
     authProvider,
     manifests,
 }: ClientProps): JSX.Element => {
->>>>>>> dev:src/AppClient.tsx
     const isAuthenticated = useAuthenticate(authProvider);
     const queryClient = new QueryClient();
 
     return isAuthenticated ? (
         <ClientContextProvider {...{ appConfig, authProvider }}>
-<<<<<<< HEAD:src/HttpClient.tsx
             <QueryClientProvider client={queryClient}>
-                <Router>
+                <BrowserRouter>
                     <GlobalStyle />
                     <ProCoSysTopBar />
                     <MainLayout>
-                        <Routes />
+                        <ClientRoutes manifests={manifests} />
                     </MainLayout>
-                </Router>
+                </BrowserRouter>
                 <FactoryComponent />
             </QueryClientProvider>
-=======
-            <BrowserRouter>
-                <GlobalStyle />
-                <ProCoSysTopBar />
-                <MainLayout>
-                    <ClientRoutes manifests={manifests} />
-                </MainLayout>
-            </BrowserRouter>
-            <FactoryComponent />
->>>>>>> dev:src/AppClient.tsx
         </ClientContextProvider>
     ) : (
         <>
@@ -101,8 +75,4 @@ const Client: React.FC<ClientProps> = ({
     );
 };
 
-<<<<<<< HEAD:src/HttpClient.tsx
-export default HttpClient;
-=======
 export default Client;
->>>>>>> dev:src/AppClient.tsx
