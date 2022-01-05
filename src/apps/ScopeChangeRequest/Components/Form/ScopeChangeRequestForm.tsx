@@ -1,26 +1,20 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { QueryClient, QueryClientProvider, useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { RequestDetailView } from '../DetailView/RequestDetailView';
-import { getScopeChangeById } from '../../Api/getScopeChange';
-import { postScopeChange } from '../../Api/postScopeChange';
-
-export const FormWrapper = (props) => {
-    const queryClient = new QueryClient();
-    return (
-        <QueryClientProvider client={queryClient}>
-            <ScopeChangeRequestForm {...props} />
-        </QueryClientProvider>
-    );
-};
+import { getScopeChangeById, postScopeChange } from '../../Api/';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
     setHasUnsavedChanges: (value: boolean) => void;
+}
+
+interface CreateScopeChangeProps {
+    draft: boolean;
 }
 
 export const ScopeChangeRequestForm = ({
@@ -30,32 +24,31 @@ export const ScopeChangeRequestForm = ({
     const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
     const [scID, setScID] = useState<string | undefined>(undefined);
     const [scopeChange, setScopeChange] = useState<ScopeChangeRequest | undefined>(undefined);
-    const onSave = async (): Promise<void> => {
-        setScID(await postScopeChange(formData.data, true));
-    };
-    const onSubmit = async (): Promise<void> => {
-        setScID(await postScopeChange(formData.data, false));
-    };
-    const { mutate: createScopeChangeAsDraft, error } = useMutation(onSave);
-    const { mutate: createScopeChangeAsOpen } = useMutation(onSubmit, {
-        retry: 2,
-    });
 
-    const { isLoading, refetch } = useQuery('fetchScopeChange', fetchScopeChange, {
-        refetchOnWindowFocus: false,
-        enabled: false,
-    });
+    const createScopeChangeMutation = async ({ draft }: CreateScopeChangeProps) => {
+        formData.reset();
+        setScID(await postScopeChange(formData.data, draft));
+    };
 
-    async function fetchScopeChange() {
-        if (scID && !scopeChange && !isLoading) {
-            formData.reset();
+    const getScopeChangeQuery = async () => {
+        if (scID) {
             setScopeChange(await getScopeChangeById(scID));
         }
-    }
+    };
 
-    useEffect(() => {
-        refetch();
-    }, [scID]);
+    const { mutate, error } = useMutation(createScopeChangeMutation, {
+        retry: 2,
+        retryDelay: 2,
+        onSuccess: async () => {
+            refetch();
+        },
+    });
+
+    const { refetch } = useQuery('fetchScopeChange', getScopeChangeQuery, {
+        refetchOnWindowFocus: false,
+        enabled: false,
+        cacheTime: 10,
+    });
 
     useEffect(() => {
         setHasUnsavedChanges(formData.getChangedData() !== undefined);
@@ -63,7 +56,7 @@ export const ScopeChangeRequestForm = ({
 
     const SubmitButton = () => {
         return (
-            <Button disabled={!formData.isValidForm()} onClick={() => createScopeChangeAsOpen()}>
+            <Button disabled={!formData.isValidForm()} onClick={() => mutate({ draft: false })}>
                 Initiate request
             </Button>
         );
@@ -74,19 +67,17 @@ export const ScopeChangeRequestForm = ({
             <Button
                 disabled={!formData.isValidForm()}
                 variant={'outlined'}
-                onClick={() => createScopeChangeAsDraft()}
+                onClick={() => mutate({ draft: true })}
             >
                 Save as draft
             </Button>
         );
     };
 
-    async function refetchScopeChange(): Promise<void> {
-        if (scID) {
-            console.log('Refetching scope change');
-            setScopeChange(await getScopeChangeById(scID));
-        }
-    }
+    const refetchScopeChange = useCallback(async () => {
+        refetch();
+    }, [refetch]);
+
     return (
         <>
             {scopeChange ? (

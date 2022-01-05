@@ -1,6 +1,7 @@
 import { AuthenticationProvider, useAuthenticate } from '@equinor/authentication';
 import { tokens } from '@equinor/eds-tokens';
 import { AppConfig } from '@equinor/lighthouse-conf';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { MainLayout } from './components/Layouts/MainLayout';
@@ -37,27 +38,30 @@ const GlobalStyle = createGlobalStyle`
         background:${tokens.colors.interactive.primary__hover.rgba}; 
         }
 `;
-interface ProCoSysAppClientProps {
+interface HttpClientProps {
     appConfig: AppConfig;
     authProvider: AuthenticationProvider;
 }
 
-const ProCoSysAppClient: React.FC<ProCoSysAppClientProps> = ({
+const HttpClient: React.FC<HttpClientProps> = ({
     appConfig,
     authProvider,
-}: ProCoSysAppClientProps): JSX.Element => {
+}: HttpClientProps): JSX.Element => {
     const isAuthenticated = useAuthenticate(authProvider);
+    const queryClient = new QueryClient();
 
     return isAuthenticated ? (
         <ClientContextProvider {...{ appConfig, authProvider }}>
-            <Router>
-                <GlobalStyle />
-                <ProCoSysTopBar />
-                <MainLayout>
-                    <Routes />
-                </MainLayout>
-            </Router>
-            <FactoryComponent />
+            <QueryClientProvider client={queryClient}>
+                <Router>
+                    <GlobalStyle />
+                    <ProCoSysTopBar />
+                    <MainLayout>
+                        <Routes />
+                    </MainLayout>
+                </Router>
+                <FactoryComponent />
+            </QueryClientProvider>
         </ClientContextProvider>
     ) : (
         <>
@@ -67,4 +71,4 @@ const ProCoSysAppClient: React.FC<ProCoSysAppClientProps> = ({
     );
 };
 
-export default ProCoSysAppClient;
+export default HttpClient;

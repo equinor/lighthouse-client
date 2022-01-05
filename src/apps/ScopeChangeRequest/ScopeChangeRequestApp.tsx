@@ -5,7 +5,7 @@ import { baseClient } from '@equinor/http-client';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { CustomSidesheet } from './Components/CustomSidesheet';
 import { createDataFactory } from '@equinor/DataFactory';
-import { FormWrapper } from './Components/Form/ScopeChangeRequestForm';
+import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 
@@ -20,7 +20,7 @@ export function setup(appApi: AppApi): void {
 
     request.registerDataCreator({
         title: 'Scope change',
-        component: FormWrapper,
+        component: ScopeChangeRequestForm,
     });
 
     request.registerDataSource(async () => {
@@ -34,11 +34,6 @@ export function setup(appApi: AppApi): void {
     });
 
     const scopeChangeExcludeKeys: (keyof ScopeChangeRequest)[] = [
-        'createdBy',
-        'created',
-        'lastModified',
-        'lastModifiedBy',
-        'description',
         'id',
         'currentWorkflowStep',
         'workflowSteps',
@@ -49,8 +44,8 @@ export function setup(appApi: AppApi): void {
         typeMap: {},
         groupValue: {
             signedAtDate: (item: ScopeChangeRequest): string => {
-                if (item.created === '') return 'unknown';
-                switch (new Date(item.created).getMonth()) {
+                if (item.createdAtUtc === '') return 'unknown';
+                switch (new Date(item.createdAtUtc).getMonth()) {
                     case 0:
                         return 'January';
                     case 1:
@@ -93,15 +88,7 @@ export function setup(appApi: AppApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'id',
         enableSelectRows: true,
-        hiddenColumns: [
-            'currentWorkflowStep',
-            'createdBy',
-            'lastModifiedBy',
-            'id',
-            'state',
-            'created',
-            'description',
-        ],
+        hiddenColumns: ['currentWorkflowStep', 'id'],
         columnOrder: [
             'title',
             'phase',
@@ -120,7 +107,13 @@ export function setup(appApi: AppApi): void {
             { key: 'actualChangeHours', title: 'Actual' },
             { key: 'category', title: 'Change category' },
             { key: 'origin', title: 'Change origin' },
-            { key: 'lastModified', title: 'Last updated' },
+            { key: 'createdAtUtc', title: 'Created at' },
+            { key: 'createdById', title: 'Created by' },
+            { key: 'modifiedAtUtc', title: 'Last updated' },
+            { key: 'modifiedById', title: 'Updated by' },
+            { key: 'description', title: 'Description' },
+            { key: 'state', title: 'Status' },
+
             // { key: 'createdBy', title: 'Created by' },
             // { key: 'state', title: 'State' },
             // { key: 'description', title: 'Description' },
@@ -130,7 +123,11 @@ export function setup(appApi: AppApi): void {
         ],
         customCellView: [
             {
-                key: 'lastModified',
+                key: 'modifiedAtUtc',
+                type: 'Date',
+            },
+            {
+                key: 'createdAtUtc',
                 type: 'Date',
             },
 

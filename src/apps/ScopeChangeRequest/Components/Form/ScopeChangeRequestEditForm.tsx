@@ -2,7 +2,7 @@ import { Button } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { patchScopeChange } from '../../Api/patchScopeChange';
+import { patchScopeChange } from '../../Api';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;

@@ -51,20 +51,58 @@ export const RequestDetailView = ({
     return (
         <div>
             <DetailViewContainer>
-                <Field label={'Title'} value={request.title} />
-                <SectionRow>
-                    <Field label={'Phase'} value={request.phase} />
-                    <Field label={'Status'} value={request.state} />
-                </SectionRow>
-                <SectionRow>
-                    <Field label={'Change category'} value={request.category} />
-                    <Field label={'Change origin'} value={request.origin} />
-                </SectionRow>
-                <Field label={'Description'} value={request.description} />
                 <Field
-                    label={'Workflow'}
-                    value={<Workflow steps={request.workflowSteps} statusFunc={statusFunc} />}
+                    label={'Title'}
+                    customLabel={{ fontSize: '12px' }}
+                    customValue={{ fontSize: '16px' }}
+                    value={request.title}
                 />
+                <SectionRow>
+                    <Field
+                        label={'Phase'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.phase}
+                    />
+                    <Field
+                        label={'Status'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.state}
+                    />
+                </SectionRow>
+                <SectionRow>
+                    <Field
+                        label={'Change category'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.category}
+                    />
+                    <Field
+                        label={'Change origin'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.origin}
+                    />
+                </SectionRow>
+                <Field
+                    label={'Description'}
+                    customLabel={{ fontSize: '12px' }}
+                    customValue={{ fontSize: '16px' }}
+                    value={request.description}
+                />
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label={'Workflow'}
+                    value={
+                        <Workflow
+                            stepName={'name'}
+                            steps={request.workflowSteps}
+                            statusFunc={statusFunc}
+                        />
+                    }
+                />
+                <Field customLabel={{ fontSize: '18px', bold: true }} label="Log" value={''} />
             </DetailViewContainer>
             <ButtonContainer>
                 {request.state === 'Draft' && (

@@ -9,13 +9,13 @@ interface FieldProps {
 
 interface labelConfig {
     bold?: boolean;
-    fontSize?: 'x-large' | 'large' | 'xx-large' | 'x-small';
+    fontSize?: string;
     faded?: boolean;
 }
 
 interface valueConfig {
     bold?: boolean;
-    fontSize?: 'x-large' | 'large' | 'xx-large' | 'x-small';
+    fontSize?: string;
     faded?: boolean;
 }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { WorkflowDot } from './WorkflowDot';
-import { WorkflowContainer } from './Styles/WorkflowContainer';
 import styled from 'styled-components';
 
 interface WorkflowProps<T> {
@@ -15,12 +14,11 @@ export function WorkflowCompact<T>({
     steps,
     statusDotFunc,
     stepName,
-    spanDirection,
     dotSize,
 }: WorkflowProps<T>): JSX.Element {
     return (
         <>
-            <WorkflowContainer direction={spanDirection === 'horizontal' ? 'row' : 'column'}>
+            <WorkflowStepContainer>
                 {steps.map((x, id) => {
                     return (
                         <div key={id}>
@@ -36,7 +34,7 @@ export function WorkflowCompact<T>({
                         </div>
                     );
                 })}
-            </WorkflowContainer>
+            </WorkflowStepContainer>
         </>
     );
 }
@@ -54,3 +52,8 @@ export interface WorkflowStep {
     order: number;
     isCompleted: boolean;
 }
+
+export const WorkflowStepContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+`;

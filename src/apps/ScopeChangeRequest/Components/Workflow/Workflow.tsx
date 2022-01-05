@@ -1,8 +1,8 @@
 import React from 'react';
-import { WorkflowContainer } from './Styles/WorkflowContainer';
 import styled from 'styled-components';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { WorkflowLine } from './WorkflowLine';
 
 interface WorkflowProps<T> {
     steps: T[];
@@ -10,30 +10,41 @@ interface WorkflowProps<T> {
     stepName?: keyof T;
     spanDirection?: 'vertical' | 'horizontal';
 }
-export function Workflow<T>({
-    steps,
-    statusFunc,
-    stepName,
-    spanDirection,
-}: WorkflowProps<T>): JSX.Element {
+export function Workflow<T>({ steps, statusFunc, stepName }: WorkflowProps<T>): JSX.Element {
     return (
-        <>
-            <WorkflowContainer direction={spanDirection === 'horizontal' ? 'row' : 'column'}>
-                {steps.map((x, id) => {
-                    return (
-                        <div key={id}>
-                            <WorkflowStep>
-                                <WorkflowIcon status={statusFunc(x)} />
+        <div>
+            {steps.map((x, id) => {
+                return (
+                    <WorkflowStepContainer key={id}>
+                        {id !== 0 && (
+                            <>
+                                <Spacer />
+                                <WorkflowLine colored={true} />
+                                <Spacer />
+                            </>
+                        )}
+                        <WorkflowStep>
+                            <WorkflowIcon status={statusFunc(x)} />
 
-                                {stepName && x[stepName]}
-                            </WorkflowStep>
-                        </div>
-                    );
-                })}
-            </WorkflowContainer>
-        </>
+                            {stepName && x[stepName]}
+                        </WorkflowStep>
+                    </WorkflowStepContainer>
+                );
+            })}
+        </div>
     );
 }
+
+const WorkflowStepContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+`;
+
+const Spacer = styled.div`
+    height: 9px;
+    width: 2px;
+`;
 
 const WorkflowStep = styled.div`
     display: flex;
@@ -58,8 +69,8 @@ function WorkflowIcon({ status }: WorkflowIconProps): JSX.Element {
         case 'Active':
             return (
                 <svg
-                    width="24"
-                    height="24"
+                    width="22"
+                    height="22"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
