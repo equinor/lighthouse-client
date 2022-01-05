@@ -1,23 +1,10 @@
+import { ApexOptions } from 'apexcharts';
 import { useMemo } from 'react';
 import { BarChartOptions } from '../Types/barVisualOptions';
 import { createSeriesByKeys } from '../Utils/createSeriesByKeys';
 
 interface BarChart {
-    barChartOptions: {
-        chart: { id: string; stacked: boolean | undefined; toolbar: { show: boolean } };
-        plotOptions: { bar: { columnWidth: string } };
-        stroke: { width: number[] };
-        colors: string[];
-        xaxis: { categories: string[] | { name: string; type: string; data: number[] }[] };
-        markers: {
-            size: number;
-            strokeWidth: number;
-            fillOpacity: number;
-            strokeOpacity: number;
-            hover: { size: number };
-        };
-        yaxis: { tickAmount: number; min: number };
-    };
+    barChartOptions: ApexOptions;
     series: string[] | { name: string; type: string; data: number[] }[];
 }
 
@@ -30,11 +17,14 @@ export function useBarChart<T>(
         [categoryKey, data, nameKey]
     );
 
-    const barChartOptions = useMemo(
+    const barChartOptions: ApexOptions = useMemo(
         () => ({
             chart: {
                 id: 'basic-bar',
                 stacked,
+                animations: {
+                    enabled: false,
+                },
                 toolbar: {
                     show: true,
                 },
@@ -81,7 +71,7 @@ export function useBarChart<T>(
                 min: 0,
             },
         }),
-        [stacked, colors, categories]
+        [stacked, colors, categories, data, nameKey, categoryKey]
     );
 
     return {

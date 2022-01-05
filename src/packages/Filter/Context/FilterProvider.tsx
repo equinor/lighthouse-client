@@ -1,29 +1,35 @@
 import { useCallback, useEffect, useReducer } from 'react';
-import { useLocationKey } from '../Hooks/useLocationKey';
 import { checkItem } from '../Services/checkItem';
 import { createFilterData } from '../Services/creatFilter';
 import { workerFilter } from '../Services/filterApi';
-import { FilterData, FilterDataOptions, FilterItem, FilterItemCheck } from '../Types/FilterItem';
+import { FilterItem, FilterItemCheck, FilterOptions } from '../Types/FilterItem';
+import { FilterPersistOptions, PersistCustomFilters } from '../Types/PersistFilter';
 import { objectHasKeys } from '../Utils/objectHasKeys';
-import { storage } from '../Utils/storage';
 import { actions } from './FilterActions';
-import { Context, FilterProviderProps, FilterState } from './FilterContext';
+import { Context, FilterState } from './FilterContext';
 import { filterReducer } from './FilterReducer';
+
+export interface FilterProviderProps<T> {
+    children: React.ReactNode;
+    initialData: T[];
+    options?: FilterOptions<T>;
+    persistOptions?: FilterPersistOptions;
+    persistCustomOptions?: PersistCustomFilters;
+}
 
 export function FilterProvider<T>({
     children,
     initialData,
     options,
+    persistOptions,
 }: FilterProviderProps<T>): JSX.Element {
-    const locationKey = useLocationKey();
-    const filterLocationKey = `filer-${locationKey}`;
-
     const initialState: FilterState = {
         isLoading: false,
         data: [],
         filteredData: [],
         filterData: {},
-        options: options as FilterDataOptions<unknown>,
+        options: options as FilterOptions<unknown>,
+        activeFiltersTypes: options?.initialFilters ? options.initialFilters : [],
     };
     const [state, dispatch] = useReducer(filterReducer, initialState);
     const { filterData } = state;
@@ -31,7 +37,7 @@ export function FilterProvider<T>({
     const setFilter = useCallback(
         (state, filterData): void => {
             dispatch(actions.setIsLoading(true));
-            workerFilter(state, filterData, options as FilterDataOptions<unknown>).then((data) => {
+            workerFilter(state, filterData, options as FilterOptions<unknown>).then((data) => {
                 dispatch(actions.setFilteredData(data));
                 dispatch(actions.setIsLoading(false));
             });
@@ -39,19 +45,22 @@ export function FilterProvider<T>({
         [options]
     );
 
+    const setActiveFiltersTypes = useCallback((filterTypes: string[]): void => {
+        dispatch(actions.setActiveFiltersTypes(filterTypes));
+    }, []);
+
     useEffect(() => {
-        // TODO Extracte denne funsjonaliteten og ta den inn som options for filter.
-        const localFilter = {}; //storage.getItem<FilterData>(filterLocationKey);
+        const localFilter = persistOptions && persistOptions.getFilter();
         if (localFilter && typeof localFilter !== 'string' && objectHasKeys(localFilter)) {
             dispatch(actions.setFilter(localFilter));
             setFilter(initialData, localFilter);
         } else {
             const filter = createFilterData(initialData, options);
             dispatch(actions.setFilter(filter));
-            storage.setItem<FilterData>(filterLocationKey, filter);
+            persistOptions && persistOptions.setFilter(filter);
             setFilter(initialData, filter);
         }
-    }, [filterLocationKey, initialData, options, setFilter]);
+    }, [initialData, options, persistOptions, setFilter]);
 
     useEffect(() => {
         dispatch(actions.setData(initialData));
@@ -61,11 +70,15 @@ export function FilterProvider<T>({
         (filterItem: FilterItem | FilterItem[], singleClick?: boolean): void => {
             const currentFilter = checkItem(filterData, filterItem, singleClick);
             dispatch(actions.setFilter(currentFilter));
-            storage.setItem<FilterData>(filterLocationKey, currentFilter);
+            persistOptions && persistOptions.setFilter(currentFilter);
             setFilter(state.data, filterData);
         },
-        [filterData, filterLocationKey, setFilter, state.data]
+        [filterData, persistOptions, setFilter, state.data]
     );
 
-    return <Context.Provider value={{ ...state, filterItemCheck }}>{children}</Context.Provider>;
+    return (
+        <Context.Provider value={{ ...state, filterItemCheck, setActiveFiltersTypes }}>
+            {children}
+        </Context.Provider>
+    );
 }

@@ -5,14 +5,24 @@ import styled from 'styled-components';
 export const Wrapper = styled.section`
     display: flex;
     flex-direction: row;
-    max-height: 200px;
-    background-color: ${tokens.colors.ui.background__light.rgba};
-    border-bottom: 1.5px solid ${tokens.colors.ui.background__medium.rgba};
-`;
+    height: ${({ isActive }: { isActive: boolean }) => (isActive ? `200px` : '0px')};
 
-interface FilterSelectProps {
-    isActive: boolean;
-}
+    background-color: ${tokens.colors.ui.background__light.rgba};
+    border-bottom: ${({ isActive }: { isActive: boolean }) =>
+        isActive ? `1.5px solid ${tokens.colors.ui.background__medium.rgba}` : 'none'};
+    transition: height 0.35s ease;
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    animation-duration: 0.5s;
+    animation-name: ${({ isActive }: { isActive: boolean }) => (isActive ? 'fadeIn' : '')};
+`;
 
 export const FilterSelect = styled.div`
     display: flex;

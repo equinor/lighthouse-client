@@ -1,5 +1,5 @@
+import { FilterProvider, FilterView } from '@equinor/filter';
 import { useEffect, useRef } from 'react';
-import { FilterProvider, FilterView } from '../../../../components/Filter';
 import { useDashboardDataContext } from '../../Context/DataProvider';
 import { Dashboard } from '../DashboardView/Dashboard';
 

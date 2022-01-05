@@ -1,14 +1,14 @@
-import styled from 'styled-components';
+import { useFilteredData } from '@equinor/filter';
 import { defaultGroupByFn, Table, TableData, useColumns } from '@equinor/Table';
-import { useFilteredData } from '../../../Filter';
-import { PopupFilter } from '../../../Filter/Components/PopoutFilter/PopupFilter';
+import styled from 'styled-components';
+import { PopupFilter } from '../../../../packages/Filter/Components/PopoutFilter/PopupFilter';
 import { useDataContext } from '../Context/DataProvider';
 
 const Wrapper = styled.section`
     /* overflow: scroll; */
 `;
 
-export const ListTab = () => {
+export const ListTab = (): JSX.Element => {
     const { data } = useFilteredData<TableData>();
     const { tableOptions, setSelected } = useDataContext();
     const columns = useColumns(data[0], {

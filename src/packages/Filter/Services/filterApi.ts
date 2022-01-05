@@ -1,13 +1,13 @@
 import { wrap } from 'comlink';
-import Worker from './filterWorker?worker';
-import { FilterData, FilterDataOptions } from '../Types/FilterItem';
+import { FilterData, FilterOptions } from '../Types/FilterItem';
 import { groupValueTopString } from '../Utils/optionParse';
 import { FilterWorker } from './filterWorker';
+import Worker from './filterWorker?worker';
 
 export async function workerFilter<T>(
     data: T[],
     filter: FilterData,
-    options?: FilterDataOptions<T>
+    options?: FilterOptions<T>
 ): Promise<T[]> {
     const worker = new Worker();
 

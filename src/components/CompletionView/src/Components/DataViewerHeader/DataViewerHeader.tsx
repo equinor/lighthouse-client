@@ -1,8 +1,8 @@
 import { useFactory } from '@equinor/DataFactory';
 import { Tabs } from '@equinor/eds-core-react';
+import { useFilteredData } from '@equinor/filter';
 import { useEffect, useRef } from 'react';
 import { StatusBar } from '../../../../../packages/StatusBar';
-import { useFilteredData } from '../../../../Filter';
 import Icon from '../../../../Icon/Icon';
 import { useDataContext } from '../../Context/DataProvider';
 import { TabButton } from '../ToggleButton';
@@ -12,7 +12,7 @@ import {
     LeftSection,
     RightSection,
     TabTitle,
-    Title,
+    Title
 } from './DataViewerHeaderStyles';
 
 const { Tab, List } = Tabs;

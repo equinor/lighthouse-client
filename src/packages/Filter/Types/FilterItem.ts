@@ -14,15 +14,15 @@ export type FilterItemCheck = (
 ) => void;
 
 export type FilterGroup = {
-    all: boolean;
     type: string;
     value: Record<string, FilterItem>;
 };
 export type FilterData = Record<string, FilterGroup>;
 
-export interface FilterDataOptions<T> {
+export interface FilterOptions<T> {
     excludeKeys?: (keyof T)[];
     typeMap?: Partial<Record<keyof T, string>>;
     groupValue?: Record<string, (item: T) => string>;
     customRender?: Record<keyof T | string, React.FC<T>>;
+    initialFilters?: string[];
 }

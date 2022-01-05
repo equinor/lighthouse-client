@@ -6,6 +6,7 @@ export enum FilterActions {
     setFilter = 'setFilter',
     setData = 'setData',
     setIsLoading = 'setIsLoading',
+    setActiveFiltersTypes = 'setActiveFiltersTypes',
 }
 
 export const actions = {
@@ -21,6 +22,12 @@ export const actions = {
     setIsLoading: createCustomAction(FilterActions.setIsLoading, (isLoading: boolean) => ({
         isLoading,
     })),
+    setActiveFiltersTypes: createCustomAction(
+        FilterActions.setActiveFiltersTypes,
+        (activeFiltersTypes: string[]) => ({
+            activeFiltersTypes,
+        })
+    ),
 };
 
 export type Actions = ActionType<typeof actions>;
