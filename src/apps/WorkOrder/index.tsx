@@ -1,6 +1,7 @@
 import { baseClient } from '@equinor/http-client';
-import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
+import { createWorkSpace } from '../../Core/WorkSpace/src/WorkSpaceApi/Api';
 import { AppApi } from '../apps';
+
 
 export interface WorkOrder {
     plant: string;
@@ -34,7 +35,7 @@ export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [
         'api://460842ad-e295-4449-a96a-362b1e46ce45/.default',
     ]);
-    const commPkg = createDataViewer<WorkOrder>({
+    const commPkg = createWorkSpace<WorkOrder>({
         initialState: [],
         primaryViewKey: 'mcPkgNo',
         viewerId: appApi.shortName,
