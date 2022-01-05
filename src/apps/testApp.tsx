@@ -103,10 +103,8 @@ export function TestApp(appApi: AppApi): JSX.Element {
     }, [viewerRef]);
 
     return (
-        <>
-            <ThreeDContextProvider threeDInstance={threeDInstance}>
-                <Viewer ref={viewerRef} />
-            </ThreeDContextProvider>
-        </>
+        <ThreeDContextProvider threeDInstance={threeDInstance}>
+            <Viewer ref={viewerRef} />
+        </ThreeDContextProvider>
     );
 }

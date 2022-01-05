@@ -20,6 +20,10 @@ export const FilterItemComponent = ({
     const { count, isActive } = useCount(filterItem);
     const debouncedFilterItemCheck = debounceFilterItemCheck(filterItemCheck, 0);
 
+    if (typeof filterItem.value === 'object') {
+        return <></>;
+    }
+
     if (!isActive) return <></>;
     return (
         <FilterItemWrapper key={itemKey} aria-label={filterItem.value} title={filterItem.value}>

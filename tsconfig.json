@@ -36,7 +36,7 @@
     },
     "compileOnSave": true,
     "exclude": ["node_modules"],
-    "include": ["./src", "src/components/Garden", "packages/components/NavigationView/TreeMoc.ts"],
+    "include": ["./src"],
     "typedocOptions": {
         "entryPoints": ["src/index.ts"],
         "out": "docs"

@@ -29,6 +29,9 @@ export const generateHeaderKeys = <D extends TableData>(
         if (Array.isArray(headerItem[key])) {
             return generateArrayColumn({ headers: options?.headers, key });
         }
+        if (headerItem[key] === null) {
+            return generateOthersColumn({ headers: options?.headers, key });
+        }
         if (typeof headerItem[key] === 'object') {
             return generateObjectColumn({ headers: options?.headers, key });
         }

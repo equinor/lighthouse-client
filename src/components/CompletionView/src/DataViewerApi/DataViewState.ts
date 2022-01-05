@@ -2,11 +2,12 @@ import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
+import React from 'react';
 import { TableOptions as ReactTableOptions } from 'react-table';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { StatusItem } from '../../../../packages/StatusBar';
 import { DataSet } from '../../../ParkView/Models/data';
-import { DataFetcher, DataViewerProps, ViewOptions } from './DataViewerTypes';
+import { DataSource, DataViewerProps, ViewOptions } from './DataViewerTypes';
 export interface DataViewState {
     [key: string]: ViewConfig<unknown>;
 }
@@ -79,9 +80,17 @@ export interface PowerBiOptions {
 
 export type StatusFunc<T> = (data: T[]) => StatusItem[];
 
+export interface DataViewSideSheetOptions<T> {
+    CustomComponent?: React.FC<{ item: T; onClose: () => void }>;
+}
+
+export interface WorkflowEditorOptions {
+    endpoint: string;
+}
+
 export interface ViewConfig<T> {
     name: string;
-    dataFetcher?: DataFetcher<T>;
+    dataSource?: DataSource<T>;
     validator?: (data: unknown[]) => T[];
     viewComponent?: React.FC<DataViewerProps<T>>;
     viewOptions?: ViewOptions<T>;
@@ -93,6 +102,8 @@ export interface ViewConfig<T> {
     analyticsOptions?: AnalyticsOptions<T>;
     statusFunc?: StatusFunc<T>;
     powerBiOptions?: any;
+    dataViewSideSheetOptions?: DataViewSideSheetOptions<T>;
+    workflowEditorOptions?: WorkflowEditorOptions;
 }
 
 export function createGlobalState(defaultState: DataViewState): Atom<DataViewState> {

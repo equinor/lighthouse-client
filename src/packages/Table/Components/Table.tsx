@@ -95,7 +95,7 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     data.prepareRow(row);
 
     const handleClick = useCallback(() => {
-        data.setSelected && data.setSelected(row.values['tagNo']);
+        data.setSelected && data.setSelected(row.original);
     }, [data.setSelected, row]);
 
     return (
@@ -108,18 +108,19 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
                         key={cell.getCellProps().key}
                         onClick={(e) => data.onCellClick(cell, e)}
                     >
-                        {cell.isGrouped ? (
-                            <GroupCell row={row} cell={cell} />
-                        ) : cell.isAggregated && cell.value ? (
-                            // If the cell is aggregated, use the Aggregated
-                            // renderer for cell
-                            cell.render('Aggregated')
-                        ) : cell.isPlaceholder ? null : (
-                            // For cells with repeated values, render null
-                            // Otherwise, just render the regular cell
-                            cell.render('Cell')
-                        )}
-                        <></>
+                        <span style={{ fontSize: '14px' }}>
+                            {cell.isGrouped ? (
+                                <GroupCell row={row} cell={cell} />
+                            ) : cell.isAggregated && cell.value ? (
+                                // If the cell is aggregated, use the Aggregated
+                                // renderer for cell
+                                cell.render('Aggregated')
+                            ) : cell.isPlaceholder ? null : (
+                                // For cells with repeated values, render null
+                                // Otherwise, just render the regular cell
+                                cell.render('Cell')
+                            )}
+                        </span>
                     </TableCell>
                 );
             })}

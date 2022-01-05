@@ -2,14 +2,16 @@ import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
 import {
+    DataViewSideSheetOptions,
     GardenOptions,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
+    WorkflowEditorOptions,
 } from './DataViewState';
 
-export type DataFetcher<T> = () => Promise<T[]>;
+export type DataSource<T> = () => Promise<T[]>;
 export type Validator<T> = (data: unknown[]) => T[];
 export type FactoryOptions = Omit<Factory, 'factoryId'>;
 
@@ -37,8 +39,8 @@ export interface ViewOptions<T> {
 }
 
 export interface DataViewerApi<T> {
+    registerDataSource: (dataSource: DataSource<T>) => void;
     registerDataCreator: (factory: FactoryOptions) => void;
-    registerDataFetcher: (dataFetcher: DataFetcher<T>) => void;
     registerDataValidator: (validator: Validator<T>) => void;
     registerCustomContentView: (
         viewComponent: React.FC<DataViewerProps<T>>,
@@ -53,4 +55,6 @@ export interface DataViewerApi<T> {
     registerAnalyticsOptions: (options: AnalyticsOptions<T>) => void;
     registerStatusItems: (options: StatusFunc<T>) => void;
     registerPowerBIOptions: (options: PowerBiOptions) => void;
+    registerDataViewSideSheetOptions: (options: DataViewSideSheetOptions<T>) => void;
+    registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => void;
 }

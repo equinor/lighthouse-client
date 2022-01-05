@@ -66,7 +66,7 @@ export function setup(appApi: AppApi) {
         viewerId: appApi.shortName,
     });
 
-    checklist.registerDataFetcher(async () => {
+    checklist.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
         const project = 'L.O532C.002';
         const response = await api.fetch(
