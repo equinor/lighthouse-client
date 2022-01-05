@@ -1,9 +1,8 @@
 import { Tabs } from '@equinor/eds-core-react';
+import { FilterProvider, FilterView } from '@equinor/filter';
 import { useMemo, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { AppApi } from '../../../../../apps/apps';
-import { FilterView } from '../../../../../components/Filter';
-import { FilterProvider } from '../../../../../components/Filter/Context/FilterProvider';
 import { useDataContext } from '../../Context/DataProvider';
 import { useConfiguredTabs } from '../../Tabs/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
@@ -12,6 +11,7 @@ import { DataView } from '../DefaultView/DataView';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { DataViewWrapper } from './WorkSpaceViewStyles';
+
 
 export function WorkSpaceView(props: AppApi): JSX.Element {
     const {
@@ -41,6 +41,23 @@ export function WorkSpaceView(props: AppApi): JSX.Element {
     );
     const [activeTab, setActiveTab] = useState(Number(id) || 0);
     const [activeFilter, setActiveFilter] = useState(false);
+
+    // const filterLocationKey = useMemo(() => `filer-${props.shortName}`, [props.shortName]);
+    // const persistOptions: FilterPersistOptions = useMemo(
+    //     () => ({
+    //         getFilter() {
+    //             const filter = storage.getItem<FilterData>(filterLocationKey);
+    //             if (typeof filter === 'object') {
+    //                 return filter;
+    //             }
+    //             return;
+    //         },
+    //         setFilter(filterData: FilterData) {
+    //             return storage.setItem(filterLocationKey, filterData);
+    //         },
+    //     }),
+    //     [filterLocationKey]
+    // );
 
     const handleChange = (index: number) => {
         setActiveTab(index);

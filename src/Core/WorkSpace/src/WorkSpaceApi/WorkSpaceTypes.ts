@@ -1,8 +1,8 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { FilterOptions } from '@equinor/filter';
 import {
     DataViewSideSheetOptions,
-    FilterOptions,
     GardenOptions,
     PowerBiOptions,
     StatusFunc,

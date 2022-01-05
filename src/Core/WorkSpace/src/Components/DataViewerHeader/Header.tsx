@@ -1,7 +1,7 @@
 import { useFactory } from '@equinor/DataFactory';
 import { Tabs } from '@equinor/eds-core-react';
+import { useFilteredData } from '@equinor/filter';
 import { useEffect, useRef } from 'react';
-import { useFilteredData } from '../../../../../components/Filter';
 import Icon from '../../../../../components/Icon/Icon';
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { useDataContext } from '../../Context/DataProvider';

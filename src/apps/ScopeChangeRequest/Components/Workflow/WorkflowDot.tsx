@@ -7,20 +7,31 @@ interface WorkflowDotProps {
     state: 'Active' | 'Completed' | 'Inactive';
 }
 
+interface dotStyling {
+    color: string;
+    stroke: string;
+}
+
 export const WorkflowDot = ({ state, height = 15, width = 15 }: WorkflowDotProps): JSX.Element => {
-    const color = useMemo(() => {
+    const color: dotStyling = useMemo(() => {
         switch (state) {
             case 'Active':
-                return tokens.colors.infographic.substitute__blue_sky.hex;
-            // figma color: return '#78C0FF';
+                return {
+                    color: tokens.colors.infographic.substitute__blue_overcast.hex,
+                    stroke: '',
+                };
 
             case 'Completed':
-                return tokens.colors.infographic.substitute__green_succulent.hex;
-            // figma color: return '#00977B';
+                return {
+                    color: tokens.colors.infographic.substitute__green_succulent.hex,
+                    stroke: '',
+                };
 
             case 'Inactive':
-                return tokens.colors.ui.background__default.hex;
-            // figma color: return '##FFFFFF';
+                return {
+                    color: '',
+                    stroke: '#6F6F6F',
+                };
         }
     }, [state]);
 
@@ -32,7 +43,7 @@ export const WorkflowDot = ({ state, height = 15, width = 15 }: WorkflowDotProps
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
-            <circle cx="6" cy="6" r="5.5" stroke="#6F6F6F" fill={color} />
+            <circle cx="6" cy="6" r="5.5" stroke={color.stroke} fill={color.color} />
         </svg>
     );
 };

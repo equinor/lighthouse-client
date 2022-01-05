@@ -1,15 +1,19 @@
-import { Value } from './value';
-import { InputType } from './inputType';
+import { InputType } from './InputTypes/inputType';
 
-export interface Field {
-    label?: string;
-    isRequired: (() => boolean) | boolean;
-    editable: (() => boolean) | boolean;
-    order: number;
-    inputType: InputType;
-    validationFunction?: (value: any | undefined) => boolean;
-}
+export type Setter<Type> = (value: Type) => void;
 
 export type Fields<T> = {
-    [K in keyof T]?: Value<T[K]>;
+    [K in keyof T]?: Field<T[K]>;
 };
+
+export interface Field<Type> {
+    value: Type;
+    isDirty: boolean;
+    isValid: boolean;
+    title: string;
+    optional: boolean;
+    editable: boolean;
+    order: number;
+    inputType: InputType;
+    setValue: Setter<Type>;
+}

@@ -13,6 +13,8 @@ export default defineConfig({
     },
     resolve: {
         alias: {
+            '@equinor/worker': path.resolve(__dirname, './src/packages/WebWorkers'),
+            '@equinor/filter': path.resolve(__dirname, './src/packages/Filter'),
             '@equinor/VisualEditor': path.resolve(__dirname, './src/packages/VisualEditor'),
             '@equinor/Form': path.resolve(__dirname, './src/packages/Form'),
             '@equinor/WorkSpace': path.resolve(__dirname, './src/Core/WorkSpace'),

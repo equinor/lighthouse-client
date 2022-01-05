@@ -79,6 +79,7 @@ export function setup(appApi: AppApi): void {
 
     commPkg.registerFilterOptions({
         excludeKeys: loopKeys,
+        initialFilters: ['status', 'signedAtDate', 'phase'],
         typeMap: {},
         groupValue: {
             signedAtDate: (item: Loop): string => {

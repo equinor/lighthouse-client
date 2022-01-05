@@ -1,6 +1,6 @@
+import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+
 export const HomeIcon = (): JSX.Element => {
-    return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9.99863 18.9997V13.9997H13.9986V18.9997C13.9986 19.5497 14.4486 19.9997 14.9986 19.9997H17.9986C18.5486 19.9997 18.9986 19.5497 18.9986 18.9997V11.9997H20.6986C21.1586 11.9997 21.3786 11.4297 21.0286 11.1297L12.6686 3.59973C12.2886 3.25973 11.7086 3.25973 11.3286 3.59973L2.96863 11.1297C2.62863 11.4297 2.83863 11.9997 3.29863 11.9997H4.99863V18.9997C4.99863 19.5497 5.44863 19.9997 5.99863 19.9997H8.99863C9.54863 19.9997 9.99863 19.5497 9.99863 18.9997Z" fill="#919BA2" />
-        </svg>)
-}
+    return <Icon color={tokens.colors.interactive.primary__resting.hex} name="home" />;
+};

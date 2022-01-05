@@ -1,5 +1,5 @@
 import { AnalyticsView } from '@equinor/Diagrams';
-import { useFilteredData } from '../../../../components/Filter';
+import { useFilteredData } from '@equinor/filter';
 import { DashboardInstance, PageConfig } from '../../Types/State';
 import { Page, PageWrapper } from './PagesStyles';
 

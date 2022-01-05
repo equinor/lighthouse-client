@@ -1,80 +1,63 @@
 import styled from 'styled-components';
-import { Form } from '../Types/form';
-import { GeneratedField } from './GeneratedField';
-import { Value } from '../Types/value';
 import { SectionRow } from '../Styles/Section';
-import React from 'react';
+import { Field } from '../Types/field';
+import { Form } from '../Types/form';
+import { groupBy } from '../Utils/groupBy';
+import { GeneratedField } from './GeneratedField';
 
 export interface Behaviour {
-    hideDisabledFields?: (() => boolean) | boolean;
-}
-
-export interface Components {
-    customTextInput?: React.FC;
-    customNumberInput?: React.FC;
-    customMultiSelect?: React.FC;
-    customSingleSelect?: React.FC;
+    hideDisabledFields?: boolean;
+    hideMetaTags?: boolean;
 }
 
 interface FormProps<T> {
     formData: Form<T>;
     editMode: boolean;
+    buttons: React.FC[];
     title?: string;
     behaviour?: Behaviour;
-    customComponents?: Components;
-    buttons?: React.FC[];
 }
-export function GeneratedForm<T>({
+
+export const GeneratedForm = <T, K extends keyof T>({
     formData,
     editMode,
-    title,
-    customComponents,
-    behaviour,
     buttons,
-}: FormProps<T>): JSX.Element {
-    const allItems: Value<unknown>[][] = [];
-    const ids = new Set();
-    const fields: Value<unknown>[] = [];
+    title,
+    behaviour,
+}: FormProps<T>): JSX.Element => {
+    const fields: Field<T[K]>[] = [];
 
-    Object.keys(formData.fields).map((fieldName) => {
-        ids.add(formData.fields[fieldName]['order']);
-        fields.push(formData.fields[fieldName]);
+    Object.keys(formData.fields).map((fieldKey) => {
+        const field = formData.fields[fieldKey as K];
+        if (field) {
+            fields.push(field);
+        }
     });
 
-    ids.forEach((id) => {
-        allItems.push(fields.filter((x) => x['order'] == id));
-    });
+    fields.sort((a, b) => a.order - b.order);
+    const grouped = groupBy(fields, 'order');
+
+    const groupedFields = Array.from(grouped.values());
 
     return (
         <>
-            {title && <h1>{title}</h1>}
-
-            <>
-                {allItems.map((fieldArray) => {
-                    return (
-                        <SectionRow key={fieldArray.map((x) => x.label).toString()}>
-                            {fieldArray.map((field) => {
-                                if (behaviour?.hideDisabledFields && !field.editable && editMode) {
-                                    return <></>;
-                                }
-                                return (
-                                    <>
-                                        <GeneratedField
-                                            field={field as Value<any>}
-                                            key={field.order}
-                                            inputType={field.inputType}
-                                            setter={formData.getSetter(field)}
-                                            editMode={editMode}
-                                            customComponents={customComponents}
-                                        />
-                                    </>
-                                );
-                            })}
-                        </SectionRow>
-                    );
-                })}
-            </>
-
+            <h2>{title}</h2>
+            {groupedFields.map((fieldArray, index) => {
+                return (
+                    <SectionRow key={fieldArray.toString() + index.toString()}>
+                        {fieldArray.map((field: Field<T[K]>, index: number) => {
+                            return (
+                                <GeneratedField<T>
+                                    key={field.toString() + index.toString()}
+                                    editMode={editMode}
+                                    field={field as unknown as Field<T>}
+                                    behaviour={behaviour}
+                                />
+                            );
+                        })}
+                    </SectionRow>
+                );
+            })}
             <ButtonContainer>
                 {buttons &&
                     buttons.map((Component, index) => {
@@ -87,7 +70,7 @@ export function GeneratedForm<T>({
             </ButtonContainer>
         </>
     );
-}
+};
 
 const ButtonContainer = styled.div`
     display: flex;

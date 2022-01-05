@@ -1,6 +1,7 @@
-import { useFilteredData } from '../../../../components/Filter';
+import { useFilteredData } from '@equinor/filter';
 import { Tree } from '../../../../components/ParkView/Components/Tree';
 import { useDataContext } from '../Context/DataProvider';
+
 
 export const TreeTab = (): JSX.Element => {
     const { data } = useFilteredData();

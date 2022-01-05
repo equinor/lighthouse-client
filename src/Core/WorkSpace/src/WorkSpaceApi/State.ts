@@ -1,5 +1,6 @@
 import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { FilterOptions } from '@equinor/filter';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
 import { TableOptions as ReactTableOptions } from 'react-table';
@@ -7,15 +8,9 @@ import { DataSet } from '../../../../components/ParkView/Models/data';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { StatusItem } from '../../../../packages/StatusBar';
 import { DataSource, DataViewerProps, ViewOptions } from './WorkSpaceTypes';
+
 export interface WorkSpaceState {
     [key: string]: WorkSpaceConfig<unknown>;
-}
-
-export interface FilterOptions<T> {
-    excludeKeys?: (keyof T)[];
-    typeMap?: Partial<Record<keyof T, string>>;
-    groupValue?: Record<string, (item: T) => string>;
-    customRender?: Record<keyof T | string, React.FC<T>>;
 }
 
 export type TableOptions<T> = Pick<

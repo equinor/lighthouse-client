@@ -19,14 +19,15 @@
         "paths": {
             "@equinor/GroupView": ["./src/Core/GroupView"],
             "@equinor/WorkSpace": ["./src/Core/WorkSpace"],
-            "@equinor/DataFactory": ["./src/Core/DataFactory"],
-            "@equinor/VisualEditor": ["./src/packages/VisualEditor"],
-            "@equinor/Table": ["./src/packages/Table"],
             "@equinor/Form": ["./src/packages/Form"],
+            "@equinor/VisualEditor": ["./src/packages/VisualEditor"],
+            "@equinor/worker": ["./src/packages/WebWorkers"],
+            "@equinor/filter": ["./src/packages/Filter"],
+            "@equinor/DataFactory": ["./src/Core/DataFactory"],
             "@equinor/StatusBar": ["./src/packages/2StatusBar"],
             "@equinor/Diagrams": ["./src/packages/Diagrams"],
             "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
-            "@equinor/form": ["./src/packages/Form"],
+            "@equinor/Table": ["./src/packages/Table"],
             "@equinor/authentication": ["./packages/authentication"],
             "@equinor/http-client": ["./packages/httpClient"],
             "@equinor/lighthouse-core": ["./packages/core"],
@@ -39,7 +40,7 @@
     },
     "compileOnSave": true,
     "exclude": ["node_modules"],
-    "include": ["./src", "src/components/Garden", "packages/components/NavigationView/TreeMoc.ts"],
+    "include": ["./src"],
     "typedocOptions": {
         "entryPoints": ["src/index.ts"],
         "out": "docs"

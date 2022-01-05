@@ -1,10 +1,10 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { FilterOptions } from '@equinor/filter';
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useDataViewerKey';
 import {
     DataViewSideSheetOptions,
-    FilterOptions,
     GardenOptions,
     PowerBiOptions,
     StatusFunc,
