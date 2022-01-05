@@ -1,8 +1,7 @@
 import { baseClient } from '@equinor/http-client';
+import { createWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
-import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
-import { Status } from '../../components/CompletionView/src/DataViewerApi/DataViewState';
-import { createDataFactory } from '../../Core/DataFactory';
+import { Status } from '../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { AppApi } from '../apps';
 import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
 
@@ -49,7 +48,7 @@ const loopKeys: (keyof Loop)[] = [
     'createdAt',
 ];
 
-export function setup(appApi: AppApi) {
+export function setup(appApi: AppApi): void {
     // createDataFactory({
     //     factoryId: 'loop',
     //     tile: 'Creat Loop',
@@ -62,7 +61,7 @@ export function setup(appApi: AppApi) {
     // });
 
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const commPkg = createDataViewer<Loop>({
+    const commPkg = createWorkSpace<Loop>({
         initialState: [],
         primaryViewKey: 'tagNo',
         viewerId: appApi.shortName,
@@ -80,6 +79,7 @@ export function setup(appApi: AppApi) {
 
     commPkg.registerFilterOptions({
         excludeKeys: loopKeys,
+        initialFilters: ['status', 'signedAtDate', 'phase'],
         typeMap: {},
         groupValue: {
             signedAtDate: (item: Loop): string => {

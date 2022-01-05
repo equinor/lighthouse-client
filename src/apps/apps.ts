@@ -1,8 +1,6 @@
 import { AuthenticationProvider } from '@equinor/authentication';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import React from 'react';
-import { DataView } from '../components/CompletionView/src/DataView';
-import PageView from '../Core/PageViwer';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -14,12 +12,11 @@ import { ProjectInformationIcon } from '../icons/ProjectInformationIcon';
 import { QualityIcon } from '../icons/Quality icon';
 import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
-import { ScopeAndChange } from '../icons/Scope and change icon';
+import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as constructionSetup } from './Construction';
-import { setup as commissioningSetup } from './Commissioning';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
@@ -29,10 +26,9 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
-import { SwcrApp } from './swcr/swcrApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 
 type HEXColor = `#${string}`;
@@ -81,7 +77,12 @@ export enum Apps {
     SSU = 'SSU',
 }
 
-type AppGroups = Record<Apps, AppGroupe>;
+export type AppGroups = Record<Apps, AppGroupe>;
+
+export interface Manifests {
+    apps: AppManifest[];
+    appGroups: AppGroups;
+}
 
 export const appGroups: AppGroups = {
     AssetData: {
@@ -122,7 +123,7 @@ export const appGroups: AppGroups = {
     },
     ProjectControl: {
         name: 'Project control',
-        icon: ScopeAndChange,
+        icon: ProjectControlIcon,
     },
     SSU: {
         name: 'SSU',
@@ -209,7 +210,6 @@ export const apps: AppManifest[] = [
             setup: (): void => {
                 console.log('overview');
             },
-            component: PageView,
         },
     },
     {
@@ -225,7 +225,6 @@ export const apps: AppManifest[] = [
             setup: (): void => {
                 console.log('engineering');
             },
-            component: PageView,
         },
     },
     {
@@ -239,7 +238,6 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'PageView',
             setup: constructionSetup,
-            component: PageView,
         },
     },
     {
@@ -252,8 +250,7 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'PageView',
-            setup: commissioningSetup,
-            component: PageView,
+            setup: constructionSetup,
         },
     },
     // Engineering management
@@ -310,7 +307,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: '',
         app: {
-            component: DataView,
+            appType: 'DataViewer',
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
@@ -336,7 +333,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: checklistSetup,
         },
     },
@@ -350,7 +346,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: handoverSetup,
         },
     },
@@ -364,7 +359,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -377,7 +371,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: loopSetup,
         },
     },
@@ -391,7 +384,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -404,7 +396,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -417,7 +408,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -429,8 +419,7 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: [],
         app: {
-            appType: 'CustomApp',
-            component: SwcrApp,
+            appType: 'DataViewer',
         },
     },
     // Queries and requests
@@ -452,10 +441,8 @@ export const apps: AppManifest[] = [
         uri: '',
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: scopeChangeSetup,
         },
-        imageUri: './images/Scope change request.jpg',
         tags: [],
     },
     // ProjectControl

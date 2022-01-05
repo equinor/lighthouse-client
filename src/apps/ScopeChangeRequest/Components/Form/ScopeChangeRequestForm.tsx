@@ -1,30 +1,62 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { setActiveScrim } from '../../../../Core/PopupScrim/Functions/setActiveScrim';
-import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
+import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { useMutation, useQuery } from 'react-query';
 import { RequestDetailView } from '../DetailView/RequestDetailView';
+import { getScopeChangeById, postScopeChange } from '../../Api/';
 
 interface ScopeChangeRequestFormProps {
-    closeScrim: () => void;
+    closeScrim: (force?: boolean) => void;
     setHasUnsavedChanges: (value: boolean) => void;
+}
+
+interface CreateScopeChangeProps {
+    draft: boolean;
 }
 
 export const ScopeChangeRequestForm = ({
     closeScrim,
     setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const formData = useForm(scopeChangeRequestSchema);
+    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
+    const [scID, setScID] = useState<string | undefined>(undefined);
+    const [scopeChange, setScopeChange] = useState<ScopeChangeRequest | undefined>(undefined);
+
+    const createScopeChangeMutation = async ({ draft }: CreateScopeChangeProps) => {
+        formData.reset();
+        setScID(await postScopeChange(formData.data, draft));
+    };
+
+    const getScopeChangeQuery = async () => {
+        if (scID) {
+            setScopeChange(await getScopeChangeById(scID));
+        }
+    };
+
+    const { mutate, error } = useMutation(createScopeChangeMutation, {
+        retry: 2,
+        retryDelay: 2,
+        onSuccess: async () => {
+            refetch();
+        },
+    });
+
+    const { refetch } = useQuery('fetchScopeChange', getScopeChangeQuery, {
+        refetchOnWindowFocus: false,
+        enabled: false,
+        cacheTime: 10,
+    });
 
     useEffect(() => {
         setHasUnsavedChanges(formData.getChangedData() !== undefined);
-    }, [formData]);
+    }, [formData, setHasUnsavedChanges]);
 
     const SubmitButton = () => {
         return (
-            <Button disabled={!formData.isValidForm()} onClick={onSubmit}>
+            <Button disabled={!formData.isValidForm()} onClick={() => mutate({ draft: false })}>
                 Initiate request
             </Button>
         );
@@ -32,77 +64,44 @@ export const ScopeChangeRequestForm = ({
 
     const SaveButton = () => {
         return (
-            <Button disabled={!formData.isValidForm()} variant={'outlined'} onClick={onSave}>
+            <Button
+                disabled={!formData.isValidForm()}
+                variant={'outlined'}
+                onClick={() => mutate({ draft: true })}
+            >
                 Save as draft
             </Button>
         );
     };
 
-    const onSave = () => {
-        const payload = {
-            ...formData.data,
-            setAsOpen: false,
-        };
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        };
-        fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`,
-            requestOptions
-        );
-        console.log('Form submitted');
-    };
-
-    const onSubmit = () => {
-        const payload = {
-            ...formData.data,
-            setAsOpen: true,
-        };
-
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-        };
-        fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`,
-            requestOptions
-        );
-    };
+    const refetchScopeChange = useCallback(async () => {
+        refetch();
+    }, [refetch]);
 
     return (
         <>
-            <TitleHeader>
-                <h2>Create scope change request</h2>
-                <Button variant={'ghost_icon'} onClick={closeScrim}>
-                    <Icon name="close" />
-                </Button>
-            </TitleHeader>
-            <GeneratedForm
-                formData={formData}
-                editMode={false}
-                buttons={[SubmitButton, SaveButton]}
-            />
-            <Button
-                onClick={() => {
-                    setActiveScrim(scrimminyCricket);
-                    closeScrim();
-                }}
-            >
-                Spawn scrim{' '}
-            </Button>
-            <Button
-                onClick={() =>
-                    spawnConfirmationDialog('You will lose all data', 'Unsaved changes', () =>
-                        formData.set({ title: '123' })
-                    )
-                }
-            >
-                Open confirmation
-            </Button>
+            {scopeChange ? (
+                <RequestDetailView
+                    request={scopeChange}
+                    setEditMode={() => console.log()}
+                    refetch={refetchScopeChange}
+                />
+            ) : (
+                <>
+                    <TitleHeader>
+                        <h2>Create scope change request</h2>
+                        <Icon onClick={() => closeScrim()} name="close" />
+                    </TitleHeader>
+                    <GeneratedForm
+                        formData={formData}
+                        editMode={false}
+                        buttons={[SubmitButton, SaveButton]}
+                    />
+                    {error && (
+                        <p> Something went wrong, please check your connection and try again</p>
+                    )}
+                </>
+            )}
         </>
     );
 };
@@ -126,10 +125,12 @@ const scrimminyCricket = () => {
                     category: 'string',
                     estimatedChangeHours: 2,
                     actualChangeHours: 0,
-                    created: 'string',
-                    createdBy: 'string',
+                    createdAtUtc: 'string',
+                    createdById: 'string',
                     lastModified: 'tring',
                     lastModifiedBy: 'string',
+                    modifiedAtUtc: 'string',
+                    modifiedById: 'string',
                     state: 'string',
                     currentWorkflowStep: {
                         id: '',
@@ -140,6 +141,7 @@ const scrimminyCricket = () => {
                     },
                     workflowSteps: [],
                 }}
+                refetch={ }
                 setEditMode={() => console.log('hello')}
             />
         </>
