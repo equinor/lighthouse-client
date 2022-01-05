@@ -17,7 +17,7 @@
         "types": ["node", "vite/client"],
         "sourceMap": true,
         "paths": {
-            "@equinor/form": ["./src/packages/Form"],
+            "@equinor/Form": ["./src/packages/Form"],
             "@equinor/VisualEditor": ["./src/packages/VisualEditor"],
             "@equinor/worker": ["./src/packages/WebWorkers"],
             "@equinor/filter": ["./src/packages/Filter"],
