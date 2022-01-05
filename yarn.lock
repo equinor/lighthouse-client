@@ -10946,6 +10946,14 @@ react-scripts@3.0.0:
   optionalDependencies:
     fsevents "2.0.6"
 
+react-sortablejs@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-sortablejs/-/react-sortablejs-6.0.0.tgz#ba75ded6dce3fa1b5b3b52c70d1928fcdee2003d"
+  integrity sha512-vzi+TWOnofcYg+dYnC/Iz/ZZkBGG76uM6KaLwuAqBk0349JQxIy3PZizbK0TJdLlK6NnLt4CiEyyQXSSnVYvEw==
+  dependencies:
+    classnames "^2.2.6"
+    tiny-invariant "^1.1.0"
+
 react-table@^7.7.0:
   version "7.7.0"
   resolved "https://registry.npmjs.org/react-table/-/react-table-7.7.0.tgz"
