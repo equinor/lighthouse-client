@@ -57,10 +57,10 @@ const ProCoSysAppClient: React.FC<ProCoSysAppClientProps> = ({
                 <ProCoSysTopBar />
                 <MainLayout>
                     <Routes />
+                    <PopupScrim />
                 </MainLayout>
             </Router>
             <FactoryComponent />
-            <PopupScrim />
             <ConfirmationDialog />
         </ClientContextProvider>
     ) : (

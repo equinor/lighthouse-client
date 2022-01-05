@@ -86,7 +86,14 @@ export const ScopeChangeRequestForm = ({
                 editMode={false}
                 buttons={[SubmitButton, SaveButton]}
             />
-            <Button onClick={() => setActiveScrim(scrimminyCricket)}>Spawn scrim </Button>
+            <Button
+                onClick={() => {
+                    setActiveScrim(scrimminyCricket);
+                    closeScrim();
+                }}
+            >
+                Spawn scrim{' '}
+            </Button>
             <Button
                 onClick={() =>
                     spawnConfirmationDialog('You will lose all data', 'Unsaved changes', () =>
