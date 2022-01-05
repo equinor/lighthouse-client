@@ -49,7 +49,7 @@ const webpackConfig: Configuration = {
         path: buildPath,
         filename: '[name].bundle.js',
         chunkFilename: `[name].[contenthash].chunk.js`,
-        publicPath: './',
+        publicPath: '/',
     },
     module: {
         rules: [
