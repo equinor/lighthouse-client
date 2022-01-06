@@ -1,18 +1,33 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { baseClient } from '@equinor/http-client';
 import { createPageViewer } from '../../Core/PageViwer/Api/pageViewerApi';
 import { HorizontalBarChartOptions } from '../../packages/Diagrams/src/Visuals/HorizontalBarVisual';
+import { CumulativeSeriesOptions } from '../../packages/Diagrams/src';
 import { AppApi } from '../apps';
-import { tableColumns } from './DetailsPage/tableConfig';
+import { cols } from './DetailsPage/tableConfig';
 import { Job, mockData } from './mocData/mockData';
+import { newMock } from './mocData/newMock';
 
 const analyticsOptions: AnalyticsOptions<Job> = {
-    section2: {
+    section1: {
+        // chart1: {
+        //     type: 'horizontalBarChart',
+        //     options: {
+        //         nameKey: 'disciplineDescription',
+        //         categoryKey: 'disciplineDescription',
+        //     } as HorizontalBarChartOptions<Job>,
+        // },
         chart1: {
-            type: 'horizontalBarChart',
+            type: 'timeBarChart',
             options: {
-                nameKey: 'disciplineDescription',
-                categoryKey: 'disciplineDescription',
-            } as HorizontalBarChartOptions<Job>,
+                timeChartOptions: {
+                    categoriesKey: 'jobStatuses',
+                    title: 'Job Statuses',
+                    type: 'column',
+                },
+                dateAccessor: 'weekUpdated',
+                title: 'Job Statuses',
+            },
         },
     },
 };
@@ -22,7 +37,7 @@ const detailsPage: AnalyticsOptions<Job> = {
             type: 'table',
             options: {
                 initialGroupBy: 'disciplineDescription',
-                columns: tableColumns,
+                columns: cols,
             },
         },
         // chart2: {
@@ -43,7 +58,7 @@ const detailsPage: AnalyticsOptions<Job> = {
 };
 
 export function setup(appApi: AppApi): void {
-    // const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.fusion]);
     const construction = createPageViewer({
         viewerId: appApi.shortName,
         title: appApi.title,
@@ -60,15 +75,15 @@ export function setup(appApi: AppApi): void {
 
     // Loop Data Test for testing system..
     workPreparation.registerDataSource(async () => {
-        // const plantId = 'PCS$JOHAN_CASTBERG';
-        // const project = 'L.O532C.002';
-        // const response = await api.fetch(
-        //     `https://api-lighthouse-production.playground.radix.equinor.com/loops/${plantId}/${project}`
-        // );
+        const plantId = 'PCS$JOHAN_CASTBERG';
+        const project = 'L.O532C.002';
+        const response = await api.fetch(
+            `https://pro-s-dataproxy-ci.azurewebsites.net/api/contexts/71db33bb-cb1b-42cf-b5bf-969c77e40931/work-orders`
+        );
 
-        // return JSON.parse(await response.text());
-        const data = mockData().filter((j) => j.jobStatus.startsWith('E'));
-        return data;
+        return JSON.parse(await response.text());
+        // const data = newMock().filter((j) => j.jobStatus.startsWith('E'));
+        // return newMock();
     });
 
     const excludeKeys: (keyof Job)[] = ['job', 'jobName', 'jobEstimatedHours'];

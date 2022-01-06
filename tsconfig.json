@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "lib": ["esnext"],
         "strict": true,
         "jsx": "react-jsx",
         "target": "es6",

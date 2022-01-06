@@ -6,14 +6,18 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import { timeChartSeries, TimeDimension } from '../../Utils/createTime';
 import { TimeChip, TimeWrapper } from './Styles/Styles';
 import { TimeBarChartProps } from './Types/timeVisualOptions';
+import { Table, useColumns } from '@equinor/Table';
 
-export function TimeChart<T>({
+export function TimeChart<T extends unknown>({
     data,
-    options: { title, timeChartOptions, colors, defaultTime },
+    options: { title, timeChartOptions, colors, defaultTime, dateAccessor },
 }: TimeBarChartProps<T>): JSX.Element {
     const [time, setTime] = useState<TimeDimension>(defaultTime || 'month');
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const columns = useColumns(data[0] as any);
+
     const { series, categories } = useMemo(
-        () => timeChartSeries(data, timeChartOptions, time),
+        () => timeChartSeries(data, timeChartOptions, time, dateAccessor),
         [data, time]
     );
 
@@ -51,6 +55,18 @@ export function TimeChart<T>({
                 animations: {
                     enabled: false,
                 },
+                events: {
+                    // click: (_event, _chartContext, config) => {
+                    //     console.log('I clicked!');
+                    //     console.log(data);
+                    //     MyPortalThing();
+                    // },
+                    click: (event, chartContext, config) => {
+                        setIsOpen(true);
+                        console.log(data);
+                        console.log(timeChartOptions.categoriesKey);
+                    },
+                },
             },
 
             responsive: [
@@ -84,9 +100,9 @@ export function TimeChart<T>({
             colors: colors
                 ? colors
                 : [
-                    tokens.colors.infographic.substitute__blue_sky.hex,
-                    tokens.colors.infographic.primary__moss_green_100.hex,
-                ],
+                      tokens.colors.infographic.substitute__blue_sky.hex,
+                      tokens.colors.infographic.primary__moss_green_100.hex,
+                  ],
             xaxis: {
                 type: 'category',
                 tickPlacement: 'on',
@@ -129,35 +145,62 @@ export function TimeChart<T>({
     }
 
     return (
-        <AutoSizer>
-            {({ width }) => (
-                <>
-                    <TimeWrapper>
-                        <TimeChip variant={getVariant('week')} onClick={() => setTime('week')}>
-                            Week
-                        </TimeChip>
-                        <TimeChip variant={getVariant('month')} onClick={() => setTime('month')}>
-                            Month
-                        </TimeChip>
-                        <TimeChip
-                            variant={getVariant('quarter')}
-                            onClick={() => setTime('quarter')}
-                        >
-                            Quarter
-                        </TimeChip>
-                        <TimeChip variant={getVariant('year')} onClick={() => setTime('year')}>
-                            Year
-                        </TimeChip>
-                    </TimeWrapper>
-                    <Chart
-                        options={options}
-                        series={series}
-                        type="bar"
-                        height={`${300}px`}
-                        width={`${width}px`}
-                    />
-                </>
+        <>
+            <AutoSizer>
+                {({ width }) => (
+                    <>
+                        <TimeWrapper>
+                            <TimeChip variant={getVariant('week')} onClick={() => setTime('week')}>
+                                Week
+                            </TimeChip>
+                            <TimeChip
+                                variant={getVariant('month')}
+                                onClick={() => setTime('month')}
+                            >
+                                Month
+                            </TimeChip>
+                            <TimeChip
+                                variant={getVariant('quarter')}
+                                onClick={() => setTime('quarter')}
+                            >
+                                Quarter
+                            </TimeChip>
+                            <TimeChip variant={getVariant('year')} onClick={() => setTime('year')}>
+                                Year
+                            </TimeChip>
+                        </TimeWrapper>
+                        <Chart
+                            options={options}
+                            series={series}
+                            type="bar"
+                            height={`${300}px`}
+                            width={`${width}px`}
+                        />
+                    </>
+                )}
+            </AutoSizer>
+            {isOpen && (
+                <div
+                    style={{
+                        zIndex: 1000,
+                        display: 'flex',
+                        justifySelf: 'end',
+                        width: 'fit-content',
+                        height: '100vh',
+                        backgroundColor: 'white',
+                        borderLeft: '1px solid lightgray',
+                        overflow: 'auto',
+                    }}
+                >
+                    <button onClick={() => setIsOpen(false)} style={{ height: '20px' }}>
+                        X
+                    </button>
+
+                    <div style={{ display: 'flex' }}>
+                        <Table options={{ data, columns }} />
+                    </div>
+                </div>
             )}
-        </AutoSizer>
+        </>
     );
 }

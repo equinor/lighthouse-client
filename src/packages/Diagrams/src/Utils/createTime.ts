@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { ChartData, CumulativeSeries, CumulativeSeriesOptions } from '../Types';
-import { sortDateByKey } from './sortDate';
+import { convertToDate, sortDateByKey, sorting } from './sortDate';
 
 export type TimeDimension = 'month' | 'week' | 'year' | 'quarter';
 
@@ -84,6 +84,15 @@ function getTimeDimension(date: string, timeDimension: TimeDimension): string {
             return `${dt.year}`;
     }
 }
+function getYears2<T>(data: T[]) {
+    const years: Set<number> = new Set();
+    data.forEach((item) => {
+        debugger;
+        item && years.add(convertToDate(item as any).getUTCFullYear());
+    });
+    debugger;
+    return [...years];
+}
 
 function getYears<T>(data: T[], dateKey: keyof T): number[] {
     const years: Set<number> = new Set();
@@ -94,7 +103,7 @@ function getYears<T>(data: T[], dateKey: keyof T): number[] {
 }
 
 function dataReducer<T>(sortedData: T[], options: CumulativeSeriesOptions<T>, time: TimeDimension) {
-    const years = getYears(sortedData, options.categoriesKey);
+    const years = getYears2(sortedData);
     const initialData = getInitialTimeDecimation<T>(
         years,
         time,
@@ -133,13 +142,14 @@ function dataReducer<T>(sortedData: T[], options: CumulativeSeriesOptions<T>, ti
     return Object.values(reducedData).filter(options.filter ? options.filter : () => true);
 }
 
-export function timeChartSeries<T>(
+export function timeChartSeries<T extends unknown>(
     dataItem: T[],
     options: CumulativeSeriesOptions<T>,
-    time: TimeDimension
+    time: TimeDimension,
+    dateAccessor: any
 ): ChartData {
-    const sortedData = sortDateByKey(dataItem, options.categoriesKey);
-
+    const sortedData = sorting(dataItem, options.categoriesKey, dateAccessor);
+    debugger;
     const reducedData = dataReducer<T>(sortedData, options, time);
     const data = reducedData.map((i) => i.value);
     const series = [{ data, name: options.title, type: options.type }];
