@@ -1,4 +1,4 @@
-import { Status } from '../../CompletionView/src/DataViewerApi/DataViewState';
+import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { StatusView } from '../Context/ParkViewContext';
 import { Data } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';

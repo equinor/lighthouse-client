@@ -1,8 +1,6 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { baseClient } from '@equinor/http-client';
-import { createPageViewer } from '../../Core/PageViwer/Api/pageViewerApi';
-import { HorizontalBarChartOptions } from '../../packages/Diagrams/src/Visuals/HorizontalBarVisual';
-import { CumulativeSeriesOptions } from '../../packages/Diagrams/src';
+import { baseClient } from '../../../packages/httpClient/src';
+import { createPageViewer } from '../../Core/PageViewer/Api/pageViewerApi';
 import { AppApi } from '../apps';
 import { cols } from './DetailsPage/tableConfig';
 import { Job, mockData } from './mocData/mockData';
@@ -64,10 +62,9 @@ export function setup(appApi: AppApi): void {
         title: appApi.title,
     });
 
-    construction.registerFusionPowerBi('swcr-analytics-rls', {
-        title: 'SWCR Analytics',
-        reportURI: 'swcr-analytics-rls',
-    });
+    /** 
+    Remove SWCR analytics, since its not relevant for Construction
+    */
 
     const workPreparation = construction.registerDashboard<Job>('work-preparation', {
         title: 'Work Preparation',
@@ -88,42 +85,55 @@ export function setup(appApi: AppApi): void {
 
     const excludeKeys: (keyof Job)[] = ['job', 'jobName', 'jobEstimatedHours'];
 
-    workPreparation.registerFilterOptions({ excludeKeys });
+    // const excludeKeys: (keyof WP)[] = [
+    //     'tagNo',
+    //     'functionTags',
+    //     'contentChecklists',
+    //     'description',
+    //     'commPk',
+    //     'mcPk',
+    //     'signedAt',
+    //     'createdAt',
+    // ];
 
-    workPreparation.registerPage({
-        title: 'Jobcards',
-        pageId: 'workPreparationJobCards',
-        type: 'AnalyticsPage',
+    // workPreparation.registerFilterOptions({ excludeKeys });
 
-        ...analyticsOptions,
-    });
+    // workPreparation.registerPage({
+    //     title: 'Jobcards',
+    //     pageId: 'workPreparationJobCards',
+    //     type: 'AnalyticsPage',
+    //     ...analyticsOptions,
+    // });
 
-    workPreparation.registerPage({
-        title: 'Hours',
-        pageId: 'workPreparationHours',
-        type: 'AnalyticsPage',
-        ...analyticsOptions,
-    });
-    workPreparation.registerPage({
-        title: 'Details',
-        pageId: 'workPreparationDetails',
-        type: 'AnalyticsPage',
-        ...detailsPage,
-    });
-    workPreparation.registerPage({
-        title: 'Hold',
-        pageId: 'workPreparationDetailsHold',
-        type: 'AnalyticsPage',
-        ...analyticsOptions,
-    });
+    // workPreparation.registerPage({
+    //     title: 'Hours',
+    //     pageId: 'workPreparationHours',
+    //     type: 'AnalyticsPage',
+    //     ...analyticsOptions2,
+    // });
+    // workPreparation.registerPage({
+    //     title: 'Details',
+    //     pageId: 'workPreparationDetails',
+    //     type: 'AnalyticsPage',
+    //     ...analyticsOptions,
+    // });
+    // workPreparation.registerPage({
+    //     title: 'Hold',
+    //     pageId: 'workPreparationDetailsHold',
+    //     type: 'AnalyticsPage',
+    //     ...analyticsOptions2,
+    // });
 
-    construction.registerFusionPowerBi('lci-hanging-gardens', {
-        title: 'LCI Hanging Garden',
-        reportURI: 'lci-hanging-gardens',
-    });
-    construction.registerFusionPowerBi('checklist-analytics-rls', {
+    /** 
+    Remove LCI hanging garden, since its not relevant for Construction
+    */
+    // construction.registerFusionPowerBi('lci-hanging-gardens', {
+    //     title: 'LCI Hanging Garden',
+    //     reportURI: 'lci-hanging-gardens',
+    // });
+    construction.registerFusionPowerBi('jca-checklist', {
         title: 'Checklist Analytics',
-        reportURI: 'checklist-analytics-rls',
+        reportURI: 'jca-checklist',
     });
     construction.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
         title: 'Punch Analytics',

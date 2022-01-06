@@ -1,21 +1,20 @@
-import { Avatar, TopBar } from "@equinor/eds-core-react";
-import { useGraphClient } from "@equinor/http-client";
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import useClientContext from "../../context/clientContext";
-import Icon from "../Icon/Icon";
-import Logo from "./Logo/Logo";
+import { Avatar, TopBar } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { useGraphClient } from '@equinor/http-client';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import useClientContext from '../../context/clientContext';
+import Icon from '../Icon/Icon';
+import Logo from './Logo/Logo';
 
 const Icons = styled.div`
-      display: flex;
-      align-items: center;
-      flex-direction: row-reverse;
-      > * {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    > * {
         margin-left: 40px;
-       
-      }
-`
-
+    }
+`;
 
 const TopBarWrapper = styled.div`
     position: fixed;
@@ -25,24 +24,21 @@ const TopBarWrapper = styled.div`
     > header {
         padding-left: 1.5rem;
     }
-`
-
+`;
 
 const ProCoSysTopBar = (): JSX.Element => {
-
     const { toggleAppPanel, authProvider } = useClientContext();
-    const graph = useGraphClient(authProvider)
-    const [image, setImage] = useState<string | undefined>(undefined)
+    const graph = useGraphClient(authProvider);
+    const [image, setImage] = useState<string | undefined>(undefined);
     useEffect(() => {
-
-        graph.graphGetProfilePicture().then(img => setImage(img));
-    }, [])
+        graph.graphGetProfilePicture().then((img) => setImage(img));
+    }, []);
     return (
         <TopBarWrapper>
             <TopBar>
                 <TopBar.Header>
-                    <div onClick={() => toggleAppPanel()} style={{ cursor: "pointer" }}>
-                        <Icon name="menu" />
+                    <div onClick={() => toggleAppPanel()} style={{ cursor: 'pointer' }}>
+                        <Icon color={tokens.colors.interactive.primary__resting.hex} name="menu" />
                     </div>
                     <Logo />
                 </TopBar.Header>
@@ -60,7 +56,7 @@ const ProCoSysTopBar = (): JSX.Element => {
                 </TopBar.Actions>
             </TopBar>
         </TopBarWrapper>
-    )
-}
+    );
+};
 
 export default ProCoSysTopBar;

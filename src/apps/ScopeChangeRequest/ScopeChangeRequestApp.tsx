@@ -1,17 +1,17 @@
-import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
-import { AppApi } from '../apps';
-import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
-import { baseClient } from '@equinor/http-client';
-import { statusBarData } from './Sections/AnalyticsConfig';
-import { CustomSidesheet } from './Components/CustomSidesheet';
 import { createDataFactory } from '@equinor/DataFactory';
-import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { Workflow } from './Components/Workflow/Workflow';
+import { baseClient } from '@equinor/http-client';
+import { createWorkSpace } from '@equinor/WorkSpace';
+import { AppApi } from '../apps';
+import { CustomSidesheet } from './Components/CustomSidesheet';
+import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
+import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
+import { statusBarData } from './Sections/AnalyticsConfig';
+import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
 export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const request = createDataViewer<ScopeChangeRequest>({
+    const request = createWorkSpace<ScopeChangeRequest>({
         initialState: [],
         primaryViewKey: 'id',
         viewerId: appApi.shortName,
@@ -34,11 +34,6 @@ export function setup(appApi: AppApi): void {
     });
 
     const scopeChangeExcludeKeys: (keyof ScopeChangeRequest)[] = [
-        'createdBy',
-        'created',
-        'lastModified',
-        'lastModifiedBy',
-        'description',
         'id',
         'currentWorkflowStep',
         'workflowSteps',
@@ -49,8 +44,8 @@ export function setup(appApi: AppApi): void {
         typeMap: {},
         groupValue: {
             signedAtDate: (item: ScopeChangeRequest): string => {
-                if (item.created === '') return 'unknown';
-                switch (new Date(item.created).getMonth()) {
+                if (item.createdAtUtc === '') return 'unknown';
+                switch (new Date(item.createdAtUtc).getMonth()) {
                     case 0:
                         return 'January';
                     case 1:
@@ -93,39 +88,56 @@ export function setup(appApi: AppApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'id',
         enableSelectRows: true,
-        hiddenColumns: ['currentWorkflowStep', 'createdBy', 'lastModified', 'lastModifiedBy'],
+        hiddenColumns: ['currentWorkflowStep', 'id'],
+        columnOrder: [
+            'title',
+            'phase',
+            'workflowSteps',
+            'estimatedChangeHours',
+            'actualChangeHours',
+            'category',
+            'origin',
+            'lastModified',
+        ],
         headers: [
-            { key: 'id', title: 'Id' },
-            { key: 'actualChangeHours', title: 'Actual hours' },
-            { key: 'category', title: 'Category' },
-            { key: 'workflowSteps', title: 'Workflow' },
             { key: 'title', title: 'Title' },
-            { key: 'description', title: 'Description' },
             { key: 'phase', title: 'Phase' },
-            { key: 'createdBy', title: 'Created by' },
+            { key: 'workflowSteps', title: 'Workflow' },
             { key: 'estimatedChangeHours', title: 'Estimate hours' },
-            { key: 'lastModified', title: 'Last modified' },
-            { key: 'lastModifiedBy', title: 'Last modified by' },
-            { key: 'origin', title: 'Origin' },
-            { key: 'state', title: 'State' },
-            { key: 'created', title: 'Created' },
+            { key: 'actualChangeHours', title: 'Actual' },
+            { key: 'category', title: 'Change category' },
+            { key: 'origin', title: 'Change origin' },
+            { key: 'createdAtUtc', title: 'Created at' },
+            { key: 'createdById', title: 'Created by' },
+            { key: 'modifiedAtUtc', title: 'Last updated' },
+            { key: 'modifiedById', title: 'Updated by' },
+            { key: 'description', title: 'Description' },
+            { key: 'state', title: 'Status' },
+
+            // { key: 'createdBy', title: 'Created by' },
+            // { key: 'state', title: 'State' },
+            // { key: 'description', title: 'Description' },
+            // { key: 'id', title: 'Id' },
+            // { key: 'created', title: 'Created' },
+            // { key: 'lastModifiedBy', title: 'Last modified by' },
         ],
         customCellView: [
             {
-                key: 'created',
+                key: 'modifiedAtUtc',
                 type: 'Date',
             },
             {
-                key: 'description',
-                type: 'Description',
+                key: 'createdAtUtc',
+                type: 'Date',
             },
+
             {
                 key: 'workflowSteps',
                 type: {
-                    Cell: ({ cell }) => {
+                    Cell: ({ cell }: any) => {
                         return (
                             <div>
-                                <Workflow
+                                <WorkflowCompact
                                     steps={cell.value.content.workflowSteps}
                                     statusDotFunc={statusDotFunc}
                                     spanDirection={'horizontal'}

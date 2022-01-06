@@ -2,6 +2,7 @@ import { Button } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { patchScopeChange } from '../../Api';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -11,22 +12,11 @@ interface ScopeChangeRequestEditFormProps {
 export const ScopeChangeRequestEditForm = ({
     request,
     cancel,
-}: ScopeChangeRequestEditFormProps) => {
+}: ScopeChangeRequestEditFormProps): JSX.Element => {
     const formData = useForm(scopeChangeRequestSchema, request);
 
-    const onSubmit = () => {
-        const requestOptions = {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData.data),
-        };
-        fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}`,
-            requestOptions
-        )
-            .then((response) => response.json())
-            .then((data) => console.log(data));
-        console.log('Form submitted');
+    const onSubmit = async () => {
+        patchScopeChange(formData.data);
     };
 
     const SaveButton = () => {

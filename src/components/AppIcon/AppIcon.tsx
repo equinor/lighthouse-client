@@ -1,12 +1,12 @@
-import { FC } from "react";
-import { useHistory } from "react-router-dom";
-import styled from "styled-components";
-import useClientContext from "../../context/clientContext";
+import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import useClientContext from '../../context/clientContext';
 
 interface AppIconProps {
     icon: React.FC;
     color: string;
-    label?: string
+    label?: string;
 }
 
 const Wrapper = styled.div`
@@ -16,8 +16,7 @@ const Wrapper = styled.div`
     padding: 18px;
     width: 84px;
     text-align: center;
-`
-
+`;
 
 const IconWrapper = styled.div`
     cursor: pointer;
@@ -26,40 +25,35 @@ const IconWrapper = styled.div`
     height: 28px;
     margin: 8px;
 
-    :hover{
+    :hover {
         filter: brightness(120%);
     }
-`
+`;
 
 const IconLabel = styled.p`
     margin: 0;
-  
-`
+`;
 
 const AppIcon: FC<AppIconProps> = ({ icon, label }: AppIconProps): JSX.Element => {
     const { toggleAppPanel } = useClientContext();
 
-    let history = useHistory();
+    const navigate = useNavigate();
 
     function handleClick() {
         const route = `/${label}`;
-        console.log(route)
-        history.push(route);
-        toggleAppPanel()
+        navigate(route);
+        toggleAppPanel();
     }
 
     const Icon = icon;
-    return (<Wrapper onClick={() => handleClick()}>
-        <IconWrapper >
-            <Icon />
-        </IconWrapper>
-        {
-            label &&
-            <IconLabel>{label}</IconLabel>
-        }
-    </Wrapper >
-    )
-
-}
+    return (
+        <Wrapper onClick={() => handleClick()}>
+            <IconWrapper>
+                <Icon />
+            </IconWrapper>
+            {label && <IconLabel>{label}</IconLabel>}
+        </Wrapper>
+    );
+};
 
 export default AppIcon;
