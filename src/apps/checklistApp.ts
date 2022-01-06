@@ -1,6 +1,5 @@
+import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
-import { createWorkSpace } from '@equinor/WorkSpace';
-import { AppApi } from './apps';
 
 export interface Checklist {
     Hyperlink_Status__Id: string;
@@ -58,12 +57,10 @@ const commPkgKeys: (keyof Checklist)[] = [
     'WorkOrders__WoNo',
 ];
 
-export function setup(appApi: AppApi): void {
+export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const checklist = createWorkSpace<Checklist>({
-        initialState: [],
+    const checklist = appApi.createWorkSpace<Checklist>({
         primaryViewKey: 'TagFormularType__Tag__TagNo',
-        viewerId: appApi.shortName,
     });
 
     checklist.registerDataSource(async () => {

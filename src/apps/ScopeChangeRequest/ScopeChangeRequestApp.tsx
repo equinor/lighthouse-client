@@ -1,21 +1,16 @@
-import { createDataFactory } from '@equinor/DataFactory';
+import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { baseClient } from '@equinor/http-client';
-import { createWorkSpace } from '@equinor/WorkSpace';
-import { AppApi } from '../apps';
 import { ScopeChangeSideSheet } from './Components/CustomSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
-export function setup(appApi: AppApi): void {
+export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const request = createWorkSpace<ScopeChangeRequest>({
-        initialState: [],
+    const request = appApi.createWorkSpace<ScopeChangeRequest>({
         primaryViewKey: 'id',
-        viewerId: appApi.shortName,
-        dataFactoryCreator: createDataFactory,
     });
 
     request.registerDataCreator({

@@ -1,7 +1,5 @@
+import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
-import { createWorkSpace } from '../../Core/WorkSpace/src/WorkSpaceApi/Api';
-import { AppApi } from '../apps';
-
 
 export interface WorkOrder {
     plant: string;
@@ -31,14 +29,12 @@ const excludeKeys: (keyof WorkOrder)[] = [
     'areaDescription',
 ];
 
-export function setup(appApi: AppApi): void {
+export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [
         'api://460842ad-e295-4449-a96a-362b1e46ce45/.default',
     ]);
-    const commPkg = createWorkSpace<WorkOrder>({
-        initialState: [],
+    const commPkg = appApi.createWorkSpace<WorkOrder>({
         primaryViewKey: 'mcPkgNo',
-        viewerId: appApi.shortName,
     });
 
     commPkg.registerDataSource(async () => {
