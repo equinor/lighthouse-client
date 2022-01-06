@@ -17,6 +17,8 @@ export function DataView(): JSX.Element {
         setSelectedData(item);
     }, [item]);
 
+    return null;
+
     return (
         <Wrapper>
             {dataViewSideSheetOptions?.CustomComponent ? (

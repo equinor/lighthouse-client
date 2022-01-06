@@ -1,6 +1,8 @@
 import React, { PropsWithChildren, useCallback, useLayoutEffect } from 'react';
 import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
+import { openSidesheet } from '../../../Core/PopoutSidesheet/Functions/openSidesheet';
+import { useDataContext } from '../../../Core/WorkSpace/src/Context/DataProvider';
 import { useTable } from '../Hooks/useTable';
 import { CellClickHandler, TableData } from '../types';
 import { useDefaultColumn } from '../Utils/ColumnDefault';
@@ -90,12 +92,18 @@ interface RenderRowProps {
     style: any;
 }
 const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null => {
+    const { dataViewSideSheetOptions } = useDataContext();
     const row = data.rows[index];
     if (!row) return null;
     data.prepareRow(row);
 
     const handleClick = useCallback(() => {
-        data.setSelected && data.setSelected(row.original);
+        //data.setSelected && data.setSelected(row.original);
+        if (dataViewSideSheetOptions?.CustomComponent) {
+            openSidesheet(dataViewSideSheetOptions.CustomComponent, {
+                object: row.original,
+            });
+        }
     }, [data.setSelected, row]);
 
     return (

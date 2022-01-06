@@ -10,7 +10,7 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
-    WorkflowEditorOptions
+    WorkflowEditorOptions,
 } from '../WorkSpaceApi/State';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
@@ -31,7 +31,7 @@ interface DataState {
     analyticsOptions?: AnalyticsOptions<unknown>;
     statusFunc?: StatusFunc<unknown>;
     powerBiOptions?: PowerBiOptions;
-    dataViewSideSheetOptions?: DataViewSideSheetOptions<unknown>;
+    dataViewSideSheetOptions?: DataViewSideSheetOptions;
     workflowEditorOptions?: WorkflowEditorOptions;
 }
 interface DataContextState extends DataState {

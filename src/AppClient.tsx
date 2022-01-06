@@ -12,7 +12,7 @@ import ProCoSysTopBar from './components/TopBar/TopBar';
 import { ClientContextProvider } from './context/clientContext';
 import { FactoryComponent } from './Core/DataFactory';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
-import { PopupScrim } from './Core/PopupScrim/PopupScrim';
+import { PopoutSidesheet } from './Core/PopoutSidesheet/PopoutSidesheet';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -57,21 +57,21 @@ const Client: React.FC<ClientProps> = ({
     const queryClient = new QueryClient();
 
     return isAuthenticated ? (
-        <ClientContextProvider {...{ appConfig, authProvider }}>
-            <FactoryComponent />
-            <ConfirmationDialog />
-            <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+            <ClientContextProvider {...{ appConfig, authProvider }}>
+                <FactoryComponent />
+                <ConfirmationDialog />
                 <BrowserRouter>
                     <GlobalStyle />
                     <ProCoSysTopBar />
                     <MainLayout>
                         <ClientRoutes manifests={manifests} />
-                        <PopupScrim />
+                        <PopoutSidesheet />
                     </MainLayout>
                 </BrowserRouter>
                 <FactoryComponent />
-            </QueryClientProvider>
-        </ClientContextProvider>
+            </ClientContextProvider>
+        </QueryClientProvider>
     ) : (
         <>
             <GlobalStyle />

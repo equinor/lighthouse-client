@@ -55,6 +55,6 @@ export interface WorkSpaceApi<T> {
     registerAnalyticsOptions: (options: AnalyticsOptions<T>) => void;
     registerStatusItems: (options: StatusFunc<T>) => void;
     registerPowerBIOptions: (options: PowerBiOptions) => void;
-    registerDataViewSideSheetOptions: (options: DataViewSideSheetOptions<T>) => void;
+    registerDataViewSideSheetOptions: (options: DataViewSideSheetOptions) => void;
     registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => void;
 }

@@ -3,7 +3,7 @@ import { AnalyticsOptions } from '@equinor/Diagrams';
 import { baseClient } from '@equinor/http-client';
 import { createWorkSpace } from '@equinor/WorkSpace';
 import { AppApi } from '../apps';
-import { CustomSidesheet } from './Components/CustomSidesheet';
+import { ScopeChangeSideSheet } from './Components/CustomSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
@@ -169,7 +169,7 @@ export function setup(appApi: AppApi): void {
 
     request.registerStatusItems(statusBarData);
 
-    request.registerDataViewSideSheetOptions({ CustomComponent: CustomSidesheet });
+    request.registerDataViewSideSheetOptions({ CustomComponent: ScopeChangeSideSheet });
 
     // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
     // request.registerVisualEditorOptions({

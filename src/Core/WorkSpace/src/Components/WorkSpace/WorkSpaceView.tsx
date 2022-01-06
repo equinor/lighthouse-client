@@ -12,7 +12,6 @@ import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { DataViewWrapper } from './WorkSpaceViewStyles';
 
-
 export function WorkSpaceView(props: AppApi): JSX.Element {
     const {
         treeOptions,

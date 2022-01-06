@@ -3,19 +3,17 @@ import styled from 'styled-components';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
-import { clearActiveScrim } from '../Functions/clearActiveScrim';
+import { closeSidesheet } from '../Functions/closeSidesheet';
+import { useAtom } from '@dbeining/react-atom';
+import { getSidesheetContext } from '../context/sidesheetContext';
 
-interface ResizableSidesheetProps {
-    children: React.ReactChild;
-}
-
-export const ResizableSidesheet = ({ children }: ResizableSidesheetProps): JSX.Element => {
+export const ResizableSidesheet = (): JSX.Element | null => {
     const [isMinimized, setIsMinimized] = useState<boolean>(false);
-    const [width, setWidth] = useState<number>(320);
-
+    const [width, setWidth] = useState<number>(650);
+    const { SidesheetComponent, props } = useAtom(getSidesheetContext());
     const handleClose = () => {
         setWidth(0);
-        clearActiveScrim();
+        closeSidesheet();
     };
 
     const handleMinimize = () => {
@@ -34,11 +32,15 @@ export const ResizableSidesheet = ({ children }: ResizableSidesheetProps): JSX.E
         );
     }
 
+    if (!SidesheetComponent) return null;
+
     return (
         <div>
             <Resizable
-                size={{ width: width, height: '100vh' }}
-                style={{ borderLeft: `2px solid ${tokens.colors.ui.background__medium.rgba}` }}
+                size={{ width: width, height: 5 }}
+                style={{
+                    borderLeft: `2px solid ${tokens.colors.ui.background__medium.rgba}`,
+                }}
                 onResizeStop={(e, direction, ref, d) => {
                     setWidth(width + d.width);
                 }}
@@ -55,7 +57,8 @@ export const ResizableSidesheet = ({ children }: ResizableSidesheetProps): JSX.E
                         onClick={handleClose}
                     />
                 </Header>
-                {children}
+
+                <SidesheetComponent {...props} />
             </Resizable>
         </div>
     );
