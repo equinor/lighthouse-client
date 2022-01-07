@@ -21,7 +21,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
     return (
         <>
-            <p>Test</p>
             {scopeChange && !!Object.keys(scopeChange).length && (
                 <>
                     <Wrapper>
