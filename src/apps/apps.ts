@@ -26,10 +26,11 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport
+    SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
+import { setup as SwcrSetup } from './swcr';
 
 type HEXColor = `#${string}`;
 
@@ -420,6 +421,7 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
+            setup: SwcrSetup,
         },
     },
     // Queries and requests
