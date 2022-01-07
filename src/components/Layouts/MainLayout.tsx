@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import useClientContext from '../../context/clientContext';
+import { PopoutSidesheet } from '../../Core/PopoutSidesheet/PopoutSidesheet';
 import { MainMenu } from '../Menu/MainMenu';
 
 const Wrapper = styled.div`
@@ -34,6 +35,7 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
                 <MainMenu />
             </MainMenuWrapper>
             <ChildrenWrapper panelActive={appsPanelActive}>{children}</ChildrenWrapper>
+            <PopoutSidesheet />
         </Wrapper>
     );
 };

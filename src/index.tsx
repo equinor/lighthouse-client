@@ -1,9 +1,12 @@
 import { Configuration } from '@azure/msal-browser';
+import { clientApiBuilder } from '@equinor/app-builder';
 import { authenticationProvider } from '@equinor/authentication';
 import { fetchConfig } from '@equinor/lighthouse-conf';
 import { render } from 'react-dom';
 import Client from './AppClient';
 import { appGroups, apps } from './apps/apps';
+import { createDataFactory } from '@equinor/DataFactory';
+import { openSidesheet } from './Core/PopoutSidesheet/Functions/openSidesheet';
 
 fetchConfig().then((appConfig) => {
     const clientId = appConfig.clientId;
@@ -24,15 +27,18 @@ fetchConfig().then((appConfig) => {
     };
 
     const authProvider = authenticationProvider(authConfig);
-
     if (authProvider && !(window !== window.parent && !window.opener)) {
         apps.forEach((manifest) => {
             manifest.app?.setup &&
-                manifest.app.setup({
-                    ...manifest,
-                    appConfig,
-                    authProvider,
-                });
+                manifest.app.setup(
+                    clientApiBuilder({
+                        ...manifest,
+                        appConfig,
+                        authProvider,
+                        openSidesheet,
+                        createDataFactory,
+                    })
+                );
         });
 
         const manifests = { apps, appGroups };

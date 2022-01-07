@@ -17,8 +17,10 @@
         "types": ["node", "vite/client"],
         "sourceMap": true,
         "paths": {
+            "@equinor/app-builder": ["./src/Core/AppBuilder"],
             "@equinor/GroupView": ["./src/Core/GroupView"],
             "@equinor/WorkSpace": ["./src/Core/WorkSpace"],
+            "@equinor/PageViewer": ["./src/Core/PageViewer"],
             "@equinor/Form": ["./src/packages/Form"],
             "@equinor/VisualEditor": ["./src/packages/VisualEditor"],
             "@equinor/worker": ["./src/packages/WebWorkers"],
