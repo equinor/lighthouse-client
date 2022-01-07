@@ -31,7 +31,7 @@ import {
  */
 export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
     const onSelect = (item: T) => options.openSidesheet(options.CustomSidesheet, item);
-    const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
+    //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
 
     dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => {
         if (state[options.viewerId]) {
