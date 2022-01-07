@@ -6,11 +6,12 @@ import { WorkspaceOptions } from '../Services/ClientBuilder';
 import { AppManifest } from './Manifest';
 
 type AppType = 'DataViewer' | 'PageView' | 'CustomApp' | 'PowerBI';
+export type CustomClientApi = Omit<ClientApi, 'createWorkSpace' | 'createPageViewer'>;
 
 export interface App {
     appType?: AppType;
     setup?: (api: ClientApi) => void;
-    component?: React.FC<AppManifest>;
+    component?: React.FC<CustomClientApi>;
 }
 
 export interface ClientApi extends AppManifest {

@@ -57,9 +57,8 @@ const Client: React.FC<ClientProps> = ({
 
     return isAuthenticated ? (
         <QueryClientProvider client={queryClient}>
+            <ConfirmationDialog />
             <ClientContextProvider {...{ appConfig, authProvider }}>
-                <FactoryComponent />
-                <ConfirmationDialog />
                 <BrowserRouter>
                     <GlobalStyle />
                     <ProCoSysTopBar />

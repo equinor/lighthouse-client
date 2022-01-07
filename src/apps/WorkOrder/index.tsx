@@ -33,9 +33,7 @@ export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [
         'api://460842ad-e295-4449-a96a-362b1e46ce45/.default',
     ]);
-    const commPkg = appApi.createWorkSpace<WorkOrder>({
-        primaryViewKey: 'mcPkgNo',
-    });
+    const commPkg = appApi.createWorkSpace<WorkOrder>({});
 
     commPkg.registerDataSource(async () => {
         const response = await api.fetch(
@@ -47,18 +45,6 @@ export function setup(appApi: ClientApi): void {
 
     commPkg.registerFilterOptions({
         excludeKeys,
-    });
-
-    commPkg.registerViewOptions({
-        objectIdentifierKey: 'mcPkgNo',
-        title: {
-            key: 'mcPkgNo',
-            label: 'McPkg No',
-        },
-        description: {
-            key: 'description',
-            label: 'Description',
-        },
     });
 
     commPkg.registerTableOptions({

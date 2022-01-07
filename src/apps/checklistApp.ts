@@ -59,9 +59,7 @@ const commPkgKeys: (keyof Checklist)[] = [
 
 export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const checklist = appApi.createWorkSpace<Checklist>({
-        primaryViewKey: 'TagFormularType__Tag__TagNo',
-    });
+    const checklist = appApi.createWorkSpace<Checklist>({});
 
     checklist.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
@@ -81,18 +79,6 @@ export function setup(appApi: ClientApi): void {
         excludeKeys: commPkgKeys,
         typeMap: {},
         groupValue: {},
-    });
-
-    checklist.registerViewOptions({
-        objectIdentifierKey: 'Id',
-        title: {
-            key: 'TagFormularType__Tag__TagNo',
-            label: 'TagNo:',
-        },
-        description: {
-            key: 'TagFormularType__FormularType__FormularGroup__Description',
-            label: 'Description',
-        },
     });
 
     checklist.registerTableOptions({ objectIdentifierKey: 'Id' });

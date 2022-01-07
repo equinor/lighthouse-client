@@ -2,17 +2,16 @@ import { Tabs } from '@equinor/eds-core-react';
 import { FilterProvider, FilterView } from '@equinor/filter';
 import { useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { ClientApi } from '../../../../../apps/apps';
+import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
 import { useConfiguredTabs } from '../../Tabs/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { CompletionViewHeader } from '../DataViewerHeader/Header';
-import { DataView } from '../DefaultView/DataView';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { DataViewWrapper } from './WorkSpaceViewStyles';
 
-export function WorkSpaceView(props: ClientApi): JSX.Element {
+export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const {
         treeOptions,
         tableOptions,
@@ -81,7 +80,6 @@ export function WorkSpaceView(props: ClientApi): JSX.Element {
                 <FilterView isActive={activeFilter} />
                 <DataViewWrapper>
                     <WorkSpaceTabs tabs={tabs} activeTab={activeTab} />
-                    <DataView />
                 </DataViewWrapper>
             </Tabs>
         </FilterProvider>

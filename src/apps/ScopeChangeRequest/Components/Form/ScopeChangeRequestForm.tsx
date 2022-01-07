@@ -37,6 +37,7 @@ export const ScopeChangeRequestForm = ({
 
     const redirect = async () => {
         if (!scID) return;
+
         openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scID));
         closeScrim();
     };

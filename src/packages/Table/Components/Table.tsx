@@ -1,8 +1,6 @@
 import React, { PropsWithChildren, useCallback, useLayoutEffect } from 'react';
 import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
-import { openSidesheet } from '../../../Core/PopoutSidesheet/Functions/openSidesheet';
-import { useDataContext } from '../../../Core/WorkSpace/src/Context/DataProvider';
 import { useTable } from '../Hooks/useTable';
 import { CellClickHandler, TableData } from '../types';
 import { useDefaultColumn } from '../Utils/ColumnDefault';
@@ -72,7 +70,13 @@ export function Table<TData extends TableData = TableData>({
                     itemCount={rows.length}
                     width={totalColumnsWidth + 10}
                     itemSize={itemSize}
-                    itemData={{ rows, prepareRow, onCellClick, setSelected: options?.setSelected }}
+                    itemData={{
+                        rows,
+                        prepareRow,
+                        onCellClick,
+                        setSelected: options?.setSelected,
+                        onSelect: options?.onSelect,
+                    }}
                 >
                     {RenderRow}
                 </List>
@@ -85,6 +89,7 @@ interface RenderRowData {
     prepareRow: (row: Row<TableData>) => void;
     onCellClick: CellClickHandler<TableData>;
     setSelected?: (item: any) => void;
+    onSelect?: (item: TableData) => void;
 }
 interface RenderRowProps {
     data: RenderRowData;
@@ -92,19 +97,14 @@ interface RenderRowProps {
     style: any;
 }
 const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null => {
-    const { dataViewSideSheetOptions } = useDataContext();
     const row = data.rows[index];
     if (!row) return null;
     data.prepareRow(row);
 
     const handleClick = useCallback(() => {
         //data.setSelected && data.setSelected(row.original);
-        if (dataViewSideSheetOptions?.CustomComponent) {
-            openSidesheet(dataViewSideSheetOptions.CustomComponent, {
-                object: row.original,
-            });
-        }
-    }, [data.setSelected, row]);
+        data?.onSelect && data.onSelect(row.original);
+    }, [data?.onSelect, row]);
 
     return (
         <TableRow {...row.getRowProps({ style })} onClick={handleClick}>

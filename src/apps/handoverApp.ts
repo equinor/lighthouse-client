@@ -60,9 +60,7 @@ function start(item: CommPkg): string {
 
 export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const commPkg = appApi.createWorkSpace<CommPkg>({
-        primaryViewKey: 'CommPkgNo',
-    });
+    const commPkg = appApi.createWorkSpace<CommPkg>({});
 
     commPkg.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
@@ -86,18 +84,6 @@ export function setup(appApi: ClientApi): void {
         },
         groupValue: {
             start,
-        },
-    });
-
-    commPkg.registerViewOptions({
-        objectIdentifierKey: 'CommPkgNo',
-        title: {
-            key: 'CommPkgNo',
-            label: 'Comm. Package:',
-        },
-        description: {
-            key: 'Description',
-            label: 'Description',
         },
     });
 

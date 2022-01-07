@@ -1,8 +1,8 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
+import React from 'react';
 import {
-    DataViewSideSheetOptions,
     GardenOptions,
     PowerBiOptions,
     StatusFunc,
@@ -17,10 +17,11 @@ export type FactoryOptions = Omit<Factory, 'factoryId'>;
 
 export interface ViewerOptions<T> {
     initialState: T[];
-    primaryViewKey: keyof T;
     viewerId: string;
     dataFactoryCreator(factory: Factory): void;
-    onSelect(data: T | T[]): void;
+    openSidesheet(SidesheetContent?: React.FC<any>, props?: any): void;
+    CustomSidesheet?: React.FC<T>;
+    CustomSidesheetList?: React.FC<T[]>;
 }
 
 export interface DataViewerProps<T> extends ViewOptions<T> {
@@ -47,7 +48,6 @@ export interface WorkSpaceApi<T> {
         viewComponent: React.FC<DataViewerProps<T>>,
         viewOptions: ViewOptions<T>
     ) => void;
-    registerViewOptions: (viewOptions: ViewOptions<T>) => void;
     registerFilterOptions: (options: FilterOptions<T>) => void;
     registerTableOptions: (options: TableOptions<T>) => void;
     registerTreeOptions: (options: TreeOptions<T>) => void;
@@ -56,6 +56,5 @@ export interface WorkSpaceApi<T> {
     registerAnalyticsOptions: (options: AnalyticsOptions<T>) => void;
     registerStatusItems: (options: StatusFunc<T>) => void;
     registerPowerBIOptions: (options: PowerBiOptions) => void;
-    registerDataViewSideSheetOptions: (options: DataViewSideSheetOptions) => void;
     registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => void;
 }

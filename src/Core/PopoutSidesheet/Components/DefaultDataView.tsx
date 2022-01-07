@@ -15,7 +15,7 @@ export const DefaultDataView = (props: any): JSX.Element => {
     const title = Object.keys(props).find((x) => x.toLowerCase().includes('title'));
     const description = Object.keys(props).find((x) => x.toLowerCase().includes('description'));
 
-    let viewOptions;
+    const viewOptions = true;
 
     return (
         <>

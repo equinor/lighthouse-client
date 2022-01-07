@@ -1,14 +1,14 @@
+import { CustomClientApi } from '@equinor/app-builder';
 import { tokens } from '@equinor/eds-tokens';
 import {
     THREE,
     threeD,
     ThreeDConfig,
     ThreeDContextProvider,
-    ThreeDInstance
+    ThreeDInstance,
 } from '@equinor/ThreeDViewer';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { ClientApi } from '../../apps';
 
 const Viewer = styled.div`
     height: calc(100vh - 64px);
@@ -17,7 +17,7 @@ const Viewer = styled.div`
     }
 `;
 
-export const ModelViewer: React.FC<ClientApi> = (appApi: ClientApi): JSX.Element => {
+export const ModelViewer: React.FC<CustomClientApi> = (appApi: CustomClientApi): JSX.Element => {
     const viewerRef = useRef<HTMLDivElement>(null);
     const [threeDInstance, setThreeDInstance] = useState<ThreeDInstance>();
 

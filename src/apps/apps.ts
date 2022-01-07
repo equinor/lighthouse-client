@@ -528,6 +528,7 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: ['3D', 'Asset', 'Map'],
         app: {
+            appType: 'CustomApp',
             component: ModelViewer,
         },
     },

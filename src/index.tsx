@@ -5,6 +5,8 @@ import { fetchConfig } from '@equinor/lighthouse-conf';
 import { render } from 'react-dom';
 import Client from './AppClient';
 import { appGroups, apps } from './apps/apps';
+import { createDataFactory } from '@equinor/DataFactory';
+import { openSidesheet } from './Core/PopoutSidesheet/Functions/openSidesheet';
 
 fetchConfig().then((appConfig) => {
     const clientId = appConfig.clientId;
@@ -33,6 +35,8 @@ fetchConfig().then((appConfig) => {
                         ...manifest,
                         appConfig,
                         authProvider,
+                        openSidesheet,
+                        createDataFactory,
                     })
                 );
         });

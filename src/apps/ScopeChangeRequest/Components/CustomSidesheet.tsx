@@ -6,11 +6,7 @@ import styled from 'styled-components';
 import { Field } from './DetailView/Components/Field';
 import { getScopeChangeById } from '../Api/getScopeChange';
 
-interface ScopeChangeSideSheetProps {
-    object: ScopeChangeRequest;
-}
-
-export const ScopeChangeSideSheet = ({ object }: ScopeChangeSideSheetProps): JSX.Element => {
+export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [scopeChange, setScopeChange] = useState<ScopeChangeRequest>();
 
     const refetch = async () => {
@@ -20,11 +16,12 @@ export const ScopeChangeSideSheet = ({ object }: ScopeChangeSideSheetProps): JSX
     };
 
     useEffect(() => {
-        setScopeChange(object);
-    }, [object]);
+        setScopeChange(item);
+    }, [item]);
 
     return (
         <>
+            <p>Test</p>
             {scopeChange && !!Object.keys(scopeChange).length && (
                 <>
                     <Wrapper>

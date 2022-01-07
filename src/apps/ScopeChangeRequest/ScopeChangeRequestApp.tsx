@@ -10,7 +10,7 @@ import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
-        primaryViewKey: 'id',
+        CustomSidesheet: ScopeChangeSideSheet,
     });
 
     request.registerDataCreator({
@@ -72,12 +72,17 @@ export function setup(appApi: ClientApi): void {
         },
     });
 
-    request.registerViewOptions({
-        objectIdentifierKey: 'id',
-        title: {
-            key: 'id',
-            label: 'Request id',
-        },
+    //TODO: kill
+    // request.registerViewOptions({
+    //     objectIdentifierKey: 'id',
+    //     title: {
+    //         key: 'id',
+    //         label: 'Request id',
+    //     },
+    // });
+
+    request.registerTreeOptions({
+        itemKey: 'id',
     });
 
     request.registerTableOptions({
@@ -164,7 +169,8 @@ export function setup(appApi: ClientApi): void {
 
     request.registerStatusItems(statusBarData);
 
-    request.registerDataViewSideSheetOptions({ CustomComponent: ScopeChangeSideSheet });
+    // TODO: replaced by top
+    // request.registerDataViewSideSheetOptions({ CustomComponent: ScopeChangeSideSheet });
 
     // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
     // request.registerVisualEditorOptions({

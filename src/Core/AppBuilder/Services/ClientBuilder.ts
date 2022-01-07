@@ -1,5 +1,5 @@
 import { AuthenticationProvider } from '@equinor/authentication';
-import { createDataFactory } from '@equinor/DataFactory';
+import { Factory } from '@equinor/DataFactory';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import { createPageViewer, PageViewerOptions as PageOptions } from '@equinor/PageViewer';
 import { createWorkSpace, ViewerOptions } from '@equinor/WorkSpace';
@@ -9,11 +9,13 @@ import { AppManifest } from '../Types/Manifest';
 export interface ClientBuilderConfig extends AppManifest {
     appConfig: AppConfig;
     authProvider: AuthenticationProvider;
+    openSidesheet: (SidesheetContent?: React.FC<any> | undefined, props?: any) => void;
+    createDataFactory: (factory: Factory) => void;
 }
 
 export type WorkspaceOptions<T> = Omit<
     ViewerOptions<T>,
-    'viewerId' | 'initialState' | 'dataFactoryCreator'
+    'viewerId' | 'initialState' | 'dataFactoryCreator' | 'openSidesheet'
 >;
 
 export type PageViewerOptions = Omit<PageOptions, 'viewerId'>;
@@ -27,7 +29,8 @@ export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
                 ...options,
                 initialState: [],
                 viewerId: shortName,
-                dataFactoryCreator: createDataFactory,
+                dataFactoryCreator: config.createDataFactory,
+                openSidesheet: config.openSidesheet,
             });
         },
         createPageViewer() {
