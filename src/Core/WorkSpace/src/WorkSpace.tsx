@@ -1,4 +1,4 @@
-import { ClientApi } from '../../../apps/apps';
+import { ClientApi } from '@equinor/app-builder';
 import { WorkSpaceView } from './Components/WorkSpace/WorkSpaceView';
 import { DataProvider } from './Context/DataProvider';
 

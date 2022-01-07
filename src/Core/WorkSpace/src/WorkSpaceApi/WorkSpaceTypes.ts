@@ -19,7 +19,8 @@ export interface ViewerOptions<T> {
     initialState: T[];
     primaryViewKey: keyof T;
     viewerId: string;
-    dataFactoryCreator?: (factory: Factory) => void;
+    dataFactoryCreator(factory: Factory): void;
+    onSelect(data: T | T[]): void;
 }
 
 export interface DataViewerProps<T> extends ViewOptions<T> {

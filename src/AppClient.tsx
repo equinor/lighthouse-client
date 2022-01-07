@@ -12,8 +12,6 @@ import ProCoSysTopBar from './components/TopBar/TopBar';
 import { ClientContextProvider } from './context/clientContext';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
 import { FactoryComponent } from './Core/DataFactory';
-import { PopoutSidesheet } from './Core/PopoutSidesheet/PopoutSidesheet';
-
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -67,7 +65,6 @@ const Client: React.FC<ClientProps> = ({
                     <ProCoSysTopBar />
                     <MainLayout>
                         <ClientRoutes manifests={manifests} />
-                        <PopoutSidesheet />
                     </MainLayout>
                 </BrowserRouter>
                 <FactoryComponent />
