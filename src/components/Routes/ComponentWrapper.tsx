@@ -1,4 +1,4 @@
-import { AppManifest } from '../../apps/apps';
+import { AppManifest } from '@equinor/app-builder';
 import useClientContext from '../../context/clientContext';
 import { DefaultRouteComponent } from './DefaultRouteComponent';
 

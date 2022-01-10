@@ -4,13 +4,12 @@ import { createContext, useCallback, useContext, useEffect, useReducer } from 'r
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useDataViewerKey';
 import {
-    DataViewSideSheetOptions,
     GardenOptions,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
-    WorkflowEditorOptions
+    WorkflowEditorOptions,
 } from '../WorkSpaceApi/State';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
@@ -31,12 +30,10 @@ interface DataState {
     analyticsOptions?: AnalyticsOptions<unknown>;
     statusFunc?: StatusFunc<unknown>;
     powerBiOptions?: PowerBiOptions;
-    dataViewSideSheetOptions?: DataViewSideSheetOptions<unknown>;
     workflowEditorOptions?: WorkflowEditorOptions;
 }
 interface DataContextState extends DataState {
     getData: VoidFunction;
-    setSelected: (item: any) => void;
 }
 interface DataProviderProps {
     children: React.ReactNode;
@@ -46,14 +43,12 @@ type VoidFunction = () => void;
 
 export enum DataAction {
     getData = 'getData',
-    setSelected = 'setSelected',
     setOptions = 'setOptions',
 }
 
 export const actions = {
     getData: createCustomAction(DataAction.getData, (data: any[]) => ({ data })),
     setOptions: createCustomAction(DataAction.setOptions, (options) => ({ options })),
-    setSelected: createCustomAction(DataAction.setSelected, (item: any) => ({ item })),
 };
 
 export type OfflineDocumentsActionType = typeof DataAction;
@@ -66,8 +61,6 @@ export function ClientReducer(state: DataState, action: Action): DataState {
     switch (action.type) {
         case getType(actions.getData):
             return { ...state, data: action.data };
-        case getType(actions.setSelected):
-            return { ...state, item: action.item };
         case getType(actions.setOptions):
             return { ...state, ...action.options };
         default:
@@ -90,7 +83,6 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         analyticsOptions,
         statusFunc,
         powerBiOptions,
-        dataViewSideSheetOptions,
         workflowEditorOptions,
     } = useWorkSpace();
 
@@ -109,7 +101,6 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         analyticsOptions,
         statusFunc,
         powerBiOptions,
-        dataViewSideSheetOptions,
         workflowEditorOptions,
     };
 
@@ -145,16 +136,11 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         }
     }, []);
 
-    const setSelected = (item: any) => {
-        dispatch(actions.setSelected(item !== state.item ? item : {}));
-    };
-
     return (
         <DataContext.Provider
             value={{
                 ...state,
                 getData,
-                setSelected,
             }}
         >
             {children}

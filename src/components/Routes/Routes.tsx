@@ -1,7 +1,7 @@
 import { GroupView } from '@equinor/GroupView';
 import { Route, Routes } from 'react-router-dom';
-import { Apps, Manifests } from '../../apps/apps';
 import useClientContext from '../../context/clientContext';
+import { Apps, Manifests } from '../../Core/AppBuilder/Types';
 import PageView from '../../Core/PageViewer';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
 import { ComponentWrapper } from './ComponentWrapper';

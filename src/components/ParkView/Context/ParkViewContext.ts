@@ -37,6 +37,7 @@ export interface ParkViewState {
     options?: Options<unknown>;
     status?: StatusView<unknown>;
     data: unknown[] | undefined;
+    onSelect: (item: unknown) => void;
 }
 
 export interface ParkViewContextState extends ParkViewState {

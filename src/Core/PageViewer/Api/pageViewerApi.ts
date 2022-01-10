@@ -7,7 +7,7 @@ export interface PageViewerOptions {
     viewerId: string;
 }
 
-interface PageViewerInstance {
+export interface PageViewerInstance {
     registerFusionPowerBi(reportId: string, options: FusionPowerBi): void;
     registerDashboard<T>(pageId: string, options: DashboardConfig): DashboardApiInstance<T>;
     registerCustom(pageId: string, options: CustomConfig): void;
