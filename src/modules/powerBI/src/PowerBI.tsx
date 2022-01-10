@@ -5,6 +5,7 @@ import 'powerbi-report-authoring';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../../components/Icon/Icon';
+
 import { usePowerBI } from './api';
 import { Filter } from './models/filter';
 import './style.css';
