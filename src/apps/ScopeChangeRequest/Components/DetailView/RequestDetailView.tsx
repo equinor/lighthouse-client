@@ -83,7 +83,7 @@ export const RequestDetailView = ({
     };
 
     return (
-        <div style={{ height: '70vh' }}>
+        <div>
             <DetailViewContainer>
                 <Field
                     label={'Title'}
@@ -158,52 +158,57 @@ export const RequestDetailView = ({
                     }
                 />
             </DetailViewContainer>
-            {request.state !== 'Closed' && (
-                <RequestActionsContainer>
-                    <Field
-                        label="Comment"
-                        value={
-                            <div style={{ width: '50vh' }}>
-                                <TextField
-                                    id={'Comment'}
-                                    multiline
-                                    value={comment}
-                                    onChange={(e) => {
-                                        setComment(e.target.value);
-                                    }}
-                                />
-                            </div>
-                        }
-                    />
-                    <ButtonContainer>
-                        {request.state === 'Draft' && (
-                            <>
-                                <Button onClick={setEditMode}>Edit</Button>
-                                <HorizontalDivider />
-                                <Button onClick={onInitiate} variant="outlined">
-                                    Initiate request
-                                </Button>
-                            </>
-                        )}
-                        {request.state === 'Open' && (
-                            <>
-                                <Button variant="outlined" color="danger">
-                                    Void Request
-                                </Button>
-                                <Button onClick={onSignStep}>Sign</Button>
-                            </>
-                        )}
-                    </ButtonContainer>
-                </RequestActionsContainer>
-            )}
+            <RequestActionsContainer>
+                {request.state !== 'Closed' && (
+                    <>
+                        <Field
+                            label="Comment"
+                            value={
+                                <div style={{ width: '50vh' }}>
+                                    <TextField
+                                        id={'Comment'}
+                                        multiline
+                                        value={comment}
+                                        onChange={(e) => {
+                                            setComment(e.target.value);
+                                        }}
+                                    />
+                                </div>
+                            }
+                        />
+                        <ButtonContainer>
+                            {request.state === 'Draft' && (
+                                <>
+                                    <Button onClick={setEditMode}>Edit</Button>
+                                    <HorizontalDivider />
+                                    <Button onClick={onInitiate} variant="outlined">
+                                        Initiate request
+                                    </Button>
+                                </>
+                            )}
+                            {request.state === 'Open' && (
+                                <>
+                                    <Button variant="outlined" color="danger">
+                                        Void Request
+                                    </Button>
+                                    <Button onClick={onSignStep}>Sign</Button>
+                                </>
+                            )}
+                        </ButtonContainer>
+                    </>
+                )}
+            </RequestActionsContainer>
         </div>
     );
 };
 
+const ActionSelectorHeight = '180px';
+
 const DetailViewContainer = styled.div`
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: calc(87vh - ${ActionSelectorHeight});
+
     overflow: scroll;
 `;
 
@@ -222,6 +227,7 @@ const RequestActionsContainer = styled.div`
     display: flex;
     background-color: white;
     width: 650px;
+    height: ${ActionSelectorHeight};
     flex-direction: column;
     position: fixed;
     bottom: 0px;
@@ -230,6 +236,7 @@ const RequestActionsContainer = styled.div`
 const LogMessage = styled.div`
     display: flex;
     flex-direction: column;
+    margin: 1em 0em;
 `;
 
 /**
