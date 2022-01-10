@@ -231,3 +231,8 @@ const LogMessage = styled.div`
     display: flex;
     flex-direction: column;
 `;
+
+/**
+ //TODO:
+ * Do some CSS magic, Calculate height of DetailViewContainer and subtract RequestActionsContainer to make overflow work properly
+ */
