@@ -1,4 +1,4 @@
-import { ClientApi } from '@equinor/app-builder';
+import { CustomClientApi } from '@equinor/app-builder';
 import { tokens } from '@equinor/eds-tokens';
 import {
     THREE,
@@ -17,7 +17,7 @@ const Viewer = styled.div`
     }
 `;
 
-export const ModelViewer: React.FC<ClientApi> = (appApi: ClientApi): JSX.Element => {
+export const ModelViewer: React.FC<CustomClientApi> = (appApi: CustomClientApi): JSX.Element => {
     const viewerRef = useRef<HTMLDivElement>(null);
     const [threeDInstance, setThreeDInstance] = useState<ThreeDInstance>();
 

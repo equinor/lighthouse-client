@@ -16,6 +16,8 @@ export interface ScopeChangeRequest {
     state: string;
     currentWorkflowStep: WorkflowStep;
     workflowSteps: WorkflowStep[];
+    guesstimateHours: string;
+    guesstimateDescription: string;
     //workflow
 }
 

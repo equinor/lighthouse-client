@@ -113,6 +113,8 @@ export function setup(appApi: ClientApi): void {
             { key: 'modifiedById', title: 'Updated by' },
             { key: 'description', title: 'Description' },
             { key: 'state', title: 'Status' },
+            { key: 'guesstimateHours', title: 'Guesstimate' },
+            { key: 'guesstimateDescription', title: 'Guesstimate description' },
 
             // { key: 'createdBy', title: 'Created by' },
             // { key: 'state', title: 'State' },

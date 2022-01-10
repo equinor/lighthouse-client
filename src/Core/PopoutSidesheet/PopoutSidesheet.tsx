@@ -1,4 +1,5 @@
 import { useAtom } from '@dbeining/react-atom';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { ResizableSidesheet } from './Components/ResizableSidesheet';
 import { getSidesheetContext } from './context/sidesheetContext';
@@ -25,6 +26,7 @@ const Wrapper = styled.div`
     width: auto;
     height: 100%;
     background: white;
+    border-left: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
 
 // borderleft: 2px solid ${tokens.colors.ui.background__medium.rgba};
