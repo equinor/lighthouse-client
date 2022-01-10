@@ -37,24 +37,37 @@ export const RequestDetailView = ({
         ).then(() => refetch());
     };
 
+    interface LogEntry {
+        value: string;
+        date: string;
+        personId: string;
+    }
+
+    const logValues: LogEntry[] = useMemo(() => {
+        const logArray: LogEntry[] = [];
+
+        request.workflowSteps.map((x) => {
+            x.criterias.map((x) => {
+                x.signedComment &&
+                    logArray.push({
+                        value: x.signedComment,
+                        date: x.signedAtUtc,
+                        personId: x.signedById,
+                    });
+            });
+        });
+        return logArray;
+    }, [request]);
     const activeCriteriaId = useMemo(() => {
         if (request.state === 'Open') {
             return request.currentWorkflowStep.criterias.find((x) => x.id)?.id;
         }
     }, [request]);
 
-    // const logValues = useMemo(() => {
-    //     const logArray: string[] = [];
-
-    //     request.workflowSteps.map((x) => {
-    //         x.criterias.map((x) => {x.})
-    //     })
-    // });
-
     const onSignStep = () => {
-        console.log(request);
         if (activeCriteriaId) {
             patchWorkflowStep(request.id, activeCriteriaId, comment).then(() => refetch());
+            setComment('');
         }
     };
 
@@ -124,7 +137,26 @@ export const RequestDetailView = ({
                     }
                 />
 
-                <Field customLabel={{ fontSize: '18px', bold: true }} label="Log" value={''} />
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label="Log"
+                    value={
+                        <div>
+                            {logValues.map((x) => {
+                                return (
+                                    <LogMessage key={x.value + x.date}>
+                                        <span style={{ fontSize: '10px' }}>
+                                            {new Date(x.date).toLocaleDateString()} by
+                                        </span>
+                                        <span style={{ fontSize: '16px' }}>
+                                            &quot;{x.value}&quot;
+                                        </span>
+                                    </LogMessage>
+                                );
+                            })}
+                        </div>
+                    }
+                />
             </DetailViewContainer>
             {request.state !== 'Closed' && (
                 <RequestActionsContainer>
@@ -193,4 +225,9 @@ const RequestActionsContainer = styled.div`
     flex-direction: column;
     position: fixed;
     bottom: 0px;
+`;
+
+const LogMessage = styled.div`
+    display: flex;
+    flex-direction: column;
 `;

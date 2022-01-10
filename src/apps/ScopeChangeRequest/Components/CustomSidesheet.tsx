@@ -5,13 +5,16 @@ import { RequestViewContainer } from './RequestDetailViewContainer';
 import styled from 'styled-components';
 import { Field } from './DetailView/Components/Field';
 import { getScopeChangeById } from '../Api/getScopeChange';
+import { openSidesheet } from '../../../packages/Sidesheet/Functions';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [scopeChange, setScopeChange] = useState<ScopeChangeRequest>();
 
     const refetch = async () => {
         if (scopeChange?.id) {
-            setScopeChange(await getScopeChangeById(scopeChange.id));
+            const newScopeChange = await getScopeChangeById(scopeChange.id);
+            setScopeChange(newScopeChange);
+            openSidesheet(ScopeChangeSideSheet, newScopeChange);
         }
     };
 
