@@ -1,30 +1,25 @@
 import { Button, Dialog, Scrim } from '@equinor/eds-core-react';
 import styled from 'styled-components';
+import { clearConfirmationDialog } from '../Functions/clearConfirmationDialog';
+import { useConfirmationDialog } from '../Hooks/useConfirmationDialog';
 
-interface ConfirmationDialogProps {
-    onConfirm: () => void;
-    onReject: () => void;
-    dialogTitle: string;
-    dialogText: string;
-}
+export const ConfirmationDialog = (): JSX.Element | null => {
+    const dialog = useConfirmationDialog();
+    if (!dialog?.onConfirm) {
+        return null;
+    }
 
-export const ConfirmationDialog = ({
-    onConfirm,
-    onReject,
-    dialogText,
-    dialogTitle,
-}: ConfirmationDialogProps): JSX.Element => {
     return (
         <>
-            <Scrim isDismissable={false}>
-                <Dialog style={{ width: 'auto' }}>
+            <Scrim isDismissable={false} style={{ zIndex: 1000 }}>
+                <Dialog style={{ width: '110%' }}>
                     <DialogPadding>
-                        <h2>{dialogTitle}</h2>
-                        <p>{dialogText}</p>
+                        <TitleSection>{dialog.dialogTitle}</TitleSection>
+                        <p>{dialog.dialogText}</p>
                         <ButtonContainer>
                             <Button
                                 onClick={() => {
-                                    onReject && onReject();
+                                    clearConfirmationDialog();
                                 }}
                                 variant={'ghost_icon'}
                                 color={'danger'}
@@ -35,7 +30,8 @@ export const ConfirmationDialog = ({
                             <Button
                                 variant={'ghost_icon'}
                                 onClick={() => {
-                                    onConfirm && onConfirm();
+                                    clearConfirmationDialog();
+                                    dialog.onConfirm && dialog.onConfirm();
                                 }}
                             >
                                 Ok
@@ -62,4 +58,8 @@ const HorizontalDivider = styled.div`
 const DialogPadding = styled.div`
     padding-left: 1em;
     padding-right: 1em;
+`;
+
+const TitleSection = styled.h2`
+    width: 100%;
 `;

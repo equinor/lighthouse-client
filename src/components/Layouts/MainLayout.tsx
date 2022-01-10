@@ -1,3 +1,4 @@
+import { PopoutSidesheet } from '@equinor/sidesheet';
 import styled from 'styled-components';
 import useClientContext from '../../context/clientContext';
 import { MainMenu } from '../Menu/MainMenu';
@@ -34,6 +35,8 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
                 <MainMenu />
             </MainMenuWrapper>
             <ChildrenWrapper panelActive={appsPanelActive}>{children}</ChildrenWrapper>
+            {/* TODO: Wrap Resizable here */}
+            <PopoutSidesheet />
         </Wrapper>
     );
 };

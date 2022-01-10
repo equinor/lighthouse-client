@@ -1,7 +1,6 @@
+import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { baseClient } from '../../../packages/httpClient/src';
-import { createPageViewer } from '../../Core/PageViewer/Api/pageViewerApi';
-import { AppApi } from '../apps';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 interface Checklist {
@@ -78,12 +77,9 @@ const analyticsOptions2: AnalyticsOptions<WP> = {
     },
 };
 
-export function setup(appApi: AppApi): void {
+export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const construction = createPageViewer({
-        viewerId: appApi.shortName,
-        title: appApi.title,
-    });
+    const construction = appApi.createPageViewer();
 
     /** 
     Remove SWCR analytics, since its not relevant for Construction

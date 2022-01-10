@@ -1,6 +1,4 @@
-import { AuthenticationProvider } from '@equinor/authentication';
-import { AppConfig } from '@equinor/lighthouse-conf';
-import React from 'react';
+import { AppGroups, AppManifest } from '@equinor/app-builder';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -26,40 +24,10 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport
+    SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
-
-type HEXColor = `#${string}`;
-
-type AppType = 'DataViewer' | 'PageView' | 'CustomApp' | 'PowerBI';
-
-export interface AppApi extends AppManifest {
-    appConfig: AppConfig;
-    authProvider: AuthenticationProvider;
-}
-interface App {
-    appType?: AppType;
-    setup?: (api: AppApi) => void;
-    component?: React.FC<AppApi>;
-}
-export interface AppManifest {
-    title: string;
-    shortName: string;
-    color: HEXColor;
-    groupe: Apps | Apps[];
-    tags: string[];
-    icon?: string | React.FC;
-    uri?: string;
-    imageUri?: string;
-    app?: App;
-}
-
-export interface AppGroupe {
-    name: string;
-    icon: string | React.FC;
-}
 
 export enum Apps {
     AssetData = 'AssetData',
@@ -75,13 +43,6 @@ export enum Apps {
     ProjectControl = 'ProjectControl',
     Reports = 'Reports',
     SSU = 'SSU',
-}
-
-export type AppGroups = Record<Apps, AppGroupe>;
-
-export interface Manifests {
-    apps: AppManifest[];
-    appGroups: AppGroups;
 }
 
 export const appGroups: AppGroups = {
@@ -583,6 +544,7 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: ['3D', 'Asset', 'Map'],
         app: {
+            appType: 'CustomApp',
             component: ModelViewer,
         },
     },

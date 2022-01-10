@@ -1,9 +1,9 @@
+import { ClientApi } from '@equinor/app-builder';
 import { THREE, ThreeDContextProvider, ViewerInstance } from '@equinor/ThreeDViewer';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { threeD, ThreeDConfig, ThreeDInstance } from '../packages/ThreeDViewer/src/Api/threeD';
 import { ObjectData } from '../packages/ThreeDViewer/src/Types/objectData';
-import { AppApi } from './apps';
 import { status } from './mockData/status';
 
 const Viewer = styled.div`
@@ -36,7 +36,7 @@ async function setupBoxes(viewer: ViewerInstance) {
     });
 }
 
-export function TestApp(appApi: AppApi): JSX.Element {
+export function TestApp(appApi: ClientApi): JSX.Element {
     const viewerRef = useRef<HTMLDivElement>(null);
     const [threeDInstance, setThreeDInstance] = useState<ThreeDInstance>();
 
