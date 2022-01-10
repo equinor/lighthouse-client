@@ -2,10 +2,10 @@ import { tokens } from '@equinor/eds-tokens';
 import { Embed, Report, service } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../../components/Icon/Icon';
-import { useSidesheetCleanup } from '../../../Core/PopoutSidesheet/Hooks/useSidesheetCleanup';
+
 import { usePowerBI } from './api';
 import { Filter } from './models/filter';
 import './style.css';
@@ -40,10 +40,6 @@ interface PowerBiProps {
 export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element => {
     const { config, error } = usePowerBI(reportUri, filterOptions);
     const [report, setReport] = useState<Report>();
-    const { closeSidesheet } = useSidesheetCleanup();
-    useEffect(() => {
-        closeSidesheet();
-    }, []);
 
     //TODO custom loading
     const eventHandlersMap = new Map([

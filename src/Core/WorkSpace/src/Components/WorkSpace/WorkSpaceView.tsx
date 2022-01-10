@@ -22,7 +22,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         filterOptions,
         workflowEditorOptions,
     } = useWorkSpace();
-    const { data } = useDataContext();
+    const { data, isLoading } = useDataContext();
     const { id } = useParams();
     const currentId = useMemo(() => id && `/${id}`, [id]);
     const navigate = useNavigate();
@@ -68,6 +68,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     }
 
     if (!viewIsActive) return <NoDataView />;
+
     return (
         <FilterProvider initialData={data} options={filterOptions}>
             <Tabs activeTab={activeTab} onChange={handleChange}>

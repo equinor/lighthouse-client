@@ -1,8 +1,8 @@
 import { useAtom } from '@dbeining/react-atom';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ResizableSidesheet } from './Components/ResizableSidesheet';
-import { getSidesheetContext } from './context/sidesheetContext';
+import { ResizableSidesheet } from './ResizableSidesheet';
+import { getSidesheetContext } from '../context/sidesheetContext';
 
 export const PopoutSidesheet = (): JSX.Element | null => {
     const { SidesheetComponent } = useAtom(getSidesheetContext());

@@ -1,6 +1,6 @@
+import { PopoutSidesheet } from '@equinor/sidesheet';
 import styled from 'styled-components';
 import useClientContext from '../../context/clientContext';
-import { PopoutSidesheet } from '../../Core/PopoutSidesheet/PopoutSidesheet';
 import { MainMenu } from '../Menu/MainMenu';
 
 const Wrapper = styled.div`

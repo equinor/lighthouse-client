@@ -1,8 +1,6 @@
 import { AppManifest } from '@equinor/app-builder';
 import { tokens } from '@equinor/eds-tokens';
-import { useEffect } from 'react';
 import styled from 'styled-components';
-import { useSidesheetCleanup } from '../../Core/PopoutSidesheet/Hooks/useSidesheetCleanup';
 import Icon from '../Icon/Icon';
 
 const Wrapper = styled.div`
@@ -25,12 +23,6 @@ const Info = styled.p`
 `;
 
 export const DefaultRouteComponent = (route: AppManifest) => {
-    const { closeSidesheet } = useSidesheetCleanup();
-
-    useEffect(() => {
-        closeSidesheet();
-    }, []);
-
     const CustomIcon = route.icon && typeof route.icon !== 'string' ? route.icon : undefined;
     return (
         <Wrapper>

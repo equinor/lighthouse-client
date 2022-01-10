@@ -13,6 +13,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
+            '@equinor/sidesheet': path.resolve(__dirname, './src/packages/Sidesheet'),
             '@equinor/app-builder': path.resolve(__dirname, './src/Core/AppBuilder'),
             '@equinor/worker': path.resolve(__dirname, './src/packages/WebWorkers'),
             '@equinor/filter': path.resolve(__dirname, './src/packages/Filter'),

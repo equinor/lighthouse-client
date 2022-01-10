@@ -6,7 +6,7 @@ import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { useMutation } from 'react-query';
 import { getScopeChangeById, postScopeChange } from '../../Api/';
-import { openSidesheet } from '../../../../Core/PopoutSidesheet/Functions/openSidesheet';
+import { openSidesheet } from '@equinor/sidesheet';
 import { ScopeChangeSideSheet } from '../CustomSidesheet';
 
 interface ScopeChangeRequestFormProps {
