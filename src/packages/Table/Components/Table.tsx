@@ -70,7 +70,13 @@ export function Table<TData extends TableData = TableData>({
                     itemCount={rows.length}
                     width={totalColumnsWidth + 10}
                     itemSize={itemSize}
-                    itemData={{ rows, prepareRow, onCellClick, setSelected: options?.setSelected }}
+                    itemData={{
+                        rows,
+                        prepareRow,
+                        onCellClick,
+                        setSelected: options?.setSelected,
+                        onSelect: options?.onSelect,
+                    }}
                 >
                     {RenderRow}
                 </List>
@@ -83,6 +89,7 @@ interface RenderRowData {
     prepareRow: (row: Row<TableData>) => void;
     onCellClick: CellClickHandler<TableData>;
     setSelected?: (item: any) => void;
+    onSelect?: (item: TableData) => void;
 }
 interface RenderRowProps {
     data: RenderRowData;
@@ -95,8 +102,9 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     data.prepareRow(row);
 
     const handleClick = useCallback(() => {
-        data.setSelected && data.setSelected(row.original);
-    }, [data.setSelected, row]);
+        //data.setSelected && data.setSelected(row.original);
+        data?.onSelect && data.onSelect(row.original);
+    }, [data?.onSelect, row]);
 
     return (
         <TableRow {...row.getRowProps({ style })} onClick={handleClick}>

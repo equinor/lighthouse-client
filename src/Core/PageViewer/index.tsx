@@ -7,3 +7,6 @@ export const PageView = (): JSX.Element => {
 };
 
 export default PageView;
+
+export * from './Api/pageViewerApi';
+export * from './Api/pageViewerState';
