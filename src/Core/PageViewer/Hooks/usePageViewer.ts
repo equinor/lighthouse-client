@@ -16,6 +16,7 @@ export function usePageViewer(): ViewState {
             title: `Unknown ${key}`,
             shortName: '',
             pages: {},
+            onSelect: () => { },
         };
     }
 }

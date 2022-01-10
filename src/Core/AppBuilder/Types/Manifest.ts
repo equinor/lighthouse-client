@@ -1,5 +1,5 @@
 import { App } from './App';
-import { AppGroups, Apps } from './AppGroupe';
+import { AppGroups } from './AppGroupe';
 
 export interface Manifests {
     apps: AppManifest[];
@@ -12,7 +12,7 @@ export interface AppManifest {
     title: string;
     shortName: string;
     color: HEXColor;
-    groupe: Apps | Apps[];
+    groupe: string | string[];
     tags: string[];
     icon?: string | React.FC;
     uri?: string;

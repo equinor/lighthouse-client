@@ -53,7 +53,6 @@ interface CustomView<T> {
     customGroupView?: React.FC<{ data: DataSet<any>; onClick: () => void }>;
 }
 
-//update TreeOptions;;
 export interface TreeOptions<T> {
     groupByKeys?: (keyof T)[];
     itemKey: keyof T;
@@ -73,7 +72,6 @@ export interface GardenOptions<T> {
     options?: Options<T>;
     status?: StatusView<T>;
     onSelect?: (item: T) => void;
-    disableOnClick?: boolean;
 }
 
 export interface PowerBiOptions {

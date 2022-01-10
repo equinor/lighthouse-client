@@ -8,6 +8,9 @@ import { useMutation } from 'react-query';
 import { getScopeChangeById, postScopeChange } from '../../Api/';
 import { openSidesheet } from '@equinor/sidesheet';
 import { ScopeChangeSideSheet } from '../CustomSidesheet';
+import { Field } from '../DetailView/Components/Field';
+import { Upload } from '../Upload';
+import { tokens } from '@equinor/eds-tokens';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -73,22 +76,30 @@ export const ScopeChangeRequestForm = ({
     };
 
     return (
-        <>
+        <FormContainer>
             <TitleHeader>
-                <h2>Create scope change request</h2>
-                <Icon onClick={() => closeScrim()} name="close" />
+                <span style={{ fontSize: '28px' }}>Create scope change request</span>
+                <Icon
+                    onClick={() => closeScrim()}
+                    name="close"
+                    color={tokens.colors.interactive.primary__resting.hex}
+                />
             </TitleHeader>
             <GeneratedForm
                 formData={formData}
                 editMode={false}
                 buttons={[SubmitButton, SaveButton]}
             />
+            <Field label="Attachments" value={<Upload />} />
             {error && <p> Something went wrong, please check your connection and try again</p>}
-        </>
+        </FormContainer>
     );
 };
 const TitleHeader = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
+    align-items: center;
 `;
+
+const FormContainer = styled.div``;

@@ -1,6 +1,5 @@
 import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { baseClient } from '../../../packages/httpClient/src';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 interface Checklist {

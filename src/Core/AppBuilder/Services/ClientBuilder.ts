@@ -37,6 +37,7 @@ export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
             return createPageViewer({
                 title,
                 viewerId: shortName,
+                openSidesheet: config.openSidesheet,
             });
         },
     };

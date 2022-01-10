@@ -35,6 +35,7 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
                 <MainMenu />
             </MainMenuWrapper>
             <ChildrenWrapper panelActive={appsPanelActive}>{children}</ChildrenWrapper>
+            {/* TODO: Wrap Resizable here */}
             <PopoutSidesheet />
         </Wrapper>
     );

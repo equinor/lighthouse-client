@@ -16,7 +16,7 @@ export function readState<S>(
     return read(state);
 }
 
-export function createGlobalScrimState(
+export function createGlobalSidesheetState(
     defaultState: SidesheetState<unknown>
 ): Atom<SidesheetState<unknown>> {
     return Atom.of(defaultState);

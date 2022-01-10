@@ -1,8 +1,8 @@
 import { Atom } from '@dbeining/react-atom';
-import { createGlobalScrimState } from '../State/actions';
+import { createGlobalSidesheetState } from '../State/actions';
 import { SidesheetState } from '../State/sidesheetState';
 
-export const SidesheetCoreContext = createGlobalScrimState({});
+export const SidesheetCoreContext = createGlobalSidesheetState({});
 
 export function getSidesheetContext(): Atom<SidesheetState<unknown>> {
     return SidesheetCoreContext;

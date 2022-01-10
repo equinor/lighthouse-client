@@ -1,4 +1,4 @@
-import { AppGroups, AppManifest, Apps } from '@equinor/app-builder';
+import { AppGroups, AppManifest } from '@equinor/app-builder';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -28,6 +28,22 @@ import {
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
+
+export enum Apps {
+    AssetData = 'AssetData',
+    Top = 'Top',
+    Collaboration = 'Collaboration',
+    ProgressAndStatus = 'ProgressAndStatus',
+    CompletionManagement = 'CompletionManagement',
+    ConstructionManagement = 'ConstructionManagement',
+    EngineeringManagement = 'EngineeringManagement',
+    ProjectInformation = 'ProjectInformation',
+    QueriesAndRequests = 'QueriesAndRequests',
+    QualityAndCompliance = 'QualityAndCompliance',
+    ProjectControl = 'ProjectControl',
+    Reports = 'Reports',
+    SSU = 'SSU',
+}
 
 export const appGroups: AppGroups = {
     AssetData: {

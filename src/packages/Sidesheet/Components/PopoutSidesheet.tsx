@@ -28,9 +28,3 @@ const Wrapper = styled.div`
     background: white;
     border-left: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
-
-// borderleft: 2px solid ${tokens.colors.ui.background__medium.rgba};
-
-// const Wrapper = styled.div`
-//     background: white;
-// `;

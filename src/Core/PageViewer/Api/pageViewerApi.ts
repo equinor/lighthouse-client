@@ -5,6 +5,7 @@ import { dispatch, getContext } from './pageViewerState';
 export interface PageViewerOptions {
     title: string;
     viewerId: string;
+    openSidesheet(SidesheetContent?: React.FC<any>, props?: any): void;
 }
 
 export interface PageViewerInstance {
@@ -17,7 +18,11 @@ type FusionPowerBi = Omit<FusionPowerBiOptions, 'type'>;
 type DashboardConfig = Omit<DashboardOptions, 'type' | 'dashboardId'>;
 type CustomConfig = Omit<CustomPage, 'type'>;
 
-export function createPageViewer({ viewerId, title }: PageViewerOptions): PageViewerInstance {
+export function createPageViewer({
+    viewerId,
+    title,
+    openSidesheet,
+}: PageViewerOptions): PageViewerInstance {
     dispatch(getContext(), (state: CoreViewState) => {
         if (state[viewerId]) {
             // eslint-disable-next-line no-console
@@ -29,6 +34,7 @@ export function createPageViewer({ viewerId, title }: PageViewerOptions): PageVi
                 title,
                 shortName: viewerId,
                 pages: {},
+                onSelect: openSidesheet,
             },
         };
     });

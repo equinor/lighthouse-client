@@ -18,7 +18,7 @@ interface WorkflowSteps {
     StepTemplates: TemplateStep[];
 }
 
-type TemplateStep = Omit<WorkflowStep, 'isCompleted' | 'id' | 'isCurrent'>;
+type TemplateStep = Omit<WorkflowStep, 'isCompleted' | 'id' | 'isCurrent' | 'criterias'>;
 
 export const WorkflowEditor = (): JSX.Element | null => {
     const tempWorkflowID = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
@@ -111,10 +111,6 @@ export const WorkflowEditor = (): JSX.Element | null => {
         });
         setSteps(newSteps);
     };
-
-    useEffect(() => {
-        console.log(steps);
-    }, [steps]);
 
     return (
         <WorkflowEditorWrapper>
