@@ -1,8 +1,7 @@
+import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
-import { createWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
 import { Status } from '../../Core/WorkSpace/src/WorkSpaceApi/State';
-import { AppApi } from '../apps';
 import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
@@ -48,7 +47,7 @@ const loopKeys: (keyof Loop)[] = [
     'createdAt',
 ];
 
-export function setup(appApi: AppApi): void {
+export function setup(appApi: ClientApi): void {
     // createDataFactory({
     //     factoryId: 'loop',
     //     tile: 'Creat Loop',
@@ -61,11 +60,7 @@ export function setup(appApi: AppApi): void {
     // });
 
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const commPkg = createWorkSpace<Loop>({
-        initialState: [],
-        primaryViewKey: 'tagNo',
-        viewerId: appApi.shortName,
-    });
+    const commPkg = appApi.createWorkSpace<Loop>({});
 
     commPkg.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
@@ -120,18 +115,6 @@ export function setup(appApi: AppApi): void {
 
                 return 'Other';
             },
-        },
-    });
-
-    commPkg.registerViewOptions({
-        objectIdentifierKey: 'tagNo',
-        title: {
-            key: 'tagNo',
-            label: 'Tag No',
-        },
-        description: {
-            key: 'description',
-            label: 'Description',
         },
     });
 

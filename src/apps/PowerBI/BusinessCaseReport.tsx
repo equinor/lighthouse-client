@@ -1,29 +1,27 @@
-import { PowerBI } from "../../modules/powerBI";
+import { PowerBI } from '../../modules/powerBI';
 import { Filter } from '../../modules/powerBI/src/models/filter';
 
 export function BusinessCaseReport() {
-    const reportUri = "pmt-non-confidential"
+    const reportUri = 'pmt-non-confidential';
 
     const filterOptions: Filter[] = [
         {
-            values: ["Johan Castberg"],
+            values: ['Johan Castberg'],
             target: {
                 table: 'Dim_MasterProject',
-                column: 'Project'
+                column: 'Project',
             },
-            operator: "In"
+            operator: 'In',
         },
         {
             values: ['JCA'],
             target: {
                 column: 'FACILITY',
-                table: 'Commpkg'
+                table: 'Commpkg',
             },
-            operator: "In"
-        }
-    ]
+            operator: 'In',
+        },
+    ];
 
-    return (
-        <PowerBI reportUri={reportUri} />
-    );
+    return <PowerBI reportUri={reportUri} />;
 }

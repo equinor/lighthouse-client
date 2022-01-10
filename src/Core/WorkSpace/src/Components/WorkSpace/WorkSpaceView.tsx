@@ -2,18 +2,16 @@ import { Tabs } from '@equinor/eds-core-react';
 import { FilterProvider, FilterView } from '@equinor/filter';
 import { useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { AppApi } from '../../../../../apps/apps';
+import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
 import { useConfiguredTabs } from '../../Tabs/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { CompletionViewHeader } from '../DataViewerHeader/Header';
-import { DataView } from '../DefaultView/DataView';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { DataViewWrapper } from './WorkSpaceViewStyles';
 
-
-export function WorkSpaceView(props: AppApi): JSX.Element {
+export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const {
         treeOptions,
         tableOptions,
@@ -24,7 +22,7 @@ export function WorkSpaceView(props: AppApi): JSX.Element {
         filterOptions,
         workflowEditorOptions,
     } = useWorkSpace();
-    const { data } = useDataContext();
+    const { data, isLoading } = useDataContext();
     const { id } = useParams();
     const currentId = useMemo(() => id && `/${id}`, [id]);
     const navigate = useNavigate();
@@ -70,6 +68,7 @@ export function WorkSpaceView(props: AppApi): JSX.Element {
     }
 
     if (!viewIsActive) return <NoDataView />;
+
     return (
         <FilterProvider initialData={data} options={filterOptions}>
             <Tabs activeTab={activeTab} onChange={handleChange}>
@@ -82,7 +81,6 @@ export function WorkSpaceView(props: AppApi): JSX.Element {
                 <FilterView isActive={activeFilter} />
                 <DataViewWrapper>
                     <WorkSpaceTabs tabs={tabs} activeTab={activeTab} />
-                    <DataView />
                 </DataViewWrapper>
             </Tabs>
         </FilterProvider>

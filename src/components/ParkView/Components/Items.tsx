@@ -1,4 +1,4 @@
-import { useDataContext } from '../../../Core/WorkSpace/src/Context/DataProvider';
+import React from 'react';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { Item } from '../Styles/item';
 
@@ -7,8 +7,7 @@ interface RenderItemsProps<T> {
 }
 
 export function Items<T>({ data }: RenderItemsProps<T>): JSX.Element | null {
-    const { setSelected } = useDataContext();
-    const { itemKey, customView, status } = useParkViewContext<T>();
+    const { itemKey, customView, status, onSelect } = useParkViewContext<T>();
 
     return (
         <>
@@ -18,12 +17,14 @@ export function Items<T>({ data }: RenderItemsProps<T>): JSX.Element | null {
                         data={data[key]}
                         itemKey={itemKey.toString()}
                         key={data[key] + index}
-                        onClick={() => setSelected(data[key])}
+                        onClick={() => {
+                            onSelect(data[key]);
+                        }}
                     >
                         {data[key][itemKey]}
                     </customView.CustomItemView>
                 ) : (
-                    <Item key={data[key] + index} onClick={() => setSelected(data[key])}>
+                    <Item key={data[key] + index} onClick={() => onSelect(data[key])}>
                         {status?.statusItemFunc(data[key]).statusElement}
                         {data[key][itemKey]}
                     </Item>

@@ -5,7 +5,6 @@ import { ScopeChangeRequestEditForm } from './Form/ScopeChangeRequestEditForm';
 
 interface RequestViewContainerProps {
     request: ScopeChangeRequest;
-    close: () => void;
     refetch: () => Promise<void>;
 }
 

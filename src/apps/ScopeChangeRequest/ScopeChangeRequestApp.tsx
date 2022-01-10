@@ -1,21 +1,16 @@
-import { createDataFactory } from '@equinor/DataFactory';
+import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { baseClient } from '@equinor/http-client';
-import { createWorkSpace } from '@equinor/WorkSpace';
-import { AppApi } from '../apps';
-import { CustomSidesheet } from './Components/CustomSidesheet';
+import { ScopeChangeSideSheet } from './Components/CustomSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
-export function setup(appApi: AppApi): void {
+export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const request = createWorkSpace<ScopeChangeRequest>({
-        initialState: [],
-        primaryViewKey: 'id',
-        viewerId: appApi.shortName,
-        dataFactoryCreator: createDataFactory,
+    const request = appApi.createWorkSpace<ScopeChangeRequest>({
+        CustomSidesheet: ScopeChangeSideSheet,
     });
 
     request.registerDataCreator({
@@ -77,12 +72,17 @@ export function setup(appApi: AppApi): void {
         },
     });
 
-    request.registerViewOptions({
-        objectIdentifierKey: 'id',
-        title: {
-            key: 'id',
-            label: 'Request id',
-        },
+    //TODO: kill
+    // request.registerViewOptions({
+    //     objectIdentifierKey: 'id',
+    //     title: {
+    //         key: 'id',
+    //         label: 'Request id',
+    //     },
+    // });
+
+    request.registerTreeOptions({
+        itemKey: 'id',
     });
 
     request.registerTableOptions({
@@ -113,6 +113,8 @@ export function setup(appApi: AppApi): void {
             { key: 'modifiedById', title: 'Updated by' },
             { key: 'description', title: 'Description' },
             { key: 'state', title: 'Status' },
+            { key: 'guesstimateHours', title: 'Guesstimate' },
+            { key: 'guesstimateDescription', title: 'Guesstimate description' },
 
             // { key: 'createdBy', title: 'Created by' },
             // { key: 'state', title: 'State' },
@@ -169,7 +171,8 @@ export function setup(appApi: AppApi): void {
 
     request.registerStatusItems(statusBarData);
 
-    request.registerDataViewSideSheetOptions({ CustomComponent: CustomSidesheet });
+    // TODO: replaced by top
+    // request.registerDataViewSideSheetOptions({ CustomComponent: ScopeChangeSideSheet });
 
     // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
     // request.registerVisualEditorOptions({

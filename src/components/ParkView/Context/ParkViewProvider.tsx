@@ -7,7 +7,7 @@ import {
     ParkViewContext,
     ParkViewProviderProps,
     ParkViewState,
-    StatusView
+    StatusView,
 } from './ParkViewContext';
 import { GardenReducer } from './ParkViewReducer';
 
@@ -24,6 +24,7 @@ export function ParkViewProvider<T>({
         options: parkViewOptions.options as Options<unknown>,
         status: parkViewOptions.status as StatusView<unknown>,
         data: data,
+        onSelect: parkViewOptions.onSelect as (item: unknown) => void,
 
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey?.toString(),
     };

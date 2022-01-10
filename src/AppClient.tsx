@@ -1,15 +1,16 @@
+import { Manifests } from '@equinor/app-builder';
 import { AuthenticationProvider, useAuthenticate } from '@equinor/authentication';
 import { tokens } from '@equinor/eds-tokens';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
-import { Manifests } from './apps/apps';
 import { MainLayout } from './components/Layouts/MainLayout';
 import LoadingPage from './components/Loading/LoadingPage';
 import { ClientRoutes } from './components/Routes/Routes';
 import ProCoSysTopBar from './components/TopBar/TopBar';
 import { ClientContextProvider } from './context/clientContext';
+import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
 import { FactoryComponent } from './Core/DataFactory';
 
 const GlobalStyle = createGlobalStyle`
@@ -55,8 +56,9 @@ const Client: React.FC<ClientProps> = ({
     const queryClient = new QueryClient();
 
     return isAuthenticated ? (
-        <ClientContextProvider {...{ appConfig, authProvider }}>
-            <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+            <ConfirmationDialog />
+            <ClientContextProvider {...{ appConfig, authProvider }}>
                 <BrowserRouter>
                     <GlobalStyle />
                     <ProCoSysTopBar />
@@ -65,8 +67,8 @@ const Client: React.FC<ClientProps> = ({
                     </MainLayout>
                 </BrowserRouter>
                 <FactoryComponent />
-            </QueryClientProvider>
-        </ClientContextProvider>
+            </ClientContextProvider>
+        </QueryClientProvider>
     ) : (
         <>
             <GlobalStyle />
