@@ -81,9 +81,9 @@ export function setup(appApi: ClientApi): void {
     //     },
     // });
 
-    request.registerTreeOptions({
-        itemKey: 'id',
-    });
+    // request.registerTreeOptions({
+    //     itemKey: 'id',
+    // });
 
     request.registerTableOptions({
         objectIdentifierKey: 'id',
