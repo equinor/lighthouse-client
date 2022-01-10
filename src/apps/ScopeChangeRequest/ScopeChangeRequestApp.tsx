@@ -72,19 +72,6 @@ export function setup(appApi: ClientApi): void {
         },
     });
 
-    //TODO: kill
-    // request.registerViewOptions({
-    //     objectIdentifierKey: 'id',
-    //     title: {
-    //         key: 'id',
-    //         label: 'Request id',
-    //     },
-    // });
-
-    // request.registerTreeOptions({
-    //     itemKey: 'id',
-    // });
-
     request.registerTableOptions({
         objectIdentifierKey: 'id',
         enableSelectRows: true,
@@ -115,13 +102,6 @@ export function setup(appApi: ClientApi): void {
             { key: 'state', title: 'Status' },
             { key: 'guesstimateHours', title: 'Guesstimate' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
-
-            // { key: 'createdBy', title: 'Created by' },
-            // { key: 'state', title: 'State' },
-            // { key: 'description', title: 'Description' },
-            // { key: 'id', title: 'Id' },
-            // { key: 'created', title: 'Created' },
-            // { key: 'lastModifiedBy', title: 'Last modified by' },
         ],
         customCellView: [
             {
@@ -170,9 +150,6 @@ export function setup(appApi: ClientApi): void {
     request.registerAnalyticsOptions(analyticsOptions);
 
     request.registerStatusItems(statusBarData);
-
-    // TODO: replaced by top
-    // request.registerDataViewSideSheetOptions({ CustomComponent: ScopeChangeSideSheet });
 
     // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
     // request.registerVisualEditorOptions({
