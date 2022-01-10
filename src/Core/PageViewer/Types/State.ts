@@ -9,6 +9,7 @@ export interface ViewState {
     title: string;
     shortName: string;
     icon?: React.FC;
+    onSelect(SidesheetContent?: React.FC<any>, props?: any): void;
     pages: {
         [key: string]: PageConfig;
     };
