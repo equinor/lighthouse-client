@@ -83,7 +83,7 @@ export const RequestDetailView = ({
     };
 
     return (
-        <div style={{ height: '100vh' }}>
+        <div style={{ height: '70vh' }}>
             <DetailViewContainer>
                 <Field
                     label={'Title'}
@@ -203,7 +203,7 @@ export const RequestDetailView = ({
 const DetailViewContainer = styled.div`
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     overflow: scroll;
 `;
 
