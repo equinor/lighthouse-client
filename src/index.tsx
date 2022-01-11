@@ -1,14 +1,14 @@
 import { Configuration } from '@azure/msal-browser';
 import { clientApiBuilder } from '@equinor/app-builder';
 import { authenticationProvider } from '@equinor/authentication';
+import { createDataFactory } from '@equinor/DataFactory';
+import { Icon as EdsIcon } from '@equinor/eds-core-react';
+import * as icons from '@equinor/eds-icons';
 import { fetchConfig } from '@equinor/lighthouse-conf';
+import { openSidesheet } from '@equinor/sidesheet';
 import { render } from 'react-dom';
 import Client from './AppClient';
 import { appGroups, apps } from './apps/apps';
-import { createDataFactory } from '@equinor/DataFactory';
-import { openSidesheet } from '@equinor/sidesheet';
-import * as icons from '@equinor/eds-icons';
-import { Icon as EdsIcon } from '@equinor/eds-core-react';
 
 EdsIcon.add({ ...icons });
 
