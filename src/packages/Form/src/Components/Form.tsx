@@ -16,6 +16,7 @@ interface FormProps<T> {
     buttons: React.FC[];
     title?: string;
     behaviour?: Behaviour;
+    children?: React.ReactNode;
 }
 
 export const GeneratedForm = <T, K extends keyof T>({
@@ -24,6 +25,7 @@ export const GeneratedForm = <T, K extends keyof T>({
     buttons,
     title,
     behaviour,
+    children,
 }: FormProps<T>): JSX.Element => {
     const fields: Field<T[K]>[] = [];
 
@@ -58,6 +60,8 @@ export const GeneratedForm = <T, K extends keyof T>({
                     </SectionRow>
                 );
             })}
+            {children}
+
             <ButtonContainer>
                 {buttons &&
                     buttons.map((Component, index) => {

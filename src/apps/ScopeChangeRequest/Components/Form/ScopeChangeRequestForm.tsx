@@ -89,8 +89,11 @@ export const ScopeChangeRequestForm = ({
                 formData={formData}
                 editMode={false}
                 buttons={[SubmitButton, SaveButton]}
-            />
-            <Field label="Attachments" value={<Upload />} />
+            >
+                {/* Temporarily feature flagged */}
+                <Field label="Attachments" value={<Upload />} />
+            </GeneratedForm>
+
             {error && <p> Something went wrong, please check your connection and try again</p>}
         </FormContainer>
     );

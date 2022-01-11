@@ -5,28 +5,50 @@ import { RequestViewContainer } from './RequestDetailViewContainer';
 import styled from 'styled-components';
 import { Field } from './DetailView/Components/Field';
 import { getScopeChangeById } from '../Api/getScopeChange';
-import { openSidesheet } from '../../../packages/Sidesheet/Functions';
+import { useQuery } from 'react-query';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
-    const [scopeChange, setScopeChange] = useState<ScopeChangeRequest>();
+    const [scopeChange, setScopeChange] = useState<ScopeChangeRequest>(item);
 
-    const refetch = async () => {
-        if (scopeChange?.id) {
-            const newScopeChange = await getScopeChangeById(scopeChange.id);
-            setScopeChange(newScopeChange);
-            openSidesheet(ScopeChangeSideSheet, newScopeChange);
-        }
-    };
+    /**
+     * Refetches every second
+     */
+    const { error, data, refetch } = useQuery<ScopeChangeRequest>(
+        'scopeChange',
+        () => getScopeChangeById(item.id),
+        { refetchInterval: 1000 }
+    );
 
     useEffect(() => {
-        setScopeChange(item);
+        if (item) {
+            setScopeChange(item);
+        }
     }, [item]);
+
+    useEffect(() => {
+        if (data) {
+            setScopeChange(data);
+        }
+    }, [data]);
+
+    if (!item.id) {
+        return <p>Something went wrong</p>;
+    }
+
+    const updateScopeChange = async () => {
+        await refetch();
+    };
 
     return (
         <>
             {scopeChange && !!Object.keys(scopeChange).length && (
                 <>
                     <Wrapper>
+                        {error && (
+                            <div>
+                                Failed to fetch scope change request, please check your connection?
+                            </div>
+                        )}
                         <TitleHeader>
                             <Field
                                 label={'Review scope change request'}
@@ -34,7 +56,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                                 customLabel={{ fontSize: 'xx-large' }}
                             />
                         </TitleHeader>
-                        <RequestViewContainer request={scopeChange} refetch={refetch} />
+                        <RequestViewContainer request={scopeChange} refetch={updateScopeChange} />
                     </Wrapper>
                 </>
             )}

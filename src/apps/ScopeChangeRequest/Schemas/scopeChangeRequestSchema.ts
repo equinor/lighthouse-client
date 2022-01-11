@@ -10,16 +10,6 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         title: 'Title',
         inputType: { type: 'TextInput' },
         order: 1,
-        validationFunction: (value: string | undefined) => {
-            if (!value) {
-                return false;
-            }
-            if (value.length > 2) {
-                return true;
-            } else {
-                return false;
-            }
-        },
     },
     phase: {
         title: 'Phase',

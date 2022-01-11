@@ -46,6 +46,9 @@ export const RequestDetailView = ({
     const logValues: LogEntry[] = useMemo(() => {
         const logArray: LogEntry[] = [];
 
+        if (!request.workflowSteps) {
+            return [];
+        }
         request.workflowSteps.map((x) => {
             x.criterias.map((x) => {
                 x.signedComment &&
@@ -58,6 +61,7 @@ export const RequestDetailView = ({
         });
         return logArray;
     }, [request]);
+
     const activeCriteriaId = useMemo(() => {
         if (request.state === 'Open') {
             return request.currentWorkflowStep.criterias.find((x) => x.id)?.id;
@@ -158,46 +162,49 @@ export const RequestDetailView = ({
                     }
                 />
             </DetailViewContainer>
-            <RequestActionsContainer>
-                {request.state !== 'Closed' && (
-                    <>
-                        <Field
-                            label="Comment"
-                            value={
-                                <div style={{ width: '50vh' }}>
-                                    <TextField
-                                        id={'Comment'}
-                                        multiline
-                                        value={comment}
-                                        onChange={(e) => {
-                                            setComment(e.target.value);
-                                        }}
-                                    />
-                                </div>
-                            }
-                        />
-                        <ButtonContainer>
-                            {request.state === 'Draft' && (
-                                <>
-                                    <Button onClick={setEditMode}>Edit</Button>
-                                    <HorizontalDivider />
-                                    <Button onClick={onInitiate} variant="outlined">
-                                        Initiate request
-                                    </Button>
-                                </>
-                            )}
-                            {request.state === 'Open' && (
-                                <>
-                                    <Button variant="outlined" color="danger">
-                                        Void Request
-                                    </Button>
-                                    <Button onClick={onSignStep}>Sign</Button>
-                                </>
-                            )}
-                        </ButtonContainer>
-                    </>
-                )}
-            </RequestActionsContainer>
+            {request.state !== 'Closed' && (
+                <RequestActionsContainer>
+                    <Field
+                        label="Comment"
+                        value={
+                            <TextField
+                                style={{ width: '100vh' }}
+                                id={'Comment'}
+                                multiline
+                                // meta={'(Required)'}
+                                value={comment}
+                                onChange={(e) => {
+                                    setComment(e.target.value);
+                                }}
+                            />
+                        }
+                    />
+                    <ButtonContainer>
+                        {request.state === 'Draft' && (
+                            <>
+                                <Button onClick={setEditMode}>Edit</Button>
+                                <HorizontalDivider />
+                                <Button onClick={onInitiate} variant="outlined">
+                                    Initiate request
+                                </Button>
+                            </>
+                        )}
+                        {request.state === 'Open' && (
+                            <>
+                                {/* Temporarily feature flagged */}
+                                <span>
+                                    {/* <Button variant="outlined" color="danger">
+                                            Void Request
+                                        </Button> */}
+                                </span>
+                                <Button disabled={!activeCriteriaId} onClick={onSignStep}>
+                                    Sign
+                                </Button>
+                            </>
+                        )}
+                    </ButtonContainer>
+                </RequestActionsContainer>
+            )}
         </div>
     );
 };
