@@ -71,6 +71,3 @@ stages:
                 repository: '${{ variables.repositoryName }}'
                 containerRegistry: '${{ variables.containerRegistry }}'
                 appName: '$(appName)'
-                appConfigName: '${{ variables.appConfigName }}'
-
-
