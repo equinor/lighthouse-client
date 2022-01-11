@@ -3,8 +3,9 @@ import { tokens } from '@equinor/eds-tokens';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { appGroups, apps, Apps } from '../../apps/apps';
+import { appGroups, Apps, apps } from '../../apps/apps';
 import useClientContext from '../../context/clientContext';
+import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
 
 const { Item, Header, Panel } = Accordion;
@@ -143,9 +144,17 @@ const PopoverWrapper = styled.span`
     }
 `;
 
+const GroupLink = styled(Link)`
+    text-decoration: none;
+    color: #030303;
+    flex-grow: 1;
+`;
+
 export const MainMenu = (): JSX.Element => {
     const { appsPanelActive } = useClientContext();
     const [searchValue, setSearchValue] = useState('');
+    // const navigate = useNavigate();
+    const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
 
     const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -153,6 +162,7 @@ export const MainMenu = (): JSX.Element => {
     };
 
     const anchorRef = useRef<HTMLHeadingElement[]>([]);
+    const addMenuRef = useRef<HTMLHeadingElement>(null);
 
     const [isOpen, setIsOpen] = useState<string>('');
     const openPopover = (type: string) => setIsOpen(type);
@@ -216,7 +226,6 @@ export const MainMenu = (): JSX.Element => {
                             <Item key={`item-${key}`} isExpanded={isExpanded}>
                                 <Header className="noBorder heading">
                                     {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
-
                                     {CustomIcon && typeof CustomIcon === 'string' && (
                                         <Icon
                                             name={CustomIcon}
@@ -224,15 +233,14 @@ export const MainMenu = (): JSX.Element => {
                                             color={tokens.colors.text.static_icons__secondary.rgba}
                                         />
                                     )}
-
-                                    {appGroups[key].name}
+                                    <GroupLink to={`${key}`}>{appGroups[key].name}</GroupLink>
                                 </Header>
                                 <Panel className="noBorder">
                                     {filteredList[key].map((item) => (
                                         <Link
                                             className="link"
                                             key={`link-${item.shortName}`}
-                                            to={`/${item.shortName}`}
+                                            to={`${key}/${item.shortName}`}
                                         >
                                             {item.title}
                                         </Link>
@@ -243,23 +251,25 @@ export const MainMenu = (): JSX.Element => {
 
                     return (
                         <SmallItem key={`item-${key}`}>
-                            <SmallButton
-                                id="hover-popover-anchor"
-                                ref={(el) => (anchorRef.current[i] = el as HTMLHeadingElement)}
-                                className="noBorder heading"
-                                onFocus={() => openPopover(appGroups[key].name)}
-                                onMouseOver={() => openPopover(appGroups[key].name)}
-                                onBlur={handleClose}
-                            >
-                                {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
-                                {CustomIcon && typeof CustomIcon === 'string' && (
-                                    <Icon
-                                        name={CustomIcon}
-                                        title={appGroups[key].name}
-                                        color={tokens.colors.text.static_icons__secondary.rgba}
-                                    />
-                                )}
-                            </SmallButton>
+                            <GroupLink to={`${key}`}>
+                                <SmallButton
+                                    id="hover-popover-anchor"
+                                    ref={(el) => (anchorRef.current[i] = el as HTMLHeadingElement)}
+                                    className="noBorder heading"
+                                    onFocus={() => openPopover(appGroups[key].name)}
+                                    onMouseOver={() => openPopover(appGroups[key].name)}
+                                    onBlur={handleClose}
+                                >
+                                    {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
+                                    {CustomIcon && typeof CustomIcon === 'string' && (
+                                        <Icon
+                                            name={CustomIcon}
+                                            title={appGroups[key].name}
+                                            color={tokens.colors.text.static_icons__secondary.rgba}
+                                        />
+                                    )}
+                                </SmallButton>
+                            </GroupLink>
                             <PopoverWrapper>
                                 <Popover
                                     anchorEl={anchorRef.current[i]}
@@ -275,7 +285,7 @@ export const MainMenu = (): JSX.Element => {
                                             <Link
                                                 className="link"
                                                 key={`link-${item.shortName}`}
-                                                to={`/${item.shortName}`}
+                                                to={`${key}/${item.shortName}`}
                                             >
                                                 {item.title}
                                             </Link>
@@ -287,6 +297,31 @@ export const MainMenu = (): JSX.Element => {
                     );
                 })}
             </Accordion>
+            <SmallItem>
+                <SmallButton
+                    id="add-menu"
+                    ref={addMenuRef}
+                    className="noBorder heading"
+                    onFocus={() => setIsAddMenuOpen((s) => !s)}
+                    onMouseOver={() => {
+                        handleClose();
+                        setIsAddMenuOpen(true);
+                    }}
+                    onBlur={() => setIsAddMenuOpen(false)}
+                >
+                    <Icon
+                        name={'add'}
+                        title={'Add Item'}
+                        color={tokens.colors.interactive.primary__resting.hex}
+                    />
+                </SmallButton>
+                <AddMenu
+                    anchorEl={addMenuRef.current}
+                    isOpen={isAddMenuOpen}
+                    handleClose={() => setIsAddMenuOpen(false)}
+                    onMouseEnter={() => setIsAddMenuOpen(true)}
+                />
+            </SmallItem>
         </Wrapper>
     );
 };

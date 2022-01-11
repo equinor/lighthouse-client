@@ -1,15 +1,15 @@
+import { useContext, useEffect, useReducer } from 'react';
+import { GardenOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { actions } from './ParkViewActions';
 import {
     CustomView,
+    Options,
+    ParkViewContext,
     ParkViewProviderProps,
     ParkViewState,
-    ParkViewContext,
-    Options,
     StatusView,
 } from './ParkViewContext';
-import { actions } from './ParkViewActions';
 import { GardenReducer } from './ParkViewReducer';
-import { useContext, useEffect, useReducer } from 'react';
-import { GardenOptions } from '../../CompletionView/src/DataViewerApi/DataViewState';
 
 export function ParkViewProvider<T>({
     children,
@@ -24,6 +24,7 @@ export function ParkViewProvider<T>({
         options: parkViewOptions.options as Options<unknown>,
         status: parkViewOptions.status as StatusView<unknown>,
         data: data,
+        onSelect: parkViewOptions.onSelect as (item: unknown) => void,
 
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey?.toString(),
     };

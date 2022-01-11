@@ -16,7 +16,7 @@ declare global {
 }
 
 const dep: Record<string, unknown> = {
-    lodash: require('lodash')
+    lodash: require('lodash'),
 };
 
 const requireDependency = (d: string) => dep[d];
@@ -24,7 +24,7 @@ const requireDependency = (d: string) => dep[d];
 export function register(): void {
     self.define = function (d: string[], f: Factory) {
         if (typeof document === 'undefined') return;
-        let currentScript = document.currentScript as HTMLScriptElement;
+        const currentScript = document.currentScript as HTMLScriptElement;
 
         if (d[0] === 'exports') {
             // Rollup Setup

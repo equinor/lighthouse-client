@@ -1,6 +1,5 @@
+import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
-import { createDataViewer } from '../components/CompletionView/src/DataViewerApi/DataViewerApi';
-import { AppApi } from './apps';
 
 interface CommPkg {
     Area__Id: string;
@@ -59,17 +58,13 @@ function start(item: CommPkg): string {
     }
 }
 
-export function setup(appApi: AppApi) {
+export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
-    const commPkg = createDataViewer<CommPkg>({
-        initialState: [],
-        primaryViewKey: 'CommPkgNo',
-        viewerId: appApi.shortName,
-    });
+    const commPkg = appApi.createWorkSpace<CommPkg>({});
 
-    commPkg.registerDataFetcher(async () => {
+    commPkg.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
-        const project = 'L.O532C.002';
+        // const project = 'L.O532C.002';
         const response = await api.fetch(
             // `https://api-lighthouse-production.playground..equinor.com/commpks/${plantId}/${project}`
             `https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=96128&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`,
@@ -89,18 +84,6 @@ export function setup(appApi: AppApi) {
         },
         groupValue: {
             start,
-        },
-    });
-
-    commPkg.registerViewOptions({
-        objectIdentifierKey: 'CommPkgNo',
-        title: {
-            key: 'CommPkgNo',
-            label: 'Comm. Package:',
-        },
-        description: {
-            key: 'Description',
-            label: 'Description',
         },
     });
 

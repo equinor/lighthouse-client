@@ -1,8 +1,7 @@
+import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
 import styled from 'styled-components';
-import { createDataViewer } from '../../components/CompletionView/src/DataViewerApi/DataViewerApi';
-import { Status } from '../../components/CompletionView/src/DataViewerApi/DataViewState';
-import { AppApi } from '../apps';
+import { Status } from '../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
@@ -48,15 +47,22 @@ const loopKeys: (keyof Loop)[] = [
     'createdAt',
 ];
 
-export function setup(appApi: AppApi) {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
-    const commPkg = createDataViewer<Loop>({
-        initialState: [],
-        primaryViewKey: 'tagNo',
-        viewerId: appApi.shortName,
-    });
+export function setup(appApi: ClientApi): void {
+    // createDataFactory({
+    //     factoryId: 'loop',
+    //     tile: 'Creat Loop',
+    //     component: (scope: any) => <div>Creat Loop {scope.test}</div>,
+    // });
+    // createDataFactory({
+    //     factoryId: 'swcr',
+    //     tile: 'Create SWCR',
+    //     component: (scope: any) => <div>Create SWCR {scope.test}</div>,
+    // });
 
-    commPkg.registerDataFetcher(async () => {
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
+    const commPkg = appApi.createWorkSpace<Loop>({});
+
+    commPkg.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
         const project = 'L.O532C.002';
         const response = await api.fetch(
@@ -68,6 +74,7 @@ export function setup(appApi: AppApi) {
 
     commPkg.registerFilterOptions({
         excludeKeys: loopKeys,
+        initialFilters: ['status', 'signedAtDate', 'phase'],
         typeMap: {},
         groupValue: {
             signedAtDate: (item: Loop): string => {
@@ -111,19 +118,75 @@ export function setup(appApi: AppApi) {
         },
     });
 
-    commPkg.registerViewOptions({
+    commPkg.registerTableOptions({
         objectIdentifierKey: 'tagNo',
-        title: {
-            key: 'tagNo',
-            label: 'Tag No',
-        },
-        description: {
-            key: 'description',
-            label: 'Description',
-        },
-    });
+        // columnOrder: ['custom', 'status', 'formType'],
+        // customColumns: [
+        //     {
+        //         id: 'custom',
+        //         Header: 'Custom',
+        //         accessor: (row) => {
+        //             return row['contentChecklists'].length + 1;
+        //         },
+        //         aggregate: 'count',
+        //         Aggregated: (cell) => {
+        //             return <div>{cell.value}</div>;
+        //         },
+        //     },
+        // ],
+        // hiddenColumns: ['functionTags', 'signedAt', 'commPk'],
+        // headers: [
+        //     { key: 'formType', title: 'Form' },
+        //     { key: 'createdAt', title: 'Created Date' },
+        // ],
+        // customCellView: [
+        //     {
+        //         key: 'createdAt',
+        //         type: 'Date',
+        //     },
+        //     {
+        //         key: 'description',
+        //         type: 'Description',
+        //     },
 
-    commPkg.registerTableOptions({ objectIdentifierKey: 'tagNo' });
+        //     {
+        //         key: 'status',
+        //         type: 'Status',
+        //         cellAttributeFn: (content) => {
+        //             let bgcolor = '';
+
+        //             if (content.status === 'OK') {
+        //                 bgcolor = 'green';
+        //             } else if (content.status === 'OS') {
+        //                 bgcolor = 'blue';
+        //             } else if (content.status === 'PA') {
+        //                 bgcolor = 'red';
+        //             } else {
+        //                 bgcolor = 'yellow';
+        //             }
+
+        //             return {
+        //                 style: {
+        //                     backgroundColor: bgcolor,
+        //                     color: bgcolor === 'blue' ? 'white' : 'black',
+        //                 },
+        //             };
+        //         },
+        //     },
+        //     {
+        //         key: 'formType',
+        //         type: {
+        //             Cell: ({ cell }) => {
+        //                 return (
+        //                     <div style={{ fontWeight: 500 }}>
+        //                         {cell.row.original.formType as string}
+        //                     </div>
+        //                 );
+        //             },
+        //         },
+        //     },
+        // ],
+    });
     commPkg.registerGardenOptions({
         gardenKey: 'phase',
         itemKey: 'tagNo',

@@ -1,10 +1,6 @@
 import { createContext } from 'react';
+import { GardenOptions, Status, TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { DataSet } from '../Models/data';
-import {
-    GardenOptions,
-    Status,
-    TreeOptions,
-} from '../../CompletionView/src/DataViewerApi/DataViewState';
 
 export interface CustomItemViewProps<T> {
     data: T;
@@ -41,6 +37,7 @@ export interface ParkViewState {
     options?: Options<unknown>;
     status?: StatusView<unknown>;
     data: unknown[] | undefined;
+    onSelect: (item: unknown) => void;
 }
 
 export interface ParkViewContextState extends ParkViewState {

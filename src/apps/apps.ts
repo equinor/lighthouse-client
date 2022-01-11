@@ -1,7 +1,4 @@
-import { AuthenticationProvider } from '@equinor/authentication';
-import { AppConfig } from '@equinor/lighthouse-conf';
-import React from 'react';
-import { DataView } from '../components/CompletionView/src/DataView';
+import { AppGroups, AppManifest } from '@equinor/app-builder';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -13,10 +10,11 @@ import { ProjectInformationIcon } from '../icons/ProjectInformationIcon';
 import { QualityIcon } from '../icons/Quality icon';
 import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
-import { ScopeAndChange } from '../icons/Scope and change icon';
+import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
+import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
@@ -28,36 +26,8 @@ import {
     QueryReport,
     SafetyPerformanceReport
 } from './PowerBI';
-
-type HEXColor = `#${string}`;
-
-type AppType = 'DataViewer' | 'SomeApp' | 'CustomApp' | 'PowerBI';
-
-export interface AppApi extends AppManifest {
-    appConfig: AppConfig;
-    authProvider: AuthenticationProvider;
-}
-interface App {
-    appType?: AppType;
-    setup?: (api: AppApi) => void;
-    component?: React.FC<AppApi>;
-}
-export interface AppManifest {
-    title: string;
-    shortName: string;
-    color: HEXColor;
-    groupe: Apps | Apps[];
-    tags: string[];
-    icon?: string | React.FC;
-    uri?: string;
-    imageUri?: string;
-    app?: App;
-}
-
-export interface AppGroupe {
-    name: string;
-    icon: string | React.FC;
-}
+import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
+import { setup as WorkOrderSetup } from './WorkOrder';
 
 export enum Apps {
     AssetData = 'AssetData',
@@ -68,15 +38,12 @@ export enum Apps {
     ConstructionManagement = 'ConstructionManagement',
     EngineeringManagement = 'EngineeringManagement',
     ProjectInformation = 'ProjectInformation',
-    Dashboard = 'Dashboard',
     QueriesAndRequests = 'QueriesAndRequests',
     QualityAndCompliance = 'QualityAndCompliance',
     ProjectControl = 'ProjectControl',
     Reports = 'Reports',
     SSU = 'SSU',
 }
-
-type AppGroups = Record<Apps, AppGroupe>;
 
 export const appGroups: AppGroups = {
     AssetData: {
@@ -117,16 +84,13 @@ export const appGroups: AppGroups = {
     },
     ProjectControl: {
         name: 'Project control',
-        icon: ScopeAndChange,
+        icon: ProjectControlIcon,
     },
     SSU: {
         name: 'SSU',
         icon: SSUIcon,
     },
-    Dashboard: {
-        name: 'Dashboard',
-        icon: ProgressAndStatusIcon,
-    },
+
     CompletionManagement: {
         name: 'Completion management',
         icon: CompletionManagementIcon,
@@ -193,60 +157,62 @@ export const apps: AppManifest[] = [
         },
         tags: ['PowerBI'],
     },
-    // Dashboard
+    // ProgressAndStatus
     {
-        title: 'Overall',
-        shortName: 'overall',
+        title: 'Overview',
+        shortName: 'overview',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
+        app: {
+            appType: 'PageView',
+            setup: (): void => {
+                console.log('overview');
+            },
+        },
     },
     {
         title: 'Engineering',
         shortName: 'engineering',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
+        app: {
+            appType: 'PageView',
+            setup: (): void => {
+                console.log('engineering');
+            },
+        },
     },
     {
-        title: 'Fabrication',
-        shortName: 'fabrication',
+        title: 'Construction',
+        shortName: 'construction',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
-    },
-    {
-        title: 'Installation',
-        shortName: 'installation',
-        color: '#0364B8',
-        groupe: Apps.Dashboard,
-        icon: '',
-        uri: '',
-        tags: [],
-    },
-    {
-        title: 'Mechanical Completion',
-        shortName: 'mc',
-        color: '#0364B8',
-        groupe: Apps.Dashboard,
-        icon: '',
-        uri: '',
-        tags: [],
+        app: {
+            appType: 'PageView',
+            setup: constructionSetup,
+        },
     },
     {
         title: 'Commissioning',
         shortName: 'commissioning',
         color: '#0364B8',
-        groupe: Apps.Dashboard,
+        groupe: Apps.ProgressAndStatus,
         icon: '',
         uri: '',
         tags: [],
+        app: {
+            appType: 'PageView',
+            setup: constructionSetup,
+        },
     },
     // Engineering management
     {
@@ -301,7 +267,11 @@ export const apps: AppManifest[] = [
         groupe: Apps.ConstructionManagement,
         icon: '',
         uri: '',
-        tags: [],
+        app: {
+            appType: 'DataViewer',
+            setup: WorkOrderSetup,
+        },
+        tags: ['Job'],
     },
     // CompletionManagement
     {
@@ -324,7 +294,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: checklistSetup,
         },
     },
@@ -338,7 +307,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: handoverSetup,
         },
     },
@@ -352,7 +320,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -365,7 +332,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
             setup: loopSetup,
         },
     },
@@ -379,7 +345,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -392,7 +357,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -405,7 +369,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     {
@@ -418,7 +381,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            component: DataView,
         },
     },
     // Queries and requests
@@ -438,7 +400,10 @@ export const apps: AppManifest[] = [
         groupe: Apps.QueriesAndRequests,
         icon: '',
         uri: '',
-        imageUri: './images/Scope change request.jpg',
+        app: {
+            appType: 'DataViewer',
+            setup: scopeChangeSetup,
+        },
         tags: [],
     },
     // ProjectControl
@@ -579,6 +544,7 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: ['3D', 'Asset', 'Map'],
         app: {
+            appType: 'CustomApp',
             component: ModelViewer,
         },
     },

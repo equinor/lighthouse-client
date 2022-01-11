@@ -1,6 +1,5 @@
+import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
-import { createDataViewer } from '../components/CompletionView/src/DataViewerApi/DataViewerApi';
-import { AppApi } from './apps';
 
 export interface Checklist {
     Hyperlink_Status__Id: string;
@@ -58,17 +57,13 @@ const commPkgKeys: (keyof Checklist)[] = [
     'WorkOrders__WoNo',
 ];
 
-export function setup(appApi: AppApi) {
+export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
-    const checklist = createDataViewer<Checklist>({
-        initialState: [],
-        primaryViewKey: 'TagFormularType__Tag__TagNo',
-        viewerId: appApi.shortName,
-    });
+    const checklist = appApi.createWorkSpace<Checklist>({});
 
-    checklist.registerDataFetcher(async () => {
+    checklist.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
-        const project = 'L.O532C.002';
+        // const project = 'L.O532C.002';
         const response = await api.fetch(
             `https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=103425&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`,
             { body: JSON.stringify([]), method: 'POST' }
@@ -84,18 +79,6 @@ export function setup(appApi: AppApi) {
         excludeKeys: commPkgKeys,
         typeMap: {},
         groupValue: {},
-    });
-
-    checklist.registerViewOptions({
-        objectIdentifierKey: 'Id',
-        title: {
-            key: 'TagFormularType__Tag__TagNo',
-            label: 'TagNo:',
-        },
-        description: {
-            key: 'TagFormularType__FormularType__FormularGroup__Description',
-            label: 'Description',
-        },
     });
 
     checklist.registerTableOptions({ objectIdentifierKey: 'Id' });
