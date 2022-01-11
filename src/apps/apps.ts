@@ -24,10 +24,18 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport
+    SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
+
+export function getApps(): AppManifest[] {
+    return apps;
+}
+
+export function getAppGroups(): AppGroups {
+    return appGroups;
+}
 
 export enum Apps {
     AssetData = 'AssetData',
@@ -114,6 +122,7 @@ export const apps: AppManifest[] = [
             appType: 'PowerBI',
             component: BusinessCaseReport,
         },
+        isProduction: true,
         tags: ['PowerBI'],
     },
     {
@@ -156,6 +165,7 @@ export const apps: AppManifest[] = [
             component: SafetyPerformanceReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     // ProgressAndStatus
     {
@@ -200,6 +210,7 @@ export const apps: AppManifest[] = [
             appType: 'PageView',
             setup: constructionSetup,
         },
+        isProduction: true,
     },
     {
         title: 'Commissioning',
@@ -213,6 +224,7 @@ export const apps: AppManifest[] = [
             appType: 'PageView',
             setup: constructionSetup,
         },
+        isProduction: true,
     },
     // Engineering management
     {
@@ -236,6 +248,7 @@ export const apps: AppManifest[] = [
             component: LCIReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     {
         title: 'LCI portal',
@@ -258,6 +271,7 @@ export const apps: AppManifest[] = [
             component: MDRReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     // Construction management
     {
@@ -272,6 +286,7 @@ export const apps: AppManifest[] = [
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
+        isProduction: true,
     },
     // CompletionManagement
     {
@@ -296,6 +311,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: checklistSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'Handover',
@@ -309,6 +325,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: handoverSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'Heat trace installation',
@@ -321,6 +338,7 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'DataViewer',
         },
+        // isProduction: true,
     },
     {
         title: 'Loop',
@@ -334,6 +352,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: loopSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'N2He',
@@ -346,6 +365,7 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'DataViewer',
         },
+        // isProduction: true,
     },
     {
         title: 'Preservation',
@@ -382,6 +402,7 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'DataViewer',
         },
+        isProduction: true,
     },
     // Queries and requests
     {
@@ -405,6 +426,7 @@ export const apps: AppManifest[] = [
             setup: scopeChangeSetup,
         },
         tags: [],
+        isProduction: true,
     },
     // ProjectControl
     {
@@ -457,6 +479,7 @@ export const apps: AppManifest[] = [
             component: NonConformityReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     {
         title: 'Quality deviation',
@@ -470,6 +493,7 @@ export const apps: AppManifest[] = [
             component: QualityDeviationReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
 
     {
@@ -493,6 +517,7 @@ export const apps: AppManifest[] = [
             component: QueryReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     // Reports
     {
@@ -547,6 +572,7 @@ export const apps: AppManifest[] = [
             appType: 'CustomApp',
             component: ModelViewer,
         },
+        // isProduction: true,
     },
     {
         title: 'Documents and drawings',
