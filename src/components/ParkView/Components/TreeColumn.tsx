@@ -11,14 +11,20 @@ export function TreeColumn<T>({ group }: TreeColumnProps<T>): JSX.Element | null
         return null;
     }
 
+    const columnExpanded = group.isExpanded;
+
     return (
         <>
             {group.items[0] != null ? (
-                <Items data={group.items} />
+                <Items data={group.items} columnExpanded={columnExpanded} />
             ) : (
                 <>
                     {Object.keys(group.subGroups).map((groupKey, index) => (
-                        <Group key={groupKey + index} group={group.subGroups[groupKey]} />
+                        <Group
+                            key={groupKey + index}
+                            group={group.subGroups[groupKey]}
+                            columnExpanded={columnExpanded}
+                        />
                     ))}
                 </>
             )}

@@ -4,28 +4,30 @@ import { Item } from '../Styles/item';
 
 interface RenderItemsProps<T> {
     data: T[];
+    columnExpanded: boolean;
 }
 
-export function Items<T>({ data }: RenderItemsProps<T>): JSX.Element | null {
+export function Items<T>({ data, columnExpanded }: RenderItemsProps<T>): JSX.Element | null {
     const { setSelected } = useDataContext();
     const { itemKey, customView, status } = useParkViewContext<T>();
+
+    const View = (customView as any)?.customItemView || null;
 
     return (
         <>
             {Object.keys(data).map((key, index) =>
-                customView?.CustomItemView ? (
-                    <customView.CustomItemView
+                View ? (
+                    <View
                         data={data[key]}
                         itemKey={itemKey.toString()}
                         key={data[key] + index}
                         onClick={() => setSelected(data[key])}
-                    >
-                        {data[key][itemKey]}
-                    </customView.CustomItemView>
+                        columnExpanded={columnExpanded}
+                    />
                 ) : (
                     <Item key={data[key] + index} onClick={() => setSelected(data[key])}>
                         {status?.statusItemFunc(data[key]).statusElement}
-                        {data[key][itemKey]}
+                        {data[key][itemKey]} cdb
                     </Item>
                 )
             )}

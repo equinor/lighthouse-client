@@ -1,3 +1,4 @@
+import { FieldSettings } from '../../../apps/swcr';
 import { StatusView } from '../Context/ParkViewContext';
 import { Data } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
@@ -10,7 +11,8 @@ export function createGarden<T>(
     gardenKey: keyof T,
     groupingKeys?: (keyof T)[],
     status?: StatusView<T>,
-    groupDescriptionFunc?: GroupDescriptionFunc<T>
+    groupDescriptionFunc?: GroupDescriptionFunc<T>,
+    fieldSettings?: FieldSettings<T, string>
 ): Data<T> {
     const allGroupingKeys: (keyof T)[] = [gardenKey];
     if (groupingKeys) {
@@ -19,6 +21,12 @@ export function createGarden<T>(
         });
     }
 
-    const groupedData = groupBy(dataSet, allGroupingKeys, status, groupDescriptionFunc);
+    const groupedData = groupBy(
+        dataSet,
+        allGroupingKeys,
+        status,
+        groupDescriptionFunc,
+        fieldSettings
+    );
     return groupedData;
 }

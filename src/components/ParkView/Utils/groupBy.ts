@@ -1,3 +1,4 @@
+import { FieldSettings } from '../../../apps/swcr';
 import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { StatusView } from '../Context/ParkViewContext';
 import { Data } from '../Models/data';
@@ -7,15 +8,24 @@ export function groupBy<T, K extends keyof T>(
     arr: T[],
     keys: K[],
     status?: StatusView<T>,
-    groupDescriptionFunc?: GroupDescriptionFunc<T>
+    groupDescriptionFunc?: GroupDescriptionFunc<T>,
+    fieldSettings?: FieldSettings<T, string>,
+    isExpanded?: boolean
 ): Data<T> {
     const key = (keys[0] && keys[0].toString()) || undefined;
     if (!key) return {} as Data<T>;
 
+    const fieldSetting = fieldSettings?.[key];
+
     const data = arr.reduce((acc, item) => {
-        const itemKeys: [] = Array.isArray(item[key]) ? item[key] : [item[key]];
+        const itemKeys: string[] = fieldSetting?.getKey
+            ? fieldSetting.getKey(item)
+            : Array.isArray(item[key])
+            ? item[key]
+            : [item[key]];
 
         itemKeys.forEach((valueKey: string) => {
+            if (!valueKey) valueKey = '(Blank)';
             acc[valueKey] = acc[valueKey] || {
                 groupKey: key,
                 value: valueKey,
@@ -23,7 +33,7 @@ export function groupBy<T, K extends keyof T>(
                 subGroups: {},
                 items: [],
                 count: 0,
-                isExpanded: false,
+                isExpanded: Boolean(isExpanded),
             };
             acc[valueKey].items.push(item);
             acc[valueKey].count = acc[valueKey].count + 1;
@@ -53,7 +63,14 @@ export function groupBy<T, K extends keyof T>(
             }
         }
 
-        data[key].subGroups = groupBy(data[key].items, nextKeys, status, groupDescriptionFunc);
+        data[key].subGroups = groupBy(
+            data[key].items,
+            nextKeys,
+            status,
+            groupDescriptionFunc,
+            fieldSettings,
+            true
+        );
         if (nextKeys.length > 0) data[key].items = [];
     });
 

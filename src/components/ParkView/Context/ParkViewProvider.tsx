@@ -1,4 +1,5 @@
 import { useContext, useEffect, useReducer } from 'react';
+import { FieldSettings } from '../../../apps/swcr';
 import { GardenOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { actions } from './ParkViewActions';
 import {
@@ -7,7 +8,7 @@ import {
     ParkViewContext,
     ParkViewProviderProps,
     ParkViewState,
-    StatusView
+    StatusView,
 } from './ParkViewContext';
 import { GardenReducer } from './ParkViewReducer';
 
@@ -23,6 +24,7 @@ export function ParkViewProvider<T>({
         customView: parkViewOptions.customViews as CustomView<unknown>,
         options: parkViewOptions.options as Options<unknown>,
         status: parkViewOptions.status as StatusView<unknown>,
+        fieldSettings: (parkViewOptions as GardenOptions<unknown>)?.fieldSettings || {},
         data: data,
 
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey?.toString(),
@@ -75,5 +77,6 @@ export function useParkViewContext<T>() {
         status: parkViewContext.status as StatusView<T>,
         options: parkViewContext.options as Options<T>,
         data: parkViewContext.data as T[],
+        fieldSettings: parkViewContext.fieldSettings as FieldSettings<T, string>,
     };
 }

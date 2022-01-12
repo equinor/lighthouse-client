@@ -7,10 +7,18 @@ import { useParkViewContext } from '../Context/ParkViewProvider';
 export function FilterSelector<T>(): JSX.Element | null {
     const [selectedOption, setSelectedOption] = useState<string>('');
 
-    const { groupByKeys, setGroupKeys, setGardenKey, data, gardenKey, excludeKeys, itemKey } =
-        useParkViewContext<T>();
+    const {
+        groupByKeys,
+        setGroupKeys,
+        setGardenKey,
+        data,
+        gardenKey,
+        excludeKeys,
+        itemKey,
+        fieldSettings,
+    } = useParkViewContext<T>();
 
-    const groupingOptions = useMemo(() => {
+    /*     const groupingOptions = useMemo(() => {
         if (data.length > 0) {
             //exclude rootkey, itemkey and all keys present in groupKeys
             const options: string[] = [];
@@ -28,6 +36,28 @@ export function FilterSelector<T>(): JSX.Element | null {
         }
         return null;
     }, [data, gardenKey, groupByKeys, itemKey, excludeKeys]);
+ */
+    const groupingOptions = useMemo(() => {
+        if (data.length > 0) {
+            //exclude rootkey, itemkey and all keys present in groupKeys
+            const options: string[] = [];
+
+            const groupByObject = fieldSettings || data[0];
+
+            Object.keys(groupByObject).map((x) => {
+                if (
+                    x !== gardenKey &&
+                    x !== itemKey &&
+                    !groupByKeys.includes(x as keyof T) &&
+                    !excludeKeys?.includes(x as keyof T)
+                ) {
+                    options.push(x);
+                }
+            });
+            return options;
+        }
+        return null;
+    }, [data, gardenKey, groupByKeys, itemKey, fieldSettings, excludeKeys]);
 
     const handleSelectedItemsChanged = (newValue: string | null | undefined, index: number) => {
         if (newValue === null) {

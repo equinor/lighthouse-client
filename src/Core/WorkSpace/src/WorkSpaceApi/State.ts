@@ -4,7 +4,8 @@ import { FilterOptions } from '@equinor/filter';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
 import { TableOptions as ReactTableOptions } from 'react-table';
-import { DataSet } from '../../../../components/ParkView/Models/data';
+import { FieldSettings } from '../../../../apps/swcr';
+import { Data, DataSet } from '../../../../components/ParkView/Models/data';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { StatusItem } from '../../../../packages/StatusBar';
 import { DataSource, DataViewerProps, ViewOptions } from './WorkSpaceTypes';
@@ -49,9 +50,27 @@ interface Options<T> {
     groupDescriptionFunc?: (data: T, groupingKey: string) => string;
 }
 
+export interface CustomItemView<T> {
+    data: T;
+    itemKey: string;
+    onClick: () => void;
+    columnExpanded: boolean;
+}
+
+export interface CustomGroupView<T> {
+    data: DataSet<T>;
+    onClick: () => void;
+}
+
+export interface CustomHeaderView<T> {
+    garden: Data<T>;
+    columnKey: string;
+}
+
 interface CustomView<T> {
-    customItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
-    customGroupView?: React.FC<{ data: DataSet<any>; onClick: () => void }>;
+    customItemView?: React.FC<CustomItemView<T>>;
+    customGroupView?: React.FC<CustomGroupView<T>>;
+    customHeaderView?: React.FC<CustomHeaderView<T>>;
 }
 
 //update TreeOptions;;
@@ -64,10 +83,13 @@ export interface TreeOptions<T> {
     status?: StatusView<T>;
 }
 
+export type GetKeyFunction<T> = (item: T, itemKey?: keyof T) => string[];
+
 export interface GardenOptions<T> {
     gardenKey: keyof T;
     itemKey: keyof T;
     groupByKeys?: (keyof T)[];
+    fieldSettings: FieldSettings<T, string>;
     excludeKeys?: (keyof T)[];
     customViews?: CustomView<T>;
     options?: Options<T>;

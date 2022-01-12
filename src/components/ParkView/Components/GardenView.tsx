@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from 'react';
 
 import { createGarden } from '../Services/createGarden';
-import { Wrapper, Col, Groupe, Title, Count } from '../Styles/common';
+import { Wrapper, Col } from '../Styles/common';
 import { Data } from '../Models/data';
 import { TreeColumn } from './TreeColumn';
 import { getExcludeKeys } from '../Utils/excludeKeys';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { FilterSelector } from './GroupingSelector';
+import { GroupHeader } from './GroupHeader';
+import { useRefresh } from '../hooks/useRefresh';
 
 export function GardenView<T>(): JSX.Element | null {
-    const { data, groupByKeys, gardenKey, excludeKeys, setExcludeKeys, options, status } =
-        useParkViewContext<T>();
+    const refresh = useRefresh();
+    const {
+        data,
+        groupByKeys,
+        gardenKey,
+        excludeKeys,
+        setExcludeKeys,
+        options,
+        status,
+        fieldSettings,
+        customView,
+    } = useParkViewContext<T>();
     const [garden, setGarden] = useState<Data<T> | null>();
     if (!excludeKeys && data) {
         setExcludeKeys(getExcludeKeys(data, 60));
@@ -24,14 +36,22 @@ export function GardenView<T>(): JSX.Element | null {
                     gardenKey as unknown as keyof T,
                     groupByKeys as unknown as (keyof T)[],
                     status,
-                    options?.groupDescriptionFunc
+                    options?.groupDescriptionFunc,
+                    fieldSettings
                 )
             );
-    }, [data, gardenKey, groupByKeys, status, options?.groupDescriptionFunc]);
+    }, [data, gardenKey, groupByKeys, status, options?.groupDescriptionFunc, fieldSettings]);
 
     if (!data || !garden) {
         return null;
     }
+
+    const Header = customView?.customHeaderView || GroupHeader;
+
+    const handleHeaderClick = (columnKey: string) => {
+        refresh();
+        garden[columnKey].isExpanded = !garden[columnKey].isExpanded;
+    };
 
     return (
         <>
@@ -42,11 +62,12 @@ export function GardenView<T>(): JSX.Element | null {
                         <Col key={`col-${index}`}>
                             {/* Will be created with viewerFactory configured with gardenoptions */}
                             {gardenKey && (
-                                <Groupe>
-                                    {garden[key].status?.statusElement}
-                                    <Title>{garden[key].value}</Title>
-                                    <Count>({garden[key].count})</Count>
-                                </Groupe>
+                                <div
+                                    style={{ width: '100%' }}
+                                    onClick={() => handleHeaderClick(key)}
+                                >
+                                    <Header garden={garden} columnKey={key} />
+                                </div>
                             )}
 
                             <TreeColumn group={garden[key]} />

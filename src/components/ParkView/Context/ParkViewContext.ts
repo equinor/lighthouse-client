@@ -1,6 +1,7 @@
 import { createContext } from 'react';
+import { FieldSettings } from '../../../apps/swcr';
 import { GardenOptions, Status, TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
-import { DataSet } from '../Models/data';
+import { Data, DataSet } from '../Models/data';
 
 export interface CustomItemViewProps<T> {
     data: T;
@@ -24,8 +25,14 @@ export interface StatusView<T> {
 }
 
 export interface CustomView<T> {
-    CustomItemView?: React.FC<{ data: T; itemKey: string; onClick: () => void }>;
-    CustomGroupView?: React.FC<{ data: DataSet<any>; onClick: () => void }>;
+    customItemView?: React.FC<{
+        data: T;
+        itemKey: string;
+        onClick: () => void;
+        columnExpanded: boolean;
+    }>;
+    customGroupView?: React.FC<{ data: DataSet<any>; onClick: () => void }>;
+    customHeaderView?: React.FC<{ garden: Data<T>; columnKey: string }>;
 }
 
 export interface ParkViewState {
@@ -33,6 +40,7 @@ export interface ParkViewState {
     itemKey: string;
     groupByKeys: string[];
     excludeKeys?: string[];
+    fieldSettings?: FieldSettings<unknown, string>;
     customView: CustomView<unknown>;
     options?: Options<unknown>;
     status?: StatusView<unknown>;
