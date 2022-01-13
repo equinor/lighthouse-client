@@ -11,4 +11,5 @@ export interface TimeBarChartOptions<T extends unknown> {
     timeChartOptions: CumulativeSeriesOptions<T>;
     colors?: string[];
     dateAccessor?: any | string | ((data: T[]) => any);
+    accumulative?: boolean;
 }

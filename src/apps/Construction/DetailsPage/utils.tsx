@@ -1,5 +1,5 @@
 import { CellProps, TableInstance } from '@equinor/Table';
-import { Job } from '../mocData/mockData';
+import { Job, WorkOrder } from '../mocData/mockData';
 import {
     SumColumnFooter,
     SumColumnFooterCount,
@@ -16,7 +16,7 @@ import {
 export const columnGenerator = <T extends Record<string, unknown>>(
     id: string,
     header: string,
-    accessorKey: keyof Job,
+    accessorKey: keyof WorkOrder,
     aggregate: 'sum' | 'count',
     footerType:
         | SumColumnFooterType<T>
@@ -39,16 +39,16 @@ export const columnGenerator = <T extends Record<string, unknown>>(
             }
             const count = data.row.subRows.reduce((acc, i) => {
                 if (footerType.type === 'SumColumnFooterCountTotal') {
-                    acc = acc + (i.original[accessorKey] as number);
+                    acc = acc + Number(i.original[accessorKey]) || 0;
                     return acc;
                 } else if (aggregate === 'count') {
-                    acc = i.original.jobStatus === jobStatus ? acc + 1 : acc;
+                    acc = i.original.jobStatusCode === jobStatus ? acc + 1 : acc;
 
                     return acc;
                 } else {
                     acc =
-                        i.original.jobStatus === jobStatus
-                            ? acc + (i.original[accessorKey] as number)
+                        i.original.jobStatusCode === jobStatus
+                            ? acc + Number(i.original[accessorKey]) || 0
                             : acc;
                     return acc;
                 }
@@ -56,7 +56,7 @@ export const columnGenerator = <T extends Record<string, unknown>>(
             return count;
         },
         aggregate,
-        Footer: (data: React.PropsWithChildren<TableInstance<Job>>) => {
+        Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => {
             switch (footerType.type) {
                 case 'SumColumnFooterCount':
                     return (

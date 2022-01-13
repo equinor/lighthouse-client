@@ -3,10 +3,7 @@
  */
 export function sortDateByKey<T extends unknown>(dataItem: T[], key: keyof T): T[] {
     const sorted = dataItem.sort((a: T, b: T) => {
-        return (
-            new Date((a[key as string] as string).replaceAll('.', '/')).getTime() -
-            new Date((b[key as string] as string).replaceAll('.', '/')).getTime()
-        );
+        return new Date(a[key as string]).getTime() - new Date(b[key as string]).getTime();
     });
     return sorted;
 }

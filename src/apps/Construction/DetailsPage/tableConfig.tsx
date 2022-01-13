@@ -1,9 +1,9 @@
 import { Column } from '@equinor/Table';
-import { Job } from '../mocData/mockData';
+import { Job, WorkOrder } from '../mocData/mockData';
 import { SumColumnFooter } from './components';
 import { columnGenerator } from './utils';
 
-export const cols: Column<Job>[] = [
+export const cols: Column<WorkOrder>[] = [
     {
         Header: '',
         accessor: 'disciplineDescription',
@@ -25,30 +25,30 @@ export const cols: Column<Job>[] = [
         Footer: () => <></>,
         columns: [
             columnGenerator(
-                'E10-WOs',
+                'W01-WOs',
                 'WOs',
-                'job',
+                'woNo',
                 'count',
                 {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatus',
-                    value: 'E10',
-                    columnId: 'E10-WOs',
+                    fieldKey: 'jobStatusCode',
+                    value: 'W01',
+                    columnId: 'W01-WOs',
                 },
-                'E10'
+                'W01'
             ),
             columnGenerator(
-                'E10-Est',
+                'W01-Est',
                 'Est mhrs',
-                'jobEstimatedHours',
+                'estimatedManHours',
                 'sum',
                 {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatus',
-                    value: 'E10',
-                    sumKey: 'jobEstimatedHours',
+                    fieldKey: 'jobStatusCode',
+                    value: 'W01',
+                    sumKey: 'estimatedManHours',
                 },
-                'E10',
+                'W01',
                 80
             ),
         ],
@@ -58,30 +58,30 @@ export const cols: Column<Job>[] = [
         Footer: () => <></>,
         columns: [
             columnGenerator(
-                'E20-WOs',
+                'W02-WOs',
                 'WOs',
-                'job',
+                'woNo',
                 'count',
                 {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatus',
-                    value: 'E20',
-                    columnId: 'E20-WOs',
+                    fieldKey: 'jobStatusCode',
+                    value: 'W02',
+                    columnId: 'W02-WOs',
                 },
-                'E20'
+                'W02'
             ),
             columnGenerator(
-                'E20-Est',
+                'W02-Est',
                 'Est mhrs',
-                'jobEstimatedHours',
+                'estimatedManHours',
                 'sum',
                 {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatus',
-                    value: 'E20',
-                    sumKey: 'jobEstimatedHours',
+                    fieldKey: 'jobStatusCode',
+                    value: 'W02',
+                    sumKey: 'estimatedManHours',
                 },
-                'E20'
+                'W02'
             ),
         ],
     },
@@ -90,30 +90,30 @@ export const cols: Column<Job>[] = [
         Footer: () => <></>,
         columns: [
             columnGenerator(
-                'E30-WOs',
+                'W03-WOs',
                 'WOs',
-                'job',
+                'woNo',
                 'count',
                 {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatus',
-                    value: 'E30',
-                    columnId: 'E30-WOs',
+                    fieldKey: 'jobStatusCode',
+                    value: 'W03',
+                    columnId: 'W03-WOs',
                 },
-                'E30'
+                'W03'
             ),
             columnGenerator(
-                'E30-Est',
+                'W03-Est',
                 'Est mhrs',
-                'jobEstimatedHours',
+                'estimatedManHours',
                 'sum',
                 {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatus',
-                    value: 'E30',
-                    sumKey: 'jobEstimatedHours',
+                    fieldKey: 'jobStatusCode',
+                    value: 'W03',
+                    sumKey: 'estimatedManHours',
                 },
-                'E30'
+                'W03'
             ),
         ],
     },
@@ -122,30 +122,30 @@ export const cols: Column<Job>[] = [
         Footer: () => <></>,
         columns: [
             columnGenerator(
-                'E35-WOs',
+                'W04-WOs',
                 'WOs',
-                'job',
+                'woNo',
                 'count',
                 {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatus',
-                    value: 'E35',
-                    columnId: 'E35-WOs',
+                    fieldKey: 'jobStatusCode',
+                    value: 'W04',
+                    columnId: 'W04-WOs',
                 },
-                'E35'
+                'W04'
             ),
             columnGenerator(
-                'E35-Est',
+                'W04-Est',
                 'Est mhrs',
-                'jobEstimatedHours',
+                'estimatedManHours',
                 'sum',
                 {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatus',
-                    value: 'E35',
-                    sumKey: 'jobEstimatedHours',
+                    fieldKey: 'jobStatusCode',
+                    value: 'W04',
+                    sumKey: 'estimatedManHours',
                 },
-                'E35'
+                'W04'
             ),
         ],
     },
@@ -154,30 +154,30 @@ export const cols: Column<Job>[] = [
         Footer: () => <></>,
         columns: [
             columnGenerator(
-                'E40-WOs',
+                'W05-WOs',
                 'WOs',
-                'job',
+                'woNo',
                 'count',
                 {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatus',
-                    value: 'E40',
-                    columnId: 'E40-WOs',
+                    fieldKey: 'jobStatusCode',
+                    value: 'W05',
+                    columnId: 'W05-WOs',
                 },
-                'E40'
+                'W05'
             ),
             columnGenerator(
-                'E40-Est',
+                'W05-Est',
                 'Est mhrs',
-                'jobEstimatedHours',
+                'estimatedManHours',
                 'sum',
                 {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatus',
-                    value: 'E40',
-                    sumKey: 'jobEstimatedHours',
+                    fieldKey: 'jobStatusCode',
+                    value: 'W05',
+                    sumKey: 'estimatedManHours',
                 },
-                'E40'
+                'W05'
             ),
         ],
     },
@@ -188,7 +188,7 @@ export const cols: Column<Job>[] = [
             columnGenerator(
                 'Total-WOs',
                 'WOs',
-                'discipline',
+                'disciplineDescription',
                 'count',
                 { type: 'SumColumnFooter', columnId: 'Total-WOs' },
                 ''
@@ -196,9 +196,9 @@ export const cols: Column<Job>[] = [
             columnGenerator(
                 'Total-Est',
                 'Est mhrs',
-                'jobEstimatedHours',
+                'estimatedManHours',
                 'sum',
-                { type: 'SumColumnFooterCountTotal', fieldKey: 'jobEstimatedHours' },
+                { type: 'SumColumnFooterCountTotal', fieldKey: 'estimatedManHours' },
                 ''
             ),
         ],

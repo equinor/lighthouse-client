@@ -11,7 +11,93 @@ export type Job = {
     jobEstimatedHours: number;
     jobStatuses: JobStatuses[];
 };
-
+// export type WorkOrder = {
+//     [index: string]: any;
+//     siteCodes: string[];
+//     projectIdentifier: string;
+//     workOrderNumber: string;
+//     description: string;
+//     disciplineCode: string;
+//     discipline: string;
+//     responsibleCode: string;
+//     responsible: string;
+//     milestone: string;
+//     milestoneCode: string;
+//     onshore: boolean;
+//     offshore: boolean;
+//     materialStatus: string;
+//     plannedStartDate: string;
+//     plannedFinishDate: string;
+//     w1ActualDate: string;
+//     w2ActualDate: string;
+//     w3ActualDate: string;
+//     w4ActualDate: string;
+//     w5ActualDate: string;
+//     w6ActualDate: string;
+//     w7ActualDate: string;
+//     w8ActualDate: string;
+//     w9ActualDate: string;
+//     w10ActualDate: string;
+//     commpkgNumber: string;
+//     workOrderId: string;
+//     proCoSysSiteName: string;
+//     materialComments: string;
+//     constructionComments: string;
+//     projectProgress: string;
+//     estimatedHours: number;
+//     remainingHours: number;
+//     expendedHours: number;
+//     url: string;
+//     order: number;
+//     hourType: string;
+//     mccrStatus: string;
+//     holdBy: string;
+//     holdByDescription: string;
+//     date: string;
+//     rowKey: string;
+//     searchableValues: string;
+//     projectDescription: string;
+// };
+export type WorkOrder = {
+    plant: string;
+    plantName: string;
+    projectName: string;
+    woNo: string;
+    commPkgNo: string;
+    title: string;
+    description: string;
+    mileStoneCode: string;
+    milestoneDescription: string;
+    materialStatusCode: string;
+    categoryCode: string;
+    holdByCode: string;
+    responsibleCode: string;
+    responsibleDescription: string;
+    areaCode: string;
+    areaDescription: string;
+    jobStatusCode: string;
+    typeOfWorkCode: string;
+    onShoreOffShoreCode: string;
+    woTypeCode: string;
+    projectProgress: string;
+    expendedManHours: string;
+    estimatedManHours: string;
+    remainingManHours: string;
+    plannedStartAtDate: string;
+    actualStartAtDate: string;
+    plannedFinishedAtDate: string;
+    actualFinishAtDate: string;
+    createdAt: string;
+    lastUpdated: string;
+    disciplineDescription: string;
+    jobStatusCutoffs: {
+        status: string;
+        weeks: string[];
+    }[];
+};
+export type WorkOrderApi = {
+    items: WorkOrder[];
+};
 export const mockData = (): Job[] => {
     const jobs: Job[] = JSON.parse(`[
     {

@@ -3,24 +3,49 @@ import { ApexOptions } from 'apexcharts';
 import { useMemo, useState } from 'react';
 import Chart from 'react-apexcharts';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { timeChartSeries, TimeDimension } from '../../Utils/createTime';
+import { getSeriesAndCategories, timeChartSeries, TimeDimension } from '../../Utils/createTime';
 import { TimeChip, TimeWrapper } from './Styles/Styles';
 import { TimeBarChartProps } from './Types/timeVisualOptions';
 import { Table, useColumns } from '@equinor/Table';
+import ReactDOM from 'react-dom';
+import { PopupFilter } from '../../../../Filter/Components/PopoutFilter/PopupFilter';
+import {
+    createSeries,
+    renameCats,
+    sortCategories,
+    createUniqueCategories,
+} from '../../Utils/cutoffUtils';
+import { WorkOrder } from '../../../../../apps/Construction/mocData/mockData';
+import { createAccumulativeSeries } from '../../Utils/accumulativeUtils';
 
 export function TimeChart<T extends unknown>({
     data,
-    options: { title, timeChartOptions, colors, defaultTime, dateAccessor },
+    options: { title, timeChartOptions, colors, defaultTime, accumulative },
 }: TimeBarChartProps<T>): JSX.Element {
-    const [time, setTime] = useState<TimeDimension>(defaultTime || 'month');
+    const [time, setTime] = useState<TimeDimension>(defaultTime || 'week');
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const columns = useColumns(data[0] as any);
-
-    const { series, categories } = useMemo(
-        () => timeChartSeries(data, timeChartOptions, time, dateAccessor),
-        [data, time]
+    const [showData, setShowData] = useState<T[]>();
+    const cats = sortCategories(createUniqueCategories(data as WorkOrder[]));
+    const accumulated = useMemo(
+        () => createAccumulativeSeries(data as WorkOrder[], 'createdAt', new Date('07/01/2020')),
+        [data]
     );
-
+    const series = useMemo(
+        () =>
+            createSeries({
+                data: data as WorkOrder[],
+                cats,
+                options: {},
+            }),
+        [data, cats, accumulative]
+    );
+    const wo4series = series.filter((serie) => serie.name === 'W04');
+    let a = [{ name: 'wo4', data: [] }] as { name: string; data: number[] }[];
+    for (let i = 0; i < accumulated.categories.length; i++) {
+        a[0].data.push(wo4series[wo4series.length - 1].data[cats.length - 1]);
+    }
+    const blahh = accumulated.series.concat(a);
+    const categories = renameCats(accumulative ? accumulated.categories : cats);
     const options: ApexOptions = useMemo(
         () => ({
             title: {
@@ -30,6 +55,7 @@ export function TimeChart<T extends unknown>({
             chart: {
                 id: 'chart2',
                 height: 350,
+                type: 'line',
                 // title: timeChartOptions.title,
                 // type: 'line',
                 toolbar: {
@@ -63,8 +89,20 @@ export function TimeChart<T extends unknown>({
                     // },
                     click: (event, chartContext, config) => {
                         setIsOpen(true);
-                        console.log(data);
-                        console.log(timeChartOptions.categoriesKey);
+
+                        const categoryClicked =
+                            config.config.xaxis.categories[config.dataPointIndex];
+                        const clickedName = config.globals.initialSeries[config.seriesIndex].name;
+
+                        const filtered = data.filter((wo) =>
+                            (wo as WorkOrder).jobStatusCutoffs.some(
+                                (jobStatus) =>
+                                    jobStatus.weeks.indexOf(categoryClicked) > -1 &&
+                                    jobStatus.status === clickedName
+                            )
+                        );
+                        debugger;
+                        setShowData(filtered);
                     },
                 },
             },
@@ -106,7 +144,7 @@ export function TimeChart<T extends unknown>({
             xaxis: {
                 type: 'category',
                 tickPlacement: 'on',
-                categories,
+                categories: categories,
 
                 showAlways: true,
             },
@@ -118,15 +156,14 @@ export function TimeChart<T extends unknown>({
                         text: `Amount`,
                     },
                 },
-                {
-                    opposite: true,
-                    showAlways: true,
-                    forceNiceScale: false,
-                    // reversed: true,
-                    title: {
-                        text: `Cumulative `,
-                    },
-                },
+                // {
+                //     showAlways: accumulative,
+                //     opposite: true,
+                //     forceNiceScale: false,
+                //     title: {
+                //         text: 'a',
+                //     },
+                // },
             ],
             legend: {
                 // position: 'right',
@@ -137,7 +174,7 @@ export function TimeChart<T extends unknown>({
                 opacity: 1,
             },
         }),
-        [categories]
+        [cats]
     );
 
     function getVariant(type: TimeDimension) {
@@ -171,36 +208,51 @@ export function TimeChart<T extends unknown>({
                         </TimeWrapper>
                         <Chart
                             options={options}
-                            series={series}
-                            type="bar"
+                            series={accumulative ? blahh : series}
+                            type={accumulative ? 'line' : 'bar'}
                             height={`${300}px`}
                             width={`${width}px`}
                         />
                     </>
                 )}
             </AutoSizer>
-            {isOpen && (
-                <div
-                    style={{
-                        zIndex: 1000,
-                        display: 'flex',
-                        justifySelf: 'end',
-                        width: 'fit-content',
-                        height: '100vh',
-                        backgroundColor: 'white',
-                        borderLeft: '1px solid lightgray',
-                        overflow: 'auto',
-                    }}
-                >
-                    <button onClick={() => setIsOpen(false)} style={{ height: '20px' }}>
-                        X
-                    </button>
-
-                    <div style={{ display: 'flex' }}>
-                        <Table options={{ data, columns }} />
-                    </div>
-                </div>
-            )}
+            {isOpen && <Something data={showData} setIsOpen={setIsOpen} />}
         </>
+    );
+}
+type SomethingProps<T> = {
+    data: T[] | undefined;
+    setIsOpen: (value: React.SetStateAction<boolean>) => void;
+};
+function Something<T>({ data, setIsOpen }: SomethingProps<T>) {
+    const columns = useColumns(data ? (data[0] as any) : []);
+    const temp = document.getElementById('temp');
+    temp!.hidden = false;
+    temp!.style.position = 'absolute';
+    temp!.style.zIndex = '2';
+    temp!.style.background = 'white';
+    temp!.style.width = '50%';
+    temp!.style.height = '100vh';
+    temp!.style.right = '0';
+    return ReactDOM.createPortal(
+        <div
+            style={{
+                borderLeft: '1px solid lightgray',
+                overflow: 'auto',
+                height: '100%',
+            }}
+        >
+            <button
+                onClick={() => {
+                    setIsOpen(false);
+                    temp!.hidden = true;
+                }}
+            >
+                X
+            </button>
+
+            <div style={{ height: '100%' }}>{data && <Table options={{ data, columns }} />}</div>
+        </div>,
+        temp!
     );
 }
