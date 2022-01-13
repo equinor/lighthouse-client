@@ -20,13 +20,13 @@
     "docker-build": "docker build -f ./.docker/Dockerfile -t lighthouse:dev ."
   },
   "dependencies": {
-    "@azure/app-configuration": "^1.3.0",
+    "@azure/app-configuration": "^1.3.1",
     "@azure/msal-browser": "^2.18.0",
     "@cognite/reveal": "^2.2.2",
     "@cognite/sdk": "5.6.1",
     "@dbeining/react-atom": "^4.1.21",
     "@equinor/eds-core-react": "^0.14.2",
-    "@equinor/eds-icons": "^0.7.0",
+    "@equinor/eds-icons": "^0.10.0",
     "@equinor/eds-tokens": "^0.7.0",
     "@microsoft/microsoft-graph-types": "^2.7.0",
     "apexcharts": "^3.29.0",
@@ -40,6 +40,7 @@
     "powerbi-client": "^2.18.5",
     "powerbi-client-react": "^1.3.3",
     "powerbi-report-authoring": "^1.1.1",
+    "re-resizable": "^6.9.1",
     "react": "^17.0.2",
     "react-apexcharts": "^1.3.9",
     "react-dom": "^17.0.2",

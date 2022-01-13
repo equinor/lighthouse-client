@@ -1,3 +1,4 @@
+import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { baseClient } from '../../../packages/httpClient/src';
 import { createPageViewer } from '../../Core/PageViewer/Api/pageViewerApi';
@@ -78,12 +79,9 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
     },
 };
 
-export function setup(appApi: AppApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.clientId]);
-    const construction = createPageViewer({
-        viewerId: appApi.shortName,
-        title: appApi.title,
-    });
+export function setup(appApi: ClientApi): void {
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const construction = appApi.createPageViewer();
 
     /** 
     Remove SWCR analytics, since its not relevant for Construction

@@ -85,13 +85,6 @@ function getTimeDimension(date: string, timeDimension: TimeDimension): string {
             return `${dt.year}`;
     }
 }
-function getYears2<T>(data: T[]) {
-    const years: Set<number> = new Set();
-    data.forEach((item) => {
-        item && years.add(convertToDate(item as any).getUTCFullYear());
-    });
-    return [...years];
-}
 
 function getYears<T>(data: T[], dateKey: keyof T): number[] {
     const years: Set<number> = new Set();
@@ -144,8 +137,7 @@ function dataReducer<T>(sortedData: T[], options: CumulativeSeriesOptions<T>, ti
 export function timeChartSeries<T extends unknown>(
     dataItem: T[],
     options: CumulativeSeriesOptions<T>,
-    time: TimeDimension,
-    dateAccessor: any
+    time: TimeDimension
 ): ChartData {
     const sortedData = sortDateByKey(dataItem, options.categoriesKey);
     const reducedData = dataReducer<T>(sortedData, options, time);

@@ -17,10 +17,9 @@ export type TableOptions<T> = Pick<
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     //@ts-ignore
     ReactTableOptions<T>,
-    'enableSelectRows' | 'onCellClick' | 'setSelected' | 'columnOrder'
+    'enableSelectRows' | 'onCellClick' | 'setSelected' | 'columnOrder' | 'onSelect'
 > & {
     objectIdentifierKey: string;
-
     /** Hide certain columns based on key */
     hiddenColumns?: (keyof T)[];
 
@@ -54,7 +53,6 @@ interface CustomView<T> {
     customGroupView?: React.FC<{ data: DataSet<any>; onClick: () => void }>;
 }
 
-//update TreeOptions;;
 export interface TreeOptions<T> {
     groupByKeys?: (keyof T)[];
     itemKey: keyof T;
@@ -62,16 +60,18 @@ export interface TreeOptions<T> {
     customViews?: CustomView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
+    onSelect?: (item: T) => void;
 }
 
 export interface GardenOptions<T> {
     gardenKey: keyof T;
     itemKey: keyof T;
-    groupByKeys?: (keyof T)[];
     excludeKeys?: (keyof T)[];
+    groupByKeys?: (keyof T)[];
     customViews?: CustomView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
+    onSelect?: (item: T) => void;
 }
 
 export interface PowerBiOptions {
@@ -80,10 +80,6 @@ export interface PowerBiOptions {
 }
 
 export type StatusFunc<T> = (data: T[]) => StatusItem[];
-
-export interface DataViewSideSheetOptions<T> {
-    CustomComponent?: React.FC<{ item: T; onClose: () => void }>;
-}
 
 export interface WorkflowEditorOptions {
     endpoint: string;
@@ -103,7 +99,6 @@ export interface WorkSpaceConfig<T> {
     analyticsOptions?: AnalyticsOptions<T>;
     statusFunc?: StatusFunc<T>;
     powerBiOptions?: any;
-    dataViewSideSheetOptions?: DataViewSideSheetOptions<T>;
     workflowEditorOptions?: WorkflowEditorOptions;
 }
 

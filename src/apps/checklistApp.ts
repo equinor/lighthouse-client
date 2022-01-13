@@ -1,6 +1,5 @@
+import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
-import { createWorkSpace } from '@equinor/WorkSpace';
-import { AppApi } from './apps';
 
 export interface Checklist {
     Hyperlink_Status__Id: string;
@@ -58,13 +57,9 @@ const commPkgKeys: (keyof Checklist)[] = [
     'WorkOrders__WoNo',
 ];
 
-export function setup(appApi: AppApi): void {
+export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const checklist = createWorkSpace<Checklist>({
-        initialState: [],
-        primaryViewKey: 'TagFormularType__Tag__TagNo',
-        viewerId: appApi.shortName,
-    });
+    const checklist = appApi.createWorkSpace<Checklist>({});
 
     checklist.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
@@ -84,18 +79,6 @@ export function setup(appApi: AppApi): void {
         excludeKeys: commPkgKeys,
         typeMap: {},
         groupValue: {},
-    });
-
-    checklist.registerViewOptions({
-        objectIdentifierKey: 'Id',
-        title: {
-            key: 'TagFormularType__Tag__TagNo',
-            label: 'TagNo:',
-        },
-        description: {
-            key: 'TagFormularType__FormularType__FormularGroup__Description',
-            label: 'Description',
-        },
     });
 
     checklist.registerTableOptions({ objectIdentifierKey: 'Id' });

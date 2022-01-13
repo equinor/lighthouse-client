@@ -13,11 +13,14 @@ export default defineConfig({
     },
     resolve: {
         alias: {
+            '@equinor/sidesheet': path.resolve(__dirname, './src/packages/Sidesheet'),
+            '@equinor/app-builder': path.resolve(__dirname, './src/Core/AppBuilder'),
             '@equinor/worker': path.resolve(__dirname, './src/packages/WebWorkers'),
             '@equinor/filter': path.resolve(__dirname, './src/packages/Filter'),
             '@equinor/VisualEditor': path.resolve(__dirname, './src/packages/VisualEditor'),
             '@equinor/Form': path.resolve(__dirname, './src/packages/Form'),
             '@equinor/WorkSpace': path.resolve(__dirname, './src/Core/WorkSpace'),
+            '@equinor/PageViewer': path.resolve(__dirname, './src/Core/PageViewer'),
             '@equinor/GroupView': path.resolve(__dirname, './src/Core/GroupView'),
             '@equinor/DataFactory': path.resolve(__dirname, './src/Core/DataFactory'),
             '@equinor/StatusBar': path.resolve(__dirname, './src/packages/StatusBar'),

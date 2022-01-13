@@ -16,6 +16,8 @@ export interface ScopeChangeRequest {
     state: string;
     currentWorkflowStep: WorkflowStep;
     workflowSteps: WorkflowStep[];
+    guesstimateHours: string;
+    guesstimateDescription: string;
     //workflow
 }
 
@@ -25,4 +27,15 @@ export interface WorkflowStep {
     order: number;
     isCompleted: boolean;
     isCurrent: boolean;
+    criterias: Criteria[];
+}
+
+export interface Criteria {
+    id: string;
+    type: string;
+    value: string;
+    signedAtUtc: string;
+    signedById: string;
+    signedComment: string;
+    signedState: 'Approved' | 'Rejected';
 }

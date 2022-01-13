@@ -3,14 +3,13 @@ import { defaultGroupByFn, Table, TableData, useColumns } from '@equinor/Table';
 import styled from 'styled-components';
 import { useDataContext } from '../Context/DataProvider';
 
-
 const Wrapper = styled.section`
     /* overflow: scroll; */
 `;
 
 export const ListTab = (): JSX.Element => {
     const { data } = useFilteredData<TableData>();
-    const { tableOptions, setSelected } = useDataContext();
+    const { tableOptions } = useDataContext();
     const columns = useColumns(data[0], {
         customCellView: tableOptions?.customCellView,
         headers: tableOptions?.headers,
@@ -29,8 +28,8 @@ export const ListTab = (): JSX.Element => {
                         hiddenColumns: hiddenCols,
                     },
                     columnOrder: tableOptions?.columnOrder,
-                    setSelected,
                     groupByFn: defaultGroupByFn,
+                    onSelect: tableOptions?.onSelect,
                 }}
                 FilterComponent={PopupFilter}
             />
