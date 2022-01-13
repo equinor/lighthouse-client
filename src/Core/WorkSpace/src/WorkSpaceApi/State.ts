@@ -4,7 +4,7 @@ import { FilterOptions } from '@equinor/filter';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
 import { TableOptions as ReactTableOptions } from 'react-table';
-import { FieldSettings } from '../../../../apps/swcr';
+import { FieldSettings } from '../../../../apps/swcr/models/FieldSettings';
 import { Data, DataSet } from '../../../../components/ParkView/Models/data';
 import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { StatusItem } from '../../../../packages/StatusBar';
@@ -89,7 +89,7 @@ export interface GardenOptions<T> {
     gardenKey: keyof T;
     itemKey: keyof T;
     groupByKeys?: (keyof T)[];
-    fieldSettings: FieldSettings<T, string>;
+    fieldSettings?: FieldSettings<T, string>;
     excludeKeys?: (keyof T)[];
     customViews?: CustomView<T>;
     options?: Options<T>;

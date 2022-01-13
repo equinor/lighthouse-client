@@ -1,5 +1,5 @@
 import { SingleSelect } from '@equinor/eds-core-react';
-import React, { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useState } from 'react';
 import { SelectRowWrapper, Separator } from '../Styles/groupingSelector';
 import { useParkViewContext } from '../Context/ParkViewProvider';
@@ -18,46 +18,30 @@ export function FilterSelector<T>(): JSX.Element | null {
         fieldSettings,
     } = useParkViewContext<T>();
 
-    /*     const groupingOptions = useMemo(() => {
+    //exclude rootkey, itemkey and all keys present in groupKeys
+    const filterGroupKey = useCallback(
+        (groupKey: string) =>
+            !(
+                groupKey === gardenKey &&
+                groupKey === itemKey &&
+                groupByKeys.includes(groupKey as keyof T) &&
+                excludeKeys?.includes(groupKey as keyof T)
+            ),
+        [excludeKeys, gardenKey, groupByKeys, itemKey]
+    );
+
+    const groupingOptions = useMemo((): string[] | null => {
         if (data.length > 0) {
-            //exclude rootkey, itemkey and all keys present in groupKeys
-            const options: string[] = [];
-            Object.keys(data[0]).map((x) => {
-                if (
-                    x !== gardenKey &&
-                    x !== itemKey &&
-                    !groupByKeys.includes(x as keyof T) &&
-                    !excludeKeys?.includes(x as keyof T)
-                ) {
-                    options.push(x);
-                }
-            });
+            const fieldKeys = Object.keys(fieldSettings);
+
+            const options: string[] = (fieldKeys.length ? fieldKeys : Object.keys(data[0]))
+                .map((groupKey) => fieldSettings?.[groupKey]?.label || groupKey)
+                .filter(filterGroupKey);
+
             return options;
         }
         return null;
-    }, [data, gardenKey, groupByKeys, itemKey, excludeKeys]);
- */
-    const groupingOptions = useMemo(() => {
-        if (data.length > 0) {
-            //exclude rootkey, itemkey and all keys present in groupKeys
-            const options: string[] = [];
-
-            const groupByObject = fieldSettings || data[0];
-
-            Object.keys(groupByObject).map((x) => {
-                if (
-                    x !== gardenKey &&
-                    x !== itemKey &&
-                    !groupByKeys.includes(x as keyof T) &&
-                    !excludeKeys?.includes(x as keyof T)
-                ) {
-                    options.push(x);
-                }
-            });
-            return options;
-        }
-        return null;
-    }, [data, gardenKey, groupByKeys, itemKey, fieldSettings, excludeKeys]);
+    }, [data, fieldSettings, filterGroupKey]);
 
     const handleSelectedItemsChanged = (newValue: string | null | undefined, index: number) => {
         if (newValue === null) {
@@ -72,9 +56,15 @@ export function FilterSelector<T>(): JSX.Element | null {
         }
     };
 
-    if (!data) {
-        return null;
-    }
+    const getKeyFromLabel = (label: string) =>
+        Object.keys(fieldSettings).find((k) => fieldSettings[k]?.label === label) || label;
+
+    const gardenKeyLabel = useMemo(
+        () => fieldSettings[gardenKey.toString()]?.label || gardenKey.toString(),
+        [gardenKey, fieldSettings]
+    );
+
+    if (!data) return null;
 
     return (
         <>
@@ -85,9 +75,13 @@ export function FilterSelector<T>(): JSX.Element | null {
                         <SingleSelect
                             items={groupingOptions || []}
                             label={''}
-                            initialSelectedItem={gardenKey ? gardenKey.toString() : undefined}
+                            initialSelectedItem={gardenKeyLabel}
+                            selectedOption={gardenKeyLabel}
                             handleSelectedItemChange={(changes) => {
-                                changes.selectedItem && setGardenKey(changes.selectedItem);
+                                const keyFromlabel =
+                                    changes.selectedItem && getKeyFromLabel(changes.selectedItem);
+
+                                keyFromlabel && setGardenKey(keyFromlabel);
                                 setGroupKeys([]);
                             }}
                         />
