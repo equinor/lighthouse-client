@@ -95,11 +95,11 @@ export const pipetestData = [
                 register: 'JUNCTION_BOX',
                 children: ['HT560747A'],
             },
-            'HT560747A': {
+            HT560747A: {
                 register: 'HEAT_TRACING_CABLE',
                 children: ['56L00420A', '56L00420B', '56L00440A', '56L00446A'],
             },
-            'PT560747A': {
+            PT560747A: {
                 register: 'CABLE',
                 children: ['82EL068-417-B01'],
             },
@@ -168,15 +168,15 @@ export const pipetestData = [
                 register: 'JUNCTION_BOX',
                 children: ['PT560747B'],
             },
-            'HT560747A': {
+            HT560747A: {
                 register: 'HEAT_TRACING_CABLE',
                 children: ['56L00420A', '56L00420B', '56L00440A'],
             },
-            'PT560747A': {
+            PT560747A: {
                 register: 'CABLE',
                 children: ['82EL068-417-B01'],
             },
-            'PT560747B': {
+            PT560747B: {
                 register: 'CABLE',
                 children: ['82EL068-417-B02'],
             },
@@ -184,7 +184,7 @@ export const pipetestData = [
                 register: 'JUNCTION_BOX',
                 children: ['HT560747A', 'PT560747C'],
             },
-            'PT560747C': {
+            PT560747C: {
                 register: 'CABLE',
                 children: ['82EL068-417-B03'],
             },
@@ -192,7 +192,7 @@ export const pipetestData = [
                 register: 'JUNCTION_BOX',
                 children: ['HT560747B'],
             },
-            'HT560747B': {
+            HT560747B: {
                 register: 'HEAT_TRACING_CABLE',
                 children: ['56L00440Z', '56L00446X'],
             },
@@ -269,11 +269,11 @@ export const pipetestData = [
                 register: 'JUNCTION_BOX',
                 children: ['HT560747A'],
             },
-            'HT560747A': {
+            HT560747A: {
                 register: 'HEAT_TRACING_CABLE',
                 children: ['56L00420A', '56L00446A', '56L00446K'],
             },
-            'PT560747A': {
+            PT560747A: {
                 register: 'CABLE',
                 children: ['82EL068-417-B01'],
             },
@@ -293,17 +293,16 @@ export const pipetestData = [
                 register: 'JUNCTION_BOX',
                 children: ['HT560747B'],
             },
-            'HT560747B': {
+            HT560747B: {
                 register: 'HEAT_TRACING_CABLE',
                 children: ['56L00420B', '56L00446B'],
             },
-            'PT560747B': {
+            PT560747B: {
                 register: 'CABLE',
                 children: ['82EL068-417-B02'],
             },
         },
     },
-
 ];
 
 // export const checklists = [

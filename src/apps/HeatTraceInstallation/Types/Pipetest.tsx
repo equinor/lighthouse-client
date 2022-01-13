@@ -3,12 +3,11 @@ export interface Pipetest {
     description: string;
     checklists: Checklist[];
     lineAndSpools: string[][];
-    tagTree: Record<string, Tag>;
+    tagTree: Record<string, unknown>;
 }
 
 export interface Checklist {
     tagNo: string;
-    tag: string;
     responsible: string;
     formType: string;
     status: string;

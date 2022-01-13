@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Pipetest } from '../../Types/Pipetest';
+import { Pipetest, Tag } from '../../Types/Pipetest';
 import { ElectroNode } from './ElectroNode';
 
 interface ElectroViewProps {
@@ -8,7 +8,7 @@ interface ElectroViewProps {
 }
 export const ElectroView = ({ pipetest }: ElectroViewProps): JSX.Element => {
     const tagTree = pipetest?.tagTree;
-    const startNodes = tagTree['']?.children;
+    const startNodes = (tagTree[''] as Tag)?.children;
     const startNodesArray: string[] = startNodes[0]?.split(', ');
 
     return (
@@ -22,8 +22,8 @@ export const ElectroView = ({ pipetest }: ElectroViewProps): JSX.Element => {
                                 <ElectroViewRow key={startNode}>
                                     <ElectroNode
                                         key={startNode}
-                                        tag={tagTree[startNode]}
-                                        tagTree={tagTree}
+                                        tag={tagTree[startNode] as Tag}
+                                        tagTree={tagTree as Record<string, Tag>}
                                         value={startNode}
                                     />
                                 </ElectroViewRow>

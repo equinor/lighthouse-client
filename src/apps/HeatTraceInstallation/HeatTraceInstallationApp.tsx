@@ -1,4 +1,3 @@
-import { createDataFactory } from '@equinor/DataFactory';
 import { pipetestData } from './pipetestData';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { Pipetest } from './Types/Pipetest';
@@ -6,10 +5,9 @@ import { CustomSidesheet } from './CustomSidesheet';
 import { ClientApi } from '@equinor/app-builder';
 
 export function setup(appApi: ClientApi): void {
-    
     const request = appApi.createWorkSpace<Pipetest>({
         CustomSidesheet: CustomSidesheet,
-    })
+    });
 
     request.registerDataSource(async () => {
         return pipetestData;
@@ -37,7 +35,6 @@ export function setup(appApi: ClientApi): void {
 
     request.registerGardenOptions({ gardenKey: 'name', itemKey: 'name' });
     request.registerAnalyticsOptions(analyticsOptions);
-
 }
 
 export const analyticsOptions: AnalyticsOptions<Pipetest> = {
