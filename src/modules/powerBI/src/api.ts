@@ -17,6 +17,7 @@ export function usePowerBI(resource: string, filterOptions?: Filter[]): PowerBIR
         embedUrl: undefined,
         tokenType: models.TokenType.Embed,
         accessToken: undefined,
+        permissions: models.Permissions.All,
         settings: undefined,
     });
 

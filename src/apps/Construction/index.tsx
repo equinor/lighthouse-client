@@ -85,10 +85,10 @@ export function setup(appApi: ClientApi): void {
     Remove SWCR analytics, since its not relevant for Construction
     */
 
-    // construction.registerFusionPowerBi('swcr-analytics-rls', {
-    //     title: 'SWCR Analytics',
-    //     reportURI: 'swcr-analytics-rls',
-    // });
+    construction.registerFusionPowerBi('swcr-analytics-rls', {
+        title: 'SWCR Analytics',
+        reportURI: 'swcr-analytics-rls',
+    });
 
     // const workPreparation = construction.registerDashboard<WP>('work-preparation', {
     //     title: 'Work Preparation',
@@ -155,7 +155,7 @@ export function setup(appApi: ClientApi): void {
         title: 'Checklist Analytics',
         reportURI: 'jca-checklist',
     });
-    construction.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
+    construction.registerFusionPowerBi('punch-analytics-rls', {
         title: 'Punch Analytics',
         reportURI: 'punch-analytics-rls',
     });

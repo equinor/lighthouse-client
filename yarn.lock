@@ -4425,7 +4425,7 @@ powerbi-client-react@^1.3.3:
     lodash.isequal "^4.5.0"
     powerbi-client "^2.18.0"
 
-powerbi-client@^2.13, powerbi-client@^2.18.0, powerbi-client@^2.18.5:
+powerbi-client@^2.13, powerbi-client@^2.18.0, powerbi-client@^2.18.7:
   version "2.18.7"
   resolved "https://registry.yarnpkg.com/powerbi-client/-/powerbi-client-2.18.7.tgz#8d218ba185ca0e830d4b5a2942867ea5ea0d01d4"
   integrity sha512-7kFOa7Yzr6eQtEO5uqBxL6rWFCU00LPY3MgBxvN8tyGz3QF5wVigI0UJQz2RBf3mMfIgzcB9ab4qGVGAx87o4w==

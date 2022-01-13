@@ -74,7 +74,7 @@ export function useFusionClient(resource: string, filterOptions?: Filter[]): use
                     },
                 },
             },
-            filters: filters ?? undefined,
+            // filters: filters ?? undefined,
         };
     }
 
