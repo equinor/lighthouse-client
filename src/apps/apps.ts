@@ -27,6 +27,7 @@ import {
     SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
+import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 
 export enum Apps {
@@ -320,6 +321,7 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
+            setup: heatTraceInstallationSetup,
         },
     },
     {
