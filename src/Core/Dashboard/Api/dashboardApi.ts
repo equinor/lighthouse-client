@@ -1,3 +1,4 @@
+import { KpiBuilder } from '@equinor/Kpi';
 import { DashboardState, DataSource, FilterOptions, PageConfig, Validator } from '../Types/State';
 import { dispatch, getDashboardContext } from './dashboardState';
 
@@ -9,6 +10,7 @@ export interface DashboardOptions {
 
 export interface DashboardApiInstance<T> {
     registerPage(config: PageConfig<T>): void;
+    registerKpi(kpiBuilder: KpiBuilder<T>): void;
     registerDataSource(dataFetcher: DataSource<T>): void;
     registerDataValidator(validator: Validator<T>): void;
     registerFilterOptions(options: FilterOptions<T>): void;
@@ -83,6 +85,17 @@ export function createDashboard<T>({
                     [dashboardId]: {
                         ...state[dashboardId],
                         filterOptions: filterOptions as FilterOptions<unknown>,
+                    },
+                };
+            });
+        },
+        registerKpi(kpiBuilder: KpiBuilder<T>): void {
+            dispatch(getDashboardContext(), (state: DashboardState) => {
+                return {
+                    ...state,
+                    [dashboardId]: {
+                        ...state[dashboardId],
+                        kpiBuilder: kpiBuilder as KpiBuilder<unknown>,
                     },
                 };
             });
