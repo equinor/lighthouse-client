@@ -13,9 +13,22 @@ import {
     ValidationError,
 } from './networkError';
 
-export class AuthenticationError extends BaseError { }
+export class AuthenticationError extends BaseError {}
 
-export function baseClient(newAuthProvider: AuthenticationProvider, newScopes?: string[]) {
+export interface BaseClient {
+    fetch: (url: string, init?: RequestInit | undefined) => Promise<Response>;
+    fetchWithToken: (
+        endpoint: string,
+        token: string,
+        init?: RequestInit | undefined
+    ) => Promise<Response>;
+    isAuthenticated: () => boolean;
+}
+
+export function baseClient(
+    newAuthProvider: AuthenticationProvider,
+    newScopes?: string[]
+): BaseClient {
     const authProvider: AuthenticationProvider = newAuthProvider;
     const scopes = newScopes;
 

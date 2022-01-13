@@ -1,9 +1,9 @@
 import { GroupView } from '@equinor/GroupView';
+import { useClientContext } from '@equinor/portal-client';
 import { closeSidesheet } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Apps } from '../../apps/apps';
-import useClientContext from '../../context/clientContext';
 import { Manifests } from '../../Core/AppBuilder/Types';
 import PageView from '../../Core/PageViewer';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
