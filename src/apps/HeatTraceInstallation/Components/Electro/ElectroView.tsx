@@ -15,9 +15,8 @@ export const ElectroView = ({ pipetest }: ElectroViewProps): JSX.Element => {
         <>
             {pipetest && tagTree && !!Object.keys(tagTree).length && (
                 <>
-
                     <ElectroViewContainer>
-                    <h3>Electro view</h3>
+                        <h3>Electro view</h3>
                         {startNodesArray.map((startNode) => {
                             return (
                                 <ElectroViewRow key={startNode}>
@@ -41,7 +40,7 @@ const ElectroViewContainer = styled.div`
     display: flex;
     flex-direction: row;
     flex: 0 0 100%;
-    align-items: center; 
+    align-items: center;
     position: fixed;
     flex-wrap: wrap;
     overflow: auto;

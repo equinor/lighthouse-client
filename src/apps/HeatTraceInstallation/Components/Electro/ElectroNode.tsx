@@ -1,4 +1,3 @@
-import { tag } from '@equinor/eds-icons';
 import React from 'react';
 import styled from 'styled-components';
 import { Tag } from '../../Types/Pipetest';
@@ -16,7 +15,7 @@ interface ElectroNodeProps {
 
 export const ElectroNode = ({ tag, tagTree, value }: ElectroNodeProps): JSX.Element => {
     const children = tag?.children;
-    
+
     function getNodeRender(tag: Tag) {
         switch (tag?.register) {
             case 'CIRCUIT_AND_STARTER':
@@ -25,7 +24,7 @@ export const ElectroNode = ({ tag, tagTree, value }: ElectroNodeProps): JSX.Elem
                 return <JunctionBox value={value} />;
             case 'HEAT_TRACING_CABLE':
                 return (
-                    <ElectroViewVericalRow>
+                    <ElectroViewVerticalRow>
                         <HeatTracingCable value={value} />
                         <Lines>
                             {children?.map((child) => {
@@ -39,7 +38,7 @@ export const ElectroNode = ({ tag, tagTree, value }: ElectroNodeProps): JSX.Elem
                                 );
                             })}
                         </Lines>
-                    </ElectroViewVericalRow>
+                    </ElectroViewVerticalRow>
                 );
             case 'CABLE':
                 return <Cable value={value} />;
@@ -54,38 +53,37 @@ export const ElectroNode = ({ tag, tagTree, value }: ElectroNodeProps): JSX.Elem
         <>
             {getNodeRender(tag)}
 
-            {children.length === 1 ? children[0] === "LINE" ? null :
-                <ElectroViewHorizontalRow>
-                <ElectroNode
-                key={children[0]}
-                tag={tagTree[children[0]]}
-                tagTree={tagTree}
-                value={children[0]}
-                />
-                </ElectroViewHorizontalRow>
-            :
-            (children.length > 1) ?
-                <ElectroViewVericalRow>
-                {children?.map((child) => {
-                    if(tagTree[child].register === "LINE") {
-                        return null
-                    } 
-                    else {
-                        return (
-                            <ElectroViewHorizontalRow>
-                            <ElectroNode
-                                key={child}
-                                tag={tagTree[child]}
-                                tagTree={tagTree}
-                                value={child}
-                            />
-                            </ElectroViewHorizontalRow>
-                        );
-                    }
-                    
-                })}
-                </ElectroViewVericalRow>
-            : null}
+            {children.length === 1 ? (
+                children[0] === 'LINE' ? null : (
+                    <ElectroViewRow>
+                        <ElectroNode
+                            key={children[0]}
+                            tag={tagTree[children[0]]}
+                            tagTree={tagTree}
+                            value={children[0]}
+                        />
+                    </ElectroViewRow>
+                )
+            ) : children.length > 1 ? (
+                <ElectroViewVerticalRow>
+                    {children?.map((child) => {
+                        if (tagTree[child].register === 'LINE') {
+                            return null;
+                        } else {
+                            return (
+                                <ElectroViewRow>
+                                    <ElectroNode
+                                        key={child}
+                                        tag={tagTree[child]}
+                                        tagTree={tagTree}
+                                        value={child}
+                                    />
+                                </ElectroViewRow>
+                            );
+                        }
+                    })}
+                </ElectroViewVerticalRow>
+            ) : null}
         </>
     );
 };
@@ -95,15 +93,15 @@ const Lines = styled.div`
     flex: 0 0 100%;
 `;
 
-const ElectroViewVericalRow = styled.div`
+const ElectroViewVerticalRow = styled.div`
     display: flex;
     flex-direction: column;
 `;
 
-const ElectroViewHorizontalRow = styled.div`
+const ElectroViewRow = styled.div`
     display: flex;
-    flex-direction: row !important; 
-    &:not(:last-child){
+    flex-direction: row !important;
+    &:not(:last-child) {
         margin-bottom: 20px;
     }
 `;
