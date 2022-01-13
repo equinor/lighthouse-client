@@ -1,6 +1,7 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
 import { createContext, useCallback, useContext, useEffect, useReducer, useState } from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useDataViewerKey';
@@ -93,31 +94,46 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [key]);
 
-    useEffect(() => {
-        getData();
-    }, [dataSource]);
-
-    const getData = useCallback(async () => {
-        if (dataSource) {
+    const { refetch } = useQuery(
+        key,
+        async () => {
+            if (!dataSource) return;
             setIsLoading(true);
             const data = await dataSource();
-            if (validator) {
-                dispatch(actions.getData(validator(data)));
-                setIsLoading(false);
-                return;
-            }
-            // eslint-disable-next-line no-console
-            console.warn(`Data may not be valid. Data validator is not registered for ${name}.`);
             dispatch(actions.getData(data));
             setIsLoading(false);
-        }
-    }, [dataSource, validator]);
+            return data;
+        },
+        { refetchOnWindowFocus: false }
+    );
+
+    useEffect(() => {
+        refetch();
+    }, [dataSource]);
+
+    // const getData = useCallback(async () => {
+    //     if (dataSource) {
+    //         setIsLoading(true);
+    //         await refetch();
+    //         if (!data) return;
+    //         console.warn('Datasource returned nothing');
+    //         if (validator) {
+    //             dispatch(actions.getData(validator(data)));
+    //             setIsLoading(false);
+    //             return;
+    //         }
+    //         // eslint-disable-next-line no-console
+    //         console.warn(`Data may not be valid. Data validator is not registered for ${name}.`);
+    //         dispatch(actions.getData(data));
+    //         setIsLoading(false);
+    //     }
+    // }, [dataSource, validator]);
 
     return (
         <DataContext.Provider
             value={{
                 ...state,
-                getData,
+                getData: refetch,
                 isLoading,
             }}
         >

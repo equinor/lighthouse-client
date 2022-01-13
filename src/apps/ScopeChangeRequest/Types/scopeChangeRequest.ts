@@ -8,17 +8,22 @@ export interface ScopeChangeRequest {
     estimatedChangeHours: number;
     actualChangeHours: number;
     createdAtUtc: string;
-    createdById: string;
+    createdBy: Person;
     modifiedAtUtc: string;
-    modifiedById: string;
-    lastModified: string;
-    lastModifiedBy: string;
+    modifiedBy: Person;
     state: string;
     currentWorkflowStep: WorkflowStep;
     workflowSteps: WorkflowStep[];
     guesstimateHours: string;
     guesstimateDescription: string;
     //workflow
+}
+
+export interface Person {
+    id: string;
+    oid: string;
+    firstName: string;
+    lastName: string;
 }
 
 export interface WorkflowStep {
@@ -35,7 +40,7 @@ export interface Criteria {
     type: string;
     value: string;
     signedAtUtc: string;
-    signedById: string;
+    signedBy: Person;
     signedComment: string;
     signedState: 'Approved' | 'Rejected';
 }
