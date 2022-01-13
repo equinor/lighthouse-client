@@ -1,6 +1,6 @@
 import { AppConfig } from '@equinor/lighthouse-conf';
 import { baseClient, BaseClient } from '../../../../packages/httpClient/src/baseClient';
-import useClientContext from '../ClientContext/clientContext';
+import { useClientContext } from '../ClientContext/clientContext';
 
 type Clients = {
     [key in keyof AppConfig]: BaseClient;
