@@ -36,7 +36,8 @@
             "@equinor/lighthouse-components": ["./packages/components"],
             "@equinor/lighthouse-conf": ["./packages/configuration"],
             "@equinor/lighthouse-util": ["./packages/util"],
-            "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"]
+            "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"],
+            "@equinor/Kpi": ["./src/packages/KPI"]
         }
     },
     "compileOnSave": true,
