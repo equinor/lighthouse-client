@@ -2,6 +2,7 @@ import { Manifests } from '@equinor/app-builder';
 import { AuthenticationProvider, useAuthenticate } from '@equinor/authentication';
 import { tokens } from '@equinor/eds-tokens';
 import { AppConfig } from '@equinor/lighthouse-conf';
+import { ClientContextProvider } from '@equinor/portal-client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
@@ -9,7 +10,6 @@ import { MainLayout } from './components/Layouts/MainLayout';
 import LoadingPage from './components/Loading/LoadingPage';
 import { ClientRoutes } from './components/Routes/Routes';
 import ProCoSysTopBar from './components/TopBar/TopBar';
-import { ClientContextProvider } from './context/clientContext';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
 import { FactoryComponent } from './Core/DataFactory';
 
