@@ -1,6 +1,6 @@
 import { GetKeyFunction } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { DateTime } from 'luxon';
-import { SwcrStatus, SwcrPackage } from '../SwcrPackage';
+import { SwcrStatus, SwcrPackage } from '../models/SwcrPackage';
 
 export const DATE_BLANKSTRING = 'No Date';
 export const DEFAULT_BLANKSTRING = '(Blank)';

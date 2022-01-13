@@ -1,10 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { DataSet } from '../../components/ParkView/Models/data';
-import { Count, Groupe, Title } from '../../components/ParkView/Styles/common';
-import { CustomHeaderView } from '../../Core/WorkSpace/src/WorkSpaceApi/State';
-import { SwcrPackage } from './SwcrPackage';
-import { DATE_BLANKSTRING, DEFAULT_BLANKSTRING } from './utilities/packages';
+import { DataSet } from '../../../components/ParkView/Models/data';
+import { Count, Groupe, Title } from '../../../components/ParkView/Styles/common';
+import { CustomHeaderView } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { SwcrPackage } from '../models/SwcrPackage';
+import { DATE_BLANKSTRING, DEFAULT_BLANKSTRING } from '../utilities/packages';
 
 const MinorTitle = styled(Count)`
     min-height: 0.8rem;

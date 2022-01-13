@@ -1,15 +1,9 @@
-import { SwcrPackage } from './SwcrPackage';
-import { Pack } from '../../components/ParkView/Styles/group';
+import { SwcrPackage } from '../models/SwcrPackage';
+import { Pack } from '../../../components/ParkView/Styles/group';
 import styled from 'styled-components';
-//import { DataSet } from '../../components/ParkView/Models/data';
-import { Count } from '../../components/ParkView/Styles/common';
-import { ChevronUp, ChevronDown } from '../../components/ParkView/Icons/Chevron';
-import { CustomGroupView } from '../../Core/WorkSpace/src/WorkSpaceApi/State';
-
-/* interface SwcrGroupViewProps {
-    data: DataSet<SwcrPackage>;
-    onClick: () => void;
-} */
+import { Count } from '../../../components/ParkView/Styles/common';
+import { ChevronUp, ChevronDown } from '../../../components/ParkView/Icons/Chevron';
+import { CustomGroupView } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 
 const SwcrGroup = styled(Pack)`
     max-width: 240px;

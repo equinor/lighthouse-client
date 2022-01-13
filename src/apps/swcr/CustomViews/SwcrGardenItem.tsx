@@ -1,18 +1,8 @@
-import { SwcrPackage } from './SwcrPackage';
-import { Item } from '../../components/ParkView/Styles/item';
+import { SwcrPackage } from '../models/SwcrPackage';
+import { Item } from '../../../components/ParkView/Styles/item';
 import styled from 'styled-components';
-import { getSwcrStatusColor } from './utilities/packages';
-
-interface SwcrItemViewProps {
-    data: SwcrPackage;
-    itemKey: string;
-    onClick: () => void;
-    columnExpanded: boolean;
-}
-
-interface SwcrExpandViewProps {
-    data: SwcrPackage;
-}
+import { getSwcrStatusColor } from '../utilities/packages';
+import { CustomItemView } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 
 const SwcrItem = styled(Item)`
     background-color: ${(props) => props.color};
@@ -36,7 +26,7 @@ const SwcrExpandedHours = styled.div`
     display: flex;
 `;
 
-export function SwcrExpandedView({ data }: SwcrExpandViewProps): JSX.Element {
+export function SwcrExpandedView({ data }: { data: SwcrPackage }): JSX.Element {
     return (
         <SwcrExpanded>
             <SwcrExpandedTitle>{data.title}</SwcrExpandedTitle>
@@ -52,7 +42,7 @@ export function SwcrItemView({
     itemKey,
     onClick,
     columnExpanded,
-}: SwcrItemViewProps): JSX.Element {
+}: CustomItemView<SwcrPackage>): JSX.Element {
     const statusColor = getSwcrStatusColor(data.status);
 
     return (
