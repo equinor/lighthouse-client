@@ -78,7 +78,7 @@ const analyticsOptions2: AnalyticsOptions<WP> = {
 };
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
     const construction = appApi.createPageViewer();
 
     /** 
