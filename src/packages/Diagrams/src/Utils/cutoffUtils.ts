@@ -97,11 +97,10 @@ export const createSeries = ({
                 data: { ...categories },
             };
 
-            console.log('series', seriesMap);
             cutoff.weeks.forEach((week) => {
                 seriesMap[cutoff.status].data[week] = seriesMap[cutoff.status].data[week] + 1;
             });
-
+            //seems like we dont need to do this..
             // if (cutoff.status === lastWoStatus) {
             //     const data = Object.keys(seriesMap[cutoff.status].data);
             //     const lastDataItem = cutoff.weeks[cutoff.weeks.length - 1];
@@ -137,18 +136,11 @@ export const createSeries = ({
             backgroundColor: tempTest[index],
         } as Series;
         newSeries.data = Object.values(sortedSeries);
-        // newSeries.backgroundColor = interpolateColors(9, interpolateInferno, {
-        //     colorStart: 0,
-        //     colorEnd: 1,
-        //     useEndAsStart: false,
-        // });
+
         return newSeries;
     });
-    const temp = accumulateSeries(woSeries).concat(woSeries);
-    return temp;
-    return woSeries;
-
-    // return accumulated ? accumulateSeries(woSeries) : woSeries;
+    const series = accumulateSeries(woSeries).concat(woSeries);
+    return series;
 };
 
 /**
@@ -174,8 +166,8 @@ export const accumulateSeries = (series: Series[]): Series[] => {
     const totalAcc: number[] = series
         .map((entry) => entry.data)
         .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + entry), []);
-    let temp: number = 0;
-    const tempAcc = totalAcc.map((item) => (temp = (temp || 0) + item));
+    //let temp: number = 0;
+    //const tempAcc = totalAcc.map((item) => (temp = (temp || 0) + item));
     const ready = ['W04', 'W05', 'W06', 'W07', 'W08'];
     //TODO: breaks if no wo4 in array
     const wo4Acc: number[] = series
@@ -183,8 +175,8 @@ export const accumulateSeries = (series: Series[]): Series[] => {
         .map((entry) => entry.data)
         .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + entry, []));
 
-    let temp2: number = 0;
-    const tempAcc2 = wo4Acc.map((item) => (temp2 = (temp2 || 0) + item));
+    //let temp2: number = 0;
+    //const tempAcc2 = wo4Acc.map((item) => (temp2 = (temp2 || 0) + item));
 
     return [
         {
@@ -203,33 +195,5 @@ export const accumulateSeries = (series: Series[]): Series[] => {
             backgroundColor: 'pink',
             yAxisID: 'acc',
         },
-        // { data: tempAcc2, name: 'accumulated wo4' },
     ];
 };
-
-export const tempAcc = (series: Series[]): number[] => {
-    if (!series || series.length === 0) {
-        return [];
-    }
-    return series
-        .map((entry) => entry.data)
-        .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + entry));
-};
-/**
- * Temp for series that is not part of the filtered data set based on dates
- * to find accumulative and use it as init in the reduce func.
- */
-// const woOldSeries = Object.values(seriesMap).map((series) => {
-//     const dateKeys = Object.keys(series.data);
-
-//     const temp = dateKeys
-//         .filter((date) => checkDate.getTime() > new Date(date).getTime())
-//         .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
-//         .reduce((acc, curr) => {
-//             acc[curr] = series.data[curr];
-//             return acc;
-//         }, {});
-//     const newSeries = { name: series.name, data: [] } as Series;
-//     newSeries.data = Object.values(temp);
-//     return newSeries;
-// });

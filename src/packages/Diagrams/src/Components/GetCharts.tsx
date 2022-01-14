@@ -39,7 +39,7 @@ export function getChart<T>(
                     )}
                 </ChartsWrapper>
             );
-        case 'timeBarChart':
+        case 'constructionChart':
             return (
                 <ChartsWrapper>
                     {!isLoading ? (

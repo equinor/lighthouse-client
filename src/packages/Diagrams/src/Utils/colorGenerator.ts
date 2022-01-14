@@ -28,31 +28,3 @@ export const interpolateColors = (
 
     return colorArray;
 };
-
-export const createChart = (
-    chartData: { data: any[]; labels: string[] },
-    colorScale,
-    colorRangeInfo
-) => {
-    const dataLength = chartData.data.length;
-
-    const COLORS = interpolateColors(dataLength, colorScale, colorRangeInfo);
-
-    const myChartOptions = {
-        data: {
-            labels: chartData.labels,
-            datasets: [
-                {
-                    backgroundColor: COLORS,
-                    hoverBackgroundColor: COLORS,
-                    data: chartData.data,
-                },
-            ],
-        },
-        options: {
-            maintainAspectRatio: false,
-            responsive: true,
-        },
-    };
-    return myChartOptions;
-};

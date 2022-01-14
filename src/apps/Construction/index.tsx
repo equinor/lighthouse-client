@@ -12,7 +12,7 @@ import { mock } from './mocData/newMockData';
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
     section1: {
         chart1: {
-            type: 'timeBarChart',
+            type: 'constructionChart',
             options: {
                 timeChartOptions: {
                     categoriesKey: 'jobStatusCutoffs',

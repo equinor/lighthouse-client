@@ -14,7 +14,7 @@ interface LineChart<T> {
 }
 
 interface ControlledTimeBarChart<T> {
-    type: 'timeBarChart';
+    type: 'constructionChart';
     options: TimeBarChartOptions<T>;
 }
 
