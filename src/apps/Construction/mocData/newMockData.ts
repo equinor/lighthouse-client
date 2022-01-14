@@ -33,6 +33,12 @@ export const mock = (): WorkOrder[] => {
       "plannedFinishDate": "01/15/2022",
       "disciplineDescription": "Engineering",
       "jobStatusCutoffs": [
+ {
+          "status": "W04",
+          "weeks": [
+            "09/06/2021"
+          ]
+        },
         {
           "status": "W03",
           "weeks": [
@@ -48,8 +54,7 @@ export const mock = (): WorkOrder[] => {
             "08/09/2021",
             "08/16/2021",
             "08/23/2021",
-            "08/30/2021",
-            "09/06/2021"
+            "08/30/2021"
           ]
         }
       ]

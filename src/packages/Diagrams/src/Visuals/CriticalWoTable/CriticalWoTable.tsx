@@ -35,9 +35,9 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
                 {disciplines &&
                     disciplines.map((discipline, index) => {
                         const woCountValues = Object.values(filtered[discipline]);
-                        if (woCountValues.every((val) => val === 0)) {
-                            return null;
-                        }
+                        // if (woCountValues.every((val) => val === 0)) {
+                        //     return null;
+                        // }
                         const keysOfFiltered = Object.keys(filtered[discipline]);
 
                         return (
@@ -79,47 +79,3 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
         </div>
     );
 };
-
-/**
- *
- * Test data here..
- */
-
-// export const counted: WoDiscCount = {
-//     Insulation: {
-//         one: 1,
-//         two: 2,
-//         three: 4,
-//         four: 5,
-//     },
-
-//     Automation: {
-//         one: 0,
-//         two: 2,
-//         three: 5,
-//         four: 1,
-//     },
-// };
-
-// export const blah: WoDiscMap = {
-//     Insulation: [
-//         {
-//             status: 'WO3',
-//             plannedFinishDate: new Date('01/20/2022').toString(),
-//         },
-//         // {
-//         //     status: 'WO3',
-//         //     plannedFinishDate: new Date('30/11/2021').toString(),
-//         // },
-//         // {
-//         //     status: 'WO3',
-//         //     plannedFinishDate: new Date('30/11/2021').toString(),
-//         // },
-//     ],
-//     Automation: [
-//         {
-//             status: 'WO1',
-//             plannedFinishDate: new Date('01/12/2022').toString(),
-//         },
-//     ],
-// };

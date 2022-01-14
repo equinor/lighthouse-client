@@ -17,7 +17,6 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     const minWidth = 40;
 
     const { SidesheetComponent, props, isPinned } = useAtom(getSidesheetContext());
-
     const handleMinimize = () => {
         setIsMinimized((prev) => !prev);
     };

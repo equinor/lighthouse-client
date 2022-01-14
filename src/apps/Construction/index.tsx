@@ -4,11 +4,9 @@ import { baseClient } from '../../../packages/httpClient/src';
 import { createPageViewer } from '../../Core/PageViewer/Api/pageViewerApi';
 import { CriticalWoTable, weekDiff } from '../../packages/Diagrams/src/Visuals/CriticalWoTable';
 import { HorizontalBarChartOptions } from '../../packages/Diagrams/src/Visuals/HorizontalBarVisual';
-import { AppApi } from '../apps';
 import { tableColumns } from './DetailsPage/components/temp/old';
 import { cols } from './DetailsPage/tableConfig';
 import { Job, mockData, WorkOrder, WorkOrderApi } from './mocData/mockData';
-import { newMock } from './mocData/newMock';
 import { mock } from './mocData/newMockData';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
@@ -24,18 +22,18 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
                 title: 'Job Statuses',
             },
         },
-        chart2: {
-            type: 'timeBarChart',
-            options: {
-                accumulative: true,
-                timeChartOptions: {
-                    categoriesKey: 'jobStatusCutoffs',
-                    title: 'Job Statuses accumulated',
-                    type: 'column',
-                },
-                title: 'Job Statuses accumulated',
-            },
-        },
+        // chart2: {
+        //     type: 'timeBarChart',
+        //     options: {
+        //         accumulative: true,
+        //         timeChartOptions: {
+        //             categoriesKey: 'jobStatusCutoffs',
+        //             title: 'Job Statuses accumulated',
+        //             type: 'column',
+        //         },
+        //         title: 'Job Statuses accumulated',
+        //     },
+        // },
     },
     section2: {
         chart1: {
@@ -80,8 +78,14 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
 };
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const construction = appApi.createPageViewer();
+    const api = baseClient(appApi.authProvider, [
+        'api://460842ad-e295-4449-a96a-362b1e46ce45/.default',
+    ]);
+    const construction = createPageViewer({
+        viewerId: appApi.shortName,
+        title: appApi.title,
+        openSidesheet: () => {},
+    });
 
     /** 
     Remove SWCR analytics, since its not relevant for Construction
@@ -96,17 +100,14 @@ export function setup(appApi: ClientApi): void {
         const plantId = 'PCS$JOHAN_CASTBERG';
         const project = 'L.O532C.002';
         const response: WorkOrderApi = await api
-            .fetchWithToken(
-                `https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders?PageNumber=30&PageSize=10`,
-                foo
-            )
+            .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
             .then((res) => res.json());
 
         const blah: WorkOrder[] = response.items.flatMap((j) => j);
         return blah;
         // return JSON.parse(await response.text());
         //  const data = newMock().filter((j) => j.jobStatus.startsWith('E'));
-        // return mock();
+        return mock();
     });
     workPreparation.registerKpi((data) => {
         return [
@@ -176,12 +177,12 @@ export function setup(appApi: ClientApi): void {
     //     type: 'AnalyticsPage',
     //     ...analyticsOptions2,
     // });
-    workPreparation.registerPage({
-        title: 'Details',
-        pageId: 'workPreparationDetails',
-        type: 'AnalyticsPage',
-        ...detailsPage,
-    });
+    // workPreparation.registerPage({
+    //     title: 'Details',
+    //     pageId: 'workPreparationDetails',
+    //     type: 'AnalyticsPage',
+    //     ...detailsPage,
+    // });
 
     // workPreparation.registerPage({
     //     title: 'Hold',
