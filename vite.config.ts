@@ -14,7 +14,7 @@ export default defineConfig({
     },
     define: {
         'process.env': {
-            environment: 'dev',
+            // environment: 'dev',
         },
     },
     resolve: {
