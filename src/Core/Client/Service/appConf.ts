@@ -5,21 +5,22 @@ export async function fetchConfig(): Promise<AppConfig> {
     return await response.json();
 }
 
+export interface Scope {
+    fusion: string;
+    procosys: string;
+    echoModelDistClient: string;
+    scopeChange: string;
+    constructionProgress?: string;
+    pipeTest?: string;
+    FAM?: string;
+    STID?: string;
+}
 export interface AppConfig {
     settings: {
         clientId: string;
         tenantId: string;
     };
-    scope: {
-        fusion: string;
-        procosys: string;
-        echoModelDistClient: string;
-        scopeChange: string;
-        constructionProgress?: string;
-        pipeTest?: string;
-        FAM?: string;
-        STID?: string;
-    };
+    scope: Scope;
     urls: {
         echoModelDistUrl: string;
     };
