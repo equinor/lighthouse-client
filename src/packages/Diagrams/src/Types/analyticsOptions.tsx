@@ -1,6 +1,8 @@
+import { ConstructionGraphOptions } from '..';
 import { BarChartOptions } from '../Visuals/BarVisual/Types/barVisualOptions';
-import { ControlledTimeBarChart } from '../Visuals/ControlledTimeVisual/ControlledTimeVisual';
+import { HorizontalBarChartOptions } from '../Visuals/HorizontalBarVisual/Types/barVisualOptions';
 import { LineChartOptions } from '../Visuals/LineVisual/LineChartVisual';
+import { TableVisualOptions } from '../Visuals/TableVisual/Types/tableVisualOptions';
 import { TimeBarChartOptions } from '../Visuals/TimeVisual/Types/timeVisualOptions';
 
 interface BarChart<T> {
@@ -15,6 +17,23 @@ interface LineChart<T> {
 interface ControlledTimeBarChart<T> {
     type: 'timeBarChart';
     options: TimeBarChartOptions<T>;
+}
+
+interface ConstructionChart<T> {
+    type: 'constructionChart';
+    options: ConstructionGraphOptions<T>;
+}
+
+interface Table<T> {
+    type: 'table';
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    //@ts-ignore
+    options: TableVisualOptions<T>;
+}
+
+interface HorizontalBarChart<T> {
+    type: 'horizontalBarChart';
+    options: HorizontalBarChartOptions<T>;
 }
 
 interface CustomVisual<T> {
@@ -34,6 +53,9 @@ export type Options<T> =
     | LineChart<T>
     | ControlledTimeBarChart<T>
     | CustomVisual<T>
+    | HorizontalBarChart<T>
+    | Table<T>
+    | ConstructionChart<T>
     | Default;
 
 interface Section<T> {

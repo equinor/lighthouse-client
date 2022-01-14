@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { Column } from 'react-table';
-
 import { generateDefaultColumns } from '../Utils/generateDefaultColumns';
 
 export function useColumns<D extends Record<string, unknown>>(

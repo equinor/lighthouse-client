@@ -70,7 +70,8 @@ function getWeeks(years: number[], categoriesKey: string) {
 }
 
 function getTimeDimension(date: string, timeDimension: TimeDimension): string {
-    const dt = DateTime.fromISO(date);
+    const dt = DateTime.fromISO(new Date(date).toISOString());
+
     switch (timeDimension) {
         case 'month':
             return `${dt.month}-${dt.year}`;
@@ -88,7 +89,7 @@ function getTimeDimension(date: string, timeDimension: TimeDimension): string {
 function getYears<T>(data: T[], dateKey: keyof T): number[] {
     const years: Set<number> = new Set();
     data.forEach((item) => {
-        item[dateKey] && years.add(DateTime.fromISO(`${item[dateKey]}`).year);
+        item[dateKey] && years.add(new Date(item[dateKey] as any).getUTCFullYear());
     });
     return [...years];
 }
@@ -133,13 +134,12 @@ function dataReducer<T>(sortedData: T[], options: CumulativeSeriesOptions<T>, ti
     return Object.values(reducedData).filter(options.filter ? options.filter : () => true);
 }
 
-export function timeChartSeries<T>(
+export function timeChartSeries<T extends unknown>(
     dataItem: T[],
     options: CumulativeSeriesOptions<T>,
     time: TimeDimension
 ): ChartData {
     const sortedData = sortDateByKey(dataItem, options.categoriesKey);
-
     const reducedData = dataReducer<T>(sortedData, options, time);
     const data = reducedData.map((i) => i.value);
     const series = [{ data, name: options.title, type: options.type }];
@@ -155,5 +155,3 @@ export function timeChartSeries<T>(
         categories,
     };
 }
-
-//
