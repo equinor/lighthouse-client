@@ -1,7 +1,7 @@
 import { Manifests } from '@equinor/app-builder';
+import { useClientContext } from '@equinor/portal-client';
 import { PopoutSidesheet } from '@equinor/sidesheet';
 import styled from 'styled-components';
-import useClientContext from '../../context/clientContext';
 import { MainMenu } from '../Menu/MainMenu';
 
 const Wrapper = styled.div`

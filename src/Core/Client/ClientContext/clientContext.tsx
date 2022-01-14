@@ -74,7 +74,6 @@ export const ClientContextProvider = ({
     );
 };
 
-export default function useClientContext() {
-    const appValue = useContext(ClientContext);
-    return appValue;
+export function useClientContext(): ClientContextState {
+    return useContext(ClientContext);
 }

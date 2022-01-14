@@ -27,6 +27,7 @@ import {
     SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
+import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 
 export function getApps(): AppManifest[] {
@@ -337,6 +338,7 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
+            setup: heatTraceInstallationSetup,
         },
         // isProduction: true,
     },

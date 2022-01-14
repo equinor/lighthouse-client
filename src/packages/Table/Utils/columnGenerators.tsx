@@ -55,7 +55,7 @@ export const generateArrayColumn = <D extends TableData>(
     return {
         id: key,
         accessor: (row) => {
-            return (row[key] as Array<unknown>).length;
+            return (row[key] as Array<unknown>)?.length;
         },
         Header: findCustomHeader(key, headers),
         minWidth: 30,
