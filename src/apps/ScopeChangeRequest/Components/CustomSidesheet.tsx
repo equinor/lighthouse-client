@@ -6,16 +6,18 @@ import styled from 'styled-components';
 import { Field } from './DetailView/Components/Field';
 import { getScopeChangeById } from '../Api/getScopeChange';
 import { useQuery } from 'react-query';
+import { useApiClient } from '@equinor/portal-client';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [scopeChange, setScopeChange] = useState<ScopeChangeRequest>(item);
+    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
 
     /**
      * Refetches every second
      */
     const { error, data, refetch } = useQuery<ScopeChangeRequest>(
         'scopeChange',
-        () => getScopeChangeById(item.id),
+        () => getScopeChangeById(item.id, customApi),
         { refetchInterval: 1000 }
     );
 

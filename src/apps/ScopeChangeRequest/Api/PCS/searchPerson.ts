@@ -1,17 +1,18 @@
-import { BaseClient } from '@equinor/http-client';
-
+import { BaseClient } from '../../../../../packages/httpClient/src';
 interface SelectOption {
     value: string;
     label: string;
 }
 
-interface CommPkg {
-    Id: string;
-    CommPkgNo: string;
-    Description: string;
+interface Person {
+    AzureOid: string;
+    Username: string;
+    FirstName: string;
+    LastName: string;
+    Email: string;
 }
 
-export const searchCommPkg = async (
+export const searchPerson = async (
     searchString: string,
     procosysClient: BaseClient
 ): Promise<SelectOption[]> => {
@@ -19,19 +20,19 @@ export const searchCommPkg = async (
 
     try {
         const baseUrl = 'https://procosyswebapi.equinor.com/api';
-        const uri = 'CommPkg/Search';
-        const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&startsWithCommPkgNo=${encodeURIComponent(
+        const uri = 'Person/PersonSearch';
+        const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&searchString=${encodeURIComponent(
             searchString
-        )}&includeClosedProjects=false&itemsPerPage=10&includeVoidedCommPkgs=true&includeDecommissioningPkgs=false&api-version=4.1`;
+        )}&numberOfRows=10&api-version=4.1`;
         const url = `${baseUrl}/${uri}?${queryParameters}`;
         await procosysClient
             .fetch(url)
             .then((response) => response.json())
             .then((data) => {
-                data['Items'].map((x: CommPkg) => {
+                data.map((x: Person) => {
                     selectOptions.push({
-                        label: `${x.CommPkgNo} - ${x.Description}`,
-                        value: x.CommPkgNo,
+                        label: `${x.FirstName} ${x.LastName} - ${x.Email}`,
+                        value: x.AzureOid,
                     });
                 });
             });

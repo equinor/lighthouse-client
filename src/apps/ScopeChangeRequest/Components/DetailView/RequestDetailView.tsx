@@ -7,6 +7,8 @@ import { patchWorkflowStep } from '../../Api/patchWorkflowStep';
 import { Field } from './Components/Field';
 import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
+import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
+import { patchScopeChange } from '../../Api';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -20,27 +22,21 @@ export const RequestDetailView = ({
     refetch,
 }: RequestDetailViewProps): JSX.Element => {
     const [comment, setComment] = useState<string | undefined>(undefined);
-
-    const onInitiate = () => {
+    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const onInitiate = async () => {
         const payLoad = {
             ...request,
             setAsOpen: true,
         };
-        const requestOptions = {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payLoad),
-        };
-        fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}`,
-            requestOptions
-        ).then(() => refetch());
+
+        await patchScopeChange(payLoad, customApi);
+        refetch();
     };
 
     interface LogEntry {
         value: string;
         date: string;
-        personId: string;
+        name: string;
     }
 
     const logValues: LogEntry[] = useMemo(() => {
@@ -55,7 +51,7 @@ export const RequestDetailView = ({
                     logArray.push({
                         value: x.signedComment,
                         date: x.signedAtUtc,
-                        personId: x.signedById,
+                        name: `${x.signedBy.firstName} ${x.signedBy.lastName}`,
                     });
             });
         });
@@ -63,14 +59,24 @@ export const RequestDetailView = ({
     }, [request]);
 
     const activeCriteriaId = useMemo(() => {
-        if (request.state === 'Open') {
+        if (
+            request.state === 'Open' &&
+            request.currentWorkflowStep &&
+            request.currentWorkflowStep.criterias.length > 0
+        ) {
             return request.currentWorkflowStep.criterias.find((x) => x.id)?.id;
         }
     }, [request]);
 
     const onSignStep = () => {
-        if (activeCriteriaId) {
-            patchWorkflowStep(request.id, activeCriteriaId, comment).then(() => refetch());
+        if (activeCriteriaId && request.currentWorkflowStep) {
+            patchWorkflowStep(
+                request.id,
+                request.currentWorkflowStep.id,
+                activeCriteriaId,
+                customApi,
+                comment
+            ).then(() => refetch());
             setComment('');
         }
     };
@@ -134,6 +140,8 @@ export const RequestDetailView = ({
                     label={'Workflow'}
                     value={
                         <Workflow
+                            requestId={request.id}
+                            currentStepId={request.currentWorkflowStep?.id}
                             stepName={'name'}
                             steps={request.workflowSteps}
                             statusFunc={statusFunc}
@@ -150,7 +158,7 @@ export const RequestDetailView = ({
                                 return (
                                     <LogMessage key={x.value + x.date}>
                                         <span style={{ fontSize: '10px' }}>
-                                            {new Date(x.date).toLocaleDateString()} by
+                                            {new Date(x.date).toLocaleDateString()} by {x.name}
                                         </span>
                                         <span style={{ fontSize: '16px' }}>
                                             &quot;{x.value}&quot;

@@ -12,10 +12,13 @@ export interface ScopeChangeRequest {
     modifiedAtUtc: string;
     modifiedBy: Person;
     state: string;
-    currentWorkflowStep: WorkflowStep;
+    currentWorkflowStep?: WorkflowStep;
     workflowSteps: WorkflowStep[];
     guesstimateHours: string;
     guesstimateDescription: string;
+    tagNos: string[];
+    commPkgNos: string[];
+    systemNos: string[];
     //workflow
 }
 

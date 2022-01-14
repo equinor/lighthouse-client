@@ -1,6 +1,7 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { Icon } from '@equinor/eds-core-react';
 import { FilterOptions } from '@equinor/filter';
-import { createContext, useCallback, useContext, useEffect, useReducer, useState } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
@@ -37,6 +38,7 @@ interface DataState {
 interface DataContextState extends DataState {
     getData: VoidFunction;
     isLoading: boolean;
+    error: unknown;
 }
 interface DataProviderProps {
     children: React.ReactNode;
@@ -76,7 +78,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const options = useWorkSpace();
 
     const { dataSource, validator } = options;
-    const [isLoading, setIsLoading] = useState(true);
+
     const initialState: DataState = {
         key,
         data: [],
@@ -88,24 +90,25 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
     useEffect(() => {
-        setIsLoading(true);
         dispatch(actions.setOptions(initialState));
-        setIsLoading(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [key]);
 
-    const { refetch } = useQuery(
+    const { refetch, data, isLoading, error } = useQuery(
         key,
         async () => {
             if (!dataSource) return;
-            setIsLoading(true);
             const data = await dataSource();
             dispatch(actions.getData(data));
-            setIsLoading(false);
             return data;
         },
         { refetchOnWindowFocus: false }
     );
+
+    useEffect(() => {
+        if (!data) return;
+        dispatch(actions.getData(data));
+    }, [data]);
 
     useEffect(() => {
         refetch();
@@ -135,9 +138,19 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
                 ...state,
                 getData: refetch,
                 isLoading,
+                error,
             }}
         >
-            {isLoading ? <Loading>Loading...</Loading> : children}
+            {isLoading ? (
+                <Loading>Loading...</Loading>
+            ) : error ? (
+                <Loading>
+                    <Icon name="error_outlined" />
+                    Something went wrong
+                </Loading>
+            ) : (
+                children
+            )}
         </DataContext.Provider>
     );
 };

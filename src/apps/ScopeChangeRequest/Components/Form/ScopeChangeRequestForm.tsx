@@ -1,6 +1,6 @@
-import { Button, Icon, SingleSelect } from '@equinor/eds-core-react';
+import { Button, Icon } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
@@ -11,16 +11,20 @@ import { ScopeChangeSideSheet } from '../CustomSidesheet';
 import { Field } from '../DetailView/Components/Field';
 import { Upload } from '../Upload';
 import { tokens } from '@equinor/eds-tokens';
-import AsyncSelect from 'react-select/async';
-import { ActionMeta, InputActionMeta, MultiValue, OptionsOrGroups, Theme } from 'react-select';
-import { getOrigins } from '../../Api/getOrigins';
-import { searchQueryOrigin } from '../../Api/PCS/searchQuery';
 
-import { searchPcs } from '../../Api/PCS/searchPcs';
+import { useApiClient } from '@equinor/portal-client';
+import { PCSLink } from '../SearchableDropdown/PCSLink';
+import { OriginLink } from '../SearchableDropdown/OriginLink';
+import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
     setHasUnsavedChanges: (value: boolean) => void;
+}
+
+interface SelectOption {
+    value: string;
+    label: string;
 }
 
 interface CreateScopeChangeProps {
@@ -31,21 +35,35 @@ export const ScopeChangeRequestForm = ({
     closeScrim,
     setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
-    let scopeChangeId: string | undefined = undefined;
-    const [origin, setOrigin] = useState<string | undefined | null>();
-    const linkOptions = ['Tag', 'CommPkg', 'System'];
-    const [tagCommPkgSystem, setTagCommPkgSystem] = useState<string | undefined | null>(
-        linkOptions[0]
-    );
+    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
+        category: 'Hidden carryover',
+        origin: 'NCR',
+        phase: 'IC',
+    });
+    const [origin, setOrigin] = useState<SelectOption | undefined>();
 
-    const [tags, setTags] = useState<SelectOption[] | undefined>();
-    const [commPkgs, setCommPkgs] = useState<SelectOption[] | undefined>();
-    const [systems, setSystems] = useState<SelectOption[] | undefined>();
+    const [tags, setTags] = useState<SelectOption[]>([]);
+    const [commPkgs, setCommPkgs] = useState<SelectOption[]>([]);
+    const [systems, setSystems] = useState<SelectOption[]>([]);
+
+    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
 
     const createScopeChangeMutation = async ({ draft }: CreateScopeChangeProps) => {
-        scopeChangeId = await postScopeChange(formData.data, draft);
-        formData.reset();
+        const scID = await postScopeChange(
+            {
+                ...formData.data,
+
+                tagNos: tags?.map((x) => x.value) || [],
+                systemNos: systems?.map((x) => x.value) || [],
+                commPkgNos: commPkgs?.map((x) => x.value) || [],
+            },
+            draft,
+            customApi
+        );
+        if (scID) {
+            redirect(scID);
+        }
+        // formData.reset();
     };
 
     const { mutate, error } = useMutation(createScopeChangeMutation, {
@@ -53,15 +71,12 @@ export const ScopeChangeRequestForm = ({
         retryDelay: 2,
     });
 
-    const redirect = async () => {
+    const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
-        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId));
-        closeScrim();
+        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId, customApi));
+        clearActiveFactory();
     };
-    useEffect(() => {
-        redirect();
-    }, [scopeChangeId]);
 
     useEffect(() => {
         setHasUnsavedChanges(formData.getChangedData() !== undefined);
@@ -69,7 +84,7 @@ export const ScopeChangeRequestForm = ({
 
     const SubmitButton = () => {
         return (
-            <Button disabled={!formData.isValidForm()} onClick={() => mutate({ draft: false })}>
+            <Button disabled={!isValidForm} onClick={() => mutate({ draft: false })}>
                 Initiate request
             </Button>
         );
@@ -78,7 +93,7 @@ export const ScopeChangeRequestForm = ({
     const SaveButton = () => {
         return (
             <Button
-                disabled={!formData.isValidForm()}
+                disabled={!isValidForm}
                 variant={'outlined'}
                 onClick={() => mutate({ draft: true })}
             >
@@ -87,15 +102,9 @@ export const ScopeChangeRequestForm = ({
         );
     };
 
-    interface SelectOption {
-        value: string;
-        label: string;
-    }
-
-    const loadOptions = async (inputValue: string, callback: (options: SelectOption[]) => void) => {
-        if (!tagCommPkgSystem) return;
-        callback(await searchPcs(inputValue, tagCommPkgSystem));
-    };
+    const isValidForm = useMemo(() => {
+        return formData.isValidForm() && origin;
+    }, [formData, origin]);
 
     return (
         <FormContainer>
@@ -107,100 +116,39 @@ export const ScopeChangeRequestForm = ({
                     color={tokens.colors.interactive.primary__resting.hex}
                 />
             </TitleHeader>
+
             <GeneratedForm
                 formData={formData}
                 editMode={false}
                 buttons={[SubmitButton, SaveButton]}
+                customFields={[
+                    {
+                        Component: OriginLink,
+                        order: 3,
+                        title: 'Origin',
+                        props: {
+                            originId: origin,
+                            setOriginId: setOrigin,
+                            originType: formData.fields.origin?.value,
+                        },
+                    },
+                    {
+                        Component: PCSLink,
+                        order: 6,
+                        title: 'Tag / comm pkg / system',
+                        props: {
+                            commPkgs: commPkgs,
+                            setCommPkgs: setCommPkgs,
+                            tags: tags,
+                            setTags: setTags,
+                            systems: systems,
+                            setSystems: setSystems,
+                        },
+                    },
+                ]}
             >
-                <Inline>
-                    <SingleSelect
-                        style={{ width: '100%' }}
-                        label="Type"
-                        items={linkOptions}
-                        selectedOption={tagCommPkgSystem || ''}
-                        handleSelectedItemChange={(e) => {
-                            setTagCommPkgSystem(e.selectedItem);
-                        }}
-                    />
-                    <div style={{ width: '5px' }} />
-
-                    <AsyncSelect
-                        cacheOptions={false}
-                        isDisabled={!tagCommPkgSystem}
-                        loadOptions={loadOptions}
-                        defaultOptions={false}
-                        isMulti
-                        isClearable={false}
-                        controlShouldRenderValue={false}
-                        onChange={(newValue: MultiValue<SelectOption>) => {
-                            switch (tagCommPkgSystem) {
-                                case 'Tag':
-                                    setTags((prev) => [
-                                        ...(prev || []),
-                                        { ...newValue[newValue.length - 1] },
-                                    ]);
-                                    break;
-
-                                case 'CommPkg':
-                                    setCommPkgs((prev) => [
-                                        ...(prev || []),
-                                        { ...newValue[newValue.length - 1] },
-                                    ]);
-                                    break;
-
-                                case 'System':
-                                    setSystems((prev) => [
-                                        ...(prev || []),
-                                        { ...newValue[newValue.length - 1] },
-                                    ]);
-                                    break;
-                            }
-                        }}
-                        theme={(theme: Theme) => ({
-                            ...theme,
-                            borderRadius: 2,
-                            colors: {
-                                ...theme.colors,
-                                neutral0: `${tokens.colors.ui.background__light.rgba}`,
-                                primary25: `${tokens.colors.ui.background__medium.rgba}`,
-                                primary: `${tokens.colors.interactive.primary__resting.rgba}`,
-                                primary50: 'pink',
-                                primary75: 'pink',
-                                danger: 'pink',
-                                dangerLight: 'pink',
-                                neutral5: 'pink',
-                                neutral20: `${tokens.colors.interactive.primary__resting.rgba}`,
-                                neutral30: 'green',
-                                neutral40: `${tokens.colors.interactive.primary__resting.rgba}`,
-                                neutral50: 'pink',
-                                neutral60: `${tokens.colors.interactive.primary__resting.rgba}`,
-                                neutral70: 'green',
-                                neutral80: `${tokens.colors.interactive.primary__resting.rgba}`,
-                            },
-                        })}
-                    /**
-                     * neutral 10 overlay color over selected items
-                     * netutral 20 cross and dropdown button
-                     * neutral 40 onHover neutral 20
-                     * neutral 80 onHover when bar is open
-                     *
-                     */
-                    />
-                </Inline>
-
-                {tags?.map((x) => {
-                    return <div key={x.value}>Tag: {x.value}</div>;
-                })}
-                {commPkgs?.map((x) => {
-                    return <div key={x.value}>CommPkg: {x.value}</div>;
-                })}
-                {systems?.map((x) => {
-                    return <div key={x.value}>System: {x.value}</div>;
-                })}
-
                 <Field label="Attachments" value={<Upload />} />
             </GeneratedForm>
-
             {error && <p> Something went wrong, please check your connection and try again</p>}
         </FormContainer>
     );
@@ -211,13 +159,6 @@ const TitleHeader = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: center;
-`;
-
-const Inline = styled.span`
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
 `;
 
 const FormContainer = styled.div``;

@@ -76,6 +76,7 @@ const AttachmentsList = styled.div`
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
+    width: 100%;
 `;
 
 const AttachmentsContainer = styled.div`
@@ -90,6 +91,7 @@ const AttachmentsContainer = styled.div`
 
 const DropHere = styled.div`
     display: flex;
+    width: 100%;
     flex-direction: column;
     align-items: center;
 `;
