@@ -11,7 +11,7 @@ resources:
           type: github
           name: equinor/lighthouse-infra
           endpoint: 'equinor'
-          ref: infra/move
+          ref: infra/scope
 
 # Global variables for the pipeline
 variables:
