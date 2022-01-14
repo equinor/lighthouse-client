@@ -1,5 +1,5 @@
 import { useContext, useEffect, useReducer } from 'react';
-import { FieldSettings } from '../../../apps/swcr';
+import { FieldSettings } from '../../../apps/swcr/models/FieldSettings';
 import { GardenOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { actions } from './ParkViewActions';
 import {
