@@ -5,15 +5,16 @@ import { Count } from '../../../components/ParkView/Styles/common';
 import { ChevronUp, ChevronDown } from '../../../components/ParkView/Icons/Chevron';
 import { CustomGroupView } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 
-const SwcrGroup = styled(Pack)`
-    max-width: 240px;
-`;
+const SwcrGroup = styled(Pack)``;
 
 const Title = styled.div`
-    max-width: 200px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+`;
+
+const GroupText = styled.div`
+    display: flex;
 `;
 
 const Chevron = styled.div`
@@ -24,8 +25,10 @@ export function SwcrGroupView({ data, onClick }: CustomGroupView<SwcrPackage>): 
     return (
         <SwcrGroup key={data.value + data.groupKey} onClick={onClick}>
             {data.status?.statusElement}
-            <Title> {data.value} </Title>
-            <Count>({data.count})</Count>
+            <GroupText>
+                <Title> {data.value} </Title>
+                <Count>({data.count})</Count>
+            </GroupText>
             <Chevron>{data.isExpanded ? <ChevronUp /> : <ChevronDown />}</Chevron>
         </SwcrGroup>
     );

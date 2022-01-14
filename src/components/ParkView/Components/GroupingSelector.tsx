@@ -34,7 +34,6 @@ export function FilterSelector<T>(): JSX.Element | null {
         [fieldSettings, data]
     );
 
-    //exclude rootkey, itemkey and all keys present in groupKeys
     const filterGroupKey = useCallback(
         (groupKey: string) =>
             !(

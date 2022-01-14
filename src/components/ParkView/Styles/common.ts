@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
 export const Col = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     padding: 4px;
 `;
 
