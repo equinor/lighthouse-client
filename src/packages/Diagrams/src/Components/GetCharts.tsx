@@ -1,4 +1,5 @@
 import { BarChartVisual, LineChartVisual, TableVisual, TimeChart } from '@equinor/Diagrams';
+import { ConstructionVisual } from '..';
 import { Options } from '../Types';
 import { HorizontalBarVisual } from '../Visuals/HorizontalBarVisual/HorizontalBarVisual';
 import { ChartsWrapper, Circular, Loading } from './GetChartsStyles';
@@ -39,7 +40,7 @@ export function getChart<T>(
                     )}
                 </ChartsWrapper>
             );
-        case 'constructionChart':
+        case 'timeBarChart':
             return (
                 <ChartsWrapper>
                     {!isLoading ? (
@@ -66,6 +67,19 @@ export function getChart<T>(
                             Loading...
                         </Loading>
                     )} */}
+                </ChartsWrapper>
+            );
+        case 'constructionChart':
+            return (
+                <ChartsWrapper>
+                    {!isLoading ? (
+                        <ConstructionVisual data={data} options={config.options} />
+                    ) : (
+                        <Loading>
+                            <Circular />
+                            Loading...
+                        </Loading>
+                    )}
                 </ChartsWrapper>
             );
         case 'horizontalBarChart':
