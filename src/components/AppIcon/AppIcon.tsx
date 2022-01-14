@@ -1,7 +1,7 @@
+import { useClientContext } from '@equinor/portal-client';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import useClientContext from '../../context/clientContext';
 
 interface AppIconProps {
     icon: React.FC;

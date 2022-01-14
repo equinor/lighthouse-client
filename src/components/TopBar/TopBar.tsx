@@ -1,9 +1,9 @@
 import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useGraphClient } from '@equinor/http-client';
+import { useClientContext } from '@equinor/portal-client';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import useClientContext from '../../context/clientContext';
 import Icon from '../Icon/Icon';
 import Logo from './Logo/Logo';
 

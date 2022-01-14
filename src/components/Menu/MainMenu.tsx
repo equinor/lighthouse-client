@@ -1,10 +1,10 @@
 import { Accordion, Popover, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { useClientContext } from '@equinor/portal-client';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { appGroups, Apps, apps } from '../../apps/apps';
-import useClientContext from '../../context/clientContext';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
 
