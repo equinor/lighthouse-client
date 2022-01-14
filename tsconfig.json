@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "lib": ["esnext"],
         "strict": true,
         "jsx": "react-jsx",
         "target": "es6",
@@ -17,6 +18,7 @@
         "types": ["node", "vite/client"],
         "sourceMap": true,
         "paths": {
+            "@equinor/Kpi": ["./src/packages/KPI"],
             "@equinor/portal-client": ["./src/Core/Client"],
             "@equinor/sidesheet": ["./src/packages/Sidesheet"],
             "@equinor/app-builder": ["./src/Core/AppBuilder"],

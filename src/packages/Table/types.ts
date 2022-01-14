@@ -138,4 +138,4 @@ declare module 'react-table' {
     export interface TableState<D extends TableData> extends Partial<UseGroupByState<D>> { }
 }
 
-export type { TableOptions, Cell } from 'react-table';
+export type { TableOptions, Cell, TableInstance, CellProps } from 'react-table';

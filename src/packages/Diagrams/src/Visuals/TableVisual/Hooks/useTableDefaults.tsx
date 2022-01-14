@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { TableState } from 'react-table';
 import { CustomTableState } from '../Types/table';
 
@@ -8,6 +8,7 @@ export interface TableDefaults {
         minWidth: number;
         maxWidth: number;
         width?: number;
+        Footer: React.FC;
     };
 }
 
@@ -21,9 +22,9 @@ export function useTableDefaults(initialGroupBy: string): TableDefaults {
 
     const defaultColumn = useMemo(
         () => ({
-            minWidth: 30,
-            // width: 150,
+            minWidth: 10,
             maxWidth: 100,
+            Footer: () => <></>,
         }),
         []
     );

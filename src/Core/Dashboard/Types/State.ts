@@ -1,4 +1,5 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { KpiBuilder } from '@equinor/Kpi';
 import React from 'react';
 
 /** Core state for dashboards all registered with unique dashboardId */
@@ -16,6 +17,7 @@ export interface DashboardInstance<T> {
     icon?: React.FC;
     pages: Record<string, PageConfig<T>>;
     filterOptions?: FilterOptions<T>;
+    kpiBuilder?: KpiBuilder<T>;
 }
 
 export type PageConfig<T> = AnalyticsPage<T> | CustomPage<T>;

@@ -84,9 +84,9 @@ export function TimeChart<T>({
             colors: colors
                 ? colors
                 : [
-                    tokens.colors.infographic.substitute__blue_sky.hex,
-                    tokens.colors.infographic.primary__moss_green_100.hex,
-                ],
+                      tokens.colors.infographic.substitute__blue_sky.hex,
+                      tokens.colors.infographic.primary__moss_green_100.hex,
+                  ],
             xaxis: {
                 type: 'category',
                 tickPlacement: 'on',

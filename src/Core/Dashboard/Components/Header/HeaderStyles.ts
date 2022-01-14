@@ -5,10 +5,11 @@ import styled from 'styled-components';
 export const Wrapper = styled.section`
     height: 100%;
     display: flex;
-    flex-direction: row;
-    align-items: flex-end;
+    flex-direction: column;
+    align-items: flex-start;
     align-content: center;
     padding: 1rem;
+    gap: 1em;
 `;
 
 export const ChipTab = styled(Chip)`
