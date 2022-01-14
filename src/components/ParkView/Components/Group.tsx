@@ -25,7 +25,12 @@ export function Group<T>({ group, columnExpanded }: GroupProps<T>): JSX.Element 
     return (
         <SubGroup>
             {GroupView ? (
-                <GroupView key={group.value} data={group} onClick={handleClick} />
+                <GroupView
+                    key={group.value}
+                    data={group}
+                    onClick={handleClick}
+                    columnExpanded={columnExpanded}
+                />
             ) : (
                 <Pack key={group.value + group.groupKey} onClick={() => handleClick()}>
                     <div style={{ display: 'flex' }}>

@@ -60,6 +60,7 @@ export interface CustomItemView<T> {
 export interface CustomGroupView<T> {
     data: DataSet<T>;
     onClick: () => void;
+    columnExpanded: boolean;
 }
 
 export interface CustomHeaderView<T> {

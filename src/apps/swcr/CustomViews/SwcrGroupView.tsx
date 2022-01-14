@@ -5,7 +5,9 @@ import { Count } from '../../../components/ParkView/Styles/common';
 import { ChevronUp, ChevronDown } from '../../../components/ParkView/Icons/Chevron';
 import { CustomGroupView } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 
-const SwcrGroup = styled(Pack)``;
+const SwcrGroup = styled(Pack)`
+    min-width: 50px;
+`;
 
 const Title = styled.div`
     white-space: nowrap;
@@ -26,7 +28,7 @@ export function SwcrGroupView({ data, onClick }: CustomGroupView<SwcrPackage>): 
         <SwcrGroup key={data.value + data.groupKey} onClick={onClick}>
             {data.status?.statusElement}
             <GroupText>
-                <Title> {data.value} </Title>
+                <Title>{data.value}</Title>
                 <Count>({data.count})</Count>
             </GroupText>
             <Chevron>{data.isExpanded ? <ChevronUp /> : <ChevronDown />}</Chevron>

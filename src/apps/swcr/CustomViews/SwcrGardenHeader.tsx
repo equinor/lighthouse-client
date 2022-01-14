@@ -16,6 +16,7 @@ const Header = styled(Groupe)`
     flex-direction: column;
     height: 46px;
     width: 100%;
+    min-width: 50px;
     box-sizing: border-box;
     ::after {
         content: ' ';
@@ -30,7 +31,6 @@ const Header = styled(Groupe)`
 const HeaderTitle = styled(Title)`
     margin: 0px;
     padding: 0px;
-    max-width: 234px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

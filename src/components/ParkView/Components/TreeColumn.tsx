@@ -8,6 +8,9 @@ interface TreeColumnProps<T> {
 }
 
 const Groups = styled.div`
+    width: 100%;
+    box-sizing: border-box;
+
     > div {
         width: 100%;
         margin: 0px;

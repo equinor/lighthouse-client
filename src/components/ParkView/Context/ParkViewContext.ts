@@ -1,5 +1,6 @@
 import { createContext } from 'react';
-import { FieldSettings } from '../../../apps/swcr';
+import { FieldSettings } from '../../../apps/swcr/models/FieldSettings';
+
 import { GardenOptions, Status, TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { Data, DataSet } from '../Models/data';
 
@@ -31,7 +32,11 @@ export interface CustomView<T> {
         onClick: () => void;
         columnExpanded: boolean;
     }>;
-    customGroupView?: React.FC<{ data: DataSet<any>; onClick: () => void }>;
+    customGroupView?: React.FC<{
+        data: DataSet<any>;
+        onClick: () => void;
+        columnExpanded: boolean;
+    }>;
     customHeaderView?: React.FC<{ garden: Data<T>; columnKey: string }>;
 }
 
