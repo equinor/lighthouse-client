@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Apps } from '../../apps/apps';
 import useClientContext from '../../context/clientContext';
+import { isProduction } from '../../Core/AppBuilder/Utils/isProduction';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
 
@@ -156,6 +157,7 @@ interface MainMenuProps {
 }
 
 export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
+    const isProd = isProduction();
     const { apps, appGroups } = manifests;
     const { appsPanelActive } = useClientContext();
     const [searchValue, setSearchValue] = useState('');
@@ -204,6 +206,8 @@ export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
                                 className="link"
                                 key={`link-${item.shortName}`}
                                 to={`/${item.shortName}`}
+                                title={!item.isProduction && isProd ? 'Disabled' : item.title}
+                                style={item.isProduction && !isProd ? { color: '#e3e3e3' } : {}}
                             >
                                 {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
 
@@ -249,6 +253,16 @@ export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
                                             className="link"
                                             key={`link-${item.shortName}`}
                                             to={`${key}/${item.shortName}`}
+                                            title={
+                                                !item.isProduction && isProd
+                                                    ? 'Disabled'
+                                                    : item.title
+                                            }
+                                            style={
+                                                !item.isProduction && isProd
+                                                    ? { color: '#e3e3e3' }
+                                                    : {}
+                                            }
                                         >
                                             {item.title}
                                         </Link>
@@ -294,6 +308,16 @@ export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
                                                 className="link"
                                                 key={`link-${item.shortName}`}
                                                 to={`${key}/${item.shortName}`}
+                                                title={
+                                                    !item.isProduction && isProd
+                                                        ? 'Disabled'
+                                                        : item.title
+                                                }
+                                                style={
+                                                    !item.isProduction && isProd
+                                                        ? { color: '#e3e3e3' }
+                                                        : {}
+                                                }
                                             >
                                                 {item.title}
                                             </Link>

@@ -30,7 +30,7 @@ fetchConfig().then((appConfig) => {
         },
     };
 
-    const { apps, appGroups } = appsProvider(getApps, getAppGroups, true);
+    const { apps, appGroups } = appsProvider(getApps, getAppGroups);
 
     const authProvider = authenticationProvider(authConfig);
     if (authProvider && !(window !== window.parent && !window.opener)) {

@@ -2,7 +2,6 @@ import react from '@vitejs/plugin-react';
 import * as path from 'path';
 import copy from 'rollup-plugin-copy';
 import { defineConfig } from 'vite';
-import { env } from './setting';
 
 export default defineConfig({
     plugins: [react()],
@@ -15,7 +14,7 @@ export default defineConfig({
     },
     define: {
         'process.env': {
-            ...env,
+            environment: 'dev',
         },
     },
     resolve: {

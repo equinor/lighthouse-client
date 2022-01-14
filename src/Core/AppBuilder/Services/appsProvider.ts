@@ -4,12 +4,8 @@ import { AppManifest, Manifests } from '../Types/Manifest';
 export type GetApps = () => AppManifest[];
 export type GetAppGroups = () => AppGroups;
 
-export function appsProvider(
-    getApps: GetApps,
-    getInitialGroups: GetAppGroups,
-    isProduction: boolean
-): Manifests {
-    const apps = getProductionApps(getApps(), isProduction);
+export function appsProvider(getApps: GetApps, getInitialGroups: GetAppGroups): Manifests {
+    const apps = getProductionApps(getApps(), false);
     const initialGroups = getInitialGroups();
 
     return {
