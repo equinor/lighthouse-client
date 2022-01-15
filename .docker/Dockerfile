@@ -1,7 +1,7 @@
 # build environment
 FROM node:16.10.0 as build
 
-RUN echo "Builing Web Client"
+RUN echo "Web Client"
 
 # Env variables
 ARG env
