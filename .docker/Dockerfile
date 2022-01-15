@@ -3,6 +3,7 @@ FROM node:16.10.0 as build
 
 # Env variables
 ARG env
+RUN echo "Current environment $env"
 
 # Copy App
 WORKDIR /app
