@@ -1,11 +1,9 @@
 # build environment
 FROM node:16.10.0 as build
 
-RUN echo "Web Client"
-
 # Env variables
 ARG environmentId
-RUN echo "Current environment $environmentId"
+RUN echo "Current environmentId $environmentId"
 
 # Copy App
 WORKDIR /app
