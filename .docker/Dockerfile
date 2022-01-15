@@ -1,6 +1,7 @@
 # build environment
 FROM node:16.10.0 as build
 ARG env
+#ARG env=dev
 
 # Copy App
 WORKDIR /app
