@@ -40,7 +40,7 @@ stages:
             parameters:
                 deploymentName: 'docker_build_push'
                 dependsOn: ''
-                env: '${{ variables.envName }}'
+                environmentId: '${{ variables.envName }}'
                 envGroup: '${{ variables.envGroupName }}'
                 dockerfilePath: '${{ variables.dockerfilePath }}'
                 repository: '${{ variables.repositoryName }}'
@@ -65,7 +65,7 @@ stages:
                 deploymentName: 'deploy_web'
                 dependsOn: ''
                 serviceConnection: '${{ variables.serviceConnection }}'
-                env: '${{ variables.envName }}'
+                environmentId: '${{ variables.envName }}'
                 rgName: '${{variables.rgName}}'
                 envGroup: '${{ variables.envGroupName }}'
                 repository: '${{ variables.repositoryName }}'

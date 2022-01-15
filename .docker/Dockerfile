@@ -4,8 +4,8 @@ FROM node:16.10.0 as build
 RUN echo "Web Client"
 
 # Env variables
-ARG env
-RUN echo "Current environment $env"
+ARG environmentId
+RUN echo "Current environment ${environmentId}"
 
 # Copy App
 WORKDIR /app
@@ -13,7 +13,7 @@ COPY . /app
 
 # Build 
 RUN yarn install
-RUN yarn build --mode ${env}
+RUN yarn build --mode ${environmentId}
 
 # production environment
 FROM nginx:stable-alpine
