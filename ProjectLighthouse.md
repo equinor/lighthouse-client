@@ -1,1 +1,1 @@
-# Project Lighthouse test
+# Project Lighthouse
