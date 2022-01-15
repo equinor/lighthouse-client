@@ -42,6 +42,8 @@ export default defineConfig({
             '@equinor/lighthouse-util': path.resolve(__dirname, './packages/util/'),
             '@equinor/lighthouse-typeGuard': path.resolve(__dirname, './packages/typeGuard/'),
             '@equinor/client': path.resolve(__dirname, './src/Core/Client'),
+            '@equinor/lighthouse-conf': path.resolve(__dirname, './packages/configuration/'),
+            '@equinor/Kpi': path.resolve(__dirname, '/src/packages/KPI'),
         },
     },
     build: {
