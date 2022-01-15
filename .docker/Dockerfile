@@ -5,7 +5,7 @@ RUN echo "Web Client"
 
 # Env variables
 ARG environmentId
-RUN echo "Current environment ${environmentId}"
+RUN echo "Current environment $environmentId"
 
 # Copy App
 WORKDIR /app
