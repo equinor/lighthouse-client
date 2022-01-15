@@ -1,9 +1,9 @@
-import { AppConfig } from '@equinor/lighthouse-conf';
 import { baseClient, BaseClient } from '../../../../packages/httpClient/src/baseClient';
 import { useClientContext } from '../ClientContext/clientContext';
+import { Scope } from '../Service/appConf';
 
 type Clients = {
-    [key in keyof AppConfig]: BaseClient;
+    [key in keyof Scope]: BaseClient;
 } & {
     customApi: BaseClient;
 };
@@ -16,8 +16,8 @@ export function useApiClient(customScope?: string): Clients {
         customApi: baseClient(authProvider, [customScope]),
     };
 
-    Object.keys(appConfig).forEach((key) => {
-        apiClients[key] = baseClient(authProvider, [appConfig[key]]);
+    Object.keys(appConfig.scope).forEach((key) => {
+        apiClients[key] = baseClient(authProvider, [appConfig.scope[key]]);
     });
     return apiClients as Clients;
 }
