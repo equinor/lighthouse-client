@@ -134,7 +134,7 @@ const webpackConfig: Configuration = {
             '@equinor/lighthouse-components': path.resolve(__dirname, './packages/components/'),
             '@equinor/lighthouse-util': path.resolve(__dirname, './packages/util/'),
             '@equinor/lighthouse-typeGuard': path.resolve(__dirname, './packages/typeGuard/'),
-            '@equinor/lighthouse-conf': path.resolve(__dirname, './packages/configuration/'),
+            '@equinor/client': path.resolve(__dirname, './packages/configuration/'),
         },
     },
     devtool: 'source-map',
