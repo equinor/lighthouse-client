@@ -1,6 +1,8 @@
 # build environment
 FROM node:16.10.0 as build
 
+RUN echo "Builing Client"
+
 # Env variables
 ARG env
 RUN echo "Current environment $env"
