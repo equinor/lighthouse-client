@@ -8,7 +8,7 @@ import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
         CustomSidesheet: ScopeChangeSideSheet,
     });

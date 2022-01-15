@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "vite",
+    "start": "vite --mode dev",
     "build": "tsc && vite build",
     "serve": "vite preview",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
