@@ -1,13 +1,17 @@
 # build environment
 FROM node:16.10.0 as build
 
+# Env variables
+ARG environmentId
+RUN echo "Current environmentId $environmentId"
+
 # Copy App
 WORKDIR /app
 COPY . /app
 
 # Build 
 RUN yarn install
-RUN yarn build 
+RUN yarn build --mode ${environmentId}
 
 # production environment
 FROM nginx:stable-alpine
