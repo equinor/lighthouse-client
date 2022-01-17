@@ -4,6 +4,8 @@ import copy from 'rollup-plugin-copy';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+    envDir: './env',
+    envPrefix: ['VITE_', 'CLIENT_', 'APP_', 'ENV_'],
     plugins: [react()],
 
     preview: {
@@ -41,9 +43,8 @@ export default defineConfig({
             '@equinor/lighthouse-components': path.resolve(__dirname, './packages/components/'),
             '@equinor/lighthouse-util': path.resolve(__dirname, './packages/util/'),
             '@equinor/lighthouse-typeGuard': path.resolve(__dirname, './packages/typeGuard/'),
-            '@equinor/client': path.resolve(__dirname, './src/Core/Client'),
             '@equinor/lighthouse-conf': path.resolve(__dirname, './packages/configuration/'),
-            '@equinor/Kpi': path.resolve(__dirname, '/src/packages/KPI'),
+            '@equinor/Kpi': path.resolve(__dirname, './src/packages/KPI'),
         },
     },
     build: {

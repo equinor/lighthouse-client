@@ -1,5 +1,5 @@
 import { AuthenticationProvider } from '@equinor/authentication';
-import { AppConfig } from '@equinor/client';
+import { AppConfig } from '@equinor/portal-client';
 import { Factory } from '@equinor/DataFactory';
 import { createPageViewer, PageViewerOptions as PageOptions } from '@equinor/PageViewer';
 import { createWorkSpace, ViewerOptions } from '@equinor/WorkSpace';

@@ -1,8 +1,9 @@
 import { crypt } from './crypt';
 
 export async function fetchConfig(): Promise<AppConfig> {
-    console.log(import.meta.env.VITE_CLIENT_ENV || 'Env not defined :(');
-    const response = await fetch(getEnvironmentUri(import.meta.env.VITE_CLIENT_ENV || ''));
+    console.log(import.meta.env.CLIENT_ENV || 'CLIENT_ENV not defined :(');
+
+    const response = await fetch(getEnvironmentUri(import.meta.env.CLIENT_ENV || ''));
     return await response.json();
 }
 
