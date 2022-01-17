@@ -60,11 +60,11 @@ export function Workflow<T>({
                     <PCSPersonSearch person={contributor} setPerson={setContributor} />
                     <div style={{ height: '30px' }}>
                         {isLoading && <span>Loading...</span>}
-                        {error && (
+                        {/* {error && (
                             <span style={{ fontSize: '14px', color: 'red' }}>
                                 Adding contributor failed
                             </span>
-                        )}
+                        )} */}
                     </div>
                 </>
             )}

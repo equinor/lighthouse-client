@@ -32,7 +32,7 @@ export const ScopeChangeRequestForm = ({
 }: ScopeChangeRequestFormProps): JSX.Element => {
     const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
         category: 'Hidden carryover',
-        origin: 'NCR',
+        origin: 'Query',
         phase: 'IC',
     });
     const [origin, setOrigin] = useState<TypedSelectOption | undefined>();
@@ -51,7 +51,6 @@ export const ScopeChangeRequestForm = ({
         const scID = await postScopeChange(
             {
                 ...formData.data,
-
                 TagNumbers: tags?.map((x) => x.value) || [],
                 SystemIds: systems?.map((x) => x.value) || [],
                 CommissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
@@ -102,7 +101,7 @@ export const ScopeChangeRequestForm = ({
 
     const isValidForm = useMemo(() => {
         return formData.isValidForm() && origin?.value && relatedObjects.length > 0;
-    }, [formData, origin]);
+    }, [formData, origin?.value, relatedObjects]);
 
     return (
         <FormContainer>

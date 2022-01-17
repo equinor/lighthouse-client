@@ -1,13 +1,6 @@
 import { BaseClient } from '../../../../../../packages/httpClient/src';
 import { TypedSelectOption } from '../searchType';
-
-interface Person {
-    AzureOid: string;
-    Username: string;
-    FirstName: string;
-    LastName: string;
-    Email: string;
-}
+import { Person } from './Types/person';
 
 export const searchPerson = async (
     searchString: string,

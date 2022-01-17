@@ -2,7 +2,7 @@ import { BaseClient } from '../../../../packages/httpClient/src';
 
 interface ContributorBody {
     messageToContributor: string;
-    personId: string;
+    oid: string;
 }
 
 export const addContributor = async (
@@ -13,7 +13,7 @@ export const addContributor = async (
 ): Promise<void> => {
     const payload: ContributorBody = {
         messageToContributor: '',
-        personId: azureOid,
+        oid: azureOid,
     };
     const requestOptions = {
         method: 'POST',

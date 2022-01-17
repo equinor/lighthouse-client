@@ -9,7 +9,7 @@ import { TypedSelectOption } from '../searchType';
 export type ProcoSysTypes = 'tag' | 'commpkg' | 'system' | 'query' | 'person';
 
 /**
- *
+ * TODO: convert to hook
  * @param searchString
  * @param searchItem
  * @param procosysClient

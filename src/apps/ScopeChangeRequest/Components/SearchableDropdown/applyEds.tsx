@@ -42,18 +42,6 @@ export const applyEDSTheme = (theme: Theme): Theme => ({
 
 export const applyEdsStyles = () => {
     return {
-        indicatorsContainer: (styles) => ({
-            ...styles,
-        }),
-        menuPortal: (styles) => ({
-            ...styles,
-        }),
-        group: (styles) => ({
-            ...styles,
-        }),
-        input: (styles) => ({
-            ...styles,
-        }),
         /**
          * Dropdown list
          */

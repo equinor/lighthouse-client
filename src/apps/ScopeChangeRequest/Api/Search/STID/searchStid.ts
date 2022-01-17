@@ -11,7 +11,7 @@ export type StidTypes = 'document';
  * @param procosysClient
  * @returns
  */
-export const searchPcs = async (
+export const searchStid = async (
     searchString: string,
     searchItem: StidTypes,
     procosysClient: BaseClient

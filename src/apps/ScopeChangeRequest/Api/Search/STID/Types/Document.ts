@@ -4,7 +4,7 @@ export interface Document {
     docTitle: string;
     docClass: string;
     projectCode: string;
-    poNo?: any;
+    poNo?: string;
     system: string;
     locationCode: string;
     disciplineCode: string;
@@ -16,10 +16,15 @@ export interface Document {
     revStatus: string;
     revisionProject: string;
     reasonForIssue: string;
-    remark?: any;
-    tagNoMedia?: any;
+    remark?: string;
+    tagNoMedia?: string;
     insertedDate: Date;
     updatedDate: Date;
-    additionalFields: any[];
+    additionalFields: AdditionalField[];
     files: File[];
+}
+
+interface AdditionalField {
+    type: string;
+    value: string;
 }

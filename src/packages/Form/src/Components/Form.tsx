@@ -52,7 +52,7 @@ export const GeneratedForm = <T, K extends keyof T>({
                 return (
                     <SectionRow key={fieldArray.toString() + index.toString()}>
                         {fieldArray.map((field: Field<T[K] | CustomField>, index: number) => {
-                            if (field['Component']) {
+                            if (isCustomComponent(field)) {
                                 const { Component, props, title } = field as unknown as CustomField;
                                 return (
                                     <VisualField label={title} value={<Component {...props} />} />
@@ -92,3 +92,7 @@ const ButtonContainer = styled.div`
     justify-content: flex-end;
     align-items: center;
 `;
+
+const isCustomComponent = (arg: CustomField | unknown): arg is CustomField => {
+    return (arg as CustomField).Component !== undefined;
+};

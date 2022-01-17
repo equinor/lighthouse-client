@@ -1,6 +1,11 @@
 import { BaseClient } from '../../../../../../packages/httpClient/src';
 import { FunctionalRole } from './Types/functionalRole';
 
+/**
+ * Returns a list of the users functional roles
+ * @param procosysClient
+ * @returns
+ */
 export async function checkMyFunctionalRole(procosysClient: BaseClient): Promise<FunctionalRole[]> {
     const baseUrl = 'https://procosyswebapi.equinor.com/api';
     const uri = 'Me/FunctionalRoleCodes';

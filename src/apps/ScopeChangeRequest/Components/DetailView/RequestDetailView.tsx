@@ -24,12 +24,12 @@ export const RequestDetailView = ({
     const [comment, setComment] = useState<string | undefined>(undefined);
     const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
     const onInitiate = async () => {
-        const payLoad = {
+        const payload = {
             ...request,
             setAsOpen: true,
         };
 
-        await patchScopeChange(payLoad, customApi);
+        await patchScopeChange(payload, customApi);
         refetch();
     };
 
@@ -194,7 +194,6 @@ export const RequestDetailView = ({
                                 style={{ width: '100vh' }}
                                 id={'Comment'}
                                 multiline
-                                // meta={'(Required)'}
                                 value={comment}
                                 onChange={(e) => {
                                     setComment(e.target.value);

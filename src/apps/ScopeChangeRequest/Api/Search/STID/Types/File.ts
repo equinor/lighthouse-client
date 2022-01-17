@@ -7,7 +7,7 @@ export interface File {
     fileOrder: number;
     prodViewCode: string;
     insertedDate: Date;
-    thumbnail?: any;
+    thumbnail?: string;
     fileSize: number;
     blobId: string;
 }
