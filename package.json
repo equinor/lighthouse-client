@@ -10,6 +10,7 @@
     "start": "vite --mode dev",
     "build": "tsc && vite build",
     "serve": "vite preview",
+    "create-config": "python ./.docker/scripts/create-client-config.py",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
     "lint-fix": "eslint --ext .js,.jsx,.ts,.tsx src --color --fix",
     "lint-strict": "eslint --ext .js,.jsx,.ts,.tsx src --color --max-warnings=0",

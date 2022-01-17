@@ -1,21 +1,22 @@
 import { Configuration } from '@azure/msal-browser';
 import { appsProvider, clientApiBuilder } from '@equinor/app-builder';
 import { authenticationProvider } from '@equinor/authentication';
-import { fetchConfig } from '@equinor/portal-client';
 import { createDataFactory } from '@equinor/DataFactory';
 import { Icon as EdsIcon } from '@equinor/eds-core-react';
 import * as icons from '@equinor/eds-icons';
+import { fetchConfig } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 import { render } from 'react-dom';
 import Client from './AppClient';
 import { getAppGroups, getApps } from './apps/apps';
+
 
 EdsIcon.add({ ...icons });
 
 fetchConfig().then((appConfig) => {
     const clientId = appConfig.settings.clientId;
     const tenantId = appConfig.settings.tenantId;
-    const authority = `${import.meta.env.CLIENT_ENV}/${tenantId}`;
+    const authority = `https://login.microsoftonline.com/${tenantId}`;
     const authConfig: Configuration = {
         auth: {
             authority: authority,

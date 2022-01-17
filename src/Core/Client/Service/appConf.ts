@@ -1,11 +1,15 @@
 import { crypt } from './crypt';
 
 export async function fetchConfig(): Promise<AppConfig> {
-    console.log(process.env.FunctionEnvironment || 'FunctionEnvironment not defined :(');
-    console.log(import.meta.env.CLIENT_ENV || 'CLIENT_ENV not defined :(');
-
-    const response = await fetch(getEnvironmentUri(import.meta.env.CLIENT_ENV || ''));
+    const config = await fetchClientConfig();
+    console.log("clientConfig:", config)
+    const response = await fetch(getEnvironmentUri("func-ppo-web-client", config.CLIENT_ENV));
     return await response.json();
+}
+
+async function fetchClientConfig() {
+    const configResponse = await fetch("/client-config.json");
+    return await  await configResponse.json();
 }
 
 export interface Scope {
@@ -29,9 +33,9 @@ export interface AppConfig {
     };
 }
 
-function getEnvironmentUri(id: string): string {
-    return `https://func-ppo-web-client-dev.azurewebsites.net/api/clientConfig?environmentId=${crypt(
+function getEnvironmentUri(baseUri: string, env: string): string {
+    return `https://${baseUri}-${env}.azurewebsites.net/api/clientConfig?environmentId=${crypt(
         'environmentId',
-        id
+        env
     )}`;
 }

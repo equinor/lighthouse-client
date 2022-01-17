@@ -58,7 +58,7 @@ export default defineConfig({
                         {
                             src: './doc/dataView.md',
                             dest: 'dist/',
-                        },
+                        }, 
                     ],
                     hook: 'writeBundle',
                 }),

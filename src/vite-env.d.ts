@@ -1,9 +1,9 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-    readonly VITE_CLIENT_ENV: string;
     readonly CLIENT_ENV: string;
     readonly ENV_LOGIN: string;
+    readonly ENV_CONFIG_URI: string;
     // more env variables...
 }
 

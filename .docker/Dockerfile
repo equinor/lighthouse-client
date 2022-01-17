@@ -11,13 +11,13 @@ COPY . /app
 
 # Build 
 RUN yarn install
-RUN yarn build --mode ${environmentId}
+RUN yarn build 
 
 # production environment
 FROM nginx:stable-alpine
 
 ## Install
-# RUN apk add python3
+RUN apk add python3
 
 
 ## add permissions for nginx user
@@ -28,6 +28,9 @@ COPY .docker/nginx/ /etc/nginx/
 
 ## Copy Scripts
 COPY  .docker/scripts/ /etc/scripts/
+
+## Copy Env
+COPY .env /etc/scripts/
 
 ## Server setup
 EXPOSE 80
