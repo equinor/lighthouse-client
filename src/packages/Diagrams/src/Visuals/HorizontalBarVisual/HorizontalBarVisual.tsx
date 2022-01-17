@@ -1,11 +1,11 @@
 import Chart from 'react-apexcharts';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { useHorizontalBarChart } from './Hooks/useHorizontalBarChart';
-import { BarChartOptions } from './Types/barVisualOptions';
+import { HorizontalBarChartOptions } from './Types/barVisualOptions';
 
 interface HorizontalBarVisual<T> {
     data: T[];
-    options: BarChartOptions<T>;
+    options: HorizontalBarChartOptions<T>;
 }
 
 /**
