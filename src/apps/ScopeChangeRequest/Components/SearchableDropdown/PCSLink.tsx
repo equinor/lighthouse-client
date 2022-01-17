@@ -1,81 +1,92 @@
-import { useMemo, useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { tokens } from '@equinor/eds-tokens';
-import { Icon, SingleSelect } from '@equinor/eds-core-react';
-import {
-    ActionMeta,
-    GroupBase,
-    InputActionMeta,
-    InputProps,
-    MultiValue,
-    Theme,
-} from 'react-select';
+import { Icon } from '@equinor/eds-core-react';
+import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { searchPcs } from '../../Api/PCS/searchPcs';
+import { searchPcs } from '../../Api/Search/PCS/searchPcs';
 import { applyEDSTheme, applyEdsComponents, applyEdsStyles } from './applyEds';
-
-interface SelectOption {
-    label: string;
-    value: string;
-}
+import { sort } from './sort';
+import { TypedSelectOption } from '../../Api/Search/searchType';
 
 interface PCSLinkProps {
-    tags: SelectOption[];
-    setTags: React.Dispatch<React.SetStateAction<SelectOption[]>>;
-    commPkgs: SelectOption[];
-    setCommPkgs: React.Dispatch<React.SetStateAction<SelectOption[]>>;
-    systems: SelectOption[];
-    setSystems: React.Dispatch<React.SetStateAction<SelectOption[]>>;
+    relatedObjects: TypedSelectOption[];
+    setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>;
 }
 
-export const PCSLink = ({
-    commPkgs,
-    systems,
-    tags,
-    setCommPkgs,
-    setTags,
-    setSystems,
-}: PCSLinkProps): JSX.Element => {
-    const linkOptions = ['Tag', 'CommPkg', 'System'];
-    const [tagCommPkgSystem, setTagCommPkgSystem] = useState<string | undefined | null>(
-        linkOptions[0]
-    );
-
+export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JSX.Element => {
     const { procosys } = useApiClient();
+    const [apiErrors, setApiErrors] = useState<string[]>([]);
+    const debounce = useRef(new Date());
 
-    const addTag = (value: SelectOption) => setTags((prev) => [...prev, value]);
-    const addSystem = (value: SelectOption) => setSystems((prev) => [...prev, value]);
-    const addCommPkg = (value: SelectOption) => setCommPkgs((prev) => [...prev, value]);
+    const addRelatedObject = (value: TypedSelectOption) =>
+        setRelatedObjects((prev) => [...prev, value]);
 
-    const removeTag = (value: string) => setTags(tags.filter((x) => x.value !== value));
-    const removeSystem = (value: string) => setSystems(systems.filter((x) => x.value !== value));
-    const removeCommPkg = (value: string) => setCommPkgs(commPkgs.filter((x) => x.value !== value));
+    const removeRelatedObject = (value: string) =>
+        setRelatedObjects((prev) => prev.filter((x) => x.value !== value));
 
-    const loadOptions = async (inputValue: string, callback: (options: SelectOption[]) => void) => {
-        if (!tagCommPkgSystem) return;
-        callback(await searchPcs(inputValue, tagCommPkgSystem, procosys));
+    const loadOptions = async (
+        inputValue: string,
+        callback: (
+            options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
+        ) => void
+    ) => {
+        const options: TypedSelectOption[] = [];
+        try {
+            await (await searchPcs(inputValue, 'system', procosys)).forEach((x) => options.push(x));
+            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+                sort(a, b, inputValue)
+            );
+
+            if (sorted.length > 0) {
+                callback(sorted);
+            }
+        } catch (e) {
+            console.log(e);
+            setApiErrors((prev) => [...prev, 'systems']);
+        }
+
+        try {
+            await (
+                await searchPcs(inputValue, 'commpkg', procosys)
+            ).forEach((x) => options.push(x));
+            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+                sort(a, b, inputValue)
+            );
+
+            if (sorted.length > 0) {
+                callback(sorted);
+            }
+        } catch (e) {
+            console.log(e);
+            setApiErrors((prev) => [...prev, 'comm pkgs']);
+        }
+
+        try {
+            await (await searchPcs(inputValue, 'tag', procosys)).forEach((x) => options.push(x));
+            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+                sort(a, b, inputValue)
+            );
+
+            if (sorted.length > 0) {
+                callback(sorted);
+            }
+        } catch (e) {
+            console.log(e);
+            setApiErrors((prev) => [...prev, 'tags']);
+        }
     };
-
-    const selectedOptions = useMemo(() => {
-        return [...tags, ...commPkgs, ...systems];
-    }, [tags, systems, commPkgs]);
 
     return (
         <Wrapper>
             <Column>
+                {apiErrors &&
+                    apiErrors.length > 0 &&
+                    apiErrors.map((name) => {
+                        return <ErrorWrapper key={name}>Failed to fetch {name}</ErrorWrapper>;
+                    })}
                 <Inline>
-                    <SingleSelect
-                        style={{ width: '150px' }}
-                        label=""
-                        items={linkOptions}
-                        selectedOption={tagCommPkgSystem || ''}
-                        handleSelectedItemChange={(e) => {
-                            setTagCommPkgSystem(e.selectedItem);
-                        }}
-                    />
-                    <div style={{ width: '5px' }} />
-
                     <div
                         style={{
                             width: '653.75px',
@@ -85,34 +96,41 @@ export const PCSLink = ({
                     >
                         <AsyncSelect
                             cacheOptions={false}
-                            isDisabled={!tagCommPkgSystem}
-                            loadOptions={loadOptions}
+                            loadOptions={(
+                                inputValue: string,
+                                callback: (
+                                    options: OptionsOrGroups<
+                                        TypedSelectOption,
+                                        GroupBase<TypedSelectOption>
+                                    >
+                                ) => void
+                            ) => {
+                                const start = debounce.current;
+                                setTimeout(() => {
+                                    if (start === debounce.current) {
+                                        loadOptions(inputValue, callback);
+                                    }
+                                }, 300);
+                                return;
+                            }}
                             defaultOptions={false}
                             components={applyEdsComponents()}
                             isMulti
                             placeholder={`Type to search..`}
                             isClearable={false}
-                            value={selectedOptions}
+                            value={relatedObjects}
+                            onInputChange={() => {
+                                debounce.current = new Date();
+                                setApiErrors([]);
+                            }}
                             styles={applyEdsStyles()}
                             controlShouldRenderValue={false}
                             onChange={(
-                                newValue: MultiValue<SelectOption>,
-                                actionMeta: ActionMeta<SelectOption>
+                                newValue: MultiValue<TypedSelectOption>,
+                                actionMeta: ActionMeta<TypedSelectOption>
                             ) => {
                                 if (!actionMeta.option) return;
-                                switch (tagCommPkgSystem) {
-                                    case 'Tag':
-                                        addTag(actionMeta.option);
-                                        break;
-
-                                    case 'CommPkg':
-                                        addCommPkg(actionMeta.option);
-                                        break;
-
-                                    case 'System':
-                                        addSystem(actionMeta.option);
-                                        break;
-                                }
+                                addRelatedObject(actionMeta.option);
                             }}
                             theme={(theme: Theme) => applyEDSTheme(theme)}
                         />
@@ -120,18 +138,16 @@ export const PCSLink = ({
                 </Inline>
 
                 <Column>
-                    {selectedOptions && selectedOptions.length > 0 && (
+                    {relatedObjects && relatedObjects.length > 0 && (
                         <>
-                            {selectedOptions.map((x) => {
+                            {relatedObjects.map((x) => {
                                 return (
                                     <Chip key={x.value}>
                                         {x.label}
                                         <Icon
                                             color={tokens.colors.interactive.primary__resting.rgba}
                                             onClick={() => {
-                                                removeTag(x.value);
-                                                removeSystem(x.value);
-                                                removeCommPkg(x.value);
+                                                removeRelatedObject(x.value);
                                             }}
                                             name="clear"
                                         />
@@ -169,4 +185,9 @@ const Column = styled.div`
 
 const Wrapper = styled.div`
     width: 100%;
+`;
+
+const ErrorWrapper = styled.div`
+    font-size: 12px;
+    color: red;
 `;

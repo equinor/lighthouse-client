@@ -7,9 +7,11 @@ import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { addContributor as postContributor } from '../../Api/addContributor';
 import { useMutation } from 'react-query';
+import { ScopeChangeRequestState } from '../../Types/scopeChangeRequest';
 
 interface WorkflowProps<T> {
     requestId: string;
+    requestState: ScopeChangeRequestState;
     currentStepId: string | undefined;
     steps: T[];
     statusFunc: (item: T) => 'Completed' | 'Inactive' | 'Active';
@@ -18,6 +20,7 @@ interface WorkflowProps<T> {
 }
 export function Workflow<T>({
     steps,
+    requestState,
     statusFunc,
     stepName,
     requestId,
@@ -51,16 +54,21 @@ export function Workflow<T>({
 
     return (
         <div>
-            <div style={{ fontSize: '12px' }}>Add contributors</div>
-            <PCSPersonSearch person={contributor} setPerson={setContributor} />
-            <div style={{ height: '30px' }}>
-                {isLoading && <span>Loading...</span>}
-                {error && (
-                    <span style={{ fontSize: '14px', color: 'red' }}>
-                        Adding contributor failed
-                    </span>
-                )}
-            </div>
+            {requestState === 'Open' && (
+                <>
+                    <div style={{ fontSize: '12px' }}>Add contributors</div>
+                    <PCSPersonSearch person={contributor} setPerson={setContributor} />
+                    <div style={{ height: '30px' }}>
+                        {isLoading && <span>Loading...</span>}
+                        {error && (
+                            <span style={{ fontSize: '14px', color: 'red' }}>
+                                Adding contributor failed
+                            </span>
+                        )}
+                    </div>
+                </>
+            )}
+
             {steps.map((x, id) => {
                 return (
                     <WorkflowStepContainer key={id}>

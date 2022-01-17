@@ -77,7 +77,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
     const options = useWorkSpace();
 
-    const { dataSource, validator } = options;
+    const { dataSource } = options;
 
     const initialState: DataState = {
         key,
@@ -113,24 +113,6 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     useEffect(() => {
         refetch();
     }, [dataSource]);
-
-    // const getData = useCallback(async () => {
-    //     if (dataSource) {
-    //         setIsLoading(true);
-    //         await refetch();
-    //         if (!data) return;
-    //         console.warn('Datasource returned nothing');
-    //         if (validator) {
-    //             dispatch(actions.getData(validator(data)));
-    //             setIsLoading(false);
-    //             return;
-    //         }
-    //         // eslint-disable-next-line no-console
-    //         console.warn(`Data may not be valid. Data validator is not registered for ${name}.`);
-    //         dispatch(actions.getData(data));
-    //         setIsLoading(false);
-    //     }
-    // }, [dataSource, validator]);
 
     return (
         <DataContext.Provider

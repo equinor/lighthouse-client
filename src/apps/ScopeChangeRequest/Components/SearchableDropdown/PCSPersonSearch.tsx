@@ -1,7 +1,7 @@
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { SingleValue, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { searchPcs } from '../../Api/PCS/searchPcs';
+import { searchPcs } from '../../Api/Search/PCS/searchPcs';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';

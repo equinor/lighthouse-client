@@ -47,11 +47,9 @@ export const applyEdsStyles = () => {
         }),
         menuPortal: (styles) => ({
             ...styles,
-            backgroundColor: 'pink',
         }),
         group: (styles) => ({
             ...styles,
-            backgroundColor: 'pink',
         }),
         input: (styles) => ({
             ...styles,
@@ -85,7 +83,7 @@ export const applyEdsComponents = (): EdsOverride => {
 const DownChevronOverride = () => {
     return (
         <Button style={{ width: '25px', height: '25px' }} variant="ghost_icon">
-            <Icon color={tokens.colors.interactive.primary__resting.rgba} name="arrow_drop_down" />
+            <Icon color={tokens.colors.interactive.primary__resting.rgba} name="search" />
         </Button>
     );
 };

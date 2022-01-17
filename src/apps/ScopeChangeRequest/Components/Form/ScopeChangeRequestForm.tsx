@@ -8,26 +8,21 @@ import { useMutation } from 'react-query';
 import { getScopeChangeById, postScopeChange } from '../../Api/';
 import { openSidesheet } from '@equinor/sidesheet';
 import { ScopeChangeSideSheet } from '../CustomSidesheet';
-import { Field } from '../DetailView/Components/Field';
-import { Upload } from '../Upload';
 import { tokens } from '@equinor/eds-tokens';
 
 import { useApiClient } from '@equinor/portal-client';
 import { PCSLink } from '../SearchableDropdown/PCSLink';
+import { TypedSelectOption } from '../../Api/Search/searchType';
 import { OriginLink } from '../SearchableDropdown/OriginLink';
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
+import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
     setHasUnsavedChanges: (value: boolean) => void;
 }
 
-interface SelectOption {
-    value: string;
-    label: string;
-}
-
-interface CreateScopeChangeProps {
+interface CreateScopeChangeParams {
     draft: boolean;
 }
 
@@ -40,22 +35,26 @@ export const ScopeChangeRequestForm = ({
         origin: 'NCR',
         phase: 'IC',
     });
-    const [origin, setOrigin] = useState<SelectOption | undefined>();
+    const [origin, setOrigin] = useState<TypedSelectOption | undefined>();
 
-    const [tags, setTags] = useState<SelectOption[]>([]);
-    const [commPkgs, setCommPkgs] = useState<SelectOption[]>([]);
-    const [systems, setSystems] = useState<SelectOption[]>([]);
+    const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
     const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
 
-    const createScopeChangeMutation = async ({ draft }: CreateScopeChangeProps) => {
+    const createScopeChangeMutation = async ({ draft }: CreateScopeChangeParams) => {
+        const tags = filterElementsByType(relatedObjects, 'tag');
+        const systems = filterElementsByType(relatedObjects, 'system');
+        const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
+        // const areas = filterElementsByType(relatedObjects, 'area');
+        // const disciplines = filterElementsByType(relatedObjects, 'discipline');
+
         const scID = await postScopeChange(
             {
                 ...formData.data,
 
-                tagNos: tags?.map((x) => x.value) || [],
-                systemNos: systems?.map((x) => x.value) || [],
-                commPkgNos: commPkgs?.map((x) => x.value) || [],
+                TagNumbers: tags?.map((x) => x.value) || [],
+                SystemIds: systems?.map((x) => x.value) || [],
+                CommissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
             },
             draft,
             customApi
@@ -63,7 +62,6 @@ export const ScopeChangeRequestForm = ({
         if (scID) {
             redirect(scID);
         }
-        // formData.reset();
     };
 
     const { mutate, error } = useMutation(createScopeChangeMutation, {
@@ -103,7 +101,7 @@ export const ScopeChangeRequestForm = ({
     };
 
     const isValidForm = useMemo(() => {
-        return formData.isValidForm() && origin;
+        return formData.isValidForm() && origin?.value && relatedObjects.length > 0;
     }, [formData, origin]);
 
     return (
@@ -137,17 +135,14 @@ export const ScopeChangeRequestForm = ({
                         order: 6,
                         title: 'Tag / comm pkg / system',
                         props: {
-                            commPkgs: commPkgs,
-                            setCommPkgs: setCommPkgs,
-                            tags: tags,
-                            setTags: setTags,
-                            systems: systems,
-                            setSystems: setSystems,
+                            relatedObjects: relatedObjects,
+                            setRelatedObjects: setRelatedObjects,
                         },
                     },
                 ]}
             >
-                <Field label="Attachments" value={<Upload />} />
+                {/* <StidSelector /> */}
+                {/* <Field label="Attachments" value={<Upload />} /> */}
             </GeneratedForm>
             {error && <p> Something went wrong, please check your connection and try again</p>}
         </FormContainer>
@@ -162,3 +157,7 @@ const TitleHeader = styled.div`
 `;
 
 const FormContainer = styled.div``;
+
+function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes) {
+    return items.filter((x) => x.type === type);
+}

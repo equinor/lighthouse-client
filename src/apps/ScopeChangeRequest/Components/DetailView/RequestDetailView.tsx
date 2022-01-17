@@ -135,11 +135,26 @@ export const RequestDetailView = ({
                     customValue={{ fontSize: '16px' }}
                     value={request.description}
                 />
+                <SectionRow>
+                    <Field
+                        label={'Guesstimate mhrs'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.guesstimateHours}
+                    />
+                    <Field
+                        label={'Guesstimate description'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.guesstimateDescription}
+                    />
+                </SectionRow>
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label={'Workflow'}
                     value={
                         <Workflow
+                            requestState={request.state}
                             requestId={request.id}
                             currentStepId={request.currentWorkflowStep?.id}
                             stepName={'name'}
@@ -190,7 +205,7 @@ export const RequestDetailView = ({
                     <ButtonContainer>
                         {request.state === 'Draft' && (
                             <>
-                                <Button onClick={setEditMode}>Edit</Button>
+                                {/* <Button onClick={setEditMode}>Edit</Button> */}
                                 <HorizontalDivider />
                                 <Button onClick={onInitiate} variant="outlined">
                                     Initiate request

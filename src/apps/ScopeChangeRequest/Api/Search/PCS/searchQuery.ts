@@ -1,27 +1,13 @@
-import { BaseClient } from '../../../../../packages/httpClient/src';
-
-interface SelectOption {
-    value: string;
-    label: string;
-}
-
-interface PCSStructure {
-    Key: string;
-    Value: string;
-}
-
-interface Query {
-    DocumentNo: string;
-    Id: number;
-    DocumentType__Code?: any;
-    Title: string;
-}
+import { BaseClient } from '../../../../../../packages/httpClient/src';
+import { TypedSelectOption } from '../searchType';
+import { Query } from './Types/query';
+import { PCSStructure } from './Types/searchStructure';
 
 export const searchQueryOrigin = async (
     searchString: string,
     client: BaseClient
-): Promise<SelectOption[]> => {
-    const selectOptions: SelectOption[] = [];
+): Promise<TypedSelectOption[]> => {
+    const selectOptions: TypedSelectOption[] = [];
 
     const search: PCSStructure[] = [
         {
@@ -43,13 +29,16 @@ export const searchQueryOrigin = async (
             .then((response) => response.json())
             .then((data) => {
                 data.map((x: Query) => {
-                    selectOptions.push({ label: x.DocumentNo, value: x.DocumentNo });
+                    selectOptions.push({
+                        label: x.DocumentNo,
+                        value: x.DocumentNo,
+                        type: 'query',
+                        searchValue: x.DocumentNo,
+                    });
                 });
             });
     } catch (e) {
         console.log(e);
     }
-
-    console.log(selectOptions);
     return selectOptions || [];
 };
