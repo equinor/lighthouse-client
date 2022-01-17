@@ -1,6 +1,4 @@
-import { Apps } from '../../../apps/apps';
-
-export type AppGroups = Record<Apps, AppGroupe>;
+export type AppGroups = Record<string, AppGroupe>;
 
 export interface AppGroupe {
     name: string;
