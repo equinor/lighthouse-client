@@ -16,6 +16,7 @@ export interface AppManifest {
     tags: string[];
     icon?: string | React.FC;
     uri?: string;
+    isProduction?: boolean;
     imageUri?: string;
     app?: App;
 }
