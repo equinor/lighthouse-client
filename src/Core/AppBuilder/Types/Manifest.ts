@@ -17,7 +17,6 @@ export interface AppManifest {
     icon?: string | React.FC;
     uri?: string;
     isProduction?: boolean;
-    isDisabled?: boolean;
     imageUri?: string;
     app?: App;
 }

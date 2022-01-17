@@ -13,7 +13,7 @@ export interface Scope {
     procosys: string;
     echoModelDistClient: string;
     scopeChange: string;
-    constructionProgress?: string;
+    constructionProgress: string;
     pipeTest?: string;
     FAM?: string;
     STID?: string;

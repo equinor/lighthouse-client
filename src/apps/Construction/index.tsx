@@ -75,7 +75,7 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
 };
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
     const construction = appApi.createPageViewer();
 
     /** 
