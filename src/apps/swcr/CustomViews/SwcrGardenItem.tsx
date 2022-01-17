@@ -1,15 +1,20 @@
 import { SwcrPackage } from '../models/SwcrPackage';
 import { Item } from '../../../components/ParkView/Styles/item';
 import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 import { getSwcrStatusColor } from '../utilities/packages';
 import { CustomItemView } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 
-const SwcrItem = styled(Item)`
-    background-color: ${(props) => props.color};
+type SwcrItemProps = { backgroundColor: string; textColor: string };
+
+const SwcrItem = styled(Item)<SwcrItemProps>`
+    background-color: ${(props) => props.backgroundColor};
+    color: ${(props) => props.textColor};
     width: 100%;
-    min-width: 50px;
+    min-width: 150px;
     box-sizing: border-box;
     white-space: nowrap;
+    justify-content: center;
 `;
 
 const SwcrExpanded = styled.div`
@@ -45,9 +50,12 @@ export function SwcrItemView({
     columnExpanded,
 }: CustomItemView<SwcrPackage>): JSX.Element {
     const statusColor = getSwcrStatusColor(data.status);
+    const textColor = ['Closed - Rejected', 'Closed'].includes(data.status)
+        ? tokens.colors.text.static_icons__primary_white.rgba
+        : tokens.colors.text.static_icons__default.rgba;
 
     return (
-        <SwcrItem color={statusColor} onClick={onClick}>
+        <SwcrItem backgroundColor={statusColor} textColor={textColor} onClick={onClick}>
             {data[itemKey]}
             {columnExpanded && <SwcrExpandedView data={data} />}
         </SwcrItem>
