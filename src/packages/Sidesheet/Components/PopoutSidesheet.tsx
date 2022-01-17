@@ -3,6 +3,8 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { ResizableSidesheet } from './ResizableSidesheet';
 import { getSidesheetContext } from '../context/sidesheetContext';
+import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
 
 export const PopoutSidesheet = (): JSX.Element | null => {
     const { SidesheetComponent } = useAtom(getSidesheetContext());
@@ -13,9 +15,11 @@ export const PopoutSidesheet = (): JSX.Element | null => {
     }
 
     return (
-        <Wrapper>
-            <ResizableSidesheet />
-        </Wrapper>
+        <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
+            <Wrapper>
+                <ResizableSidesheet />
+            </Wrapper>
+        </ErrorBoundary>
     );
 };
 
