@@ -2,14 +2,22 @@ import react from '@vitejs/plugin-react';
 import * as path from 'path';
 import copy from 'rollup-plugin-copy';
 import { defineConfig } from 'vite';
+
 export default defineConfig({
+    envDir: './env',
+    envPrefix: ['VITE_', 'CLIENT_', 'APP_', 'ENV_'],
     plugins: [react()],
 
     preview: {
         port: 3000,
     },
+    server: {
+        // https: true,
+    },
     define: {
-        'process.env': {},
+        'process.env': {
+            // environment: 'dev',
+        },
     },
     resolve: {
         alias: {
@@ -50,7 +58,7 @@ export default defineConfig({
                         {
                             src: './doc/dataView.md',
                             dest: 'dist/',
-                        },
+                        }, 
                     ],
                     hook: 'writeBundle',
                 }),

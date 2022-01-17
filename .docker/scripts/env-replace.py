@@ -1,30 +1,22 @@
-# 
-# Replaces #placeholder# values from the build step with values from the system environment
-# System variables are set by Docker/kubernetes when deployed
-# Filter: Only uses variables that start with 'pcs_' but removes this prefix when searching for replacement
-#
-
+import json
 import os
-import sys
-import glob
 
-print('Start - Replacing placeholder variables')
+print('Start - Creating client-config.json')
 
-keyVaultSecrets = []
-for key in os.environ:
-    if (key.startswith('pcs_')):
-        keyVaultSecrets.append((key.replace('pcs_',''),os.environ.get(key)))
+# Reading the .env file.
+with open('/usr/share/nginx/html/.env', 'r') as f:
+    content = f.readlines()
 
-# Get all files
-for filepath in glob.iglob('/usr/share/nginx/html/**/*.js', recursive=True):
-    print("Looking for stuff to replace in: {filepath}".format(**vars()))
-    s = ""
-    with open(filepath) as file:
-        s = file.read()
-    for placeholderKey,value in keyVaultSecrets:
-        print("Replacing: #{placeholderKey}# - {value}".format(**vars()))
-        s = s.replace('#' + placeholderKey + '#', value)
-    with open(filepath, "w") as file:
-        file.write(s)
+# Extracting environment keys.
+keys = [line.split('=')[0] for line in content if '=' in line]
 
-print('Done - Replacing placeholder variables')
+# Get Environmet Keys
+envKeys = []
+for key in keys:
+    envKeys.append((key, os.environ.get(key)))
+
+with open('/usr/share/nginx/html/assets/client-config.json', "w") as file:
+    file.write(json.dumps(dict(envKeys)))
+
+
+print('Done - Creating client-config.json')

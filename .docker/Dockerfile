@@ -1,6 +1,10 @@
 # build environment
 FROM node:16.10.0 as build
 
+# Env variables
+ARG environmentId
+RUN echo "Current environmentId $environmentId"
+
 # Copy App
 WORKDIR /app
 COPY . /app
@@ -13,7 +17,7 @@ RUN yarn build
 FROM nginx:stable-alpine
 
 ## Install
-# RUN apk add python3
+RUN apk add python3
 
 
 ## add permissions for nginx user
@@ -24,6 +28,9 @@ COPY .docker/nginx/ /etc/nginx/
 
 ## Copy Scripts
 COPY  .docker/scripts/ /etc/scripts/
+
+## Copy Env
+COPY .env /etc/scripts/
 
 ## Server setup
 EXPOSE 80

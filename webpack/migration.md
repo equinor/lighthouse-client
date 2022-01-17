@@ -29,7 +29,7 @@ export default defineConfig({
             '@equinor/lighthouse-components': path.resolve(__dirname, './packages/components/'),
             '@equinor/lighthouse-util': path.resolve(__dirname, './packages/util/'),
             '@equinor/lighthouse-typeGuard': path.resolve(__dirname, './packages/typeGuard/'),
-            '@equinor/lighthouse-conf': path.resolve(__dirname, './packages/configuration/'),
+            '@equinor/client': path.resolve(__dirname, './packages/configuration/'),
         },
     },
     build: {
@@ -106,7 +106,7 @@ With vite
             "@equinor/lighthouse-core": ["./packages/core"],
             "@equinor/lighthouse-hooks": ["./packages/hooks"],
             "@equinor/lighthouse-components": ["./packages/components"],
-            "@equinor/lighthouse-conf": ["./packages/configuration"],
+            "@equinor/client": ["./packages/configuration"],
             "@equinor/lighthouse-util": ["./packages/util"],
             "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"]
         }
@@ -145,7 +145,7 @@ With webpack:
             "@equinor/lighthouse-core": ["./packages/core"],
             "@equinor/lighthouse-hooks": ["./packages/hooks"],
             "@equinor/lighthouse-components": ["./packages/components"],
-            "@equinor/lighthouse-conf": ["./packages/configuration"],
+            "@equinor/client": ["./packages/configuration"],
             "@equinor/lighthouse-util": ["./packages/util"],
             "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"]
         }
