@@ -4,7 +4,7 @@ import os
 print('Start - Creating client-config.json')
 
 # Reading the .env file.
-with open('/usr/share/nginx/html/.env', 'r') as f:
+with open('/etc/scripts/.env', 'r') as f:
     content = f.readlines()
 
 # Extracting environment keys.
@@ -15,7 +15,7 @@ envKeys = []
 for key in keys:
     envKeys.append((key, os.environ.get(key)))
 
-with open('/usr/share/nginx/html/assets/client-config.json', "w") as file:
+with open('/usr/share/nginx/html/client-config.json', "w") as file:
     file.write(json.dumps(dict(envKeys)))
 
 
