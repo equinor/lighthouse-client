@@ -1,12 +1,12 @@
 import { Manifests } from '@equinor/app-builder';
 import { Accordion, Popover, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useClientContext } from '@equinor/portal-client';
+import { isProduction, useClientContext } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Apps } from '../../apps/apps';
-import { isProduction } from '../../Core/AppBuilder/Utils/isProduction';
+
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
 
