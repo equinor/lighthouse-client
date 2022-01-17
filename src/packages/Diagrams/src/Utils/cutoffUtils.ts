@@ -1,4 +1,4 @@
-import { interpolateInferno } from 'd3-scale-chromatic';
+import { interpolateBlues } from 'd3-scale-chromatic';
 import { DateTime } from 'luxon';
 import { WorkOrder } from '../../../../apps/Construction/mocData/mockData';
 import { interpolateColors } from './colorGenerator';
@@ -41,7 +41,7 @@ export const renameCats = (categories: string[]): string[] => {
     const renamed = [] as string[];
     categories.forEach((category) => {
         const date = DateTime.fromJSDate(new Date(category));
-        renamed.push(`w${date.weekNumber}`);
+        renamed.push(`${date.year}w${date.weekNumber}`);
     });
     return renamed;
 };
@@ -112,8 +112,8 @@ export const createSeries = ({
             // }
         });
     });
-    const tempTest = interpolateColors(Object.keys(seriesMap).length + 1, interpolateInferno, {
-        colorStart: 0.5,
+    const tempTest = interpolateColors(Object.keys(seriesMap).length + 1, interpolateBlues, {
+        colorStart: 0.2,
         colorEnd: 1,
         useEndAsStart: false,
     });
@@ -135,9 +135,13 @@ export const createSeries = ({
             type: 'bar',
             backgroundColor: tempTest[index],
         } as Series;
+
         newSeries.data = Object.values(sortedSeries);
 
         return newSeries;
+    });
+    woSeries.sort((a, b) => {
+        return a.label < b.label ? -1 : a.label > b.label ? 1 : 0;
     });
     const series = accumulateSeries(woSeries).concat(woSeries);
     return series;
