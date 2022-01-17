@@ -1,6 +1,7 @@
 import { Manifests } from '@equinor/app-builder';
 import { AuthenticationProvider, useAuthenticate } from '@equinor/authentication';
 import { tokens } from '@equinor/eds-tokens';
+import { ErrorBoundary } from '@equinor/ErrorBoundary';
 import { AppConfig } from '@equinor/lighthouse-conf';
 import { ClientContextProvider } from '@equinor/portal-client';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -12,6 +13,7 @@ import { ClientRoutes } from './components/Routes/Routes';
 import ProCoSysTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
 import { FactoryComponent } from './Core/DataFactory';
+import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -56,19 +58,21 @@ const Client: React.FC<ClientProps> = ({
     const queryClient = new QueryClient();
 
     return isAuthenticated ? (
-        <QueryClientProvider client={queryClient}>
-            <ConfirmationDialog />
-            <ClientContextProvider {...{ appConfig, authProvider }}>
-                <BrowserRouter>
-                    <GlobalStyle />
-                    <ProCoSysTopBar />
-                    <MainLayout>
-                        <ClientRoutes manifests={manifests} />
-                    </MainLayout>
-                </BrowserRouter>
-                <FactoryComponent />
-            </ClientContextProvider>
-        </QueryClientProvider>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+            <QueryClientProvider client={queryClient}>
+                <ConfirmationDialog />
+                <ClientContextProvider {...{ appConfig, authProvider }}>
+                    <BrowserRouter>
+                        <GlobalStyle />
+                        <ProCoSysTopBar />
+                        <MainLayout>
+                            <ClientRoutes manifests={manifests} />
+                        </MainLayout>
+                    </BrowserRouter>
+                    <FactoryComponent />
+                </ClientContextProvider>
+            </QueryClientProvider>
+        </ErrorBoundary>
     ) : (
         <>
             <GlobalStyle />
