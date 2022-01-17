@@ -1,16 +1,13 @@
 import { crypt } from './crypt';
+import { fetchClientConfig } from './envConfig';
 
 export async function fetchConfig(): Promise<AppConfig> {
     const config = await fetchClientConfig();
     console.log("clientConfig:", config)
-    const response = await fetch(getEnvironmentUri("func-ppo-web-client", config.CLIENT_ENV));
+    const response = await fetch(getEnvironmentUri(config.ENV_CONFIG_URI, config.CLIENT_ENV));
     return await response.json();
 }
 
-async function fetchClientConfig() {
-    const configResponse = await fetch("/client-config.json");
-    return await  await configResponse.json();
-}
 
 export interface Scope {
     fusion: string;
@@ -34,7 +31,7 @@ export interface AppConfig {
 }
 
 function getEnvironmentUri(baseUri: string, env: string): string {
-    return `https://${baseUri}-${env}.azurewebsites.net/api/clientConfig?environmentId=${crypt(
+    return `https://${baseUri}.azurewebsites.net/api/clientConfig?environmentId=${crypt(
         'environmentId',
         env
     )}`;

@@ -26,7 +26,7 @@ stages:
     - stage: build
       displayName: 'Docker - Build and Push'
       variables:
-          envName: 'dev'
+          envName: 'build'
           envRg: '${{ variables.envRgName }}'
           serviceConnection: '${{ variables.nonProdServiceConnection }}'
           containerRegistry: '${{ variables.containerRegistryName }}'
@@ -40,7 +40,6 @@ stages:
             parameters:
                 deploymentName: 'docker_build_push'
                 dependsOn: ''
-                environmentId: '${{ variables.envName }}'
                 envGroup: '${{ variables.envGroupName }}'
                 dockerfilePath: '${{ variables.dockerfilePath }}'
                 repository: '${{ variables.repositoryName }}'
@@ -54,6 +53,7 @@ stages:
       variables:
           envName: 'dev'
           envLabel: 'non-prod'
+          configURI: '$(functionAppName)'
           rgName: '${{ variables.envRgName }}'
           envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
           serviceConnection: '${{ variables.nonProdServiceConnection }}'
@@ -65,7 +65,8 @@ stages:
                 deploymentName: 'deploy_web'
                 dependsOn: ''
                 serviceConnection: '${{ variables.serviceConnection }}'
-                environmentId: '${{ variables.envName }}'
+                clientEnv: '${{ variables.envName }}'
+                configURI:  '${{ variables.configURI }}'
                 rgName: '${{variables.rgName}}'
                 envGroup: '${{ variables.envGroupName }}'
                 repository: '${{ variables.repositoryName }}'

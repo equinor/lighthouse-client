@@ -1,9 +1,5 @@
-# build environment
+# Build environment
 FROM node:16.10.0 as build
-
-# Env variables
-ARG environmentId
-RUN echo "Current environmentId $environmentId"
 
 # Copy App
 WORKDIR /app
@@ -13,14 +9,13 @@ COPY . /app
 RUN yarn install
 RUN yarn build 
 
-# production environment
+# Production environment
 FROM nginx:stable-alpine
 
 ## Install
 RUN apk add python3
 
-
-## add permissions for nginx user
+## Add permissions for nginx user
 COPY --from=build /app/dist /usr/share/nginx/html
 
 ## Cooy Nginx

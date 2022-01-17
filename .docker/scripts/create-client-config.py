@@ -9,7 +9,7 @@ with open('.env', 'r') as f:
 # Extracting environment keys.
 content = [line.strip().split('=') for line in content if '=' in line]
 
-with open('./src/client-config.json', "w") as file:
+with open('./public/client-config.json', "w") as file:
     file.write(json.dumps(dict(content)))
 
 

@@ -1,6 +1,6 @@
 import { baseClient, BaseClient } from '../../../../packages/httpClient/src/baseClient';
 import { useClientContext } from '../ClientContext/clientContext';
-import { Scope } from '../Service/appConf';
+import { Scope } from '../Service/appConfig';
 
 type Clients = {
     [key in keyof Scope]: BaseClient;

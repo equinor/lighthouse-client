@@ -1,5 +1,4 @@
 {
     "CLIENT_ENV": "dev",
-    "ENV_LOGIN": "https://login.microsoftonline.com/",
-    "ENV_CONFIG_URI": "func-ppo-web-client"
+    "ENV_CONFIG_URI": "func-ppo-web-client-dev"
 }

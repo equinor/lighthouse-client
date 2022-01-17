@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "vite --mode dev",
+    "start": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
     "create-config": "python ./.docker/scripts/create-client-config.py",
