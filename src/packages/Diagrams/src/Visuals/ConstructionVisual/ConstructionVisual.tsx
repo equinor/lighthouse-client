@@ -1,25 +1,18 @@
 import { useMemo, useRef, useState } from 'react';
 import { TimeDimension } from '../../Utils/createTime';
 import { ConstructionGraphProps } from './Types/constructionVisualOptions';
-import { Table, useColumns } from '@equinor/Table';
-import { createSeries, sortCategories, createUniqueCategories } from '../../Utils/cutoffUtils';
+import {
+    createSeries,
+    sortCategories,
+    createUniqueCategories,
+    renameCats,
+} from '../../Utils/cutoffUtils';
 import { WorkOrder } from '../../../../../apps/Construction/mocData/mockData';
 import { openSidesheet } from '../../../../Sidesheet/Functions';
-import {
-    Chart as ChartJS,
-    LinearScale,
-    CategoryScale,
-    BarElement,
-    PointElement,
-    LineElement,
-    Legend,
-    Tooltip,
-    ChartOptions,
-    ChartData,
-    registerables,
-} from 'chart.js';
+import { Chart as ChartJS, ChartOptions, ChartData, registerables } from 'chart.js';
 import { Chart as ReactChart, getDatasetAtEvent, getElementsAtEvent } from 'react-chartjs-2';
 import zoomPlugin from 'chartjs-plugin-zoom';
+import { SidesheetContent } from '../../Components';
 ChartJS.register(...registerables);
 
 export const chartoptions: ChartOptions = {
@@ -78,7 +71,7 @@ export function ConstructionVisual<T extends unknown>({
         [data, cats, accumulative]
     );
 
-    const categories = cats;
+    const categories = renameCats(cats);
 
     const tempData = useMemo(
         () => ({
@@ -87,7 +80,6 @@ export function ConstructionVisual<T extends unknown>({
         }),
         [categories, series]
     );
-
     const onClick = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const { current: chart } = chartRef;
 
@@ -130,14 +122,5 @@ export function ConstructionVisual<T extends unknown>({
             height={400}
             onClick={onClick}
         />
-    );
-}
-interface Props<T> {
-    data: T[];
-}
-function SidesheetContent<T>({ data }: Props<T>) {
-    const columns = useColumns(data[0] as any);
-    return (
-        <div style={{ overflowX: 'scroll' }}>{data && <Table options={{ data, columns }} />}</div>
     );
 }
