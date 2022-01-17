@@ -1,18 +1,74 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowLine } from './WorkflowLine';
+import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
+import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
+import { addContributor as postContributor } from '../../Api/addContributor';
+import { useMutation } from 'react-query';
+import { ScopeChangeRequestState } from '../../Types/scopeChangeRequest';
 
 interface WorkflowProps<T> {
+    requestId: string;
+    requestState: ScopeChangeRequestState;
+    currentStepId: string | undefined;
     steps: T[];
     statusFunc: (item: T) => 'Completed' | 'Inactive' | 'Active';
     stepName?: keyof T;
     spanDirection?: 'vertical' | 'horizontal';
 }
-export function Workflow<T>({ steps, statusFunc, stepName }: WorkflowProps<T>): JSX.Element {
+export function Workflow<T>({
+    steps,
+    requestState,
+    statusFunc,
+    stepName,
+    requestId,
+    currentStepId,
+}: WorkflowProps<T>): JSX.Element {
+    const [contributor, setContributor] = useState<{ value: string; label: string } | undefined>();
+
+    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+
+    const { mutateAsync, error, isLoading } = useMutation(createContributor, {
+        retry: 2,
+        retryDelay: 2,
+    });
+
+    async function createContributor() {
+        if (!contributor?.value || !currentStepId) return;
+        await postContributor(contributor.value, requestId, currentStepId, customApi);
+    }
+
+    useEffect(() => {
+        if (!contributor?.value) return;
+        const addContributor = async () => {
+            await mutateAsync();
+        };
+        addContributor();
+        setContributor(undefined);
+        /**
+         * APi call to add contributor then clear contributor
+         */
+    }, [contributor]);
+
     return (
         <div>
+            {requestState === 'Open' && (
+                <>
+                    <div style={{ fontSize: '12px' }}>Add contributors</div>
+                    <PCSPersonSearch person={contributor} setPerson={setContributor} />
+                    <div style={{ height: '30px' }}>
+                        {isLoading && <span>Loading...</span>}
+                        {/* {error && (
+                            <span style={{ fontSize: '14px', color: 'red' }}>
+                                Adding contributor failed
+                            </span>
+                        )} */}
+                    </div>
+                </>
+            )}
+
             {steps.map((x, id) => {
                 return (
                     <WorkflowStepContainer key={id}>

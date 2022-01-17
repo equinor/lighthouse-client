@@ -13,4 +13,6 @@ export interface FieldConfig<T> {
     editable?: boolean;
     /** Takes in the value of the field and lets you write your own validation function */
     validationFunction?: (value: T | undefined) => boolean;
+    /** Placeholder text */
+    placeholderText?: string;
 }
