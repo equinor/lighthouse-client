@@ -11,6 +11,7 @@ resources:
           type: github
           name: equinor/lighthouse-infra
           endpoint: 'equinor'
+          ref: infra/scope
 
 # Global variables for the pipeline
 variables:
@@ -39,7 +40,6 @@ stages:
             parameters:
                 deploymentName: 'docker_build_push'
                 dependsOn: ''
-                env: '${{ variables.envName }}'
                 envGroup: '${{ variables.envGroupName }}'
                 dockerfilePath: '${{ variables.dockerfilePath }}'
                 repository: '${{ variables.repositoryName }}'
@@ -49,10 +49,11 @@ stages:
     - stage: dev
       displayName: 'Deploy to dev'
       dependsOn: 'build'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+      condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/dev'))
       variables:
           envName: 'dev'
           envLabel: 'non-prod'
+          configURI: '$(functionAppName)'
           rgName: '${{ variables.envRgName }}'
           envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
           serviceConnection: '${{ variables.nonProdServiceConnection }}'
@@ -64,11 +65,10 @@ stages:
                 deploymentName: 'deploy_web'
                 dependsOn: ''
                 serviceConnection: '${{ variables.serviceConnection }}'
-                env: '${{ variables.envName }}'
+                clientEnv: '${{ variables.envName }}'
+                configURI:  '${{ variables.configURI }}'
                 rgName: '${{variables.rgName}}'
                 envGroup: '${{ variables.envGroupName }}'
                 repository: '${{ variables.repositoryName }}'
                 containerRegistry: '${{ variables.containerRegistry }}'
                 appName: '$(appName)'
-
-

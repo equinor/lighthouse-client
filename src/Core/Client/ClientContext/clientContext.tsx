@@ -1,5 +1,5 @@
 import { AuthenticationProvider } from '@equinor/authentication';
-import { AppConfig } from '@equinor/lighthouse-conf';
+import { AppConfig } from '@equinor/portal-client';
 import { createContext, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 

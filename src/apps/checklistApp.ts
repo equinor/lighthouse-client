@@ -58,7 +58,7 @@ const commPkgKeys: (keyof Checklist)[] = [
 ];
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
     const checklist = appApi.createWorkSpace<Checklist>({});
 
     checklist.registerDataSource(async () => {

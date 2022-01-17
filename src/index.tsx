@@ -1,21 +1,22 @@
 import { Configuration } from '@azure/msal-browser';
-import { clientApiBuilder } from '@equinor/app-builder';
+import { appsProvider, clientApiBuilder } from '@equinor/app-builder';
 import { authenticationProvider } from '@equinor/authentication';
-import { fetchConfig } from '@equinor/lighthouse-conf';
+import { createDataFactory } from '@equinor/DataFactory';
+import { Icon as EdsIcon } from '@equinor/eds-core-react';
+import * as icons from '@equinor/eds-icons';
+import { fetchConfig } from '@equinor/portal-client';
+import { openSidesheet } from '@equinor/sidesheet';
 import { render } from 'react-dom';
 import Client from './AppClient';
-import { appGroups, apps } from './apps/apps';
-import { createDataFactory } from '@equinor/DataFactory';
-import { openSidesheet } from '@equinor/sidesheet';
-import * as icons from '@equinor/eds-icons';
-import { Icon as EdsIcon } from '@equinor/eds-core-react';
+import { getAppGroups, getApps } from './apps/apps';
+
 
 EdsIcon.add({ ...icons });
 
 fetchConfig().then((appConfig) => {
-    const clientId = appConfig.clientId;
-    const tenant = appConfig.tenant;
-    const authority = `https://login.microsoftonline.com/${tenant}`;
+    const clientId = appConfig.settings.clientId;
+    const tenantId = appConfig.settings.tenantId;
+    const authority = `https://login.microsoftonline.com/${tenantId}`;
     const authConfig: Configuration = {
         auth: {
             authority: authority,
@@ -29,6 +30,8 @@ fetchConfig().then((appConfig) => {
             storeAuthStateInCookie: true,
         },
     };
+
+    const { apps, appGroups } = appsProvider(getApps, getAppGroups);
 
     const authProvider = authenticationProvider(authConfig);
     if (authProvider && !(window !== window.parent && !window.opener)) {
