@@ -16,4 +16,12 @@ export interface Field<Type> {
     order: number;
     inputType: InputType;
     setValue: Setter<Type>;
+    placeholderText: string;
+}
+
+export interface CustomField {
+    title: string;
+    order: number;
+    Component: React.FC<any>;
+    props: any;
 }

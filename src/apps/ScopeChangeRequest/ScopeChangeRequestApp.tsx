@@ -7,8 +7,13 @@ import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
+//[appApi.appConfig.tenant]
+
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
+    const api = baseClient(appApi.authProvider, [
+        'api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default',
+    ]);
+
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
         CustomSidesheet: ScopeChangeSideSheet,
     });
@@ -95,9 +100,7 @@ export function setup(appApi: ClientApi): void {
             { key: 'category', title: 'Change category' },
             { key: 'origin', title: 'Change origin' },
             { key: 'createdAtUtc', title: 'Created at' },
-            { key: 'createdById', title: 'Created by' },
             { key: 'modifiedAtUtc', title: 'Last updated' },
-            { key: 'modifiedById', title: 'Updated by' },
             { key: 'description', title: 'Description' },
             { key: 'state', title: 'Status' },
             { key: 'guesstimateHours', title: 'Guesstimate' },

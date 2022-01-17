@@ -3,6 +3,7 @@ import { GeneratedForm, useForm } from '@equinor/Form';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { patchScopeChange } from '../../Api';
+import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -14,9 +15,10 @@ export const ScopeChangeRequestEditForm = ({
     cancel,
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
     const formData = useForm(scopeChangeRequestSchema, request);
+    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
 
     const onSubmit = async () => {
-        patchScopeChange(formData.data);
+        patchScopeChange(formData.data, customApi);
     };
 
     const SaveButton = () => {

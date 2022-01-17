@@ -7,6 +7,8 @@ import { patchWorkflowStep } from '../../Api/patchWorkflowStep';
 import { Field } from './Components/Field';
 import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
+import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
+import { patchScopeChange } from '../../Api';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -20,41 +22,62 @@ export const RequestDetailView = ({
     refetch,
 }: RequestDetailViewProps): JSX.Element => {
     const [comment, setComment] = useState<string | undefined>(undefined);
-
-    const onInitiate = () => {
-        const payLoad = {
+    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const onInitiate = async () => {
+        const payload = {
             ...request,
             setAsOpen: true,
         };
-        const requestOptions = {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payLoad),
-        };
-        fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}`,
-            requestOptions
-        ).then(() => refetch());
+
+        await patchScopeChange(payload, customApi);
+        refetch();
     };
 
+    interface LogEntry {
+        value: string;
+        date: string;
+        name: string;
+    }
+
+    const logValues: LogEntry[] = useMemo(() => {
+        const logArray: LogEntry[] = [];
+
+        if (!request.workflowSteps) {
+            return [];
+        }
+        request.workflowSteps.map((x) => {
+            x.criterias.map((x) => {
+                x.signedComment &&
+                    logArray.push({
+                        value: x.signedComment,
+                        date: x.signedAtUtc,
+                        name: `${x.signedBy.firstName} ${x.signedBy.lastName}`,
+                    });
+            });
+        });
+        return logArray;
+    }, [request]);
+
     const activeCriteriaId = useMemo(() => {
-        if (request.state === 'Open') {
+        if (
+            request.state === 'Open' &&
+            request.currentWorkflowStep &&
+            request.currentWorkflowStep.criterias.length > 0
+        ) {
             return request.currentWorkflowStep.criterias.find((x) => x.id)?.id;
         }
     }, [request]);
 
-    // const logValues = useMemo(() => {
-    //     const logArray: string[] = [];
-
-    //     request.workflowSteps.map((x) => {
-    //         x.criterias.map((x) => {x.})
-    //     })
-    // });
-
     const onSignStep = () => {
-        console.log(request);
-        if (activeCriteriaId) {
-            patchWorkflowStep(request.id, activeCriteriaId, comment).then(() => refetch());
+        if (activeCriteriaId && request.currentWorkflowStep) {
+            patchWorkflowStep(
+                request.id,
+                request.currentWorkflowStep.id,
+                activeCriteriaId,
+                customApi,
+                comment
+            ).then(() => refetch());
+            setComment('');
         }
     };
 
@@ -70,7 +93,7 @@ export const RequestDetailView = ({
     };
 
     return (
-        <div style={{ height: '100vh' }}>
+        <div>
             <DetailViewContainer>
                 <Field
                     label={'Title'}
@@ -112,11 +135,28 @@ export const RequestDetailView = ({
                     customValue={{ fontSize: '16px' }}
                     value={request.description}
                 />
+                <SectionRow>
+                    <Field
+                        label={'Guesstimate mhrs'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.guesstimateHours}
+                    />
+                    <Field
+                        label={'Guesstimate description'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.guesstimateDescription}
+                    />
+                </SectionRow>
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label={'Workflow'}
                     value={
                         <Workflow
+                            requestState={request.state}
+                            requestId={request.id}
+                            currentStepId={request.currentWorkflowStep?.id}
                             stepName={'name'}
                             steps={request.workflowSteps}
                             statusFunc={statusFunc}
@@ -124,29 +164,47 @@ export const RequestDetailView = ({
                     }
                 />
 
-                <Field customLabel={{ fontSize: '18px', bold: true }} label="Log" value={''} />
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label="Log"
+                    value={
+                        <div>
+                            {logValues.map((x) => {
+                                return (
+                                    <LogMessage key={x.value + x.date}>
+                                        <span style={{ fontSize: '10px' }}>
+                                            {new Date(x.date).toLocaleDateString()} by {x.name}
+                                        </span>
+                                        <span style={{ fontSize: '16px' }}>
+                                            &quot;{x.value}&quot;
+                                        </span>
+                                    </LogMessage>
+                                );
+                            })}
+                        </div>
+                    }
+                />
             </DetailViewContainer>
             {request.state !== 'Closed' && (
                 <RequestActionsContainer>
                     <Field
                         label="Comment"
                         value={
-                            <div style={{ width: '50vh' }}>
-                                <TextField
-                                    id={'Comment'}
-                                    multiline
-                                    value={comment}
-                                    onChange={(e) => {
-                                        setComment(e.target.value);
-                                    }}
-                                />
-                            </div>
+                            <TextField
+                                style={{ width: '100vh' }}
+                                id={'Comment'}
+                                multiline
+                                value={comment}
+                                onChange={(e) => {
+                                    setComment(e.target.value);
+                                }}
+                            />
                         }
                     />
                     <ButtonContainer>
                         {request.state === 'Draft' && (
                             <>
-                                <Button onClick={setEditMode}>Edit</Button>
+                                {/* <Button onClick={setEditMode}>Edit</Button> */}
                                 <HorizontalDivider />
                                 <Button onClick={onInitiate} variant="outlined">
                                     Initiate request
@@ -155,10 +213,15 @@ export const RequestDetailView = ({
                         )}
                         {request.state === 'Open' && (
                             <>
-                                <Button variant="outlined" color="danger">
-                                    Void Request
+                                {/* Temporarily feature flagged */}
+                                <span>
+                                    {/* <Button variant="outlined" color="danger">
+                                            Void Request
+                                        </Button> */}
+                                </span>
+                                <Button disabled={!activeCriteriaId} onClick={onSignStep}>
+                                    Sign
                                 </Button>
-                                <Button onClick={onSignStep}>Sign</Button>
                             </>
                         )}
                     </ButtonContainer>
@@ -168,10 +231,13 @@ export const RequestDetailView = ({
     );
 };
 
+const ActionSelectorHeight = '180px';
+
 const DetailViewContainer = styled.div`
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: calc(87vh - ${ActionSelectorHeight});
+
     overflow: scroll;
 `;
 
@@ -190,7 +256,19 @@ const RequestActionsContainer = styled.div`
     display: flex;
     background-color: white;
     width: 650px;
+    height: ${ActionSelectorHeight};
     flex-direction: column;
     position: fixed;
     bottom: 0px;
 `;
+
+const LogMessage = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 1em 0em;
+`;
+
+/**
+ //TODO:
+ * Do some CSS magic, Calculate height of DetailViewContainer and subtract RequestActionsContainer to make overflow work properly
+ */
