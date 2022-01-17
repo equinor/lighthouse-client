@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import { WoMapCount } from '..';
 import { tokens } from '@equinor/eds-tokens';
+import { useCallback } from 'react';
+import { openSidesheet } from '../../../../../Sidesheet/Functions';
+import { SidesheetContent } from '../../../Components';
+
 enum CircleColor {
     WARNING,
     SUCCESS,
@@ -30,66 +34,73 @@ const WoNumbers = styled.div`
     align-items: center;
     gap: 0.2em;
 `;
-type WoNumbersDisplayProps = {
-    filtered: WoMapCount;
+type WoNumbersDisplayProps<T> = {
+    filtered: WoMapCount<T>;
     discipline: string;
     keysOfFiltered: string[];
 };
-export const WoNumbersDisplay = ({
+
+export const WoNumbersDisplay = <T extends unknown>({
     filtered,
     discipline,
     keysOfFiltered,
-}: WoNumbersDisplayProps) => {
+}: WoNumbersDisplayProps<T>) => {
+    const onClick = useCallback(
+        (item: T[]) => {
+            openSidesheet(SidesheetContent, { data: item });
+        },
+        [openSidesheet]
+    );
     return (
         <>
             {Object.values(filtered[discipline]).map((item, index) => {
                 switch (keysOfFiltered[index]) {
                     case 'one':
                         return (
-                            <WoNumbers key={index}>
-                                {item === 0 ? (
+                            <WoNumbers key={index} onClick={() => onClick(item.workorder)}>
+                                {item.count === 0 ? (
                                     <Circle circleColor={CircleColor.SUCCESS} />
                                 ) : (
                                     <Triangle />
                                 )}
-                                {item}
+                                {item.count}
                             </WoNumbers>
                         );
                     case 'two':
                         return (
-                            <WoNumbers key={index}>
-                                {item === 0 ? (
+                            <WoNumbers key={index} onClick={() => onClick(item.workorder)}>
+                                {item.count === 0 ? (
                                     <Circle circleColor={CircleColor.SUCCESS} />
-                                ) : item >= 5 ? (
+                                ) : item.count >= 5 ? (
                                     <Triangle />
                                 ) : (
                                     <Circle circleColor={CircleColor.WARNING} />
                                 )}
-                                {item}
+                                {item.count}
                             </WoNumbers>
                         );
                     case 'three':
                         return (
-                            <WoNumbers key={index}>
-                                {item === 0 ? (
+                            <WoNumbers key={index} onClick={() => onClick(item.workorder)}>
+                                {item.count === 0 ? (
                                     <Circle circleColor={CircleColor.SUCCESS} />
-                                ) : item >= 10 ? (
+                                ) : item.count >= 10 ? (
                                     <Triangle />
                                 ) : (
                                     <Circle circleColor={CircleColor.WARNING} />
                                 )}
-                                {item}
+                                {item.count}
                             </WoNumbers>
                         );
                     case 'four':
                         return (
-                            <WoNumbers key={index}>
-                                {item < 50 ? (
+                            <WoNumbers key={index} onClick={() => onClick(item.workorder)}>
+                                {item.count < 50 ? (
                                     <Circle circleColor={CircleColor.SUCCESS} />
                                 ) : (
                                     <Triangle />
                                 )}
-                                {item}
+                                {item.count}
                             </WoNumbers>
                         );
                     default:
