@@ -3,15 +3,12 @@ import { WorkOrder } from '../../../../../apps/Construction/mocData/mockData';
 import { Fragment } from 'react';
 import { createWoStatusMap, filterWoMap } from './utils';
 import { WoNumbersDisplay } from './components/WoNumbers';
-<<<<<<< HEAD
 
 const Container = styled.div`
     height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
 `;
-=======
->>>>>>> 88a053c13d1e06cc33b70b46c088e22a39fb2c4d
 const Main = styled.div`
     width: 100%;
     padding-bottom: 2em;

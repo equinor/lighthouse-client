@@ -32,7 +32,9 @@ const Triangle = styled.div`
 const WoNumbers = styled.div`
     display: flex;
     align-items: center;
+    width: fit-content;
     gap: 0.2em;
+    cursor: pointer;
 `;
 type WoNumbersDisplayProps<T> = {
     filtered: WoMapCount<T>;
