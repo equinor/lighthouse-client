@@ -5,6 +5,9 @@ import { Form } from '../Types/form';
 import { Fields, Field } from '../Types/field';
 
 const validateField = <TValue>(field: FieldConfig<TValue>, value?: TValue): boolean => {
+    if (field.optional) {
+        return true;
+    }
     if (field.validationFunction) {
         return field.validationFunction(value);
     }
@@ -53,7 +56,7 @@ export const useForm = <T>(schema: Schema<T>, initialState?: Partial<T>): Form<T
             }
 
             const isDirty = data[fieldKey] !== originalState[fieldKey];
-            const isValid = data[fieldKey] ? validateField(fieldConfig, data[fieldKey]) : undefined;
+            const isValid = validateField(fieldConfig, data[fieldKey]);
             newFields[fieldKey] = {
                 title: fieldConfig.title,
                 optional: fieldConfig.optional ?? false,
@@ -64,6 +67,7 @@ export const useForm = <T>(schema: Schema<T>, initialState?: Partial<T>): Form<T
                 setValue: (value) => mutateField(fieldKey, value),
                 value: data[fieldKey],
                 isValid: isValid ?? false,
+                placeholderText: fieldConfig.placeholderText || '',
             };
         }
         return newFields;

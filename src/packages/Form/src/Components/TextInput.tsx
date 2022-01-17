@@ -13,8 +13,8 @@ export function TextInput<T>({ field, editMode }: TextInputProps<T>): JSX.Elemen
                 <TextField
                     id={field.toString()}
                     disabled={editMode ? !field?.editable : false}
-                    // defaultValue={field?.value}
                     value={field?.value}
+                    placeholder={field.placeholderText}
                     onChange={(e) => {
                         if (!e.target.value || e.target.value.length < 1) {
                             field.setValue(undefined as unknown as T);
