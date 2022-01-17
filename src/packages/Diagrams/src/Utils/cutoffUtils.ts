@@ -135,7 +135,6 @@ export const createSeries = ({
             type: 'bar',
             backgroundColor: tempTest[index],
         } as Series;
-
         newSeries.data = Object.values(sortedSeries);
 
         return newSeries;
