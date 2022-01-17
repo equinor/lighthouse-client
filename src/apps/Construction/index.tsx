@@ -3,10 +3,8 @@ import { AnalyticsOptions } from '@equinor/Diagrams';
 import { baseClient } from '../../../packages/httpClient/src';
 import { createPageViewer } from '../../Core/PageViewer/Api/pageViewerApi';
 import { CriticalWoTable, weekDiff } from '../../packages/Diagrams/src/Visuals/CriticalWoTable';
-import { HorizontalBarChartOptions } from '../../packages/Diagrams/src/Visuals/HorizontalBarVisual';
-import { tableColumns } from './DetailsPage/components/temp/old';
 import { cols } from './DetailsPage/tableConfig';
-import { Job, mockData, WorkOrder, WorkOrderApi } from './mocData/mockData';
+import { WorkOrder } from './mocData/mockData';
 import { mock } from './mocData/newMockData';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
@@ -99,12 +97,11 @@ export function setup(appApi: ClientApi): void {
     workPreparation.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
         const project = 'L.O532C.002';
-        const response: WorkOrderApi = await api
-            .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
-            .then((res) => res.json());
-
-        const blah: WorkOrder[] = response.items.flatMap((j) => j);
-        return blah;
+        // const response: WorkOrderApi = await api
+        //     .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
+        //     .then((res) => res.json())
+        // const blah: WorkOrder[] = response.items.flatMap((j) => j);
+        // return blah;
         // return JSON.parse(await response.text());
         //  const data = newMock().filter((j) => j.jobStatus.startsWith('E'));
         return mock();
