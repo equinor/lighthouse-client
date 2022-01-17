@@ -30,6 +30,7 @@
             "@equinor/worker": ["./src/packages/WebWorkers"],
             "@equinor/filter": ["./src/packages/Filter"],
             "@equinor/DataFactory": ["./src/Core/DataFactory"],
+            "@equinor/ErrorBoundary": ["./src/Core/ErrorBoundary"],
             "@equinor/StatusBar": ["./src/packages/2StatusBar"],
             "@equinor/Diagrams": ["./src/packages/Diagrams"],
             "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],

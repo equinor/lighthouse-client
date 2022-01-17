@@ -1,9 +1,15 @@
+import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import ErrorFallback from '../ErrorBoundary/Components/ErrorFallback';
 import { PageViewer } from './Components/PageViewer/PageViewer';
 import { usePageViewer } from './Hooks/usePageViewer';
 
 export const PageView = (): JSX.Element => {
     const viewState = usePageViewer();
-    return <PageViewer {...viewState} />;
+    return (
+        <ErrorBoundary FallbackComponent={ErrorFallback} routeName={viewState.title}>
+            <PageViewer {...viewState} />;
+        </ErrorBoundary>
+    );
 };
 
 export default PageView;
