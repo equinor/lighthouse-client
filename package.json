@@ -29,7 +29,7 @@
     "@equinor/eds-icons": "^0.10.0",
     "@equinor/eds-tokens": "^0.7.0",
     "@microsoft/microsoft-graph-types": "^2.7.0",
-    "apexcharts": "^3.29.0",
+    "apexcharts": "^3.33.0",
     "chart.js": "^3.7.0",
     "chartjs-plugin-zoom": "^1.2.0",
     "comlink": "^4.3.1",
