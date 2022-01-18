@@ -59,7 +59,7 @@ export function setup(appApi: ClientApi): void {
     //     component: (scope: any) => <div>Create SWCR {scope.test}</div>,
     // });
 
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
     const commPkg = appApi.createWorkSpace<Loop>({});
 
     commPkg.registerDataSource(async () => {
