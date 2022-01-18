@@ -90,12 +90,11 @@ export function setup(appApi: ClientApi): void {
     workPreparation.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';
         const project = 'L.O532C.002';
-        const response: WorkOrderApi = await api
-            .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
-            .then((res) => res.json());
-
-        const blah: WorkOrder[] = response.items.flatMap((j) => j);
-        return blah;
+        // const response: WorkOrderApi = await api
+        //     .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
+        //     .then((res) => res.json())
+        // const blah: WorkOrder[] = response.items.flatMap((j) => j);
+        // return blah;
         // return JSON.parse(await response.text());
         //  const data = newMock().filter((j) => j.jobStatus.startsWith('E'));
         return mock();
@@ -122,9 +121,7 @@ export function setup(appApi: ClientApi): void {
                     // Find all the first filtered WOs that are due in one week or less
 
                     const secondFiltered = firstFiltered.filter(
-                        (wo) =>
-                            weekDiff(new Date(wo.plannedStartAtDate)).days <= 7 &&
-                            weekDiff(new Date(wo.plannedStartAtDate)).days > 0
+                        (wo) => weekDiff(new Date(wo.plannedStartAtDate)).days <= 7
                     );
 
                     return secondFiltered.length.toString();

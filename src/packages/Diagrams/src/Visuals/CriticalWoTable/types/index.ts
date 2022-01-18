@@ -1,8 +1,15 @@
-export type WoStatusMap = Record<string, { status: string; plannedFinishDate: string }[]>;
-export type Weeks = {
-    one: number;
-    two: number;
-    three: number;
-    four: number;
+export type WoStatusMap<T> = Record<
+    string,
+    { status: string; plannedStartAtDate: string; workorder: T }[]
+>;
+export type WeekCount<T> = {
+    count: number;
+    workorder: T[];
 };
-export type WoMapCount = Record<string, Weeks>;
+export type Weeks<T> = {
+    one: WeekCount<T>;
+    two: WeekCount<T>;
+    three: WeekCount<T>;
+    four: WeekCount<T>;
+};
+export type WoMapCount<T> = Record<string, Weeks<T>>;
