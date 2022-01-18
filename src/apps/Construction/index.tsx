@@ -1,7 +1,6 @@
 import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions, CriticalWoTable, SidesheetContent, weekDiff } from '@equinor/Diagrams';
 import { baseClient } from '../../../packages/httpClient/src';
-import { createPageViewer } from '../../Core/PageViewer/Api/pageViewerApi';
 import { openSidesheet } from '@equinor/sidesheet';
 import { cols } from './DetailsPage/tableConfig';
 import { WorkOrder } from './mocData/mockData';
@@ -85,14 +84,8 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
 };
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [
-        'api://460842ad-e295-4449-a96a-362b1e46ce45/.default',
-    ]);
-    const construction = createPageViewer({
-        viewerId: appApi.shortName,
-        title: appApi.title,
-        openSidesheet: () => {},
-    });
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
+    const construction = appApi.createPageViewer();
 
     /** 
     Remove SWCR analytics, since its not relevant for Construction

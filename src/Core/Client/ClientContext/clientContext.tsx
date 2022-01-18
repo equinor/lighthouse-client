@@ -1,7 +1,7 @@
 import { AuthenticationProvider } from '@equinor/authentication';
-import { AppConfig } from '@equinor/lighthouse-conf';
 import { createContext, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
+import { AppConfig } from '../Types/Settings';
 
 interface ClientState {
     appsPanelActive: boolean;
