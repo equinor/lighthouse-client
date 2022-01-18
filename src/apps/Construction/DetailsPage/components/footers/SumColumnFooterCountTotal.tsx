@@ -9,7 +9,7 @@ export const SumColumnFooterCountTotal = ({
     const total = useMemo(
         () =>
             data.data.reduce((sum, row) => {
-                return sum + Number(row[fieldKey]);
+                return sum + Number(row[fieldKey] || 0);
             }, 0),
         [data.data, fieldKey]
     );
