@@ -11,7 +11,7 @@ const Page = styled.div`
     background: rgb(30,45,57);
     color: #ffffff;
     object-fit: fill;
-    background-image: url("./images/light-house.png");
+    background-image: url("/images/light-house.png");
     background-repeat: no-repeat;
     background-size: cover;
     background-position-x: center;
@@ -70,7 +70,7 @@ const LoadingPage = () => {
         <Page>
             <Wrapper>
                 <LogoIcon width={200} height={140} />
-                <H1>Johan Casberg</H1>
+                <H1>Johan Castberg</H1>
                 <H3>Project Lighthouse Portal</H3>
             </Wrapper>
         </Page>
