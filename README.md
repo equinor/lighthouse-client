@@ -69,11 +69,9 @@ https://reactjs.org/
 https://jestjs.io/
 Testing Framework
 
-
 ### TS-JEST
 https://github.com/kulshekhar/ts-jest
 For running tests with Typescript and Typechecking
-
 
 
 # (Build) Tools for the job
