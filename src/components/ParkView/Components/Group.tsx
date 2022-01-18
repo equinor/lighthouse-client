@@ -5,13 +5,16 @@ import { DataSet } from '../Models/data';
 import { Items } from './Items';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { useRefresh } from '../hooks/useRefresh';
+import { FieldSettings } from '../Models/FieldSettings';
 
 interface GroupProps<T> {
     group: DataSet<T>;
     columnExpanded: boolean;
+    fieldSettings?: FieldSettings<T>;
 }
+const defaultSortFunction = (a: string, b: string) => a.localeCompare(b);
 
-export function Group<T>({ group, columnExpanded }: GroupProps<T>): JSX.Element {
+export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>): JSX.Element {
     const refresh = useRefresh();
     const { customView } = useParkViewContext<T>();
 
@@ -21,6 +24,8 @@ export function Group<T>({ group, columnExpanded }: GroupProps<T>): JSX.Element 
     };
 
     const GroupView = customView?.customGroupView || null;
+
+    const subGroupKeys = Object.keys(group.subGroups) || [];
 
     return (
         <SubGroup>
@@ -48,9 +53,18 @@ export function Group<T>({ group, columnExpanded }: GroupProps<T>): JSX.Element 
                     <Items data={group.items} columnExpanded={columnExpanded} />
                 ) : (
                     <>
-                        {Object.values(group.subGroups).map((x) => (
-                            <Group key={x.value} group={x} columnExpanded={columnExpanded} />
-                        ))}
+                        {subGroupKeys
+                            .sort(
+                                fieldSettings?.[group.subGroups?.[0]?.groupKey]?.getSort ||
+                                    defaultSortFunction
+                            )
+                            .map((groupKey) => (
+                                <Group
+                                    key={group.subGroups[groupKey].value}
+                                    group={group.subGroups[groupKey]}
+                                    columnExpanded={columnExpanded}
+                                />
+                            ))}
                     </>
                 ))}
         </SubGroup>
