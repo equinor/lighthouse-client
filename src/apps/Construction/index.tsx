@@ -46,7 +46,7 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
                         wo.disciplineDescription === labelClicked && tableData.push(wo);
                     });
 
-                    openSidesheet(SidesheetContent, { data: tableData });
+                    tableData.length > 0 && openSidesheet(SidesheetContent, { data: tableData });
                 },
             },
         },
