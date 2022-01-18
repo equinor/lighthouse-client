@@ -163,6 +163,33 @@ export const RequestDetailView = ({
                         />
                     }
                 />
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label="Attachments"
+                    value={
+                        <div>
+                            {request.attachments &&
+                                request.attachments.map((x) => {
+                                    return (
+                                        <a
+                                            href={`https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}/attachments/${x.id}`}
+                                            download
+                                            style={{
+                                                display: 'flex',
+                                                color: `${tokens.colors.interactive.primary__resting.rgba}`,
+                                                cursor: 'pointer',
+                                                textDecorationLine: 'underline',
+                                                padding: '8px 0px',
+                                            }}
+                                            key={x.id}
+                                        >
+                                            {x.fileName}
+                                        </a>
+                                    );
+                                })}
+                        </div>
+                    }
+                />
 
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
@@ -213,7 +240,6 @@ export const RequestDetailView = ({
                         )}
                         {request.state === 'Open' && (
                             <>
-                                {/* Temporarily feature flagged */}
                                 <span>
                                     {/* <Button variant="outlined" color="danger">
                                             Void Request

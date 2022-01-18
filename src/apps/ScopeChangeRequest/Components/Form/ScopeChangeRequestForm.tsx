@@ -18,6 +18,10 @@ import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clear
 import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
 import { StidSelector } from '../SearchableDropdown/stidSelector';
 
+import { StidDocument } from '../StidDocument';
+import { Document } from '../../Api/Search/STID/Types/Document';
+import { uploadAttachment } from '../../Api/ScopeChange/attachment';
+
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
     setHasUnsavedChanges: (value: boolean) => void;
@@ -37,15 +41,18 @@ export const ScopeChangeRequestForm = ({
         phase: 'IC',
     });
     const [origin, setOrigin] = useState<TypedSelectOption | undefined>();
-    const [stidDocuments, setStidDocuments] = useState<TypedSelectOption[]>([]);
-    const removeDocument = (value: string) =>
-        setStidDocuments((prev) => prev.filter((x) => x.value !== value));
+    const [stidDocuments, setStidDocuments] = useState<Document[]>([]);
+    const [attachments, setAttachments] = useState<Attachment[]>([]);
+    const removeDocument = (docNo: string) =>
+        setStidDocuments((prev) => prev.filter((x) => x.docNo !== docNo));
+
     const handleRedirect = (docNo: string) => {
         window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
     };
 
-    const appendDocuments = (documents: TypedSelectOption[]) =>
+    const appendDocuments = (documents: Document[]) =>
         setStidDocuments((prev) => [...prev, ...documents]);
+
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
     const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
@@ -68,6 +75,10 @@ export const ScopeChangeRequestForm = ({
             customApi
         );
         if (scID) {
+            attachments.forEach(async (attachment) => {
+                await uploadAttachment(scID, attachment, customApi);
+            });
+
             redirect(scID);
         }
     };
@@ -149,16 +160,19 @@ export const ScopeChangeRequestForm = ({
                     },
                 ]}
             >
-                <StidSelector appendDocuments={appendDocuments} />
+                <Inline>
+                    <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Documents</div>
+                    <StidSelector appendDocuments={appendDocuments} />
+                </Inline>
                 {stidDocuments &&
                     stidDocuments.map((x) => {
                         return (
-                            <Chip key={x.value}>
-                                {x.label}
-                                <span>
+                            <Chip key={x.docNo}>
+                                <StidDocument document={x} />
+                                <Inline>
                                     <Icon
                                         onClick={() => {
-                                            handleRedirect(x.value);
+                                            handleRedirect(x.docNo);
                                         }}
                                         color={tokens.colors.interactive.primary__resting.rgba}
                                         name="external_link"
@@ -167,15 +181,19 @@ export const ScopeChangeRequestForm = ({
                                     <Icon
                                         color={tokens.colors.interactive.primary__resting.rgba}
                                         onClick={() => {
-                                            removeDocument(x.value);
+                                            removeDocument(x.docNo);
                                         }}
                                         name="clear"
                                     />
-                                </span>
+                                </Inline>
                             </Chip>
                         );
                     })}
-                {/* <Field label="Attachments" value={<Upload />} /> */}
+
+                {/* <Field
+                    label="Attachments"
+                    value={<Upload attachments={attachments} setAttachments={setAttachments} />}
+                /> */}
             </GeneratedForm>
             {error && <p> Something went wrong, please check your connection and try again</p>}
         </FormContainer>
@@ -188,6 +206,18 @@ const TitleHeader = styled.div`
     justify-content: space-between;
     align-items: center;
 `;
+
+const LineBreaks = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const Inline = styled.span`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
 const Chip = styled.div`
     text-align: center;
     display: flex;

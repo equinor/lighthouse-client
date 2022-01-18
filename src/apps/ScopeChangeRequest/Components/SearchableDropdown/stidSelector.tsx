@@ -8,9 +8,10 @@ import { searchStid } from '../../Api/Search/STID/searchStid';
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import styled from 'styled-components';
+import { Document } from '../../Api/Search/STID/Types/Document';
 
 interface StidSelectorProps {
-    appendDocuments: (documents: TypedSelectOption[]) => void;
+    appendDocuments: (documents: Document[]) => void;
 }
 
 export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Element => {
@@ -38,12 +39,15 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
     return (
         <Fragment>
             <Button
+                variant="ghost_icon"
                 onClick={() => {
                     setIsOpen((prev) => !prev);
                 }}
             >
-                Add document
+                <Icon name="add" />
+                <div>Add document</div>
             </Button>
+
             {isOpen && (
                 <Scrim
                     isDismissable={false}
@@ -58,13 +62,15 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                     }}
                 >
                     <StidWrapper>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                        <StidHeader>
+                            <span></span>
+                            <h2>Stid document search</h2>
                             <Icon
                                 name="close"
                                 color={tokens.colors.interactive.primary__resting.hex}
                                 onClick={() => setIsOpen(false)}
                             />
-                        </div>
+                        </StidHeader>
                         <br />
                         <AsyncSelect
                             loadOptions={loadOptions}
@@ -116,7 +122,7 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                         <br />
                         <Button
                             onClick={() => {
-                                appendDocuments(documents);
+                                appendDocuments(documents.map((x) => x.object as Document));
                                 setDocuments([]);
                                 setIsOpen(false);
                             }}
@@ -135,6 +141,7 @@ const StidWrapper = styled.div`
     width: 600px;
     height: 400px;
     padding: 20px;
+    border-radius: 2%;
 `;
 
 const Chip = styled.div`
@@ -144,4 +151,10 @@ const Chip = styled.div`
     align-items: center;
     font-size: 16px;
     padding: 5px;
+`;
+
+const StidHeader = styled.div`
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
 `;

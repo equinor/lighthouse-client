@@ -18,7 +18,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { error, data, refetch } = useQuery<ScopeChangeRequest>(
         'scopeChange',
         () => getScopeChangeById(item.id, customApi),
-        { refetchInterval: 1000 }
+        { refetchInterval: 5000 }
     );
 
     useEffect(() => {

@@ -34,6 +34,7 @@ export const searchQueryOrigin = async (
                         value: x.DocumentNo,
                         type: 'query',
                         searchValue: x.DocumentNo,
+                        object: x,
                     });
                 });
             });
