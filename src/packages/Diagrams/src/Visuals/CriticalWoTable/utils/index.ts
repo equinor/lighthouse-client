@@ -12,7 +12,7 @@ export const createWoStatusMap = <T extends Record<string, any>>(
     data: T[],
     groupByKey: keyof T
 ) => {
-    const woDiscMap = {} as WoStatusMap;
+    const woDiscMap = {} as WoStatusMap<T>;
 
     // I want all WOs that have one of these statuses
     const statusChecks = ['W01', 'W02', 'W03'];
@@ -23,42 +23,63 @@ export const createWoStatusMap = <T extends Record<string, any>>(
                 ? [
                       ...woDiscMap[wo[groupByKey]],
                       {
-                          plannedFinishDate: wo.plannedStartAtDate,
+                          plannedStartAtDate: wo.plannedStartAtDate,
                           status: wo.jobStatusCode,
+                          workorder: wo,
                       },
                   ]
                 : [
                       {
-                          plannedFinishDate: wo.plannedStartAtDate,
+                          plannedStartAtDate: wo.plannedStartAtDate,
                           status: wo.jobStatusCode,
+                          workorder: wo,
                       },
                   ];
         }
     });
     return woDiscMap;
 };
-export const filterWoMap = (woMap: WoStatusMap): WoMapCount => {
+
+//TODO: improve this function...
+export function filterWoMap<T>(woMap: WoStatusMap<T>): WoMapCount<T> {
     const keys = Object.keys(woMap);
-    const filtered = {} as WoMapCount;
+    const filtered = {} as WoMapCount<T>;
     keys.forEach((key) => {
         woMap[key].forEach((a) => {
             filtered[key] = filtered[key] || {
-                one: 0,
-                two: 0,
-                three: 0,
-                four: 0,
+                one: {
+                    count: 0,
+                    workorder: [],
+                },
+                two: {
+                    count: 0,
+                    workorder: [],
+                },
+                three: {
+                    count: 0,
+                    workorder: [],
+                },
+                four: {
+                    count: 0,
+                    workorder: [],
+                },
             };
-            const plannedDateDiff = weekDiff(new Date(a.plannedFinishDate)).days;
-            if (0 < plannedDateDiff && plannedDateDiff <= 7) {
-                filtered[key].one = filtered[key].one + 1;
-            } else if (0 < plannedDateDiff && plannedDateDiff <= 14) {
-                filtered[key].two = filtered[key].two + 1;
-            } else if (0 < plannedDateDiff && plannedDateDiff <= 21) {
-                filtered[key].three = filtered[key].three + 1;
-            } else if (0 < plannedDateDiff && plannedDateDiff <= 28) {
-                filtered[key].four = filtered[key].four + 1;
+            const plannedDateDiff = weekDiff(new Date(a.plannedStartAtDate)).days;
+
+            if (plannedDateDiff <= 7) {
+                filtered[key].one.count = filtered[key].one.count + 1;
+                filtered[key].one.workorder = [...filtered[key].one.workorder, a.workorder];
+            } else if (plannedDateDiff <= 14) {
+                filtered[key].two.count = filtered[key].two.count + 1;
+                filtered[key].two.workorder = [...filtered[key].two.workorder, a.workorder];
+            } else if (plannedDateDiff <= 21) {
+                filtered[key].three.count = filtered[key].three.count + 1;
+                filtered[key].three.workorder = [...filtered[key].three.workorder, a.workorder];
+            } else if (plannedDateDiff <= 28) {
+                filtered[key].four.count = filtered[key].four.count + 1;
+                filtered[key].four.workorder = [...filtered[key].four.workorder, a.workorder];
             }
         });
     });
     return filtered;
-};
+}
