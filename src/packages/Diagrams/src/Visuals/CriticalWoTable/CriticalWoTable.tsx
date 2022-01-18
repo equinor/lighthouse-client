@@ -59,6 +59,7 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
                                                             fontWeight: 500,
                                                             paddingBottom: '1em',
                                                         }}
+                                                        key={index}
                                                     >
                                                         {index + 1}
                                                         {index === 0 ? ' Week left' : ' Weeks left'}
