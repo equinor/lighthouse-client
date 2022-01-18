@@ -1,74 +1,142 @@
 trigger:
-    branches:
-        include:
-            - main
-            - dev
+  branches:
+    include:
+      - main
+      - dev
 
 resources:
-    repositories:
-        - repository: self
-        - repository: templates
-          type: github
-          name: equinor/lighthouse-infra
-          endpoint: 'equinor'
+  repositories:
+    - repository: self
+    - repository: templates
+      type: github
+      name: equinor/lighthouse-infra
+      endpoint: 'equinor'
+      ref: infra/move
 
 # Global variables for the pipeline
 variables:
-    - template: /src/resources/web-client/web-client-variables.yml@templates
-    - template: /src/variables/global-variables.yml@templates
+  - template: /src/resources/web-client/web-client-variables.yml@templates
+  - template: /src/variables/global-variables.yml@templates
 
-    - name: 'repositoryName'
-      value: lighthouse-client
+  - name: 'repositoryName'
+    value: lighthouse-client
 
 stages:
-    # build_stage stage. Docker build, tag and push
-    - stage: build
-      displayName: 'Docker - Build and Push'
-      variables:
-          envName: 'build'
-          envRg: '${{ variables.envRgName }}'
-          serviceConnection: '${{ variables.nonProdServiceConnection }}'
-          containerRegistry: '${{ variables.containerRegistryName }}'
-          envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
-          dockerfilePath: '/.docker/Dockerfile'
-          dockerRegistryServiceConnection: '$(dockerRegistryServiceConnectionName)'
+  # build_stage stage. Docker build, tag and push
+  - stage: build
+    displayName: 'Docker - Build and Push'
+    variables:
+      envName: 'build'
+      envRg: '${{ variables.envRgName }}'
+      serviceConnection: '${{ variables.nonProdServiceConnection }}'
+      envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
+      dockerfilePath: '/.docker/Dockerfile'
 
+    jobs:
       # Docker Build
-      jobs:
-          - template: /src/resources/web-client/jobs/client-dockerbuild.yml@templates
-            parameters:
-                deploymentName: 'docker_build_push'
-                dependsOn: ''
-                env: '${{ variables.envName }}'
-                envGroup: '${{ variables.envGroupName }}'
-                dockerfilePath: '${{ variables.dockerfilePath }}'
-                repository: '${{ variables.repositoryName }}'
-                dockerRegistryServiceConnection: $(dockerRegistryServiceConnectionName)
+      - template: /src/resources/web-client/jobs/client-dockerbuild.yml@templates
+        parameters:
+          dependsOn: ''
+          condition: and(always(), eq(variables['Build.Reason'], 'PullRequest'))
+          deploymentName: 'docker_build'
+          envGroup: '${{ variables.envGroupName }}'
+          buildCommand: build
+          dockerfilePath: '${{ variables.dockerfilePath }}'
+          repository: '${{ variables.repositoryName }}'
+          dockerRegistryServiceConnection: '${{ variables.dockerRegistryServiceConnectionName }}'
 
-    # Deploy to dev environment
-    - stage: dev
-      displayName: 'Deploy to dev'
-      dependsOn: 'build'
-      condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
-      variables:
-          envName: 'dev'
-          envLabel: 'non-prod'
-          rgName: '${{ variables.envRgName }}'
-          envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
-          serviceConnection: '${{ variables.nonProdServiceConnection }}'
-          containerRegistry: '${{ variables.containerRegistryName }}'
+      # Docker Build and Push
+      - template: /src/resources/web-client/jobs/client-dockerbuild.yml@templates
+        parameters:
+          dependsOn: ''
+          condition: and(always(), ne(variables['Build.Reason'], 'PullRequest'))
+          deploymentName: 'docker_build_push'
+          envGroup: '${{ variables.envGroupName }}'
+          buildCommand: buildAndPush
+          dockerfilePath: '${{ variables.dockerfilePath }}'
+          repository: '${{ variables.repositoryName }}'
+          dockerRegistryServiceConnection: '${{ variables.dockerRegistryServiceConnectionName }}'
 
-      jobs:
-          - template: /src/resources/web-client/jobs/client-deploy.yml@templates
-            parameters:
-                deploymentName: 'deploy_web'
-                dependsOn: ''
-                serviceConnection: '${{ variables.serviceConnection }}'
-                env: '${{ variables.envName }}'
-                rgName: '${{variables.rgName}}'
-                envGroup: '${{ variables.envGroupName }}'
-                repository: '${{ variables.repositoryName }}'
-                containerRegistry: '${{ variables.containerRegistry }}'
-                appName: '$(appName)'
+  # Deploy to dev environment
+  - stage: dev
+    displayName: 'Deploy to dev'
+    dependsOn: 'build'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+    variables:
+      envName: 'dev'
+      envLabel: 'non-prod'
+      configURI: '${{ variables.functionAppName }}'
+      rgName: '${{ variables.envRgName }}'
+      envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
+      serviceConnection: '${{ variables.nonProdServiceConnection }}'
+      containerRegistry: '${{ variables.containerRegistryName }}'
 
+    jobs:
+      - template: /src/resources/web-client/jobs/client-deploy.yml@templates
+        parameters:
+          deploymentName: 'deploy_web'
+          dependsOn: ''
+          serviceConnection: '${{ variables.serviceConnection }}'
+          clientEnv: '${{ variables.envName }}'
+          configURI: '${{ variables.configURI }}'
+          rgName: '${{variables.rgName}}'
+          envGroup: '${{ variables.envGroupName }}'
+          repository: '${{ variables.repositoryName }}'
+          containerRegistry: '${{ variables.containerRegistry }}'
+          appName: '${{ variables.appName }}'
 
+  # Deploy to test environment
+  - stage: test
+    displayName: 'Deploy to test'
+    dependsOn: 'build'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    variables:
+      envName: 'test'
+      envLabel: 'non-prod'
+      configURI: '${{ variables.functionAppName }}'
+      rgName: '${{ variables.envRgName }}'
+      envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
+      serviceConnection: '${{ variables.nonProdServiceConnection }}'
+      containerRegistry: '${{ variables.containerRegistryName }}'
+
+    jobs:
+      - template: /src/resources/web-client/jobs/client-deploy.yml@templates
+        parameters:
+          deploymentName: 'deploy_web'
+          dependsOn: ''
+          serviceConnection: '${{ variables.serviceConnection }}'
+          clientEnv: '${{ variables.envName }}'
+          configURI: '${{ variables.configURI }}'
+          rgName: '${{variables.rgName}}'
+          envGroup: '${{ variables.envGroupName }}'
+          repository: '${{ variables.repositoryName }}'
+          containerRegistry: '${{ variables.containerRegistry }}'
+          appName: '${{ variables.appName }}'
+
+  # Deploy to prod environment
+  - stage: prod
+    displayName: 'Deploy to prod'
+    dependsOn: 'test'
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    variables:
+      envName: 'prod'
+      envLabel: 'prod'
+      configURI: '${{ variables.functionAppName }}'
+      rgName: '${{ variables.envRgName }}'
+      envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
+      serviceConnection: '${{ variables.prodServiceConnection }}'
+      containerRegistry: '${{ variables.containerRegistryName }}'
+
+    jobs:
+      - template: /src/resources/web-client/jobs/client-deploy.yml@templates
+        parameters:
+          deploymentName: 'deploy_web'
+          dependsOn: ''
+          serviceConnection: '${{ variables.serviceConnection }}'
+          clientEnv: '${{ variables.envName }}'
+          configURI: '${{ variables.configURI }}'
+          rgName: '${{variables.rgName}}'
+          envGroup: '${{ variables.envGroupName }}'
+          repository: '${{ variables.repositoryName }}'
+          containerRegistry: '${{ variables.containerRegistry }}'
+          appName: '${{ variables.appName }}'
