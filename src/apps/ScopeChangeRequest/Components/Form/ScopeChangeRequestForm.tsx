@@ -16,6 +16,7 @@ import { TypedSelectOption } from '../../Api/Search/searchType';
 import { OriginLink } from '../SearchableDropdown/OriginLink';
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
 import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
+import { StidSelector } from '../SearchableDropdown/stidSelector';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -36,7 +37,15 @@ export const ScopeChangeRequestForm = ({
         phase: 'IC',
     });
     const [origin, setOrigin] = useState<TypedSelectOption | undefined>();
+    const [stidDocuments, setStidDocuments] = useState<TypedSelectOption[]>([]);
+    const removeDocument = (value: string) =>
+        setStidDocuments((prev) => prev.filter((x) => x.value !== value));
+    const handleRedirect = (docNo: string) => {
+        window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
+    };
 
+    const appendDocuments = (documents: TypedSelectOption[]) =>
+        setStidDocuments((prev) => [...prev, ...documents]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
     const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
@@ -140,7 +149,32 @@ export const ScopeChangeRequestForm = ({
                     },
                 ]}
             >
-                {/* <StidSelector /> */}
+                <StidSelector appendDocuments={appendDocuments} />
+                {stidDocuments &&
+                    stidDocuments.map((x) => {
+                        return (
+                            <Chip key={x.value}>
+                                {x.label}
+                                <span>
+                                    <Icon
+                                        onClick={() => {
+                                            handleRedirect(x.value);
+                                        }}
+                                        color={tokens.colors.interactive.primary__resting.rgba}
+                                        name="external_link"
+                                        style={{ cursor: 'pointer' }}
+                                    />
+                                    <Icon
+                                        color={tokens.colors.interactive.primary__resting.rgba}
+                                        onClick={() => {
+                                            removeDocument(x.value);
+                                        }}
+                                        name="clear"
+                                    />
+                                </span>
+                            </Chip>
+                        );
+                    })}
                 {/* <Field label="Attachments" value={<Upload />} /> */}
             </GeneratedForm>
             {error && <p> Something went wrong, please check your connection and try again</p>}
@@ -153,6 +187,14 @@ const TitleHeader = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: center;
+`;
+const Chip = styled.div`
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    padding: 5px;
 `;
 
 const FormContainer = styled.div``;
