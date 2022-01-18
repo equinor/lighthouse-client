@@ -1,5 +1,9 @@
-import { SwcrStatus } from '../models/SwcrPackage';
+import { SwcrPackage, SwcrStatus } from '../models/SwcrPackage';
 import { getSwcrStatusPriority } from './packages';
+
+export const sortPackagesByStatusAndNumber = (columnA: SwcrPackage, columnB: SwcrPackage): number =>
+    getSwcrStatusPriority(columnA.status) - getSwcrStatusPriority(columnB.status) ||
+    parseInt(columnA.swcrNo) - parseInt(columnB.swcrNo);
 
 export const sortBySwcrStatusPriority = (a: string, b: string): number =>
     getSwcrStatusPriority(a as SwcrStatus) - getSwcrStatusPriority(b as SwcrStatus);

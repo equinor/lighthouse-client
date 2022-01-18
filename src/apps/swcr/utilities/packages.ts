@@ -109,8 +109,8 @@ export const getRfccDueDateKey: GetKeyFunction<SwcrPackage> = (item) => {
     return [groupByKey];
 };
 
-export const getNextToSignKey = (nextToSign: string, ranking?): string => {
-    if (!ranking.length) ranking = '0';
+export const getNextToSignKey = (nextToSign: string, ranking?: string): string => {
+    if (!ranking?.length) ranking = '0';
 
     const nextToSignKey =
         nextToSign
@@ -205,9 +205,3 @@ export const getStartImplForecastKey: GetKeyFunction<SwcrPackage> = (item) => {
 
 export const getTypeKeys: GetKeyFunction<SwcrPackage> = (item) =>
     item.types.length ? item.types.split(',') : [DEFAULT_BLANKSTRING];
-
-type sortColumnFunctionType = (columnA: SwcrPackage, columnB: SwcrPackage) => number;
-
-export const sortColumnByDefault: sortColumnFunctionType = (columnA, columnB) =>
-    getSwcrStatusPriority(columnA.status) - getSwcrStatusPriority(columnB.status) ||
-    parseInt(columnA.swcrNo) - parseInt(columnB.swcrNo);

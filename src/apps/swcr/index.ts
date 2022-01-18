@@ -2,12 +2,13 @@ import { AppApi } from '../apps';
 import { baseClient } from '../../../packages/httpClient/src';
 import { SwcrPackage } from './models/SwcrPackage';
 import { createWorkSpace } from '../../Core/WorkSpace/src/WorkSpaceApi/Api';
-import { sortColumnByDefault } from './utilities/packages';
+
 import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
 import { SwcrItemView } from './CustomViews/SwcrGardenItem';
 import { SwcrGroupView } from './CustomViews/SwcrGroupView';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { fieldSettings } from './utilities/gardenSetup';
+import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 
 export function setup(appApi: AppApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.fusion]);
@@ -24,7 +25,7 @@ export function setup(appApi: AppApi): void {
         );
         const swcrPackages = JSON.parse(await response.text()) as SwcrPackage[];
 
-        return swcrPackages.sort(sortColumnByDefault);
+        return swcrPackages.sort(sortPackagesByStatusAndNumber);
     });
 
     swcr.registerFilterOptions({
