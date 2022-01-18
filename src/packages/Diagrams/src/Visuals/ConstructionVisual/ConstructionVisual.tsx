@@ -97,7 +97,7 @@ export function ConstructionVisual<T extends unknown>({
         data.forEach((wo) => {
             (wo as WorkOrder).jobStatusCutoffs.forEach((jobStatus) => {
                 if (jobStatus.status === status) {
-                    const weeks = renameCats(jobStatus.weeks);
+                    const weeks = renameCategories(jobStatus.weeks);
                     if (weeks.includes(categoryDate as string)) {
                         showData.push(wo as WorkOrder);
                     }
