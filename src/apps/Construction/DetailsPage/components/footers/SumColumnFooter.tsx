@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Job, WorkOrder } from '../../../mocData/mockData';
+import { WorkOrder } from '../../../mocData/mockData';
 import { FooterProps } from '../../types';
 
 export const SumColumnFooter = ({ data, columnId }: FooterProps<WorkOrder>): JSX.Element => {
