@@ -29,6 +29,7 @@ export const OriginLink = ({ originId, setOriginId }: PCSLinkProps): JSX.Element
             searchValue: '',
             type: 'query',
             value: 'OOTA',
+            object: {},
         };
 
         const options: TypedSelectOption[] = [];

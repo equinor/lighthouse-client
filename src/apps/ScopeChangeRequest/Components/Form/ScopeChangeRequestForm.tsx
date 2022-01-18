@@ -42,7 +42,7 @@ export const ScopeChangeRequestForm = ({
     });
     const [origin, setOrigin] = useState<TypedSelectOption | undefined>();
     const [stidDocuments, setStidDocuments] = useState<Document[]>([]);
-    const [attachments, setAttachments] = useState<Attachment[]>([]);
+    const [attachments, setAttachments] = useState<File[]>([]);
     const removeDocument = (docNo: string) =>
         setStidDocuments((prev) => prev.filter((x) => x.docNo !== docNo));
 

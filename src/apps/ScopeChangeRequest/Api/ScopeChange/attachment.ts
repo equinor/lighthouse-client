@@ -1,4 +1,4 @@
-import { BaseClient } from '../../../../packages/httpClient/src';
+import { BaseClient } from '@equinor/http-client';
 
 export const uploadAttachment = async (
     requestId: string,
