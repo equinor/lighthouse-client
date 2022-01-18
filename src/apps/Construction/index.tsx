@@ -1,8 +1,8 @@
 import { ClientApi } from '@equinor/app-builder';
-import { AnalyticsOptions } from '@equinor/Diagrams';
+import { AnalyticsOptions, CriticalWoTable, SidesheetContent, weekDiff } from '@equinor/Diagrams';
 import { baseClient } from '../../../packages/httpClient/src';
 import { createPageViewer } from '../../Core/PageViewer/Api/pageViewerApi';
-import { CriticalWoTable, weekDiff } from '../../packages/Diagrams/src/Visuals/CriticalWoTable';
+import { openSidesheet } from '@equinor/sidesheet';
 import { cols } from './DetailsPage/tableConfig';
 import { WorkOrder } from './mocData/mockData';
 import { mock } from './mocData/newMockData';
@@ -39,6 +39,15 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
             options: {
                 categoryKey: 'disciplineDescription',
                 nameKey: 'disciplineDescription',
+                onClick: (data, graphData) => {
+                    const labelClicked = graphData.globals.labels[graphData.dataPointIndex];
+                    const tableData: WorkOrder[] = [];
+                    data.forEach((wo) => {
+                        wo.disciplineDescription === labelClicked && tableData.push(wo);
+                    });
+
+                    openSidesheet(SidesheetContent, { data: tableData });
+                },
             },
         },
         chart3: {
