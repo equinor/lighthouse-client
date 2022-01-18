@@ -11,6 +11,7 @@ resources:
           type: github
           name: equinor/lighthouse-infra
           endpoint: 'equinor'
+          ref: infra/move
 
 # Global variables for the pipeline
 variables:
@@ -33,14 +34,27 @@ stages:
           dockerfilePath: '/.docker/Dockerfile'
           dockerRegistryServiceConnection: '$(dockerRegistryServiceConnectionName)'
 
-      # Docker Build
       jobs:
+          # Docker Build
           - template: /src/resources/web-client/jobs/client-dockerbuild.yml@templates
             parameters:
-                deploymentName: 'docker_build_push'
                 dependsOn: ''
-                env: '${{ variables.envName }}'
+                condition: and(always(), eq(variables['Build.Reason'], 'PullRequest'))
+                deploymentName: 'docker_build'
                 envGroup: '${{ variables.envGroupName }}'
+                buildCommand: build
+                dockerfilePath: '${{ variables.dockerfilePath }}'
+                repository: '${{ variables.repositoryName }}'
+                dockerRegistryServiceConnection: $(dockerRegistryServiceConnectionName)
+
+          # Docker Build and Push
+          - template: /src/resources/web-client/jobs/client-dockerbuild.yml@templates
+            parameters:
+                dependsOn: ''
+                condition: and(always(), ne(variables['Build.Reason'], 'PullRequest'))
+                deploymentName: 'docker_build_push'
+                envGroup: '${{ variables.envGroupName }}'
+                buildCommand: buildAndPush
                 dockerfilePath: '${{ variables.dockerfilePath }}'
                 repository: '${{ variables.repositoryName }}'
                 dockerRegistryServiceConnection: $(dockerRegistryServiceConnectionName)
@@ -53,6 +67,7 @@ stages:
       variables:
           envName: 'dev'
           envLabel: 'non-prod'
+          configURI: '$(functionAppName)'
           rgName: '${{ variables.envRgName }}'
           envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
           serviceConnection: '${{ variables.nonProdServiceConnection }}'
@@ -64,11 +79,10 @@ stages:
                 deploymentName: 'deploy_web'
                 dependsOn: ''
                 serviceConnection: '${{ variables.serviceConnection }}'
-                env: '${{ variables.envName }}'
+                clientEnv: '${{ variables.envName }}'
+                configURI: '${{ variables.configURI }}'
                 rgName: '${{variables.rgName}}'
                 envGroup: '${{ variables.envGroupName }}'
                 repository: '${{ variables.repositoryName }}'
                 containerRegistry: '${{ variables.containerRegistry }}'
                 appName: '$(appName)'
-
-
