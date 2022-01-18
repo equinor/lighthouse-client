@@ -37,6 +37,7 @@ export const searchTags = async (
                     value: x.TagNo,
                     type: 'tag',
                     searchValue: x.TagNo,
+                    object: x,
                 });
             });
         });

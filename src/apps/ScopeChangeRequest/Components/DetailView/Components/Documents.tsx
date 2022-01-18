@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { StidDocument } from '../../../Types/stidDocument';
+import { Document } from '../../../Api/Search/STID/Types/Document';
 
 interface DocumentsProps {
-    documents?: StidDocument[];
+    documents?: Document[];
 }
 
 export const Documents = ({ documents }: DocumentsProps): JSX.Element => {
@@ -10,9 +10,9 @@ export const Documents = ({ documents }: DocumentsProps): JSX.Element => {
         <DocumentContainer>
             {documents &&
                 documents.map((x) => (
-                    <div key={x.id}>
-                        <p>{x.name}</p>
-                        <p>{x.description}</p>
+                    <div key={x.docNo}>
+                        <p>{x.docNo}</p>
+                        <p>{x.docTitle}</p>
                     </div>
                 ))}
         </DocumentContainer>
