@@ -26,7 +26,6 @@ export function ParkViewProvider<T>({
         status: parkViewOptions.status as StatusView<unknown>,
         fieldSettings: (parkViewOptions as GardenOptions<unknown>)?.fieldSettings || {},
         data: data,
-
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey?.toString(),
     };
     const [state, dispatch] = useReducer(GardenReducer, initialState);

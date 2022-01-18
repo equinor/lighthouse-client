@@ -6,6 +6,7 @@ import { sortColumnByDefault } from './utilities/packages';
 import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
 import { SwcrItemView } from './CustomViews/SwcrGardenItem';
 import { SwcrGroupView } from './CustomViews/SwcrGroupView';
+import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { fieldSettings } from './utilities/gardenSetup';
 
 export function setup(appApi: AppApi): void {
@@ -67,4 +68,6 @@ export function setup(appApi: AppApi): void {
         },
         options: { groupDescriptionFunc: (data) => data.title },
     });
+
+    swcr.registerDataViewSideSheetOptions({ CustomComponent: SwcrSideSheet });
 }

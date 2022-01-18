@@ -109,7 +109,9 @@ export const getRfccDueDateKey: GetKeyFunction<SwcrPackage> = (item) => {
     return [groupByKey];
 };
 
-export const getNextToSignKey = (nextToSign: string, ranking = '0'): string => {
+export const getNextToSignKey = (nextToSign: string, ranking?): string => {
+    if (!ranking.length) ranking = '0';
+
     const nextToSignKey =
         nextToSign
             .substring(nextToSign.indexOf('('))

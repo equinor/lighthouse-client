@@ -14,6 +14,13 @@ import {
     getYearAndWeekFromString,
 } from './packages';
 
+import {
+    sortByEstimatedManHours,
+    sortByIsSafety,
+    sortByLastSignedRanking,
+    sortBySwcrStatusPriority,
+} from './sortFunctions';
+
 export type ExtendedSwcrGardenFields =
     | 'isSafety'
     | 'RFCC'
@@ -24,12 +31,20 @@ export type ExtendedSwcrGardenFields =
     | 'nextSignatureRole';
 
 export const fieldSettings: FieldSettings<SwcrPackage, ExtendedSwcrGardenFields> = {
-    isSafety: { key: 'types', label: 'Is Safety', getKey: getIsSafetyKey },
-    estimatedManhours: { label: 'Estimated man hours', getKey: getHoursGroupKey },
+    isSafety: { label: 'Is Safety', getKey: getIsSafetyKey, getSort: sortByIsSafety },
+    estimatedManhours: {
+        label: 'Estimated man hours',
+        getKey: getHoursGroupKey,
+        getSort: sortByEstimatedManHours,
+    },
     types: { label: 'Types', getKey: getTypeKeys },
     nextToSign: { label: 'Next signature by', getKey: getNextToSignKeys },
     nextSignatureRole: { label: 'Next signature role', getKey: getNextSignatureRoleKeys },
-    latestSignRanking: { label: 'Last signed ranking', getKey: getLatestSignedRankingKey },
+    latestSignRanking: {
+        label: 'Last signed ranking',
+        getKey: getLatestSignedRankingKey,
+        getSort: sortByLastSignedRanking,
+    },
     RFCC: { label: 'RFCC', getKey: getRfccKey },
     RFCCDueDate: { label: 'RFCC duedate', getKey: getRfccDueDateKey },
     startImplForecast: { label: 'Start impl. forecast', getKey: getStartImplForecastKey },
@@ -56,5 +71,5 @@ export const fieldSettings: FieldSettings<SwcrPackage, ExtendedSwcrGardenFields>
     nextSignRanking: { label: 'Next signature ' },
     cpkgNo: { label: 'CommPK' },
     cpkgPhase: { label: 'Phase' },
-    status: { key: 'status', label: 'Status' },
+    status: { key: 'status', label: 'Status', getSort: sortBySwcrStatusPriority },
 };

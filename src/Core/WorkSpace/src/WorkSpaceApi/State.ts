@@ -104,8 +104,12 @@ export interface PowerBiOptions {
 
 export type StatusFunc<T> = (data: T[]) => StatusItem[];
 
+export interface DataViewSideSheetCustomComponent<T> {
+    item: T;
+    onClose: () => void;
+}
 export interface DataViewSideSheetOptions<T> {
-    CustomComponent?: React.FC<{ item: T; onClose: () => void }>;
+    CustomComponent?: React.FC<DataViewSideSheetCustomComponent<T>>;
 }
 
 export interface WorkflowEditorOptions {

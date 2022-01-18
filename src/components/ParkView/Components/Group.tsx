@@ -20,7 +20,7 @@ export function Group<T>({ group, columnExpanded }: GroupProps<T>): JSX.Element 
         group.isExpanded = !group.isExpanded;
     };
 
-    const GroupView = customView.customGroupView || null;
+    const GroupView = customView?.customGroupView || null;
 
     return (
         <SubGroup>

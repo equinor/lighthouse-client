@@ -1,9 +1,12 @@
 import { GetKeyFunction } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 
+export type GetSortFunction = (a: string, b: string) => number;
+
 export type FieldSetting<ItemType> = {
     key?: keyof ItemType;
     label?: string;
     getKey?: GetKeyFunction<ItemType>;
+    getSort?: GetSortFunction;
 };
 
 /**

@@ -1,4 +1,4 @@
-import { FieldSettings } from '../../../apps/swcr';
+import { FieldSettings } from '../../../apps/swcr/models/FieldSettings';
 import { StatusView } from '../Context/ParkViewContext';
 import { Data } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
@@ -28,5 +28,6 @@ export function createGarden<T>(
         groupDescriptionFunc,
         fieldSettings
     );
+
     return groupedData;
 }

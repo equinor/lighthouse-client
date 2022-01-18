@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { createGarden } from '../Services/createGarden';
 import { Wrapper, Col } from '../Styles/common';
@@ -24,6 +24,7 @@ export function GardenView<T>(): JSX.Element | null {
         customView,
     } = useParkViewContext<T>();
     const [garden, setGarden] = useState<Data<T> | null>();
+
     if (!excludeKeys && data) {
         setExcludeKeys(getExcludeKeys(data, 60));
     }
@@ -53,12 +54,16 @@ export function GardenView<T>(): JSX.Element | null {
         garden[columnKey].isExpanded = !garden[columnKey].isExpanded;
     };
 
+    const defaultSortFunction = (a: string, b: string) => a.localeCompare(b);
+    const columnSortFunction = fieldSettings[gardenKey]?.getSort || defaultSortFunction;
+    const columnKeys = Object.keys(garden).sort(columnSortFunction);
+
     return (
         <>
             <FilterSelector<T> />
             <Wrapper>
                 {garden &&
-                    Object.keys(garden).map((key, index) => (
+                    columnKeys.map((key, index) => (
                         <Col key={`col-${index}`}>
                             {/* Will be created with viewerFactory configured with gardenoptions */}
                             {gardenKey && (

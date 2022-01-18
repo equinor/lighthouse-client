@@ -1,4 +1,4 @@
-import { FieldSettings } from '../../../apps/swcr';
+import { FieldSettings } from '../../../apps/swcr/models/FieldSettings';
 import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { StatusView } from '../Context/ParkViewContext';
 import { Data } from '../Models/data';
