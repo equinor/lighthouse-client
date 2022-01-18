@@ -1,4 +1,4 @@
-# Build environment
+# uild environment
 FROM node:16.10.0 as build
 
 # Copy App

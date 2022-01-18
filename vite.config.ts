@@ -4,8 +4,6 @@ import copy from 'rollup-plugin-copy';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    envDir: './env',
-    envPrefix: ['VITE_', 'CLIENT_', 'APP_', 'ENV_'],
     plugins: [react()],
 
     preview: {
@@ -16,7 +14,6 @@ export default defineConfig({
     },
     define: {
         'process.env': {
-            // environment: 'dev',
         },
     },
     resolve: {

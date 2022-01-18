@@ -18,7 +18,7 @@
     "format": "prettier --config ./.prettierrc --write ./src/**",
     "test-watch": "yarn  ci & jest --watchAll",
     "test-coverage": "yarn ci & jest --coverage",
-    "docker-build": "docker build -f ./.docker/Dockerfile -t lighthouse:dev ."
+    "docker-build": "docker-compose up"
   },
   "dependencies": {
     "@azure/app-configuration": "^1.3.1",
