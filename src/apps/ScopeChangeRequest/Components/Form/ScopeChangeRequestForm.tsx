@@ -46,10 +46,6 @@ export const ScopeChangeRequestForm = ({
     const removeDocument = (docNo: string) =>
         setStidDocuments((prev) => prev.filter((x) => x.docNo !== docNo));
 
-    const handleRedirect = (docNo: string) => {
-        window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
-    };
-
     const appendDocuments = (documents: Document[]) =>
         setStidDocuments((prev) => [...prev, ...documents]);
 
@@ -169,23 +165,14 @@ export const ScopeChangeRequestForm = ({
                         return (
                             <Chip key={x.docNo}>
                                 <StidDocument document={x} />
-                                <Inline>
-                                    <Icon
-                                        onClick={() => {
-                                            handleRedirect(x.docNo);
-                                        }}
-                                        color={tokens.colors.interactive.primary__resting.rgba}
-                                        name="external_link"
-                                        style={{ cursor: 'pointer' }}
-                                    />
-                                    <Icon
-                                        color={tokens.colors.interactive.primary__resting.rgba}
-                                        onClick={() => {
-                                            removeDocument(x.docNo);
-                                        }}
-                                        name="clear"
-                                    />
-                                </Inline>
+
+                                <Icon
+                                    color={tokens.colors.interactive.primary__resting.rgba}
+                                    onClick={() => {
+                                        removeDocument(x.docNo);
+                                    }}
+                                    name="clear"
+                                />
                             </Chip>
                         );
                     })}

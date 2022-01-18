@@ -7,15 +7,8 @@ export const uploadAttachment = async (
 ): Promise<string> => {
     const formData = new FormData();
 
-    // await fileReader.readAsArrayBuffer(file);
-    // console.log(fileReader.result);
-
     formData.set('File', file, file.name);
 
-    // const payload: AttachmentBody = {
-    //     OverwriteIfExists: true,
-    //     File: fileReader.result,
-    // };
     const requestOptions: RequestInit = {
         method: 'POST',
         body: formData,

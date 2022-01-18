@@ -9,6 +9,7 @@ import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import styled from 'styled-components';
 import { Document } from '../../Api/Search/STID/Types/Document';
+import { StidDocument } from '../StidDocument';
 
 interface StidSelectorProps {
     appendDocuments: (documents: Document[]) => void;
@@ -32,15 +33,12 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
         callback(await searchStid(inputValue, 'document', customApi));
     };
 
-    const handleRedirect = (docNo: string) => {
-        window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
-    };
-
     return (
         <Fragment>
             <Button
                 variant="ghost_icon"
                 onClick={() => {
+                    setDocuments([]);
                     setIsOpen((prev) => !prev);
                 }}
             >
@@ -68,7 +66,10 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                             <Icon
                                 name="close"
                                 color={tokens.colors.interactive.primary__resting.hex}
-                                onClick={() => setIsOpen(false)}
+                                onClick={() => {
+                                    setDocuments([]);
+                                    setIsOpen(false);
+                                }}
                             />
                         </StidHeader>
                         <br />
@@ -94,28 +95,15 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                             documents.map((x) => {
                                 return (
                                     <Chip key={x.value}>
-                                        {x.label}
-                                        <span>
-                                            <Icon
-                                                onClick={() => {
-                                                    handleRedirect(x.value);
-                                                }}
-                                                color={
-                                                    tokens.colors.interactive.primary__resting.rgba
-                                                }
-                                                name="external_link"
-                                                style={{ cursor: 'pointer' }}
-                                            />
-                                            <Icon
-                                                color={
-                                                    tokens.colors.interactive.primary__resting.rgba
-                                                }
-                                                onClick={() => {
-                                                    removeDocument(x.value);
-                                                }}
-                                                name="clear"
-                                            />
-                                        </span>
+                                        <StidDocument document={x.object as Document} />
+
+                                        <Icon
+                                            color={tokens.colors.interactive.primary__resting.rgba}
+                                            onClick={() => {
+                                                removeDocument(x.value);
+                                            }}
+                                            name="clear"
+                                        />
                                     </Chip>
                                 );
                             })}
@@ -127,7 +115,7 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                                 setIsOpen(false);
                             }}
                         >
-                            Save
+                            Confirm
                         </Button>
                     </StidWrapper>
                 </Scrim>
