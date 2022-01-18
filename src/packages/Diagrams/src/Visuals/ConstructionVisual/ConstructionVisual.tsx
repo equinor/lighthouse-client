@@ -13,7 +13,7 @@ import { Chart as ChartJS, ChartOptions, ChartData, registerables } from 'chart.
 import { Chart as ReactChart, getDatasetAtEvent, getElementsAtEvent } from 'react-chartjs-2';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { SidesheetContent } from '../../Components';
-ChartJS.register(...registerables);
+ChartJS.register(...registerables, zoomPlugin);
 
 export const chartoptions: ChartOptions = {
     maintainAspectRatio: false,
