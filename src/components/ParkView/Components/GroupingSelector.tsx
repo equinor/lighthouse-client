@@ -2,7 +2,7 @@ import { SingleSelect } from '@equinor/eds-core-react';
 import { useCallback, useMemo } from 'react';
 import { SelectRowWrapper, Separator } from '../Styles/groupingSelector';
 import { useParkViewContext } from '../Context/ParkViewProvider';
-import { FieldSettings } from '../../../apps/swcr/models/FieldSettings';
+import { FieldSettings } from '../Models/FieldSettings';
 
 const getFieldSettingsKeyFromLabel = <T extends unknown>(
     label: string,

@@ -1,8 +1,9 @@
-import { FieldSettings } from '../../../apps/swcr/models/FieldSettings';
-import { StatusView } from '../Context/ParkViewContext';
+import { FieldSettings } from '../Models/FieldSettings';
+
 import { Data } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
 import { groupBy } from '../Utils/groupBy';
+import { StatusView } from '../Models/gardenOptions';
 
 export type Garden<T> = Record<string, T[]>;
 

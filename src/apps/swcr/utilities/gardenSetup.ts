@@ -1,4 +1,4 @@
-import { FieldSettings } from '../models/FieldSettings';
+import { FieldSettings } from '../../../components/ParkView/Models/FieldSettings';
 import { SwcrPackage } from '../models/SwcrPackage';
 import {
     getIsSafetyKey,

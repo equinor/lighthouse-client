@@ -1,8 +1,8 @@
-import { FieldSettings } from '../../../apps/swcr/models/FieldSettings';
+import { FieldSettings } from '../Models/FieldSettings';
 import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
-import { StatusView } from '../Context/ParkViewContext';
 import { Data } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
+import { StatusView } from '../Models/gardenOptions';
 
 export function groupBy<T, K extends keyof T>(
     arr: T[],
