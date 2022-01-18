@@ -1,4 +1,4 @@
-import { interpolateInferno } from 'd3-scale-chromatic';
+import { interpolateBlues } from 'd3-scale-chromatic';
 import { DateTime } from 'luxon';
 import { WorkOrder } from '../../../../apps/Construction/mocData/mockData';
 import { interpolateColors } from './colorGenerator';
@@ -37,11 +37,11 @@ export const sortCategories = (categories: string[]): string[] => {
  * display the week number.
  * Using luxon to retrieve the week number.
  */
-export const renameCats = (categories: string[]): string[] => {
+export const renameCategories = (categories: string[]): string[] => {
     const renamed = [] as string[];
     categories.forEach((category) => {
         const date = DateTime.fromJSDate(new Date(category));
-        renamed.push(`w${date.weekNumber}`);
+        renamed.push(`${date.year}w${date.weekNumber}`);
     });
     return renamed;
 };
@@ -68,7 +68,7 @@ type Series = {
 
 type CreateSeriesArgs = {
     data: WorkOrder[];
-    cats: string[];
+    categories: string[];
     options: {
         accumulated?: boolean;
         dateLimit?: Date;
@@ -78,10 +78,10 @@ type CreateSeriesArgs = {
 
 export const createSeries = ({
     data,
-    cats,
+    categories,
     options: { dateLimit = new Date('07/01/2021'), lastWoStatus = 'W04', accumulated = false },
 }: CreateSeriesArgs): Series[] => {
-    const categories = createCategoriesMap(cats);
+    const categoriesMap = createCategoriesMap(categories);
     const seriesMap = {} as Record<
         string,
         {
@@ -94,7 +94,7 @@ export const createSeries = ({
         item.jobStatusCutoffs.forEach((cutoff) => {
             seriesMap[cutoff.status] = seriesMap[cutoff.status] || {
                 label: cutoff.status,
-                data: { ...categories },
+                data: { ...categoriesMap },
             };
 
             cutoff.weeks.forEach((week) => {
@@ -112,8 +112,8 @@ export const createSeries = ({
             // }
         });
     });
-    const tempTest = interpolateColors(Object.keys(seriesMap).length + 1, interpolateInferno, {
-        colorStart: 0.5,
+    const graphColors = interpolateColors(Object.keys(seriesMap).length + 1, interpolateBlues, {
+        colorStart: 0.2,
         colorEnd: 1,
         useEndAsStart: false,
     });
@@ -133,11 +133,14 @@ export const createSeries = ({
             label: series.label,
             data: [],
             type: 'bar',
-            backgroundColor: tempTest[index],
+            backgroundColor: graphColors[index],
         } as Series;
         newSeries.data = Object.values(sortedSeries);
 
         return newSeries;
+    });
+    woSeries.sort((a, b) => {
+        return a.label < b.label ? -1 : a.label > b.label ? 1 : 0;
     });
     const series = accumulateSeries(woSeries).concat(woSeries);
     return series;
@@ -163,14 +166,14 @@ export const accumulateSeries = (series: Series[]): Series[] => {
             },
         ];
     }
-    const totalAcc: number[] = series
+    const totalAccumulated: number[] = series
         .map((entry) => entry.data)
         .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + entry), []);
     //let temp: number = 0;
     //const tempAcc = totalAcc.map((item) => (temp = (temp || 0) + item));
     const ready = ['W04', 'W05', 'W06', 'W07', 'W08'];
     //TODO: breaks if no wo4 in array
-    const wo4Acc: number[] = series
+    const wo4Accumulated: number[] = series
         .filter((entry) => ready.includes(entry.label))
         .map((entry) => entry.data)
         .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + entry, []));
@@ -180,7 +183,7 @@ export const accumulateSeries = (series: Series[]): Series[] => {
 
     return [
         {
-            data: totalAcc,
+            data: totalAccumulated,
             label: 'accumulated',
             type: 'line',
             yAxisID: 'acc',
@@ -188,11 +191,11 @@ export const accumulateSeries = (series: Series[]): Series[] => {
             borderColor: 'green',
         },
         {
-            data: wo4Acc,
+            data: wo4Accumulated,
             label: 'w04-w08 acc',
             type: 'line',
-            borderColor: 'pink',
-            backgroundColor: 'pink',
+            borderColor: 'red',
+            backgroundColor: 'red',
             yAxisID: 'acc',
         },
     ];

@@ -1,26 +1,19 @@
 import { useMemo, useRef, useState } from 'react';
 import { TimeDimension } from '../../Utils/createTime';
 import { ConstructionGraphProps } from './Types/constructionVisualOptions';
-import { Table, useColumns } from '@equinor/Table';
-import { createSeries, sortCategories, createUniqueCategories } from '../../Utils/cutoffUtils';
+import {
+    createSeries,
+    sortCategories,
+    createUniqueCategories,
+    renameCategories,
+} from '../../Utils/cutoffUtils';
 import { WorkOrder } from '../../../../../apps/Construction/mocData/mockData';
 import { openSidesheet } from '../../../../Sidesheet/Functions';
-import {
-    Chart as ChartJS,
-    LinearScale,
-    CategoryScale,
-    BarElement,
-    PointElement,
-    LineElement,
-    Legend,
-    Tooltip,
-    ChartOptions,
-    ChartData,
-    registerables,
-} from 'chart.js';
+import { Chart as ChartJS, ChartOptions, ChartData, registerables } from 'chart.js';
 import { Chart as ReactChart, getDatasetAtEvent, getElementsAtEvent } from 'react-chartjs-2';
 import zoomPlugin from 'chartjs-plugin-zoom';
-ChartJS.register(...registerables);
+import { SidesheetContent } from '../../Components';
+ChartJS.register(...registerables, zoomPlugin);
 
 export const chartoptions: ChartOptions = {
     maintainAspectRatio: false,
@@ -66,28 +59,27 @@ export function ConstructionVisual<T extends unknown>({
     options: { title, timeChartOptions, colors, defaultTime, accumulative },
 }: ConstructionGraphProps<T>): JSX.Element {
     const [time, setTime] = useState<TimeDimension>(defaultTime || 'week');
-    const cats = sortCategories(createUniqueCategories(data as WorkOrder[]));
+    const sortedCategories = sortCategories(createUniqueCategories(data as WorkOrder[]));
 
     const series = useMemo(
         () =>
             createSeries({
                 data: data as WorkOrder[],
-                cats,
+                categories: sortedCategories,
                 options: {},
             }),
-        [data, cats, accumulative]
+        [data, sortedCategories, accumulative]
     );
 
-    const categories = cats;
+    const renamedCategories = renameCategories(sortedCategories);
 
-    const tempData = useMemo(
+    const chartData = useMemo(
         () => ({
-            labels: categories,
+            labels: renamedCategories,
             datasets: [...series],
         }),
-        [categories, series]
+        [renamedCategories, series]
     );
-
     const onClick = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const { current: chart } = chartRef;
 
@@ -96,11 +88,11 @@ export function ConstructionVisual<T extends unknown>({
         }
         // W07, W01...
         const dataset = getDatasetAtEvent(chart, event);
-        const status = tempData.datasets[dataset[0].datasetIndex].label;
+        const status = chartData.datasets[dataset[0].datasetIndex].label;
         // category date
         const element = getElementsAtEvent(chart, event);
         const { index } = element[0];
-        const categoryDate = tempData.labels![index];
+        const categoryDate = chartData.labels![index];
         let showData = [] as WorkOrder[];
         data.forEach((wo) => {
             (wo as WorkOrder).jobStatusCutoffs.forEach((jobStatus) => {
@@ -126,18 +118,9 @@ export function ConstructionVisual<T extends unknown>({
             type="bar"
             ref={chartRef}
             options={chartoptions}
-            data={tempData as ChartData}
+            data={chartData as ChartData}
             height={400}
             onClick={onClick}
         />
-    );
-}
-interface Props<T> {
-    data: T[];
-}
-function SidesheetContent<T>({ data }: Props<T>) {
-    const columns = useColumns(data[0] as any);
-    return (
-        <div style={{ overflowX: 'scroll' }}>{data && <Table options={{ data, columns }} />}</div>
     );
 }

@@ -1,10 +1,12 @@
+import { Manifests } from '@equinor/app-builder';
 import { Accordion, Popover, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useClientContext } from '@equinor/portal-client';
-import { useRef, useState } from 'react';
+import { isProduction, useClientContext } from '@equinor/portal-client';
+import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { appGroups, Apps, apps } from '../../apps/apps';
+import { Apps } from '../../apps/apps';
+
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
 
@@ -150,7 +152,13 @@ const GroupLink = styled(Link)`
     flex-grow: 1;
 `;
 
-export const MainMenu = (): JSX.Element => {
+interface MainMenuProps {
+    manifests: Manifests;
+}
+
+export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
+    const isProd = isProduction();
+    const { apps, appGroups } = manifests;
     const { appsPanelActive } = useClientContext();
     const [searchValue, setSearchValue] = useState('');
     // const navigate = useNavigate();
@@ -160,6 +168,8 @@ export const MainMenu = (): JSX.Element => {
         const value = event.target.value;
         setSearchValue(value);
     };
+
+    const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
 
     const anchorRef = useRef<HTMLHeadingElement[]>([]);
     const addMenuRef = useRef<HTMLHeadingElement>(null);
@@ -196,6 +206,8 @@ export const MainMenu = (): JSX.Element => {
                                 className="link"
                                 key={`link-${item.shortName}`}
                                 to={`/${item.shortName}`}
+                                title={!item.isProduction && isProd ? 'Disabled' : item.title}
+                                style={item.isProduction && !isProd ? { color: '#e3e3e3' } : {}}
                             >
                                 {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
 
@@ -241,6 +253,16 @@ export const MainMenu = (): JSX.Element => {
                                             className="link"
                                             key={`link-${item.shortName}`}
                                             to={`${key}/${item.shortName}`}
+                                            title={
+                                                !item.isProduction && isProd
+                                                    ? 'Disabled'
+                                                    : item.title
+                                            }
+                                            style={
+                                                !item.isProduction && isProd
+                                                    ? { color: '#e3e3e3' }
+                                                    : {}
+                                            }
                                         >
                                             {item.title}
                                         </Link>
@@ -286,6 +308,16 @@ export const MainMenu = (): JSX.Element => {
                                                 className="link"
                                                 key={`link-${item.shortName}`}
                                                 to={`${key}/${item.shortName}`}
+                                                title={
+                                                    !item.isProduction && isProd
+                                                        ? 'Disabled'
+                                                        : item.title
+                                                }
+                                                style={
+                                                    !item.isProduction && isProd
+                                                        ? { color: '#e3e3e3' }
+                                                        : {}
+                                                }
                                             >
                                                 {item.title}
                                             </Link>
@@ -325,8 +357,6 @@ export const MainMenu = (): JSX.Element => {
         </Wrapper>
     );
 };
-
-const GroupedMenu = groupeByKey(apps, 'groupe');
 
 function filterByValue<T, K extends keyof T>(
     list: Record<string, T[]>,

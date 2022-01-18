@@ -135,23 +135,3 @@ const DropHere = styled.div`
     flex-direction: column;
     align-items: center;
 `;
-
-// setUploadErrors([]);
-// let attachmentId;
-// try {
-//     attachmentId = await uploadAttachment(requestId, file, customApi);
-// } catch (e) {
-//     setUploadErrors((prev) => [...prev, file.name]);
-//     console.log(e);
-// }
-
-// if (attachmentId) {
-//     setAttachments((prev) => [
-//         ...prev,
-//         { name: file.name, id: attachmentId, size: file.size },
-//     ]);
-// }
-// /**
-//  * Upload file
-//  */
-// //set files again

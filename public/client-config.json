@@ -1,0 +1,4 @@
+{
+    "CLIENT_ENV": "dev",
+    "ENV_CONFIG_URI": "func-ppo-web-client-dev"
+}

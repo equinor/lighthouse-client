@@ -26,8 +26,7 @@ export const ScopeChangeRequestEditForm = ({
     const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
 
     const onSubmit = async () => {
-        console.log('yepå');
-        patchScopeChange(
+        await patchScopeChange(
             {
                 ...request,
                 ...formData.getChangedData(),

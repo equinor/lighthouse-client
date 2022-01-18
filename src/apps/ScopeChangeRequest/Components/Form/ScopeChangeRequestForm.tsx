@@ -207,11 +207,6 @@ const TitleHeader = styled.div`
     align-items: center;
 `;
 
-const LineBreaks = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
 const Inline = styled.span`
     display: flex;
     align-items: center;

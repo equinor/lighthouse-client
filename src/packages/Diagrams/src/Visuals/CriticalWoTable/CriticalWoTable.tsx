@@ -3,6 +3,12 @@ import { WorkOrder } from '../../../../../apps/Construction/mocData/mockData';
 import { Fragment } from 'react';
 import { createWoStatusMap, filterWoMap } from './utils';
 import { WoNumbersDisplay } from './components/WoNumbers';
+
+const Container = styled.div`
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+`;
 const Main = styled.div`
     width: 100%;
     padding-bottom: 2em;
@@ -29,7 +35,7 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
     const filtered = filterWoMap(woDisc);
     const disciplines = Object.keys(filtered);
     return (
-        <div style={{ height: '100%', overflowY: 'scroll' }}>
+        <Container>
             <h3>Job cards that have not reached state WO4 in weeks before installation date</h3>
             <Main>
                 {disciplines &&
@@ -53,6 +59,7 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
                                                             fontWeight: 500,
                                                             paddingBottom: '1em',
                                                         }}
+                                                        key={index}
                                                     >
                                                         {index + 1}
                                                         {index === 0 ? ' Week left' : ' Weeks left'}
@@ -76,6 +83,6 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
                         );
                     })}
             </Main>
-        </div>
+        </Container>
     );
 };
