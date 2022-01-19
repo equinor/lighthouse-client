@@ -5,7 +5,7 @@ export type FieldSetting<ItemType> = {
     key?: keyof ItemType;
     label?: string;
     getKey?: GetKeyFunction<ItemType>;
-    getSort?: GetSortFunction;
+    getColumnSort?: GetSortFunction;
 };
 
 /**

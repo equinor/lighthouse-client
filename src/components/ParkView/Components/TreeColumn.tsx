@@ -2,7 +2,7 @@ import { DataSet } from '../Models/data';
 import { Items } from './Items';
 import { Group } from './Group';
 import styled from 'styled-components';
-import { FieldSettings } from '../Models/FieldSettings';
+import { FieldSettings } from '../Models/fieldSettings';
 
 interface TreeColumnProps<T> {
     group: DataSet<T>;
@@ -37,7 +37,7 @@ export function TreeColumn<T>({ group, fieldSettings }: TreeColumnProps<T>): JSX
                 <Groups>
                     {subGroupKeys
                         .sort(
-                            fieldSettings?.[group.subGroups?.[0]?.groupKey]?.getSort ||
+                            fieldSettings?.[group.subGroups?.[0]?.groupKey]?.getColumnSort ||
                                 defaultSortFunction
                         )
                         .map((groupKey, index) => (

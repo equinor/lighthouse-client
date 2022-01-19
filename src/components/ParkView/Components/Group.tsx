@@ -5,7 +5,7 @@ import { DataSet } from '../Models/data';
 import { Items } from './Items';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { useRefresh } from '../hooks/useRefresh';
-import { FieldSettings } from '../Models/FieldSettings';
+import { FieldSettings } from '../Models/fieldSettings';
 
 interface GroupProps<T> {
     group: DataSet<T>;
@@ -55,7 +55,7 @@ export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>
                     <>
                         {subGroupKeys
                             .sort(
-                                fieldSettings?.[group.subGroups?.[0]?.groupKey]?.getSort ||
+                                fieldSettings?.[group.subGroups?.[0]?.groupKey]?.getColumnSort ||
                                     defaultSortFunction
                             )
                             .map((groupKey) => (

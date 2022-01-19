@@ -1,4 +1,4 @@
-import { FieldSettings } from '../Models/FieldSettings';
+import { FieldSettings } from '../Models/fieldSettings';
 
 import { Data } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';

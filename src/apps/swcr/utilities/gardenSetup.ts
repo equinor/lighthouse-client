@@ -1,4 +1,4 @@
-import { FieldSettings } from '../../../components/ParkView/Models/FieldSettings';
+import { FieldSettings } from '../../../components/ParkView/Models/fieldSettings';
 import { SwcrPackage } from '../models/SwcrPackage';
 import {
     getIsSafetyKey,
@@ -31,11 +31,11 @@ export type ExtendedSwcrGardenFields =
     | 'nextSignatureRole';
 
 export const fieldSettings: FieldSettings<SwcrPackage, ExtendedSwcrGardenFields> = {
-    isSafety: { label: 'Is Safety', getKey: getIsSafetyKey, getSort: sortByIsSafety },
+    isSafety: { label: 'Is Safety', getKey: getIsSafetyKey, getColumnSort: sortByIsSafety },
     estimatedManhours: {
         label: 'Estimated man hours',
         getKey: getHoursGroupKey,
-        getSort: sortByEstimatedManHours,
+        getColumnSort: sortByEstimatedManHours,
     },
     types: { label: 'Types', getKey: getTypeKeys },
     nextToSign: { label: 'Next signature by', getKey: getNextToSignKeys },
@@ -43,7 +43,7 @@ export const fieldSettings: FieldSettings<SwcrPackage, ExtendedSwcrGardenFields>
     latestSignRanking: {
         label: 'Last signed ranking',
         getKey: getLatestSignedRankingKey,
-        getSort: sortByLastSignedRanking,
+        getColumnSort: sortByLastSignedRanking,
     },
     RFCC: { label: 'RFCC', getKey: getRfccKey },
     RFCCDueDate: { label: 'RFCC duedate', getKey: getRfccDueDateKey },
@@ -71,5 +71,5 @@ export const fieldSettings: FieldSettings<SwcrPackage, ExtendedSwcrGardenFields>
     nextSignRanking: { label: 'Next signature ' },
     cpkgNo: { label: 'CommPK' },
     cpkgPhase: { label: 'Phase' },
-    status: { key: 'status', label: 'Status', getSort: sortBySwcrStatusPriority },
+    status: { key: 'status', label: 'Status', getColumnSort: sortBySwcrStatusPriority },
 };

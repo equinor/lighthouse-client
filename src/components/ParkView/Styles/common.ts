@@ -2,7 +2,7 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
-/**TODO: max-heigh is hardcoded to make the garden scale corret. Expanded filter panel brakes this.
+/**TODO: max-heigh is hardcoded to make the garden scale correct. Expanded filter panel brakes this.
  * This needs to be removed at some point
  **/
 export const Wrapper = styled.div`

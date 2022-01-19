@@ -55,7 +55,7 @@ export function GardenView<T>(): JSX.Element | null {
     };
 
     const defaultSortFunction = (a: string, b: string) => a.localeCompare(b);
-    const columnSortFunction = fieldSettings[gardenKey]?.getSort || defaultSortFunction;
+    const columnSortFunction = fieldSettings[gardenKey]?.getColumnSort || defaultSortFunction;
     const columnKeys = Object.keys(garden).sort(columnSortFunction);
 
     return (
