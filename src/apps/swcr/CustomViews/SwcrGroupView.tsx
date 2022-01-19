@@ -3,7 +3,7 @@ import { Pack } from '../../../components/ParkView/Styles/group';
 import styled from 'styled-components';
 import { Count } from '../../../components/ParkView/Styles/common';
 import { ChevronUp, ChevronDown } from '../../../components/ParkView/Icons/Chevron';
-import { CustomGroupView } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { CustomGroupView } from '../../../components/ParkView/Models/gardenOptions';
 
 const SwcrGroup = styled(Pack)`
     min-width: 50px;

@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { DataSet } from '../../../components/ParkView/Models/data';
+import { CustomHeaderView } from '../../../components/ParkView/Models/gardenOptions';
 import { Count, Groupe, Title } from '../../../components/ParkView/Styles/common';
-import { CustomHeaderView } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { SwcrPackage } from '../models/SwcrPackage';
 import { DATE_BLANKSTRING, DEFAULT_BLANKSTRING } from '../utilities/packages';
 

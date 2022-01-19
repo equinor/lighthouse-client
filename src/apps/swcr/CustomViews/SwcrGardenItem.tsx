@@ -3,7 +3,7 @@ import { Item } from '../../../components/ParkView/Styles/item';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { getSwcrStatusColor } from '../utilities/packages';
-import { CustomItemView } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { CustomItemView } from '../../../components/ParkView/Models/gardenOptions';
 
 type SwcrItemProps = { backgroundColor: string; textColor: string };
 
@@ -61,44 +61,3 @@ export function SwcrItemView({
         </SwcrItem>
     );
 }
-
-/* 
-    import { useState } from 'react';
-
-    const SwcrItem = styled(Item)`
-    background-color: ${(props) => props.color};
-    flex-direction: column;
-    width: 100%;
-    box-sizing: border-box;
-    white-space: nowrap;
-    padding: 0.25rem 1rem;
-    border: none;
-`;
-export function SwcrExtendedInfoView({ data }: { data: SwcrPackage }): JSX.Element {
-    return (
-        <div style={{ display: 'flex', flexDirection: 'column', minWidth: '300px' }}>
-            <pre style={{ whiteSpace: 'pre-wrap' }}>{data.modification}</pre>
-            <pre style={{ whiteSpace: 'pre-wrap' }}>{data.description}</pre>
-        </div>
-    );
-}
-
-export function SwcrItemView({
-    data,
-    itemKey,
-    onClick,
-    columnExpanded,
-}: CustomItemView<SwcrPackage>): JSX.Element {
-    const statusColor = getSwcrStatusColor(data.status);
-    const [open, setOpen] = useState(false);
-
-    return (
-        <SwcrItem color={statusColor} onClick={() => setOpen((prevState) => !prevState)}>
-            <div style={{ display: 'flex' }}>
-                {data[itemKey]}
-                {columnExpanded && <SwcrExpandedView data={data} />}
-            </div>
-            {open && <SwcrExtendedInfoView data={data} />}
-        </SwcrItem>
-    );
-} */
