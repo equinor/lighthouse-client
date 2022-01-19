@@ -62,7 +62,7 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
         chart1: {
             type: 'table',
             options: {
-                initialGroupBy: 'responsibleCode',
+                initialGroupBy: 'disciplineDescription',
                 columns: cols,
             },
         },
@@ -174,12 +174,12 @@ export function setup(appApi: ClientApi): void {
     //     type: 'AnalyticsPage',
     //     ...analyticsOptions2,
     // });
-    // workPreparation.registerPage({
-    //     title: 'Details',
-    //     pageId: 'workPreparationDetails',
-    //     type: 'AnalyticsPage',
-    //     ...detailsPage,
-    // });
+    workPreparation.registerPage({
+        title: 'Details',
+        pageId: 'workPreparationDetails',
+        type: 'AnalyticsPage',
+        ...detailsPage,
+    });
 
     // workPreparation.registerPage({
     //     title: 'Hold',
