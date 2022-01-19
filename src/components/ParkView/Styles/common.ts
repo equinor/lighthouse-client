@@ -33,6 +33,7 @@ export const Groupe = styled.div`
     align-items: center;
     position: relative;
     height: 32px;
+    cursor: pointer;
 
     ::after {
         content: ' ';
