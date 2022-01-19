@@ -81,6 +81,7 @@ export function FilterSelector<T>(): JSX.Element | null {
             {gardenKey && (
                 <>
                     <SingleSelect
+                        key={gardenKey.toString()}
                         items={groupingOptions || []}
                         label={''}
                         selectedOption={getFieldSettingsLabelFromKey(
@@ -88,11 +89,11 @@ export function FilterSelector<T>(): JSX.Element | null {
                             fieldSettings
                         )}
                         handleSelectedItemChange={(changes) => {
-                            const keyFromlabel =
+                            const keyFromLabel =
                                 changes.selectedItem &&
                                 getFieldSettingsKeyFromLabel(changes.selectedItem, fieldSettings);
 
-                            keyFromlabel && setGardenKey(keyFromlabel);
+                            keyFromLabel && setGardenKey(keyFromLabel);
                             setGroupKeys([]);
                         }}
                     />
@@ -100,14 +101,15 @@ export function FilterSelector<T>(): JSX.Element | null {
                 </>
             )}
 
-            {groupByKeys.map((x, index) => {
+            {groupByKeys.map((groupByKey, index) => {
                 return (
-                    <SelectRowWrapper key={x.toString()}>
+                    <SelectRowWrapper key={groupByKey.toString() + 'wrapper'}>
                         <SingleSelect
+                            key={groupByKey.toString()}
                             items={groupingOptions || []}
                             label={''}
                             selectedOption={getFieldSettingsLabelFromKey(
-                                x.toString(),
+                                groupByKey.toString(),
                                 fieldSettings
                             )}
                             handleSelectedItemChange={(changes) => {
@@ -121,6 +123,7 @@ export function FilterSelector<T>(): JSX.Element | null {
             {groupingOptions && groupingOptions.length > 0 && (
                 <>
                     <SingleSelect
+                        key={'EmptyGroupBySelector'}
                         items={groupingOptions}
                         label={''}
                         selectedOption=""

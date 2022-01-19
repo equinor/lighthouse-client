@@ -6,13 +6,13 @@ import { Items } from './Items';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { useRefresh } from '../hooks/useRefresh';
 import { FieldSettings } from '../Models/fieldSettings';
+import { defaultSortFunction } from '../Utils/utilities';
 
 interface GroupProps<T> {
     group: DataSet<T>;
     columnExpanded: boolean;
     fieldSettings?: FieldSettings<T>;
 }
-const defaultSortFunction = (a: string, b: string) => a.localeCompare(b);
 
 export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>): JSX.Element {
     const refresh = useRefresh();
@@ -37,7 +37,7 @@ export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>
                     columnExpanded={columnExpanded}
                 />
             ) : (
-                <Pack key={group.value + group.groupKey} onClick={() => handleClick()}>
+                <Pack key={group.value + group.groupKey} onClick={handleClick}>
                     <div style={{ display: 'flex' }}>
                         {group.status?.statusElement}
                         {group.value}

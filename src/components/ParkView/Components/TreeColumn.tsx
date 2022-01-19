@@ -3,6 +3,7 @@ import { Items } from './Items';
 import { Group } from './Group';
 import styled from 'styled-components';
 import { FieldSettings } from '../Models/fieldSettings';
+import { defaultSortFunction } from '../Utils/utilities';
 
 interface TreeColumnProps<T> {
     group: DataSet<T>;
@@ -18,8 +19,6 @@ const Groups = styled.div`
         margin: 0px;
     }
 `;
-
-const defaultSortFunction = (a: string, b: string) => a.localeCompare(b);
 
 export function TreeColumn<T>({ group, fieldSettings }: TreeColumnProps<T>): JSX.Element | null {
     if (!group) {

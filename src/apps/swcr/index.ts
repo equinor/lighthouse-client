@@ -51,23 +51,11 @@ export function setup(appApi: AppApi): void {
         itemKey: 'swcrNo',
         groupByKeys: [],
         fieldSettings,
-        excludeKeys: [
-            'projectDescription',
-            'description',
-            'modification',
-            'rowKey',
-            'url',
-            'updatedAtDate',
-            'cntAttachments',
-            'title',
-            'swcrId',
-        ],
         customViews: {
             customItemView: SwcrItemView,
             customGroupView: SwcrGroupView,
             customHeaderView: SwcrHeaderView,
         },
-        options: { groupDescriptionFunc: (data) => data.title },
     });
 
     swcr.registerDataViewSideSheetOptions({ CustomComponent: SwcrSideSheet });

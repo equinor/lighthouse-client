@@ -1,51 +1,33 @@
-import { useEffect, useState } from 'react';
-
 import { createGarden } from '../Services/createGarden';
 import { Wrapper, Col } from '../Styles/common';
-import { Data } from '../Models/data';
 import { TreeColumn } from './TreeColumn';
-import { getExcludeKeys } from '../Utils/excludeKeys';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { FilterSelector } from './GroupingSelector';
 import { GroupHeader } from './GroupHeader';
 import { useRefresh } from '../hooks/useRefresh';
+import { useMemo } from 'react';
+import { defaultSortFunction } from '../Utils/utilities';
 
 export function GardenView<T>(): JSX.Element | null {
     const refresh = useRefresh();
-    const {
-        data,
-        groupByKeys,
-        gardenKey,
-        excludeKeys,
-        setExcludeKeys,
-        options,
-        status,
-        fieldSettings,
-        customView,
-    } = useParkViewContext<T>();
-    const [garden, setGarden] = useState<Data<T> | null>();
+    const { data, groupByKeys, gardenKey, options, status, fieldSettings, customView } =
+        useParkViewContext<T>();
 
-    if (!excludeKeys && data) {
-        setExcludeKeys(getExcludeKeys(data, 60));
-    }
+    const garden = useMemo(
+        () =>
+            data &&
+            createGarden(
+                data,
+                gardenKey as unknown as keyof T,
+                groupByKeys as unknown as (keyof T)[],
+                status,
+                options?.groupDescriptionFunc,
+                fieldSettings
+            ),
+        [data, fieldSettings, gardenKey, groupByKeys, options?.groupDescriptionFunc, status]
+    );
 
-    useEffect(() => {
-        data &&
-            setGarden(
-                createGarden(
-                    data,
-                    gardenKey as unknown as keyof T,
-                    groupByKeys as unknown as (keyof T)[],
-                    status,
-                    options?.groupDescriptionFunc,
-                    fieldSettings
-                )
-            );
-    }, [data, gardenKey, groupByKeys, status, options?.groupDescriptionFunc, fieldSettings]);
-
-    if (!data || !garden) {
-        return null;
-    }
+    if (!data || !garden) return null;
 
     const Header = customView?.customHeaderView || GroupHeader;
 
@@ -54,9 +36,9 @@ export function GardenView<T>(): JSX.Element | null {
         garden[columnKey].isExpanded = !garden[columnKey].isExpanded;
     };
 
-    const defaultSortFunction = (a: string, b: string) => a.localeCompare(b);
-    const columnSortFunction = fieldSettings[gardenKey]?.getColumnSort || defaultSortFunction;
-    const columnKeys = Object.keys(garden).sort(columnSortFunction);
+    const columnKeys = Object.keys(garden).sort(
+        fieldSettings[gardenKey]?.getColumnSort || defaultSortFunction
+    );
 
     return (
         <>

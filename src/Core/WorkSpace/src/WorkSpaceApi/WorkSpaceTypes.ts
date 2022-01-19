@@ -1,9 +1,9 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
+import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import {
     DataViewSideSheetOptions,
-    GardenOptions,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
