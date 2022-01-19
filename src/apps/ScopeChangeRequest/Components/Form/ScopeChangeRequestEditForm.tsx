@@ -4,7 +4,6 @@ import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { patchScopeChange } from '../../Api';
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { Upload } from '../Upload';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;

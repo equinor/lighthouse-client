@@ -1,8 +1,8 @@
-import { BaseClient } from '@equinor/http-client';
-import { Document } from './Types/Document';
+import { BaseClient } from '../../../../../../packages/httpClient/src';
 import { TypedSelectOption } from '../searchType';
+import { Tag } from './Types/Tag';
 
-export const searchDocuments = async (
+export const searchTags = async (
     searchString: string,
     stidClient: BaseClient
 ): Promise<TypedSelectOption[]> => {
@@ -10,19 +10,19 @@ export const searchDocuments = async (
 
     //Test https://stidapitest.equinor.com
     const baseUrl = 'https://stidapi.equinor.com';
-    const uri = 'JCA/documents';
-    const queryParameters = `docNo=${encodeURI(searchString)}&skip=0&take=50&noContentAs200=true`;
+    const uri = 'JCA/tags';
+    const queryParameters = `tagNo=${encodeURI(searchString)}&skip=0&take=8&noContentAs200=true`;
     const url = `${baseUrl}/${uri}?${queryParameters}`;
     await stidClient
         .fetch(url)
         .then((response) => response.json())
         .then((data) => {
-            data.map((x: Document) => {
+            data.map((x: Tag) => {
                 selectOptions.push({
-                    label: `${x.docNo} - ${x.docTitle}`,
-                    value: x.docNo,
-                    type: 'document',
-                    searchValue: x.docNo,
+                    label: `${x.tagNo}`,
+                    value: x.tagNo,
+                    type: 'stidtag',
+                    searchValue: x.tagNo,
                     object: x,
                 });
             });

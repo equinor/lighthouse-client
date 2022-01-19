@@ -28,16 +28,13 @@ export function Workflow<T>({
 }: WorkflowProps<T>): JSX.Element {
     const [contributor, setContributor] = useState<{ value: string; label: string } | undefined>();
 
-    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const { scopeChange } = useApiClient();
 
-    const { mutateAsync, error, isLoading } = useMutation(createContributor, {
-        retry: 2,
-        retryDelay: 2,
-    });
+    const { mutateAsync, isLoading } = useMutation(createContributor);
 
     async function createContributor() {
         if (!contributor?.value || !currentStepId) return;
-        await postContributor(contributor.value, requestId, currentStepId, customApi);
+        await postContributor(contributor.value, requestId, currentStepId, scopeChange);
     }
 
     useEffect(() => {
@@ -58,14 +55,7 @@ export function Workflow<T>({
                 <>
                     <div style={{ fontSize: '12px' }}>Add contributors</div>
                     <PCSPersonSearch person={contributor} setPerson={setContributor} />
-                    <div style={{ height: '30px' }}>
-                        {isLoading && <span>Loading...</span>}
-                        {/* {error && (
-                            <span style={{ fontSize: '14px', color: 'red' }}>
-                                Adding contributor failed
-                            </span>
-                        )} */}
-                    </div>
+                    <div style={{ height: '30px' }}>{isLoading && <span>Loading...</span>}</div>
                 </>
             )}
 

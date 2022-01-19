@@ -16,11 +16,7 @@ interface RequestDetailViewProps {
     refetch: () => Promise<void>;
 }
 
-export const RequestDetailView = ({
-    request,
-    setEditMode,
-    refetch,
-}: RequestDetailViewProps): JSX.Element => {
+export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps): JSX.Element => {
     const [comment, setComment] = useState<string | undefined>(undefined);
     const { scopeChange } = useApiClient();
     const onInitiate = async () => {
@@ -163,6 +159,20 @@ export const RequestDetailView = ({
                         />
                     }
                 />
+                {/* <Field
+                    label="Contributors"
+                    value={
+                        <div>
+                            {request.currentWorkflowStep?.contributors.map((x) => {
+                                return (
+                                    <div key={x.id}>
+                                        {x.person.firstName} {x.person.lastName}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    }
+                /> */}
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label="Attachments"

@@ -166,12 +166,14 @@ export const ScopeChangeRequestForm = ({
                             <Chip key={x.docNo}>
                                 <StidDocument document={x} />
 
-                                <Button variant="ghost_icon">
+                                <Button
+                                    variant="ghost_icon"
+                                    onClick={() => {
+                                        removeDocument(x.docNo);
+                                    }}
+                                >
                                     <Icon
                                         color={tokens.colors.interactive.primary__resting.rgba}
-                                        onClick={() => {
-                                            removeDocument(x.docNo);
-                                        }}
                                         name="clear"
                                     />
                                 </Button>

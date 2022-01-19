@@ -84,6 +84,7 @@ export interface WorkflowStep {
     isCompleted: boolean;
     isCurrent: boolean;
     criterias: Criteria[];
+    contributors: Contributor[];
 }
 
 export interface Criteria {
@@ -94,4 +95,27 @@ export interface Criteria {
     signedBy: Person;
     signedComment: string;
     signedState: 'Approved' | 'Rejected';
+}
+
+export interface Contributor {
+    createdAtUtc: Date;
+    createdBy: Person;
+    modifiedAtUtc: Date;
+    modifiedBy: Person;
+    plant: string;
+    id: string;
+    messageToContributor: string;
+    person: Person;
+    contribution: Contribution;
+}
+
+export interface Contribution {
+    createdAtUtc: Date;
+    createdBy: Person;
+    modifiedAtUtc: Date;
+    modifiedBy: Person;
+    plant: string;
+    id: string;
+    comment: string;
+    suggestion: string;
 }
