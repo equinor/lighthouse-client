@@ -24,6 +24,7 @@ export const searchPerson = async (
                     value: x.AzureOid,
                     type: 'person',
                     searchValue: `${x.FirstName} ${x.LastName}`,
+                    object: x,
                 });
             });
         });

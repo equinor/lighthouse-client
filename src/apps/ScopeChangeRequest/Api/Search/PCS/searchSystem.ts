@@ -34,6 +34,7 @@ export const searchSystem = async (
                     value: x.Code,
                     searchValue: x.Code,
                     type: 'system',
+                    object: x,
                 });
             });
         });

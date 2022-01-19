@@ -1,31 +1,43 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useCallback, useReducer } from 'react';
-import { useDropzone } from 'react-dropzone';
+import { useCallback, useState } from 'react';
+import { FileRejection, useDropzone } from 'react-dropzone';
 import styled from 'styled-components';
 
-export const Upload = (): JSX.Element => {
-    const reducer = (state: File[], action: File[] | number) => {
-        if (Array.isArray(action) && action.length < 1) return [];
-        if (Array.isArray(action)) return state.concat(action);
-        else return state.filter((_: any, index: number) => index !== action);
+interface UploadProps {
+    attachments: File[];
+    setAttachments: React.Dispatch<React.SetStateAction<File[]>>;
+}
+
+export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Element => {
+    const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
+
+    const addFile = useCallback(
+        async (file: File) => {
+            setAttachments((prev) => [...prev, file]);
+        },
+        [setAttachments]
+    );
+
+    const removeAttachment = async (attachmentName: string | undefined) => {
+        if (!attachmentName) return;
+        setAttachments((prev) => prev.filter((x) => x.name !== attachmentName));
     };
-    const [state, dispatch] = useReducer(reducer, []);
-    const onDrop = useCallback((acceptedFiles) => {
-        onFilesAdded(acceptedFiles);
-    }, []);
+
+    const onDrop = useCallback(
+        (acceptedFiles, fileRejections: FileRejection[]) => {
+            setRejectedFiles(fileRejections);
+            if (acceptedFiles[0]) {
+                addFile(acceptedFiles[0]);
+            }
+        },
+        [addFile]
+    );
+
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         maxSize: 42000000,
     });
-
-    const onFilesAdded = (files: File[]) => {
-        dispatch(files);
-    };
-
-    const onFileRemoved = (index: number) => {
-        dispatch(index);
-    };
 
     return (
         <Wrapper>
@@ -41,20 +53,46 @@ export const Upload = (): JSX.Element => {
                     <span style={{ fontSize: '16px' }}>Drop files or browse to upload</span>
                 </DropHere>
             </AttachmentsContainer>
-            {state.map((attachment, i) => (
-                <AttachmentsList key={i}>
-                    <div>{attachment.name}</div>
-                    <Inline>
-                        <div>{(attachment.size / 1000 ** 2).toFixed(2)}MB / 42.00MB</div>
-                        <Icon
-                            style={{ margin: '0em 0.5em' }}
-                            color={tokens.colors.interactive.primary__resting.rgba}
-                            onClick={() => onFileRemoved(i)}
-                            name="delete_forever"
-                        />
-                    </Inline>
-                </AttachmentsList>
-            ))}
+            {attachments.map((attachment, i) => {
+                return (
+                    <AttachmentsList key={i}>
+                        <a
+                            href={URL.createObjectURL(attachment)}
+                            download
+                            style={{
+                                color: `${tokens.colors.interactive.primary__resting.rgba}`,
+                                cursor: 'pointer',
+                            }}
+                        >
+                            {attachment.name}
+                        </a>
+                        <Inline>
+                            <div>
+                                {attachment.size && (attachment?.size / 1000 ** 2).toFixed(2)}MB /
+                                42.00MB
+                            </div>
+                            <Icon
+                                style={{ margin: '0em 0.5em' }}
+                                color={tokens.colors.interactive.primary__resting.rgba}
+                                onClick={() => removeAttachment(attachment.name)}
+                                name="delete_forever"
+                            />
+                        </Inline>
+                    </AttachmentsList>
+                );
+            })}
+            {rejectedFiles && rejectedFiles.length > 0 && (
+                <div style={{ color: 'red' }}>
+                    The following files could not be added
+                    {rejectedFiles.map((x) => {
+                        return (
+                            <div
+                                key={x.file.name}
+                            >{`${x.file.name} - Reason:  ${x.errors[0].code}`}</div>
+                        );
+                    })}
+                </div>
+            )}
         </Wrapper>
     );
 };
