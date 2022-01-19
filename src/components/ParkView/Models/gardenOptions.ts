@@ -1,6 +1,6 @@
 import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { DataSet, Data } from './data';
-import { FieldSettings } from './FieldSettings';
+import { FieldSettings } from './fieldSettings';
 
 export interface Options<T> {
     groupDescriptionFunc?: (data: T, groupingKey: string) => string;

@@ -1,5 +1,5 @@
-import { GetKeyFunction } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { DateTime } from 'luxon';
+import { GetKeyFunction } from '../../../components/ParkView/Models/fieldSettings';
 import { SwcrStatus, SwcrPackage } from '../models/SwcrPackage';
 
 export const DATE_BLANKSTRING = 'No Date';
@@ -126,7 +126,9 @@ export const getNextToSignKey = (nextToSign: string, ranking?: string): string =
         : `${ranking}: ${nextToSignKey}`;
 };
 
-export const getNextSignatureRoleKey = (nextToSign: string, ranking = '0'): string => {
+export const getNextSignatureRoleKey = (nextToSign: string, ranking?: string): string => {
+    if (!ranking?.length) ranking = '0';
+
     const nextSignatureRoleKey =
         nextToSign.substring(0, nextToSign.indexOf('(')).trimEnd() || DEFAULT_BLANKSTRING;
 
