@@ -75,7 +75,7 @@ export function GardenView<T>(): JSX.Element | null {
                                 </div>
                             )}
 
-                            <TreeColumn group={garden[key]} />
+                            <TreeColumn group={garden[key]} fieldSettings={fieldSettings} />
                         </Col>
                     ))}
             </Wrapper>
