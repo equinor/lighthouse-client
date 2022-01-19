@@ -32,10 +32,24 @@ export interface ScopeChangeRequest {
     workflowSteps: WorkflowStep[];
     guesstimateHours: string;
     guesstimateDescription: string;
-    TagNumbers: Tag[];
-    CommissioningPackageNumbers: CommissioningPackage[];
+    tags: Tag[];
+    TagNumbers: string[];
+    CommissioningPackageNumbers: string[];
+    commissioningPackages: CommissioningPackage[];
+    systems: System[];
     SystemIds: System[];
+    attachments: Attachment[];
     //workflow
+}
+
+export interface Attachment {
+    blobPath: string;
+    createdAtUtc: string;
+    createdBy: Person;
+    fileName: string;
+    id: string;
+    modifiedAtUtc: string | null;
+    modifiedBy: string | null;
 }
 
 export interface CommissioningPackage {

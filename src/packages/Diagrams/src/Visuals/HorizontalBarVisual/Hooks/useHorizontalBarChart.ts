@@ -10,7 +10,7 @@ interface BarChart {
 
 export function useHorizontalBarChart<T>(
     data: T[],
-    { stacked, nameKey, categoryKey, colors }: HorizontalBarChartOptions<T>
+    { stacked, nameKey, categoryKey, colors, onClick }: HorizontalBarChartOptions<T>
 ): BarChart {
     const { series, categories } = useMemo(
         () => createSeriesByKeys(data, 'column', nameKey as string, categoryKey as string),
@@ -25,6 +25,11 @@ export function useHorizontalBarChart<T>(
                 toolbar: {
                     show: true,
                 },
+                events: {
+                    click: function (_event, _chartContext, config) {
+                        onClick && onClick(data, config);
+                    },
+                },
                 animations: {
                     speed: 400,
                     animateGradually: {
@@ -32,6 +37,7 @@ export function useHorizontalBarChart<T>(
                     },
                 },
             },
+
             plotOptions: {
                 bar: {
                     horizontal: true,

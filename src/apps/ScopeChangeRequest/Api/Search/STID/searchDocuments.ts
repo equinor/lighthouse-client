@@ -22,6 +22,7 @@ export const searchDocuments = async (
                     value: x.docNo,
                     type: 'document',
                     searchValue: x.docNo,
+                    object: x,
                 });
             });
         });
