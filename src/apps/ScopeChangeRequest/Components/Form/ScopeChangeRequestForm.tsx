@@ -51,7 +51,7 @@ export const ScopeChangeRequestForm = ({
 
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
-    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const { scopeChange } = useApiClient();
 
     const createScopeChangeMutation = async ({ draft }: CreateScopeChangeParams) => {
         const tags = filterElementsByType(relatedObjects, 'tag');
@@ -68,11 +68,11 @@ export const ScopeChangeRequestForm = ({
                 CommissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
             },
             draft,
-            customApi
+            scopeChange
         );
         if (scID) {
             attachments.forEach(async (attachment) => {
-                await uploadAttachment(scID, attachment, customApi);
+                await uploadAttachment(scID, attachment, scopeChange);
             });
 
             redirect(scID);
@@ -87,7 +87,7 @@ export const ScopeChangeRequestForm = ({
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
-        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId, customApi));
+        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId, scopeChange));
         clearActiveFactory();
     };
 

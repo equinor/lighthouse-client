@@ -10,9 +10,7 @@ import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 //[appApi.appConfig.tenant]
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [
-        'api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default',
-    ]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.scopeChange]);
 
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
         CustomSidesheet: ScopeChangeSideSheet,
