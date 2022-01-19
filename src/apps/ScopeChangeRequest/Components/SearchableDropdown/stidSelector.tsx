@@ -97,13 +97,17 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                                     <Chip key={x.value}>
                                         <StidDocument document={x.object as Document} />
 
-                                        <Icon
-                                            color={tokens.colors.interactive.primary__resting.rgba}
-                                            onClick={() => {
-                                                removeDocument(x.value);
-                                            }}
-                                            name="clear"
-                                        />
+                                        <Button variant="ghost_icon">
+                                            <Icon
+                                                color={
+                                                    tokens.colors.interactive.primary__resting.rgba
+                                                }
+                                                onClick={() => {
+                                                    removeDocument(x.value);
+                                                }}
+                                                name="clear"
+                                            />
+                                        </Button>
                                     </Chip>
                                 );
                             })}

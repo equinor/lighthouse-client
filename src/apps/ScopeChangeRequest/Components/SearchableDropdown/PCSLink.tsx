@@ -43,7 +43,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                 callback(sorted);
             }
         } catch (e) {
-            console.log(e);
+            console.warn(e);
             setApiErrors((prev) => [...prev, 'systems']);
         }
 
@@ -59,7 +59,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                 callback(sorted);
             }
         } catch (e) {
-            console.log(e);
+            console.warn(e);
             setApiErrors((prev) => [...prev, 'comm pkgs']);
         }
 
@@ -73,7 +73,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                 callback(sorted);
             }
         } catch (e) {
-            console.log(e);
+            console.warn(e);
             setApiErrors((prev) => [...prev, 'tags']);
         }
     };

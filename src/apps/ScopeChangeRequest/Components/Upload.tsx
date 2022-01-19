@@ -26,7 +26,6 @@ export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Elemen
 
     const onDrop = useCallback(
         (acceptedFiles, fileRejections: FileRejection[]) => {
-            console.log(fileRejections);
             setRejectedFiles(fileRejections);
             if (acceptedFiles[0]) {
                 addFile(acceptedFiles[0]);
@@ -86,7 +85,6 @@ export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Elemen
                 <div style={{ color: 'red' }}>
                     The following files could not be added
                     {rejectedFiles.map((x) => {
-                        console.log(x);
                         return (
                             <div
                                 key={x.file.name}

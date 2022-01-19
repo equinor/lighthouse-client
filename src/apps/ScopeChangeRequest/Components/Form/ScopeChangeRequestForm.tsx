@@ -120,7 +120,7 @@ export const ScopeChangeRequestForm = ({
     }, [formData, origin?.value, relatedObjects]);
 
     return (
-        <FormContainer>
+        <>
             <TitleHeader>
                 <span style={{ fontSize: '28px' }}>Create scope change request</span>
                 <Icon
@@ -166,13 +166,15 @@ export const ScopeChangeRequestForm = ({
                             <Chip key={x.docNo}>
                                 <StidDocument document={x} />
 
-                                <Icon
-                                    color={tokens.colors.interactive.primary__resting.rgba}
-                                    onClick={() => {
-                                        removeDocument(x.docNo);
-                                    }}
-                                    name="clear"
-                                />
+                                <Button variant="ghost_icon">
+                                    <Icon
+                                        color={tokens.colors.interactive.primary__resting.rgba}
+                                        onClick={() => {
+                                            removeDocument(x.docNo);
+                                        }}
+                                        name="clear"
+                                    />
+                                </Button>
                             </Chip>
                         );
                     })}
@@ -183,7 +185,7 @@ export const ScopeChangeRequestForm = ({
                 /> */}
             </GeneratedForm>
             {error && <p> Something went wrong, please check your connection and try again</p>}
-        </FormContainer>
+        </>
     );
 };
 
@@ -208,8 +210,6 @@ const Chip = styled.div`
     font-size: 16px;
     padding: 5px;
 `;
-
-const FormContainer = styled.div``;
 
 function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes) {
     return items.filter((x) => x.type === type);

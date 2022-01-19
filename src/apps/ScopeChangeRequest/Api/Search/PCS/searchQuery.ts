@@ -39,7 +39,7 @@ export const searchQueryOrigin = async (
                 });
             });
     } catch (e) {
-        console.log(e);
+        console.warn(e);
     }
     return selectOptions || [];
 };

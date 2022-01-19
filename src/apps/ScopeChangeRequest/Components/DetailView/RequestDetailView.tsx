@@ -171,20 +171,13 @@ export const RequestDetailView = ({
                             {request.attachments &&
                                 request.attachments.map((x) => {
                                     return (
-                                        <a
+                                        <Link
                                             href={`https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}/attachments/${x.id}`}
                                             download
-                                            style={{
-                                                display: 'flex',
-                                                color: `${tokens.colors.interactive.primary__resting.rgba}`,
-                                                cursor: 'pointer',
-                                                textDecorationLine: 'underline',
-                                                padding: '8px 0px',
-                                            }}
                                             key={x.id}
                                         >
                                             {x.fileName}
-                                        </a>
+                                        </Link>
                                     );
                                 })}
                         </div>
@@ -275,6 +268,14 @@ const ButtonContainer = styled.div`
 
 const HorizontalDivider = styled.div`
     margin: 0.2em;
+`;
+
+const Link = styled.a`
+    display: flex;
+    color: ${tokens.colors.interactive.primary__resting.rgba};
+    cursor: pointer;
+    textdecorationline: underline;
+    padding: 8px 0px;
 `;
 
 const RequestActionsContainer = styled.div`
