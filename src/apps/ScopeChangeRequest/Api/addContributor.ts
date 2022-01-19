@@ -1,4 +1,4 @@
-import { HttpClient } from '../../../../packages/httpClient/src';
+import { HttpClient } from '@equinor/http-client';
 
 interface ContributorBody {
     messageToContributor: string;

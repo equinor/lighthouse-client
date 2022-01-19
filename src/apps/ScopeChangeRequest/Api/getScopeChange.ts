@@ -1,4 +1,4 @@
-import { HttpClient } from '../../../../packages/httpClient/src';
+import { HttpClient } from '@equinor/http-client';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
 export async function getScopeChangeById(
