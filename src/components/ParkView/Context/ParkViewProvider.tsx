@@ -1,5 +1,5 @@
 import { useContext, useEffect, useReducer } from 'react';
-import { FieldSettings } from '../Models/FieldSettings';
+import { FieldSettings } from '../Models/fieldSettings';
 import { CustomView, GardenOptions, Options, StatusView } from '../Models/gardenOptions';
 
 import { actions } from './ParkViewActions';

@@ -14,7 +14,7 @@ export interface CustomGroupViewProps<T> {
     onClick: () => void;
 }
 
-export interface ParkViewState<T> extends GardenOptions<T> {
+export interface ParkViewState<T extends unknown> extends GardenOptions<T> {
     data: T[] | undefined;
 }
 
