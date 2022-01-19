@@ -66,11 +66,8 @@ const ScrimContainer = styled.div`
 const Container = styled.div`
     min-width: 60vh;
     background: #ffffff;
-    overflow: hidden;
     align-content: stretch;
     align-items: center;
     justify-content: center;
     padding: 2em;
-    height: 100%;
-    overflow: hidden;
 `;

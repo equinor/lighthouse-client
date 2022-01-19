@@ -163,6 +163,26 @@ export const RequestDetailView = ({
                         />
                     }
                 />
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label="Attachments"
+                    value={
+                        <div>
+                            {request.attachments &&
+                                request.attachments.map((x) => {
+                                    return (
+                                        <Link
+                                            href={`https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}/attachments/${x.id}`}
+                                            download
+                                            key={x.id}
+                                        >
+                                            {x.fileName}
+                                        </Link>
+                                    );
+                                })}
+                        </div>
+                    }
+                />
 
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
@@ -213,7 +233,6 @@ export const RequestDetailView = ({
                         )}
                         {request.state === 'Open' && (
                             <>
-                                {/* Temporarily feature flagged */}
                                 <span>
                                     {/* <Button variant="outlined" color="danger">
                                             Void Request
@@ -249,6 +268,14 @@ const ButtonContainer = styled.div`
 
 const HorizontalDivider = styled.div`
     margin: 0.2em;
+`;
+
+const Link = styled.a`
+    display: flex;
+    color: ${tokens.colors.interactive.primary__resting.rgba};
+    cursor: pointer;
+    textdecorationline: underline;
+    padding: 8px 0px;
 `;
 
 const RequestActionsContainer = styled.div`
