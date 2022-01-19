@@ -35,7 +35,7 @@
             "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
             "@equinor/Table": ["./src/packages/Table"],
             "@equinor/authentication": ["./packages/authentication"],
-            "@equinor/http-client": ["./packages/httpClient"],
+            "@equinor/http-client": ["./src/Core/httpClient"],
             "@equinor/lighthouse-core": ["./packages/core"],
             "@equinor/lighthouse-hooks": ["./packages/hooks"],
             "@equinor/lighthouse-components": ["./packages/components"],

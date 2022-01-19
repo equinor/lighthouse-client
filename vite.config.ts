@@ -13,8 +13,7 @@ export default defineConfig({
         // https: true,
     },
     define: {
-        'process.env': {
-        },
+        'process.env': {},
     },
     resolve: {
         alias: {
@@ -34,7 +33,7 @@ export default defineConfig({
             '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),
             '@equinor/Table': path.resolve(__dirname, './src/packages/Table'),
             '@equinor/authentication': path.resolve(__dirname, './packages/authentication/'),
-            '@equinor/http-client': path.resolve(__dirname, './packages/httpClient/'),
+            '@equinor/http-client': path.resolve(__dirname, './src/Core/httpClient/'),
             '@equinor/lighthouse-core': path.resolve(__dirname, './packages/core/'),
             '@equinor/lighthouse-hooks': path.resolve(__dirname, './packages/hooks/'),
             '@equinor/lighthouse-components': path.resolve(__dirname, './packages/components/'),
@@ -55,7 +54,7 @@ export default defineConfig({
                         {
                             src: './doc/dataView.md',
                             dest: 'dist/',
-                        }, 
+                        },
                     ],
                     hook: 'writeBundle',
                 }),
