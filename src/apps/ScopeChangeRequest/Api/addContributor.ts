@@ -1,4 +1,4 @@
-import { BaseClient } from '../../../../packages/httpClient/src';
+import { HttpClient } from '../../../../packages/httpClient/src';
 
 interface ContributorBody {
     messageToContributor: string;
@@ -9,7 +9,7 @@ export const addContributor = async (
     azureOid: string,
     requestId: string,
     stepId: string,
-    client: BaseClient
+    client: HttpClient
 ): Promise<void> => {
     const payload: ContributorBody = {
         messageToContributor: '',

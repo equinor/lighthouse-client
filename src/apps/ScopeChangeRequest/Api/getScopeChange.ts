@@ -1,9 +1,9 @@
-import { BaseClient } from '../../../../packages/httpClient/src';
+import { HttpClient } from '../../../../packages/httpClient/src';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
 export async function getScopeChangeById(
     id: string,
-    client: BaseClient
+    client: HttpClient
 ): Promise<ScopeChangeRequest> {
     return await client
         .fetch(

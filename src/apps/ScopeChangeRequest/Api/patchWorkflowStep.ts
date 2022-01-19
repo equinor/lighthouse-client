@@ -1,10 +1,10 @@
-import { BaseClient } from '../../../../packages/httpClient/src';
+import { HttpClient } from '../../../../packages/httpClient/src';
 
 export async function patchWorkflowStep(
     requestId: string,
     stepId: string,
     criteriaId: string,
-    client: BaseClient,
+    client: HttpClient,
     comment?: string
 ): Promise<void> {
     const requestOptions = {

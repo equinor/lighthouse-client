@@ -1,6 +1,6 @@
-import { BaseClient } from '../../../../../../packages/httpClient/src';
-import { searchDocuments } from './searchDocuments';
+import { HttpClient } from '../../../../../../packages/httpClient/src';
 import { TypedSelectOption } from '../searchType';
+import { searchDocuments } from './searchDocuments';
 
 export type StidTypes = 'document';
 
@@ -14,7 +14,7 @@ export type StidTypes = 'document';
 export const searchStid = async (
     searchString: string,
     searchItem: StidTypes,
-    procosysClient: BaseClient
+    procosysClient: HttpClient
 ): Promise<TypedSelectOption[]> => {
     switch (searchItem.toLowerCase()) {
         case 'document':

@@ -1,11 +1,11 @@
-import { BaseClient } from '@equinor/http-client';
+import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
 import { PCSStructure } from './Types/searchStructure';
 import { Tag } from './Types/tag';
 
 export const searchTags = async (
     searchString: string,
-    procosysClient: BaseClient
+    procosysClient: HttpClient
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 

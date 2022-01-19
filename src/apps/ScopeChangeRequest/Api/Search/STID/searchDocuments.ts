@@ -1,10 +1,10 @@
-import { BaseClient } from '@equinor/http-client';
-import { Document } from './Types/Document';
+import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
+import { Document } from './Types/Document';
 
 export const searchDocuments = async (
     searchString: string,
-    stidClient: BaseClient
+    stidClient: HttpClient
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 

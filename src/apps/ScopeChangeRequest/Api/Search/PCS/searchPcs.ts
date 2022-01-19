@@ -1,10 +1,10 @@
-import { searchCommPkg } from './searchCommPkg';
-import { searchTags } from './searchTags';
-import { searchSystem } from './searchSystem';
-import { BaseClient } from '../../../../../../packages/httpClient/src';
-import { searchQueryOrigin } from './searchQuery';
-import { searchPerson } from './searchPerson';
+import { HttpClient } from '../../../../../../packages/httpClient/src';
 import { TypedSelectOption } from '../searchType';
+import { searchCommPkg } from './searchCommPkg';
+import { searchPerson } from './searchPerson';
+import { searchQueryOrigin } from './searchQuery';
+import { searchSystem } from './searchSystem';
+import { searchTags } from './searchTags';
 
 export type ProcoSysTypes = 'tag' | 'commpkg' | 'system' | 'query' | 'person';
 
@@ -18,7 +18,7 @@ export type ProcoSysTypes = 'tag' | 'commpkg' | 'system' | 'query' | 'person';
 export const searchPcs = async (
     searchString: string,
     searchItem: ProcoSysTypes,
-    procosysClient: BaseClient
+    procosysClient: HttpClient
 ): Promise<TypedSelectOption[]> => {
     switch (searchItem.toLowerCase()) {
         case 'tag':
