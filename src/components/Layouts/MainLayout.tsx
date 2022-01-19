@@ -2,6 +2,7 @@ import { Manifests } from '@equinor/app-builder';
 import { useClientContext } from '@equinor/portal-client';
 import { PopoutSidesheet } from '@equinor/sidesheet';
 import styled from 'styled-components';
+import { FullscreenMainMenu } from '../Menu/FullscreenMainMenu';
 import { MainMenu } from '../Menu/MainMenu';
 
 const Wrapper = styled.div`
@@ -30,13 +31,19 @@ interface CssProps {
 }
 
 export const MainLayout = ({ children, manifests }: MainLayoutProps): JSX.Element => {
-    const { appsPanelActive } = useClientContext();
+    const { appsPanelActive, fullscreenMenuActive } = useClientContext();
     return (
         <Wrapper>
-            <MainMenuWrapper panelActive={appsPanelActive}>
-                <MainMenu manifests={manifests} />
-            </MainMenuWrapper>
-            <ChildrenWrapper panelActive={appsPanelActive}>{children}</ChildrenWrapper>
+            {fullscreenMenuActive ? (
+                <FullscreenMainMenu manifests={manifests} />
+            ) : (
+                <>
+                    <MainMenuWrapper panelActive={appsPanelActive}>
+                        <MainMenu manifests={manifests} />
+                    </MainMenuWrapper>
+                    <ChildrenWrapper panelActive={appsPanelActive}>{children}</ChildrenWrapper>
+                </>
+            )}
             {/* TODO: Wrap Resizable here */}
             <PopoutSidesheet />
         </Wrapper>

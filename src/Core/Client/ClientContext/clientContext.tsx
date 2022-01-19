@@ -5,12 +5,13 @@ import { AppConfig } from '../Types/Settings';
 
 interface ClientState {
     appsPanelActive: boolean;
+    fullscreenMenuActive: boolean;
 }
 
 interface ClientContextState extends ClientState {
     toggleAppPanel: VoidFunction;
+    toggleFullscreenMenu: VoidFunction;
     appConfig: AppConfig;
-
     authProvider: AuthenticationProvider;
 }
 
@@ -24,10 +25,12 @@ type VoidFunction = () => void;
 
 export enum OfflineDocumentsAction {
     toggleAppPanel = 'toggleAppPanel',
+    toggleFullscreenMenu = 'toggleFullscreenMenu',
 }
 
 export const actions = {
     toggleAppPanel: createCustomAction(OfflineDocumentsAction.toggleAppPanel),
+    toggleFullscreenMenu: createCustomAction(OfflineDocumentsAction.toggleFullscreenMenu),
 };
 
 export type OfflineDocumentsActionType = typeof OfflineDocumentsAction;
@@ -40,6 +43,8 @@ export function ClientReducer(state: ClientState, action: Action): ClientState {
     switch (action.type) {
         case getType(actions.toggleAppPanel):
             return { ...state, appsPanelActive: !state.appsPanelActive };
+        case getType(actions.toggleFullscreenMenu):
+            return { ...state, fullscreenMenuActive: !state.fullscreenMenuActive };
         default:
             return state;
     }
@@ -47,6 +52,7 @@ export function ClientReducer(state: ClientState, action: Action): ClientState {
 
 const initialState: ClientState = {
     appsPanelActive: false,
+    fullscreenMenuActive: false,
 };
 
 export const ClientContextProvider = ({
@@ -60,6 +66,10 @@ export const ClientContextProvider = ({
         dispatch(actions.toggleAppPanel());
     };
 
+    const toggleFullscreenMenu = () => {
+        dispatch(actions.toggleFullscreenMenu());
+    };
+
     return (
         <ClientContext.Provider
             value={{
@@ -67,6 +77,7 @@ export const ClientContextProvider = ({
                 appConfig,
                 authProvider,
                 toggleAppPanel,
+                toggleFullscreenMenu,
             }}
         >
             {children}
