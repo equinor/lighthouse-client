@@ -19,7 +19,6 @@ export default defineConfig({
         alias: {
             '@equinor/portal-client': path.resolve(__dirname, './src/Core/Client'),
             '@equinor/sidesheet': path.resolve(__dirname, './src/packages/Sidesheet'),
-            '@equinor/app-builder': path.resolve(__dirname, './src/Core/AppBuilder'),
             '@equinor/worker': path.resolve(__dirname, './src/packages/WebWorkers'),
             '@equinor/filter': path.resolve(__dirname, './src/packages/Filter'),
             '@equinor/VisualEditor': path.resolve(__dirname, './src/packages/VisualEditor'),

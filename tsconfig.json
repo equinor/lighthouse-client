@@ -21,7 +21,6 @@
             "@equinor/Kpi": ["./src/packages/KPI"],
             "@equinor/portal-client": ["./src/Core/Client"],
             "@equinor/sidesheet": ["./src/packages/Sidesheet"],
-            "@equinor/app-builder": ["./src/Core/AppBuilder"],
             "@equinor/GroupView": ["./src/Core/GroupView"],
             "@equinor/WorkSpace": ["./src/Core/WorkSpace"],
             "@equinor/PageViewer": ["./src/Core/PageViewer"],

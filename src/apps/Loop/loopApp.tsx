@@ -1,5 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
+import { ClientApi } from '@equinor/portal-client';
 import styled from 'styled-components';
 import { Status } from '../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';

@@ -1,6 +1,6 @@
-import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { baseClient } from '@equinor/http-client';
+import { ClientApi } from '@equinor/portal-client';
 import { ScopeChangeSideSheet } from './Components/CustomSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';

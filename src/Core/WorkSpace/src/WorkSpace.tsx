@@ -1,7 +1,7 @@
-import { ClientApi } from '@equinor/app-builder';
-
+import { ClientApi } from '@equinor/portal-client';
 import { WorkSpaceView } from './Components/WorkSpace/WorkSpaceView';
 import { DataProvider } from './Context/DataProvider';
+
 
 export type WorkspaceProps = Omit<ClientApi, 'createWorkSpace' | 'createPageViewer'>;
 

@@ -1,5 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
+import { ClientApi } from '@equinor/portal-client';
 
 export interface WorkOrder {
     plant: string;

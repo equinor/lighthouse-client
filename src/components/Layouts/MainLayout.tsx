@@ -1,5 +1,4 @@
-import { Manifests } from '@equinor/app-builder';
-import { useClientContext } from '@equinor/portal-client';
+import { Manifests, useClientContext } from '@equinor/portal-client';
 import { PopoutSidesheet } from '@equinor/sidesheet';
 import styled from 'styled-components';
 import { MainMenu } from '../Menu/MainMenu';

@@ -1,15 +1,8 @@
-import { baseClient, BaseClient } from '../../../../packages/httpClient/src/baseClient';
+import { baseClient } from '../../../../packages/httpClient/src/baseClient';
 import { useClientContext } from '../ClientContext/clientContext';
-import { Scope } from '../Types/Settings';
+import { HttpClients } from '../Types/HttpClients';
 
-
-type Clients = {
-    [key in keyof Scope]: BaseClient;
-} & {
-    customApi: BaseClient;
-};
-
-export function useApiClient(customScope?: string): Clients {
+export function useApiClient(customScope?: string): HttpClients {
     const { appConfig, authProvider } = useClientContext();
     customScope = customScope || '';
 
@@ -20,5 +13,5 @@ export function useApiClient(customScope?: string): Clients {
     Object.keys(appConfig.scope).forEach((key) => {
         apiClients[key] = baseClient(authProvider, [appConfig.scope[key]]);
     });
-    return apiClients as Clients;
+    return apiClients as HttpClients;
 }

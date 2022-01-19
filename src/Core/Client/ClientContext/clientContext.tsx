@@ -1,7 +1,7 @@
 import { AuthenticationProvider } from '@equinor/authentication';
 import { createContext, useContext, useReducer } from 'react';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
-import { AppConfig } from '../Types/Settings';
+import { AppConfig } from '../Types/AppConfig';
 
 interface ClientState {
     appsPanelActive: boolean;
@@ -10,14 +10,11 @@ interface ClientState {
 interface ClientContextState extends ClientState {
     toggleAppPanel: VoidFunction;
     appConfig: AppConfig;
-
     authProvider: AuthenticationProvider;
 }
 
 interface ClientContextProviderProps {
     children: React.ReactNode;
-    appConfig: AppConfig;
-    authProvider: AuthenticationProvider;
 }
 
 type VoidFunction = () => void;
@@ -49,11 +46,8 @@ const initialState: ClientState = {
     appsPanelActive: false,
 };
 
-export const ClientContextProvider = ({
-    children,
-    appConfig,
-    authProvider,
-}: ClientContextProviderProps): JSX.Element => {
+// Add AppConfig and authProvider from hook
+export const ClientContextProvider = ({ children }: ClientContextProviderProps): JSX.Element => {
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
     const toggleAppPanel = () => {

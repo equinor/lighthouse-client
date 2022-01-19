@@ -1,9 +1,9 @@
-import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { ClientApi } from '@equinor/portal-client';
 import { baseClient } from '../../../packages/httpClient/src';
 import { CriticalWoTable, weekDiff } from '../../packages/Diagrams/src/Visuals/CriticalWoTable';
 import { cols } from './DetailsPage/tableConfig';
-import { WorkOrder, WorkOrderApi } from './mocData/mockData';
+import { WorkOrder } from './mocData/mockData';
 import { mock } from './mocData/newMockData';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {

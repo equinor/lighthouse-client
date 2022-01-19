@@ -1,7 +1,6 @@
-import { Manifests } from '@equinor/app-builder';
-import { AuthenticationProvider, useAuthenticate } from '@equinor/authentication';
+import { useAuthenticate } from '@equinor/authentication';
 import { tokens } from '@equinor/eds-tokens';
-import { AppConfig, ClientContextProvider } from '@equinor/portal-client';
+import { Client as ClientProps, ClientContextProvider } from '@equinor/portal-client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
@@ -40,29 +39,19 @@ const GlobalStyle = createGlobalStyle`
         }
 `;
 
-interface ClientProps {
-    appConfig: AppConfig;
-    authProvider: AuthenticationProvider;
-    manifests: Manifests;
-}
-
-const Client: React.FC<ClientProps> = ({
-    appConfig,
-    authProvider,
-    manifests,
-}: ClientProps): JSX.Element => {
+const Client: React.FC<ClientProps> = ({ authProvider, registry }: ClientProps): JSX.Element => {
     const isAuthenticated = useAuthenticate(authProvider);
     const queryClient = new QueryClient();
 
     return isAuthenticated ? (
         <QueryClientProvider client={queryClient}>
+            <GlobalStyle />
             <ConfirmationDialog />
-            <ClientContextProvider {...{ appConfig, authProvider }}>
+            <ClientContextProvider>
                 <BrowserRouter>
-                    <GlobalStyle />
                     <ProCoSysTopBar />
-                    <MainLayout manifests={manifests}>
-                        <ClientRoutes manifests={manifests} />
+                    <MainLayout manifests={registry}>
+                        <ClientRoutes manifests={registry} />
                     </MainLayout>
                 </BrowserRouter>
                 <FactoryComponent />
