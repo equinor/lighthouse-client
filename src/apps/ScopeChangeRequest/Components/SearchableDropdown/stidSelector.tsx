@@ -61,8 +61,8 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                 >
                     <StidWrapper>
                         <StidHeader>
-                            <span></span>
-                            <h2>Stid document search</h2>
+                            <Title>Add document</Title>
+
                             <Icon
                                 name="close"
                                 color={tokens.colors.interactive.primary__resting.hex}
@@ -78,7 +78,7 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                             isMulti
                             isClearable={false}
                             controlShouldRenderValue={false}
-                            placeholder={'Type to search...'}
+                            placeholder={'Search'}
                             components={applyEdsComponents()}
                             onChange={(
                                 newValue: MultiValue<TypedSelectOption>,
@@ -126,10 +126,13 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
 
 const StidWrapper = styled.div`
     background-color: white;
-    width: 600px;
-    height: 400px;
+    width: 640px;
+    min-height: 800px;
     padding: 20px;
-    border-radius: 2%;
+`;
+
+const Title = styled.h2`
+    font-weight: normal;
 `;
 
 const Chip = styled.div`
