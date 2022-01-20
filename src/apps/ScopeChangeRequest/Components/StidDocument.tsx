@@ -9,7 +9,7 @@ interface StidDocumentProps {
 }
 
 export const StidDocument = ({ document }: StidDocumentProps): JSX.Element => {
-    //const revDate = new Date(document.revDate).toISOString().slice(0, 10);
+    const revDate = new Date(document.revDate).toISOString().slice(0, 10);
     const handleRedirect = (docNo: string) => {
         window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
     };
@@ -32,7 +32,7 @@ export const StidDocument = ({ document }: StidDocumentProps): JSX.Element => {
                     </Link>
                     <Inline>
                         <MetaData>
-                            {`Revision ${document.revNo} | Rev date ${document.revDate} | Reason for issue ${document.reasonForIssue}`}
+                            {`Revision ${document.revNo} | Rev date ${revDate} | Reason for issue ${document.reasonForIssue}`}
                         </MetaData>
                     </Inline>
                 </LineBreaks>

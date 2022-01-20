@@ -125,7 +125,7 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                                         documents.forEach((x) => {
                                             if (x && x.docNo) {
                                                 addDocument({
-                                                    label: `${x.docNo} - ${x.docTitle}`,
+                                                    label: `DOC_${x.docNo} - ${x.docTitle}`,
                                                     searchValue: x.docNo,
                                                     object: x,
                                                     type: 'document',
@@ -133,10 +133,6 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                                                 });
                                             }
                                         });
-                                        /**
-                                         * Resolve all documents for given tag value
-                                         * https://stidapi.equinor.com/JCA/tag/document-refs
-                                         */
                                     }
                                 }
                             }}
