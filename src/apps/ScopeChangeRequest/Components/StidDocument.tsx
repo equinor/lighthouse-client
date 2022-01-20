@@ -15,9 +15,9 @@ export const StidDocument = ({ document }: StidDocumentProps): JSX.Element => {
     };
     return (
         <Wrapper>
-            <div style={{ width: '24px', height: '24px' }}>
+            <IconWrapper>
                 <Icon name="file_copy" color={tokens.colors.interactive.primary__resting.rgba} />
-            </div>
+            </IconWrapper>
             <Inline>
                 <LineBreaks
                     style={{
@@ -40,6 +40,11 @@ export const StidDocument = ({ document }: StidDocumentProps): JSX.Element => {
         </Wrapper>
     );
 };
+
+const IconWrapper = styled.div`
+    width: 24px;
+    height: 24px;
+`;
 
 const LineBreaks = styled.div`
     display: flex;

@@ -21,10 +21,7 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
     const [isOpen, setIsOpen] = useState(false);
     const [documents, setDocuments] = useState<TypedSelectOption[]>([]);
     const [tagContainsNoDocuments, setTagContainsNoDocuments] = useState<boolean>(false);
-    //prod
     const { customApi } = useApiClient('1734406c-3449-4192-a50d-7c3a63d3f57d/.default');
-    //test
-    // const { customApi } = useApiClient('3aa4a235-b6e2-48d5-9195-7fcf05b459b0');
 
     const [hasErrored, setHasErrored] = useState(false);
 

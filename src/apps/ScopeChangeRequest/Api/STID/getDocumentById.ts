@@ -12,8 +12,6 @@ export async function getDocumentById(
     instCode: string,
     docNo: string,
     stidClient: BaseClient
-    //TODO:
-    //docCategory?: string
 ): Promise<Document> {
     const baseUrl = 'https://stidapi.equinor.com';
     const uri = `${instCode}/document`;
