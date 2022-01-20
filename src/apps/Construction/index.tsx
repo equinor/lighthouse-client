@@ -200,11 +200,11 @@ export function setup(appApi: ClientApi): void {
         reportURI: 'jca-installation',
     });
     construction.registerFusionPowerBi('jca-checklist', {
-        title: 'Checklist Analytics',
+        title: 'Checklists',
         reportURI: 'jca-checklist',
     });
     construction.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
-        title: 'Punch Analytics',
+        title: 'Punch',
         reportURI: 'punch-analytics-rls',
     });
     construction.registerFusionPowerBi('fd4052a9-641b-47b4-92d6-4876ecb8cdba', {
