@@ -6,7 +6,7 @@ import LogoIcon from '../../../icons/ProX_logo';
 const Page = styled.div`
     height: 100vh;
     width: 100vw;
-    background: rgb(30, 45, 57);
+    background: #ffffff;
     color: #ffffff;
     object-fit: fill;
     animation: fadeInAnimation ease 3s;
