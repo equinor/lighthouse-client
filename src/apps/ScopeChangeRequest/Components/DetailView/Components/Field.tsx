@@ -35,12 +35,8 @@ export const Field = ({ label, value, customLabel, customValue }: FieldProps): J
                 bold={customValue?.bold}
                 faded={customValue?.faded}
             >
-                <Value>{value}</Value>
+                {value}
             </SectionText>
         </Section>
     );
 };
-
-const Value = styled.div`
-    display: flex;
-`;
