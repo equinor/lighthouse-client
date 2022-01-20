@@ -1,103 +1,125 @@
 import { SingleSelect } from '@equinor/eds-core-react';
-import React, { useMemo } from 'react';
-import { useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { SelectRowWrapper, Separator } from '../Styles/groupingSelector';
 import { useParkViewContext } from '../Context/ParkViewProvider';
+import { FieldSettings } from '../Models/fieldSettings';
+
+const getFieldSettingsKeyFromLabel = <T extends unknown>(
+    label: string,
+    fieldSettings: FieldSettings<T, string>
+) => Object.keys(fieldSettings).find((k) => fieldSettings[k]?.label === label) || label;
+
+const getFieldSettingsLabelFromKey = <T extends unknown>(
+    key: string,
+    fieldSettings: FieldSettings<T, string>
+) => fieldSettings[key]?.label || key;
 
 export function FilterSelector<T>(): JSX.Element | null {
-    const [selectedOption, setSelectedOption] = useState<string>('');
-
-    const { groupByKeys, setGroupKeys, setGardenKey, data, gardenKey, excludeKeys, itemKey } =
+    const { groupByKeys, setGroupKeys, setGardenKey, data, gardenKey, fieldSettings } =
         useParkViewContext<T>();
 
-    const groupingOptions = useMemo(() => {
-        if (data.length > 0) {
-            //exclude rootkey, itemkey and all keys present in groupKeys
-            const options: string[] = [];
-            Object.keys(data[0]).map((x) => {
-                if (
-                    x !== gardenKey &&
-                    x !== itemKey &&
-                    !groupByKeys.includes(x as keyof T) &&
-                    !excludeKeys?.includes(x as keyof T)
-                ) {
-                    options.push(x);
-                }
-            });
-            return options;
-        }
-        return null;
-    }, [data, gardenKey, groupByKeys, itemKey, excludeKeys]);
+    const allOptions = useMemo(
+        () =>
+            Object.keys(fieldSettings).length
+                ? Object.keys(fieldSettings)
+                : Object.keys(data?.[0] || {}),
+        [fieldSettings, data]
+    );
 
-    const handleSelectedItemsChanged = (newValue: string | null | undefined, index: number) => {
-        if (newValue === null) {
-            const newKeys: string[] = [];
+    const filterGroupKey = useCallback(
+        (groupKey: string) =>
+            !(groupKey === gardenKey || groupByKeys.includes(groupKey as keyof T)),
+        [gardenKey, groupByKeys]
+    );
 
-            for (let i = 0; i < index; i++) {
-                newKeys.push(groupByKeys[i] as string);
-            }
-            setGroupKeys([...newKeys]);
-        } else {
-            newValue && setGroupKeys([...(groupByKeys as string[]), newValue]);
-        }
+    const groupingOptions = useMemo(
+        (): string[] | null =>
+            data.length
+                ? allOptions
+                      .filter(filterGroupKey)
+                      .map((groupKey) => fieldSettings?.[groupKey]?.label || groupKey)
+                : null,
+
+        [data, fieldSettings, filterGroupKey, allOptions]
+    );
+
+    const handleExistingSelectionChange = (newValue: string | null | undefined, index: number) => {
+        const newGroupByKeys = [...groupByKeys] as string[];
+        newValue == null
+            ? newGroupByKeys.splice(index, 1)
+            : (newGroupByKeys[index] =
+                  getFieldSettingsKeyFromLabel(newValue, fieldSettings) || newValue);
+
+        setGroupKeys(newGroupByKeys);
     };
 
-    if (!data) {
-        return null;
-    }
+    const addItemToGroupKeys = (newValue: string | null | undefined) =>
+        newValue &&
+        setGroupKeys([
+            ...(groupByKeys as string[]),
+            getFieldSettingsKeyFromLabel(newValue, fieldSettings),
+        ]);
+
+    if (!data) return null;
 
     return (
-        <>
-            <SelectRowWrapper>
-                <Separator> Group by </Separator>
-                {gardenKey && (
-                    <>
+        <SelectRowWrapper>
+            <Separator> Group by </Separator>
+            {gardenKey && (
+                <>
+                    <SingleSelect
+                        key={gardenKey.toString()}
+                        items={groupingOptions || []}
+                        label={''}
+                        selectedOption={getFieldSettingsLabelFromKey(
+                            gardenKey.toString(),
+                            fieldSettings
+                        )}
+                        handleSelectedItemChange={(changes) => {
+                            const keyFromLabel =
+                                changes.selectedItem &&
+                                getFieldSettingsKeyFromLabel(changes.selectedItem, fieldSettings);
+
+                            keyFromLabel && setGardenKey(keyFromLabel);
+                            setGroupKeys([]);
+                        }}
+                    />
+                    <Separator>then</Separator>
+                </>
+            )}
+
+            {groupByKeys.map((groupByKey, index) => {
+                return (
+                    <SelectRowWrapper key={groupByKey.toString() + 'wrapper'}>
                         <SingleSelect
+                            key={groupByKey.toString()}
                             items={groupingOptions || []}
                             label={''}
-                            initialSelectedItem={gardenKey ? gardenKey.toString() : undefined}
+                            selectedOption={getFieldSettingsLabelFromKey(
+                                groupByKey.toString(),
+                                fieldSettings
+                            )}
                             handleSelectedItemChange={(changes) => {
-                                changes.selectedItem && setGardenKey(changes.selectedItem);
-                                setGroupKeys([]);
+                                handleExistingSelectionChange(changes.selectedItem, index);
                             }}
                         />
                         <Separator>then</Separator>
-                    </>
-                )}
-
-                {groupByKeys.map((x, index) => {
-                    return (
-                        <SelectRowWrapper key={x.toString()}>
-                            <SingleSelect
-                                items={groupingOptions || []}
-                                label={''}
-                                initialSelectedItem={x.toString()}
-                                handleSelectedItemChange={(changes) => {
-                                    handleSelectedItemsChanged(changes.selectedItem, index);
-                                }}
-                            />
-                            <Separator>then</Separator>
-                        </SelectRowWrapper>
-                    );
-                })}
-                {groupingOptions && groupingOptions.length > 0 && (
-                    <>
-                        <SingleSelect
-                            items={groupingOptions}
-                            label={''}
-                            selectedOption={selectedOption}
-                            handleSelectedItemChange={(changes) => {
-                                setSelectedOption('');
-                                changes.selectedItem &&
-                                    setGroupKeys([
-                                        ...(groupByKeys as string[]),
-                                        changes.selectedItem,
-                                    ]);
-                            }}
-                        />
-                    </>
-                )}
-            </SelectRowWrapper>
-        </>
+                    </SelectRowWrapper>
+                );
+            })}
+            {groupingOptions && groupingOptions.length > 0 && (
+                <>
+                    <SingleSelect
+                        key={'EmptyGroupBySelector'}
+                        items={groupingOptions}
+                        label={''}
+                        selectedOption=""
+                        handleSelectedItemChange={(changes) => {
+                            addItemToGroupKeys(changes.selectedItem);
+                        }}
+                    />
+                </>
+            )}
+        </SelectRowWrapper>
     );
 }
