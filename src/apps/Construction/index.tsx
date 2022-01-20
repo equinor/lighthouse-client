@@ -195,6 +195,10 @@ export function setup(appApi: ClientApi): void {
     //     title: 'LCI Hanging Garden',
     //     reportURI: 'lci-hanging-gardens',
     // });
+    construction.registerFusionPowerBi('jca-installation', {
+        title: 'Installation',
+        reportURI: 'jca-installation',
+    });
     construction.registerFusionPowerBi('jca-checklist', {
         title: 'Checklist Analytics',
         reportURI: 'jca-checklist',
