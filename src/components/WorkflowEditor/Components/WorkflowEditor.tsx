@@ -20,6 +20,11 @@ interface Workflow {
     requestType: string;
 }
 
+interface WorkflowTemplate {
+    id: string;
+    isPublished: true;
+}
+
 interface WorkflowEditorProps {
     options: WorkflowEditorOptions;
 }
@@ -27,30 +32,25 @@ export const WorkflowEditor = ({
     options: { endpoint },
 }: WorkflowEditorProps): JSX.Element | null => {
     const [workflow, setWorkflow] = useState<Workflow>();
-    const [workflowTemplates, setWorkflowTemplates] = useState<Workflow>();
+    const [workflowTemplates, setWorkflowTemplates] = useState<WorkflowTemplate[]>();
+    const [selectedWorkflowTemplate, setSelectedWorkflowTemplate] = useState<WorkflowTemplate>();
 
-    const [selectedWorkflowTemplate, setSelectedWorkflowTemplate] = useState<Workflow>();
-    const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
     const { scopeChange } = useApiClient();
 
     const fetchWorkflow = async () => {
-        setWorkflow(
-            await scopeChange
-                .fetch(
-                    'https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows'
-                )
-                .then((x) => x.json())
-        );
+        const workflows = await scopeChange
+            .fetch('https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows')
+            .then((x) => x.json());
+        setWorkflow(workflows[0]);
     };
 
     const fetchWorkflowTemplates = async () => {
-        setWorkflowTemplates(
-            await scopeChange
-                .fetch(
-                    `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflow?.id}/templates`
-                )
-                .then((x) => x.json())
-        );
+        const workflowTemplates = await scopeChange
+            .fetch(
+                `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflow?.id}/templates`
+            )
+            .then((x) => x.json());
+        setWorkflowTemplates(workflowTemplates);
     };
 
     useEffect(() => {
@@ -58,6 +58,7 @@ export const WorkflowEditor = ({
     }, [endpoint]);
 
     useEffect(() => {
+        console.log(workflow);
         if (!workflow) return;
         fetchWorkflowTemplates();
     }, [workflow]);
@@ -114,13 +115,35 @@ export const WorkflowEditor = ({
     return (
         <Wrapper>
             <Sidebar>
-                {workflow?.map((x) => {
+                {workflow && (
+                    <Section>
+                        <Inline>
+                            <Icon name="folder" />
+                            <p>{workflow.name}</p>
+                        </Inline>
+                        <SubFolder>
+                            {workflowTemplates &&
+                                workflowTemplates.map((x, i) => {
+                                    return (
+                                        <Entry
+                                            onClick={() => setSelectedWorkflowTemplate(x)}
+                                            key={x.id}
+                                        >
+                                            <Icon name="puzzle_filled" color="grey" />
+                                            Template {i}
+                                        </Entry>
+                                    );
+                                })}
+                        </SubFolder>
+                    </Section>
+                )}
+                {/* {workflow?.map((x) => {
                     return (
                         <Inline key={x.id}>
                             <Icon name="folder" /> {x.name}{' '}
                         </Inline>
                     );
-                })}
+                })} */}
             </Sidebar>
             <div>
                 <Header>
@@ -136,6 +159,7 @@ export const WorkflowEditor = ({
                     </Inline>
                 </Header>
                 <Content>
+                    {selectedWorkflowTemplate && <div>{selectedWorkflowTemplate.id}</div>}
                     <Field
                         label="Workflow title"
                         value={
@@ -219,6 +243,11 @@ export const WorkflowEditor = ({
     // );
 };
 
+const Section = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
 const Sidebar = styled.div`
     height: 100vh;
     width: 256px;
@@ -228,6 +257,15 @@ const Sidebar = styled.div`
 const Inline = styled.div`
     display: flex;
     align-items: center;
+`;
+
+const SubFolder = styled.div`
+    padding: 0em 1em;
+`;
+
+const Entry = styled.div`
+    padding: 0.1em 0em;
+    cursor: pointer;
 `;
 
 const Title = styled.div`
