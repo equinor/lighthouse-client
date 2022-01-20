@@ -10,14 +10,14 @@ import { useApiClient } from '@equinor/portal-client';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [scopeChange, setScopeChange] = useState<ScopeChangeRequest>(item);
-    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const { scopeChange: scopeChangeApi } = useApiClient();
 
     /**
      * Refetches every second
      */
     const { error, data, refetch } = useQuery<ScopeChangeRequest>(
         'scopeChange',
-        () => getScopeChangeById(item.id, customApi),
+        () => getScopeChangeById(item.id, scopeChangeApi),
         { refetchInterval: 1000 }
     );
 

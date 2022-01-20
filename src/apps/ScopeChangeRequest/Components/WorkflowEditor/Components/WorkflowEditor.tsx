@@ -1,5 +1,5 @@
 import { Button } from '@equinor/eds-core-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { WorkflowStep } from '../../../Types/scopeChangeRequest';
 import { DraggableItem, DraggableItemsContainer } from '@equinor/VisualEditor';
@@ -18,7 +18,10 @@ interface WorkflowSteps {
     StepTemplates: TemplateStep[];
 }
 
-type TemplateStep = Omit<WorkflowStep, 'isCompleted' | 'id' | 'isCurrent' | 'criterias'>;
+type TemplateStep = Omit<
+    WorkflowStep,
+    'isCompleted' | 'id' | 'isCurrent' | 'criterias' | 'contributors'
+>;
 
 export const WorkflowEditor = (): JSX.Element | null => {
     const tempWorkflowID = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
@@ -169,13 +172,6 @@ const HorizontalSpacer = styled.div`
 `;
 
 const WorkflowStepsOutline = styled.div``;
-
-const WorkflowStepBox = styled.div`
-    display: flex;
-    margin-bottom: 5px;
-    border: solid;
-    align-items: center;
-`;
 
 const WorkflowEditorWrapper = styled.div`
     display: flex;

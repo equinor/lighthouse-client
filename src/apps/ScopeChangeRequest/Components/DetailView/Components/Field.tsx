@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { Section, SectionText } from '../../../Styles/Section';
 
 interface FieldProps {
