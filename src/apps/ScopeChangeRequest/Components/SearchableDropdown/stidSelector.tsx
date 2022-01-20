@@ -1,15 +1,15 @@
-import React, { Fragment, useState } from 'react';
 import { Button, Icon, Scrim } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { TypedSelectOption } from '../../Api/Search/searchType';
-import AsyncSelect from 'react-select/async';
+import React, { Fragment, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups } from 'react-select';
-import { searchStid } from '../../Api/Search/STID/searchStid';
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
+import AsyncSelect from 'react-select/async';
 import styled from 'styled-components';
+import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
+import { TypedSelectOption } from '../../Api/Search/searchType';
+import { searchStid } from '../../Api/Search/STID/searchStid';
 import { Document } from '../../Api/Search/STID/Types/Document';
 import { StidDocument } from '../StidDocument';
+import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 
 interface StidSelectorProps {
     appendDocuments: (documents: Document[]) => void;
@@ -18,7 +18,7 @@ interface StidSelectorProps {
 export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Element => {
     const [isOpen, setIsOpen] = useState(false);
     const [documents, setDocuments] = useState<TypedSelectOption[]>([]);
-    const { customApi } = useApiClient('1734406c-3449-4192-a50d-7c3a63d3f57d/.default');
+    const { customApi } = useHttpClient('1734406c-3449-4192-a50d-7c3a63d3f57d/.default');
 
     const removeDocument = (value: string) =>
         setDocuments((prev) => prev.filter((x) => x.value !== value));

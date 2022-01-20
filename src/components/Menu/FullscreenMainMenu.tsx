@@ -1,34 +1,30 @@
-import {
-    FullscreenMenuAppColumn,
-    FullscreenMenuItems,
-    FullscreenMenuWrapper,
-    MenuItem,
-    FullscreenMenuItemText,
-    FullscreenMenuGroupHeaderLink,
-    FullscreenMenuGroupHeaderText,
-    Title,
-    FullscreenMenuAppGroup,
-    FullscreenSearchWrapper,
-} from './Styles';
 import { Search } from '@equinor/eds-core-react';
-import { Manifests } from '@equinor/app-builder';
 import { tokens } from '@equinor/eds-tokens';
+import { isProduction, useClientContext } from '@equinor/portal-client';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../Icon/Icon';
+import {
+    FullscreenMenuAppColumn,
+    FullscreenMenuAppGroup,
+    FullscreenMenuGroupHeaderLink,
+    FullscreenMenuGroupHeaderText,
+    FullscreenMenuItems,
+    FullscreenMenuItemText,
+    FullscreenMenuWrapper,
+    FullscreenSearchWrapper,
+    MenuItem,
+    Title
+} from './Styles';
 import { filterByValue, groupeByKey } from './utils';
-import { useMemo, useState } from 'react';
-import { isProduction, useClientContext } from '@equinor/portal-client';
 
-interface FullscreenMainMenuProps {
-    manifests: Manifests;
-}
-
-export const FullscreenMainMenu = ({ manifests }: FullscreenMainMenuProps): JSX.Element => {
+export const FullscreenMainMenu = (): JSX.Element => {
     const isProd = isProduction();
-    const { apps, appGroups } = manifests;
-    const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
     const [searchValue, setSearchValue] = useState('');
-    const { appsPanelActive, toggleAppPanel, toggleFullscreenMenu } = useClientContext();
+    const { settings, registry, toggleAppPanel, toggleFullscreenMenu } = useClientContext();
+
+    const { apps, appGroups } = registry;
+    const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
 
     const filteredList = filterByValue(GroupedMenu, searchValue, 'title');
 
@@ -104,7 +100,7 @@ export const FullscreenMainMenu = ({ manifests }: FullscreenMainMenuProps): JSX.
                 </Title>
                 <MenuItem
                     onClick={() => {
-                        appsPanelActive ? toggleAppPanel() : null;
+                        settings.appsPanelActive ? toggleAppPanel() : null;
                         toggleFullscreenMenu();
                     }}
                 >
@@ -112,7 +108,7 @@ export const FullscreenMainMenu = ({ manifests }: FullscreenMainMenuProps): JSX.
                 </MenuItem>
                 <MenuItem
                     onClick={() => {
-                        !appsPanelActive ? toggleAppPanel() : null;
+                        !settings.appsPanelActive ? toggleAppPanel() : null;
                         toggleFullscreenMenu();
                     }}
                 >

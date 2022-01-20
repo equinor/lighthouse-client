@@ -41,7 +41,7 @@ const GlobalStyle = createGlobalStyle`
         }
 `;
 
-const Client: React.FC<ClientProps> = ({ authProvider, registry }: ClientProps): JSX.Element => {
+const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Element => {
     const isAuthenticated = useAuthenticate(authProvider);
     const queryClient = new QueryClient();
 
@@ -53,8 +53,8 @@ const Client: React.FC<ClientProps> = ({ authProvider, registry }: ClientProps):
                 <ClientContextProvider>
                     <BrowserRouter>
                         <ProCoSysTopBar />
-                        <MainLayout manifests={registry}>
-                            <ClientRoutes manifests={registry} />
+                        <MainLayout>
+                            <ClientRoutes />
                         </MainLayout>
                     </BrowserRouter>
                     <FactoryComponent />

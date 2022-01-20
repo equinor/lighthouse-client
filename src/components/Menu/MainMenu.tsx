@@ -1,6 +1,6 @@
 import { Accordion, Popover, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { isProduction, Manifests, useClientContext } from '@equinor/portal-client';
+import { isProduction, useClientContext } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Apps } from '../../apps/apps';
@@ -18,21 +18,21 @@ import {
     SmallButton,
     SmallItem,
     Title,
-    TopItems,
+    TopItems
 } from './Styles';
 import { filterByValue, groupeByKey } from './utils';
 
-
 const { Item, Header, Panel } = Accordion;
 
-interface MainMenuProps {
-    manifests: Manifests;
-}
-
-export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
+export const MainMenu = (): JSX.Element => {
     const isProd = isProduction();
-    const { apps, appGroups } = manifests;
-    const { appsPanelActive, toggleAppPanel, toggleFullscreenMenu } = useClientContext();
+    const {
+        settings: { appsPanelActive },
+        registry,
+        toggleAppPanel,
+        toggleFullscreenMenu,
+    } = useClientContext();
+    const { apps, appGroups } = registry;
     const [searchValue, setSearchValue] = useState('');
     const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
 

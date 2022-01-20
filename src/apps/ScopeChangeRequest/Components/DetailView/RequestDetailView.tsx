@@ -1,14 +1,14 @@
 import { Button, TextField } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { useMemo, useState } from 'react';
 import styled from 'styled-components';
+import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
+import { patchScopeChange } from '../../Api';
+import { patchWorkflowStep } from '../../Api/patchWorkflowStep';
 import { SectionRow } from '../../Styles/Section';
 import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
 import { Workflow } from '../Workflow/Workflow';
-import { patchWorkflowStep } from '../../Api/patchWorkflowStep';
 import { Field } from './Components/Field';
-import { tokens } from '@equinor/eds-tokens';
-import { useMemo, useState } from 'react';
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { patchScopeChange } from '../../Api';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -22,7 +22,7 @@ export const RequestDetailView = ({
     refetch,
 }: RequestDetailViewProps): JSX.Element => {
     const [comment, setComment] = useState<string | undefined>(undefined);
-    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const { customApi } = useHttpClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
     const onInitiate = async () => {
         const payload = {
             ...request,

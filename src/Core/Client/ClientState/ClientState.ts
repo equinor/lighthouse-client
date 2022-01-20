@@ -2,11 +2,20 @@
  *  and updates to the context is made trough the state.
  */
 
-import { Atom, deref, swap } from '@dbeining/react-atom';
+import { Atom, DeepImmutable, deref, swap, useAtom } from '@dbeining/react-atom';
 import { GlobalClientState } from '../Types/GlobalClientState';
 
+/* Initial Global state used for setting panel states and logging sate to false */
+const INITIAL_STATE = {
+    settings: {
+        appsPanelActive: false,
+        fullscreenMenuActive: false,
+        logging: false,
+    },
+} as GlobalClientState;
+
 /** @type {Atom<GlobalClientState>}  Main State in Application*/
-const GLOBAL_CLIENT_STATE = createGlobalClientState({} as GlobalClientState);
+const GLOBAL_CLIENT_STATE = createGlobalClientState(INITIAL_STATE);
 
 function createGlobalClientState(initialState: GlobalClientState) {
     return Atom.of(initialState);
@@ -18,6 +27,14 @@ function createGlobalClientState(initialState: GlobalClientState) {
  */
 function getGlobalClientState(): Atom<GlobalClientState> {
     return GLOBAL_CLIENT_STATE;
+}
+
+/**
+ * Internal hook used retrieving the globalClientState.
+ * @return {DeepImmutable<GlobalClientState>}
+ */
+export function useGlobalClientState(): DeepImmutable<GlobalClientState> {
+    return useAtom(getGlobalClientState());
 }
 
 /**

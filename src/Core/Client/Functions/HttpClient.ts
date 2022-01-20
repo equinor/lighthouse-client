@@ -4,7 +4,7 @@ import { Scope } from '../Types/ScopeAndUrls';
 import { getAuthProvider } from './getAuthProvider';
 import { readAppConfig } from './Readers';
 
-interface HttpClientOptions {
+export interface HttpClientOptions {
     scope: string;
     baseUrl?: string;
 }

@@ -1,10 +1,9 @@
 import { Button } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
+import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
+import { patchScopeChange } from '../../Api';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { patchScopeChange } from '../../Api';
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { Upload } from '../Upload';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -23,7 +22,7 @@ export const ScopeChangeRequestEditForm = ({
         guesstimateHours: request.guesstimateHours ?? undefined,
         title: request.title,
     });
-    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const { customApi } = useHttpClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
 
     const onSubmit = async () => {
         await patchScopeChange(
