@@ -155,10 +155,10 @@ export function setup(appApi: ClientApi): void {
 
     request.registerStatusItems(statusBarData);
 
-    // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
-    // request.registerVisualEditorOptions({
-    //     endpoint: `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflowId}/templates`,
-    // });
+    const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
+    request.registerWorkflowEditorOptions({
+        endpoint: `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflowId}/templates`,
+    });
 }
 
 export const analyticsOptions: AnalyticsOptions<ScopeChangeRequest> = {
