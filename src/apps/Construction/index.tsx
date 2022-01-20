@@ -211,4 +211,12 @@ export function setup(appApi: ClientApi): void {
         title: 'WO Analytics',
         reportURI: 'wo-analytics-rls',
     });
+
+    /**
+     * Does not contain JC data yet.
+     */
+    // construction.registerFusionPowerBi('fd4052a9-641b-47b4-92d6-4876ecb8cdba', {
+    //     title: 'WO Analytics',
+    //     reportURI: 'wo-analytics-rls',
+    // });
 }
