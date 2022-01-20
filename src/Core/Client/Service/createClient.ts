@@ -1,7 +1,8 @@
-import { AuthenticationProvider } from '../../../../packages/authentication/src';
-import { AppGroups, AppManifest } from '../../AppBuilder/Types';
+import { AuthenticationProvider } from '@equinor/authentication';
 import { registerClientRegistry, registerInternalState } from '../Functions/RegisterActions';
 import { AppConfigResult } from '../Types/AppConfig';
+import { AppGroups } from '../Types/AppGroupe';
+import { AppManifest } from '../Types/AppManifest';
 import { ClientRegistry } from '../Types/ClientRegistry';
 import { fetchConfig } from './appConfig';
 import { appsProvider } from './appsProvider';

@@ -1,10 +1,9 @@
 import { AuthenticationProvider } from '@equinor/authentication';
 import { Factory } from '@equinor/DataFactory';
 import { createPageViewer, PageViewerOptions as PageOptions } from '@equinor/PageViewer';
+import { AppManifest, ClientApi } from '@equinor/portal-client';
 import { createWorkSpace, ViewerOptions } from '@equinor/WorkSpace';
 import { AppConfig } from '../../Client/Types/AppConfig';
-import { ClientApi } from '../Types/App';
-import { AppManifest } from '../Types/Manifest';
 
 export interface ClientBuilderConfig extends AppManifest {
     appConfig: AppConfig;

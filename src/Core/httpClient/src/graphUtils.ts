@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable no-constant-condition */
 import { AuthenticationProvider } from '@equinor/authentication';
 import { User } from '@microsoft/microsoft-graph-types';
 import { graphApiRequest, graphConfig } from './graphConfig';
@@ -16,15 +18,10 @@ export function useGraphClient(authProvider: AuthenticationProvider) {
         if (!account) return;
         const requestConfig = graphApiRequest(account);
 
-        const accessToken = await authProvider.getAccessToken(
-            requestConfig.scopes
-        );
+        const accessToken = await authProvider.getAccessToken(requestConfig.scopes);
 
         if (accessToken) {
-            const userProfile = await getUserProfile(
-                graphConfig.graphProfileEndpoint,
-                accessToken
-            );
+            const userProfile = await getUserProfile(graphConfig.graphProfileEndpoint, accessToken);
             return userProfile;
         } else {
             return;
@@ -41,9 +38,7 @@ export function useGraphClient(authProvider: AuthenticationProvider) {
         if (!account) return;
         const requestConfig = graphApiRequest(account);
 
-        const accessToken = await authProvider.getAccessToken(
-            requestConfig.scopes
-        );
+        const accessToken = await authProvider.getAccessToken(requestConfig.scopes);
         if (accessToken) {
             const userProfilePictureUrl = await getUserProfilePicture(
                 graphConfig.graphProfilePictureEndpoint,
@@ -61,10 +56,7 @@ export function useGraphClient(authProvider: AuthenticationProvider) {
      * @param token users access token used in graph fetch call
      * @returns User profile or undefined if response is not successful
      */
-    async function getUserProfile(
-        endpoint: string,
-        token: string
-    ): Promise<User | undefined> {
+    async function getUserProfile(endpoint: string, token: string): Promise<User | undefined> {
         let profile: User | undefined = undefined;
         const headers = new Headers();
         const bearer = `Bearer ${token}`;
@@ -72,14 +64,11 @@ export function useGraphClient(authProvider: AuthenticationProvider) {
 
         const options = {
             method: 'GET',
-            headers: headers
+            headers: headers,
         };
 
         if (false) {
-            console.log(
-                'request for user profile made to Graph API at: ' +
-                    new Date().toString()
-            );
+            console.log('request for user profile made to Graph API at: ' + new Date().toString());
         }
 
         const response: Response = await fetch(endpoint, options);
@@ -107,13 +96,12 @@ export function useGraphClient(authProvider: AuthenticationProvider) {
 
         const options = {
             method: 'GET',
-            headers: headers
+            headers: headers,
         };
 
         if (false) {
             console.log(
-                'request for user profile picture made to Graph API at: ' +
-                    new Date().toString()
+                'request for user profile picture made to Graph API at: ' + new Date().toString()
             );
         }
 
@@ -133,6 +121,6 @@ export function useGraphClient(authProvider: AuthenticationProvider) {
         getUserProfile,
         graphGetProfile,
         graphGetProfilePicture,
-        getUserProfilePicture
+        getUserProfilePicture,
     };
 }

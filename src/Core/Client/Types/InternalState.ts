@@ -1,4 +1,5 @@
-import { AuthenticationProvider } from '@equinor/authentication';
+import { AuthenticationProvider } from "@equinor/authentication";
+
 
 export interface InternalState {
     clientId: string;

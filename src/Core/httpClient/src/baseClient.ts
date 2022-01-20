@@ -24,7 +24,7 @@ export interface HttpClient {
     delete(url: string, init?: RequestInit | undefined): Promise<Response>;
     uploadFile(
         url: string,
-        file: File,
+        formData: FormData,
         progressCallback?: ProgressCallback,
         init?: RequestInit | undefined
     ): Promise<Response>;
@@ -141,13 +141,10 @@ export function baseClient(
 
     async function uploadFile(
         url: string,
-        file: File,
+        formData: FormData,
         progressCallback?: ProgressCallback,
         requestInit?: RequestInit
     ) {
-        const formData = new FormData();
-        formData.set('File', file, file.name);
-
         requestInit = {
             ...requestInit,
             method: 'POST',

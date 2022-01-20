@@ -35,7 +35,7 @@ const useDrag = ({ id, effect, ref, onDragStart, onDragOver, onDragEnd }) => {
         }
     }, []);
     return {
-        dragState: dragState
+        dragState: dragState,
     };
 };
 
