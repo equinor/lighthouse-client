@@ -9,6 +9,7 @@ export interface ScopeChangeRequestFormModel {
     TagNumbers: string[];
     CommissioningPackageNumbers: string[];
     SystemIds: string[];
+    documentNumbers: string[];
     //workflow
 }
 
@@ -39,7 +40,14 @@ export interface ScopeChangeRequest {
     systems: System[];
     SystemIds: System[];
     attachments: Attachment[];
+    documents: Document[];
     //workflow
+}
+
+export interface Document {
+    id: string;
+    stidDocumentNumber: string;
+    stidDocumentRevisionNumber: string;
 }
 
 export interface Attachment {
@@ -84,6 +92,7 @@ export interface WorkflowStep {
     isCompleted: boolean;
     isCurrent: boolean;
     criterias: Criteria[];
+    contributors: Contributor[];
 }
 
 export interface Criteria {
@@ -94,4 +103,27 @@ export interface Criteria {
     signedBy: Person;
     signedComment: string;
     signedState: 'Approved' | 'Rejected';
+}
+
+export interface Contributor {
+    createdAtUtc: Date;
+    createdBy: Person;
+    modifiedAtUtc: Date;
+    modifiedBy: Person;
+    plant: string;
+    id: string;
+    messageToContributor: string;
+    person: Person;
+    contribution: Contribution;
+}
+
+export interface Contribution {
+    createdAtUtc: Date;
+    createdBy: Person;
+    modifiedAtUtc: Date;
+    modifiedBy: Person;
+    plant: string;
+    id: string;
+    comment: string;
+    suggestion: string;
 }
