@@ -1,8 +1,8 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { dispatch } from './CoreActions';
 import {
-    GardenOptions,
     getWorkSpaceContext,
     PowerBiOptions,
     StatusFunc,

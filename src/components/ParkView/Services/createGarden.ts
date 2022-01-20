@@ -1,7 +1,9 @@
-import { StatusView } from '../Context/ParkViewContext';
+import { FieldSettings } from '../Models/fieldSettings';
+
 import { Data } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
 import { groupBy } from '../Utils/groupBy';
+import { StatusView } from '../Models/gardenOptions';
 
 export type Garden<T> = Record<string, T[]>;
 
@@ -10,7 +12,8 @@ export function createGarden<T>(
     gardenKey: keyof T,
     groupingKeys?: (keyof T)[],
     status?: StatusView<T>,
-    groupDescriptionFunc?: GroupDescriptionFunc<T>
+    groupDescriptionFunc?: GroupDescriptionFunc<T>,
+    fieldSettings?: FieldSettings<T, string>
 ): Data<T> {
     const allGroupingKeys: (keyof T)[] = [gardenKey];
     if (groupingKeys) {
@@ -19,6 +22,13 @@ export function createGarden<T>(
         });
     }
 
-    const groupedData = groupBy(dataSet, allGroupingKeys, status, groupDescriptionFunc);
+    const groupedData = groupBy(
+        dataSet,
+        allGroupingKeys,
+        status,
+        groupDescriptionFunc,
+        fieldSettings
+    );
+
     return groupedData;
 }
