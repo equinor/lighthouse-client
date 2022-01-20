@@ -141,7 +141,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                         label={'Guesstimate description'}
                         customLabel={{ fontSize: '12px' }}
                         customValue={{ fontSize: '16px' }}
-                        value={<div>{request.guesstimateDescription}</div>}
+                        value={request.guesstimateDescription}
                     />
                 </SectionRow>
                 <Field
