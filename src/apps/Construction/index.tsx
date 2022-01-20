@@ -207,9 +207,9 @@ export function setup(appApi: ClientApi): void {
         title: 'Punch',
         reportURI: 'punch-analytics-rls',
     });
-    construction.registerFusionPowerBi('fd4052a9-641b-47b4-92d6-4876ecb8cdba', {
-        title: 'WO Analytics',
-        reportURI: 'wo-analytics-rls',
+    construction.registerFusionPowerBi('jca-handover-analytics', {
+        title: 'Handover',
+        reportURI: 'jca-handover-analytics',
     });
 
     /**
