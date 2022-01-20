@@ -19,7 +19,7 @@ import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
 import { StidSelector } from '../SearchableDropdown/stidSelector';
 
 import { StidDocument } from '../StidDocument';
-import { Document } from '../../Api/Search/STID/Types/Document';
+import { Document } from '../../Api/STID/Types/Document';
 import { uploadAttachment } from '../../Api/ScopeChange/attachment';
 
 interface ScopeChangeRequestFormProps {
@@ -51,7 +51,7 @@ export const ScopeChangeRequestForm = ({
 
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
-    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const { scopeChange } = useApiClient();
 
     const createScopeChangeMutation = async ({ draft }: CreateScopeChangeParams) => {
         const tags = filterElementsByType(relatedObjects, 'tag');
@@ -66,13 +66,14 @@ export const ScopeChangeRequestForm = ({
                 TagNumbers: tags?.map((x) => x.value) || [],
                 SystemIds: systems?.map((x) => x.value) || [],
                 CommissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
+                documentNumbers: stidDocuments.map((x) => x.docNo) || [],
             },
             draft,
-            customApi
+            scopeChange
         );
         if (scID) {
             attachments.forEach(async (attachment) => {
-                await uploadAttachment(scID, attachment, customApi);
+                await uploadAttachment(scID, attachment, scopeChange);
             });
 
             redirect(scID);
@@ -87,13 +88,13 @@ export const ScopeChangeRequestForm = ({
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
-        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId, customApi));
+        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId, scopeChange));
         clearActiveFactory();
     };
 
     useEffect(() => {
-        setHasUnsavedChanges(formData.getChangedData() !== undefined);
-    }, [formData, setHasUnsavedChanges]);
+        setHasUnsavedChanges(formData.getChangedData() !== undefined || relatedObjects.length > 0);
+    }, [formData, setHasUnsavedChanges, relatedObjects]);
 
     const SubmitButton = () => {
         return (
@@ -166,12 +167,14 @@ export const ScopeChangeRequestForm = ({
                             <Chip key={x.docNo}>
                                 <StidDocument document={x} />
 
-                                <Button variant="ghost_icon">
+                                <Button
+                                    variant="ghost_icon"
+                                    onClick={() => {
+                                        removeDocument(x.docNo);
+                                    }}
+                                >
                                     <Icon
                                         color={tokens.colors.interactive.primary__resting.rgba}
-                                        onClick={() => {
-                                            removeDocument(x.docNo);
-                                        }}
                                         name="clear"
                                     />
                                 </Button>
