@@ -24,6 +24,7 @@ export const WorkflowLine = ({ colored }: WorklflowLineProps): JSX.Element => {
 
 const VerticalLine = styled.div`
     width: 24px;
-    border: 1px solid;
+    border: 1px solid grey;
     transform: rotate(90deg);
+    background-color: grey;
 `;

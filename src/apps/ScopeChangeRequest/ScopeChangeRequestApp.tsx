@@ -10,9 +10,7 @@ import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 //[appApi.appConfig.tenant]
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [
-        'api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default',
-    ]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.scopeChange]);
 
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
         CustomSidesheet: ScopeChangeSideSheet,
@@ -81,11 +79,25 @@ export function setup(appApi: ClientApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'id',
         enableSelectRows: true,
-        hiddenColumns: ['currentWorkflowStep', 'id'],
+        hiddenColumns: [
+            'currentWorkflowStep',
+            'id',
+            'attachments',
+            'systems',
+            'tags',
+            'commissioningPackages',
+            'documents',
+            'description',
+            'guesstimateDescription',
+            'createdBy',
+            'createdAtUtc',
+            'modifiedBy',
+        ],
         columnOrder: [
             'title',
             'phase',
             'workflowSteps',
+            'guesstimateHours',
             'estimatedChangeHours',
             'actualChangeHours',
             'category',
@@ -96,21 +108,39 @@ export function setup(appApi: ClientApi): void {
             { key: 'title', title: 'Title' },
             { key: 'phase', title: 'Phase' },
             { key: 'workflowSteps', title: 'Workflow' },
+            { key: 'guesstimateHours', title: 'Guesstimate' },
             { key: 'estimatedChangeHours', title: 'Estimate hours' },
             { key: 'actualChangeHours', title: 'Actual' },
             { key: 'category', title: 'Change category' },
             { key: 'origin', title: 'Change origin' },
             { key: 'createdAtUtc', title: 'Created at' },
+            { key: 'createdBy', title: 'Created by' },
             { key: 'modifiedAtUtc', title: 'Last updated' },
+            { key: 'modifiedBy', title: 'Modified by' },
             { key: 'description', title: 'Description' },
             { key: 'state', title: 'Status' },
-            { key: 'guesstimateHours', title: 'Guesstimate' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
         ],
         customCellView: [
             {
+                key: 'createdBy',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        return <div>{cell.value.content.createdBy?.firstName}</div>;
+                    },
+                },
+            },
+            {
                 key: 'modifiedAtUtc',
                 type: 'Date',
+            },
+            {
+                key: 'guesstimateHours',
+                type: 'Description',
+            },
+            {
+                key: 'estimatedChangeHours',
+                type: 'Description',
             },
             {
                 key: 'createdAtUtc',

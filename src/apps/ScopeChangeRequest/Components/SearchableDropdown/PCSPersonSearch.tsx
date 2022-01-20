@@ -3,8 +3,6 @@ import { SingleValue, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { searchPcs } from '../../Api/Search/PCS/searchPcs';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
-import { Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 
 interface SelectOption {
     label: string;
@@ -33,7 +31,7 @@ export const PCSPersonSearch = ({ person, setPerson }: PCSLinkProps): JSX.Elemen
                     value={person}
                     styles={applyEdsStyles()}
                     controlShouldRenderValue={false}
-                    components={{ ...applyEdsComponents(), DropdownIndicator: SearchIcon }}
+                    components={{ ...applyEdsComponents() }}
                     placeholder={`Type to search..`}
                     noOptionsMessage={(obj: { inputValue: string }) => {
                         if (!obj.inputValue || obj.inputValue.length === 0) {
@@ -51,8 +49,4 @@ export const PCSPersonSearch = ({ person, setPerson }: PCSLinkProps): JSX.Elemen
             </div>
         </>
     );
-};
-
-const SearchIcon = () => {
-    return <Icon name="search" color={tokens.colors.interactive.focus.hex} />;
 };
