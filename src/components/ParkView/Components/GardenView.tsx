@@ -27,8 +27,6 @@ export function GardenView<T>(): JSX.Element | null {
         [data, fieldSettings, gardenKey, groupByKeys, options?.groupDescriptionFunc, status]
     );
 
-    if (!data || !garden) return null;
-
     const Header = customView?.customHeaderView || GroupHeader;
 
     const handleHeaderClick = (columnKey: string) => {
@@ -36,10 +34,15 @@ export function GardenView<T>(): JSX.Element | null {
         garden[columnKey].isExpanded = !garden[columnKey].isExpanded;
     };
 
-    const columnKeys = Object.keys(garden).sort(
-        fieldSettings[gardenKey]?.getColumnSort || defaultSortFunction
+    const columnKeys = useMemo(
+        () =>
+            Object.keys(garden).sort(
+                fieldSettings[gardenKey]?.getColumnSort || defaultSortFunction
+            ),
+        [fieldSettings, garden, gardenKey]
     );
 
+    if (!data || !garden) return null;
     return (
         <>
             <FilterSelector<T> />

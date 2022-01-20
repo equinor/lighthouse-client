@@ -7,6 +7,7 @@ import { useParkViewContext } from '../Context/ParkViewProvider';
 import { useRefresh } from '../hooks/useRefresh';
 import { FieldSettings } from '../Models/fieldSettings';
 import { defaultSortFunction } from '../Utils/utilities';
+import { useMemo } from 'react';
 
 interface GroupProps<T> {
     group: DataSet<T>;
@@ -25,7 +26,7 @@ export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>
 
     const GroupView = customView?.customGroupView;
 
-    const subGroupKeys = Object.keys(group.subGroups) || [];
+    const subGroupKeys = useMemo(() => Object.keys(group.subGroups) || [], [group.subGroups]);
 
     return (
         <SubGroup>

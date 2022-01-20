@@ -4,6 +4,7 @@ import { Group } from './Group';
 import styled from 'styled-components';
 import { FieldSettings } from '../Models/fieldSettings';
 import { defaultSortFunction } from '../Utils/utilities';
+import { useMemo } from 'react';
 
 interface TreeColumnProps<T> {
     group: DataSet<T>;
@@ -21,12 +22,10 @@ const Groups = styled.div`
 `;
 
 export function TreeColumn<T>({ group, fieldSettings }: TreeColumnProps<T>): JSX.Element | null {
-    if (!group) {
-        return null;
-    }
-
     const columnExpanded = group.isExpanded;
-    const subGroupKeys = Object.keys(group.subGroups) || [];
+    const subGroupKeys = useMemo(() => Object.keys(group.subGroups) || [], [group.subGroups]);
+
+    if (!group) return null;
 
     return (
         <>
