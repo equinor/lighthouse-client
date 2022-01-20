@@ -1,9 +1,13 @@
 import { GroupView } from '@equinor/GroupView';
+import { useClientContext } from '@equinor/portal-client';
+import { closeSidesheet } from '@equinor/sidesheet';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Apps, Manifests } from '../../apps/apps';
-import useClientContext from '../../context/clientContext';
+import { Apps } from '../../apps/apps';
+import { Manifests } from '../../Core/AppBuilder/Types';
 import PageView from '../../Core/PageViewer';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
+import { useLocationKey } from '../../packages/Filter/Hooks/useLocationKey';
 import { ComponentWrapper } from './ComponentWrapper';
 
 interface ClientRoutesProps {
@@ -12,6 +16,12 @@ interface ClientRoutesProps {
 
 export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesProps): JSX.Element {
     const { appConfig, authProvider } = useClientContext();
+
+    const currentRoute = useLocationKey();
+
+    useEffect(() => {
+        closeSidesheet();
+    }, [currentRoute]);
 
     return (
         <Routes>
@@ -45,7 +55,7 @@ export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesPro
                 if (route.app?.appType === 'DataViewer') {
                     const api = { ...route, authProvider, appConfig };
                     return (
-                        <>
+                        <Route key={route.shortName + route.groupe}>
                             <Route
                                 key={route.shortName}
                                 path={`${route.groupe.toString()}/${route.shortName}`}
@@ -56,12 +66,12 @@ export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesPro
                                 path={`${route.groupe.toString()}/${route.shortName}/:id`}
                                 element={<WorkSpace {...api} />}
                             />
-                        </>
+                        </Route>
                     );
                 }
                 if (route.app?.appType === 'PageView') {
                     return (
-                        <>
+                        <Route key={route.shortName + route.groupe}>
                             <Route
                                 key={route.shortName}
                                 path={`${route.groupe.toString()}/${route.shortName}`}
@@ -72,7 +82,7 @@ export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesPro
                                 path={`${route.groupe.toString()}/${route.shortName}/:id`}
                                 element={<PageView />}
                             />
-                        </>
+                        </Route>
                     );
                 }
                 return (

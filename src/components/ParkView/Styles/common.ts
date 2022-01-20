@@ -10,6 +10,8 @@ export const Wrapper = styled.div`
     flex-direction: row;
     align-items: center;
     overflow: scroll;
+    height: 100vh;
+    width: 100%;
     align-items: flex-start;
     max-height: calc(100vh - 176px);
 `;

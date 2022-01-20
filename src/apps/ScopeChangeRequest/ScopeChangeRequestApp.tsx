@@ -1,21 +1,21 @@
-import { createDataFactory } from '@equinor/DataFactory';
+import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { baseClient } from '@equinor/http-client';
-import { createWorkSpace } from '@equinor/WorkSpace';
-import { AppApi } from '../apps';
-import { CustomSidesheet } from './Components/CustomSidesheet';
+import { ScopeChangeSideSheet } from './Components/CustomSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
-export function setup(appApi: AppApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const request = createWorkSpace<ScopeChangeRequest>({
-        initialState: [],
-        primaryViewKey: 'id',
-        viewerId: appApi.shortName,
-        dataFactoryCreator: createDataFactory,
+//[appApi.appConfig.tenant]
+
+export function setup(appApi: ClientApi): void {
+    const api = baseClient(appApi.authProvider, [
+        'api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default',
+    ]);
+
+    const request = appApi.createWorkSpace<ScopeChangeRequest>({
+        CustomSidesheet: ScopeChangeSideSheet,
     });
 
     request.registerDataCreator({
@@ -42,6 +42,7 @@ export function setup(appApi: AppApi): void {
     request.registerFilterOptions({
         excludeKeys: scopeChangeExcludeKeys,
         typeMap: {},
+        initialFilters: ['state'],
         groupValue: {
             signedAtDate: (item: ScopeChangeRequest): string => {
                 if (item.createdAtUtc === '') return 'unknown';
@@ -77,14 +78,6 @@ export function setup(appApi: AppApi): void {
         },
     });
 
-    request.registerViewOptions({
-        objectIdentifierKey: 'id',
-        title: {
-            key: 'id',
-            label: 'Request id',
-        },
-    });
-
     request.registerTableOptions({
         objectIdentifierKey: 'id',
         enableSelectRows: true,
@@ -108,18 +101,11 @@ export function setup(appApi: AppApi): void {
             { key: 'category', title: 'Change category' },
             { key: 'origin', title: 'Change origin' },
             { key: 'createdAtUtc', title: 'Created at' },
-            { key: 'createdById', title: 'Created by' },
             { key: 'modifiedAtUtc', title: 'Last updated' },
-            { key: 'modifiedById', title: 'Updated by' },
             { key: 'description', title: 'Description' },
             { key: 'state', title: 'Status' },
-
-            // { key: 'createdBy', title: 'Created by' },
-            // { key: 'state', title: 'State' },
-            // { key: 'description', title: 'Description' },
-            // { key: 'id', title: 'Id' },
-            // { key: 'created', title: 'Created' },
-            // { key: 'lastModifiedBy', title: 'Last modified by' },
+            { key: 'guesstimateHours', title: 'Guesstimate' },
+            { key: 'guesstimateDescription', title: 'Guesstimate description' },
         ],
         customCellView: [
             {
@@ -168,8 +154,6 @@ export function setup(appApi: AppApi): void {
     request.registerAnalyticsOptions(analyticsOptions);
 
     request.registerStatusItems(statusBarData);
-
-    request.registerDataViewSideSheetOptions({ CustomComponent: CustomSidesheet });
 
     // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
     // request.registerVisualEditorOptions({

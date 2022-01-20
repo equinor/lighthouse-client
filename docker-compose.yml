@@ -1,0 +1,11 @@
+version: '3'
+services:
+    web:
+        build:
+            context: .
+            dockerfile: .docker/Dockerfile
+        environment:
+            - CLIENT_ENV=dev
+            - ENV_CONFIG_URI=func-ppo-web-client-dev
+        ports:
+            - "3000:80"

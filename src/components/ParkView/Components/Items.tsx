@@ -1,4 +1,3 @@
-import { useDataContext } from '../../../Core/WorkSpace/src/Context/DataProvider';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { Item } from '../Styles/item';
 
@@ -8,8 +7,7 @@ interface RenderItemsProps<T> {
 }
 
 export function Items<T>({ data, columnExpanded }: RenderItemsProps<T>): JSX.Element | null {
-    const { setSelected } = useDataContext();
-    const { itemKey, customView, status } = useParkViewContext<T>();
+    const { itemKey, customView, status, onSelect } = useParkViewContext<T>();
 
     const View = (customView as any)?.customItemView;
 
@@ -21,11 +19,11 @@ export function Items<T>({ data, columnExpanded }: RenderItemsProps<T>): JSX.Ele
                         data={data[key]}
                         itemKey={itemKey.toString()}
                         key={data[key] + index}
-                        onClick={() => setSelected(data[key])}
+                        onClick={() => onSelect(data[key])}
                         columnExpanded={columnExpanded}
                     />
                 ) : (
-                    <Item key={data[key] + index} onClick={() => setSelected(data[key])}>
+                    <Item key={data[key] + index} onClick={() => onSelect(data[key])}>
                         {status?.statusItemFunc(data[key]).statusElement}
                         {data[key][itemKey]} cdb
                     </Item>

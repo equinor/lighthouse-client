@@ -1,22 +1,18 @@
-import { AppApi } from '../apps';
 import { baseClient } from '../../../packages/httpClient/src';
 import { SwcrPackage } from './models/SwcrPackage';
-import { createWorkSpace } from '../../Core/WorkSpace/src/WorkSpaceApi/Api';
-
 import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
 import { SwcrItemView } from './CustomViews/SwcrGardenItem';
 import { SwcrGroupView } from './CustomViews/SwcrGroupView';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { fieldSettings } from './utilities/gardenSetup';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
+import { ClientApi } from '@equinor/app-builder';
 
-export function setup(appApi: AppApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.fusion]);
+export function setup(appApi: ClientApi): void {
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.fusion]);
 
-    const swcr = createWorkSpace<SwcrPackage>({
-        initialState: [],
-        primaryViewKey: 'swcrId',
-        viewerId: appApi.shortName,
+    const swcr = appApi.createWorkSpace<SwcrPackage>({
+        CustomSidesheet: SwcrSideSheet,
     });
 
     swcr.registerDataSource(async () => {
@@ -58,5 +54,5 @@ export function setup(appApi: AppApi): void {
         },
     });
 
-    swcr.registerDataViewSideSheetOptions({ CustomComponent: SwcrSideSheet });
+    //swcr.registerDataViewSideSheetOptions({ CustomComponent: SwcrSideSheet });
 }

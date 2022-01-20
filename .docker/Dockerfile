@@ -1,4 +1,4 @@
-# build environment
+# uild environment
 FROM node:16.10.0 as build
 
 # Copy App
@@ -9,14 +9,13 @@ COPY . /app
 RUN yarn install
 RUN yarn build 
 
-# production environment
+# Production environment
 FROM nginx:stable-alpine
 
 ## Install
-# RUN apk add python3
+RUN apk add python3
 
-
-## add permissions for nginx user
+## Add permissions for nginx user
 COPY --from=build /app/dist /usr/share/nginx/html
 
 ## Cooy Nginx
@@ -24,6 +23,9 @@ COPY .docker/nginx/ /etc/nginx/
 
 ## Copy Scripts
 COPY  .docker/scripts/ /etc/scripts/
+
+## Copy Env
+COPY .env /etc/scripts/
 
 ## Server setup
 EXPOSE 80

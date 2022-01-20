@@ -36,7 +36,7 @@ export function SingleSelect<T>({
                     disabled={editMode ? !field?.editable : false}
                     items={selectOptions || ['']}
                     label={''}
-                    placeholder={`Select ${field.title}`}
+                    placeholder={field.placeholderText}
                     // initialSelectedItem={field?.value}
                     value={field?.value}
                     handleSelectedItemChange={(select) => {

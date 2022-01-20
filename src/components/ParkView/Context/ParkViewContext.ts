@@ -16,6 +16,7 @@ export interface CustomGroupViewProps<T> {
 
 export interface ParkViewState<T extends unknown> extends GardenOptions<T> {
     data: T[] | undefined;
+    onSelect: (item: unknown) => void;
 }
 
 export interface ParkViewContextState extends ParkViewState<unknown> {

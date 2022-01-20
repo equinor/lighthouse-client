@@ -44,4 +44,5 @@ export interface GardenOptions<T> {
     customViews?: CustomView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
+    onSelect?: (item: T) => void;
 }

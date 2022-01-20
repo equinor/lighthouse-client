@@ -1,9 +1,8 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { dispatch } from './CoreActions';
 import {
-    DataViewSideSheetOptions,
-    GardenOptions,
     getWorkSpaceContext,
     PowerBiOptions,
     StatusFunc,
@@ -31,6 +30,9 @@ import {
  * @return {*}  {DataViewerApi<T>}
  */
 export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
+    const onSelect = (item: T) => options.openSidesheet(options.CustomSidesheet, item);
+    //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
+
     dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => {
         if (state[options.viewerId]) {
             // eslint-disable-next-line no-console
@@ -88,15 +90,6 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
                 },
             }));
         },
-        registerViewOptions(viewOptions: ViewOptions<T>) {
-            dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => ({
-                ...state,
-                [options.viewerId]: {
-                    ...state[options.viewerId],
-                    viewOptions: viewOptions as ViewOptions<unknown>,
-                },
-            }));
-        },
         registerFilterOptions(filterOptions: any) {
             dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => ({
                 ...state,
@@ -111,21 +104,21 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
          * View option Registration
          *
          */
-        registerTableOptions<T>(tableOptions: TableOptions<T>) {
+        registerTableOptions<T>(tableOptions: Omit<TableOptions<T>, 'onSelect'>) {
             dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    tableOptions: tableOptions as TableOptions<unknown>,
+                    tableOptions: { ...tableOptions, onSelect } as TableOptions<unknown>,
                 },
             }));
         },
-        registerTreeOptions<T>(treeOptions: TreeOptions<T>) {
+        registerTreeOptions<T>(treeOptions: Omit<TreeOptions<T>, 'onSelect'>) {
             dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    treeOptions: treeOptions as TreeOptions<unknown>,
+                    treeOptions: { ...treeOptions, onSelect } as TreeOptions<unknown>,
                 },
             }));
         },
@@ -138,12 +131,15 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
                 },
             }));
         },
-        registerGardenOptions<T>(gardenOptions: GardenOptions<T>) {
+        registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
             dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => ({
                 ...state,
                 [options.viewerId]: {
                     ...state[options.viewerId],
-                    gardenOptions: gardenOptions as GardenOptions<unknown>,
+                    gardenOptions: {
+                        ...gardenOptions,
+                        onSelect,
+                    } as GardenOptions<unknown>,
                 },
             }));
         },
@@ -171,16 +167,6 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
                 [options.viewerId]: {
                     ...state[options.viewerId],
                     powerBiOptions,
-                },
-            }));
-        },
-        registerDataViewSideSheetOptions(dataViewSideSheetOptions: DataViewSideSheetOptions<T>) {
-            dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => ({
-                ...state,
-                [options.viewerId]: {
-                    ...state[options.viewerId],
-                    dataViewSideSheetOptions:
-                        dataViewSideSheetOptions as DataViewSideSheetOptions<unknown>,
                 },
             }));
         },

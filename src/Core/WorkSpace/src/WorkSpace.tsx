@@ -1,11 +1,17 @@
-import { AppApi } from '../../../apps/apps';
+import { ClientApi } from '@equinor/app-builder';
+import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import ErrorFallback from '../../ErrorBoundary/Components/ErrorFallback';
 import { WorkSpaceView } from './Components/WorkSpace/WorkSpaceView';
 import { DataProvider } from './Context/DataProvider';
 
-export const WorkSpace = (props: AppApi): JSX.Element => {
+export type WorkspaceProps = Omit<ClientApi, 'createWorkSpace' | 'createPageViewer'>;
+
+export const WorkSpace = (props: WorkspaceProps): JSX.Element => {
     return (
-        <DataProvider>
-            <WorkSpaceView {...props} />
-        </DataProvider>
+        <ErrorBoundary FallbackComponent={ErrorFallback} routeName={props.title}>
+            <DataProvider>
+                <WorkSpaceView {...props} />
+            </DataProvider>
+        </ErrorBoundary>
     );
 };

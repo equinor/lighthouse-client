@@ -1,6 +1,5 @@
 import { SwcrPackage } from '../models/SwcrPackage';
 import styled from 'styled-components';
-import { DataViewSideSheetCustomComponent } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { Chip, Button } from '@equinor/eds-core-react';
 
 const SideSheetContainer = styled.div`
@@ -69,24 +68,19 @@ const Header = styled.div`
     align-items: center;
 `;
 
-export function SwcrSideSheet({
-    item,
-    onClose,
-}: DataViewSideSheetCustomComponent<SwcrPackage>): JSX.Element | null {
-    if (!item || !Object.keys(item).length) return null;
-
+export function SwcrSideSheet(item: SwcrPackage): JSX.Element {
     return (
         <div style={{ height: '100%' }}>
             <SideSheetContainer>
                 <Header>
-                    <h3 onClick={onClose}>{item.swcrNo}</h3>
+                    <h3>{item.swcrNo}</h3>
                     <a target="_BLANK" href={item.url} rel="noreferrer">
                         <Button key="linkToProcosys" variant="ghost">
                             Open in ProCoSys
                         </Button>
                     </a>
                 </Header>
-                <h3 onClick={onClose}>{item.title}</h3>
+                <h3>{item.title}</h3>
                 <TagsAndAttachmentBlock>
                     <Tags>
                         <Chip>

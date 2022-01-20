@@ -14,6 +14,7 @@ export function ParkViewProvider<T>({
     const initialState: ParkViewState<T> = {
         ...parkViewOptions,
         data: data,
+        onSelect: parkViewOptions.onSelect as (item: unknown) => void,
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey,
     };
     const [state, dispatch] = useReducer(GardenReducer, initialState);

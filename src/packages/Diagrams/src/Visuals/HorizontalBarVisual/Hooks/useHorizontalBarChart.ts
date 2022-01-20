@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
 import { ApexOptions } from 'apexcharts';
-import { BarChartOptions } from '../Types/barVisualOptions';
+import { useMemo } from 'react';
+import { HorizontalBarChartOptions } from '../Types/barVisualOptions';
 import { createSeriesByKeys } from '../Utils/createSeriesByKeys';
 
 interface BarChart {
@@ -10,7 +10,7 @@ interface BarChart {
 
 export function useHorizontalBarChart<T>(
     data: T[],
-    { stacked, nameKey, categoryKey, colors }: BarChartOptions<T>
+    { stacked, nameKey, categoryKey, colors, onClick }: HorizontalBarChartOptions<T>
 ): BarChart {
     const { series, categories } = useMemo(
         () => createSeriesByKeys(data, 'column', nameKey as string, categoryKey as string),
@@ -25,10 +25,21 @@ export function useHorizontalBarChart<T>(
                 toolbar: {
                     show: true,
                 },
+                events: {
+                    click: function (_event, _chartContext, config) {
+                        onClick && onClick(data, config);
+                    },
+                },
+                animations: {
+                    speed: 400,
+                    animateGradually: {
+                        enabled: false,
+                    },
+                },
             },
+
             plotOptions: {
                 bar: {
-                    columnWidth: '80%',
                     horizontal: true,
                 },
             },
@@ -38,6 +49,7 @@ export function useHorizontalBarChart<T>(
             colors: colors ? colors : ['#F44336', '#E91E63', '#9C27B0'],
             xaxis: {
                 categories,
+                columnHeight: '80%',
             },
             markers: {
                 size: 1,

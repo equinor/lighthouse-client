@@ -1,8 +1,5 @@
+import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { baseClient } from '../../../packages/httpClient/src';
-import { createPageViewer } from '../../Core/PageViewer/Api/pageViewerApi';
-import { AppApi } from '../apps';
-
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 interface Checklist {
@@ -79,14 +76,11 @@ const analyticsOptions2: AnalyticsOptions<WP> = {
     },
 };
 
-export function setup(appApi: AppApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const commissioning = createPageViewer({
-        viewerId: appApi.shortName,
-        title: appApi.title,
-    });
+export function setup(appApi: ClientApi): void {
+    //const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const pages = appApi.createPageViewer();
 
-    commissioning.registerFusionPowerBi('swcr-analytics-rls', {
+    pages.registerFusionPowerBi('swcr-analytics-rls', {
         title: 'SWCR Analytics',
         reportURI: 'swcr-analytics-rls',
     });
@@ -152,11 +146,11 @@ export function setup(appApi: AppApi): void {
     //     title: 'LCI Hanging Garden',
     //     reportURI: 'lci-hanging-gardens',
     // });
-    commissioning.registerFusionPowerBi('jca-checklist', {
+    pages.registerFusionPowerBi('jca-checklist', {
         title: 'Checklist Analytics',
         reportURI: 'jca-checklist',
     });
-    commissioning.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
+    pages.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
         title: 'Punch Analytics',
         reportURI: 'punch-analytics-rls',
     });

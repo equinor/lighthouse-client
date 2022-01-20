@@ -23,22 +23,31 @@ export function createSeriesByKeys<T>(
         return acc;
     }, [] as string[]);
 
-    const names = dataItem.reduce((acc, item) => {
-        acc = acc || [];
-        const index = acc.findIndex((i) => i === item[nameKey]);
-        if (index === -1) {
-            acc.push(item[nameKey]);
-        }
-        return acc;
-    }, [] as string[]);
+    let series: { name: string; type: string; data: number[] }[] = [];
 
-    const series = names.map((name) => {
-        const data: number[] = [];
-        categories.forEach((k) => {
-            data.push(dataItem.filter((i) => i[categoryKey] === k && i[nameKey] === name).length);
+    if (nameKey === categoryKey) {
+        const data = categories.map((key) => dataItem.filter((i) => i[nameKey] === key).length);
+        series = [{ name: '', type, data }];
+    } else {
+        const names = dataItem.reduce((acc, item) => {
+            acc = acc || [];
+            const index = acc.findIndex((i) => i === item[nameKey]);
+            if (index === -1) {
+                acc.push(item[nameKey]);
+            }
+            return acc;
+        }, [] as string[]);
+
+        series = names.map((name) => {
+            const data: number[] = [];
+            categories.forEach((k) => {
+                data.push(
+                    dataItem.filter((i) => i[categoryKey] === k && i[nameKey] === name).length
+                );
+            });
+            return { name, type, data };
         });
-        return { name, type, data };
-    });
+    }
 
     return { series, categories };
 }

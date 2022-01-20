@@ -1,113 +1,152 @@
-import { AnalyticsOptions } from '@equinor/Diagrams';
+import { ClientApi } from '@equinor/app-builder';
+import { AnalyticsOptions, CriticalWoTable, SidesheetContent, weekDiff } from '@equinor/Diagrams';
 import { baseClient } from '../../../packages/httpClient/src';
-import { createPageViewer } from '../../Core/PageViewer/Api/pageViewerApi';
-import { AppApi } from '../apps';
+import { openSidesheet } from '@equinor/sidesheet';
+import { cols } from './DetailsPage/tableConfig';
+import { WorkOrder } from './mocData/mockData';
+import { mock } from './mocData/newMockData';
 
-type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
-interface Checklist {
-    loopTag: string;
-    tagNo: string;
-    description: string;
-    register: string;
-    commPk: string;
-    mcPk: string;
-    responsible: string;
-    type: string;
-    status: LoopStatus;
-    phase: string;
-    createdAt: string;
-    signedAt: string;
-}
-
-export interface WP {
-    tagNo: string;
-    commPk: string;
-    mcPk: string;
-    description: string;
-    responsible: string;
-    formType: string;
-    status: LoopStatus;
-    phase: string;
-    createdAt: string;
-    signedAt: string;
-    contentChecklists: Checklist[];
-    functionTags: string[];
-}
-
-const analyticsOptions: AnalyticsOptions<WP> = {
+const analyticsOptions: AnalyticsOptions<WorkOrder> = {
+    section1: {
+        chart1: {
+            type: 'constructionChart',
+            options: {
+                timeChartOptions: {
+                    categoriesKey: 'jobStatusCutoffs',
+                    title: 'Job Statuses',
+                    type: 'column',
+                },
+                title: 'Job Statuses',
+            },
+        },
+        // chart2: {
+        //     type: 'timeBarChart',
+        //     options: {
+        //         accumulative: true,
+        //         timeChartOptions: {
+        //             categoriesKey: 'jobStatusCutoffs',
+        //             title: 'Job Statuses accumulated',
+        //             type: 'column',
+        //         },
+        //         title: 'Job Statuses accumulated',
+        //     },
+        // },
+    },
     section2: {
         chart1: {
-            type: 'timeBarChart',
+            type: 'horizontalBarChart',
             options: {
-                title: 'Loops Created',
-                defaultTime: 'year',
-                timeChartOptions: {
-                    categoriesKey: 'createdAt',
-                    title: 'Created',
-                    type: 'bar',
+                categoryKey: 'disciplineDescription',
+                nameKey: 'disciplineDescription',
+                onClick: (data, graphData) => {
+                    const labelClicked = graphData.globals.labels[graphData.dataPointIndex];
+                    const tableData: WorkOrder[] = [];
+                    data.forEach((wo) => {
+                        wo.disciplineDescription === labelClicked && tableData.push(wo);
+                    });
+
+                    tableData.length > 0 && openSidesheet(SidesheetContent, { data: tableData });
                 },
+            },
+        },
+        chart3: {
+            type: 'customVisual',
+            options: {
+                component: CriticalWoTable,
             },
         },
     },
 };
-const analyticsOptions2: AnalyticsOptions<WP> = {
-    section2: {
+const detailsPage: AnalyticsOptions<WorkOrder> = {
+    section1: {
         chart1: {
-            type: 'barChart',
+            type: 'table',
             options: {
-                stacked: true,
-                nameKey: 'status',
-                categoryKey: 'responsible',
-                colors: ['#F44336', '#E91E63', '#9C27B0'],
+                initialGroupBy: 'disciplineDescription',
+                columns: cols,
             },
         },
-        chart2: {
-            type: 'timeBarChart',
-            options: {
-                title: 'Punch A',
-                defaultTime: 'quarter',
-                timeChartOptions: {
-                    categoriesKey: 'createdAt',
-                    title: 'PB',
-                    type: 'bar',
-                    key: 'status',
-                    value: 'PB',
-                },
-            },
-        },
+        // chart2: {
+        //     type: 'timeBarChart',
+        //     options: {
+        //         title: 'Punch A',
+        //         defaultTime: 'quarter',
+        //         timeChartOptions: {
+        //             categoriesKey: 'createdAt',
+        //             title: 'PB',
+        //             type: 'bar',
+        //             key: 'status',
+        //             value: 'PB',
+        //         },
+        //     },
+        // },
     },
 };
 
-export function setup(appApi: AppApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
-    const construction = createPageViewer({
-        viewerId: appApi.shortName,
-        title: appApi.title,
-    });
+export function setup(appApi: ClientApi): void {
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
+    const construction = appApi.createPageViewer();
 
     /** 
     Remove SWCR analytics, since its not relevant for Construction
     */
 
-    // construction.registerFusionPowerBi('swcr-analytics-rls', {
-    //     title: 'SWCR Analytics',
-    //     reportURI: 'swcr-analytics-rls',
-    // });
+    const workPreparation = construction.registerDashboard<WorkOrder>('work-preparation', {
+        title: 'Work Preparation',
+    });
 
-    // const workPreparation = construction.registerDashboard<WP>('work-preparation', {
-    //     title: 'Work Preparation',
-    // });
+    // Loop Data Test for testing system..
+    workPreparation.registerDataSource(async () => {
+        const plantId = 'PCS$JOHAN_CASTBERG';
+        const project = 'L.O532C.002';
+        // const response: WorkOrderApi = await api
+        //     .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
+        //     .then((res) => res.json())
+        // const blah: WorkOrder[] = response.items.flatMap((j) => j);
+        // return blah;
+        // return JSON.parse(await response.text());
+        //  const data = newMock().filter((j) => j.jobStatus.startsWith('E'));
+        return mock();
+    });
+    workPreparation.registerKpi((data) => {
+        return [
+            {
+                status: 'ok',
+                title: 'Job cards created',
+                value: () => data.length.toString(),
+            },
+            {
+                status: 'waring',
+                title: 'Critical status',
+                value: () => {
+                    // critical WO: Workorder which havent reached status W04
+                    // and 1 week left until plannedStartAtDate
 
-    // // Loop Data Test for testing system..
-    // workPreparation.registerDataSource(async () => {
-    //     const plantId = 'PCS$JOHAN_CASTBERG';
-    //     const project = 'L.O532C.002';
-    //     const response = await api.fetch(
-    //         `https://api-lighthouse-production.playground.radix.equinor.com/loops/${plantId}/${project}`
-    //     );
+                    //Find all workorders that have status W01, W02 or W03
 
-    //     return JSON.parse(await response.text());
-    // });
+                    const filter = ['W01', 'W02', 'W03'];
+                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatusCode));
+
+                    // Find all the first filtered WOs that are due in one week or less
+
+                    const secondFiltered = firstFiltered.filter(
+                        (wo) => weekDiff(new Date(wo.plannedStartAtDate)).days <= 7
+                    );
+
+                    return secondFiltered.length.toString();
+                },
+            },
+            {
+                status: 'ok',
+                title: 'Job cards in W04',
+                value: () => {
+                    return data.filter((wo) => wo.jobStatusCode === 'W04').length.toString();
+                },
+            },
+        ];
+    });
+
+    const excludeKeys: (keyof WorkOrder)[] = [];
 
     // const excludeKeys: (keyof WP)[] = [
     //     'tagNo',
@@ -122,12 +161,12 @@ export function setup(appApi: AppApi): void {
 
     // workPreparation.registerFilterOptions({ excludeKeys });
 
-    // workPreparation.registerPage({
-    //     title: 'Jobcards',
-    //     pageId: 'workPreparationJobCards',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions,
-    // });
+    workPreparation.registerPage({
+        title: 'Jobcards',
+        pageId: 'workPreparationJobCards',
+        type: 'AnalyticsPage',
+        ...analyticsOptions,
+    });
 
     // workPreparation.registerPage({
     //     title: 'Hours',
@@ -135,12 +174,13 @@ export function setup(appApi: AppApi): void {
     //     type: 'AnalyticsPage',
     //     ...analyticsOptions2,
     // });
-    // workPreparation.registerPage({
-    //     title: 'Details',
-    //     pageId: 'workPreparationDetails',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions,
-    // });
+    workPreparation.registerPage({
+        title: 'Details',
+        pageId: 'workPreparationDetails',
+        type: 'AnalyticsPage',
+        ...detailsPage,
+    });
+
     // workPreparation.registerPage({
     //     title: 'Hold',
     //     pageId: 'workPreparationDetailsHold',

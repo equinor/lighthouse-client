@@ -1,6 +1,4 @@
-import { AuthenticationProvider } from '@equinor/authentication';
-import { AppConfig } from '@equinor/lighthouse-conf';
-import React from 'react';
+import { AppGroups, AppManifest } from '@equinor/app-builder';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -17,6 +15,7 @@ import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as constructionSetup } from './Construction';
+import { setup as commissioningSetup } from './Commissioning';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
@@ -29,37 +28,16 @@ import {
     SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
+import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as SwcrSetup } from './swcr';
 
-type HEXColor = `#${string}`;
-
-type AppType = 'DataViewer' | 'PageView' | 'CustomApp' | 'PowerBI';
-
-export interface AppApi extends AppManifest {
-    appConfig: AppConfig;
-    authProvider: AuthenticationProvider;
-}
-interface App {
-    appType?: AppType;
-    setup?: (api: AppApi) => void;
-    component?: React.FC<AppApi>;
-}
-export interface AppManifest {
-    title: string;
-    shortName: string;
-    color: HEXColor;
-    groupe: Apps | Apps[];
-    tags: string[];
-    icon?: string | React.FC;
-    uri?: string;
-    imageUri?: string;
-    app?: App;
+export function getApps(): AppManifest[] {
+    return apps;
 }
 
-export interface AppGroupe {
-    name: string;
-    icon: string | React.FC;
+export function getAppGroups(): AppGroups {
+    return appGroups;
 }
 
 export enum Apps {
@@ -76,13 +54,6 @@ export enum Apps {
     ProjectControl = 'ProjectControl',
     Reports = 'Reports',
     SSU = 'SSU',
-}
-
-export type AppGroups = Record<Apps, AppGroupe>;
-
-export interface Manifests {
-    apps: AppManifest[];
-    appGroups: AppGroups;
 }
 
 export const appGroups: AppGroups = {
@@ -154,6 +125,7 @@ export const apps: AppManifest[] = [
             appType: 'PowerBI',
             component: BusinessCaseReport,
         },
+        isProduction: true,
         tags: ['PowerBI'],
     },
     {
@@ -196,6 +168,7 @@ export const apps: AppManifest[] = [
             component: SafetyPerformanceReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     // ProgressAndStatus
     {
@@ -207,10 +180,7 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: [],
         app: {
-            appType: 'PageView',
-            setup: (): void => {
-                console.log('overview');
-            },
+            appType: 'PageView',  
         },
     },
     {
@@ -223,9 +193,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'PageView',
-            setup: (): void => {
-                console.log('engineering');
-            },
         },
     },
     {
@@ -240,6 +207,7 @@ export const apps: AppManifest[] = [
             appType: 'PageView',
             setup: constructionSetup,
         },
+        isProduction: true,
     },
     {
         title: 'Commissioning',
@@ -251,8 +219,9 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'PageView',
-            setup: constructionSetup,
+            setup: commissioningSetup,
         },
+        isProduction: true,
     },
     // Engineering management
     {
@@ -276,6 +245,7 @@ export const apps: AppManifest[] = [
             component: LCIReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     {
         title: 'LCI portal',
@@ -298,6 +268,7 @@ export const apps: AppManifest[] = [
             component: MDRReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     // Construction management
     {
@@ -312,6 +283,7 @@ export const apps: AppManifest[] = [
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
+        isProduction: true,
     },
     // CompletionManagement
     {
@@ -336,6 +308,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: checklistSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'Handover',
@@ -349,6 +322,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: handoverSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'Heat trace installation',
@@ -360,7 +334,9 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
+            setup: heatTraceInstallationSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'Loop',
@@ -374,6 +350,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: loopSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'N2He',
@@ -386,6 +363,7 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'DataViewer',
         },
+        // isProduction: true,
     },
     {
         title: 'Preservation',
@@ -423,6 +401,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: SwcrSetup,
         },
+        isProduction: true,
     },
     // Queries and requests
     {
@@ -446,6 +425,7 @@ export const apps: AppManifest[] = [
             setup: scopeChangeSetup,
         },
         tags: [],
+        isProduction: true,
     },
     // ProjectControl
     {
@@ -498,6 +478,7 @@ export const apps: AppManifest[] = [
             component: NonConformityReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     {
         title: 'Quality deviation',
@@ -511,6 +492,7 @@ export const apps: AppManifest[] = [
             component: QualityDeviationReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
 
     {
@@ -534,6 +516,7 @@ export const apps: AppManifest[] = [
             component: QueryReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     // Reports
     {
@@ -585,8 +568,10 @@ export const apps: AppManifest[] = [
         uri: '',
         tags: ['3D', 'Asset', 'Map'],
         app: {
+            appType: 'CustomApp',
             component: ModelViewer,
         },
+        // isProduction: true,
     },
     {
         title: 'Documents and drawings',

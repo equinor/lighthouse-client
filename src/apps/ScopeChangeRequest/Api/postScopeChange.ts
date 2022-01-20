@@ -1,8 +1,10 @@
-import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
+import { BaseClient } from '@equinor/http-client';
+import { ScopeChangeRequestFormModel } from '../Types/scopeChangeRequest';
 
 export async function postScopeChange(
-    scopeChange: ScopeChangeRequest,
-    draft: boolean
+    scopeChange: ScopeChangeRequestFormModel,
+    draft: boolean,
+    client: BaseClient
 ): Promise<string> {
     const payload = {
         ...scopeChange,
@@ -11,11 +13,12 @@ export async function postScopeChange(
 
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
     };
-    return await fetch(
-        `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`,
-        requestOptions
-    ).then((x) => x.json());
+    return await client
+        .fetch(
+            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`,
+            requestOptions
+        )
+        .then((x) => x.json());
 }
