@@ -27,7 +27,8 @@ const TopBarWrapper = styled.div`
 `;
 
 const ProCoSysTopBar = (): JSX.Element => {
-    const { toggleAppPanel, authProvider } = useClientContext();
+    const { toggleAppPanel, toggleFullscreenMenu, fullscreenMenuActive, authProvider } =
+        useClientContext();
     const graph = useGraphClient(authProvider);
     const [image, setImage] = useState<string | undefined>(undefined);
     useEffect(() => {
@@ -37,7 +38,13 @@ const ProCoSysTopBar = (): JSX.Element => {
         <TopBarWrapper>
             <TopBar>
                 <TopBar.Header>
-                    <div onClick={() => toggleAppPanel()} style={{ cursor: 'pointer' }}>
+                    <div
+                        onClick={() => {
+                            toggleAppPanel();
+                            fullscreenMenuActive ? toggleFullscreenMenu() : null;
+                        }}
+                        style={{ cursor: 'pointer' }}
+                    >
                         <Icon color={tokens.colors.interactive.primary__resting.hex} name="menu" />
                     </div>
                     <Logo />
