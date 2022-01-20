@@ -17,13 +17,14 @@ import { Link } from 'react-router-dom';
 import Icon from '../Icon/Icon';
 import { filterByValue, groupeByKey } from './utils';
 import { useMemo, useState } from 'react';
-import { useClientContext } from '@equinor/portal-client';
+import { isProduction, useClientContext } from '@equinor/portal-client';
 
 interface FullscreenMainMenuProps {
     manifests: Manifests;
 }
 
 export const FullscreenMainMenu = ({ manifests }: FullscreenMainMenuProps): JSX.Element => {
+    const isProd = isProduction();
     const { apps, appGroups } = manifests;
     const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
     const [searchValue, setSearchValue] = useState('');
@@ -68,6 +69,8 @@ export const FullscreenMainMenu = ({ manifests }: FullscreenMainMenuProps): JSX.
                                 key={`link-${item.shortName}`}
                                 to={`${key}/${item.shortName}`}
                                 onClick={() => toggleFullscreenMenu()}
+                                title={!item.isProduction && isProd ? 'Disabled' : item.title}
+                                style={!item.isProduction && isProd ? { color: '#e3e3e3' } : {}}
                             >
                                 {item.title}
                             </Link>
