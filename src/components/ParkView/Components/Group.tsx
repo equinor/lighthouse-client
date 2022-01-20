@@ -23,7 +23,7 @@ export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>
         group.isExpanded = !group.isExpanded;
     };
 
-    const GroupView = customView?.customGroupView || null;
+    const GroupView = customView?.customGroupView;
 
     const subGroupKeys = Object.keys(group.subGroups) || [];
 

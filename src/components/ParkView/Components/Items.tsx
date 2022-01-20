@@ -11,7 +11,7 @@ export function Items<T>({ data, columnExpanded }: RenderItemsProps<T>): JSX.Ele
     const { setSelected } = useDataContext();
     const { itemKey, customView, status } = useParkViewContext<T>();
 
-    const View = (customView as any)?.customItemView || null;
+    const View = (customView as any)?.customItemView;
 
     return (
         <>

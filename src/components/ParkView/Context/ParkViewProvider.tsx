@@ -27,10 +27,6 @@ export function ParkViewProvider<T>({
         dispatch(actions.setGardenKey(gardenKey));
     }
 
-    function setExcludeKeys(excludeKeys: string[]): void {
-        dispatch(actions.setExcludeKeys(excludeKeys));
-    }
-
     useEffect(() => {
         if (data && data.length > 0) {
             dispatch(actions.setData(data as unknown[]));
@@ -43,7 +39,6 @@ export function ParkViewProvider<T>({
                 ...state,
                 setGroupKeys,
                 setGardenKey,
-                setExcludeKeys,
             }}
         >
             {children}
@@ -58,7 +53,6 @@ export function useParkViewContext<T>() {
         ...parkViewContext,
         gardenKey: parkViewContext.gardenKey as keyof T,
         itemKey: parkViewContext.itemKey as keyof T,
-        excludeKeys: parkViewContext.excludeKeys as (keyof T)[],
         groupByKeys: parkViewContext.groupByKeys as (keyof T)[],
         customView: parkViewContext.customViews as CustomView<T>,
         status: parkViewContext.status as StatusView<T>,

@@ -15,16 +15,8 @@ const getFieldSettingsLabelFromKey = <T extends unknown>(
 ) => fieldSettings[key]?.label || key;
 
 export function FilterSelector<T>(): JSX.Element | null {
-    const {
-        groupByKeys,
-        setGroupKeys,
-        setGardenKey,
-        data,
-        gardenKey,
-        excludeKeys,
-        itemKey,
-        fieldSettings,
-    } = useParkViewContext<T>();
+    const { groupByKeys, setGroupKeys, setGardenKey, data, gardenKey, fieldSettings } =
+        useParkViewContext<T>();
 
     const allOptions = useMemo(
         () =>
@@ -36,13 +28,8 @@ export function FilterSelector<T>(): JSX.Element | null {
 
     const filterGroupKey = useCallback(
         (groupKey: string) =>
-            !(
-                groupKey === gardenKey ||
-                groupKey === itemKey ||
-                groupByKeys.includes(groupKey as keyof T) ||
-                excludeKeys?.includes(groupKey as keyof T)
-            ),
-        [excludeKeys, gardenKey, groupByKeys, itemKey]
+            !(groupKey === gardenKey || groupByKeys.includes(groupKey as keyof T)),
+        [gardenKey, groupByKeys]
     );
 
     const groupingOptions = useMemo(

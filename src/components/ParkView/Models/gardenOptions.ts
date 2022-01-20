@@ -41,7 +41,6 @@ export interface GardenOptions<T> {
     itemKey: keyof T;
     groupByKeys?: (keyof T)[];
     fieldSettings?: FieldSettings<T, string>;
-    excludeKeys?: (keyof T)[];
     customViews?: CustomView<T>;
     options?: Options<T>;
     status?: StatusView<T>;

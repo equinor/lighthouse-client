@@ -13,9 +13,6 @@ export function GardenReducer(state: any, action: Actions) {
         case getType(actions.setGardenKey):
             return { ...state, gardenKey: action.gardenKey };
 
-        case getType(actions.setExcludeKeys):
-            return { ...state, excludeKeys: action.excludeKeys };
-
         case getType(actions.setData):
             return { ...state, data: action.data };
         default:

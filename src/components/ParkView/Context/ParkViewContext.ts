@@ -20,7 +20,6 @@ export interface ParkViewState<T extends unknown> extends GardenOptions<T> {
 
 export interface ParkViewContextState extends ParkViewState<unknown> {
     setGroupKeys: (groupKeys: string[]) => void;
-    setExcludeKeys: (excludeKeys: string[]) => void;
     setGardenKey: (groupeKey?: string) => void;
 }
 
@@ -33,7 +32,6 @@ export interface ParkViewProviderProps<T> {
 export enum DataAction {
     setGroupKeys = 'setGroupKeys',
     setGardenKey = 'setGardenKey',
-    setExcludeKeys = 'setExcludeKeys',
     setData = 'setData',
 }
 
