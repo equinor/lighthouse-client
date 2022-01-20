@@ -59,55 +59,68 @@ export const appGroups: AppGroups = {
     AssetData: {
         name: 'Asset data',
         icon: AssetDataIcon,
+        columnId: 4,
     },
     Top: {
         name: 'Top',
         icon: HomeIcon,
+        columnId: 1,
     },
     Collaboration: {
         name: 'Collaboration',
         icon: CollaborationIcon,
+        columnId: 4,
     },
     ProgressAndStatus: {
         name: 'Progress and status',
         icon: ProgressAndStatusIcon,
+        columnId: 1,
     },
     ConstructionManagement: {
         name: 'Construction management',
         icon: ConstructionManagementIcon,
+        columnId: 2,
     },
     EngineeringManagement: {
         name: 'Engineering management',
         icon: EngineeringManagementIcon,
+        columnId: 2,
     },
     ProjectInformation: {
         name: 'Project information',
         icon: ProjectInformationIcon,
+        columnId: 1,
     },
     QueriesAndRequests: {
         name: 'Queries and requests',
         icon: QueriesAndRequests,
+        columnId: 3,
     },
     QualityAndCompliance: {
         name: 'Quality and compliance',
         icon: QualityIcon,
+        columnId: 3,
     },
     ProjectControl: {
         name: 'Project control',
         icon: ProjectControlIcon,
+        columnId: 3,
     },
     SSU: {
         name: 'SSU',
         icon: SSUIcon,
+        columnId: 1,
     },
 
     CompletionManagement: {
         name: 'Completion management',
         icon: CompletionManagementIcon,
+        columnId: 2,
     },
     Reports: {
         name: 'Reports',
         icon: ReportIcon,
+        columnId: 3,
     },
 };
 export const apps: AppManifest[] = [

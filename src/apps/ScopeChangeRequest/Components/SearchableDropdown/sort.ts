@@ -21,5 +21,5 @@ export function sort(a: TypedSelectOption, b: TypedSelectOption, searchValue: st
  * @returns
  */
 export function replaceCharacter(a: string): string {
-    return a.replace('#', 'a');
+    return a.replace('#', '|');
 }

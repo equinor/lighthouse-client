@@ -24,6 +24,7 @@ export const searchCommPkg = async (
                     value: x.CommPkgNo,
                     type: 'commpkg',
                     searchValue: x.CommPkgNo,
+                    object: x,
                 });
             });
         });

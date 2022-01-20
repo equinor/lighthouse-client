@@ -27,6 +27,7 @@ export default defineConfig({
             '@equinor/PageViewer': path.resolve(__dirname, './src/Core/PageViewer'),
             '@equinor/GroupView': path.resolve(__dirname, './src/Core/GroupView'),
             '@equinor/DataFactory': path.resolve(__dirname, './src/Core/DataFactory'),
+            '@equinor/ErrorBoundary': path.resolve(__dirname, './src/Core/ErrorBoundary'),
             '@equinor/StatusBar': path.resolve(__dirname, './src/packages/StatusBar'),
             '@equinor/Diagrams': path.resolve(__dirname, './src/packages/Diagrams'),
             '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),

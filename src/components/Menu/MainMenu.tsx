@@ -3,153 +3,27 @@ import { tokens } from '@equinor/eds-tokens';
 import { isProduction, Manifests, useClientContext } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 import { Apps } from '../../apps/apps';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
+import {
+    Content,
+    GroupLink,
+    MenuItem,
+    MenuItems,
+    MenuItemText,
+    MenuWrapper,
+    PopoverWrapper,
+    SearchWrapper,
+    SmallButton,
+    SmallItem,
+    Title,
+    TopItems,
+} from './Styles';
+import { filterByValue, groupeByKey } from './utils';
 
 
 const { Item, Header, Panel } = Accordion;
-
-interface AppsPanelWrapperProps {
-    panelActive: boolean;
-}
-
-const Wrapper = styled.div`
-    overflow-y: auto;
-    height: calc(100vh - 64px);
-    display: flex;
-    flex-direction: column;
-    border-right: 1.5px solid #efefef;
-    padding: 8px;
-    transition: all 0.2s ease;
-    background: ${tokens.colors.ui.background__light.rgba};
-    z-index: 1;
-    width: ${({ panelActive }: AppsPanelWrapperProps) => (panelActive ? '350px' : '55px')};
-
-    .heading {
-        background-color: transparent;
-        :hover {
-            ::before {
-                content: ' ';
-                display: block;
-                background: ${tokens.colors.interactive.focus.rgba};
-                position: absolute;
-                left: 0;
-
-                width: 6px;
-                height: 48px;
-                transition: height 0.3s ease;
-            }
-        }
-        ::before {
-            height: 0px;
-            content: ' ';
-        }
-    }
-
-    .noBorder {
-        border: 0px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-        min-height: 0px;
-        background-color: transparent;
-
-        p {
-            padding-left: 1rem;
-        }
-        svg {
-            padding: 1rem;
-            padding-left: 0px;
-        }
-
-        .link {
-            color: #030303;
-            text-decoration: none;
-            display: block;
-            padding-bottom: 0.5rem;
-            padding-top: 0.5rem;
-            padding-left: 2.5rem;
-            :hover {
-                opacity: 0.5;
-            }
-        }
-    }
-`;
-
-interface TopItemsProps {
-    topDivider: boolean;
-    bottomDivider: boolean;
-}
-
-const TopItems = styled.div`
-    padding-left: 1rem;
-    border-top: ${({ topDivider }: TopItemsProps) => (topDivider ? `1px solid #EFEFEF` : 'none')};
-    border-bottom: ${({ bottomDivider }: TopItemsProps) =>
-        bottomDivider ? `1px solid #EFEFEF` : 'none'};
-
-    .link {
-        color: #030303;
-        text-decoration: none;
-        display: block;
-        padding-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        :hover {
-            opacity: 0.5;
-        }
-    }
-    svg {
-        padding: 1rem;
-        padding-left: 0px;
-    }
-`;
-
-const SearchWrapper = styled.div`
-    padding: 1rem;
-`;
-const SmallItem = styled.div`
-    :hover {
-        background-color: ${tokens.colors.ui.background__light.rgba};
-    }
-`;
-
-const Title = styled.div`
-    font-weight: 800;
-`;
-
-const Content = styled.div`
-    .link {
-        color: #030303;
-        text-decoration: none;
-        display: block;
-        padding-bottom: 1rem;
-        font-size: 14px;
-
-        :hover {
-            opacity: 0.5;
-        }
-    }
-`;
-
-const SmallButton = styled.h2`
-    height: 48px;
-    margin: 0;
-    border: 0px;
-    padding: 0px 16px;
-    cursor: pointer;
-`;
-const PopoverWrapper = styled.span`
-    > div > button {
-        display: none !important;
-    }
-`;
-
-const GroupLink = styled(Link)`
-    text-decoration: none;
-    color: #030303;
-    flex-grow: 1;
-`;
 
 interface MainMenuProps {
     manifests: Manifests;
@@ -158,9 +32,8 @@ interface MainMenuProps {
 export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
     const isProd = isProduction();
     const { apps, appGroups } = manifests;
-    const { appsPanelActive } = useClientContext();
+    const { appsPanelActive, toggleAppPanel, toggleFullscreenMenu } = useClientContext();
     const [searchValue, setSearchValue] = useState('');
-    // const navigate = useNavigate();
     const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
 
     const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -182,8 +55,9 @@ export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
 
     const filteredList = filterByValue(GroupedMenu, searchValue, 'title');
     const isExpanded = searchValue.length > 1 ? true : false;
+
     return (
-        <Wrapper panelActive={appsPanelActive}>
+        <MenuWrapper panelActive={appsPanelActive}>
             {appsPanelActive && (
                 <SearchWrapper>
                     <Search
@@ -353,66 +227,36 @@ export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
                     onMouseEnter={() => setIsAddMenuOpen(true)}
                 />
             </SmallItem>
-        </Wrapper>
+            <MenuItems>
+                <MenuItem
+                    onClick={() => (appsPanelActive ? toggleAppPanel() : null)}
+                    style={{ cursor: appsPanelActive ? 'pointer' : 'default' }}
+                >
+                    <Icon
+                        color={tokens.colors.interactive.primary__resting.hex}
+                        name="more_vertical"
+                    />
+                    {appsPanelActive && <MenuItemText>Minimized</MenuItemText>}
+                </MenuItem>
+                <MenuItem
+                    onClick={() => (!appsPanelActive ? toggleAppPanel() : null)}
+                    style={{ cursor: appsPanelActive ? 'default' : 'pointer' }}
+                >
+                    <Icon color={tokens.colors.interactive.primary__resting.hex} name="menu" />
+                    {appsPanelActive && (
+                        <MenuItemText disabled={appsPanelActive ? true : false}>
+                            Standard
+                        </MenuItemText>
+                    )}
+                </MenuItem>
+                <MenuItem onClick={() => toggleFullscreenMenu()} style={{ cursor: 'pointer' }}>
+                    <Icon
+                        color={tokens.colors.interactive.primary__resting.hex}
+                        name="fullscreen"
+                    />
+                    {appsPanelActive && <MenuItemText>Expand all</MenuItemText>}
+                </MenuItem>
+            </MenuItems>
+        </MenuWrapper>
     );
 };
-
-function filterByValue<T, K extends keyof T>(
-    list: Record<string, T[]>,
-    value: string,
-    key: K
-): Record<string, T[]> {
-    let filteredList: Record<string, T[]> = {};
-    Object.keys(list).forEach((listKey) => {
-        if (listKey.toLowerCase().includes(value.toLowerCase())) {
-            filteredList = { ...filteredList, [listKey]: list[listKey] };
-        } else {
-            const filteredItems = list[listKey].filter((item) => {
-                if (value === '') return true;
-                const valueInKey = item[key];
-                let hasValue = false;
-                if (typeof valueInKey === 'string') {
-                    hasValue = valueInKey.toLowerCase().includes(value.toLowerCase());
-                }
-                if (!hasValue) hasValue = objectContainsValue(item, value);
-                return hasValue;
-            });
-            if (filteredItems.length > 0) {
-                filteredList = { ...filteredList, [listKey]: filteredItems };
-            }
-        }
-    });
-    return filteredList;
-}
-
-function objectContainsValue<T>(object: T, value: string): boolean {
-    let contains = false;
-    Object.keys(object).map((key) => {
-        const item = object[key];
-        if (Array.isArray(item) && item.length > 0) {
-            if (typeof item[0] === 'string') {
-                contains = item.reduce((hasItem: boolean, item: string) => {
-                    if (hasItem) return hasItem;
-                    hasItem = item.toLowerCase().includes(value.toLowerCase());
-                    return hasItem;
-                }, false);
-            }
-        }
-    });
-    return contains;
-}
-
-function groupeByKey<T, K extends keyof T>(list: T[], key: K) {
-    return list.reduce((acc: Record<string, T[]>, item: T) => {
-        if (Array.isArray(item[`${key}`])) {
-            item[`${key}`].forEach((groupeKey) => {
-                acc[groupeKey] = acc[groupeKey] || [];
-                acc[groupeKey].push(item);
-            });
-        } else {
-            acc[item[`${key}`]] = acc[item[`${key}`]] || [];
-            acc[item[`${key}`]].push(item);
-        }
-        return acc;
-    }, {} as Record<string, T[]>);
-}

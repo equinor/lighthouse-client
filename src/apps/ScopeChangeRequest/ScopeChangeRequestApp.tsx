@@ -42,6 +42,7 @@ export function setup(appApi: ClientApi): void {
     request.registerFilterOptions({
         excludeKeys: scopeChangeExcludeKeys,
         typeMap: {},
+        initialFilters: ['state'],
         groupValue: {
             signedAtDate: (item: ScopeChangeRequest): string => {
                 if (item.createdAtUtc === '') return 'unknown';

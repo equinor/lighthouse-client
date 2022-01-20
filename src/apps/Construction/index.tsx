@@ -1,7 +1,6 @@
-import { AnalyticsOptions } from '@equinor/Diagrams';
+import { AnalyticsOptions, CriticalWoTable, SidesheetContent, weekDiff } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/portal-client';
-import { baseClient } from '../../../packages/httpClient/src';
-import { CriticalWoTable, weekDiff } from '../../packages/Diagrams/src/Visuals/CriticalWoTable';
+import { openSidesheet } from '@equinor/sidesheet';
 import { cols } from './DetailsPage/tableConfig';
 import { WorkOrder } from './mocData/mockData';
 import { mock } from './mocData/newMockData';
@@ -38,6 +37,15 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
             options: {
                 categoryKey: 'disciplineDescription',
                 nameKey: 'disciplineDescription',
+                onClick: (data, graphData) => {
+                    const labelClicked = graphData.globals.labels[graphData.dataPointIndex];
+                    const tableData: WorkOrder[] = [];
+                    data.forEach((wo) => {
+                        wo.disciplineDescription === labelClicked && tableData.push(wo);
+                    });
+
+                    tableData.length > 0 && openSidesheet(SidesheetContent, { data: tableData });
+                },
             },
         },
         chart3: {
@@ -53,7 +61,7 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
         chart1: {
             type: 'table',
             options: {
-                initialGroupBy: 'responsibleCode',
+                initialGroupBy: 'disciplineDescription',
                 columns: cols,
             },
         },
@@ -75,7 +83,7 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
 };
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
+    // const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
     const construction = appApi.createPageViewer();
 
     /** 
@@ -88,8 +96,8 @@ export function setup(appApi: ClientApi): void {
 
     // Loop Data Test for testing system..
     workPreparation.registerDataSource(async () => {
-        const plantId = 'PCS$JOHAN_CASTBERG';
-        const project = 'L.O532C.002';
+        // const plantId = 'PCS$JOHAN_CASTBERG';
+        // const project = 'L.O532C.002';
         // const response: WorkOrderApi = await api
         //     .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
         //     .then((res) => res.json())
@@ -137,7 +145,7 @@ export function setup(appApi: ClientApi): void {
         ];
     });
 
-    const excludeKeys: (keyof WorkOrder)[] = [];
+    // const excludeKeys: (keyof WorkOrder)[] = [];
 
     // const excludeKeys: (keyof WP)[] = [
     //     'tagNo',
@@ -165,12 +173,12 @@ export function setup(appApi: ClientApi): void {
     //     type: 'AnalyticsPage',
     //     ...analyticsOptions2,
     // });
-    // workPreparation.registerPage({
-    //     title: 'Details',
-    //     pageId: 'workPreparationDetails',
-    //     type: 'AnalyticsPage',
-    //     ...detailsPage,
-    // });
+    workPreparation.registerPage({
+        title: 'Details',
+        pageId: 'workPreparationDetails',
+        type: 'AnalyticsPage',
+        ...detailsPage,
+    });
 
     // workPreparation.registerPage({
     //     title: 'Hold',

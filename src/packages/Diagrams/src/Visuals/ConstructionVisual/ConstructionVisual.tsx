@@ -15,10 +15,26 @@ import zoomPlugin from 'chartjs-plugin-zoom';
 import { SidesheetContent } from '../../Components';
 ChartJS.register(...registerables, zoomPlugin);
 
-export const chartoptions: ChartOptions = {
+export const chartoptions = (title: string): ChartOptions => ({
     maintainAspectRatio: false,
     responsive: true,
     plugins: {
+        tooltip: {
+            backgroundColor: 'white',
+            titleColor: 'black',
+            bodyColor: 'black',
+        },
+        title: {
+            text: title,
+            display: true,
+            align: 'start',
+            color: 'black',
+            font: {
+                size: 16,
+                family: 'Equinor',
+                weight: 'bolder',
+            },
+        },
         legend: {
             position: 'bottom',
         },
@@ -53,7 +69,7 @@ export const chartoptions: ChartOptions = {
             offset: true,
         },
     },
-};
+});
 export function ConstructionVisual<T extends unknown>({
     data,
     options: { title, timeChartOptions, colors, defaultTime, accumulative },
@@ -97,7 +113,8 @@ export function ConstructionVisual<T extends unknown>({
         data.forEach((wo) => {
             (wo as WorkOrder).jobStatusCutoffs.forEach((jobStatus) => {
                 if (jobStatus.status === status) {
-                    if (jobStatus.weeks.includes(categoryDate as string)) {
+                    const weeks = renameCategories(jobStatus.weeks);
+                    if (weeks.includes(categoryDate as string)) {
                         showData.push(wo as WorkOrder);
                     }
                     return;
@@ -117,7 +134,7 @@ export function ConstructionVisual<T extends unknown>({
         <ReactChart
             type="bar"
             ref={chartRef}
-            options={chartoptions}
+            options={chartoptions(title)}
             data={chartData as ChartData}
             height={400}
             onClick={onClick}

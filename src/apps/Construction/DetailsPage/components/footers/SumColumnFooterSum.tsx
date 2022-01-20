@@ -11,7 +11,7 @@ export const SumColumnFooterSum = ({
     const total = useMemo(
         () =>
             data.data.reduce((sum, row) => {
-                return row[fieldKey] === value ? sum + Number(row[sumKey]) : sum;
+                return row[fieldKey] === value ? sum + Number(row[sumKey] || 0) : sum;
             }, 0),
         [data.data, fieldKey, sumKey, value]
     );

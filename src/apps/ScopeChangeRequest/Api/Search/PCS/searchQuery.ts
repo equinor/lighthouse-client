@@ -34,11 +34,12 @@ export const searchQueryOrigin = async (
                         value: x.DocumentNo,
                         type: 'query',
                         searchValue: x.DocumentNo,
+                        object: x,
                     });
                 });
             });
     } catch (e) {
-        console.log(e);
+        console.warn(e);
     }
     return selectOptions || [];
 };
