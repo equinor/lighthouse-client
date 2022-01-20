@@ -18,8 +18,8 @@ export function GardenView<T>(): JSX.Element | null {
             data &&
             createGarden(
                 data,
-                gardenKey as unknown as keyof T,
-                groupByKeys as unknown as (keyof T)[],
+                gardenKey,
+                groupByKeys,
                 status,
                 options?.groupDescriptionFunc,
                 fieldSettings

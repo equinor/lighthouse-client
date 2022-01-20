@@ -14,6 +14,7 @@ export function ParkViewProvider<T>({
     const initialState: ParkViewState<T> = {
         ...parkViewOptions,
         data: data,
+        groupByKeys: parkViewOptions?.groupByKeys || [],
         onSelect: parkViewOptions.onSelect as (item: unknown) => void,
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey,
     };

@@ -45,7 +45,6 @@ export function setup(appApi: ClientApi): void {
     swcr.registerGardenOptions({
         gardenKey: 'dueAtDate',
         itemKey: 'swcrNo',
-        groupByKeys: [],
         fieldSettings,
         customViews: {
             customItemView: SwcrItemView,
