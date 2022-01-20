@@ -195,16 +195,28 @@ export function setup(appApi: ClientApi): void {
     //     title: 'LCI Hanging Garden',
     //     reportURI: 'lci-hanging-gardens',
     // });
+    construction.registerFusionPowerBi('jca-installation', {
+        title: 'Installation',
+        reportURI: 'jca-installation',
+    });
     construction.registerFusionPowerBi('jca-checklist', {
-        title: 'Checklist Analytics',
+        title: 'Checklists',
         reportURI: 'jca-checklist',
     });
     construction.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
-        title: 'Punch Analytics',
+        title: 'Punch',
         reportURI: 'punch-analytics-rls',
     });
-    construction.registerFusionPowerBi('fd4052a9-641b-47b4-92d6-4876ecb8cdba', {
-        title: 'WO Analytics',
-        reportURI: 'wo-analytics-rls',
+    construction.registerFusionPowerBi('jca-handover-analytics', {
+        title: 'Handover',
+        reportURI: 'jca-handover-analytics',
     });
+
+    /**
+     * Does not contain JC data yet.
+     */
+    // construction.registerFusionPowerBi('fd4052a9-641b-47b4-92d6-4876ecb8cdba', {
+    //     title: 'WO Analytics',
+    //     reportURI: 'wo-analytics-rls',
+    // });
 }
