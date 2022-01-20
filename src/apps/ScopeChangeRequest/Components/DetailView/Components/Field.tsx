@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { Section, SectionText } from '../../../Styles/Section';
 
 interface FieldProps {
@@ -34,8 +35,12 @@ export const Field = ({ label, value, customLabel, customValue }: FieldProps): J
                 bold={customValue?.bold}
                 faded={customValue?.faded}
             >
-                {value}
+                <Value>{value}</Value>
             </SectionText>
         </Section>
     );
 };
+
+const Value = styled.div`
+    display: flex;
+`;

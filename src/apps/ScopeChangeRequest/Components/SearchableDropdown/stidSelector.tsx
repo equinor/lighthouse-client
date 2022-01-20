@@ -8,7 +8,7 @@ import { searchStid } from '../../Api/Search/STID/searchStid';
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import styled from 'styled-components';
-import { Document } from '../../Api/Search/STID/Types/Document';
+import { Document } from '../../Api/STID/Types/Document';
 import { StidDocument } from '../StidDocument';
 import { getDocumentsByTag } from '../../Api/STID/getDocumentsByTag';
 import { sort } from './sort';

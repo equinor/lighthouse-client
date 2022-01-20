@@ -1,7 +1,7 @@
 import { Button, TextField } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { SectionRow } from '../../Styles/Section';
-import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
+import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { Workflow } from '../Workflow/Workflow';
 import { patchWorkflowStep } from '../../Api/patchWorkflowStep';
 import { Field } from './Components/Field';
@@ -9,6 +9,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { patchScopeChange } from '../../Api';
+import { StidDocumentResolver } from '../DetailView/Components/StidDocumentResolver';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -77,16 +78,14 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
         }
     };
 
-    const statusFunc = (item: WorkflowStep): 'Completed' | 'Inactive' | 'Active' => {
-        if (item.isCompleted) {
-            return 'Completed';
-        }
-        if (item.isCurrent) {
-            return 'Active';
-        } else {
-            return 'Inactive';
-        }
-    };
+    async function downloadAttachment(attachmentId: string) {
+        const blob = await scopeChange.fetch(
+            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}/attachments/${attachmentId}`
+        );
+        const file: File = await blob.json();
+        const url = URL.createObjectURL(file);
+        window.open(url, '_blank');
+    }
 
     return (
         <div>
@@ -142,37 +141,31 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                         label={'Guesstimate description'}
                         customLabel={{ fontSize: '12px' }}
                         customValue={{ fontSize: '16px' }}
-                        value={request.guesstimateDescription}
+                        value={<div>{request.guesstimateDescription}</div>}
                     />
                 </SectionRow>
                 <Field
+                    customLabel={{ fontSize: '12px' }}
+                    customValue={{ fontSize: '16px' }}
+                    label={'System / comm pkg / tag'}
+                    value={<div></div>}
+                />
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label={'Documents'}
+                    value={<StidDocumentResolver inputDocuments={request.documents} />}
+                />
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label={'Attachments'}
+                    value={<div></div>}
+                />
+                <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label={'Workflow'}
-                    value={
-                        <Workflow
-                            requestState={request.state}
-                            requestId={request.id}
-                            currentStepId={request.currentWorkflowStep?.id}
-                            stepName={'name'}
-                            steps={request.workflowSteps}
-                            statusFunc={statusFunc}
-                        />
-                    }
+                    value={<Workflow request={request} />}
                 />
-                {/* <Field
-                    label="Contributors"
-                    value={
-                        <div>
-                            {request.currentWorkflowStep?.contributors.map((x) => {
-                                return (
-                                    <div key={x.id}>
-                                        {x.person.firstName} {x.person.lastName}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    }
-                /> */}
+
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label="Attachments"
@@ -182,12 +175,20 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                                 request.attachments.map((x) => {
                                     return (
                                         <Link
-                                            href={`https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}/attachments/${x.id}`}
-                                            download
+                                            onClick={async () => {
+                                                await downloadAttachment(x.id);
+                                            }}
                                             key={x.id}
                                         >
                                             {x.fileName}
                                         </Link>
+                                        // <Link
+                                        //     href={`https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}/attachments/${x.id}`}
+                                        //     download
+                                        //     key={x.id}
+                                        // >
+                                        //     {x.fileName}
+                                        // </Link>
                                     );
                                 })}
                         </div>
@@ -266,8 +267,7 @@ const DetailViewContainer = styled.div`
     display: flex;
     flex-direction: column;
     height: calc(87vh - ${ActionSelectorHeight});
-
-    overflow: scroll;
+    overflow-y: scroll;
 `;
 
 const ButtonContainer = styled.div`

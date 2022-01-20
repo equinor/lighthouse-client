@@ -1,6 +1,6 @@
 import { BaseClient } from '../../../../../../packages/httpClient/src';
 import { TypedSelectOption } from '../searchType';
-import { Tag } from './Types/Tag';
+import { Tag } from '../../STID/Types/Tag';
 
 export const searchTags = async (
     searchString: string,
@@ -19,7 +19,7 @@ export const searchTags = async (
         .then((data) => {
             data.map((x: Tag) => {
                 selectOptions.push({
-                    label: `${x.tagNo}`,
+                    label: `TAG_${x.tagNo}`,
                     value: x.tagNo,
                     type: 'stidtag',
                     searchValue: x.tagNo,

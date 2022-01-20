@@ -9,6 +9,7 @@ export interface ScopeChangeRequestFormModel {
     TagNumbers: string[];
     CommissioningPackageNumbers: string[];
     SystemIds: string[];
+    documentNumbers: string[];
     //workflow
 }
 
@@ -39,7 +40,14 @@ export interface ScopeChangeRequest {
     systems: System[];
     SystemIds: System[];
     attachments: Attachment[];
+    documents: Document[];
     //workflow
+}
+
+export interface Document {
+    id: string;
+    stidDocumentNumber: string;
+    stidDocumentRevisionNumber: string;
 }
 
 export interface Attachment {

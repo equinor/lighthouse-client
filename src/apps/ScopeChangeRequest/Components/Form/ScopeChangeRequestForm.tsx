@@ -19,7 +19,7 @@ import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
 import { StidSelector } from '../SearchableDropdown/stidSelector';
 
 import { StidDocument } from '../StidDocument';
-import { Document } from '../../Api/Search/STID/Types/Document';
+import { Document } from '../../Api/STID/Types/Document';
 import { uploadAttachment } from '../../Api/ScopeChange/attachment';
 
 interface ScopeChangeRequestFormProps {
@@ -66,6 +66,7 @@ export const ScopeChangeRequestForm = ({
                 TagNumbers: tags?.map((x) => x.value) || [],
                 SystemIds: systems?.map((x) => x.value) || [],
                 CommissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
+                documentNumbers: stidDocuments.map((x) => x.docNo) || [],
             },
             draft,
             scopeChange
@@ -92,8 +93,8 @@ export const ScopeChangeRequestForm = ({
     };
 
     useEffect(() => {
-        setHasUnsavedChanges(formData.getChangedData() !== undefined);
-    }, [formData, setHasUnsavedChanges]);
+        setHasUnsavedChanges(formData.getChangedData() !== undefined || relatedObjects.length > 0);
+    }, [formData, setHasUnsavedChanges, relatedObjects]);
 
     const SubmitButton = () => {
         return (

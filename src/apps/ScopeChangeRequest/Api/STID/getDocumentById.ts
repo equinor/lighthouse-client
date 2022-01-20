@@ -2,22 +2,22 @@ import { BaseClient } from '../../../../../packages/httpClient/src';
 import { Document } from './Types/Document';
 
 /**
- * Returns all stid documents related to a given tag
+ * Resolves document by document number
  * @param instCode
- * @param tagNo
+ * @param docNo
  * @param stidClient
- * @param docCategory
+ * @returns
  */
-export async function getDocumentsByTag(
+export async function getDocumentById(
     instCode: string,
-    tagNo: string,
+    docNo: string,
     stidClient: BaseClient
     //TODO:
     //docCategory?: string
-): Promise<Document[]> {
+): Promise<Document> {
     const baseUrl = 'https://stidapi.equinor.com';
-    const uri = `${instCode}/tag/document-refs`;
-    const queryParameters = `tagNo=${encodeURIComponent(tagNo)}&noContentAs200=true`;
+    const uri = `${instCode}/document`;
+    const queryParameters = `docNo=${encodeURIComponent(docNo)}`;
     const url = `${baseUrl}/${uri}?${queryParameters}`;
     return await stidClient.fetch(url).then((response) => response.json());
 }

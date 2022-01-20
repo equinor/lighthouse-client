@@ -1,5 +1,5 @@
 import { BaseClient } from '@equinor/http-client';
-import { Document } from './Types/Document';
+import { Document } from '../../STID/Types/Document';
 import { TypedSelectOption } from '../searchType';
 
 export const searchDocuments = async (
@@ -19,7 +19,7 @@ export const searchDocuments = async (
         .then((data) => {
             data.map((x: Document) => {
                 selectOptions.push({
-                    label: `${x.docNo} - ${x.docTitle}`,
+                    label: `DOC_${x.docNo} - ${x.docTitle}`,
                     value: x.docNo,
                     type: 'document',
                     searchValue: x.docNo,
