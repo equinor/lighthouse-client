@@ -1,12 +1,13 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { Garden } from '../../../components/ParkView/Components/Garden';
-import { GardenOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { GardenOptions } from '../../../components/ParkView/Models/gardenOptions';
+
 import {
     getDatePercentage,
     getDateStatus,
     getPercentage,
     getStatus,
-    StatusItem
+    StatusItem,
 } from '../../../packages/StatusBar';
 import { Loop } from '../loopApp';
 
