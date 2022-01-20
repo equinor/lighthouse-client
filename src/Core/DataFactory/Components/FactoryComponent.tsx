@@ -62,6 +62,7 @@ const ScrimContainer = styled.div`
     height: -webkit-fill-available;
     background: white;
     max-width: 90vh;
+    overflow: scroll;
 `;
 
 const Container = styled.div`

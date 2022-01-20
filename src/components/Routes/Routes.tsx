@@ -29,7 +29,7 @@ export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesPro
                 path={'/'}
                 element={
                     <GroupView
-                        group={{ name: 'Johan Castberg Home', icon: '' }}
+                        group={{ name: 'Johan Castberg Home', icon: '', columnId: 1 }}
                         groups={appGroups}
                         groupeId={'key'}
                     />
