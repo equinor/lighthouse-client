@@ -9,6 +9,22 @@ export interface HttpClientOptions {
     baseUrl?: string;
 }
 
+/**
+ * Return configured httpClients according to what appConfig.urls provides.
+ * the httpClients are pre scooped with the associated scope.
+ *
+ * ```
+ * const {scopeChange} = httpClient();
+ * ```
+ * This wil provide a http client predefined with the current
+ * environments scope and url for scopeChange
+ *
+ * By providing options under development one can create customHttpClient.
+ * when committing to dev one should register the scope and url in the infra repo.
+ *
+ * @param {HttpClientOptions} [options]
+ * @return {*}  {HttpClients}
+ */
 export function httpClient(options?: HttpClientOptions): HttpClients {
     const appConfig = readAppConfig();
     const authProvider = getAuthProvider();
@@ -16,7 +32,7 @@ export function httpClient(options?: HttpClientOptions): HttpClients {
     const customScope = options?.scope || '';
 
     const apiClients = {
-        customApi: baseClient(authProvider, [customScope]),
+        customHttpClient: baseClient(authProvider, [customScope]),
     };
 
     Object.keys(appConfig.urls).forEach((key) => {
