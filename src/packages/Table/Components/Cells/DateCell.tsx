@@ -11,5 +11,9 @@ export const DateCell = <T extends TableData>(props: CellProps<T, CellRenderProp
         () => (cellAttributeFn ? cellAttributeFn(content) : undefined),
         [cellAttributeFn]
     );
-    return <div {...attr}>{new Date(content[currentKey] as Date).toLocaleDateString()}</div>;
+
+    const dateDisplay = content[currentKey]
+        ? new Date(content[currentKey] as string).toLocaleDateString()
+        : '';
+    return <div {...attr}>{dateDisplay}</div>;
 };
