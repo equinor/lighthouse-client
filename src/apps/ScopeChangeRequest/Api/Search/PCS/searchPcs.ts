@@ -3,10 +3,12 @@ import { searchTags } from './searchTags';
 import { searchSystem } from './searchSystem';
 import { BaseClient } from '../../../../../../packages/httpClient/src';
 import { searchQueryOrigin } from './searchQuery';
+import { searchDCN } from './searchDCN';
+import { searchNCR } from './searchNcr';
 import { searchPerson } from './searchPerson';
 import { TypedSelectOption } from '../searchType';
 
-export type ProcoSysTypes = 'tag' | 'commpkg' | 'system' | 'query' | 'person';
+export type ProcoSysTypes = 'tag' | 'commpkg' | 'system' | 'query' | 'person' | 'dcn' | 'ncr';
 
 /**
  * TODO: convert to hook
@@ -32,6 +34,12 @@ export const searchPcs = async (
 
         case 'query':
             return await searchQueryOrigin(searchString, procosysClient);
+
+        case 'dcn':
+            return await searchDCN(searchString, procosysClient);
+
+        case 'ncr':
+            return await searchNCR(searchString, procosysClient);
 
         case 'person':
             return await searchPerson(searchString, procosysClient);

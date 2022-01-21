@@ -9,6 +9,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { patchScopeChange } from '../../Api';
+import { StidDocumentResolver } from './Components/StidDocumentResolver';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -153,6 +154,11 @@ export const RequestDetailView = ({
                     customLabel={{ fontSize: '18px', bold: true }}
                     label={'Workflow'}
                     value={<Workflow request={request} />}
+                />
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label="Documents"
+                    value={<StidDocumentResolver inputDocuments={request.documents} />}
                 />
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}

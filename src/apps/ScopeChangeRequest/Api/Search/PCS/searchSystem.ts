@@ -31,7 +31,7 @@ export const searchSystem = async (
             data.map((x: System) => {
                 selectOptions.push({
                     label: `SYS_${x.Code} - ${x.Description}`,
-                    value: x.Code,
+                    value: x.Id,
                     searchValue: x.Code,
                     type: 'system',
                     object: x,

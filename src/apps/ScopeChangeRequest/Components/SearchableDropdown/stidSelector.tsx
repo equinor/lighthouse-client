@@ -60,16 +60,15 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
 
     return (
         <Fragment>
-            <Button
-                variant="ghost_icon"
+            <AdvancedSearch
                 onClick={() => {
                     setDocuments([]);
                     setIsOpen((prev) => !prev);
                 }}
             >
-                <Icon name="add" />
-                <div>Add document</div>
-            </Button>
+                <Icon name="search" />
+                <div>Advanced search</div>
+            </AdvancedSearch>
 
             {isOpen && (
                 <Scrim
@@ -206,4 +205,15 @@ const StidHeader = styled.div`
     align-items: center;
     display: flex;
     justify-content: space-between;
+`;
+
+const AdvancedSearch = styled.div`
+    height: 48px;
+    width: 178px;
+    display: flex;
+    align-items: center;
+    color: ${tokens.colors.interactive.primary__resting.hex};
+    justify-content: space-evenly;
+    font-size: 14px;
+    cursor: pointer;
 `;

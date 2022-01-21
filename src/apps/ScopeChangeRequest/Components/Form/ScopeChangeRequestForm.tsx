@@ -21,6 +21,8 @@ import { StidSelector } from '../SearchableDropdown/stidSelector';
 import { StidDocument } from '../StidDocument';
 import { Document } from '../../Api/STID/Types/Document';
 import { uploadAttachment } from '../../Api/ScopeChange/attachment';
+import { Field } from '../DetailView/Components/Field';
+import { Upload } from '../Upload';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -149,7 +151,7 @@ export const ScopeChangeRequestForm = ({
                     {
                         Component: PCSLink,
                         order: 6,
-                        title: 'Tag / comm pkg / system',
+                        title: 'References',
                         props: {
                             relatedObjects: relatedObjects,
                             setRelatedObjects: setRelatedObjects,
@@ -182,10 +184,10 @@ export const ScopeChangeRequestForm = ({
                         );
                     })}
 
-                {/* <Field
+                <Field
                     label="Attachments"
                     value={<Upload attachments={attachments} setAttachments={setAttachments} />}
-                /> */}
+                />
             </GeneratedForm>
             {error && <p> Something went wrong, please check your connection and try again</p>}
         </>

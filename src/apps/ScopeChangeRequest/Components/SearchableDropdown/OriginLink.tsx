@@ -37,13 +37,25 @@ export const OriginLink = ({ originId, setOriginId }: PCSLinkProps): JSX.Element
             await (await searchPcs(inputValue, 'query', procosys)).map((x) => options.push(x));
         } catch (e) {
             setApiErrors((prev) => [...prev, 'queries']);
-        } finally {
-            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-                sort(a, b, inputValue)
-            );
-            sorted.push(none);
-            callback(sorted);
         }
+
+        try {
+            await (await searchPcs(inputValue, 'dcn', procosys)).map((x) => options.push(x));
+        } catch (e) {
+            setApiErrors((prev) => [...prev, 'DCN']);
+        }
+
+        try {
+            await (await searchPcs(inputValue, 'ncr', procosys)).map((x) => options.push(x));
+        } catch (e) {
+            setApiErrors((prev) => [...prev, 'NCR']);
+        }
+
+        const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+            sort(a, b, inputValue)
+        );
+        sorted.push(none);
+        callback(sorted);
     };
 
     return (

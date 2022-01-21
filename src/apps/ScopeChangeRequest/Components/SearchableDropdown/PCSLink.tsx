@@ -155,6 +155,10 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                             {objects.map((x) => {
                                 return (
                                     <Chip key={x.value}>
+                                        <Icon
+                                            name={x.type === 'tag' ? 'tag' : 'school'}
+                                            color={tokens.colors.interactive.primary__resting.hex}
+                                        />
                                         {x.label}
                                         <Icon
                                             color={tokens.colors.interactive.primary__resting.rgba}
@@ -184,11 +188,14 @@ const Inline = styled.span`
 const Chip = styled.div`
     text-align: center;
     display: flex;
-    justify-content: space-between;
+    width: fit-content;
     align-items: center;
     font-size: 16px;
     padding: 5px;
+    background-color: ${tokens.colors.ui.background__light.hex};
+    border-radius: 35%;
 `;
+// justify-content: space-between;
 
 const Column = styled.div`
     display: flex;

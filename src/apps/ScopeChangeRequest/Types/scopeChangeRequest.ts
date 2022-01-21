@@ -34,11 +34,11 @@ export interface ScopeChangeRequest {
     guesstimateHours: string;
     guesstimateDescription: string;
     tags: Tag[];
-    TagNumbers: string[];
-    CommissioningPackageNumbers: string[];
+    tagNumbers: string[];
+    commissioningPackageNumbers: string[];
     commissioningPackages: CommissioningPackage[];
     systems: System[];
-    SystemIds: System[];
+    systemIds: System[];
     attachments: Attachment[];
     documents: Document[];
     //workflow
