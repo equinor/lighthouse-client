@@ -1,12 +1,11 @@
 import { useMemo } from 'react';
-import { Job, WorkOrder } from '../../../mocData/mockData';
 import { FooterPropsCount } from '../../types';
 
-export const SumColumnFooterCount = ({
+export const SumColumnFooterCount = <T extends Record<string, unknown>>({
     data,
     fieldKey,
     value,
-}: FooterPropsCount<WorkOrder>): JSX.Element => {
+}: FooterPropsCount<T>): JSX.Element => {
     const total = useMemo(
         () =>
             data.data.reduce((sum, row) => {
