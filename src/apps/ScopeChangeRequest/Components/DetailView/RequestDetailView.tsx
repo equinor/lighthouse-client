@@ -22,14 +22,16 @@ export const RequestDetailView = ({
     refetch,
 }: RequestDetailViewProps): JSX.Element => {
     const [comment, setComment] = useState<string | undefined>(undefined);
-    const { customApi } = useHttpClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const { customHttpClient } = useHttpClient(
+        'api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default'
+    );
     const onInitiate = async () => {
         const payload = {
             ...request,
             setAsOpen: true,
         };
 
-        await patchScopeChange(payload, customApi);
+        await patchScopeChange(payload, customHttpClient);
         refetch();
     };
 
@@ -74,7 +76,7 @@ export const RequestDetailView = ({
                 request.id,
                 request.currentWorkflowStep.id,
                 activeCriteriaId,
-                customApi,
+                customHttpClient,
                 comment
             ).then(() => refetch());
             setComment('');

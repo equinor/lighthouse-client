@@ -1,7 +1,7 @@
 import { AuthenticationProvider } from '@equinor/authentication';
 import { PageViewerInstance } from '@equinor/PageViewer';
 import { WorkSpaceApi } from '@equinor/WorkSpace';
-import { WorkspaceOptions } from '../../AppBuilder/Services';
+import { WorkspaceOptions } from '../Service/ClientBuilder';
 import { AppConfig } from './AppConfig';
 import { AppManifest } from './AppManifest';
 

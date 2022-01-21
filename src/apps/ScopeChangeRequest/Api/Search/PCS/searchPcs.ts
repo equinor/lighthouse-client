@@ -1,4 +1,4 @@
-import { HttpClient } from '../../../../../../packages/httpClient/src';
+import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
 import { searchCommPkg } from './searchCommPkg';
 import { searchPerson } from './searchPerson';

@@ -1,4 +1,4 @@
-import { HttpClient } from '../../../../../../packages/httpClient/src';
+import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
 import { Query } from './Types/query';
 import { PCSStructure } from './Types/searchStructure';
