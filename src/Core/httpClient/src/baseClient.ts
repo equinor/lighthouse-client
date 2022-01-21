@@ -44,8 +44,8 @@ export function baseClient(
     baseUrl?: string
 ): HttpClient {
     const authProvider: AuthenticationProvider = newAuthProvider;
-    let _scopes = scopes;
-    let _baseUrl = baseUrl;
+    let _scopes = scopes || [''];
+    let _baseUrl = baseUrl || '';
 
     /**
      * Setts a new base url for the HttpClient
