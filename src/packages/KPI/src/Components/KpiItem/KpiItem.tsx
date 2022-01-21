@@ -1,4 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
+import { Tooltip } from '@equinor/eds-core-react';
 import { useMemo } from 'react';
 import { StatusCard, Title, Value } from './KpiItemStyles';
 
@@ -7,6 +8,7 @@ export interface KpiItem {
     value: () => string;
     description?: string;
     status: keyof Status;
+    tooltipContent?: string;
 }
 
 export type KpiBuilder<T> = (data: T[]) => KpiItem[];
@@ -18,7 +20,12 @@ export interface Status {
     default: string;
 }
 
-export function Item({ status, title, value }: React.PropsWithChildren<KpiItem>): JSX.Element {
+export function Item({
+    status,
+    title,
+    value,
+    tooltipContent,
+}: React.PropsWithChildren<KpiItem>): JSX.Element {
     const colors: Status = useMemo(
         () => ({
             waring: `${tokens.colors.interactive.danger__resting.hex}`,
@@ -32,7 +39,12 @@ export function Item({ status, title, value }: React.PropsWithChildren<KpiItem>)
     return (
         <StatusCard color={colors[status]}>
             <div>
-                <Title>{title}</Title>
+                <Tooltip
+                    title={tooltipContent}
+                    hidden={tooltipContent === undefined || tooltipContent.length === 0}
+                >
+                    <Title>{title}</Title>
+                </Tooltip>
             </div>
             <Value>{value()}</Value>
         </StatusCard>
