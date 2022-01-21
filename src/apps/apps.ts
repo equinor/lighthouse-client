@@ -1,4 +1,4 @@
-import { AppGroups, AppManifest } from '@equinor/app-builder';
+import { AppGroups, AppManifest } from '@equinor/portal-client';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -14,9 +14,10 @@ import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
-import { setup as constructionSetup } from './Construction';
 import { setup as commissioningSetup } from './Commissioning';
+import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
+import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
     BusinessCaseReport,
@@ -28,7 +29,6 @@ import {
     SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
-import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 
 export function getApps(): AppManifest[] {

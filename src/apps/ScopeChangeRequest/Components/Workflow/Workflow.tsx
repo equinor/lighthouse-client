@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { WorkflowLine } from './WorkflowLine';
-import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { addContributor as postContributor } from '../../Api/addContributor';
+import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
+import styled from 'styled-components';
+import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
+import { addContributor as postContributor } from '../../Api/addContributor';
 import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
+import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
+import { WorkflowLine } from './WorkflowLine';
 
 interface WorkflowProps {
     request: ScopeChangeRequest;
@@ -15,7 +15,7 @@ interface WorkflowProps {
 export function Workflow({ request }: WorkflowProps): JSX.Element {
     const [contributor, setContributor] = useState<{ value: string; label: string } | undefined>();
 
-    const { scopeChange } = useApiClient();
+    const { scopeChange } = useHttpClient();
 
     const { mutateAsync, isLoading } = useMutation(createContributor);
 

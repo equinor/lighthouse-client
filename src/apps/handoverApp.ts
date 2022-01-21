@@ -1,5 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
+import { ClientApi } from '@equinor/portal-client';
 
 interface CommPkg {
     Area__Id: string;

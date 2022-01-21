@@ -1,9 +1,9 @@
-import { BaseClient } from '@equinor/http-client';
+import { HttpClient } from '@equinor/http-client';
 
 export const uploadAttachment = async (
     requestId: string,
     file: File,
-    client: BaseClient
+    client: HttpClient
 ): Promise<string> => {
     const formData = new FormData();
 
@@ -25,7 +25,7 @@ export const uploadAttachment = async (
 export const deleteAttachment = async (
     requestId: string,
     attachmentId: string,
-    client: BaseClient
+    client: HttpClient
 ): Promise<void> => {
     const requestOptions: RequestInit = {
         method: 'DELETE',
@@ -44,7 +44,7 @@ export const deleteAttachment = async (
 export const getAttachment = async (
     requestId: string,
     attachmentId: string,
-    client: BaseClient
+    client: HttpClient
 ): Promise<void> => {
     const requestOptions: RequestInit = {
         method: 'GET',
