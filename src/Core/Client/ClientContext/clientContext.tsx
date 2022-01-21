@@ -1,16 +1,12 @@
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 import { useGlobalClientState } from '../ClientState/ClientState';
 import { toggleAppPanel, toggleFullscreenMenu } from '../Functions/Settings';
 import { GlobalClientState } from '../Types/GlobalClientState';
+import { UIFunctionContext } from '../Types/UIContext';
 
-interface ClientContextState extends GlobalClientState {
-    toggleAppPanel: VoidFunction;
-    toggleFullscreenMenu: VoidFunction;
-}
+export type ClientContextState = GlobalClientState & UIFunctionContext;
 
-type VoidFunction = () => void;
-
-const ClientContext = createContext({} as ClientContextState);
+export const ClientContext = createContext({} as ClientContextState);
 interface ClientContextProviderProps {
     children: React.ReactNode;
 }
@@ -30,7 +26,3 @@ export const ClientContextProvider = ({ children }: ClientContextProviderProps):
         </ClientContext.Provider>
     );
 };
-
-export function useClientContext(): ClientContextState {
-    return useContext(ClientContext);
-}

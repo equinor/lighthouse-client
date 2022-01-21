@@ -11,6 +11,8 @@ const INITIAL_STATE = {
         appsPanelActive: false,
         fullscreenMenuActive: false,
         logging: false,
+        isProduction: false,
+        clientEnv: 'dev',
     },
 } as GlobalClientState;
 

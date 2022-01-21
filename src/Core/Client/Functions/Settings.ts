@@ -1,5 +1,6 @@
 import { updateGlobalClientState } from '../ClientState/ClientState';
 import { ClientSettings } from '../Types/ClientSettings';
+import { readClientSettings } from './Readers';
 
 function internalUpdateSettings(
     update: ((settings: ClientSettings) => Partial<ClientSettings>) | Partial<ClientSettings>
@@ -25,4 +26,12 @@ export function toggleFullscreenMenu(): void {
 
 export function setLoggingState(logging: boolean): void {
     internalUpdateSettings({ logging });
+}
+
+export function setEnv(isProduction: boolean, clientEnv: string): void {
+    internalUpdateSettings({ isProduction, clientEnv });
+}
+
+export function isProduction(): boolean {
+    return readClientSettings().isProduction;
 }
