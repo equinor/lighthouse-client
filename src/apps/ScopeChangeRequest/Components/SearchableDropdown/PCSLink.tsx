@@ -1,14 +1,15 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import styled from 'styled-components';
-import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { searchPcs } from '../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import { sort } from './sort';
+
+
 
 interface PCSLinkProps {
     relatedObjects: TypedSelectOption[];
@@ -25,6 +26,18 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
 
     const removeRelatedObject = (value: string) =>
         setRelatedObjects((prev) => prev.filter((x) => x.value !== value));
+
+    const objects = useMemo(() => {
+        return relatedObjects.sort(function (a, b) {
+            if (a.type < b.type) {
+                return -1;
+            }
+            if (a.type > b.type) {
+                return 1;
+            }
+            return 0;
+        });
+    }, [relatedObjects]);
 
     const loadOptions = async (
         inputValue: string,
@@ -138,9 +151,9 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                 </Inline>
 
                 <Column>
-                    {relatedObjects && relatedObjects.length > 0 && (
+                    {objects && objects.length > 0 && (
                         <>
-                            {relatedObjects.map((x) => {
+                            {objects.map((x) => {
                                 return (
                                     <Chip key={x.value}>
                                         {x.label}

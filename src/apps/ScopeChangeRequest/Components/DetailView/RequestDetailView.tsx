@@ -152,16 +152,7 @@ export const RequestDetailView = ({
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label={'Workflow'}
-                    value={
-                        <Workflow
-                            requestState={request.state}
-                            requestId={request.id}
-                            currentStepId={request.currentWorkflowStep?.id}
-                            stepName={'name'}
-                            steps={request.workflowSteps}
-                            statusFunc={statusFunc}
-                        />
-                    }
+                    value={<Workflow request={request} />}
                 />
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}

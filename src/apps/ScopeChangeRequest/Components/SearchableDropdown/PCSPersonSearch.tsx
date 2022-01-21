@@ -33,7 +33,7 @@ export const PCSPersonSearch = ({ person, setPerson }: PCSLinkProps): JSX.Elemen
                     value={person}
                     styles={applyEdsStyles()}
                     controlShouldRenderValue={false}
-                    components={{ ...applyEdsComponents(), DropdownIndicator: SearchIcon }}
+                    components={{ ...applyEdsComponents() }}
                     placeholder={`Type to search..`}
                     noOptionsMessage={(obj: { inputValue: string }) => {
                         if (!obj.inputValue || obj.inputValue.length === 0) {
@@ -51,8 +51,4 @@ export const PCSPersonSearch = ({ person, setPerson }: PCSLinkProps): JSX.Elemen
             </div>
         </>
     );
-};
-
-const SearchIcon = () => {
-    return <Icon name="search" color={tokens.colors.interactive.focus.hex} />;
 };

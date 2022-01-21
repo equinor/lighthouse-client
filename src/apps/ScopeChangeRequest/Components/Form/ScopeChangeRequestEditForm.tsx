@@ -22,7 +22,8 @@ export const ScopeChangeRequestEditForm = ({
         guesstimateHours: request.guesstimateHours ?? undefined,
         title: request.title,
     });
-    const { customApi } = useHttpClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+
+    const { scopeChange } = useHttpClient();
 
     const onSubmit = async () => {
         await patchScopeChange(
@@ -33,7 +34,7 @@ export const ScopeChangeRequestEditForm = ({
                 SystemIds: request.SystemIds || [],
                 CommissioningPackageNumbers: request.CommissioningPackageNumbers || [],
             },
-            customApi
+            scopeChange
         );
     };
 
