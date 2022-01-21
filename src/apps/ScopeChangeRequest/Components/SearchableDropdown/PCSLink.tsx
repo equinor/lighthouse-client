@@ -1,5 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { useHttpClient } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
@@ -8,8 +9,6 @@ import { searchPcs } from '../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import { sort } from './sort';
-
-
 
 interface PCSLinkProps {
     relatedObjects: TypedSelectOption[];
