@@ -130,7 +130,7 @@ export function setup(appApi: ClientApi): void {
                     // Find all the first filtered WOs that are due in one week or less
 
                     const secondFiltered = firstFiltered.filter(
-                        (wo) => weekDiff(new Date(wo.plannedStartAtDate)).days <= 7
+                        (wo) => weekDiff(new Date(wo.plannedStartAtDate)).days <= 28
                     );
 
                     return secondFiltered.length.toString();
