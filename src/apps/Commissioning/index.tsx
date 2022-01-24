@@ -1,5 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { ClientApi } from '@equinor/portal-client';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 interface Checklist {
