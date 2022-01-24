@@ -153,10 +153,3 @@ export function SwcrSideSheet(item: SwcrPackage): JSX.Element {
         </div>
     );
 }
-
-/***
- *
- *
- *
- *
- */
