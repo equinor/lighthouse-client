@@ -25,7 +25,7 @@ export function useFusionClient(resource: string, filterOptions?: Filter[]): use
     const { fusion } = useApiClient();
     const [error, setError] = useState<NetworkError>();
 
-    const baseUri = 'https://lih-proxy.azurewebsites.net/fusion/reports';
+    const baseUri = 'https://app-ppo-proxy-dev.azurewebsites.net/fusion/reports';
 
     const filters: PowerBiFilter[] = [];
     filterOptions?.forEach((filterOption) => {
