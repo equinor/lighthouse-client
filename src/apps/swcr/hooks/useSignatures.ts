@@ -42,7 +42,7 @@ const useSignatures = (swcrId: string): UseSignatures => {
 
     useEffect(() => {
         getSignatures(swcrId);
-    }, [swcrId]);
+    }, [swcrId, getSignatures]);
 
     return {
         signatures,
