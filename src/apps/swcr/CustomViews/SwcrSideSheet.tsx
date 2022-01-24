@@ -9,8 +9,6 @@ const SideSheetContainer = styled.div`
     flex-direction: column;
     box-sizing: border-box;
     padding: 16px;
-    max-width: 960px;
-    overflow: auto;
 `;
 
 const TextBlock = styled.div`
@@ -18,6 +16,7 @@ const TextBlock = styled.div`
     margin-bottom: 16px;
     padding-right: 160;
     border-bottom: 1px solid black;
+    max-width: 960px;
 
     pre {
         white-space: pre-wrap;
