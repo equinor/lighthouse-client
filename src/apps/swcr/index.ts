@@ -52,6 +52,4 @@ export function setup(appApi: ClientApi): void {
             customHeaderView: SwcrHeaderView,
         },
     });
-
-    //swcr.registerDataViewSideSheetOptions({ CustomComponent: SwcrSideSheet });
 }

@@ -33,64 +33,66 @@ export function FilterSelector<T>(): JSX.Element | null {
     );
 
     const groupingOptions = useMemo(
-        (): string[] | null =>
+        (): string[] =>
             data.length
                 ? allOptions
                       .filter(filterGroupKey)
                       .map((groupKey) => fieldSettings?.[groupKey]?.label || groupKey)
-                : null,
+                : [],
 
         [data, fieldSettings, filterGroupKey, allOptions]
     );
 
-    const handleExistingSelectionChange = (newValue: string | null | undefined, index: number) => {
-        const newGroupByKeys = [...groupByKeys] as string[];
-        newValue == null
-            ? newGroupByKeys.splice(index, 1)
-            : (newGroupByKeys[index] =
-                  getFieldSettingsKeyFromLabel(newValue, fieldSettings) || newValue);
+    const handleExistingSelectionChange = useCallback(
+        (newValue: string | null | undefined, index: number) => {
+            const newGroupByKeys = [...groupByKeys] as string[];
+            newValue == null
+                ? newGroupByKeys.splice(index, 1)
+                : (newGroupByKeys[index] =
+                      getFieldSettingsKeyFromLabel(newValue, fieldSettings) || newValue);
 
-        setGroupKeys(newGroupByKeys);
-    };
+            setGroupKeys(newGroupByKeys);
+        },
+        [fieldSettings, groupByKeys, setGroupKeys]
+    );
 
-    const addItemToGroupKeys = (newValue: string | null | undefined) =>
-        newValue &&
-        setGroupKeys([
-            ...(groupByKeys as string[]),
-            getFieldSettingsKeyFromLabel(newValue, fieldSettings),
-        ]);
+    const addItemToGroupKeys = useCallback(
+        (newValue: string | null | undefined) =>
+            newValue &&
+            setGroupKeys([
+                ...(groupByKeys as string[]),
+                getFieldSettingsKeyFromLabel(newValue, fieldSettings),
+            ]),
+        [fieldSettings, groupByKeys, setGroupKeys]
+    );
+
+    const handleGardenKeyChange = useCallback(
+        (newValue: string | null | undefined) => {
+            const keyFromLabel = newValue && getFieldSettingsKeyFromLabel(newValue, fieldSettings);
+            keyFromLabel && setGardenKey(keyFromLabel);
+            setGroupKeys([]);
+        },
+        [fieldSettings, setGardenKey, setGroupKeys]
+    );
 
     if (!data) return null;
 
     return (
         <SelectRowWrapper>
             <Separator> Group by </Separator>
-            {gardenKey && (
-                <>
-                    <SingleSelect
-                        key={gardenKey.toString()}
-                        items={groupingOptions || []}
-                        label={''}
-                        selectedOption={getFieldSettingsLabelFromKey(
-                            gardenKey.toString(),
-                            fieldSettings
-                        )}
-                        handleSelectedItemChange={(changes) => {
-                            const keyFromLabel =
-                                changes.selectedItem &&
-                                getFieldSettingsKeyFromLabel(changes.selectedItem, fieldSettings);
 
-                            keyFromLabel && setGardenKey(keyFromLabel);
-                            setGroupKeys([]);
-                        }}
-                    />
-                    <Separator>then</Separator>
-                </>
-            )}
+            <SingleSelect
+                key={gardenKey.toString()}
+                items={groupingOptions}
+                label={''}
+                selectedOption={getFieldSettingsLabelFromKey(gardenKey.toString(), fieldSettings)}
+                handleSelectedItemChange={(changes) => handleGardenKeyChange(changes.selectedItem)}
+            />
+            <Separator>then</Separator>
 
             {groupByKeys.map((groupByKey, index) => {
                 return (
-                    <SelectRowWrapper key={groupByKey.toString() + 'wrapper'}>
+                    <>
                         <SingleSelect
                             key={groupByKey.toString()}
                             items={groupingOptions || []}
@@ -104,21 +106,19 @@ export function FilterSelector<T>(): JSX.Element | null {
                             }}
                         />
                         <Separator>then</Separator>
-                    </SelectRowWrapper>
+                    </>
                 );
             })}
             {groupingOptions && groupingOptions.length > 0 && (
-                <>
-                    <SingleSelect
-                        key={'EmptyGroupBySelector'}
-                        items={groupingOptions}
-                        label={''}
-                        selectedOption=""
-                        handleSelectedItemChange={(changes) => {
-                            addItemToGroupKeys(changes.selectedItem);
-                        }}
-                    />
-                </>
+                <SingleSelect
+                    key={'EmptyGroupBySelector'}
+                    items={groupingOptions}
+                    label={''}
+                    selectedOption=""
+                    handleSelectedItemChange={(changes) => {
+                        addItemToGroupKeys(changes.selectedItem);
+                    }}
+                />
             )}
         </SelectRowWrapper>
     );
