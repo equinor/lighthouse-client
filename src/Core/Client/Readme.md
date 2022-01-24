@@ -2,11 +2,11 @@
 
 The main hart of the project portal.
 
-## Global Context
 
-Provides the main content and helps orchestrating the howl client.
-Built on React Atom / Atom wrapped in a `createClient`.
-This function creates an instance of the client and 
+## The Client
+
+By providing appManifests and appGroups the `createClient` function will
+orchestrate creation of the client
 
 ```TS
 
@@ -16,16 +16,18 @@ This function creates an instance of the client and
     }
 
     /*Project Portal Setup*/
-    createClient({getApps, getAppGroups}).then((client) => {
-        render( 
-            <Client {...client} />,
-            document.getElementById('root')    
-        );
-    }
+    createClient({ getApps, getAppGroups }).then((client) => {
+        if (client.authProvider && !(window !== window.parent && !window.opener)) {
+            render(<Client {...client} />, document.getElementById('root'));
+        }
+    });
     
 ```
+### Global State Context 
 
-### Global HttpClient
+
+
+## Global HttpClient
 
 Basic usage of the `httpClient` function. providing scoped http clients.
 
