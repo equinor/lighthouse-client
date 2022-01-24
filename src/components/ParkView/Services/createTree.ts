@@ -1,7 +1,7 @@
-import { StatusView } from '../Context/ParkViewContext';
 import { Data } from '../Models/data';
 import { groupBy } from '../Utils/groupBy';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
+import { StatusView } from '../Models/gardenOptions';
 
 export type Tree<T> = Record<string, T[]>;
 

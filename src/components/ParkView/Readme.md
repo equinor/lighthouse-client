@@ -2,9 +2,6 @@ Parkview consists of both Tree view and Garden view
 
 A garden is just a horizontal row of multiple trees. Garden groups its first row on garden key which is a horizontal grouping, rest is vertical grouping.
 
-If no excludeKeys are passed it will automatically remove keys which are unique, no reason to group on unique keys.
-If you want to override this pass in an empty array or the keys you want to remove to excludeKeys parameter. 
-
 Group Description Function:
 Pass in a function that returns a description for the group. Useful in cases where the name of the group is not descriptive enough. 
 API calls are not recommended
