@@ -1,6 +1,8 @@
 import { SwcrPackage } from '../models/SwcrPackage';
 import styled from 'styled-components';
 import { Chip, Button } from '@equinor/eds-core-react';
+import useSignatures from '../hooks/useSignatures';
+import { Fragment } from 'react';
 
 const SideSheetContainer = styled.div`
     display: flex;
@@ -69,6 +71,8 @@ const Header = styled.div`
 `;
 
 export function SwcrSideSheet(item: SwcrPackage): JSX.Element {
+    const { signatures, signaturesFetching } = useSignatures(item.swcrId);
+    console.log(signatures, signaturesFetching);
     return (
         <div style={{ height: '100%' }}>
             <SideSheetContainer>
@@ -128,30 +132,31 @@ export function SwcrSideSheet(item: SwcrPackage): JSX.Element {
                         <TextBlockEmpty>No modifications</TextBlockEmpty>
                     )}
                 </TextBlock>
+                <Signatures>
+                    <h5>Next signatures</h5>
+                    <h5>Seq</h5>
+                    <h5>By</h5>
+
+                    {!signaturesFetching &&
+                        signatures &&
+                        signatures
+                            .filter((signature) => !signature.signDate)
+                            .map((signature, key) => (
+                                <Fragment key={'signature' + key}>
+                                    <div>{signature.signatureRole}</div>
+                                    <div>{signature.ranking}</div>
+                                    <div>{signature.functionalRole || signature.person}</div>
+                                </Fragment>
+                            ))}
+                </Signatures>
             </SideSheetContainer>
         </div>
     );
 }
 
 /***
- * 
- *   
- * 
- *   <Signatures>
-                <h5>Next signatures</h5>
-                <h5>Seq</h5>
-                <h5>By</h5>
-
-                {!signaturesFetching &&
-                    signatures &&
-                    signatures
-                        .filter((signature) => !signature.signDate)
-                        .map((signature, key) => (
-                            <div key={'signature' + key}>
-                                <div>{signature.signatureRole}</div>
-                                <div>{signature.ranking}</div>
-                                <div>{signature.functionalRole || signature.person}</div>
-                            </div>
-                        ))}
-            </Signatures>
+ *
+ *
+ *
+ *
  */
