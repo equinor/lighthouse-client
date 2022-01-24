@@ -72,7 +72,7 @@ const Header = styled.div`
 
 export function SwcrSideSheet(item: SwcrPackage): JSX.Element {
     const { signatures, signaturesFetching } = useSignatures(item.swcrId);
-    console.log(signatures, signaturesFetching);
+
     return (
         <div style={{ height: '100%' }}>
             <SideSheetContainer>
