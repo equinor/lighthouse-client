@@ -193,7 +193,6 @@ export function setup(appApi: ClientApi): void {
         groupByKeys: ['commPk'],
         status: { statusItemFunc, shouldAggregate: true },
         //options: { groupDescriptionFunc },
-        excludeKeys: [],
     });
     commPkg.registerAnalyticsOptions(analyticsOptions);
     commPkg.registerTreeOptions({
