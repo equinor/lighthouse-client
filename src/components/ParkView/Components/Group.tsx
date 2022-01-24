@@ -5,12 +5,17 @@ import { DataSet } from '../Models/data';
 import { Items } from './Items';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { useRefresh } from '../hooks/useRefresh';
+import { FieldSettings } from '../Models/fieldSettings';
+import { defaultSortFunction } from '../Utils/utilities';
+import { useMemo } from 'react';
 
 interface GroupProps<T> {
     group: DataSet<T>;
+    columnExpanded: boolean;
+    fieldSettings?: FieldSettings<T>;
 }
 
-export function Group<T>({ group }: GroupProps<T>): JSX.Element {
+export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>): JSX.Element {
     const refresh = useRefresh();
     const { customView } = useParkViewContext<T>();
 
@@ -19,12 +24,21 @@ export function Group<T>({ group }: GroupProps<T>): JSX.Element {
         group.isExpanded = !group.isExpanded;
     };
 
+    const GroupView = customView?.customGroupView;
+
+    const subGroupKeys = useMemo(() => Object.keys(group.subGroups) || [], [group.subGroups]);
+
     return (
         <SubGroup>
-            {customView?.CustomGroupView ? (
-                <customView.CustomGroupView key={group.value} data={group} onClick={handleClick} />
+            {GroupView ? (
+                <GroupView
+                    key={group.value}
+                    data={group}
+                    onClick={handleClick}
+                    columnExpanded={columnExpanded}
+                />
             ) : (
-                <Pack key={group.value + group.groupKey} onClick={() => handleClick()}>
+                <Pack key={group.value + group.groupKey} onClick={handleClick}>
                     <div style={{ display: 'flex' }}>
                         {group.status?.statusElement}
                         {group.value}
@@ -37,12 +51,21 @@ export function Group<T>({ group }: GroupProps<T>): JSX.Element {
 
             {group.isExpanded &&
                 (group.items[0] != null ? (
-                    <Items data={group.items} />
+                    <Items data={group.items} columnExpanded={columnExpanded} />
                 ) : (
                     <>
-                        {Object.values(group.subGroups).map((x) => (
-                            <Group key={x.value} group={x} />
-                        ))}
+                        {subGroupKeys
+                            .sort(
+                                fieldSettings?.[group.subGroups?.[0]?.groupKey]?.getColumnSort ||
+                                    defaultSortFunction
+                            )
+                            .map((groupKey) => (
+                                <Group
+                                    key={group.subGroups[groupKey].value}
+                                    group={group.subGroups[groupKey]}
+                                    columnExpanded={columnExpanded}
+                                />
+                            ))}
                     </>
                 ))}
         </SubGroup>

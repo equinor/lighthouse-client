@@ -21,13 +21,12 @@ const Tree = styled.div`
     color: #212529;
     max-height: calc(100vh - 98px);
     overflow-y: auto;
-    width: 200px;
+    min-width: 50px;
     padding: 1rem;
 `;
 
 interface TitleProps {
     isSelected: boolean;
-
 }
 
 const Title = styled.h5`
@@ -39,14 +38,13 @@ const Title = styled.h5`
     background-color: ${tokens.colors.ui.background__light.rgba};
 `;
 
-
 const Wrapper = styled.span`
     display: flex;
     align-items: center;
     cursor: pointer;
     /* color: ${(props: WrapperProps) => (props.id === props.selected ? '#9aee2c' : '#272727')}; */
 
-    svg{
+    svg {
         height: 16px;
         width: 16px;
     }
@@ -66,8 +64,8 @@ const Item = styled.div`
     padding-left: 15px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
-    box-sizing: border-box; 
-            
+    box-sizing: border-box;
+
     &:after {
         position: absolute;
         top: 0;
@@ -78,44 +76,44 @@ const Item = styled.div`
         content: '';
         background-color: #666;
     }
-        
+
     :last-child:after {
         height: 0;
     }
 `;
 
-
 type Data<T> = {
-    [key: string]: DataSet<T>
-}
+    [key: string]: DataSet<T>;
+};
 
 type DataSet<T> = {
-    groupKey: keyof T,
-    value: string,
-    subGroups: Data<T>,
-    items: T[],
-    isExpanded: false,
-    count: number,
-    customRenderFunction?: RenderFunction<T>
-}
+    groupKey: keyof T;
+    value: string;
+    subGroups: Data<T>;
+    items: T[];
+    isExpanded: false;
+    count: number;
+    customRenderFunction?: RenderFunction<T>;
+};
 
+type RenderFunction<T> = (data: Data<T>) => React.FC<{ data: Data<T> }>;
 
-type RenderFunction<T> = (data: Data<T>) => React.FC<{ data: Data<T> }>
-
-type CustomRender<T,> = {
+type CustomRender<T> = {
     [key in keyof T]: RenderFunction<T>;
 };
 
-function groupBy<T, K extends keyof T>(arr: T[], keys: K[], renderFunction?: CustomRender<T>): Data<T> {
-
-    const key = keys[0] && keys[0].toString() || undefined
+function groupBy<T, K extends keyof T>(
+    arr: T[],
+    keys: K[],
+    renderFunction?: CustomRender<T>
+): Data<T> {
+    const key = (keys[0] && keys[0].toString()) || undefined;
     if (!key) return {} as Data<T>;
 
     const data = arr.reduce((acc: Data<T>, item) => {
         const itemKeys: [] = Array.isArray(item[key]) ? item[key] : [item[key]];
 
         itemKeys.forEach((valueKey: string) => {
-
             acc[valueKey] = acc[valueKey] || {
                 groupKey: key,
                 value: valueKey,
@@ -123,38 +121,37 @@ function groupBy<T, K extends keyof T>(arr: T[], keys: K[], renderFunction?: Cus
                 items: [],
                 count: 0,
                 isExpanded: false,
-                renderFunction: renderFunction && renderFunction[key]
+                renderFunction: renderFunction && renderFunction[key],
             };
-            acc[valueKey].items.push(item)
-            acc[valueKey].count = acc[valueKey].count + 1
+            acc[valueKey].items.push(item);
+            acc[valueKey].count = acc[valueKey].count + 1;
         });
-        return acc
-
+        return acc;
     }, {} as Data<T>);
 
     if (keys.length === 0) return data;
 
-    const nextKeys = keys.slice(1)
-    Object.keys(data).forEach(key => {
+    const nextKeys = keys.slice(1);
+    Object.keys(data).forEach((key) => {
         data[key].subGroups = groupBy(data[key].items, nextKeys);
-        if (nextKeys.length > 0)
-            data[key].items = [];
+        if (nextKeys.length > 0) data[key].items = [];
     });
 
-    return data
-
+    return data;
 }
 
-interface TreeRootProps<T> { data: T[], rootNode: keyof T, groupByKeys: (keyof T)[] }
-
-
+interface TreeRootProps<T> {
+    data: T[];
+    rootNode: keyof T;
+    groupByKeys: (keyof T)[];
+}
 
 export function TreeRoot<T>({ data, groupByKeys, rootNode }: TreeRootProps<T>) {
     const [treeData, setTreeData] = useState<Data<T>>({});
 
     useEffect(() => {
-        setTreeData(groupBy(data, [rootNode, ...groupByKeys]))
-    }, [data, groupByKeys])
+        setTreeData(groupBy(data, [rootNode, ...groupByKeys]));
+    }, [data, groupByKeys]);
 
     return (
         <Tree>
@@ -163,11 +160,11 @@ export function TreeRoot<T>({ data, groupByKeys, rootNode }: TreeRootProps<T>) {
             ))}
         </Tree>
     );
-};
+}
 
 export function ItemNode<T>({ data }: { data: DataSet<T> }): JSX.Element {
     const [expand, setExpand] = useState(false);
-    const [selected, setSelects] = useState<string>("");
+    const [selected, setSelects] = useState<string>('');
     const handleExpand = () => {
         setExpand((expand: boolean) => !expand);
         setSelects(data.groupKey.toString() !== selected ? data.groupKey.toString() : '');
@@ -175,26 +172,27 @@ export function ItemNode<T>({ data }: { data: DataSet<T> }): JSX.Element {
 
     return (
         <>
-
             <Wrapper id={data.groupKey.toString()} selected={selected} onClick={handleExpand}>
                 {/* <H3>{icon[data.groupKey.toString()]}</H3> */}
-                {
-                    Object.keys(data.subGroups).length > 0 &&
-                    <Icon name={data.groupKey.toString() === selected ? "remove_outlined" : "add_circle_outlined"} />
-                }
-                <Title {...{ selected }} >
-                    {data.value || "Unknown"}
-                </Title>
+                {Object.keys(data.subGroups).length > 0 && (
+                    <Icon
+                        name={
+                            data.groupKey.toString() === selected
+                                ? 'remove_outlined'
+                                : 'add_circle_outlined'
+                        }
+                    />
+                )}
+                <Title {...{ selected }}>{data.value || 'Unknown'}</Title>
             </Wrapper>
             <HeightWrapper active={data.groupKey !== selected}>
                 {expand &&
                     Object.keys(data.subGroups).map((key: string, index: number) => (
                         <Item key={data.subGroups[key].groupKey.toString() + index}>
-
                             <ItemNode data={data.subGroups[key]} />
                         </Item>
                     ))}
             </HeightWrapper>
         </>
     );
-};
+}

@@ -1,55 +1,66 @@
-import React, { useEffect, useState } from 'react';
-
 import { createGarden } from '../Services/createGarden';
-import { Wrapper, Col, Groupe, Title, Count } from '../Styles/common';
-import { Data } from '../Models/data';
+import { Wrapper, Col } from '../Styles/common';
 import { TreeColumn } from './TreeColumn';
-import { getExcludeKeys } from '../Utils/excludeKeys';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { FilterSelector } from './GroupingSelector';
+import { GroupHeader } from './GroupHeader';
+import { useRefresh } from '../hooks/useRefresh';
+import { useMemo } from 'react';
+import { defaultSortFunction } from '../Utils/utilities';
 
 export function GardenView<T>(): JSX.Element | null {
-    const { data, groupByKeys, gardenKey, excludeKeys, setExcludeKeys, options, status } =
+    const refresh = useRefresh();
+    const { data, groupByKeys, gardenKey, options, status, fieldSettings, customView } =
         useParkViewContext<T>();
-    const [garden, setGarden] = useState<Data<T> | null>();
-    if (!excludeKeys && data) {
-        setExcludeKeys(getExcludeKeys(data, 60));
-    }
 
-    useEffect(() => {
-        data &&
-            setGarden(
-                createGarden(
-                    data,
-                    gardenKey as unknown as keyof T,
-                    groupByKeys as unknown as (keyof T)[],
-                    status,
-                    options?.groupDescriptionFunc
-                )
-            );
-    }, [data, gardenKey, groupByKeys, status, options?.groupDescriptionFunc]);
+    const garden = useMemo(
+        () =>
+            data &&
+            createGarden(
+                data,
+                gardenKey,
+                groupByKeys,
+                status,
+                options?.groupDescriptionFunc,
+                fieldSettings
+            ),
+        [data, fieldSettings, gardenKey, groupByKeys, options?.groupDescriptionFunc, status]
+    );
 
-    if (!data || !garden) {
-        return null;
-    }
+    const Header = customView?.customHeaderView || GroupHeader;
 
+    const handleHeaderClick = (columnKey: string) => {
+        refresh();
+        garden[columnKey].isExpanded = !garden[columnKey].isExpanded;
+    };
+
+    const columnKeys = useMemo(
+        () =>
+            Object.keys(garden).sort(
+                fieldSettings[gardenKey]?.getColumnSort || defaultSortFunction
+            ),
+        [fieldSettings, garden, gardenKey]
+    );
+
+    if (!data || !garden) return null;
     return (
         <>
             <FilterSelector<T> />
             <Wrapper>
                 {garden &&
-                    Object.keys(garden).map((key, index) => (
+                    columnKeys.map((key, index) => (
                         <Col key={`col-${index}`}>
                             {/* Will be created with viewerFactory configured with gardenoptions */}
                             {gardenKey && (
-                                <Groupe>
-                                    {garden[key].status?.statusElement}
-                                    <Title>{garden[key].value}</Title>
-                                    <Count>({garden[key].count})</Count>
-                                </Groupe>
+                                <div
+                                    style={{ width: '100%' }}
+                                    onClick={() => handleHeaderClick(key)}
+                                >
+                                    <Header garden={garden} columnKey={key} />
+                                </div>
                             )}
 
-                            <TreeColumn group={garden[key]} />
+                            <TreeColumn group={garden[key]} fieldSettings={fieldSettings} />
                         </Col>
                     ))}
             </Wrapper>

@@ -2,6 +2,9 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
+/**TODO: max-heigh is hardcoded to make the garden scale correct. Expanded filter panel brakes this.
+ * This needs to be removed at some point
+ **/
 export const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
@@ -10,11 +13,12 @@ export const Wrapper = styled.div`
     height: 100vh;
     width: 100%;
     align-items: flex-start;
+    max-height: calc(100vh - 176px);
 `;
 export const Col = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     padding: 4px;
 `;
 
@@ -31,6 +35,7 @@ export const Groupe = styled.div`
     align-items: center;
     position: relative;
     height: 32px;
+    cursor: pointer;
 
     ::after {
         content: ' ';
