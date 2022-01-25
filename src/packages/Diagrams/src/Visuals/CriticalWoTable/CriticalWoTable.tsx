@@ -53,38 +53,37 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
                 {groupByKeys &&
                     groupByKeys.map((groupedKey, index) => {
                         const woCountValues = Object.values(filtered[groupedKey]);
-                        // if (woCountValues.every((val) => val === 0)) {
-                        //     return null;
-                        // }
+
                         const keysOfFiltered = Object.keys(filtered[groupedKey]);
 
                         return (
                             <Fragment key={groupedKey}>
-                                <div>
-                                    <TableData>
-                                        <div style={{ visibility: 'hidden' }}>Very hacky :)</div>
-                                        {index === 0 &&
-                                            keysOfFiltered.map((_key, index) => {
-                                                return (
-                                                    <WeekHeader key={index}>
-                                                        {index + 1}
-                                                        {index === 0 ? ' Week left' : ' Weeks left'}
-                                                    </WeekHeader>
-                                                );
-                                            })}
-                                    </TableData>
+                                <TableData>
+                                    <div style={{ visibility: 'hidden' }}>Very hacky :)</div>
+                                    {index === 0 &&
+                                        keysOfFiltered.map((_key, index) => {
+                                            return (
+                                                <WeekHeader key={index}>
+                                                    {index + 1}
+                                                    {index === 0 ? ' Week left' : ' Weeks left'}
+                                                </WeekHeader>
+                                            );
+                                        })}
+                                </TableData>
+                                {woCountValues.every((val) => val.count === 0) ? null : (
+                                    <>
+                                        <TableData>
+                                            <div style={{ fontWeight: 500 }}>{groupedKey}</div>
 
-                                    <TableData>
-                                        <div style={{ fontWeight: 500 }}>{groupedKey}</div>
-
-                                        <WoNumbersDisplay
-                                            filtered={filtered}
-                                            groupedKey={groupedKey}
-                                            keysOfFiltered={keysOfFiltered}
-                                        />
-                                    </TableData>
-                                </div>
-                                <HLine />
+                                            <WoNumbersDisplay
+                                                filtered={filtered}
+                                                groupedKey={groupedKey}
+                                                keysOfFiltered={keysOfFiltered}
+                                            />
+                                        </TableData>
+                                        <HLine />
+                                    </>
+                                )}
                             </Fragment>
                         );
                     })}
