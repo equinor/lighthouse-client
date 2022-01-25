@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { WorkOrder } from '../../../../../apps/Construction/mocData/mockData';
-import { Fragment } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { createWoStatusMap, filterWoMap } from './utils';
 import { WoNumbersDisplay } from './components/WoNumbers';
+import { SingleSelect } from '@equinor/eds-core-react';
+import { CustomVisualArgs } from '../../Types';
 
 const Container = styled.div`
     height: 100%;
@@ -18,7 +20,9 @@ const Title = styled.div`
     font-size: 16px;
     font-weight: bold;
 `;
-
+const SelectContainer = styled.div`
+    width: 30%;
+`;
 const TableData = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -34,24 +38,50 @@ const HLine = styled.hr`
     height: 1px;
 `;
 
-type CriticalWoTableProps<T> = {
-    data: T[];
-};
-
 export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = WorkOrder>({
     data,
-}: CriticalWoTableProps<T>) => {
-    const woStatusMap = createWoStatusMap(data, 'disciplineDescription');
+    enableGrouping = false,
+    initialGroupBy,
+}: CustomVisualArgs<T>) => {
+    const [groupBy, setGroupBy] = useState<keyof T>('disciplineDescription');
+    const woStatusMap = createWoStatusMap(data, groupBy);
     const filtered = filterWoMap(woStatusMap);
-    const groupByKeys = Object.keys(filtered);
+    const grouped = Object.keys(filtered);
+    const groupByKeys = data.length > 0 ? Object.keys(data[0]) : [groupBy];
+
+    const handleChange = useCallback(
+        (groupByKey: keyof T) => {
+            setGroupBy(groupByKey);
+        },
+        [setGroupBy]
+    );
+
+    useEffect(() => {
+        if (initialGroupBy) {
+            setGroupBy(initialGroupBy as keyof T);
+        }
+    }, [initialGroupBy]);
     return (
         <Container>
             <Title>
                 Job cards that have not reached state WO4 in weeks before installation date
             </Title>
+            {enableGrouping && (
+                <SelectContainer>
+                    <SingleSelect
+                        items={groupByKeys as string[]}
+                        label="Group by"
+                        value={`${groupBy}`}
+                        handleSelectedItemChange={(select) => {
+                            if (select.selectedItem) handleChange(select.selectedItem as keyof T);
+                        }}
+                        style={{ height: '30px' }}
+                    />
+                </SelectContainer>
+            )}
             <Main>
-                {groupByKeys &&
-                    groupByKeys.map((groupedKey, index) => {
+                {grouped &&
+                    grouped.map((groupedKey, index) => {
                         const woCountValues = Object.values(filtered[groupedKey]);
 
                         const keysOfFiltered = Object.keys(filtered[groupedKey]);
