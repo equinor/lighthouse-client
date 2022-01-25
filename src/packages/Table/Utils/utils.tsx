@@ -15,6 +15,19 @@ export const findCustomHeader = <T extends TableData>(
     } else return key;
 };
 
+export const findCustomColumnWidth = <T extends TableData>(
+    key: keyof T,
+    headers?: CustomHeader<T>[]
+): number | undefined => {
+    if (headers === undefined || headers.length === 0) return undefined;
+
+    const customHeaderIndex = headers.findIndex((header) => header.key === key);
+
+    if (customHeaderIndex > -1) {
+        return headers[customHeaderIndex].width;
+    } else undefined;
+};
+
 const isCustomCell = <T, D extends TableData>(arg: CellType<T>): arg is CustomCellType<T, D> => {
     return (arg as CustomCellType<T, D>).Cell !== undefined;
 };
