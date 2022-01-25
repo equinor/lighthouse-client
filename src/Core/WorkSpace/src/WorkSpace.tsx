@@ -1,5 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import { ClientApi } from '@equinor/portal-client';
 import ErrorFallback from '../../ErrorBoundary/Components/ErrorFallback';
 import { WorkSpaceView } from './Components/WorkSpace/WorkSpaceView';
 import { DataProvider } from './Context/DataProvider';

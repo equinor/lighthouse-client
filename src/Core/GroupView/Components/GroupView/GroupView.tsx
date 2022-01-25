@@ -1,7 +1,7 @@
-import { AppGroupe, AppGroups, AppManifest } from '@equinor/app-builder';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import { AppGroupe, AppGroups, AppManifest } from '@equinor/portal-client';
 import ErrorFallback from '../../../ErrorBoundary/Components/ErrorFallback';
 import { Header } from '../Header/Header';
 import { Link, Links, Main, Section, SubTitle, Wrapper } from './GroupViewStyles';
@@ -42,7 +42,9 @@ export function GroupView({ group, groups, links, groupeId }: GroupViewProps): J
                                 const CustomIcon = groupItem.icon;
                                 return (
                                     <Link key={`group-link-${key}`} to={`/${key}`}>
-                                        {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
+                                        {CustomIcon && typeof CustomIcon !== 'string' && (
+                                            <CustomIcon />
+                                        )}
                                         {<span>{groupItem.name}</span>}
                                     </Link>
                                 );
@@ -59,13 +61,17 @@ export function GroupView({ group, groups, links, groupeId }: GroupViewProps): J
                                         key={`group-link-${item.shortName}`}
                                         to={`/${groupeId}/${item.shortName}`}
                                     >
-                                        {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
+                                        {CustomIcon && typeof CustomIcon !== 'string' && (
+                                            <CustomIcon />
+                                        )}
 
                                         {CustomIcon && typeof CustomIcon === 'string' && (
                                             <Icon
                                                 name={CustomIcon}
                                                 title={item.title}
-                                                color={tokens.colors.text.static_icons__secondary.rgba}
+                                                color={
+                                                    tokens.colors.text.static_icons__secondary.rgba
+                                                }
                                             />
                                         )}
 

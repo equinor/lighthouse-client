@@ -1,10 +1,10 @@
-import { BaseClient } from '../../../../packages/httpClient/src';
+import { HttpClient } from '@equinor/http-client';
 
 export async function patchWorkflowStep(
     requestId: string,
     stepId: string,
     criteriaId: string,
-    client: BaseClient,
+    client: HttpClient,
     comment?: string
 ): Promise<void> {
     const requestOptions = {

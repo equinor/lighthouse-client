@@ -1,6 +1,5 @@
-import { BaseClient } from '../../../../../../packages/httpClient/src';
-import { searchDocuments } from './searchDocuments';
 import { TypedSelectOption } from '../searchType';
+import { searchDocuments } from './searchDocuments';
 import { searchTags } from './searchTags';
 
 export type StidTypes = 'document' | 'stidtag';
@@ -14,15 +13,14 @@ export type StidTypes = 'document' | 'stidtag';
  */
 export const searchStid = async (
     searchString: string,
-    searchItem: StidTypes,
-    stidClient: BaseClient
+    searchItem: StidTypes
 ): Promise<TypedSelectOption[]> => {
     switch (searchItem.toLowerCase()) {
         case 'document':
-            return await searchDocuments(searchString, stidClient);
+            return await searchDocuments(searchString);
 
         case 'stidtag':
-            return await searchTags(searchString, stidClient);
+            return await searchTags(searchString);
 
         default:
             // eslint-disable-next-line no-console

@@ -1,6 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions, CriticalWoTable, SidesheetContent, weekDiff } from '@equinor/Diagrams';
-import { baseClient } from '../../../packages/httpClient/src';
+import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 import { cols } from './DetailsPage/tableConfig';
 import { WorkOrder } from './mocData/mockData';
@@ -84,7 +83,7 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
 };
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
+    // const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
     const construction = appApi.createPageViewer();
 
     /** 
@@ -97,8 +96,8 @@ export function setup(appApi: ClientApi): void {
 
     // Loop Data Test for testing system..
     workPreparation.registerDataSource(async () => {
-        const plantId = 'PCS$JOHAN_CASTBERG';
-        const project = 'L.O532C.002';
+        // const plantId = 'PCS$JOHAN_CASTBERG';
+        // const project = 'L.O532C.002';
         // const response: WorkOrderApi = await api
         //     .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
         //     .then((res) => res.json())
@@ -148,7 +147,7 @@ export function setup(appApi: ClientApi): void {
         ];
     });
 
-    const excludeKeys: (keyof WorkOrder)[] = [];
+    // const excludeKeys: (keyof WorkOrder)[] = [];
 
     // const excludeKeys: (keyof WP)[] = [
     //     'tagNo',

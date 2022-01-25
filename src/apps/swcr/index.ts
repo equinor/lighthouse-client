@@ -1,12 +1,12 @@
-import { baseClient } from '../../../packages/httpClient/src';
-import { SwcrPackage } from './models/SwcrPackage';
+import { baseClient } from '@equinor/http-client';
+import { ClientApi } from '@equinor/portal-client';
 import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
 import { SwcrItemView } from './CustomViews/SwcrGardenItem';
 import { SwcrGroupView } from './CustomViews/SwcrGroupView';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
+import { SwcrPackage } from './models/SwcrPackage';
 import { fieldSettings } from './utilities/gardenSetup';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
-import { ClientApi } from '@equinor/app-builder';
 
 export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.fusion]);

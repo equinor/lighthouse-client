@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useApiClient } from '../../../Core/Client/Hooks/useApiClient';
+import { useHttpClient } from '../../../Core/Client/Hooks';
 import SwcrSignature from '../models/SwcrSignature';
 
 type UseSignatures = {
@@ -11,7 +11,8 @@ const useSignatures = (swcrId: string): UseSignatures => {
     const [signatures, setSignatures] = useState<SwcrSignature[]>([]);
     const [signaturesFetching, setSignaturesFetching] = useState<boolean>(false);
 
-    const apiClient = useApiClient().fusion;
+    const apiClient = useHttpClient().fusion;
+    apiClient.setBaseUrl('');
 
     const getSignatures = useCallback(
         async (swcrId: string) => {

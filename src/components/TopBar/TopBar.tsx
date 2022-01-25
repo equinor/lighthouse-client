@@ -27,9 +27,8 @@ const TopBarWrapper = styled.div`
 `;
 
 const ProCoSysTopBar = (): JSX.Element => {
-    const { toggleAppPanel, toggleFullscreenMenu, fullscreenMenuActive, authProvider } =
-        useClientContext();
-    const graph = useGraphClient(authProvider);
+    const { toggleAppPanel, toggleFullscreenMenu, settings, internal } = useClientContext();
+    const graph = useGraphClient(internal.authProvider);
     const [image, setImage] = useState<string | undefined>(undefined);
     useEffect(() => {
         graph.graphGetProfilePicture().then((img) => setImage(img));
@@ -41,7 +40,7 @@ const ProCoSysTopBar = (): JSX.Element => {
                     <div
                         onClick={() => {
                             toggleAppPanel();
-                            fullscreenMenuActive ? toggleFullscreenMenu() : null;
+                            settings.fullscreenMenuActive ? toggleFullscreenMenu() : null;
                         }}
                         style={{ cursor: 'pointer' }}
                     >

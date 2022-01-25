@@ -1,16 +1,16 @@
-import React, { Fragment, useState } from 'react';
 import { Button, Icon, Scrim } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { TypedSelectOption } from '../../Api/Search/searchType';
-import AsyncSelect from 'react-select/async';
+import React, { Fragment, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups } from 'react-select';
-import { searchStid } from '../../Api/Search/STID/searchStid';
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
+import AsyncSelect from 'react-select/async';
 import styled from 'styled-components';
+import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
+import { TypedSelectOption } from '../../Api/Search/searchType';
+import { searchStid } from '../../Api/Search/STID/searchStid';
+import { getDocumentsByTag } from '../../Api/STID/getDocumentsByTag';
 import { Document } from '../../Api/STID/Types/Document';
 import { StidDocument } from '../StidDocument';
-import { getDocumentsByTag } from '../../Api/STID/getDocumentsByTag';
+import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import { sort } from './sort';
 
 interface StidSelectorProps {
@@ -21,7 +21,7 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
     const [isOpen, setIsOpen] = useState(false);
     const [documents, setDocuments] = useState<TypedSelectOption[]>([]);
     const [tagContainsNoDocuments, setTagContainsNoDocuments] = useState<boolean>(false);
-    const { customApi } = useApiClient('1734406c-3449-4192-a50d-7c3a63d3f57d/.default');
+    const { customHttpClient } = useHttpClient('1734406c-3449-4192-a50d-7c3a63d3f57d/.default');
 
     const [hasErrored, setHasErrored] = useState(false);
 
@@ -45,12 +45,12 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
         let tagsResult: TypedSelectOption[] = [];
         let documentsResult: TypedSelectOption[] = [];
         try {
-            tagsResult = await searchStid(inputValue, 'stidtag', customApi);
+            tagsResult = await searchStid(inputValue, 'stidtag');
         } catch (e) {
             setHasErrored(true);
         }
         try {
-            documentsResult = await searchStid(inputValue, 'document', customApi);
+            documentsResult = await searchStid(inputValue, 'document');
         } catch (e) {
             setHasErrored(true);
         }
@@ -116,7 +116,7 @@ export const StidSelector = ({ appendDocuments }: StidSelectorProps): JSX.Elemen
                                         const documents = await getDocumentsByTag(
                                             'JCA',
                                             actionMeta.option.value,
-                                            customApi
+                                            customHttpClient
                                         );
                                         if (documents.length <= 0) setTagContainsNoDocuments(true);
                                         documents.forEach((x) => {

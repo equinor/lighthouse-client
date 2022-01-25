@@ -1,4 +1,4 @@
-import { BaseClient } from '../../../../../packages/httpClient/src';
+import { HttpClient } from '@equinor/http-client';
 import { Document } from './Types/Document';
 
 /**
@@ -11,7 +11,7 @@ import { Document } from './Types/Document';
 export async function getDocumentById(
     instCode: string,
     docNo: string,
-    stidClient: BaseClient
+    stidClient: HttpClient
 ): Promise<Document> {
     const baseUrl = 'https://stidapi.equinor.com';
     const uri = `${instCode}/document`;
