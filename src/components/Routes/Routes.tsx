@@ -28,7 +28,7 @@ export function ClientRoutes(): JSX.Element {
                 path={'/'}
                 element={
                     <GroupView
-                        group={{ name: 'Johan Castberg Home', icon: '', columnId: 1 }}
+                        group={{ name: 'Home', icon: '', columnId: 1 }}
                         groups={appGroups}
                         groupeId={'key'}
                     />

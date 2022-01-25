@@ -1,5 +1,4 @@
 import { Menu } from '@equinor/eds-core-react';
-import React from 'react';
 import { useFactories } from '../Hooks/useFactories';
 import { AddMenuButton } from './AddMenuButton';
 
