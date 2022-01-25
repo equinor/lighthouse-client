@@ -32,8 +32,8 @@ export const mock = (): WorkOrder[] => {
       "createdAt": "2020.02.01",
       "lastUpdated": "2021-09-06T02:18:06.646Z",
       "plannedFinishDate": "01/15/2022",
-      "plannedStartAtDate": "01/17/2022",
-      "disciplineDescription": "Engineering",
+      "plannedStartAtDate": "04/17/2022",
+      "disciplineDescription": "Piping",
       "jobStatusCutoffs": [
        {
           "status": "W01",

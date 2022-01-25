@@ -18,18 +18,6 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
                 title: 'Job Statuses',
             },
         },
-        // chart2: {
-        //     type: 'timeBarChart',
-        //     options: {
-        //         accumulative: true,
-        //         timeChartOptions: {
-        //             categoriesKey: 'jobStatusCutoffs',
-        //             title: 'Job Statuses accumulated',
-        //             type: 'column',
-        //         },
-        //         title: 'Job Statuses accumulated',
-        //     },
-        // },
     },
     section2: {
         chart1: {
@@ -37,11 +25,15 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
             options: {
                 categoryKey: 'disciplineDescription',
                 nameKey: 'disciplineDescription',
-                onClick: (data, graphData) => {
+
+                title: 'Grouped job cards',
+                enableGroupBy: true,
+                onClick: (data, graphData, groupByKey) => {
                     const labelClicked = graphData.globals.labels[graphData.dataPointIndex];
                     const tableData: WorkOrder[] = [];
                     data.forEach((wo) => {
-                        wo.disciplineDescription === labelClicked && tableData.push(wo);
+                        //TODO: also need to check if correct series if categoryKey and nameKey are not equal
+                        wo[groupByKey] === labelClicked && tableData.push(wo);
                     });
 
                     tableData.length > 0 && openSidesheet(SidesheetContent, { data: tableData });
@@ -52,6 +44,7 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
             type: 'customVisual',
             options: {
                 component: CriticalWoTable,
+                componentProps: { enableGrouping: true, initialGroupBy: 'lastUpdated' },
             },
         },
     },

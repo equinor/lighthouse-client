@@ -10,13 +10,14 @@ interface BarChart {
 
 export function useHorizontalBarChart<T>(
     data: T[],
-    { stacked, nameKey, categoryKey, colors, onClick }: HorizontalBarChartOptions<T>
+    { stacked, colors, onClick }: HorizontalBarChartOptions<T>,
+    groupByKey: keyof T,
+    nameByKey: keyof T
 ): BarChart {
     const { series, categories } = useMemo(
-        () => createSeriesByKeys(data, 'column', nameKey as string, categoryKey as string),
-        [categoryKey, data, nameKey]
+        () => createSeriesByKeys(data, 'column', nameByKey as string, groupByKey as string),
+        [groupByKey, data, nameByKey]
     );
-
     const barChartOptions: ApexOptions = useMemo(
         () => ({
             chart: {
@@ -27,7 +28,7 @@ export function useHorizontalBarChart<T>(
                 },
                 events: {
                     click: function (_event, _chartContext, config) {
-                        onClick && onClick(data, config);
+                        onClick && onClick(data, config, groupByKey);
                     },
                 },
                 animations: {
