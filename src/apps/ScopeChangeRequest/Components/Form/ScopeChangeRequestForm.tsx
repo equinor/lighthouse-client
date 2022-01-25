@@ -1,26 +1,24 @@
 import { Button, Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { GeneratedForm, useForm } from '@equinor/Form';
+import { useHttpClient } from '@equinor/portal-client';
+import { openSidesheet } from '@equinor/sidesheet';
 import { useEffect, useMemo, useState } from 'react';
+import { useMutation } from 'react-query';
 import styled from 'styled-components';
+import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
+import { getScopeChangeById, postScopeChange } from '../../Api/';
+import { uploadAttachment } from '../../Api/ScopeChange/attachment';
+import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
+import { TypedSelectOption } from '../../Api/Search/searchType';
+import { Document } from '../../Api/STID/Types/Document';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { useMutation } from 'react-query';
-import { getScopeChangeById, postScopeChange } from '../../Api/';
-import { openSidesheet } from '@equinor/sidesheet';
 import { ScopeChangeSideSheet } from '../CustomSidesheet';
-import { tokens } from '@equinor/eds-tokens';
-
-import { useApiClient } from '@equinor/portal-client';
-import { PCSLink } from '../SearchableDropdown/PCSLink';
-import { TypedSelectOption } from '../../Api/Search/searchType';
 import { OriginLink } from '../SearchableDropdown/OriginLink';
-import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
+import { PCSLink } from '../SearchableDropdown/PCSLink';
 import { StidSelector } from '../SearchableDropdown/stidSelector';
-
 import { StidDocument } from '../StidDocument';
-import { Document } from '../../Api/STID/Types/Document';
-import { uploadAttachment } from '../../Api/ScopeChange/attachment';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -51,7 +49,7 @@ export const ScopeChangeRequestForm = ({
 
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
-    const { scopeChange } = useApiClient();
+    const { scopeChange } = useHttpClient();
 
     const createScopeChangeMutation = async ({ draft }: CreateScopeChangeParams) => {
         const tags = filterElementsByType(relatedObjects, 'tag');

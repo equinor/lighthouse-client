@@ -24,11 +24,6 @@ export default defineConfig({
             '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),
             '@equinor/authentication': path.resolve(__dirname, './packages/authentication/'),
             '@equinor/http-client': path.resolve(__dirname, './packages/httpClient/'),
-            '@equinor/lighthouse-core': path.resolve(__dirname, './packages/core/'),
-            '@equinor/lighthouse-hooks': path.resolve(__dirname, './packages/hooks/'),
-            '@equinor/lighthouse-components': path.resolve(__dirname, './packages/components/'),
-            '@equinor/lighthouse-util': path.resolve(__dirname, './packages/util/'),
-            '@equinor/lighthouse-typeGuard': path.resolve(__dirname, './packages/typeGuard/'),
             '@equinor/client': path.resolve(__dirname, './packages/configuration/'),
         },
     },
@@ -103,12 +98,8 @@ With vite
             "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
             "@equinor/authentication": ["./packages/authentication"],
             "@equinor/http-client": ["./packages/httpClient"],
-            "@equinor/lighthouse-core": ["./packages/core"],
-            "@equinor/lighthouse-hooks": ["./packages/hooks"],
-            "@equinor/lighthouse-components": ["./packages/components"],
-            "@equinor/client": ["./packages/configuration"],
-            "@equinor/lighthouse-util": ["./packages/util"],
-            "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"]
+            "@equinor/util": ["./packages/util"],
+            "@equinor/typeGuard": ["./packages/typeGuard"]
         }
     },
     "compileOnSave": true,

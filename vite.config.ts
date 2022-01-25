@@ -13,14 +13,12 @@ export default defineConfig({
         // https: true,
     },
     define: {
-        'process.env': {
-        },
+        'process.env': {},
     },
     resolve: {
         alias: {
             '@equinor/portal-client': path.resolve(__dirname, './src/Core/Client'),
             '@equinor/sidesheet': path.resolve(__dirname, './src/packages/Sidesheet'),
-            '@equinor/app-builder': path.resolve(__dirname, './src/Core/AppBuilder'),
             '@equinor/worker': path.resolve(__dirname, './src/packages/WebWorkers'),
             '@equinor/filter': path.resolve(__dirname, './src/packages/Filter'),
             '@equinor/VisualEditor': path.resolve(__dirname, './src/packages/VisualEditor'),
@@ -34,11 +32,10 @@ export default defineConfig({
             '@equinor/Diagrams': path.resolve(__dirname, './src/packages/Diagrams'),
             '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),
             '@equinor/Table': path.resolve(__dirname, './src/packages/Table'),
-            '@equinor/authentication': path.resolve(__dirname, './packages/authentication/'),
-            '@equinor/http-client': path.resolve(__dirname, './packages/httpClient/'),
+            '@equinor/authentication': path.resolve(__dirname, './src/packages/authentication'),
+            '@equinor/http-client': path.resolve(__dirname, './src/Core/httpClient/'),
             '@equinor/lighthouse-core': path.resolve(__dirname, './packages/core/'),
             '@equinor/lighthouse-hooks': path.resolve(__dirname, './packages/hooks/'),
-            '@equinor/lighthouse-components': path.resolve(__dirname, './packages/components/'),
             '@equinor/lighthouse-util': path.resolve(__dirname, './packages/util/'),
             '@equinor/lighthouse-typeGuard': path.resolve(__dirname, './packages/typeGuard/'),
             '@equinor/lighthouse-conf': path.resolve(__dirname, './packages/configuration/'),
@@ -56,7 +53,7 @@ export default defineConfig({
                         {
                             src: './doc/dataView.md',
                             dest: 'dist/',
-                        }, 
+                        },
                     ],
                     hook: 'writeBundle',
                 }),
