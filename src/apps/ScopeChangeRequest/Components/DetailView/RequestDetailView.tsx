@@ -99,7 +99,6 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
             if (activeCriterias.length === 1) {
                 setSelectedCriteria(activeCriterias[0]);
             }
-
             return activeCriterias;
         }
     }, [request]);
