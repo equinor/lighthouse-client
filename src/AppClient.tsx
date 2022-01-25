@@ -8,7 +8,7 @@ import { createGlobalStyle } from 'styled-components';
 import { MainLayout } from './components/Layouts/MainLayout';
 import LoadingPage from './components/Loading/LoadingPage';
 import { ClientRoutes } from './components/Routes/Routes';
-import ProCoSysTopBar from './components/TopBar/TopBar';
+import ClientTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
 import { FactoryComponent } from './Core/DataFactory';
 import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
@@ -52,7 +52,7 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
                 <ConfirmationDialog />
                 <ClientContextProvider>
                     <BrowserRouter>
-                        <ProCoSysTopBar />
+                        <ClientTopBar />
                         <MainLayout>
                             <ClientRoutes />
                         </MainLayout>
