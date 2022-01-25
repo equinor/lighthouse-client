@@ -5,7 +5,8 @@ export const ChartsWrapper = styled(Card)`
     width: 100%;
     height: 350px;
     margin: 0rem 0.5rem;
-    overflow: hidden;
+    grid-gap: 0;
+    overflow: scroll;
 `;
 export const Loading = styled.p`
     width: 100%;

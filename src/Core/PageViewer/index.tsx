@@ -7,7 +7,7 @@ export const PageView = (): JSX.Element => {
     const viewState = usePageViewer();
     return (
         <ErrorBoundary FallbackComponent={ErrorFallback} routeName={viewState.title}>
-            <PageViewer {...viewState} />;
+            <PageViewer {...viewState} />
         </ErrorBoundary>
     );
 };

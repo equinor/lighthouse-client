@@ -33,6 +33,7 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
                     const labelClicked = graphData.globals.labels[graphData.dataPointIndex];
                     const tableData: WorkOrder[] = [];
                     data.forEach((wo) => {
+                        //TODO: also need to check if correct series if categoryKey and nameKey are not equal
                         wo[groupByKey] === labelClicked && tableData.push(wo);
                     });
 

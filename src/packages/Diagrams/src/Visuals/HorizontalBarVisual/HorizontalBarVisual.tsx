@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
-import AutoSizer from 'react-virtualized-auto-sizer';
 import { useHorizontalBarChart } from './Hooks/useHorizontalBarChart';
 import { HorizontalBarChartOptions } from './Types/barVisualOptions';
 import { GroupingSelectors } from './Components/GroupingSelectors';
@@ -64,7 +63,7 @@ export function HorizontalBarVisual<T>({ data, options }: HorizontalBarVisual<T>
     }, [options.categoryKey, options.nameKey]);
 
     return (
-        <div style={{ height: 'inherit', overflow: 'scroll' }}>
+        <div>
             <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{options?.title}</div>
             <GroupingSelectors<T>
                 enableGroupBy={options.enableGroupBy}
@@ -74,17 +73,7 @@ export function HorizontalBarVisual<T>({ data, options }: HorizontalBarVisual<T>
                 handleChange={handleChange}
             />
 
-            <AutoSizer>
-                {({ width }) => (
-                    <Chart
-                        options={barChartOptions}
-                        series={series}
-                        type="bar"
-                        height={`${300}px`}
-                        width={`${width}px`}
-                    />
-                )}
-            </AutoSizer>
+            <Chart options={barChartOptions} series={series} type="bar" height={`${300}px`} />
         </div>
     );
 }
