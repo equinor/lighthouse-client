@@ -30,6 +30,7 @@ import {
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
+import { setup as SwcrSetup } from './swcr';
 
 export function getApps(): AppManifest[] {
     return apps;
@@ -411,6 +412,7 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
+            setup: SwcrSetup,
         },
         isProduction: true,
     },

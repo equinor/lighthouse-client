@@ -1,9 +1,8 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
-import React from 'react';
+import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import {
-    GardenOptions,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
