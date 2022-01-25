@@ -1,36 +1,32 @@
-import { Accordion, Popover, Search } from '@equinor/eds-core-react';
+import { Accordion, Menu, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { isProduction, useClientContext } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Apps } from '../../apps/apps';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
+import { TopItems } from './Components/TopItems/TopItems';
+import { AccordionHeader, AccordionHeaderTitle, AccordionPanel } from './MainMenuExpandedStyles';
+import { MenuItem, MenuItemLink, MenuItemTitleLink } from './MainMenuStyles';
 import {
-    Content,
     GroupLink,
-    MenuItem,
-    MenuItems,
-    MenuItemText,
+    LinkIcon,
+    LinkIconWrapper,
     MenuWrapper,
     PopoverWrapper,
     SearchWrapper,
-    SmallButton,
     SmallItem,
-    Title,
-    TopItems
+    Title
 } from './Styles';
 import { filterByValue, groupeByKey } from './utils';
 
-const { Item, Header, Panel } = Accordion;
+const { Item } = Accordion;
 
 export const MainMenu = (): JSX.Element => {
     const isProd = isProduction();
     const {
         settings: { appsPanelActive },
         registry,
-        toggleAppPanel,
-        toggleFullscreenMenu,
+        // toggleAppPanel,
     } = useClientContext();
     const { apps, appGroups } = registry;
     const [searchValue, setSearchValue] = useState('');
@@ -40,8 +36,18 @@ export const MainMenu = (): JSX.Element => {
         const value = event.target.value;
         setSearchValue(value);
     };
+    // useEffect(() => {
+    //     toggleAppPanel(true);
+    // }, []);
 
-    const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
+    const GroupedMenu = useMemo(
+        () =>
+            groupeByKey(
+                apps.filter((a) => a.isProduction),
+                'groupe'
+            ),
+        [apps]
+    );
 
     const anchorRef = useRef<HTMLHeadingElement[]>([]);
     const addMenuRef = useRef<HTMLHeadingElement>(null);
@@ -68,48 +74,21 @@ export const MainMenu = (): JSX.Element => {
                     />
                 </SearchWrapper>
             )}
-            {/* It's own component */}
-            <TopItems topDivider={appsPanelActive} bottomDivider={!!filteredList[Apps.Top]}>
-                {/* {appsPanelActive && <Divider />} */}
-                {filteredList[Apps.Top] &&
-                    filteredList[Apps.Top].map((item) => {
-                        const CustomIcon = item.icon;
-                        return (
-                            <Link
-                                className="link"
-                                key={`link-${item.shortName}`}
-                                to={`/${item.shortName}`}
-                                title={!item.isProduction && isProd ? 'Disabled' : item.title}
-                                style={item.isProduction && !isProd ? { color: '#e3e3e3' } : {}}
-                            >
-                                {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
 
-                                {CustomIcon && typeof CustomIcon === 'string' && (
-                                    <Icon
-                                        name={CustomIcon}
-                                        title={item.title}
-                                        color={tokens.colors.text.static_icons__secondary.rgba}
-                                    />
-                                )}
-
-                                {appsPanelActive && <span>{item.title}</span>}
-                            </Link>
-                        );
-                    })}
-                {/* {filteredList[Apps.Top] && <Divider />} */}
-            </TopItems>
+            <TopItems apps={filteredList} openPopover={openPopover} isExpanded={appsPanelActive} />
 
             <Accordion chevronPosition="right">
                 {Object.keys(filteredList).map((key, i) => {
                     if (key === 'Top') {
                         return null;
                     }
-
+                    const isActive = location.pathname.includes(key);
                     const CustomIcon = appGroups[key].icon;
+
                     if (appsPanelActive)
                         return (
                             <Item key={`item-${key}`} isExpanded={isExpanded}>
-                                <Header className="noBorder heading">
+                                <AccordionHeader>
                                     {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
                                     {CustomIcon && typeof CustomIcon === 'string' && (
                                         <Icon
@@ -118,11 +97,13 @@ export const MainMenu = (): JSX.Element => {
                                             color={tokens.colors.text.static_icons__secondary.rgba}
                                         />
                                     )}
-                                    <GroupLink to={`${key}`}>{appGroups[key].name}</GroupLink>
-                                </Header>
-                                <Panel className="noBorder">
+                                    <AccordionHeaderTitle to={`${key}`}>
+                                        {appGroups[key].name}
+                                    </AccordionHeaderTitle>
+                                </AccordionHeader>
+                                <AccordionPanel>
                                     {filteredList[key].map((item) => (
-                                        <Link
+                                        <MenuItemLink
                                             className="link"
                                             key={`link-${item.shortName}`}
                                             to={`${key}/${item.shortName}`}
@@ -138,35 +119,44 @@ export const MainMenu = (): JSX.Element => {
                                             }
                                         >
                                             {item.title}
-                                        </Link>
+                                        </MenuItemLink>
                                     ))}
-                                </Panel>
+                                </AccordionPanel>
                             </Item>
                         );
 
                     return (
                         <SmallItem key={`item-${key}`}>
                             <GroupLink to={`${key}`}>
-                                <SmallButton
+                                <LinkIconWrapper
                                     id="hover-popover-anchor"
                                     ref={(el) => (anchorRef.current[i] = el as HTMLHeadingElement)}
-                                    className="noBorder heading"
                                     onFocus={() => openPopover(appGroups[key].name)}
-                                    onMouseOver={() => openPopover(appGroups[key].name)}
+                                    onMouseOver={() => {
+                                        openPopover(appGroups[key].name);
+                                        setIsAddMenuOpen(false);
+                                    }}
                                     onBlur={handleClose}
+                                    active={isActive}
                                 >
-                                    {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
-                                    {CustomIcon && typeof CustomIcon === 'string' && (
-                                        <Icon
-                                            name={CustomIcon}
-                                            title={appGroups[key].name}
-                                            color={tokens.colors.text.static_icons__secondary.rgba}
-                                        />
-                                    )}
-                                </SmallButton>
+                                    <LinkIcon>
+                                        {CustomIcon && typeof CustomIcon !== 'string' && (
+                                            <CustomIcon />
+                                        )}
+                                        {CustomIcon && typeof CustomIcon === 'string' && (
+                                            <Icon
+                                                name={CustomIcon}
+                                                title={appGroups[key].name}
+                                                color={
+                                                    tokens.colors.text.static_icons__secondary.rgba
+                                                }
+                                            />
+                                        )}
+                                    </LinkIcon>
+                                </LinkIconWrapper>
                             </GroupLink>
                             <PopoverWrapper>
-                                <Popover
+                                <Menu
                                     anchorEl={anchorRef.current[i]}
                                     aria-controls="hover-popover"
                                     onClose={handleClose}
@@ -174,12 +164,20 @@ export const MainMenu = (): JSX.Element => {
                                     placement="right-start"
                                     onMouseLeave={handleClose}
                                 >
-                                    <Title> {appGroups[key].name}</Title>
-                                    <Content>
-                                        {filteredList[key].map((item) => (
-                                            <Link
-                                                className="link"
-                                                key={`link-${item.shortName}`}
+                                    <Menu.Item>
+                                        <MenuItemTitleLink to={`${key}`}>
+                                            <Title> {appGroups[key].name}</Title>
+                                        </MenuItemTitleLink>
+                                    </Menu.Item>
+
+                                    {filteredList[key].map((item) => (
+                                        <MenuItem
+                                            key={`link-${item.shortName}`}
+                                            active={location.pathname.includes(
+                                                `${key}/${item.shortName}`
+                                            )}
+                                        >
+                                            <MenuItemLink
                                                 to={`${key}/${item.shortName}`}
                                                 title={
                                                     !item.isProduction && isProd
@@ -193,33 +191,35 @@ export const MainMenu = (): JSX.Element => {
                                                 }
                                             >
                                                 {item.title}
-                                            </Link>
-                                        ))}
-                                    </Content>
-                                </Popover>
+                                            </MenuItemLink>
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
                             </PopoverWrapper>
                         </SmallItem>
                     );
                 })}
             </Accordion>
             <SmallItem>
-                <SmallButton
+                <LinkIconWrapper
                     id="add-menu"
                     ref={addMenuRef}
-                    className="noBorder heading"
                     onFocus={() => setIsAddMenuOpen((s) => !s)}
                     onMouseOver={() => {
                         handleClose();
                         setIsAddMenuOpen(true);
                     }}
                     onBlur={() => setIsAddMenuOpen(false)}
+                    active={false}
                 >
-                    <Icon
-                        name={'add'}
-                        title={'Add Item'}
-                        color={tokens.colors.interactive.primary__resting.hex}
-                    />
-                </SmallButton>
+                    <LinkIcon>
+                        <Icon
+                            name={'add'}
+                            title={'Add Item'}
+                            color={tokens.colors.interactive.primary__resting.hex}
+                        />
+                    </LinkIcon>
+                </LinkIconWrapper>
                 <AddMenu
                     anchorEl={addMenuRef.current}
                     isOpen={isAddMenuOpen}
@@ -227,36 +227,6 @@ export const MainMenu = (): JSX.Element => {
                     onMouseEnter={() => setIsAddMenuOpen(true)}
                 />
             </SmallItem>
-            <MenuItems>
-                <MenuItem
-                    onClick={() => (appsPanelActive ? toggleAppPanel() : null)}
-                    style={{ cursor: appsPanelActive ? 'pointer' : 'default' }}
-                >
-                    <Icon
-                        color={tokens.colors.interactive.primary__resting.hex}
-                        name="more_vertical"
-                    />
-                    {appsPanelActive && <MenuItemText>Minimized</MenuItemText>}
-                </MenuItem>
-                <MenuItem
-                    onClick={() => (!appsPanelActive ? toggleAppPanel() : null)}
-                    style={{ cursor: appsPanelActive ? 'default' : 'pointer' }}
-                >
-                    <Icon color={tokens.colors.interactive.primary__resting.hex} name="menu" />
-                    {appsPanelActive && (
-                        <MenuItemText disabled={appsPanelActive ? true : false}>
-                            Standard
-                        </MenuItemText>
-                    )}
-                </MenuItem>
-                <MenuItem onClick={() => toggleFullscreenMenu()} style={{ cursor: 'pointer' }}>
-                    <Icon
-                        color={tokens.colors.interactive.primary__resting.hex}
-                        name="fullscreen"
-                    />
-                    {appsPanelActive && <MenuItemText>Expand all</MenuItemText>}
-                </MenuItem>
-            </MenuItems>
         </MenuWrapper>
     );
 };

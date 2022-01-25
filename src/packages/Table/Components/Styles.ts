@@ -82,7 +82,7 @@ export const TableCell = styled.div<{ align?: string }>`
 export const ResizeHandleComponent = styled.div<{ handleActive: boolean }>`
     position: absolute;
     cursor: col-resize;
-    z-index: 100;
+    /* z-index: 100; */
     opacity: 1;
     border-left: 1px solid rgba(0, 0, 0, 0.2);
     /* border-right: 1px solid rgba(0, 0, 0, 0.5); */
@@ -107,7 +107,7 @@ export const ResizeHandleComponent = styled.div<{ handleActive: boolean }>`
 export const HeaderCellMenuButton = styled.div`
     /* position: absolute; */
     cursor: pointer;
-    z-index: 100;
+    /* z-index: 100; */
     opacity: 1;
     height: 60%;
     /* top: 20%;
@@ -118,7 +118,7 @@ export const HeaderCellMenuButton = styled.div`
 `;
 export const HeaderItem = styled.div`
     padding-right: 0.5rem;
-    z-index: 100;
+    /* z-index: 100; */
     opacity: 1;
     height: 60%;
 

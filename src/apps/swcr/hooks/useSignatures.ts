@@ -12,7 +12,6 @@ const useSignatures = (swcrId: string): UseSignatures => {
     const [signaturesFetching, setSignaturesFetching] = useState<boolean>(false);
 
     const apiClient = useHttpClient().fusion;
-    apiClient.setBaseUrl('');
 
     const getSignatures = useCallback(
         async (swcrId: string) => {

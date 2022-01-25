@@ -26,7 +26,7 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
@@ -571,6 +571,7 @@ export const apps: AppManifest[] = [
         icon: HomeIcon,
         uri: '',
         tags: [],
+        isProduction: true,
     },
     {
         title: '3D Model',
