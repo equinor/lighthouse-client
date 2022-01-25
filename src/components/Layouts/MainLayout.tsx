@@ -7,18 +7,19 @@ import { MainMenu } from '../Menu/MainMenu';
 
 const Wrapper = styled.div`
     position: fixed;
-    top: 64px;
-    height: calc(100vh - 64px);
+    top: 48px;
+    height: calc(100vh - 48px);
     display: flex;
     width: 100vw;
 `;
 const ChildrenWrapper = styled.div`
-    width: calc(100vw - ${({ panelActive }: CssProps) => (panelActive ? '374px' : '74px')});
+    width: calc(100vw - ${({ panelActive }: CssProps) => (panelActive ? '374px' : '48px')});
     transition: width 0.2s ease;
 `;
 const MainMenuWrapper = styled.div`
-    width: ${({ panelActive }: CssProps) => (panelActive ? '374px' : '74px')};
+    width: ${({ panelActive }: CssProps) => (panelActive ? '374px' : '48px')};
     transition: width 0.2s ease;
+    border-right: 1.5px solid #e0e0e0;
 `;
 
 interface MainLayoutProps {
@@ -34,16 +35,11 @@ export const MainLayout = ({ children, manifests }: MainLayoutProps): JSX.Elemen
     const { appsPanelActive, fullscreenMenuActive } = useClientContext();
     return (
         <Wrapper>
-            {fullscreenMenuActive ? (
-                <FullscreenMainMenu manifests={manifests} />
-            ) : (
-                <>
-                    <MainMenuWrapper panelActive={appsPanelActive}>
-                        <MainMenu manifests={manifests} />
-                    </MainMenuWrapper>
-                    <ChildrenWrapper panelActive={appsPanelActive}>{children}</ChildrenWrapper>
-                </>
-            )}
+            {fullscreenMenuActive && <FullscreenMainMenu manifests={manifests} />}
+            <MainMenuWrapper panelActive={appsPanelActive}>
+                <MainMenu manifests={manifests} />
+            </MainMenuWrapper>
+            <ChildrenWrapper panelActive={appsPanelActive}>{children}</ChildrenWrapper>
             {/* TODO: Wrap Resizable here */}
             <PopoutSidesheet />
         </Wrapper>

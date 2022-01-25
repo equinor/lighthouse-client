@@ -14,9 +14,10 @@ import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
-import { setup as constructionSetup } from './Construction';
 import { setup as commissioningSetup } from './Commissioning';
+import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
+import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
     BusinessCaseReport,
@@ -25,10 +26,9 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
-import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 
 export function getApps(): AppManifest[] {
@@ -569,6 +569,7 @@ export const apps: AppManifest[] = [
         icon: HomeIcon,
         uri: '',
         tags: [],
+        isProduction: true,
     },
     {
         title: '3D Model',

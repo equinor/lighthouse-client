@@ -1,6 +1,6 @@
-import { Menu } from '@equinor/eds-core-react';
 import { useSelectFactory } from '../Hooks/useSelectFactory';
 import { Factory } from '../Types/factory';
+import { MenuItem } from './AddMenuButtonStyles';
 
 interface AddButtonProps {
     factory?: Factory;
@@ -9,5 +9,5 @@ interface AddButtonProps {
 
 export function AddMenuButton({ factory, scope }: AddButtonProps): JSX.Element {
     const onClick = useSelectFactory(factory?.factoryId, scope);
-    return <Menu.Item onClick={onClick}>{factory?.title}</Menu.Item>;
+    return <MenuItem onClick={onClick}>{factory?.title}</MenuItem>;
 }
