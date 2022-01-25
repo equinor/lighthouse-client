@@ -1,9 +1,7 @@
-import { Manifests } from '@equinor/app-builder';
 import { Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useClientContext } from '@equinor/portal-client';
+import { isProduction, useClientContext } from '@equinor/portal-client';
 import { useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import Icon from '../Icon/Icon';
 import {
     FullscreenMenuAppGroup,
@@ -17,16 +15,13 @@ import {
 } from './FullscreenMainMenuStyles';
 import { filterByValue, groupeByKey } from './utils';
 
-interface FullscreenMainMenuProps {
-    manifests: Manifests;
-}
-
-export const FullscreenMainMenu = ({ manifests }: FullscreenMainMenuProps): JSX.Element => {
-    const location = useLocation();
-    const { apps, appGroups } = manifests;
-    const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
+export const FullscreenMainMenu = (): JSX.Element => {
+    const isProd = isProduction();
     const [searchValue, setSearchValue] = useState('');
-    const { toggleFullscreenMenu } = useClientContext();
+    const { registry, toggleFullscreenMenu } = useClientContext();
+
+    const { apps, appGroups } = registry;
+    const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
 
     const filteredList = filterByValue(GroupedMenu, searchValue, 'title');
 
@@ -66,9 +61,9 @@ export const FullscreenMainMenu = ({ manifests }: FullscreenMainMenuProps): JSX.
                             active={location.pathname.includes(`${key}/${item.shortName}`)}
                             key={`link-${item.shortName}`}
                             to={item.isProduction ? `${key}/${item.shortName}` : '#'}
-                            onClick={() => item.isProduction && toggleFullscreenMenu()}
-                            title={!item.isProduction ? 'Disabled' : item.title}
-                            disabled={!item.isProduction}
+                            onClick={() => isProd && item.isProduction && toggleFullscreenMenu()}
+                            title={isProd && !item.isProduction ? 'Disabled' : item.title}
+                            disabled={isProd && !item.isProduction}
                         >
                             {item.title}
                         </Link>

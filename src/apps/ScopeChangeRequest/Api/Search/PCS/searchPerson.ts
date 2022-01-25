@@ -1,10 +1,10 @@
-import { BaseClient } from '../../../../../../packages/httpClient/src';
+import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
 import { Person } from './Types/person';
 
 export const searchPerson = async (
     searchString: string,
-    procosysClient: BaseClient
+    procosysClient: HttpClient
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 

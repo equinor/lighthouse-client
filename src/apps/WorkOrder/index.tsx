@@ -1,5 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
+import { ClientApi } from '@equinor/portal-client';
 
 export interface WorkOrder {
     plant: string;
@@ -56,7 +56,6 @@ export function setup(appApi: ClientApi): void {
         groupByKeys: ['commPkgNo'],
         // status: { statusItemFunc, shouldAggregate: true },
         //options: { groupDescriptionFunc },
-        excludeKeys: [],
     });
     // commPkg.registerAnalyticsOptions(analyticsOptions);
     // commPkg.registerTreeOptions({

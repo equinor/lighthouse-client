@@ -1,4 +1,4 @@
-import { AppGroups, AppManifest } from '@equinor/app-builder';
+import { AppGroups, AppManifest } from '@equinor/portal-client';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -30,6 +30,7 @@ import {
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
+import { setup as SwcrSetup } from './swcr';
 
 export function getApps(): AppManifest[] {
     return apps;
@@ -411,6 +412,7 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
+            setup: SwcrSetup,
         },
         isProduction: true,
     },

@@ -1,8 +1,8 @@
-import { pipetestData } from './pipetestData';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { Pipetest } from './Types/Pipetest';
+import { ClientApi } from '@equinor/portal-client';
 import { CustomSidesheet } from './CustomSidesheet';
-import { ClientApi } from '@equinor/app-builder';
+import { pipetestData } from './pipetestData';
+import { Pipetest } from './Types/Pipetest';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<Pipetest>({

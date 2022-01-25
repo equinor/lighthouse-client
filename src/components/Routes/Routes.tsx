@@ -4,18 +4,17 @@ import { closeSidesheet } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Apps } from '../../apps/apps';
-import { Manifests } from '../../Core/AppBuilder/Types';
 import PageView from '../../Core/PageViewer';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
 import { useLocationKey } from '../../packages/Filter/Hooks/useLocationKey';
 import { ComponentWrapper } from './ComponentWrapper';
 
-interface ClientRoutesProps {
-    manifests: Manifests;
-}
-
-export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesProps): JSX.Element {
-    const { appConfig, authProvider } = useClientContext();
+export function ClientRoutes(): JSX.Element {
+    const {
+        appConfig,
+        registry: { apps, appGroups },
+        internal: { authProvider },
+    } = useClientContext();
 
     const currentRoute = useLocationKey();
 

@@ -1,14 +1,14 @@
-import { useMemo, useRef, useState } from 'react';
-import styled from 'styled-components';
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { useHttpClient } from '@equinor/portal-client';
+import { useMemo, useRef, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
+import styled from 'styled-components';
 import { searchPcs } from '../../Api/Search/PCS/searchPcs';
-import { applyEDSTheme, applyEdsComponents, applyEdsStyles } from './applyEds';
-import { sort } from './sort';
 import { TypedSelectOption } from '../../Api/Search/searchType';
+import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
+import { sort } from './sort';
 
 interface PCSLinkProps {
     relatedObjects: TypedSelectOption[];
@@ -16,7 +16,7 @@ interface PCSLinkProps {
 }
 
 export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JSX.Element => {
-    const { procosys } = useApiClient();
+    const { procosys } = useHttpClient();
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const debounce = useRef(new Date());
 

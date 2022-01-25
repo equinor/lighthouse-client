@@ -1,6 +1,6 @@
-import { AppGroupe, AppManifest } from '@equinor/app-builder';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { AppGroupe, AppManifest } from '@equinor/portal-client';
 import { Link } from 'react-router-dom';
 
 interface GroupComponentWrapperProps extends AppGroupe {

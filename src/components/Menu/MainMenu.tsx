@@ -1,9 +1,7 @@
-import { Manifests } from '@equinor/app-builder';
 import { Accordion, Menu, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { isProduction, useClientContext } from '@equinor/portal-client';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useMemo, useRef, useState } from 'react';
 import { Apps } from '../../apps/apps';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
@@ -25,24 +23,14 @@ import { filterByValue, groupeByKey } from './utils';
 
 const { Item } = Accordion;
 
-interface MainMenuProps {
-    manifests: Manifests;
-}
-
-/**
- * Menu Components and structure
- * - IconLink
- * - TextLink
- * - TextIconLink
- *
- *  Using React  Router Dom Link as wrapper for navigation and internal styling.
- */
-
-export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
+export const MainMenu = (): JSX.Element => {
     const isProd = isProduction();
-    const location = useLocation();
-    const { apps, appGroups } = manifests;
-    const { appsPanelActive, toggleAppPanel } = useClientContext();
+    const {
+        settings: { appsPanelActive },
+        registry,
+        // toggleAppPanel,
+    } = useClientContext();
+    const { apps, appGroups } = registry;
     const [searchValue, setSearchValue] = useState('');
     const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
 
@@ -50,9 +38,9 @@ export const MainMenu = ({ manifests }: MainMenuProps): JSX.Element => {
         const value = event.target.value;
         setSearchValue(value);
     };
-    useEffect(() => {
-        toggleAppPanel(true);
-    }, []);
+    // useEffect(() => {
+    //     toggleAppPanel(true);
+    // }, []);
 
     const GroupedMenu = useMemo(
         () =>

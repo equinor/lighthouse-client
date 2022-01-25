@@ -29,8 +29,9 @@ const TopBarWrapper = styled(TopBar)`
 `;
 
 const ClientTopBar = (): JSX.Element => {
-    const { toggleFullscreenMenu, authProvider } = useClientContext();
-    const graph = useGraphClient(authProvider);
+    const { toggleFullscreenMenu, internal } = useClientContext();
+    const graph = useGraphClient(internal.authProvider);
+
     const [image, setImage] = useState<string | undefined>(undefined);
 
     useEffect(() => {

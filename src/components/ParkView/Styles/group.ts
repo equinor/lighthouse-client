@@ -3,6 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const SubGroup = styled.div`
+    width: calc(100% - 10px);
     margin-left: 10px;
     margin-bottom: 0px;
 `;

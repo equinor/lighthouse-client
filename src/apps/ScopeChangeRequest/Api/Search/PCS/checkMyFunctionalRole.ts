@@ -1,4 +1,4 @@
-import { BaseClient } from '../../../../../../packages/httpClient/src';
+import { HttpClient } from '@equinor/http-client';
 import { FunctionalRole } from './Types/functionalRole';
 
 /**
@@ -6,7 +6,7 @@ import { FunctionalRole } from './Types/functionalRole';
  * @param procosysClient
  * @returns
  */
-export async function checkMyFunctionalRole(procosysClient: BaseClient): Promise<FunctionalRole[]> {
+export async function checkMyFunctionalRole(procosysClient: HttpClient): Promise<FunctionalRole[]> {
     const baseUrl = 'https://procosyswebapi.equinor.com/api';
     const uri = 'Me/FunctionalRoleCodes';
     const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&api-version=4.1`;
