@@ -14,9 +14,19 @@ const Main = styled.div`
     padding-bottom: 2em;
 `;
 
+const Title = styled.div`
+    font-size: 16px;
+    font-weight: bold;
+`;
+
 const TableData = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
+`;
+const WeekHeader = styled.div`
+    font-weight: 500;
+    padding-top: 1em;
+    padding-bottom: 1em;
 `;
 const HLine = styled.hr`
     width: 100%;
@@ -36,7 +46,9 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
     const groupByKeys = Object.keys(filtered);
     return (
         <Container>
-            <h3>Job cards that have not reached state WO4 in weeks before installation date</h3>
+            <Title>
+                Job cards that have not reached state WO4 in weeks before installation date
+            </Title>
             <Main>
                 {groupByKeys &&
                     groupByKeys.map((groupedKey, index) => {
@@ -54,16 +66,10 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
                                         {index === 0 &&
                                             keysOfFiltered.map((_key, index) => {
                                                 return (
-                                                    <div
-                                                        style={{
-                                                            fontWeight: 500,
-                                                            paddingBottom: '1em',
-                                                        }}
-                                                        key={index}
-                                                    >
+                                                    <WeekHeader key={index}>
                                                         {index + 1}
                                                         {index === 0 ? ' Week left' : ' Weeks left'}
-                                                    </div>
+                                                    </WeekHeader>
                                                 );
                                             })}
                                     </TableData>
