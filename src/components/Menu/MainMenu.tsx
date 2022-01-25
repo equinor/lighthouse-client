@@ -166,21 +166,6 @@ export const MainMenu = (): JSX.Element => {
                                 >
                                     <Menu.Item>
                                         <MenuItemTitleLink to={`${key}`}>
-                                            {CustomIcon && typeof CustomIcon !== 'string' && (
-                                                <CustomIcon />
-                                            )}
-                                            {CustomIcon && typeof CustomIcon === 'string' && (
-                                                <Icon
-                                                    name={CustomIcon}
-                                                    title={appGroups[key].name}
-                                                    color={
-                                                        tokens.colors.text.static_icons__secondary
-                                                            .rgba
-                                                    }
-                                                />
-                                            )}
-                                        </MenuItemTitleLink>
-                                        <MenuItemTitleLink to={`${key}`}>
                                             <Title> {appGroups[key].name}</Title>
                                         </MenuItemTitleLink>
                                     </Menu.Item>

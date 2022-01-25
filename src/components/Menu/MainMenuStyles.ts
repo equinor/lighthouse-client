@@ -25,7 +25,7 @@ export const MenuItem = styled(Menu.Item)`
 export const MenuItemLink = styled(Link)`
     text-decoration: none;
     color: inherit;
-    padding-left: 2.5rem;
+
     width: 100%;
     height: 100%;
 `;
