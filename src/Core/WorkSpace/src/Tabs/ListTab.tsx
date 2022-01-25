@@ -14,6 +14,7 @@ export const ListTab = (): JSX.Element => {
         customCellView: tableOptions?.customCellView,
         headers: tableOptions?.headers,
         customColumns: tableOptions?.customColumns,
+        hiddenColumnsCount: tableOptions?.hiddenColumns?.length,
     });
     const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
     return (
