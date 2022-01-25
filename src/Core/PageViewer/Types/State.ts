@@ -26,6 +26,7 @@ export interface FusionPowerBiOptions extends PageBase {
     type: 'FusionPowerBi';
     reportURI: string;
     filter?: Filter[];
+    options?: { showFilter?: boolean; enablePageNavigation?: boolean };
 }
 export interface DashboardOptions extends PageBase {
     type: 'Dashboard';
