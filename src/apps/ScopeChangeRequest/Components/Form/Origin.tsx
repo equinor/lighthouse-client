@@ -47,6 +47,9 @@ export const Origin = ({ setOrigin }: OriginProps): JSX.Element => {
             case 'Punch':
                 return <SelectPunch setOriginId={setOriginId} />;
 
+            case 'SWCR':
+                return <></>;
+
             default:
                 return <></>;
         }
