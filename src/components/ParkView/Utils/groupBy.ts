@@ -10,7 +10,8 @@ export function groupBy<T, K extends keyof T>(
     status?: StatusView<T>,
     groupDescriptionFunc?: GroupDescriptionFunc<T>,
     fieldSettings?: FieldSettings<T, string>,
-    isExpanded?: boolean
+    isExpanded?: boolean,
+    customGroupByKeys?: Record<string, unknown>
 ): Data<T> {
     const key = (keys[0] && keys[0].toString()) || undefined;
     if (!key) return {} as Data<T>;
@@ -18,13 +19,13 @@ export function groupBy<T, K extends keyof T>(
     const fieldSetting = fieldSettings?.[key];
 
     const data = arr.reduce((acc, item) => {
-        const itemKeys: string[] = fieldSetting?.getKey
-            ? fieldSetting.getKey(item)
-            : Array.isArray(item[key])
-            ? item[key]
-            : [item[key]];
+        const itemKeys: string[] | string = fieldSetting?.getKey
+            ? fieldSetting.getKey(item, fieldSetting?.key || key, customGroupByKeys)
+            : item[key];
 
-        itemKeys.forEach((valueKey: string) => {
+        const itemKeysArray = Array.isArray(itemKeys) ? itemKeys : [itemKeys];
+
+        itemKeysArray.forEach((valueKey: string) => {
             if (!valueKey) valueKey = '(Blank)';
             acc[valueKey] = acc[valueKey] || {
                 groupKey: key,

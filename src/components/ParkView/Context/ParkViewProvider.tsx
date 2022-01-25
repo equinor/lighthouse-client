@@ -29,6 +29,10 @@ export function ParkViewProvider<T>({
         dispatch(actions.setGardenKey(gardenKey));
     }
 
+    function setCustomGroupKeys(groupKeys: Record<string, unknown>): void {
+        dispatch(actions.setCustomGroupKeys(groupKeys));
+    }
+
     useEffect(() => {
         if (data && data.length > 0) {
             dispatch(actions.setData(data as unknown[]));
@@ -41,6 +45,7 @@ export function ParkViewProvider<T>({
                 ...state,
                 setGroupKeys,
                 setGardenKey,
+                setCustomGroupKeys,
             }}
         >
             {children}
@@ -57,6 +62,7 @@ export function useParkViewContext<T>() {
         itemKey: parkViewContext.itemKey as keyof T,
         groupByKeys: parkViewContext.groupByKeys as (keyof T)[],
         customView: parkViewContext.customViews as CustomView<T>,
+        customGroupByKeys: parkViewContext.customGroupByKeys || {},
         status: parkViewContext.status as StatusView<T>,
         options: parkViewContext.options as Options<T>,
         data: parkViewContext.data as T[],

@@ -5,6 +5,12 @@ export const actions = {
     setGroupKeys: createCustomAction(DataAction.setGroupKeys, (groupKeys: string[]) => ({
         groupKeys,
     })),
+    setCustomGroupKeys: createCustomAction(
+        DataAction.setCustomGroupKeys,
+        (groupKeys: Record<string, unknown>) => ({
+            groupKeys,
+        })
+    ),
 
     setGardenKey: createCustomAction(DataAction.setGardenKey, (gardenKey?: string) => ({
         gardenKey,

@@ -15,8 +15,10 @@ const getFieldSettingsLabelFromKey = <T extends unknown>(
 ) => fieldSettings[key]?.label || key;
 
 export function FilterSelector<T>(): JSX.Element | null {
-    const { groupByKeys, setGroupKeys, setGardenKey, data, gardenKey, fieldSettings } =
+    const { groupByKeys, setGroupKeys, setGardenKey, data, gardenKey, fieldSettings, customViews } =
         useParkViewContext<T>();
+
+    const CustomGroupByView = customViews?.customGroupByView;
 
     const allOptions = useMemo(
         () =>
@@ -79,6 +81,8 @@ export function FilterSelector<T>(): JSX.Element | null {
 
     return (
         <SelectRowWrapper>
+            {CustomGroupByView && <CustomGroupByView />}
+
             <Separator> Group by </Separator>
 
             <SingleSelect
