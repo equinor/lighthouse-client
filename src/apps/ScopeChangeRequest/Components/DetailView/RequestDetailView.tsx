@@ -19,6 +19,8 @@ import {
     ButtonContainer,
 } from './requestDetailViewStyles';
 import styled from 'styled-components';
+import Select, { SingleValue } from 'react-select';
+import { applyEdsStyles, applyEDSTheme } from '../SearchableDropdown/applyEds';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -87,7 +89,12 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
         return logArray;
     }, [request]);
 
-    const availableActions: string[] | undefined = useMemo(() => {
+    interface SelectOption {
+        label: string;
+        value: string;
+    }
+
+    const availableActions: SelectOption[] | undefined = useMemo(() => {
         if (
             request.state === 'Open' &&
             request.currentWorkflowStep &&
@@ -95,9 +102,14 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
         ) {
             const activeCriterias = request.currentWorkflowStep.criterias
                 .filter((x) => x.signedAtUtc === null)
-                .map((x) => x.value);
+                .map((x) => {
+                    return {
+                        value: x.id,
+                        label: x.value,
+                    };
+                });
             if (activeCriterias.length === 1) {
-                setSelectedCriteria(activeCriterias[0]);
+                setSelectedCriteria(activeCriterias[0].value);
             }
             return activeCriterias;
         }
@@ -276,13 +288,22 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
 
                                 <Inline>
                                     {availableActions && availableActions?.length > 1 && (
-                                        <SingleSelect
-                                            label="Sign as"
-                                            items={availableActions}
-                                            handleSelectedItemChange={(e) => {
-                                                setSelectedCriteria(e.selectedItem ?? undefined);
-                                            }}
-                                        />
+                                        <>
+                                            <div style={{ minWidth: '250px' }}>
+                                                <Select
+                                                    isClearable={true}
+                                                    isSearchable={false}
+                                                    options={availableActions}
+                                                    placeholder="Sign as"
+                                                    onChange={(
+                                                        newValue: SingleValue<SelectOption>
+                                                    ) => {
+                                                        setSelectedCriteria(newValue?.value);
+                                                    }}
+                                                    theme={applyEDSTheme}
+                                                />
+                                            </div>
+                                        </>
                                     )}
                                     <Button
                                         disabled={!selectedCriteria || isLoading}

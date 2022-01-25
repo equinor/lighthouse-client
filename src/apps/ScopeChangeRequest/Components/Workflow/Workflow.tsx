@@ -111,14 +111,14 @@ export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
                                                 <span>{x.name}</span>
                                             </Tooltip>
                                         </Inline>
-                                        {x.isCurrent && !criteria.signedState && (
+                                        {/* {x.isCurrent && !criteria.signedState && (
                                             <Button
                                                 variant="outlined"
                                                 onClick={() => onSignStep(criteria.id)}
                                             >
                                                 Sign
                                             </Button>
-                                        )}
+                                        )} */}
                                     </WorkflowStepViewContainer>
                                     {index !== request.workflowSteps.length - 1 && (
                                         <>
@@ -148,14 +148,14 @@ export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
                                                 <div>Contribution</div>
                                             </Tooltip>
                                         </Inline>
-                                        {!y.contribution && x.isCurrent && (
+                                        {/* {!y.contribution && x.isCurrent && (
                                             <Button
                                                 variant="outlined"
                                                 onClick={() => sendContribution(y.id)}
                                             >
                                                 Contribute
                                             </Button>
-                                        )}
+                                        )} */}
                                     </WorkflowStepViewContainer>
                                     <Spacer />
                                     <WorkflowLine colored={true} />
