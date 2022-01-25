@@ -31,23 +31,23 @@ type CriticalWoTableProps<T> = {
 export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = WorkOrder>({
     data,
 }: CriticalWoTableProps<T>) => {
-    const woDisc = createWoStatusMap(data, 'disciplineDescription');
-    const filtered = filterWoMap(woDisc);
-    const disciplines = Object.keys(filtered);
+    const woStatusMap = createWoStatusMap(data, 'disciplineDescription');
+    const filtered = filterWoMap(woStatusMap);
+    const groupByKeys = Object.keys(filtered);
     return (
         <Container>
             <h3>Job cards that have not reached state WO4 in weeks before installation date</h3>
             <Main>
-                {disciplines &&
-                    disciplines.map((discipline, index) => {
-                        const woCountValues = Object.values(filtered[discipline]);
+                {groupByKeys &&
+                    groupByKeys.map((groupedKey, index) => {
+                        const woCountValues = Object.values(filtered[groupedKey]);
                         // if (woCountValues.every((val) => val === 0)) {
                         //     return null;
                         // }
-                        const keysOfFiltered = Object.keys(filtered[discipline]);
+                        const keysOfFiltered = Object.keys(filtered[groupedKey]);
 
                         return (
-                            <Fragment key={discipline}>
+                            <Fragment key={groupedKey}>
                                 <div>
                                     <TableData>
                                         <div style={{ visibility: 'hidden' }}>Very hacky :)</div>
@@ -69,11 +69,11 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
                                     </TableData>
 
                                     <TableData>
-                                        <div style={{ fontWeight: 500 }}>{discipline}</div>
+                                        <div style={{ fontWeight: 500 }}>{groupedKey}</div>
 
                                         <WoNumbersDisplay
                                             filtered={filtered}
-                                            discipline={discipline}
+                                            groupedKey={groupedKey}
                                             keysOfFiltered={keysOfFiltered}
                                         />
                                     </TableData>
