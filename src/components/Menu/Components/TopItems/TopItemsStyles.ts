@@ -2,13 +2,15 @@ import { tokens } from '@equinor/eds-tokens';
 import { Link as ReactLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-export const Wrapper = styled(ReactLink)`
+export const Wrapper = styled.div``;
+
+export const LinkWrapper = styled(ReactLink)`
     text-decoration: none;
     padding: 0px;
     margin: 0px;
 `;
 
-export const MenuIcon = styled.span`
+export const IconContainer = styled.span`
     display: grid;
     gap: 8px;
     grid-auto-flow: column;
@@ -21,25 +23,28 @@ export const MenuIcon = styled.span`
 `;
 
 interface IconWrapperProps {
-    active?: boolean;
+    active: boolean;
 }
 
 export const IconWrapper = styled.span`
-    text-decoration: none;
+    display: block;
     padding: 0px;
     height: 48px;
     width: 48px;
     overflow: hidden;
     margin: 0px;
-
-    :active {
-        background: ${({ active }: IconWrapperProps) =>
-            active ? `${tokens.colors.interactive.primary__hover_alt.rgba}` : 'none'};
-    }
+    background: ${({ active }: IconWrapperProps) =>
+        active ? `${tokens.colors.interactive.primary__hover_alt.rgba}` : ''};
 
     :hover {
         background: ${tokens.colors.interactive.primary__hover_alt.rgba};
-        border-radius: 50%;
+        border-radius: ${({ active }: IconWrapperProps) => (active ? 0 : '50%')};
         display: block;
     }
+`;
+
+export const Title = styled.div`
+    font-weight: 800;
+    display: flex;
+    flex-direction: row;
 `;

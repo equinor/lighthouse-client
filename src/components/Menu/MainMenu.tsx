@@ -2,22 +2,20 @@ import { Accordion, Menu, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { isProduction, useClientContext } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
-import { Apps } from '../../apps/apps';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
+import { TopItems } from './Components/TopItems/TopItems';
 import { AccordionHeader, AccordionHeaderTitle, AccordionPanel } from './MainMenuExpandedStyles';
 import { MenuItem, MenuItemLink, MenuItemTitleLink } from './MainMenuStyles';
 import {
     GroupLink,
     LinkIcon,
     LinkIconWrapper,
-    LinkWrapper,
     MenuWrapper,
     PopoverWrapper,
     SearchWrapper,
     SmallItem,
-    Title,
-    TopItems
+    Title
 } from './Styles';
 import { filterByValue, groupeByKey } from './utils';
 
@@ -77,42 +75,7 @@ export const MainMenu = (): JSX.Element => {
                 </SearchWrapper>
             )}
 
-            <TopItems>
-                {filteredList[Apps.Top] &&
-                    filteredList[Apps.Top].map((item) => {
-                        const CustomIcon = item.icon;
-                        return (
-                            <LinkWrapper
-                                key={`link-${item.shortName}`}
-                                to={`/${item.shortName}`}
-                                title={!item.isProduction && isProd ? 'Disabled' : item.title}
-                                style={item.isProduction && !isProd ? { color: '#e3e3e3' } : {}}
-                                onMouseOver={() => {
-                                    openPopover('');
-                                }}
-                            >
-                                <LinkIconWrapper active={false}>
-                                    <LinkIcon>
-                                        {CustomIcon && typeof CustomIcon !== 'string' && (
-                                            <CustomIcon />
-                                        )}
-
-                                        {CustomIcon && typeof CustomIcon === 'string' && (
-                                            <Icon
-                                                name={CustomIcon}
-                                                title={item.title}
-                                                color={
-                                                    tokens.colors.text.static_icons__secondary.rgba
-                                                }
-                                            />
-                                        )}
-                                    </LinkIcon>
-                                </LinkIconWrapper>
-                                {appsPanelActive && <span>{item.title}</span>}
-                            </LinkWrapper>
-                        );
-                    })}
-            </TopItems>
+            <TopItems apps={filteredList} openPopover={openPopover} isExpanded={appsPanelActive} />
 
             <Accordion chevronPosition="right">
                 {Object.keys(filteredList).map((key, i) => {

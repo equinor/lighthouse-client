@@ -56,22 +56,6 @@ export const LinkIconWrapper = styled.span`
     }
 `;
 
-export const TopItems = styled.div`
-    /* padding: 1rem; */
-
-    .link {
-        color: #030303;
-        text-decoration: none;
-        display: block;
-        padding-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        :hover {
-            opacity: 0.5;
-        }
-    }
-`;
-
 export const MenuItems = styled.div`
     bottom: 1rem;
     position: absolute;

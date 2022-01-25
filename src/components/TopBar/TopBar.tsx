@@ -35,8 +35,9 @@ const ClientTopBar = (): JSX.Element => {
     const [image, setImage] = useState<string | undefined>(undefined);
 
     useEffect(() => {
+        if (image) return;
         graph.graphGetProfilePicture().then((img) => setImage(img));
-    }, [graph]);
+    }, [graph, image]);
 
     return (
         <TopBarWrapper>

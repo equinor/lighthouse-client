@@ -1,6 +1,6 @@
 import { Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { isProduction, useClientContext } from '@equinor/portal-client';
+import { useClientContext } from '@equinor/portal-client';
 import { useMemo, useState } from 'react';
 import Icon from '../Icon/Icon';
 import {
@@ -16,7 +16,6 @@ import {
 import { filterByValue, groupeByKey } from './utils';
 
 export const FullscreenMainMenu = (): JSX.Element => {
-    const isProd = isProduction();
     const [searchValue, setSearchValue] = useState('');
     const { registry, toggleFullscreenMenu } = useClientContext();
 
@@ -60,10 +59,10 @@ export const FullscreenMainMenu = (): JSX.Element => {
                         <Link
                             active={location.pathname.includes(`${key}/${item.shortName}`)}
                             key={`link-${item.shortName}`}
-                            to={item.isProduction ? `${key}/${item.shortName}` : '#'}
-                            onClick={() => isProd && item.isProduction && toggleFullscreenMenu()}
-                            title={isProd && !item.isProduction ? 'Disabled' : item.title}
-                            disabled={isProd && !item.isProduction}
+                            to={`${key}/${item.shortName}`}
+                            onClick={() => toggleFullscreenMenu()}
+                            title={!item.isProduction ? 'Disabled' : item.title}
+                            disabled={!item.isProduction}
                         >
                             {item.title}
                         </Link>

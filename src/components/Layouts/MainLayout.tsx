@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
 import { PopoutSidesheet } from '@equinor/sidesheet';
 import styled from 'styled-components';
@@ -18,7 +19,7 @@ const ChildrenWrapper = styled.div`
 const MainMenuWrapper = styled.div`
     width: ${({ panelActive }: CssProps) => (panelActive ? '374px' : '48px')};
     transition: width 0.2s ease;
-    border-right: 1.5px solid #e0e0e0;
+    border-right: 2px solid ${tokens.colors.ui.background__light.rgba};
 `;
 
 interface MainLayoutProps {
