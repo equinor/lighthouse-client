@@ -35,10 +35,14 @@ const Heading = styled.h1`
 interface PowerBiProps {
     reportUri: string;
     filterOptions?: Filter[];
+    options?: {
+        showFilter?: boolean;
+        enableNavigation?: boolean;
+    };
 }
 
-export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element => {
-    const { config, error } = usePowerBI(reportUri, filterOptions);
+export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JSX.Element => {
+    const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
 
     //TODO custom loading
