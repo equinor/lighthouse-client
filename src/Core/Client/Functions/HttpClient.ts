@@ -35,7 +35,7 @@ export function httpClient(options?: HttpClientOptions): HttpClients {
         customHttpClient: baseClient(authProvider, [customScope]),
     };
 
-    Object.keys(appConfig.urls).forEach((key) => {
+    Object.keys(appConfig.scope).forEach((key) => {
         apiClients[key] = baseClient(
             authProvider,
             getScope(key, appConfig.scope)
