@@ -1,14 +1,25 @@
 import { searchCommPkg } from './searchCommPkg';
+import { searchAreas } from './searchArea';
 import { searchTags } from './searchTags';
-import { searchSystem } from './searchSystem';
+import { searchSystems } from './searchSystem';
 import { BaseClient } from '../../../../../../packages/httpClient/src';
 import { searchQueryOrigin } from './searchQuery';
 import { searchDCN } from './searchDCN';
 import { searchNCR } from './searchNcr';
+import { searchDiscipline } from './searchDiscipline';
 import { searchPerson } from './searchPerson';
 import { TypedSelectOption } from '../searchType';
 
-export type ProcoSysTypes = 'tag' | 'commpkg' | 'system' | 'query' | 'person' | 'dcn' | 'ncr';
+export type ProcoSysTypes =
+    | 'tag'
+    | 'commpkg'
+    | 'system'
+    | 'query'
+    | 'person'
+    | 'dcn'
+    | 'ncr'
+    | 'area'
+    | 'discipline';
 
 /**
  * TODO: convert to hook
@@ -30,7 +41,7 @@ export const searchPcs = async (
             return await searchCommPkg(searchString, procosysClient);
 
         case 'system':
-            return await searchSystem(searchString, procosysClient);
+            return await searchSystems(searchString, procosysClient);
 
         case 'query':
             return await searchQueryOrigin(searchString, procosysClient);
@@ -43,6 +54,12 @@ export const searchPcs = async (
 
         case 'person':
             return await searchPerson(searchString, procosysClient);
+
+        case 'area':
+            return await searchAreas(searchString, procosysClient);
+
+        case 'discipline':
+            return await searchDiscipline(searchString, procosysClient);
 
         default:
             // eslint-disable-next-line no-console

@@ -9,9 +9,9 @@ export const searchDocuments = async (
     const selectOptions: TypedSelectOption[] = [];
 
     //Test https://stidapitest.equinor.com
-    const baseUrl = 'https://stidapi.equinor.com';
+    const baseUrl = 'https://stidapitest.equinor.com';
     const uri = 'JCA/documents';
-    const queryParameters = `docNo=${encodeURI(searchString)}&skip=0&take=50&noContentAs200=true`;
+    const queryParameters = `docNo=${encodeURI(searchString)}&skip=0&take=7&noContentAs200=true`;
     const url = `${baseUrl}/${uri}?${queryParameters}`;
     await stidClient
         .fetch(url)
@@ -19,7 +19,7 @@ export const searchDocuments = async (
         .then((data) => {
             data.map((x: Document) => {
                 selectOptions.push({
-                    label: `DOC_${x.docNo} - ${x.docTitle}`,
+                    label: `DOC_${x.docNo}`,
                     value: x.docNo,
                     type: 'document',
                     searchValue: x.docNo,

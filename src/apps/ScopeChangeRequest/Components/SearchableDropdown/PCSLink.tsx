@@ -47,13 +47,6 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
         const options: TypedSelectOption[] = [];
         try {
             await (await searchPcs(inputValue, 'system', procosys)).forEach((x) => options.push(x));
-            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-                sort(a, b, inputValue)
-            );
-
-            if (sorted.length > 0) {
-                callback(sorted);
-            }
         } catch (e) {
             console.warn(e);
             setApiErrors((prev) => [...prev, 'systems']);
@@ -76,6 +69,36 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
         }
 
         try {
+            await (await searchPcs(inputValue, 'area', procosys)).forEach((x) => options.push(x));
+            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+                sort(a, b, inputValue)
+            );
+
+            if (sorted.length > 0) {
+                callback(sorted);
+            }
+        } catch (e) {
+            console.warn(e);
+            setApiErrors((prev) => [...prev, 'areas']);
+        }
+
+        try {
+            await (
+                await searchPcs(inputValue, 'discipline', procosys)
+            ).forEach((x) => options.push(x));
+            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+                sort(a, b, inputValue)
+            );
+
+            if (sorted.length > 0) {
+                callback(sorted);
+            }
+        } catch (e) {
+            console.warn(e);
+            setApiErrors((prev) => [...prev, 'disciplines']);
+        }
+
+        try {
             await (await searchPcs(inputValue, 'tag', procosys)).forEach((x) => options.push(x));
             const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
                 sort(a, b, inputValue)
@@ -88,6 +111,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
             console.warn(e);
             setApiErrors((prev) => [...prev, 'tags']);
         }
+        callback([]);
     };
 
     return (
@@ -153,12 +177,10 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                     {objects && objects.length > 0 && (
                         <>
                             {objects.map((x) => {
+                                const TypeIcon = getIcon(x);
                                 return (
                                     <Chip key={x.value}>
-                                        <Icon
-                                            name={x.type === 'tag' ? 'tag' : 'school'}
-                                            color={tokens.colors.interactive.primary__resting.hex}
-                                        />
+                                        {TypeIcon}
                                         {x.label}
                                         <Icon
                                             color={tokens.colors.interactive.primary__resting.rgba}
@@ -177,6 +199,21 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
         </Wrapper>
     );
 };
+
+function getIcon(x: TypedSelectOption): JSX.Element {
+    if (x.type === 'area') {
+        return <Icon name="pin_drop" color={tokens.colors.interactive.primary__resting.hex} />;
+    }
+
+    if (x.type === 'discipline') {
+        return <Icon name="school" color={tokens.colors.interactive.primary__resting.hex} />;
+    }
+
+    if (x.type === 'tag') {
+        return <Icon name="tag" color={tokens.colors.interactive.primary__resting.hex} />;
+    }
+    return <></>;
+}
 
 const Inline = styled.span`
     display: flex;

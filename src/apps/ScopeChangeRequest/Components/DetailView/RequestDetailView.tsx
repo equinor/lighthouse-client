@@ -1,15 +1,24 @@
-import { Button, TextField } from '@equinor/eds-core-react';
-import styled from 'styled-components';
+import { Button, CircularProgress, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { SectionRow } from '../../Styles/Section';
-import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
+import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../Types/scopeChangeRequest';
 import { Workflow } from '../Workflow/Workflow';
 import { patchWorkflowStep } from '../../Api/patchWorkflowStep';
 import { Field } from './Components/Field';
-import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { patchScopeChange } from '../../Api';
+import { postContribution } from '../../Api/ScopeChange/postContribution';
 import { StidDocumentResolver } from './Components/StidDocumentResolver';
+import { Attachments } from './Components/Attachments';
+import { RelatedObjects } from './Components/RelatedObjects';
+import {
+    RequestActionsContainer,
+    LogMessage,
+    HorizontalDivider,
+    DetailViewContainer,
+    ButtonContainer,
+} from './requestDetailViewStyles';
+import styled from 'styled-components';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -17,21 +26,40 @@ interface RequestDetailViewProps {
     refetch: () => Promise<void>;
 }
 
-export const RequestDetailView = ({
-    request,
-    setEditMode,
-    refetch,
-}: RequestDetailViewProps): JSX.Element => {
+export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps): JSX.Element => {
     const [comment, setComment] = useState<string | undefined>(undefined);
     const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [selectedCriteria, setSelectedCriteria] = useState<string | undefined>(undefined);
+
     const onInitiate = async () => {
-        const payload = {
+        setIsLoading(true);
+        const scopeChange: ScopeChangeRequestFormModel = {
             ...request,
+            actualChangeHours: request.actualChangeHours,
+            estimatedChangeHours: request.estimatedChangeHours,
+            category: request.category,
+            description: request.description,
+            guesstimateDescription: request.guesstimateDescription,
+            guesstimateHours: request.guesstimateHours,
+            id: request.id,
+            origin: request.origin,
+            phase: request.phase,
+            title: request.title,
+            commissioningPackageNumbers:
+                request.commissioningPackages.map((x) => x.procosysNumber) || [],
+            systemIds: request.systems.map((x) => x.procosysId) || [],
+            tagNumbers: request.tags.map((x) => x.procosysNumber) || [],
+            documentNumbers: request.documents.map((x) => x.stidDocumentNumber) || [],
+        };
+        const payload = {
+            ...scopeChange,
             setAsOpen: true,
         };
 
         await patchScopeChange(payload, customApi);
-        refetch();
+        await refetch();
+        setIsLoading(false);
     };
 
     interface LogEntry {
@@ -59,22 +87,29 @@ export const RequestDetailView = ({
         return logArray;
     }, [request]);
 
-    const activeCriteriaId = useMemo(() => {
+    const availableActions: string[] | undefined = useMemo(() => {
         if (
             request.state === 'Open' &&
             request.currentWorkflowStep &&
             request.currentWorkflowStep.criterias.length > 0
         ) {
-            return request.currentWorkflowStep.criterias.find((x) => x.id)?.id;
+            const activeCriterias = request.currentWorkflowStep.criterias
+                .filter((x) => x.signedAtUtc === null)
+                .map((x) => x.value);
+            if (activeCriterias.length === 1) {
+                setSelectedCriteria(activeCriterias[0]);
+            }
+
+            return activeCriterias;
         }
     }, [request]);
 
     const onSignStep = () => {
-        if (activeCriteriaId && request.currentWorkflowStep) {
+        if (selectedCriteria && request.currentWorkflowStep) {
             patchWorkflowStep(
                 request.id,
                 request.currentWorkflowStep.id,
-                activeCriteriaId,
+                selectedCriteria,
                 customApi,
                 comment
             ).then(() => refetch());
@@ -82,14 +117,17 @@ export const RequestDetailView = ({
         }
     };
 
-    const statusFunc = (item: WorkflowStep): 'Completed' | 'Inactive' | 'Active' => {
-        if (item.isCompleted) {
-            return 'Completed';
-        }
-        if (item.isCurrent) {
-            return 'Active';
-        } else {
-            return 'Inactive';
+    const sendContribution = async () => {
+        const contributionId = request.currentWorkflowStep?.contributors.find((x) => x.id)?.id;
+        if (request.currentWorkflowStep && contributionId) {
+            await postContribution(
+                request.id,
+                request.currentWorkflowStep?.id,
+                contributionId,
+                customApi,
+                comment
+            );
+            setComment('');
         }
     };
 
@@ -150,10 +188,22 @@ export const RequestDetailView = ({
                         value={request.guesstimateDescription}
                     />
                 </SectionRow>
+
+                <Field
+                    label={'Related objects'}
+                    value={
+                        <RelatedObjects
+                            systems={request.systems}
+                            commPkgs={request.commissioningPackages}
+                            tags={request.tags}
+                        />
+                    }
+                />
+
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label={'Workflow'}
-                    value={<Workflow request={request} />}
+                    value={<Workflow request={request} refetch={refetch} />}
                 />
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
@@ -163,22 +213,7 @@ export const RequestDetailView = ({
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label="Attachments"
-                    value={
-                        <div>
-                            {request.attachments &&
-                                request.attachments.map((x) => {
-                                    return (
-                                        <Link
-                                            href={`https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}/attachments/${x.id}`}
-                                            download
-                                            key={x.id}
-                                        >
-                                            {x.fileName}
-                                        </Link>
-                                    );
-                                })}
-                        </div>
-                    }
+                    value={<Attachments attachments={request.attachments} requestId={request.id} />}
                 />
 
                 <Field
@@ -202,13 +237,14 @@ export const RequestDetailView = ({
                     }
                 />
             </DetailViewContainer>
+
             {request.state !== 'Closed' && (
                 <RequestActionsContainer>
                     <Field
                         label="Comment"
                         value={
                             <TextField
-                                style={{ width: '100vh' }}
+                                style={{ width: '630px' }}
                                 id={'Comment'}
                                 multiline
                                 value={comment}
@@ -228,6 +264,9 @@ export const RequestDetailView = ({
                                 </Button>
                             </>
                         )}
+                        {request.currentWorkflowStep?.contributors.some((x) => x.id) && (
+                            <Button onClick={sendContribution}>Contribute</Button>
+                        )}
                         {request.state === 'Open' && (
                             <>
                                 <span>
@@ -235,9 +274,28 @@ export const RequestDetailView = ({
                                             Void Request
                                         </Button> */}
                                 </span>
-                                <Button disabled={!activeCriteriaId} onClick={onSignStep}>
-                                    Sign
-                                </Button>
+
+                                <Inline>
+                                    {availableActions && availableActions?.length > 1 && (
+                                        <SingleSelect
+                                            label="Sign as"
+                                            items={availableActions}
+                                            handleSelectedItemChange={(e) => {
+                                                setSelectedCriteria(e.selectedItem ?? undefined);
+                                            }}
+                                        />
+                                    )}
+                                    <Button
+                                        disabled={!selectedCriteria || isLoading}
+                                        onClick={onSignStep}
+                                    >
+                                        {isLoading ? (
+                                            <CircularProgress value={0} size={48} />
+                                        ) : (
+                                            <div>Sign</div>
+                                        )}
+                                    </Button>
+                                </Inline>
                             </>
                         )}
                     </ButtonContainer>
@@ -247,49 +305,9 @@ export const RequestDetailView = ({
     );
 };
 
-const ActionSelectorHeight = '180px';
-
-const DetailViewContainer = styled.div`
+const Inline = styled.div`
     display: flex;
-    flex-direction: column;
-    height: calc(87vh - ${ActionSelectorHeight});
-
-    overflow: scroll;
-`;
-
-const ButtonContainer = styled.div`
-    display: flex;
-    padding: 0em 1em 1em 1em;
-    justify-content: space-between;
-`;
-
-const HorizontalDivider = styled.div`
-    margin: 0.2em;
-`;
-
-const Link = styled.a`
-    display: flex;
-    color: ${tokens.colors.interactive.primary__resting.rgba};
-    cursor: pointer;
-    textdecorationline: underline;
-    padding: 8px 0px;
-`;
-
-const RequestActionsContainer = styled.div`
-    border-top: solid 2.5px ${tokens.colors.ui.background__medium.rgba};
-    display: flex;
-    background-color: white;
-    width: 650px;
-    height: ${ActionSelectorHeight};
-    flex-direction: column;
-    position: fixed;
-    bottom: 0px;
-`;
-
-const LogMessage = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 1em 0em;
+    align-items: flex-end;
 `;
 
 /**

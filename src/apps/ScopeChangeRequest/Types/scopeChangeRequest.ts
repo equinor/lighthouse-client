@@ -1,21 +1,15 @@
-export interface ScopeChangeRequestFormModel {
-    title: string;
-    description: string;
-    phase: string;
-    origin: string;
-    category: string;
-    guesstimateHours: string;
-    guesstimateDescription: string;
-    TagNumbers: string[];
-    CommissioningPackageNumbers: string[];
-    SystemIds: string[];
+export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
+    tagNumbers: string[];
+    commissioningPackageNumbers: string[];
+    systemIds: number[];
     documentNumbers: string[];
+    setAsOpen?: boolean;
     //workflow
 }
 
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
 
-export interface ScopeChangeRequest {
+export interface ScopeChangeBaseModel {
     id: string;
     title: string;
     description: string;
@@ -24,6 +18,11 @@ export interface ScopeChangeRequest {
     category: string;
     estimatedChangeHours: number;
     actualChangeHours: number;
+    guesstimateHours: string;
+    guesstimateDescription: string;
+}
+
+export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     createdAtUtc: string;
     createdBy: Person;
     modifiedAtUtc: string;
@@ -31,14 +30,9 @@ export interface ScopeChangeRequest {
     state: ScopeChangeRequestState;
     currentWorkflowStep?: WorkflowStep;
     workflowSteps: WorkflowStep[];
-    guesstimateHours: string;
-    guesstimateDescription: string;
     tags: Tag[];
-    tagNumbers: string[];
-    commissioningPackageNumbers: string[];
     commissioningPackages: CommissioningPackage[];
     systems: System[];
-    systemIds: System[];
     attachments: Attachment[];
     documents: Document[];
     //workflow
@@ -58,6 +52,7 @@ export interface Attachment {
     id: string;
     modifiedAtUtc: string | null;
     modifiedBy: string | null;
+    fileSize: number;
 }
 
 export interface CommissioningPackage {
@@ -75,7 +70,7 @@ export interface Tag {
 export interface System {
     id: string;
     procosysId: number;
-    procosysNumber: string;
+    procosysCode: string;
 }
 
 export interface Person {

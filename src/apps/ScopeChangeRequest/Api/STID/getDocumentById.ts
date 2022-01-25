@@ -13,7 +13,7 @@ export async function getDocumentById(
     docNo: string,
     stidClient: BaseClient
 ): Promise<Document> {
-    const baseUrl = 'https://stidapi.equinor.com';
+    const baseUrl = 'https://stidapitest.equinor.com';
     const uri = `${instCode}/document`;
     const queryParameters = `docNo=${encodeURIComponent(docNo)}`;
     const url = `${baseUrl}/${uri}?${queryParameters}`;

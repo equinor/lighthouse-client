@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Icon } from '@equinor/eds-core-react';
+import { Button, Icon, Tooltip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowLine } from './WorkflowLine';
 import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { addContributor as postContributor } from '../../Api/addContributor';
 import { useMutation } from 'react-query';
-import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
+import {
+    Contributor,
+    Criteria,
+    ScopeChangeRequest,
+    WorkflowStep,
+} from '../../Types/scopeChangeRequest';
+import { patchWorkflowStep } from '../../Api';
+import { postContribution } from '../../Api/ScopeChange/postContribution';
 
 interface WorkflowProps {
     request: ScopeChangeRequest;
+    refetch?: () => Promise<void>;
 }
-export function Workflow({ request }: WorkflowProps): JSX.Element {
+export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
     const [contributor, setContributor] = useState<{ value: string; label: string } | undefined>();
 
     const { scopeChange } = useApiClient();
@@ -29,10 +37,35 @@ export function Workflow({ request }: WorkflowProps): JSX.Element {
         );
     }
 
+    async function onSignStep(criteria: string) {
+        if (request.currentWorkflowStep?.id) {
+            await patchWorkflowStep(
+                request.id,
+                request.currentWorkflowStep.id,
+                criteria,
+                scopeChange
+            );
+            refetch && (await refetch());
+        }
+    }
+
+    async function sendContribution(contributionId: string) {
+        if (request.currentWorkflowStep && contributionId) {
+            await postContribution(
+                request.id,
+                request.currentWorkflowStep?.id,
+                contributionId,
+                scopeChange
+            );
+            refetch && (await refetch());
+        }
+    }
+
     useEffect(() => {
         if (!contributor?.value) return;
         const addContributor = async () => {
             await mutateAsync();
+            refetch && (await refetch());
         };
         addContributor();
         setContributor(undefined);
@@ -52,37 +85,77 @@ export function Workflow({ request }: WorkflowProps): JSX.Element {
             )}
 
             {request.workflowSteps.map((x, index) => {
+                const stepStatus = statusFunc(x);
                 return (
                     <WorkflowStepContainer key={index}>
-                        <WorkflowStepViewContainer>
-                            <WorkflowIcon status={statusFunc(x)} number={x.order + 1} />
-                            {x.name}
-                        </WorkflowStepViewContainer>
-                        {index !== request.workflowSteps.length - 1 && (
-                            <>
-                                <Spacer />
-                                <div style={{ padding: '1.05px' }}>
-                                    <WorkflowLine colored={x.isCompleted} />
-                                </div>
-                                <Spacer />
-                            </>
-                        )}
-
-                        {x.contributors.map((x) => {
+                        {x.criterias.map((criteria) => {
                             return (
-                                <ContributorContainer key={x.id}>
+                                <>
                                     <WorkflowStepViewContainer>
-                                        <WorkflowIcon
-                                            status={
-                                                x.contribution && x.contribution?.id
-                                                    ? 'Completed'
-                                                    : 'Active'
-                                            }
-                                            number={'#'}
-                                        />
-                                        <div title={`${x.person.firstName} ${x.person.lastName}`}>
-                                            Contribution
-                                        </div>
+                                        <Inline>
+                                            <WorkflowIcon
+                                                status={
+                                                    stepStatus === 'Active'
+                                                        ? criteriaStatus(criteria)
+                                                        : stepStatus
+                                                }
+                                                number={x.order + 1}
+                                            />
+                                            <Tooltip
+                                                title={
+                                                    !x.isCompleted
+                                                        ? `Signature from ${criteria.value} required.`
+                                                        : `Signed by ${criteria.signedBy.firstName} ${criteria.signedBy.lastName}`
+                                                }
+                                            >
+                                                <span>{x.name}</span>
+                                            </Tooltip>
+                                        </Inline>
+                                        {x.isCurrent && !criteria.signedState && (
+                                            <Button
+                                                variant="outlined"
+                                                onClick={() => onSignStep(criteria.id)}
+                                            >
+                                                Sign
+                                            </Button>
+                                        )}
+                                    </WorkflowStepViewContainer>
+                                    {index !== request.workflowSteps.length - 1 && (
+                                        <>
+                                            <Spacer />
+                                            <div style={{ padding: '1.05px' }}>
+                                                <WorkflowLine colored={x.isCompleted} />
+                                            </div>
+                                            <Spacer />
+                                        </>
+                                    )}
+                                </>
+                            );
+                        })}
+
+                        {x.contributors.map((y) => {
+                            return (
+                                <ContributorContainer key={y.id}>
+                                    <WorkflowStepViewContainer>
+                                        <Inline>
+                                            <WorkflowIcon
+                                                status={contributorStatus(y, x.isCurrent)}
+                                                number={'#'}
+                                            />
+                                            <Tooltip
+                                                title={`${y.person.firstName} ${y.person.lastName}`}
+                                            >
+                                                <div>Contribution</div>
+                                            </Tooltip>
+                                        </Inline>
+                                        {!y.contribution && x.isCurrent && (
+                                            <Button
+                                                variant="outlined"
+                                                onClick={() => sendContribution(y.id)}
+                                            >
+                                                Contribute
+                                            </Button>
+                                        )}
                                     </WorkflowStepViewContainer>
                                     <Spacer />
                                     <WorkflowLine colored={true} />
@@ -99,6 +172,7 @@ export function Workflow({ request }: WorkflowProps): JSX.Element {
 
 const ContributorContainer = styled.div`
     padding: 0px 32px;
+    width: -webkit-fill-available;
 `;
 
 const WorkflowStepContainer = styled.div`
@@ -117,14 +191,42 @@ const WorkflowStepViewContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     margin: 2px;
+    width: -webkit-fill-available;
 `;
 
+const Inline = styled.span`
+    display: flex;
+    align-items: center;
+`;
+
+type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
+
 interface WorkflowIconProps {
-    status: 'Completed' | 'Inactive' | 'Active';
+    status: WorkflowStatus;
     number: number | string;
 }
 
-export const statusFunc = (item: WorkflowStep): 'Completed' | 'Inactive' | 'Active' => {
+export const criteriaStatus = (criteria: Criteria): WorkflowStatus => {
+    if (criteria.signedAtUtc === null) {
+        return 'Active';
+    } else {
+        return 'Completed';
+    }
+};
+
+function contributorStatus(contributor: Contributor, currentStep: boolean): WorkflowStatus {
+    if (contributor.contribution) {
+        return 'Completed';
+    }
+
+    if (currentStep) {
+        return 'Active';
+    } else {
+        return 'Failed';
+    }
+}
+
+export const statusFunc = (item: WorkflowStep): WorkflowStatus => {
     if (item.isCompleted) {
         return 'Completed';
     }
@@ -159,6 +261,14 @@ function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element {
                 <GreyCircle>
                     <span>{number}</span>
                 </GreyCircle>
+            );
+
+        case 'Failed':
+            return (
+                <Icon
+                    name="close_circle_outlined"
+                    color={tokens.colors.infographic.primary__energy_red_100.hex}
+                />
             );
 
         default:

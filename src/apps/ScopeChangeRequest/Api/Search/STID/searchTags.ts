@@ -9,9 +9,9 @@ export const searchTags = async (
     const selectOptions: TypedSelectOption[] = [];
 
     //Test https://stidapitest.equinor.com
-    const baseUrl = 'https://stidapi.equinor.com';
+    const baseUrl = 'https://stidapitest.equinor.com';
     const uri = 'JCA/tags';
-    const queryParameters = `tagNo=${encodeURI(searchString)}&skip=0&take=8&noContentAs200=true`;
+    const queryParameters = `tagNo=${encodeURI(searchString)}&skip=0&take=7&noContentAs200=true`;
     const url = `${baseUrl}/${uri}?${queryParameters}`;
     await stidClient
         .fetch(url)

@@ -29,9 +29,9 @@ export const ScopeChangeRequestEditForm = ({
             {
                 ...request,
                 ...formData.getChangedData(),
-                TagNumbers: request.TagNumbers || [],
-                SystemIds: request.SystemIds || [],
-                CommissioningPackageNumbers: request.CommissioningPackageNumbers || [],
+                tagNumbers: request.tagNumbers || [],
+                systemIds: request.systemIds || [],
+                commissioningPackageNumbers: request.commissioningPackageNumbers || [],
             },
             scopeChange
         );

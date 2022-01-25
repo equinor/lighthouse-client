@@ -5,6 +5,7 @@ import { StidDocument as StidVisual } from '../../StidDocument';
 import { getDocumentById } from '../../../Api/STID/getDocumentById';
 import { useApiClient } from '../../../../../Core/Client/Hooks/useApiClient';
 import styled from 'styled-components';
+import { DotProgress } from '@equinor/eds-core-react';
 
 interface StidDocumentResolverProps {
     inputDocuments: Document[];
@@ -12,7 +13,7 @@ interface StidDocumentResolverProps {
 export const StidDocumentResolver = ({
     inputDocuments,
 }: StidDocumentResolverProps): JSX.Element => {
-    const { customApi } = useApiClient('1734406c-3449-4192-a50d-7c3a63d3f57d/.default');
+    const { customApi } = useApiClient('b827c278-12de-47a0-b789-c8d11e3b9571/.default');
 
     useEffect(() => {
         const resolveDocuments = async () => {
@@ -41,7 +42,9 @@ export const StidDocumentResolver = ({
         <>
             <DocumentWrapper>
                 {documents.length !== inputDocuments.length && (
-                    <LoadingMessage>Loading documents....</LoadingMessage>
+                    <LoadingMessage>
+                        <DotProgress color="primary" />
+                    </LoadingMessage>
                 )}
                 {documents.map((x) => {
                     return <StidVisual key={x.docNo} document={x} />;
