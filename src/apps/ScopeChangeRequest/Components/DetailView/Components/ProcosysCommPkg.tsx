@@ -15,8 +15,8 @@ export const ProcosSysCommPkgs = ({ commPkgs }: ProcosSysCommPkgsProps): JSX.Ele
 
                         <Spacer />
                         <Link
-                        // href={`https://procosys.equinor.com/JOHAN_CASTBERG/Completion#Tag|${x.procosysId}`}
-                        // target="_blank"
+                            href={`https://procosys.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${x.procosysId}?bf=1`}
+                            target="_blank"
                         >
                             CommPkg_{x.procosysNumber}
                         </Link>

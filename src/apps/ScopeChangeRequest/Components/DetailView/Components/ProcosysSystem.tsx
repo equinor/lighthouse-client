@@ -14,8 +14,8 @@ export const ProcosysSystem = ({ systems: systems }: ProcosysSystemProps): JSX.E
                         {/* TODO: Find system icon */}
                         <Spacer />
                         <Link
-                        // href={`https://procosys.equinor.com/JOHAN_CASTBERG/Completion#Tag|${x.procosysId}`}
-                        // target="_blank"
+                            href={`https://procosys.equinor.com/JOHAN_CASTBERG/Completion#System|${x.procosysId}`}
+                            target="_blank"
                         >
                             SYS_{x.procosysCode}
                         </Link>
