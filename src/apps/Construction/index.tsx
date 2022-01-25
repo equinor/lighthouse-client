@@ -19,18 +19,6 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
                 title: 'Job Statuses',
             },
         },
-        // chart2: {
-        //     type: 'timeBarChart',
-        //     options: {
-        //         accumulative: true,
-        //         timeChartOptions: {
-        //             categoriesKey: 'jobStatusCutoffs',
-        //             title: 'Job Statuses accumulated',
-        //             type: 'column',
-        //         },
-        //         title: 'Job Statuses accumulated',
-        //     },
-        // },
     },
     section2: {
         chart1: {
