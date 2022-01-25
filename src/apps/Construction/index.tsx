@@ -38,11 +38,14 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
             options: {
                 categoryKey: 'disciplineDescription',
                 nameKey: 'disciplineDescription',
-                onClick: (data, graphData) => {
+
+                title: 'Grouped job cards',
+                enableGroupBy: true,
+                onClick: (data, graphData, groupByKey) => {
                     const labelClicked = graphData.globals.labels[graphData.dataPointIndex];
                     const tableData: WorkOrder[] = [];
                     data.forEach((wo) => {
-                        wo.disciplineDescription === labelClicked && tableData.push(wo);
+                        wo[groupByKey] === labelClicked && tableData.push(wo);
                     });
 
                     tableData.length > 0 && openSidesheet(SidesheetContent, { data: tableData });
