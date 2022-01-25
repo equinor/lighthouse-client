@@ -60,7 +60,11 @@ const ClientTopBar = (): JSX.Element => {
             </TopBar.CustomContent>
             <TopBar.Actions>
                 <Icons>
-                    {image && <Avatar alt="User avatar" src={image} />}
+                    {!image ? (
+                        <Icon name="account_circle" />
+                    ) : (
+                        <Avatar alt="User avatar" src={image} />
+                    )}
                     {/* <Icon name="notifications" /> */}
                 </Icons>
             </TopBar.Actions>
