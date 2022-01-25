@@ -40,9 +40,14 @@ interface CustomVisual<T> {
     type: 'customVisual';
     options: CustomVisualOptions<T>;
 }
+export type CustomVisualArgs<T> = {
+    data: T[];
+    [x: string]: unknown;
+};
 
 interface CustomVisualOptions<T> {
-    component: React.FC<{ data: T[] }>;
+    component: React.FC<CustomVisualArgs<T>>;
+    componentProps?: { [x: string]: unknown };
 }
 interface Default {
     type: 'default';
