@@ -67,10 +67,10 @@ export function useFusionClient(resource: string, filterOptions?: Filter[]): use
                 panes: {
                     filters: {
                         expanded: false,
-                        visible: false,
+                        visible: true,
                     },
                     pageNavigation: {
-                        visible: false,
+                        visible: true,
                     },
                 },
             },
