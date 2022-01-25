@@ -1,4 +1,5 @@
 import { updateGlobalClientState } from '../ClientState/ClientState';
+import { AppConfigResult } from '../Types/AppConfig';
 import { ClientRegistry } from '../Types/ClientRegistry';
 import { InternalState } from '../Types/InternalState';
 
@@ -14,4 +15,10 @@ export function registerClientRegistry(registry: ClientRegistry): ClientRegistry
         registry,
     }));
     return registry;
+}
+export function registerAppConfig(appConfig: AppConfigResult): AppConfigResult {
+    updateGlobalClientState(() => ({
+        appConfig,
+    }));
+    return appConfig;
 }
