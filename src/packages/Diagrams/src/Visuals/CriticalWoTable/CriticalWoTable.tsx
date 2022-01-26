@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { WorkOrder } from '../../../../../apps/Construction/mocData/mockData';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { createWoStatusMap, filterWoMap } from './utils';
 import { WoNumbersDisplay } from './components/WoNumbers';
 import { SingleSelect } from '@equinor/eds-core-react';
@@ -49,12 +49,9 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
     const grouped = Object.keys(filtered);
     const groupByKeys = data.length > 0 ? Object.keys(data[0]) : [groupBy];
 
-    const handleChange = useCallback(
-        (groupByKey: keyof T) => {
-            setGroupBy(groupByKey);
-        },
-        [setGroupBy]
-    );
+    const handleChange = (groupByKey: keyof T) => {
+        setGroupBy(groupByKey);
+    };
 
     useEffect(() => {
         if (initialGroupBy) {
