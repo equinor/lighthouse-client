@@ -1,43 +1,32 @@
 import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
-import { PCSStructure } from './Types/searchStructure';
 import { System } from './Types/system';
 
-export const searchSystem = async (
+export async function searchSystems(
     searchString: string,
     procosysClient: HttpClient
-): Promise<TypedSelectOption[]> => {
+): Promise<TypedSelectOption[]> {
     const selectOptions: TypedSelectOption[] = [];
-
-    const search: PCSStructure[] = [
-        {
-            Key: 'LibraryCode',
-            Value: searchString,
-        },
-    ];
-
-    const requestOptions = {
-        method: 'POST',
-        body: JSON.stringify(search),
-    };
-
-    await procosysClient
+    const res: Promise<System[]> = await procosysClient
         .fetch(
-            `https://procosyswebapi.equinor.com/api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105667&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
-            requestOptions
+            'https://procosyswebapi.equinor.com/api/Systems?plantId=PCS%24JOHAN_CASTBERG&projectId=177433&onlyActiveSystems=true&api-version=4.1'
         )
-        .then((response) => response.json())
-        .then((data) => {
-            data.map((x: System) => {
+        .then((x) => x.json());
+
+    try {
+        (await res)
+            .filter((x) => x.Code.includes(searchString))
+            .map((x) =>
                 selectOptions.push({
                     label: `SYS_${x.Code} - ${x.Description}`,
-                    value: x.Code,
+                    value: x.Id,
                     searchValue: x.Code,
                     type: 'system',
                     object: x,
-                });
-            });
-        });
-
-    return selectOptions || [];
-};
+                })
+            );
+    } catch (e) {
+        console.log(e);
+    }
+    return selectOptions;
+}

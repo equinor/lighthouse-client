@@ -1,5 +1,5 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { Icon } from '@equinor/eds-core-react';
+import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { FilterOptions } from '@equinor/filter';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery } from 'react-query';
@@ -124,7 +124,9 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
             }}
         >
             {isLoading ? (
-                <Loading>Loading...</Loading>
+                <Loading>
+                    <CircularProgress value={0} size={48} />
+                </Loading>
             ) : error ? (
                 <Loading>
                     <Icon name="error_outlined" />

@@ -1,29 +1,37 @@
-export interface ScopeChangeRequestFormModel {
-    title: string;
-    description: string;
-    phase: string;
-    origin: string;
-    category: string;
-    guesstimateHours: string;
-    guesstimateDescription: string;
-    TagNumbers: string[];
-    CommissioningPackageNumbers: string[];
-    SystemIds: string[];
+export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
+    tagNumbers: string[];
+    commissioningPackageNumbers: string[];
+    systemIds: number[];
+    areaCodes: string[];
+    disciplineCodes: string[];
     documentNumbers: string[];
+    setAsOpen?: boolean;
     //workflow
+}
+
+export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'None' | 'DCN';
+
+export interface Origin {
+    type: OriginType;
+    id?: string;
 }
 
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
 
-export interface ScopeChangeRequest {
+export interface ScopeChangeBaseModel {
     id: string;
     title: string;
     description: string;
     phase: string;
-    origin: string;
+    origin: OriginType;
     category: string;
     estimatedChangeHours: number;
     actualChangeHours: number;
+    guesstimateHours: string;
+    guesstimateDescription: string;
+}
+
+export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     createdAtUtc: string;
     createdBy: Person;
     modifiedAtUtc: string;
@@ -31,14 +39,9 @@ export interface ScopeChangeRequest {
     state: ScopeChangeRequestState;
     currentWorkflowStep?: WorkflowStep;
     workflowSteps: WorkflowStep[];
-    guesstimateHours: string;
-    guesstimateDescription: string;
     tags: Tag[];
-    TagNumbers: string[];
-    CommissioningPackageNumbers: string[];
     commissioningPackages: CommissioningPackage[];
     systems: System[];
-    SystemIds: System[];
     attachments: Attachment[];
     documents: Document[];
     //workflow
@@ -58,6 +61,7 @@ export interface Attachment {
     id: string;
     modifiedAtUtc: string | null;
     modifiedBy: string | null;
+    fileSize: number;
 }
 
 export interface CommissioningPackage {
@@ -75,7 +79,7 @@ export interface Tag {
 export interface System {
     id: string;
     procosysId: number;
-    procosysNumber: string;
+    procosysCode: string;
 }
 
 export interface Person {
