@@ -32,7 +32,6 @@ export type ProcoSysTypes =
 export const searchPcs = async (
     searchString: string,
     searchItem: ProcoSysTypes
-    // procosysClient: HttpClient
 ): Promise<TypedSelectOption[]> => {
     const clients = httpClient();
     const procosysClient = clients.procosys;

@@ -43,10 +43,7 @@ export const ScopeChangeRequestForm = ({
     closeScrim,
     setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
-        category: 'Hidden carryover',
-        phase: 'IC',
-    });
+    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
 
     const [origin, setOrigin] = useState<Origin | undefined>();
     const [stidDocuments, setStidDocuments] = useState<Document[]>([]);
@@ -83,7 +80,7 @@ export const ScopeChangeRequestForm = ({
         );
         if (scID) {
             attachments.forEach(async (attachment) => {
-                await uploadAttachment(scID, attachment, scopeChange);
+                await uploadAttachment(scID, attachment);
             });
             setIsRedirecting(true);
 

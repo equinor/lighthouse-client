@@ -13,7 +13,7 @@ import {
     ValidationError,
 } from './networkError';
 
-export class AuthenticationError extends BaseError {}
+export class AuthenticationError extends BaseError { }
 type ProgressCallback = (progress: number) => void;
 
 export interface HttpClient {
@@ -142,39 +142,53 @@ export function baseClient(
     async function uploadFile(
         url: string,
         formData: FormData,
-        progressCallback?: ProgressCallback,
-        requestInit?: RequestInit
+        progressCallback?: ProgressCallback
     ) {
-        requestInit = {
-            ...requestInit,
-            method: 'POST',
-            body: formData,
-        };
+        const token = await getAccessToken();
 
-        const response = await _fetch(url, requestInit);
-        const total = Number(response.headers.get('content-length'));
+        let statusCode = 0;
+        try {
+            const requestInit = {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                },
+            };
+            const response: Response = await fetch(url, requestInit);
 
-        if (progressCallback) {
-            try {
-                const reader = response.body?.getReader();
-                let bytesReceived = 0;
+            if (response.status) statusCode = response.status;
 
-                while (bytesReceived !== total) {
-                    const result = await reader?.read();
-                    if (result?.done) {
-                        break;
-                    }
-                    bytesReceived += result ? result.value.byteLength : 0;
-                    progressCallback(bytesReceived / total);
-                }
-
-                return response;
-            } catch {
-                return response;
+            if (response && !response.ok) {
+                initializeError(NetworkError, { httpStatusCode: statusCode, url });
             }
-        } else {
             return response;
+        } catch (Exception) {
+            initializeError(NetworkError, { httpStatusCode: statusCode, url });
+            throw Exception;
         }
+
+        // if (progressCallback) {
+        //     try {
+        //         const reader = response.body?.getReader();
+        //         let bytesReceived = 0;
+
+        //         while (bytesReceived !== total) {
+        //             const result = await reader?.read();
+        //             if (result?.done) {
+        //                 break;
+        //             }
+        //             bytesReceived += result ? result.value.byteLength : 0;
+        //             progressCallback(bytesReceived / total);
+        //         }
+
+        //         return response;
+        //     } catch {
+        //         return response;
+        //     }
+        // } else {
+        //     return response;
+        // }
     }
 
     /**
