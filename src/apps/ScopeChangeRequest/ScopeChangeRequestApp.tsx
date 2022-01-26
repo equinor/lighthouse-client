@@ -177,7 +177,7 @@ export function setup(appApi: ClientApi): void {
                 return 'Inactive';
         }
     };
-    request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'title' });
+    request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'title', fieldSettings: {} });
 
     request.registerAnalyticsOptions(analyticsOptions);
 

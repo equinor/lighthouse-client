@@ -36,7 +36,6 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
     const [selectedCriteria, setSelectedCriteria] = useState<string | undefined>(undefined);
 
     const { internal } = useClientContext();
-    internal.authProvider;
 
     const [userId, setUserId] = useState<string | undefined>();
 
