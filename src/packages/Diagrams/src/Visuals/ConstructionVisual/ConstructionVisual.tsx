@@ -55,11 +55,20 @@ export const chartoptions = (title: string): ChartOptions => ({
             beginAtZero: true,
             position: 'left',
             type: 'linear',
+            title: {
+                display: true,
+                text: 'Bars',
+            },
         },
         acc: {
             type: 'linear',
             display: true,
             position: 'right',
+            title: {
+                display: true,
+                text: 'Lines',
+            },
+
             grid: {
                 display: false,
             },
