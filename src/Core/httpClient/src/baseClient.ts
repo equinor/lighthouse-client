@@ -141,8 +141,8 @@ export function baseClient(
 
     async function uploadFile(
         url: string,
-        formData: FormData,
-        progressCallback?: ProgressCallback
+        formData: FormData
+        // progressCallback?: ProgressCallback
     ) {
         const token = await getAccessToken();
 
