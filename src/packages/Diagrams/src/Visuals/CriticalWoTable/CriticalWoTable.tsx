@@ -31,7 +31,7 @@ type CriticalWoTableProps<T> = {
 export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = WorkOrder>({
     data,
 }: CriticalWoTableProps<T>) => {
-    const woDisc = createWoStatusMap(data, 'disciplineDescription');
+    const woDisc = createWoStatusMap(data, 'facility');
     const filtered = filterWoMap(woDisc);
     const disciplines = Object.keys(filtered);
     return (

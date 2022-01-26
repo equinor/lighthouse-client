@@ -36,13 +36,13 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
         chart1: {
             type: 'horizontalBarChart',
             options: {
-                categoryKey: 'disciplineDescription',
-                nameKey: 'disciplineDescription',
+                categoryKey: 'facility',
+                nameKey: 'facility',
                 onClick: (data, graphData) => {
                     const labelClicked = graphData.globals.labels[graphData.dataPointIndex];
                     const tableData: WorkOrder[] = [];
                     data.forEach((wo) => {
-                        wo.disciplineDescription === labelClicked && tableData.push(wo);
+                        wo.facility === labelClicked && tableData.push(wo);
                     });
 
                     tableData.length > 0 && openSidesheet(SidesheetContent, { data: tableData });
@@ -62,7 +62,7 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
         chart1: {
             type: 'table',
             options: {
-                initialGroupBy: 'disciplineDescription',
+                initialGroupBy: 'facility',
                 columns: cols,
             },
         },
@@ -102,15 +102,16 @@ export function setup(appApi: ClientApi): void {
 
     // Loop Data Test for testing system..
     workPreparation.registerDataSource(async () => {
-        const plantId = 'PCS$JOHAN_CASTBERG';
+        const plantId = 'JCA';
         // const project = 'L.O532C.002';
-        const response = await api
+        const response: WorkOrder[] = await api
             .fetch(
                 `https://fam-synapse-api-dev.azurewebsites.net/v0.1/procosys/completionworkorderswithcutoff/${plantId}`,
-                { method: 'POST' }
+                { method: 'POST', body: JSON.stringify({}) }
             )
             .then((res) => res.json());
         console.log(response);
+        return response;
         // const blah: WorkOrder[] = response.items.flatMap((j) => j);
         // return blah;
         // return JSON.parse(await response.text());
@@ -136,12 +137,12 @@ export function setup(appApi: ClientApi): void {
                     //Find all workorders that have status W01, W02 or W03
 
                     const filter = ['W01', 'W02', 'W03'];
-                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatusCode));
+                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatus));
 
                     // Find all the first filtered WOs that are due in one week or less
 
                     const secondFiltered = firstFiltered.filter(
-                        (wo) => weekDiff(new Date(wo.plannedStartAtDate)).days <= 28
+                        (wo) => weekDiff(new Date(wo.plannedStartupDate)).days <= 28
                     );
 
                     return secondFiltered.length.toString();
@@ -151,7 +152,7 @@ export function setup(appApi: ClientApi): void {
                 status: 'ok',
                 title: 'Job cards in W04',
                 value: () => {
-                    return data.filter((wo) => wo.jobStatusCode === 'W04').length.toString();
+                    return data.filter((wo) => wo.jobStatus === 'W04').length.toString();
                 },
             },
         ];
