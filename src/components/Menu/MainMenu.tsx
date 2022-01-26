@@ -4,7 +4,6 @@ import { isProduction, useClientContext } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
-import { TopItems } from './Components/TopItems/TopItems';
 import { AccordionHeader, AccordionHeaderTitle, AccordionPanel } from './MainMenuExpandedStyles';
 import { MenuItem, MenuItemLink, MenuItemTitleLink } from './MainMenuStyles';
 import {
@@ -75,7 +74,7 @@ export const MainMenu = (): JSX.Element => {
                 </SearchWrapper>
             )}
 
-            <TopItems apps={filteredList} openPopover={openPopover} isExpanded={appsPanelActive} />
+            {/* <TopItems apps={filteredList} openPopover={openPopover} isExpanded={appsPanelActive} /> */}
 
             <Accordion chevronPosition="right">
                 {Object.keys(filteredList).map((key, i) => {
@@ -127,7 +126,7 @@ export const MainMenu = (): JSX.Element => {
 
                     return (
                         <SmallItem key={`item-${key}`}>
-                            <GroupLink to={`${key}`}>
+                            <GroupLink to={'#'}>
                                 <LinkIconWrapper
                                     id="hover-popover-anchor"
                                     ref={(el) => (anchorRef.current[i] = el as HTMLHeadingElement)}
@@ -164,11 +163,9 @@ export const MainMenu = (): JSX.Element => {
                                     placement="right-start"
                                     onMouseLeave={handleClose}
                                 >
-                                    <Menu.Item>
-                                        <MenuItemTitleLink to={`${key}`}>
-                                            <Title> {appGroups[key].name}</Title>
-                                        </MenuItemTitleLink>
-                                    </Menu.Item>
+                                    <MenuItemTitleLink>
+                                        <Title> {appGroups[key].name}</Title>
+                                    </MenuItemTitleLink>
 
                                     {filteredList[key].map((item) => (
                                         <MenuItem
