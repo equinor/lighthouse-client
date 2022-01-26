@@ -1,4 +1,4 @@
-import { interpolateBlues } from 'd3-scale-chromatic';
+import { interpolateCubehelixDefault } from 'd3-scale-chromatic';
 import { DateTime } from 'luxon';
 import { WorkOrder } from '../../../../apps/Construction/mocData/mockData';
 import { interpolateColors } from './colorGenerator';
@@ -112,11 +112,15 @@ export const createSeries = ({
             // }
         });
     });
-    const graphColors = interpolateColors(Object.keys(seriesMap).length + 1, interpolateBlues, {
-        colorStart: 0.2,
-        colorEnd: 1,
-        useEndAsStart: false,
-    });
+    const graphColors = interpolateColors(
+        Object.keys(seriesMap).length + 1,
+        interpolateCubehelixDefault,
+        {
+            colorStart: 0.2,
+            colorEnd: 1,
+            useEndAsStart: false,
+        }
+    );
     const woSeries = Object.values(seriesMap).map((series, index) => {
         const dateKeys = Object.keys(series.data);
         // filter the dates that are too old, sort them
