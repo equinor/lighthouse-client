@@ -199,6 +199,10 @@ export function setup(appApi: ClientApi): void {
     construction.registerFusionPowerBi('jca-installation', {
         title: 'Installation',
         reportURI: 'jca-installation',
+        options: {
+            showFilter: true,
+            enablePageNavigation: true,
+        },
     });
     construction.registerFusionPowerBi('jca-checklist', {
         title: 'Checklists',
