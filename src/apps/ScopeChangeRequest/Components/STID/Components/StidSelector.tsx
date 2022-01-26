@@ -3,7 +3,7 @@ import { Button, Icon, Scrim, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
 import { searchStid } from '../../../Api/Search/STID/searchStid';
-import { useApiClient } from '../../../../../Core/Client/Hooks/useApiClient';
+import { useHttpClient } from '../../../../../Core/Client/Hooks/useApiClient';
 import { Document } from '../../../Api/STID/Types/Document';
 import { getDocumentsByTag } from '../../../Api/STID/getDocumentsByTag';
 import { sort } from '../../SearchableDropdown/sort';
@@ -22,7 +22,7 @@ export interface SubResult {
 }
 
 export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps): JSX.Element => {
-    const { customApi } = useApiClient('b827c278-12de-47a0-b789-c8d11e3b9571/.default');
+    const { customHttpClient } = useHttpClient('b827c278-12de-47a0-b789-c8d11e3b9571/.default');
 
     //controls
     const [isOpen, setIsOpen] = useState(false);
@@ -71,7 +71,7 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
             }
             popResult(x.value);
         } else {
-            const documents = await getDocumentsByTag('JCA', x.value, customApi);
+            const documents = await getDocumentsByTag('JCA', x.value, customHttpClient);
             if (documents.length === 0) {
                 setTagContainsNoDocuments(true);
                 popResult(x.value);
@@ -111,13 +111,13 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
         let tagsResult: TypedSelectOption[] = [];
         let documentsResult: TypedSelectOption[] = [];
         try {
-            tagsResult = await searchStid(inputValue, 'stidtag', customApi);
+            tagsResult = await searchStid(inputValue, 'stidtag');
             setTagsLoading(false);
         } catch (e) {
             setHasErrored(true);
         }
         try {
-            documentsResult = await searchStid(inputValue, 'document', customApi);
+            documentsResult = await searchStid(inputValue, 'document');
             setDocumentsLoading(false);
         } catch (e) {
             setHasErrored(true);

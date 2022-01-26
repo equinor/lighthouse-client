@@ -13,7 +13,6 @@ export async function searchSystems(
         )
         .then((x) => x.json());
 
-    console.log(res);
     try {
         (await res)
             .filter((x) => x.Code.includes(searchString))
@@ -29,6 +28,5 @@ export async function searchSystems(
     } catch (e) {
         console.log(e);
     }
-    console.log(selectOptions);
     return selectOptions;
 }

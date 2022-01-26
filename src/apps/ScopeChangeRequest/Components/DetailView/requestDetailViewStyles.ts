@@ -1,13 +1,12 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-const ActionSelectorHeight = '180px';
+const ActionSelectorHeight = '280px';
 
 export const DetailViewContainer = styled.div`
     display: flex;
     flex-direction: column;
-    height: calc(83vh - ${ActionSelectorHeight});
-
+    height: calc(87vh - ${ActionSelectorHeight});
     overflow: scroll;
 `;
 
@@ -30,9 +29,6 @@ export const RequestActionsContainer = styled.div`
     flex-direction: column;
     position: fixed;
     bottom: 0px;
-    height: 250px;
-    overflow-y: scroll;
-    overflow-x: hidden;
 `;
 
 export const LogMessage = styled.div`

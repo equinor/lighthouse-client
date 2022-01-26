@@ -2,7 +2,7 @@ import { CircularProgress, Icon, Input } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useApiClient } from '../../../../../Core/Client/Hooks/useApiClient';
+import { useHttpClient } from '../../../../../Core/Client/Hooks/useApiClient';
 
 interface SelectPunchProps {
     setOriginId: (originId: string | undefined) => void;
@@ -13,7 +13,7 @@ export const SelectPunch = ({ setOriginId }: SelectPunchProps): JSX.Element => {
     const [isChecking, setIsChecking] = useState<boolean>();
     const [hasChecked, setHasChecked] = useState<boolean>();
 
-    const { procosys } = useApiClient();
+    const { procosys } = useHttpClient();
 
     async function validatePunch(plNumber) {
         console.log('Validating punch');

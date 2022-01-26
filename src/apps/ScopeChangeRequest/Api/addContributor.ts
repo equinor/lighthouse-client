@@ -9,10 +9,11 @@ export const addContributor = async (
     azureOid: string,
     requestId: string,
     stepId: string,
-    client: HttpClient
+    client: HttpClient,
+    contributorTitle: string
 ): Promise<void> => {
     const payload: ContributorBody = {
-        messageToContributor: '',
+        messageToContributor: contributorTitle,
         oid: azureOid,
     };
     const requestOptions = {

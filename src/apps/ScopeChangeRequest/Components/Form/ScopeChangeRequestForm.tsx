@@ -1,11 +1,13 @@
+import { useEffect, useMemo, useState } from 'react';
+import { useMutation } from 'react-query';
+import styled from 'styled-components';
+
 import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useHttpClient } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
-import { useEffect, useMemo, useState } from 'react';
-import { useMutation } from 'react-query';
-import styled from 'styled-components';
+
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
 import { getScopeChangeById, postScopeChange } from '../../Api/';
 import { uploadAttachment } from '../../Api/ScopeChange/attachment';
@@ -20,8 +22,8 @@ import { Field } from '../DetailView/Components/Field';
 import { Upload } from '../Upload';
 import { Origin, OriginType } from './Origin';
 import { PCSLink } from '../SearchableDropdown/PCSLink';
-import { StidSelector } from '../SearchableDropdown/stidSelector';
 import { StidDocument } from '../StidDocument';
+import { StidSelector } from '../STID';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -183,7 +185,7 @@ export const ScopeChangeRequestForm = ({
             >
                 <Inline>
                     <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Documents</div>
-                    <StidSelector appendDocuments={appendDocuments} />
+                    <StidSelector appendDocuments={appendDocuments} documents={stidDocuments} />
                 </Inline>
                 {stidDocuments &&
                     stidDocuments.map((x) => {

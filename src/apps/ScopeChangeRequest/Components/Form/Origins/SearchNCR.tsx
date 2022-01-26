@@ -8,7 +8,6 @@ import {
     applyEDSTheme,
 } from '../../SearchableDropdown/applyEds';
 import { useRef, useState } from 'react';
-import { useApiClient } from '../../../../../Core/Client/Hooks/useApiClient';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
 
 interface PCSLinkProps {
@@ -16,7 +15,6 @@ interface PCSLinkProps {
 }
 
 export const SearchNCR = ({ setOriginId }: PCSLinkProps): JSX.Element => {
-    const { procosys } = useApiClient();
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const debounce = useRef(new Date());
 
@@ -29,7 +27,7 @@ export const SearchNCR = ({ setOriginId }: PCSLinkProps): JSX.Element => {
         const options: TypedSelectOption[] = [];
 
         try {
-            await (await searchPcs(inputValue, 'ncr', procosys)).map((x) => options.push(x));
+            await (await searchPcs(inputValue, 'ncr')).map((x) => options.push(x));
         } catch (e) {
             setApiErrors((prev) => [...prev, 'NCR']);
         }

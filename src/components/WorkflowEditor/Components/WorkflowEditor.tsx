@@ -1,16 +1,10 @@
-import { Button, Icon, SingleSelect, TextField } from '@equinor/eds-core-react';
+import { Icon, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { VisualEditor } from '@equinor/VisualEditor';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Field } from '../../../apps/ScopeChangeRequest/Components/DetailView/Components/Field';
-import { useApiClient } from '../../../Core/Client/Hooks/useApiClient';
+import { useHttpClient } from '../../../Core/Client/Hooks';
 import { WorkflowEditorOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
-import { TextInput } from '../../../packages/Form/src/Components/TextInput';
-import { createTemplate } from '../API/createTemplate';
-import { publishTemplate } from '../API/publishTemplate';
-import { saveTemplate } from '../API/saveTemplate';
-import { Step } from '../Types/Workflow';
 
 interface Workflow {
     id: string;
@@ -35,7 +29,7 @@ export const WorkflowEditor = ({
     const [workflowTemplates, setWorkflowTemplates] = useState<WorkflowTemplate[]>();
     const [selectedWorkflowTemplate, setSelectedWorkflowTemplate] = useState<WorkflowTemplate>();
 
-    const { scopeChange } = useApiClient();
+    const { scopeChange } = useHttpClient();
 
     const fetchWorkflow = async () => {
         const workflows = await scopeChange

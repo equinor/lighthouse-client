@@ -21,6 +21,7 @@ import Select, { SingleValue } from 'react-select';
 import { applyEDSTheme } from '../SearchableDropdown/applyEds';
 import { useClientContext } from '@equinor/portal-client';
 import { useHttpClient } from '@equinor/portal-client';
+import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -30,7 +31,7 @@ interface RequestDetailViewProps {
 
 export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps): JSX.Element => {
     const [comment, setComment] = useState<string | undefined>(undefined);
-    const { scopeChange } = useHttpClient();
+    const { scopeChange: scopeChangeApi } = useHttpClient();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [selectedCriteria, setSelectedCriteria] = useState<string | undefined>(undefined);
 
@@ -64,7 +65,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
             setAsOpen: true,
         };
 
-        await patchScopeChange(payload, scopeChange);
+        await patchScopeChange(payload, scopeChangeApi);
         await refetch();
         setIsLoading(false);
     };
@@ -120,15 +121,41 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
         }
     }, [request]);
 
-    const onSignStep = () => {
+    const onSignStep = async () => {
         if (selectedCriteria && request.currentWorkflowStep) {
-            patchWorkflowStep(
-                request.id,
-                request.currentWorkflowStep.id,
-                selectedCriteria,
-                scopeChange,
-                comment
-            ).then(() => refetch());
+            const currentStepId = request.currentWorkflowStep.id;
+            const unsignedCriterias = request.currentWorkflowStep.criterias.filter(
+                (x) => x.signedAtUtc === null
+            );
+
+            if (
+                request.currentWorkflowStep.contributors &&
+                request.currentWorkflowStep.contributors.some((x) => x.contribution === null) &&
+                unsignedCriterias.length === 1
+            ) {
+                spawnConfirmationDialog(
+                    'Not all contributors have responded yet, are you sure you want to sign this step?',
+                    'Warning',
+                    async () =>
+                        await patchWorkflowStep(
+                            request.id,
+                            currentStepId,
+                            selectedCriteria,
+                            scopeChangeApi,
+                            comment
+                        )
+                );
+            } else {
+                await patchWorkflowStep(
+                    request.id,
+                    currentStepId,
+                    selectedCriteria,
+                    scopeChangeApi,
+                    comment
+                );
+            }
+
+            await refetch();
             setComment('');
         }
     };
@@ -142,7 +169,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                 request.id,
                 request.currentWorkflowStep?.id,
                 contributionId,
-                scopeChange,
+                scopeChangeApi,
                 comment
             );
             setComment('');
@@ -154,7 +181,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
     }, [internal]);
 
     return (
-        <div>
+        <Wrapper>
             <DetailViewContainer>
                 <Field
                     label={'Title'}
@@ -287,7 +314,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                             </>
                         )}
                         {request.currentWorkflowStep?.contributors.some(
-                            (x) => x.person.oid === userId
+                            (x) => x.person.oid === userId && x.contribution === null
                         ) && <Button onClick={sendContribution}>Contribute</Button>}
                         {request.state === 'Open' && (
                             <>
@@ -332,13 +359,18 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                     </ButtonContainer>
                 </RequestActionsContainer>
             )}
-        </div>
+        </Wrapper>
     );
 };
 
 const Inline = styled.div`
     display: flex;
     align-items: flex-end;
+`;
+
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 
 /**
