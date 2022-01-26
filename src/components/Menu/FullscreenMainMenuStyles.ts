@@ -57,23 +57,6 @@ interface MenuProps {
     disabled?: boolean;
 }
 
-// export const MenuItemText = styled.div`
-//     color: ${({ disabled }: MenuProps) => (disabled ? '#007079' : '#565656')};
-//     text-decoration: none;
-//     display: block;
-//     font-size: 16px;
-//     font-weight: 500;
-//     line-height: 1.5em;
-//     padding-top: 1rem;
-//     cursor: ${({ disabled }: MenuProps) => (disabled ? 'default' : 'pointer')};
-
-//     :hover {
-//         opacity: ${({ disabled }: MenuProps) => (disabled ? 1.0 : 0.5)};
-//         background-color: ${({ disabled }: MenuProps) =>
-//             disabled ? 'none' : `${tokens.colors.ui.background__light.rgba}`};
-//     }
-// `;
-
 export const FullscreenMenuItemText = styled.div`
     color: ${({ disabled }: MenuProps) => (disabled ? '#030303' : '#007079')};
     text-decoration: none;
@@ -184,16 +167,12 @@ export const HeaderLink = styled(ReactLink)`
     min-height: 0px;
     background-color: transparent;
     text-decoration: none;
+    align-items: flex-end;
 
-    p {
-        padding-left: 1rem;
-    }
     svg {
-        padding: 1rem;
+        padding: 0.5rem;
         padding-left: 0px;
-    }
-    :hover {
-        opacity: 0.5;
+        cursor: default;
     }
 `;
 
@@ -218,4 +197,6 @@ export const FullscreenMenuGroupHeaderText = styled.h3`
     text-decoration: none;
     cursor: pointer;
     color: #030303;
+    margin-bottom: 0.5rem;
+    cursor: default;
 `;
