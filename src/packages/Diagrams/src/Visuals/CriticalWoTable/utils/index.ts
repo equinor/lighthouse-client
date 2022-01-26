@@ -23,15 +23,15 @@ export const createWoStatusMap = <T extends Record<string, any>>(
                 ? [
                       ...woDiscMap[wo[groupByKey]],
                       {
-                          plannedStartAtDate: wo.plannedStartAtDate,
-                          status: wo.jobStatusCode,
+                          plannedStartupDate: wo.plannedStartupDate,
+                          status: wo.jobStatus,
                           workorder: wo,
                       },
                   ]
                 : [
                       {
-                          plannedStartAtDate: wo.plannedStartAtDate,
-                          status: wo.jobStatusCode,
+                          plannedStartupDate: wo.plannedStartupDate,
+                          status: wo.jobStatus,
                           workorder: wo,
                       },
                   ];
@@ -64,7 +64,7 @@ export function filterWoMap<T>(woMap: WoStatusMap<T>): WoMapCount<T> {
                     workorder: [],
                 },
             };
-            const plannedDateDiff = weekDiff(new Date(a.plannedStartAtDate)).days;
+            const plannedDateDiff = weekDiff(new Date(a.plannedStartupDate)).days;
 
             if (plannedDateDiff <= 7) {
                 filtered[key].one.count = filtered[key].one.count + 1;

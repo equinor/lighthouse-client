@@ -1,6 +1,6 @@
 export type WoStatusMap<T> = Record<
     string,
-    { status: string; plannedStartAtDate: string; workorder: T }[]
+    { status: string; plannedStartupDate: string; workorder: T }[]
 >;
 export type WeekCount<T> = {
     count: number;
