@@ -1,6 +1,6 @@
 import { BarChartVisual, LineChartVisual, TableVisual, TimeChart } from '@equinor/Diagrams';
 import { ConstructionVisual } from '..';
-import { Options } from '../Types';
+import { CustomVisualArgs, Options } from '../Types';
 import { HorizontalBarVisual } from '../Visuals/HorizontalBarVisual/HorizontalBarVisual';
 import { ChartsWrapper, Circular, Loading } from './GetChartsStyles';
 
@@ -9,7 +9,7 @@ export function getChart<T>(
     config: Options<T> = { type: 'default' },
     isLoading?: boolean
 ): JSX.Element {
-    let Component: React.FC<{ data: T[] }> = () => <></>;
+    let Component: React.FC<CustomVisualArgs<T>> = () => <></>;
     if (config.type === 'customVisual') {
         Component = config.options.component;
     }
@@ -99,7 +99,7 @@ export function getChart<T>(
             return (
                 <ChartsWrapper>
                     {!isLoading ? (
-                        <Component data={data} />
+                        <Component data={data} {...config.options.componentProps} />
                     ) : (
                         <Loading>
                             <Circular />

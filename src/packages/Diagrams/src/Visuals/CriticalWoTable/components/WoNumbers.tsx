@@ -38,13 +38,13 @@ const WoNumbers = styled.div`
 `;
 type WoNumbersDisplayProps<T> = {
     filtered: WoMapCount<T>;
-    discipline: string;
+    groupedKey: string;
     keysOfFiltered: string[];
 };
 
 export const WoNumbersDisplay = <T extends unknown>({
     filtered,
-    discipline,
+    groupedKey,
     keysOfFiltered,
 }: WoNumbersDisplayProps<T>) => {
     const onClick = useCallback(
@@ -55,7 +55,7 @@ export const WoNumbersDisplay = <T extends unknown>({
     );
     return (
         <>
-            {Object.values(filtered[discipline]).map((item, index) => {
+            {Object.values(filtered[groupedKey]).map((item, index) => {
                 switch (keysOfFiltered[index]) {
                     case 'one':
                         return (
