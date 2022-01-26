@@ -1,8 +1,13 @@
+import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
-import AutoSizer from 'react-virtualized-auto-sizer';
+import styled from 'styled-components';
+import { GroupingSelectors } from './Components';
 import { useHorizontalBarChart } from './Hooks/useHorizontalBarChart';
 import { HorizontalBarChartOptions } from './Types/barVisualOptions';
-
+const Title = styled.div`
+    font-size: 16px;
+    font-weight: bold;
+`;
 interface HorizontalBarVisual<T> {
     data: T[];
     options: HorizontalBarChartOptions<T>;
@@ -45,19 +50,30 @@ interface HorizontalBarVisual<T> {
  * ```
  */
 export function HorizontalBarVisual<T>({ data, options }: HorizontalBarVisual<T>): JSX.Element {
-    const { barChartOptions, series } = useHorizontalBarChart(data, options);
+    const [groupByKey, setGroupByKey] = useState<keyof T>(options.categoryKey);
+    const [nameByKey, setNameByKey] = useState<keyof T>(options.nameKey);
+    const { barChartOptions, series } = useHorizontalBarChart(data, options, groupByKey, nameByKey);
+    const dataKeys = data.length > 0 ? Object.keys(data[0]) : [''];
+
+    const handleChange = (selector: 'groupBy' | 'series', selectedItem: keyof T) => {
+        selector === 'groupBy' ? setGroupByKey(selectedItem) : setNameByKey(selectedItem);
+    };
+    useEffect(() => {
+        setGroupByKey(options.categoryKey);
+        setNameByKey(options.nameKey);
+    }, [options.categoryKey, options.nameKey]);
 
     return (
-        <AutoSizer>
-            {({ width }) => (
-                <Chart
-                    options={barChartOptions}
-                    series={series}
-                    type="bar"
-                    height={`${300}px`}
-                    width={`${width}px`}
-                />
-            )}
-        </AutoSizer>
+        <div>
+            <Title>{options?.title}</Title>
+            <GroupingSelectors<T>
+                enableGroupBy={options.enableGroupBy}
+                options={dataKeys}
+                groupByKey={groupByKey}
+                seriesKey={nameByKey}
+                handleChange={handleChange}
+            />
+            <Chart options={barChartOptions} series={series} type="bar" height={`${300}px`} />
+        </div>
     );
 }
