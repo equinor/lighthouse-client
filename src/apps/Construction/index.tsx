@@ -52,6 +52,7 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
             type: 'customVisual',
             options: {
                 component: CriticalWoTable,
+                componentProps: { enableGrouping: true, initialGroupBy: 'disciplineDescription' },
             },
         },
     },
