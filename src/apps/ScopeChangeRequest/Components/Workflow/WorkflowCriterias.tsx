@@ -1,4 +1,5 @@
 import { Tooltip } from '@equinor/eds-core-react';
+import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import { Criteria, WorkflowStep } from '../../Types/scopeChangeRequest';
 import { WorkflowIcon } from './WorkflowIcon';
@@ -15,10 +16,8 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
         <>
             {step.criterias.map((criteria) => {
                 const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc));
-
-                const signedDate = date.toLocaleDateString('en-GB');
-                const signedTime = `${date.getHours()}:${date.getMinutes()}`;
-
+                const { day, month, year, hour, minute } = DateTime.fromJSDate(date).toObject();
+                const paddedMinutes = minute.toString().length === 1 ? `0${minute}` : minute;
                 return (
                     <>
                         <WorkflowStepViewContainer>
@@ -31,6 +30,7 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
                                     }
                                     number={step.order + 1}
                                 />
+                                <Divider />
                                 <WorkflowText>
                                     <Tooltip
                                         title={
@@ -44,7 +44,7 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
                                     {criteria.signedAtUtc ? (
                                         <div
                                             style={{ fontSize: '14px' }}
-                                        >{`${signedDate} ${signedTime} - ${criteria.signedBy.firstName} ${criteria.signedBy.lastName} `}</div>
+                                        >{`${day}/${month}/${year} ${hour}:${paddedMinutes} - ${criteria.signedBy.firstName} ${criteria.signedBy.lastName} `}</div>
                                     ) : (
                                         <div style={{ fontSize: '14px' }}>{criteria.value}</div>
                                     )}
@@ -61,11 +61,11 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
                         </WorkflowStepViewContainer>
                         {!lastStep && (
                             <>
-                                <Spacer />
+                                {/* <Spacer />
                                 <div style={{ padding: '1.05px' }}>
                                     <WorkflowLine colored={step.isCompleted} />
                                 </div>
-                                <Spacer />
+                                <Spacer /> */}
                             </>
                         )}
                     </>
@@ -107,11 +107,17 @@ const Spacer = styled.div`
     width: 7px;
 `;
 
+const Divider = styled.div`
+    height: 9px;
+    width: 0.5rem;
+`;
+
 const WorkflowStepViewContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 2px;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
     width: -webkit-fill-available;
 `;
 

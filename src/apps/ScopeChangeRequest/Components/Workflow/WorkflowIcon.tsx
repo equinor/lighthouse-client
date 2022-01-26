@@ -38,10 +38,11 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
         case 'Failed':
             return (
                 <Icon
-                    name="close_circle_outlined"
+                    name="remove_outlined"
                     height={'28.8'}
                     width={'28.8'}
-                    color={tokens.colors.infographic.primary__energy_red_100.hex}
+                    color="grey"
+                // color={tokens.colors.infographic.primary__energy_red_100.hex}
                 />
             );
 

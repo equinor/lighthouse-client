@@ -20,7 +20,7 @@ export const Attachments = ({ attachments, requestId }: AttachmentProps): JSX.El
                             >
                                 <span>{x.fileName}</span>
                             </Link>
-                            <span>{x.fileSize}MB</span>
+                            <span>{Math.round(x.fileSize / 1000 ** 2)}MB</span>
                         </Wrapper>
                     );
                 })}
