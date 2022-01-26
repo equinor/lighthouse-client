@@ -16,6 +16,7 @@ export function registerClientRegistry(registry: ClientRegistry): ClientRegistry
     }));
     return registry;
 }
+
 export function registerAppConfig(appConfig: AppConfigResult): AppConfigResult {
     updateGlobalClientState(() => ({
         appConfig,

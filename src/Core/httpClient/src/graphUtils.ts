@@ -4,10 +4,10 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import { User } from '@microsoft/microsoft-graph-types';
 import { graphApiRequest, graphConfig } from './graphConfig';
 
-export type GraphClient = ReturnType<typeof useGraphClient>;
+export type GraphClient = ReturnType<typeof graphClient>;
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function useGraphClient(authProvider: AuthenticationProvider) {
+export function graphClient(authProvider: AuthenticationProvider) {
     /**
      * Graph method for fetching a users profile
      * Method authenticates user based on EchoAuthProvider user information

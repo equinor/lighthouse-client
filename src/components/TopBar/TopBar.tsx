@@ -1,8 +1,7 @@
 import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useGraphClient } from '@equinor/http-client';
 import { useClientContext } from '@equinor/portal-client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import Icon from '../Icon/Icon';
 import Logo from './Logo/Logo';
@@ -29,15 +28,10 @@ const TopBarWrapper = styled(TopBar)`
 `;
 
 const ClientTopBar = (): JSX.Element => {
-    const { toggleFullscreenMenu, internal } = useClientContext();
-    const graph = useGraphClient(internal.authProvider);
-
-    const [image, setImage] = useState<string | undefined>(undefined);
-
-    useEffect(() => {
-        if (image) return;
-        graph.graphGetProfilePicture().then((img) => setImage(img));
-    }, [graph, image]);
+    const {
+        toggleFullscreenMenu,
+        settings: { userImageUrl },
+    } = useClientContext();
 
     return (
         <TopBarWrapper>
@@ -60,7 +54,11 @@ const ClientTopBar = (): JSX.Element => {
             </TopBar.CustomContent>
             <TopBar.Actions>
                 <Icons>
-                    {image && <Avatar alt="User avatar" src={image} />}
+                    {!userImageUrl ? (
+                        <Icon name="account_circle" />
+                    ) : (
+                        <Avatar alt="User avatar" src={userImageUrl} />
+                    )}
                     {/* <Icon name="notifications" /> */}
                 </Icons>
             </TopBar.Actions>

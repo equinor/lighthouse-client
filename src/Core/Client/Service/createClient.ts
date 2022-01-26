@@ -12,6 +12,7 @@ import { fetchConfig } from './appConfig';
 import { appsProvider } from './appsProvider';
 import { setupApps } from './setupApps';
 import { setupAuthProvider } from './setupAuthProvider';
+import { setupUserData } from './setupUserData';
 
 interface ClientOptions {
     getApps(): AppManifest[];
@@ -27,6 +28,7 @@ export interface Client {
 export async function createClient(clientOptions: ClientOptions): Promise<Client> {
     const appConfig = registerAppConfig(await fetchConfig());
     const { authProvider } = registerInternalState(setupAuthProvider(appConfig.settings));
+    setupUserData(authProvider);
     const registry = registerClientRegistry(
         setupApps(
             appsProvider(clientOptions.getApps, clientOptions.getAppGroups, false),
