@@ -1,3 +1,4 @@
+import { User } from '@microsoft/microsoft-graph-types';
 import { updateGlobalClientState } from '../ClientState/ClientState';
 import { ClientSettings } from '../Types/ClientSettings';
 import { readClientSettings } from './Readers';
@@ -34,4 +35,12 @@ export function setEnv(isProduction: boolean, clientEnv: string): void {
 
 export function isProduction(): boolean {
     return readClientSettings().isProduction;
+}
+
+export function setUserImageUrl(url?: string): void {
+    internalUpdateSettings({ userImageUrl: url });
+}
+
+export function setUser(user?: User): void {
+    user && internalUpdateSettings({ user });
 }
