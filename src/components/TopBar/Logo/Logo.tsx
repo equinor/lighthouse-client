@@ -6,6 +6,7 @@ const LogoWrapper = styled.div`
     display: flex;
     align-content: center;
     align-items: center;
+    cursor: pointer;
 `;
 
 const LogoTitle = styled.p`
