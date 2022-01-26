@@ -2,9 +2,18 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     tagNumbers: string[];
     commissioningPackageNumbers: string[];
     systemIds: number[];
+    areaCodes: string[];
+    disciplineCodes: string[];
     documentNumbers: string[];
     setAsOpen?: boolean;
     //workflow
+}
+
+export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'None' | 'DCN';
+
+export interface Origin {
+    type: OriginType;
+    id?: string;
 }
 
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
@@ -14,7 +23,7 @@ export interface ScopeChangeBaseModel {
     title: string;
     description: string;
     phase: string;
-    origin: string;
+    origin: Origin;
     category: string;
     estimatedChangeHours: number;
     actualChangeHours: number;

@@ -60,20 +60,26 @@ export const ScopeChangeRequestForm = ({
     const { scopeChange } = useHttpClient();
 
     const createScopeChangeMutation = async ({ draft }: CreateScopeChangeParams) => {
+        if (!origin?.type) return;
         const tags = filterElementsByType(relatedObjects, 'tag');
         const systems = filterElementsByType(relatedObjects, 'system');
         const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
-        // const areas = filterElementsByType(relatedObjects, 'area');
-        // const disciplines = filterElementsByType(relatedObjects, 'discipline');
+        const areas = filterElementsByType(relatedObjects, 'area');
+        const disciplines = filterElementsByType(relatedObjects, 'discipline');
 
         const scID = await postScopeChange(
             {
                 ...formData.data,
-                origin: origin?.type ?? '',
+                origin: {
+                    type: origin?.type,
+                    id: origin?.id,
+                },
                 tagNumbers: tags?.map((x) => x.value) || [],
                 systemIds: systems?.map((x) => Number(x.value)) || [],
                 commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
                 documentNumbers: stidDocuments.map((x) => x.docNo) || [],
+                areaCodes: areas.map((x) => x.value) || [],
+                disciplineCodes: disciplines.map((x) => x.value) || [],
             },
             draft,
             scopeChange
