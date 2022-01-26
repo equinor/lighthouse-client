@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { CommissioningPackage } from '../../../Types/scopeChangeRequest';
 
@@ -28,9 +29,9 @@ export const ProcosSysCommPkgs = ({ commPkgs }: ProcosSysCommPkgsProps): JSX.Ele
 
 const Link = styled.a`
     font-size: 16px;
+    text-decoration: none;
+    color: ${tokens.colors.interactive.primary__resting.hex};
 `;
-// text-decoration: none;
-// color: ${tokens.colors.interactive.primary__resting.hex};
 
 const CommPkgWrapper = styled.div`
     display: flex;

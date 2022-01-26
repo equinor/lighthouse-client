@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Button, Icon, Tooltip } from '@equinor/eds-core-react';
+import { DotProgress, Icon, Tooltip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowLine } from './WorkflowLine';
 import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
@@ -13,8 +13,6 @@ import {
     ScopeChangeRequest,
     WorkflowStep,
 } from '../../Types/scopeChangeRequest';
-import { patchWorkflowStep } from '../../Api';
-import { postContribution } from '../../Api/ScopeChange/postContribution';
 
 interface WorkflowProps {
     request: ScopeChangeRequest;
@@ -22,10 +20,9 @@ interface WorkflowProps {
 }
 export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
     const [contributor, setContributor] = useState<{ value: string; label: string } | undefined>();
-
     const { scopeChange } = useApiClient();
 
-    const { mutateAsync, isLoading } = useMutation(createContributor);
+    const { mutateAsync, isLoading, isError } = useMutation(createContributor);
 
     async function createContributor() {
         if (!contributor?.value || !request.currentWorkflowStep?.id) return;
@@ -37,29 +34,29 @@ export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
         );
     }
 
-    async function onSignStep(criteria: string) {
-        if (request.currentWorkflowStep?.id) {
-            await patchWorkflowStep(
-                request.id,
-                request.currentWorkflowStep.id,
-                criteria,
-                scopeChange
-            );
-            refetch && (await refetch());
-        }
-    }
+    // async function onSignStep(criteria: string) {
+    //     if (request.currentWorkflowStep?.id) {
+    //         await patchWorkflowStep(
+    //             request.id,
+    //             request.currentWorkflowStep.id,
+    //             criteria,
+    //             scopeChange
+    //         );
+    //         refetch && (await refetch());
+    //     }
+    // }
 
-    async function sendContribution(contributionId: string) {
-        if (request.currentWorkflowStep && contributionId) {
-            await postContribution(
-                request.id,
-                request.currentWorkflowStep?.id,
-                contributionId,
-                scopeChange
-            );
-            refetch && (await refetch());
-        }
-    }
+    // async function sendContribution(contributionId: string) {
+    //     if (request.currentWorkflowStep && contributionId) {
+    //         await postContribution(
+    //             request.id,
+    //             request.currentWorkflowStep?.id,
+    //             contributionId,
+    //             scopeChange
+    //         );
+    //         refetch && (await refetch());
+    //     }
+    // }
 
     useEffect(() => {
         if (!contributor?.value) return;
@@ -80,7 +77,19 @@ export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
                 <>
                     <div style={{ fontSize: '12px' }}>Add contributors</div>
                     <PCSPersonSearch person={contributor} setPerson={setContributor} />
-                    <div style={{ height: '30px' }}>{isLoading && <span>Loading...</span>}</div>
+                    <div style={{ height: '30px' }}>
+                        {isLoading && <DotProgress color="primary" size={32} />}
+                        {isError && (
+                            <div
+                                style={{
+                                    fontSize: '14px',
+                                    color: `${tokens.colors.infographic.primary__energy_red_100.hex}`,
+                                }}
+                            >
+                                Failed to add contributor
+                            </div>
+                        )}
+                    </div>
                 </>
             )}
 
@@ -89,6 +98,11 @@ export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
                 return (
                     <WorkflowStepContainer key={index}>
                         {x.criterias.map((criteria) => {
+                            const date = new Date(criteria.signedAtUtc);
+
+                            const signedDate = date.toLocaleDateString('en-GB');
+                            const signedTime = `${date.getHours()}:${date.getMinutes()}`;
+
                             return (
                                 <>
                                     <WorkflowStepViewContainer>
@@ -101,15 +115,26 @@ export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
                                                 }
                                                 number={x.order + 1}
                                             />
-                                            <Tooltip
-                                                title={
-                                                    !x.isCompleted
-                                                        ? `Signature from ${criteria.value} required.`
-                                                        : `Signed by ${criteria.signedBy.firstName} ${criteria.signedBy.lastName}`
-                                                }
-                                            >
-                                                <span>{x.name}</span>
-                                            </Tooltip>
+                                            <WorkflowText>
+                                                <Tooltip
+                                                    title={
+                                                        !x.isCompleted
+                                                            ? `Signature from ${criteria.value} required.`
+                                                            : `Signed by ${criteria.signedBy.firstName} ${criteria.signedBy.lastName}`
+                                                    }
+                                                >
+                                                    <span>{x.name}</span>
+                                                </Tooltip>
+                                                {criteria.signedAtUtc ? (
+                                                    <div
+                                                        style={{ fontSize: '14px' }}
+                                                    >{`${signedDate} ${signedTime} - ${criteria.signedBy.firstName} ${criteria.signedBy.lastName} `}</div>
+                                                ) : (
+                                                    <div style={{ fontSize: '14px' }}>
+                                                        {criteria.value}
+                                                    </div>
+                                                )}
+                                            </WorkflowText>
                                         </Inline>
                                         {/* {x.isCurrent && !criteria.signedState && (
                                             <Button
@@ -142,11 +167,16 @@ export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
                                                 status={contributorStatus(y, x.isCurrent)}
                                                 number={'#'}
                                             />
-                                            <Tooltip
-                                                title={`${y.person.firstName} ${y.person.lastName}`}
-                                            >
-                                                <div>Contribution</div>
-                                            </Tooltip>
+                                            <WorkflowText>
+                                                <Tooltip
+                                                    title={`${y.person.firstName} ${y.person.lastName}`}
+                                                >
+                                                    <div>Contributor</div>
+                                                </Tooltip>
+                                                <div style={{ fontSize: '14px' }}>
+                                                    {y.person.firstName} {y.person.lastName}
+                                                </div>
+                                            </WorkflowText>
                                         </Inline>
                                         {/* {!y.contribution && x.isCurrent && (
                                             <Button
@@ -176,6 +206,12 @@ const ContributorContainer = styled.div`
 `;
 
 const WorkflowStepContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+`;
+
+const WorkflowText = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;

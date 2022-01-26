@@ -1,10 +1,10 @@
-import { Button, CircularProgress, SingleSelect, TextField } from '@equinor/eds-core-react';
+import { Button, CircularProgress, TextField } from '@equinor/eds-core-react';
 import { SectionRow } from '../../Styles/Section';
 import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../Types/scopeChangeRequest';
 import { Workflow } from '../Workflow/Workflow';
 import { patchWorkflowStep } from '../../Api/patchWorkflowStep';
 import { Field } from './Components/Field';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { patchScopeChange } from '../../Api';
 import { postContribution } from '../../Api/ScopeChange/postContribution';
@@ -20,7 +20,8 @@ import {
 } from './requestDetailViewStyles';
 import styled from 'styled-components';
 import Select, { SingleValue } from 'react-select';
-import { applyEdsStyles, applyEDSTheme } from '../SearchableDropdown/applyEds';
+import { applyEDSTheme } from '../SearchableDropdown/applyEds';
+import { useClientContext } from '../../../../Core/Client/ClientContext/clientContext';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -33,6 +34,9 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
     const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [selectedCriteria, setSelectedCriteria] = useState<string | undefined>(undefined);
+
+    const { authProvider } = useClientContext();
+    const [userId, setUserId] = useState<string | undefined>();
 
     const onInitiate = async () => {
         setIsLoading(true);
@@ -129,7 +133,9 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
     };
 
     const sendContribution = async () => {
-        const contributionId = request.currentWorkflowStep?.contributors.find((x) => x.id)?.id;
+        const contributionId = request.currentWorkflowStep?.contributors.find(
+            (x) => x.person.oid === userId
+        )?.id;
         if (request.currentWorkflowStep && contributionId) {
             await postContribution(
                 request.id,
@@ -141,6 +147,10 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
             setComment('');
         }
     };
+
+    useEffect(() => {
+        setUserId(authProvider.getCurrentUser()?.localAccountId);
+    }, [authProvider]);
 
     return (
         <div>
@@ -275,9 +285,9 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                                 </Button>
                             </>
                         )}
-                        {request.currentWorkflowStep?.contributors.some((x) => x.id) && (
-                            <Button onClick={sendContribution}>Contribute</Button>
-                        )}
+                        {request.currentWorkflowStep?.contributors.some(
+                            (x) => x.person.oid === userId
+                        ) && <Button onClick={sendContribution}>Contribute</Button>}
                         {request.state === 'Open' && (
                             <>
                                 <span>

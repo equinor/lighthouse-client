@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { System } from '../../../Types/scopeChangeRequest';
 
@@ -27,9 +28,9 @@ export const ProcosysSystem = ({ systems: systems }: ProcosysSystemProps): JSX.E
 
 const Link = styled.a`
     font-size: 16px;
+    text-decoration: none;
+    color: ${tokens.colors.interactive.primary__resting.hex};
 `;
-// text-decoration: none;
-// color: ${tokens.colors.interactive.primary__resting.hex};
 
 const SystemWrapper = styled.div`
     display: flex;
