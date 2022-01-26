@@ -64,7 +64,7 @@ export function HorizontalBarVisual<T>({ data, options }: HorizontalBarVisual<T>
     }, [options.categoryKey, options.nameKey]);
 
     return (
-        <div>
+        <div style={{ paddingBottom: '1em' }}>
             <Title>{options?.title}</Title>
             <GroupingSelectors<T>
                 enableGroupBy={options.enableGroupBy}
