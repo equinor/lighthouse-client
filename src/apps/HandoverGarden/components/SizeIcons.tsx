@@ -1,46 +1,19 @@
-import styled from 'styled-components';
 import { getTextColor, Status } from '../utility/handoverItemMapping';
-import { getLargeSizeIcon, getMediumSizeIcon, getSmallSizeIcon } from '../utility/icons';
 
 type SizeIconsProps = {
     size: string;
     status: Status;
 };
+const lines = [
+    <rect key="1" x="3" y="12" width="2" height="8" rx="1" transform="rotate(-90 3 12)" />,
+    <rect key="2" x="3" y="7" width="2" height="8" rx="1" transform="rotate(-90 3 7)" />,
+    <rect key="3" x="3" y="2" width="2" height="8" rx="1" transform="rotate(-90 3 2)" />,
+];
 
-export const SizeIcons = ({ size, status }: SizeIconsProps): JSX.Element => {
-    const iconSvg: string =
-        size === 'small'
-            ? getSmallSizeIcon(getTextColor(status))
-            : size === 'medium'
-            ? getMediumSizeIcon(getTextColor(status))
-            : getLargeSizeIcon(getTextColor(status));
-    return (
-        <object
-            style={{ width: '12px', height: '14px' }}
-            type="image/svg+xml"
-            data={'data:image/svg+xml;charset=utf8,' + iconSvg}
-        />
-    );
-};
+const lineCount = (size: string): number => (size === 'small' ? 1 : size === 'medium' ? 2 : 3);
 
-const PackageSize = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 10px;
-    height: 100%;
-`;
-
-const Line = styled.div<{ color: string }>`
-    background-color: ${(props) => props.color};
-    width: 100%;
-    height: 2px;
-    margin: 1px;
-`;
-
-export const SizeIconsHtml = ({ size, status }: SizeIconsProps): JSX.Element => {
-    const lineCount = size === 'small' ? 1 : size === 'medium' ? 2 : 3;
-    const color = getTextColor(status);
-    const lines = new Array<JSX.Element>(lineCount).fill(<Line color={color} />);
-    return <PackageSize>{lines.map((Line) => Line)}</PackageSize>;
-};
+export const SizeIcons = ({ size, status }: SizeIconsProps): JSX.Element => (
+    <svg width="14" height="12" viewBox="0 0 14 12" xmlns="http://www.w3.org/2000/svg">
+        <g fill={getTextColor(status)}>{lines.slice(0, lineCount(size)).map((line) => line)}</g>
+    </svg>
+);

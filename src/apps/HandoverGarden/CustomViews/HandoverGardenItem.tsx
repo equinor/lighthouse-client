@@ -2,23 +2,39 @@ import { useMemo } from 'react';
 import styled from 'styled-components';
 import { Item } from '../../../components/ParkView/Styles/item';
 import { HandoverPackage } from '../models/HandoverPackage';
-import { getStatus, getTextColor } from '../utility/handoverItemMapping';
+import { getDotsColor, getStatus, getTextColor } from '../utility/handoverItemMapping';
 import { CustomItemView } from '../../../components/ParkView/Models/gardenOptions';
 import { createProgressGradient } from '../utility/mcProgress';
-import { SizeIconsHtml } from '../components/SizeIcons';
+import { SizeIcons } from '../components/SizeIcons';
+import { StatusCircle } from '../components/StatusCircle';
+import { FlagIcon } from '../components/FlagIcon';
+import { WarningIcon } from '../components/WarningIcon';
 
 type HandoverItemProps = { backgroundColor: string; textColor: string };
 
 const HandoverItem = styled(Item)<HandoverItemProps>`
     display: flex;
-
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
     width: 100%;
     min-width: 150px;
     box-sizing: border-box;
     white-space: nowrap;
-    justify-content: space-evenly;
+    justify-content: space-between;
+`;
+
+const MidSection = styled.div<{ expanded: boolean }>`
+    display: flex;
+    justify-content: ${(props) => (props.expanded ? 'flex-start' : 'center')};
+    flex: 1;
+`;
+
+const Icons = styled.div`
+    display: flex;
+`;
+
+const Title = styled.div`
+    padding: 0px 8px;
 `;
 
 const HandoverExpanded = styled.div`
@@ -29,7 +45,12 @@ const HandoverExpanded = styled.div`
 const HandoverExpandedTitle = styled.div`
     display: flex;
     flex: 1;
-    padding: 0 1rem;
+    padding-right: 8px;
+`;
+
+const Circles = styled.div`
+    display: flex;
+    padding-right: 0px 8px;
 `;
 
 export function HandoverExpandedView({ data }: { data: HandoverPackage }): JSX.Element {
@@ -48,21 +69,28 @@ export function HandoverGardenItem({
 }: CustomItemView<HandoverPackage>): JSX.Element {
     const status = getStatus(data);
     const backgroundColor = useMemo(() => createProgressGradient(data, status), [data, status]);
+    const textColor = getTextColor(status);
+
+    const mcPackageColor = getDotsColor(data.mcStatus);
+    const commStatusColor = getDotsColor(data.commpkgStatus);
+
+    const showWarningIcon = false; // data.mcStatus === 'OS' && status === 'RFCC Accepted';
 
     return (
-        <HandoverItem
-            backgroundColor={backgroundColor}
-            textColor={getTextColor(status)}
-            onClick={onClick}
-        >
-            <div>
-                <SizeIconsHtml size={'medium'} status={status} />
-            </div>
-            <div>
-                {data[itemKey]}
+        <HandoverItem backgroundColor={backgroundColor} textColor={textColor} onClick={onClick}>
+            <Icons>
+                <SizeIcons size={'medium'} status={status} />
+                <FlagIcon color={textColor} />
+            </Icons>
+            <MidSection expanded={columnExpanded}>
+                <Title>{data[itemKey]}</Title>
                 {columnExpanded && <HandoverExpandedView data={data} />}
-            </div>
-            <div></div>
+            </MidSection>
+            <Circles>
+                <StatusCircle statusColor={mcPackageColor} />
+                <StatusCircle statusColor={commStatusColor} />
+            </Circles>
+            {showWarningIcon && <WarningIcon />}
         </HandoverItem>
     );
 }

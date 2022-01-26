@@ -4,6 +4,7 @@ import { baseClient } from '../../../packages/httpClient/src';
 import { fieldSettings } from './utility/gardenSetup';
 import { HandoverGroupByView } from './CustomViews/HandoverGroupByView';
 import { HandoverGardenItem } from './CustomViews/HandoverGardenItem';
+import { HandoverSideSheet } from './CustomViews/HandoverSideSheet';
 
 export type HandoverCustomGroupByKeys = {
     weeklyDaily: 'Weekly' | 'Daily';
@@ -12,7 +13,9 @@ export type HandoverCustomGroupByKeys = {
 
 export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.fusion]);
-    const handover = appApi.createWorkSpace<HandoverPackage>({});
+    const handover = appApi.createWorkSpace<HandoverPackage>({
+        CustomSidesheet: HandoverSideSheet,
+    });
 
     handover.registerDataSource(async () => {
         const response = await api.fetch(

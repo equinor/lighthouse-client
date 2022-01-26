@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { HandoverCustomGroupByKeys } from '..';
 
 import { GetKeyFunction } from '../../../components/ParkView/Models/fieldSettings';
-import { HandoverPackage } from '../models/HandoverPackage';
+import { HandoverPackage, HandoverPackageStatus } from '../models/HandoverPackage';
 
 const getFieldKeyBasedOnPlannedForecast = (
     groupBy: string,
@@ -68,3 +68,18 @@ export const getDateKey: GetKeyFunction<HandoverPackage> = (item, key, groupBy) 
 };
 
 export const getProgressKey: GetKeyFunction<HandoverPackage> = (item) => `${item.progress || '0'}%`;
+
+export type RFCCStatus = {
+    rfccIsAccepted: boolean;
+    rfccIsRejected: boolean;
+    rfccIsShipped: boolean;
+};
+
+export const getRFCCStatus = (item: RFCCStatus): HandoverPackageStatus =>
+    item.rfccIsAccepted
+        ? 'RFCC Accepted'
+        : item.rfccIsRejected
+        ? 'RFCC Rejected'
+        : item.rfccIsShipped
+        ? 'RFCC Sent'
+        : 'OS';

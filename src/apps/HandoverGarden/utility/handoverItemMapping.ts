@@ -1,46 +1,5 @@
-import { HandoverPackage } from '../models/HandoverPackage';
+import { HandoverPackage, HandoverPackageStatus } from '../models/HandoverPackage';
 import { tokens } from '@equinor/eds-tokens';
-
-export type ProCoSysStatuses =
-    | 'AS Built completed'
-    | 'WO Sent to planning'
-    | 'WO Sent DC'
-    | 'WO compl. By MC'
-    | 'WO from Field'
-    | 'WO to Field'
-    | 'MC docs prepared'
-    | 'WO to MC'
-    | 'WO Cancelled'
-    | 'WO Prepared'
-    | 'No status';
-
-export const proCoSysWorkOrderColorMap: Record<ProCoSysStatuses, string> = {
-    'AS Built completed': 'hsla(218, 100%, 92%, 1)',
-    'WO Sent to planning': 'hsla(218, 100%, 32%, 1)',
-    'MC docs prepared': 'hsla(60, 85%, 62%, 1)',
-    'WO to Field': 'hsla(123, 70%, 52%, 1)',
-    'WO from Field': 'hsla(123, 70%, 72%, 1)',
-    'WO compl. By MC': 'hsla(218, 100%, 52%, 1)',
-    'WO Cancelled': 'hsla(12, 85%, 72%, 1)',
-    'WO Sent DC': 'hsla(218, 100%, 72%, 1)',
-    'WO to MC': 'hsla(12, 70%, 82%, 1)',
-    'WO Prepared': 'hsla(0, 0%, 72%, 1)',
-    'No status': 'hsla(12, 85%, 50%, 1)',
-};
-
-export const proCoSysWorkOrderProgressColorMap: Record<ProCoSysStatuses, string> = {
-    'AS Built completed': 'hsla(218, 100%, 80%, 1)',
-    'WO Sent to planning': 'hsla(218, 100%, 15%, 1)',
-    'MC docs prepared': 'hsla(60, 85%, 50%, 1)',
-    'WO to Field': 'hsla(123, 70%, 45%, 1)',
-    'WO from Field': 'hsla(123, 70%, 60%, 1)',
-    'WO compl. By MC': 'hsla(218, 100%, 40%, 1)',
-    'WO Cancelled': 'hsla(12, 85%, 60%, 1)',
-    'WO Sent DC': 'hsla(218, 100%, 60%, 1)',
-    'WO to MC': 'hsla(12, 70%, 70%, 1)',
-    'WO Prepared': 'hsla(0, 0%, 60%, 1)',
-    'No status': 'hsla(12, 85%, 40%, 1)',
-};
 
 export type FollowUpStatuses =
     | 'WO Finished'
@@ -119,6 +78,19 @@ export const colorMap: Record<Status, string> = {
     PB: '#ffc107',
     PA: '#ff4081',
     OK: '#00c853',
+};
+
+export const getDotsColor = (status: HandoverPackageStatus) => {
+    switch (status) {
+        case 'OS':
+            return colorMap.OS;
+        case 'PA':
+            return colorMap.PA;
+        case 'PB':
+            return colorMap.PB;
+        default:
+            return colorMap.OK;
+    }
 };
 
 export const statusPriorityMap: Record<Status, number> = {
