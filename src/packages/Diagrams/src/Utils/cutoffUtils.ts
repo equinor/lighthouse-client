@@ -1,4 +1,4 @@
-import { interpolateBlues, interpolateCubehelixDefault } from 'd3-scale-chromatic';
+import { interpolateCubehelixDefault } from 'd3-scale-chromatic';
 import { DateTime } from 'luxon';
 import { WorkOrder } from '../../../../apps/Construction/mocData/mockData';
 import { interpolateColors } from './colorGenerator';
