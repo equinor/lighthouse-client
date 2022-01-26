@@ -70,10 +70,7 @@ export const ScopeChangeRequestForm = ({
         const scID = await postScopeChange(
             {
                 ...formData.data,
-                origin: {
-                    type: origin?.type,
-                    id: origin?.id,
-                },
+                origin: origin,
                 tagNumbers: tags?.map((x) => x.value) || [],
                 systemIds: systems?.map((x) => Number(x.value)) || [],
                 commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
