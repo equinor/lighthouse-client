@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 import styled from 'styled-components';
 import { GroupingSelectors } from './Components';
@@ -55,13 +55,9 @@ export function HorizontalBarVisual<T>({ data, options }: HorizontalBarVisual<T>
     const { barChartOptions, series } = useHorizontalBarChart(data, options, groupByKey, nameByKey);
     const dataKeys = data.length > 0 ? Object.keys(data[0]) : [''];
 
-    const handleChange = useCallback(
-        (selector: 'groupBy' | 'series', selectedItem: keyof T) => {
-            selector === 'groupBy' ? setGroupByKey(selectedItem) : setNameByKey(selectedItem);
-        },
-        [setGroupByKey, setNameByKey]
-    );
-
+    const handleChange = (selector: 'groupBy' | 'series', selectedItem: keyof T) => {
+        selector === 'groupBy' ? setGroupByKey(selectedItem) : setNameByKey(selectedItem);
+    };
     useEffect(() => {
         setGroupByKey(options.categoryKey);
         setNameByKey(options.nameKey);
