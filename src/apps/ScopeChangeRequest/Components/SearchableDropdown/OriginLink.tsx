@@ -1,11 +1,11 @@
-import styled from 'styled-components';
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
+import { useRef, useState } from 'react';
 import { GroupBase, OptionsOrGroups, SingleValue, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
+import styled from 'styled-components';
+import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { searchPcs } from '../../Api/Search/PCS/searchPcs';
-import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
-import { useRef, useState } from 'react';
 import { TypedSelectOption } from '../../Api/Search/searchType';
+import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import { sort } from './sort';
 
 interface PCSLinkProps {
@@ -14,7 +14,7 @@ interface PCSLinkProps {
 }
 
 export const OriginLink = ({ originId, setOriginId }: PCSLinkProps): JSX.Element => {
-    const { procosys } = useApiClient();
+    const { procosys } = useHttpClient();
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const debounce = useRef(new Date());
 

@@ -1,81 +1,23 @@
-import { AuthenticationProvider } from '@equinor/authentication';
-import { createContext, useContext, useReducer } from 'react';
-import { ActionType, createCustomAction, getType } from 'typesafe-actions';
-import { AppConfig } from '../Types/Settings';
+import { createContext } from 'react';
+import { useGlobalClientState } from '../ClientState/ClientState';
+import { toggleAppPanel, toggleFullscreenMenu } from '../Functions/Settings';
+import { GlobalClientState } from '../Types/GlobalClientState';
+import { UIFunctionContext } from '../Types/UIContext';
 
-interface ClientState {
-    appsPanelActive: boolean;
-    fullscreenMenuActive: boolean;
-}
+export type ClientContextState = GlobalClientState & UIFunctionContext;
 
-interface ClientContextState extends ClientState {
-    toggleAppPanel: VoidFunction;
-    toggleFullscreenMenu: VoidFunction;
-    appConfig: AppConfig;
-    authProvider: AuthenticationProvider;
-}
-
+export const ClientContext = createContext({} as ClientContextState);
 interface ClientContextProviderProps {
     children: React.ReactNode;
-    appConfig: AppConfig;
-    authProvider: AuthenticationProvider;
 }
 
-type VoidFunction = () => void;
-
-export enum OfflineDocumentsAction {
-    toggleAppPanel = 'toggleAppPanel',
-    toggleFullscreenMenu = 'toggleFullscreenMenu',
-}
-
-export const actions = {
-    toggleAppPanel: createCustomAction(OfflineDocumentsAction.toggleAppPanel),
-    toggleFullscreenMenu: createCustomAction(OfflineDocumentsAction.toggleFullscreenMenu),
-};
-
-export type OfflineDocumentsActionType = typeof OfflineDocumentsAction;
-
-export type Action = ActionType<typeof actions>;
-
-const ClientContext = createContext({} as ClientContextState);
-
-export function ClientReducer(state: ClientState, action: Action): ClientState {
-    switch (action.type) {
-        case getType(actions.toggleAppPanel):
-            return { ...state, appsPanelActive: !state.appsPanelActive };
-        case getType(actions.toggleFullscreenMenu):
-            return { ...state, fullscreenMenuActive: !state.fullscreenMenuActive };
-        default:
-            return state;
-    }
-}
-
-const initialState: ClientState = {
-    appsPanelActive: false,
-    fullscreenMenuActive: false,
-};
-
-export const ClientContextProvider = ({
-    children,
-    appConfig,
-    authProvider,
-}: ClientContextProviderProps): JSX.Element => {
-    const [state, dispatch] = useReducer(ClientReducer, initialState);
-
-    const toggleAppPanel = () => {
-        dispatch(actions.toggleAppPanel());
-    };
-
-    const toggleFullscreenMenu = () => {
-        dispatch(actions.toggleFullscreenMenu());
-    };
+export const ClientContextProvider = ({ children }: ClientContextProviderProps): JSX.Element => {
+    const state = useGlobalClientState();
 
     return (
         <ClientContext.Provider
             value={{
                 ...state,
-                appConfig,
-                authProvider,
                 toggleAppPanel,
                 toggleFullscreenMenu,
             }}
@@ -84,7 +26,3 @@ export const ClientContextProvider = ({
         </ClientContext.Provider>
     );
 };
-
-export function useClientContext(): ClientContextState {
-    return useContext(ClientContext);
-}

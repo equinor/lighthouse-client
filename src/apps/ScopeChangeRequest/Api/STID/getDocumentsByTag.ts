@@ -1,4 +1,4 @@
-import { BaseClient } from '../../../../../packages/httpClient/src';
+import { HttpClient } from '@equinor/http-client';
 import { Document } from './Types/Document';
 
 /**
@@ -11,7 +11,7 @@ import { Document } from './Types/Document';
 export async function getDocumentsByTag(
     instCode: string,
     tagNo: string,
-    stidClient: BaseClient
+    stidClient: HttpClient
     //TODO:
     //docCategory?: string
 ): Promise<Document[]> {

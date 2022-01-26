@@ -1,6 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions, CriticalWoTable, SidesheetContent, weekDiff } from '@equinor/Diagrams';
-import { baseClient } from '../../../packages/httpClient/src';
+import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 import { cols } from './DetailsPage/tableConfig';
 import { WorkOrder } from './mocData/mockData';
@@ -84,7 +83,7 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
 };
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
+    // const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
     const construction = appApi.createPageViewer();
 
     /** 
@@ -97,8 +96,8 @@ export function setup(appApi: ClientApi): void {
 
     // Loop Data Test for testing system..
     workPreparation.registerDataSource(async () => {
-        const plantId = 'PCS$JOHAN_CASTBERG';
-        const project = 'L.O532C.002';
+        // const plantId = 'PCS$JOHAN_CASTBERG';
+        // const project = 'L.O532C.002';
         // const response: WorkOrderApi = await api
         //     .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
         //     .then((res) => res.json())
@@ -118,6 +117,8 @@ export function setup(appApi: ClientApi): void {
             {
                 status: 'waring',
                 title: 'Critical status',
+                tooltipContent:
+                    'Workorders that have status W01, W02 or W04 and it is 4 weeks or less until planned start date',
                 value: () => {
                     // critical WO: Workorder which havent reached status W04
                     // and 1 week left until plannedStartAtDate
@@ -130,7 +131,7 @@ export function setup(appApi: ClientApi): void {
                     // Find all the first filtered WOs that are due in one week or less
 
                     const secondFiltered = firstFiltered.filter(
-                        (wo) => weekDiff(new Date(wo.plannedStartAtDate)).days <= 7
+                        (wo) => weekDiff(new Date(wo.plannedStartAtDate)).days <= 28
                     );
 
                     return secondFiltered.length.toString();
@@ -146,7 +147,7 @@ export function setup(appApi: ClientApi): void {
         ];
     });
 
-    const excludeKeys: (keyof WorkOrder)[] = [];
+    // const excludeKeys: (keyof WorkOrder)[] = [];
 
     // const excludeKeys: (keyof WP)[] = [
     //     'tagNo',
@@ -195,16 +196,32 @@ export function setup(appApi: ClientApi): void {
     //     title: 'LCI Hanging Garden',
     //     reportURI: 'lci-hanging-gardens',
     // });
+    construction.registerFusionPowerBi('jca-installation', {
+        title: 'Installation',
+        reportURI: 'jca-installation',
+        options: {
+            showFilter: true,
+            enablePageNavigation: true,
+        },
+    });
     construction.registerFusionPowerBi('jca-checklist', {
-        title: 'Checklist Analytics',
+        title: 'Checklists',
         reportURI: 'jca-checklist',
     });
     construction.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
-        title: 'Punch Analytics',
+        title: 'Punch',
         reportURI: 'punch-analytics-rls',
     });
-    construction.registerFusionPowerBi('fd4052a9-641b-47b4-92d6-4876ecb8cdba', {
-        title: 'WO Analytics',
-        reportURI: 'wo-analytics-rls',
+    construction.registerFusionPowerBi('jca-handover-analytics', {
+        title: 'Handover',
+        reportURI: 'jca-handover-analytics',
     });
+
+    /**
+     * Does not contain JC data yet.
+     */
+    // construction.registerFusionPowerBi('fd4052a9-641b-47b4-92d6-4876ecb8cdba', {
+    //     title: 'WO Analytics',
+    //     reportURI: 'wo-analytics-rls',
+    // });
 }

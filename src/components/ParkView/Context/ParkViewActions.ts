@@ -6,10 +6,6 @@ export const actions = {
         groupKeys,
     })),
 
-    setExcludeKeys: createCustomAction(DataAction.setExcludeKeys, (excludeKeys: string[]) => ({
-        excludeKeys,
-    })),
-
     setGardenKey: createCustomAction(DataAction.setGardenKey, (gardenKey?: string) => ({
         gardenKey,
     })),

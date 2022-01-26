@@ -1,11 +1,11 @@
-import { CustomClientApi } from '@equinor/app-builder';
 import { tokens } from '@equinor/eds-tokens';
+import { CustomClientApi } from '@equinor/portal-client';
 import {
     THREE,
     threeD,
     ThreeDConfig,
     ThreeDContextProvider,
-    ThreeDInstance,
+    ThreeDInstance
 } from '@equinor/ThreeDViewer';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';

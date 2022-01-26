@@ -16,54 +16,56 @@ const Icons = styled.div`
     }
 `;
 
-const TopBarWrapper = styled.div`
+const TopBarWrapper = styled(TopBar)`
     position: fixed;
     width: 100%;
     z-index: 2;
     height: 48px;
+    padding-left: 12px;
+    padding-right: 12px;
     > header {
         padding-left: 1.5rem;
     }
 `;
 
-const ProCoSysTopBar = (): JSX.Element => {
-    const { toggleAppPanel, toggleFullscreenMenu, fullscreenMenuActive, authProvider } =
-        useClientContext();
-    const graph = useGraphClient(authProvider);
+const ClientTopBar = (): JSX.Element => {
+    const { toggleFullscreenMenu, internal } = useClientContext();
+    const graph = useGraphClient(internal.authProvider);
+
     const [image, setImage] = useState<string | undefined>(undefined);
+
     useEffect(() => {
+        if (image) return;
         graph.graphGetProfilePicture().then((img) => setImage(img));
-    }, []);
+    }, [graph, image]);
+
     return (
         <TopBarWrapper>
-            <TopBar>
-                <TopBar.Header>
-                    <div
-                        onClick={() => {
-                            toggleAppPanel();
-                            fullscreenMenuActive ? toggleFullscreenMenu() : null;
-                        }}
-                        style={{ cursor: 'pointer' }}
-                    >
-                        <Icon color={tokens.colors.interactive.primary__resting.hex} name="menu" />
-                    </div>
-                    <Logo />
-                </TopBar.Header>
-                <TopBar.CustomContent>
-                    {/* <CustomContentWrapper>
+            <TopBar.Header>
+                <div
+                    onClick={() => {
+                        toggleFullscreenMenu();
+                    }}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <Icon color={tokens.colors.interactive.primary__resting.hex} name="apps" />
+                </div>
+                <Logo />
+            </TopBar.Header>
+            <TopBar.CustomContent>
+                {/* <CustomContentWrapper>
                         <PlantSelector />
                         <Search aria-label="sitewide" id="search-normal" placeholder="Search..." />
                     </CustomContentWrapper> */}
-                </TopBar.CustomContent>
-                <TopBar.Actions>
-                    <Icons>
-                        {image && <Avatar alt="User avatar" size={16} src={image} />}
-                        <Icon name="notifications" size={16} />
-                    </Icons>
-                </TopBar.Actions>
-            </TopBar>
+            </TopBar.CustomContent>
+            <TopBar.Actions>
+                <Icons>
+                    {image && <Avatar alt="User avatar" src={image} />}
+                    {/* <Icon name="notifications" /> */}
+                </Icons>
+            </TopBar.Actions>
         </TopBarWrapper>
     );
 };
 
-export default ProCoSysTopBar;
+export default ClientTopBar;

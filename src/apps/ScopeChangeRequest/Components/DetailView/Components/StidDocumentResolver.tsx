@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
-import { Document } from '../../../Types/scopeChangeRequest';
-import { Document as StidDocument } from '../../../Api/STID/Types/Document';
-import { StidDocument as StidVisual } from '../../StidDocument';
-import { getDocumentById } from '../../../Api/STID/getDocumentById';
-import { useApiClient } from '../../../../../Core/Client/Hooks/useApiClient';
-import styled from 'styled-components';
 import { DotProgress } from '@equinor/eds-core-react';
+import { useHttpClient } from '@equinor/portal-client';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { getDocumentById } from '../../../Api/STID/getDocumentById';
+import { Document as StidDocument } from '../../../Api/STID/Types/Document';
+import { Document } from '../../../Types/scopeChangeRequest';
+import { StidDocument as StidVisual } from '../../StidDocument';
 
 interface StidDocumentResolverProps {
     inputDocuments: Document[];
@@ -13,7 +13,7 @@ interface StidDocumentResolverProps {
 export const StidDocumentResolver = ({
     inputDocuments,
 }: StidDocumentResolverProps): JSX.Element => {
-    const { customApi } = useApiClient('b827c278-12de-47a0-b789-c8d11e3b9571/.default');
+    const { customHttpClient } = useHttpClient('1734406c-3449-4192-a50d-7c3a63d3f57d/.default');
 
     useEffect(() => {
         const resolveDocuments = async () => {
@@ -21,7 +21,7 @@ export const StidDocumentResolver = ({
                 const resolvedDocument = await getDocumentById(
                     'JCA',
                     x.stidDocumentNumber,
-                    customApi
+                    customHttpClient
                 );
                 addDocument({
                     ...resolvedDocument,

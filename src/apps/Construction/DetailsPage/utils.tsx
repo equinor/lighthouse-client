@@ -1,31 +1,22 @@
 import { CellProps, TableInstance } from '@equinor/Table';
-import { Job, WorkOrder } from '../mocData/mockData';
 import {
     SumColumnFooter,
     SumColumnFooterCount,
     SumColumnFooterCountTotal,
     SumColumnFooterSum,
 } from './components';
-import {
-    SumColumnFooterCountTotalType,
-    SumColumnFooterCountType,
-    SumColumnFooterSumType,
-    SumColumnFooterType,
-} from './types';
+import { ColumnGeneratorArgs } from './types';
 
+/**
+ * Function that will generate columns for Table component based on arguments passed.
+ * Will have predefined Footer components,
+ * Aggregated requires a field, jobStatusCode, to be present on T
+ *
+ */
 export const columnGenerator = <T extends Record<string, unknown>>(
-    id: string,
-    header: string,
-    accessorKey: keyof WorkOrder,
-    aggregate: 'sum' | 'count',
-    footerType:
-        | SumColumnFooterType<T>
-        | SumColumnFooterSumType<T>
-        | SumColumnFooterCountType<T>
-        | SumColumnFooterCountTotalType<T>,
-    jobStatus: string,
-    width = 100
+    args: ColumnGeneratorArgs<T>
 ) => {
+    const { id, header, accessorKey, aggregate, footerType, jobStatus, width = 100 } = args;
     return {
         id,
         Header: header,
@@ -56,14 +47,14 @@ export const columnGenerator = <T extends Record<string, unknown>>(
             return count;
         },
         aggregate,
-        Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => {
+        Footer: (data: React.PropsWithChildren<TableInstance<T>>) => {
             switch (footerType.type) {
                 case 'SumColumnFooterCount':
                     return (
                         <SumColumnFooterCount
                             data={data}
                             columnId={id}
-                            fieldKey={footerType.fieldKey as any}
+                            fieldKey={footerType.fieldKey}
                             value={footerType.value}
                         />
                     );
@@ -77,9 +68,9 @@ export const columnGenerator = <T extends Record<string, unknown>>(
                     return (
                         <SumColumnFooterSum
                             data={data}
-                            fieldKey={footerType.fieldKey as any}
+                            fieldKey={footerType.fieldKey}
                             value={footerType.value}
-                            sumKey={footerType.sumKey as any}
+                            sumKey={footerType.sumKey}
                         />
                     );
             }

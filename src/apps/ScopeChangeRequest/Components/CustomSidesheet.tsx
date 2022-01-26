@@ -1,17 +1,18 @@
-import { useEffect } from 'react';
-
-import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
-import { Wrapper } from '../Styles/SidesheetWrapper';
-import { RequestViewContainer } from './RequestDetailViewContainer';
-import styled from 'styled-components';
-import { Field } from './DetailView/Components/Field';
-import { getScopeChangeById } from '../Api/getScopeChange';
+import React, { useEffect } from 'react';
 import { useQuery } from 'react-query';
-import { useApiClient } from '@equinor/portal-client';
+import styled from 'styled-components';
+
+import { useHttpClient } from '@equinor/portal-client';
 import { CircularProgress } from '@equinor/eds-core-react';
 
+import { getScopeChangeById } from '../Api/getScopeChange';
+import { Wrapper } from '../Styles/SidesheetWrapper';
+import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
+import { Field } from './DetailView/Components/Field';
+import { RequestViewContainer } from './RequestDetailViewContainer';
+
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
-    const { scopeChange: scopeChangeApi } = useApiClient();
+    const { scopeChange: scopeChangeApi } = useHttpClient();
 
     /**
      * Refetches every second

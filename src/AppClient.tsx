@@ -1,15 +1,14 @@
-import { Manifests } from '@equinor/app-builder';
-import { AuthenticationProvider, useAuthenticate } from '@equinor/authentication';
+import { useAuthenticate } from '@equinor/authentication';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
-import { AppConfig, ClientContextProvider } from '@equinor/portal-client';
+import { Client as ClientProps, ClientContextProvider } from '@equinor/portal-client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { MainLayout } from './components/Layouts/MainLayout';
 import LoadingPage from './components/Loading/LoadingPage';
 import { ClientRoutes } from './components/Routes/Routes';
-import ProCoSysTopBar from './components/TopBar/TopBar';
+import ClientTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
 import { FactoryComponent } from './Core/DataFactory';
 import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
@@ -42,30 +41,20 @@ const GlobalStyle = createGlobalStyle`
         }
 `;
 
-interface ClientProps {
-    appConfig: AppConfig;
-    authProvider: AuthenticationProvider;
-    manifests: Manifests;
-}
-
-const Client: React.FC<ClientProps> = ({
-    appConfig,
-    authProvider,
-    manifests,
-}: ClientProps): JSX.Element => {
+const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Element => {
     const isAuthenticated = useAuthenticate(authProvider);
     const queryClient = new QueryClient();
 
     return isAuthenticated ? (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
             <QueryClientProvider client={queryClient}>
+                <GlobalStyle />
                 <ConfirmationDialog />
-                <ClientContextProvider {...{ appConfig, authProvider }}>
+                <ClientContextProvider>
                     <BrowserRouter>
-                        <GlobalStyle />
-                        <ProCoSysTopBar />
-                        <MainLayout manifests={manifests}>
-                            <ClientRoutes manifests={manifests} />
+                        <ClientTopBar />
+                        <MainLayout>
+                            <ClientRoutes />
                         </MainLayout>
                     </BrowserRouter>
                     <FactoryComponent />

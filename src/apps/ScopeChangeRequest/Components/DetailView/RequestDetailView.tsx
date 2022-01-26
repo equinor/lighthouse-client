@@ -2,11 +2,9 @@ import { Button, CircularProgress, TextField } from '@equinor/eds-core-react';
 import { SectionRow } from '../../Styles/Section';
 import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../Types/scopeChangeRequest';
 import { Workflow } from '../Workflow/Workflow';
-import { patchWorkflowStep } from '../../Api/patchWorkflowStep';
 import { Field } from './Components/Field';
 import { useEffect, useMemo, useState } from 'react';
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { patchScopeChange } from '../../Api';
+import { patchScopeChange, patchWorkflowStep } from '../../Api';
 import { postContribution } from '../../Api/ScopeChange/postContribution';
 import { StidDocumentResolver } from './Components/StidDocumentResolver';
 import { Attachments } from './Components/Attachments';
@@ -21,7 +19,8 @@ import {
 import styled from 'styled-components';
 import Select, { SingleValue } from 'react-select';
 import { applyEDSTheme } from '../SearchableDropdown/applyEds';
-import { useClientContext } from '../../../../Core/Client/ClientContext/clientContext';
+import { useClientContext } from '@equinor/portal-client';
+import { useHttpClient } from '@equinor/portal-client';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -31,11 +30,13 @@ interface RequestDetailViewProps {
 
 export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps): JSX.Element => {
     const [comment, setComment] = useState<string | undefined>(undefined);
-    const { customApi } = useApiClient('api://df71f5b5-f034-4833-973f-a36c2d5f9e31/.default');
+    const { scopeChange } = useHttpClient();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [selectedCriteria, setSelectedCriteria] = useState<string | undefined>(undefined);
 
-    const { authProvider } = useClientContext();
+    const { internal } = useClientContext();
+    internal.authProvider;
+
     const [userId, setUserId] = useState<string | undefined>();
 
     const onInitiate = async () => {
@@ -63,7 +64,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
             setAsOpen: true,
         };
 
-        await patchScopeChange(payload, customApi);
+        await patchScopeChange(payload, scopeChange);
         await refetch();
         setIsLoading(false);
     };
@@ -125,7 +126,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                 request.id,
                 request.currentWorkflowStep.id,
                 selectedCriteria,
-                customApi,
+                scopeChange,
                 comment
             ).then(() => refetch());
             setComment('');
@@ -141,7 +142,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                 request.id,
                 request.currentWorkflowStep?.id,
                 contributionId,
-                customApi,
+                scopeChange,
                 comment
             );
             setComment('');
@@ -149,8 +150,8 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
     };
 
     useEffect(() => {
-        setUserId(authProvider.getCurrentUser()?.localAccountId);
-    }, [authProvider]);
+        setUserId(internal.authProvider.getCurrentUser()?.localAccountId);
+    }, [internal]);
 
     return (
         <div>

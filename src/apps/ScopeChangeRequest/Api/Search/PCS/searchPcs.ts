@@ -1,14 +1,15 @@
+import { HttpClient } from '@equinor/http-client';
+import { TypedSelectOption } from '../searchType';
 import { searchCommPkg } from './searchCommPkg';
 import { searchAreas } from './searchArea';
 import { searchTags } from './searchTags';
 import { searchSystems } from './searchSystem';
-import { BaseClient } from '../../../../../../packages/httpClient/src';
 import { searchQueryOrigin } from './searchQuery';
 import { searchDCN } from './searchDCN';
 import { searchNCR } from './searchNcr';
 import { searchDiscipline } from './searchDiscipline';
 import { searchPerson } from './searchPerson';
-import { TypedSelectOption } from '../searchType';
+import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 
 export type ProcoSysTypes =
     | 'tag'
@@ -30,9 +31,11 @@ export type ProcoSysTypes =
  */
 export const searchPcs = async (
     searchString: string,
-    searchItem: ProcoSysTypes,
-    procosysClient: BaseClient
+    searchItem: ProcoSysTypes
+    // procosysClient: HttpClient
 ): Promise<TypedSelectOption[]> => {
+    const clients = httpClient();
+    const procosysClient = clients.procosys;
     switch (searchItem.toLowerCase()) {
         case 'tag':
             return await searchTags(searchString, procosysClient);

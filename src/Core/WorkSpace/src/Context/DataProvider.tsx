@@ -5,9 +5,9 @@ import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
+import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useDataViewerKey';
 import {
-    GardenOptions,
     PowerBiOptions,
     StatusFunc,
     TableOptions,

@@ -1,10 +1,10 @@
-import { BaseClient } from '@equinor/http-client';
+import { HttpClient } from '@equinor/http-client';
 import { ScopeChangeRequestFormModel } from '../Types/scopeChangeRequest';
 
 export async function postScopeChange(
     scopeChange: ScopeChangeRequestFormModel,
     draft: boolean,
-    client: BaseClient
+    client: HttpClient
 ): Promise<string> {
     const payload = {
         ...scopeChange,

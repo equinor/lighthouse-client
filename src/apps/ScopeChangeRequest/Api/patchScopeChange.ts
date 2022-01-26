@@ -1,9 +1,9 @@
-import { BaseClient } from '@equinor/http-client';
+import { HttpClient } from '@equinor/http-client';
 import { ScopeChangeRequestFormModel } from '../Types/scopeChangeRequest';
 
 export async function patchScopeChange(
     request: ScopeChangeRequestFormModel,
-    client: BaseClient
+    client: HttpClient
 ): Promise<string> {
     const requestOptions = {
         method: 'PATCH',

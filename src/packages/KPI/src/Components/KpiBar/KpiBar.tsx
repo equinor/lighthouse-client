@@ -8,13 +8,14 @@ interface KpiBarProps {
 export function KpiBar({ data }: KpiBarProps): JSX.Element {
     return (
         <StatusWrapper>
-            {data.map(({ title, value, description, status }, index) => (
+            {data.map(({ title, value, description, status, tooltipContent }, index) => (
                 <Item
                     key={title + index}
                     title={title}
                     value={value}
                     description={description}
                     status={status}
+                    tooltipContent={tooltipContent}
                 />
             ))}
         </StatusWrapper>

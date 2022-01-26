@@ -1,10 +1,8 @@
 import { useAtom } from '@dbeining/react-atom';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ResizableSidesheet } from './ResizableSidesheet';
 import { getSidesheetContext } from '../context/sidesheetContext';
-import { ErrorBoundary } from '@equinor/ErrorBoundary';
-import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
+import { ResizableSidesheet } from './ResizableSidesheet';
 
 export const PopoutSidesheet = (): JSX.Element | null => {
     const { SidesheetComponent } = useAtom(getSidesheetContext());
@@ -15,11 +13,9 @@ export const PopoutSidesheet = (): JSX.Element | null => {
     }
 
     return (
-        <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
-            <Wrapper>
-                <ResizableSidesheet />
-            </Wrapper>
-        </ErrorBoundary>
+        <Wrapper>
+            <ResizableSidesheet />
+        </Wrapper>
     );
 };
 

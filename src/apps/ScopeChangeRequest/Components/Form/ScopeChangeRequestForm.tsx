@@ -1,28 +1,27 @@
 import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { GeneratedForm, useForm } from '@equinor/Form';
+import { useHttpClient } from '@equinor/portal-client';
+import { openSidesheet } from '@equinor/sidesheet';
 import { useEffect, useMemo, useState } from 'react';
+import { useMutation } from 'react-query';
 import styled from 'styled-components';
+import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
+import { getScopeChangeById, postScopeChange } from '../../Api/';
+import { uploadAttachment } from '../../Api/ScopeChange/attachment';
+import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
+import { TypedSelectOption } from '../../Api/Search/searchType';
+import { Document } from '../../Api/STID/Types/Document';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { useMutation } from 'react-query';
-import { getScopeChangeById, postScopeChange } from '../../Api/';
-import { openSidesheet } from '@equinor/sidesheet';
 import { ScopeChangeSideSheet } from '../CustomSidesheet';
-import { tokens } from '@equinor/eds-tokens';
 
-import { useApiClient } from '@equinor/portal-client';
-import { PCSLink } from '../SearchableDropdown/PCSLink';
-import { TypedSelectOption } from '../../Api/Search/searchType';
-import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
-import { StidSelector } from '../STID';
-
-import { StidDocument } from '../StidDocument';
-import { Document } from '../../Api/STID/Types/Document';
-import { uploadAttachment } from '../../Api/ScopeChange/attachment';
 import { Field } from '../DetailView/Components/Field';
 import { Upload } from '../Upload';
 import { Origin, OriginType } from './Origin';
+import { PCSLink } from '../SearchableDropdown/PCSLink';
+import { StidSelector } from '../SearchableDropdown/stidSelector';
+import { StidDocument } from '../StidDocument';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -58,7 +57,8 @@ export const ScopeChangeRequestForm = ({
         setStidDocuments((prev) => [...prev, ...documents]);
 
     const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
-    const { scopeChange } = useApiClient();
+
+    const { scopeChange } = useHttpClient();
 
     const createScopeChangeMutation = async ({ draft }: CreateScopeChangeParams) => {
         const tags = filterElementsByType(relatedObjects, 'tag');
@@ -183,7 +183,7 @@ export const ScopeChangeRequestForm = ({
             >
                 <Inline>
                     <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Documents</div>
-                    <StidSelector appendDocuments={appendDocuments} documents={stidDocuments} />
+                    <StidSelector appendDocuments={appendDocuments} />
                 </Inline>
                 {stidDocuments &&
                     stidDocuments.map((x) => {

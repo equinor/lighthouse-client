@@ -1,5 +1,5 @@
-import { AppManifest } from '@equinor/app-builder';
 import { tokens } from '@equinor/eds-tokens';
+import { AppManifest } from '@equinor/portal-client';
 import styled from 'styled-components';
 import Icon from '../Icon/Icon';
 
