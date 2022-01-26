@@ -1,10 +1,10 @@
-import { BaseClient } from '@equinor/http-client';
+import { HttpClient } from '@equinor/http-client';
 
 export async function postContribution(
     requestId: string,
     stepId: string,
     contributorId: string,
-    client: BaseClient,
+    client: HttpClient,
     comment?: string
 ): Promise<void> {
     const requestOptions = {

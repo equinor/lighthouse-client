@@ -9,8 +9,8 @@ interface SelectOption {
 }
 
 interface PCSLinkProps {
-    person: SelectOption | undefined;
-    setPerson: React.Dispatch<React.SetStateAction<SelectOption | undefined>>;
+    person: SelectOption | null;
+    setPerson: React.Dispatch<React.SetStateAction<SelectOption | null>>;
 }
 
 export const PCSPersonSearch = ({ person, setPerson }: PCSLinkProps): JSX.Element => {
@@ -39,7 +39,7 @@ export const PCSPersonSearch = ({ person, setPerson }: PCSLinkProps): JSX.Elemen
                     }}
                     isClearable
                     onChange={(newValue: SingleValue<SelectOption>) => {
-                        setPerson(newValue ?? undefined);
+                        setPerson(newValue ?? null);
                     }}
                     theme={(theme: Theme) => applyEDSTheme(theme)}
                 />

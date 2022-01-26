@@ -16,7 +16,6 @@ interface PCSLinkProps {
 }
 
 export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JSX.Element => {
-    const { procosys } = useHttpClient();
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const debounce = useRef(new Date());
 
@@ -46,16 +45,14 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
     ) => {
         const options: TypedSelectOption[] = [];
         try {
-            await (await searchPcs(inputValue, 'system', procosys)).forEach((x) => options.push(x));
+            await (await searchPcs(inputValue, 'system')).forEach((x) => options.push(x));
         } catch (e) {
             console.warn(e);
             setApiErrors((prev) => [...prev, 'systems']);
         }
 
         try {
-            await (
-                await searchPcs(inputValue, 'commpkg', procosys)
-            ).forEach((x) => options.push(x));
+            await (await searchPcs(inputValue, 'commpkg')).forEach((x) => options.push(x));
             const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
                 sort(a, b, inputValue)
             );
@@ -69,7 +66,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
         }
 
         try {
-            await (await searchPcs(inputValue, 'area', procosys)).forEach((x) => options.push(x));
+            await (await searchPcs(inputValue, 'area')).forEach((x) => options.push(x));
             const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
                 sort(a, b, inputValue)
             );
@@ -83,9 +80,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
         }
 
         try {
-            await (
-                await searchPcs(inputValue, 'discipline', procosys)
-            ).forEach((x) => options.push(x));
+            await (await searchPcs(inputValue, 'discipline')).forEach((x) => options.push(x));
             const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
                 sort(a, b, inputValue)
             );
@@ -99,7 +94,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
         }
 
         try {
-            await (await searchPcs(inputValue, 'tag', procosys)).forEach((x) => options.push(x));
+            await (await searchPcs(inputValue, 'tag')).forEach((x) => options.push(x));
             const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
                 sort(a, b, inputValue)
             );

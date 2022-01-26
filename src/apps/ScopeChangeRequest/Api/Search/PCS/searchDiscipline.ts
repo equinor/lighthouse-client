@@ -1,11 +1,11 @@
-import { BaseClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
 import { PCSStructure } from './Types/searchStructure';
 import { Area } from './Types/area';
+import { HttpClient } from '../../../../../Core/httpClient/src';
 
 export const searchDiscipline = async (
     searchString: string,
-    procosysClient: BaseClient
+    procosysClient: HttpClient
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 

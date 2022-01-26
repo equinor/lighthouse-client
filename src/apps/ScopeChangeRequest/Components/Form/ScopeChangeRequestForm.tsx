@@ -20,10 +20,11 @@ import { ScopeChangeSideSheet } from '../CustomSidesheet';
 
 import { Field } from '../DetailView/Components/Field';
 import { Upload } from '../Upload';
-import { Origin, OriginType } from './Origin';
 import { PCSLink } from '../SearchableDropdown/PCSLink';
 import { StidDocument } from '../StidDocument';
 import { StidSelector } from '../STID';
+import { Origin as OriginType } from '../../Types/scopeChangeRequest';
+import { Origin } from './Origin';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -34,18 +35,13 @@ interface CreateScopeChangeParams {
     draft: boolean;
 }
 
-export interface Origin {
-    type: OriginType;
-    id?: string;
-}
-
 export const ScopeChangeRequestForm = ({
     closeScrim,
     setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
     const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
 
-    const [origin, setOrigin] = useState<Origin | undefined>();
+    const [origin, setOrigin] = useState<OriginType | undefined>();
     const [stidDocuments, setStidDocuments] = useState<Document[]>([]);
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
@@ -70,7 +66,7 @@ export const ScopeChangeRequestForm = ({
         const scID = await postScopeChange(
             {
                 ...formData.data,
-                origin: origin,
+                origin: origin.type,
                 tagNumbers: tags?.map((x) => x.value) || [],
                 systemIds: systems?.map((x) => Number(x.value)) || [],
                 commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],

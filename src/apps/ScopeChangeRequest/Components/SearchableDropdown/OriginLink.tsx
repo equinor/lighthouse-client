@@ -2,7 +2,6 @@ import { useRef, useState } from 'react';
 import { GroupBase, OptionsOrGroups, SingleValue, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import styled from 'styled-components';
-import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { searchPcs } from '../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
@@ -14,7 +13,6 @@ interface PCSLinkProps {
 }
 
 export const OriginLink = ({ originId, setOriginId }: PCSLinkProps): JSX.Element => {
-    const { procosys } = useHttpClient();
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const debounce = useRef(new Date());
 
@@ -34,19 +32,19 @@ export const OriginLink = ({ originId, setOriginId }: PCSLinkProps): JSX.Element
 
         const options: TypedSelectOption[] = [];
         try {
-            await (await searchPcs(inputValue, 'query', procosys)).map((x) => options.push(x));
+            await (await searchPcs(inputValue, 'query')).map((x) => options.push(x));
         } catch (e) {
             setApiErrors((prev) => [...prev, 'queries']);
         }
 
         try {
-            await (await searchPcs(inputValue, 'dcn', procosys)).map((x) => options.push(x));
+            await (await searchPcs(inputValue, 'dcn')).map((x) => options.push(x));
         } catch (e) {
             setApiErrors((prev) => [...prev, 'DCN']);
         }
 
         try {
-            await (await searchPcs(inputValue, 'ncr', procosys)).map((x) => options.push(x));
+            await (await searchPcs(inputValue, 'ncr')).map((x) => options.push(x));
         } catch (e) {
             setApiErrors((prev) => [...prev, 'NCR']);
         }

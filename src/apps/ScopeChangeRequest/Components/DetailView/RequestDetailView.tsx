@@ -58,6 +58,8 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
             systemIds: request.systems.map((x) => x.procosysId) || [],
             tagNumbers: request.tags.map((x) => x.procosysNumber) || [],
             documentNumbers: request.documents.map((x) => x.stidDocumentNumber) || [],
+            areaCodes: [],
+            disciplineCodes: [],
         };
         const payload = {
             ...scopeChange,

@@ -5,10 +5,7 @@ import { SearchNCR } from './Origins/SearchNCR';
 import { SearchDCN } from './Origins/SearchDCN';
 import { SearchQuery } from './Origins/SearchQuery';
 import { SelectPunch } from './Origins/SelectPunch';
-import { Origin as OriginInterface } from './ScopeChangeRequestForm';
-
-//TODO: Add SWCR
-export type OriginType = 'NCR' | 'DCN' | 'Query' | 'Punch' | 'SWCR' | 'None';
+import { OriginType, Origin as OriginInterface } from '../../Types/scopeChangeRequest';
 
 interface OriginProps {
     setOrigin: React.Dispatch<React.SetStateAction<OriginInterface | undefined>>;

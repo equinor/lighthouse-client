@@ -23,7 +23,7 @@ export interface ScopeChangeBaseModel {
     title: string;
     description: string;
     phase: string;
-    origin: Origin;
+    origin: OriginType;
     category: string;
     estimatedChangeHours: number;
     actualChangeHours: number;

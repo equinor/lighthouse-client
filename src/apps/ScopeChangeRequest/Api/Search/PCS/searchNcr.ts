@@ -1,11 +1,11 @@
-import { BaseClient } from '../../../../../../packages/httpClient/src';
+import { HttpClient } from '../../../../../Core/httpClient/src';
 import { TypedSelectOption } from '../searchType';
 import { NCR } from './Types/ncr';
 import { PCSStructure } from './Types/searchStructure';
 
 export const searchNCR = async (
     searchString: string,
-    client: BaseClient
+    client: HttpClient
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 

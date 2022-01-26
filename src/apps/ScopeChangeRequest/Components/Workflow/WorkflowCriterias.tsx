@@ -3,7 +3,6 @@ import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import { Criteria, WorkflowStep } from '../../Types/scopeChangeRequest';
 import { WorkflowIcon } from './WorkflowIcon';
-import { WorkflowLine } from './WorkflowLine';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -100,11 +99,6 @@ const WorkflowText = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-`;
-
-const Spacer = styled.div`
-    height: 9px;
-    width: 7px;
 `;
 
 const Divider = styled.div`

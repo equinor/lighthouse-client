@@ -15,7 +15,7 @@ interface WorkflowProps {
     refetch?: () => Promise<void>;
 }
 export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
-    const [contributor, setContributor] = useState<{ value: string; label: string } | undefined>();
+    const [contributor, setContributor] = useState<{ value: string; label: string } | null>(null);
     const [contributorTitle, setContributorTitle] = useState<string | undefined>();
 
     const { scopeChange } = useHttpClient();
@@ -37,7 +37,7 @@ export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
         await mutateAsync();
         refetch && (await refetch());
         setContributorTitle('');
-        setContributor(undefined);
+        setContributor(null);
     };
 
     return (
@@ -46,7 +46,7 @@ export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
                 <>
                     <div style={{ fontSize: '12px' }}>Add contributors</div>
                     <PCSPersonSearch person={contributor} setPerson={setContributor} />
-                    {contributor && (
+                    {contributor !== null && (
                         <Inline>
                             <TextField
                                 id={'Contributor text'}
