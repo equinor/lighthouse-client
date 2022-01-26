@@ -134,7 +134,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                 unsignedCriterias.length === 1
             ) {
                 spawnConfirmationDialog(
-                    'Not all contributors have responded yet, are you sure you want to sign this step?',
+                    'Not all contributors have responded yet, are you sure you want to continue?',
                     'Warning',
                     async () =>
                         await patchWorkflowStep(
