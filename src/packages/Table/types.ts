@@ -48,6 +48,8 @@ export type CellType<T, D extends TableData = TableData> =
     | 'Date'
     | 'Description'
     | 'Status'
+    | 'Link'
+    | 'Progress'
     | CustomCellType<T, D>;
 
 export type CustomCell<T> = {
