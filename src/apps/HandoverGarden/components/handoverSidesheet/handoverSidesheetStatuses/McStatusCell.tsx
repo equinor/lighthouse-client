@@ -1,8 +1,8 @@
 import { CellProps } from '@equinor/Table';
 
 import tinycolor from 'tinycolor2';
-import { HandoverPackageStatus } from '../../models/HandoverPackage';
-import { HandoverMcpkg } from '../../models/HandoverResources';
+import { HandoverPackageStatus } from '../../../models/HandoverPackage';
+import { HandoverMcpkg } from '../../../models/HandoverResources';
 import { Pill, PillProps } from './PillStyle';
 import { createGradientBackground, getPunchStatusGradient } from './utility';
 

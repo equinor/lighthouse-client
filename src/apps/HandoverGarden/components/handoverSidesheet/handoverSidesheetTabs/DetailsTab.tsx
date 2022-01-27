@@ -1,11 +1,19 @@
 import { useMemo } from 'react';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { HandoverPackage } from '../../models/HandoverPackage';
-import { HandoverDetails } from '../../models/HandoverResources';
+import { HandoverPackage } from '../../../models/HandoverPackage';
+import { HandoverDetails } from '../../../models/HandoverResources';
 
 const StringCell = ({ value }: { value: string }) => <>{value.trim() ? value.trim() : 'N/A'}</>;
 
-const DateCell = ({ date }: { date: string }) => <>{date ? new Date(date).toString() : 'N/A'}</>;
+const formatDateString = (dateString: string): string => {
+    const date = new Date(dateString);
+    if (date.toString() === 'Invalid Date') return 'N/A';
+    const dateParts = new Intl.DateTimeFormat(undefined).formatToParts(date);
+    return `${dateParts[0].value}/${dateParts[2].value}/${dateParts[4].value}`;
+};
+
+const DateCell = ({ date }: { date: string }) => <>{formatDateString(date)}</>;
 
 const TabContent = styled.div`
     height: 100%;
@@ -27,7 +35,7 @@ const Table = styled.table`
     }
 
     td {
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid ${tokens.colors.ui.background__medium.hex};
         padding: 8px;
 
         &:first-child {
@@ -48,7 +56,7 @@ const DetailsTab = ({ commpkg, nextToSign, dataIsFetching }: DetailsTabProps): J
         if (dataIsFetching) return <>Loading...</>;
 
         return nextToSign.length ? <>{nextToSign[0].nextToSign}</> : '';
-    }, [nextToSign]);
+    }, [nextToSign, dataIsFetching]);
 
     return (
         <TabContent>
