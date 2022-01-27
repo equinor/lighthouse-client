@@ -5,7 +5,7 @@ import { Workflow } from '../Workflow/Workflow';
 import { Field } from './Components/Field';
 import { useEffect, useMemo, useState } from 'react';
 import { patchScopeChange, patchWorkflowStep } from '../../Api';
-import { voidRequest } from '../../Api/ScopeChange/voidRequest';
+import { unVoidRequest, voidRequest } from '../../Api/ScopeChange/voidRequest';
 import { postContribution } from '../../Api/ScopeChange/postContribution';
 import { StidDocumentResolver } from './Components/StidDocumentResolver';
 import { Attachments } from './Components/Attachments';
@@ -124,7 +124,11 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
     }, [request]);
 
     const onVoidRequest = async () => {
-        await voidRequest(request.id);
+        if (request.isVoided) {
+            await unVoidRequest(request.id);
+        } else {
+            await voidRequest(request.id);
+        }
         await refetch();
     };
 
