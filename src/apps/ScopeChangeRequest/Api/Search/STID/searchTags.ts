@@ -4,15 +4,17 @@ import { TypedSelectOption } from '../searchType';
 
 export const searchTags = async (searchString: string): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
-    const { STID } = httpClient();
-
+    const { customHttpClient } = httpClient({
+        scope: 'b827c278-12de-47a0-b789-c8d11e3b9571/.default',
+    });
     //Test https://stidapitest.equinor.com
-    const baseUrl = 'https://stidapi.equinor.com';
-    STID.setBaseUrl(baseUrl);
+    const baseUrl = 'https://stidapitest.equinor.com';
+    customHttpClient.setBaseUrl(baseUrl);
     const uri = 'JCA/tags';
-    const queryParameters = `tagNo=${encodeURI(searchString)}&skip=0&take=8&noContentAs200=true`;
+    const queryParameters = `tagNo=${encodeURI(searchString)}&skip=0&take=10&noContentAs200=true`;
     const url = `/${uri}?${queryParameters}`;
-    await STID.fetch(url)
+    await customHttpClient
+        .fetch(url)
         .then((response) => response.json())
         .then((data) => {
             data.map((x: Tag) => {

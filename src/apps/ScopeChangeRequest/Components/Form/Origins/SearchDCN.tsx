@@ -1,18 +1,20 @@
-import { useRef, useState } from 'react';
+import styled from 'styled-components';
 import { GroupBase, OptionsOrGroups, SingleValue, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import styled from 'styled-components';
-import { searchPcs } from '../../Api/Search/PCS/searchPcs';
-import { TypedSelectOption } from '../../Api/Search/searchType';
-import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
-import { sort } from './sort';
+import { searchPcs } from '../../../Api/Search/PCS/searchPcs';
+import {
+    applyEdsComponents,
+    applyEdsStyles,
+    applyEDSTheme,
+} from '../../SearchableDropdown/applyEds';
+import { useRef, useState } from 'react';
+import { TypedSelectOption } from '../../../Api/Search/searchType';
 
 interface PCSLinkProps {
-    originId: TypedSelectOption | undefined;
-    setOriginId: React.Dispatch<React.SetStateAction<TypedSelectOption | undefined>>;
+    setOriginId: (originId: string | undefined) => void;
 }
 
-export const OriginLink = ({ originId, setOriginId }: PCSLinkProps): JSX.Element => {
+export const SearchDCN = ({ setOriginId }: PCSLinkProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const debounce = useRef(new Date());
 
@@ -22,20 +24,7 @@ export const OriginLink = ({ originId, setOriginId }: PCSLinkProps): JSX.Element
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
     ) => {
-        const none: TypedSelectOption = {
-            label: 'None',
-            searchValue: '',
-            type: 'query',
-            value: 'OOTA',
-            object: {},
-        };
-
         const options: TypedSelectOption[] = [];
-        try {
-            await (await searchPcs(inputValue, 'query')).map((x) => options.push(x));
-        } catch (e) {
-            setApiErrors((prev) => [...prev, 'queries']);
-        }
 
         try {
             await (await searchPcs(inputValue, 'dcn')).map((x) => options.push(x));
@@ -43,17 +32,7 @@ export const OriginLink = ({ originId, setOriginId }: PCSLinkProps): JSX.Element
             setApiErrors((prev) => [...prev, 'DCN']);
         }
 
-        try {
-            await (await searchPcs(inputValue, 'ncr')).map((x) => options.push(x));
-        } catch (e) {
-            setApiErrors((prev) => [...prev, 'NCR']);
-        }
-
-        const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-            sort(a, b, inputValue)
-        );
-        sorted.push(none);
-        callback(sorted);
+        callback(options);
     };
 
     return (
@@ -89,10 +68,9 @@ export const OriginLink = ({ originId, setOriginId }: PCSLinkProps): JSX.Element
                             return;
                         }}
                         defaultOptions={false}
-                        value={originId}
                         styles={applyEdsStyles()}
                         components={applyEdsComponents()}
-                        placeholder={`Type to search..`}
+                        placeholder={`16121`}
                         noOptionsMessage={(obj: { inputValue: string }) => {
                             if (!obj.inputValue || obj.inputValue.length === 0) {
                                 return <></>;
@@ -102,7 +80,7 @@ export const OriginLink = ({ originId, setOriginId }: PCSLinkProps): JSX.Element
                         }}
                         isClearable
                         onChange={(newValue: SingleValue<TypedSelectOption>) => {
-                            setOriginId(newValue ?? undefined);
+                            setOriginId(newValue?.value ?? undefined);
                         }}
                         onInputChange={() => {
                             debounce.current = new Date();

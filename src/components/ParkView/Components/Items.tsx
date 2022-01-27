@@ -25,7 +25,7 @@ export function Items<T>({ data, columnExpanded }: RenderItemsProps<T>): JSX.Ele
                 ) : (
                     <Item key={data[key] + index} onClick={() => onSelect(data[key])}>
                         {status?.statusItemFunc(data[key]).statusElement}
-                        {data[key][itemKey]} cdb
+                        {data[key][itemKey]}
                     </Item>
                 )
             )}
