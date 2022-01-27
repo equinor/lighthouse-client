@@ -9,6 +9,9 @@ export const searchQueryOrigin = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
+    const searchIdDev = 103743;
+    const searchIdProd = 105670;
+
     const search: PCSStructure[] = [
         {
             Key: 'DocumentDocumentNo',
@@ -23,7 +26,7 @@ export const searchQueryOrigin = async (
     try {
         await client
             .fetch(
-                `https://procosyswebapi.equinor.com/api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105670&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
+                `https://procosyswebapi.equinor.com/api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${searchIdProd}&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
                 requestOptions
             )
             .then((response) => response.json())

@@ -9,6 +9,9 @@ export const searchDCN = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
+    const searchIdDev = 103746;
+    const searchIdProd = 105598;
+
     const search: PCSStructure[] = [
         {
             Key: 'DocumentDocumentNo',
@@ -23,7 +26,7 @@ export const searchDCN = async (
     try {
         await client
             .fetch(
-                `https://procosyswebapi.equinor.com/api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105598&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
+                `https://procosyswebapi.equinor.com/api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${searchIdProd}&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
                 requestOptions
             )
             .then((response) => response.json())

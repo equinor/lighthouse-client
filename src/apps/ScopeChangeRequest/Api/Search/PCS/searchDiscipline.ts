@@ -9,9 +9,12 @@ export const searchDiscipline = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
+    const searchIdDev = 103742;
+    const searchIdProd = 106105;
+
     const baseUrl = 'https://procosyswebapi.equinor.com/api';
     const uri = 'Search';
-    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=106105&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
+    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${searchIdProd}&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
 
     const url = `${baseUrl}/${uri}?${queryParameters}`;
 

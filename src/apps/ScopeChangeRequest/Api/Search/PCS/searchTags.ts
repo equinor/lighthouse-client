@@ -1,4 +1,5 @@
 import { HttpClient } from '@equinor/http-client';
+import { isProduction } from '../../../../../Core/Client/Functions';
 import { TypedSelectOption } from '../searchType';
 import { PCSStructure } from './Types/searchStructure';
 import { Tag } from './Types/tag';
@@ -9,9 +10,13 @@ export const searchTags = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
+    //TODO use isProduction() doesnt work yet
+    const searchIdDev = 103745;
+    const searchIdProd = 105793;
+
     const baseUrl = 'https://procosyswebapi.equinor.com/api';
     const uri = 'Search';
-    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105793&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
+    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${searchIdProd}&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
 
     const url = `${baseUrl}/${uri}?${queryParameters}`;
 
