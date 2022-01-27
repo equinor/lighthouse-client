@@ -1,45 +1,44 @@
-import { Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import { useEffect, useState } from 'react';
-import { useMutation } from 'react-query';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { Button, DotProgress, TextField } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { useMutation } from 'react-query';
+import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { addContributor as postContributor } from '../../Api/addContributor';
-import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
 import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
-import { WorkflowLine } from './WorkflowLine';
+import { WorkflowCriterias } from './WorkflowCriterias';
+import { Contributors } from './Contributors';
 
 interface WorkflowProps {
     request: ScopeChangeRequest;
+    refetch?: () => Promise<void>;
 }
-export function Workflow({ request }: WorkflowProps): JSX.Element {
-    const [contributor, setContributor] = useState<{ value: string; label: string } | undefined>();
+export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
+    const [contributor, setContributor] = useState<{ value: string; label: string } | null>(null);
+    const [contributorTitle, setContributorTitle] = useState<string | undefined>();
 
     const { scopeChange } = useHttpClient();
 
-    const { mutateAsync, isLoading } = useMutation(createContributor);
+    const { mutateAsync, isLoading, isError } = useMutation(createContributor);
 
     async function createContributor() {
-        if (!contributor?.value || !request.currentWorkflowStep?.id) return;
+        if (!contributor?.value || !request.currentWorkflowStep?.id || !contributorTitle) return;
         await postContributor(
             contributor.value,
             request.id,
             request.currentWorkflowStep?.id,
-            scopeChange
+            scopeChange,
+            contributorTitle
         );
     }
 
-    useEffect(() => {
-        if (!contributor?.value) return;
-        const addContributor = async () => {
-            await mutateAsync();
-        };
-        addContributor();
-        setContributor(undefined);
-        /**
-         * APi call to add contributor then clear contributor
-         */
-    }, [contributor, mutateAsync]);
+    const addContributor = async () => {
+        await mutateAsync();
+        refetch && (await refetch());
+        setContributorTitle('');
+        setContributor(null);
+    };
 
     return (
         <div>
@@ -47,49 +46,51 @@ export function Workflow({ request }: WorkflowProps): JSX.Element {
                 <>
                     <div style={{ fontSize: '12px' }}>Add contributors</div>
                     <PCSPersonSearch person={contributor} setPerson={setContributor} />
-                    <div style={{ height: '30px' }}>{isLoading && <span>Loading...</span>}</div>
+                    {contributor !== null && (
+                        <Inline>
+                            <TextField
+                                id={'Contributor text'}
+                                placeholder={'Please enter contribution title'}
+                                value={contributorTitle}
+                                onChange={(e) => {
+                                    setContributorTitle(e.target.value);
+                                }}
+                            />
+                            <Button
+                                disabled={
+                                    contributorTitle === undefined || contributorTitle.length < 1
+                                }
+                                onClick={async () => await addContributor()}
+                            >
+                                Add
+                            </Button>
+                        </Inline>
+                    )}
+
+                    <div style={{ height: '30px' }}>
+                        {isLoading && <DotProgress color="primary" size={32} />}
+                        {isError && (
+                            <div
+                                style={{
+                                    fontSize: '14px',
+                                    color: `${tokens.colors.infographic.primary__energy_red_100.hex}`,
+                                }}
+                            >
+                                Failed to add contributor
+                            </div>
+                        )}
+                    </div>
                 </>
             )}
 
             {request.workflowSteps.map((x, index) => {
                 return (
                     <WorkflowStepContainer key={index}>
-                        <WorkflowStepViewContainer>
-                            <WorkflowIcon status={statusFunc(x)} number={x.order + 1} />
-                            {x.name}
-                        </WorkflowStepViewContainer>
-                        {index !== request.workflowSteps.length - 1 && (
-                            <>
-                                <Spacer />
-                                <div style={{ padding: '1.05px' }}>
-                                    <WorkflowLine colored={x.isCompleted} />
-                                </div>
-                                <Spacer />
-                            </>
-                        )}
-
-                        {x.contributors.map((x) => {
-                            return (
-                                <ContributorContainer key={x.id}>
-                                    <WorkflowStepViewContainer>
-                                        <WorkflowIcon
-                                            status={
-                                                x.contribution && x.contribution?.id
-                                                    ? 'Completed'
-                                                    : 'Active'
-                                            }
-                                            number={'#'}
-                                        />
-                                        <div title={`${x.person.firstName} ${x.person.lastName}`}>
-                                            Contribution
-                                        </div>
-                                    </WorkflowStepViewContainer>
-                                    <Spacer />
-                                    <WorkflowLine colored={true} />
-                                    <Spacer />
-                                </ContributorContainer>
-                            );
-                        })}
+                        <WorkflowCriterias
+                            step={x}
+                            lastStep={index === request.workflowSteps.length - 1}
+                        />
+                        <Contributors step={x} />
                     </WorkflowStepContainer>
                 );
             })}
@@ -97,100 +98,13 @@ export function Workflow({ request }: WorkflowProps): JSX.Element {
     );
 }
 
-const ContributorContainer = styled.div`
-    padding: 0px 32px;
-`;
-
 const WorkflowStepContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 `;
 
-const Spacer = styled.div`
-    height: 9px;
-    width: 7px;
-`;
-
-const WorkflowStepViewContainer = styled.div`
+const Inline = styled.span`
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin: 2px;
-`;
-
-interface WorkflowIconProps {
-    status: 'Completed' | 'Inactive' | 'Active';
-    number: number | string;
-}
-
-export const statusFunc = (item: WorkflowStep): 'Completed' | 'Inactive' | 'Active' => {
-    if (item.isCompleted) {
-        return 'Completed';
-    }
-    if (item.isCurrent) {
-        return 'Active';
-    } else {
-        return 'Inactive';
-    }
-};
-
-function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element {
-    switch (status) {
-        case 'Active':
-            return (
-                <GreenCircle>
-                    <span>{number}</span>
-                </GreenCircle>
-            );
-
-        case 'Completed':
-            return (
-                <Icon
-                    name="check_circle_outlined"
-                    height={'28.8'}
-                    width={'28.8'}
-                    color={tokens.colors.interactive.primary__resting.hex}
-                />
-            );
-
-        case 'Inactive':
-            return (
-                <GreyCircle>
-                    <span>{number}</span>
-                </GreyCircle>
-            );
-
-        default:
-            return (
-                <Icon
-                    name="close"
-                    color={tokens.colors.infographic.substitute__green_succulent.hex}
-                />
-            );
-    }
-}
-
-const GreenCircle = styled.div`
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    color: white;
-    font-size: 14px;
-    background: ${tokens.colors.interactive.primary__resting.hex};
-`;
-
-const GreyCircle = styled.div`
-    color: grey;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    border-radius: 50%;
-    width: 20px;
-    font-size: 14px;
-    height: 20px;
-    border: 2px solid grey;
 `;

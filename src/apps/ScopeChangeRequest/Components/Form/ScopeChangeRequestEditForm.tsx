@@ -30,9 +30,13 @@ export const ScopeChangeRequestEditForm = ({
             {
                 ...request,
                 ...formData.getChangedData(),
-                TagNumbers: request.TagNumbers || [],
-                SystemIds: request.SystemIds || [],
-                CommissioningPackageNumbers: request.CommissioningPackageNumbers || [],
+                tagNumbers: request.tags.map((x) => x.procosysNumber) || [],
+                systemIds: request.systems.map((x) => Number(x.procosysCode)) || [],
+                commissioningPackageNumbers:
+                    request.commissioningPackages.map((x) => x.procosysNumber) || [],
+                areaCodes: [],
+                disciplineCodes: [],
+                documentNumbers: request.documents.map((x) => x.id) || [],
             },
             scopeChange
         );

@@ -1,37 +1,22 @@
-import { HttpClient } from '@equinor/http-client';
+import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
 
-export const uploadAttachment = async (
-    requestId: string,
-    file: File,
-    client: HttpClient
-): Promise<string> => {
+export const uploadAttachment = async (requestId: string, file: File): Promise<void> => {
     const formData = new FormData();
-
+    const { scopeChange } = httpClient();
     formData.set('File', file, file.name);
-
-    const requestOptions: RequestInit = {
-        method: 'POST',
-        body: formData,
-    };
-
-    return await client
-        .fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${requestId}/attachments`,
-            requestOptions
-        )
-        .then((x) => x.json());
+    await scopeChange.uploadFile(
+        `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${requestId}/attachments`,
+        formData
+    );
 };
 
-export const deleteAttachment = async (
-    requestId: string,
-    attachmentId: string,
-    client: HttpClient
-): Promise<void> => {
+export const deleteAttachment = async (requestId: string, attachmentId: string): Promise<void> => {
+    const { scopeChange } = httpClient();
     const requestOptions: RequestInit = {
         method: 'DELETE',
     };
 
-    return await client
+    return await scopeChange
         .fetch(
             `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${requestId}/attachments/${attachmentId}`,
             requestOptions
@@ -39,18 +24,13 @@ export const deleteAttachment = async (
         .then((x) => x.json());
 };
 
-//const url = URL.createObjectURL(blob);
-
-export const getAttachment = async (
-    requestId: string,
-    attachmentId: string,
-    client: HttpClient
-): Promise<void> => {
+export const getAttachment = async (requestId: string, attachmentId: string): Promise<void> => {
+    const { scopeChange } = httpClient();
     const requestOptions: RequestInit = {
         method: 'GET',
     };
 
-    return await client
+    return await scopeChange
         .fetch(
             `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${requestId}/attachments/${attachmentId}`,
             requestOptions

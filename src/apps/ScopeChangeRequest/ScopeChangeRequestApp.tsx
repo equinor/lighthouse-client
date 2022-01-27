@@ -7,8 +7,6 @@ import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
-//[appApi.appConfig.tenant]
-
 export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.scopeChange]);
 
@@ -163,6 +161,14 @@ export function setup(appApi: ClientApi): void {
                     },
                 },
             },
+            {
+                key: 'isVoided',
+                type: {
+                    Cell: ({ cell }) => {
+                        return <div>{cell.value.content.isVoided.toString()}</div>;
+                    },
+                },
+            },
         ],
     });
 
@@ -179,14 +185,14 @@ export function setup(appApi: ClientApi): void {
                 return 'Inactive';
         }
     };
-    request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'title' });
+    request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'title', fieldSettings: {} });
 
     request.registerAnalyticsOptions(analyticsOptions);
 
     request.registerStatusItems(statusBarData);
 
     // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
-    // request.registerVisualEditorOptions({
+    // request.registerWorkflowEditorOptions({
     //     endpoint: `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflowId}/templates`,
     // });
 }
