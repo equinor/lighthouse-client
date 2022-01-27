@@ -1,4 +1,3 @@
-import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
 import { searchCommPkg } from './searchCommPkg';
 import { searchAreas } from './searchArea';

@@ -5,6 +5,7 @@ import { Workflow } from '../Workflow/Workflow';
 import { Field } from './Components/Field';
 import { useEffect, useMemo, useState } from 'react';
 import { patchScopeChange, patchWorkflowStep } from '../../Api';
+import { voidRequest } from '../../Api/ScopeChange/voidRequest';
 import { postContribution } from '../../Api/ScopeChange/postContribution';
 import { StidDocumentResolver } from './Components/StidDocumentResolver';
 import { Attachments } from './Components/Attachments';
@@ -121,6 +122,11 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
             return activeCriterias;
         }
     }, [request]);
+
+    const onVoidRequest = async () => {
+        await voidRequest(request.id);
+        await refetch();
+    };
 
     const onSignStep = async () => {
         if (selectedCriteria && request.currentWorkflowStep) {
@@ -320,9 +326,13 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                         {request.state === 'Open' && (
                             <>
                                 <span>
-                                    {/* <Button variant="outlined" color="danger">
-                                            Void Request
-                                        </Button> */}
+                                    <Button
+                                        onClick={() => onVoidRequest()}
+                                        variant="outlined"
+                                        color="danger"
+                                    >
+                                        {request.isVoided ? 'Unvoid request' : 'Void request'}
+                                    </Button>
                                 </span>
 
                                 <Inline>

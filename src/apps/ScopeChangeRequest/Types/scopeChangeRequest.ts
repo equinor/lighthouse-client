@@ -37,6 +37,7 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     modifiedAtUtc: string;
     modifiedBy: Person;
     state: ScopeChangeRequestState;
+    isVoided: boolean;
     currentWorkflowStep?: WorkflowStep;
     workflowSteps: WorkflowStep[];
     tags: Tag[];
