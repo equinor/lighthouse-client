@@ -7,10 +7,9 @@ import { convertUtcToLocalDate } from './Utils/utcDateToLocal';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
-    lastStep: boolean;
 }
 
-export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): JSX.Element => {
+export const WorkflowCriterias = ({ step }: WorkflowCriteriasProps): JSX.Element => {
     const stepStatus = statusFunc(step);
     return (
         <>
@@ -19,38 +18,35 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
                 const { day, month, year, hour, minute } = DateTime.fromJSDate(date).toObject();
                 const paddedMinutes = minute.toString().length === 1 ? `0${minute}` : minute;
                 return (
-                    <>
-                        <WorkflowStepViewContainer>
-                            <Inline>
-                                <WorkflowIcon
-                                    status={
-                                        stepStatus === 'Active'
-                                            ? criteriaStatus(criteria)
-                                            : stepStatus
+                    <WorkflowStepViewContainer key={criteria.id}>
+                        <Inline>
+                            <WorkflowIcon
+                                status={
+                                    stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus
+                                }
+                                number={step.order + 1}
+                            />
+                            <Divider />
+                            <WorkflowText>
+                                <Tooltip
+                                    title={
+                                        !step.isCompleted
+                                            ? `Signature from ${criteria.value} required.`
+                                            : `Signed by ${criteria.signedBy.firstName} ${criteria.signedBy.lastName}`
                                     }
-                                    number={step.order + 1}
-                                />
-                                <Divider />
-                                <WorkflowText>
-                                    <Tooltip
-                                        title={
-                                            !step.isCompleted
-                                                ? `Signature from ${criteria.value} required.`
-                                                : `Signed by ${criteria.signedBy.firstName} ${criteria.signedBy.lastName}`
-                                        }
-                                    >
-                                        <span>{step.name}</span>
-                                    </Tooltip>
-                                    {criteria.signedAtUtc ? (
-                                        <div
-                                            style={{ fontSize: '14px' }}
-                                        >{`${day}/${month}/${year} ${hour}:${paddedMinutes} - ${criteria.signedBy.firstName} ${criteria.signedBy.lastName} `}</div>
-                                    ) : (
-                                        <div style={{ fontSize: '14px' }}>{criteria.value}</div>
-                                    )}
-                                </WorkflowText>
-                            </Inline>
-                            {/* {x.isCurrent && !criteria.signedState && (
+                                >
+                                    <span>{step.name}</span>
+                                </Tooltip>
+                                {criteria.signedAtUtc ? (
+                                    <div
+                                        style={{ fontSize: '14px' }}
+                                    >{`${day}/${month}/${year} ${hour}:${paddedMinutes} - ${criteria.signedBy.firstName} ${criteria.signedBy.lastName} `}</div>
+                                ) : (
+                                    <div style={{ fontSize: '14px' }}>{criteria.value}</div>
+                                )}
+                            </WorkflowText>
+                        </Inline>
+                        {/* {x.isCurrent && !criteria.signedState && (
                             <Button
                                 variant="outlined"
                                 onClick={() => onSignStep(criteria.id)}
@@ -58,17 +54,7 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
                                 Sign
                             </Button>
                         )} */}
-                        </WorkflowStepViewContainer>
-                        {!lastStep && (
-                            <>
-                                {/* <Spacer />
-                                <div style={{ padding: '1.05px' }}>
-                                    <WorkflowLine colored={step.isCompleted} />
-                                </div>
-                                <Spacer /> */}
-                            </>
-                        )}
-                    </>
+                    </WorkflowStepViewContainer>
                 );
             })}
         </>
