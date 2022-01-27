@@ -23,6 +23,8 @@ export interface ParkViewContextState extends ParkViewState<unknown> {
     setGroupKeys: (groupKeys: string[]) => void;
     setCustomGroupKeys: (groupKeys: Record<string, unknown>) => void;
     setGardenKey: (groupeKey?: string) => void;
+    setCustomState: (customState: Record<string, unknown>) => void;
+    customState?: Record<string, unknown>;
 }
 
 export interface ParkViewProviderProps<T> {
@@ -36,6 +38,7 @@ export enum DataAction {
     setCustomGroupKeys = 'setCustomGroupKeys',
     setGardenKey = 'setGardenKey',
     setData = 'setData',
+    setCustomState = 'setCustomState',
 }
 
 export const ParkViewContext = createContext({} as ParkViewContextState);

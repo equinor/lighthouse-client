@@ -34,10 +34,14 @@ export function ParkViewProvider<T>({
     }
 
     useEffect(() => {
-        if (data && data.length > 0) {
-            dispatch(actions.setData(data as unknown[]));
-        }
-    }, [data]);
+        if (!(data && data?.length > 0)) return;
+
+        dispatch(actions.setData(data as unknown[]));
+
+        const customState = (parkViewOptions as GardenOptions<T>)?.customStateFunction?.(data);
+
+        customState && dispatch(actions.setCustomState(customState));
+    }, [data, parkViewOptions]);
 
     return (
         <ParkViewContext.Provider
@@ -63,6 +67,7 @@ export function useParkViewContext<T>() {
         groupByKeys: parkViewContext.groupByKeys as (keyof T)[],
         customView: parkViewContext.customViews as CustomView<T>,
         customGroupByKeys: parkViewContext.customGroupByKeys || {},
+        customState: parkViewContext.customState || {},
         status: parkViewContext.status as StatusView<T>,
         options: parkViewContext.options as Options<T>,
         data: parkViewContext.data as T[],

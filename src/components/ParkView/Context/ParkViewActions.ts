@@ -19,6 +19,13 @@ export const actions = {
     setData: createCustomAction(DataAction.setData, (data: unknown[]) => ({
         data,
     })),
+
+    setCustomState: createCustomAction(
+        DataAction.setCustomState,
+        (data: Record<string, unknown>) => ({
+            data,
+        })
+    ),
 };
 
 export type Actions = ActionType<typeof actions>;

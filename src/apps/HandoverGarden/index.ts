@@ -6,6 +6,7 @@ import { HandoverGroupByView } from './CustomViews/HandoverGroupByView';
 import { HandoverGardenItem } from './CustomViews/HandoverGardenItem';
 import { HandoverSideSheet } from './CustomViews/HandoverSideSheet';
 import { sortPackagesByStatus } from './utility/sortFunctions';
+import { getMaxVolumeFromData } from './utility/getKeyFunctions';
 
 export type HandoverCustomGroupByKeys = {
     weeklyDaily: 'Weekly' | 'Daily';
@@ -46,5 +47,6 @@ export function setup(appApi: ClientApi): void {
             customGroupByView: HandoverGroupByView,
             customItemView: HandoverGardenItem,
         },
+        customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
     });
 }

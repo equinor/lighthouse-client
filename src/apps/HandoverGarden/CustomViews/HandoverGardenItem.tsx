@@ -9,6 +9,7 @@ import { SizeIcons } from '../components/SizeIcons';
 import { StatusCircle } from '../components/StatusCircle';
 import { FlagIcon } from '../components/FlagIcon';
 import { WarningIcon } from '../components/WarningIcon';
+import { useParkViewContext } from '../../../components/ParkView/Context/ParkViewProvider';
 
 type HandoverItemProps = { backgroundColor: string; textColor: string };
 
@@ -61,12 +62,21 @@ export function HandoverExpandedView({ data }: { data: HandoverPackage }): JSX.E
     );
 }
 
+const itemSize = (volume: number, maxVolume: number) => {
+    if (maxVolume <= 0) return 'small';
+    const percentage = (volume / maxVolume) * 100;
+    return percentage > 66 ? 'large' : percentage > 33 ? 'medium' : 'small';
+};
+
 export function HandoverGardenItem({
     data,
     itemKey,
     onClick,
     columnExpanded,
 }: CustomItemView<HandoverPackage>): JSX.Element {
+    const { customState } = useParkViewContext();
+    const size = itemSize(data.volume, (customState?.['maxVolume'] as number) || 0);
+
     const status = getStatus(data);
     const backgroundColor = useMemo(() => createProgressGradient(data, status), [data, status]);
     const textColor = getTextColor(status);
@@ -79,7 +89,7 @@ export function HandoverGardenItem({
     return (
         <HandoverItem backgroundColor={backgroundColor} textColor={textColor} onClick={onClick}>
             <Icons>
-                <SizeIcons size={'medium'} status={status} />
+                <SizeIcons size={size} status={status} />
                 <FlagIcon color={textColor} />
             </Icons>
             <MidSection expanded={columnExpanded}>

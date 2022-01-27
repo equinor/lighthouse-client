@@ -11,6 +11,8 @@ export function GardenReducer(state: any, action: Actions) {
             return { ...state, groupByKeys: action.groupKeys };
         case getType(actions.setCustomGroupKeys):
             return { ...state, customGroupByKeys: action.groupKeys };
+        case getType(actions.setCustomState):
+            return { ...state, customState: action.data };
 
         case getType(actions.setGardenKey):
             return { ...state, gardenKey: action.gardenKey };

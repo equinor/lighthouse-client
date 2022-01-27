@@ -68,3 +68,11 @@ export const getDateKey: GetKeyFunction<HandoverPackage> = (item, key, groupBy) 
 };
 
 export const getProgressKey: GetKeyFunction<HandoverPackage> = (item) => `${item.progress || '0'}%`;
+
+export const getMaxVolumeFromData = (data: HandoverPackage[]): number => {
+    const volumes = data.map((d) => d.volume).sort((a, b) => a - b);
+
+    volumes.pop();
+    volumes.shift();
+    return volumes.reduce((a, b) => a + b, 0) / volumes.length;
+};
