@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import { Criteria, WorkflowStep } from '../../Types/scopeChangeRequest';
 import { WorkflowIcon } from './WorkflowIcon';
+import { convertUtcToLocalDate } from './Utils/utcDateToLocal';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -77,8 +78,7 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
 const statusFunc = (item: WorkflowStep): WorkflowStatus => {
     if (item.isCompleted) {
         return 'Completed';
-    }
-    if (item.isCurrent) {
+    } else if (item.isCurrent) {
         return 'Active';
     } else {
         return 'Inactive';
@@ -119,6 +119,3 @@ const Inline = styled.span`
     display: flex;
     align-items: center;
 `;
-
-const convertUtcToLocalDate = (date: Date) =>
-    new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);

@@ -116,7 +116,7 @@ export interface Contributor {
     modifiedBy: Person;
     plant: string;
     id: string;
-    messageToContributor: string;
+    instructionsToContributor: string;
     person: Person;
     contribution: Contribution;
 }

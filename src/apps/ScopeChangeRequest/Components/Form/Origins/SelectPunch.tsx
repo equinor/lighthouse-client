@@ -16,7 +16,6 @@ export const SelectPunch = ({ setOriginId }: SelectPunchProps): JSX.Element => {
     const { procosys } = useHttpClient();
 
     async function validatePunch(plNumber) {
-        console.log('Validating punch');
         setIsChecking(true);
 
         try {

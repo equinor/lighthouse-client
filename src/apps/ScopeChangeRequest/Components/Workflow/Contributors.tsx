@@ -1,9 +1,7 @@
 import { Tooltip } from '@equinor/eds-core-react';
-import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import { Contributor, WorkflowStep } from '../../Types/scopeChangeRequest';
 import { WorkflowIcon } from './WorkflowIcon';
-import { WorkflowLine } from './WorkflowLine';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -28,7 +26,7 @@ export const Contributors = ({ step }: ContributorsProps): JSX.Element => {
                                 <Spacer />
                                 <WorkflowText>
                                     <Tooltip title={`${y.person.firstName} ${y.person.lastName}`}>
-                                        <div>{y.messageToContributor}</div>
+                                        <div>{y.instructionsToContributor}</div>
                                     </Tooltip>
                                     <div style={{ fontSize: '14px' }}>
                                         {y.person.firstName} {y.person.lastName}
@@ -89,6 +87,3 @@ function contributorStatus(contributor: Contributor, currentStep: boolean): Work
         return 'Failed';
     }
 }
-
-const convertUtcToLocalDate = (date: Date) =>
-    new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000);

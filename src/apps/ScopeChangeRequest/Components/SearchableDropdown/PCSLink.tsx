@@ -195,7 +195,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
     );
 };
 
-function getIcon(x: TypedSelectOption): JSX.Element {
+function getIcon(x: TypedSelectOption): JSX.Element | null {
     if (x.type === 'area') {
         return <Icon name="pin_drop" color={tokens.colors.interactive.primary__resting.hex} />;
     }
@@ -207,7 +207,7 @@ function getIcon(x: TypedSelectOption): JSX.Element {
     if (x.type === 'tag') {
         return <Icon name="tag" color={tokens.colors.interactive.primary__resting.hex} />;
     }
-    return <></>;
+    return null;
 }
 
 const Inline = styled.span`
@@ -227,7 +227,6 @@ const Chip = styled.div`
     background-color: ${tokens.colors.ui.background__light.hex};
     border-radius: 35%;
 `;
-// justify-content: space-between;
 
 const Column = styled.div`
     display: flex;

@@ -1,7 +1,7 @@
 import { HttpClient } from '@equinor/http-client';
 
 interface ContributorBody {
-    messageToContributor: string;
+    instructionsToContributor: string;
     oid: string;
 }
 
@@ -13,7 +13,7 @@ export const addContributor = async (
     contributorTitle: string
 ): Promise<void> => {
     const payload: ContributorBody = {
-        messageToContributor: contributorTitle,
+        instructionsToContributor: contributorTitle,
         oid: azureOid,
     };
     const requestOptions = {

@@ -52,7 +52,6 @@ export const WorkflowEditor = ({
     }, [endpoint]);
 
     useEffect(() => {
-        console.log(workflow);
         if (!workflow) return;
         fetchWorkflowTemplates();
     }, [workflow]);

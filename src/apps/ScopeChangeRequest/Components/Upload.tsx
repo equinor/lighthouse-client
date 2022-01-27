@@ -9,9 +9,9 @@ interface UploadProps {
     setAttachments: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
+const maxSizeInBytes = 100 * 1000 ** 2;
 export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Element => {
     const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
-    const maxSize = 100 * 1000 ** 2;
     const addFile = useCallback(
         async (file: File) => {
             setAttachments((prev) => [...prev, file]);
@@ -36,7 +36,7 @@ export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Elemen
 
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
-        maxSize: maxSize,
+        maxSize: maxSizeInBytes,
     });
 
     return (
@@ -51,7 +51,9 @@ export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Elemen
                     <input {...getInputProps()} />
 
                     <span style={{ fontSize: '16px' }}>Drop files or browse to upload</span>
-                    <span style={{ fontSize: '12px' }}>Max size: {maxSize / 1000 ** 2}MB</span>
+                    <span style={{ fontSize: '12px' }}>
+                        Max size: {maxSizeInBytes / 1000 ** 2}MB
+                    </span>
                 </DropHere>
             </AttachmentsContainer>
             {attachments.map((attachment, i) => {
@@ -70,7 +72,7 @@ export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Elemen
                         <Inline>
                             <div>
                                 {attachment.size && (attachment?.size / 1000 ** 2).toFixed(2)}MB /
-                                {maxSize / 1000 ** 2}MB
+                                {maxSizeInBytes / 1000 ** 2}MB
                             </div>
                             <Icon
                                 style={{ margin: '0em 0.5em' }}

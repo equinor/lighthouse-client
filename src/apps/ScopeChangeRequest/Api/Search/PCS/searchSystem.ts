@@ -26,7 +26,7 @@ export async function searchSystems(
                 })
             );
     } catch (e) {
-        console.log(e);
+        console.error(e);
     }
     return selectOptions;
 }
