@@ -1,11 +1,13 @@
-import { Button, Icon } from '@equinor/eds-core-react';
+import { useEffect, useMemo, useState } from 'react';
+import { useMutation } from 'react-query';
+import styled from 'styled-components';
+
+import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useHttpClient } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
-import { useEffect, useMemo, useState } from 'react';
-import { useMutation } from 'react-query';
-import styled from 'styled-components';
+
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
 import { getScopeChangeById, postScopeChange } from '../../Api/';
 import { uploadAttachment } from '../../Api/ScopeChange/attachment';
@@ -15,10 +17,14 @@ import { Document } from '../../Api/STID/Types/Document';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { ScopeChangeSideSheet } from '../CustomSidesheet';
-import { OriginLink } from '../SearchableDropdown/OriginLink';
+
+import { Field } from '../DetailView/Components/Field';
+import { Upload } from '../Upload';
 import { PCSLink } from '../SearchableDropdown/PCSLink';
-import { StidSelector } from '../SearchableDropdown/stidSelector';
 import { StidDocument } from '../StidDocument';
+import { StidSelector } from '../STID';
+import { Origin as OriginType } from '../../Types/scopeChangeRequest';
+import { Origin } from './Origin';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -33,52 +39,55 @@ export const ScopeChangeRequestForm = ({
     closeScrim,
     setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
-        category: 'Hidden carryover',
-        origin: 'Query',
-        phase: 'IC',
-    });
-    const [origin, setOrigin] = useState<TypedSelectOption | undefined>();
+    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
+
+    const [origin, setOrigin] = useState<OriginType | undefined>();
     const [stidDocuments, setStidDocuments] = useState<Document[]>([]);
     const [attachments, setAttachments] = useState<File[]>([]);
+    const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
     const removeDocument = (docNo: string) =>
         setStidDocuments((prev) => prev.filter((x) => x.docNo !== docNo));
 
     const appendDocuments = (documents: Document[]) =>
         setStidDocuments((prev) => [...prev, ...documents]);
 
-    const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
+    const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
     const { scopeChange } = useHttpClient();
 
     const createScopeChangeMutation = async ({ draft }: CreateScopeChangeParams) => {
+        if (!origin?.type) return;
         const tags = filterElementsByType(relatedObjects, 'tag');
         const systems = filterElementsByType(relatedObjects, 'system');
         const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
-        // const areas = filterElementsByType(relatedObjects, 'area');
-        // const disciplines = filterElementsByType(relatedObjects, 'discipline');
+        const areas = filterElementsByType(relatedObjects, 'area');
+        const disciplines = filterElementsByType(relatedObjects, 'discipline');
 
         const scID = await postScopeChange(
             {
                 ...formData.data,
-                TagNumbers: tags?.map((x) => x.value) || [],
-                SystemIds: systems?.map((x) => x.value) || [],
-                CommissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
+                origin: origin.type,
+                tagNumbers: tags?.map((x) => x.value) || [],
+                systemIds: systems?.map((x) => Number(x.value)) || [],
+                commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
                 documentNumbers: stidDocuments.map((x) => x.docNo) || [],
+                areaCodes: areas.map((x) => x.value) || [],
+                disciplineCodes: disciplines.map((x) => x.value) || [],
             },
             draft,
             scopeChange
         );
         if (scID) {
             attachments.forEach(async (attachment) => {
-                await uploadAttachment(scID, attachment, scopeChange);
+                await uploadAttachment(scID, attachment);
             });
+            setIsRedirecting(true);
 
             redirect(scID);
         }
     };
 
-    const { mutate, error } = useMutation(createScopeChangeMutation, {
+    const { mutate, isLoading, error } = useMutation(createScopeChangeMutation, {
         retry: 2,
         retryDelay: 2,
     });
@@ -91,12 +100,16 @@ export const ScopeChangeRequestForm = ({
     };
 
     useEffect(() => {
-        setHasUnsavedChanges(formData.getChangedData() !== undefined || relatedObjects.length > 0);
-    }, [formData, setHasUnsavedChanges, relatedObjects]);
+        setHasUnsavedChanges(
+            formData.getChangedData() !== undefined ||
+            relatedObjects.length > 0 ||
+            stidDocuments.length > 0
+        );
+    }, [formData, setHasUnsavedChanges, relatedObjects, stidDocuments.length]);
 
     const SubmitButton = () => {
         return (
-            <Button disabled={!isValidForm} onClick={() => mutate({ draft: false })}>
+            <Button disabled={!isValidForm || isLoading} onClick={() => mutate({ draft: false })}>
                 Initiate request
             </Button>
         );
@@ -105,18 +118,30 @@ export const ScopeChangeRequestForm = ({
     const SaveButton = () => {
         return (
             <Button
-                disabled={!isValidForm}
+                disabled={!isValidForm || isLoading}
                 variant={'outlined'}
                 onClick={() => mutate({ draft: true })}
             >
-                Save as draft
+                {isLoading ? <CircularProgress value={0} size={16} /> : <div>Save as draft</div>}
             </Button>
         );
     };
 
     const isValidForm = useMemo(() => {
-        return formData.isValidForm() && origin?.value && relatedObjects.length > 0;
-    }, [formData, origin?.value, relatedObjects]);
+        return (
+            formData.isValidForm() &&
+            (origin?.type === 'None' || origin?.id) &&
+            relatedObjects.length > 0
+        );
+    }, [formData, origin, relatedObjects]);
+
+    if (isRedirecting) {
+        return (
+            <LoadingPage>
+                <CircularProgress value={0} size={48} />
+            </LoadingPage>
+        );
+    }
 
     return (
         <>
@@ -135,19 +160,18 @@ export const ScopeChangeRequestForm = ({
                 buttons={[SubmitButton, SaveButton]}
                 customFields={[
                     {
-                        Component: OriginLink,
+                        Component: Origin,
                         order: 3,
                         title: 'Origin',
                         props: {
-                            originId: origin,
-                            setOriginId: setOrigin,
-                            originType: formData.fields.origin?.value,
+                            setOrigin: setOrigin,
                         },
                     },
+
                     {
                         Component: PCSLink,
                         order: 6,
-                        title: 'Tag / comm pkg / system',
+                        title: 'References',
                         props: {
                             relatedObjects: relatedObjects,
                             setRelatedObjects: setRelatedObjects,
@@ -157,7 +181,7 @@ export const ScopeChangeRequestForm = ({
             >
                 <Inline>
                     <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Documents</div>
-                    <StidSelector appendDocuments={appendDocuments} />
+                    <StidSelector appendDocuments={appendDocuments} documents={stidDocuments} />
                 </Inline>
                 {stidDocuments &&
                     stidDocuments.map((x) => {
@@ -180,11 +204,12 @@ export const ScopeChangeRequestForm = ({
                         );
                     })}
 
-                {/* <Field
+                <Field
                     label="Attachments"
                     value={<Upload attachments={attachments} setAttachments={setAttachments} />}
-                /> */}
+                />
             </GeneratedForm>
+
             {error && <p> Something went wrong, please check your connection and try again</p>}
         </>
     );
@@ -210,6 +235,14 @@ const Chip = styled.div`
     align-items: center;
     font-size: 16px;
     padding: 5px;
+`;
+
+const LoadingPage = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 650px;
 `;
 
 function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes) {
