@@ -16,7 +16,6 @@ interface PCSLinkProps {
 }
 
 export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JSX.Element => {
-    const { procosys } = useHttpClient();
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const debounce = useRef(new Date());
 
@@ -46,23 +45,14 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
     ) => {
         const options: TypedSelectOption[] = [];
         try {
-            await (await searchPcs(inputValue, 'system', procosys)).forEach((x) => options.push(x));
-            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-                sort(a, b, inputValue)
-            );
-
-            if (sorted.length > 0) {
-                callback(sorted);
-            }
+            await (await searchPcs(inputValue, 'system')).forEach((x) => options.push(x));
         } catch (e) {
             console.warn(e);
             setApiErrors((prev) => [...prev, 'systems']);
         }
 
         try {
-            await (
-                await searchPcs(inputValue, 'commpkg', procosys)
-            ).forEach((x) => options.push(x));
+            await (await searchPcs(inputValue, 'commpkg')).forEach((x) => options.push(x));
             const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
                 sort(a, b, inputValue)
             );
@@ -76,7 +66,35 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
         }
 
         try {
-            await (await searchPcs(inputValue, 'tag', procosys)).forEach((x) => options.push(x));
+            await (await searchPcs(inputValue, 'area')).forEach((x) => options.push(x));
+            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+                sort(a, b, inputValue)
+            );
+
+            if (sorted.length > 0) {
+                callback(sorted);
+            }
+        } catch (e) {
+            console.warn(e);
+            setApiErrors((prev) => [...prev, 'areas']);
+        }
+
+        try {
+            await (await searchPcs(inputValue, 'discipline')).forEach((x) => options.push(x));
+            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+                sort(a, b, inputValue)
+            );
+
+            if (sorted.length > 0) {
+                callback(sorted);
+            }
+        } catch (e) {
+            console.warn(e);
+            setApiErrors((prev) => [...prev, 'disciplines']);
+        }
+
+        try {
+            await (await searchPcs(inputValue, 'tag')).forEach((x) => options.push(x));
             const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
                 sort(a, b, inputValue)
             );
@@ -88,6 +106,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
             console.warn(e);
             setApiErrors((prev) => [...prev, 'tags']);
         }
+        callback([]);
     };
 
     return (
@@ -153,8 +172,10 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                     {objects && objects.length > 0 && (
                         <>
                             {objects.map((x) => {
+                                const TypeIcon = getIcon(x);
                                 return (
                                     <Chip key={x.value}>
+                                        {TypeIcon}
                                         {x.label}
                                         <Icon
                                             color={tokens.colors.interactive.primary__resting.rgba}
@@ -174,6 +195,21 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
     );
 };
 
+function getIcon(x: TypedSelectOption): JSX.Element | null {
+    if (x.type === 'area') {
+        return <Icon name="pin_drop" color={tokens.colors.interactive.primary__resting.hex} />;
+    }
+
+    if (x.type === 'discipline') {
+        return <Icon name="school" color={tokens.colors.interactive.primary__resting.hex} />;
+    }
+
+    if (x.type === 'tag') {
+        return <Icon name="tag" color={tokens.colors.interactive.primary__resting.hex} />;
+    }
+    return null;
+}
+
 const Inline = styled.span`
     display: flex;
     flex-direction: row;
@@ -184,10 +220,12 @@ const Inline = styled.span`
 const Chip = styled.div`
     text-align: center;
     display: flex;
-    justify-content: space-between;
+    width: fit-content;
     align-items: center;
     font-size: 16px;
     padding: 5px;
+    background-color: ${tokens.colors.ui.background__light.hex};
+    border-radius: 35%;
 `;
 
 const Column = styled.div`

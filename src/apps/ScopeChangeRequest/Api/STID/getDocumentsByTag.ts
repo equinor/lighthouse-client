@@ -15,7 +15,7 @@ export async function getDocumentsByTag(
     //TODO:
     //docCategory?: string
 ): Promise<Document[]> {
-    const baseUrl = 'https://stidapi.equinor.com';
+    const baseUrl = 'https://stidapitest.equinor.com';
     const uri = `${instCode}/tag/document-refs`;
     const queryParameters = `tagNo=${encodeURIComponent(tagNo)}&noContentAs200=true`;
     const url = `${baseUrl}/${uri}?${queryParameters}`;
