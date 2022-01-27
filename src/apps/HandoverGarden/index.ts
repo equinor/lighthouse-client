@@ -5,6 +5,7 @@ import { fieldSettings } from './utility/gardenSetup';
 import { HandoverGroupByView } from './CustomViews/HandoverGroupByView';
 import { HandoverGardenItem } from './CustomViews/HandoverGardenItem';
 import { HandoverSideSheet } from './CustomViews/HandoverSideSheet';
+import { sortPackagesByStatus } from './utility/sortFunctions';
 
 export type HandoverCustomGroupByKeys = {
     weeklyDaily: 'Weekly' | 'Daily';
@@ -24,7 +25,7 @@ export function setup(appApi: ClientApi): void {
         const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
         [];
 
-        return parsedResponse;
+        return parsedResponse.sort(sortPackagesByStatus);
     });
 
     // handover.registerFilterOptions({});

@@ -70,7 +70,8 @@ export function groupBy<T, K extends keyof T>(
             status,
             groupDescriptionFunc,
             fieldSettings,
-            true
+            true,
+            customGroupByKeys
         );
         if (nextKeys.length > 0) data[key].items = [];
     });
