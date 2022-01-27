@@ -161,6 +161,14 @@ export function setup(appApi: ClientApi): void {
                     },
                 },
             },
+            {
+                key: 'isVoided',
+                type: {
+                    Cell: ({ cell }) => {
+                        return <div>{cell.value.content.isVoided.toString()}</div>;
+                    },
+                },
+            },
         ],
     });
 
