@@ -40,10 +40,9 @@ const onClickDownloadAttachment = async (
 
             // Start download
             link.click();
-            if (link.parentNode) {
-                // Clean up and remove the link
-                link.parentNode.removeChild(link);
-            }
+
+            //cleanup
+            link.remove();
         });
 };
 
