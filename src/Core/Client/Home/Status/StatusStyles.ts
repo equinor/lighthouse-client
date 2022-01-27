@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.section`
     margin: 0.5rem;
-    height: 600px;
+    height: 800px;
     width: 100%;
     padding: 1rem;
     box-sizing: border-box;
@@ -11,7 +11,7 @@ export const Wrapper = styled.section`
 
     background-image: url(/images/boat.png);
     background-repeat: no-repeat;
-    background-size: 90%;
+    /* background-size: cover; */
     background-position-x: center;
     background-blend-mode: multiply;
     background-position-y: 60px;
