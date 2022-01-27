@@ -8,6 +8,8 @@ export const searchNCR = async (
     client: HttpClient
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
+    const searchIdDev = 103747;
+    const searchIdProd = 105600;
 
     const search: PCSStructure[] = [
         {
@@ -23,7 +25,7 @@ export const searchNCR = async (
     try {
         await client
             .fetch(
-                `https://procosyswebapi.equinor.com/api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105600&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
+                `https://procosyswebapi.equinor.com/api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${searchIdProd}&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
                 requestOptions
             )
             .then((response) => response.json())
