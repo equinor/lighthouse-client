@@ -16,15 +16,15 @@ const Progress = styled.div`
     line-height: 23px;
 `;
 
-const ProgressBar = styled.div`
+const ProgressBar = styled.div<ProgressSpanProps>`
     height: 100%;
     display: block;
     color: rgb(255, 251, 251);
     position: absolute;
-    width: ${({ percent }: ProgressSpanProps) => percent + '%'};
+    width: ${(props) => props.percent + '%'};
     z-index: -1;
-    background-color: ${({ percent }: ProgressSpanProps) =>
-        percent <= 33 ? 'red' : percent <= 66 ? 'orange' : 'green'};
+    background-color: ${(props) =>
+        props.percent <= 33 ? 'red' : props.percent <= 66 ? 'orange' : 'green'};
 `;
 
 export const ProgressCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
