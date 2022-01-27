@@ -1,3 +1,4 @@
+import { DotProgress } from '@equinor/eds-core-react';
 import { useHttpClient } from '@equinor/portal-client';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -41,7 +42,9 @@ export const StidDocumentResolver = ({
         <>
             <DocumentWrapper>
                 {documents.length !== inputDocuments.length && (
-                    <LoadingMessage>Loading documents....</LoadingMessage>
+                    <LoadingMessage>
+                        <DotProgress color="primary" />
+                    </LoadingMessage>
                 )}
                 {documents.map((x) => {
                     return <StidVisual key={x.docNo} document={x} />;
