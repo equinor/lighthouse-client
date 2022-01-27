@@ -9,7 +9,7 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     //workflow
 }
 
-export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'None' | 'DCN';
+export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCN';
 
 export interface Origin {
     type: OriginType;
@@ -23,9 +23,10 @@ export interface ScopeChangeBaseModel {
     title: string;
     description: string;
     phase: string;
-    origin: OriginType;
     category: string;
     estimatedChangeHours: number;
+    originSourceId?: string;
+    originSource: OriginType;
     actualChangeHours: number;
     guesstimateHours: string;
     guesstimateDescription: string;

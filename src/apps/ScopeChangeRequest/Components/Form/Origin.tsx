@@ -56,7 +56,7 @@ export const Origin = ({ setOrigin }: OriginProps): JSX.Element => {
         <Wrapper>
             <SingleSelect
                 label=""
-                items={['NCR', 'DCN', 'Query', 'Punch', 'None']}
+                items={['NCR', 'DCN', 'Query', 'Punch', 'NotApplicable']}
                 handleSelectedItemChange={(e) => setOriginType(e.selectedItem as OriginType)}
             />
             <div style={{ width: '50px' }}></div>

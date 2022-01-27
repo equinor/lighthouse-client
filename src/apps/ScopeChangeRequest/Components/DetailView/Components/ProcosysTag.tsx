@@ -29,7 +29,7 @@ export const ProcosysTags = ({ tags }: TagsProps): JSX.Element => {
 
 const Link = styled.a`
     font-size: 16px;
-    text-decoration: none;
+    text-decoration: underline;
     color: ${tokens.colors.interactive.primary__resting.hex};
 `;
 

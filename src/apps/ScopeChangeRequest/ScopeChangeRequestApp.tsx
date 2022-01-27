@@ -21,7 +21,8 @@ export function setup(appApi: ClientApi): void {
 
     request.registerDataSource(async () => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
-        // const project = 'L.O532C.002';
+        // const projectName = 'L.O532C.002';
+        // const projectId = 177433
         const response = await api.fetch(
             `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`
         );
@@ -78,8 +79,8 @@ export function setup(appApi: ClientApi): void {
         objectIdentifierKey: 'id',
         enableSelectRows: true,
         hiddenColumns: [
-            'currentWorkflowStep',
             'id',
+            'currentWorkflowStep',
             'attachments',
             'systems',
             'tags',
@@ -90,6 +91,7 @@ export function setup(appApi: ClientApi): void {
             'createdBy',
             'createdAtUtc',
             'modifiedBy',
+            'originSourceId',
         ],
         columnOrder: [
             'title',
@@ -110,7 +112,7 @@ export function setup(appApi: ClientApi): void {
             { key: 'estimatedChangeHours', title: 'Estimate hours' },
             { key: 'actualChangeHours', title: 'Actual' },
             { key: 'category', title: 'Change category' },
-            { key: 'origin', title: 'Change origin' },
+            { key: 'originSource', title: 'Change origin' },
             { key: 'createdAtUtc', title: 'Created at' },
             { key: 'createdBy', title: 'Created by' },
             { key: 'modifiedAtUtc', title: 'Last updated' },
@@ -177,7 +179,11 @@ export function setup(appApi: ClientApi): void {
                 return 'Inactive';
         }
     };
-    request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'title', fieldSettings: {} });
+    request.registerGardenOptions({
+        gardenKey: 'originSource',
+        itemKey: 'title',
+        fieldSettings: {},
+    });
 
     request.registerAnalyticsOptions(analyticsOptions);
 
@@ -192,12 +198,8 @@ export function setup(appApi: ClientApi): void {
 export const analyticsOptions: AnalyticsOptions<ScopeChangeRequest> = {
     section1: {
         chart1: {
-            type: 'barChart',
-            options: {
-                categoryKey: 'origin',
-                nameKey: 'category',
-                stacked: true,
-            },
+            type: 'lineChart',
+            options: { categoryKey: 'originSource', nameKey: 'category' },
         },
     },
 };

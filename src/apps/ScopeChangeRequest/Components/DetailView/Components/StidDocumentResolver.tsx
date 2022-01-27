@@ -13,7 +13,7 @@ interface StidDocumentResolverProps {
 export const StidDocumentResolver = ({
     inputDocuments,
 }: StidDocumentResolverProps): JSX.Element => {
-    const { customHttpClient } = useHttpClient('1734406c-3449-4192-a50d-7c3a63d3f57d/.default');
+    const { customHttpClient } = useHttpClient('b827c278-12de-47a0-b789-c8d11e3b9571/.default');
 
     useEffect(() => {
         const resolveDocuments = async () => {

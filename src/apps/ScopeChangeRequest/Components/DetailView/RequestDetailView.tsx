@@ -23,6 +23,7 @@ import { applyEDSTheme } from '../SearchableDropdown/applyEds';
 import { useClientContext } from '@equinor/portal-client';
 import { useHttpClient } from '@equinor/portal-client';
 import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { OriginLink } from './Components/OriginLink';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
@@ -51,7 +52,8 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
             guesstimateDescription: request.guesstimateDescription,
             guesstimateHours: request.guesstimateHours,
             id: request.id,
-            origin: request.origin,
+            originSource: request.originSource,
+            originSourceId: request.originSourceId,
             phase: request.phase,
             title: request.title,
             commissioningPackageNumbers:
@@ -225,7 +227,9 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                         label={'Change origin'}
                         customLabel={{ fontSize: '12px' }}
                         customValue={{ fontSize: '16px' }}
-                        value={request.origin}
+                        value={
+                            <OriginLink type={request.originSource} id={request.originSourceId} />
+                        }
                     />
                 </SectionRow>
                 <Field
