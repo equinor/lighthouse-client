@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { WoMapCount } from '..';
 import { tokens } from '@equinor/eds-tokens';
 import { useCallback } from 'react';
-import { SidesheetContent } from '@equinor/Diagrams';
 import { openSidesheet } from '@equinor/sidesheet';
+import { SidesheetContent } from '../../SidesheetContent';
 
 enum CircleColor {
     WARNING,
@@ -46,7 +46,7 @@ export const WoNumbersDisplay = <T extends unknown>({
     filtered,
     groupedKey,
     keysOfFiltered,
-}: WoNumbersDisplayProps<T>) => {
+}: WoNumbersDisplayProps<T>): JSX.Element => {
     const onClick = useCallback((item: T[]) => {
         openSidesheet(SidesheetContent, { data: item });
     }, []);

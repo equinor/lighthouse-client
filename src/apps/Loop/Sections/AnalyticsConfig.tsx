@@ -63,9 +63,7 @@ export const analyticsOptions: AnalyticsOptions<Loop> = {
     section3: {
         chart1: {
             type: 'customVisual',
-            options: {
-                component: Component,
-            },
+            component: Component,
         },
     },
 };

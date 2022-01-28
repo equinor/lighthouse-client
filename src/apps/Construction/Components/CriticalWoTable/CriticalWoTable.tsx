@@ -4,7 +4,7 @@ import { createWoStatusMap, filterWoMap } from './utils';
 import { WoNumbersDisplay } from './components/WoNumbers';
 import { SingleSelect } from '@equinor/eds-core-react';
 import { CustomVisualArgs } from '@equinor/Diagrams';
-import { WorkOrder } from '../../mocData/mockData';
+import { WorkOrder } from '../../Types';
 
 const Container = styled.div`
     height: 100%;
@@ -37,12 +37,15 @@ const HLine = styled.hr`
     background-color: #e7e0e0;
     height: 1px;
 `;
-
+type CriticalWoTableProps<T> = CustomVisualArgs<T> & {
+    enableGrouping?: boolean;
+    initialGroupBy?: keyof T;
+};
 export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = WorkOrder>({
     data,
     enableGrouping = false,
-    initialGroupBy,
-}: CustomVisualArgs<T>) => {
+    initialGroupBy = 'disciplineDescription',
+}: CriticalWoTableProps<T>) => {
     const [groupBy, setGroupBy] = useState<keyof T>('disciplineDescription');
     const woStatusMap = createWoStatusMap(data, groupBy);
     const filtered = filterWoMap(woStatusMap);

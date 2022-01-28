@@ -1,5 +1,4 @@
 import React from 'react';
-import { ConstructionGraphOptions } from '..';
 import { BarChartOptions } from '../Visuals/BarVisual/Types/barVisualOptions';
 import { HorizontalBarChartOptions } from '../Visuals/HorizontalBarVisual/Types/barVisualOptions';
 import { LineChartOptions } from '../Visuals/LineVisual/LineChartVisual';
@@ -20,11 +19,6 @@ interface ControlledTimeBarChart<T> {
     options: TimeBarChartOptions<T>;
 }
 
-interface ConstructionChart<T> {
-    type: 'constructionChart';
-    options: ConstructionGraphOptions<T>;
-}
-
 interface Table<T> {
     type: 'table';
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -36,22 +30,22 @@ interface HorizontalBarChart<T> {
     type: 'horizontalBarChart';
     options: HorizontalBarChartOptions<T>;
 }
-
-interface CustomVisual<
-    T,
-    D extends React.ComponentType<CustomVisualArgs<T>> = React.ComponentType<CustomVisualArgs<T>>
-> {
-    type: 'customVisual';
-    component: D;
-    options: CustomVisualOptions<D>;
-}
 export type CustomVisualArgs<T> = {
     data: T[];
-    other: {};
+    [x: string]: unknown;
 };
-interface CustomVisualOptions<D extends React.ComponentType<any>> {
-    componentProps?: React.ComponentPropsWithoutRef<D>;
+interface CustomVisual<T> {
+    type: 'customVisual';
+    /** Component to render. Must accept `data: T[]` as a prop.
+     *  All other props must be optional
+     */
+    component: React.FC<CustomVisualArgs<T>>;
+    /** Props are passed to the given component.
+     * @todo: better typing?
+     */
+    componentProps?: Record<string, unknown>;
 }
+
 interface Default {
     type: 'default';
 }
@@ -63,13 +57,12 @@ export type Options<T> =
     | CustomVisual<T>
     | HorizontalBarChart<T>
     | Table<T>
-    | ConstructionChart<T>
     | Default;
 
 interface Section<T> {
-    chart1?: CustomVisual<T>;
-    chart2?: CustomVisual<T>;
-    chart3?: CustomVisual<T>;
+    chart1?: Options<T>;
+    chart2?: Options<T>;
+    chart3?: Options<T>;
 }
 
 interface AnalyticsSections<T> {

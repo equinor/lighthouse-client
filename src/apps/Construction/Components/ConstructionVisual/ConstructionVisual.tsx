@@ -1,5 +1,4 @@
-import { ExoticComponent, useMemo, useRef, useState } from 'react';
-import { ConstructionGraphProps } from './Types/constructionVisualOptions';
+import { useMemo, useRef, useState } from 'react';
 import { Chart as ChartJS, ChartOptions, ChartData, registerables } from 'chart.js';
 import { Chart as ReactChart, getDatasetAtEvent, getElementsAtEvent } from 'react-chartjs-2';
 import zoomPlugin from 'chartjs-plugin-zoom';
@@ -9,13 +8,13 @@ import {
     renameCategories,
     sortCategories,
 } from './Utils/cutoffUtils';
-import { TimeDimension } from '../../../../packages/Diagrams/src/Utils/createTime';
 import { openSidesheet } from '@equinor/sidesheet';
-import { WorkOrder } from '../../mocData/mockData';
-import { CustomVisualArgs } from '../../../../packages/Diagrams/src';
+import { WorkOrder } from './Types';
+import { CustomVisualArgs, TimeDimension } from '@equinor/Diagrams';
+import { SidesheetContent } from '../SidesheetContent';
 ChartJS.register(...registerables, zoomPlugin);
 
-export const chartoptions = (title: string): ChartOptions => ({
+export const chartoptions = (title?: string): ChartOptions => ({
     maintainAspectRatio: false,
     responsive: true,
     plugins: {
@@ -25,7 +24,7 @@ export const chartoptions = (title: string): ChartOptions => ({
             bodyColor: 'black',
         },
         title: {
-            text: title,
+            text: title || '',
             display: true,
             align: 'start',
             color: 'black',
@@ -79,18 +78,25 @@ export const chartoptions = (title: string): ChartOptions => ({
         },
     },
 });
-type ConstructionVisualProps = {
-    data: WorkOrder[];
-    other: {};
+
+type ConstructionVisualProps = CustomVisualArgs<WorkOrder> & {
+    accumulative?: boolean;
+    defaultTime?: TimeDimension;
+    title?: string;
 };
-export const ConstructionVisual = ({ data }: ConstructionVisualProps) => {
+export const ConstructionVisual = ({
+    data,
+    accumulative,
+    defaultTime,
+    title,
+}: ConstructionVisualProps) => {
     const [time, setTime] = useState<TimeDimension>(defaultTime || 'week');
-    const sortedCategories = sortCategories(createUniqueCategories(data as WorkOrder[]));
+    const sortedCategories = sortCategories(createUniqueCategories(data));
 
     const series = useMemo(
         () =>
             createSeries({
-                data: data as WorkOrder[],
+                data: data,
                 categories: sortedCategories,
                 options: {},
             }),
@@ -122,17 +128,18 @@ export const ConstructionVisual = ({ data }: ConstructionVisualProps) => {
         const categoryDate = chartData.labels![index];
         let showData = [] as WorkOrder[];
         data.forEach((wo) => {
-            (wo as WorkOrder).jobStatusCutoffs.forEach((jobStatus) => {
+            wo.jobStatusCutoffs.forEach((jobStatus) => {
                 if (jobStatus.status === status) {
                     const weeks = renameCategories(jobStatus.weeks);
-                    if (weeks.includes(categoryDate as string)) {
-                        showData.push(wo as WorkOrder);
+                    if (weeks.includes(categoryDate)) {
+                        showData.push(wo);
                     }
                     return;
                 }
                 return;
             });
         });
+        openSidesheet(SidesheetContent, { data: showData });
     };
 
     function getVariant(type: TimeDimension) {
