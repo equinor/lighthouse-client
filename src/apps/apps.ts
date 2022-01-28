@@ -16,7 +16,7 @@ import { ModelViewer } from './3DModel/src/3DModel';
 import { setup as checklistSetup } from './checklistApp';
 import { setup as constructionSetup } from './Construction';
 import { setup as commissioningSetup } from './Commissioning';
-import { setup as handoverSetup } from './HandoverGarden';
+import { setup as handoverSetup } from './Handover';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
     BusinessCaseReport,
