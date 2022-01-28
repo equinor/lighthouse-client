@@ -1,16 +1,11 @@
-import {
-    Button,
-    CircularProgress,
-    DotProgress,
-    Progress,
-    TextField,
-} from '@equinor/eds-core-react';
+import { Button, Progress, TextField } from '@equinor/eds-core-react';
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import Select, { SingleValue } from 'react-select';
 import styled from 'styled-components';
 import { useClientContext, useHttpClient } from '../../../../../Core/Client/Hooks';
 import { spawnConfirmationDialog } from '../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { patchScopeChange, patchWorkflowStep } from '../../../Api';
+import { canSign as apiCheckSign } from '../../../Api/ScopeChange/Access/canSign';
 import { postContribution } from '../../../Api/ScopeChange/postContribution';
 import { unVoidRequest, voidRequest } from '../../../Api/ScopeChange/voidRequest';
 import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../../Types/scopeChangeRequest';
@@ -29,6 +24,26 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps) =>
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [selectedCriteria, setSelectedCriteria] = useState<string | undefined>(undefined);
     const [userId, setUserId] = useState<string | undefined>();
+
+    const checkCanSign = async () => {
+        if (!request.currentWorkflowStep || !request.currentWorkflowStep?.criterias) return;
+        const criteriaId = request.currentWorkflowStep.criterias
+            .filter((x) => x.signedState === null)
+            .map((x) => x.id);
+
+        if (criteriaId.length > 0) {
+            const signAllowed = await apiCheckSign(
+                request.id,
+                request.currentWorkflowStep?.id || '',
+                criteriaId[0]
+            );
+            console.log(signAllowed);
+        }
+    };
+
+    useEffect(() => {
+        checkCanSign();
+    }, [request]);
 
     useEffect(() => {
         setUserId(internal.authProvider.getCurrentUser()?.localAccountId);
