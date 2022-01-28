@@ -2,9 +2,9 @@ import { ClientApi } from '@equinor/app-builder';
 import { HandoverPackage } from './Garden/models/HandoverPackage';
 import { baseClient } from '../../../packages/httpClient/src';
 import { fieldSettings } from './Garden/utility/gardenSetup';
-import { HandoverGroupByView } from './CustomViews/HandoverGroupByView';
-import { HandoverGardenItem } from './CustomViews/HandoverGardenItem';
-import { HandoverSideSheet } from './CustomViews/HandoverSideSheet';
+import { HandoverGroupByView } from './Garden/CustomViews/HandoverGroupByView';
+import { HandoverGardenItem } from './Garden/CustomViews/HandoverGardenItem';
+import { HandoverSideSheet } from './Garden/CustomViews/HandoverSideSheet';
 import { sortPackagesByStatus } from './Garden/utility/sortFunctions';
 import { getMaxVolumeFromData } from './Garden/utility/getKeyFunctions';
 

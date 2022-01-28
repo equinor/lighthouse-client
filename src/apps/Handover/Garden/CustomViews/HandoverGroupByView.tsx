@@ -1,6 +1,6 @@
 import { SingleSelect } from '@equinor/eds-core-react';
-import { HandoverCustomGroupByKeys } from '..';
-import { useParkViewContext } from '../../../components/ParkView/Context/ParkViewProvider';
+import { HandoverCustomGroupByKeys } from '../..';
+import { useParkViewContext } from '../../../../components/ParkView/Context/ParkViewProvider';
 
 export function HandoverGroupByView(): JSX.Element {
     const { setCustomGroupKeys, ...parkViewContext } = useParkViewContext();

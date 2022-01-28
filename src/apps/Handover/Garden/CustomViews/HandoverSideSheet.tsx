@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 import { Tabs } from '@equinor/eds-core-react';
 
-import { HandoverPackage } from '../Garden/models/HandoverPackage';
-import useHandoverResource from '../Garden/hooks/useHandoverResource';
+import { HandoverPackage } from '../models/HandoverPackage';
+import useHandoverResource from '../hooks/useHandoverResource';
 import { useState } from 'react';
 
-import { SidesheetHeader } from '../Garden/components/handoverSidesheet/SidesheetHeader';
-import DetailsTab from '../Garden/components/handoverSidesheet/handoverSidesheetTabs/DetailsTab';
-import McPackagesTab from '../Garden/components/handoverSidesheet/handoverSidesheetTabs/McPackagesTab';
-import NcrTab from '../Garden/components/handoverSidesheet/handoverSidesheetTabs/NcrTab';
-import PunchTab from '../Garden/components/handoverSidesheet/handoverSidesheetTabs/PunchTab';
-import QueryTab from '../Garden/components/handoverSidesheet/handoverSidesheetTabs/QueryTab';
-import SwcrTab from '../Garden/components/handoverSidesheet/handoverSidesheetTabs/SwcrTab';
-import UnsignedActionTab from '../Garden/components/handoverSidesheet/handoverSidesheetTabs/UnsignedActionTab';
-import UnsignedTaskTab from '../Garden/components/handoverSidesheet/handoverSidesheetTabs/UnsignedTasksTab';
-import WorkOrderTab from '../Garden/components/handoverSidesheet/handoverSidesheetTabs/WorkOrdersTab';
+import { SidesheetHeader } from '../components/handoverSidesheet/SidesheetHeader';
+import DetailsTab from '../components/handoverSidesheet/handoverSidesheetTabs/DetailsTab';
+import McPackagesTab from '../components/handoverSidesheet/handoverSidesheetTabs/McPackagesTab';
+import NcrTab from '../components/handoverSidesheet/handoverSidesheetTabs/NcrTab';
+import PunchTab from '../components/handoverSidesheet/handoverSidesheetTabs/PunchTab';
+import QueryTab from '../components/handoverSidesheet/handoverSidesheetTabs/QueryTab';
+import SwcrTab from '../components/handoverSidesheet/handoverSidesheetTabs/SwcrTab';
+import UnsignedActionTab from '../components/handoverSidesheet/handoverSidesheetTabs/UnsignedActionTab';
+import UnsignedTaskTab from '../components/handoverSidesheet/handoverSidesheetTabs/UnsignedTasksTab';
+import WorkOrderTab from '../components/handoverSidesheet/handoverSidesheetTabs/WorkOrdersTab';
 
 const SideSheetContainer = styled.div`
     display: flex;
