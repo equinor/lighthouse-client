@@ -1,17 +1,10 @@
-import { DateTime } from 'luxon';
+import { weekDiff } from '../../../Utils';
 import { WoMapCount, WoStatusMap } from '../types';
-
-export const weekDiff = (week: Date) => {
-    const now = DateTime.local();
-    const woDate = DateTime.fromJSDate(week);
-    const diff = woDate.diff(now, 'days');
-    return diff;
-};
 
 export const createWoStatusMap = <T extends Record<string, any>>(
     data: T[],
     groupByKey: keyof T
-) => {
+): WoStatusMap<T> => {
     const woDiscMap = {} as WoStatusMap<T>;
 
     // I want all WOs that have one of these statuses

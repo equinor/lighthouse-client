@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { WorkOrder } from '../../../../../apps/Construction/mocData/mockData';
 import { Fragment, useEffect, useState } from 'react';
 import { createWoStatusMap, filterWoMap } from './utils';
 import { WoNumbersDisplay } from './components/WoNumbers';
 import { SingleSelect } from '@equinor/eds-core-react';
-import { CustomVisualArgs } from '../../Types';
+import { CustomVisualArgs } from '@equinor/Diagrams';
+import { WorkOrder } from '../../mocData/mockData';
 
 const Container = styled.div`
     height: 100%;
