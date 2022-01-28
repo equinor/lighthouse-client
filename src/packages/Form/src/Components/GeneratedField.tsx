@@ -17,7 +17,8 @@ export function GeneratedField<T>({
     field,
     editMode,
     behaviour,
-}: GenerateFieldProps<T>): JSX.Element {
+}: GenerateFieldProps<T>): JSX.Element | null {
+    if (!field.inputType) return null;
     const metaTag =
         !behaviour?.hideMetaTags && !field.optional ? { meta: '(Required)' } : undefined;
 

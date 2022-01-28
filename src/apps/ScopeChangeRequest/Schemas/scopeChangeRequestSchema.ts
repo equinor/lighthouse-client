@@ -24,7 +24,6 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         order: 2,
         placeholderText: 'Select phase',
     },
-
     category: {
         title: 'Category',
         inputType: {
@@ -36,6 +35,17 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         order: 3,
         placeholderText: 'Select category',
     },
+    originSource: {
+        title: 'Origin',
+        inputType: {
+            type: 'SingleSelect',
+            selectOptions: ['NCR', 'DCN', 'Query', 'Punch', 'NotApplicable'],
+        },
+        order: 3,
+        placeholderText: 'Select origin',
+    },
+    originSourceId: {},
+
     description: {
         title: 'Description',
         inputType: { type: 'TextArea' },

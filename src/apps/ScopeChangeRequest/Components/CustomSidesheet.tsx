@@ -1,19 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
-import { CircularProgress } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 
 import { getScopeChangeById } from '../Api/getScopeChange';
 import { Wrapper } from '../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
-import { Field } from './DetailView/Components/Field';
-import { RequestViewContainer } from './RequestDetailViewContainer';
+import { tokens } from '@equinor/eds-tokens';
+import { RequestDetailView } from './DetailView/RequestDetailView';
+import { ScopeChangeRequestEditForm } from './Form/ScopeChangeRequestEditForm';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { scopeChange: scopeChangeApi } = useHttpClient();
-
+    const [editMode, setEditMode] = useState<boolean>(false);
     /**
      * Refetches every second
      */
@@ -52,16 +53,35 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                 <div>Failed to fetch scope change request, please check your connection?</div>
             )}
             <TitleHeader>
-                <Field
-                    label={'Review scope change request'}
-                    value=""
-                    customLabel={{ fontSize: 'xx-large' }}
-                />
+                <Title>Review scope change request</Title>
+                <Button variant="ghost_icon" onClick={() => setEditMode(!editMode)}>
+                    <Icon color={tokens.colors.interactive.primary__resting.hex} name="edit" />
+                </Button>
             </TitleHeader>
-            {data && <RequestViewContainer request={data} refetch={updateScopeChange} />}
+            {data && (
+                <div>
+                    {editMode ? (
+                        <ScopeChangeRequestEditForm
+                            request={data}
+                            cancel={() => setEditMode(false)}
+                        />
+                    ) : (
+                        <RequestDetailView
+                            request={data}
+                            setEditMode={setEditMode}
+                            refetch={updateScopeChange}
+                        />
+                    )}
+                </div>
+            )}
+            {/* {data && <RequestViewContainer request={data} refetch={updateScopeChange} />} */}
         </Wrapper>
     );
 };
+
+const Title = styled.div`
+    font-size: 28px;
+`;
 
 const TitleHeader = styled.div`
     display: flex;

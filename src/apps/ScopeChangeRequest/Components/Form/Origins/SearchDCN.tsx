@@ -12,11 +12,22 @@ import { TypedSelectOption } from '../../../Api/Search/searchType';
 
 interface PCSLinkProps {
     setOriginId: (originId: string | undefined) => void;
+    originId?: string;
 }
 
-export const SearchDCN = ({ setOriginId }: PCSLinkProps): JSX.Element => {
+export const SearchDCN = ({ setOriginId, originId }: PCSLinkProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const debounce = useRef(new Date());
+
+    const origin: TypedSelectOption | null = originId
+        ? {
+            label: originId,
+            value: originId,
+            type: 'NCR',
+            searchValue: originId,
+            object: originId,
+        }
+        : null;
 
     const loadOptions = async (
         inputValue: string,
@@ -27,7 +38,7 @@ export const SearchDCN = ({ setOriginId }: PCSLinkProps): JSX.Element => {
         const options: TypedSelectOption[] = [];
 
         try {
-            await (await searchPcs(inputValue, 'dcn')).map((x) => options.push(x));
+            await (await searchPcs(inputValue, 'DCN')).map((x) => options.push(x));
         } catch (e) {
             setApiErrors((prev) => [...prev, 'DCN']);
         }
@@ -49,6 +60,7 @@ export const SearchDCN = ({ setOriginId }: PCSLinkProps): JSX.Element => {
                 >
                     <AsyncSelect
                         cacheOptions={false}
+                        defaultValue={origin}
                         // loadOptions={loadOptions}
                         loadOptions={(
                             inputValue: string,

@@ -27,7 +27,7 @@ import { OriginLink } from './Components/OriginLink';
 
 interface RequestDetailViewProps {
     request: ScopeChangeRequest;
-    setEditMode: () => void;
+    setEditMode?: React.Dispatch<React.SetStateAction<boolean>>;
     refetch: () => Promise<void>;
 }
 
@@ -254,7 +254,8 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                 </SectionRow>
 
                 <Field
-                    label={'Related objects'}
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label={'References'}
                     value={
                         <RelatedObjects
                             systems={request.systems}

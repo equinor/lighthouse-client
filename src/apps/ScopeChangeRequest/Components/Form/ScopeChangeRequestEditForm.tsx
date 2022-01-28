@@ -1,9 +1,11 @@
 import { Button } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
+import { useEffect } from 'react';
 import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { patchScopeChange } from '../../Api';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { Origin } from './Origin';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -21,6 +23,8 @@ export const ScopeChangeRequestEditForm = ({
         guesstimateDescription: request.guesstimateDescription ?? undefined,
         guesstimateHours: request.guesstimateHours ?? undefined,
         title: request.title,
+        originSource: request.originSource,
+        originSourceId: request.originSourceId,
     });
 
     const { scopeChange } = useHttpClient();
@@ -54,9 +58,66 @@ export const ScopeChangeRequestEditForm = ({
         );
     };
 
+    useEffect(() => {
+        formData.fields.originSourceId?.setValue(undefined);
+    }, [formData.fields.originSource?.value]);
+
     return (
-        <GeneratedForm formData={formData} editMode={true} buttons={[CancelButton, SaveButton]}>
-            {/* <Upload requestId={request.id} existingAttachments={request.attachments} /> */}
+        <GeneratedForm
+            formData={formData}
+            editMode={false}
+            buttons={[CancelButton, SaveButton]}
+            customFields={[
+                {
+                    Component: Origin,
+                    order: 3,
+                    title: '',
+                    props: {
+                        originSource: formData.fields.originSource,
+                        originId: formData.fields.originSourceId,
+                    },
+                },
+
+                // {
+                //     Component: PCSLink,
+                //     order: 6,
+                //     title: 'References',
+                //     props: {
+                //         relatedObjects: relatedObjects,
+                //         setRelatedObjects: setRelatedObjects,
+                //     },
+                // },
+            ]}
+        >
+            {/* <Inline>
+                <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Documents</div>
+                <StidSelector appendDocuments={appendDocuments} documents={stidDocuments} />
+            </Inline>
+            {stidDocuments &&
+                stidDocuments.map((x) => {
+                    return (
+                        <Chip key={x.docNo}>
+                            <StidDocument document={x} />
+
+                            <Button
+                                variant="ghost_icon"
+                                onClick={() => {
+                                    removeDocument(x.docNo);
+                                }}
+                            >
+                                <Icon
+                                    color={tokens.colors.interactive.primary__resting.rgba}
+                                    name="clear"
+                                />
+                            </Button>
+                        </Chip>
+                    );
+                })}
+
+            <Field
+                label="Attachments"
+                value={<Upload attachments={attachments} setAttachments={setAttachments} />}
+            /> */}
         </GeneratedForm>
     );
 };
