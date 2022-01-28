@@ -21,6 +21,7 @@ const SideSheetContainer = styled.div`
     flex-direction: column;
     box-sizing: border-box;
     padding: 16px;
+    width: 100%;
 `;
 
 export function HandoverSideSheet(handoverPackage: HandoverPackage): JSX.Element {
@@ -69,66 +70,64 @@ export function HandoverSideSheet(handoverPackage: HandoverPackage): JSX.Element
     );
 
     return (
-        <div style={{ height: '100%' }}>
-            <SideSheetContainer>
-                <SidesheetHeader handoverPackage={handoverPackage} />
+        <SideSheetContainer>
+            <SidesheetHeader handoverPackage={handoverPackage} />
 
-                <Tabs activeTab={activeTab} onChange={handleChange}>
-                    <Tabs.List>
-                        <Tabs.Tab>Details </Tabs.Tab>
-                        <Tabs.Tab>McPackages {`(${mcPackages?.length || 0})`} </Tabs.Tab>
-                        <Tabs.Tab>Work Orders {`(${workOrderPackages?.length || 0})`} </Tabs.Tab>
-                        <Tabs.Tab>Unsigned Tasks{`(${unsignedTasks?.length || 0})`} </Tabs.Tab>
-                        <Tabs.Tab>Unsigned Actions{`(${unsignedActions?.length || 0})`} </Tabs.Tab>
-                        <Tabs.Tab>Punch{`(${punchPackages?.length || 0})`} </Tabs.Tab>
-                        <Tabs.Tab>SWCR {`(${swcrPackages?.length || 0})`}</Tabs.Tab>
-                        <Tabs.Tab>NCr{`(${ncrPackages?.length || 0})`} </Tabs.Tab>
-                        <Tabs.Tab>Query{`(${queryPackages?.length || 0})`} </Tabs.Tab>
-                    </Tabs.List>
-                    <Tabs.Panels>
-                        <Tabs.Panel>
-                            <DetailsTab
-                                commpkg={handoverPackage}
-                                nextToSign={detailsData}
-                                dataIsFetching={isDataFetchingDetails}
-                            />
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <McPackagesTab packages={mcPackages} isFetching={isDataFetchingMc} />
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <WorkOrderTab
-                                packages={workOrderPackages}
-                                isFetching={isDataFetchingWorkOrder}
-                            />
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <UnsignedTaskTab
-                                packages={unsignedTasks}
-                                isFetching={isDataFetchingUnsignedTasks}
-                            />
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <UnsignedActionTab
-                                packages={unsignedActions}
-                                isFetching={isDataFetchingUnsignedActions}
-                            />
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <PunchTab packages={punchPackages} isFetching={isDataFetchingPunch} />
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <SwcrTab packages={swcrPackages} isFetching={isDataFetchingSwcr} />
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <NcrTab packages={ncrPackages} isFetching={isDataFetchingNcr} />
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <QueryTab packages={queryPackages} isFetching={isDataFetchingQuery} />
-                        </Tabs.Panel>
-                    </Tabs.Panels>
-                </Tabs>
-            </SideSheetContainer>
-        </div>
+            <Tabs activeTab={activeTab} onChange={handleChange}>
+                <Tabs.List>
+                    <Tabs.Tab>Details </Tabs.Tab>
+                    <Tabs.Tab>McPackages {`(${mcPackages?.length || 0})`} </Tabs.Tab>
+                    <Tabs.Tab>Work Orders {`(${workOrderPackages?.length || 0})`} </Tabs.Tab>
+                    <Tabs.Tab>Unsigned Tasks{`(${unsignedTasks?.length || 0})`} </Tabs.Tab>
+                    <Tabs.Tab>Unsigned Actions{`(${unsignedActions?.length || 0})`} </Tabs.Tab>
+                    <Tabs.Tab>Punch{`(${punchPackages?.length || 0})`} </Tabs.Tab>
+                    <Tabs.Tab>SWCR {`(${swcrPackages?.length || 0})`}</Tabs.Tab>
+                    <Tabs.Tab>NCr{`(${ncrPackages?.length || 0})`} </Tabs.Tab>
+                    <Tabs.Tab>Query{`(${queryPackages?.length || 0})`} </Tabs.Tab>
+                </Tabs.List>
+                <Tabs.Panels>
+                    <Tabs.Panel>
+                        <DetailsTab
+                            commpkg={handoverPackage}
+                            nextToSign={detailsData}
+                            dataIsFetching={isDataFetchingDetails}
+                        />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <McPackagesTab packages={mcPackages} isFetching={isDataFetchingMc} />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <WorkOrderTab
+                            packages={workOrderPackages}
+                            isFetching={isDataFetchingWorkOrder}
+                        />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <UnsignedTaskTab
+                            packages={unsignedTasks}
+                            isFetching={isDataFetchingUnsignedTasks}
+                        />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <UnsignedActionTab
+                            packages={unsignedActions}
+                            isFetching={isDataFetchingUnsignedActions}
+                        />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <PunchTab packages={punchPackages} isFetching={isDataFetchingPunch} />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <SwcrTab packages={swcrPackages} isFetching={isDataFetchingSwcr} />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <NcrTab packages={ncrPackages} isFetching={isDataFetchingNcr} />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <QueryTab packages={queryPackages} isFetching={isDataFetchingQuery} />
+                    </Tabs.Panel>
+                </Tabs.Panels>
+            </Tabs>
+        </SideSheetContainer>
     );
 }

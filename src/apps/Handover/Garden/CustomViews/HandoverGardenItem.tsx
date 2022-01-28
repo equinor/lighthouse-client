@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Item } from '../../../../components/ParkView/Styles/item';
 import { HandoverPackage } from '../models/HandoverPackage';
@@ -10,6 +10,7 @@ import { StatusCircle } from '../components/StatusCircle';
 import { FlagIcon } from '../components/FlagIcon';
 import { WarningIcon } from '../components/WarningIcon';
 import { useParkViewContext } from '../../../../components/ParkView/Context/ParkViewProvider';
+import { HandoverItemPopover, ItemOptions } from '../components/HandoverItemPopover';
 
 type HandoverItemProps = { backgroundColor: string; textColor: string };
 
@@ -86,21 +87,55 @@ export function HandoverGardenItem({
 
     const showWarningIcon = false; // data.mcStatus === 'OS' && status === 'RFCC Accepted';
 
+    const anchorRef = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const onOpen = () => setIsOpen(true);
+    const onClose = () => setIsOpen(false);
+
+    const options: ItemOptions = {
+        size,
+        status,
+        barColor: backgroundColor,
+        textColor,
+        mcPackageColor,
+        commStatusColor,
+        showWarningIcon,
+    };
+
     return (
-        <HandoverItem backgroundColor={backgroundColor} textColor={textColor} onClick={onClick}>
-            <Icons>
-                <SizeIcons size={size} status={status} />
-                <FlagIcon color={textColor} />
-            </Icons>
-            <MidSection expanded={columnExpanded}>
-                <Title>{data[itemKey]}</Title>
-                {columnExpanded && <HandoverExpandedView data={data} />}
-            </MidSection>
-            <Circles>
-                <StatusCircle statusColor={mcPackageColor} />
-                <StatusCircle statusColor={commStatusColor} />
-            </Circles>
-            {showWarningIcon && <WarningIcon />}
-        </HandoverItem>
+        <>
+            <HandoverItem
+                ref={anchorRef}
+                onMouseOver={onOpen}
+                onMouseLeave={onClose}
+                backgroundColor={backgroundColor}
+                textColor={textColor}
+                onClick={onClick}
+            >
+                <Icons>
+                    <SizeIcons size={size} status={status} />
+                    <FlagIcon color={textColor} />
+                </Icons>
+                <MidSection expanded={columnExpanded}>
+                    <Title>{data[itemKey]}</Title>
+                    {columnExpanded && <HandoverExpandedView data={data} />}
+                </MidSection>
+                <Circles>
+                    <StatusCircle statusColor={mcPackageColor} />
+                    <StatusCircle statusColor={commStatusColor} />
+                </Circles>
+                {showWarningIcon && <WarningIcon />}
+            </HandoverItem>
+            {isOpen && (
+                <HandoverItemPopover
+                    data={data}
+                    itemOptions={options}
+                    anchorRef={anchorRef}
+                    setOpenState={setIsOpen}
+                    isOpen={isOpen}
+                />
+            )}
+        </>
     );
 }
