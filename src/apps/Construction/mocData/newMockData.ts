@@ -1,4 +1,4 @@
-import { WorkOrder, WorkOrderApi } from './mockData';
+import { WorkOrder, WorkOrderApi } from '../Types';
 
 export const mock = (): WorkOrder[] => {
     const data: WorkOrderApi[] = JSON.parse(

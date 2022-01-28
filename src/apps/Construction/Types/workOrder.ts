@@ -1,16 +1,3 @@
-export type JobStatuses = {
-    status: string;
-    weekUpdated: Date;
-};
-export type Job = {
-    discipline: string;
-    disciplineDescription: string;
-    job: string;
-    jobName: string;
-    jobStatus: string;
-    jobEstimatedHours: number;
-    jobStatuses: JobStatuses[];
-};
 export type WorkOrder = {
     plant: string;
     plantName: string;

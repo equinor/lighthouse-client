@@ -1,37 +1,20 @@
-import { AnalyticsOptions, SidesheetContent } from '@equinor/Diagrams';
+import { AnalyticsOptions } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
-import { CriticalWoTable } from './Components';
-import { cols } from './Components/DetailsPage/tableConfig';
-import { WorkOrder } from './mocData/mockData';
+import { cols, ConstructionVisual, CriticalWoTable, SidesheetContent } from './Components';
 import { mock } from './mocData/newMockData';
+import { WorkOrder } from './Types';
 import { weekDiff } from './Utils';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
     section1: {
         chart1: {
-            type: 'constructionChart',
-            options: {
-                timeChartOptions: {
-                    categoriesKey: 'jobStatusCutoffs',
-                    title: 'Job Statuses',
-                    type: 'column',
-                },
+            type: 'customVisual',
+            componentProps: {
                 title: 'Job Statuses',
             },
+            component: ConstructionVisual,
         },
-        // chart2: {
-        //     type: 'timeBarChart',
-        //     options: {
-        //         accumulative: true,
-        //         timeChartOptions: {
-        //             categoriesKey: 'jobStatusCutoffs',
-        //             title: 'Job Statuses accumulated',
-        //             type: 'column',
-        //         },
-        //         title: 'Job Statuses accumulated',
-        //     },
-        // },
     },
     section2: {
         chart1: {
@@ -54,10 +37,9 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
         },
         chart3: {
             type: 'customVisual',
-            options: {
-                component: CriticalWoTable,
-                componentProps: { enableGrouping: true, initialGroupBy: 'disciplineDescription' },
-            },
+
+            component: CriticalWoTable,
+            componentProps: { enableGrouping: true, initialGroupBy: 'disciplineDescription' },
         },
     },
 };

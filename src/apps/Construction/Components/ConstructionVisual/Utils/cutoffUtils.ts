@@ -1,6 +1,6 @@
 import { interpolateCubehelixDefault } from 'd3-scale-chromatic';
 import { DateTime } from 'luxon';
-import { WorkOrder } from '../../../../apps/Construction/mocData/mockData';
+import { CreateSeriesArgs, Series, WorkOrder } from '../Types';
 import { interpolateColors } from './colorGenerator';
 /**
  * Creates a set of unique dates
@@ -55,25 +55,6 @@ export const createCategoriesMap = (categories: string[]): Record<string, number
         map[item] = 0;
         return map;
     }, {});
-};
-
-type Series = {
-    label: string;
-    data: number[];
-    type: string;
-    yAxisID?: string;
-    backgroundColor?: string | string[];
-    borderColor?: string;
-};
-
-type CreateSeriesArgs = {
-    data: WorkOrder[];
-    categories: string[];
-    options: {
-        accumulated?: boolean;
-        dateLimit?: Date;
-        lastWoStatus?: string;
-    };
 };
 
 export const createSeries = ({

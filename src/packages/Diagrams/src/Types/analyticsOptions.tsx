@@ -1,4 +1,4 @@
-import { ConstructionGraphOptions } from '..';
+import React from 'react';
 import { BarChartOptions } from '../Visuals/BarVisual/Types/barVisualOptions';
 import { HorizontalBarChartOptions } from '../Visuals/HorizontalBarVisual/Types/barVisualOptions';
 import { LineChartOptions } from '../Visuals/LineVisual/LineChartVisual';
@@ -19,11 +19,6 @@ interface ControlledTimeBarChart<T> {
     options: TimeBarChartOptions<T>;
 }
 
-interface ConstructionChart<T> {
-    type: 'constructionChart';
-    options: ConstructionGraphOptions<T>;
-}
-
 interface Table<T> {
     type: 'table';
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -35,19 +30,22 @@ interface HorizontalBarChart<T> {
     type: 'horizontalBarChart';
     options: HorizontalBarChartOptions<T>;
 }
-
-interface CustomVisual<T> {
-    type: 'customVisual';
-    options: CustomVisualOptions<T>;
-}
 export type CustomVisualArgs<T> = {
     data: T[];
     [x: string]: unknown;
 };
-interface CustomVisualOptions<T> {
+interface CustomVisual<T> {
+    type: 'customVisual';
+    /** Component to render. Must accept `data: T[]` as a prop.
+     *  All other props must be optional
+     */
     component: React.FC<CustomVisualArgs<T>>;
-    componentProps?: { [x: string]: unknown };
+    /** Props are passed to the given component.
+     * @todo: better typing?
+     */
+    componentProps?: Record<string, unknown>;
 }
+
 interface Default {
     type: 'default';
 }
@@ -59,7 +57,6 @@ export type Options<T> =
     | CustomVisual<T>
     | HorizontalBarChart<T>
     | Table<T>
-    | ConstructionChart<T>
     | Default;
 
 interface Section<T> {
