@@ -2,6 +2,7 @@ import { TypedSelectOption } from '../searchType';
 import { PCSStructure } from './Types/searchStructure';
 import { Area } from './Types/area';
 import { HttpClient } from '../../../../../Core/httpClient/src';
+import { isProduction } from '../../../../../Core/Client/Functions';
 
 export const searchAreas = async (
     searchString: string,
@@ -9,11 +10,14 @@ export const searchAreas = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
-    const baseUrl = 'https://procosyswebapi.equinor.com/api';
-    const uri = 'Search';
-    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=106102&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
+    const searchIdProd = 106102;
+    const searchIdDev = 103741;
 
-    const url = `${baseUrl}/${uri}?${queryParameters}`;
+    const uri = 'api/Search';
+    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
+        }&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
+
+    const url = `${uri}?${queryParameters}`;
 
     const search: PCSStructure[] = [
         {
