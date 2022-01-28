@@ -1,5 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { Cell, Row } from 'react-table';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -20,7 +21,7 @@ const Chevron = styled.span`
     padding-right: 1rem;
 `;
 
-export const GroupCell = ({ row, cell }) => {
+export const GroupCell = ({ row, cell }: { row: Row; cell: Cell }) => {
     return (
         <Wrapper>
             <Chevron {...row.getToggleRowExpandedProps()}>

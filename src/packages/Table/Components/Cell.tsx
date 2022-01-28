@@ -1,7 +1,7 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import { Hooks } from 'react-table';
 import styled from 'styled-components';
-import { TableData } from '../types';
+import { TableData, Cell } from '../types';
 
 export const Div = styled.div`
     padding: 0px;
@@ -28,7 +28,7 @@ export function useSelector<T extends TableData>(hooks: Hooks<T>): void {
             //     <HeaderCheckbox  {...getToggleAllPageRowsSelectedProps()} />
             // ),
             // TODO : row.original doesnt contain the property noCheckbox
-            Cell: ({ row }): JSX.Element => {
+            Cell: ({ row }: Cell<T>): JSX.Element => {
                 return row.original?.noCheckbox ? (
                     <></>
                 ) : (
