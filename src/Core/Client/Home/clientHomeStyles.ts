@@ -55,9 +55,13 @@ export const Main = styled.div`
     background-color: ${tokens.colors.ui.background__light.rgba};
 `;
 
+interface SideItemProps {
+    height?: number;
+}
+
 export const SideItem = styled.div`
     margin: 0.5rem;
-    height: 325px;
+    height: ${({ height }: SideItemProps) => `${height || 325}px`};
     width: 100%;
     background-color: ${tokens.colors.ui.background__light.rgba};
 `;

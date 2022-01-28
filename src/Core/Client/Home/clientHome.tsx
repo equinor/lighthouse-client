@@ -100,7 +100,7 @@ export const ClientHome = (): JSX.Element => {
                     <SideItem>
                         <Task />
                     </SideItem>
-                    <SideItem>
+                    <SideItem height={575}>
                         <YammerFeed />
                     </SideItem>
                 </SideColumn>

@@ -8,20 +8,26 @@ export const Wrapper = styled.section`
     padding: 1rem;
     box-sizing: border-box;
     background-color: ${tokens.colors.ui.background__light.rgba};
+    overflow: hidden;
+    display: flex;
 
-    background-image: url(/images/boat.png);
+    /* background-image: url(/images/boat.png);
     background-repeat: no-repeat;
-    /* background-size: cover; */
+
     background-position-x: center;
     background-blend-mode: multiply;
-    background-position-y: 60px;
+    background-position-y: 60px; */
 `;
 
-export const Background = styled.section`
-    height: 100%;
-    width: 100%;
-    background-image: url('/images/boat.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position-x: center;
+export const Background = styled.img`
+    mix-blend-mode: darken;
+    width: 1500px;
+`;
+
+export const StatusContent = styled.div`
+    position: relative;
+    overflow: hidden;
+    width: max-content;
+    height: fit-content;
+    margin: auto auto;
 `;

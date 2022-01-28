@@ -58,7 +58,8 @@ const ClientTopBar = (): JSX.Element => {
                     ) : (
                         <Avatar alt="User avatar" src={userImageUrl} />
                     )}
-                    {/* <Icon name="notifications" /> */}
+
+                    <Icon name="support" color={tokens.colors.interactive.disabled__text.rgba} />
                 </Icons>
             </TopBar.Actions>
         </TopBarWrapper>
