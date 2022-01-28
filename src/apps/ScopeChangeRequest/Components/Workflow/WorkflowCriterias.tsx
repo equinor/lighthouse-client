@@ -12,6 +12,7 @@ interface WorkflowCriteriasProps {
 
 export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): JSX.Element => {
     const stepStatus = statusFunc(step);
+
     return (
         <>
             {step.criterias.map((criteria) => {
@@ -21,7 +22,7 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
                 return (
                     <>
                         <WorkflowStepViewContainer>
-                            <Inline>
+                            <SplitInline>
                                 <WorkflowIcon
                                     status={
                                         stepStatus === 'Active'
@@ -49,7 +50,7 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
                                         <div style={{ fontSize: '14px' }}>{criteria.value}</div>
                                     )}
                                 </WorkflowText>
-                            </Inline>
+                            </SplitInline>
                             {/* {x.isCurrent && !criteria.signedState && (
                             <Button
                                 variant="outlined"
@@ -74,6 +75,12 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
         </>
     );
 };
+
+const SplitInline = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
 
 const statusFunc = (item: WorkflowStep): WorkflowStatus => {
     if (item.isCompleted) {

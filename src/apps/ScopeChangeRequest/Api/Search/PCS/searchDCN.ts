@@ -35,7 +35,7 @@ export const searchDCN = async (
                     selectOptions.push({
                         label: x.DocumentNo,
                         value: x.DocumentNo,
-                        type: 'dcn',
+                        type: 'DCN',
                         searchValue: x.DocumentNo,
                         object: x,
                     });

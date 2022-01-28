@@ -34,7 +34,7 @@ export const searchNCR = async (
                     selectOptions.push({
                         label: `NCR-${x.DocumentNo}`,
                         value: x.DocumentNo,
-                        type: 'ncr',
+                        type: 'NCR',
                         searchValue: x.DocumentNo,
                         object: x,
                     });

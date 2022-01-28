@@ -55,7 +55,7 @@ export const SearchQuery = ({ setOriginId, originId }: PCSLinkProps): JSX.Elemen
 
             <Inline>
                 <div
-                    style={{ width: '300px', borderBottom: '5px solid #6F6F6F', fontSize: '16px' }}
+                    style={{ width: '211px', borderBottom: '5px solid #6F6F6F', fontSize: '16px' }}
                 >
                     <AsyncSelect
                         cacheOptions={false}

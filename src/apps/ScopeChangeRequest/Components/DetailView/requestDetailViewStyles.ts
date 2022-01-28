@@ -10,12 +10,6 @@ export const DetailViewContainer = styled.div`
     overflow: scroll;
 `;
 
-export const ButtonContainer = styled.div`
-    display: flex;
-    padding: 0em 1em 1em 1em;
-    justify-content: space-between;
-`;
-
 export const HorizontalDivider = styled.div`
     margin: 0.2em;
 `;

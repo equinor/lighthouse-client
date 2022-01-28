@@ -6,6 +6,7 @@ import { SearchQuery } from './Origins/SearchQuery';
 import { SelectPunch } from './Origins/SelectPunch';
 import { OriginType } from '../../Types/scopeChangeRequest';
 import { Field } from '../../../../packages/Form/src/Types/field';
+import { MultiSelect } from '@equinor/eds-core-react';
 
 interface OriginProps {
     originSource: Field<OriginType> | undefined;
@@ -42,7 +43,9 @@ export const Origin = ({ originId, originSource }: OriginProps): JSX.Element => 
                 return <></>;
 
             default:
-                return <></>;
+                return (
+                    <MultiSelect disabled={true} items={[]} meta="(Required)" label={'Origin ID'} />
+                );
         }
     }, [originId?.value, originSource?.value, setOriginId]);
 

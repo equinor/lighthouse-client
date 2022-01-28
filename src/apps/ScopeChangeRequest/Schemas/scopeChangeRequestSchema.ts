@@ -36,7 +36,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         placeholderText: 'Select category',
     },
     originSource: {
-        title: 'Origin',
+        title: 'Change origin',
         inputType: {
             type: 'SingleSelect',
             selectOptions: ['NCR', 'DCN', 'Query', 'Punch', 'NotApplicable'],
