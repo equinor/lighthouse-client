@@ -12,7 +12,7 @@ const getFieldSettingsKeyFromLabel = <T extends unknown>(
 const getFieldSettingsLabelFromKey = <T extends unknown>(
     key: string,
     fieldSettings: FieldSettings<T, string>
-) => fieldSettings[key]?.label || key;
+) => fieldSettings?.[key]?.label || key;
 
 export function FilterSelector<T>(): JSX.Element | null {
     const { groupByKeys, setGroupKeys, setGardenKey, data, gardenKey, fieldSettings } =
@@ -20,7 +20,7 @@ export function FilterSelector<T>(): JSX.Element | null {
 
     const allOptions = useMemo(
         () =>
-            Object.keys(fieldSettings).length
+            fieldSettings && Object.keys(fieldSettings).length
                 ? Object.keys(fieldSettings)
                 : Object.keys(data?.[0] || {}),
         [fieldSettings, data]

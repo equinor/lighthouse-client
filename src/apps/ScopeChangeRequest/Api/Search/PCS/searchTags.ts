@@ -10,15 +10,14 @@ export const searchTags = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
-    //TODO use isProduction() doesnt work yet
-    const searchIdDev = 103745;
     const searchIdProd = 105793;
+    const searchIdDev = 103745;
 
-    const baseUrl = 'https://procosyswebapi.equinor.com/api';
-    const uri = 'Search';
-    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${searchIdProd}&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
+    const uri = 'api/Search';
+    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
+        }&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
 
-    const url = `${baseUrl}/${uri}?${queryParameters}`;
+    const url = `${uri}?${queryParameters}`;
 
     const search: PCSStructure[] = [
         {

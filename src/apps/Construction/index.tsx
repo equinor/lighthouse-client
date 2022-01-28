@@ -1,9 +1,11 @@
-import { AnalyticsOptions, CriticalWoTable, SidesheetContent, weekDiff } from '@equinor/Diagrams';
+import { AnalyticsOptions, SidesheetContent } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
-import { cols } from './DetailsPage/tableConfig';
+import { CriticalWoTable } from './Components';
+import { cols } from './Components/DetailsPage/tableConfig';
 import { WorkOrder } from './mocData/mockData';
 import { mock } from './mocData/newMockData';
+import { weekDiff } from './Utils';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
     section1: {

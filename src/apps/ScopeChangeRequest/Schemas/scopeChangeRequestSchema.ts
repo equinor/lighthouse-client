@@ -81,10 +81,7 @@ const getCategories = async (): Promise<string[]> => {
         },
     };
     await scopeChange
-        .fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/categories`,
-            requestOptions
-        )
+        .fetch(`api/categories`, requestOptions)
         .then((response) => response.json())
         .then((data) => {
             selectOptions = data.map((x: Category) => x.name);
@@ -104,10 +101,7 @@ const getPhases = async (): Promise<string[]> => {
         },
     };
     await scopeChange
-        .fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/phases`,
-            requestOptions
-        )
+        .fetch(`api/phases`, requestOptions)
         .then((response) => response.json())
         .then((data) => {
             selectOptions = data.map((x: Category) => x.name);

@@ -1,5 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+import { isProduction } from '../../../../../Core/Client/Functions';
 import { CommissioningPackage } from '../../../Types/scopeChangeRequest';
 
 interface ProcosSysCommPkgsProps {
@@ -16,7 +17,8 @@ export const ProcosSysCommPkgs = ({ commPkgs }: ProcosSysCommPkgsProps): JSX.Ele
 
                         <Spacer />
                         <Link
-                            href={`https://procosys.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${x.procosysId}?bf=1`}
+                            href={`https://${isProduction() ? 'procosys' : 'procosystest'
+                                }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${x.procosysId}?bf=1`}
                             target="_blank"
                         >
                             CommPkg_{x.procosysNumber}

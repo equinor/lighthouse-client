@@ -1,4 +1,5 @@
 import { HttpClient } from '@equinor/http-client';
+import { isProduction } from '../../../../../Core/Client/Functions';
 import { TypedSelectOption } from '../searchType';
 import { Query } from './Types/query';
 import { PCSStructure } from './Types/searchStructure';
@@ -26,7 +27,8 @@ export const searchQueryOrigin = async (
     try {
         await client
             .fetch(
-                `https://procosyswebapi.equinor.com/api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${searchIdProd}&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
+                `api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
+                }&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
                 requestOptions
             )
             .then((response) => response.json())
@@ -35,7 +37,7 @@ export const searchQueryOrigin = async (
                     selectOptions.push({
                         label: x.DocumentNo,
                         value: x.DocumentNo,
-                        type: 'query',
+                        type: 'Query',
                         searchValue: x.DocumentNo,
                         object: x,
                     });

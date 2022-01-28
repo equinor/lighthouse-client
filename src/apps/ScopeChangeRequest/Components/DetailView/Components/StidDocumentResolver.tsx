@@ -13,16 +13,12 @@ interface StidDocumentResolverProps {
 export const StidDocumentResolver = ({
     inputDocuments,
 }: StidDocumentResolverProps): JSX.Element => {
-    const { customHttpClient } = useHttpClient('b827c278-12de-47a0-b789-c8d11e3b9571/.default');
+    const { STID } = useHttpClient();
 
     useEffect(() => {
         const resolveDocuments = async () => {
             inputDocuments.forEach(async (x) => {
-                const resolvedDocument = await getDocumentById(
-                    'JCA',
-                    x.stidDocumentNumber,
-                    customHttpClient
-                );
+                const resolvedDocument = await getDocumentById('JCA', x.stidDocumentNumber, STID);
                 addDocument({
                     ...resolvedDocument,
                     revNo: resolvedDocument.currentRevision.revNo,

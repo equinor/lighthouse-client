@@ -148,4 +148,5 @@ export const GroupLink = styled(ReactLink)`
     text-decoration: none;
     color: ${tokens.colors.text.static_icons__secondary.rgba};
     flex-grow: 1;
+    cursor: default;
 `;

@@ -15,9 +15,8 @@ export async function getDocumentsByTag(
     //TODO:
     //docCategory?: string
 ): Promise<Document[]> {
-    const baseUrl = 'https://stidapitest.equinor.com';
     const uri = `${instCode}/tag/document-refs`;
     const queryParameters = `tagNo=${encodeURIComponent(tagNo)}&noContentAs200=true`;
-    const url = `${baseUrl}/${uri}?${queryParameters}`;
+    const url = `${uri}?${queryParameters}`;
     return await stidClient.fetch(url).then((response) => response.json());
 }

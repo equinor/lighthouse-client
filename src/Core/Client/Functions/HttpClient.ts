@@ -38,8 +38,8 @@ export function httpClient(options?: HttpClientOptions): HttpClients {
     Object.keys(appConfig.scope).forEach((key) => {
         apiClients[key] = baseClient(
             authProvider,
-            getScope(key, appConfig.scope)
-            // appConfig.urls[key]
+            getScope(key, appConfig.scope),
+            appConfig.urls[key]
         );
     });
 
