@@ -50,18 +50,18 @@ interface HorizontalBarVisual<T> {
  * ```
  */
 export function HorizontalBarVisual<T>({ data, options }: HorizontalBarVisual<T>): JSX.Element {
-    const [groupByKey, setGroupByKey] = useState<keyof T>(options.categoryKey);
-    const [nameByKey, setNameByKey] = useState<keyof T>(options.nameKey);
+    const [groupByKey, setGroupByKey] = useState<keyof T>('discipline');
+    const [nameByKey, setNameByKey] = useState<keyof T>('discipline');
     const { barChartOptions, series } = useHorizontalBarChart(data, options, groupByKey, nameByKey);
     const dataKeys = data.length > 0 ? Object.keys(data[0]) : [''];
 
     const handleChange = (selector: 'groupBy' | 'series', selectedItem: keyof T) => {
         selector === 'groupBy' ? setGroupByKey(selectedItem) : setNameByKey(selectedItem);
     };
-    useEffect(() => {
-        setGroupByKey(options.categoryKey);
-        setNameByKey(options.nameKey);
-    }, [options.categoryKey, options.nameKey]);
+    // useEffect(() => {
+    //     setGroupByKey(options.categoryKey);
+    //     setNameByKey(options.nameKey);
+    // }, [options.categoryKey, options.nameKey]);
 
     return (
         <div style={{ paddingBottom: '1em' }}>

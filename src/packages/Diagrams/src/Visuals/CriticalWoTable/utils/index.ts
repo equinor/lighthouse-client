@@ -18,7 +18,7 @@ export const createWoStatusMap = <T extends Record<string, any>>(
     const statusChecks = ['W01', 'W02', 'W03'];
 
     data.forEach((wo) => {
-        if (statusChecks.includes(wo.jobStatusCode)) {
+        if (statusChecks.includes(wo.jobStatus)) {
             woDiscMap[wo[groupByKey]] = woDiscMap[wo[groupByKey]]
                 ? [
                       ...woDiscMap[wo[groupByKey]],

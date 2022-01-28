@@ -9,7 +9,7 @@ export function SidesheetContent<T>({ data }: Props<T>) {
     const customCol: Column<WorkOrder> = {
         id: 'procosyslink',
         accessor: (row) => ({
-            content: `https://procosys.equinor.com/JOHAN_CASTBERG/WorkOrders/WorkOrder#id=${row['woId']}`,
+            content: `https://procosys.equinor.com/JOHAN_CASTBERG/WorkOrders/WorkOrder#id=${row['workOrderNo']}`,
         }),
         Header: '',
         Cell: LinkCell,

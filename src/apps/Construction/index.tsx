@@ -3,9 +3,8 @@ import { baseClient } from '@equinor/http-client';
 import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 import { cols } from './DetailsPage/tableConfig';
+import { famMock } from './mocData/famMock';
 import { WorkOrder } from './mocData/mockData';
-import { mock } from './mocData/newMockData';
-
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
     section1: {
         chart1: {
@@ -65,7 +64,7 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
         chart1: {
             type: 'table',
             options: {
-                initialGroupBy: 'facility',
+                initialGroupBy: 'discipline',
                 columns: cols,
             },
         },
@@ -84,11 +83,6 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
         //     },
         // },
     },
-};
-
-const test = {
-    andParameters: [],
-    orParamteres: [],
 };
 
 export function setup(appApi: ClientApi): void {
@@ -113,43 +107,8 @@ export function setup(appApi: ClientApi): void {
                 { method: 'POST', body: JSON.stringify({}) }
             )
             .then((res) => res.json());
-        console.log(response);
-        console.log('Total work orders', response.length);
-        let testt: WorkOrder[] = [];
-        response.forEach((wo) => {
-            wo.jobStatus === 'W01' && testt.push(wo);
-        });
-        console.log('Work orders with status: W01', testt.length);
-
-        let test1: WorkOrder[] = [];
-        testt.forEach((wo) => {
-            wo.jobStatusCutoffs.forEach((cutoff) => {
-                cutoff.status === 'W01' &&
-                    !cutoff.weeks.includes('2021-09-06T00:00:00') &&
-                    test1.push(wo);
-            });
-        });
-        console.log('should be same as above', test1.length, test1);
-        let test2: WorkOrder[] = [];
-        response.forEach((wo) => {
-            wo.jobStatusCutoffs.forEach((cutoff) => {
-                cutoff.status === 'W01' &&
-                    cutoff.weeks.includes('2021-09-06T00:00:00') &&
-                    test2.push(wo);
-            });
-        });
-        console.log('testwo1 cutoff dates', test2.length);
-
-        test2.forEach((wo) => {
-            wo.jobStatus !== 'W01' && console.log('should be w01', wo);
-        });
         return response;
-
-        // const blah: WorkOrder[] = response.items.flatMap((j) => j);
-        // return blah;
-        // return JSON.parse(await response.text());
-        //  const data = newMock().filter((j) => j.jobStatus.startsWith('E'));
-        return mock();
+        return famMock;
     });
     workPreparation.registerKpi((data) => {
         return [

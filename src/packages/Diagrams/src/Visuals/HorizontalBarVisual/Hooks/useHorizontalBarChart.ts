@@ -1,5 +1,6 @@
 import { ApexOptions } from 'apexcharts';
 import { useMemo } from 'react';
+import { useFilter } from '../../../../../Filter/Hooks/useFilter';
 import { HorizontalBarChartOptions } from '../Types/barVisualOptions';
 import { createSeriesByKeys } from '../Utils/createSeriesByKeys';
 
@@ -18,7 +19,7 @@ export function useHorizontalBarChart<T>(
         () => createSeriesByKeys(data, 'column', nameByKey as string, groupByKey as string),
         [groupByKey, data, nameByKey]
     );
-
+    const { filterItemCheck } = useFilter();
     const barChartOptions: ApexOptions = useMemo(
         () => ({
             chart: {
@@ -29,7 +30,40 @@ export function useHorizontalBarChart<T>(
                 },
                 events: {
                     click: function (_event, _chartContext, config) {
-                        onClick && onClick(data, config, groupByKey);
+                        // onClick && onClick(data, config, groupByKey);
+
+                        const labelClicked = config.globals.labels[config.dataPointIndex] as string;
+                        if (groupByKey === nameByKey) {
+                            debugger;
+                            filterItemCheck(
+                                { checked: true, type: `${groupByKey}`, value: `${labelClicked}` },
+                                true
+                            );
+                        } else {
+                            debugger;
+                            const seriesClicked = config.globals.seriesNames[config.seriesIndex];
+                            console.log('nameBYkey', nameByKey, 'seriesClicked', seriesClicked);
+                            console.log('groupbykey', groupByKey, ' labelclicked', labelClicked);
+                            filterItemCheck(
+                                {
+                                    checked: true,
+                                    type: `${groupByKey}`,
+                                    value: `${labelClicked}`,
+                                },
+
+                                true
+                            );
+                            filterItemCheck(
+                                {
+                                    checked: true,
+                                    type: `${nameByKey}`,
+                                    value: `${seriesClicked}`,
+                                },
+                                true
+                            );
+                        }
+
+                        // filterItemCheck({ checked: true, type: 'discipline', value: 'N' }, true);
                     },
                 },
                 animations: {
@@ -67,7 +101,7 @@ export function useHorizontalBarChart<T>(
                 min: 0,
             },
         }),
-        [stacked, colors, categories]
+        [stacked, colors, categories, groupByKey, nameByKey]
     );
 
     return {

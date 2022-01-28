@@ -33,12 +33,12 @@ export const columnGenerator = <T extends Record<string, unknown>>(
                     acc = acc + Number(i.original[accessorKey]) || 0;
                     return acc;
                 } else if (aggregate === 'count') {
-                    acc = i.original.jobStatusCode === jobStatus ? acc + 1 : acc;
+                    acc = i.original.jobStatus === jobStatus ? acc + 1 : acc;
 
                     return acc;
                 } else {
                     acc =
-                        i.original.jobStatusCode === jobStatus
+                        i.original.jobStatus === jobStatus
                             ? acc + Number(i.original[accessorKey]) || 0
                             : acc;
                     return acc;

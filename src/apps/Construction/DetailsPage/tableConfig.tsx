@@ -6,17 +6,15 @@ import { columnGenerator } from './utils';
 export const cols: Column<WorkOrder>[] = [
     {
         Header: '',
-        accessor: 'disciplineDescription',
+        accessor: 'discipline',
         Footer: () => <></>,
         columns: [
             {
                 Header: 'Discipline',
-                accessor: 'disciplineDescription',
+                accessor: 'discipline',
                 width: 250,
                 maxWidth: 300,
-                Footer: (data) => (
-                    <SumColumnFooter data={data} columnId={'disciplineDescription'} />
-                ),
+                Footer: (data) => <SumColumnFooter data={data} columnId={'discipline'} />,
             },
         ],
     },
@@ -27,11 +25,11 @@ export const cols: Column<WorkOrder>[] = [
             columnGenerator({
                 id: 'W01-WOs',
                 header: 'WOs',
-                accessorKey: 'woNo',
+                accessorKey: 'workOrderNo',
                 aggregate: 'count',
                 footerType: {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W01',
                     columnId: 'W01-WOs',
                 },
@@ -44,7 +42,7 @@ export const cols: Column<WorkOrder>[] = [
                 aggregate: 'sum',
                 footerType: {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W01',
                     sumKey: 'estimatedManHours',
                 },
@@ -60,11 +58,11 @@ export const cols: Column<WorkOrder>[] = [
             columnGenerator({
                 id: 'W02-WOs',
                 header: 'WOs',
-                accessorKey: 'woNo',
+                accessorKey: 'workOrderNo',
                 aggregate: 'count',
                 footerType: {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W02',
                     columnId: 'W02-WOs',
                 },
@@ -77,7 +75,7 @@ export const cols: Column<WorkOrder>[] = [
                 aggregate: 'sum',
                 footerType: {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W02',
                     sumKey: 'estimatedManHours',
                 },
@@ -93,11 +91,11 @@ export const cols: Column<WorkOrder>[] = [
             columnGenerator({
                 id: 'W03-WOs',
                 header: 'WOs',
-                accessorKey: 'woNo',
+                accessorKey: 'workOrderNo',
                 aggregate: 'count',
                 footerType: {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W03',
                     columnId: 'W03-WOs',
                 },
@@ -110,7 +108,7 @@ export const cols: Column<WorkOrder>[] = [
                 aggregate: 'sum',
                 footerType: {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W03',
                     sumKey: 'estimatedManHours',
                 },
@@ -126,11 +124,11 @@ export const cols: Column<WorkOrder>[] = [
             columnGenerator({
                 id: 'W04-WOs',
                 header: 'WOs',
-                accessorKey: 'woNo',
+                accessorKey: 'workOrderNo',
                 aggregate: 'count',
                 footerType: {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W04',
                     columnId: 'W04-WOs',
                 },
@@ -143,7 +141,7 @@ export const cols: Column<WorkOrder>[] = [
                 aggregate: 'sum',
                 footerType: {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W04',
                     sumKey: 'estimatedManHours',
                 },
@@ -159,11 +157,11 @@ export const cols: Column<WorkOrder>[] = [
             columnGenerator({
                 id: 'W05-WOs',
                 header: 'WOs',
-                accessorKey: 'woNo',
+                accessorKey: 'workOrderNo',
                 aggregate: 'count',
                 footerType: {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W05',
                     columnId: 'W05-WOs',
                 },
@@ -176,7 +174,7 @@ export const cols: Column<WorkOrder>[] = [
                 aggregate: 'sum',
                 footerType: {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W05',
                     sumKey: 'estimatedManHours',
                 },
@@ -192,11 +190,11 @@ export const cols: Column<WorkOrder>[] = [
             columnGenerator({
                 id: 'W06-WOs',
                 header: 'WOs',
-                accessorKey: 'woNo',
+                accessorKey: 'workOrderNo',
                 aggregate: 'count',
                 footerType: {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W06',
                     columnId: 'W06-WOs',
                 },
@@ -210,7 +208,7 @@ export const cols: Column<WorkOrder>[] = [
                 aggregate: 'sum',
                 footerType: {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W06',
                     sumKey: 'estimatedManHours',
                 },
@@ -226,11 +224,11 @@ export const cols: Column<WorkOrder>[] = [
             columnGenerator({
                 id: 'W07-WOs',
                 header: 'WOs',
-                accessorKey: 'woNo',
+                accessorKey: 'workOrderNo',
                 aggregate: 'count',
                 footerType: {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W07',
                     columnId: 'W07-WOs',
                 },
@@ -244,7 +242,7 @@ export const cols: Column<WorkOrder>[] = [
                 aggregate: 'sum',
                 footerType: {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W07',
                     sumKey: 'estimatedManHours',
                 },
@@ -260,11 +258,11 @@ export const cols: Column<WorkOrder>[] = [
             columnGenerator({
                 id: 'W08-WOs',
                 header: 'WOs',
-                accessorKey: 'woNo',
+                accessorKey: 'workOrderNo',
                 aggregate: 'count',
                 footerType: {
                     type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W08',
                     columnId: 'W08-WOs',
                 },
@@ -278,7 +276,7 @@ export const cols: Column<WorkOrder>[] = [
                 aggregate: 'sum',
                 footerType: {
                     type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
+                    fieldKey: 'jobStatus',
                     value: 'W08',
                     sumKey: 'estimatedManHours',
                 },
@@ -294,7 +292,7 @@ export const cols: Column<WorkOrder>[] = [
             columnGenerator({
                 id: 'Total-WOs',
                 header: 'WOs',
-                accessorKey: 'disciplineDescription',
+                accessorKey: 'discipline',
                 aggregate: 'count',
                 footerType: {
                     type: 'SumColumnFooter',
