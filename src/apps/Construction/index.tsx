@@ -1,6 +1,7 @@
 import { AnalyticsOptions, CriticalWoTable, SidesheetContent, weekDiff } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
+import { ConstructionVisual } from './Components/ConstructionVisual';
 import { cols } from './DetailsPage/tableConfig';
 import { WorkOrder } from './mocData/mockData';
 import { mock } from './mocData/newMockData';
@@ -15,6 +16,7 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
                     title: 'Job Statuses',
                     type: 'column',
                 },
+                sidesheetContent: SidesheetContent,
                 title: 'Job Statuses',
             },
         },
@@ -50,13 +52,20 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
                 },
             },
         },
-        chart3: {
+        chart2: {
             type: 'customVisual',
+            component: ConstructionVisual,
             options: {
-                component: CriticalWoTable,
-                componentProps: { enableGrouping: true, initialGroupBy: 'disciplineDescription' },
+                componentProps: {},
             },
         },
+        // chart3: {
+        //     type: 'customVisual',
+        //     options: {
+        //         component: CriticalWoTable,
+        //         componentProps: { enableGrouping: true, initialGroupBy: 'disciplineDescription' },
+        //     },
+        // },
     },
 };
 const detailsPage: AnalyticsOptions<WorkOrder> = {

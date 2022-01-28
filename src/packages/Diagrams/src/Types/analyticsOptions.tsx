@@ -1,3 +1,4 @@
+import React from 'react';
 import { ConstructionGraphOptions } from '..';
 import { BarChartOptions } from '../Visuals/BarVisual/Types/barVisualOptions';
 import { HorizontalBarChartOptions } from '../Visuals/HorizontalBarVisual/Types/barVisualOptions';
@@ -36,17 +37,20 @@ interface HorizontalBarChart<T> {
     options: HorizontalBarChartOptions<T>;
 }
 
-interface CustomVisual<T> {
+interface CustomVisual<
+    T,
+    D extends React.ComponentType<CustomVisualArgs<T>> = React.ComponentType<CustomVisualArgs<T>>
+> {
     type: 'customVisual';
-    options: CustomVisualOptions<T>;
+    component: D;
+    options: CustomVisualOptions<D>;
 }
 export type CustomVisualArgs<T> = {
     data: T[];
-    [x: string]: unknown;
+    other: {};
 };
-interface CustomVisualOptions<T> {
-    component: React.FC<CustomVisualArgs<T>>;
-    componentProps?: { [x: string]: unknown };
+interface CustomVisualOptions<D extends React.ComponentType<any>> {
+    componentProps?: React.ComponentPropsWithoutRef<D>;
 }
 interface Default {
     type: 'default';
@@ -63,9 +67,9 @@ export type Options<T> =
     | Default;
 
 interface Section<T> {
-    chart1?: Options<T>;
-    chart2?: Options<T>;
-    chart3?: Options<T>;
+    chart1?: CustomVisual<T>;
+    chart2?: CustomVisual<T>;
+    chart3?: CustomVisual<T>;
 }
 
 interface AnalyticsSections<T> {

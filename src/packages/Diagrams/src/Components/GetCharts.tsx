@@ -9,10 +9,6 @@ export function getChart<T>(
     config: Options<T> = { type: 'default' },
     isLoading?: boolean
 ): JSX.Element {
-    let Component: React.FC<CustomVisualArgs<T>> = () => <></>;
-    if (config.type === 'customVisual') {
-        Component = config.options.component;
-    }
     switch (config.type) {
         case 'barChart':
             return (
@@ -96,10 +92,14 @@ export function getChart<T>(
                 </ChartsWrapper>
             );
         case 'customVisual':
+            const {
+                component: Component,
+                options: { componentProps },
+            } = config;
             return (
                 <ChartsWrapper>
                     {!isLoading ? (
-                        <Component data={data} {...config.options.componentProps} />
+                        <Component data={data} other={componentProps} />
                     ) : (
                         <Loading>
                             <Circular />
