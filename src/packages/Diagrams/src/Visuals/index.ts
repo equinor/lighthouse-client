@@ -4,4 +4,3 @@ export * from './LineVisual';
 export * from './TableVisual';
 export * from './TimeVisual';
 export * from './ConstructionVisual';
-export * from './CriticalWoTable';

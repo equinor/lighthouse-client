@@ -1,4 +1,4 @@
-import { CellProps, TableInstance } from '@equinor/Table';
+import { CellProps, Column, TableInstance } from '@equinor/Table';
 import {
     SumColumnFooter,
     SumColumnFooterCount,
@@ -15,10 +15,10 @@ import { ColumnGeneratorArgs } from './types';
  */
 export const columnGenerator = <T extends Record<string, unknown>>(
     args: ColumnGeneratorArgs<T>
-) => {
+): Column<T> => {
     const { id, header, accessorKey, aggregate, footerType, jobStatus, width = 100 } = args;
     return {
-        id,
+        id: id,
         Header: header,
         width: width,
         accessor: (item: T) => {

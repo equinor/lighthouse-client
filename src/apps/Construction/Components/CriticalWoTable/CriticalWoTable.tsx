@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { WorkOrder } from '../../../../../apps/Construction/mocData/mockData';
+import { WorkOrder } from '../../mocData/mockData';
 import { Fragment, useEffect, useState } from 'react';
 import { createWoStatusMap, filterWoMap } from './utils';
 import { WoNumbersDisplay } from './components/WoNumbers';
 import { SingleSelect } from '@equinor/eds-core-react';
-import { CustomVisualArgs } from '../../Types';
+import { CustomVisualArgs } from '@equinor/Diagrams';
 
 const Container = styled.div`
     height: 100%;
@@ -42,7 +42,7 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
     data,
     enableGrouping = false,
     initialGroupBy,
-}: CustomVisualArgs<T>) => {
+}: CustomVisualArgs<T>): JSX.Element => {
     const [groupBy, setGroupBy] = useState<keyof T>('disciplineDescription');
     const woStatusMap = createWoStatusMap(data, groupBy);
     const filtered = filterWoMap(woStatusMap);
