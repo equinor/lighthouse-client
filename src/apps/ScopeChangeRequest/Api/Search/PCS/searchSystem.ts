@@ -9,7 +9,7 @@ export async function searchSystems(
     const selectOptions: TypedSelectOption[] = [];
     const res: Promise<System[]> = await procosysClient
         .fetch(
-            'https://procosyswebapi.equinor.com/api/Systems?plantId=PCS%24JOHAN_CASTBERG&projectId=177433&onlyActiveSystems=true&api-version=4.1'
+            'api/Systems?plantId=PCS%24JOHAN_CASTBERG&projectId=177433&onlyActiveSystems=true&api-version=4.1'
         )
         .then((x) => x.json());
 

@@ -1,6 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+import { isProduction } from '../../../../../Core/Client/Functions';
 import { Tag } from '../../../Types/scopeChangeRequest';
 
 interface TagsProps {
@@ -16,7 +17,8 @@ export const ProcosysTags = ({ tags }: TagsProps): JSX.Element => {
                         <Icon color={tokens.colors.interactive.primary__resting.hex} name="tag" />
                         <Spacer />
                         <Link
-                            href={`https://procosys.equinor.com/JOHAN_CASTBERG/Completion#Tag|${x.procosysId}`}
+                            href={`https://${isProduction() ? 'procosys' : 'procosystest'
+                                }.equinor.com/JOHAN_CASTBERG/Completion#Tag|${x.procosysId}`}
                             target="_blank"
                         >
                             TAG_{x.procosysNumber}

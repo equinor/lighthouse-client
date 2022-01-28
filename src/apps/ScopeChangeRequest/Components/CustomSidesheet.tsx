@@ -10,9 +10,16 @@ import { Wrapper } from '../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { Field } from './DetailView/Components/Field';
 import { RequestViewContainer } from './RequestDetailViewContainer';
+import { httpClient } from '../../../Core/Client/Functions/HttpClient';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { scopeChange: scopeChangeApi } = useHttpClient();
+
+    const clients = httpClient();
+
+    useEffect(() => {
+        console.log(clients);
+    }, []);
 
     /**
      * Refetches every second

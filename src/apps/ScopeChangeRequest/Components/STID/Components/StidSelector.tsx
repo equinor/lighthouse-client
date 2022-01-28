@@ -22,7 +22,7 @@ export interface SubResult {
 }
 
 export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps): JSX.Element => {
-    const { customHttpClient } = useHttpClient('b827c278-12de-47a0-b789-c8d11e3b9571/.default');
+    const { STID } = useHttpClient();
 
     //controls
     const [isOpen, setIsOpen] = useState(false);
@@ -69,7 +69,7 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
             }
             popResult(x.value);
         } else {
-            const documents = await getDocumentsByTag('JCA', x.value, customHttpClient);
+            const documents = await getDocumentsByTag('JCA', x.value, STID);
             if (documents.length === 0) {
                 dispatch({ type: 'setTagContainsNoDocuments', value: true });
                 popResult(x.value);

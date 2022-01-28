@@ -10,9 +10,6 @@ export async function patchScopeChange(
         body: JSON.stringify(request),
     };
     return await client
-        .fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}`,
-            requestOptions
-        )
+        .fetch(`api/scope-change-requests/${request.id}`, requestOptions)
         .then((response) => response.json());
 }

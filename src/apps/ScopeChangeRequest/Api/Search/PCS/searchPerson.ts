@@ -8,12 +8,11 @@ export const searchPerson = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
-    const baseUrl = 'https://procosyswebapi.equinor.com/api';
-    const uri = 'Person/PersonSearch';
+    const uri = 'api/Person/PersonSearch';
     const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&searchString=${encodeURIComponent(
         searchString
     )}&numberOfRows=10&api-version=4.1`;
-    const url = `${baseUrl}/${uri}?${queryParameters}`;
+    const url = `${uri}?${queryParameters}`;
     await procosysClient
         .fetch(url)
         .then((response) => response.json())
