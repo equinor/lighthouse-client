@@ -23,7 +23,7 @@ export const searchQueryOrigin = async (
     try {
         await client
             .fetch(
-                `https://procosyswebapi.equinor.com/api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105670&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
+                `api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105670&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
                 requestOptions
             )
             .then((response) => response.json())

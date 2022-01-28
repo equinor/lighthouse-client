@@ -8,12 +8,11 @@ export const searchCommPkg = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
-    const baseUrl = 'https://procosyswebapi.equinor.com/api';
-    const uri = 'CommPkg/Search';
+    const uri = 'api/CommPkg/Search';
     const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&startsWithCommPkgNo=${encodeURIComponent(
         searchString
     )}&includeClosedProjects=false&itemsPerPage=10&includeVoidedCommPkgs=true&includeDecommissioningPkgs=false&api-version=4.1`;
-    const url = `${baseUrl}/${uri}?${queryParameters}`;
+    const url = `${uri}?${queryParameters}`;
     await procosysClient
         .fetch(url)
         .then((response) => response.json())

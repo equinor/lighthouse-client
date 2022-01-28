@@ -15,7 +15,7 @@ export async function postContribution(
         }),
     };
     await client.fetch(
-        `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${requestId}/workflow/step/${stepId}/contributors/${contributorId}/contribute`,
+        `api/scope-change-requests/${requestId}/workflow/step/${stepId}/contributors/${contributorId}/contribute`,
         requestOptions
     );
 }

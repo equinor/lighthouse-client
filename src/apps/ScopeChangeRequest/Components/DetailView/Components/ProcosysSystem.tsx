@@ -1,5 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+import { isProduction } from '../../../../../Core/Client/Functions';
 import { System } from '../../../Types/scopeChangeRequest';
 
 interface ProcosysSystemProps {
@@ -15,7 +16,8 @@ export const ProcosysSystem = ({ systems: systems }: ProcosysSystemProps): JSX.E
                         {/* TODO: Find system icon */}
                         <Spacer />
                         <Link
-                            href={`https://procosys.equinor.com/JOHAN_CASTBERG/Completion#System|${x.procosysId}`}
+                            href={`https://${isProduction() ? 'procosys' : 'procosystest'
+                                }.com/JOHAN_CASTBERG/Completion#System|${x.procosysId}`}
                             target="_blank"
                         >
                             SYS_{x.procosysCode}

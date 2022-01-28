@@ -15,7 +15,7 @@ export async function patchWorkflowStep(
         }),
     };
     await client.fetch(
-        `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${requestId}/workflow/step/${stepId}/sign/${criteriaId}`,
+        `api/scope-change-requests/${requestId}/workflow/step/${stepId}/sign/${criteriaId}`,
         requestOptions
     );
 }

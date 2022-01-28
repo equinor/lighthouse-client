@@ -7,10 +7,9 @@ import { FunctionalRole } from './Types/functionalRole';
  * @returns
  */
 export async function checkMyFunctionalRole(procosysClient: HttpClient): Promise<FunctionalRole[]> {
-    const baseUrl = 'https://procosyswebapi.equinor.com/api';
-    const uri = 'Me/FunctionalRoleCodes';
+    const uri = 'api/Me/FunctionalRoleCodes';
     const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&api-version=4.1`;
-    const url = `${baseUrl}/${uri}?${queryParameters}`;
+    const url = `${uri}?${queryParameters}`;
     return await procosysClient
         .fetch(url)
         .then((response) => response.json())

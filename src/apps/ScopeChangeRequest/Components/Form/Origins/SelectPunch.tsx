@@ -20,7 +20,7 @@ export const SelectPunch = ({ setOriginId }: SelectPunchProps): JSX.Element => {
 
         try {
             await procosys.fetch(
-                `https://procosyswebapi.equinor.com/api/PunchListItem?plantId=PCS%24JOHAN_CASTBERG&punchItemId=${plNumber}&api-version=4.1`
+                `api/PunchListItem?plantId=PCS%24JOHAN_CASTBERG&punchItemId=${plNumber}&api-version=4.1`
             );
             setIsValidPunch(true);
             setOriginId(plNumber);
