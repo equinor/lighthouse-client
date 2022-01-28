@@ -28,7 +28,7 @@ export function useSelector<T extends TableData>(hooks: Hooks<T>): void {
             //     <HeaderCheckbox  {...getToggleAllPageRowsSelectedProps()} />
             // ),
             // TODO : row.original doesnt contain the property noCheckbox
-            Cell: ({ row }: Cell<T>): JSX.Element => {
+            Cell: ({ row }): JSX.Element => {
                 return row.original?.noCheckbox ? (
                     <></>
                 ) : (
