@@ -1,4 +1,4 @@
-import { FieldSettings } from '../../../components/ParkView/Models/fieldSettings';
+import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
 import { HandoverPackage } from '../models/HandoverPackage';
 import { getDateKey, getProgressKey } from './getKeyFunctions';
 import { sortByNumber } from './sortFunctions';

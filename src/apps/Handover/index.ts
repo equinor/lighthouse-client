@@ -1,12 +1,12 @@
 import { ClientApi } from '@equinor/app-builder';
-import { HandoverPackage } from './models/HandoverPackage';
+import { HandoverPackage } from './Garden/models/HandoverPackage';
 import { baseClient } from '../../../packages/httpClient/src';
-import { fieldSettings } from './utility/gardenSetup';
+import { fieldSettings } from './Garden/utility/gardenSetup';
 import { HandoverGroupByView } from './CustomViews/HandoverGroupByView';
 import { HandoverGardenItem } from './CustomViews/HandoverGardenItem';
 import { HandoverSideSheet } from './CustomViews/HandoverSideSheet';
-import { sortPackagesByStatus } from './utility/sortFunctions';
-import { getMaxVolumeFromData } from './utility/getKeyFunctions';
+import { sortPackagesByStatus } from './Garden/utility/sortFunctions';
+import { getMaxVolumeFromData } from './Garden/utility/getKeyFunctions';
 
 export type HandoverCustomGroupByKeys = {
     weeklyDaily: 'Weekly' | 'Daily';

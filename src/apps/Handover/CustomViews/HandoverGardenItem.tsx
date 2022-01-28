@@ -1,14 +1,14 @@
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import { Item } from '../../../components/ParkView/Styles/item';
-import { HandoverPackage } from '../models/HandoverPackage';
-import { getDotsColor, getStatus, getTextColor } from '../utility/handoverItemMapping';
+import { HandoverPackage } from '../Garden/models/HandoverPackage';
+import { getDotsColor, getStatus, getTextColor } from '../Garden/utility/handoverItemMapping';
 import { CustomItemView } from '../../../components/ParkView/Models/gardenOptions';
-import { createProgressGradient } from '../utility/mcProgress';
-import { SizeIcons } from '../components/SizeIcons';
-import { StatusCircle } from '../components/StatusCircle';
-import { FlagIcon } from '../components/FlagIcon';
-import { WarningIcon } from '../components/WarningIcon';
+import { createProgressGradient } from '../Garden/utility/mcProgress';
+import { SizeIcons } from '../Garden/components/SizeIcons';
+import { StatusCircle } from '../Garden/components/StatusCircle';
+import { FlagIcon } from '../Garden/components/FlagIcon';
+import { WarningIcon } from '../Garden/components/WarningIcon';
 import { useParkViewContext } from '../../../components/ParkView/Context/ParkViewProvider';
 
 type HandoverItemProps = { backgroundColor: string; textColor: string };

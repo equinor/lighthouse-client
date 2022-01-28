@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useApiClient } from '../../../Core/Client/Hooks/useApiClient';
+import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { HandoverResourceTypeMap } from '../models/HandoverResources';
 
 type UseHandoverResource<T extends keyof HandoverResourceTypeMap> = {

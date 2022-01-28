@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
-import { HandoverCustomGroupByKeys } from '..';
+import { HandoverCustomGroupByKeys } from '../..';
 
-import { GetKeyFunction } from '../../../components/ParkView/Models/fieldSettings';
+import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
 import { HandoverPackage } from '../models/HandoverPackage';
 
 const getFieldKeyBasedOnPlannedForecast = (
