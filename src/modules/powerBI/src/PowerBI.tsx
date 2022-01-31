@@ -1,15 +1,15 @@
 import { tokens } from '@equinor/eds-tokens';
-import { Embed, Report, service } from 'powerbi-client';
+import { Embed, Page, Report, service } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../../components/Icon/Icon';
 
 import { usePowerBI } from './api';
 import { Filter } from './models/filter';
 import './style.css';
-
+import { Chip } from '@equinor/eds-core-react';
 const Wrapper = styled.div`
     position: relative;
     width: 100%;
@@ -40,11 +40,70 @@ interface PowerBiProps {
         enableNavigation?: boolean;
     };
 }
+/**
+ * Gets all pages for powerbi report
+ * Will only change pages if pages is undefined because
+ * report.setPage() will cause this to set the state every time
+ * user changes a page.
+ */
+const useGetPages = (report?: Report) => {
+    const [pages, setPages] = useState<Page[]>();
 
+    useEffect(() => {
+        const getPages = () => {
+            report &&
+                !pages &&
+                report.on('rendered', async () => {
+                    try {
+                        const pbiPages = await report.getPages();
+                        setPages(pbiPages);
+                    } catch {}
+                });
+        };
+        getPages();
+    }, [report]);
+
+    return { pages };
+};
+
+/**
+ * Will get the active page at first render.
+ * If user changes page, it should be handled outside of the hook (setActivePage)
+ * @param report
+ * @returns
+ */
+const useActivePage = (
+    report?: Report
+): [activePage: Page | undefined, setActivePage: (page: Page) => void] => {
+    const [activePage, setActivePage] = useState<Page>();
+
+    const handleChange = useCallback(
+        (page: Page) => {
+            report?.setPage(page.name);
+            setActivePage(page);
+        },
+        [report]
+    );
+
+    useEffect(() => {
+        report &&
+            !activePage &&
+            report.on('rendered', async () => {
+                try {
+                    const active = await report.getActivePage();
+
+                    setActivePage(active);
+                } catch {}
+            });
+    }, [activePage, report]);
+
+    return [activePage, handleChange];
+};
 export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JSX.Element => {
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
-
+    const { pages } = useGetPages(report);
+    const [activePage, setActivePage] = useActivePage(report);
     //TODO custom loading
     const eventHandlersMap = new Map([
         [
@@ -71,7 +130,14 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             },
         ],
     ]);
-
+    const handleClick = useCallback(
+        (page: Page) => {
+            if (report) {
+                setActivePage(page);
+            }
+        },
+        [report]
+    );
     return (
         <>
             {error ? (
@@ -85,6 +151,22 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                 </ErrorWrapper>
             ) : (
                 <Wrapper>
+                    <div style={{ display: 'flex' }}>
+                        {pages &&
+                            pages.map((page) => {
+                                return (
+                                    <Chip
+                                        key={page.name}
+                                        onClick={() => handleClick(page)}
+                                        variant={
+                                            page.name === activePage?.name ? 'active' : 'default'
+                                        }
+                                    >
+                                        {page.displayName}
+                                    </Chip>
+                                );
+                            })}
+                    </div>
                     <PowerBIEmbed
                         embedConfig={config}
                         eventHandlers={eventHandlersMap}
@@ -93,6 +175,7 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                                 `Embedded object of type "${embedObject.embedtype}" received`
                             );
                             setReport(embedObject as Report);
+
                             window['report'] = embedObject;
                         }}
                         cssClassName="pbiEmbed"
