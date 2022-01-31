@@ -38,6 +38,7 @@ export function Item({
 
     return (
         <StatusCard color={colors[status]}>
+            <Value>{value()}</Value>
             <div>
                 <Tooltip
                     title={tooltipContent}
@@ -46,7 +47,6 @@ export function Item({
                     <Title>{title}</Title>
                 </Tooltip>
             </div>
-            <Value>{value()}</Value>
         </StatusCard>
     );
 }

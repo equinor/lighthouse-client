@@ -13,15 +13,15 @@ export const StatusCard = styled(Card)`
     justify-content: space-between;
     border-bottom: ${({ color }: StatusCardProps) => `0.25rem solid ${color}`};
     margin: 0.5rem;
+    width: fit-content;
 `;
-export const Title = styled.h4`
-    margin: 0;
-    padding: 0;
+export const Title = styled.div`
+    font-size: 13px;
 `;
 
-export const Value = styled.h1`
-    margin: 0;
-    padding: 0;
+export const Value = styled.div`
+    font-size: 20px;
+    font-weight: bold;
 `;
 
 export const Description = styled.p`
