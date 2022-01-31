@@ -1,5 +1,5 @@
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
-import { useEffect, useMemo, useReducer, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import Select, { SingleValue } from 'react-select';
 import styled from 'styled-components';
 import { useClientContext, useHttpClient } from '../../../../../Core/Client/Hooks';
@@ -8,7 +8,11 @@ import { patchScopeChange, patchWorkflowStep } from '../../../Api';
 import { canSign as apiCheckSign } from '../../../Api/ScopeChange/Access/canSign';
 import { postContribution } from '../../../Api/ScopeChange/postContribution';
 import { unVoidRequest, voidRequest } from '../../../Api/ScopeChange/voidRequest';
-import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../../Types/scopeChangeRequest';
+import {
+    Criteria,
+    ScopeChangeRequest,
+    ScopeChangeRequestFormModel,
+} from '../../../Types/scopeChangeRequest';
 import { applyEDSTheme } from '../../SearchableDropdown/applyEds';
 import { RequestActionsContainer } from '../requestDetailViewStyles';
 import { Field } from './Field';
@@ -18,72 +22,79 @@ interface RequestActionBarProps {
     refetch: () => Promise<void>;
 }
 
-export const RequestActionBar = ({ request, refetch }: RequestActionBarProps) => {
+export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): JSX.Element => {
     const { internal } = useClientContext();
     const [comment, setComment] = useState<string | undefined>(undefined);
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [selectedCriteria, setSelectedCriteria] = useState<string | undefined>(undefined);
     const [userId, setUserId] = useState<string | undefined>();
+    const [signableCriterias, setSignableCriterias] = useState<Criteria[] | undefined>();
+    const [contributeId, setContributeId] = useState<string | undefined>();
 
-    const checkCanSign = async () => {
-        if (!request.currentWorkflowStep || !request.currentWorkflowStep?.criterias) return;
-        const criteriaId = request.currentWorkflowStep.criterias
-            .filter((x) => x.signedState === null)
-            .map((x) => x.id);
-
-        if (criteriaId.length > 0) {
-            const signAllowed = await apiCheckSign(
+    async function checkCanSign(): Promise<Criteria[]> {
+        if (!request.currentWorkflowStep || !request.currentWorkflowStep.criterias) return [];
+        const validCriterias: Criteria[] = [];
+        const unsignedCriterias = request.currentWorkflowStep.criterias.filter(
+            (x) => x.signedState === null
+        );
+        unsignedCriterias.forEach(async (criteria) => {
+            if (!request.currentWorkflowStep?.id) return;
+            const allowed = await apiCheckSign(
                 request.id,
-                request.currentWorkflowStep?.id || '',
-                criteriaId[0]
+                request.currentWorkflowStep.id,
+                criteria.id
             );
-            console.log(signAllowed);
-        }
-    };
+            if (allowed.canPatch) {
+                validCriterias.push(criteria);
+            }
+        });
+        return validCriterias;
+    }
 
-    useEffect(() => {
-        checkCanSign();
+    async function checkCanContribute(): Promise<void> {
+        if (!request.currentWorkflowStep || !request.currentWorkflowStep.criterias || !userId)
+            return;
+        setContributeId(
+            request.currentWorkflowStep.contributors.find(
+                (x) => x.person.oid === userId && x.contribution === null
+            )?.id
+        );
+    }
+
+    const checkPermissions = useCallback(async () => {
+        const availableToSign = await checkCanSign();
+        if (availableToSign.length === 1) {
+            setSelectedCriteria(availableToSign[0].id);
+        }
+        setSignableCriterias(availableToSign);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [request]);
 
     useEffect(() => {
+        checkPermissions();
+    }, [checkPermissions, request]);
+
+    useEffect(() => {
         setUserId(internal.authProvider.getCurrentUser()?.localAccountId);
+        checkCanContribute();
     }, [internal]);
 
     const [
         {
-            hasErrored,
             voidLoading,
             signLoading,
             initiateLoading,
             contributeLoading,
             canInitiate,
             canSign,
-            canContribute,
             canVoid,
+            // contributeFailed,
+            // initiateFailed,
+            // signFailed,
+            // voidFailed,
         },
         dispatch,
     ] = useReducer(tasksReducer, initial);
-
-    const availableActions: SelectOption[] | undefined = useMemo(() => {
-        if (
-            request.state === 'Open' &&
-            request.currentWorkflowStep &&
-            request.currentWorkflowStep.criterias.length > 0
-        ) {
-            const activeCriterias = request.currentWorkflowStep.criterias
-                .filter((x) => x.signedAtUtc === null)
-                .map((x) => {
-                    return {
-                        value: x.id,
-                        label: x.value,
-                    };
-                });
-            if (activeCriterias.length === 1) {
-                setSelectedCriteria(activeCriterias[0].value);
-            }
-            return activeCriterias;
-        }
-    }, [request]);
 
     const onVoidRequest = async () => {
         dispatch({ type: 'setVoidLoading', value: true });
@@ -103,7 +114,14 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps) =>
             const unsignedCriterias = request.currentWorkflowStep.criterias.filter(
                 (x) => x.signedAtUtc === null
             );
-
+            const sign = async () =>
+                await patchWorkflowStep(
+                    request.id,
+                    currentStepId,
+                    selectedCriteria,
+                    scopeChangeApi,
+                    comment
+                );
             if (
                 request.currentWorkflowStep.contributors &&
                 request.currentWorkflowStep.contributors.some((x) => x.contribution === null) &&
@@ -112,23 +130,10 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps) =>
                 spawnConfirmationDialog(
                     'Not all contributors have responded yet, are you sure you want to continue?',
                     'Warning',
-                    async () =>
-                        await patchWorkflowStep(
-                            request.id,
-                            currentStepId,
-                            selectedCriteria,
-                            scopeChangeApi,
-                            comment
-                        )
+                    sign
                 );
             } else {
-                await patchWorkflowStep(
-                    request.id,
-                    currentStepId,
-                    selectedCriteria,
-                    scopeChangeApi,
-                    comment
-                );
+                sign();
             }
 
             await refetch();
@@ -210,76 +215,76 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps) =>
                         <>
                             {/* <Button onClick={setEditMode}>Edit</Button> */}
                             <HorizontalDivider />
-                            <Button
-                                onClick={onInitiate}
-                                variant="outlined"
-                                disabled={initiateLoading}
-                            >
-                                {initiateLoading ? (
-                                    <Progress.Dots color="primary" />
-                                ) : (
-                                    <span>Initiate request</span>
-                                )}
-                            </Button>
-                        </>
-                    )}
-                    {request.currentWorkflowStep?.contributors.some(
-                        (x) => x.person.oid === userId && x.contribution === null
-                    ) && (
-                            <Button onClick={sendContribution} disabled={contributeLoading}>
-                                {contributeLoading ? (
-                                    <Progress.Dots color="primary" />
-                                ) : (
-                                    <span> Contribute</span>
-                                )}
-                            </Button>
-                        )}
-                    {request.state === 'Open' && (
-                        <>
-                            <span>
+                            {canInitiate && (
                                 <Button
-                                    onClick={async () => await onVoidRequest()}
-                                    disabled={voidLoading}
+                                    onClick={onInitiate}
                                     variant="outlined"
-                                    color="danger"
+                                    disabled={initiateLoading}
                                 >
-                                    {voidLoading ? (
-                                        <Progress.Dots color="tertiary" />
-                                    ) : (
-                                        <>{request.isVoided ? 'Unvoid request' : 'Void request'}</>
-                                    )}
-                                </Button>
-                            </span>
-
-                            <Inline>
-                                {availableActions && availableActions?.length > 1 && (
-                                    <>
-                                        <div style={{ minWidth: '250px' }}>
-                                            <Select
-                                                isClearable={true}
-                                                isSearchable={false}
-                                                options={availableActions}
-                                                placeholder="Sign as"
-                                                onChange={(newValue: SingleValue<SelectOption>) => {
-                                                    setSelectedCriteria(newValue?.value);
-                                                }}
-                                                theme={applyEDSTheme}
-                                            />
-                                        </div>
-                                    </>
-                                )}
-                                <Button
-                                    disabled={!selectedCriteria || signLoading}
-                                    onClick={onSignStep}
-                                >
-                                    {signLoading ? (
+                                    {initiateLoading ? (
                                         <Progress.Dots color="primary" />
                                     ) : (
-                                        <div>Sign</div>
+                                        <span>Initiate request</span>
                                     )}
                                 </Button>
-                            </Inline>
+                            )}
                         </>
+                    )}
+                    {contributeId && (
+                        <Button onClick={sendContribution} disabled={contributeLoading}>
+                            {contributeLoading ? (
+                                <Progress.Dots color="primary" />
+                            ) : (
+                                <span> Contribute</span>
+                            )}
+                        </Button>
+                    )}
+
+                    {canVoid && (
+                        <span>
+                            <Button
+                                onClick={async () => await onVoidRequest()}
+                                disabled={voidLoading}
+                                variant="outlined"
+                                color="danger"
+                            >
+                                {voidLoading ? (
+                                    <Progress.Dots color="tertiary" />
+                                ) : (
+                                    <>{request.isVoided ? 'Unvoid request' : 'Void request'}</>
+                                )}
+                            </Button>
+                        </span>
+                    )}
+
+                    {canSign && (
+                        <Inline>
+                            {signableCriterias && signableCriterias?.length > 1 && (
+                                <>
+                                    <div style={{ minWidth: '250px' }}>
+                                        <Select
+                                            isClearable={true}
+                                            isSearchable={false}
+                                            options={signableCriterias.map((x): SelectOption => {
+                                                return { label: x.value, value: x.id };
+                                            })}
+                                            placeholder="Sign as"
+                                            onChange={(newValue: SingleValue<SelectOption>) => {
+                                                setSelectedCriteria(newValue?.value);
+                                            }}
+                                            theme={applyEDSTheme}
+                                        />
+                                    </div>
+                                </>
+                            )}
+
+                            <Button
+                                disabled={!selectedCriteria || signLoading}
+                                onClick={onSignStep}
+                            >
+                                {signLoading ? <Progress.Dots color="primary" /> : <div>Sign</div>}
+                            </Button>
+                        </Inline>
                     )}
                 </ButtonContainer>
             </RequestActionsContainer>
@@ -313,8 +318,10 @@ const initial: NotifyEvents = {
     voidLoading: false,
     initiateLoading: false,
     contributeLoading: false,
-    hasErrored: false,
-    canContribute: false,
+    contributeFailed: false,
+    initiateFailed: false,
+    signFailed: false,
+    voidFailed: false,
     canInitiate: false,
     canSign: false,
     canVoid: false,
@@ -322,25 +329,29 @@ const initial: NotifyEvents = {
 
 interface NotifyEvents {
     contributeLoading: boolean;
+    contributeFailed: boolean;
     initiateLoading: boolean;
+    initiateFailed: boolean;
     voidLoading: boolean;
+    voidFailed: boolean;
     signLoading: boolean;
-    hasErrored: boolean;
+    signFailed: boolean;
     canSign: boolean;
     canVoid: boolean;
-    canContribute: boolean;
     canInitiate: boolean;
 }
 
 type MutableStates =
     | 'setSignLoading'
+    | 'setSignFailed'
+    | 'setVoidFailed'
+    | 'setInitiateFailed'
+    | 'setContributeFailed'
     | 'setVoidLoading'
     | 'setInitiateLoading'
     | 'setContributeLoading'
-    | 'hasErrored'
-    | 'setCanSign'
     | 'setCanVoid'
-    | 'setCanContribute'
+    | 'setContributeId'
     | 'setCanInitiate';
 
 interface Actions {
@@ -350,10 +361,6 @@ interface Actions {
 
 function tasksReducer(state: NotifyEvents, action: Actions): NotifyEvents {
     switch (action.type) {
-        case 'hasErrored': {
-            return { ...state, hasErrored: action.value };
-        }
-
         case 'setContributeLoading': {
             return { ...state, contributeLoading: action.value };
         }
@@ -370,20 +377,28 @@ function tasksReducer(state: NotifyEvents, action: Actions): NotifyEvents {
             return { ...state, voidLoading: action.value };
         }
 
-        case 'setCanContribute': {
-            return { ...state, canContribute: action.value };
-        }
-
         case 'setCanVoid': {
             return { ...state, canVoid: action.value };
         }
 
-        case 'setCanSign': {
-            return { ...state, canSign: action.value };
-        }
-
         case 'setCanInitiate': {
             return { ...state, canInitiate: action.value };
+        }
+
+        case 'setContributeFailed': {
+            return { ...state, contributeFailed: action.value };
+        }
+
+        case 'setVoidFailed': {
+            return { ...state, voidFailed: action.value };
+        }
+
+        case 'setSignFailed': {
+            return { ...state, signFailed: action.value };
+        }
+
+        case 'setInitiateFailed': {
+            return { ...state, initiateFailed: action.value };
         }
 
         default: {
