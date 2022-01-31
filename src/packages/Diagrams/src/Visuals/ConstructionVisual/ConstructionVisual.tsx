@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { TimeDimension } from '../../Utils/createTime';
 import { ConstructionGraphProps } from './Types/constructionVisualOptions';
 import {
@@ -9,81 +9,22 @@ import {
 } from '../../Utils/cutoffUtils';
 import { WorkOrder } from '../../../../../apps/Construction/mocData/mockData';
 import { openSidesheet } from '../../../../Sidesheet/Functions';
-import { Chart as ChartJS, ChartOptions, ChartData, registerables } from 'chart.js';
+import { Chart as ChartJS, ChartData, registerables } from 'chart.js';
 import { Chart as ReactChart, getDatasetAtEvent, getElementsAtEvent } from 'react-chartjs-2';
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { SidesheetContent } from '../../Components';
+import { htmlLegendPlugin } from './Utils/htmlLegendPlugin';
+import { chartoptions } from './Utils/config';
 ChartJS.register(...registerables, zoomPlugin);
 
-export const chartoptions = (title: string): ChartOptions => ({
-    maintainAspectRatio: false,
-    responsive: true,
-    plugins: {
-        tooltip: {
-            backgroundColor: 'white',
-            titleColor: 'black',
-            bodyColor: 'black',
-        },
-        title: {
-            text: title,
-            display: true,
-            align: 'start',
-            color: 'black',
-            font: {
-                size: 16,
-                family: 'Equinor',
-                weight: 'bolder',
-            },
-        },
-        legend: {
-            position: 'bottom',
-        },
-        zoom: {
-            zoom: {
-                wheel: {
-                    enabled: true,
-                },
-                drag: {
-                    enabled: true,
-                },
-            },
-        },
-    },
-
-    scales: {
-        y: {
-            beginAtZero: true,
-            position: 'left',
-            type: 'linear',
-            title: {
-                display: true,
-                text: 'Bars',
-            },
-        },
-        acc: {
-            type: 'linear',
-            display: true,
-            position: 'right',
-            title: {
-                display: true,
-                text: 'Lines',
-            },
-
-            grid: {
-                display: false,
-            },
-            beginAtZero: true,
-        },
-        xAxis: {
-            offset: true,
-        },
-    },
-});
 export function ConstructionVisual<T extends unknown>({
     data,
     options: { title, timeChartOptions, colors, defaultTime, accumulative },
 }: ConstructionGraphProps<T>): JSX.Element {
     const [time, setTime] = useState<TimeDimension>(defaultTime || 'week');
+
+    const chartRef = useRef<ChartJS>(null);
+
     const sortedCategories = sortCategories(createUniqueCategories(data as WorkOrder[]));
 
     const series = useMemo(
@@ -105,6 +46,7 @@ export function ConstructionVisual<T extends unknown>({
         }),
         [renamedCategories, series]
     );
+
     const onClick = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const { current: chart } = chartRef;
 
@@ -138,15 +80,18 @@ export function ConstructionVisual<T extends unknown>({
         return time === type ? 'active' : 'default';
     }
 
-    const chartRef = useRef<ChartJS>(null);
     return (
-        <ReactChart
-            type="bar"
-            ref={chartRef}
-            options={chartoptions(title)}
-            data={chartData as ChartData}
-            height={400}
-            onClick={onClick}
-        />
+        <div style={{ height: '300px' }}>
+            <ReactChart
+                type="bar"
+                ref={chartRef}
+                options={chartoptions(title)}
+                data={chartData as ChartData}
+                onClick={onClick}
+                height={250}
+                plugins={[htmlLegendPlugin]}
+            />
+            <div id="legend-container"></div>
+        </div>
     );
 }
