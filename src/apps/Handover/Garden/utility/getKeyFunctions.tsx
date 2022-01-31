@@ -74,5 +74,5 @@ export const getMaxVolumeFromData = (data: HandoverPackage[]): number => {
 
     volumes.pop();
     volumes.shift();
-    return volumes.reduce((a, b) => a + b, 0) / volumes.length;
+    return (volumes.reduce((a, b) => a + b, 0) / volumes.length) * 2;
 };
