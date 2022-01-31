@@ -1,10 +1,10 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { checkOptionsRequest } from './optionsRequestChecker';
 
-export async function canSign(
+export async function canContribute(
     requestId: string,
     stepId: string,
-    criteriaId: string
+    contributorId: string
 ): Promise<boolean> {
     const { scopeChange } = httpClient();
 
@@ -14,9 +14,9 @@ export async function canSign(
 
     const check = () =>
         scopeChange.fetch(
-            `api/scope-change-requests/${requestId}/workflow/step/${stepId}/sign/${criteriaId}`,
+            `api/scope-change-requests/${requestId}/workflow/step/${stepId}/contributors/${contributorId}/contribute`,
             requestOptions
         );
 
-    return (await checkOptionsRequest(check)).canPatch;
+    return (await checkOptionsRequest(check)).canPost;
 }

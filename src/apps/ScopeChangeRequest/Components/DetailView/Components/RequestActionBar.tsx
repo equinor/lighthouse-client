@@ -1,11 +1,13 @@
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
-import { useCallback, useEffect, useReducer, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 import Select, { SingleValue } from 'react-select';
 import styled from 'styled-components';
-import { useClientContext, useHttpClient } from '../../../../../Core/Client/Hooks';
+import { useHttpClient } from '../../../../../Core/Client/Hooks';
 import { spawnConfirmationDialog } from '../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { patchScopeChange, patchWorkflowStep } from '../../../Api';
 import { canSign as apiCheckSign } from '../../../Api/ScopeChange/Access/canSign';
+import { canVoid as apiCheckCanVoid, canUnVoid } from '../../../Api/ScopeChange/Access/canVoid';
+import { canContribute } from '../../../Api/ScopeChange/Access/canContribute';
 import { postContribution } from '../../../Api/ScopeChange/postContribution';
 import { unVoidRequest, voidRequest } from '../../../Api/ScopeChange/voidRequest';
 import {
@@ -23,20 +25,33 @@ interface RequestActionBarProps {
 }
 
 export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): JSX.Element => {
-    const { internal } = useClientContext();
     const [comment, setComment] = useState<string | undefined>(undefined);
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [selectedCriteria, setSelectedCriteria] = useState<string | undefined>(undefined);
-    const [userId, setUserId] = useState<string | undefined>();
-    const [signableCriterias, setSignableCriterias] = useState<Criteria[] | undefined>();
+    const [signableCriterias, setSignableCriterias] = useState<Criteria[]>([]);
     const [contributeId, setContributeId] = useState<string | undefined>();
 
-    async function checkCanSign(): Promise<Criteria[]> {
-        if (!request.currentWorkflowStep || !request.currentWorkflowStep.criterias) return [];
-        const validCriterias: Criteria[] = [];
-        const unsignedCriterias = request.currentWorkflowStep.criterias.filter(
-            (x) => x.signedState === null
-        );
+    const appendCriteria = (criteria: Criteria) =>
+        setSignableCriterias((prev) => [...prev, criteria]);
+
+    const checkCanVoid = useCallback(async () => {
+        // dispatch({ type: 'setCanVoid', value: false });
+
+        const allowed = request.isVoided
+            ? await canUnVoid(request.id)
+            : await apiCheckCanVoid(request.id);
+        dispatch({ type: 'setCanVoid', value: allowed });
+    }, [request.isVoided, request.id]);
+
+    const checkCanSign = useCallback(async () => {
+        setSignableCriterias([]);
+        setSelectedCriteria(undefined);
+        if (request.currentWorkflowStep === null) {
+            return;
+        }
+
+        const unsignedCriterias =
+            request.currentWorkflowStep?.criterias.filter((x) => x.signedState === null) || [];
         unsignedCriterias.forEach(async (criteria) => {
             if (!request.currentWorkflowStep?.id) return;
             const allowed = await apiCheckSign(
@@ -44,40 +59,60 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
                 request.currentWorkflowStep.id,
                 criteria.id
             );
-            if (allowed.canPatch) {
-                validCriterias.push(criteria);
+
+            if (allowed) {
+                appendCriteria(criteria);
             }
         });
-        return validCriterias;
-    }
+    }, [request]);
 
-    async function checkCanContribute(): Promise<void> {
-        if (!request.currentWorkflowStep || !request.currentWorkflowStep.criterias || !userId)
+    const checkCanContribute = useCallback(async () => {
+        setContributeId(undefined);
+        if (request.currentWorkflowStep === null) {
             return;
-        setContributeId(
-            request.currentWorkflowStep.contributors.find(
-                (x) => x.person.oid === userId && x.contribution === null
-            )?.id
-        );
-    }
+        }
+        request.currentWorkflowStep?.contributors.map(async (x) => {
+            if (x.contribution === null) {
+                if (!request.currentWorkflowStep?.id) return;
+                const allowed = await canContribute(
+                    request.id,
+                    request.currentWorkflowStep?.id,
+                    x.id
+                );
+                if (allowed) {
+                    setContributeId(x.id);
+                }
+            }
+        });
+    }, [request]);
+
+    useEffect(() => {
+        if (signableCriterias.length === 1) {
+            setSelectedCriteria(signableCriterias[0].id);
+        } else {
+            setSelectedCriteria(undefined);
+        }
+    }, [signableCriterias]);
 
     const checkPermissions = useCallback(async () => {
-        const availableToSign = await checkCanSign();
-        if (availableToSign.length === 1) {
-            setSelectedCriteria(availableToSign[0].id);
+        if (request.currentWorkflowStep === null) return;
+        if (request.isVoided === false) {
+            await checkCanSign();
+            await checkCanContribute();
         }
-        setSignableCriterias(availableToSign);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [request]);
+        await checkCanVoid();
+    }, [checkCanContribute, checkCanSign, checkCanVoid, request.isVoided, request.state]);
 
     useEffect(() => {
         checkPermissions();
     }, [checkPermissions, request]);
 
     useEffect(() => {
-        setUserId(internal.authProvider.getCurrentUser()?.localAccountId);
-        checkCanContribute();
-    }, [internal]);
+        dispatch({ type: 'setSignLoading', value: false });
+        dispatch({ type: 'setContributeLoading', value: false });
+        dispatch({ type: 'setInitiateLoading', value: false });
+        dispatch({ type: 'setVoidLoading', value: false });
+    }, [request.currentWorkflowStep, request.isVoided]);
 
     const [
         {
@@ -86,8 +121,8 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
             initiateLoading,
             contributeLoading,
             canInitiate,
-            canSign,
             canVoid,
+
             // contributeFailed,
             // initiateFailed,
             // signFailed,
@@ -96,7 +131,7 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
         dispatch,
     ] = useReducer(tasksReducer, initial);
 
-    const onVoidRequest = async () => {
+    const onVoidRequest = useCallback(async () => {
         dispatch({ type: 'setVoidLoading', value: true });
         if (request.isVoided) {
             await unVoidRequest(request.id);
@@ -104,24 +139,29 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
             await voidRequest(request.id);
         }
         await refetch();
-        dispatch({ type: 'setVoidLoading', value: false });
-    };
+    }, [refetch, request.id, request.isVoided]);
 
-    const onSignStep = async () => {
-        dispatch({ type: 'setSignLoading', value: true });
+    const onSignStep = useCallback(async () => {
         if (selectedCriteria && request.currentWorkflowStep) {
             const currentStepId = request.currentWorkflowStep.id;
             const unsignedCriterias = request.currentWorkflowStep.criterias.filter(
                 (x) => x.signedAtUtc === null
             );
-            const sign = async () =>
-                await patchWorkflowStep(
-                    request.id,
-                    currentStepId,
-                    selectedCriteria,
-                    scopeChangeApi,
-                    comment
-                );
+            const sign = async () => {
+                try {
+                    await patchWorkflowStep(
+                        request.id,
+                        currentStepId,
+                        selectedCriteria,
+                        scopeChangeApi,
+                        comment
+                    );
+                } catch (e) {
+                    console.error(e);
+                } finally {
+                    await refetch();
+                }
+            };
             if (
                 request.currentWorkflowStep.contributors &&
                 request.currentWorkflowStep.contributors.some((x) => x.contribution === null) &&
@@ -139,28 +179,37 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
             await refetch();
             setComment('');
         }
-        dispatch({ type: 'setSignLoading', value: false });
-    };
+    }, [
+        comment,
+        refetch,
+        request.currentWorkflowStep,
+        request.id,
+        scopeChangeApi,
+        selectedCriteria,
+    ]);
 
-    const sendContribution = async () => {
+    const sendContribution = useCallback(async () => {
+        if (!contributeId) return;
         dispatch({ type: 'setContributeLoading', value: true });
-        const contributionId = request.currentWorkflowStep?.contributors.find(
-            (x) => x.person.oid === userId
-        )?.id;
-        if (request.currentWorkflowStep && contributionId) {
-            await postContribution(
-                request.id,
-                request.currentWorkflowStep?.id,
-                contributionId,
-                scopeChangeApi,
-                comment
-            );
-            setComment('');
+        if (request.currentWorkflowStep) {
+            try {
+                await postContribution(
+                    request.id,
+                    request.currentWorkflowStep?.id,
+                    contributeId,
+                    scopeChangeApi,
+                    comment
+                );
+                setComment('');
+            } catch (e) {
+                console.error(e);
+            } finally {
+                await refetch();
+            }
         }
-        dispatch({ type: 'setContributeLoading', value: false });
-    };
+    }, [comment, contributeId, refetch, request.currentWorkflowStep, request.id, scopeChangeApi]);
 
-    const onInitiate = async () => {
+    const onInitiate = useCallback(async () => {
         dispatch({ type: 'setInitiateLoading', value: true });
         const scopeChange: ScopeChangeRequestFormModel = {
             ...request,
@@ -190,105 +239,167 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
 
         await patchScopeChange(payload, scopeChangeApi);
         await refetch();
-        dispatch({ type: 'setInitiateLoading', value: false });
-    };
+    }, [refetch, request, scopeChangeApi]);
 
-    return (
-        <div>
-            <RequestActionsContainer>
-                <Field
-                    label="Comment"
-                    value={
-                        <TextField
-                            style={{ width: '630px' }}
-                            id={'Comment'}
-                            multiline
-                            value={comment}
-                            onChange={(e) => {
-                                setComment(e.target.value);
-                            }}
-                        />
-                    }
-                />
-                <ButtonContainer>
-                    {request.state === 'Draft' && (
-                        <>
-                            {/* <Button onClick={setEditMode}>Edit</Button> */}
-                            <HorizontalDivider />
-                            {canInitiate && (
-                                <Button
-                                    onClick={onInitiate}
-                                    variant="outlined"
-                                    disabled={initiateLoading}
-                                >
-                                    {initiateLoading ? (
-                                        <Progress.Dots color="primary" />
-                                    ) : (
-                                        <span>Initiate request</span>
-                                    )}
-                                </Button>
-                            )}
-                        </>
-                    )}
-                    {contributeId && (
-                        <Button onClick={sendContribution} disabled={contributeLoading}>
-                            {contributeLoading ? (
-                                <Progress.Dots color="primary" />
+    const performingAction = useMemo(() => {
+        return voidLoading || signLoading || initiateLoading || contributeLoading;
+    }, [contributeLoading, initiateLoading, signLoading, voidLoading]);
+
+    const InitiateButton = useCallback(
+        () => (
+            <div>
+                {canInitiate && (
+                    <Button onClick={onInitiate} variant="outlined" disabled={performingAction}>
+                        {initiateLoading ? (
+                            <Progress.Dots color="primary" />
+                        ) : (
+                            <span>Initiate request</span>
+                        )}
+                    </Button>
+                )}
+            </div>
+        ),
+        [canInitiate, initiateLoading, onInitiate, performingAction]
+    );
+
+    const VoidButton = useCallback(
+        () => (
+            <div>
+                {canVoid && (
+                    <span>
+                        <Button
+                            onClick={async () => await onVoidRequest()}
+                            disabled={performingAction}
+                            variant="outlined"
+                            color="danger"
+                        >
+                            {voidLoading ? (
+                                <Progress.Dots color="tertiary" />
                             ) : (
-                                <span> Contribute</span>
+                                <>{request.isVoided ? 'Unvoid request' : 'Void request'}</>
                             )}
                         </Button>
-                    )}
+                    </span>
+                )}
+            </div>
+        ),
+        [canVoid, onVoidRequest, performingAction, request.isVoided, voidLoading]
+    );
 
-                    {canVoid && (
-                        <span>
-                            <Button
-                                onClick={async () => await onVoidRequest()}
-                                disabled={voidLoading}
-                                variant="outlined"
-                                color="danger"
-                            >
-                                {voidLoading ? (
-                                    <Progress.Dots color="tertiary" />
-                                ) : (
-                                    <>{request.isVoided ? 'Unvoid request' : 'Void request'}</>
-                                )}
-                            </Button>
-                        </span>
-                    )}
+    const ContributeButton = useCallback(
+        () => (
+            <div>
+                {contributeId && (
+                    <Button onClick={sendContribution} disabled={performingAction}>
+                        {contributeLoading ? (
+                            <Progress.Dots color="primary" />
+                        ) : (
+                            <span> Contribute</span>
+                        )}
+                    </Button>
+                )}
+            </div>
+        ),
+        [contributeId, contributeLoading, performingAction, sendContribution]
+    );
 
-                    {canSign && (
-                        <Inline>
-                            {signableCriterias && signableCriterias?.length > 1 && (
-                                <>
-                                    <div style={{ minWidth: '250px' }}>
-                                        <Select
-                                            isClearable={true}
-                                            isSearchable={false}
-                                            options={signableCriterias.map((x): SelectOption => {
-                                                return { label: x.value, value: x.id };
-                                            })}
-                                            placeholder="Sign as"
-                                            onChange={(newValue: SingleValue<SelectOption>) => {
-                                                setSelectedCriteria(newValue?.value);
-                                            }}
-                                            theme={applyEDSTheme}
-                                        />
-                                    </div>
-                                </>
-                            )}
+    const CommentField = () => (
+        <Field
+            label="Comment"
+            value={
+                <TextField
+                    style={{ width: '630px' }}
+                    id={'Comment'}
+                    multiline
+                    value={comment}
+                    onChange={(e) => {
+                        setComment(e.target.value);
+                    }}
+                />
+            }
+        />
+    );
 
-                            <Button
-                                disabled={!selectedCriteria || signLoading}
-                                onClick={onSignStep}
-                            >
-                                {signLoading ? <Progress.Dots color="primary" /> : <div>Sign</div>}
-                            </Button>
-                        </Inline>
-                    )}
-                </ButtonContainer>
-            </RequestActionsContainer>
-        </div>
+    const SignButton = useCallback(
+        () => (
+            <Inline>
+                {signableCriterias && signableCriterias?.length > 1 && (
+                    <>
+                        <div style={{ minWidth: '250px' }}>
+                            <Select
+                                isClearable={true}
+                                isSearchable={false}
+                                options={signableCriterias.map((x): SelectOption => {
+                                    return { label: x.value, value: x.id };
+                                })}
+                                placeholder="Sign as"
+                                onChange={(newValue: SingleValue<SelectOption>) => {
+                                    setSelectedCriteria(newValue?.value);
+                                }}
+                                theme={applyEDSTheme}
+                            />
+                        </div>
+                    </>
+                )}
+
+                <Button
+                    disabled={!selectedCriteria || performingAction}
+                    onClick={async () => {
+                        dispatch({ type: 'setSignLoading', value: true });
+                        await onSignStep().then(async () => await refetch());
+                    }}
+                >
+                    {signLoading ? <Progress.Dots color="primary" /> : <div>Sign</div>}
+                </Button>
+            </Inline>
+        ),
+        [onSignStep, performingAction, refetch, selectedCriteria, signLoading, signableCriterias]
+    );
+
+    const ActionBar = useCallback(() => {
+        if (request.isVoided) {
+            return (
+                <div>
+                    <VoidButton />
+                </div>
+            );
+        }
+
+        switch (request.state) {
+            case 'Draft': {
+                return (
+                    <div>
+                        <ButtonContainer>
+                            <InitiateButton />
+                            <VoidButton />
+                        </ButtonContainer>
+                    </div>
+                );
+            }
+
+            case 'Open': {
+                return (
+                    <div>
+                        <CommentField />
+                        <ButtonContainer>
+                            <VoidButton />
+                            <ContributeButton />
+                            <SignButton />
+                        </ButtonContainer>
+                    </div>
+                );
+            }
+
+            case 'Closed': {
+                return <></>;
+            }
+        }
+    }, [ContributeButton, InitiateButton, VoidButton, SignButton, request.state, request.isVoided]);
+
+    return (
+        <RequestActionsContainer>
+            <ActionBar />
+        </RequestActionsContainer>
     );
 };
 
@@ -303,6 +414,7 @@ export const ButtonContainer = styled.div`
     display: flex;
     padding: 0em 1em 1em 1em;
     justify-content: space-between;
+    align-items: baseline;
 `;
 
 export const HorizontalDivider = styled.div`
@@ -323,7 +435,6 @@ const initial: NotifyEvents = {
     signFailed: false,
     voidFailed: false,
     canInitiate: false,
-    canSign: false,
     canVoid: false,
 };
 
@@ -336,7 +447,6 @@ interface NotifyEvents {
     voidFailed: boolean;
     signLoading: boolean;
     signFailed: boolean;
-    canSign: boolean;
     canVoid: boolean;
     canInitiate: boolean;
 }

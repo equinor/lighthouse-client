@@ -9,7 +9,7 @@ export type OptionRequestResult = {
 export const checkOptionsRequest = async (
     request: () => Promise<any>
 ): Promise<OptionRequestResult> => {
-    const res = await request();
+    const res: Response = await request();
     const actions = res.headers.get('Allow');
     if (!actions) throw 'An error occurred when getting permissions';
 

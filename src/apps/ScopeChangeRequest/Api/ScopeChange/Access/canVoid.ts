@@ -1,7 +1,7 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { checkOptionsRequest, OptionRequestResult } from './optionsRequestChecker';
+import { checkOptionsRequest } from './optionsRequestChecker';
 
-export async function canVoid(requestId: string): Promise<OptionRequestResult> {
+export async function canVoid(requestId: string): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
@@ -11,10 +11,10 @@ export async function canVoid(requestId: string): Promise<OptionRequestResult> {
     const check = () =>
         scopeChange.fetch(`api/scope-change-requests/${requestId}/void`, requestOptions);
 
-    return checkOptionsRequest(check);
+    return (await checkOptionsRequest(check)).canPatch;
 }
 
-export async function canUnVoid(requestId: string): Promise<OptionRequestResult> {
+export async function canUnVoid(requestId: string): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
@@ -24,5 +24,5 @@ export async function canUnVoid(requestId: string): Promise<OptionRequestResult>
     const check = () =>
         scopeChange.fetch(`api/scope-change-requests/${requestId}/unvoid`, requestOptions);
 
-    return checkOptionsRequest(check);
+    return (await checkOptionsRequest(check)).canPatch;
 }

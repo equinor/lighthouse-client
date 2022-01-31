@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
@@ -6,6 +6,7 @@ import { useHttpClient } from '@equinor/portal-client';
 import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 
 import { getScopeChangeById } from '../Api/getScopeChange';
+import { canEdit as apiCanEditCheck } from '../Api/ScopeChange/Access/canEdit';
 import { Wrapper } from '../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
@@ -15,6 +16,7 @@ import { ScopeChangeRequestEditForm } from './Form/ScopeChangeRequestEditForm';
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
+    const [canEdit, setCanEdit] = useState<boolean>(false);
     /**
      * Refetches every second
      */
@@ -24,10 +26,15 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         { refetchInterval: 3000, refetchOnMount: true, initialData: item }
     );
 
+    const checkCanEdit = useCallback(async () => {
+        setCanEdit(await apiCanEditCheck(item.id));
+    }, [item]);
+
     useEffect(() => {
         if (item) {
             remove();
             updateScopeChange();
+            checkCanEdit();
         }
     }, [item]);
 
@@ -54,9 +61,11 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             )}
             <TitleHeader>
                 <Title>Review scope change request</Title>
-                <Button variant="ghost_icon" onClick={() => setEditMode(!editMode)}>
-                    <Icon color={tokens.colors.interactive.primary__resting.hex} name="edit" />
-                </Button>
+                {canEdit && (
+                    <Button variant="ghost_icon" onClick={() => setEditMode(!editMode)}>
+                        <Icon color={tokens.colors.interactive.primary__resting.hex} name="edit" />
+                    </Button>
+                )}
             </TitleHeader>
             {data && (
                 <div>
@@ -74,7 +83,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                     )}
                 </div>
             )}
-            {/* {data && <RequestViewContainer request={data} refetch={updateScopeChange} />} */}
         </Wrapper>
     );
 };
