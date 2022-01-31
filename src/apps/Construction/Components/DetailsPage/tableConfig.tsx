@@ -1,7 +1,11 @@
-import { Column } from '@equinor/Table';
+import { CellProps, Column, TableInstance } from '@equinor/Table';
 import { WorkOrder } from '../../mocData/mockData';
-import { SumColumnFooter } from './components';
-import { columnGenerator } from './utils';
+import {
+    SumColumnFooter,
+    SumColumnFooterCount,
+    SumColumnFooterCountTotal,
+    SumColumnFooterSum,
+} from './components';
 
 export const cols: Column<WorkOrder>[] = [
     {
@@ -21,297 +25,355 @@ export const cols: Column<WorkOrder>[] = [
         ],
     },
     {
-        Header: 'W01',
+        Header: 'E10',
         Footer: () => <></>,
+        // accessor: "jobStatus",
         columns: [
-            columnGenerator({
-                id: 'W01-WOs',
-                header: 'WOs',
-                accessorKey: 'woNo',
-                aggregate: 'count',
-                footerType: {
-                    type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W01',
-                    columnId: 'W01-WOs',
-                },
-                jobStatus: 'W01',
-            }),
-            columnGenerator({
-                id: 'W01-Est',
-                header: 'Est mhrs',
-                accessorKey: 'estimatedManHours',
-                aggregate: 'sum',
-                footerType: {
-                    type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W01',
-                    sumKey: 'estimatedManHours',
-                },
-                jobStatus: 'W01',
+            {
+                id: 'E10-WOs',
+                Header: 'WOs',
                 width: 80,
-            }),
-        ],
-    },
-    {
-        Header: 'W02',
-        Footer: () => <></>,
-        columns: [
-            columnGenerator({
-                id: 'W02-WOs',
-                header: 'WOs',
-                accessorKey: 'woNo',
+                accessor: (row) => row.woNo,
                 aggregate: 'count',
-                footerType: {
-                    type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W02',
-                    columnId: 'W02-WOs',
-                },
-                jobStatus: 'W02',
-            }),
-            columnGenerator({
-                id: 'W02-Est',
-                header: 'Est mhrs',
-                accessorKey: 'estimatedManHours',
-                aggregate: 'sum',
-                footerType: {
-                    type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W02',
-                    sumKey: 'estimatedManHours',
-                },
-                jobStatus: 'W02',
-                width: 80,
-            }),
-        ],
-    },
-    {
-        Header: 'W03',
-        Footer: () => <></>,
-        columns: [
-            columnGenerator({
-                id: 'W03-WOs',
-                header: 'WOs',
-                accessorKey: 'woNo',
-                aggregate: 'count',
-                footerType: {
-                    type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W03',
-                    columnId: 'W03-WOs',
-                },
-                jobStatus: 'W03',
-            }),
-            columnGenerator({
-                id: 'W03-Est',
-                header: 'Est mhrs',
-                accessorKey: 'estimatedManHours',
-                aggregate: 'sum',
-                footerType: {
-                    type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W03',
-                    sumKey: 'estimatedManHours',
-                },
-                jobStatus: 'W03',
-                width: 80,
-            }),
-        ],
-    },
-    {
-        Header: 'W04',
-        Footer: () => <></>,
-        columns: [
-            columnGenerator({
-                id: 'W04-WOs',
-                header: 'WOs',
-                accessorKey: 'woNo',
-                aggregate: 'count',
-                footerType: {
-                    type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W04',
-                    columnId: 'W04-WOs',
-                },
-                jobStatus: 'W04',
-            }),
-            columnGenerator({
-                id: 'W04-Est',
-                header: 'Est mhrs',
-                accessorKey: 'estimatedManHours',
-                aggregate: 'sum',
-                footerType: {
-                    type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W04',
-                    sumKey: 'estimatedManHours',
-                },
-                jobStatus: 'W04',
-                width: 80,
-            }),
-        ],
-    },
-    {
-        Header: 'W05',
-        Footer: () => <></>,
-        columns: [
-            columnGenerator({
-                id: 'W05-WOs',
-                header: 'WOs',
-                accessorKey: 'woNo',
-                aggregate: 'count',
-                footerType: {
-                    type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W05',
-                    columnId: 'W05-WOs',
-                },
-                jobStatus: 'W05',
-            }),
-            columnGenerator({
-                id: 'W05-Est',
-                header: 'Est mhrs',
-                accessorKey: 'estimatedManHours',
-                aggregate: 'sum',
-                footerType: {
-                    type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W05',
-                    sumKey: 'estimatedManHours',
-                },
-                jobStatus: 'W05',
-                width: 80,
-            }),
-        ],
-    },
-    {
-        Header: 'W06',
-        Footer: () => <></>,
-        columns: [
-            columnGenerator({
-                id: 'W06-WOs',
-                header: 'WOs',
-                accessorKey: 'woNo',
-                aggregate: 'count',
-                footerType: {
-                    type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W06',
-                    columnId: 'W06-WOs',
-                },
-                jobStatus: 'W06',
-            }),
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc = i.original.jobStatusCode === 'W01' ? acc + 1 : acc;
+                        return acc;
+                    }, 0);
 
-            columnGenerator({
-                id: 'W06-Est',
-                header: 'Est mhrs',
-                accessorKey: 'estimatedManHours',
-                aggregate: 'sum',
-                footerType: {
-                    type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W06',
-                    sumKey: 'estimatedManHours',
+                    return count;
                 },
-                jobStatus: 'W06',
+                Footer: (data) => (
+                    <SumColumnFooterCount
+                        data={data}
+                        fieldKey={'jobStatusCode'}
+                        value={'W01'}
+                        columnId={'E10-WOs'}
+                    />
+                ),
+            },
+            {
+                id: 'E10-Est',
+                Header: 'Est mhrs',
                 width: 80,
-            }),
+                accessor: (row) => row.estimatedManHours,
+                aggregate: 'sum',
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc =
+                            i.original.jobStatusCode === 'W01'
+                                ? acc + Number(i.original.estimatedManHours) || 0
+                                : acc;
+                        return acc;
+                    }, 0);
+
+                    return count;
+                },
+                Footer: (data) => (
+                    <SumColumnFooterSum
+                        data={data}
+                        fieldKey={'jobStatusCode'}
+                        value={'W01'}
+                        sumKey={'estimatedManHours'}
+                    />
+                ),
+            },
         ],
     },
     {
-        Header: 'W07',
+        Header: 'E20',
         Footer: () => <></>,
         columns: [
-            columnGenerator({
-                id: 'W07-WOs',
-                header: 'WOs',
-                accessorKey: 'woNo',
-                aggregate: 'count',
-                footerType: {
-                    type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W07',
-                    columnId: 'W07-WOs',
-                },
-                jobStatus: 'W07',
-            }),
-
-            columnGenerator({
-                id: 'W07-Est',
-                header: 'Est mhrs',
-                accessorKey: 'estimatedManHours',
-                aggregate: 'sum',
-                footerType: {
-                    type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W07',
-                    sumKey: 'estimatedManHours',
-                },
-                jobStatus: 'W07',
+            {
+                id: 'E20-WOs',
+                Header: 'WOs',
                 width: 80,
-            }),
+                accessor: (item: WorkOrder): string => {
+                    return item.woNo;
+                },
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc = i.original.jobStatusCode === 'W01' ? acc + 1 : acc;
+                        return acc;
+                    }, 0);
+
+                    return count;
+                },
+                aggregate: 'count',
+                Footer: (data) => (
+                    <SumColumnFooterCount
+                        data={data}
+                        fieldKey={'jobStatusCode'}
+                        value={'W02'}
+                        columnId={'E20-WOs'}
+                    />
+                ),
+            },
+            {
+                id: 'E20-Est',
+                Header: 'Est mhrs',
+                width: 80,
+                accessor: (item: WorkOrder): number => {
+                    return Number(item.estimatedManHours) || 0;
+                },
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc =
+                            i.original.jobStatusCode === 'W02'
+                                ? acc + Number(i.original.estimatedManHours) || 0
+                                : acc;
+                        return acc;
+                    }, 0);
+
+                    return count;
+                },
+                aggregate: 'sum',
+                Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
+                    <SumColumnFooterSum
+                        data={data}
+                        fieldKey={'jobStatusCode'}
+                        value={'W02'}
+                        sumKey={'estimatedManHours'}
+                    />
+                ),
+            },
         ],
     },
     {
-        Header: 'W08',
+        Header: 'E30',
         Footer: () => <></>,
         columns: [
-            columnGenerator({
-                id: 'W08-WOs',
-                header: 'WOs',
-                accessorKey: 'woNo',
-                aggregate: 'count',
-                footerType: {
-                    type: 'SumColumnFooterCount',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W08',
-                    columnId: 'W08-WOs',
-                },
-                jobStatus: 'W08',
-            }),
-
-            columnGenerator({
-                id: 'W08-Est',
-                header: 'Est mhrs',
-                accessorKey: 'estimatedManHours',
-                aggregate: 'sum',
-                footerType: {
-                    type: 'SumColumnFooterSum',
-                    fieldKey: 'jobStatusCode',
-                    value: 'W08',
-                    sumKey: 'estimatedManHours',
-                },
-                jobStatus: 'W08',
+            {
+                id: 'E30-WOs',
+                Header: 'WOs',
                 width: 80,
-            }),
+                accessor: (item: WorkOrder): string => {
+                    return item.woNo;
+                },
+                aggregate: 'count',
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc = i.original.jobStatusCode === 'W03' ? acc + 1 : acc;
+                        return acc;
+                    }, 0);
+
+                    return count;
+                },
+                Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
+                    <SumColumnFooterCount
+                        data={data}
+                        fieldKey={'jobStatusCode'}
+                        value={'W03'}
+                        columnId={'E30-WOs'}
+                    />
+                ),
+            },
+            {
+                id: 'E30-Est',
+                Header: 'Est mhrs',
+                width: 80,
+                accessor: (item: WorkOrder): number => {
+                    return Number(item.estimatedManHours) || 0;
+                },
+                aggregate: 'sum',
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc =
+                            i.original.jobStatusCode === 'W03'
+                                ? acc + Number(i.original.estimatedManHours) || 0
+                                : acc;
+                        return acc;
+                    }, 0);
+
+                    return count;
+                },
+                Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
+                    <SumColumnFooterSum
+                        data={data}
+                        fieldKey={'jobStatusCode'}
+                        value={'E30'}
+                        sumKey={'estimatedManHours'}
+                    />
+                ),
+            },
+        ],
+    },
+    {
+        Header: 'E35',
+        Footer: () => <></>,
+        columns: [
+            {
+                id: 'E35-WOs',
+                Header: 'WOs',
+                width: 80,
+                accessor: (item: WorkOrder): string => {
+                    return item.woNo;
+                },
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc = i.original.jobStatusCode === 'E35' ? acc + 1 : acc;
+                        return acc;
+                    }, 0);
+
+                    return count;
+                },
+                aggregate: 'count',
+                Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
+                    <SumColumnFooterCount
+                        data={data}
+                        fieldKey={'jobStatusCode'}
+                        value={'E35'}
+                        columnId={'E35-WOs'}
+                    />
+                ),
+            },
+            {
+                id: 'E35-Est',
+                Header: 'Est mhrs',
+                width: 80,
+                accessor: (item: WorkOrder): number => {
+                    return Number(item.estimatedManHours) || 0;
+                },
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc =
+                            i.original.jobStatusCode === 'E35'
+                                ? acc + Number(i.original.estimatedManHours) || 0
+                                : acc;
+                        return acc;
+                    }, 0);
+
+                    return count;
+                },
+                aggregate: 'sum',
+                Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
+                    <SumColumnFooterSum
+                        data={data}
+                        fieldKey={'jobStatusCode'}
+                        value={'E35'}
+                        sumKey={'estimatedManHours'}
+                    />
+                ),
+            },
+        ],
+    },
+    {
+        Header: 'E40',
+        Footer: () => <></>,
+        columns: [
+            {
+                id: 'E40-WOs',
+                Header: 'WOs',
+                width: 80,
+                accessor: (item: WorkOrder): string => {
+                    return item.woNo;
+                },
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc = i.original.jobStatusCode === 'E40' ? acc + 1 : acc;
+                        return acc;
+                    }, 0);
+
+                    return count;
+                },
+                aggregate: 'count',
+                Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
+                    <SumColumnFooterCount
+                        data={data}
+                        fieldKey={'jobStatusCode'}
+                        value={'E40'}
+                        columnId={'E40-WOs'}
+                    />
+                ),
+            },
+            {
+                id: 'E40-Est',
+                Header: 'Est mhrs',
+                width: 80,
+                accessor: (item: WorkOrder): number => {
+                    return Number(item.estimatedManHours);
+                },
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc =
+                            i.original.jobStatusCode === 'E40'
+                                ? acc + Number(i.original.estimatedManHours)
+                                : acc;
+                        return acc;
+                    }, 0);
+
+                    return count;
+                },
+                aggregate: 'sum',
+                Footer: (data) => (
+                    <SumColumnFooterSum
+                        data={data}
+                        fieldKey={'jobStatusCode'}
+                        value={'E40'}
+                        sumKey={'estimatedManHours'}
+                    />
+                ),
+            },
         ],
     },
     {
         Header: 'Total',
         Footer: () => <></>,
         columns: [
-            columnGenerator({
+            {
                 id: 'Total-WOs',
-                header: 'WOs',
-                accessorKey: 'disciplineDescription',
+                Header: 'WOs',
+                width: 100,
+                accessor: (item: WorkOrder): string => {
+                    return item.responsibleCode;
+                },
                 aggregate: 'count',
-                footerType: {
-                    type: 'SumColumnFooter',
-                    columnId: 'Total-WOs',
+                Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>): JSX.Element => {
+                    return <SumColumnFooter data={data} columnId={'Total-WOs'} />;
                 },
-                jobStatus: 'W08',
-            }),
-            columnGenerator({
+            },
+            {
                 id: 'Total-Est',
-                header: 'Est mhrs',
-                accessorKey: 'estimatedManHours',
-                aggregate: 'sum',
-                footerType: {
-                    type: 'SumColumnFooterCountTotal',
-                    fieldKey: 'estimatedManHours',
+                Header: 'Est mhrs',
+                width: 100,
+                accessor: (item: WorkOrder): number => {
+                    return Number(item.estimatedManHours) || 0;
                 },
-            }),
+                Aggregated: ({
+                    row,
+                }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
+                    const count = row.subRows.reduce((acc, i) => {
+                        acc = acc + Number(i.original.estimatedManHours) || 0;
+                        return acc;
+                    }, 0);
+
+                    return count;
+                },
+                aggregate: 'sum',
+                Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
+                    <SumColumnFooterCountTotal data={data} fieldKey={'estimatedManHours'} />
+                ),
+            },
         ],
     },
 ];
