@@ -56,6 +56,14 @@ export function filterWoMap<T>(woMap: WoStatusMap<T>): WoMapCount<T> {
                     count: 0,
                     workorder: [],
                 },
+                five: {
+                    count: 0,
+                    workorder: [],
+                },
+                six: {
+                    count: 0,
+                    workorder: [],
+                },
             };
             const plannedDateDiff = weekDiff(new Date(a.plannedStartAtDate)).days;
 
@@ -71,6 +79,12 @@ export function filterWoMap<T>(woMap: WoStatusMap<T>): WoMapCount<T> {
             } else if (plannedDateDiff <= 28) {
                 filtered[key].four.count = filtered[key].four.count + 1;
                 filtered[key].four.workorder = [...filtered[key].four.workorder, a.workorder];
+            } else if (plannedDateDiff <= 35) {
+                filtered[key].five.count = filtered[key].five.count + 1;
+                filtered[key].five.workorder = [...filtered[key].five.workorder, a.workorder];
+            } else if (plannedDateDiff <= 42) {
+                filtered[key].six.count = filtered[key].six.count + 1;
+                filtered[key].six.workorder = [...filtered[key].six.workorder, a.workorder];
             }
         });
     });
