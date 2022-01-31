@@ -32,7 +32,7 @@ export function ParkViewProvider<T>({
     function setCustomGroupKeys(groupKeys: Record<string, unknown>): void {
         dispatch(actions.setCustomGroupKeys(groupKeys));
     }
-
+    //Runs on every filter update
     useEffect(() => {
         if (!(data && data?.length > 0)) return;
 

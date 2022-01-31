@@ -27,17 +27,17 @@ const HandoverItem = styled(Item)<HandoverItemProps>`
 
 const MidSection = styled.div<{ expanded: boolean }>`
     display: flex;
-    justify-content: ${(props) => (props.expanded ? 'flex-start' : 'center')};
+    justify-content: ${(p) => (p.expanded ? 'flex-start' : 'center')};
     flex: 1;
+    padding: ${(p) => (p.expanded ? '0px 8px' : '0px')};
 `;
 
 const Icons = styled.div`
     display: flex;
+    width: 28px;
 `;
 
-const Title = styled.div`
-    padding: 0px 8px;
-`;
+const Title = styled.div``;
 
 const HandoverExpanded = styled.div`
     display: flex;
@@ -47,7 +47,7 @@ const HandoverExpanded = styled.div`
 const HandoverExpandedTitle = styled.div`
     display: flex;
     flex: 1;
-    padding-right: 8px;
+    padding: 0px 8px;
 `;
 
 const Circles = styled.div`
@@ -115,7 +115,7 @@ export function HandoverGardenItem({
             >
                 <Icons>
                     <SizeIcons size={size} status={status} />
-                    <FlagIcon color={textColor} />
+                    {data.hasUnsignedActions && <FlagIcon color={textColor} />}
                 </Icons>
                 <MidSection expanded={columnExpanded}>
                     <Title>{data[itemKey]}</Title>
