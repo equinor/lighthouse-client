@@ -206,7 +206,7 @@ export function setup(appApi: ClientApi): void {
         reportURI: 'jca-installation',
         options: {
             showFilter: true,
-            enablePageNavigation: true,
+            enablePageNavigation: false,
         },
     });
     construction.registerFusionPowerBi('jca-checklist', {
