@@ -118,7 +118,6 @@ export const createSeries = ({
         colorEnd: 1,
         useEndAsStart: false,
     });
-    debugger;
     const woSeries = Object.values(seriesMap).map((series, index) => {
         const dateKeys = Object.keys(series.data);
         // filter the dates that are too old, sort them
