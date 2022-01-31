@@ -58,10 +58,12 @@ export const createCategoriesMap = (categories: string[]): Record<string, number
     }, {});
 };
 
-type Series = Partial<ChartDataset> & {
+type Series = Partial<Omit<ChartDataset<'bar' | 'line'>, 'data'>> & {
     label: string;
     data: number[];
-    type: string;
+    yAxisID?: string;
+    borderDash?: number[];
+    pointBackgroundColor?: string;
 };
 
 type CreateSeriesArgs = {
@@ -170,7 +172,7 @@ export const accumulateSeries = (series: Series[]): Series[] => {
     }
     const totalAccumulated: number[] = series
         .map((entry) => entry.data)
-        .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + Number(entry)), []);
+        .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + entry), []);
     //let temp: number = 0;
     //const tempAcc = totalAcc.map((item) => (temp = (temp || 0) + item));
     const ready = ['W04', 'W05', 'W06', 'W07', 'W08'];
@@ -178,7 +180,7 @@ export const accumulateSeries = (series: Series[]): Series[] => {
     const wo4Accumulated: number[] = series
         .filter((entry) => ready.includes(entry.label))
         .map((entry) => entry.data)
-        .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + Number(entry), []));
+        .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + entry, []));
 
     //let temp2: number = 0;
     //const tempAcc2 = wo4Acc.map((item) => (temp2 = (temp2 || 0) + item));
