@@ -1,5 +1,4 @@
-import { Chart, LegendItem } from 'chart.js';
-import styled from 'styled-components';
+import { Chart } from 'chart.js';
 
 export const getOrCreateLegendList = (_chart: Chart, id: string): HTMLUListElement => {
     const legendContainer = document.getElementById(id);
@@ -25,9 +24,6 @@ type HtmlLegendOptions = {
 const afterUpdate = (chart: Chart, _args: unknown, options: HtmlLegendOptions) => {
     const ul = getOrCreateLegendList(chart, options.containerID);
 
-    // chart &&
-    //     chart.canvas &&
-    //     ReactDOM.render(<Test chart={chart} />, document.getElementById('legend-container'));
     // Remove old legend items
     while (ul.firstChild) {
         ul.firstChild.remove();
@@ -61,16 +57,11 @@ const afterUpdate = (chart: Chart, _args: unknown, options: HtmlLegendOptions) =
             boxSpan.style.display = 'inline-block';
             if (item.text === 'accumulated') {
                 boxSpan.style.borderBottom = `2px dashed ${item.strokeStyle?.toString()}`;
-            } else if (item.text === 'w04-w08 acc') {
-                boxSpan.style.height = '2px';
-                boxSpan.style.background = item.fillStyle?.toString() || '';
-                boxSpan.style.borderColor = item.strokeStyle?.toString() || '';
-                boxSpan.style.borderWidth = item.lineWidth + 'px';
             } else {
-                boxSpan.style.height = '15px';
                 boxSpan.style.background = item.fillStyle?.toString() || '';
                 boxSpan.style.borderColor = item.strokeStyle?.toString() || '';
                 boxSpan.style.borderWidth = item.lineWidth + 'px';
+                boxSpan.style.height = item.text === 'w04-w08 acc' ? '2px' : '15px';
             }
 
             // Text
@@ -93,147 +84,4 @@ const afterUpdate = (chart: Chart, _args: unknown, options: HtmlLegendOptions) =
 export const htmlLegendPlugin = {
     id: 'htmlLegend',
     afterUpdate: afterUpdate,
-};
-
-const ListItem = styled.li`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-    margin-left: 10px;
-`;
-// type BoxSpanProps = {
-//     fillStyle: string;
-//     strokeStyle: string;
-//     lineWidth: string;
-// };
-// const BoxSpan = styled.span<BoxSpanProps>`
-//     margin-right: 10px;
-//     width: 30px;
-//     display: inline-block;
-// `;
-// const BoxSpanAccumulated = styled(BoxSpan)`
-//     border-bottom: ${(props) => `2px dashed ${props.strokeStyle}`};
-// `;
-// const OtherBoxSpans = styled(BoxSpan)`
-//     background: ${(props) => props.fillStyle};
-//     border-color: ${(props) => props.strokeStyle};
-//     border-width: ${(props) => props.lineWidth}px;
-// `;
-// const BoxSpanWOAccumulated = styled(OtherBoxSpans)`
-//     height: 2px;
-// `;
-// const RectangleBoxSpan = styled(OtherBoxSpans)`
-//     height: 15px;
-// `;
-type LegendProps = {
-    chart: Chart;
-};
-export const Test = (props: LegendProps) => {
-    const onClick = (item: LegendItem) => {
-        props.chart.setDatasetVisibility(
-            item.datasetIndex,
-            !props.chart.isDatasetVisible(item.datasetIndex)
-        );
-
-        props.chart.update();
-    };
-    if (!props?.chart) return null;
-    if (
-        props.chart?.options?.plugins?.legend?.labels?.generateLabels &&
-        props.chart?.options?.plugins?.legend?.labels?.generateLabels(props.chart).length > 0
-    ) {
-        const items = props.chart.options.plugins.legend.labels.generateLabels(props.chart);
-
-        return (
-            <ul
-                style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    margin: 0,
-                    padding: 0,
-                }}
-            >
-                {items.map((item) => {
-                    return (
-                        <ListItem onClick={() => onClick(item)} key={item.text}>
-                            {item.text === 'accumulated' ? (
-                                <>
-                                    <span
-                                        style={{
-                                            width: '30px',
-                                            display: 'inline-block',
-                                            marginRight: '10px',
-                                            borderBottom: `2px dashed ${
-                                                item.strokeStyle?.toString() || ''
-                                            }`,
-                                        }}
-                                    ></span>
-                                    <p
-                                        style={{
-                                            color: `${item.fontColor?.toString() || ''}`,
-                                            textDecoration: item.hidden ? 'line-through' : '',
-                                            padding: 0,
-                                            margin: 0,
-                                        }}
-                                    >
-                                        {item.text}
-                                    </p>
-                                </>
-                            ) : item.text === 'wo4-wo8 acc' ? (
-                                <>
-                                    <span
-                                        style={{
-                                            width: '30px',
-                                            display: 'inline-block',
-                                            marginRight: '10px',
-                                            background: `${item.fillStyle?.toString() || ''}`,
-                                            borderColor: `${item.strokeStyle?.toString() || ''}`,
-                                            borderWidth: `${item.lineWidth}px`,
-                                            height: '2px',
-                                        }}
-                                    ></span>
-                                    <p
-                                        style={{
-                                            color: `${item.fontColor?.toString() || ''}`,
-                                            textDecoration: item.hidden ? 'line-through' : '',
-                                            padding: 0,
-                                            margin: 0,
-                                        }}
-                                    >
-                                        {item.text}
-                                    </p>
-                                </>
-                            ) : (
-                                <>
-                                    <span
-                                        style={{
-                                            width: '30px',
-                                            display: 'inline-block',
-                                            marginRight: '10px',
-                                            background: `${item.fillStyle?.toString() || ''}`,
-                                            borderColor: `${item.strokeStyle?.toString() || ''}`,
-                                            borderWidth: `${item.lineWidth}px`,
-                                            height: '15px',
-                                        }}
-                                    ></span>
-                                    <p
-                                        style={{
-                                            color: `${item.fontColor?.toString() || ''}`,
-                                            textDecoration: item.hidden ? 'line-through' : '',
-                                            padding: 0,
-                                            margin: 0,
-                                        }}
-                                    >
-                                        {item.text}
-                                    </p>
-                                </>
-                            )}
-                        </ListItem>
-                    );
-                })}
-            </ul>
-        );
-    } else return null;
 };
