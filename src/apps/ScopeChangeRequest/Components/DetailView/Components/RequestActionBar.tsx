@@ -35,8 +35,6 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
         setSignableCriterias((prev) => [...prev, criteria]);
 
     const checkCanVoid = useCallback(async () => {
-        // dispatch({ type: 'setCanVoid', value: false });
-
         const allowed = request.isVoided
             ? await canUnVoid(request.id)
             : await apiCheckCanVoid(request.id);
@@ -64,7 +62,7 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
                 appendCriteria(criteria);
             }
         });
-    }, [request]);
+    }, [request.currentWorkflowStep]);
 
     const checkCanContribute = useCallback(async () => {
         setContributeId(undefined);
@@ -84,7 +82,7 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
                 }
             }
         });
-    }, [request]);
+    }, [request.currentWorkflowStep]);
 
     useEffect(() => {
         if (signableCriterias.length === 1) {
@@ -320,40 +318,48 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
         />
     );
 
+    const CriteriaSelector = useCallback(
+        () => (
+            <div>
+                {signableCriterias && signableCriterias?.length > 1 && (
+                    <Field
+                        label="Select criteria to sign"
+                        value={
+                            <div style={{ width: '630px' }}>
+                                <Select
+                                    isClearable={true}
+                                    isSearchable={false}
+                                    controlShouldRenderValue
+                                    options={signableCriterias.map((x): SelectOption => {
+                                        return { label: x.value, value: x.id };
+                                    })}
+                                    onChange={(newValue: SingleValue<SelectOption>) => {
+                                        setSelectedCriteria(newValue?.value);
+                                    }}
+                                    theme={applyEDSTheme}
+                                />
+                            </div>
+                        }
+                    />
+                )}
+            </div>
+        ),
+        [signableCriterias]
+    );
+
     const SignButton = useCallback(
         () => (
-            <Inline>
-                {signableCriterias && signableCriterias?.length > 1 && (
-                    <>
-                        <div style={{ minWidth: '250px' }}>
-                            <Select
-                                isClearable={true}
-                                isSearchable={false}
-                                options={signableCriterias.map((x): SelectOption => {
-                                    return { label: x.value, value: x.id };
-                                })}
-                                placeholder="Sign as"
-                                onChange={(newValue: SingleValue<SelectOption>) => {
-                                    setSelectedCriteria(newValue?.value);
-                                }}
-                                theme={applyEDSTheme}
-                            />
-                        </div>
-                    </>
-                )}
-
-                <Button
-                    disabled={!selectedCriteria || performingAction}
-                    onClick={async () => {
-                        dispatch({ type: 'setSignLoading', value: true });
-                        await onSignStep().then(async () => await refetch());
-                    }}
-                >
-                    {signLoading ? <Progress.Dots color="primary" /> : <div>Sign</div>}
-                </Button>
-            </Inline>
+            <Button
+                disabled={!selectedCriteria || performingAction}
+                onClick={async () => {
+                    dispatch({ type: 'setSignLoading', value: true });
+                    await onSignStep().then(async () => await refetch());
+                }}
+            >
+                {signLoading ? <Progress.Dots color="primary" /> : <div>Sign</div>}
+            </Button>
         ),
-        [onSignStep, performingAction, refetch, selectedCriteria, signLoading, signableCriterias]
+        [onSignStep, performingAction, refetch, selectedCriteria, signLoading]
     );
 
     const ActionBar = useCallback(() => {
@@ -380,11 +386,16 @@ export const RequestActionBar = ({ request, refetch }: RequestActionBarProps): J
             case 'Open': {
                 return (
                     <div>
+                        <CriteriaSelector />
                         <CommentField />
                         <ButtonContainer>
-                            <VoidButton />
-                            <ContributeButton />
-                            <SignButton />
+                            <Inline>
+                                <VoidButton />
+                            </Inline>
+                            <Inline>
+                                <ContributeButton />
+                                <SignButton />
+                            </Inline>
                         </ButtonContainer>
                     </div>
                 );
@@ -408,6 +419,7 @@ const Inline = styled.div`
     align-items: center;
     justify-content: space-between;
     margin: 0.2em;
+    column-gap: 1em;
 `;
 
 export const ButtonContainer = styled.div`

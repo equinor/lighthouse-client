@@ -94,6 +94,7 @@ const Title = styled.div`
 const TitleHeader = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
 `;
 
 const Loading = styled.div`
