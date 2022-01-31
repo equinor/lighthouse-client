@@ -1,9 +1,8 @@
 import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
-import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
+import { ColDef } from 'ag-grid-enterprise';
 import React from 'react';
-import { TableOptions as ReactTableOptions } from 'react-table';
 import {
     CustomView,
     GardenOptions,
@@ -17,24 +16,16 @@ export interface WorkSpaceState {
     [key: string]: WorkSpaceConfig<unknown>;
 }
 
-export type TableOptions<T> = Pick<
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    //@ts-ignore
-    ReactTableOptions<T>,
-    'enableSelectRows' | 'onCellClick' | 'setSelected' | 'columnOrder' | 'onSelect'
-> & {
-    objectIdentifierKey: string;
-    /** Hide certain columns based on key */
-    hiddenColumns?: (keyof T)[];
+export interface ColumnDefintion<T> extends Omit<ColDef, 'field'> {
+    /**Which field to target, you can reference the same field multiple times to make calculated fields */
+    field: keyof T;
+}
 
-    /** Change the default header */
-    headers?: CustomHeader<T>[];
-
-    /** Change the default cell view */
-    customCellView?: CustomCell<T>[];
-    /** Add extra columns that are not part of the dataset */
-    customColumns?: CustomColumn<T>[];
-};
+export interface TableOptions<T> {
+    /**Controls the order and config of a column in the table */
+    columnDefinition: ColumnDefintion<T>[];
+    onSelect?: (data: T) => void;
+}
 
 export interface Status {
     rating: number;

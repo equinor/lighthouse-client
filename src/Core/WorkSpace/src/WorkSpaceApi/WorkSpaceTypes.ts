@@ -48,7 +48,7 @@ export interface WorkSpaceApi<T> {
         viewOptions: ViewOptions<T>
     ) => void;
     registerFilterOptions: (options: FilterOptions<T>) => void;
-    registerTableOptions: (options: TableOptions<T>) => void;
+    registerTableOptions: (options: Omit<TableOptions<T>, "onSelect">) => void;
     registerTreeOptions: (options: TreeOptions<T>) => void;
     registerGanttOptions: (options: any) => void;
     registerGardenOptions: (options: GardenOptions<T>) => void;
