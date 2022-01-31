@@ -102,6 +102,28 @@ export const WoNumbersDisplay = <T extends unknown>({
                                 {item.count}
                             </WoNumbers>
                         );
+                    case 'five':
+                        return (
+                            <WoNumbers key={index} onClick={() => onClick(item.workorder)}>
+                                {item.count < 50 ? (
+                                    <Circle circleColor={CircleColor.SUCCESS} />
+                                ) : (
+                                    <Triangle />
+                                )}
+                                {item.count}
+                            </WoNumbers>
+                        );
+                    case 'six':
+                        return (
+                            <WoNumbers key={index} onClick={() => onClick(item.workorder)}>
+                                {item.count < 50 ? (
+                                    <Circle circleColor={CircleColor.SUCCESS} />
+                                ) : (
+                                    <Triangle />
+                                )}
+                                {item.count}
+                            </WoNumbers>
+                        );
                     default:
                         return <WoNumbers key={index}></WoNumbers>;
                 }
