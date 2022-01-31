@@ -189,7 +189,7 @@ export const accumulateSeries = (series: Series[]): Series[] => {
             type: 'line',
             yAxisID: 'acc',
             borderDash: [10, 5],
-            pointBackgroundColor: 'green',
+            pointBackgroundColor: themeColors.line[0],
             backgroundColor: themeColors.line[0],
             borderColor: themeColors.line[0],
         },
