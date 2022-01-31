@@ -1,3 +1,4 @@
+import { ChartDataset } from 'chart.js';
 import { interpolateCubehelixDefault } from 'd3-scale-chromatic';
 import { DateTime } from 'luxon';
 import { WorkOrder } from '../../../../apps/Construction/mocData/mockData';
@@ -57,13 +58,10 @@ export const createCategoriesMap = (categories: string[]): Record<string, number
     }, {});
 };
 
-type Series = {
+type Series = Partial<ChartDataset> & {
     label: string;
     data: number[];
     type: string;
-    yAxisID?: string;
-    backgroundColor?: string | string[];
-    borderColor?: string;
 };
 
 type CreateSeriesArgs = {
@@ -172,7 +170,7 @@ export const accumulateSeries = (series: Series[]): Series[] => {
     }
     const totalAccumulated: number[] = series
         .map((entry) => entry.data)
-        .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + entry), []);
+        .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + Number(entry)), []);
     //let temp: number = 0;
     //const tempAcc = totalAcc.map((item) => (temp = (temp || 0) + item));
     const ready = ['W04', 'W05', 'W06', 'W07', 'W08'];
@@ -180,7 +178,7 @@ export const accumulateSeries = (series: Series[]): Series[] => {
     const wo4Accumulated: number[] = series
         .filter((entry) => ready.includes(entry.label))
         .map((entry) => entry.data)
-        .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + entry, []));
+        .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + Number(entry), []));
 
     //let temp2: number = 0;
     //const tempAcc2 = wo4Acc.map((item) => (temp2 = (temp2 || 0) + item));
@@ -191,8 +189,10 @@ export const accumulateSeries = (series: Series[]): Series[] => {
             label: 'accumulated',
             type: 'line',
             yAxisID: 'acc',
-            backgroundColor: 'green',
+            backgroundColor: 'white',
             borderColor: 'green',
+            borderDash: [10, 5],
+            pointBackgroundColor: 'green',
         },
         {
             data: wo4Accumulated,
