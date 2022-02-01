@@ -22,19 +22,12 @@ export const Legend = (props: LegendProps): JSX.Element | null => {
                         <ListItem onClick={() => onClick(item)} key={item.text}>
                             {item.text === 'accumulated' ? (
                                 <AccumulatedBox strokeStyle={item.strokeStyle?.toString() || ''} />
-                            ) : item.text === 'w04-w08 acc' ? (
-                                <Box
-                                    fillStyle={item.fillStyle?.toString() || ''}
-                                    strokeStyle={item.strokeStyle?.toString() || ''}
-                                    lineWidth={item.lineWidth || 0}
-                                    height={2}
-                                />
                             ) : (
                                 <Box
                                     fillStyle={item.fillStyle?.toString() || ''}
                                     strokeStyle={item.strokeStyle?.toString() || ''}
                                     lineWidth={item.lineWidth || 0}
-                                    height={15}
+                                    height={item.text === 'w04-w08 acc' ? 2 : 15}
                                 />
                             )}
 
