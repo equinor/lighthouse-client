@@ -66,7 +66,7 @@ const ClientTopBar = (): JSX.Element => {
                         <Search aria-label="sitewide" id="search-normal" placeholder="Search..." />
                     </CustomContentWrapper> */}
                 <BetaTag>
-                    <b>UNDER DEVELOPMENT - </b>
+                    <b>UNDER DEVELOPMENT</b>
                     <p>This site contains test data.</p>
                 </BetaTag>
             </TopBar.CustomContent>
