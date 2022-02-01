@@ -42,7 +42,7 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
     data,
     enableGrouping = false,
     initialGroupBy,
-}: CustomVisualArgs<T>) => {
+}: CustomVisualArgs<T>): JSX.Element => {
     const [groupBy, setGroupBy] = useState<keyof T>('disciplineDescription');
     const woStatusMap = createWoStatusMap(data, groupBy);
     const filtered = filterWoMap(woStatusMap);
