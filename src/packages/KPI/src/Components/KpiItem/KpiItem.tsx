@@ -37,7 +37,7 @@ export function Item({
     );
 
     return (
-        <StatusCard color={colors[status]}>
+        <StatusCard>
             <Circle color={colors[status]} />
             <Value>{value()}</Value>
             <div>
