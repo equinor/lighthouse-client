@@ -23,7 +23,6 @@ export const createWoStatusMap = <T extends Record<string, any>>(
             ];
         }
     });
-    console.log(woDiscMap);
     return woDiscMap;
 };
 
