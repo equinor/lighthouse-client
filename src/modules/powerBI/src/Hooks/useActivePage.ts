@@ -3,9 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 /**
  * Will get the active page at first render.
- * If user changes page, it should be handled outside of the hook (setActivePage)
- * @param report
- * @returns
+ * If user changes page, it should be handled by `setActivePage`.
  */
 export const useActivePage = (
     report?: Report
