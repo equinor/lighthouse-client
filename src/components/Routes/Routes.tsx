@@ -1,5 +1,5 @@
 import { GroupView } from '@equinor/GroupView';
-import { useClientContext } from '@equinor/portal-client';
+import { ClientHome, useClientContext } from '@equinor/portal-client';
 import { closeSidesheet } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -24,16 +24,7 @@ export function ClientRoutes(): JSX.Element {
 
     return (
         <Routes>
-            <Route
-                path={'/'}
-                element={
-                    <GroupView
-                        group={{ name: 'Home', icon: '', columnId: 1 }}
-                        groups={appGroups}
-                        groupeId={'key'}
-                    />
-                }
-            />
+            <Route path={'/'} element={<ClientHome />} />
             {Object.keys(appGroups).map((key) => {
                 const group = appGroups[key];
                 const links = apps.filter((app) => {

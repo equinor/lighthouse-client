@@ -30,6 +30,14 @@ export const MenuItemLink = styled(Link)`
     height: 100%;
 `;
 
+export const MenuItemExternalLink = styled.a`
+    text-decoration: none;
+    color: inherit;
+
+    width: 100%;
+    height: 100%;
+`;
+
 export const MenuItemTitleLink = styled.div`
     text-decoration: none;
     color: inherit;

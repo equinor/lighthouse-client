@@ -5,7 +5,7 @@ import { useMemo, useRef, useState } from 'react';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
 import { AccordionHeader, AccordionHeaderTitle, AccordionPanel } from './MainMenuExpandedStyles';
-import { MenuItem, MenuItemLink, MenuItemTitleLink } from './MainMenuStyles';
+import { MenuItem, MenuItemExternalLink, MenuItemLink, MenuItemTitleLink } from './MainMenuStyles';
 import {
     GroupLink,
     LinkIcon,
@@ -14,7 +14,7 @@ import {
     PopoverWrapper,
     SearchWrapper,
     SmallItem,
-    Title
+    Title,
 } from './Styles';
 import { filterByValue, groupeByKey } from './utils';
 
@@ -174,21 +174,36 @@ export const MainMenu = (): JSX.Element => {
                                                 `${key}/${item.shortName}`
                                             )}
                                         >
-                                            <MenuItemLink
-                                                to={`${key}/${item.shortName}`}
-                                                title={
-                                                    !item.isProduction && isProd
+                                            {item.uri ? (
+                                                <MenuItemExternalLink
+                                                    href={item.uri}
+                                                    style={
+                                                        !item.isProduction && isProd
+                                                            ? { color: '#e3e3e3' }
+                                                            : {}
+                                                    }
+                                                >
+                                                    {!item.isProduction && isProd
                                                         ? 'Disabled'
-                                                        : item.title
-                                                }
-                                                style={
-                                                    !item.isProduction && isProd
-                                                        ? { color: '#e3e3e3' }
-                                                        : {}
-                                                }
-                                            >
-                                                {item.title}
-                                            </MenuItemLink>
+                                                        : item.title}
+                                                </MenuItemExternalLink>
+                                            ) : (
+                                                <MenuItemLink
+                                                    to={`${key}/${item.shortName}`}
+                                                    title={
+                                                        !item.isProduction && isProd
+                                                            ? 'Disabled'
+                                                            : item.title
+                                                    }
+                                                    style={
+                                                        !item.isProduction && isProd
+                                                            ? { color: '#e3e3e3' }
+                                                            : {}
+                                                    }
+                                                >
+                                                    {item.title}
+                                                </MenuItemLink>
+                                            )}
                                         </MenuItem>
                                     ))}
                                 </Menu>

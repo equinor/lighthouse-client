@@ -26,11 +26,11 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport
+    SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
-import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as SwcrSetup } from './swcr';
+import { setup as WorkOrderSetup } from './WorkOrder';
 
 export function getApps(): AppManifest[] {
     return apps;
@@ -127,13 +127,20 @@ export const appGroups: AppGroups = {
 export const apps: AppManifest[] = [
     // Project information
     {
+        title: 'Home',
+        shortName: '',
+        color: '#0364B8',
+        groupe: Apps.ProjectInformation,
+        icon: HomeIcon,
+        tags: [],
+        isProduction: true,
+    },
+    {
         title: 'Business case',
         shortName: 'business-case',
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        uri: '',
-        // imageUri: './images/Business case.jpg',
         app: {
             appType: 'PowerBI',
             component: BusinessCaseReport,
@@ -147,7 +154,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -156,7 +162,8 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        uri: '',
+        uri: 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart',
+        isProduction: true,
         tags: [],
     },
     {
@@ -165,7 +172,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        uri: '',
         tags: [],
     },
     //SSU
@@ -175,7 +181,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.SSU,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: SafetyPerformanceReport,
@@ -190,7 +195,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProgressAndStatus,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'PageView',
@@ -202,7 +206,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProgressAndStatus,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'PageView',
@@ -214,7 +217,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProgressAndStatus,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'PageView',
@@ -228,7 +230,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProgressAndStatus,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'PageView',
@@ -243,7 +244,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.EngineeringManagement,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -252,7 +252,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.EngineeringManagement,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: LCIReport,
@@ -266,7 +265,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.EngineeringManagement,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -275,7 +273,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.EngineeringManagement,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: MDRReport,
@@ -290,7 +287,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionManagement,
         icon: '',
-        uri: '',
         app: {
             appType: 'DataViewer',
             setup: WorkOrderSetup,
@@ -305,9 +301,7 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
-        imageUri: './images/Project explorer.jpg',
     },
     {
         title: 'Checklist',
@@ -315,7 +309,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
@@ -329,7 +322,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
@@ -343,7 +335,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
@@ -357,7 +348,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
@@ -371,7 +361,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
@@ -384,7 +373,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
@@ -396,7 +384,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
@@ -408,7 +395,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
@@ -423,7 +409,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -432,7 +417,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: '',
         app: {
             appType: 'DataViewer',
             setup: scopeChangeSetup,
@@ -447,7 +431,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -456,8 +439,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
-        uri: '',
-        imageUri: './images/Scope change control.jpg',
         tags: [],
     },
     // QualityAndCompliance
@@ -467,7 +448,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndCompliance,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -476,7 +456,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndCompliance,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -485,7 +464,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndCompliance,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: NonConformityReport,
@@ -499,7 +477,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndCompliance,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: QualityDeviationReport,
@@ -514,16 +491,14 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
-        title: 'Queries',
-        shortName: 'queries',
+        title: 'Queries Analytics',
+        shortName: 'queries-analytics',
         color: '#0364B8',
         groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: QueryReport,
@@ -531,16 +506,25 @@ export const apps: AppManifest[] = [
         tags: ['PowerBI'],
         isProduction: true,
     },
-    // Reports
     {
-        title: 'temp-link',
-        shortName: 'temp-link2',
+        title: 'Queries',
+        shortName: 'queries',
         color: '#0364B8',
-        groupe: Apps.Reports,
+        groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: '',
-        tags: [],
+        uri: 'https://fusion.equinor.com/apps/query',
+        tags: ['link', 'fusion'],
+        // isProduction: true,
     },
+    // Reports
+    // {
+    //     title: 'temp-link',
+    //     shortName: 'temp-link2',
+    //     color: '#0364B8',
+    //     groupe: Apps.Reports,
+    //     icon: '',
+    //     tags: [],
+    // },
 
     // Collaboration
     {
@@ -549,9 +533,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: 'tag',
-        uri: '',
-        tags: [],
-        imageUri: './images/image-test.png',
+        uri: 'https://fusion.equinor.com/apps/meetings',
+        tags: ['fuison', 'link', 'external'],
+        isProduction: true,
     },
     {
         title: 'Review',
@@ -559,20 +543,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: 'tag',
-        uri: '',
-        tags: [],
+        isProduction: true,
+        uri: 'https://fusion.equinor.com/apps/reviews/255d8c0a-7893-4c21-ab42-62c652ea8129',
+        tags: ['fuison', 'link', 'external'],
     },
     // Asset Data
-    {
-        title: 'Home',
-        shortName: '',
-        color: '#0364B8',
-        groupe: Apps.Top,
-        icon: HomeIcon,
-        uri: '',
-        tags: [],
-        isProduction: true,
-    },
     {
         title: '3D Model',
         shortName: '3dm',
