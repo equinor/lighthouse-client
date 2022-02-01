@@ -12,22 +12,15 @@ export const createWoStatusMap = <T extends Record<string, any>>(
 
     data.forEach((wo) => {
         if (statusChecks.includes(wo.jobStatusCode)) {
-            woDiscMap[wo[groupByKey]] = woDiscMap[wo[groupByKey]]
-                ? [
-                      ...woDiscMap[wo[groupByKey]],
-                      {
-                          plannedStartAtDate: wo.plannedStartAtDate,
-                          status: wo.jobStatusCode,
-                          workorder: wo,
-                      },
-                  ]
-                : [
-                      {
-                          plannedStartAtDate: wo.plannedStartAtDate,
-                          status: wo.jobStatusCode,
-                          workorder: wo,
-                      },
-                  ];
+            const spread = woDiscMap[wo[groupByKey]] !== undefined;
+            woDiscMap[wo[groupByKey]] = [
+                ...(spread ? woDiscMap[wo[groupByKey]] : []),
+                {
+                    plannedStartAtDate: wo.plannedStartAtDate,
+                    status: wo.jobStatusCode,
+                    workorder: wo,
+                },
+            ];
         }
     });
     return woDiscMap;
