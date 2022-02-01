@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -26,7 +27,12 @@ const Logo = () => {
     return (
         <LogoWrapper onClick={() => handleClick()}>
             {/* <LogoIcon /> */}
-            <LogoTitle>Johan Castberg</LogoTitle>
+            <LogoTitle>
+                <span style={{ color: tokens.colors.infographic.primary__energy_red_100.rgba }}>
+                    <b>Johan Castberg </b>
+                </span>
+                <b>Portal</b>
+            </LogoTitle>
         </LogoWrapper>
     );
 };

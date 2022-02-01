@@ -1,4 +1,5 @@
 import { useAuthenticate } from '@equinor/authentication';
+import { EdsProvider } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
 import { Client as ClientProps, ClientContextProvider } from '@equinor/portal-client';
@@ -16,8 +17,13 @@ import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
 const GlobalStyle = createGlobalStyle`
     body {
         font-family: Equinor;
+        font-size: 13px;
         margin: 0;
     };
+
+    p {
+        font-size: 13px !important;
+    }
 
     ::-webkit-scrollbar {
         width: .3rem;
@@ -47,19 +53,21 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
 
     return isAuthenticated ? (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <QueryClientProvider client={queryClient}>
-                <GlobalStyle />
-                <ConfirmationDialog />
-                <ClientContextProvider>
-                    <BrowserRouter>
-                        <ClientTopBar />
-                        <MainLayout>
-                            <ClientRoutes />
-                        </MainLayout>
-                    </BrowserRouter>
-                    <FactoryComponent />
-                </ClientContextProvider>
-            </QueryClientProvider>
+            <EdsProvider density={'compact'}>
+                <QueryClientProvider client={queryClient}>
+                    <GlobalStyle />
+                    <ConfirmationDialog />
+                    <ClientContextProvider>
+                        <BrowserRouter>
+                            <ClientTopBar />
+                            <MainLayout>
+                                <ClientRoutes />
+                            </MainLayout>
+                        </BrowserRouter>
+                        <FactoryComponent />
+                    </ClientContextProvider>
+                </QueryClientProvider>
+            </EdsProvider>
         </ErrorBoundary>
     ) : (
         <>
