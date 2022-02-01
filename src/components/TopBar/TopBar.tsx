@@ -27,6 +27,20 @@ const TopBarWrapper = styled(TopBar)`
     }
 `;
 
+const BetaTag = styled.div`
+    padding: 0 1rem;
+    position: absolute;
+    left: 40%;
+    top: 0px;
+    left: 500px;
+    display: flex;
+    background: #ff7e29;
+    color: #fff;
+    align-items: center;
+    justify-content: space-between;
+    width: 500px;
+`;
+
 const ClientTopBar = (): JSX.Element => {
     const {
         toggleFullscreenMenu,
@@ -51,6 +65,10 @@ const ClientTopBar = (): JSX.Element => {
                         <PlantSelector />
                         <Search aria-label="sitewide" id="search-normal" placeholder="Search..." />
                     </CustomContentWrapper> */}
+                <BetaTag>
+                    <b>UNDER DEVELOPMENT - </b>
+                    <p>This site contains test data.</p>
+                </BetaTag>
             </TopBar.CustomContent>
             <TopBar.Actions>
                 <Icons>
