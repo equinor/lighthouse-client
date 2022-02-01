@@ -2,6 +2,7 @@ import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
 import styled from 'styled-components';
+import { SupportButton } from '../../Core/Client/Support/Support';
 import Icon from '../Icon/Icon';
 import Logo from './Logo/Logo';
 
@@ -59,9 +60,10 @@ const ClientTopBar = (): JSX.Element => {
                         <Avatar alt="User avatar" src={userImageUrl} />
                     )}
 
-                    <Icon name="support" color={tokens.colors.interactive.disabled__text.rgba} />
+                    {/* <Icon name="support" color={tokens.colors.interactive.disabled__text.rgba} /> */}
                 </Icons>
             </TopBar.Actions>
+            <SupportButton />
         </TopBarWrapper>
     );
 };
