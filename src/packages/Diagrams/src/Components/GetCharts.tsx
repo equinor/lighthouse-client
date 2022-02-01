@@ -1,5 +1,10 @@
-import { BarChartVisual, LineChartVisual, TableVisual, TimeChart } from '@equinor/Diagrams';
-import { ConstructionVisual } from '..';
+import {
+    BarChartVisual,
+    LineChartVisual,
+    TableVisual,
+    TimeChart,
+    ConstructionVisual,
+} from '@equinor/Diagrams';
 import { CustomVisualArgs, Options } from '../Types';
 import { HorizontalBarVisual } from '../Visuals/HorizontalBarVisual/HorizontalBarVisual';
 import { ChartsWrapper, Circular, Loading } from './GetChartsStyles';
