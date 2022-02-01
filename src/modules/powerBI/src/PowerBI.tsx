@@ -5,8 +5,8 @@ import 'powerbi-report-authoring';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../../components/Icon/Icon';
-
 import { usePowerBI } from './api';
+import { PageNavigation } from './Components';
 import { Filter } from './models/filter';
 import './style.css';
 
@@ -85,6 +85,7 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                 </ErrorWrapper>
             ) : (
                 <Wrapper>
+                    <PageNavigation report={report} />
                     <PowerBIEmbed
                         embedConfig={config}
                         eventHandlers={eventHandlersMap}
@@ -93,6 +94,7 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                                 `Embedded object of type "${embedObject.embedtype}" received`
                             );
                             setReport(embedObject as Report);
+
                             window['report'] = embedObject;
                         }}
                         cssClassName="pbiEmbed"
