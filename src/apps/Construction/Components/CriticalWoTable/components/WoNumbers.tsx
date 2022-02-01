@@ -46,7 +46,7 @@ export const WoNumbersDisplay = <T extends unknown>({
     filtered,
     groupedKey,
     keysOfFiltered,
-}: WoNumbersDisplayProps<T>) => {
+}: WoNumbersDisplayProps<T>): JSX.Element => {
     const onClick = useCallback((item: T[]) => {
         openSidesheet(SidesheetContent, { data: item });
     }, []);

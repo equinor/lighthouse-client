@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import { Tooltip } from '@equinor/eds-core-react';
 import { useMemo } from 'react';
-import { StatusCard, Title, Value } from './KpiItemStyles';
+import { Circle, StatusCard, Title, Value } from './KpiItemStyles';
 
 export interface KpiItem {
     title: string;
@@ -37,7 +37,8 @@ export function Item({
     );
 
     return (
-        <StatusCard color={colors[status]}>
+        <StatusCard>
+            <Circle color={colors[status]} />
             <Value>{value()}</Value>
             <div>
                 <Tooltip
