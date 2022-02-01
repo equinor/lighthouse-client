@@ -11,5 +11,7 @@ export type Weeks<T> = {
     two: WeekCount<T>;
     three: WeekCount<T>;
     four: WeekCount<T>;
+    five: WeekCount<T>;
+    six: WeekCount<T>;
 };
 export type WoMapCount<T> = Record<string, Weeks<T>>;

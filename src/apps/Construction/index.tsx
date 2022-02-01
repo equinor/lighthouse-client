@@ -1,4 +1,4 @@
-import { AnalyticsOptions, SidesheetContent } from '@equinor/Diagrams';
+import { AnalyticsOptions, SidesheetContent, themeColors } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 import { CriticalWoTable } from './Components';
@@ -50,6 +50,7 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
 
                     tableData.length > 0 && openSidesheet(SidesheetContent, { data: tableData });
                 },
+                colors: [...themeColors.bar],
             },
         },
         chart3: {
@@ -136,7 +137,7 @@ export function setup(appApi: ClientApi): void {
                     // Find all the first filtered WOs that are due in one week or less
 
                     const secondFiltered = firstFiltered.filter(
-                        (wo) => weekDiff(new Date(wo.plannedStartAtDate)).days <= 28
+                        (wo) => weekDiff(new Date(wo.plannedStartAtDate)).days <= 42
                     );
 
                     return secondFiltered.length.toString();

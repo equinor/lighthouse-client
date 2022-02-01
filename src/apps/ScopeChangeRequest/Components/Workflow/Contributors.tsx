@@ -34,9 +34,6 @@ export const Contributors = ({ step }: ContributorsProps): JSX.Element => {
                                 </WorkflowText>
                             </Inline>
                         </WorkflowStepViewContainer>
-                        {/* <Spacer />
-                        <WorkflowLine colored={true} />
-                        <Spacer /> */}
                     </ContributorContainer>
                 );
             })}
