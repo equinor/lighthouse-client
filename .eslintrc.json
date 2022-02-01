@@ -15,7 +15,7 @@
         "prettier/prettier": [
             "warn",
             {
-                "endOfLine": "lf"
+                "endOfLine": "crlf"
             }
         ],
         "@typescript-eslint/explicit-function-return-type": "off",
