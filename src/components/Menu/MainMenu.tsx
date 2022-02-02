@@ -16,7 +16,7 @@ import {
     SmallItem,
     Title,
 } from './Styles';
-import { filterByValue, groupeByKey } from './utils';
+import { filterByValue, getURL, groupeByKey } from './utils';
 
 const { Item } = Accordion;
 
@@ -105,7 +105,7 @@ export const MainMenu = (): JSX.Element => {
                                         <MenuItemLink
                                             className="link"
                                             key={`link-${item.shortName}`}
-                                            to={`${key}/${item.shortName}`}
+                                            to={getURL(item, key)}
                                             title={
                                                 !item.isProduction && isProd
                                                     ? 'Disabled'
@@ -189,7 +189,7 @@ export const MainMenu = (): JSX.Element => {
                                                 </MenuItemExternalLink>
                                             ) : (
                                                 <MenuItemLink
-                                                    to={`${key}/${item.shortName}`}
+                                                    to={getURL(item, key)}
                                                     title={
                                                         !item.isProduction && isProd
                                                             ? 'Disabled'
