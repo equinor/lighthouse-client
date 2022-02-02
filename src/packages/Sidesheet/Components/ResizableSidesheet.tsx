@@ -28,13 +28,9 @@ export const ResizableSidesheet = (): JSX.Element | null => {
 
     if (isMinimized) {
         return (
-            <div>
-                <Icon
-                    name="chevron_left"
-                    color={tokens.colors.interactive.primary__resting.hex}
-                    onClick={handleMinimize}
-                />
-            </div>
+            <Button variant="ghost_icon" onClick={handleMinimize}>
+                <Icon name="chevron_left" color={tokens.colors.interactive.primary__resting.hex} />
+            </Button>
         );
     }
 
