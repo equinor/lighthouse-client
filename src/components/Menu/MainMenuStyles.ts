@@ -15,9 +15,6 @@ export const MenuItem = styled(Menu.Item)`
             : tokens.colors.interactive.primary__resting.rgba};
     cursor: ${({ disabled }: MenuItemProps) => (disabled ? 'default' : 'pointer')};
 
-    height: 32px;
-    padding-top: 12px;
-    padding-bottom: 0;
     background: ${({ active }: MenuItemProps) =>
         active ? `${tokens.colors.interactive.primary__hover_alt.rgba}` : ''};
 `;

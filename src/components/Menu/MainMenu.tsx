@@ -2,10 +2,11 @@ import { Accordion, Menu, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { isProduction, useClientContext } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
 import { AccordionHeader, AccordionHeaderTitle, AccordionPanel } from './MainMenuExpandedStyles';
-import { MenuItem, MenuItemExternalLink, MenuItemLink, MenuItemTitleLink } from './MainMenuStyles';
+import { MenuItem, MenuItemLink, MenuItemTitleLink } from './MainMenuStyles';
 import {
     GroupLink,
     LinkIcon,
@@ -30,7 +31,7 @@ export const MainMenu = (): JSX.Element => {
     const { apps, appGroups } = registry;
     const [searchValue, setSearchValue] = useState('');
     const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
-
+    const navigate = useNavigate();
     const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setSearchValue(value);
@@ -173,38 +174,18 @@ export const MainMenu = (): JSX.Element => {
                                             active={location.pathname.includes(
                                                 `${key}/${item.shortName}`
                                             )}
+                                            title={
+                                                !item.isProduction && isProd
+                                                    ? 'Disabled'
+                                                    : item.title
+                                            }
+                                            onClick={() => {
+                                                item.uri
+                                                    ? window.open(item.uri)
+                                                    : navigate(getURL(item, key));
+                                            }}
                                         >
-                                            {item.uri ? (
-                                                <MenuItemExternalLink
-                                                    href={item.uri}
-                                                    style={
-                                                        !item.isProduction && isProd
-                                                            ? { color: '#e3e3e3' }
-                                                            : {}
-                                                    }
-                                                    target="_blank"
-                                                >
-                                                    {!item.isProduction && isProd
-                                                        ? 'Disabled'
-                                                        : item.title}
-                                                </MenuItemExternalLink>
-                                            ) : (
-                                                <MenuItemLink
-                                                    to={getURL(item, key)}
-                                                    title={
-                                                        !item.isProduction && isProd
-                                                            ? 'Disabled'
-                                                            : item.title
-                                                    }
-                                                    style={
-                                                        !item.isProduction && isProd
-                                                            ? { color: '#e3e3e3' }
-                                                            : {}
-                                                    }
-                                                >
-                                                    {item.title}
-                                                </MenuItemLink>
-                                            )}
+                                            {item.title}
                                         </MenuItem>
                                     ))}
                                 </Menu>
