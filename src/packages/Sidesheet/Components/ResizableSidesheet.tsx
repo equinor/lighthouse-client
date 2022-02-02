@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
 import { Resizable } from 're-resizable';
@@ -45,25 +45,33 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                 }}
             >
                 <Header>
-                    <Icon
-                        name="chevron_right"
-                        color={tokens.colors.interactive.primary__resting.hex}
-                        onClick={handleMinimize}
-                    />
+                    <Button variant="ghost_icon" onClick={handleMinimize}>
+                        <Icon
+                            name="chevron_right"
+                            size={24}
+                            color={tokens.colors.interactive.primary__resting.hex}
+                        />
+                    </Button>
 
                     <span>
-                        <Icon
-                            name={'thumb_pin'}
-                            onClick={togglePinned}
-                            color={
-                                isPinned ? tokens.colors.interactive.primary__resting.hex : 'grey'
-                            }
-                        />
-                        <Icon
-                            name="close"
-                            color={tokens.colors.interactive.primary__resting.hex}
-                            onClick={closeSidesheet}
-                        />
+                        <Button variant="ghost_icon" onClick={togglePinned}>
+                            <Icon
+                                name={'thumb_pin'}
+                                size={24}
+                                color={
+                                    isPinned
+                                        ? tokens.colors.interactive.primary__resting.hex
+                                        : 'grey'
+                                }
+                            />
+                        </Button>
+                        <Button variant="ghost_icon" onClick={closeSidesheet}>
+                            <Icon
+                                name="close"
+                                size={24}
+                                color={tokens.colors.interactive.primary__resting.hex}
+                            />
+                        </Button>
                     </span>
                 </Header>
 
