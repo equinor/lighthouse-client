@@ -1,15 +1,13 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { baseClient } from '@equinor/http-client';
 import { ClientApi } from '@equinor/portal-client';
-import { ScopeChangeSideSheet } from './Components/CustomSidesheet';
+import { httpClient } from '../../Core/Client/Functions/HttpClient';
+import { ScopeChangeSideSheet } from './Components/Sidesheet/ScopeChangeSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.scopeChange]);
-
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
         CustomSidesheet: ScopeChangeSideSheet,
     });
@@ -23,9 +21,8 @@ export function setup(appApi: ClientApi): void {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const projectName = 'L.O532C.002';
         // const projectId = 177433
-        const response = await api.fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`
-        );
+        const { scopeChange } = httpClient();
+        const response = await scopeChange.fetch(`api/scope-change-requests`);
 
         return JSON.parse(await response.text());
     });
@@ -193,7 +190,7 @@ export function setup(appApi: ClientApi): void {
         fieldSettings: {},
     });
 
-    request.registerAnalyticsOptions(analyticsOptions);
+    // request.registerAnalyticsOptions(analyticsOptions);
 
     request.registerStatusItems(statusBarData);
 

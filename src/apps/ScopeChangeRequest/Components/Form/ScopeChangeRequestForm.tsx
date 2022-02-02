@@ -16,7 +16,7 @@ import { TypedSelectOption } from '../../Api/Search/searchType';
 import { Document } from '../../Api/STID/Types/Document';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { ScopeChangeSideSheet } from '../CustomSidesheet';
+import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 
 import { Field } from '../DetailView/Components/Field';
 import { Upload } from '../Upload';

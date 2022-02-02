@@ -1,15 +1,13 @@
-import { HttpClient } from '@equinor/http-client';
+import { httpClient } from '../../../Core/Client/Functions/HttpClient';
 import { ScopeChangeRequestFormModel } from '../Types/scopeChangeRequest';
 
-export async function patchScopeChange(
-    request: ScopeChangeRequestFormModel,
-    client: HttpClient
-): Promise<string> {
+export async function patchScopeChange(request: ScopeChangeRequestFormModel): Promise<string> {
+    const { scopeChange } = httpClient();
     const requestOptions = {
         method: 'PATCH',
         body: JSON.stringify(request),
     };
-    return await client
+    return await scopeChange
         .fetch(`api/scope-change-requests/${request.id}`, requestOptions)
         .then((response) => response.json());
 }

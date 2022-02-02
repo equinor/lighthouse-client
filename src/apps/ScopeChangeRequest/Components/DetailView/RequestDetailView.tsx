@@ -1,7 +1,7 @@
+import React, { useContext } from 'react';
 import { useMemo } from 'react';
 
 import { SectionRow } from '../../Styles/Section';
-import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { Workflow } from '../Workflow/Workflow';
 import { Field } from './Components/Field';
 import { StidDocumentResolver } from './Components/StidDocumentResolver';
@@ -10,20 +10,17 @@ import { RelatedObjects } from './Components/RelatedObjects';
 import { LogMessage, DetailViewContainer } from './requestDetailViewStyles';
 import styled from 'styled-components';
 import { OriginLink } from './Components/OriginLink';
-import { RequestActionBar } from './Components/RequestActionBar';
+import { RequestActionBar } from './Components/RequestActionBar/Components/RequestActionBar';
+import { ScopeChangeAccessContext } from '../Sidesheet/Context/scopeChangeAccessContext';
 
-interface RequestDetailViewProps {
-    request: ScopeChangeRequest;
-    setEditMode?: React.Dispatch<React.SetStateAction<boolean>>;
-    refetch: () => Promise<void>;
-}
-
-export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps): JSX.Element => {
+export const RequestDetailView = (): JSX.Element => {
     interface LogEntry {
         value: string;
         date: string;
         name: string;
     }
+
+    const { request } = useContext(ScopeChangeAccessContext);
 
     const logValues: LogEntry[] = useMemo(() => {
         const logArray: LogEntry[] = [];
@@ -119,7 +116,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label={'Workflow'}
-                    value={<Workflow request={request} refetch={refetch} />}
+                    value={<Workflow />}
                 />
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
@@ -154,7 +151,7 @@ export const RequestDetailView = ({ request, refetch }: RequestDetailViewProps):
                 />
             </DetailViewContainer>
 
-            {request.state !== 'Closed' && <RequestActionBar request={request} refetch={refetch} />}
+            {request.state !== 'Closed' && <RequestActionBar />}
         </Wrapper>
     );
 };

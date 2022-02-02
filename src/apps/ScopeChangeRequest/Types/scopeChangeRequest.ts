@@ -120,7 +120,7 @@ export interface Contributor {
     id: string;
     instructionsToContributor: string;
     person: Person;
-    contribution: Contribution;
+    contribution: Contribution | null;
 }
 
 export interface Contribution {
