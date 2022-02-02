@@ -82,6 +82,14 @@ export const RequestDetailView = (): JSX.Element => {
                         customValue={{ fontSize: '16px' }}
                         value={request.category}
                     />
+
+                    <Field
+                        label={'Change origin'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.originSource}
+                    />
+
                     <Field
                         label={'Change origin'}
                         customLabel={{ fontSize: '12px' }}
@@ -97,21 +105,26 @@ export const RequestDetailView = (): JSX.Element => {
                     customValue={{ fontSize: '16px' }}
                     value={request.description}
                 />
-                <SectionRow>
-                    <Field
-                        label={'Guesstimate mhrs'}
-                        customLabel={{ fontSize: '12px' }}
-                        customValue={{ fontSize: '16px' }}
-                        value={request.guesstimateHours}
-                    />
-                    <Field
+                {/* <SectionRow> */}
+                <Field
+                    label={'Guesstimate mhrs'}
+                    customLabel={{ fontSize: '12px' }}
+                    customValue={{ fontSize: '16px' }}
+                    value={request.guesstimateHours}
+                />
+                {/* <Field
                         label={'Guesstimate description'}
                         customLabel={{ fontSize: '12px' }}
                         customValue={{ fontSize: '16px' }}
                         value={request.guesstimateDescription}
                     />
-                </SectionRow>
+                </SectionRow> */}
 
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label={'Workflow'}
+                    value={<Workflow />}
+                />
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label={'References'}
@@ -124,11 +137,6 @@ export const RequestDetailView = (): JSX.Element => {
                     }
                 />
 
-                <Field
-                    customLabel={{ fontSize: '18px', bold: true }}
-                    label={'Workflow'}
-                    value={<Workflow />}
-                />
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
                     label="Documents"

@@ -40,6 +40,7 @@ const SystemWrapper = styled.div`
     height: 16px;
     justify-content: space-between;
     align-items: center;
+    margin: 0.2rem;
 `;
 const Wrapper = styled.div`
     display: flex;
