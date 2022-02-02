@@ -8,8 +8,9 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     setAsOpen?: boolean;
     //workflow
 }
+export type StrippedCriteria = Pick<Criteria, 'id' | 'value' | 'signedState'>;
 
-export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'None' | 'DCN';
+export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCN';
 
 export interface Origin {
     type: OriginType;
@@ -23,9 +24,10 @@ export interface ScopeChangeBaseModel {
     title: string;
     description: string;
     phase: string;
-    origin: OriginType;
     category: string;
     estimatedChangeHours: number;
+    originSourceId?: string;
+    originSource: OriginType;
     actualChangeHours: number;
     guesstimateHours: string;
     guesstimateDescription: string;
@@ -107,7 +109,7 @@ export interface Criteria {
     signedAtUtc: string;
     signedBy: Person;
     signedComment: string;
-    signedState: 'Approved' | 'Rejected';
+    signedState: 'Approved' | 'Rejected' | null;
 }
 
 export interface Contributor {
@@ -119,7 +121,7 @@ export interface Contributor {
     id: string;
     instructionsToContributor: string;
     person: Person;
-    contribution: Contribution;
+    contribution: Contribution | null;
 }
 
 export interface Contribution {

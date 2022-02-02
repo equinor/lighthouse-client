@@ -5,6 +5,6 @@ export const Wrapper = styled.div`
     height: 100%;
     z-index: 100;
     background: #fff;
-    width: 640px;
+    width: 650px;
     grid-area: sidebar;
 `;
