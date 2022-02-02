@@ -182,6 +182,7 @@ export const MainMenu = (): JSX.Element => {
                                                             ? { color: '#e3e3e3' }
                                                             : {}
                                                     }
+                                                    target="_blank"
                                                 >
                                                     {!item.isProduction && isProd
                                                         ? 'Disabled'
