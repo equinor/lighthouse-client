@@ -1,13 +1,34 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-const ActionSelectorHeight = '280px';
+interface DetailViewContainerProps {
+    wrapperTopPosition: number;
+    actionBarHeight: number;
+}
+
+export const Wrapper = styled.div`
+    display: flex;
+    /* height: calc(
+        100vh -
+            ${({ wrapperTopPosition, actionBarHeight }: DetailViewContainerProps) =>
+        wrapperTopPosition + actionBarHeight}px
+    ); */
+    height: 75vh;
+    padding-bottom: 250px;
+    /* padding-bottom: ${({ actionBarHeight }: DetailViewContainerProps) => actionBarHeight}px; */
+    flex-direction: column;
+    overflow: scroll;
+`;
 
 export const DetailViewContainer = styled.div`
     display: flex;
     flex-direction: column;
-    height: calc(87vh - ${ActionSelectorHeight});
-    overflow: scroll;
+`;
+
+export const ButtonContainer = styled.div`
+    display: flex;
+    padding: 0em 1em 1em 1em;
+    justify-content: space-between;
 `;
 
 export const HorizontalDivider = styled.div`
@@ -19,10 +40,8 @@ export const RequestActionsContainer = styled.div`
     display: flex;
     background-color: white;
     width: 650px;
-    height: ${ActionSelectorHeight};
+    height: auto;
     flex-direction: column;
-    position: fixed;
-    bottom: 0px;
 `;
 
 export const LogMessage = styled.div`

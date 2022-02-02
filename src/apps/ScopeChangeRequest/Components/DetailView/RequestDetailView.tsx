@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useMemo } from 'react';
 
 import { SectionRow } from '../../Styles/Section';
@@ -7,8 +7,7 @@ import { Field } from './Components/Field';
 import { StidDocumentResolver } from './Components/StidDocumentResolver';
 import { Attachments } from './Components/Attachments';
 import { RelatedObjects } from './Components/RelatedObjects';
-import { LogMessage, DetailViewContainer } from './requestDetailViewStyles';
-import styled from 'styled-components';
+import { LogMessage, Wrapper } from './requestDetailViewStyles';
 import { OriginLink } from './Components/OriginLink';
 import { RequestActionBar } from './Components/RequestActionBar/Components/RequestActionBar';
 import { ScopeChangeAccessContext } from '../Sidesheet/Context/scopeChangeAccessContext';
@@ -21,6 +20,11 @@ export const RequestDetailView = (): JSX.Element => {
     }
 
     const { request } = useContext(ScopeChangeAccessContext);
+    const actionBarRef = useRef<HTMLDivElement | null>(null);
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
+
+    const topBarHeight = 50;
+    const sidesheetHeader = 40;
 
     const logValues: LogEntry[] = useMemo(() => {
         const logArray: LogEntry[] = [];
@@ -42,8 +46,15 @@ export const RequestDetailView = (): JSX.Element => {
     }, [request]);
 
     return (
-        <Wrapper>
-            <DetailViewContainer>
+        <>
+            <Wrapper
+                ref={wrapperRef}
+                wrapperTopPosition={
+                    wrapperRef.current?.offsetTop || 0 + topBarHeight + sidesheetHeader
+                }
+                actionBarHeight={actionBarRef.current?.clientHeight || 0}
+            >
+                {/* <DetailViewContainer> */}
                 <Field
                     label={'Title'}
                     customLabel={{ fontSize: '12px' }}
@@ -149,17 +160,17 @@ export const RequestDetailView = (): JSX.Element => {
                         </div>
                     }
                 />
-            </DetailViewContainer>
-
-            {request.state !== 'Closed' && <RequestActionBar />}
-        </Wrapper>
+                {/* </DetailViewContainer> */}
+            </Wrapper>
+            <div
+                style={{ height: 'fit-content', bottom: '0px', position: 'fixed' }}
+                ref={actionBarRef}
+            >
+                <RequestActionBar />
+            </div>
+        </>
     );
 };
-
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
 
 /**
  //TODO:
