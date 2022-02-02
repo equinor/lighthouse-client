@@ -10,7 +10,7 @@ import { interpolateColors } from './colorGenerator';
  */
 export const createUniqueCategories = (
     data: WorkOrder[],
-    dateLimit = new Date('07/01/2021')
+    dateLimit = new Date('11/01/2021')
 ): string[] => {
     const categories = new Set<string>();
     data.forEach((element) => {
@@ -80,7 +80,7 @@ type CreateSeriesArgs = {
 export const createSeries = ({
     data,
     categories,
-    options: { dateLimit = new Date('07/01/2021'), lastWoStatus = 'W04', accumulated = false },
+    options: { dateLimit = new Date('11/01/2021'), lastWoStatus = 'W04', accumulated = false },
 }: CreateSeriesArgs): Series[] => {
     const categoriesMap = createCategoriesMap(categories);
     const seriesMap = {} as Record<

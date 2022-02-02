@@ -13,7 +13,7 @@ export type Job = {
 };
 export type WorkOrder = {
     actualCompletionDate: string;
-    actualStartupDate: string;
+    actualStartupDate: string | null;
     category: string;
     commissioningPackageNo: string;
     createdDate: string;
@@ -40,6 +40,7 @@ export type WorkOrder = {
     projectProgress: string;
     remainingManHours: string | null;
     responsible: string;
+    sourceIdentity: string;
     subMilestone: string;
     title: string;
     typeOfWork: string;
