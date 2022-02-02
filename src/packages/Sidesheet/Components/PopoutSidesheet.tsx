@@ -27,5 +27,4 @@ const Wrapper = styled.div`
     height: 100%;
     background: white;
     border-left: 2px solid ${tokens.colors.ui.background__medium.rgba};
-    overflow: scroll;
 `;

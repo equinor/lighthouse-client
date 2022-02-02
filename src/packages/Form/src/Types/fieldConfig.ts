@@ -2,9 +2,9 @@ import { InputType } from './InputTypes/inputType';
 
 export interface FieldConfig<T> {
     /** Title to be shown above the input field */
-    title: string;
+    title?: string;
     /** Input type */
-    inputType: InputType;
+    inputType?: InputType;
     /** Order of the input fields, give two the same order if you want them side by side */
     order?: number;
     /** Is field optional, default false */

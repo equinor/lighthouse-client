@@ -11,6 +11,7 @@ interface WorkflowCriteriasProps {
 
 export const WorkflowCriterias = ({ step }: WorkflowCriteriasProps): JSX.Element => {
     const stepStatus = statusFunc(step);
+
     return (
         <>
             {step.criterias.map((criteria) => {
@@ -19,7 +20,7 @@ export const WorkflowCriterias = ({ step }: WorkflowCriteriasProps): JSX.Element
                 const paddedMinutes = minute.toString().length === 1 ? `0${minute}` : minute;
                 return (
                     <WorkflowStepViewContainer key={criteria.id}>
-                        <Inline>
+                        <SplitInline>
                             <WorkflowIcon
                                 status={
                                     stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus
@@ -45,21 +46,19 @@ export const WorkflowCriterias = ({ step }: WorkflowCriteriasProps): JSX.Element
                                     <div style={{ fontSize: '14px' }}>{criteria.value}</div>
                                 )}
                             </WorkflowText>
-                        </Inline>
-                        {/* {x.isCurrent && !criteria.signedState && (
-                            <Button
-                                variant="outlined"
-                                onClick={() => onSignStep(criteria.id)}
-                            >
-                                Sign
-                            </Button>
-                        )} */}
+                        </SplitInline>
                     </WorkflowStepViewContainer>
                 );
             })}
         </>
     );
 };
+
+const SplitInline = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
 
 const statusFunc = (item: WorkflowStep): WorkflowStatus => {
     if (item.isCompleted) {
@@ -99,9 +98,4 @@ const WorkflowStepViewContainer = styled.div`
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
     width: -webkit-fill-available;
-`;
-
-const Inline = styled.span`
-    display: flex;
-    align-items: center;
 `;

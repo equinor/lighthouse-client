@@ -1,3 +1,4 @@
+import { isProduction } from '../../../../../Core/Client/Functions';
 import { HttpClient } from '../../../../../Core/httpClient/src';
 import { TypedSelectOption } from '../searchType';
 import { NCR } from './Types/ncr';
@@ -8,6 +9,8 @@ export const searchNCR = async (
     client: HttpClient
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
+    const searchIdDev = 103747;
+    const searchIdProd = 105600;
 
     const search: PCSStructure[] = [
         {
@@ -23,7 +26,8 @@ export const searchNCR = async (
     try {
         await client
             .fetch(
-                `api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105600&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
+                `api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
+                }&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
                 requestOptions
             )
             .then((response) => response.json())
@@ -32,7 +36,7 @@ export const searchNCR = async (
                     selectOptions.push({
                         label: `NCR-${x.DocumentNo}`,
                         value: x.DocumentNo,
-                        type: 'ncr',
+                        type: 'NCR',
                         searchValue: x.DocumentNo,
                         object: x,
                     });

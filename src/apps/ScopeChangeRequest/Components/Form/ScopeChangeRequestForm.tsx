@@ -16,14 +16,13 @@ import { TypedSelectOption } from '../../Api/Search/searchType';
 import { Document } from '../../Api/STID/Types/Document';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { ScopeChangeSideSheet } from '../CustomSidesheet';
+import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 
 import { Field } from '../DetailView/Components/Field';
 import { Upload } from '../Upload';
 import { PCSLink } from '../SearchableDropdown/PCSLink';
 import { StidDocument } from '../StidDocument';
 import { StidSelector } from '../STID';
-import { Origin as OriginType } from '../../Types/scopeChangeRequest';
 import { Origin } from './Origin';
 
 interface ScopeChangeRequestFormProps {
@@ -41,7 +40,6 @@ export const ScopeChangeRequestForm = ({
 }: ScopeChangeRequestFormProps): JSX.Element => {
     const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
 
-    const [origin, setOrigin] = useState<OriginType | undefined>();
     const [stidDocuments, setStidDocuments] = useState<Document[]>([]);
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
@@ -56,7 +54,6 @@ export const ScopeChangeRequestForm = ({
     const { scopeChange } = useHttpClient();
 
     const createScopeChangeMutation = async ({ draft }: CreateScopeChangeParams) => {
-        if (!origin?.type) return;
         const tags = filterElementsByType(relatedObjects, 'tag');
         const systems = filterElementsByType(relatedObjects, 'system');
         const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
@@ -66,7 +63,6 @@ export const ScopeChangeRequestForm = ({
         const scID = await postScopeChange(
             {
                 ...formData.data,
-                origin: origin.type,
                 tagNumbers: tags?.map((x) => x.value) || [],
                 systemIds: systems?.map((x) => Number(x.value)) || [],
                 commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
@@ -127,13 +123,18 @@ export const ScopeChangeRequestForm = ({
         );
     };
 
+    useEffect(() => {
+        formData.fields.originSourceId?.setValue(undefined);
+    }, [formData.fields.originSource?.value]);
+
     const isValidForm = useMemo(() => {
         return (
             formData.isValidForm() &&
-            (origin?.type === 'None' || origin?.id) &&
+            (formData.fields.originSource?.value === 'NotApplicable' ||
+                formData.fields.originSourceId?.value) &&
             relatedObjects.length > 0
         );
-    }, [formData, origin, relatedObjects]);
+    }, [formData, relatedObjects]);
 
     if (isRedirecting) {
         return (
@@ -162,9 +163,10 @@ export const ScopeChangeRequestForm = ({
                     {
                         Component: Origin,
                         order: 3,
-                        title: 'Origin',
+                        title: '',
                         props: {
-                            setOrigin: setOrigin,
+                            originId: formData.fields.originSourceId,
+                            originSource: formData.fields.originSource,
                         },
                     },
 
