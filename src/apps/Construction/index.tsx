@@ -1,6 +1,7 @@
 import { AnalyticsOptions, SidesheetContent, themeColors } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
+import { baseClient } from '../../Core/httpClient/src';
 import { CriticalWoTable } from './Components';
 import { cols } from './Components/DetailsPage/tableConfig';
 import { WorkOrder } from './mocData/mockData';
@@ -89,7 +90,7 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
 };
 
 export function setup(appApi: ClientApi): void {
-    // const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.FAM]);
     const construction = appApi.createPageViewer();
 
     /** 
@@ -104,9 +105,15 @@ export function setup(appApi: ClientApi): void {
     workPreparation.registerDataSource(async () => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const project = 'L.O532C.002';
-        // const response: WorkOrderApi = await api
-        //     .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
-        //     .then((res) => res.json())
+        const response = await api
+            .fetch(
+                `https://fam-synapse-api-dev.azurewebsites.net/v0.1/procosys/completionworkorderswithcutoff/JCA`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({}),
+                }
+            )
+            .then((res) => res.json());
         // const blah: WorkOrder[] = response.items.flatMap((j) => j);
         // return blah;
         // return JSON.parse(await response.text());
