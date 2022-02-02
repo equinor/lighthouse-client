@@ -84,10 +84,7 @@ export function Workflow(): JSX.Element {
             {request.workflowSteps.map((x, index) => {
                 return (
                     <WorkflowStepContainer key={index}>
-                        <WorkflowCriterias
-                            step={x}
-                            lastStep={index === request.workflowSteps.length - 1}
-                        />
+                        <WorkflowCriterias step={x} />
                         <Contributors step={x} />
                     </WorkflowStepContainer>
                 );

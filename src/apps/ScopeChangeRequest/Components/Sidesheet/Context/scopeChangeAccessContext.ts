@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { OptionRequestResult } from '../../../Api/ScopeChange/Access/optionsRequestChecker';
-import { StrippedCriteria } from '../../../Functions/Access';
+import { StrippedCriteria } from '../../../Types/scopeChangeRequest';
 import { ScopeChangeRequest } from '../../../Types/scopeChangeRequest';
 
 export interface ScopeChangeAccessContextState {

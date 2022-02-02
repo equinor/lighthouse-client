@@ -60,7 +60,6 @@ export const SearchQuery = ({ setOriginId, originId }: PCSLinkProps): JSX.Elemen
                     <AsyncSelect
                         cacheOptions={false}
                         defaultValue={origin}
-                        // loadOptions={loadOptions}
                         loadOptions={(
                             inputValue: string,
                             callback: (

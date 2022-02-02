@@ -1,7 +1,6 @@
 import { Button } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect } from 'react';
-import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { patchScopeChange } from '../../Api';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
@@ -27,23 +26,18 @@ export const ScopeChangeRequestEditForm = ({
         originSourceId: request.originSourceId,
     });
 
-    const { scopeChange } = useHttpClient();
-
     const onSubmit = async () => {
-        await patchScopeChange(
-            {
-                ...request,
-                ...formData.getChangedData(),
-                tagNumbers: request.tags.map((x) => x.procosysNumber) || [],
-                systemIds: request.systems.map((x) => Number(x.procosysCode)) || [],
-                commissioningPackageNumbers:
-                    request.commissioningPackages.map((x) => x.procosysNumber) || [],
-                areaCodes: [],
-                disciplineCodes: [],
-                documentNumbers: request.documents.map((x) => x.id) || [],
-            },
-            scopeChange
-        );
+        await patchScopeChange({
+            ...request,
+            ...formData.getChangedData(),
+            tagNumbers: request.tags.map((x) => x.procosysNumber) || [],
+            systemIds: request.systems.map((x) => Number(x.procosysCode)) || [],
+            commissioningPackageNumbers:
+                request.commissioningPackages.map((x) => x.procosysNumber) || [],
+            areaCodes: [],
+            disciplineCodes: [],
+            documentNumbers: request.documents.map((x) => x.id) || [],
+        });
     };
 
     const SaveButton = () => {

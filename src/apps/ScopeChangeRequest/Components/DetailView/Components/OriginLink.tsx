@@ -1,6 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import { useMemo } from 'react';
 import styled from 'styled-components';
+import { isProduction } from '../../../../../Core/Client/Functions';
 import { getDocumentIdByNo } from '../../../Api/PCS/getDocumentIdByNo';
 import { OriginType } from '../../../Types/scopeChangeRequest';
 
@@ -12,7 +13,10 @@ interface OriginLinkProps {
 export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
     async function onClickRedirectOrigin(id: string) {
         const pcsId = await getDocumentIdByNo(id);
-        window.open(`https://procosys.equinor.com/JOHAN_CASTBERG/Documents/Document#id=${pcsId}`);
+        window.open(
+            `https://${isProduction() ? 'procosys' : 'procosystest'
+            }.equinor.com/JOHAN_CASTBERG/Documents/Document#id=${pcsId}`
+        );
     }
 
     const Component = useMemo(() => {
@@ -43,7 +47,8 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
                     <Link
                         onClick={() =>
                             window.open(
-                                `https://procosys.equinor.com/JOHAN_CASTBERG/Completion#PunchListItem|${id}`
+                                `https://${isProduction() ? 'procosys' : 'procosystest'
+                                }.equinor.com/JOHAN_CASTBERG/Completion#PunchListItem|${id}`
                             )
                         }
                     >

@@ -20,11 +20,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
     const [performingAction, setPerformingAction] = useState<boolean>(false);
-    //
 
-    /**
-     * Refetches every second
-     */
     const { error, data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
         'scopeChange',
         () => getScopeChangeById(item.id, scopeChangeApi),

@@ -36,7 +36,7 @@ export function setup(appApi: ClientApi): void {
     request.registerFilterOptions({
         excludeKeys: scopeChangeExcludeKeys,
         typeMap: {},
-        initialFilters: ['state'],
+        initialFilters: ['state', 'phase', 'category', 'originSource', 'isVoided'],
         groupValue: {
             signedAtDate: (item: ScopeChangeRequest): string => {
                 if (item.createdAtUtc === '') return 'unknown';
@@ -98,7 +98,7 @@ export function setup(appApi: ClientApi): void {
             'estimatedChangeHours',
             'actualChangeHours',
             'category',
-            'origin',
+            'originSource',
             'lastModified',
         ],
         headers: [

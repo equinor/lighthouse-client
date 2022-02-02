@@ -7,10 +7,9 @@ import { convertUtcToLocalDate } from './Utils/utcDateToLocal';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
-    lastStep: boolean;
 }
 
-export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): JSX.Element => {
+export const WorkflowCriterias = ({ step }: WorkflowCriteriasProps): JSX.Element => {
     const stepStatus = statusFunc(step);
 
     return (
@@ -51,24 +50,7 @@ export const WorkflowCriterias = ({ step, lastStep }: WorkflowCriteriasProps): J
                                     )}
                                 </WorkflowText>
                             </SplitInline>
-                            {/* {x.isCurrent && !criteria.signedState && (
-                            <Button
-                                variant="outlined"
-                                onClick={() => onSignStep(criteria.id)}
-                            >
-                                Sign
-                            </Button>
-                        )} */}
                         </WorkflowStepViewContainer>
-                        {!lastStep && (
-                            <>
-                                {/* <Spacer />
-                                <div style={{ padding: '1.05px' }}>
-                                    <WorkflowLine colored={step.isCompleted} />
-                                </div>
-                                <Spacer /> */}
-                            </>
-                        )}
                     </>
                 );
             })}
@@ -120,9 +102,4 @@ const WorkflowStepViewContainer = styled.div`
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
     width: -webkit-fill-available;
-`;
-
-const Inline = styled.span`
-    display: flex;
-    align-items: center;
 `;

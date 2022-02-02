@@ -61,7 +61,6 @@ export const SearchNCR = ({ setOriginId, originId }: PCSLinkProps): JSX.Element 
                     <AsyncSelect
                         cacheOptions={false}
                         defaultValue={origin}
-                        // loadOptions={loadOptions}
                         loadOptions={(
                             inputValue: string,
                             callback: (

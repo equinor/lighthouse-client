@@ -30,7 +30,7 @@ export function GeneratedField<T>({
         case 'TextInput': {
             return (
                 <Field
-                    label={field.title}
+                    label={field.title ?? ''}
                     customLabel={metaTag}
                     value={<TextInput field={field} editMode={editMode} />}
                 />
@@ -40,7 +40,7 @@ export function GeneratedField<T>({
         case 'TextArea': {
             return (
                 <Field
-                    label={field.title}
+                    label={field.title ?? ''}
                     customLabel={metaTag}
                     value={<TextArea field={field} editMode={editMode} />}
                 />
@@ -50,7 +50,7 @@ export function GeneratedField<T>({
         case 'NumberInput': {
             return (
                 <Field
-                    label={field.title}
+                    label={field.title ?? ''}
                     customLabel={metaTag}
                     value={<NumberInput field={field} editMode={editMode} />}
                 />
@@ -60,7 +60,7 @@ export function GeneratedField<T>({
         case 'SingleSelect': {
             return (
                 <Field
-                    label={field.title}
+                    label={field.title ?? ''}
                     customLabel={metaTag}
                     value={
                         <SingleSelect
@@ -76,7 +76,7 @@ export function GeneratedField<T>({
         case 'MultiSelect': {
             return (
                 <Field
-                    label={field.title}
+                    label={field.title ?? ''}
                     customLabel={metaTag}
                     value={
                         <MultiSelect
