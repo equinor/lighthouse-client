@@ -101,7 +101,7 @@ export function setup(appApi: ClientApi): void {
                 status: 'waring',
                 title: 'Critical status',
                 tooltipContent:
-                    'Workorders that have status W01, W02 or W04 and it is 4 weeks or less until planned start date',
+                    'Workorders that have status W01, W02 or W04 and it is six weeks or less until planned start date',
                 value: () => {
                     // critical WO: Workorder which havent reached status W04
                     // and 1 week left until plannedStartAtDate
