@@ -1,6 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
-import { PopoutSidesheet } from '@equinor/sidesheet';
 import styled from 'styled-components';
 import { useSideSheet } from '../../packages/Sidesheet/context/sidesheetContext';
 import { getWidth } from '../../packages/Sidesheet/Utils/getWidth';
@@ -52,8 +51,6 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
             <ChildrenWrapper sideSheetWidth={getWidth(sideSheet)} panelActive={appsPanelActive}>
                 {children}
             </ChildrenWrapper>
-
-            <PopoutSidesheet />
         </Wrapper>
     );
 };

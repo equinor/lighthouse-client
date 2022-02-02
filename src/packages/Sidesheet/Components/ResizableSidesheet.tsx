@@ -2,19 +2,29 @@ import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
 import { Resizable } from 're-resizable';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
 import { useSideSheet } from '../context/sidesheetContext';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
 
 export const ResizableSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent, props, isPinned, minWidth, width, isMinimized } = useSideSheet();
+    const { SidesheetComponent, props, isPinned, minWidth, width, isMinimized, defaultWidth } =
+        useSideSheet();
     const { closeSidesheet, togglePinned, setIsMinimized, setWidth } =
         useInternalSidesheetFunction();
 
     const handleMinimize = () => {
         setIsMinimized((prev) => !prev);
     };
+
+    useEffect(() => {
+        SidesheetComponent && setWidth(defaultWidth);
+        return () => {
+            isPinned && setWidth(0);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     if (isMinimized) {
         return (
