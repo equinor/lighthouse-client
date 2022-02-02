@@ -81,11 +81,21 @@ export function Workflow(): JSX.Element {
                 </>
             )}
 
-            {request.workflowSteps.map((x, index) => {
+            {request.workflowSteps.map((step, index) => {
                 return (
                     <WorkflowStepContainer key={index}>
-                        <WorkflowCriterias step={x} />
-                        <Contributors step={x} />
+                        {step.criterias &&
+                            step.criterias.map((criteria) => {
+                                return (
+                                    <WorkflowCriterias
+                                        key={criteria.id}
+                                        step={step}
+                                        criteria={criteria}
+                                    />
+                                );
+                            })}
+
+                        <Contributors step={step} />
                     </WorkflowStepContainer>
                 );
             })}
