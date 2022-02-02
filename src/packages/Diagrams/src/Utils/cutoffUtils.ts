@@ -12,7 +12,7 @@ import { interpolateColors } from './colorGenerator';
  */
 export const createUniqueCategories = (
     data: WorkOrder[],
-    dateLimit = new Date('07/01/2021')
+    dateLimit = new Date('11/28/2021')
 ): string[] => {
     const categories = new Set<string>();
     data.forEach((element) => {
@@ -81,7 +81,7 @@ type CreateSeriesArgs = {
 export const createSeries = ({
     data,
     categories,
-    options: { dateLimit = new Date('07/01/2021'), lastWoStatus = 'W04', accumulated = false },
+    options: { dateLimit = new Date('11/28/2021'), lastWoStatus = 'W04', accumulated = false },
 }: CreateSeriesArgs): Series[] => {
     const categoriesMap = createCategoriesMap(categories);
     const seriesMap = {} as Record<
@@ -136,6 +136,7 @@ export const createSeries = ({
             data: [],
             type: 'bar',
             backgroundColor: themeColors.bar[index] || graphColors[index],
+            hidden: series.label === 'W09' || series.label === 'W10' ? true : false,
         } as Series;
         newSeries.data = Object.values(sortedSeries);
 
@@ -173,7 +174,7 @@ export const accumulateSeries = (series: Series[]): Series[] => {
         .reduce((acc, curr) => curr.map((entry, index) => (acc[index] || 0) + entry), []);
     //let temp: number = 0;
     //const tempAcc = totalAcc.map((item) => (temp = (temp || 0) + item));
-    const ready = ['W04', 'W05', 'W06', 'W07', 'W08'];
+    const ready = ['W04', 'W05', 'W06', 'W08'];
     //TODO: breaks if no wo4 in array
     const wo4Accumulated: number[] = series
         .filter((entry) => ready.includes(entry.label))

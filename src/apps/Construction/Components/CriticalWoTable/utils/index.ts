@@ -11,13 +11,13 @@ export const createWoStatusMap = <T extends Record<string, any>>(
     const statusChecks = ['W01', 'W02', 'W03'];
 
     data.forEach((wo) => {
-        if (statusChecks.includes(wo.jobStatusCode)) {
+        if (statusChecks.includes(wo.jobStatus)) {
             const spread = woDiscMap[wo[groupByKey]] !== undefined;
             woDiscMap[wo[groupByKey]] = [
                 ...(spread ? woDiscMap[wo[groupByKey]] : []),
                 {
-                    plannedStartAtDate: wo.plannedStartAtDate,
-                    status: wo.jobStatusCode,
+                    plannedStartUpDate: wo.plannedStartupDate,
+                    status: wo.jobStatus,
                     workorder: wo,
                 },
             ];
@@ -58,7 +58,7 @@ export function filterWoMap<T>(woMap: WoStatusMap<T>): WoMapCount<T> {
                     workorder: [],
                 },
             };
-            const plannedDateDiff = weekDiff(new Date(a.plannedStartAtDate)).days;
+            const plannedDateDiff = weekDiff(new Date(a.plannedStartUpDate)).days;
 
             if (plannedDateDiff <= 7) {
                 filtered[key].one.count = filtered[key].one.count + 1;
