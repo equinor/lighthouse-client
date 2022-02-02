@@ -12,9 +12,10 @@ import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
 import { RequestDetailView } from '../DetailView/RequestDetailView';
 import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
-import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
+
 import { useWorkflowAccess } from '../../Hooks/useWorkflowAccess';
 import { ScopeChangeAccessContext } from './Context/scopeChangeAccessContext';
+import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { scopeChange: scopeChangeApi } = useHttpClient();
@@ -122,6 +123,7 @@ const TitleHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 0rem 0.5rem;
 `;
 
 const Loading = styled.div`
