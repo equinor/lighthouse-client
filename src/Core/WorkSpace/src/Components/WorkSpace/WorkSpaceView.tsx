@@ -1,5 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { FilterProvider, FilterView } from '@equinor/filter';
+import { PopoutSidesheet } from '@equinor/sidesheet';
 import { useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { WorkspaceProps } from '../..';
@@ -82,6 +83,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
                     <WorkSpaceTabs tabs={tabs} activeTab={activeTab} />
                 </DataViewWrapper>
             </Tabs>
+            <PopoutSidesheet />
         </FilterProvider>
     );
 }
