@@ -14,10 +14,10 @@ export type ProcoSysTypes =
     | 'tag'
     | 'commpkg'
     | 'system'
-    | 'query'
+    | 'Query'
     | 'person'
-    | 'dcn'
-    | 'ncr'
+    | 'DCN'
+    | 'NCR'
     | 'area'
     | 'discipline';
 

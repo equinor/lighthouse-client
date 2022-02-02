@@ -63,7 +63,7 @@ export function getChart<T>(
             return (
                 <ChartsWrapper>
                     {/* {!isLoading ? ( */}
-                    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'scroll' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <TableVisual<any> data={data} options={config.options} />
                     </div>
                     {/* ) : (

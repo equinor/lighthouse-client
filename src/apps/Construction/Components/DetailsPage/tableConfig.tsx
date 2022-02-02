@@ -10,17 +10,15 @@ import {
 export const cols: Column<WorkOrder>[] = [
     {
         Header: '',
-        accessor: 'disciplineDescription',
+        accessor: 'discipline',
         Footer: () => <></>,
         columns: [
             {
                 Header: 'Discipline',
-                accessor: 'disciplineDescription',
+                accessor: 'discipline',
                 width: 250,
                 maxWidth: 300,
-                Footer: (data) => (
-                    <SumColumnFooter data={data} columnId={'disciplineDescription'} />
-                ),
+                Footer: (data) => <SumColumnFooter data={data} columnId={'discipline'} />,
             },
         ],
     },
@@ -33,13 +31,13 @@ export const cols: Column<WorkOrder>[] = [
                 id: 'W01-WOs',
                 Header: 'WOs',
                 width: 80,
-                accessor: (row) => row.woNo,
+                accessor: (row) => row.sourceIdentity,
                 aggregate: 'count',
                 Aggregated: ({
                     row,
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
-                        acc = i.original.jobStatusCode === 'W01' ? acc + 1 : acc;
+                        acc = i.original.jobStatus === 'W01' ? acc + 1 : acc;
                         return acc;
                     }, 0);
 
@@ -48,7 +46,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data) => (
                     <SumColumnFooterCount
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W01'}
                         columnId={'W01-WOs'}
                     />
@@ -65,7 +63,7 @@ export const cols: Column<WorkOrder>[] = [
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
                         acc =
-                            i.original.jobStatusCode === 'W01'
+                            i.original.jobStatus === 'W01'
                                 ? acc + Number(i.original.estimatedManHours) || 0
                                 : acc;
                         return acc;
@@ -76,7 +74,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data) => (
                     <SumColumnFooterSum
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W01'}
                         sumKey={'estimatedManHours'}
                     />
@@ -93,13 +91,13 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.woNo;
+                    return item.sourceIdentity;
                 },
                 Aggregated: ({
                     row,
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
-                        acc = i.original.jobStatusCode === 'W02' ? acc + 1 : acc;
+                        acc = i.original.jobStatus === 'W02' ? acc + 1 : acc;
                         return acc;
                     }, 0);
 
@@ -109,7 +107,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data) => (
                     <SumColumnFooterCount
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W02'}
                         columnId={'W02-WOs'}
                     />
@@ -127,7 +125,7 @@ export const cols: Column<WorkOrder>[] = [
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
                         acc =
-                            i.original.jobStatusCode === 'W02'
+                            i.original.jobStatus === 'W02'
                                 ? acc + Number(i.original.estimatedManHours) || 0
                                 : acc;
                         return acc;
@@ -139,7 +137,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
                     <SumColumnFooterSum
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W02'}
                         sumKey={'estimatedManHours'}
                     />
@@ -156,14 +154,14 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.woNo;
+                    return item.sourceIdentity;
                 },
                 aggregate: 'count',
                 Aggregated: ({
                     row,
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
-                        acc = i.original.jobStatusCode === 'W03' ? acc + 1 : acc;
+                        acc = i.original.jobStatus === 'W03' ? acc + 1 : acc;
                         return acc;
                     }, 0);
 
@@ -172,7 +170,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
                     <SumColumnFooterCount
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W03'}
                         columnId={'W03-WOs'}
                     />
@@ -191,7 +189,7 @@ export const cols: Column<WorkOrder>[] = [
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
                         acc =
-                            i.original.jobStatusCode === 'W03'
+                            i.original.jobStatus === 'W03'
                                 ? acc + Number(i.original.estimatedManHours) || 0
                                 : acc;
                         return acc;
@@ -202,7 +200,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
                     <SumColumnFooterSum
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W03'}
                         sumKey={'estimatedManHours'}
                     />
@@ -219,13 +217,13 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.woNo;
+                    return item.sourceIdentity;
                 },
                 Aggregated: ({
                     row,
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
-                        acc = i.original.jobStatusCode === 'W04' ? acc + 1 : acc;
+                        acc = i.original.jobStatus === 'W04' ? acc + 1 : acc;
                         return acc;
                     }, 0);
 
@@ -235,7 +233,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
                     <SumColumnFooterCount
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W04'}
                         columnId={'W04-WOs'}
                     />
@@ -253,7 +251,7 @@ export const cols: Column<WorkOrder>[] = [
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
                         acc =
-                            i.original.jobStatusCode === 'W04'
+                            i.original.jobStatus === 'W04'
                                 ? acc + Number(i.original.estimatedManHours) || 0
                                 : acc;
                         return acc;
@@ -265,7 +263,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
                     <SumColumnFooterSum
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W04'}
                         sumKey={'estimatedManHours'}
                     />
@@ -283,13 +281,13 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.woNo;
+                    return item.sourceIdentity;
                 },
                 Aggregated: ({
                     row,
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
-                        acc = i.original.jobStatusCode === 'W05' ? acc + 1 : acc;
+                        acc = i.original.jobStatus === 'W05' ? acc + 1 : acc;
                         return acc;
                     }, 0);
 
@@ -299,7 +297,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
                     <SumColumnFooterCount
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W05'}
                         columnId={'W05-WOs'}
                     />
@@ -317,7 +315,7 @@ export const cols: Column<WorkOrder>[] = [
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
                         acc =
-                            i.original.jobStatusCode === 'W05'
+                            i.original.jobStatus === 'W05'
                                 ? acc + Number(i.original.estimatedManHours)
                                 : acc;
                         return acc;
@@ -329,7 +327,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data) => (
                     <SumColumnFooterSum
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W05'}
                         sumKey={'estimatedManHours'}
                     />
@@ -346,13 +344,13 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.woNo;
+                    return item.sourceIdentity;
                 },
                 Aggregated: ({
                     row,
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
-                        acc = i.original.jobStatusCode === 'W06' ? acc + 1 : acc;
+                        acc = i.original.jobStatus === 'W06' ? acc + 1 : acc;
                         return acc;
                     }, 0);
 
@@ -362,7 +360,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
                     <SumColumnFooterCount
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W06'}
                         columnId={'W06-WOs'}
                     />
@@ -380,7 +378,7 @@ export const cols: Column<WorkOrder>[] = [
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
                         acc =
-                            i.original.jobStatusCode === 'W06'
+                            i.original.jobStatus === 'W06'
                                 ? acc + Number(i.original.estimatedManHours)
                                 : acc;
                         return acc;
@@ -392,7 +390,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data) => (
                     <SumColumnFooterSum
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W06'}
                         sumKey={'estimatedManHours'}
                     />
@@ -409,13 +407,13 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.woNo;
+                    return item.sourceIdentity;
                 },
                 Aggregated: ({
                     row,
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
-                        acc = i.original.jobStatusCode === 'W07' ? acc + 1 : acc;
+                        acc = i.original.jobStatus === 'W07' ? acc + 1 : acc;
                         return acc;
                     }, 0);
 
@@ -425,7 +423,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
                     <SumColumnFooterCount
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W07'}
                         columnId={'W07-WOs'}
                     />
@@ -443,7 +441,7 @@ export const cols: Column<WorkOrder>[] = [
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
                         acc =
-                            i.original.jobStatusCode === 'W07'
+                            i.original.jobStatus === 'W07'
                                 ? acc + Number(i.original.estimatedManHours)
                                 : acc;
                         return acc;
@@ -455,7 +453,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data) => (
                     <SumColumnFooterSum
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W07'}
                         sumKey={'estimatedManHours'}
                     />
@@ -472,13 +470,13 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.woNo;
+                    return item.sourceIdentity;
                 },
                 Aggregated: ({
                     row,
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
-                        acc = i.original.jobStatusCode === 'W08' ? acc + 1 : acc;
+                        acc = i.original.jobStatus === 'W08' ? acc + 1 : acc;
                         return acc;
                     }, 0);
 
@@ -488,7 +486,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>) => (
                     <SumColumnFooterCount
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W08'}
                         columnId={'W08-WOs'}
                     />
@@ -506,7 +504,7 @@ export const cols: Column<WorkOrder>[] = [
                 }: React.PropsWithChildren<CellProps<WorkOrder, any>>): number => {
                     const count = row.subRows.reduce((acc, i) => {
                         acc =
-                            i.original.jobStatusCode === 'W08'
+                            i.original.jobStatus === 'W08'
                                 ? acc + Number(i.original.estimatedManHours)
                                 : acc;
                         return acc;
@@ -518,7 +516,7 @@ export const cols: Column<WorkOrder>[] = [
                 Footer: (data) => (
                     <SumColumnFooterSum
                         data={data}
-                        fieldKey={'jobStatusCode'}
+                        fieldKey={'jobStatus'}
                         value={'W08'}
                         sumKey={'estimatedManHours'}
                     />
@@ -535,7 +533,7 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 100,
                 accessor: (item: WorkOrder): string => {
-                    return item.responsibleCode;
+                    return item.responsible;
                 },
                 aggregate: 'count',
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>): JSX.Element => {

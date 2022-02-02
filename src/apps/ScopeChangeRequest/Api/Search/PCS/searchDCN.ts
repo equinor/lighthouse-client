@@ -1,3 +1,4 @@
+import { isProduction } from '../../../../../Core/Client/Functions';
 import { HttpClient } from '../../../../../Core/httpClient/src';
 import { TypedSelectOption } from '../searchType';
 import { DCN } from './Types/dcn';
@@ -8,6 +9,9 @@ export const searchDCN = async (
     client: HttpClient
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
+
+    const searchIdDev = 103746;
+    const searchIdProd = 105598;
 
     const search: PCSStructure[] = [
         {
@@ -23,7 +27,8 @@ export const searchDCN = async (
     try {
         await client
             .fetch(
-                `api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105598&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
+                `api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
+                }&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
                 requestOptions
             )
             .then((response) => response.json())
@@ -32,7 +37,7 @@ export const searchDCN = async (
                     selectOptions.push({
                         label: x.DocumentNo,
                         value: x.DocumentNo,
-                        type: 'dcn',
+                        type: 'DCN',
                         searchValue: x.DocumentNo,
                         object: x,
                     });

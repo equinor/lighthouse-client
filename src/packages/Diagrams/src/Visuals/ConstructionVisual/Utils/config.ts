@@ -1,4 +1,10 @@
 import { ChartOptions } from 'chart.js';
+export enum ChartNames {
+    CONTAINERID = 'legend-container',
+    WOACC = 'w04-w08 acc',
+    ACC = 'accumulated',
+    YAXISID = 'acc',
+}
 
 export const chartoptions = (title: string): ChartOptions => ({
     maintainAspectRatio: false,
@@ -6,7 +12,7 @@ export const chartoptions = (title: string): ChartOptions => ({
     plugins: {
         //@ts-ignore
         htmlLegend: {
-            containerID: 'legend-container',
+            containerID: ChartNames.CONTAINERID,
         },
         tooltip: {
             backgroundColor: 'white',
