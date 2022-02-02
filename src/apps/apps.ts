@@ -128,7 +128,7 @@ export const apps: AppManifest[] = [
     // Project information
     {
         title: 'Home',
-        shortName: '',
+        shortName: '/',
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: HomeIcon,
