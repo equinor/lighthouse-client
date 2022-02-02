@@ -1,11 +1,11 @@
 import { Button, Progress } from '@equinor/eds-core-react';
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { unVoidRequest, voidRequest } from '../../../../../Api/ScopeChange/voidRequest';
-import { ScopeChangeAccessContext } from '../../../../Sidesheet/Context/scopeChangeAccessContext';
+import { useScopeChangeAccessContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
 
 export function VoidRequestButton(): JSX.Element {
-    const { performingAction, setPerformingAction, request } = useContext(ScopeChangeAccessContext);
+    const { performingAction, setPerformingAction, request } = useScopeChangeAccessContext();
 
     const {
         isLoading: voidLoading,
@@ -21,7 +21,9 @@ export function VoidRequestButton(): JSX.Element {
         }
     }
 
-    useEffect(() => setPerformingAction(voidLoading), [setPerformingAction, voidLoading]);
+    useEffect(() => {
+        setPerformingAction(voidLoading);
+    }, [setPerformingAction, voidLoading]);
 
     return (
         <div>

@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import Select, { SingleValue } from 'react-select';
 import { applyEDSTheme } from '../../../../SearchableDropdown/applyEds';
-import { ScopeChangeAccessContext } from '../../../../Sidesheet/Context/scopeChangeAccessContext';
+import { useScopeChangeAccessContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { Field } from '../../Field';
 
 interface SelectOption {
@@ -14,7 +13,7 @@ interface CriteriaSelectorProps {
 }
 
 export function CriteriaSelector({ setSelected }: CriteriaSelectorProps): JSX.Element {
-    const { signableCriterias } = useContext(ScopeChangeAccessContext);
+    const { signableCriterias } = useScopeChangeAccessContext();
 
     return (
         <div>

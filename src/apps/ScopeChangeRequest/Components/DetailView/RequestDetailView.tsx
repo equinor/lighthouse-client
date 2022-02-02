@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useMemo } from 'react';
 
 import { SectionRow } from '../../Styles/Section';
@@ -10,7 +10,7 @@ import { RelatedObjects } from './Components/RelatedObjects';
 import { LogMessage, Wrapper } from './requestDetailViewStyles';
 import { OriginLink } from './Components/OriginLink';
 import { RequestActionBar } from './Components/RequestActionBar/Components/RequestActionBar';
-import { ScopeChangeAccessContext } from '../Sidesheet/Context/scopeChangeAccessContext';
+import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 
 export const RequestDetailView = (): JSX.Element => {
     interface LogEntry {
@@ -19,7 +19,7 @@ export const RequestDetailView = (): JSX.Element => {
         name: string;
     }
 
-    const { request } = useContext(ScopeChangeAccessContext);
+    const { request } = useScopeChangeAccessContext();
     const actionBarRef = useRef<HTMLDivElement | null>(null);
     const wrapperRef = useRef<HTMLDivElement | null>(null);
 

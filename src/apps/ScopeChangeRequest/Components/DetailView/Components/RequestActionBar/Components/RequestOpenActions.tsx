@@ -1,10 +1,10 @@
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import { patchWorkflowStep } from '../../../../../Api';
 import { postContribution } from '../../../../../Api/ScopeChange/postContribution';
-import { ScopeChangeAccessContext } from '../../../../Sidesheet/Context/scopeChangeAccessContext';
+import { useScopeChangeAccessContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { Field } from '../../Field';
 import { CriteriaSelector } from './CriteriaSelector';
 import { ButtonContainer } from './RequestActionBar';
@@ -14,8 +14,14 @@ import { VoidRequestButton } from './VoidRequestButton';
 export function RequestOpenActions(): JSX.Element {
     const [selectedCriteria, setSelectedCriteria] = useState<string>();
     const [comment, setComment] = useState<string | undefined>(undefined);
-    const { request, performingAction, refetch, setPerformingAction } =
-        useContext(ScopeChangeAccessContext);
+    const {
+        request,
+        performingAction,
+        refetch,
+        setPerformingAction,
+        contributionId,
+        signableCriterias,
+    } = useScopeChangeAccessContext();
 
     const refresh = { onSuccess: async () => setTimeout(async () => await refetch(), 500) };
 
@@ -30,8 +36,6 @@ export function RequestOpenActions(): JSX.Element {
         error: contributeError,
         mutateAsync: onContribute,
     } = useMutation(onSendContribution, refresh);
-
-    const { contributionId, signableCriterias } = useContext(ScopeChangeAccessContext);
 
     useEffect(() => {
         if (signableCriterias && signableCriterias.length === 1) {

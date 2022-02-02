@@ -1,14 +1,13 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
 import { RequestActionsContainer } from '../../../requestDetailViewStyles';
 import React from 'react';
 import { RequestDraftActions } from './RequestDraftActions';
 import { RequestOpenActions } from './RequestOpenActions';
 import { VoidRequestButton } from './VoidRequestButton';
-import { ScopeChangeAccessContext } from '../../../../Sidesheet/Context/scopeChangeAccessContext';
+import { useScopeChangeAccessContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
 
 export const RequestActionBar = (): JSX.Element | null => {
-    const { request } = useContext(ScopeChangeAccessContext);
+    const { request } = useScopeChangeAccessContext();
 
     if (request.isVoided) {
         return (

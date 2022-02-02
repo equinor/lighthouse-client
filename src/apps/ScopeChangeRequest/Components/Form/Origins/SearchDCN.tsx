@@ -23,7 +23,7 @@ export const SearchDCN = ({ setOriginId, originId }: PCSLinkProps): JSX.Element 
         ? {
             label: originId,
             value: originId,
-            type: 'NCR',
+            type: 'DCN',
             searchValue: originId,
             object: originId,
         }

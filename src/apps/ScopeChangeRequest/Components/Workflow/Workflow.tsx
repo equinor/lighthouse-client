@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Button, DotProgress, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -8,10 +8,10 @@ import { addContributor as postContributor } from '../../Api/addContributor';
 import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
 import { WorkflowCriterias } from './WorkflowCriterias';
 import { Contributors } from './Contributors';
-import { ScopeChangeAccessContext } from '../Sidesheet/Context/scopeChangeAccessContext';
+import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 
 export function Workflow(): JSX.Element {
-    const { request, setPerformingAction } = useContext(ScopeChangeAccessContext);
+    const { request, setPerformingAction } = useScopeChangeAccessContext();
     const [contributor, setContributor] = useState<{ value: string; label: string } | null>(null);
     const [contributorTitle, setContributorTitle] = useState<string | undefined>();
 

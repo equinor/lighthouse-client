@@ -2,7 +2,7 @@ import { Button, Progress } from '@equinor/eds-core-react';
 import React, { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { initiateScopeChange } from '../../../../../Api/ScopeChange/initiateScopeChange';
-import { ScopeChangeAccessContext } from '../../../../Sidesheet/Context/scopeChangeAccessContext';
+import { useScopeChangeAccessContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { ButtonContainer } from './RequestActionBar';
 import { VoidRequestButton } from './VoidRequestButton';
 
@@ -14,7 +14,7 @@ export function RequestDraftActions(): JSX.Element {
     } = useMutation(onInitiate);
 
     const { requestAccess, request, performingAction, setPerformingAction } =
-        React.useContext(ScopeChangeAccessContext);
+        useScopeChangeAccessContext();
 
     async function onInitiate(): Promise<void> {
         await initiateScopeChange(request);
