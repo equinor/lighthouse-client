@@ -1,24 +1,17 @@
-import { useAtom } from '@dbeining/react-atom';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
 import { Resizable } from 're-resizable';
-import { useState } from 'react';
 import styled from 'styled-components';
 import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
-import { getSidesheetContext } from '../context/sidesheetContext';
+import { useSideSheet } from '../context/sidesheetContext';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
 
 export const ResizableSidesheet = (): JSX.Element | null => {
-    const { closeSidesheet, togglePinned } = useInternalSidesheetFunction();
+    const { SidesheetComponent, props, isPinned, minWidth, width, isMinimized } = useSideSheet();
+    const { closeSidesheet, togglePinned, setIsMinimized, setWidth } =
+        useInternalSidesheetFunction();
 
-    const [isMinimized, setIsMinimized] = useState<boolean>(false);
-    const defaultWidth = 650;
-    const [width, setWidth] = useState<number>(defaultWidth);
-
-    const minWidth = 40;
-
-    const { SidesheetComponent, props, isPinned } = useAtom(getSidesheetContext());
     const handleMinimize = () => {
         setIsMinimized((prev) => !prev);
     };
@@ -40,7 +33,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     return (
         <div>
             <Resizable
-                size={{ width: width, height: '100%' }}
+                size={{ width: width, height: window.innerHeight - 55 }}
                 maxWidth={'100vh'}
                 onResizeStop={(e, direction, ref, d) => {
                     if (width + d.width < minWidth) {

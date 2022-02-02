@@ -2,6 +2,8 @@ import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
 import { PopoutSidesheet } from '@equinor/sidesheet';
 import styled from 'styled-components';
+import { useSideSheet } from '../../packages/Sidesheet/context/sidesheetContext';
+import { getWidth } from '../../packages/Sidesheet/Utils/getWidth';
 import { FullscreenMainMenu } from '../Menu/FullscreenMainMenu';
 import { MainMenu } from '../Menu/MainMenu';
 
@@ -13,7 +15,11 @@ const Wrapper = styled.div`
     width: 100vw;
 `;
 const ChildrenWrapper = styled.div`
-    width: calc(100vw - ${({ panelActive }: CssProps) => (panelActive ? '374px' : '48px')});
+    width: calc(
+        100vw -
+            ${({ panelActive, sideSheetWidth }: CssProps) =>
+                (panelActive ? 374 : 48) + (sideSheetWidth || 0)}px
+    );
     transition: width 0.2s ease;
 `;
 const MainMenuWrapper = styled.div`
@@ -28,20 +34,25 @@ interface MainLayoutProps {
 
 interface CssProps {
     panelActive: boolean;
+    sideSheetWidth?: number;
 }
 
 export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
     const {
         settings: { appsPanelActive, fullscreenMenuActive },
     } = useClientContext();
+    const sideSheet = useSideSheet();
+
     return (
         <Wrapper>
             {fullscreenMenuActive && <FullscreenMainMenu />}
             <MainMenuWrapper panelActive={appsPanelActive}>
                 <MainMenu />
             </MainMenuWrapper>
-            <ChildrenWrapper panelActive={appsPanelActive}>{children}</ChildrenWrapper>
-            {/* TODO: Wrap Resizable here */}
+            <ChildrenWrapper sideSheetWidth={getWidth(sideSheet)} panelActive={appsPanelActive}>
+                {children}
+            </ChildrenWrapper>
+
             <PopoutSidesheet />
         </Wrapper>
     );
