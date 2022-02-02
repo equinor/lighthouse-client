@@ -1,5 +1,5 @@
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import { patchWorkflowStep } from '../../../../../Api';
@@ -24,6 +24,8 @@ export function RequestOpenActions(): JSX.Element {
     } = useScopeChangeAccessContext();
 
     const refresh = { onSuccess: async () => setTimeout(async () => await refetch(), 500) };
+
+    const commentRef = useRef<HTMLDivElement | null>(null);
 
     const {
         isLoading: signLoading,
@@ -90,20 +92,24 @@ export function RequestOpenActions(): JSX.Element {
         <div>
             <CriteriaSelector setSelected={setSelectedCriteria} />
 
-            <Field
-                label="Comment"
-                value={
-                    <TextField
-                        style={{ width: '630px' }}
-                        id={'Comment'}
-                        multiline
-                        value={comment}
-                        onChange={(e) => {
-                            setComment(e.target.value);
-                        }}
-                    />
-                }
-            />
+            <div
+                ref={commentRef}
+                style={{
+                    width: `calc(${commentRef}px - 2rem)px`,
+                    boxSizing: 'border-box',
+                    padding: '1rem',
+                }}
+            >
+                <TextField
+                    style={{ width: `${commentRef.current?.offsetWidth || 650}px` }}
+                    id={'Comment'}
+                    multiline
+                    value={comment}
+                    onChange={(e) => {
+                        setComment(e.target.value);
+                    }}
+                />
+            </div>
 
             <ButtonContainer>
                 <VoidRequestButton />
