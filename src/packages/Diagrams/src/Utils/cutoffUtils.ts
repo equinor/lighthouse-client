@@ -3,6 +3,7 @@ import { interpolateBlues } from 'd3-scale-chromatic';
 import { DateTime } from 'luxon';
 import { WorkOrder } from '../../../../apps/Construction/mocData/mockData';
 import { themeColors } from '../Visuals/ConstructionVisual/theme';
+import { ChartNames } from '../Visuals/ConstructionVisual/Utils/config';
 import { interpolateColors } from './colorGenerator';
 /**
  * Creates a set of unique dates
@@ -161,7 +162,7 @@ export const accumulateSeries = (series: Series[]): Series[] => {
         return [
             {
                 data: [],
-                label: 'accumulated',
+                label: ChartNames.ACC,
                 type: 'line',
                 backgroundColor: themeColors.line[0],
             },
@@ -185,9 +186,9 @@ export const accumulateSeries = (series: Series[]): Series[] => {
     return [
         {
             data: totalAccumulated,
-            label: 'accumulated',
+            label: ChartNames.ACC,
             type: 'line',
-            yAxisID: 'acc',
+            yAxisID: ChartNames.YAXISID,
             borderDash: [10, 5],
             pointBackgroundColor: themeColors.line[0],
             backgroundColor: themeColors.line[0],
@@ -195,11 +196,11 @@ export const accumulateSeries = (series: Series[]): Series[] => {
         },
         {
             data: wo4Accumulated,
-            label: 'w04-w08 acc',
+            label: ChartNames.WOACC,
             type: 'line',
             borderColor: themeColors.line[1],
             backgroundColor: themeColors.line[1],
-            yAxisID: 'acc',
+            yAxisID: ChartNames.YAXISID,
         },
     ];
 };

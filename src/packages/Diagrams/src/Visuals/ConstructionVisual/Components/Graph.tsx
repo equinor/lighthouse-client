@@ -14,7 +14,7 @@ import { Chart as ReactChart, getDatasetAtEvent, getElementsAtEvent } from 'reac
 import zoomPlugin from 'chartjs-plugin-zoom';
 import { SidesheetContent } from '../../../Components';
 import { htmlLegendPlugin } from '../Utils/htmlLegendPlugin';
-import { chartoptions } from '../Utils/config';
+import { ChartNames, chartoptions } from '../Utils/config';
 ChartJS.register(...registerables, zoomPlugin);
 
 export function Graph<T extends unknown>({
@@ -91,7 +91,7 @@ export function Graph<T extends unknown>({
                 height={250}
                 plugins={[htmlLegendPlugin]}
             />
-            <div id="legend-container"></div>
+            <div id={ChartNames.CONTAINERID}></div>
         </div>
     );
 }
