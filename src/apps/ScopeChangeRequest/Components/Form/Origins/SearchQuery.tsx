@@ -12,11 +12,21 @@ import { TypedSelectOption } from '../../../Api/Search/searchType';
 
 interface PCSLinkProps {
     setOriginId: (originId: string | undefined) => void;
+    originId: string | undefined;
 }
 
-export const SearchQuery = ({ setOriginId }: PCSLinkProps): JSX.Element => {
+export const SearchQuery = ({ setOriginId, originId }: PCSLinkProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const debounce = useRef(new Date());
+    const origin: TypedSelectOption | null = originId
+        ? {
+            label: originId,
+            value: originId,
+            type: 'Query',
+            searchValue: originId,
+            object: originId,
+        }
+        : null;
 
     const loadOptions = async (
         inputValue: string,
@@ -27,7 +37,7 @@ export const SearchQuery = ({ setOriginId }: PCSLinkProps): JSX.Element => {
         const options: TypedSelectOption[] = [];
 
         try {
-            await (await searchPcs(inputValue, 'query')).map((x) => options.push(x));
+            await (await searchPcs(inputValue, 'Query')).map((x) => options.push(x));
         } catch (e) {
             setApiErrors((prev) => [...prev, 'query']);
         }
@@ -45,11 +55,11 @@ export const SearchQuery = ({ setOriginId }: PCSLinkProps): JSX.Element => {
 
             <Inline>
                 <div
-                    style={{ width: '300px', borderBottom: '5px solid #6F6F6F', fontSize: '16px' }}
+                    style={{ width: '211px', borderBottom: '5px solid #6F6F6F', fontSize: '16px' }}
                 >
                     <AsyncSelect
                         cacheOptions={false}
-                        // loadOptions={loadOptions}
+                        defaultValue={origin}
                         loadOptions={(
                             inputValue: string,
                             callback: (

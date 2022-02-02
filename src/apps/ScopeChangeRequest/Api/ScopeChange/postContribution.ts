@@ -1,12 +1,13 @@
-import { HttpClient } from '@equinor/http-client';
+import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
 
 export async function postContribution(
     requestId: string,
     stepId: string,
     contributorId: string,
-    client: HttpClient,
     comment?: string
 ): Promise<void> {
+    const { scopeChange } = httpClient();
+
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify({
@@ -14,7 +15,7 @@ export async function postContribution(
             suggestion: 'SuggestRejection',
         }),
     };
-    await client.fetch(
+    await scopeChange.fetch(
         `api/scope-change-requests/${requestId}/workflow/step/${stepId}/contributors/${contributorId}/contribute`,
         requestOptions
     );

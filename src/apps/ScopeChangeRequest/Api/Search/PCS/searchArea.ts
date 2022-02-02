@@ -10,8 +10,8 @@ export const searchAreas = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
-    const searchIdProd = 106102;
     const searchIdDev = 103741;
+    const searchIdProd = 106102;
 
     const uri = 'api/Search';
     const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev

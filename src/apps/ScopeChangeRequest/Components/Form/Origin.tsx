@@ -1,68 +1,55 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { SingleSelect } from '@equinor/eds-core-react';
+import { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { SearchNCR } from './Origins/SearchNCR';
 import { SearchDCN } from './Origins/SearchDCN';
 import { SearchQuery } from './Origins/SearchQuery';
 import { SelectPunch } from './Origins/SelectPunch';
-import { OriginType, Origin as OriginInterface } from '../../Types/scopeChangeRequest';
+import { OriginType } from '../../Types/scopeChangeRequest';
+import { Field } from '../../../../packages/Form/src/Types/field';
+import { MultiSelect } from '@equinor/eds-core-react';
 
 interface OriginProps {
-    setOrigin: React.Dispatch<React.SetStateAction<OriginInterface | undefined>>;
+    originSource: Field<OriginType> | undefined;
+    originId: Field<string | undefined> | undefined;
 }
 
-export const Origin = ({ setOrigin }: OriginProps): JSX.Element => {
-    const [originType, setOriginType] = useState<OriginType | undefined>();
-
+export const Origin = ({ originId, originSource }: OriginProps): JSX.Element => {
     const setOriginId = useCallback(
-        (originId: string | undefined) => {
-            if (originType) {
-                setOrigin({ type: originType, id: originId });
+        (inputOriginId: string | undefined) => {
+            if (originSource) {
+                originId?.setValue(inputOriginId);
             } else {
-                setOrigin(undefined);
+                originId?.setValue(undefined);
             }
         },
-        [originType, setOrigin]
+        [originId, originSource]
     );
 
-    useEffect(() => {
-        setOriginId(undefined);
-    }, [originType, setOriginId]);
-
     const SelectedComponent = useMemo(() => {
-        setOrigin(undefined);
-        switch (originType) {
+        switch (originSource?.value) {
             case 'NCR':
-                return <SearchNCR setOriginId={setOriginId} />;
+                return <SearchNCR setOriginId={setOriginId} originId={originId?.value} />;
 
             case 'DCN':
-                return <SearchDCN setOriginId={setOriginId} />;
+                return <SearchDCN setOriginId={setOriginId} originId={originId?.value} />;
 
             case 'Query':
-                return <SearchQuery setOriginId={setOriginId} />;
+                return <SearchQuery setOriginId={setOriginId} originId={originId?.value} />;
 
             case 'Punch':
-                return <SelectPunch setOriginId={setOriginId} />;
+                return <SelectPunch setOriginId={setOriginId} originId={originId?.value} />;
 
             case 'SWCR':
                 return <></>;
 
             default:
-                return <></>;
+                return (
+                    <MultiSelect disabled={true} items={[]} meta="(Required)" label={'Origin ID'} />
+                );
         }
-    }, [originType, setOrigin, setOriginId]);
+    }, [originId?.value, originSource?.value, setOriginId]);
 
-    return (
-        <Wrapper>
-            <SingleSelect
-                label=""
-                items={['NCR', 'DCN', 'Query', 'Punch', 'None']}
-                handleSelectedItemChange={(e) => setOriginType(e.selectedItem as OriginType)}
-            />
-            <div style={{ width: '50px' }}></div>
-            {SelectedComponent}
-        </Wrapper>
-    );
+    return <Wrapper>{SelectedComponent}</Wrapper>;
 };
 
 const Wrapper = styled.div`

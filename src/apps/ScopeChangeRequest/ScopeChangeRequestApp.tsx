@@ -1,15 +1,13 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { baseClient } from '@equinor/http-client';
 import { ClientApi } from '@equinor/portal-client';
-import { ScopeChangeSideSheet } from './Components/CustomSidesheet';
+import { httpClient } from '../../Core/Client/Functions/HttpClient';
+import { ScopeChangeSideSheet } from './Components/Sidesheet/ScopeChangeSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.scopeChange]);
-
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
         CustomSidesheet: ScopeChangeSideSheet,
     });
@@ -21,10 +19,10 @@ export function setup(appApi: ClientApi): void {
 
     request.registerDataSource(async () => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
-        // const project = 'L.O532C.002';
-        const response = await api.fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`
-        );
+        // const projectName = 'L.O532C.002';
+        // const projectId = 177433
+        const { scopeChange } = httpClient();
+        const response = await scopeChange.fetch(`api/scope-change-requests`);
 
         return JSON.parse(await response.text());
     });
@@ -38,7 +36,7 @@ export function setup(appApi: ClientApi): void {
     request.registerFilterOptions({
         excludeKeys: scopeChangeExcludeKeys,
         typeMap: {},
-        initialFilters: ['state'],
+        initialFilters: ['state', 'phase', 'category', 'originSource', 'isVoided'],
         groupValue: {
             signedAtDate: (item: ScopeChangeRequest): string => {
                 if (item.createdAtUtc === '') return 'unknown';
@@ -78,8 +76,8 @@ export function setup(appApi: ClientApi): void {
         objectIdentifierKey: 'id',
         enableSelectRows: true,
         hiddenColumns: [
-            'currentWorkflowStep',
             'id',
+            'currentWorkflowStep',
             'attachments',
             'systems',
             'tags',
@@ -90,6 +88,7 @@ export function setup(appApi: ClientApi): void {
             'createdBy',
             'createdAtUtc',
             'modifiedBy',
+            'originSourceId',
         ],
         columnOrder: [
             'title',
@@ -99,7 +98,7 @@ export function setup(appApi: ClientApi): void {
             'estimatedChangeHours',
             'actualChangeHours',
             'category',
-            'origin',
+            'originSource',
             'lastModified',
         ],
         headers: [
@@ -110,7 +109,7 @@ export function setup(appApi: ClientApi): void {
             { key: 'estimatedChangeHours', title: 'Estimate hours' },
             { key: 'actualChangeHours', title: 'Actual' },
             { key: 'category', title: 'Change category' },
-            { key: 'origin', title: 'Change origin' },
+            { key: 'originSource', title: 'Change origin' },
             { key: 'createdAtUtc', title: 'Created at' },
             { key: 'createdBy', title: 'Created by' },
             { key: 'modifiedAtUtc', title: 'Last updated' },
@@ -185,9 +184,13 @@ export function setup(appApi: ClientApi): void {
                 return 'Inactive';
         }
     };
-    request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'title', fieldSettings: {} });
+    request.registerGardenOptions({
+        gardenKey: 'originSource',
+        itemKey: 'title',
+        fieldSettings: {},
+    });
 
-    request.registerAnalyticsOptions(analyticsOptions);
+    // request.registerAnalyticsOptions(analyticsOptions);
 
     request.registerStatusItems(statusBarData);
 
@@ -200,12 +203,8 @@ export function setup(appApi: ClientApi): void {
 export const analyticsOptions: AnalyticsOptions<ScopeChangeRequest> = {
     section1: {
         chart1: {
-            type: 'barChart',
-            options: {
-                categoryKey: 'origin',
-                nameKey: 'category',
-                stacked: true,
-            },
+            type: 'lineChart',
+            options: { categoryKey: 'originSource', nameKey: 'category' },
         },
     },
 };

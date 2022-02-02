@@ -1,12 +1,13 @@
-import { HttpClient } from '@equinor/http-client';
+import { httpClient } from '../../../Core/Client/Functions/HttpClient';
 
 export async function patchWorkflowStep(
     requestId: string,
     stepId: string,
     criteriaId: string,
-    client: HttpClient,
     comment?: string
 ): Promise<void> {
+    const { scopeChange } = httpClient();
+
     const requestOptions = {
         method: 'PATCH',
         body: JSON.stringify({
@@ -14,7 +15,7 @@ export async function patchWorkflowStep(
             signedState: 'Approved',
         }),
     };
-    await client.fetch(
+    await scopeChange.fetch(
         `api/scope-change-requests/${requestId}/workflow/step/${stepId}/sign/${criteriaId}`,
         requestOptions
     );
