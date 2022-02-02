@@ -1,10 +1,10 @@
 import { AnalyticsOptions, SidesheetContent, themeColors } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
+import { baseClient } from '../../Core/httpClient/src';
 import { CriticalWoTable } from './Components';
 import { cols } from './Components/DetailsPage/tableConfig';
 import { WorkOrder } from './mocData/mockData';
-import { mock } from './mocData/newMockData';
 import { weekDiff } from './Utils';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
@@ -20,25 +20,13 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
                 title: 'Job Statuses',
             },
         },
-        // chart2: {
-        //     type: 'timeBarChart',
-        //     options: {
-        //         accumulative: true,
-        //         timeChartOptions: {
-        //             categoriesKey: 'jobStatusCutoffs',
-        //             title: 'Job Statuses accumulated',
-        //             type: 'column',
-        //         },
-        //         title: 'Job Statuses accumulated',
-        //     },
-        // },
     },
     section2: {
         chart1: {
             type: 'horizontalBarChart',
             options: {
-                categoryKey: 'disciplineDescription',
-                nameKey: 'disciplineDescription',
+                categoryKey: 'discipline',
+                nameKey: 'discipline',
                 title: 'Grouped job cards',
                 enableGroupBy: true,
                 onClick: (data, graphData, groupByKey) => {
@@ -57,7 +45,7 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
             type: 'customVisual',
             options: {
                 component: CriticalWoTable,
-                componentProps: { enableGrouping: true, initialGroupBy: 'disciplineDescription' },
+                componentProps: { enableGrouping: true, initialGroupBy: 'discipline' },
             },
         },
     },
@@ -67,29 +55,15 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
         chart1: {
             type: 'table',
             options: {
-                initialGroupBy: 'disciplineDescription',
+                initialGroupBy: 'discipline',
                 columns: cols,
             },
         },
-        // chart2: {
-        //     type: 'timeBarChart',
-        //     options: {
-        //         title: 'Punch A',
-        //         defaultTime: 'quarter',
-        //         timeChartOptions: {
-        //             categoriesKey: 'createdAt',
-        //             title: 'PB',
-        //             type: 'bar',
-        //             key: 'status',
-        //             value: 'PB',
-        //         },
-        //     },
-        // },
     },
 };
 
 export function setup(appApi: ClientApi): void {
-    // const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.constructionProgress]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.FAM]);
     const construction = appApi.createPageViewer();
 
     /** 
@@ -104,14 +78,17 @@ export function setup(appApi: ClientApi): void {
     workPreparation.registerDataSource(async () => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const project = 'L.O532C.002';
-        // const response: WorkOrderApi = await api
-        //     .fetch(`https://app-ppo-construction-progress-api-dev.azurewebsites.net/WorkOrders`)
-        //     .then((res) => res.json())
-        // const blah: WorkOrder[] = response.items.flatMap((j) => j);
-        // return blah;
-        // return JSON.parse(await response.text());
-        //  const data = newMock().filter((j) => j.jobStatus.startsWith('E'));
-        return mock();
+        const response: WorkOrder[] = await api
+            .fetch(
+                `https://fam-synapse-api-dev.azurewebsites.net/v0.1/procosys/completionworkorderswithcutoff/JCA`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({}),
+                }
+            )
+            .then((res) => res.json());
+
+        return response;
     });
     workPreparation.registerKpi((data) => {
         return [
@@ -124,7 +101,7 @@ export function setup(appApi: ClientApi): void {
                 status: 'waring',
                 title: 'Critical status',
                 tooltipContent:
-                    'Workorders that have status W01, W02 or W04 and it is 4 weeks or less until planned start date',
+                    'Workorders that have status W01, W02 or W03 and it is six weeks or less until planned start date',
                 value: () => {
                     // critical WO: Workorder which havent reached status W04
                     // and 1 week left until plannedStartAtDate
@@ -132,12 +109,12 @@ export function setup(appApi: ClientApi): void {
                     //Find all workorders that have status W01, W02 or W03
 
                     const filter = ['W01', 'W02', 'W03'];
-                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatusCode));
+                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatus));
 
                     // Find all the first filtered WOs that are due in one week or less
 
                     const secondFiltered = firstFiltered.filter(
-                        (wo) => weekDiff(new Date(wo.plannedStartAtDate)).days <= 42
+                        (wo) => weekDiff(new Date(wo.plannedStartupDate)).days <= 42
                     );
 
                     return secondFiltered.length.toString();
@@ -147,7 +124,7 @@ export function setup(appApi: ClientApi): void {
                 status: 'ok',
                 title: 'Job cards in W04',
                 value: () => {
-                    return data.filter((wo) => wo.jobStatusCode === 'W04').length.toString();
+                    return data.filter((wo) => wo.jobStatus === 'W04').length.toString();
                 },
             },
         ];
@@ -175,25 +152,12 @@ export function setup(appApi: ClientApi): void {
         ...analyticsOptions,
     });
 
-    // workPreparation.registerPage({
-    //     title: 'Hours',
-    //     pageId: 'workPreparationHours',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions2,
-    // });
     workPreparation.registerPage({
         title: 'Details',
         pageId: 'workPreparationDetails',
         type: 'AnalyticsPage',
         ...detailsPage,
     });
-
-    // workPreparation.registerPage({
-    //     title: 'Hold',
-    //     pageId: 'workPreparationDetailsHold',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions2,
-    // });
 
     /** 
     Remove LCI hanging garden, since its not relevant for Construction
