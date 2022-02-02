@@ -46,7 +46,7 @@ export const WoNumbersDisplay = <T extends unknown>({
     filtered,
     groupedKey,
     keysOfFiltered,
-}: WoNumbersDisplayProps<T>) => {
+}: WoNumbersDisplayProps<T>): JSX.Element => {
     const onClick = useCallback((item: T[]) => {
         openSidesheet(SidesheetContent, { data: item });
     }, []);
@@ -92,6 +92,28 @@ export const WoNumbersDisplay = <T extends unknown>({
                             </WoNumbers>
                         );
                     case 'four':
+                        return (
+                            <WoNumbers key={index} onClick={() => onClick(item.workorder)}>
+                                {item.count < 50 ? (
+                                    <Circle circleColor={CircleColor.SUCCESS} />
+                                ) : (
+                                    <Triangle />
+                                )}
+                                {item.count}
+                            </WoNumbers>
+                        );
+                    case 'five':
+                        return (
+                            <WoNumbers key={index} onClick={() => onClick(item.workorder)}>
+                                {item.count < 50 ? (
+                                    <Circle circleColor={CircleColor.SUCCESS} />
+                                ) : (
+                                    <Triangle />
+                                )}
+                                {item.count}
+                            </WoNumbers>
+                        );
+                    case 'six':
                         return (
                             <WoNumbers key={index} onClick={() => onClick(item.workorder)}>
                                 {item.count < 50 ? (

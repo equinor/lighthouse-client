@@ -1,4 +1,3 @@
-import { Card } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
@@ -6,22 +5,27 @@ interface StatusCardProps {
     color: string;
 }
 
-export const StatusCard = styled(Card)`
-    height: 50px;
+export const StatusCard = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    border-bottom: ${({ color }: StatusCardProps) => `0.25rem solid ${color}`};
-    margin: 0.5rem;
+    width: fit-content;
+    align-items: center;
+    padding: 0.5em;
+    gap: 0.5em;
 `;
-export const Title = styled.h4`
-    margin: 0;
-    padding: 0;
+export const Title = styled.div`
+    font-size: 13px;
+`;
+export const Circle = styled.div<StatusCardProps>`
+    height: 0.8em;
+    width: 0.8em;
+    border-radius: 50%;
+    background-color: ${(props) => props.color};
 `;
 
-export const Value = styled.h1`
-    margin: 0;
-    padding: 0;
+export const Value = styled.div`
+    font-size: 20px;
+    font-weight: bold;
 `;
 
 export const Description = styled.p`

@@ -25,7 +25,7 @@ const SelectContainer = styled.div`
 `;
 const TableData = styled.div`
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(7, 1fr);
 `;
 const WeekHeader = styled.div`
     font-weight: 500;
@@ -42,7 +42,7 @@ export const CriticalWoTable = <T extends Record<keyof WorkOrder, unknown> = Wor
     data,
     enableGrouping = false,
     initialGroupBy,
-}: CustomVisualArgs<T>) => {
+}: CustomVisualArgs<T>): JSX.Element => {
     const [groupBy, setGroupBy] = useState<keyof T>('disciplineDescription');
     const woStatusMap = createWoStatusMap(data, groupBy);
     const filtered = filterWoMap(woStatusMap);

@@ -19,39 +19,35 @@ export const WorkflowCriterias = ({ step }: WorkflowCriteriasProps): JSX.Element
                 const { day, month, year, hour, minute } = DateTime.fromJSDate(date).toObject();
                 const paddedMinutes = minute.toString().length === 1 ? `0${minute}` : minute;
                 return (
-                    <>
-                        <WorkflowStepViewContainer>
-                            <SplitInline>
-                                <WorkflowIcon
-                                    status={
-                                        stepStatus === 'Active'
-                                            ? criteriaStatus(criteria)
-                                            : stepStatus
+                    <WorkflowStepViewContainer key={criteria.id}>
+                        <SplitInline>
+                            <WorkflowIcon
+                                status={
+                                    stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus
+                                }
+                                number={step.order + 1}
+                            />
+                            <Divider />
+                            <WorkflowText>
+                                <Tooltip
+                                    title={
+                                        !step.isCompleted
+                                            ? `Signature from ${criteria.value} required.`
+                                            : `Signed by ${criteria.signedBy.firstName} ${criteria.signedBy.lastName}`
                                     }
-                                    number={step.order + 1}
-                                />
-                                <Divider />
-                                <WorkflowText>
-                                    <Tooltip
-                                        title={
-                                            !step.isCompleted
-                                                ? `Signature from ${criteria.value} required.`
-                                                : `Signed by ${criteria.signedBy.firstName} ${criteria.signedBy.lastName}`
-                                        }
-                                    >
-                                        <span>{step.name}</span>
-                                    </Tooltip>
-                                    {criteria.signedAtUtc ? (
-                                        <div
-                                            style={{ fontSize: '14px' }}
-                                        >{`${day}/${month}/${year} ${hour}:${paddedMinutes} - ${criteria.signedBy.firstName} ${criteria.signedBy.lastName} `}</div>
-                                    ) : (
-                                        <div style={{ fontSize: '14px' }}>{criteria.value}</div>
-                                    )}
-                                </WorkflowText>
-                            </SplitInline>
-                        </WorkflowStepViewContainer>
-                    </>
+                                >
+                                    <span>{step.name}</span>
+                                </Tooltip>
+                                {criteria.signedAtUtc ? (
+                                    <div
+                                        style={{ fontSize: '14px' }}
+                                    >{`${day}/${month}/${year} ${hour}:${paddedMinutes} - ${criteria.signedBy.firstName} ${criteria.signedBy.lastName} `}</div>
+                                ) : (
+                                    <div style={{ fontSize: '14px' }}>{criteria.value}</div>
+                                )}
+                            </WorkflowText>
+                        </SplitInline>
+                    </WorkflowStepViewContainer>
                 );
             })}
         </>
