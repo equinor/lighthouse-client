@@ -1,8 +1,8 @@
 import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
-import { useEffect } from 'react';
 import styled from 'styled-components';
+import { SupportButton } from '../../Core/Client/Support/Support';
 import Icon from '../Icon/Icon';
 import Logo from './Logo/Logo';
 
@@ -25,6 +25,20 @@ const TopBarWrapper = styled(TopBar)`
     > header {
         padding-left: 1.5rem;
     }
+`;
+
+const BetaTag = styled.div`
+    padding: 0 1rem;
+    position: absolute;
+    left: 40%;
+    top: 0px;
+    left: 500px;
+    display: flex;
+    background: #ff7e29;
+    color: #fff;
+    align-items: center;
+    justify-content: space-between;
+    width: 500px;
 `;
 
 const ClientTopBar = (): JSX.Element => {
@@ -51,6 +65,10 @@ const ClientTopBar = (): JSX.Element => {
                         <PlantSelector />
                         <Search aria-label="sitewide" id="search-normal" placeholder="Search..." />
                     </CustomContentWrapper> */}
+                <BetaTag>
+                    <b>UNDER DEVELOPMENT - </b>
+                    <p>This site contains test data.</p>
+                </BetaTag>
             </TopBar.CustomContent>
             <TopBar.Actions>
                 <Icons>
@@ -59,9 +77,11 @@ const ClientTopBar = (): JSX.Element => {
                     ) : (
                         <Avatar alt="User avatar" src={userImageUrl} />
                     )}
-                    {/* <Icon name="notifications" /> */}
+
+                    {/* <Icon name="support" color={tokens.colors.interactive.disabled__text.rgba} /> */}
                 </Icons>
             </TopBar.Actions>
+            <SupportButton />
         </TopBarWrapper>
     );
 };

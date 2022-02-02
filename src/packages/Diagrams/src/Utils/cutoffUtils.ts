@@ -1,3 +1,4 @@
+import { ChartDataset } from 'chart.js';
 import { interpolateBlues } from 'd3-scale-chromatic';
 import { DateTime } from 'luxon';
 import { WorkOrder } from '../../../../apps/Construction/mocData/mockData';
@@ -58,13 +59,12 @@ export const createCategoriesMap = (categories: string[]): Record<string, number
     }, {});
 };
 
-type Series = {
+type Series = Partial<Omit<ChartDataset<'bar' | 'line'>, 'data'>> & {
     label: string;
     data: number[];
-    type: string;
     yAxisID?: string;
-    backgroundColor?: string | string[];
-    borderColor?: string;
+    borderDash?: number[];
+    pointBackgroundColor?: string;
 };
 
 type CreateSeriesArgs = {
@@ -188,6 +188,8 @@ export const accumulateSeries = (series: Series[]): Series[] => {
             label: 'accumulated',
             type: 'line',
             yAxisID: 'acc',
+            borderDash: [10, 5],
+            pointBackgroundColor: themeColors.line[0],
             backgroundColor: themeColors.line[0],
             borderColor: themeColors.line[0],
         },
