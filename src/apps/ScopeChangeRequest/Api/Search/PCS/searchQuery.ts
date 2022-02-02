@@ -1,4 +1,5 @@
 import { HttpClient } from '@equinor/http-client';
+import { isProduction } from '../../../../../Core/Client/Functions';
 import { TypedSelectOption } from '../searchType';
 import { Query } from './Types/query';
 import { PCSStructure } from './Types/searchStructure';
@@ -8,6 +9,9 @@ export const searchQueryOrigin = async (
     client: HttpClient
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
+
+    const searchIdDev = 103743;
+    const searchIdProd = 105670;
 
     const search: PCSStructure[] = [
         {
@@ -23,7 +27,8 @@ export const searchQueryOrigin = async (
     try {
         await client
             .fetch(
-                `api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105670&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
+                `api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
+                }&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
                 requestOptions
             )
             .then((response) => response.json())
@@ -32,7 +37,7 @@ export const searchQueryOrigin = async (
                     selectOptions.push({
                         label: x.DocumentNo,
                         value: x.DocumentNo,
-                        type: 'query',
+                        type: 'Query',
                         searchValue: x.DocumentNo,
                         object: x,
                     });

@@ -1,20 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Button, DotProgress, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useMutation } from 'react-query';
-import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { addContributor as postContributor } from '../../Api/addContributor';
 import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
 import { WorkflowCriterias } from './WorkflowCriterias';
 import { Contributors } from './Contributors';
+import { ScopeChangeAccessContext } from '../Sidesheet/Context/scopeChangeAccessContext';
 
-interface WorkflowProps {
-    request: ScopeChangeRequest;
-    refetch?: () => Promise<void>;
-}
-export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
+export function Workflow(): JSX.Element {
+    const { request, setPerformingAction } = useContext(ScopeChangeAccessContext);
     const [contributor, setContributor] = useState<{ value: string; label: string } | null>(null);
     const [contributorTitle, setContributorTitle] = useState<string | undefined>();
 
@@ -34,8 +31,9 @@ export function Workflow({ request, refetch }: WorkflowProps): JSX.Element {
     }
 
     const addContributor = async () => {
+        setPerformingAction(true);
         await mutateAsync();
-        refetch && (await refetch());
+        setPerformingAction(false);
         setContributorTitle('');
         setContributor(null);
     };

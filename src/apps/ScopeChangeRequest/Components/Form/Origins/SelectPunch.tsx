@@ -6,9 +6,10 @@ import { useHttpClient } from '../../../../../Core/Client/Hooks/useApiClient';
 
 interface SelectPunchProps {
     setOriginId: (originId: string | undefined) => void;
+    originId?: string;
 }
 
-export const SelectPunch = ({ setOriginId }: SelectPunchProps): JSX.Element => {
+export const SelectPunch = ({ setOriginId, originId }: SelectPunchProps): JSX.Element => {
     const [isValidPunch, setIsValidPunch] = useState<boolean>(false);
     const [isChecking, setIsChecking] = useState<boolean>();
     const [hasChecked, setHasChecked] = useState<boolean>();
@@ -37,6 +38,7 @@ export const SelectPunch = ({ setOriginId }: SelectPunchProps): JSX.Element => {
             <Input
                 placeholder={'Pl item no, 7 characters'}
                 maxLength={7}
+                defaultValue={originId}
                 onChange={async (e) => {
                     setOriginId(undefined);
                     setIsChecking(false);
