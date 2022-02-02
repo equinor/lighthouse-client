@@ -105,20 +105,13 @@ export const RequestDetailView = (): JSX.Element => {
                     customValue={{ fontSize: '16px' }}
                     value={request.description}
                 />
-                {/* <SectionRow> */}
+
                 <Field
                     label={'Guesstimate mhrs'}
                     customLabel={{ fontSize: '12px' }}
                     customValue={{ fontSize: '16px' }}
                     value={request.guesstimateHours}
                 />
-                {/* <Field
-                        label={'Guesstimate description'}
-                        customLabel={{ fontSize: '12px' }}
-                        customValue={{ fontSize: '16px' }}
-                        value={request.guesstimateDescription}
-                    />
-                </SectionRow> */}
 
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
