@@ -104,6 +104,7 @@ export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element
     const { config, error } = usePowerBI(reportUri, filterOptions);
     const [report, setReport] = useState<Report>();
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [filters, setFilters] = useState<PowerBiFilter[] | null>(null);
 
     //TODO custom loading
     const eventHandlersMap = new Map([
@@ -138,7 +139,7 @@ export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element
             'dataSelected',
             function (e) {
                 if (e) {
-                    console.log(event.detail);
+                    console.log(e.detail);
                     if (e.detail.dataPoints && e.detail.dataPoints.length > 0) {
                         e.detail.dataPoints.forEach((p) => {
                             p.identity.forEach((element) => {
@@ -161,10 +162,50 @@ export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element
 
     useEffect(() => {
         if (isLoaded && report) {
-            getFilters(report);
+            (async () => {
+                const filters = await getFilters(report);
+                setFilters(filters);
+            })();
         }
     }, [isLoaded, report]);
+    const isChecked = async (filter, val) => {
+        const slicerState = await filter.slicer.getSlicerState();
+        let checked = false;
+        slicerState.filters.forEach((filter) => {
+            if (filter?.values.includes(val.value)) {
+                checked = true;
+            }
+        });
+        return checked;
+    };
+    const handleClick = async (filter: PowerBiFilter, val) => {
+        const page = await report?.getActivePage();
+        const visuals = await page?.getVisuals();
+        const visual = visuals?.find((visual) => visual.name === filter.slicer.name);
 
+        if (visual) {
+            const blah = await filter.slicer.getSlicerState();
+            console.log('slicer state', blah);
+            const foo = await visual.getFilters();
+            console.log('filter state for visual', foo);
+
+            await filter.slicer.setSlicerState({
+                filters: [
+                    {
+                        $schema: 'http://powerbi.com/product/schema#basic',
+                        target: {
+                            table: 'Fact_SWCR',
+                            column: 'CONTROLSYSTEM',
+                        },
+                        filterType: 1,
+                        operator: 'In',
+                        values: [val.value],
+                        requireSingleSelection: false,
+                    },
+                ],
+            });
+        }
+    };
     return (
         <>
             {error ? (
@@ -178,6 +219,38 @@ export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element
                 </ErrorWrapper>
             ) : (
                 <Wrapper>
+                    {filters && (
+                        <div style={{ display: 'flex', flexDirection: 'row' }}>
+                            {filters.map((filter) => {
+                                const vals = Object.values(filter.value);
+
+                                return (
+                                    <pre
+                                        key={filter.type}
+                                        style={{
+                                            height: '100px',
+                                            overflow: 'scroll',
+                                            width: '200px',
+                                        }}
+                                    >
+                                        {filter.type}
+                                        {vals.map((val) => {
+                                            return (
+                                                <div
+                                                    key={val.value}
+                                                    onClick={async () =>
+                                                        await handleClick(filter, val)
+                                                    }
+                                                >
+                                                    {val.value}
+                                                </div>
+                                            );
+                                        })}
+                                    </pre>
+                                );
+                            })}
+                        </div>
+                    )}
                     <PowerBIEmbed
                         embedConfig={config}
                         eventHandlers={eventHandlersMap}
