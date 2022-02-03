@@ -26,7 +26,7 @@ export function setup(appApi: ClientApi): void {
         hiddenColumns: ['tagTree'],
         enableSelectRows: true,
         headers: [
-            { key: 'name', title: 'Name' },
+            { key: 'name', title: 'Name', width: 1000 },
             { key: 'description', title: 'Description' },
             { key: 'checklists', title: 'Checklists' },
             { key: 'lineAndSpools', title: 'Line and spools' },

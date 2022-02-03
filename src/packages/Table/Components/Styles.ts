@@ -32,7 +32,7 @@ export const TableRow = styled.div<{ selected?: boolean }>`
 `;
 
 export const TableHeadCell = styled.div<{ align?: string }>`
-    padding: 10px 0px 0px 10px;
+    padding: 0px 0px 0px 10px;
     flex-direction: row;
 
     font-size: 0.875rem;
