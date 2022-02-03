@@ -19,7 +19,7 @@ export type GenerateCustomColumnArgs<D extends TableData> = GenerateColumnArgs<D
     customCellView: CustomCell<D>[];
 };
 
-const minimumTableWidth = window.innerWidth - 85; //85 is left sidebar menu width
+const minimumTableWidth = window.innerWidth - 90; //90 is left sidebar menu width
 export const generateCustomColumn = <D extends TableData>(
     args: GenerateCustomColumnArgs<D>
 ): Column<D> => {
