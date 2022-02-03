@@ -18,6 +18,7 @@ export type ColumnOptions<T extends TableData> = {
     customColumns?: CustomColumn<T>[];
     headers?: CustomHeader<T>[];
     customCellView?: CustomCell<T>[];
+    hiddenColumnsCount?: number;
 };
 
 /**
@@ -37,7 +38,9 @@ export type CellRenderProps<T> = {
 type ObjectOrTableData<T> = T extends object ? T : TableData;
 
 export type CustomColumn<T> = Column<ObjectOrTableData<T>> &
-    Required<Pick<Column<ObjectOrTableData<T>>, 'Aggregated' | 'aggregate' | 'Header' | 'id'>>;
+    Required<
+        Pick<Column<ObjectOrTableData<T>>, 'Aggregated' | 'aggregate' | 'Header' | 'id' | 'width'>
+    >;
 
 export type CustomCellType<T, D extends TableData> = {
     /** Custom cell to be display. Has access to table data object when used as a method */
@@ -48,6 +51,8 @@ export type CellType<T, D extends TableData = TableData> =
     | 'Date'
     | 'Description'
     | 'Status'
+    | 'Link'
+    | 'Progress'
     | CustomCellType<T, D>;
 
 export type CustomCell<T> = {
@@ -67,6 +72,9 @@ export type CustomHeader<T> = {
 
     /** Title which is shown instead of default header title */
     title: string;
+
+    /** Optional width parameter for the column in px */
+    width?: number;
 };
 
 export type Column<T extends object = TableData> = ColumnDefault<T> &
@@ -138,4 +146,4 @@ declare module 'react-table' {
     export interface TableState<D extends TableData> extends Partial<UseGroupByState<D>> { }
 }
 
-export type { TableOptions, Cell } from 'react-table';
+export type { TableOptions, Cell, TableInstance, CellProps } from 'react-table';

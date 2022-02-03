@@ -1,109 +1,136 @@
-import { ClientApi } from '@equinor/app-builder';
-import { AnalyticsOptions } from '@equinor/Diagrams';
-import { baseClient } from '../../../packages/httpClient/src';
+import { AnalyticsOptions, SidesheetContent, themeColors } from '@equinor/Diagrams';
+import { ClientApi } from '@equinor/portal-client';
+import { openSidesheet } from '@equinor/sidesheet';
+import { baseClient } from '../../Core/httpClient/src';
+import { CriticalWoTable } from './Components';
+import { cols } from './Components/DetailsPage/tableConfig';
+import { WorkOrder } from './mocData/mockData';
+import { weekDiff } from './Utils';
 
-type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
-interface Checklist {
-    loopTag: string;
-    tagNo: string;
-    description: string;
-    register: string;
-    commPk: string;
-    mcPk: string;
-    responsible: string;
-    type: string;
-    status: LoopStatus;
-    phase: string;
-    createdAt: string;
-    signedAt: string;
-}
-
-export interface WP {
-    tagNo: string;
-    commPk: string;
-    mcPk: string;
-    description: string;
-    responsible: string;
-    formType: string;
-    status: LoopStatus;
-    phase: string;
-    createdAt: string;
-    signedAt: string;
-    contentChecklists: Checklist[];
-    functionTags: string[];
-}
-
-const analyticsOptions: AnalyticsOptions<WP> = {
+const analyticsOptions: AnalyticsOptions<WorkOrder> = {
+    section1: {
+        chart1: {
+            type: 'constructionChart',
+            options: {
+                timeChartOptions: {
+                    categoriesKey: 'jobStatusCutoffs',
+                    title: 'Job Statuses',
+                    type: 'column',
+                },
+                title: 'Job Statuses',
+            },
+        },
+    },
     section2: {
         chart1: {
-            type: 'timeBarChart',
+            type: 'horizontalBarChart',
             options: {
-                title: 'Loops Created',
-                defaultTime: 'year',
-                timeChartOptions: {
-                    categoriesKey: 'createdAt',
-                    title: 'Created',
-                    type: 'bar',
+                categoryKey: 'discipline',
+                nameKey: 'discipline',
+                title: 'Grouped job cards',
+                enableGroupBy: true,
+                onClick: (data, graphData, groupByKey) => {
+                    const labelClicked = graphData.globals.labels[graphData.dataPointIndex];
+                    const tableData: WorkOrder[] = [];
+                    data.forEach((wo) => {
+                        wo[groupByKey] === labelClicked && tableData.push(wo);
+                    });
+
+                    tableData.length > 0 && openSidesheet(SidesheetContent, { data: tableData });
                 },
+                colors: [...themeColors.bar],
+            },
+        },
+        chart3: {
+            type: 'customVisual',
+            options: {
+                component: CriticalWoTable,
+                componentProps: { enableGrouping: true, initialGroupBy: 'discipline' },
             },
         },
     },
 };
-const analyticsOptions2: AnalyticsOptions<WP> = {
-    section2: {
+const detailsPage: AnalyticsOptions<WorkOrder> = {
+    section1: {
         chart1: {
-            type: 'barChart',
+            type: 'table',
             options: {
-                stacked: true,
-                nameKey: 'status',
-                categoryKey: 'responsible',
-                colors: ['#F44336', '#E91E63', '#9C27B0'],
-            },
-        },
-        chart2: {
-            type: 'timeBarChart',
-            options: {
-                title: 'Punch A',
-                defaultTime: 'quarter',
-                timeChartOptions: {
-                    categoriesKey: 'createdAt',
-                    title: 'PB',
-                    type: 'bar',
-                    key: 'status',
-                    value: 'PB',
-                },
+                initialGroupBy: 'discipline',
+                columns: cols,
             },
         },
     },
 };
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.FAM]);
     const construction = appApi.createPageViewer();
 
     /** 
     Remove SWCR analytics, since its not relevant for Construction
     */
 
-    construction.registerFusionPowerBi('swcr-analytics-rls', {
-        title: 'SWCR Analytics',
-        reportURI: 'swcr-analytics-rls',
+    const workPreparation = construction.registerDashboard<WorkOrder>('work-preparation', {
+        title: 'Work Preparation',
     });
 
-    // const workPreparation = construction.registerDashboard<WP>('work-preparation', {
-    //     title: 'Work Preparation',
-    // });
+    // Loop Data Test for testing system..
+    workPreparation.registerDataSource(async () => {
+        // const plantId = 'PCS$JOHAN_CASTBERG';
+        // const project = 'L.O532C.002';
+        const response: WorkOrder[] = await api
+            .fetch(
+                `https://fam-synapse-api-dev.azurewebsites.net/v0.1/procosys/completionworkorderswithcutoff/JCA`,
+                {
+                    method: 'POST',
+                    body: JSON.stringify({}),
+                }
+            )
+            .then((res) => res.json());
 
-    // // Loop Data Test for testing system..
-    // workPreparation.registerDataSource(async () => {
-    //     const plantId = 'PCS$JOHAN_CASTBERG';
-    //     const project = 'L.O532C.002';
-    //     const response = await api.fetch(
-    //         `https://api-lighthouse-production.playground.radix.equinor.com/loops/${plantId}/${project}`
-    //     );
+        return response;
+    });
+    workPreparation.registerKpi((data) => {
+        return [
+            {
+                status: 'ok',
+                title: 'Job cards created',
+                value: () => data.length.toString(),
+            },
+            {
+                status: 'waring',
+                title: 'Critical status',
+                tooltipContent:
+                    'Workorders that have status W01, W02 or W03 and it is six weeks or less until planned start date',
+                value: () => {
+                    // critical WO: Workorder which havent reached status W04
+                    // and 1 week left until plannedStartAtDate
 
-    //     return JSON.parse(await response.text());
-    // });
+                    //Find all workorders that have status W01, W02 or W03
+
+                    const filter = ['W01', 'W02', 'W03'];
+                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatus));
+
+                    // Find all the first filtered WOs that are due in one week or less
+
+                    const secondFiltered = firstFiltered.filter(
+                        (wo) => weekDiff(new Date(wo.plannedStartupDate)).days <= 42
+                    );
+
+                    return secondFiltered.length.toString();
+                },
+            },
+            {
+                status: 'ok',
+                title: 'Job cards in W04',
+                value: () => {
+                    return data.filter((wo) => wo.jobStatus === 'W04').length.toString();
+                },
+            },
+        ];
+    });
+
+    // const excludeKeys: (keyof WorkOrder)[] = [];
 
     // const excludeKeys: (keyof WP)[] = [
     //     'tagNo',
@@ -118,31 +145,19 @@ export function setup(appApi: ClientApi): void {
 
     // workPreparation.registerFilterOptions({ excludeKeys });
 
-    // workPreparation.registerPage({
-    //     title: 'Jobcards',
-    //     pageId: 'workPreparationJobCards',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions,
-    // });
+    workPreparation.registerPage({
+        title: 'Jobcards',
+        pageId: 'workPreparationJobCards',
+        type: 'AnalyticsPage',
+        ...analyticsOptions,
+    });
 
-    // workPreparation.registerPage({
-    //     title: 'Hours',
-    //     pageId: 'workPreparationHours',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions2,
-    // });
-    // workPreparation.registerPage({
-    //     title: 'Details',
-    //     pageId: 'workPreparationDetails',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions,
-    // });
-    // workPreparation.registerPage({
-    //     title: 'Hold',
-    //     pageId: 'workPreparationDetailsHold',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions2,
-    // });
+    workPreparation.registerPage({
+        title: 'Details',
+        pageId: 'workPreparationDetails',
+        type: 'AnalyticsPage',
+        ...detailsPage,
+    });
 
     /** 
     Remove LCI hanging garden, since its not relevant for Construction
@@ -151,16 +166,32 @@ export function setup(appApi: ClientApi): void {
     //     title: 'LCI Hanging Garden',
     //     reportURI: 'lci-hanging-gardens',
     // });
+    construction.registerFusionPowerBi('jca-installation', {
+        title: 'Installation',
+        reportURI: 'jca-installation',
+        options: {
+            showFilter: true,
+            enablePageNavigation: false,
+        },
+    });
     construction.registerFusionPowerBi('jca-checklist', {
-        title: 'Checklist Analytics',
+        title: 'Checklists',
         reportURI: 'jca-checklist',
     });
-    construction.registerFusionPowerBi('punch-analytics-rls', {
-        title: 'Punch Analytics',
+    construction.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
+        title: 'Punch',
         reportURI: 'punch-analytics-rls',
     });
-    construction.registerFusionPowerBi('fd4052a9-641b-47b4-92d6-4876ecb8cdba', {
-        title: 'WO Analytics',
-        reportURI: 'wo-analytics-rls',
+    construction.registerFusionPowerBi('jca-handover-analytics', {
+        title: 'Handover',
+        reportURI: 'jca-handover-analytics',
     });
+
+    /**
+     * Does not contain JC data yet.
+     */
+    // construction.registerFusionPowerBi('fd4052a9-641b-47b4-92d6-4876ecb8cdba', {
+    //     title: 'WO Analytics',
+    //     reportURI: 'wo-analytics-rls',
+    // });
 }

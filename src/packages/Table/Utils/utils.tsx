@@ -1,5 +1,5 @@
 import { Row, SortByFn } from 'react-table';
-import { DateCell, DescriptionCell, StatusCell } from '../Components/Cells';
+import { DateCell, DescriptionCell, StatusCell, LinkCell, ProgressCell } from '../Components/Cells';
 import { CellType, CustomCell, CustomCellType, CustomHeader, TableData } from '../types';
 
 export const findCustomHeader = <T extends TableData>(
@@ -13,6 +13,19 @@ export const findCustomHeader = <T extends TableData>(
     if (customHeaderIndex > -1) {
         return headers[customHeaderIndex].title;
     } else return key;
+};
+
+export const findCustomColumnWidth = <T extends TableData>(
+    key: keyof T,
+    headers?: CustomHeader<T>[]
+): number | undefined => {
+    if (headers === undefined || headers.length === 0) return undefined;
+
+    const customHeaderIndex = headers.findIndex((header) => header.key === key);
+
+    if (customHeaderIndex > -1) {
+        return headers[customHeaderIndex].width;
+    } else undefined;
 };
 
 const isCustomCell = <T, D extends TableData>(arg: CellType<T>): arg is CustomCellType<T, D> => {
@@ -40,6 +53,10 @@ export const findCustomCell = <T extends TableData>(
                 return DescriptionCell;
             case 'Status':
                 return StatusCell;
+            case 'Link':
+                return LinkCell;
+            case 'Progress':
+                return ProgressCell;
             default:
                 return 'Incorrect cell type given';
         }

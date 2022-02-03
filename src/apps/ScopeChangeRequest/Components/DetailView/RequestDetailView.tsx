@@ -1,77 +1,60 @@
-import { Button, TextField } from '@equinor/eds-core-react';
-import styled from 'styled-components';
+import React, { useRef } from 'react';
+import { useMemo } from 'react';
+
 import { SectionRow } from '../../Styles/Section';
-import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
 import { Workflow } from '../Workflow/Workflow';
-import { patchWorkflowStep } from '../../Api/patchWorkflowStep';
 import { Field } from './Components/Field';
-import { tokens } from '@equinor/eds-tokens';
-import { useMemo, useState } from 'react';
+import { StidDocumentResolver } from './Components/StidDocumentResolver';
+import { Attachments } from './Components/Attachments';
+import { RelatedObjects } from './Components/RelatedObjects';
+import { LogMessage, Wrapper } from './requestDetailViewStyles';
+import { OriginLink } from './Components/OriginLink';
+import { RequestActionBar } from './Components/RequestActionBar/Components/RequestActionBar';
+import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 
-interface RequestDetailViewProps {
-    request: ScopeChangeRequest;
-    setEditMode: () => void;
-    refetch: () => Promise<void>;
-}
+export const RequestDetailView = (): JSX.Element => {
+    interface LogEntry {
+        value: string;
+        date: string;
+        name: string;
+    }
 
-export const RequestDetailView = ({
-    request,
-    setEditMode,
-    refetch,
-}: RequestDetailViewProps): JSX.Element => {
-    const [comment, setComment] = useState<string | undefined>(undefined);
+    const { request } = useScopeChangeAccessContext();
+    const actionBarRef = useRef<HTMLDivElement | null>(null);
+    const wrapperRef = useRef<HTMLDivElement | null>(null);
 
-    const onInitiate = () => {
-        const payLoad = {
-            ...request,
-            setAsOpen: true,
-        };
-        const requestOptions = {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payLoad),
-        };
-        fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${request.id}`,
-            requestOptions
-        ).then(() => refetch());
-    };
+    const topBarHeight = 50;
+    const sidesheetHeader = 40;
 
-    const activeCriteriaId = useMemo(() => {
-        if (request.state === 'Open') {
-            return request.currentWorkflowStep.criterias.find((x) => x.id)?.id;
+    const logValues: LogEntry[] = useMemo(() => {
+        const logArray: LogEntry[] = [];
+
+        if (!request.workflowSteps) {
+            return [];
         }
+        request.workflowSteps.map((x) => {
+            x.criterias.map((x) => {
+                x.signedComment &&
+                    logArray.push({
+                        value: x.signedComment,
+                        date: x.signedAtUtc,
+                        name: `${x.signedBy.firstName} ${x.signedBy.lastName}`,
+                    });
+            });
+        });
+        return logArray;
     }, [request]);
 
-    // const logValues = useMemo(() => {
-    //     const logArray: string[] = [];
-
-    //     request.workflowSteps.map((x) => {
-    //         x.criterias.map((x) => {x.})
-    //     })
-    // });
-
-    const onSignStep = () => {
-        console.log(request);
-        if (activeCriteriaId) {
-            patchWorkflowStep(request.id, activeCriteriaId, comment).then(() => refetch());
-        }
-    };
-
-    const statusFunc = (item: WorkflowStep): 'Completed' | 'Inactive' | 'Active' => {
-        if (item.isCompleted) {
-            return 'Completed';
-        }
-        if (item.isCurrent) {
-            return 'Active';
-        } else {
-            return 'Inactive';
-        }
-    };
-
     return (
-        <div style={{ height: '100vh' }}>
-            <DetailViewContainer>
+        <>
+            <Wrapper
+                ref={wrapperRef}
+                wrapperTopPosition={
+                    wrapperRef.current?.offsetTop || 0 + topBarHeight + sidesheetHeader
+                }
+                actionBarHeight={actionBarRef.current?.clientHeight || 0}
+            >
+                {/* <DetailViewContainer> */}
                 <Field
                     label={'Title'}
                     customLabel={{ fontSize: '12px' }}
@@ -103,7 +86,9 @@ export const RequestDetailView = ({
                         label={'Change origin'}
                         customLabel={{ fontSize: '12px' }}
                         customValue={{ fontSize: '16px' }}
-                        value={request.origin}
+                        value={
+                            <OriginLink type={request.originSource} id={request.originSourceId} />
+                        }
                     />
                 </SectionRow>
                 <Field
@@ -112,85 +97,82 @@ export const RequestDetailView = ({
                     customValue={{ fontSize: '16px' }}
                     value={request.description}
                 />
+                <SectionRow>
+                    <Field
+                        label={'Guesstimate mhrs'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.guesstimateHours}
+                    />
+                    <Field
+                        label={'Guesstimate description'}
+                        customLabel={{ fontSize: '12px' }}
+                        customValue={{ fontSize: '16px' }}
+                        value={request.guesstimateDescription}
+                    />
+                </SectionRow>
+
                 <Field
                     customLabel={{ fontSize: '18px', bold: true }}
-                    label={'Workflow'}
+                    label={'References'}
                     value={
-                        <Workflow
-                            stepName={'name'}
-                            steps={request.workflowSteps}
-                            statusFunc={statusFunc}
+                        <RelatedObjects
+                            systems={request.systems}
+                            commPkgs={request.commissioningPackages}
+                            tags={request.tags}
                         />
                     }
                 />
 
-                <Field customLabel={{ fontSize: '18px', bold: true }} label="Log" value={''} />
-            </DetailViewContainer>
-            {request.state !== 'Closed' && (
-                <RequestActionsContainer>
-                    <Field
-                        label="Comment"
-                        value={
-                            <div style={{ width: '50vh' }}>
-                                <TextField
-                                    id={'Comment'}
-                                    multiline
-                                    value={comment}
-                                    onChange={(e) => {
-                                        setComment(e.target.value);
-                                    }}
-                                />
-                            </div>
-                        }
-                    />
-                    <ButtonContainer>
-                        {request.state === 'Draft' && (
-                            <>
-                                <Button onClick={setEditMode}>Edit</Button>
-                                <HorizontalDivider />
-                                <Button onClick={onInitiate} variant="outlined">
-                                    Initiate request
-                                </Button>
-                            </>
-                        )}
-                        {request.state === 'Open' && (
-                            <>
-                                <Button variant="outlined" color="danger">
-                                    Void Request
-                                </Button>
-                                <Button onClick={onSignStep}>Sign</Button>
-                            </>
-                        )}
-                    </ButtonContainer>
-                </RequestActionsContainer>
-            )}
-        </div>
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label={'Workflow'}
+                    value={<Workflow />}
+                />
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label="Documents"
+                    value={<StidDocumentResolver inputDocuments={request.documents} />}
+                />
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label="Attachments"
+                    value={<Attachments attachments={request.attachments} requestId={request.id} />}
+                />
+
+                <Field
+                    customLabel={{ fontSize: '18px', bold: true }}
+                    label="Log"
+                    value={
+                        <div>
+                            {logValues.map((x) => {
+                                return (
+                                    <LogMessage key={x.value + x.date}>
+                                        <span style={{ fontSize: '10px' }}>
+                                            {new Date(x.date).toLocaleDateString()} by {x.name}
+                                        </span>
+                                        <span style={{ fontSize: '16px' }}>
+                                            &quot;{x.value}&quot;
+                                        </span>
+                                    </LogMessage>
+                                );
+                            })}
+                        </div>
+                    }
+                />
+                {/* </DetailViewContainer> */}
+            </Wrapper>
+            <div
+                style={{ height: 'fit-content', bottom: '0px', position: 'fixed' }}
+                ref={actionBarRef}
+            >
+                <RequestActionBar />
+            </div>
+        </>
     );
 };
 
-const DetailViewContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    overflow: scroll;
-`;
-
-const ButtonContainer = styled.div`
-    display: flex;
-    padding: 0em 1em 1em 1em;
-    justify-content: space-between;
-`;
-
-const HorizontalDivider = styled.div`
-    margin: 0.2em;
-`;
-
-const RequestActionsContainer = styled.div`
-    border-top: solid 2.5px ${tokens.colors.ui.background__medium.rgba};
-    display: flex;
-    background-color: white;
-    width: 650px;
-    flex-direction: column;
-    position: fixed;
-    bottom: 0px;
-`;
+/**
+ //TODO:
+ * Do some CSS magic, Calculate height of DetailViewContainer and subtract RequestActionsContainer to make overflow work properly
+ */

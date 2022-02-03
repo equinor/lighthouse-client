@@ -1,14 +1,9 @@
+import { HttpClient } from '@equinor/http-client';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
-export async function getScopeChangeById(id: string): Promise<ScopeChangeRequest> {
-    const requestOptions = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-    };
-    return await fetch(
-        `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${id}`,
-        requestOptions
-    ).then((x) => {
-        return x.json();
-    });
+export async function getScopeChangeById(
+    id: string,
+    client: HttpClient
+): Promise<ScopeChangeRequest> {
+    return await client.fetch(`api/scope-change-requests/${id}`).then((x) => x.json());
 }

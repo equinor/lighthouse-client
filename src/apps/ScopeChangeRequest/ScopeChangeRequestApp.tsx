@@ -1,14 +1,13 @@
-import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { baseClient } from '@equinor/http-client';
-import { ScopeChangeSideSheet } from './Components/CustomSidesheet';
+import { ClientApi } from '@equinor/portal-client';
+import { httpClient } from '../../Core/Client/Functions/HttpClient';
+import { ScopeChangeSideSheet } from './Components/Sidesheet/ScopeChangeSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
         CustomSidesheet: ScopeChangeSideSheet,
     });
@@ -20,10 +19,10 @@ export function setup(appApi: ClientApi): void {
 
     request.registerDataSource(async () => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
-        // const project = 'L.O532C.002';
-        const response = await api.fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`
-        );
+        // const projectName = 'L.O532C.002';
+        // const projectId = 177433
+        const { scopeChange } = httpClient();
+        const response = await scopeChange.fetch(`api/scope-change-requests`);
 
         return JSON.parse(await response.text());
     });
@@ -37,6 +36,7 @@ export function setup(appApi: ClientApi): void {
     request.registerFilterOptions({
         excludeKeys: scopeChangeExcludeKeys,
         typeMap: {},
+        initialFilters: ['state', 'phase', 'category', 'originSource', 'isVoided'],
         groupValue: {
             signedAtDate: (item: ScopeChangeRequest): string => {
                 if (item.createdAtUtc === '') return 'unknown';
@@ -75,38 +75,69 @@ export function setup(appApi: ClientApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'id',
         enableSelectRows: true,
-        hiddenColumns: ['currentWorkflowStep', 'id'],
+        hiddenColumns: [
+            'id',
+            'currentWorkflowStep',
+            'attachments',
+            'systems',
+            'tags',
+            'commissioningPackages',
+            'documents',
+            'description',
+            'guesstimateDescription',
+            'createdBy',
+            'createdAtUtc',
+            'modifiedBy',
+            'originSourceId',
+        ],
         columnOrder: [
             'title',
             'phase',
             'workflowSteps',
+            'guesstimateHours',
             'estimatedChangeHours',
             'actualChangeHours',
             'category',
-            'origin',
+            'originSource',
             'lastModified',
         ],
         headers: [
             { key: 'title', title: 'Title' },
             { key: 'phase', title: 'Phase' },
             { key: 'workflowSteps', title: 'Workflow' },
+            { key: 'guesstimateHours', title: 'Guesstimate' },
             { key: 'estimatedChangeHours', title: 'Estimate hours' },
             { key: 'actualChangeHours', title: 'Actual' },
             { key: 'category', title: 'Change category' },
-            { key: 'origin', title: 'Change origin' },
+            { key: 'originSource', title: 'Change origin' },
             { key: 'createdAtUtc', title: 'Created at' },
-            { key: 'createdById', title: 'Created by' },
+            { key: 'createdBy', title: 'Created by' },
             { key: 'modifiedAtUtc', title: 'Last updated' },
-            { key: 'modifiedById', title: 'Updated by' },
+            { key: 'modifiedBy', title: 'Modified by' },
             { key: 'description', title: 'Description' },
             { key: 'state', title: 'Status' },
-            { key: 'guesstimateHours', title: 'Guesstimate' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
         ],
         customCellView: [
             {
+                key: 'createdBy',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        return <div>{cell.value.content.createdBy?.firstName}</div>;
+                    },
+                },
+            },
+            {
                 key: 'modifiedAtUtc',
                 type: 'Date',
+            },
+            {
+                key: 'guesstimateHours',
+                type: 'Description',
+            },
+            {
+                key: 'estimatedChangeHours',
+                type: 'Description',
             },
             {
                 key: 'createdAtUtc',
@@ -129,6 +160,14 @@ export function setup(appApi: ClientApi): void {
                     },
                 },
             },
+            {
+                key: 'isVoided',
+                type: {
+                    Cell: ({ cell }) => {
+                        return <div>{cell.value.content.isVoided.toString()}</div>;
+                    },
+                },
+            },
         ],
     });
 
@@ -145,14 +184,18 @@ export function setup(appApi: ClientApi): void {
                 return 'Inactive';
         }
     };
-    request.registerGardenOptions({ gardenKey: 'origin', itemKey: 'title' });
+    request.registerGardenOptions({
+        gardenKey: 'originSource',
+        itemKey: 'title',
+        fieldSettings: {},
+    });
 
-    request.registerAnalyticsOptions(analyticsOptions);
+    // request.registerAnalyticsOptions(analyticsOptions);
 
     request.registerStatusItems(statusBarData);
 
     // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
-    // request.registerVisualEditorOptions({
+    // request.registerWorkflowEditorOptions({
     //     endpoint: `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflowId}/templates`,
     // });
 }
@@ -160,12 +203,8 @@ export function setup(appApi: ClientApi): void {
 export const analyticsOptions: AnalyticsOptions<ScopeChangeRequest> = {
     section1: {
         chart1: {
-            type: 'barChart',
-            options: {
-                categoryKey: 'origin',
-                nameKey: 'category',
-                stacked: true,
-            },
+            type: 'lineChart',
+            options: { categoryKey: 'originSource', nameKey: 'category' },
         },
     },
 };

@@ -10,8 +10,12 @@ interface PowerBIResult {
     error: NetworkError | undefined;
 }
 
-export function usePowerBI(resource: string, filterOptions?: Filter[]): PowerBIResult {
-    const { getConfig, error } = useFusionClient(resource, filterOptions);
+export function usePowerBI(
+    resource: string,
+    filterOptions?: Filter[],
+    options?: { showFilter?: boolean; enablePageNavigation?: boolean }
+): PowerBIResult {
+    const { getConfig, error } = useFusionClient(resource, filterOptions, options);
     const [config, setReportConfig] = useState<IReportEmbedConfiguration>({
         type: 'report',
         embedUrl: undefined,

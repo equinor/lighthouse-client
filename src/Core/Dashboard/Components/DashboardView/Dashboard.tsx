@@ -15,7 +15,7 @@ export function Dashboard<T>(props: DashboardInstance<T>): JSX.Element {
     if (Object.values(props.pages).length === 0) return <NoPages />;
     return (
         <Wrapper>
-            <Header {...props} setActivePage={handlePageChange} />
+            <Header {...props} setActivePage={handlePageChange} activePage={activePage} />
             <PageWrapper>
                 <Pages {...props} activePage={activePage} />
             </PageWrapper>

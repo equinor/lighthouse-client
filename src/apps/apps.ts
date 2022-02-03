@@ -1,4 +1,4 @@
-import { AppGroups, AppManifest } from '@equinor/app-builder';
+import { AppGroups, AppManifest } from '@equinor/portal-client';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { CompletionManagementIcon } from '../icons/Completion management icon';
@@ -17,6 +17,7 @@ import { setup as checklistSetup } from './checklistApp';
 import { setup as commissioningSetup } from './Commissioning';
 import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
+import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
 import { setup as loopSetup } from './Loop/loopApp';
 import {
     BusinessCaseReport,
@@ -28,7 +29,16 @@ import {
     SafetyPerformanceReport
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
+import { setup as SwcrSetup } from './swcr';
 import { setup as WorkOrderSetup } from './WorkOrder';
+
+export function getApps(): AppManifest[] {
+    return apps;
+}
+
+export function getAppGroups(): AppGroups {
+    return appGroups;
+}
 
 export enum Apps {
     AssetData = 'AssetData',
@@ -50,71 +60,92 @@ export const appGroups: AppGroups = {
     AssetData: {
         name: 'Asset data',
         icon: AssetDataIcon,
+        columnId: 4,
     },
     Top: {
         name: 'Top',
         icon: HomeIcon,
+        columnId: 1,
     },
     Collaboration: {
         name: 'Collaboration',
         icon: CollaborationIcon,
+        columnId: 4,
     },
     ProgressAndStatus: {
         name: 'Progress and status',
         icon: ProgressAndStatusIcon,
+        columnId: 1,
     },
     ConstructionManagement: {
         name: 'Construction management',
         icon: ConstructionManagementIcon,
+        columnId: 2,
     },
     EngineeringManagement: {
         name: 'Engineering management',
         icon: EngineeringManagementIcon,
+        columnId: 2,
     },
     ProjectInformation: {
         name: 'Project information',
         icon: ProjectInformationIcon,
+        columnId: 1,
     },
     QueriesAndRequests: {
         name: 'Queries and requests',
         icon: QueriesAndRequests,
+        columnId: 3,
     },
     QualityAndCompliance: {
         name: 'Quality and compliance',
         icon: QualityIcon,
+        columnId: 3,
     },
     ProjectControl: {
         name: 'Project control',
         icon: ProjectControlIcon,
+        columnId: 3,
     },
     SSU: {
         name: 'SSU',
         icon: SSUIcon,
+        columnId: 1,
     },
 
     CompletionManagement: {
         name: 'Completion management',
         icon: CompletionManagementIcon,
+        columnId: 2,
     },
     Reports: {
         name: 'Reports',
         icon: ReportIcon,
+        columnId: 3,
     },
 };
 export const apps: AppManifest[] = [
     // Project information
+    {
+        title: 'Home',
+        shortName: '/',
+        color: '#0364B8',
+        groupe: Apps.ProjectInformation,
+        icon: HomeIcon,
+        tags: [],
+        isProduction: true,
+    },
     {
         title: 'Business case',
         shortName: 'business-case',
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        uri: '',
-        // imageUri: './images/Business case.jpg',
         app: {
             appType: 'PowerBI',
             component: BusinessCaseReport,
         },
+        isProduction: true,
         tags: ['PowerBI'],
     },
     {
@@ -123,7 +154,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -132,7 +162,8 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        uri: '',
+        uri: 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart',
+        isProduction: true,
         tags: [],
     },
     {
@@ -141,7 +172,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        uri: '',
         tags: [],
     },
     //SSU
@@ -151,12 +181,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.SSU,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: SafetyPerformanceReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     // ProgressAndStatus
     {
@@ -165,13 +195,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProgressAndStatus,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'PageView',
-            setup: (): void => {
-                console.log('overview');
-            },
         },
     },
     {
@@ -180,13 +206,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProgressAndStatus,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'PageView',
-            setup: (): void => {
-                console.log('engineering');
-            },
         },
     },
     {
@@ -195,12 +217,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProgressAndStatus,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'PageView',
             setup: constructionSetup,
         },
+        isProduction: true,
     },
     {
         title: 'Commissioning',
@@ -208,12 +230,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProgressAndStatus,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'PageView',
             setup: commissioningSetup,
         },
+        isProduction: true,
     },
     // Engineering management
     {
@@ -222,7 +244,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.EngineeringManagement,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -231,12 +252,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.EngineeringManagement,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: LCIReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     {
         title: 'LCI portal',
@@ -244,7 +265,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.EngineeringManagement,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -253,12 +273,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.EngineeringManagement,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: MDRReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     // Construction management
     {
@@ -267,12 +287,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionManagement,
         icon: '',
-        uri: '',
         app: {
             appType: 'DataViewer',
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
+        isProduction: true,
     },
     // CompletionManagement
     {
@@ -281,9 +301,7 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
-        imageUri: './images/Project explorer.jpg',
     },
     {
         title: 'Checklist',
@@ -291,12 +309,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
             setup: checklistSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'Handover',
@@ -304,12 +322,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
             setup: handoverSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'Heat trace installation',
@@ -317,11 +335,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
+            setup: heatTraceInstallationSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'Loop',
@@ -329,12 +348,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
             setup: loopSetup,
         },
+        // isProduction: true,
     },
     {
         title: 'N2He',
@@ -342,11 +361,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
         },
+        // isProduction: true,
     },
     {
         title: 'Preservation',
@@ -354,7 +373,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
@@ -366,7 +384,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
@@ -378,11 +395,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        uri: '',
         tags: [],
         app: {
             appType: 'DataViewer',
+            setup: SwcrSetup,
         },
+        isProduction: true,
     },
     // Queries and requests
     {
@@ -391,7 +409,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -400,12 +417,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: '',
         app: {
             appType: 'DataViewer',
             setup: scopeChangeSetup,
         },
         tags: [],
+        isProduction: true,
     },
     // ProjectControl
     {
@@ -414,7 +431,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -423,8 +439,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
-        uri: '',
-        imageUri: './images/Scope change control.jpg',
         tags: [],
     },
     // QualityAndCompliance
@@ -434,7 +448,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndCompliance,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -443,7 +456,6 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndCompliance,
         icon: '',
-        uri: '',
         tags: [],
     },
     {
@@ -452,12 +464,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndCompliance,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: NonConformityReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
     {
         title: 'Quality deviation',
@@ -465,12 +477,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QualityAndCompliance,
         icon: '',
-        uri: '',
         app: {
             appType: 'PowerBI',
             component: QualityDeviationReport,
         },
         tags: ['PowerBI'],
+        isProduction: true,
     },
 
     {
@@ -479,8 +491,20 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: '',
         tags: [],
+    },
+    {
+        title: 'Queries Analytics',
+        shortName: 'queries-analytics',
+        color: '#0364B8',
+        groupe: Apps.QueriesAndRequests,
+        icon: '',
+        app: {
+            appType: 'PowerBI',
+            component: QueryReport,
+        },
+        tags: ['PowerBI'],
+        isProduction: true,
     },
     {
         title: 'Queries',
@@ -488,23 +512,19 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: '',
-        app: {
-            appType: 'PowerBI',
-            component: QueryReport,
-        },
-        tags: ['PowerBI'],
+        uri: 'https://fusion.equinor.com/apps/query',
+        tags: ['link', 'fusion'],
+        // isProduction: true,
     },
     // Reports
-    {
-        title: 'temp-link',
-        shortName: 'temp-link2',
-        color: '#0364B8',
-        groupe: Apps.Reports,
-        icon: '',
-        uri: '',
-        tags: [],
-    },
+    // {
+    //     title: 'temp-link',
+    //     shortName: 'temp-link2',
+    //     color: '#0364B8',
+    //     groupe: Apps.Reports,
+    //     icon: '',
+    //     tags: [],
+    // },
 
     // Collaboration
     {
@@ -513,9 +533,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: 'tag',
-        uri: '',
-        tags: [],
-        imageUri: './images/image-test.png',
+        uri: 'https://fusion.equinor.com/apps/meetings',
+        tags: ['fuison', 'link', 'external'],
+        isProduction: true,
     },
     {
         title: 'Review',
@@ -523,19 +543,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: 'tag',
-        uri: '',
-        tags: [],
+        isProduction: true,
+        uri: 'https://fusion.equinor.com/apps/reviews/255d8c0a-7893-4c21-ab42-62c652ea8129',
+        tags: ['fuison', 'link', 'external'],
     },
     // Asset Data
-    {
-        title: 'Home',
-        shortName: '',
-        color: '#0364B8',
-        groupe: Apps.Top,
-        icon: HomeIcon,
-        uri: '',
-        tags: [],
-    },
     {
         title: '3D Model',
         shortName: '3dm',
@@ -548,6 +560,7 @@ export const apps: AppManifest[] = [
             appType: 'CustomApp',
             component: ModelViewer,
         },
+        // isProduction: true,
     },
     {
         title: 'Documents and drawings',

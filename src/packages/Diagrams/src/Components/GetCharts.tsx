@@ -1,5 +1,12 @@
-import { BarChartVisual, LineChartVisual, TimeChart } from '@equinor/Diagrams';
-import { Options } from '../Types';
+import {
+    BarChartVisual,
+    LineChartVisual,
+    TableVisual,
+    TimeChart,
+    ConstructionVisual,
+} from '@equinor/Diagrams';
+import { CustomVisualArgs, Options } from '../Types';
+import { HorizontalBarVisual } from '../Visuals/HorizontalBarVisual/HorizontalBarVisual';
 import { ChartsWrapper, Circular, Loading } from './GetChartsStyles';
 
 export function getChart<T>(
@@ -7,7 +14,7 @@ export function getChart<T>(
     config: Options<T> = { type: 'default' },
     isLoading?: boolean
 ): JSX.Element {
-    let Component: React.FC<{ data: T[] }> = () => <></>;
+    let Component: React.FC<CustomVisualArgs<T>> = () => <></>;
     if (config.type === 'customVisual') {
         Component = config.options.component;
     }
@@ -19,7 +26,6 @@ export function getChart<T>(
                         <BarChartVisual data={data} options={config.options} />
                     ) : (
                         <Loading>
-                            {' '}
                             <Circular />
                             Loading...
                         </Loading>
@@ -33,7 +39,6 @@ export function getChart<T>(
                         <LineChartVisual data={data} options={config.options} />
                     ) : (
                         <Loading>
-                            {' '}
                             <Circular />
                             Loading...
                         </Loading>
@@ -47,27 +52,68 @@ export function getChart<T>(
                         <TimeChart<T> data={data} options={config.options} />
                     ) : (
                         <Loading>
-                            {' '}
                             <Circular />
                             Loading...
                         </Loading>
                     )}
+                </ChartsWrapper>
+            );
+        case 'table':
+            // console.log(config.options);
+            return (
+                <ChartsWrapper>
+                    {/* {!isLoading ? ( */}
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <TableVisual<any> data={data} options={config.options} />
+                    </div>
+                    {/* ) : (
+                        <Loading>
+                            <Circular />
+                            Loading...
+                        </Loading>
+                    )} */}
+                </ChartsWrapper>
+            );
+        case 'constructionChart':
+            return (
+                <ChartsWrapper>
+                    {!isLoading ? (
+                        <ConstructionVisual data={data} options={config.options} />
+                    ) : (
+                        <Loading>
+                            <Circular />
+                            Loading...
+                        </Loading>
+                    )}
+                </ChartsWrapper>
+            );
+        case 'horizontalBarChart':
+            return (
+                <ChartsWrapper>
+                    {/* {!isLoading ? ( */}
+                    <HorizontalBarVisual data={data} options={config.options} />
+                    {/* ) : (
+                        <Loading>
+                            <Circular />
+                            Loading...
+                        </Loading>
+                    )} */}
                 </ChartsWrapper>
             );
         case 'customVisual':
             return (
                 <ChartsWrapper>
                     {!isLoading ? (
-                        <Component data={data} />
+                        <Component data={data} {...config.options.componentProps} />
                     ) : (
                         <Loading>
-                            {' '}
                             <Circular />
                             Loading...
                         </Loading>
                     )}
                 </ChartsWrapper>
             );
+
         case 'default':
             return <></>;
         default:

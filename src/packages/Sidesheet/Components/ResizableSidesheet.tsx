@@ -1,11 +1,13 @@
-import { Resizable } from 're-resizable';
-import styled from 'styled-components';
-import { tokens } from '@equinor/eds-tokens';
-import { useState } from 'react';
 import { useAtom } from '@dbeining/react-atom';
+import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import { Resizable } from 're-resizable';
+import { useState } from 'react';
+import styled from 'styled-components';
+import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
 import { getSidesheetContext } from '../context/sidesheetContext';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
-import { Icon } from '@equinor/eds-core-react';
 
 export const ResizableSidesheet = (): JSX.Element | null => {
     const { closeSidesheet, togglePinned } = useInternalSidesheetFunction();
@@ -17,7 +19,6 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     const minWidth = 40;
 
     const { SidesheetComponent, props, isPinned } = useAtom(getSidesheetContext());
-
     const handleMinimize = () => {
         setIsMinimized((prev) => !prev);
     };
@@ -73,7 +74,9 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                     </span>
                 </Header>
 
-                <SidesheetComponent {...props} />
+                <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
+                    <SidesheetComponent {...props} />
+                </ErrorBoundary>
             </Resizable>
         </div>
     );

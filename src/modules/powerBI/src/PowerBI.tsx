@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../../components/Icon/Icon';
 import { usePowerBI } from './api';
+import { PageNavigation } from './Components';
 import { Filter } from './models/filter';
 import './style.css';
 
@@ -34,6 +35,10 @@ const Heading = styled.h1`
 interface PowerBiProps {
     reportUri: string;
     filterOptions?: Filter[];
+    options?: {
+        showFilter?: boolean;
+        enableNavigation?: boolean;
+    };
 }
 
 interface PowerBiFilter {
@@ -100,8 +105,9 @@ function createPowerBiFilter(data: string, slicer: VisualDescriptor): PowerBiFil
     return filter;
 }
 
-export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element => {
-    const { config, error } = usePowerBI(reportUri, filterOptions);
+
+export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JSX.Element => {
+    const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const [filters, setFilters] = useState<PowerBiFilter[] | null>(null);
@@ -251,6 +257,7 @@ export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element
                             })}
                         </div>
                     )}
+                    <PageNavigation report={report} />
                     <PowerBIEmbed
                         embedConfig={config}
                         eventHandlers={eventHandlersMap}
@@ -259,6 +266,7 @@ export const PowerBI = ({ reportUri, filterOptions }: PowerBiProps): JSX.Element
                                 `Embedded object of type "${embedObject.embedtype}" received`
                             );
                             setReport(embedObject as Report);
+
                             window['report'] = embedObject;
                         }}
                         cssClassName="pbiEmbed"

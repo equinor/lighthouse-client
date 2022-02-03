@@ -1,5 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
+import { ClientApi } from '@equinor/portal-client';
 
 interface CommPkg {
     Area__Id: string;
@@ -59,7 +59,7 @@ function start(item: CommPkg): string {
 }
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
     const commPkg = appApi.createWorkSpace<CommPkg>({});
 
     commPkg.registerDataSource(async () => {

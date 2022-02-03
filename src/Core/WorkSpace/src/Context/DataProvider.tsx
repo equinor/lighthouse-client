@@ -1,11 +1,13 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { FilterOptions } from '@equinor/filter';
-import { createContext, useCallback, useContext, useEffect, useReducer, useState } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
+import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useDataViewerKey';
 import {
-    GardenOptions,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
@@ -36,6 +38,7 @@ interface DataState {
 interface DataContextState extends DataState {
     getData: VoidFunction;
     isLoading: boolean;
+    error: unknown;
 }
 interface DataProviderProps {
     children: React.ReactNode;
@@ -74,8 +77,8 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
     const options = useWorkSpace();
 
-    const { dataSource, validator } = options;
-    const [isLoading, setIsLoading] = useState(true);
+    const { dataSource } = options;
+
     const initialState: DataState = {
         key,
         data: [],
@@ -87,41 +90,51 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
     useEffect(() => {
-        setIsLoading(true);
         dispatch(actions.setOptions(initialState));
-        setIsLoading(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [key]);
 
-    useEffect(() => {
-        getData();
-    }, [dataSource]);
-
-    const getData = useCallback(async () => {
-        if (dataSource) {
-            setIsLoading(true);
+    const { refetch, data, isLoading, error } = useQuery(
+        key,
+        async () => {
+            if (!dataSource) return;
             const data = await dataSource();
-            if (validator) {
-                dispatch(actions.getData(validator(data)));
-                setIsLoading(false);
-                return;
-            }
-            // eslint-disable-next-line no-console
-            console.warn(`Data may not be valid. Data validator is not registered for ${name}.`);
             dispatch(actions.getData(data));
-            setIsLoading(false);
-        }
-    }, [dataSource, validator]);
+            return data;
+        },
+        { refetchOnWindowFocus: false }
+    );
+
+    useEffect(() => {
+        if (!data) return;
+        dispatch(actions.getData(data));
+    }, [data]);
+
+    useEffect(() => {
+        refetch();
+    }, [dataSource]);
 
     return (
         <DataContext.Provider
             value={{
                 ...state,
-                getData,
+                getData: refetch,
                 isLoading,
+                error,
             }}
         >
-            {isLoading ? <Loading>Loading...</Loading> : children}
+            {isLoading ? (
+                <Loading>
+                    <CircularProgress value={0} size={48} />
+                </Loading>
+            ) : error ? (
+                <Loading>
+                    <Icon name="error_outlined" />
+                    Something went wrong
+                </Loading>
+            ) : (
+                children
+            )}
         </DataContext.Provider>
     );
 };

@@ -1,62 +1,48 @@
 import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useGraphClient } from '@equinor/http-client';
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import useClientContext from '../../context/clientContext';
+import { useClientContext } from '@equinor/portal-client';
+import { SupportButton } from '../../Core/Client/Support/Support';
 import Icon from '../Icon/Icon';
 import Logo from './Logo/Logo';
+import { BetaTag, Icons, TopBarWrapper } from './TopBarStyle';
 
-const Icons = styled.div`
-    display: flex;
-    align-items: center;
-    flex-direction: row-reverse;
-    > * {
-        margin-left: 40px;
-    }
-`;
+const ClientTopBar = (): JSX.Element => {
+    const {
+        toggleFullscreenMenu,
+        settings: { userImageUrl, clientEnv },
+    } = useClientContext();
 
-const TopBarWrapper = styled.div`
-    position: fixed;
-    width: 100%;
-    z-index: 2;
-    height: 48px;
-    > header {
-        padding-left: 1.5rem;
-    }
-`;
-
-const ProCoSysTopBar = (): JSX.Element => {
-    const { toggleAppPanel, authProvider } = useClientContext();
-    const graph = useGraphClient(authProvider);
-    const [image, setImage] = useState<string | undefined>(undefined);
-    useEffect(() => {
-        graph.graphGetProfilePicture().then((img) => setImage(img));
-    }, []);
     return (
         <TopBarWrapper>
-            <TopBar>
-                <TopBar.Header>
-                    <div onClick={() => toggleAppPanel()} style={{ cursor: 'pointer' }}>
-                        <Icon color={tokens.colors.interactive.primary__resting.hex} name="menu" />
-                    </div>
-                    <Logo />
-                </TopBar.Header>
-                <TopBar.CustomContent>
-                    {/* <CustomContentWrapper>
-                        <PlantSelector />
-                        <Search aria-label="sitewide" id="search-normal" placeholder="Search..." />
-                    </CustomContentWrapper> */}
-                </TopBar.CustomContent>
-                <TopBar.Actions>
-                    <Icons>
-                        {image && <Avatar alt="User avatar" size={16} src={image} />}
-                        <Icon name="notifications" size={16} />
-                    </Icons>
-                </TopBar.Actions>
-            </TopBar>
+            <TopBar.Header>
+                <div
+                    onClick={() => {
+                        toggleFullscreenMenu();
+                    }}
+                    style={{ cursor: 'pointer' }}
+                >
+                    <Icon color={tokens.colors.interactive.primary__resting.hex} name="apps" />
+                </div>
+                <Logo />
+            </TopBar.Header>
+            <TopBar.CustomContent>
+                <BetaTag>
+                    <b>UNDER DEVELOPMENT - {clientEnv.toUpperCase()} </b>
+                    <p>This site contains test data.</p>
+                </BetaTag>
+            </TopBar.CustomContent>
+            <TopBar.Actions>
+                <Icons>
+                    {!userImageUrl ? (
+                        <Icon name="account_circle" />
+                    ) : (
+                        <Avatar alt="User avatar" src={userImageUrl} />
+                    )}
+                </Icons>
+            </TopBar.Actions>
+            <SupportButton />
         </TopBarWrapper>
     );
 };
 
-export default ProCoSysTopBar;
+export default ClientTopBar;

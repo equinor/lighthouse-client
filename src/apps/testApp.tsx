@@ -1,4 +1,4 @@
-import { ClientApi } from '@equinor/app-builder';
+import { ClientApi } from '@equinor/portal-client';
 import { THREE, ThreeDContextProvider, ViewerInstance } from '@equinor/ThreeDViewer';
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';

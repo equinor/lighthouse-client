@@ -1,7 +1,7 @@
-import { baseClient, NetworkError } from '@equinor/http-client';
+import { NetworkError } from '@equinor/http-client';
+import { useHttpClient } from '@equinor/portal-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
 import { useState } from 'react';
-import useClientContext from '../../../../context/clientContext';
 import { Filter, PowerBiFilter } from '../models/filter';
 
 const filterBuilder = (filter: Filter): PowerBiFilter => {
@@ -21,12 +21,18 @@ interface useFusionClientReturn {
     getConfig: () => Promise<IReportEmbedConfiguration>;
     error: NetworkError | undefined;
 }
-export function useFusionClient(resource: string, filterOptions?: Filter[]): useFusionClientReturn {
-    const { appConfig, authProvider } = useClientContext();
+export function useFusionClient(
+    resource: string,
+    filterOptions?: Filter[],
+    options?: {
+        showFilter?: boolean;
+        enablePageNavigation?: boolean;
+    }
+): useFusionClientReturn {
+    const { fusion } = useHttpClient();
     const [error, setError] = useState<NetworkError>();
-    const scope = [appConfig.fusion];
-    const fusionClient = baseClient(authProvider, scope);
-    const baseUri = 'https://lih-proxy.azurewebsites.net/fusion/reports';
+    const baseUri = 'https://app-ppo-proxy-dev.azurewebsites.net/fusion/reports';
+
     const filters: PowerBiFilter[] = [];
     filterOptions?.forEach((filterOption) => {
         filters.push(filterBuilder(filterOption));
@@ -35,7 +41,7 @@ export function useFusionClient(resource: string, filterOptions?: Filter[]): use
     async function getEmbedInfo() {
         try {
             const embedUri = `${baseUri}/${resource}/config/embedinfo`;
-            const response = await fusionClient.fetch(embedUri);
+            const response = await fusion.fetch(embedUri);
 
             const data = await response.json();
             window['embedInfo'] = data;
@@ -48,7 +54,7 @@ export function useFusionClient(resource: string, filterOptions?: Filter[]): use
     async function getPowerBiToken() {
         try {
             const tokenUri = `${baseUri}/${resource}/token`;
-            const response = await fusionClient.fetch(tokenUri);
+            const response = await fusion.fetch(tokenUri);
             return await response.json();
         } catch (error: any) {
             const networkError = error as NetworkError;
@@ -67,10 +73,10 @@ export function useFusionClient(resource: string, filterOptions?: Filter[]): use
                 panes: {
                     filters: {
                         expanded: false,
-                        visible: false,
+                        visible: options?.showFilter ?? false,
                     },
                     pageNavigation: {
-                        visible: false,
+                        visible: options?.enablePageNavigation ?? false,
                     },
                 },
             },

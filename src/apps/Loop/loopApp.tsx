@@ -1,5 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { baseClient } from '@equinor/http-client';
+import { ClientApi } from '@equinor/portal-client';
 import styled from 'styled-components';
 import { Status } from '../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { analyticsOptions, statusBarData } from './Sections/AnalyticsConfig';
@@ -59,7 +59,7 @@ export function setup(appApi: ClientApi): void {
     //     component: (scope: any) => <div>Create SWCR {scope.test}</div>,
     // });
 
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
+    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
     const commPkg = appApi.createWorkSpace<Loop>({});
 
     commPkg.registerDataSource(async () => {
@@ -193,7 +193,6 @@ export function setup(appApi: ClientApi): void {
         groupByKeys: ['commPk'],
         status: { statusItemFunc, shouldAggregate: true },
         //options: { groupDescriptionFunc },
-        excludeKeys: [],
     });
     commPkg.registerAnalyticsOptions(analyticsOptions);
     commPkg.registerTreeOptions({

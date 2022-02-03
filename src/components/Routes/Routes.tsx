@@ -1,21 +1,20 @@
 import { GroupView } from '@equinor/GroupView';
+import { ClientHome, useClientContext } from '@equinor/portal-client';
 import { closeSidesheet } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Apps } from '../../apps/apps';
-import useClientContext from '../../context/clientContext';
-import { Manifests } from '../../Core/AppBuilder/Types';
 import PageView from '../../Core/PageViewer';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
 import { useLocationKey } from '../../packages/Filter/Hooks/useLocationKey';
 import { ComponentWrapper } from './ComponentWrapper';
 
-interface ClientRoutesProps {
-    manifests: Manifests;
-}
-
-export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesProps): JSX.Element {
-    const { appConfig, authProvider } = useClientContext();
+export function ClientRoutes(): JSX.Element {
+    const {
+        appConfig,
+        registry: { apps, appGroups },
+        internal: { authProvider },
+    } = useClientContext();
 
     const currentRoute = useLocationKey();
 
@@ -25,16 +24,7 @@ export function ClientRoutes({ manifests: { apps, appGroups } }: ClientRoutesPro
 
     return (
         <Routes>
-            <Route
-                path={'/'}
-                element={
-                    <GroupView
-                        group={{ name: 'Johan Castberg Home', icon: '' }}
-                        groups={appGroups}
-                        groupeId={'key'}
-                    />
-                }
-            />
+            <Route path={'/'} element={<ClientHome />} />
             {Object.keys(appGroups).map((key) => {
                 const group = appGroups[key];
                 const links = apps.filter((app) => {

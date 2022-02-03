@@ -6,19 +6,24 @@ const Count = styled.span`
     font-size: 12px;
     padding-left: 0.5rem;
 `;
+
 export type GenerateColumnArgs<D extends TableData> = {
     key: string;
     headers: CustomHeader<D>[] | undefined;
+    columnCount: number;
+    totalCustomColumnWidth: number;
+    customWidth?: number;
 };
 
 export type GenerateCustomColumnArgs<D extends TableData> = GenerateColumnArgs<D> & {
     customCellView: CustomCell<D>[];
 };
 
+const minimumTableWidth = window.innerWidth - 90; //90 is left sidebar menu width
 export const generateCustomColumn = <D extends TableData>(
     args: GenerateCustomColumnArgs<D>
 ): Column<D> => {
-    const { key, headers, customCellView } = args;
+    const { key, headers, customCellView, columnCount, totalCustomColumnWidth, customWidth } = args;
     return {
         id: key,
         accessor: (keys) => ({
@@ -27,9 +32,11 @@ export const generateCustomColumn = <D extends TableData>(
             cellAttributeFn: findCellFn(customCellView, key),
         }),
         Header: findCustomHeader(key, headers),
-        minWidth: 30,
-        width: 150,
-        maxWidth: 400,
+        minWidth: customWidth !== undefined ? 0 : 150,
+        width:
+            customWidth !== undefined
+                ? customWidth
+                : (minimumTableWidth - totalCustomColumnWidth) / columnCount,
         Cell: findCustomCell(key, customCellView),
         aggregate: 'count',
         Aggregated: (cell) => {
@@ -51,16 +58,18 @@ export const generateCustomColumn = <D extends TableData>(
 export const generateArrayColumn = <D extends TableData>(
     args: GenerateColumnArgs<D>
 ): Column<D> => {
-    const { headers, key } = args;
+    const { headers, key, columnCount, totalCustomColumnWidth, customWidth } = args;
     return {
         id: key,
         accessor: (row) => {
-            return (row[key] as Array<unknown>).length;
+            return (row[key] as Array<unknown>)?.length;
         },
         Header: findCustomHeader(key, headers),
-        minWidth: 30,
-        width: 150,
-        maxWidth: 400,
+        minWidth: customWidth !== undefined ? 0 : 150,
+        width:
+            customWidth !== undefined
+                ? customWidth
+                : (minimumTableWidth - totalCustomColumnWidth) / columnCount,
         aggregate: 'count',
         Cell: ({ value }) => {
             return `items(${value})`;
@@ -90,13 +99,15 @@ export const generateObjectColumn = <D extends TableData>(
 };
 
 export const generateOthersColumn = <D extends TableData>(args: GenerateColumnArgs<D>) => {
-    const { key, headers } = args;
+    const { key, headers, columnCount, totalCustomColumnWidth, customWidth } = args;
     return {
         accessor: key as keyof D,
         Header: findCustomHeader(key, headers),
-        minWidth: 30,
-        width: 150,
-        maxWidth: 400,
+        minWidth: customWidth !== undefined ? 0 : 150,
+        width:
+            customWidth !== undefined
+                ? customWidth
+                : (minimumTableWidth - totalCustomColumnWidth) / columnCount,
         aggregate: 'count',
         Aggregated: (cell) => {
             return (
