@@ -1,17 +1,21 @@
-import { Button, Progress, Tooltip } from '@equinor/eds-core-react';
-import { DateTime } from 'luxon';
+import { useMutation } from 'react-query';
 import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
+
+import { Button, Icon, Progress, TextField } from '@equinor/eds-core-react';
 import { Criteria, WorkflowStep } from '../../Types/scopeChangeRequest';
-import { WorkflowIcon } from './WorkflowIcon';
-import { convertUtcToLocalDate } from './Utils/utcDateToLocal';
-import { useState } from 'react';
-import { searchPcs, SelectOption } from '../../Api/Search/PCS';
+import { SelectOption } from '../../Api/Search/PCS';
 import { reassignCriteria } from '../../Api/ScopeChange/reassignPerson';
 import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
-import AsyncSelect from 'react-select/async';
-import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from '../SearchableDropdown/applyEds';
-import { SingleValue, Theme } from 'react-select';
-import { useMutation } from 'react-query';
+import { useConditionalRender } from '../../Hooks/useConditionalRender';
+import { useLoading } from '../../Hooks/useLoading';
+import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
+import { useEffect, useState } from 'react';
+import { MenuButton } from '../MenuButton/Components/MenuButton';
+import { IconMenu } from '../MenuButton/Components/IconMenu';
+import { CriteriaDetail } from './CriteriaDetail';
+import { MenuItem } from '../MenuButton/Types/menuItem';
+import { CriteriaActions } from './Types/actions';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -19,15 +23,59 @@ interface WorkflowCriteriasProps {
 }
 
 export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): JSX.Element => {
-    const stepStatus = statusFunc(step);
+    const [person, setPerson] = useState<SelectOption | null>(null);
+    const [contributor, setContributor] = useState<SelectOption | null>(null);
 
-    const { setPerformingAction, performingAction, request, refetch } =
-        useScopeChangeAccessContext();
-    const [showReassign, setShowReassign] = useState<boolean>(false);
+    useEffect(() => {
+        if (person) {
+            setPerformingAction(true);
+            mutateAsync({ type: 'RequireProcosysUserSignature', value: person.value });
+            setPerson(null);
+            setPerformingAction(false);
+        }
+    }, [person]);
 
-    const loadOptions = async (inputValue: string, callback: (options: SelectOption[]) => void) => {
-        callback(await searchPcs(inputValue, 'person'));
+    const {
+        Component: ReassignBar,
+        toggle: toggleReassign,
+        set: setShowReassign,
+    } = useConditionalRender(<PCSPersonSearch person={person} setPerson={setPerson} />);
+
+    const {
+        Component: AddContributor,
+        toggle: toggleContributorSelector,
+        set: setShowContributor,
+    } = useConditionalRender(<PCSPersonSearch person={contributor} setPerson={setContributor} />);
+
+    const {
+        Component: CommentField,
+        toggle: toggleCommentField,
+        set: setShowCommentField,
+    } = useConditionalRender(
+        <div
+            style={{
+                fontSize: '12px',
+                display: 'flex',
+                alignItems: 'flex-end',
+                width: '300px',
+                justifyContent: 'space-around',
+            }}
+        >
+            <span>
+                Comment
+                <TextField id="comment" />
+            </span>
+            <Button variant="outlined">Sign</Button>
+        </div>
+    );
+
+    const closeAll = () => {
+        setShowContributor(false);
+        setShowCommentField(false);
+        setShowReassign(false);
     };
+
+    const { setPerformingAction, request, refetch } = useScopeChangeAccessContext();
 
     interface ReassignArgs {
         value: string;
@@ -46,127 +94,62 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
             await refetch();
         },
     });
-    const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc));
-    const { day, month, year, hour, minute } = DateTime.fromJSDate(date).toObject();
-    const paddedMinutes = minute.toString().length === 1 ? `0${minute}` : minute;
+
+    const { Loading } = useLoading(<Progress.Dots color="primary" />, isLoading);
+
+    const signActions: MenuItem[] = [
+        {
+            label: CriteriaActions.Sign,
+            icon: <Icon name="check_circle_outlined" color="grey" />,
+        },
+        {
+            label: CriteriaActions.SignWithComment,
+            icon: <Icon name="comment_add" color="grey" />,
+            onClick: () => toggleCommentField(),
+        },
+    ];
+
+    const moreActions: MenuItem[] = [
+        {
+            label: CriteriaActions.Reassign,
+            icon: <Icon name="assignment_user" color="grey" />,
+            onClick: () => toggleReassign(),
+        },
+        {
+            label: CriteriaActions.AddContributor,
+            icon: <Icon name="group_add" color="grey" />,
+            onClick: () => toggleContributorSelector(),
+        },
+        {
+            label: CriteriaActions.Reject,
+            icon: <Icon name="assignment_return" color="grey" />,
+        },
+    ];
 
     return (
         <>
             <WorkflowStepViewContainer key={criteria.id}>
-                <SplitInline>
-                    <WorkflowIcon
-                        status={stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus}
-                        number={step.order + 1}
-                    />
-                    <Divider />
-                    <WorkflowText>
-                        <Tooltip
-                            title={
-                                !step.isCompleted
-                                    ? `Signature from ${criteria.value} required.`
-                                    : `Signed by ${criteria.signedBy.firstName} ${criteria.signedBy.lastName}`
-                            }
-                        >
-                            <span>{step.name}</span>
-                        </Tooltip>
-                        {criteria.signedAtUtc ? (
-                            <div
-                                style={{ fontSize: '14px' }}
-                            >{`${day}/${month}/${year} ${hour}:${paddedMinutes} - ${criteria.signedBy.firstName} ${criteria.signedBy.lastName} `}</div>
-                        ) : (
-                            <div style={{ fontSize: '14px' }}>{criteria.value}</div>
-                        )}
-                    </WorkflowText>
-                </SplitInline>
-                <div>
-                    {step.isCurrent && (
-                        <>
-                            <Divider />
-                            <Button
-                                disabled={performingAction}
-                                onClick={() => setShowReassign(!showReassign)}
-                            >
-                                Reassign
-                            </Button>
-                        </>
-                    )}
-                </div>
-            </WorkflowStepViewContainer>
-            {isLoading && <Progress.Dots color="primary" />}
+                <CriteriaDetail criteria={criteria} step={step} />
 
-            {showReassign && (
-                <div
-                    style={{
-                        width: '600px',
-                        borderBottom: '5px solid #6F6F6F',
-                        fontSize: '16px',
-                        margin: '0.5rem 0rem',
-                    }}
-                >
-                    <AsyncSelect
-                        cacheOptions={false}
-                        loadOptions={loadOptions}
-                        defaultOptions={false}
-                        styles={applyEdsStyles()}
-                        controlShouldRenderValue={true}
-                        components={{ ...applyEdsComponents() }}
-                        placeholder={`Type to search..`}
-                        noOptionsMessage={(obj: { inputValue: string }) => {
-                            if (!obj.inputValue || obj.inputValue.length === 0) {
-                                return <></>;
-                            } else {
-                                return <div>No results</div>;
-                            }
-                        }}
-                        isClearable
-                        onChange={async (newValue: SingleValue<SelectOption>) => {
-                            if (!newValue?.value) return;
-                            setPerformingAction(true);
-                            await mutateAsync({
-                                type: 'RequireProcosysUserSignature',
-                                value: newValue.value,
-                            });
-                            setPerformingAction(false);
-                        }}
-                        theme={(theme: Theme) => applyEDSTheme(theme)}
-                    />
-                </div>
-            )}
+                {step.isCurrent && criteria.signedState === null && (
+                    <Inline>
+                        <MenuButton
+                            items={signActions}
+                            onMenuOpen={() => closeAll()}
+                            buttonText="Sign"
+                        />
+                        <Divider />
+                        <IconMenu items={moreActions} onMenuOpen={() => closeAll()} />
+                    </Inline>
+                )}
+            </WorkflowStepViewContainer>
+            <Loading />
+            <AddContributor />
+            <CommentField />
+            <ReassignBar />
         </>
     );
 };
-
-const SplitInline = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-
-const statusFunc = (item: WorkflowStep): WorkflowStatus => {
-    if (item.isCompleted) {
-        return 'Completed';
-    } else if (item.isCurrent) {
-        return 'Active';
-    } else {
-        return 'Inactive';
-    }
-};
-
-const criteriaStatus = (criteria: Criteria): WorkflowStatus => {
-    if (criteria.signedAtUtc === null) {
-        return 'Active';
-    } else {
-        return 'Completed';
-    }
-};
-
-type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
-
-const WorkflowText = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-`;
 
 const Divider = styled.div`
     height: 9px;
@@ -180,4 +163,12 @@ const WorkflowStepViewContainer = styled.div`
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
     width: -webkit-fill-available;
+    &:hover {
+        background-color: ${tokens.colors.interactive.primary__selected_hover.hex};
+    }
+`;
+
+const Inline = styled.div`
+    display: flex;
+    align-items: center;
 `;

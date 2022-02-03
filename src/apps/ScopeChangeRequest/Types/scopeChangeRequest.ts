@@ -18,6 +18,7 @@ export interface Origin {
 }
 
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
+export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
 export interface ScopeChangeBaseModel {
     id: string;

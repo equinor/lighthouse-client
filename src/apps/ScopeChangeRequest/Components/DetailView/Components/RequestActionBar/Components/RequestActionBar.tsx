@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { RequestActionsContainer } from '../../../requestDetailViewStyles';
-import React from 'react';
 import { RequestDraftActions } from './RequestDraftActions';
 import { RequestOpenActions } from './RequestOpenActions';
 import { VoidRequestButton } from './VoidRequestButton';

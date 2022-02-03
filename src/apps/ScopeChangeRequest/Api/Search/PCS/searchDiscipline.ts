@@ -6,7 +6,8 @@ import { isProduction } from '../../../../../Core/Client/Functions';
 
 export const searchDiscipline = async (
     searchString: string,
-    procosysClient: HttpClient
+    procosysClient: HttpClient,
+    signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
@@ -29,6 +30,7 @@ export const searchDiscipline = async (
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(search),
+        signal,
     };
 
     await procosysClient

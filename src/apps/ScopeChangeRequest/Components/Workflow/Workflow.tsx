@@ -7,13 +7,15 @@ import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { addContributor as postContributor } from '../../Api/addContributor';
 import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
 import { WorkflowCriterias } from './WorkflowCriterias';
-import { Contributors } from './Contributors';
+import { Contributor } from './Contributors';
 import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 
 export function Workflow(): JSX.Element {
     const { request, setPerformingAction } = useScopeChangeAccessContext();
     const [contributor, setContributor] = useState<{ value: string; label: string } | null>(null);
     const [contributorTitle, setContributorTitle] = useState<string | undefined>();
+
+    const { canAddContributor } = useScopeChangeAccessContext();
 
     const { scopeChange } = useHttpClient();
 
@@ -40,10 +42,17 @@ export function Workflow(): JSX.Element {
 
     return (
         <div>
-            {request.state === 'Open' && (
+            {/* {request.state === 'Open' && (
                 <>
-                    <div style={{ fontSize: '12px' }}>Add contributors</div>
-                    <PCSPersonSearch person={contributor} setPerson={setContributor} />
+                    <>
+                        <div style={{ fontSize: '12px' }}>Add contributors</div>
+                        <PCSPersonSearch
+                            person={contributor}
+                            setPerson={setContributor}
+                            isDisabled={!canAddContributor}
+                        />
+                    </>
+
                     {contributor !== null && (
                         <Inline>
                             <TextField
@@ -79,7 +88,7 @@ export function Workflow(): JSX.Element {
                         )}
                     </div>
                 </>
-            )}
+            )} */}
 
             {request.workflowSteps.map((step, index) => {
                 return (
@@ -94,8 +103,16 @@ export function Workflow(): JSX.Element {
                                     />
                                 );
                             })}
-
-                        <Contributors step={step} />
+                        {step.contributors &&
+                            step.contributors.map((contributor) => {
+                                return (
+                                    <Contributor
+                                        key={contributor.id}
+                                        step={step}
+                                        contributor={contributor}
+                                    />
+                                );
+                            })}
                     </WorkflowStepContainer>
                 );
             })}
@@ -107,9 +124,4 @@ const WorkflowStepContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-`;
-
-const Inline = styled.span`
-    display: flex;
-    align-items: center;
 `;

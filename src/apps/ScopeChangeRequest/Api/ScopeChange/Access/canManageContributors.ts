@@ -1,7 +1,7 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { checkOptionsRequest, OptionRequestResult } from './optionsRequestChecker';
+import { checkOptionsRequest } from './optionsRequestChecker';
 
-export async function canInitiate(requestId: string, stepId: string): Promise<OptionRequestResult> {
+export async function canAddContributor(requestId: string, stepId: string): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
@@ -14,5 +14,7 @@ export async function canInitiate(requestId: string, stepId: string): Promise<Op
             requestOptions
         );
 
-    return await checkOptionsRequest(check);
+    return await (
+        await checkOptionsRequest(check)
+    ).canPost;
 }

@@ -23,15 +23,29 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
         switch (type) {
             case 'DCN': {
                 if (!id) return <div>Error query without id</div>;
-                return <Link onClick={() => onClickRedirectOrigin(id)}>{id}</Link>;
+                return (
+                    <Link onClick={() => onClickRedirectOrigin(id)}>
+                        {' '}
+                        {type} - {id}
+                    </Link>
+                );
             }
             case 'NCR': {
                 if (!id) return <div>Error query without id</div>;
-                return <Link onClick={() => onClickRedirectOrigin(id)}>{id}</Link>;
+                return (
+                    <Link onClick={() => onClickRedirectOrigin(id)}>
+                        {' '}
+                        {type} - {id}
+                    </Link>
+                );
             }
             case 'Query': {
                 if (!id) return <div>Error query without id</div>;
-                return <Link onClick={() => onClickRedirectOrigin(id)}>{id}</Link>;
+                return (
+                    <Link onClick={() => onClickRedirectOrigin(id)}>
+                        {type} - {id}
+                    </Link>
+                );
             }
             case 'Punch': {
                 if (!id) return <div>Error query without id</div>;
@@ -44,13 +58,18 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
                             )
                         }
                     >
-                        {id}
+                        {type} - {id}
                     </Link>
                 );
             }
             case 'SWCR': {
                 if (!id) return <div>Error query without id</div>;
-                return <Link onClick={() => onClickRedirectOrigin(id)}>{id}</Link>;
+                return (
+                    <Link onClick={() => onClickRedirectOrigin(id)}>
+                        {' '}
+                        {type} - {id}
+                    </Link>
+                );
             }
             case 'NotApplicable': {
                 return <div>Not applicable</div>;

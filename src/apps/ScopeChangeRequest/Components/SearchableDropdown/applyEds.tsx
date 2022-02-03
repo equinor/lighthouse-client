@@ -1,6 +1,7 @@
-import { Button, Icon } from '@equinor/eds-core-react';
+import { Button, Icon, Progress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { Theme } from 'react-select';
+import { components, Theme } from 'react-select';
+import styled from 'styled-components';
 
 // (255, 0, 0, 0.4)
 /**
@@ -23,7 +24,8 @@ export const applyEDSTheme = (theme: Theme): Theme => ({
         danger: 'pink',
         dangerLight: 'orange',
         //overlay color over selected items
-        neutral10: 'blue',
+        //disabled
+        neutral10: 'grey',
         neutral90: 'blue',
         // neutral5: used if disabled,
         //neutral 20 border color
@@ -56,15 +58,54 @@ export const applyEdsStyles = () => {
     };
 };
 
+const Loading = styled.div`
+    padding: 0rem 1rem;
+`;
+
+const LoadingIndicator = () => {
+    return (
+        <Loading>
+            <Progress.Dots color="primary" />
+        </Loading>
+    );
+};
+
+const ControlWrapper = styled.div`
+    height: auto;
+    width: -webkit-fill-available;
+`;
+
+const ControlComponent = (props: any) => {
+    return (
+        <ControlWrapper>
+            <components.Control {...props} />
+        </ControlWrapper>
+    );
+};
+
+const SelectContainer = ({ children, ...props }: any) => {
+    return (
+        <ControlWrapper>
+            <components.SelectContainer {...props}>{children}</components.SelectContainer>
+        </ControlWrapper>
+    );
+};
+
 interface EdsOverride {
     DropdownIndicator: () => JSX.Element;
     IndicatorSeparator: () => JSX.Element;
+    LoadingIndicator: () => JSX.Element;
+    Control: (props: any) => JSX.Element;
+    SelectContainer: (props: any) => JSX.Element;
 }
 
 export const applyEdsComponents = (): EdsOverride => {
     return {
         DropdownIndicator: DownChevronOverride,
         IndicatorSeparator: RemoveLine,
+        LoadingIndicator: LoadingIndicator,
+        Control: ControlComponent,
+        SelectContainer,
     };
 };
 

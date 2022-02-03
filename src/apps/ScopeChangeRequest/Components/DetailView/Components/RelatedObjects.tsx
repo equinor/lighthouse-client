@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { CommissioningPackage, Tag, System } from '../../../Types/scopeChangeRequest';
 import { ProcosSysCommPkgs } from './ProcosysCommPkg';
 import { ProcosysSystem } from './ProcosysSystem';
-import { ProcosysTags } from './ProcosysTag';
+import { ProcosysTags } from './Tags/TagChevron';
 
 interface RelatedObjectsProps {
     systems?: System[];

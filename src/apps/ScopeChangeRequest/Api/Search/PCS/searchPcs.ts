@@ -30,36 +30,37 @@ export type ProcoSysTypes =
  */
 export const searchPcs = async (
     searchString: string,
-    searchItem: ProcoSysTypes
+    searchItem: ProcoSysTypes,
+    abortSignal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const { procosys } = httpClient();
     switch (searchItem.toLowerCase()) {
         case 'tag':
-            return await searchTags(searchString, procosys);
+            return await searchTags(searchString, procosys, abortSignal);
 
         case 'commpkg':
-            return await searchCommPkg(searchString, procosys);
+            return await searchCommPkg(searchString, procosys, abortSignal);
 
         case 'system':
-            return await searchSystems(searchString, procosys);
+            return await searchSystems(searchString, procosys, abortSignal);
 
         case 'query':
-            return await searchQueryOrigin(searchString, procosys);
+            return await searchQueryOrigin(searchString, procosys, abortSignal);
 
         case 'dcn':
-            return await searchDCN(searchString, procosys);
+            return await searchDCN(searchString, procosys, abortSignal);
 
         case 'ncr':
-            return await searchNCR(searchString, procosys);
+            return await searchNCR(searchString, procosys, abortSignal);
 
         case 'person':
-            return await searchPerson(searchString, procosys);
+            return await searchPerson(searchString, procosys, abortSignal);
 
         case 'area':
-            return await searchAreas(searchString, procosys);
+            return await searchAreas(searchString, procosys, abortSignal);
 
         case 'discipline':
-            return await searchDiscipline(searchString, procosys);
+            return await searchDiscipline(searchString, procosys, abortSignal);
 
         default:
             // eslint-disable-next-line no-console

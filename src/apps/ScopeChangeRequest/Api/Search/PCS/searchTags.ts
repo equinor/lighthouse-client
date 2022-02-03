@@ -6,7 +6,8 @@ import { Tag } from './Types/tag';
 
 export const searchTags = async (
     searchString: string,
-    procosysClient: HttpClient
+    procosysClient: HttpClient,
+    abortSignal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
@@ -29,6 +30,7 @@ export const searchTags = async (
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(search),
+        signal: abortSignal,
     };
 
     await procosysClient

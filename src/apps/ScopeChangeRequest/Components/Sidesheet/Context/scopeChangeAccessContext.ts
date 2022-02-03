@@ -11,6 +11,7 @@ export interface ScopeChangeAccessContextState {
     requestAccess: OptionRequestResult;
     signableCriterias: StrippedCriteria[] | undefined;
     contributionId: string | undefined;
+    canAddContributor: boolean;
     refetch: () => Promise<void>;
 }
 

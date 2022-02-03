@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import React, { useEffect, useRef, useState } from 'react';
+import { QueryClient, useQuery } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
@@ -16,6 +16,7 @@ import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
 import { useWorkflowAccess } from '../../Hooks/useWorkflowAccess';
 import { ScopeChangeAccessContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
+import { IconMenu } from '../MenuButton';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { scopeChange: scopeChangeApi } = useHttpClient();
@@ -25,7 +26,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { error, data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
         'scopeChange',
         () => getScopeChangeById(item.id, scopeChangeApi),
-        { refetchOnMount: true, initialData: item }
+        { refetchOnMount: false, initialData: item, retry: 0 }
     );
     const scopeChangeAccess = useScopeChangeAccess(item.id);
     const workflowAccess = useWorkflowAccess(
@@ -45,7 +46,8 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
     useEffect(() => {
         if (!performingAction) {
-            setTimeout(async () => await refetch(), 200);
+            const queryClient = new QueryClient();
+            queryClient.invalidateQueries();
         }
     }, [performingAction]);
 
@@ -68,15 +70,25 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     return (
         <Wrapper>
             {error && (
-                <div>Failed to fetch scope change request, please check your connection?</div>
+                <div style={{ color: 'red' }}>
+                    Network error, please check your connection and try again
+                </div>
             )}
             <TitleHeader>
-                <Title>Review scope change request</Title>
+                <Title>{data?.title}</Title>
                 <Button
                     variant="ghost_icon"
                     onClick={() => setEditMode(!editMode)}
                     disabled={!scopeChangeAccess.canPatch}
                 >
+                    <IconMenu
+                        items={[
+                            {
+                                label: 'Void request',
+                            },
+                        ]}
+                    />
+                    <Divider />
                     <Icon
                         color={
                             scopeChangeAccess.canPatch
@@ -96,6 +108,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                     requestAccess: scopeChangeAccess,
                     signableCriterias: workflowAccess.signableCriterias,
                     refetch: refetchScopeChange,
+                    canAddContributor: workflowAccess.canAddContributor,
                 }}
             >
                 {data && (
@@ -123,13 +136,16 @@ const TitleHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 0rem 0.5rem;
+`;
+
+const Divider = styled.div`
+    width: 0.3rem;
 `;
 
 const Loading = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 650px;
+    width: 1200px;
     height: 100vh;
 `;

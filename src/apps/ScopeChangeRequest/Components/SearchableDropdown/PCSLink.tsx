@@ -1,6 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useHttpClient } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
@@ -120,7 +119,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                 <Inline>
                     <div
                         style={{
-                            width: '653.75px',
+                            width: '-webkit-fill-available',
                             borderBottom: '5px solid #6F6F6F',
                             fontSize: '16px',
                         }}
@@ -146,7 +145,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                             }}
                             defaultOptions={false}
                             components={applyEdsComponents()}
-                            isMulti
+                            isMulti={true}
                             placeholder={`Type to search..`}
                             isClearable={false}
                             value={relatedObjects}

@@ -11,21 +11,29 @@ interface SelectOption {
 interface PCSLinkProps {
     person: SelectOption | null;
     setPerson: React.Dispatch<React.SetStateAction<SelectOption | null>>;
+    isDisabled?: boolean;
 }
 
-export const PCSPersonSearch = ({ person, setPerson }: PCSLinkProps): JSX.Element => {
+export const PCSPersonSearch = ({ person, setPerson, isDisabled }: PCSLinkProps): JSX.Element => {
     const loadOptions = async (inputValue: string, callback: (options: SelectOption[]) => void) => {
         callback(await searchPcs(inputValue, 'person'));
     };
 
     return (
         <>
-            <div style={{ width: '600px', borderBottom: '5px solid #6F6F6F', fontSize: '16px' }}>
+            <div
+                style={{
+                    width: '-webkit-fill-available',
+                    borderBottom: '5px solid #6F6F6F',
+                    fontSize: '16px',
+                }}
+            >
                 <AsyncSelect
                     cacheOptions={false}
                     loadOptions={loadOptions}
                     defaultOptions={false}
                     value={person}
+                    isDisabled={isDisabled}
                     styles={applyEdsStyles()}
                     controlShouldRenderValue={true}
                     components={{ ...applyEdsComponents() }}

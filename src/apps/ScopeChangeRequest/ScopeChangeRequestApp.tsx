@@ -21,10 +21,142 @@ export function setup(appApi: ClientApi): void {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const projectName = 'L.O532C.002';
         // const projectId = 177433
-        const { scopeChange } = httpClient();
-        const response = await scopeChange.fetch(`api/scope-change-requests`);
+        // const { scopeChange } = httpClient();
+        // const response = await scopeChange.fetch(`api/scope-change-requests`);
 
-        return JSON.parse(await response.text());
+        // return JSON.parse(await response.text());
+
+        return [
+            {
+                actualChangeHours: 2,
+                attachments: [],
+                category: 'Hidden carryover',
+                commissioningPackages: [],
+                createdAtUtc: new Date().toDateString(),
+                createdBy: {
+                    firstName: 'gustav',
+                    lastName: 'Eikaas',
+                    id: '1212',
+                    oid: '1212121221',
+                },
+                description:
+                    'test Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras consequat mauris ultrices magna dignissim rutrum. Proin eget quam tristique, feugiat ipsum ac, venenatis eros. Nullam egestas rhoncus sapien. Nam at magna et velit mattis accumsan id at lorem. In volutpat rutrum augue, in fringilla odio imperdiet non. Integer hendrerit condimentum augue. Aliquam feugiat eu libero eget porta. Vivamus nec nulla at nisl euismod elementum a sed libero. Praesent rhoncus justo nec diam imperdiet molestie. Morbi condimentum posuere tempor. Etiam vitae lorem dictum, imperdiet dui eu, pulvinar eros. Proin bibendum libero lorem, non scelerisque turpis sodales a. Fusce eget arcu nulla.',
+                documents: [],
+                estimatedChangeHours: 2,
+                guesstimateDescription: 'test',
+                guesstimateHours: 2,
+                id: '1212',
+                isVoided: false,
+                modifiedAtUtc: new Date().toDateString(),
+                modifiedBy: {
+                    firstName: 'gustav',
+                    lastName: 'Eikaas',
+                    id: '1212',
+                    oid: '1212121221',
+                },
+                originSource: 'DCN',
+                phase: 'IC phase',
+                state: 'Open',
+                systems: [],
+                tags: [
+                    {
+                        procosysId: '12112',
+                    },
+                    {
+                        procosysId: '124122',
+                    },
+                    {
+                        procosysId: '62122',
+                    },
+                    {
+                        procosysId: '17122',
+                    },
+                    {
+                        procosysId: '172122',
+                    },
+                    {
+                        procosysId: '12672',
+                    },
+                    {
+                        procosysId: '78876',
+                    },
+                    {
+                        procosysId: '145122',
+                    },
+                    {
+                        procosysId: '1454522',
+                    },
+                    {
+                        procosysId: '45122',
+                    },
+                ],
+                title: 'Scope change',
+                workflowSteps: [
+                    {
+                        contributors: [
+                            {
+                                contribution: null,
+                                createdAtUtc: null,
+                                id: '12313',
+                                person: {
+                                    firstName: 'Gustav',
+                                    lastName: 'Eikaas',
+                                    id: '1212',
+                                    oid: '1212121221',
+                                },
+                                instructionsToContributor: 'Give input',
+                            },
+                        ],
+                        criterias: [
+                            {
+                                id: '121212',
+                                signedAtUtc: null,
+                                signedBy: {},
+                                signedComment: null,
+                                signedState: null,
+                                type: 'RequireProcosysUserSignature',
+                                value: 'Guei@equinor.com',
+                            },
+                            {
+                                id: '12122222',
+                                signedAtUtc: null,
+                                signedBy: {},
+                                signedComment: null,
+                                signedState: null,
+                                type: 'RequireProcosysUserSignature',
+                                value: 'Guei@equinor.com',
+                            },
+                        ],
+                        id: '12121212',
+                        isCompleted: false,
+                        isCurrent: true,
+                        name: 'Review by engineering',
+                        order: 0,
+                    },
+                    {
+                        contributors: [],
+                        criterias: [
+                            {
+                                id: '22211|213',
+                                signedAtUtc: null,
+                                signedBy: {},
+                                signedComment: null,
+                                signedState: null,
+                                type: 'RequireProcosysGroupSignature',
+                                value: 'Construction_Role',
+                            },
+                        ],
+                        id: '1212112',
+                        isCompleted: false,
+                        isCurrent: false,
+                        name: 'Review by engineering',
+                        order: 1,
+                    },
+                ],
+                currentWorkflowStep: [],
+                originSourceId: '12121212',
+            },
+        ];
     });
 
     const scopeChangeExcludeKeys: (keyof ScopeChangeRequest)[] = [
