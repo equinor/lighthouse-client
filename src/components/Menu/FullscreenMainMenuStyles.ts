@@ -158,6 +158,28 @@ export const Link = styled(ReactLink)`
         active ? `${tokens.colors.interactive.primary__hover_alt.rgba}` : ''};
 `;
 
+export const MenuItemExternalLink = styled.a`
+    text-decoration: none;
+    color: ${({ disabled }: LinkProps) =>
+        disabled
+            ? tokens.colors.interactive.disabled__text.rgba
+            : tokens.colors.interactive.primary__hover.rgba};
+    flex-grow: 1;
+    text-decoration: none;
+    display: flex;
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    padding-left: 2.5rem;
+    font-size: 16px;
+    cursor: ${({ disabled }: LinkProps) => (disabled ? 'default' : 'pointer')};
+    :hover {
+        background-color: ${({ disabled }: MenuProps) =>
+            disabled ? 'none' : `${tokens.colors.interactive.primary__hover_alt.rgba}`};
+    }
+    background: ${({ active }: LinkProps) =>
+        active ? `${tokens.colors.interactive.primary__hover_alt.rgba}` : ''};
+`;
+
 export const HeaderLink = styled(ReactLink)`
     display: flex;
     flex-direction: row;

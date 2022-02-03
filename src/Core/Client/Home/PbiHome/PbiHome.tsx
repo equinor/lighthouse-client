@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 import { tokens } from '@equinor/eds-tokens';
 import { NetworkError } from '@equinor/http-client';
 import { useHttpClient } from '@equinor/portal-client';
-import { Embed, IReportEmbedConfiguration, models, Report, service } from 'powerbi-client';
+import { Embed, IReportEmbedConfiguration, models, service } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
 import { useEffect, useState } from 'react';
@@ -197,22 +198,8 @@ export const PowerBIHome = ({
     options,
 }: PowerBiHomeProps): JSX.Element => {
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
-    const [report, setReport] = useState<Report>();
 
-    //TODO custom loading
     const eventHandlersMap = new Map([
-        [
-            'loaded',
-            function () {
-                console.log('Report has loaded');
-            },
-        ],
-        [
-            'rendered',
-            async function () {
-                console.log('Report has rendered');
-            },
-        ],
         [
             'error',
             function (event?: service.ICustomEvent<any>) {
@@ -240,11 +227,6 @@ export const PowerBIHome = ({
                         embedConfig={config}
                         eventHandlers={eventHandlersMap}
                         getEmbeddedComponent={(embedObject: Embed) => {
-                            console.log(
-                                `Embedded object of type "${embedObject.embedtype}" received`
-                            );
-
-                            setReport(embedObject as Report);
                             window['report'] = embedObject;
                         }}
                         cssClassName="pbiEmbed"
