@@ -6,7 +6,7 @@ export enum ChartNames {
     YAXISID = 'acc',
 }
 
-export const chartoptions = (title: string): ChartOptions => ({
+export const chartoptions = (title?: string): ChartOptions => ({
     maintainAspectRatio: false,
     responsive: true,
     plugins: {
