@@ -5,9 +5,9 @@ import { Column, TableData } from '../types';
 export const createDefaultColumn = <T extends TableData>(
     props?: TableOptions<T>
 ): Partial<Column<T>> => ({
-    minWidth: 30,
+    minWidth: 100,
     width: 150,
-    maxWidth: 500,
+    maxWidth: window.innerWidth - 85,
 
     ...(props?.defaultColumn || {}),
 });
