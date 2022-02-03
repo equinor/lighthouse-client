@@ -7,7 +7,7 @@ export const createDefaultColumn = <T extends TableData>(
 ): Partial<Column<T>> => ({
     minWidth: 100,
     width: 150,
-    maxWidth: window.innerWidth - 85,
+    maxWidth: window.innerWidth - 90,
 
     ...(props?.defaultColumn || {}),
 });
