@@ -37,7 +37,6 @@ export const generateCustomColumn = <D extends TableData>(
             customWidth !== undefined
                 ? customWidth
                 : (minimumTableWidth - totalCustomColumnWidth) / columnCount,
-        maxWidth: minimumTableWidth,
         Cell: findCustomCell(key, customCellView),
         aggregate: 'count',
         Aggregated: (cell) => {
@@ -71,7 +70,6 @@ export const generateArrayColumn = <D extends TableData>(
             customWidth !== undefined
                 ? customWidth
                 : (minimumTableWidth - totalCustomColumnWidth) / columnCount,
-        maxWidth: minimumTableWidth,
         aggregate: 'count',
         Cell: ({ value }) => {
             return `items(${value})`;
@@ -110,7 +108,6 @@ export const generateOthersColumn = <D extends TableData>(args: GenerateColumnAr
             customWidth !== undefined
                 ? customWidth
                 : (minimumTableWidth - totalCustomColumnWidth) / columnCount,
-        maxWidth: minimumTableWidth,
         aggregate: 'count',
         Aggregated: (cell) => {
             return (

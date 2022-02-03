@@ -23,6 +23,11 @@ export const generateHeaderKeys = <D extends TableData>(
             column.width !== undefined ? column.width : 0;
         return column;
     });
+    options?.customColumns?.map((column) => {
+        totalCustomColumnWidth = totalCustomColumnWidth +=
+            typeof column.width === 'number' ? column.width : 0;
+        return column;
+    });
 
     const defaultColumns: Column<D>[] = Object.keys(headerItem).map((key): Column<D> => {
         const columnsWithCustomWidth = options?.headers?.filter(
@@ -32,7 +37,8 @@ export const generateHeaderKeys = <D extends TableData>(
             Object.keys(headerItem).length +
             (options?.customColumns?.length !== undefined ? options?.customColumns.length : 0) -
             (options?.hiddenColumnsCount !== undefined ? options?.hiddenColumnsCount : 0) -
-            (columnsWithCustomWidth !== undefined ? columnsWithCustomWidth : 0);
+            (columnsWithCustomWidth !== undefined ? columnsWithCustomWidth : 0) -
+            (options?.customColumns?.length !== undefined ? options?.customColumns.length : 0);
         const customWidth = findCustomColumnWidth(key, options?.headers);
         if (hasCustomCell(key, options?.customCellView)) {
             return generateCustomColumn({
