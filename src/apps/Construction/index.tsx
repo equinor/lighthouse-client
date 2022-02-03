@@ -117,12 +117,12 @@ export function setup(appApi: ClientApi): void {
                     //Find all workorders that have status W01, W02 or W03
 
                     const filter = ['W01', 'W02', 'W03'];
-                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatus));
+                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatus ?? ''));
 
                     // Find all the first filtered WOs that are due in one week or less
 
                     const secondFiltered = firstFiltered.filter(
-                        (wo) => weekDiff(new Date(wo.plannedStartupDate)).days <= 42
+                        (wo) => weekDiff(new Date(wo.plannedStartupDate ?? new Date())).days <= 42
                     );
 
                     return secondFiltered.length.toString();

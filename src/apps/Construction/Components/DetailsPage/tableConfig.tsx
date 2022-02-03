@@ -31,7 +31,7 @@ export const cols: Column<WorkOrder>[] = [
                 id: 'W01-WOs',
                 Header: 'WOs',
                 width: 80,
-                accessor: (row) => row.sourceIdentity,
+                accessor: (row) => row.workOrderNo,
                 aggregate: 'count',
                 Aggregated: ({
                     row,
@@ -91,7 +91,7 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.sourceIdentity;
+                    return item.workOrderNo ?? '';
                 },
                 Aggregated: ({
                     row,
@@ -154,7 +154,7 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.sourceIdentity;
+                    return item.workOrderNo ?? '';
                 },
                 aggregate: 'count',
                 Aggregated: ({
@@ -217,7 +217,7 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.sourceIdentity;
+                    return item.workOrderNo ?? '';
                 },
                 Aggregated: ({
                     row,
@@ -281,7 +281,7 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.sourceIdentity;
+                    return item.workOrderNo ?? '';
                 },
                 Aggregated: ({
                     row,
@@ -344,7 +344,7 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.sourceIdentity;
+                    return item.workOrderNo ?? '';
                 },
                 Aggregated: ({
                     row,
@@ -407,7 +407,7 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.sourceIdentity;
+                    return item.workOrderNo ?? '';
                 },
                 Aggregated: ({
                     row,
@@ -470,7 +470,7 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 80,
                 accessor: (item: WorkOrder): string => {
-                    return item.sourceIdentity;
+                    return item.workOrderNo;
                 },
                 Aggregated: ({
                     row,
@@ -533,7 +533,7 @@ export const cols: Column<WorkOrder>[] = [
                 Header: 'WOs',
                 width: 100,
                 accessor: (item: WorkOrder): string => {
-                    return item.responsible;
+                    return item.responsible ?? '';
                 },
                 aggregate: 'count',
                 Footer: (data: React.PropsWithChildren<TableInstance<WorkOrder>>): JSX.Element => {

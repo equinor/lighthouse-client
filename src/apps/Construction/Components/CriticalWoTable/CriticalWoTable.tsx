@@ -3,7 +3,6 @@ import { Fragment, useEffect, useState } from 'react';
 import { createWoStatusMap, filterWoMap } from './utils';
 import { WoNumbersDisplay } from './components/WoNumbers';
 import { SingleSelect } from '@equinor/eds-core-react';
-import { CustomVisualArgs } from '@equinor/Diagrams';
 import { WorkOrder } from '../../Types';
 
 const Container = styled.div`
