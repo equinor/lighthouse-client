@@ -4,5 +4,8 @@ export interface SidesheetState<T> {
     SidesheetComponent?: React.FC<T>;
     props?: T;
     isPinned?: true;
-    //config
+    isMinimized: boolean;
+    minWidth: number;
+    defaultWidth: number;
+    width: number;
 }

@@ -1,14 +1,16 @@
-import { SwcrPackage } from '../models/SwcrPackage';
-import styled from 'styled-components';
-import { Chip, Button } from '@equinor/eds-core-react';
-import useSignatures from '../hooks/useSignatures';
+import { Button, Chip } from '@equinor/eds-core-react';
 import { Fragment } from 'react';
+import styled from 'styled-components';
+import useSignatures from '../hooks/useSignatures';
+import { SwcrPackage } from '../models/SwcrPackage';
 
 const SideSheetContainer = styled.div`
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     padding: 16px;
+    overflow: scroll;
+    height: -webkit-fill-available;
 `;
 
 const TextBlock = styled.div`
