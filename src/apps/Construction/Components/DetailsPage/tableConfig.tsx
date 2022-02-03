@@ -1,5 +1,5 @@
 import { CellProps, Column, TableInstance } from '@equinor/Table';
-import { WorkOrder } from '../../mocData/mockData';
+import { WorkOrder } from '../../Types';
 import {
     SumColumnFooter,
     SumColumnFooterCount,

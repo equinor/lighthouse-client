@@ -1,10 +1,10 @@
-import { ChartDataset } from 'chart.js';
 import { interpolateBlues } from 'd3-scale-chromatic';
 import { DateTime } from 'luxon';
-import { WorkOrder } from '../../../../apps/Construction/mocData/mockData';
-import { themeColors } from '../Visuals/ConstructionVisual/theme';
-import { ChartNames } from '../Visuals/ConstructionVisual/Utils/config';
+import { WorkOrder } from '../../../Types';
+import { themeColors } from '../theme';
+import { CreateSeriesArgs, Series } from '../Types';
 import { interpolateColors } from './colorGenerator';
+import { ChartNames } from './config';
 /**
  * Creates a set of unique dates
  * Which can be used as categories for Apexcharts
@@ -58,24 +58,6 @@ export const createCategoriesMap = (categories: string[]): Record<string, number
         map[item] = 0;
         return map;
     }, {});
-};
-
-type Series = Partial<Omit<ChartDataset<'bar' | 'line'>, 'data'>> & {
-    label: string;
-    data: number[];
-    yAxisID?: string;
-    borderDash?: number[];
-    pointBackgroundColor?: string;
-};
-
-type CreateSeriesArgs = {
-    data: WorkOrder[];
-    categories: string[];
-    options: {
-        accumulated?: boolean;
-        dateLimit?: Date;
-        lastWoStatus?: string;
-    };
 };
 
 export const createSeries = ({

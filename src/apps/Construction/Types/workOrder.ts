@@ -1,16 +1,3 @@
-export type JobStatuses = {
-    status: string;
-    weekUpdated: Date;
-};
-export type Job = {
-    discipline: string;
-    disciplineDescription: string;
-    job: string;
-    jobName: string;
-    jobStatus: string;
-    jobEstimatedHours: number;
-    jobStatuses: JobStatuses[];
-};
 export type WorkOrder = {
     actualCompletionDate: string;
     actualStartupDate: string | null;
@@ -47,7 +34,4 @@ export type WorkOrder = {
     updatedDate: string;
     workOrderNo: string;
     workOrderType: string;
-};
-export type WorkOrderApi = {
-    items: WorkOrder[];
 };

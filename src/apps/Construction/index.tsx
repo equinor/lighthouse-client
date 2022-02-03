@@ -1,23 +1,24 @@
-import { AnalyticsOptions, SidesheetContent, themeColors } from '@equinor/Diagrams';
+import { AnalyticsOptions } from '@equinor/Diagrams';
+import { baseClient } from '@equinor/http-client';
 import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
-import { baseClient } from '../../Core/httpClient/src';
-import { CriticalWoTable } from './Components';
-import { cols } from './Components/DetailsPage/tableConfig';
-import { WorkOrder } from './mocData/mockData';
+import {
+    cols,
+    ConstructionVisual,
+    CriticalWoTable,
+    SidesheetContent,
+    themeColors,
+} from './Components';
+import { WorkOrder } from './Types';
 import { weekDiff } from './Utils';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
     section1: {
         chart1: {
-            type: 'constructionChart',
+            type: 'customVisual',
             options: {
-                timeChartOptions: {
-                    categoriesKey: 'jobStatusCutoffs',
-                    title: 'Job Statuses',
-                    type: 'column',
-                },
-                title: 'Job Statuses',
+                component: ConstructionVisual,
+                componentProps: { title: 'Job Statuses' },
             },
         },
     },
@@ -41,13 +42,20 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
                 colors: [...themeColors.bar],
             },
         },
-        chart3: {
+        chart2: {
             type: 'customVisual',
             options: {
                 component: CriticalWoTable,
                 componentProps: { enableGrouping: true, initialGroupBy: 'discipline' },
             },
         },
+        // chart3: {
+        //     type: 'customVisual',
+        //     options: {
+        //         component: CriticalWoTable,
+        //         componentProps: { enableGrouping: true, initialGroupBy: 'discipline' },
+        //     },
+        // },
     },
 };
 const detailsPage: AnalyticsOptions<WorkOrder> = {
