@@ -1,7 +1,8 @@
+import { ColDef } from '@ag-grid-enterprise/all-modules';
 import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
-import { ColDef } from 'ag-grid-enterprise';
+
 import React from 'react';
 import {
     CustomView,
