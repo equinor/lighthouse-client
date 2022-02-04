@@ -9,6 +9,7 @@ export interface DataState {
     title: string;
     data: any[];
     instance: DashboardInstance<unknown>;
+    isLoading: boolean;
 }
 interface DataContextState extends DataState {
     getData: VoidFunction;
@@ -28,7 +29,8 @@ export function Reducer(state: DataState, action: Action): DataState {
             return { ...state, data: action.data };
         case getType(actions.setInstance):
             return { ...action.instance };
-
+        case getType(actions.setLoading):
+            return { ...state, isLoading: action.isLoading };
         default:
             return state;
     }
@@ -38,25 +40,40 @@ export const DataProvider = ({ children, dashboardId }: DataProviderProps): JSX.
     const instance = useDashboard(dashboardId);
 
     const { title } = instance;
-    const [state, dispatch] = useReducer(Reducer, { instance, data: [], dashboardId, title });
+    const [state, dispatch] = useReducer(Reducer, {
+        instance,
+        data: [],
+        dashboardId,
+        title,
+        isLoading: false,
+    });
 
     const getData = useCallback(async () => {
+        dispatch(actions.setLoading(true));
         if (instance.dataSource) {
-            const data = await instance.dataSource();
-            if (instance.validator) {
-                dispatch(actions.setData(instance.validator(data)));
-                return;
+            try {
+                const data = await instance.dataSource();
+                if (instance.validator) {
+                    dispatch(actions.setData(instance.validator(data)));
+                    return;
+                }
+                // eslint-disable-next-line no-console
+                console.warn(
+                    `Data may not be valid. Data validator is not registered for ${instance.title}.`
+                );
+                dispatch(actions.setData(data));
+            } catch {
+                //TODO: Error handling, e.g. toaster
+                //dispatch(actions.setLoading(false));
+            } finally {
+                dispatch(actions.setLoading(false));
+                console.timeEnd('pre filter');
             }
-            // eslint-disable-next-line no-console
-            console.warn(
-                `Data may not be valid. Data validator is not registered for ${instance.title}.`
-            );
-            dispatch(actions.setData(data));
         }
     }, [instance]);
 
     useEffect(() => {
-        dispatch(actions.setInstance({ instance, data: [], dashboardId, title }));
+        dispatch(actions.setInstance({ instance, data: [], dashboardId, title, isLoading: true }));
     }, [dashboardId, instance, title]);
 
     return (
