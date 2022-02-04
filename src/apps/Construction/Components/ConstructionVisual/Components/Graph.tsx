@@ -1,25 +1,21 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { TimeDimension } from '../../../Utils/createTime';
 import { ConstructionGraphProps } from '../Types/constructionVisualOptions';
-import {
-    createSeries,
-    sortCategories,
-    createUniqueCategories,
-    renameCategories,
-} from '../../../Utils/cutoffUtils';
-import { WorkOrder } from '../../../../../../apps/Construction/mocData/mockData';
-import { openSidesheet } from '../../../../../Sidesheet/Functions';
 import { Chart as ChartJS, ChartData, registerables } from 'chart.js';
 import { Chart as ReactChart, getDatasetAtEvent, getElementsAtEvent } from 'react-chartjs-2';
 import zoomPlugin from 'chartjs-plugin-zoom';
-import { SidesheetContent } from '../../../Components';
 import { htmlLegendPlugin } from '../Utils/htmlLegendPlugin';
 import { ChartNames, chartoptions } from '../Utils/config';
+import { createSeries, createUniqueCategories, renameCategories, sortCategories } from '../Utils';
+import { WorkOrder } from '../../../Types';
+import { openSidesheet } from '@equinor/sidesheet';
+import { TimeDimension } from '@equinor/Diagrams';
+import { SidesheetContent } from '../../SidesheetContent';
 ChartJS.register(...registerables, zoomPlugin);
 
 export function Graph<T extends unknown>({
     data,
-    options: { title, timeChartOptions, colors, defaultTime, accumulative },
+    title,
+    defaultTime,
 }: ConstructionGraphProps<T>): JSX.Element {
     const [time, setTime] = useState<TimeDimension>(defaultTime || 'week');
 
@@ -34,7 +30,7 @@ export function Graph<T extends unknown>({
                 categories: sortedCategories,
                 options: {},
             }),
-        [data, sortedCategories, accumulative]
+        [data, sortedCategories]
     );
 
     const renamedCategories = renameCategories(sortedCategories);

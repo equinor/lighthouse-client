@@ -1,4 +1,3 @@
-import { ConstructionGraphOptions } from '..';
 import { BarChartOptions } from '../Visuals/BarVisual/Types/barVisualOptions';
 import { HorizontalBarChartOptions } from '../Visuals/HorizontalBarVisual/Types/barVisualOptions';
 import { LineChartOptions } from '../Visuals/LineVisual/LineChartVisual';
@@ -17,11 +16,6 @@ interface LineChart<T> {
 interface ControlledTimeBarChart<T> {
     type: 'timeBarChart';
     options: TimeBarChartOptions<T>;
-}
-
-interface ConstructionChart<T> {
-    type: 'constructionChart';
-    options: ConstructionGraphOptions<T>;
 }
 
 interface Table<T> {
@@ -45,7 +39,7 @@ export type CustomVisualArgs<T> = {
     [x: string]: unknown;
 };
 interface CustomVisualOptions<T> {
-    component: React.FC<CustomVisualArgs<T>>;
+    component: React.ComponentType<CustomVisualArgs<T>>;
     componentProps?: { [x: string]: unknown };
 }
 interface Default {
@@ -59,7 +53,6 @@ export type Options<T> =
     | CustomVisual<T>
     | HorizontalBarChart<T>
     | Table<T>
-    | ConstructionChart<T>
     | Default;
 
 interface Section<T> {
