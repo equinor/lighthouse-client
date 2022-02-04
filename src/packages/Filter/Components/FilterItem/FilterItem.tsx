@@ -41,7 +41,7 @@ export const FilterItemComponent = ({
                         debouncedFilterItemCheck(filterItem, true);
                     }}
                 >
-                    {filterItem.value}
+                    {filterItem.value.toString()}
                 </FilterItemLabel>
             </FilterItemGroupe>
             <Count>({count})</Count>
