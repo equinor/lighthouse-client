@@ -186,9 +186,9 @@ export function setup(appApi: ClientApi): void {
         title: 'Checklists',
         reportURI: 'jca-checklist',
     });
-    construction.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
+    construction.registerFusionPowerBi('jca-punch-analytics', {
         title: 'Punch',
-        reportURI: 'punch-analytics-rls',
+        reportURI: 'jca-punch-analytics',
     });
     construction.registerFusionPowerBi('jca-handover-analytics', {
         title: 'Handover',
