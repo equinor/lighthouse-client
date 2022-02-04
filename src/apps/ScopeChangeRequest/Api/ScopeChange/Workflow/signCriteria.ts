@@ -1,6 +1,6 @@
-import { httpClient } from '../../../Core/Client/Functions/HttpClient';
+import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 
-export async function patchWorkflowStep(
+export async function signCriteria(
     requestId: string,
     stepId: string,
     criteriaId: string,

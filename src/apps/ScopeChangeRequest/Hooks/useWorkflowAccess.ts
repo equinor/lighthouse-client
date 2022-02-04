@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { canSign } from '../Api/ScopeChange/Access/canSign';
-import { canAddContributor as apiCanAddContributor } from '../Api/ScopeChange/Access/canManageContributors';
+import { canSign } from '../Api/ScopeChange/Access/';
+import { canAddContributor as apiCanAddContributor } from '../Api/ScopeChange/Access/Workflow/canManageContributors';
 
 interface WorkflowAccess {
     signableCriterias: Criteria[] | undefined;

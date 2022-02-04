@@ -1,5 +1,4 @@
 import { Button, Progress } from '@equinor/eds-core-react';
-import React, { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { initiateScopeChange } from '../../../../../Api/ScopeChange/initiateScopeChange';
 import { useScopeChangeAccessContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
@@ -13,16 +12,11 @@ export function RequestDraftActions(): JSX.Element {
         mutateAsync: initiate,
     } = useMutation(onInitiate);
 
-    const { requestAccess, request, performingAction, setPerformingAction } =
-        useScopeChangeAccessContext();
+    const { requestAccess, request } = useScopeChangeAccessContext();
 
     async function onInitiate(): Promise<void> {
         await initiateScopeChange(request);
     }
-
-    useEffect(() => {
-        setPerformingAction(initiateLoading);
-    }, [initiateLoading, setPerformingAction]);
 
     return (
         <div>
@@ -34,7 +28,7 @@ export function RequestDraftActions(): JSX.Element {
                 <Button
                     onClick={() => initiate()}
                     variant="outlined"
-                    disabled={performingAction || !requestAccess.canPatch}
+                    disabled={!requestAccess.canPatch}
                 >
                     {initiateLoading ? (
                         <Progress.Dots color="primary" />

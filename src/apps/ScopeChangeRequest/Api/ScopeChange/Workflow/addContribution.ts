@@ -1,6 +1,6 @@
-import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
+import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 
-export async function postContribution(
+export async function addContribution(
     requestId: string,
     stepId: string,
     contributorId: string,

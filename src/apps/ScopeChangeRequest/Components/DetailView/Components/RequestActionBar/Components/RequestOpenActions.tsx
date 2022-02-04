@@ -2,10 +2,9 @@ import { Button, Progress, TextField } from '@equinor/eds-core-react';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
-import { patchWorkflowStep } from '../../../../../Api';
-import { postContribution } from '../../../../../Api/ScopeChange/postContribution';
+import { signCriteria } from '../../../../../Api/ScopeChange/Workflow/signCriteria';
+import { addContribution as postContribution } from '../../../../../Api/ScopeChange/Workflow/addContribution';
 import { useScopeChangeAccessContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { Field } from '../../Field';
 import { CriteriaSelector } from './CriteriaSelector';
 import { ButtonContainer } from './RequestActionBar';
 import { spawnConfirmationDialog } from '../../../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
@@ -14,14 +13,7 @@ import { VoidRequestButton } from './VoidRequestButton';
 export function RequestOpenActions(): JSX.Element {
     const [selectedCriteria, setSelectedCriteria] = useState<string>();
     const [comment, setComment] = useState<string | undefined>(undefined);
-    const {
-        request,
-        performingAction,
-        refetch,
-        setPerformingAction,
-        contributionId,
-        signableCriterias,
-    } = useScopeChangeAccessContext();
+    const { request, refetch, contributionId, signableCriterias } = useScopeChangeAccessContext();
 
     const refresh = { onSuccess: async () => setTimeout(async () => await refetch(), 500) };
 
@@ -46,14 +38,13 @@ export function RequestOpenActions(): JSX.Element {
     }, [signableCriterias]);
 
     async function onSignStep() {
-        setPerformingAction(true);
         if (selectedCriteria && request.currentWorkflowStep) {
             const currentStepId = request.currentWorkflowStep.id;
             const unsignedCriterias = request.currentWorkflowStep.criterias.filter(
                 (x) => x.signedAtUtc === null
             );
             const sign = async () => {
-                await patchWorkflowStep(request.id, currentStepId, selectedCriteria, comment);
+                await signCriteria(request.id, currentStepId, selectedCriteria, comment);
             };
             if (
                 request.currentWorkflowStep.contributors &&
@@ -70,11 +61,9 @@ export function RequestOpenActions(): JSX.Element {
             }
             setComment('');
         }
-        setPerformingAction(false);
     }
 
     async function onSendContribution() {
-        setPerformingAction(true);
         if (!contributionId) return;
         if (request.currentWorkflowStep) {
             await postContribution(
@@ -85,7 +74,6 @@ export function RequestOpenActions(): JSX.Element {
             );
             setComment('');
         }
-        setPerformingAction(false);
     }
 
     return (
@@ -115,19 +103,13 @@ export function RequestOpenActions(): JSX.Element {
                 <VoidRequestButton />
                 <Inline>
                     {signError && <div>Something went wrong</div>}
-                    <Button
-                        disabled={!selectedCriteria || performingAction}
-                        onClick={async () => await onSign()}
-                    >
+                    <Button disabled={!selectedCriteria} onClick={async () => await onSign()}>
                         {signLoading ? <Progress.Dots color="primary" /> : <div>Sign</div>}
                     </Button>
 
                     {contributeError && <div>Something went wrong</div>}
                     {contributionId && (
-                        <Button
-                            onClick={async () => await onContribute()}
-                            disabled={performingAction}
-                        >
+                        <Button onClick={async () => await onContribute()}>
                             {contributeLoading ? (
                                 <Progress.Dots color="primary" />
                             ) : (

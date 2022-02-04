@@ -1,4 +1,4 @@
-import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
+import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 
 interface ReassignBody {
     type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 interface WorkflowIconProps {
     status: WorkflowStatus;
-    number: number | string;
+    number?: number | string;
 }
 
 type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';

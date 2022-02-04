@@ -1,5 +1,5 @@
-import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { checkOptionsRequest } from './optionsRequestChecker';
+import { httpClient } from '../../../../../../Core/Client/Functions/HttpClient';
+import { checkOptionsRequest } from '../optionsRequestChecker';
 
 export async function canContribute(
     requestId: string,

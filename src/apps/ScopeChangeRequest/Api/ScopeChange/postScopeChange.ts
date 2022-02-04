@@ -1,5 +1,5 @@
 import { HttpClient } from '@equinor/http-client';
-import { ScopeChangeRequestFormModel } from '../Types/scopeChangeRequest';
+import { ScopeChangeRequestFormModel } from '../../Types/scopeChangeRequest';
 
 export async function postScopeChange(
     scopeChange: ScopeChangeRequestFormModel,

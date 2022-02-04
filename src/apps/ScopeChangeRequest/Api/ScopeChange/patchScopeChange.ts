@@ -1,5 +1,5 @@
-import { httpClient } from '../../../Core/Client/Functions/HttpClient';
-import { ScopeChangeRequestFormModel } from '../Types/scopeChangeRequest';
+import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
+import { ScopeChangeRequestFormModel } from '../../Types/scopeChangeRequest';
 
 export async function patchScopeChange(request: ScopeChangeRequestFormModel): Promise<string> {
     const { scopeChange } = httpClient();

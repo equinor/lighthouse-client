@@ -1,5 +1,5 @@
-import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { checkOptionsRequest } from './optionsRequestChecker';
+import { httpClient } from '../../../../../../Core/Client/Functions/HttpClient';
+import { checkOptionsRequest } from '../optionsRequestChecker';
 
 export async function canAddContributor(requestId: string, stepId: string): Promise<boolean> {
     const { scopeChange } = httpClient();

@@ -1,4 +1,4 @@
-import { HttpClient } from '@equinor/http-client';
+import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 
 interface ContributorBody {
     instructionsToContributor: string;
@@ -9,9 +9,10 @@ export const addContributor = async (
     azureOid: string,
     requestId: string,
     stepId: string,
-    client: HttpClient,
     contributorTitle: string
 ): Promise<void> => {
+    const { scopeChange } = httpClient();
+
     const payload: ContributorBody = {
         instructionsToContributor: contributorTitle,
         oid: azureOid,
@@ -21,7 +22,7 @@ export const addContributor = async (
         body: JSON.stringify(payload),
     };
 
-    await client.fetch(
+    await scopeChange.fetch(
         `api/scope-change-requests/${requestId}/workflow/step/${stepId}/contributors`,
         requestOptions
     );

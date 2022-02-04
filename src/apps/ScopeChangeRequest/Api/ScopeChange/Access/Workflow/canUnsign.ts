@@ -1,7 +1,7 @@
-import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { checkOptionsRequest } from './optionsRequestChecker';
+import { httpClient } from '../../../../../../Core/Client/Functions/HttpClient';
+import { checkOptionsRequest } from '../optionsRequestChecker';
 
-export async function canSign(
+export async function canUnsign(
     requestId: string,
     stepId: string,
     criteriaId: string
@@ -14,7 +14,7 @@ export async function canSign(
 
     const check = () =>
         scopeChange.fetch(
-            `api/scope-change-requests/${requestId}/workflow/step/${stepId}/sign/${criteriaId}`,
+            `api/scope-change-requests/${requestId}/workflow/step/${stepId}/unsign/${criteriaId}`,
             requestOptions
         );
 

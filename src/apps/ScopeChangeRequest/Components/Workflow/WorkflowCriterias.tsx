@@ -2,10 +2,10 @@ import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 
-import { Button, Icon, Progress, TextField } from '@equinor/eds-core-react';
+import { Icon, Progress } from '@equinor/eds-core-react';
 import { Criteria, WorkflowStep } from '../../Types/scopeChangeRequest';
 import { SelectOption } from '../../Api/Search/PCS';
-import { reassignCriteria } from '../../Api/ScopeChange/reassignPerson';
+import { reassignCriteria } from '../../Api/ScopeChange/Workflow';
 import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { useConditionalRender } from '../../Hooks/useConditionalRender';
 import { useLoading } from '../../Hooks/useLoading';
@@ -16,8 +16,10 @@ import { IconMenu } from '../MenuButton/Components/IconMenu';
 import { CriteriaDetail } from './CriteriaDetail';
 import { MenuItem } from '../MenuButton/Types/menuItem';
 import { CriteriaActions } from './Types/actions';
-import { useHttpClient } from '../../../../Core/Client/Hooks';
-import { addContributor as postContributor } from '../../Api/addContributor';
+import { AddContributor } from './AddContributor';
+import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { signCriteria } from '../../Api/ScopeChange/Workflow';
+import { SignWithComment } from './SignWithComment';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -26,51 +28,42 @@ interface WorkflowCriteriasProps {
 
 export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): JSX.Element => {
     const [person, setPerson] = useState<SelectOption | null>(null);
-    const [contributor, setContributor] = useState<SelectOption | null>(null);
-    const { canAddContributor } = useScopeChangeAccessContext();
-    const [textField, setTextField] = useState<string | undefined>(undefined);
-    const { scopeChange } = useHttpClient();
 
-    const { Loading: ConfirmContributor } = useLoading(<Button>Add</Button>, contributor !== null);
-
-    const { Loading: AddComment } = useLoading(
-        <TextField id="textField" />,
-        contributor !== null || person !== null
-    );
+    const { refetch, request } = useScopeChangeAccessContext();
+    const [signComment, setSignComment] = useState<string>('');
 
     useEffect(() => {
         if (person) {
-            setPerformingAction(true);
-            reassign({ type: 'RequireProcosysUserSignature', value: person.value });
+            reassignMutation({ type: 'RequireProcosysUserSignature', value: person.value });
             setPerson(null);
-            setPerformingAction(false);
         }
     }, [person]);
 
-    async function createContributor() {
-        if (!contributor?.value || !request.currentWorkflowStep?.id || !textField) return;
-        await postContributor(
-            contributor.value,
-            request.id,
-            request.currentWorkflowStep?.id,
-            scopeChange,
-            textField
-        );
+    async function onSignStep() {
+        if (request.currentWorkflowStep && request.currentWorkflowStep.criterias.length > 0) {
+            const currentStepId = request.currentWorkflowStep.id;
+            const unsignedCriterias = request.currentWorkflowStep.criterias.filter(
+                (x) => x.signedAtUtc === null
+            );
+            const sign = async () => {
+                await signCriteria(request.id, currentStepId, criteria.id, signComment);
+            };
+            if (
+                request.currentWorkflowStep.contributors &&
+                request.currentWorkflowStep.contributors.some((x) => x.contribution === null) &&
+                unsignedCriterias.length === 1
+            ) {
+                spawnConfirmationDialog(
+                    'Not all contributors have responded yet, are you sure you want to continue?',
+                    'Warning',
+                    sign
+                );
+            } else {
+                await sign();
+            }
+            setSignComment('');
+        }
     }
-
-    const {
-        mutateAsync,
-        isLoading: contributorLoading,
-        isError: contributorError,
-    } = useMutation(createContributor);
-
-    const addContributor = async () => {
-        setPerformingAction(true);
-        await mutateAsync();
-        setPerformingAction(false);
-        setTextField(undefined);
-        setContributor(null);
-    };
 
     const {
         Component: ReassignBar,
@@ -79,42 +72,25 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
     } = useConditionalRender(<PCSPersonSearch person={person} setPerson={setPerson} />);
 
     const {
-        Component: AddContributor,
+        Component: ContributorSelector,
         toggle: toggleContributorSelector,
         set: setShowContributor,
-    } = useConditionalRender(<PCSPersonSearch person={contributor} setPerson={setContributor} />);
+    } = useConditionalRender(<AddContributor onCancel={() => setShowContributor(false)} />);
 
     const {
-        Component: CommentField,
-        toggle: toggleCommentField,
-        set: setShowCommentField,
+        Component: SignWithCommentComp,
+        toggle: toggleSignWithComment,
+        set: setShowSignWithComment,
     } = useConditionalRender(
-        <div
-            style={{
-                fontSize: '12px',
-                display: 'flex',
-                alignItems: 'flex-end',
-                width: '300px',
-                justifyContent: 'space-around',
-            }}
-        >
-            <span>
-                Comment
-                <TextField id="comment" />
-            </span>
-            <Button variant="outlined">Sign</Button>
-        </div>
+        <SignWithComment criteria={criteria} onCancel={() => setShowSignWithComment(false)} />
     );
 
     const closeAll = () => {
-        setShowContributor(false);
-        setShowCommentField(false);
+        setShowSignWithComment(false);
         setShowReassign(false);
+        setShowContributor(false);
         setPerson(null);
-        setContributor(null);
     };
-
-    const { setPerformingAction, request, refetch } = useScopeChangeAccessContext();
 
     interface ReassignArgs {
         value: string;
@@ -127,12 +103,17 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
         });
     };
 
-    const { mutateAsync: reassignStep, isLoading } = useMutation(reassign, {
-        onSuccess: async () => {
-            setShowReassign(false);
-            await refetch();
-        },
-    });
+    const {
+        mutateAsync: reassignMutation,
+        isLoading,
+        isSuccess: reassignDone,
+    } = useMutation(reassign);
+
+    const { mutateAsync: signMutation, isSuccess: signDone } = useMutation(onSignStep);
+
+    useEffect(() => {
+        refetch();
+    }, [signDone, reassignDone]);
 
     const { Loading } = useLoading(<Progress.Dots color="primary" />, isLoading);
 
@@ -140,11 +121,12 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
         {
             label: CriteriaActions.Sign,
             icon: <Icon name="check_circle_outlined" color="grey" />,
+            onClick: () => signMutation(),
         },
         {
             label: CriteriaActions.SignWithComment,
             icon: <Icon name="comment_add" color="grey" />,
-            onClick: () => toggleCommentField(),
+            onClick: () => toggleSignWithComment(),
         },
         {
             label: CriteriaActions.Reject,
@@ -183,13 +165,8 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
                 )}
             </WorkflowStepViewContainer>
             <Loading />
-            <AddContributor />
-            <Inline>
-                <AddComment />
-                <ConfirmContributor />
-            </Inline>
-            <CommentField />
-
+            <ContributorSelector />
+            <SignWithCommentComp />
             <ReassignBar />
         </>
     );

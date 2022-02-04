@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { QueryClient, useQuery } from 'react-query';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
 import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 
-import { getScopeChangeById } from '../../Api/getScopeChange';
+import { getScopeChangeById } from '../../Api/ScopeChange';
 import { getContributionId } from '../../Functions/Access';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
@@ -21,12 +21,11 @@ import { IconMenu } from '../MenuButton';
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [performingAction, setPerformingAction] = useState<boolean>(false);
 
     const { error, data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
         'scopeChange',
         () => getScopeChangeById(item.id, scopeChangeApi),
-        { refetchOnMount: false, initialData: item, retry: 0 }
+        { initialData: item, refetchOnWindowFocus: false, retry: false }
     );
     const scopeChangeAccess = useScopeChangeAccess(item.id);
     const workflowAccess = useWorkflowAccess(
@@ -43,13 +42,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             refetchScopeChange();
         }
     }, [item]);
-
-    useEffect(() => {
-        if (!performingAction) {
-            const queryClient = new QueryClient();
-            queryClient.invalidateQueries();
-        }
-    }, [performingAction]);
 
     const refetchScopeChange = async () => {
         await refetch();
@@ -102,8 +94,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             <ScopeChangeAccessContext.Provider
                 value={{
                     contributionId: workflowAccess.contributionId,
-                    performingAction,
-                    setPerformingAction,
                     request: data || item,
                     requestAccess: scopeChangeAccess,
                     signableCriterias: workflowAccess.signableCriterias,

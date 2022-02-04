@@ -17,7 +17,7 @@ export function setup(appApi: ClientApi): void {
         component: ScopeChangeRequestForm,
     });
 
-    request.registerDataSource(async () => {
+    request.registerDataSource(() => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const projectName = 'L.O532C.002';
         // const projectId = 177433
@@ -153,7 +153,48 @@ export function setup(appApi: ClientApi): void {
                         order: 1,
                     },
                 ],
-                currentWorkflowStep: [],
+                currentWorkflowStep: {
+                    contributors: [
+                        {
+                            contribution: null,
+                            createdAtUtc: null,
+                            id: '12313',
+                            person: {
+                                firstName: 'Gustav',
+                                lastName: 'Eikaas',
+                                id: '1212',
+                                oid: '1212121221',
+                            },
+                            instructionsToContributor: 'Give input',
+                        },
+                    ],
+                    criterias: [
+                        {
+                            id: '121212',
+                            signedAtUtc: null,
+                            signedBy: {},
+                            signedComment: null,
+                            signedState: null,
+                            type: 'RequireProcosysUserSignature',
+                            value: 'Guei@equinor.com',
+                        },
+                        {
+                            id: '12122222',
+                            signedAtUtc: null,
+                            signedBy: {},
+                            signedComment: null,
+                            signedState: null,
+                            type: 'RequireProcosysUserSignature',
+                            value: 'Guei@equinor.com',
+                        },
+                    ],
+                    id: '12121212',
+                    isCompleted: false,
+                    isCurrent: true,
+                    name: 'Review by engineering',
+                    order: 0,
+                },
+
                 originSourceId: '12121212',
             },
         ];
@@ -209,7 +250,7 @@ export function setup(appApi: ClientApi): void {
         enableSelectRows: true,
         hiddenColumns: [
             'id',
-            'currentWorkflowStep',
+            // 'currentWorkflowStep',
             'attachments',
             'systems',
             'tags',
@@ -249,6 +290,7 @@ export function setup(appApi: ClientApi): void {
             { key: 'description', title: 'Description' },
             { key: 'state', title: 'Status' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
+            { key: 'currentWorkflowStep', title: 'Next to sign' },
         ],
         customCellView: [
             {
@@ -297,6 +339,20 @@ export function setup(appApi: ClientApi): void {
                 type: {
                     Cell: ({ cell }) => {
                         return <div>{cell.value.content.isVoided.toString()}</div>;
+                    },
+                },
+            },
+            {
+                key: 'currentWorkflowStep',
+                type: {
+                    Cell: ({ cell }) => {
+                        return (
+                            <div>
+                                {cell.value.content.currentWorkflowStep?.criterias.map((x) => {
+                                    return <div key={x.id}>{x.value}</div>;
+                                })}
+                            </div>
+                        );
                     },
                 },
             },

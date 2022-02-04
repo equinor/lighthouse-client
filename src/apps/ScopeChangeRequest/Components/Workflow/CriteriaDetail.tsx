@@ -1,4 +1,3 @@
-import { Tooltip } from '@equinor/eds-core-react';
 import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import { Criteria, WorkflowStatus, WorkflowStep } from '../../Types/scopeChangeRequest';
@@ -26,15 +25,7 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
                 />
                 <Divider />
                 <WorkflowText>
-                    <Tooltip
-                        title={
-                            !step.isCompleted
-                                ? `Signature from ${criteria.value} required.`
-                                : `Signed by ${criteria.signedBy.firstName} ${criteria.signedBy.lastName}`
-                        }
-                    >
-                        <span>{step.name}</span>
-                    </Tooltip>
+                    <span>{step.name}</span>
                     {criteria.signedAtUtc ? (
                         <div
                             style={{ fontSize: '14px' }}

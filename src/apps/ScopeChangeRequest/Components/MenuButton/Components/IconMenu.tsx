@@ -40,7 +40,6 @@ export const IconMenu = ({ items, onMenuOpen }: IconMenuProps): JSX.Element => {
                 open={showMenu}
                 anchorEl={anchorRef.current}
                 onClose={closeMenu}
-                // focus={focus}
                 placement="bottom"
             >
                 {items.map((x, i) => {

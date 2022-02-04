@@ -13,88 +13,79 @@ export const SingleView = (): JSX.Element => {
 
     return (
         <SplitScreen>
-            <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <h2>Request</h2>
-                <SectionRow>
-                    <Field
-                        label={'Phase'}
-                        customLabel={{ fontSize: '12px' }}
-                        customValue={{ fontSize: '16px' }}
-                        value={request.phase}
-                    />
-                    <Field
-                        label={'Status'}
-                        customLabel={{ fontSize: '12px' }}
-                        customValue={{ fontSize: '16px' }}
-                        value={request.state}
-                    />
-                </SectionRow>
-                <SectionRow>
-                    <Field
-                        label={'Change category'}
-                        customLabel={{ fontSize: '12px' }}
-                        customValue={{ fontSize: '16px' }}
-                        value={request.category}
-                    />
-
-                    <Field
-                        label={'Change origin'}
-                        customLabel={{ fontSize: '12px' }}
-                        customValue={{ fontSize: '16px' }}
-                        value={
-                            <OriginLink type={request.originSource} id={request.originSourceId} />
-                        }
-                    />
-                </SectionRow>
+            <h2>Request</h2>
+            <SectionRow>
                 <Field
-                    label={'Description'}
+                    label={'Phase'}
                     customLabel={{ fontSize: '12px' }}
                     customValue={{ fontSize: '16px' }}
-                    value={request.description}
+                    value={request.phase}
                 />
-
                 <Field
-                    label={'Guesstimate mhrs'}
+                    label={'Status'}
                     customLabel={{ fontSize: '12px' }}
                     customValue={{ fontSize: '16px' }}
-                    value={request.guesstimateHours}
+                    value={request.state}
+                />
+            </SectionRow>
+            <SectionRow>
+                <Field
+                    label={'Change category'}
+                    customLabel={{ fontSize: '12px' }}
+                    customValue={{ fontSize: '16px' }}
+                    value={request.category}
                 />
 
                 <Field
-                    customLabel={{ fontSize: '18px', bold: true }}
-                    label={'References'}
-                    value={
-                        <RelatedObjects
-                            systems={request.systems}
-                            commPkgs={request.commissioningPackages}
-                            tags={request.tags}
-                        />
-                    }
+                    label={'Change origin'}
+                    customLabel={{ fontSize: '12px' }}
+                    customValue={{ fontSize: '16px' }}
+                    value={<OriginLink type={request.originSource} id={request.originSourceId} />}
                 />
+            </SectionRow>
+            <Field
+                label={'Description'}
+                customLabel={{ fontSize: '12px' }}
+                customValue={{ fontSize: '16px' }}
+                value={request.description}
+            />
 
-                <Field
-                    customLabel={{ fontSize: '18px', bold: true }}
-                    label="Documents"
-                    value={<StidDocumentResolver inputDocuments={request.documents} />}
-                />
-                <Field
-                    customLabel={{ fontSize: '18px', bold: true }}
-                    label="Attachments"
-                    value={<Attachments attachments={request.attachments} requestId={request.id} />}
-                />
-            </div>
-            <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <Field
-                    customLabel={{ fontSize: '18px', bold: true }}
-                    label={'Workflow'}
-                    value={<Workflow />}
-                />
-                <Field
-                    customLabel={{ fontSize: '18px', bold: true }}
-                    label="Log"
-                    value={<div></div>}
-                />
-            </div>
+            <Field
+                label={'Guesstimate mhrs'}
+                customLabel={{ fontSize: '12px' }}
+                customValue={{ fontSize: '16px' }}
+                value={request.guesstimateHours}
+            />
+            <Field
+                customLabel={{ fontSize: '18px', bold: true }}
+                label={'Workflow'}
+                value={<Workflow />}
+            />
+
+            <Field
+                customLabel={{ fontSize: '18px', bold: true }}
+                label={'References'}
+                value={
+                    <RelatedObjects
+                        systems={request.systems}
+                        commPkgs={request.commissioningPackages}
+                        tags={request.tags}
+                    />
+                }
+            />
+
+            <Field
+                customLabel={{ fontSize: '18px', bold: true }}
+                label="Documents"
+                value={<StidDocumentResolver inputDocuments={request.documents} />}
+            />
+            <Field
+                customLabel={{ fontSize: '18px', bold: true }}
+                label="Attachments"
+                value={<Attachments attachments={request.attachments} requestId={request.id} />}
+            />
+
+            <Field customLabel={{ fontSize: '18px', bold: true }} label="Log" value={<div></div>} />
         </SplitScreen>
     );
 };

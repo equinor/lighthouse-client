@@ -9,7 +9,7 @@ import { useHttpClient } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import { getScopeChangeById, postScopeChange } from '../../Api/';
+import { getScopeChangeById, postScopeChange } from '../../Api/ScopeChange';
 import { uploadAttachment } from '../../Api/ScopeChange/attachment';
 import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../Api/Search/searchType';

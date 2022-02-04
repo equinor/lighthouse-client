@@ -6,6 +6,10 @@ import { Contributor as ContributorInterface, WorkflowStep } from '../../Types/s
 import { MenuButton, MenuItem } from '../MenuButton/';
 import { ContributorActions } from './Types/actions';
 import { WorkflowIcon } from './WorkflowIcon';
+import { useMutation } from 'react-query';
+import { addContribution } from '../../Api/ScopeChange/Workflow';
+import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
+import { useState } from 'react';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -13,32 +17,42 @@ interface ContributorsProps {
 }
 
 export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Element => {
+    const [comment, setComment] = useState('');
+
+    const { request } = useScopeChangeAccessContext();
     const {
         Component: CommentField,
         toggle: toggleCommentField,
         set: setShowCommentField,
     } = useConditionalRender(
-        <div
-            style={{
-                fontSize: '12px',
-                display: 'flex',
-                alignItems: 'flex-end',
-                width: '300px',
-                justifyContent: 'space-around',
-            }}
-        >
+        <div style={{ margin: '0.4rem 0rem' }}>
             <span>
                 Comment
-                <TextField id="comment" />
+                <TextField
+                    id="comment"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                />
             </span>
-            <Button variant="outlined">Confirm</Button>
+            <ButtonContainer>
+                <Button onClick={() => onAddContribution()}>Confirm</Button>
+                <Divider />
+                <Button onClick={() => setShowCommentField(false)} variant="outlined">
+                    Cancel
+                </Button>
+            </ButtonContainer>
         </div>
     );
+
+    const onAddContribution = () => addContribution(request.id, step.id, contributor.id, comment);
+
+    const { mutateAsync } = useMutation(onAddContribution);
 
     const contributorActions: MenuItem[] = [
         {
             label: ContributorActions.Confirm,
             icon: <Icon name="check_circle_outlined" color="grey" />,
+            onClick: async () => await mutateAsync(),
         },
         {
             label: ContributorActions.ConfirmWithComment,
@@ -52,10 +66,7 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
             <ContributorContainer key={contributor.id}>
                 <ContributorInnerContainer>
                     <Inline>
-                        <WorkflowIcon
-                            status={contributorStatus(contributor, step.isCurrent)}
-                            number={'#'}
-                        />
+                        <WorkflowIcon status={contributorStatus(contributor, step.isCurrent)} />
                         <Spacer />
                         <WorkflowText>
                             <Tooltip
@@ -133,3 +144,13 @@ function contributorStatus(
         return 'Failed';
     }
 }
+
+const ButtonContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    margin: 0.2rem;
+`;
+
+const Divider = styled.div`
+    width: 0.5rem;
+`;
