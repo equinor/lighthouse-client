@@ -22,11 +22,55 @@ export function setup(appApi: ClientApi): void {
     request.registerDataSource(async () => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const project = 'L.O532C.002';
-        const response = await api.fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`
-        );
+        // const response = await api.fetch(
+        //     `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests`
+        // );
 
-        return JSON.parse(await response.text());
+        // return JSON.parse(await response.text());
+
+
+        const scopeChanges: ScopeChangeRequest[] = [];
+        
+        for (let i = 0; i < 1000; i++) {
+            scopeChanges.push({
+                actualChangeHours: Math.round(Math.random() * 100),
+                attachments: [],
+                category: Math.random() * 1 ? "Design Change" : "Hidden carryover",
+                commissioningPackages: [],
+                createdAtUtc: new Date().toDateString(),
+                createdBy: {id: (Math.random() * 1000).toString(), firstName: "Gustav", lastName: "Eikaas", oid: "1212"},
+                description: "",
+                documents: [],
+                estimatedChangeHours: Math.round(Math.random() * 100),
+                guesstimateDescription: "",
+                guesstimateHours: (Math.random() * 100).toString(),
+                id: (Math.random() * 2000).toString(),
+                isVoided: Math.random() * 1 ? true : false,
+                modifiedAtUtc: new Date().toDateString(),
+                modifiedBy: {id: (Math.random() * 1000).toString(), firstName: "Gustav", lastName: "Eikaas", oid: "1212"},
+                origin: Math.random() * 1 ? "DCN" : "Query",
+                phase: "IC phase",
+                state: Math.random()* 1 ? "Closed" : "Open",
+                systems: [],
+                tags: [],
+                title: "Scope change",
+                workflowSteps: [],
+                currentWorkflowStep: {
+                    contributors: [],
+                    criterias: [],
+                    id: (Math.random() * 10000).toString(),
+                    isCompleted: false,
+                    isCurrent: true,
+                    name: "assign",
+                    order: 0
+                },
+                
+
+            })
+            
+        }
+return scopeChanges;
+
     });
 
     const scopeChangeExcludeKeys: (keyof ScopeChangeRequest)[] = [
