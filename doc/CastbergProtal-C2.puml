@@ -1,0 +1,84 @@
+@startuml Lighthouse
+' !includeurl /Style/C4-Style.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include DEVICONS/react.puml
+!include DEVICONS/dotnet.puml
+!include DEVICONS/msql_server.puml
+!include DEVICONS/database.puml
+!include FONTAWESOME/users.puml
+
+skinparam roundCorner 15
+
+' LAYOUT_UP_DOWN
+skinparam linetype polyline
+
+Person(user, "User", $sprite="users")  
+Container(webClient, "WebClient", "webClient", $sprite="react")  
+Rel(user, webClient, " ")
+
+' Facility Asset Model Section 
+System_Boundary(fam, "Facility Asset Model | Lighhouse") {
+    Container(famEventHub, "FamEvenHub", "EvenHub")  
+    Container(famApi, "Fam Api", "web API")  
+    ContainerDb(famDb, "Fam DB", "MIPS | Procosys | Stid  | osv...", $sprite="database") 
+    Rel_L(famEventHub, famDb, " ") 
+    Rel_L(famDb, "famApi", " ")  
+}
+
+' Facility Asset Model Section 
+Boundary(lightgouse, "Lighthouse | API's") {
+    ContainerDb(scopeChangeControlDB, "Scope Change Control", "New Data", $sprite="database")  
+    ContainerDb(pipeTestDB, "Heat Trace", "New Data", $sprite="database") 
+
+    Container(scopeChangeControlApi, "Scope Change Control", "web API", $sprite="dotnet")
+    Container(constructionProgressApi, "Construction Progress", "web API", $sprite="dotnet")
+    Container(pipeTest, "Pipe Test Release Control", "web API", $sprite="dotnet")
+    Container(dataAdapter, "Lighthouse", "Adapter")
+
+    
+    ' Rel(constructionProgressApi, constructionProgressDB, "Read")
+    Rel_Down(pipeTest, pipeTestDB, "Read / Write")
+    Rel_Down(scopeChangeControlApi, scopeChangeControlDB, "Read / Write")
+
+    Rel(webClient, scopeChangeControlApi, " ")
+    Rel(webClient, constructionProgressApi, " ")
+    Rel(webClient, pipeTest, " ")
+
+    Rel_Down(famApi, scopeChangeControlApi, " ") 
+    Rel_Down(famApi, constructionProgressApi, " ") 
+    Rel_Down(famApi, pipeTest, " ") 
+}
+
+Boundary(extenals, 'Externals') {
+    Container(mips, "MIPS", "Api") 
+    Container(mipsTIEAdapter, "MIPS TIE Adapter", "adapter") 
+}
+
+Container(tie, "TIE", "TIE1.5 / TIE 2.0")
+
+Boundary(externalEquinorAdapters, 'Equinor Data Adapters') {
+    Container(stid, "STID", "Adapter")  
+    Container(procosys, "ProCoSys", "Adapter")
+    Container(commonLib, "CommonLib", "Adapter")  
+    Container(mipsAdapter, "Mips", "Adapter")  
+}
+
+Rel(tie, mipsAdapter, "Write")
+
+Rel_Down(mips, tie, "Write")
+Rel_Down(stid, famEventHub, "Write")
+Rel_Down(procosys, famEventHub, "Write")
+Rel_Down(commonLib, famEventHub, "Write")
+Rel_Down(dataAdapter, famEventHub, "Write")
+Rel_Down(mipsAdapter, famEventHub, "Write")
+
+Rel_L( scopeChangeControlApi, dataAdapter, " ")
+Rel_L( constructionProgressApi, dataAdapter, " ")
+Rel_R( pipeTest, dataAdapter, " ")
+
+  
+
+@enduml

@@ -1,0 +1,51 @@
+{
+    "compilerOptions": {
+        "lib": ["esnext"],
+        "strict": true,
+        "jsx": "react-jsx",
+        "target": "es6",
+        "outDir": "dist",
+        "skipLibCheck": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "esModuleInterop": false,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "noImplicitAny": false,
+        "types": ["node", "vite/client"],
+        "sourceMap": true,
+        "paths": {
+            "@equinor/Kpi": ["./src/packages/KPI"],
+            "@equinor/portal-client": ["./src/Core/Client"],
+            "@equinor/sidesheet": ["./src/packages/Sidesheet"],
+            "@equinor/GroupView": ["./src/Core/GroupView"],
+            "@equinor/WorkSpace": ["./src/Core/WorkSpace"],
+            "@equinor/PageViewer": ["./src/Core/PageViewer"],
+            "@equinor/Form": ["./src/packages/Form"],
+            "@equinor/VisualEditor": ["./src/packages/VisualEditor"],
+            "@equinor/worker": ["./src/packages/WebWorkers"],
+            "@equinor/filter": ["./src/packages/Filter"],
+            "@equinor/DataFactory": ["./src/Core/DataFactory"],
+            "@equinor/ErrorBoundary": ["./src/Core/ErrorBoundary"],
+            "@equinor/StatusBar": ["./src/packages/2StatusBar"],
+            "@equinor/Diagrams": ["./src/packages/Diagrams"],
+            "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
+            "@equinor/Table": ["./src/packages/Table"],
+            "@equinor/authentication": ["./src/packages/authentication"],
+            "@equinor/http-client": ["./src/Core/httpClient"],
+            "@equinor/hooks": ["./src/hooks"],
+            "@equinor/util": ["./src/packages/Utils"],
+            "@equinor/typeGuard": ["./src/packages/typeGuard"]
+        }
+    },
+    "compileOnSave": true,
+    "exclude": ["node_modules"],
+    "include": ["./src"],
+    "typedocOptions": {
+        "entryPoints": ["src/index.ts"],
+        "out": "docs"
+    }
+}

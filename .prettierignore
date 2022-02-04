@@ -1,0 +1,7 @@
+# Ignore artifacts:
+# Ignore package json
+package.json
+package-lock.json
+
+# Yml files
+*.yml
