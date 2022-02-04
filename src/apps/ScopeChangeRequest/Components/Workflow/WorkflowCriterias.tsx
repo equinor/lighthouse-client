@@ -16,6 +16,8 @@ import { IconMenu } from '../MenuButton/Components/IconMenu';
 import { CriteriaDetail } from './CriteriaDetail';
 import { MenuItem } from '../MenuButton/Types/menuItem';
 import { CriteriaActions } from './Types/actions';
+import { useHttpClient } from '../../../../Core/Client/Hooks';
+import { addContributor as postContributor } from '../../Api/addContributor';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -25,15 +27,43 @@ interface WorkflowCriteriasProps {
 export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): JSX.Element => {
     const [person, setPerson] = useState<SelectOption | null>(null);
     const [contributor, setContributor] = useState<SelectOption | null>(null);
+    const { canAddContributor } = useScopeChangeAccessContext();
+    const [textField, setTextField] = useState<string | undefined>(undefined);
+    const { scopeChange } = useHttpClient();
 
     useEffect(() => {
         if (person) {
             setPerformingAction(true);
-            mutateAsync({ type: 'RequireProcosysUserSignature', value: person.value });
+            reassign({ type: 'RequireProcosysUserSignature', value: person.value });
             setPerson(null);
             setPerformingAction(false);
         }
     }, [person]);
+
+    async function createContributor() {
+        if (!contributor?.value || !request.currentWorkflowStep?.id || !textField) return;
+        await postContributor(
+            contributor.value,
+            request.id,
+            request.currentWorkflowStep?.id,
+            scopeChange,
+            textField
+        );
+    }
+
+    const {
+        mutateAsync,
+        isLoading: contributorLoading,
+        isError: contributorError,
+    } = useMutation(createContributor);
+
+    const addContributor = async () => {
+        setPerformingAction(true);
+        await mutateAsync();
+        setPerformingAction(false);
+        setTextField(undefined);
+        setContributor(null);
+    };
 
     const {
         Component: ReassignBar,
@@ -88,7 +118,7 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
         });
     };
 
-    const { mutateAsync, isLoading } = useMutation(reassign, {
+    const { mutateAsync: reassignStep, isLoading } = useMutation(reassign, {
         onSuccess: async () => {
             setShowReassign(false);
             await refetch();

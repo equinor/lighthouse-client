@@ -84,13 +84,14 @@ export const SplitView = (): JSX.Element => {
                 />
             </div>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <h2>Workflow</h2>
-                <Workflow />
-                <Field
-                    customLabel={{ fontSize: '18px', bold: true }}
-                    label="Log"
-                    value={<div></div>}
-                />
+                <div>
+                    <h2>Workflow</h2>
+                    <Workflow />
+                </div>
+                <div>
+                    <h2>Log</h2>
+                    <div></div>
+                </div>
             </div>
         </SplitScreen>
     );

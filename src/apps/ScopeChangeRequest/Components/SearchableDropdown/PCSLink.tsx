@@ -16,7 +16,7 @@ interface PCSLinkProps {
 
 export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
-    const debounce = useRef(new Date());
+    const controller = useRef(new AbortController());
 
     const addRelatedObject = (value: TypedSelectOption) =>
         setRelatedObjects((prev) => [...prev, value]);
@@ -42,70 +42,59 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
     ) => {
+        controller.current.abort();
+        controller.current = new AbortController();
+
         const options: TypedSelectOption[] = [];
-        try {
-            await (await searchPcs(inputValue, 'system')).forEach((x) => options.push(x));
-        } catch (e) {
-            console.warn(e);
-            setApiErrors((prev) => [...prev, 'systems']);
+        let sorted: TypedSelectOption[] = [];
+
+        await (
+            await searchPcs(inputValue, 'system', controller.current.signal)
+        ).forEach((x) => options.push(x));
+
+        await (
+            await searchPcs(inputValue, 'commpkg', controller.current.signal)
+        ).forEach((x) => options.push(x));
+        sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+            sort(a, b, inputValue)
+        );
+
+        if (sorted.length > 0) {
+            callback(sorted);
         }
 
-        try {
-            await (await searchPcs(inputValue, 'commpkg')).forEach((x) => options.push(x));
-            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-                sort(a, b, inputValue)
-            );
+        await (
+            await searchPcs(inputValue, 'area', controller.current.signal)
+        ).forEach((x) => options.push(x));
+        sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+            sort(a, b, inputValue)
+        );
 
-            if (sorted.length > 0) {
-                callback(sorted);
-            }
-        } catch (e) {
-            console.warn(e);
-            setApiErrors((prev) => [...prev, 'comm pkgs']);
+        if (sorted.length > 0) {
+            callback(sorted);
         }
 
-        try {
-            await (await searchPcs(inputValue, 'area')).forEach((x) => options.push(x));
-            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-                sort(a, b, inputValue)
-            );
+        await (
+            await searchPcs(inputValue, 'discipline', controller.current.signal)
+        ).forEach((x) => options.push(x));
+        sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+            sort(a, b, inputValue)
+        );
 
-            if (sorted.length > 0) {
-                callback(sorted);
-            }
-        } catch (e) {
-            console.warn(e);
-            setApiErrors((prev) => [...prev, 'areas']);
+        if (sorted.length > 0) {
+            callback(sorted);
         }
 
-        try {
-            await (await searchPcs(inputValue, 'discipline')).forEach((x) => options.push(x));
-            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-                sort(a, b, inputValue)
-            );
+        await (
+            await searchPcs(inputValue, 'tag', controller.current.signal)
+        ).forEach((x) => options.push(x));
+        sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
+            sort(a, b, inputValue)
+        );
 
-            if (sorted.length > 0) {
-                callback(sorted);
-            }
-        } catch (e) {
-            console.warn(e);
-            setApiErrors((prev) => [...prev, 'disciplines']);
+        if (sorted.length > 0) {
+            callback(sorted);
         }
-
-        try {
-            await (await searchPcs(inputValue, 'tag')).forEach((x) => options.push(x));
-            const sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-                sort(a, b, inputValue)
-            );
-
-            if (sorted.length > 0) {
-                callback(sorted);
-            }
-        } catch (e) {
-            console.warn(e);
-            setApiErrors((prev) => [...prev, 'tags']);
-        }
-        callback([]);
     };
 
     return (
@@ -126,23 +115,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                     >
                         <AsyncSelect
                             cacheOptions={false}
-                            loadOptions={(
-                                inputValue: string,
-                                callback: (
-                                    options: OptionsOrGroups<
-                                        TypedSelectOption,
-                                        GroupBase<TypedSelectOption>
-                                    >
-                                ) => void
-                            ) => {
-                                const start = debounce.current;
-                                setTimeout(() => {
-                                    if (start === debounce.current) {
-                                        loadOptions(inputValue, callback);
-                                    }
-                                }, 300);
-                                return;
-                            }}
+                            loadOptions={loadOptions}
                             defaultOptions={false}
                             components={applyEdsComponents()}
                             isMulti={true}
@@ -150,7 +123,6 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                             isClearable={false}
                             value={relatedObjects}
                             onInputChange={() => {
-                                debounce.current = new Date();
                                 setApiErrors([]);
                             }}
                             styles={applyEdsStyles()}

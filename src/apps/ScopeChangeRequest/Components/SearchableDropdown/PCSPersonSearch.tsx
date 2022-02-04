@@ -2,6 +2,7 @@ import { SingleValue, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { searchPcs } from '../../Api/Search/PCS/searchPcs';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
+import { useRef } from 'react';
 
 interface SelectOption {
     label: string;
@@ -15,8 +16,12 @@ interface PCSLinkProps {
 }
 
 export const PCSPersonSearch = ({ person, setPerson, isDisabled }: PCSLinkProps): JSX.Element => {
+    const controller = useRef(new AbortController());
+
     const loadOptions = async (inputValue: string, callback: (options: SelectOption[]) => void) => {
-        callback(await searchPcs(inputValue, 'person'));
+        controller.current.abort();
+        controller.current = new AbortController();
+        callback(await searchPcs(inputValue, 'person', controller.current.signal));
     };
 
     return (

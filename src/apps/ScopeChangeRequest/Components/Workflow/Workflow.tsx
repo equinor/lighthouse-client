@@ -15,31 +15,6 @@ export function Workflow(): JSX.Element {
     const [contributor, setContributor] = useState<{ value: string; label: string } | null>(null);
     const [contributorTitle, setContributorTitle] = useState<string | undefined>();
 
-    const { canAddContributor } = useScopeChangeAccessContext();
-
-    const { scopeChange } = useHttpClient();
-
-    const { mutateAsync, isLoading, isError } = useMutation(createContributor);
-
-    async function createContributor() {
-        if (!contributor?.value || !request.currentWorkflowStep?.id || !contributorTitle) return;
-        await postContributor(
-            contributor.value,
-            request.id,
-            request.currentWorkflowStep?.id,
-            scopeChange,
-            contributorTitle
-        );
-    }
-
-    const addContributor = async () => {
-        setPerformingAction(true);
-        await mutateAsync();
-        setPerformingAction(false);
-        setContributorTitle('');
-        setContributor(null);
-    };
-
     return (
         <div>
             {/* {request.state === 'Open' && (
