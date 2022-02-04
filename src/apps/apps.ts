@@ -374,9 +374,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.CompletionManagement,
         icon: '',
         tags: [],
-        app: {
-            appType: 'DataViewer',
-        },
+        uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Preservation',
     },
     {
         title: 'Punch',
