@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.section`
     padding: 2rem;
+    overflow: scroll;
+    height: -webkit-fill-available;
 `;
 
 export const Header = styled.div`
