@@ -1,0 +1,42 @@
+@startuml Search-Component-Structure
+!includeurl /Style/C4-Style.puml
+
+LAYOUT_TOP_DOWN
+
+
+
+    Function(clientSetup, "clientSetup", "WebClient")
+
+Group(clientSetupGroup, 'Router setup for Lighthouse') {
+    Function(routeRegistration, "routeRegistration", "webClient")
+    Function(dataRegistration, "dataRegistration", "webClient")    
+}
+    Function(createDataView, "cerateDataView", "dataViewFactory")   
+    Function(routeR, "routeRegistration", "WebClient")
+
+FactoryGroup(dataViewFactory, 'Data View Factroy') {
+    
+    ' Filter options
+    Function(registerFilterOptions, "registerFilterOptions", "dataViewFactory")
+
+    ' Data options
+    FunctionGroup(dataOptions, 'Data Options'){
+        Function(registerDataValidator, "registerDataValidator", "dataViewFactory")
+        ' This may me rtemoved >>
+        Function(register, "registerDataFetcher", "dataViewFactory")
+    }
+    
+    ' Data View options
+    FunctionGroup(dataView, 'Data view options'){
+        Function(registerTableOptions,'registerTableOptions',"dataView" )
+        Function(registerTreeOptions,'registerTableOptions',"dataView" )
+        Function(registerGanttOptions,'registerTableOptions',"dataView" )
+        Function(registerGraphOptions,'registerTableOptions',"dataView" )
+        Function(registerGardenOptions,'registerTableOptions',"dataView" )
+    }
+
+}
+   
+
+
+@enduml

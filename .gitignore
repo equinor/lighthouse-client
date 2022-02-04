@@ -1,0 +1,7 @@
+node_modules
+dist
+build
+.vscode/
+
+# Remove yarn logs
+yarn-error.log
