@@ -292,7 +292,7 @@ export const apps: AppManifest[] = [
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
-        isProduction: true,
+        // isProduction: true,
     },
     // CompletionManagement
     {
@@ -400,7 +400,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: SwcrSetup,
         },
-        isProduction: true,
+        // isProduction: true,
     },
     // Queries and requests
     {
