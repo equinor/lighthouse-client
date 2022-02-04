@@ -375,6 +375,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Preservation',
         tags: ['link', 'procosys'],
+        isProduction: true,
     },
     {
         title: 'Punch',
@@ -512,7 +513,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Search?searchType=Query',
         tags: ['link', 'procosys'],
-        // isProduction: true,
+        isProduction: true,
     },
     // Reports
     // {
