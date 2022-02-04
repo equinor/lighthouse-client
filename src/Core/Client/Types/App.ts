@@ -5,7 +5,7 @@ import { WorkspaceOptions } from '../Service/ClientBuilder';
 import { AppConfig } from './AppConfig';
 import { AppManifest } from './AppManifest';
 
-type AppType = 'DataViewer' | 'PageView' | 'CustomApp' | 'PowerBI';
+type AppType = 'DataViewer' | 'PageView' | 'CustomApp' | 'PowerBI' | 'Fusion';
 
 export type CustomClientApi = Omit<ClientApi, 'createWorkSpace' | 'createPageViewer'>;
 

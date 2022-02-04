@@ -7,7 +7,7 @@ import { getAppGroups, getApps } from './apps/apps';
 
 EdsIcon.add({ ...icons });
 
-createClient({ getApps, getAppGroups }).then((client) => {
+createClient({ getApps, getAppGroups }).then(async (client) => {
     if (client.authProvider && !(window !== window.parent && !window.opener)) {
         render(<Client {...client} />, document.getElementById('root'));
     }

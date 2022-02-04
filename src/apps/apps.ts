@@ -136,6 +136,18 @@ export const apps: AppManifest[] = [
         isProduction: true,
     },
     {
+        title: 'meetings',
+        shortName: 'people',
+        color: '#0364B8',
+        groupe: Apps.ProjectInformation,
+        icon: HomeIcon,
+        tags: [],
+        isProduction: true,
+        app: {
+            appType: 'Fusion',
+        },
+    },
+    {
         title: 'Business case',
         shortName: 'business-case',
         color: '#0364B8',
@@ -529,7 +541,7 @@ export const apps: AppManifest[] = [
     // Collaboration
     {
         title: 'Meeting',
-        shortName: 'meeting',
+        shortName: 'meeting2',
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: 'tag',

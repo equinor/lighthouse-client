@@ -4,6 +4,7 @@ import { closeSidesheet } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { Apps } from '../../apps/apps';
+import AppWrapper from '../../Core/Client/Fusion/AppWrapper';
 import PageView from '../../Core/PageViewer';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
 import { useLocationKey } from '../../packages/Filter/Hooks/useLocationKey';
@@ -42,6 +43,15 @@ export function ClientRoutes(): JSX.Element {
                 );
             })}
             {apps.map((route) => {
+                if (route.app?.appType === 'Fusion') {
+                    return (
+                        <Route
+                            key={route.shortName}
+                            path={`${route.groupe.toString()}/${route.shortName}`}
+                            element={<AppWrapper appKey={route.shortName} />}
+                        />
+                    );
+                }
                 if (route.app?.appType === 'DataViewer') {
                     const api = { ...route, authProvider, appConfig };
                     return (

@@ -10,6 +10,7 @@ import { MainLayout } from './components/Layouts/MainLayout';
 import LoadingPage from './components/Loading/LoadingPage';
 import { ClientRoutes } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
+import { FusionWrapper } from './Core/Client/Fusion/FusionWrapper';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
 import { FactoryComponent } from './Core/DataFactory';
 import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
@@ -47,27 +48,32 @@ const GlobalStyle = createGlobalStyle`
         }
 `;
 
-const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Element => {
+const Client: React.FC<ClientProps> = ({
+    authProvider,
+    authContainer,
+}: ClientProps): JSX.Element => {
     const isAuthenticated = useAuthenticate(authProvider);
     const queryClient = new QueryClient();
 
     return isAuthenticated ? (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <EdsProvider density={'compact'}>
-                <QueryClientProvider client={queryClient}>
-                    <GlobalStyle />
-                    <ConfirmationDialog />
-                    <ClientContextProvider>
-                        <BrowserRouter>
-                            <ClientTopBar />
-                            <MainLayout>
-                                <ClientRoutes />
-                            </MainLayout>
-                        </BrowserRouter>
-                        <FactoryComponent />
-                    </ClientContextProvider>
-                </QueryClientProvider>
-            </EdsProvider>
+            <FusionWrapper authContainer={authContainer}>
+                <EdsProvider density={'compact'}>
+                    <QueryClientProvider client={queryClient}>
+                        <GlobalStyle />
+                        <ConfirmationDialog />
+                        <ClientContextProvider>
+                            <BrowserRouter>
+                                <ClientTopBar />
+                                <MainLayout>
+                                    <ClientRoutes />
+                                </MainLayout>
+                            </BrowserRouter>
+                            <FactoryComponent />
+                        </ClientContextProvider>
+                    </QueryClientProvider>
+                </EdsProvider>
+            </FusionWrapper>
         </ErrorBoundary>
     ) : (
         <>
