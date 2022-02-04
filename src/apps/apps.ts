@@ -421,7 +421,7 @@ export const apps: AppManifest[] = [
             setup: scopeChangeSetup,
         },
         tags: [],
-        isProduction: true,
+        // isProduction: true,
     },
     // ProjectControl
     {
