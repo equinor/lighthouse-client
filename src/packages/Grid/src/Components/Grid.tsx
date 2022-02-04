@@ -1,25 +1,27 @@
 import styled from 'styled-components';
 import { renderToStaticMarkup } from 'react-dom/server';
 
+import 'ag-grid-enterprise/dist/styles/ag-grid.css';
+import 'ag-grid-enterprise/dist/styles/ag-theme-alpine.css';
+import { AgGridReact } from '@ag-grid-community/react';
+
+import { useEffect, useMemo, useState } from 'react';
+import { Button, Icon } from '@equinor/eds-core-react';
+import { closeSidesheet, openSidesheet } from '../../../../packages/Sidesheet/Functions';
+import { tokens } from '@equinor/eds-tokens';
+import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { buildColumnDef } from '../Utils/buildColumnDef';
+import { SidesheetListView } from './SideSheetListView';
+import { IconMenu, MenuItem } from './IconMenu';
 import {
     AllModules,
+    ChartType,
     ColumnApi,
     GridApi,
     GridReadyEvent,
     RowClickedEvent,
     SelectionChangedEvent,
 } from '@ag-grid-enterprise/all-modules';
-import 'ag-grid-enterprise/dist/styles/ag-grid.css';
-import 'ag-grid-enterprise/dist/styles/ag-theme-alpine.css';
-
-import { useEffect, useState } from 'react';
-import { Button, Icon } from '@equinor/eds-core-react';
-import { closeSidesheet, openSidesheet } from '../../../../packages/Sidesheet/Functions';
-import { AgGridReact } from '@ag-grid-community/react';
-import { tokens } from '@equinor/eds-tokens';
-import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/State';
-import { buildColumnDef } from '../Utils/buildColumnDef';
-import { SidesheetListView } from './SideSheetListView';
 
 interface GridProps<T> {
     data: T[];
@@ -34,8 +36,39 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
     const onGridReady = (params: GridReadyEvent) => {
         setGridApi(params.api);
         setGridColumnApi(params.columnApi);
+        params.columnApi.autoSizeAllColumns();
     };
 
+    const actions: () => MenuItem[] = () => {
+        const actionBuilder: MenuItem[] = [];
+
+        actionBuilder.push({ label: 'Export to csv', onClick: () => gridApi?.exportDataAsCsv() });
+        actionBuilder.push({
+            label: 'Export to excel',
+            onClick: () => gridApi?.exportDataAsExcel(),
+        });
+
+        actionBuilder.push({
+            label: 'Reset columns',
+            onClick: () => gridColumnApi?.resetColumnState(),
+        });
+
+        actionBuilder.push({
+            label: `${gridApi?.isSideBarVisible() ? 'Hide' : 'Show'} sidebar`,
+            onClick: () => gridApi?.setSideBarVisible(!gridApi.isSideBarVisible()),
+        });
+
+        if (gridApi?.isAnyFilterPresent()) {
+            actionBuilder.push({
+                label: 'Reset filter',
+                onClick: () => {
+                    gridApi.setFilterModel({});
+                },
+            });
+        }
+
+        return actionBuilder;
+    };
     useEffect(() => {
         if (gridApi) {
             gridApi.refreshCells();
@@ -51,12 +84,17 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
         }
     }, [floatingFilter]);
 
+    useEffect(() => {
+        gridApi?.sizeColumnsToFit();
+    }, [gridApi]);
+
     if (data.length === 0) {
         return null;
     }
     const columnDefs = buildColumnDef(data[0], options?.columnDefinition);
 
     function selectionChanged(props: SelectionChangedEvent) {
+        // eslint-disable-next-line react/prop-types
         const selectedNodes = props.api.getSelectedRows();
         if (selectedNodes.length === 0) {
             closeSidesheet();
@@ -95,15 +133,12 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
 
     return (
         <GridContainer className="ag-theme-alpine">
+            <IconMenu items={actions} />
+            <Button onClick={() => console.log(gridApi?.isSideBarVisible())}>Create chart</Button>
             <Button variant="outlined" onClick={() => setFloatingFilter((prev) => !prev)}>
                 Toggle floating filter
             </Button>
-            <Button variant="outlined" onClick={() => gridApi?.exportDataAsCsv()}>
-                Export to csv
-            </Button>
-            <Button variant="outlined" onClick={() => gridApi?.exportDataAsExcel()}>
-                Export to excel
-            </Button>
+
             <AgGridReact
                 onRowClicked={(props: RowClickedEvent) =>
                     options?.onSelect
@@ -154,5 +189,5 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
 
 const GridContainer = styled.div`
     height: 88vh;
-    width: 80vw;
+    width: 95vw;
 `;

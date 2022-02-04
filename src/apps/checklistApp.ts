@@ -65,7 +65,7 @@ export function setup(appApi: ClientApi): void {
         const plantId = 'PCS$JOHAN_CASTBERG';
         // const project = 'L.O532C.002';
         const response = await api.fetch(
-            `https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=103425&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`,
+            `https://procosyswebapitest.equinor.com/api/Search?plantId=${plantId}&savedSearchId=105214&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`,
             { body: JSON.stringify([]), method: 'POST' }
         );
         // const response = await fetch('./checklist.json');
@@ -81,7 +81,22 @@ export function setup(appApi: ClientApi): void {
         groupValue: {},
     });
 
-    checklist.registerTableOptions({ objectIdentifierKey: 'Id' });
+    checklist.registerTableOptions({
+        columnDefinition: [
+            {
+                field: 'Status__Id',
+                colId: 'Status',
+                headerName: 'Status',
+                chartDataType: 'category',
+            },
+            {
+                field: 'Responsible__Id',
+                colId: 'Responsible',
+                headerName: 'Responsible code',
+                chartDataType: 'series',
+            },
+        ],
+    });
     checklist.registerGardenOptions({
         gardenKey: 'Responsible__Id',
         itemKey: 'TagFormularType__Tag__TagNo',
