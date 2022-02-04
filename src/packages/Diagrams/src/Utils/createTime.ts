@@ -1,8 +1,6 @@
 import { DateTime } from 'luxon';
-import { ChartData, CumulativeSeries, CumulativeSeriesOptions } from '../Types';
+import { ChartData, CumulativeSeries, CumulativeSeriesOptions, TimeDimension } from '../Types';
 import { sortDateByKey } from './sortDate';
-
-export type TimeDimension = 'month' | 'week' | 'year' | 'quarter';
 
 function getInitialTimeDecimation<T>(
     years: number[],
