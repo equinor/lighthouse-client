@@ -373,8 +373,8 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        tags: [],
         uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Preservation',
+        tags: ['link', 'procosys'],
     },
     {
         title: 'Punch',
@@ -510,8 +510,8 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: 'https://fusion.equinor.com/apps/query',
-        tags: ['link', 'fusion'],
+        uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Search?searchType=Query',
+        tags: ['link', 'procosys'],
         // isProduction: true,
     },
     // Reports
