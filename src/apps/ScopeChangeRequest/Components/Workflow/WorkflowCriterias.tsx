@@ -31,6 +31,13 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
     const [textField, setTextField] = useState<string | undefined>(undefined);
     const { scopeChange } = useHttpClient();
 
+    const { Loading: ConfirmContributor } = useLoading(<Button>Add</Button>, contributor !== null);
+
+    const { Loading: AddComment } = useLoading(
+        <TextField id="textField" />,
+        contributor !== null || person !== null
+    );
+
     useEffect(() => {
         if (person) {
             setPerformingAction(true);
@@ -103,6 +110,8 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
         setShowContributor(false);
         setShowCommentField(false);
         setShowReassign(false);
+        setPerson(null);
+        setContributor(null);
     };
 
     const { setPerformingAction, request, refetch } = useScopeChangeAccessContext();
@@ -137,6 +146,10 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
             icon: <Icon name="comment_add" color="grey" />,
             onClick: () => toggleCommentField(),
         },
+        {
+            label: CriteriaActions.Reject,
+            icon: <Icon name="assignment_return" color="grey" />,
+        },
     ];
 
     const moreActions: MenuItem[] = [
@@ -149,10 +162,6 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
             label: CriteriaActions.AddContributor,
             icon: <Icon name="group_add" color="grey" />,
             onClick: () => toggleContributorSelector(),
-        },
-        {
-            label: CriteriaActions.Reject,
-            icon: <Icon name="assignment_return" color="grey" />,
         },
     ];
 
@@ -175,7 +184,12 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
             </WorkflowStepViewContainer>
             <Loading />
             <AddContributor />
+            <Inline>
+                <AddComment />
+                <ConfirmContributor />
+            </Inline>
             <CommentField />
+
             <ReassignBar />
         </>
     );
