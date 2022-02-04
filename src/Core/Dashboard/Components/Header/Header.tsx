@@ -23,6 +23,9 @@ export function Header<T>({ pages, setActivePage, activePage }: HeaderProps<T>):
                             key={`tab-pages-${page.title}`}
                             onClick={() => setActivePage(page.pageId)}
                             active={activePage === page.pageId}
+                            style={{
+                                height: '25px',
+                            }}
                         >
                             <TabTitle>{page.title}</TabTitle>
                         </Tab>

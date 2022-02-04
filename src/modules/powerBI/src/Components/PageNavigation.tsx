@@ -47,7 +47,7 @@ export const PageNavigation = ({ report }: PageNavigationProps) => {
                                 key={page.name}
                                 onClick={() => handleClick(page)}
                                 active={page.name === activePage?.name ? true : false}
-                                style={{ overflowX: 'visible' }}
+                                style={{ overflowX: 'visible', height: '25px' }}
                             >
                                 <TabText>{page.displayName}</TabText>
                             </Tab>
