@@ -24,6 +24,13 @@ const GlobalStyle = createGlobalStyle`
     p {
         font-size: 13px !important;
     }
+    pre {
+        font-family: Equinor;
+        font-size: 13px !important;
+        font-weight: 400;
+        line-height: 1.250em;
+        text-align: left;
+    }
 
     ::-webkit-scrollbar {
         width: .3rem;

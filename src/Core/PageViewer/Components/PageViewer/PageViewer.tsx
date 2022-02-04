@@ -1,4 +1,5 @@
 import { Tabs } from '@equinor/eds-core-react';
+import { PopoutSidesheet } from '@equinor/sidesheet';
 import { useState } from 'react';
 import { ViewState } from '../../Types/State';
 import { NoPages } from '../NoDataViewer/NoPages';
@@ -36,6 +37,7 @@ export function PageViewer(props: ViewState): JSX.Element {
                     isFilterActive={isFilterActive}
                 />
             </PageViewWrapper>
+            <PopoutSidesheet />
         </Tabs>
     );
 }
