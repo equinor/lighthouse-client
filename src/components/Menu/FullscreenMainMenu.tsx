@@ -64,26 +64,6 @@ export const FullscreenMainMenu = (): JSX.Element => {
                                 isFullMenu={true}
                             />
                         );
-                        // return item.uri ? (
-                        //     <MenuItemExternalLink
-                        //         href={item.uri}
-                        //         style={!item.isProduction ? { color: '#e3e3e3' } : {}}
-                        //         target="_blank"
-                        //     >
-                        //         {item.title}
-                        //     </MenuItemExternalLink>
-                        // ) : (
-                        //     <Link
-                        //         active={location.pathname.includes(`${key}/${item.shortName}`)}
-                        //         key={`link-${item.shortName}`}
-                        //         to={getURL(item, key)}
-                        //         onClick={() => toggleFullscreenMenu()}
-                        //         title={!item.isProduction ? 'Disabled' : item.title}
-                        //         disabled={!item.isProduction}
-                        //     >
-                        //         {item.title}
-                        //     </Link>
-                        // );
                     })}
                 </FullscreenMenuAppGroup>
             );

@@ -46,7 +46,6 @@ export const MenuItem = ({ manifest, appId, onClick, isFullMenu }: MenuItemProps
             isLink={manifest.uri !== undefined}
             active={location.pathname.includes(`${appId}/${manifest.shortName}`)}
             title={!manifest.isProduction && isProd ? 'Disabled' : manifest.title}
-            disabled
             onClick={() => {
                 manifest.uri ? window.open(manifest.uri) : navigate(getURL(manifest, appId));
                 onClick && onClick();
