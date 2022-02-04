@@ -105,7 +105,6 @@ function createPowerBiFilter(data: string, slicer: VisualDescriptor): PowerBiFil
     return filter;
 }
 
-
 export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JSX.Element => {
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
@@ -194,18 +193,19 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             console.log('slicer state', blah);
             const foo = await visual.getFilters();
             console.log('filter state for visual', foo);
+            const target = blah.targets;
 
             await filter.slicer.setSlicerState({
                 filters: [
                     {
                         $schema: 'http://powerbi.com/product/schema#basic',
                         target: {
-                            table: 'Fact_SWCR',
-                            column: 'CONTROLSYSTEM',
+                            table: 'Fact_Checklist',
+                            column: 'FORMULARGROUP',
                         },
                         filterType: 1,
                         operator: 'In',
-                        values: [val.value],
+                        values: ['CPCL'],
                         requireSingleSelection: false,
                     },
                 ],
