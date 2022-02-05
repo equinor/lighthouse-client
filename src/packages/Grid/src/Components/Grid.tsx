@@ -6,7 +6,7 @@ import 'ag-grid-enterprise/dist/styles/ag-theme-alpine.css';
 import { AgGridReact } from '@ag-grid-community/react';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Button, Icon } from '@equinor/eds-core-react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { closeSidesheet, openSidesheet } from '../../../../packages/Sidesheet/Functions';
 import { tokens } from '@equinor/eds-tokens';
 import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/State';
@@ -57,6 +57,12 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
             label: `${gridApi?.isSideBarVisible() ? 'Hide' : 'Show'} sidebar`,
             onClick: () => gridApi?.setSideBarVisible(!gridApi.isSideBarVisible()),
         });
+
+        actionBuilder.push({
+            label: "Autosize all columns",
+            onClick: () => gridColumnApi?.autoSizeAllColumns(),
+        })
+
 
         if (gridApi?.isAnyFilterPresent()) {
             actionBuilder.push({
@@ -129,15 +135,15 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
         return renderToStaticMarkup(<Icon name="chevron_up" />);
     }
 
-    // sortDescending;
 
     return (
         <GridContainer className="ag-theme-alpine">
-            <IconMenu items={actions} />
-            <Button onClick={() => console.log(gridApi?.isSideBarVisible())}>Create chart</Button>
-            <Button variant="outlined" onClick={() => setFloatingFilter((prev) => !prev)}>
-                Toggle floating filter
-            </Button>
+            <Inline>
+                <IconMenu items={actions} />
+                <Button variant="outlined" onClick={() => setFloatingFilter((prev) => !prev)}>
+                    Toggle floating filter
+                </Button>
+            </Inline>
 
             <AgGridReact
                 onRowClicked={(props: RowClickedEvent) =>
@@ -154,8 +160,6 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
                     sortAscending: sortAscendingIcon,
                 }}
                 alwaysShowVerticalScroll
-                onFilterChanged={(props) => console.log(props)}
-                onFilterModified={(props) => console.log(props)}
                 columnDefs={columnDefs as any}
                 groupSelectsChildren={true}
                 animateRows={true}
@@ -169,6 +173,7 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
                     sortable: true,
                     filter: true,
                     floatingFilter: true,
+                    initialHide: true,
                 }}
                 sideBar={true}
                 pagination={true}
@@ -188,6 +193,11 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
 }
 
 const GridContainer = styled.div`
-    height: 88vh;
+    height: 82vh;
     width: 95vw;
+`;
+
+const Inline = styled.div`
+    display: flex;
+    align-items: center;
 `;

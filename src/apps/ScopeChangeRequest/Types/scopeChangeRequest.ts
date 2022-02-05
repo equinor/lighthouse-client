@@ -107,7 +107,7 @@ export interface Criteria {
     signedAtUtc: string;
     signedBy: Person;
     signedComment: string;
-    signedState: 'Approved' | 'Rejected';
+    signedState: 'Approved' | 'Rejected' | null;
 }
 
 export interface Contributor {

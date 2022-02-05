@@ -1,6 +1,9 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { Typography } from '@equinor/eds-core-react';
 import { baseClient } from '@equinor/http-client';
 import { ClientApi } from '@equinor/portal-client';
+import { IFilterType } from 'ag-grid-enterprise';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { ScopeChangeSideSheet } from './Components/CustomSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
@@ -28,49 +31,92 @@ export function setup(appApi: ClientApi): void {
 
         // return JSON.parse(await response.text());
 
-
         const scopeChanges: ScopeChangeRequest[] = [];
-        
+
         for (let i = 0; i < 1000; i++) {
             scopeChanges.push({
                 actualChangeHours: Math.round(Math.random() * 100),
                 attachments: [],
-                category: Math.random() * 1 ? "Design Change" : "Hidden carryover",
+                category: Math.random() * 1 ? 'Design Change' : 'Hidden carryover',
                 commissioningPackages: [],
                 createdAtUtc: new Date().toDateString(),
-                createdBy: {id: (Math.random() * 1000).toString(), firstName: "Gustav", lastName: "Eikaas", oid: "1212"},
-                description: "",
+                createdBy: {
+                    id: (Math.random() * 1000).toString(),
+                    firstName: 'Gustav',
+                    lastName: 'Eikaas',
+                    oid: '1212',
+                },
+                description: '',
                 documents: [],
                 estimatedChangeHours: Math.round(Math.random() * 100),
-                guesstimateDescription: "",
-                guesstimateHours: (Math.random() * 100).toString(),
+                guesstimateDescription: '',
+                guesstimateHours: Math.round(Math.random() * 100).toString(),
                 id: (Math.random() * 2000).toString(),
                 isVoided: Math.random() * 1 ? true : false,
                 modifiedAtUtc: new Date().toDateString(),
-                modifiedBy: {id: (Math.random() * 1000).toString(), firstName: "Gustav", lastName: "Eikaas", oid: "1212"},
-                origin: Math.random() * 1 ? "DCN" : "Query",
-                phase: "IC phase",
-                state: Math.random()* 1 ? "Closed" : "Open",
+                modifiedBy: {
+                    id: (Math.random() * 1000).toString(),
+                    firstName: 'Gustav',
+                    lastName: 'Eikaas',
+                    oid: '1212',
+                },
+                origin: Math.random() * 1 ? 'DCN' : 'Query',
+                phase: 'IC phase',
+                state: Math.random() * 1 ? 'Closed' : 'Open',
                 systems: [],
                 tags: [],
-                title: "Scope change",
-                workflowSteps: [],
+                title: 'Scope change',
+                workflowSteps: [
+                    {
+                        contributors: [],
+                        criterias: [],
+                        id: (Math.round(Math.random() * 1)).toString(),
+                        isCompleted: true,
+                        isCurrent: false,
+                        name: 'Review by engineering',
+                        order: 0,
+                    },
+                    {
+                        contributors: [],
+                        criterias: [],
+                        id: (Math.random() * 16).toString(),
+                        isCompleted: false,
+                        isCurrent: true,
+                        name: 'Approval by integrated construction',
+                        order: 1,
+                    },
+                    {
+                        contributors: [],
+                        criterias: [],
+                        id: (Math.random() * 16).toString(),
+                        isCompleted: false,
+                        isCurrent: false,
+                        name: 'Final approval',
+                        order: 2,
+                    },
+                ],
                 currentWorkflowStep: {
                     contributors: [],
-                    criterias: [],
+                    criterias: [
+                        {
+                            id: (Math.random() * 1000).toString(),
+                            signedAtUtc: new Date().toString(),
+                            signedBy: {id: "2", oid: "2", lastName: "", firstName: ""},
+                            signedComment: "",
+                            signedState: null,
+                            type: "",
+                            value: "Guei@equinor.com"
+                        }
+                    ],
                     id: (Math.random() * 10000).toString(),
                     isCompleted: false,
                     isCurrent: true,
-                    name: "assign",
-                    order: 0
+                    name: 'assign',
+                    order: 0,
                 },
-                
-
-            })
-            
+            });
         }
-return scopeChanges;
-
+        return scopeChanges;
     });
 
     const scopeChangeExcludeKeys: (keyof ScopeChangeRequest)[] = [
@@ -119,102 +165,46 @@ return scopeChanges;
     });
 
     request.registerTableOptions({
-        objectIdentifierKey: 'id',
-        enableSelectRows: true,
-        hiddenColumns: [
-            'currentWorkflowStep',
-            'id',
-            'attachments',
-            'systems',
-            'tags',
-            'commissioningPackages',
-            'documents',
-            'description',
-            'guesstimateDescription',
-            'createdBy',
-            'createdAtUtc',
-            'modifiedBy',
-        ],
-        columnOrder: [
-            'title',
-            'phase',
-            'workflowSteps',
-            'guesstimateHours',
-            'estimatedChangeHours',
-            'actualChangeHours',
-            'category',
-            'origin',
-            'lastModified',
-        ],
-        headers: [
-            { key: 'title', title: 'Title' },
-            { key: 'phase', title: 'Phase' },
-            { key: 'workflowSteps', title: 'Workflow' },
-            { key: 'guesstimateHours', title: 'Guesstimate' },
-            { key: 'estimatedChangeHours', title: 'Estimate hours' },
-            { key: 'actualChangeHours', title: 'Actual' },
-            { key: 'category', title: 'Change category' },
-            { key: 'origin', title: 'Change origin' },
-            { key: 'createdAtUtc', title: 'Created at' },
-            { key: 'createdBy', title: 'Created by' },
-            { key: 'modifiedAtUtc', title: 'Last updated' },
-            { key: 'modifiedBy', title: 'Modified by' },
-            { key: 'description', title: 'Description' },
-            { key: 'state', title: 'Status' },
-            { key: 'guesstimateDescription', title: 'Guesstimate description' },
-        ],
-        customCellView: [
+        columnDefinition: [
             {
-                key: 'createdBy',
-                type: {
-                    Cell: ({ cell }: any) => {
-                        return <div>{cell.value.content.createdBy?.firstName}</div>;
-                    },
+                field: 'workflowSteps',
+                headerName: 'Workflow',
+                cellRenderer: (props) => {
+                    return renderToStaticMarkup(
+                        <WorkflowCompact
+                            steps={props.data.workflowSteps}
+                            statusDotFunc={statusDotFunc}
+                            spanDirection="horizontal"
+                        />
+                    );
                 },
+                enableRowGroup: false,
+                rowGroup: false,
+                filterValueGetter: ({ data }) => data.workflowSteps[0].id,
             },
             {
-                key: 'modifiedAtUtc',
-                type: 'Date',
-            },
-            {
-                key: 'guesstimateHours',
-                type: 'Description',
-            },
-            {
-                key: 'estimatedChangeHours',
-                type: 'Description',
-            },
-            {
-                key: 'createdAtUtc',
-                type: 'Date',
-            },
-
-            {
-                key: 'workflowSteps',
-                type: {
-                    Cell: ({ cell }: any) => {
-                        return (
-                            <div>
-                                <WorkflowCompact
-                                    steps={cell.value.content.workflowSteps}
-                                    statusDotFunc={statusDotFunc}
-                                    spanDirection={'horizontal'}
-                                />
-                            </div>
-                        );
-                    },
-                },
-            },
-            {
-                key: 'isVoided',
-                type: {
-                    Cell: ({ cell }) => {
-                        return <div>{cell.value.content.isVoided.toString()}</div>;
-                    },
-                },
-            },
+                field: "currentWorkflowStep",
+                colId: "next to sign",
+                headerName: "Next to sign",
+                cellRenderer: (props) => renderToStaticMarkup(<NextToSign currentWorkflowStep={props.data.currentWorkflowStep} />),
+                filter: true,
+            },{
+                field: "title"
+            }
         ],
     });
+
+
+    interface NextToSignProps {
+        currentWorkflowStep: WorkflowStep
+    }
+
+    const NextToSign = ({currentWorkflowStep}: NextToSignProps) => {
+        const unsignedCriterias = currentWorkflowStep.criterias.filter((x) => x.signedState === null).map((x) => x.value)
+
+        return <div>{unsignedCriterias.map((x) => <div key={x}>{x}</div> )}</div>
+
+    }
 
     const statusDotFunc = (item: WorkflowStep) => {
         if (item.isCurrent) {

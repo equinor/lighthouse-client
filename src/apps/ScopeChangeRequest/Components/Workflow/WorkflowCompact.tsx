@@ -43,7 +43,10 @@ const WorkflowStep = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 2px;
+    width: 100%;
+    height: 100%;
+    margin-top: 50%;
+    margin-right: 0.2rem;
 `;
 
 export interface WorkflowStep {

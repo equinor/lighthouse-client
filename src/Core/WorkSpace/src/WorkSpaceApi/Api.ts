@@ -105,6 +105,16 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
          *
          */
         registerTableOptions<T>(tableOptions: Omit<TableOptions<T>, 'onSelect'>) {
+
+            const overrideColumnDefinitions = tableOptions.columnDefinition?.map((x) => {
+               return {
+                   ...x,
+                   initialHide: false,
+                }
+                })
+
+                tableOptions.columnDefinition = overrideColumnDefinitions;
+
             dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => ({
                 ...state,
                 [options.viewerId]: {
