@@ -111,7 +111,7 @@ export function setup(appApi: ClientApi): void {
                     id: (Math.random() * 10000).toString(),
                     isCompleted: false,
                     isCurrent: true,
-                    name: 'assign',
+                    name: Math.random() >= 0.5 ? "Assign" : "Review",
                     order: 0,
                 },
             });

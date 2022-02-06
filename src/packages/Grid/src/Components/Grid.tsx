@@ -5,23 +5,23 @@ import 'ag-grid-enterprise/dist/styles/ag-grid.css';
 import 'ag-grid-enterprise/dist/styles/ag-theme-alpine.css';
 import { AgGridReact } from '@ag-grid-community/react';
 
-import { useEffect, useMemo, useState } from 'react';
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { useEffect, useState } from 'react';
+import { Button, Icon } from '@equinor/eds-core-react';
 import { closeSidesheet, openSidesheet } from '../../../../packages/Sidesheet/Functions';
 import { tokens } from '@equinor/eds-tokens';
-import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { ColumnDefintion, TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { buildColumnDef } from '../Utils/buildColumnDef';
 import { SidesheetListView } from './SideSheetListView';
 import { IconMenu, MenuItem } from './IconMenu';
 import {
     AllModules,
-    ChartType,
     ColumnApi,
     GridApi,
     GridReadyEvent,
     RowClickedEvent,
     SelectionChangedEvent,
 } from '@ag-grid-enterprise/all-modules';
+import { GenerateColumn } from './GenerateColumn';
 
 interface GridProps<T> {
     data: T[];
@@ -32,6 +32,15 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
     const [gridApi, setGridApi] = useState<GridApi | null>(null);
     const [gridColumnApi, setGridColumnApi] = useState<ColumnApi | null>(null);
     const [floatingFilter, setFloatingFilter] = useState(true);
+    const [scrimOpen, setScrimOpen] = useState(false);
+    const [columnDefs, setColumnDefs] = useState(
+        buildColumnDef(data[0], options?.columnDefinition)
+    );
+
+
+    function appendColumn(colDef: ColumnDefintion<T>) {
+        setColumnDefs((prev) => [...prev, colDef]);
+    }
 
     const onGridReady = (params: GridReadyEvent) => {
         setGridApi(params.api);
@@ -50,7 +59,10 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
 
         actionBuilder.push({
             label: 'Reset columns',
-            onClick: () => gridColumnApi?.resetColumnState(),
+            onClick: () => {
+                gridColumnApi?.resetColumnState();
+                setColumnDefs(buildColumnDef(data[0], options?.columnDefinition));
+            },
         });
 
         actionBuilder.push({
@@ -59,10 +71,14 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
         });
 
         actionBuilder.push({
-            label: "Autosize all columns",
+            label: 'Autosize all columns',
             onClick: () => gridColumnApi?.autoSizeAllColumns(),
-        })
+        });
 
+        actionBuilder.push({
+            label: "Generate new column",
+            onClick: () => setScrimOpen(true)
+        })
 
         if (gridApi?.isAnyFilterPresent()) {
             actionBuilder.push({
@@ -97,7 +113,6 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
     if (data.length === 0) {
         return null;
     }
-    const columnDefs = buildColumnDef(data[0], options?.columnDefinition);
 
     function selectionChanged(props: SelectionChangedEvent) {
         // eslint-disable-next-line react/prop-types
@@ -135,9 +150,14 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
         return renderToStaticMarkup(<Icon name="chevron_up" />);
     }
 
-
     return (
         <GridContainer className="ag-theme-alpine">
+            <GenerateColumn
+                isOpen={scrimOpen}
+                onClose={() => setScrimOpen(false)}
+                item={data[0]}
+                appendColumn={appendColumn}
+            />
             <Inline>
                 <IconMenu items={actions} />
                 <Button variant="outlined" onClick={() => setFloatingFilter((prev) => !prev)}>
@@ -180,14 +200,11 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
                 masterDetail={true}
                 paginationPageSize={30}
                 modules={AllModules}
+                groupSelectsFiltered
                 onGridReady={onGridReady}
                 rowModelType={'clientSide'}
                 rowData={data}
-            >
-                {/* {Object.keys(data[0]).map((x) => {
-                   return <AgGridColumn key={x} field={x} sortable={true} filter={true}  />
-                 })} */}
-            </AgGridReact>
+            ></AgGridReact>
         </GridContainer>
     );
 }
