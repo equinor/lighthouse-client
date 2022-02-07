@@ -108,14 +108,14 @@ export interface Criteria {
     id: string;
     type: string;
     value: string;
-    signedAtUtc: string;
+    signedAtUtc: string | null;
     signedBy: Person;
-    signedComment: string;
+    signedComment: string | null;
     signedState: 'Approved' | 'Rejected' | null;
 }
 
 export interface Contributor {
-    createdAtUtc: Date;
+    createdAtUtc: Date | null;
     createdBy: Person;
     modifiedAtUtc: Date;
     modifiedBy: Person;

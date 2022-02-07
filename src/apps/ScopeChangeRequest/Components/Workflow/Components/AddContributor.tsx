@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
-import { SelectOption } from '../../Api/Search/PCS';
-import { addContributor } from '../../Api/ScopeChange/Workflow/addContributor';
+import { PCSPersonSearch } from '../../SearchableDropdown/PCSPersonSearch';
+import { SelectOption } from '../../../Api/Search/PCS';
+import { addContributor } from '../../../Api/ScopeChange/Workflow/addContributor';
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
 import { useMutation } from 'react-query';
-import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from './WorkflowIcon';

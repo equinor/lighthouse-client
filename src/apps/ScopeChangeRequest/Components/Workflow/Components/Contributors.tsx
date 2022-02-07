@@ -1,13 +1,16 @@
 import { Button, Icon, TextField, Tooltip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { Contributor as ContributorInterface, WorkflowStep } from '../../Types/scopeChangeRequest';
-import { MenuButton, MenuItem } from '../MenuButton/';
-import { ContributorActions } from './Types/actions';
+import {
+    Contributor as ContributorInterface,
+    WorkflowStep,
+} from '../../../Types/scopeChangeRequest';
+import { MenuButton, MenuItem } from '../../MenuButton/';
+import { ContributorActions } from '../Types/actions';
 import { WorkflowIcon } from './WorkflowIcon';
 import { useMutation } from 'react-query';
-import { addContribution } from '../../Api/ScopeChange/Workflow';
-import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
+import { addContribution } from '../../../Api/ScopeChange/Workflow';
+import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useState } from 'react';
 
 interface ContributorsProps {
@@ -17,6 +20,7 @@ interface ContributorsProps {
 
 export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Element => {
     const [comment, setComment] = useState('');
+
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
 
     const { request } = useScopeChangeAccessContext();
@@ -77,7 +81,9 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                             />
                         </span>
                         <ButtonContainer>
-                            <Button onClick={() => onAddContribution()}>Confirm</Button>
+                            <Button disabled={!comment} onClick={() => onAddContribution()}>
+                                Confirm
+                            </Button>
                             <Divider />
                             <Button onClick={() => setShowCommentField(false)} variant="outlined">
                                 Cancel

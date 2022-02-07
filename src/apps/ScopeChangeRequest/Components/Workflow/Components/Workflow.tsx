@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 import { WorkflowCriterias } from './WorkflowCriterias';
 import { Contributor } from './Contributors';
-import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 
 export function Workflow(): JSX.Element {
     const { request } = useScopeChangeAccessContext();

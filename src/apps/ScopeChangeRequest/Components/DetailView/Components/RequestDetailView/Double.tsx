@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { SectionRow } from '../../../../Styles/Section';
 import { useScopeChangeAccessContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { Workflow } from '../../../Workflow/Workflow';
+import { Workflow } from '../../../Workflow/Components/Workflow';
 import { Attachments } from '../../Components/Attachments';
 import { RelatedObjects } from '../../Components/RelatedObjects';
 import { OriginLink } from '../../Components/OriginLink';

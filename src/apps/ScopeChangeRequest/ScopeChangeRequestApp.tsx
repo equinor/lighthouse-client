@@ -1,15 +1,12 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/portal-client';
-import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ScopeChangeSideSheet } from './Components/Sidesheet/ScopeChangeSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
-import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
+import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 import { OriginLink } from './Components/DetailView/Components/OriginLink';
-import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import { Icon } from '@equinor/eds-core-react';
-import { DateTime } from 'luxon';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -144,7 +141,12 @@ export function setup(appApi: ClientApi): void {
                             {
                                 id: '121212',
                                 signedAtUtc: null,
-                                signedBy: {},
+                                signedBy: {
+                                    firstName: 'Gustav',
+                                    lastName: 'Eikaas',
+                                    id: '1212',
+                                    oid: '1212121221',
+                                },
                                 signedComment: null,
                                 signedState: null,
                                 type: 'RequireProcosysUserSignature',
@@ -153,7 +155,12 @@ export function setup(appApi: ClientApi): void {
                             {
                                 id: '12122222',
                                 signedAtUtc: null,
-                                signedBy: {},
+                                signedBy: {
+                                    firstName: 'Gustav',
+                                    lastName: 'Eikaas',
+                                    id: '1212',
+                                    oid: '1212121221',
+                                },
                                 signedComment: null,
                                 signedState: null,
                                 type: 'RequireProcosysUserSignature',
@@ -172,7 +179,12 @@ export function setup(appApi: ClientApi): void {
                             {
                                 id: '22211|213',
                                 signedAtUtc: null,
-                                signedBy: {},
+                                signedBy: {
+                                    firstName: 'Gustav',
+                                    lastName: 'Eikaas',
+                                    id: '1212',
+                                    oid: '1212121221',
+                                },
                                 signedComment: null,
                                 signedState: null,
                                 type: 'RequireProcosysGroupSignature',
@@ -205,7 +217,12 @@ export function setup(appApi: ClientApi): void {
                         {
                             id: '121212',
                             signedAtUtc: null,
-                            signedBy: {},
+                            signedBy: {
+                                firstName: 'Gustav',
+                                lastName: 'Eikaas',
+                                id: '1212',
+                                oid: '1212121221',
+                            },
                             signedComment: null,
                             signedState: null,
                             type: 'RequireProcosysUserSignature',
@@ -214,7 +231,12 @@ export function setup(appApi: ClientApi): void {
                         {
                             id: '12122222',
                             signedAtUtc: null,
-                            signedBy: {},
+                            signedBy: {
+                                firstName: 'Gustav',
+                                lastName: 'Eikaas',
+                                id: '1212',
+                                oid: '1212121221',
+                            },
                             signedComment: null,
                             signedState: null,
                             type: 'RequireProcosysUserSignature',
@@ -253,7 +275,7 @@ export function setup(appApi: ClientApi): void {
                 documents: [],
                 estimatedChangeHours: 2,
                 guesstimateDescription: 'test',
-                guesstimateHours: 2,
+                guesstimateHours: '2',
                 id: '121sss2',
                 isVoided: false,
                 modifiedAtUtc: new Date().toDateString(),
@@ -337,7 +359,12 @@ export function setup(appApi: ClientApi): void {
                             {
                                 id: '121212',
                                 signedAtUtc: null,
-                                signedBy: {},
+                                signedBy: {
+                                    firstName: 'Gustav',
+                                    lastName: 'Eikaas',
+                                    id: '1212',
+                                    oid: '1212121221',
+                                },
                                 signedComment: null,
                                 signedState: null,
                                 type: 'RequireProcosysUserSignature',
@@ -346,7 +373,12 @@ export function setup(appApi: ClientApi): void {
                             {
                                 id: '12122222',
                                 signedAtUtc: null,
-                                signedBy: {},
+                                signedBy: {
+                                    firstName: 'Gustav',
+                                    lastName: 'Eikaas',
+                                    id: '1212',
+                                    oid: '1212121221',
+                                },
                                 signedComment: null,
                                 signedState: null,
                                 type: 'RequireProcosysUserSignature',
@@ -398,7 +430,12 @@ export function setup(appApi: ClientApi): void {
                         {
                             id: '121212',
                             signedAtUtc: null,
-                            signedBy: {},
+                            signedBy: {
+                                firstName: 'Gustav',
+                                lastName: 'Eikaas',
+                                id: '1212',
+                                oid: '1212121221',
+                            },
                             signedComment: null,
                             signedState: null,
                             type: 'RequireProcosysUserSignature',
@@ -407,7 +444,12 @@ export function setup(appApi: ClientApi): void {
                         {
                             id: '12122222',
                             signedAtUtc: null,
-                            signedBy: {},
+                            signedBy: {
+                                firstName: 'Gustav',
+                                lastName: 'Eikaas',
+                                id: '1212',
+                                oid: '1212121221',
+                            },
                             signedComment: null,
                             signedState: null,
                             type: 'RequireProcosysUserSignature',

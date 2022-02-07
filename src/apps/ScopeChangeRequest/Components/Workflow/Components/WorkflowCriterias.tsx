@@ -3,22 +3,22 @@ import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 
 import { Icon, Progress } from '@equinor/eds-core-react';
-import { Criteria, WorkflowStep } from '../../Types/scopeChangeRequest';
-import { SelectOption } from '../../Api/Search/PCS';
-import { reassignCriteria } from '../../Api/ScopeChange/Workflow';
-import { useScopeChangeAccessContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
-import { useConditionalRender } from '../../Hooks/useConditionalRender';
-import { useLoading } from '../../Hooks/useLoading';
-import { PCSPersonSearch } from '../SearchableDropdown/PCSPersonSearch';
+import { Criteria, WorkflowStep } from '../../../Types/scopeChangeRequest';
+import { SelectOption } from '../../../Api/Search/PCS';
+import { reassignCriteria } from '../../../Api/ScopeChange/Workflow';
+import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useConditionalRender } from '../../../Hooks/useConditionalRender';
+import { useLoading } from '../../../Hooks/useLoading';
+import { PCSPersonSearch } from '../../SearchableDropdown/PCSPersonSearch';
 import { useEffect, useState } from 'react';
-import { MenuButton } from '../MenuButton/Components/MenuButton';
-import { IconMenu } from '../MenuButton/Components/IconMenu';
+import { MenuButton } from '../../MenuButton/Components/MenuButton';
+import { IconMenu } from '../../MenuButton/Components/IconMenu';
 import { CriteriaDetail } from './CriteriaDetail';
-import { MenuItem } from '../MenuButton/Types/menuItem';
-import { CriteriaActions } from './Types/actions';
+import { MenuItem } from '../../MenuButton/Types/menuItem';
+import { CriteriaActions } from '../Types/actions';
 import { AddContributor } from './AddContributor';
-import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { signCriteria } from '../../Api/ScopeChange/Workflow';
+import { spawnConfirmationDialog } from '../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { signCriteria } from '../../../Api/ScopeChange/Workflow';
 import { SignWithComment } from './SignWithComment';
 
 interface WorkflowCriteriasProps {
