@@ -4,6 +4,7 @@ import {
     registerClientRegistry,
     registerInternalState,
 } from '../Functions/RegisterActions';
+import { setClientEnv } from '../Functions/Settings';
 import { AppConfigResult } from '../Types/AppConfig';
 import { AppGroups } from '../Types/AppGroupe';
 import { AppManifest } from '../Types/AppManifest';
@@ -36,6 +37,12 @@ export async function createClient(clientOptions: ClientOptions): Promise<Client
             authProvider
         )
     );
+
+    if (!appConfig.isProduction) {
+        window['setEnv'] = function setEnv(env: string) {
+            setClientEnv(env);
+        };
+    }
 
     return { authProvider, registry, appConfig };
 }

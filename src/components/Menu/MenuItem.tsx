@@ -1,5 +1,5 @@
-import { isProduction } from '@equinor/portal-client';
-import { useState } from 'react';
+import { isAppActive } from '@equinor/portal-client';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppManifest } from '../../Core/Client/Types';
 import Icon from '../Icon/Icon';
@@ -14,38 +14,35 @@ interface MenuItemProps {
 }
 
 export const MenuItem = ({ manifest, appId, onClick, isFullMenu }: MenuItemProps): JSX.Element => {
-    const isProd = isProduction();
     const navigate = useNavigate();
     const [showIcon, setShowIcon] = useState(false);
+    const isActive = useMemo(() => isAppActive(manifest), [manifest]);
 
     return isFullMenu ? (
         <DItem
             isLink={manifest.uri !== undefined}
             active={location.pathname.includes(`${appId}/${manifest.shortName}`)}
-            title={!manifest.isProduction && isProd ? 'Disabled' : manifest.title}
+            title={isActive ? manifest.title : 'Disabled'}
             onClick={() => {
                 manifest.uri ? window.open(manifest.uri) : navigate(getURL(manifest, appId));
                 onClick && onClick();
             }}
             onMouseEnter={() => setShowIcon(true)}
             onMouseLeave={() => setShowIcon(false)}
-            disabled={!manifest.isProduction}
+            disabled={!isActive}
         >
             <ContentWrapper>
                 {manifest.uri && (
-                    <Icon
-                        style={{ opacity: showIcon && manifest.isProduction ? 1 : 0 }}
-                        name="external_link"
-                    />
+                    <Icon style={{ opacity: showIcon && isActive ? 1 : 0 }} name="external_link" />
                 )}
-                <Title disabled={!manifest.isProduction}>{manifest.title}</Title>
+                <Title disabled={!isActive}>{manifest.title}</Title>
             </ContentWrapper>
         </DItem>
     ) : (
         <MItem
             isLink={manifest.uri !== undefined}
             active={location.pathname.includes(`${appId}/${manifest.shortName}`)}
-            title={!manifest.isProduction && isProd ? 'Disabled' : manifest.title}
+            title={isActive ? manifest.title : 'Disabled'}
             onClick={() => {
                 manifest.uri ? window.open(manifest.uri) : navigate(getURL(manifest, appId));
                 onClick && onClick();
