@@ -9,7 +9,7 @@ export const Wrapper = styled.section`
 `;
 export const ContentWrapper = styled.div`
     display: flex;
+    margin-top: 1rem;
     flex-direction: column;
-    padding: 1rem;
     flex: 1;
 `;
