@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { useMemo } from 'react';
 import { CellProps } from 'react-table';
 import { CellRenderProps, TableData } from '../../types';
 
@@ -6,8 +7,13 @@ export const RelativeDateCell = <T extends TableData>(
     props: CellProps<T, CellRenderProps<T>>
 ): JSX.Element => {
     const {
-        value: { content, currentKey },
+        value: { content, currentKey, cellAttributeFn },
     } = props;
+
+    const attr = useMemo(
+        () => (cellAttributeFn ? cellAttributeFn(content) : undefined),
+        [cellAttributeFn, content]
+    );
 
     if (content[currentKey] === null || content[currentKey] === undefined) {
         return <></>;
@@ -17,6 +23,5 @@ export const RelativeDateCell = <T extends TableData>(
 
     const date = new Date(dateString);
     const formattedDate = DateTime.fromJSDate(date).toRelative();
-    // const formattedDate = new DateTime(date).toRelative();
-    return <>{formattedDate}</>;
+    return <div {...attr}>{formattedDate}</div>;
 };
