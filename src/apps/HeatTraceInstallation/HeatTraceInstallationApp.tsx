@@ -29,11 +29,7 @@ export function setup(appApi: ClientApi): void {
             { key: 'name', title: 'Name', width: 1000 },
             {
                 key: 'description',
-                title: {
-                    Custom: (a) => {
-                        return <div>Header custom</div>;
-                    },
-                },
+                title: 'Description',
             },
             { key: 'checklists', title: 'Checklists' },
             { key: 'lineAndSpools', title: 'Line and spools' },

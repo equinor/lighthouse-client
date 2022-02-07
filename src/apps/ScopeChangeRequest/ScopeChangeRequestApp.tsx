@@ -102,14 +102,7 @@ export function setup(appApi: ClientApi): void {
             'lastModified',
         ],
         headers: [
-            {
-                key: 'title',
-                title: {
-                    Custom: () => {
-                        return <div>Test</div>;
-                    },
-                },
-            },
+            { key: 'title', title: 'Title' },
             { key: 'phase', title: 'Phase' },
             { key: 'workflowSteps', title: 'Workflow' },
             { key: 'guesstimateHours', title: 'Guesstimate' },
