@@ -292,7 +292,7 @@ export const apps: AppManifest[] = [
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
-        isProduction: true,
+        // isProduction: true,
     },
     // CompletionManagement
     {
@@ -373,10 +373,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.CompletionManagement,
         icon: '',
-        tags: [],
-        app: {
-            appType: 'DataViewer',
-        },
+        uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Preservation',
+        tags: ['link', 'procosys'],
+        isProduction: true,
     },
     {
         title: 'Punch',
@@ -400,7 +399,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: SwcrSetup,
         },
-        isProduction: true,
+        // isProduction: true,
     },
     // Queries and requests
     {
@@ -422,7 +421,7 @@ export const apps: AppManifest[] = [
             setup: scopeChangeSetup,
         },
         tags: [],
-        isProduction: true,
+        // isProduction: true,
     },
     // ProjectControl
     {
@@ -512,9 +511,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.QueriesAndRequests,
         icon: '',
-        uri: 'https://fusion.equinor.com/apps/query',
-        tags: ['link', 'fusion'],
-        // isProduction: true,
+        uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Search?searchType=Query',
+        tags: ['link', 'procosys'],
+        isProduction: true,
     },
     // Reports
     // {

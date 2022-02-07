@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { WoMapCount } from '..';
 import { tokens } from '@equinor/eds-tokens';
 import { useCallback } from 'react';
-import { SidesheetContent } from '@equinor/Diagrams';
 import { openSidesheet } from '@equinor/sidesheet';
+import { SidesheetContent } from '../../SidesheetContent';
 
 enum CircleColor {
     WARNING,

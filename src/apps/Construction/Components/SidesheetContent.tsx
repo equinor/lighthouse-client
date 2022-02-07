@@ -1,5 +1,5 @@
 import { Column, useColumns, LinkCell, Table } from '@equinor/Table';
-import { WorkOrder } from '../../../../apps/Construction/mocData/mockData';
+import { WorkOrder } from '../Types';
 
 interface Props<T> {
     data: T[];

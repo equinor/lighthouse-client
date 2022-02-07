@@ -1,9 +1,9 @@
 {
-  "name": "project-lighthouse",
-  "version": "1.0.0",
-  "description": "Project Lighthouse ProCoSys Client",
+  "name": "castberg-project-portal",
+  "version": "0.1.0-alpha",
+  "description": "Castberg Project Portal",
   "main": "Index.ts",
-  "author": "ProCoSys Team",
+  "author": "Castberg Project Portal Team",
   "license": "MIT",
   "private": true,
   "scripts": {
