@@ -7,6 +7,7 @@ import { StidDocumentResolver } from '../../Components/StidDocumentResolver';
 import { Attachments } from '../../Components/Attachments';
 import { RelatedObjects } from '../../Components/RelatedObjects';
 import { OriginLink } from '../../Components/OriginLink';
+import { ChevronList } from '../ChevronList/ChevronList';
 
 export const SingleView = (): JSX.Element => {
     const { request } = useScopeChangeAccessContext();
@@ -15,77 +16,84 @@ export const SingleView = (): JSX.Element => {
         <SplitScreen>
             <h2>Request</h2>
             <SectionRow>
-                <Field
-                    label={'Phase'}
-                    customLabel={{ fontSize: '12px' }}
-                    customValue={{ fontSize: '16px' }}
-                    value={request.phase}
-                />
-                <Field
-                    label={'Status'}
-                    customLabel={{ fontSize: '12px' }}
-                    customValue={{ fontSize: '16px' }}
-                    value={request.state}
-                />
+                <Section>
+                    <SubHeading>Phase</SubHeading>
+                    <Value>{request.phase}</Value>
+                </Section>
+
+                <Section>
+                    <SubHeading>State</SubHeading>
+                    <Value>{request.state}</Value>
+                </Section>
             </SectionRow>
             <SectionRow>
-                <Field
-                    label={'Change category'}
-                    customLabel={{ fontSize: '12px' }}
-                    customValue={{ fontSize: '16px' }}
-                    value={request.category}
-                />
+                <Section>
+                    <SubHeading>Change category</SubHeading>
+                    <Value>{request.category}</Value>
+                </Section>
 
-                <Field
-                    label={'Change origin'}
-                    customLabel={{ fontSize: '12px' }}
-                    customValue={{ fontSize: '16px' }}
-                    value={<OriginLink type={request.originSource} id={request.originSourceId} />}
-                />
+                <Section>
+                    <SubHeading>Change origin</SubHeading>
+                    <Value>
+                        <OriginLink type={request.originSource} id={request.originSourceId} />
+                    </Value>
+                </Section>
             </SectionRow>
-            <Field
-                label={'Description'}
-                customLabel={{ fontSize: '12px' }}
-                customValue={{ fontSize: '16px' }}
-                value={request.description}
-            />
 
-            <Field
-                label={'Guesstimate mhrs'}
-                customLabel={{ fontSize: '12px' }}
-                customValue={{ fontSize: '16px' }}
-                value={request.guesstimateHours}
-            />
-            <Field
-                customLabel={{ fontSize: '18px', bold: true }}
-                label={'Workflow'}
-                value={<Workflow />}
-            />
+            <Section>
+                <SubHeading>Description</SubHeading>
+                <Value>{request.description}</Value>
+            </Section>
 
-            <Field
-                customLabel={{ fontSize: '18px', bold: true }}
-                label={'References'}
-                value={
+            <SectionRow>
+                <Section>
+                    <SubHeading>Guesstimate mhrs</SubHeading>
+                    <Value>{request.guesstimateHours}</Value>
+                </Section>
+                <Section>
+                    <SubHeading>Guesstimate description</SubHeading>
+                    <Value>{request.guesstimateDescription}</Value>
+                </Section>
+            </SectionRow>
+
+            <Section>
+                <BoldHeading>Workflow</BoldHeading>
+                <Workflow />
+            </Section>
+
+            <Section>
+                <BoldHeading>References</BoldHeading>
+                <Value>
                     <RelatedObjects
                         systems={request.systems}
                         commPkgs={request.commissioningPackages}
                         tags={request.tags}
+                        documents={request.documents}
                     />
-                }
-            />
+                </Value>
+            </Section>
+
+            <Section>
+                <BoldHeading>Attachments</BoldHeading>
+                <Value>
+                    <Attachments attachments={request.attachments} requestId={request.id} />
+                </Value>
+            </Section>
+
+            <Section>
+                <BoldHeading>Log</BoldHeading>
+                <Value>
+                    <ChevronList title={`Log entries (${0})`}>
+                        <p></p>
+                    </ChevronList>
+                </Value>
+            </Section>
 
             <Field
                 customLabel={{ fontSize: '18px', bold: true }}
                 label="Documents"
                 value={<StidDocumentResolver inputDocuments={request.documents} />}
             />
-            <Field
-                customLabel={{ fontSize: '18px', bold: true }}
-                label="Attachments"
-                value={<Attachments attachments={request.attachments} requestId={request.id} />}
-            />
-
-            <Field customLabel={{ fontSize: '18px', bold: true }} label="Log" value={<div></div>} />
         </SplitScreen>
     );
 };
@@ -93,6 +101,29 @@ export const SingleView = (): JSX.Element => {
 const SplitScreen = styled.div`
     display: flex;
     flex-direction: column;
+    overflow: scroll;
+`;
+
+const SubHeading = styled.div`
+    font-size: 12px;
+`;
+
+const Value = styled.div`
+    margin-top: 0.5em;
+    font-size: 16px;
+`;
+
+const BoldHeading = styled.div`
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 0.5em;
+`;
+
+const Section = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin-top: 1em;
+    margin-right: 2em;
 `;
 
 /**

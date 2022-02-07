@@ -1,7 +1,6 @@
 import { Button, Icon, TextField, Tooltip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { useConditionalRender } from '../../Hooks/useConditionalRender';
 import { Contributor as ContributorInterface, WorkflowStep } from '../../Types/scopeChangeRequest';
 import { MenuButton, MenuItem } from '../MenuButton/';
 import { ContributorActions } from './Types/actions';
@@ -18,31 +17,9 @@ interface ContributorsProps {
 
 export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Element => {
     const [comment, setComment] = useState('');
+    const [showCommentField, setShowCommentField] = useState<boolean>(false);
 
     const { request } = useScopeChangeAccessContext();
-    const {
-        Component: CommentField,
-        toggle: toggleCommentField,
-        set: setShowCommentField,
-    } = useConditionalRender(
-        <div style={{ margin: '0.4rem 0rem' }}>
-            <span>
-                Comment
-                <TextField
-                    id="comment"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                />
-            </span>
-            <ButtonContainer>
-                <Button onClick={() => onAddContribution()}>Confirm</Button>
-                <Divider />
-                <Button onClick={() => setShowCommentField(false)} variant="outlined">
-                    Cancel
-                </Button>
-            </ButtonContainer>
-        </div>
-    );
 
     const onAddContribution = () => addContribution(request.id, step.id, contributor.id, comment);
 
@@ -57,7 +34,7 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
         {
             label: ContributorActions.ConfirmWithComment,
             icon: <Icon name="comment_add" color="grey" />,
-            onClick: () => toggleCommentField(),
+            onClick: () => setShowCommentField((prev) => !prev),
         },
     ];
 
@@ -89,7 +66,25 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                         </Inline>
                     )}
                 </ContributorInnerContainer>
-                <CommentField />
+                {showCommentField && (
+                    <div style={{ margin: '0.4rem 0rem' }}>
+                        <span>
+                            Comment
+                            <TextField
+                                id="comment"
+                                value={comment}
+                                onChange={(e) => setComment(e.target.value)}
+                            />
+                        </span>
+                        <ButtonContainer>
+                            <Button onClick={() => onAddContribution()}>Confirm</Button>
+                            <Divider />
+                            <Button onClick={() => setShowCommentField(false)} variant="outlined">
+                                Cancel
+                            </Button>
+                        </ButtonContainer>
+                    </div>
+                )}
             </ContributorContainer>
         </>
     );

@@ -48,6 +48,7 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     systems: System[];
     attachments: Attachment[];
     documents: Document[];
+    hasComments: boolean;
     //workflow
 }
 
