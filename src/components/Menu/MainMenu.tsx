@@ -1,6 +1,6 @@
 import { Accordion, Menu, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useClientContext } from '@equinor/portal-client';
+import { isAppActive, useClientContext } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
@@ -15,7 +15,7 @@ import {
     PopoverWrapper,
     SearchWrapper,
     SmallItem,
-    Title
+    Title,
 } from './Styles';
 import { filterByValue, groupeByKey } from './utils';
 
@@ -40,7 +40,7 @@ export const MainMenu = (): JSX.Element => {
     const GroupedMenu = useMemo(
         () =>
             groupeByKey(
-                apps.filter((a) => a.isProduction),
+                apps.filter((a) => isAppActive(a)),
                 'groupe'
             ),
         [apps]
