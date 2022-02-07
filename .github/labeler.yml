@@ -1,9 +1,27 @@
-client:
-    - ./src/**
+Apps:
+    - ./src/apps/**
 
-configuration:
+Core:
+    - ./src/Core/**
+
+Packages:
+    - ./src/packages/**
+    
+WorkSpace:
+    - ./src/Core/WorkSpace/**
+
+PageViewer:
+    - ./src/Core/PageViewer/**
+
+Client:
+    - ./src/Core/Client/**
+
+Configuration:
     - ./*
 
-dependencies:
+Pipelines:
+    - ./pipelines/*
+
+Dependencies:
     - package.json
     - yarn.lock
