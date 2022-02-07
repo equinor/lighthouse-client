@@ -9,10 +9,7 @@ name: Labeler
 on: [pull_request]
 
 
-stages: 
- - stage: labeler
-  displayName: "Apply Labels" 
-  condition:  ${{ github.actor !== 'dependabot[bot]' }}
+
   jobs:
     label:
       runs-on: ubuntu-latest
