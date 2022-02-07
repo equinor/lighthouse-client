@@ -1,5 +1,4 @@
 import { readClientSettings } from '../Functions/Readers';
-import { setClientEnv } from '../Functions/Settings';
 import { AppManifest } from '../Types/AppManifest';
 
 export function isAppActive(manifest: AppManifest): boolean {
@@ -12,7 +11,3 @@ export function isAppActive(manifest: AppManifest): boolean {
         return manifest.appEnv !== undefined;
     }
 }
-
-window['setEnv'] = function setEnv(env: string) {
-    setClientEnv(env);
-};
