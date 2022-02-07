@@ -83,7 +83,7 @@ export function setup(appApi: ClientApi): void {
     });
 
     // Loop Data Test for testing system..
-    workPreparation.registerDataSource(async () => {
+    workPreparation.registerDataSource(async (abortController) => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const project = 'L.O532C.002';
         const response: WorkOrder[] = await api
@@ -92,6 +92,7 @@ export function setup(appApi: ClientApi): void {
                 {
                     method: 'POST',
                     body: JSON.stringify({}),
+                    signal: abortController?.signal,
                 }
             )
             .then((res) => res.json());
