@@ -6,6 +6,9 @@ import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm
 import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
+import { OriginLink } from './Components/DetailView/Components/OriginLink';
+import { renderToStaticMarkup, renderToString } from 'react-dom/server';
+import { Icon } from '@equinor/eds-core-react';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -17,7 +20,7 @@ export function setup(appApi: ClientApi): void {
         component: ScopeChangeRequestForm,
     });
 
-    request.registerDataSource(() => {
+    request.registerDataSource((): ScopeChangeRequest[] => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const projectName = 'L.O532C.002';
         // const projectId = 177433
@@ -31,7 +34,13 @@ export function setup(appApi: ClientApi): void {
                 actualChangeHours: 2,
                 attachments: [],
                 category: 'Hidden carryover',
-                commissioningPackages: [],
+                commissioningPackages: [
+                    {
+                        id: '121212',
+                        procosysId: 32323232323,
+                        procosysNumber: '21313143',
+                    },
+                ],
                 createdAtUtc: new Date().toDateString(),
                 createdBy: {
                     firstName: 'gustav',
@@ -57,7 +66,23 @@ export function setup(appApi: ClientApi): void {
                 originSource: 'DCN',
                 phase: 'IC phase',
                 state: 'Open',
-                systems: [],
+                systems: [
+                    {
+                        procosysId: 611221,
+                        id: (Math.random() * 32).toString(),
+                        procosysCode: Math.round(Math.random() * 100).toString(),
+                    },
+                    {
+                        procosysId: 611221,
+                        id: (Math.random() * 32).toString(),
+                        procosysCode: Math.round(Math.random() * 100).toString(),
+                    },
+                    {
+                        procosysId: 611221,
+                        id: (Math.random() * 32).toString(),
+                        procosysCode: Math.round(Math.random() * 100).toString(),
+                    },
+                ],
                 tags: [
                     {
                         procosysId: '12112',
@@ -91,6 +116,7 @@ export function setup(appApi: ClientApi): void {
                     },
                 ],
                 title: 'Scope change',
+                hasComments: true,
                 workflowSteps: [
                     {
                         contributors: [
@@ -251,11 +277,6 @@ export function setup(appApi: ClientApi): void {
         hiddenColumns: [
             'id',
             // 'currentWorkflowStep',
-            'attachments',
-            'systems',
-            'tags',
-            'commissioningPackages',
-            'documents',
             'description',
             'guesstimateDescription',
             'createdBy',
@@ -265,6 +286,7 @@ export function setup(appApi: ClientApi): void {
         ],
         columnOrder: [
             'title',
+            'hasComments',
             'phase',
             'workflowSteps',
             'guesstimateHours',
@@ -273,6 +295,11 @@ export function setup(appApi: ClientApi): void {
             'category',
             'originSource',
             'lastModified',
+            'documents',
+            'tags',
+            'systems',
+            'commissioningPackages',
+            'attachments',
         ],
         headers: [
             { key: 'title', title: 'Title' },
@@ -291,6 +318,11 @@ export function setup(appApi: ClientApi): void {
             { key: 'state', title: 'Status' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
             { key: 'currentWorkflowStep', title: 'Next to sign' },
+            { key: 'documents', title: 'Documents', width: 120 },
+            { key: 'systems', title: 'Systems', width: 120 },
+            { key: 'commissioningPackages', title: 'Comm pkgs', width: 120 },
+            { key: 'tags', title: 'Tags', width: 120 },
+            { key: 'attachments', title: 'Attachments', width: 120 },
         ],
         customCellView: [
             {
@@ -328,6 +360,21 @@ export function setup(appApi: ClientApi): void {
                                     steps={cell.value.content.workflowSteps}
                                     statusDotFunc={statusDotFunc}
                                     spanDirection={'horizontal'}
+                                />
+                            </div>
+                        );
+                    },
+                },
+            },
+            {
+                key: 'originSource',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        return (
+                            <div>
+                                <OriginLink
+                                    type={cell.value.content.originSource}
+                                    id={cell.value.content.originSourceId}
                                 />
                             </div>
                         );
