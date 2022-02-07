@@ -1,5 +1,12 @@
 import { Row, SortByFn } from 'react-table';
-import { DateCell, DescriptionCell, StatusCell, LinkCell, ProgressCell } from '../Components/Cells';
+import {
+    DateCell,
+    DescriptionCell,
+    StatusCell,
+    LinkCell,
+    ProgressCell,
+    ArrayCell,
+} from '../Components/Cells';
 import {
     CellType,
     CustomCell,
@@ -77,6 +84,8 @@ export const findCustomCell = <T extends TableData>(
                 return LinkCell;
             case 'Progress':
                 return ProgressCell;
+            case 'Array':
+                return ArrayCell;
             default:
                 return 'Incorrect cell type given';
         }
