@@ -22,7 +22,7 @@ export function appsProvider(
 function getProductionApps(apps: AppManifest[], isProduction: boolean): AppManifest[] {
     return apps.filter((app) => {
         if (isProduction) {
-            return app.isProduction;
+            return app.appEnv === 'prod';
         } else {
             return true;
         }

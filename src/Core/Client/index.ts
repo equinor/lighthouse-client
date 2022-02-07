@@ -4,3 +4,4 @@ export * from './Home';
 export * from './Hooks';
 export * from './Service';
 export * from './Types';
+export * from './Utils/environment';

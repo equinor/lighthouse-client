@@ -32,11 +32,13 @@ export function setLoggingState(logging: boolean): void {
 export function setEnv(isProduction: boolean, clientEnv: string): void {
     internalUpdateSettings({ isProduction, clientEnv });
 }
+export function setClientEnv(clientEnv: string): void {
+    internalUpdateSettings({ clientEnv });
+}
 
 export function isProduction(): boolean {
     return readClientSettings().isProduction;
 }
-
 export function setUserImageUrl(url?: string): void {
     internalUpdateSettings({ userImageUrl: url });
 }

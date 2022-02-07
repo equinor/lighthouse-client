@@ -133,7 +133,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: HomeIcon,
         tags: [],
-        isProduction: true,
+
+        appEnv: 'test',
     },
     {
         title: 'Business case',
@@ -145,7 +146,8 @@ export const apps: AppManifest[] = [
             appType: 'PowerBI',
             component: BusinessCaseReport,
         },
-        isProduction: true,
+
+        appEnv: 'test',
         tags: ['PowerBI'],
     },
     {
@@ -163,7 +165,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart',
-        isProduction: true,
+        appEnv: 'test',
         tags: [],
     },
     {
@@ -186,7 +188,8 @@ export const apps: AppManifest[] = [
             component: SafetyPerformanceReport,
         },
         tags: ['PowerBI'],
-        isProduction: true,
+
+        appEnv: 'test',
     },
     // ProgressAndStatus
     {
@@ -222,7 +225,8 @@ export const apps: AppManifest[] = [
             appType: 'PageView',
             setup: constructionSetup,
         },
-        isProduction: true,
+
+        appEnv: 'test',
     },
     {
         title: 'Commissioning',
@@ -235,7 +239,8 @@ export const apps: AppManifest[] = [
             appType: 'PageView',
             setup: commissioningSetup,
         },
-        isProduction: true,
+
+        appEnv: 'dev',
     },
     // Engineering management
     {
@@ -257,7 +262,8 @@ export const apps: AppManifest[] = [
             component: LCIReport,
         },
         tags: ['PowerBI'],
-        isProduction: true,
+
+        appEnv: 'test',
     },
     {
         title: 'LCI portal',
@@ -278,7 +284,8 @@ export const apps: AppManifest[] = [
             component: MDRReport,
         },
         tags: ['PowerBI'],
-        isProduction: true,
+
+        appEnv: 'test',
     },
     // Construction management
     {
@@ -292,7 +299,6 @@ export const apps: AppManifest[] = [
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
-        // isProduction: true,
     },
     // CompletionManagement
     {
@@ -314,7 +320,6 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: checklistSetup,
         },
-        // isProduction: true,
     },
     {
         title: 'Handover',
@@ -327,7 +332,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: handoverSetup,
         },
-        // isProduction: true,
+        appEnv: 'dev',
     },
     {
         title: 'Heat trace installation',
@@ -340,7 +345,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: heatTraceInstallationSetup,
         },
-        // isProduction: true,
+        appEnv: 'dev',
     },
     {
         title: 'Loop',
@@ -353,7 +358,6 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: loopSetup,
         },
-        // isProduction: true,
     },
     {
         title: 'N2He',
@@ -365,7 +369,6 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'DataViewer',
         },
-        // isProduction: true,
     },
     {
         title: 'Preservation',
@@ -375,7 +378,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Preservation',
         tags: ['link', 'procosys'],
-        isProduction: true,
+        appEnv: 'test',
     },
     {
         title: 'Punch',
@@ -399,7 +402,7 @@ export const apps: AppManifest[] = [
             appType: 'DataViewer',
             setup: SwcrSetup,
         },
-        // isProduction: true,
+        appEnv: 'dev',
     },
     // Queries and requests
     {
@@ -421,7 +424,7 @@ export const apps: AppManifest[] = [
             setup: scopeChangeSetup,
         },
         tags: [],
-        // isProduction: true,
+        appEnv: 'dev',
     },
     // ProjectControl
     {
@@ -468,7 +471,7 @@ export const apps: AppManifest[] = [
             component: NonConformityReport,
         },
         tags: ['PowerBI'],
-        isProduction: true,
+        appEnv: 'test',
     },
     {
         title: 'Quality deviation',
@@ -481,7 +484,7 @@ export const apps: AppManifest[] = [
             component: QualityDeviationReport,
         },
         tags: ['PowerBI'],
-        isProduction: true,
+        appEnv: 'test',
     },
 
     {
@@ -503,7 +506,7 @@ export const apps: AppManifest[] = [
             component: QueryReport,
         },
         tags: ['PowerBI'],
-        isProduction: true,
+        appEnv: 'test',
     },
     {
         title: 'Queries',
@@ -513,7 +516,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Search?searchType=Query',
         tags: ['link', 'procosys'],
-        isProduction: true,
+        appEnv: 'test',
     },
     // Reports
     // {
@@ -534,7 +537,7 @@ export const apps: AppManifest[] = [
         icon: 'tag',
         uri: 'https://fusion.equinor.com/apps/meetings',
         tags: ['fuison', 'link', 'external'],
-        isProduction: true,
+        appEnv: 'test',
     },
     {
         title: 'Review',
@@ -542,9 +545,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: 'tag',
-        isProduction: true,
         uri: 'https://fusion.equinor.com/apps/reviews/255d8c0a-7893-4c21-ab42-62c652ea8129',
         tags: ['fuison', 'link', 'external'],
+        appEnv: 'test',
     },
     // Asset Data
     {
@@ -559,7 +562,7 @@ export const apps: AppManifest[] = [
             appType: 'CustomApp',
             component: ModelViewer,
         },
-        // isProduction: true,
+        appEnv: 'dev',
     },
     {
         title: 'Documents and drawings',
