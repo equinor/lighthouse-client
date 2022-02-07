@@ -1,3 +1,6 @@
+GithubActions:
+    - .github/**
+
 Apps:
     - ./src/apps/**
 
@@ -6,7 +9,7 @@ Core:
 
 Packages:
     - ./src/packages/**
-    
+
 WorkSpace:
     - ./src/Core/WorkSpace/**
 
