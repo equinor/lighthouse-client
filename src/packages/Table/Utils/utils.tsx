@@ -1,5 +1,12 @@
 import { Row, SortByFn } from 'react-table';
-import { DateCell, DescriptionCell, StatusCell, LinkCell, ProgressCell } from '../Components/Cells';
+import {
+    DateCell,
+    DescriptionCell,
+    StatusCell,
+    LinkCell,
+    ProgressCell,
+    ArrayCell,
+} from '../Components/Cells';
 import { CellType, CustomCell, CustomCellType, CustomHeader, TableData } from '../types';
 
 export const findCustomHeader = <T extends TableData>(
@@ -57,6 +64,8 @@ export const findCustomCell = <T extends TableData>(
                 return LinkCell;
             case 'Progress':
                 return ProgressCell;
+            case 'Array':
+                return ArrayCell;
             default:
                 return 'Incorrect cell type given';
         }
@@ -102,11 +111,11 @@ export const findCellFn = <T extends TableData>(
  */
 export const sortFn =
     <T extends TableData>(key: string): SortByFn<T> =>
-    (objA, objB, id, _desc) => {
-        const a = objA.values[id].content[key];
-        const b = objB.values[id].content[key];
-        return a === b ? 0 : a > b ? 1 : -1;
-    };
+        (objA, objB, id, _desc) => {
+            const a = objA.values[id].content[key];
+            const b = objB.values[id].content[key];
+            return a === b ? 0 : a > b ? 1 : -1;
+        };
 
 /**
  * Pass this to `options={{groupByFn}}` in Table if you need to group columns with complex objects.
