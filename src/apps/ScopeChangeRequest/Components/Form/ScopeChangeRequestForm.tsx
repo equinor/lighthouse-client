@@ -13,7 +13,6 @@ import { getScopeChangeById, postScopeChange } from '../../Api/ScopeChange';
 import { uploadAttachment } from '../../Api/ScopeChange/attachment';
 import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { Document } from '../../Api/STID/Types/Document';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
@@ -21,8 +20,6 @@ import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 import { Field } from '../DetailView/Components/Field';
 import { Upload } from '../Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/PCSLink';
-import { StidDocument } from '../StidDocument';
-import { StidSelector } from '../STID';
 import { Origin } from './Origin';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
 
@@ -39,17 +36,13 @@ export const ScopeChangeRequestForm = ({
     closeScrim,
     setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
+    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
+        phase: 'IC phase',
+        category: 'Hidden carryover',
+    });
 
-    // const [stidDocuments, setStidDocuments] = useState<Document[]>([]);
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
-
-    // const removeDocument = (docNo: string) =>
-    //     setStidDocuments((prev) => prev.filter((x) => x.docNo !== docNo));
-
-    // const appendDocuments = (documents: Document[]) =>
-    //     setStidDocuments((prev) => [...prev, ...documents]);
 
     const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
@@ -180,31 +173,6 @@ export const ScopeChangeRequestForm = ({
                     },
                 ]}
             >
-                {/* <Inline>
-                    <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Documents</div>
-                    <StidSelector appendDocuments={appendDocuments} documents={stidDocuments} />
-                </Inline>
-                {stidDocuments &&
-                    stidDocuments.map((x) => {
-                        return (
-                            <Chip key={x.docNo}>
-                                <StidDocument document={x} />
-
-                                <Button
-                                    variant="ghost_icon"
-                                    onClick={() => {
-                                        removeDocument(x.docNo);
-                                    }}
-                                >
-                                    <Icon
-                                        color={tokens.colors.interactive.primary__resting.rgba}
-                                        name="clear"
-                                    />
-                                </Button>
-                            </Chip>
-                        );
-                    })} */}
-
                 <Field
                     label="Attachments"
                     value={<Upload attachments={attachments} setAttachments={setAttachments} />}
@@ -221,21 +189,6 @@ const TitleHeader = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: center;
-`;
-
-const Inline = styled.span`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-
-const Chip = styled.div`
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 16px;
-    padding: 5px;
 `;
 
 const LoadingPage = styled.div`

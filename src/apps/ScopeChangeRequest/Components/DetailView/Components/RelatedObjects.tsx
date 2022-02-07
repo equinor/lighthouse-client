@@ -5,11 +5,8 @@ import { ChevronList } from './ChevronList/ChevronList';
 import { Tag as TagComp } from './Tags/Tag';
 import { CommPkg } from './CommPkg/CommPkg';
 import { System as SystemComp } from './Systems/System';
-import { useHttpClient } from '@equinor/portal-client';
-import { useEffect, useState } from 'react';
-import { getDocumentById } from '../../../Api/STID/getDocumentById';
-import { Document as StidDocument } from '../../../Api/STID/Types/Document';
 import { StidDocument as StidVisual } from '../../StidDocument';
+import { useStidDocumentResolver } from '../../../Hooks/useStidDocumentResolver';
 
 interface RelatedObjectsProps {
     systems?: System[];
@@ -26,32 +23,7 @@ export const RelatedObjects = ({
     tags,
     documents: inputDocuments,
 }: RelatedObjectsProps): JSX.Element => {
-    const { STID } = useHttpClient();
-
-    useEffect(() => {
-        const resolveDocuments = async () => {
-            if (inputDocuments) {
-                inputDocuments.forEach(async (x) => {
-                    const resolvedDocument = await getDocumentById(
-                        'JCA',
-                        x.stidDocumentNumber,
-                        STID
-                    );
-                    addDocument({
-                        ...resolvedDocument,
-                        revNo: resolvedDocument.revNo,
-                        revDate: resolvedDocument.currentRevision.revDate,
-                        reasonForIssue: resolvedDocument.currentRevision.reasonForIssue,
-                    });
-                });
-            }
-            setDocuments([]);
-        };
-        resolveDocuments();
-    }, [inputDocuments]);
-
-    const [documents, setDocuments] = useState<StidDocument[]>([]);
-    const addDocument = (document: StidDocument) => setDocuments((prev) => [...prev, document]);
+    const { documents } = useStidDocumentResolver(inputDocuments);
 
     return (
         <Wrapper>

@@ -133,7 +133,7 @@ export const RelatedObjectsSearch = ({
                                 }}
                             />
                         </SelectContainer>
-                        <div style={{ flexBasis: '10%' }} />
+                        <div style={{ flexBasis: '2%' }} />
                         <SearchContainer>
                             <AsyncSelect
                                 isDisabled={!referenceType}
@@ -226,7 +226,7 @@ function getIcon(x: TypedSelectOption): JSX.Element | null {
 }
 
 const SelectContainer = styled.div`
-    flex-basis: 20%;
+    flex-basis: 30%;
     border-bottom: none;
 `;
 

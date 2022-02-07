@@ -9,6 +9,7 @@ import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 import { OriginLink } from './Components/DetailView/Components/OriginLink';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import { Icon } from '@equinor/eds-core-react';
+import { DateTime } from 'luxon';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -50,10 +51,16 @@ export function setup(appApi: ClientApi): void {
                 },
                 description:
                     'test Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras consequat mauris ultrices magna dignissim rutrum. Proin eget quam tristique, feugiat ipsum ac, venenatis eros. Nullam egestas rhoncus sapien. Nam at magna et velit mattis accumsan id at lorem. In volutpat rutrum augue, in fringilla odio imperdiet non. Integer hendrerit condimentum augue. Aliquam feugiat eu libero eget porta. Vivamus nec nulla at nisl euismod elementum a sed libero. Praesent rhoncus justo nec diam imperdiet molestie. Morbi condimentum posuere tempor. Etiam vitae lorem dictum, imperdiet dui eu, pulvinar eros. Proin bibendum libero lorem, non scelerisque turpis sodales a. Fusce eget arcu nulla.',
-                documents: [],
+                documents: [
+                    {
+                        id: '121212',
+                        stidDocumentNumber: 'C143-AL-A-RB-00404',
+                        stidDocumentRevisionNumber: '',
+                    },
+                ],
                 estimatedChangeHours: 2,
                 guesstimateDescription: 'test',
-                guesstimateHours: 2,
+                guesstimateHours: '2',
                 id: '1212',
                 isVoided: false,
                 modifiedAtUtc: new Date().toDateString(),
@@ -520,16 +527,15 @@ export function setup(appApi: ClientApi): void {
         ],
         customCellView: [
             {
-                key: 'createdBy',
+                key: 'modifiedAtUtc',
                 type: {
                     Cell: ({ cell }: any) => {
-                        return <div>{cell.value.content.createdBy?.firstName}</div>;
+                        const date = new Date(cell.value.content.modifiedAtUtc);
+                        const formattedDate = DateTime.fromJSDate(date).toRelative();
+                        // const formattedDate = new DateTime(date).toRelative();
+                        return <div>{formattedDate}</div>;
                     },
                 },
-            },
-            {
-                key: 'modifiedAtUtc',
-                type: 'Date',
             },
             {
                 key: 'guesstimateHours',
