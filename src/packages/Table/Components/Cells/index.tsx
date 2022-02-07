@@ -4,3 +4,4 @@ export * from './StatusCell';
 export * from './LinkCell';
 export * from './ProgressCell';
 export * from './ArrayCell';
+export * from './RelativeDateCell';

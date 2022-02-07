@@ -6,19 +6,40 @@ import {
     LinkCell,
     ProgressCell,
     ArrayCell,
+    RelativeDateCell,
 } from '../Components/Cells';
-import { CellType, CustomCell, CustomCellType, CustomHeader, TableData } from '../types';
+import {
+    CellType,
+    CustomCell,
+    CustomCellType,
+    CustomHeader,
+    TableData,
+    HeaderType,
+    CustomHeaderType,
+} from '../types';
 
+const isCustomHeader = <T extends TableData>(arg: HeaderType<T>): arg is CustomHeaderType<T> => {
+    return (arg as CustomHeaderType<T>).Custom !== undefined;
+};
+/**
+ * Function to find custom headers if there are any.
+ * Will return a custom Header renderer object or string.
+ * String can either just be the key, if nothing is passed to custom header config, or custom title string.
+ */
 export const findCustomHeader = <T extends TableData>(
     key: keyof T,
     headers?: CustomHeader<T>[]
-): string | keyof T => {
+) => {
     if (headers === undefined || headers.length === 0) return key;
 
     const customHeaderIndex = headers.findIndex((header) => header.key === key);
 
     if (customHeaderIndex > -1) {
-        return headers[customHeaderIndex].title;
+        const headerType = headers[customHeaderIndex].title;
+        if (isCustomHeader(headerType)) {
+            return headerType.Custom;
+        }
+        return headerType;
     } else return key;
 };
 
@@ -66,6 +87,8 @@ export const findCustomCell = <T extends TableData>(
                 return ProgressCell;
             case 'Array':
                 return ArrayCell;
+            case 'RelativeDate':
+                return RelativeDateCell;
             default:
                 return 'Incorrect cell type given';
         }
@@ -111,11 +134,11 @@ export const findCellFn = <T extends TableData>(
  */
 export const sortFn =
     <T extends TableData>(key: string): SortByFn<T> =>
-        (objA, objB, id, _desc) => {
-            const a = objA.values[id].content[key];
-            const b = objB.values[id].content[key];
-            return a === b ? 0 : a > b ? 1 : -1;
-        };
+    (objA, objB, id, _desc) => {
+        const a = objA.values[id].content[key];
+        const b = objB.values[id].content[key];
+        return a === b ? 0 : a > b ? 1 : -1;
+    };
 
 /**
  * Pass this to `options={{groupByFn}}` in Table if you need to group columns with complex objects.
