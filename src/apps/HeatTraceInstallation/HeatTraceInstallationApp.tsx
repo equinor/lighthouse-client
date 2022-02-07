@@ -27,7 +27,14 @@ export function setup(appApi: ClientApi): void {
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Name', width: 1000 },
-            { key: 'description', title: 'Description' },
+            {
+                key: 'description',
+                title: {
+                    Custom: (a) => {
+                        return <div>Header custom</div>;
+                    },
+                },
+            },
             { key: 'checklists', title: 'Checklists' },
             { key: 'lineAndSpools', title: 'Line and spools' },
         ],
