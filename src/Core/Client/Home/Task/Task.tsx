@@ -33,6 +33,16 @@ export const Task = (): JSX.Element => {
                           {
                               title: 'This is a link to overdue test task',
                               url: '#',
+                              dueDate: '01/02/2022',
+                              assignedTo: {
+                                  person: {
+                                      name: user.givenName,
+                                  },
+                              },
+                          },
+                          {
+                              title: 'This is a link to overdue test task',
+                              url: '#',
                               dueDate: '01/01/2022',
                               assignedTo: {
                                   person: {
