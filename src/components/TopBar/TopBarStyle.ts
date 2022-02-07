@@ -6,7 +6,7 @@ export const Icons = styled.div`
     align-items: center;
     flex-direction: row-reverse;
     > * {
-        margin-left: 40px;
+        margin-left: 1rem;
     }
 `;
 
