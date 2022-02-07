@@ -1,22 +1,26 @@
-import { Icon } from '@equinor/eds-core-react';
+import { Icon, SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useRef, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import styled from 'styled-components';
-import { searchPcs } from '../../Api/Search/PCS/searchPcs';
+import { ProcoSysTypes, searchPcs } from '../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../Api/Search/searchType';
+import { searchStid, StidTypes } from '../../Api/Search/STID/searchStid';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
-import { sort } from './sort';
 
-interface PCSLinkProps {
+interface RelatedObjectsSearchProps {
     relatedObjects: TypedSelectOption[];
     setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>;
 }
 
-export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JSX.Element => {
+export const RelatedObjectsSearch = ({
+    relatedObjects,
+    setRelatedObjects,
+}: RelatedObjectsSearchProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const controller = useRef(new AbortController());
+    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>();
 
     const addRelatedObject = (value: TypedSelectOption) =>
         setRelatedObjects((prev) => [...prev, value]);
@@ -45,57 +49,56 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
         controller.current.abort();
         controller.current = new AbortController();
 
-        const options: TypedSelectOption[] = [];
-        let sorted: TypedSelectOption[] = [];
+        const search = (type: ProcoSysTypes) =>
+            searchPcs(inputValue, type, controller.current.signal);
 
-        await (
-            await searchPcs(inputValue, 'system', controller.current.signal)
-        ).forEach((x) => options.push(x));
+        switch (referenceType) {
+            case 'system': {
+                const results = await search('system');
+                callback(results);
+                return;
+            }
 
-        await (
-            await searchPcs(inputValue, 'commpkg', controller.current.signal)
-        ).forEach((x) => options.push(x));
-        sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-            sort(a, b, inputValue)
-        );
+            case 'area': {
+                const results = await search('area');
+                callback(results);
+                return;
+            }
 
-        if (sorted.length > 0) {
-            callback(sorted);
-        }
+            case 'commpkg': {
+                const results = await search('commpkg');
+                callback(results);
+                return;
+            }
 
-        await (
-            await searchPcs(inputValue, 'area', controller.current.signal)
-        ).forEach((x) => options.push(x));
-        sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-            sort(a, b, inputValue)
-        );
+            case 'tag': {
+                const results = await search('tag');
+                callback(results);
+                return;
+            }
 
-        if (sorted.length > 0) {
-            callback(sorted);
-        }
+            case 'discipline': {
+                const results = await search('discipline');
+                callback(results);
+                return;
+            }
 
-        await (
-            await searchPcs(inputValue, 'discipline', controller.current.signal)
-        ).forEach((x) => options.push(x));
-        sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-            sort(a, b, inputValue)
-        );
-
-        if (sorted.length > 0) {
-            callback(sorted);
-        }
-
-        await (
-            await searchPcs(inputValue, 'tag', controller.current.signal)
-        ).forEach((x) => options.push(x));
-        sorted = options.sort((a: TypedSelectOption, b: TypedSelectOption) =>
-            sort(a, b, inputValue)
-        );
-
-        if (sorted.length > 0) {
-            callback(sorted);
+            case 'document': {
+                const results = await searchStid(inputValue, 'document', controller.current.signal);
+                callback(results);
+                return;
+            }
         }
     };
+
+    const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
+        'document',
+        'discipline',
+        'area',
+        'commpkg',
+        'tag',
+        'system',
+    ];
 
     return (
         <Wrapper>
@@ -109,33 +112,54 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                     <div
                         style={{
                             width: '-webkit-fill-available',
-                            borderBottom: '5px solid #6F6F6F',
                             fontSize: '16px',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'flex-end',
                         }}
                     >
-                        <AsyncSelect
-                            cacheOptions={false}
-                            loadOptions={loadOptions}
-                            defaultOptions={false}
-                            components={applyEdsComponents()}
-                            isMulti={true}
-                            placeholder={`Type to search..`}
-                            isClearable={false}
-                            value={relatedObjects}
-                            onInputChange={() => {
-                                setApiErrors([]);
-                            }}
-                            styles={applyEdsStyles()}
-                            controlShouldRenderValue={false}
-                            onChange={(
-                                newValue: MultiValue<TypedSelectOption>,
-                                actionMeta: ActionMeta<TypedSelectOption>
-                            ) => {
-                                if (!actionMeta.option) return;
-                                addRelatedObject(actionMeta.option);
-                            }}
-                            theme={(theme: Theme) => applyEDSTheme(theme)}
-                        />
+                        <SelectContainer>
+                            <SingleSelect
+                                label="Reference type"
+                                items={referenceTypes}
+                                handleSelectedItemChange={(change) => {
+                                    if (!change.selectedItem) {
+                                        setReferenceType(undefined);
+                                    } else {
+                                        setReferenceType(
+                                            change.selectedItem as ProcoSysTypes | StidTypes
+                                        );
+                                    }
+                                }}
+                            />
+                        </SelectContainer>
+                        <div style={{ flexBasis: '10%' }} />
+                        <SearchContainer>
+                            <AsyncSelect
+                                isDisabled={!referenceType}
+                                cacheOptions={false}
+                                loadOptions={loadOptions}
+                                defaultOptions={false}
+                                components={applyEdsComponents()}
+                                isMulti={true}
+                                placeholder={`Type to search..`}
+                                isClearable={false}
+                                value={relatedObjects}
+                                onInputChange={() => {
+                                    setApiErrors([]);
+                                }}
+                                styles={applyEdsStyles()}
+                                controlShouldRenderValue={false}
+                                onChange={(
+                                    newValue: MultiValue<TypedSelectOption>,
+                                    actionMeta: ActionMeta<TypedSelectOption>
+                                ) => {
+                                    if (!actionMeta.option) return;
+                                    addRelatedObject(actionMeta.option);
+                                }}
+                                theme={(theme: Theme) => applyEDSTheme(theme)}
+                            />
+                        </SearchContainer>
                     </div>
                 </Inline>
 
@@ -143,11 +167,15 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                     {objects && objects.length > 0 && (
                         <>
                             {objects.map((x) => {
-                                const TypeIcon = getIcon(x);
+                                const TypeIcon = () => getIcon(x);
                                 return (
-                                    <Chip key={x.value}>
-                                        {TypeIcon}
-                                        {x.label}
+                                    <ListItem key={x.value}>
+                                        <Inline>
+                                            <TypeIcon />
+                                            <Spacer />
+                                            <span style={{ fontSize: '16px' }}>{x.label}</span>
+                                        </Inline>
+
                                         <Icon
                                             color={tokens.colors.interactive.primary__resting.rgba}
                                             onClick={() => {
@@ -155,7 +183,7 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
                                             }}
                                             name="clear"
                                         />
-                                    </Chip>
+                                    </ListItem>
                                 );
                             })}
                         </>
@@ -165,6 +193,17 @@ export const PCSLink = ({ relatedObjects, setRelatedObjects }: PCSLinkProps): JS
         </Wrapper>
     );
 };
+
+const ListItem = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: ${tokens.colors.interactive.primary__resting.hex};
+`;
+
+const Spacer = styled.div`
+    margin-right: 0.5em;
+`;
 
 function getIcon(x: TypedSelectOption): JSX.Element | null {
     if (x.type === 'area') {
@@ -178,30 +217,35 @@ function getIcon(x: TypedSelectOption): JSX.Element | null {
     if (x.type === 'tag') {
         return <Icon name="tag" color={tokens.colors.interactive.primary__resting.hex} />;
     }
-    return null;
+
+    if (x.type === 'document') {
+        return <Icon name="file_copy" color={tokens.colors.interactive.primary__resting.hex} />;
+    }
+
+    return <Icon name="placeholder_icon" color={tokens.colors.interactive.primary__resting.hex} />;
 }
+
+const SelectContainer = styled.div`
+    flex-basis: 20%;
+    border-bottom: none;
+`;
+
+const SearchContainer = styled.div`
+    flex-basis: 70%;
+    border-bottom: none;
+`;
 
 const Inline = styled.span`
     display: flex;
     flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-`;
-
-const Chip = styled.div`
-    text-align: center;
-    display: flex;
-    width: fit-content;
     align-items: center;
-    font-size: 16px;
-    padding: 5px;
-    background-color: ${tokens.colors.ui.background__light.hex};
-    border-radius: 35%;
+    justify-content: center;
 `;
 
 const Column = styled.div`
     display: flex;
     flex-direction: column;
+    margin-top: 0.5em;
 `;
 
 const Wrapper = styled.div`
