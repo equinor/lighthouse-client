@@ -523,19 +523,18 @@ export function setup(appApi: ClientApi): void {
             { key: 'commissioningPackages', title: 'Comm pkgs', width: 120 },
             { key: 'tags', title: 'Tags', width: 120 },
             { key: 'attachments', title: 'Attachments', width: 120 },
-            { key: 'hasComments', title: 'Comments', width: 50 },
+            {
+                key: 'hasComments',
+                title: {
+                    Custom: () => <Icon name="comment_chat" />,
+                },
+                width: 80,
+            },
         ],
         customCellView: [
             {
                 key: 'modifiedAtUtc',
-                type: {
-                    Cell: ({ cell }: any) => {
-                        const date = new Date(cell.value.content.modifiedAtUtc);
-                        const formattedDate = DateTime.fromJSDate(date).toRelative();
-                        // const formattedDate = new DateTime(date).toRelative();
-                        return <div>{formattedDate}</div>;
-                    },
-                },
+                type: 'RelativeDate',
             },
             {
                 key: 'guesstimateHours',
