@@ -8,6 +8,8 @@ export const Wrapper = styled.section`
     flex-direction: column;
     align-items: flex-start;
     align-content: center;
+    padding: 1rem 0em 1rem 0em;
+    gap: 1rem;
 `;
 
 export const ChipTab = styled(Chip)`

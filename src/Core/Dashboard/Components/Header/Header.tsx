@@ -11,9 +11,6 @@ export function Header<T>({ pages, setActivePage, activePage }: HeaderProps<T>):
     const { instance, data } = useDashboardDataContext();
     return (
         <Wrapper>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                {instance.kpiBuilder && <KpiBar data={instance.kpiBuilder(data)} />}
-            </div>
             <Wrap>
                 {Object.values(pages).map((page) => {
                     return (
@@ -28,6 +25,9 @@ export function Header<T>({ pages, setActivePage, activePage }: HeaderProps<T>):
                 })}
                 <Line />
             </Wrap>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                {instance.kpiBuilder && <KpiBar data={instance.kpiBuilder(data)} />}
+            </div>
         </Wrapper>
     );
 }
