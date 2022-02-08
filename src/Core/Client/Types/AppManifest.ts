@@ -2,6 +2,8 @@ import { App } from './App';
 
 type HEXColor = `#${string}`;
 
+type AppEnvironment = 'dev' | 'test' | 'prod';
+
 export interface AppManifest {
     title: string;
     shortName: string;
@@ -10,6 +12,6 @@ export interface AppManifest {
     tags: string[];
     icon?: string | React.FC;
     uri?: string;
-    isProduction?: boolean;
+    appEnv?: AppEnvironment;
     app?: App;
 }

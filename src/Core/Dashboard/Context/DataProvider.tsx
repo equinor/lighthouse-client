@@ -1,3 +1,4 @@
+import { useCancellation } from '@equinor/Utils';
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
 import { getType } from 'typesafe-actions';
 import { useDashboard } from '../Hooks/useDashboard';
@@ -38,7 +39,7 @@ export function Reducer(state: DataState, action: Action): DataState {
 
 export const DataProvider = ({ children, dashboardId }: DataProviderProps): JSX.Element => {
     const instance = useDashboard(dashboardId);
-
+    const { abortController, viewId } = useCancellation(dashboardId);
     const { title } = instance;
     const [state, dispatch] = useReducer(Reducer, {
         instance,
@@ -52,7 +53,10 @@ export const DataProvider = ({ children, dashboardId }: DataProviderProps): JSX.
         dispatch(actions.setLoading(true));
         if (instance.dataSource) {
             try {
-                const data = await instance.dataSource();
+                const data = await instance.dataSource(abortController);
+                if (viewId !== dashboardId) {
+                    return;
+                }
                 if (instance.validator) {
                     dispatch(actions.setData(instance.validator(data)));
                     return;
@@ -64,10 +68,8 @@ export const DataProvider = ({ children, dashboardId }: DataProviderProps): JSX.
                 dispatch(actions.setData(data));
             } catch {
                 //TODO: Error handling, e.g. toaster
-                //dispatch(actions.setLoading(false));
             } finally {
                 dispatch(actions.setLoading(false));
-                console.timeEnd('pre filter');
             }
         }
     }, [instance]);

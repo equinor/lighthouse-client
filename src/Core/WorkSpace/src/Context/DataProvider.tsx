@@ -1,6 +1,7 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { FilterOptions } from '@equinor/filter';
+import { useCancellation } from '@equinor/Utils';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
@@ -86,7 +87,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         item: {},
         ...options,
     };
-
+    const { abortController, viewId } = useCancellation(key);
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
     useEffect(() => {
@@ -98,7 +99,11 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         key,
         async () => {
             if (!dataSource) return;
-            const data = await dataSource();
+
+            const data = await dataSource(abortController);
+            if (viewId !== key) {
+                return;
+            }
             dispatch(actions.getData(data));
             return data;
         },
