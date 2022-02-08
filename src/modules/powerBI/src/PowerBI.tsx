@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { Embed, Report, service, VisualDescriptor } from 'powerbi-client';
+import { Embed, models, Report, service, VisualDescriptor } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
 import { useEffect, useState } from 'react';
@@ -110,6 +110,7 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
     const [report, setReport] = useState<Report>();
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const [filters, setFilters] = useState<PowerBiFilter[] | null>(null);
+    const [visual, setVisual] = useState<VisualDescriptor | undefined>(undefined);
 
     //TODO custom loading
     const eventHandlersMap = new Map([
@@ -153,6 +154,7 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                         });
                     }
                 }
+                debugger;
             },
         ],
         [
@@ -173,45 +175,77 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             })();
         }
     }, [isLoaded, report]);
-    const isChecked = async (filter, val) => {
-        const slicerState = await filter.slicer.getSlicerState();
-        let checked = false;
-        slicerState.filters.forEach((filter) => {
-            if (filter?.values.includes(val.value)) {
-                checked = true;
-            }
-        });
-        return checked;
-    };
+    useEffect(() => {
+        console.log(filters);
+    }, [filters]);
     const handleClick = async (filter: PowerBiFilter, val) => {
-        const page = await report?.getActivePage();
-        const visuals = await page?.getVisuals();
-        const visual = visuals?.find((visual) => visual.name === filter.slicer.name);
+        // const page = await report?.getActivePage();
+        // const visuals = await page?.getVisuals();
+        try {
+            const visuals = await report
+                ?.getActivePage()
+                .then(async (activePage) => await activePage.getVisuals());
 
-        if (visual) {
-            const blah = await filter.slicer.getSlicerState();
-            console.log('slicer state', blah);
-            const foo = await visual.getFilters();
-            console.log('filter state for visual', foo);
-            const target = blah.targets;
-
-            await filter.slicer.setSlicerState({
-                filters: [
-                    {
-                        $schema: 'http://powerbi.com/product/schema#basic',
-                        target: {
-                            table: 'Fact_Checklist',
-                            column: 'FORMULARGROUP',
-                        },
-                        filterType: 1,
-                        operator: 'In',
-                        values: ['CPCL'],
-                        requireSingleSelection: false,
-                    },
-                ],
-            });
+            const visual = visuals?.find((visual) => visual.name === filter.slicer.name);
+            setVisual(visual);
+        } catch (e) {
+            console.error('Couldnt get visual', e);
         }
+        try {
+            const test = await visual?.getSlicerState();
+            test &&
+                test.targets &&
+                (await visual?.setSlicerState({
+                    filters: [
+                        {
+                            $schema: 'http://powerbi.com/product/schema#basic',
+                            target: [
+                                {
+                                    table: 'Fact_Checklist',
+                                    column: 'Project (ProCoSys)',
+                                },
+                            ],
+                            filterType: 1,
+                            operator: 'In',
+                            values: ['L.O532C.002 (Johan Castberg Facilities Project)'],
+                            requireSingleSelection: false,
+                        },
+                    ],
+                    targets: [
+                        {
+                            table: 'Fact_Checklist',
+                            column: 'Project (ProCoSys)',
+                        },
+                    ],
+                }));
+        } catch (e) {
+            console.error('Something went wrong', e);
+        }
+        // if (visual) {
+        //     const blah = await filter.slicer.getSlicerState();
+        //     console.log('slicer state', blah);
+        //     const foo = await visual.getFilters();
+        //     console.log('filter state for visual', foo);
+        //     const target = blah.targets;
+
+        //     await filter.slicer.setSlicerState({
+        //         filters: [
+        //             {
+        //                 $schema: 'http://powerbi.com/product/schema#basic',
+        //                 target: {
+        //                     table: 'Fact_Checklist',
+        //                     column: 'FORMULARGROUP',
+        //                 },
+        //                 filterType: 1,
+        //                 operator: 'In',
+        //                 values: ['CPCL'],
+        //                 requireSingleSelection: false,
+        //             },
+        //         ],
+        //     });
+        // }
     };
+
     return (
         <>
             {error ? (
@@ -244,9 +278,50 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                                             return (
                                                 <div
                                                     key={val.value}
-                                                    onClick={async () =>
-                                                        await handleClick(filter, val)
-                                                    }
+                                                    onClick={async () => {
+                                                        const basicFilter: models.IBasicFilter = {
+                                                            $schema:
+                                                                'http://powerbi.com/product/schema#basic',
+                                                            target: [
+                                                                {
+                                                                    table: 'Commpkg',
+                                                                    column: 'PRIORITY1',
+                                                                },
+                                                            ],
+                                                            operator: 'In',
+                                                            values: ['ECOM'],
+                                                            filterType: models.FilterType.Basic,
+                                                        };
+                                                        await filter.slicer.setSlicerState({
+                                                            filters: [basicFilter],
+                                                        });
+                                                        // await report
+                                                        //     ?.getActivePage()
+                                                        //     .then((activePage) => {
+                                                        //         activePage
+                                                        //             .getVisuals()
+                                                        //             .then((visuals) => {
+                                                        //                 visuals
+                                                        //                     .find(
+                                                        //                         (visual) =>
+                                                        //                             visual.name ===
+                                                        //                             filter.slicer
+                                                        //                                 .name
+                                                        //                     )
+                                                        //                     ?.setSlicerState({
+                                                        //                         filters: [
+                                                        //                             basicFilter,
+                                                        //                         ],
+                                                        //                         targets: [
+                                                        //                             {
+                                                        //                                 table: 'Commpkg',
+                                                        //                                 column: 'PRIORITY1',
+                                                        //                             },
+                                                        //                         ],
+                                                        //                     });
+                                                        //             });
+                                                        //     });
+                                                    }}
                                                 >
                                                     {val.value}
                                                 </div>
