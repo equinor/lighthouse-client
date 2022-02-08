@@ -51,6 +51,35 @@ export function graphClient(authProvider: AuthenticationProvider) {
     }
 
     /**
+     * Get a specific user
+     * @param oid
+     * @param token
+     * @returns
+     */
+    async function getUserById(oid: string, token: string): Promise<User | undefined> {
+        let profile: User | undefined = undefined;
+        const headers = new Headers();
+        const bearer = `Bearer ${token}`;
+        headers.append('Authorization', bearer);
+
+        const options = {
+            method: 'GET',
+            headers: headers,
+        };
+
+        const response: Response = await fetch(
+            `https://graph.microsoft.com/v1.0/users/${oid}`,
+            options
+        );
+
+        if (response && response.ok) {
+            profile = (await response.json()) as User;
+        }
+
+        return profile;
+    }
+
+    /**
      * Graph method that calls fetch user profile from graph api and handles response
      * @param endpoint graph endpoint to call, based on graph config values
      * @param token users access token used in graph fetch call
@@ -120,6 +149,7 @@ export function graphClient(authProvider: AuthenticationProvider) {
     return {
         getUserProfile,
         graphGetProfile,
+        getUserById,
         graphGetProfilePicture,
         getUserProfilePicture,
     };

@@ -1,11 +1,13 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/portal-client';
-import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ScopeChangeSideSheet } from './Components/Sidesheet/ScopeChangeSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
-import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
+import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
+import { OriginLink } from './Components/DetailView/Components/OriginLink';
+import { Icon } from '@equinor/eds-core-react';
+import { httpClient } from '../../Core/Client/Functions/HttpClient';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -17,7 +19,7 @@ export function setup(appApi: ClientApi): void {
         component: ScopeChangeRequestForm,
     });
 
-    request.registerDataSource(async () => {
+    request.registerDataSource(async (): Promise<ScopeChangeRequest[]> => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const projectName = 'L.O532C.002';
         // const projectId = 177433
@@ -77,12 +79,7 @@ export function setup(appApi: ClientApi): void {
         enableSelectRows: true,
         hiddenColumns: [
             'id',
-            'currentWorkflowStep',
-            'attachments',
-            'systems',
-            'tags',
-            'commissioningPackages',
-            'documents',
+            // 'currentWorkflowStep',
             'description',
             'guesstimateDescription',
             'createdBy',
@@ -91,7 +88,9 @@ export function setup(appApi: ClientApi): void {
             'originSourceId',
         ],
         columnOrder: [
+            'sequenceNumber',
             'title',
+            'hasComments',
             'phase',
             'workflowSteps',
             'guesstimateHours',
@@ -100,8 +99,14 @@ export function setup(appApi: ClientApi): void {
             'category',
             'originSource',
             'lastModified',
+            'documents',
+            'tags',
+            'systems',
+            'commissioningPackages',
+            'attachments',
         ],
         headers: [
+            { key: 'sequenceNumber', title: 'Id' },
             { key: 'title', title: 'Title' },
             { key: 'phase', title: 'Phase' },
             { key: 'workflowSteps', title: 'Workflow' },
@@ -117,19 +122,24 @@ export function setup(appApi: ClientApi): void {
             { key: 'description', title: 'Description' },
             { key: 'state', title: 'Status' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
+            { key: 'currentWorkflowStep', title: 'Next to sign' },
+            { key: 'documents', title: 'Documents', width: 120 },
+            { key: 'systems', title: 'Systems', width: 120 },
+            { key: 'commissioningPackages', title: 'Comm pkgs', width: 120 },
+            { key: 'tags', title: 'Tags', width: 120 },
+            { key: 'attachments', title: 'Attachments', width: 120 },
+            {
+                key: 'hasComments',
+                title: {
+                    Custom: () => <Icon name="comment_chat" />,
+                },
+                width: 80,
+            },
         ],
         customCellView: [
             {
-                key: 'createdBy',
-                type: {
-                    Cell: ({ cell }: any) => {
-                        return <div>{cell.value.content.createdBy?.firstName}</div>;
-                    },
-                },
-            },
-            {
                 key: 'modifiedAtUtc',
-                type: 'Date',
+                type: 'RelativeDate',
             },
             {
                 key: 'guesstimateHours',
@@ -161,10 +171,72 @@ export function setup(appApi: ClientApi): void {
                 },
             },
             {
+                key: 'tags',
+                type: 'Array',
+            },
+            {
+                key: 'systems',
+                type: 'Array',
+            },
+            {
+                key: 'attachments',
+                type: 'Array',
+            },
+            {
+                key: 'documents',
+                type: 'Array',
+            },
+            {
+                key: 'commissioningPackages',
+                type: 'Array',
+            },
+            {
+                key: 'hasComments',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        return (
+                            <Icon
+                                name={cell.value.content.hasComments ? 'comment_chat' : 'comment'}
+                                color={cell.value.content.hasComments ? 'black' : 'grey'}
+                            />
+                        );
+                    },
+                },
+            },
+            {
+                key: 'originSource',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        return (
+                            <div>
+                                <OriginLink
+                                    type={cell.value.content.originSource}
+                                    id={cell.value.content.originSourceId}
+                                />
+                            </div>
+                        );
+                    },
+                },
+            },
+            {
                 key: 'isVoided',
                 type: {
                     Cell: ({ cell }) => {
                         return <div>{cell.value.content.isVoided.toString()}</div>;
+                    },
+                },
+            },
+            {
+                key: 'currentWorkflowStep',
+                type: {
+                    Cell: ({ cell }) => {
+                        return (
+                            <div>
+                                {cell.value.content.currentWorkflowStep?.criterias.map((x) => {
+                                    return <div key={x.id}>{x.value}</div>;
+                                })}
+                            </div>
+                        );
                     },
                 },
             },

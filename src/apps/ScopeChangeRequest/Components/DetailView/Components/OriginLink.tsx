@@ -23,13 +23,17 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
         switch (type) {
             case 'DCN': {
                 if (!id) return <div>Error query without id</div>;
-                return <Link onClick={() => onClickRedirectOrigin(id)}>{id}</Link>;
+                return (
+                    <Link onClick={() => onClickRedirectOrigin(id)}>
+                        {type} - {id}
+                    </Link>
+                );
             }
             case 'NCR': {
                 if (!id) return <div>Error query without id</div>;
                 return (
                     <Link onClick={() => onClickRedirectOrigin(id)}>
-                        {type}-{id}
+                        {type} - {id}
                     </Link>
                 );
             }
@@ -37,7 +41,7 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
                 if (!id) return <div>Error query without id</div>;
                 return (
                     <Link onClick={() => onClickRedirectOrigin(id)}>
-                        {type}-{id}
+                        {type} - {id}
                     </Link>
                 );
             }
@@ -52,7 +56,7 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
                             )
                         }
                     >
-                        {type}-{id}
+                        {type} - {id}
                     </Link>
                 );
             }
@@ -60,7 +64,7 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
                 if (!id) return <div>Error query without id</div>;
                 return (
                     <Link onClick={() => onClickRedirectOrigin(id)}>
-                        {type}-{id}
+                        {type} - {id}
                     </Link>
                 );
             }

@@ -1,32 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useEffect, useMemo, useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
 import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 
-import { getScopeChangeById } from '../../Api/getScopeChange';
+import { getScopeChangeById, voidRequest } from '../../Api/ScopeChange';
 import { getContributionId } from '../../Functions/Access';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
 import { RequestDetailView } from '../DetailView/RequestDetailView';
 import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
-import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
+
 import { useWorkflowAccess } from '../../Hooks/useWorkflowAccess';
 import { ScopeChangeAccessContext } from './Context/scopeChangeAccessContext';
+import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
+import { IconMenu, MenuItem } from '../MenuButton';
+
+import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
+    const queryClient = useQueryClient();
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [performingAction, setPerformingAction] = useState<boolean>(false);
 
     const { error, data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
-        'scopeChange',
+        QueryKeys.Scopechange,
         () => getScopeChangeById(item.id, scopeChangeApi),
-        { refetchOnMount: true, initialData: item }
+        { initialData: item, refetchOnWindowFocus: false, retry: false }
     );
     const scopeChangeAccess = useScopeChangeAccess(item.id);
+
     const workflowAccess = useWorkflowAccess(
         item.id,
         data?.currentWorkflowStep?.criterias,
@@ -42,15 +47,26 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         }
     }, [item]);
 
-    useEffect(() => {
-        if (!performingAction) {
-            setTimeout(async () => await refetch(), 200);
-        }
-    }, [performingAction]);
+    async function notifyChange() {
+        await queryClient.invalidateQueries([QueryKeys.History, QueryKeys.Scopechange]);
+        await queryClient.refetchQueries(QueryKeys.Scopechange);
+        await queryClient.refetchQueries(QueryKeys.History);
+    }
 
     const refetchScopeChange = async () => {
         await refetch();
     };
+    const actionMenu: MenuItem[] = useMemo(() => {
+        const actions: MenuItem[] = [];
+
+        if (scopeChangeAccess.canPatch) {
+            actions.push({
+                label: 'Void request',
+                onClick: () => voidRequest(item.id).then(notifyChange),
+            });
+        }
+        return actions;
+    }, [data]);
 
     if (!item.id) {
         return <p>Something went wrong</p>;
@@ -67,34 +83,39 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     return (
         <Wrapper>
             {error && (
-                <div>Failed to fetch scope change request, please check your connection?</div>
+                <div style={{ color: 'red' }}>
+                    Network error, please check your connection and try again
+                </div>
             )}
             <TitleHeader>
-                <Title>Review scope change request</Title>
-                <Button
-                    variant="ghost_icon"
-                    onClick={() => setEditMode(!editMode)}
-                    disabled={!scopeChangeAccess.canPatch}
-                >
-                    <Icon
-                        color={
-                            scopeChangeAccess.canPatch
-                                ? tokens.colors.interactive.primary__resting.hex
-                                : 'grey'
-                        }
-                        name="edit"
-                    />
-                </Button>
+                <Title>{data?.title}</Title>
+                <ButtonContainer>
+                    <IconMenu items={actionMenu} />
+
+                    <Button
+                        variant="ghost_icon"
+                        onClick={() => setEditMode(!editMode)}
+                        disabled={!scopeChangeAccess.canPatch}
+                    >
+                        <Icon
+                            color={
+                                scopeChangeAccess.canPatch
+                                    ? tokens.colors.interactive.primary__resting.hex
+                                    : tokens.colors.interactive.disabled__text.hex
+                            }
+                            name="edit"
+                        />
+                    </Button>
+                </ButtonContainer>
             </TitleHeader>
             <ScopeChangeAccessContext.Provider
                 value={{
                     contributionId: workflowAccess.contributionId,
-                    performingAction,
-                    setPerformingAction,
                     request: data || item,
                     requestAccess: scopeChangeAccess,
                     signableCriterias: workflowAccess.signableCriterias,
-                    refetch: refetchScopeChange,
+                    canAddContributor: workflowAccess.canAddContributor,
+                    notifyChange,
                 }}
             >
                 {data && (
@@ -118,6 +139,13 @@ const Title = styled.div`
     font-size: 28px;
 `;
 
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3em;
+`;
+
 const TitleHeader = styled.div`
     display: flex;
     justify-content: space-between;
@@ -128,6 +156,6 @@ const Loading = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 650px;
+    width: 1200px;
     height: 100vh;
 `;

@@ -6,10 +6,11 @@ import { PCSStructure } from './Types/searchStructure';
 
 export const searchNCR = async (
     searchString: string,
-    client: HttpClient
+    client: HttpClient,
+    signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
-    const searchIdDev = 103747;
+    const searchIdDev = 105217;
     const searchIdProd = 105600;
 
     const search: PCSStructure[] = [
@@ -22,6 +23,7 @@ export const searchNCR = async (
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(search),
+        signal,
     };
     try {
         await client

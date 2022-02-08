@@ -1,4 +1,4 @@
-import { patchScopeChange } from '..';
+import { patchScopeChange } from './patchScopeChange';
 import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../Types/scopeChangeRequest';
 
 /**

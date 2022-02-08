@@ -4,12 +4,14 @@ import { System } from './Types/system';
 
 export async function searchSystems(
     searchString: string,
-    procosysClient: HttpClient
+    procosysClient: HttpClient,
+    signal?: AbortSignal
 ): Promise<TypedSelectOption[]> {
     const selectOptions: TypedSelectOption[] = [];
     const res: Promise<System[]> = await procosysClient
         .fetch(
-            'api/Systems?plantId=PCS%24JOHAN_CASTBERG&projectId=177433&onlyActiveSystems=true&api-version=4.1'
+            'api/Systems?plantId=PCS%24JOHAN_CASTBERG&projectId=177433&onlyActiveSystems=true&api-version=4.1',
+            { signal }
         )
         .then((x) => x.json());
 
