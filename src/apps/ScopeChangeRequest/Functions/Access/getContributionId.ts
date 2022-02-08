@@ -1,4 +1,4 @@
-import { canContribute } from '../../Api/ScopeChange/Access/canContribute';
+import { canContribute } from '../../Api/ScopeChange/Access/Workflow';
 
 /**
  * Tries to find a contribution the logged in user can find

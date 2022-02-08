@@ -1,21 +1,9 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-interface DetailViewContainerProps {
-    wrapperTopPosition: number;
-    actionBarHeight: number;
-}
-
 export const Wrapper = styled.div`
     display: flex;
-    /* height: calc(
-        100vh -
-            ${({ wrapperTopPosition, actionBarHeight }: DetailViewContainerProps) =>
-        wrapperTopPosition + actionBarHeight}px
-    ); */
-    height: 75vh;
-    padding-bottom: 250px;
-    /* padding-bottom: ${({ actionBarHeight }: DetailViewContainerProps) => actionBarHeight}px; */
+    height: auto;
     flex-direction: column;
     overflow: scroll;
 `;
