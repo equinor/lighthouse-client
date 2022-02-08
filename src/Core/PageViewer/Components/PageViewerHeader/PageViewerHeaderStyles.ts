@@ -26,7 +26,7 @@ export const Line = styled.div`
     border-bottom: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
 export const Title = styled(Typography)`
-    padding: 1rem;
+    padding: 1rem 1rem 0 1rem;
 `;
 
 export const Divider = styled.div`

@@ -29,6 +29,7 @@ export const Wrap = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: flex-end;
+    padding: 1em 0 1em 0;
 `;
 export const Line = styled.div`
     width: -webkit-fill-available;
