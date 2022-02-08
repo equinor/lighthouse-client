@@ -6,11 +6,10 @@ import { ScopeChangeRequest } from '../../../Types/scopeChangeRequest';
 
 export interface ScopeChangeAccessContextState {
     request: ScopeChangeRequest;
-    performingAction: boolean;
-    setPerformingAction: (value: boolean) => void;
     requestAccess: OptionRequestResult;
     signableCriterias: StrippedCriteria[] | undefined;
     contributionId: string | undefined;
+    canAddContributor: boolean;
     refetch: () => Promise<void>;
 }
 
