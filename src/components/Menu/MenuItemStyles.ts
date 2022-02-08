@@ -15,10 +15,15 @@ export const MItem = styled(Menu.Item)`
             : tokens.colors.interactive.primary__resting.rgba};
     cursor: ${({ disabled }: MenuItemProps) => (disabled ? 'default' : 'pointer')};
 
-    height: 32px;
-    padding-top: 12px;
+    height: 26px;
+    padding-top: 8px;
     padding-bottom: 0;
-    padding-left: ${({ isLink }: MenuItemProps) => (isLink ? '8px' : '2rem')};
+    display: flex;
+    align-items: center;
+    p {
+        font-size: 14px !important;
+    }
+    padding-left: ${({ isLink }: MenuItemProps) => (isLink ? '8px' : '1.5rem')};
     background: ${({ active }: MenuItemProps) =>
         active ? `${tokens.colors.interactive.primary__hover_alt.rgba}` : ''};
 `;
@@ -30,10 +35,13 @@ export const DItem = styled.div`
     flex-grow: 1;
     text-decoration: none;
     display: flex;
-    padding-bottom: 0.5rem;
-    padding-top: 0.5rem;
-    padding-left: ${({ isLink }: MenuItemProps) => (isLink ? '8px' : '2rem')};
-    font-size: 16px;
+    align-items: center;
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+    padding-left: ${({ isLink }: MenuItemProps) => (isLink ? '8px' : '1.5rem')};
+    p {
+        font-size: 14px !important;
+    }
     cursor: ${({ disabled }: MenuItemProps) => (disabled ? 'default' : 'pointer')};
     :hover {
         background-color: ${({ disabled }: MenuItemProps) =>

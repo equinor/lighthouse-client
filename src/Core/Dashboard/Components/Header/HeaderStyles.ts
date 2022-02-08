@@ -1,7 +1,7 @@
-import { Chip } from '@equinor/eds-core-react';
+import { Chip, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-
+const { Tab } = Tabs;
 export const Wrapper = styled.section`
     height: 100%;
     display: flex;
@@ -33,4 +33,7 @@ export const Wrap = styled.div`
 export const Line = styled.div`
     width: -webkit-fill-available;
     border-bottom: 2px solid ${tokens.colors.ui.background__medium.rgba};
+`;
+export const HeaderTab = styled(Tab)`
+    height: 25px;
 `;

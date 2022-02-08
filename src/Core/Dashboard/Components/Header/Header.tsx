@@ -1,9 +1,7 @@
 import { KpiBar } from '@equinor/Kpi';
 import { useDashboardDataContext } from '../../Context/DataProvider';
 import { PageConfig } from '../../Types/State';
-import { Line, TabTitle, Wrap, Wrapper } from './HeaderStyles';
-import { Tabs } from '@equinor/eds-core-react';
-const { Tab } = Tabs;
+import { HeaderTab, Line, TabTitle, Wrap, Wrapper } from './HeaderStyles';
 interface HeaderProps<T> {
     setActivePage: (pageId: string) => void;
     activePage: string;
@@ -16,13 +14,13 @@ export function Header<T>({ pages, setActivePage, activePage }: HeaderProps<T>):
             <Wrap>
                 {Object.values(pages).map((page) => {
                     return (
-                        <Tab
+                        <HeaderTab
                             key={`tab-pages-${page.title}`}
                             onClick={() => setActivePage(page.pageId)}
                             active={activePage === page.pageId}
                         >
                             <TabTitle>{page.title}</TabTitle>
-                        </Tab>
+                        </HeaderTab>
                     );
                 })}
                 <Line />
