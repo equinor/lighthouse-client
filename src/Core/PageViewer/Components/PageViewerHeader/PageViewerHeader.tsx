@@ -1,5 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { useState } from 'react';
+import styled from 'styled-components';
 import Icon from '../../../../components/Icon/Icon';
 import { ViewState } from '../../Types/State';
 import { HeaderButton } from '../HeaderButton/HeaderButton';
@@ -7,9 +8,10 @@ import {
     Divider,
     HeaderWrapper,
     LeftSection,
+    Line,
     RightSection,
     TabTitle,
-    Title
+    Title,
 } from './PageViewerHeaderStyles';
 
 const { Tab, List } = Tabs;
@@ -22,6 +24,8 @@ interface PageViewerHeaderProps {
     handleFilter: HandleFilter;
     activeFilter: boolean;
 }
+
+const Filter = styled.div``;
 
 export const PageViewerHeader = ({
     title,
@@ -36,8 +40,6 @@ export const PageViewerHeader = ({
         <HeaderWrapper>
             <LeftSection>
                 <Title variant="h3">{title}</Title>
-            </LeftSection>
-            <RightSection>
                 <List>
                     {Object.values(viewState.pages).map((page) => {
                         const Icon = page.icon;
@@ -49,6 +51,9 @@ export const PageViewerHeader = ({
                         );
                     })}
                 </List>
+            </LeftSection>
+            <RightSection>
+                <Line />
                 {showFilter && (
                     <>
                         <Divider />
