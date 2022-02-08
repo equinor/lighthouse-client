@@ -22,13 +22,22 @@ import {
     SelectionChangedEvent,
 } from '@ag-grid-enterprise/all-modules';
 import { GenerateColumn } from './GenerateColumn';
+import { FilterModel } from '../../../../Core/WorkSpace/src/Tabs/ListTab';
+import { FilterMode } from '@microsoft/microsoft-graph-types';
 
 interface GridProps<T> {
     data: T[];
     options?: TableOptions<T>;
+    filterModel: FilterModel<T>;
+    setFilterModel: (filterModel: FilterModel<T>) => void;
 }
 
-export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
+export function Grid<T>({
+    data,
+    options,
+    filterModel,
+    setFilterModel,
+}: GridProps<T>): JSX.Element | null {
     const [gridApi, setGridApi] = useState<GridApi | null>(null);
     const [gridColumnApi, setGridColumnApi] = useState<ColumnApi | null>(null);
     const [floatingFilter, setFloatingFilter] = useState(true);
@@ -37,6 +46,13 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
         buildColumnDef(data[0], options?.columnDefinition)
     );
 
+    useEffect(() => {
+        /**Potential pitfall */
+        if (JSON.stringify(filterModel) !== JSON.stringify(gridApi?.getFilterModel())) {
+            console.log('External filterModel changed');
+            gridApi?.setFilterModel(filterModel);
+        }
+    }, [filterModel]);
 
     function appendColumn(colDef: ColumnDefintion<T>) {
         setColumnDefs((prev) => [...prev, colDef]);
@@ -76,9 +92,9 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
         });
 
         actionBuilder.push({
-            label: "Generate new column",
-            onClick: () => setScrimOpen(true)
-        })
+            label: 'Generate new column',
+            onClick: () => setScrimOpen(true),
+        });
 
         if (gridApi?.isAnyFilterPresent()) {
             actionBuilder.push({
@@ -193,7 +209,10 @@ export function Grid<T>({ data, options }: GridProps<T>): JSX.Element | null {
                     sortable: true,
                     filter: true,
                     floatingFilter: true,
-                    initialHide: true,
+                    initialHide: false,
+                }}
+                onFilterChanged={() => {
+                    setFilterModel(gridApi?.getFilterModel() as FilterModel<T>);
                 }}
                 sideBar={true}
                 pagination={true}
