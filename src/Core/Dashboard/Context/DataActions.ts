@@ -4,6 +4,7 @@ import { DataState } from './DataProvider';
 export enum DataAction {
     setData = 'setData',
     setInstance = 'setInstance',
+    setLoading = 'setLoading',
 }
 
 export const actions = {
@@ -11,6 +12,7 @@ export const actions = {
     setInstance: createCustomAction(DataAction.setInstance, (instance: DataState) => ({
         instance,
     })),
+    setLoading: createCustomAction(DataAction.setLoading, (isLoading: boolean) => ({ isLoading })),
 };
 
 export type Action = ActionType<typeof actions>;

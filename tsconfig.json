@@ -37,7 +37,7 @@
             "@equinor/authentication": ["./src/packages/authentication"],
             "@equinor/http-client": ["./src/Core/httpClient"],
             "@equinor/hooks": ["./src/hooks"],
-            "@equinor/util": ["./src/packages/Utils"],
+            "@equinor/Utils": ["./src/packages/Utils"],
             "@equinor/typeGuard": ["./src/packages/typeGuard"]
         }
     },

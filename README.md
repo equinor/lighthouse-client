@@ -8,7 +8,10 @@ Table of content
 ## About
 
 Client for the Castberg project portal. The client can be 
-viewed at [https://jc.fusion.equinor.com/](https://jc.fusion.equinor.com/)
+viewed at:
+- [https://jc.fusion.equinor.com/](https://jc.fusion.equinor.com/)
+- [https://jc.fusion.test.equinor.com/](https://jc.fusion.test.equinor.com/)
+- [https://jc.fusion.dev.equinor.com/](https://jc.fusion.dev.equinor.com/)
 
 ## Software - Required
 ### Required Software

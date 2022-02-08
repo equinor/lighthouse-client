@@ -6,11 +6,12 @@ import { isProduction } from '../../../../../Core/Client/Functions';
 
 export const searchAreas = async (
     searchString: string,
-    procosysClient: HttpClient
+    procosysClient: HttpClient,
+    signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
-    const searchIdDev = 103741;
+    const searchIdDev = 105219;
     const searchIdProd = 106102;
 
     const uri = 'api/Search';
@@ -29,6 +30,7 @@ export const searchAreas = async (
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(search),
+        signal,
     };
 
     await procosysClient

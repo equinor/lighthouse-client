@@ -13,14 +13,15 @@ export type StidTypes = 'document' | 'stidtag';
  */
 export const searchStid = async (
     searchString: string,
-    searchItem: StidTypes
+    searchItem: StidTypes,
+    abortSignal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     switch (searchItem.toLowerCase()) {
         case 'document':
-            return await searchDocuments(searchString);
+            return await searchDocuments(searchString, abortSignal);
 
         case 'stidtag':
-            return await searchTags(searchString);
+            return await searchTags(searchString, abortSignal);
 
         default:
             // eslint-disable-next-line no-console

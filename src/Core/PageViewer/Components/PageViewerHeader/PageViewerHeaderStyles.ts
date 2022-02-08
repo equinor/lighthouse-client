@@ -14,16 +14,19 @@ export const LeftSection = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: -webkit-fill-available;
-    border-bottom: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
 export const RightSection = styled.div`
     display: flex;
     flex-direction: row;
+    width: -webkit-fill-available;
+    justify-content: end;
 `;
-
+export const Line = styled.div`
+    width: 100%;
+    border-bottom: 2px solid ${tokens.colors.ui.background__medium.rgba};
+`;
 export const Title = styled(Typography)`
-    padding: 1rem;
+    padding: 1rem 1rem 0 1rem;
 `;
 
 export const Divider = styled.div`

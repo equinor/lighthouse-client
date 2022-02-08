@@ -30,6 +30,12 @@ const buildObject = <T>(schema: Schema<T>, initialState?: Partial<T>): T => {
     return object;
 };
 
+/**
+ * Hook that controls the state of a form
+ * @param schema
+ * @param initialState
+ * @returns
+ */
 export const useForm = <T>(schema: Schema<T>, initialState?: Partial<T>): Form<T> => {
     const state: T = buildObject(schema, initialState);
 

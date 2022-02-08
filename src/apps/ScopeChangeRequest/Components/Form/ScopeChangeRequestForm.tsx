@@ -9,21 +9,19 @@ import { useHttpClient } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import { getScopeChangeById, postScopeChange } from '../../Api/';
+import { getScopeChangeById, postScopeChange } from '../../Api/ScopeChange';
 import { uploadAttachment } from '../../Api/ScopeChange/attachment';
 import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { Document } from '../../Api/STID/Types/Document';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 
 import { Field } from '../DetailView/Components/Field';
 import { Upload } from '../Upload';
-import { PCSLink } from '../SearchableDropdown/PCSLink';
-import { StidDocument } from '../StidDocument';
-import { StidSelector } from '../STID';
+import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { Origin } from './Origin';
+import { StidTypes } from '../../Api/Search/STID/searchStid';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -38,16 +36,12 @@ export const ScopeChangeRequestForm = ({
     closeScrim,
     setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema);
+    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
+        phase: 'IC',
+    });
 
-    const [stidDocuments, setStidDocuments] = useState<Document[]>([]);
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
-    const removeDocument = (docNo: string) =>
-        setStidDocuments((prev) => prev.filter((x) => x.docNo !== docNo));
-
-    const appendDocuments = (documents: Document[]) =>
-        setStidDocuments((prev) => [...prev, ...documents]);
 
     const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
@@ -59,6 +53,7 @@ export const ScopeChangeRequestForm = ({
         const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
         const areas = filterElementsByType(relatedObjects, 'area');
         const disciplines = filterElementsByType(relatedObjects, 'discipline');
+        const documents = filterElementsByType(relatedObjects, 'document');
 
         const scID = await postScopeChange(
             {
@@ -66,7 +61,7 @@ export const ScopeChangeRequestForm = ({
                 tagNumbers: tags?.map((x) => x.value) || [],
                 systemIds: systems?.map((x) => Number(x.value)) || [],
                 commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
-                documentNumbers: stidDocuments.map((x) => x.docNo) || [],
+                documentNumbers: documents.map((x) => x.value) || [],
                 areaCodes: areas.map((x) => x.value) || [],
                 disciplineCodes: disciplines.map((x) => x.value) || [],
             },
@@ -96,12 +91,8 @@ export const ScopeChangeRequestForm = ({
     };
 
     useEffect(() => {
-        setHasUnsavedChanges(
-            formData.getChangedData() !== undefined ||
-            relatedObjects.length > 0 ||
-            stidDocuments.length > 0
-        );
-    }, [formData, setHasUnsavedChanges, relatedObjects, stidDocuments.length]);
+        setHasUnsavedChanges(formData.getChangedData() !== undefined || relatedObjects.length > 0);
+    }, [formData, setHasUnsavedChanges, relatedObjects]);
 
     const SubmitButton = () => {
         return (
@@ -171,7 +162,7 @@ export const ScopeChangeRequestForm = ({
                     },
 
                     {
-                        Component: PCSLink,
+                        Component: RelatedObjectsSearch,
                         order: 6,
                         title: 'References',
                         props: {
@@ -181,31 +172,6 @@ export const ScopeChangeRequestForm = ({
                     },
                 ]}
             >
-                <Inline>
-                    <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Documents</div>
-                    <StidSelector appendDocuments={appendDocuments} documents={stidDocuments} />
-                </Inline>
-                {stidDocuments &&
-                    stidDocuments.map((x) => {
-                        return (
-                            <Chip key={x.docNo}>
-                                <StidDocument document={x} />
-
-                                <Button
-                                    variant="ghost_icon"
-                                    onClick={() => {
-                                        removeDocument(x.docNo);
-                                    }}
-                                >
-                                    <Icon
-                                        color={tokens.colors.interactive.primary__resting.rgba}
-                                        name="clear"
-                                    />
-                                </Button>
-                            </Chip>
-                        );
-                    })}
-
                 <Field
                     label="Attachments"
                     value={<Upload attachments={attachments} setAttachments={setAttachments} />}
@@ -224,21 +190,6 @@ const TitleHeader = styled.div`
     align-items: center;
 `;
 
-const Inline = styled.span`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-
-const Chip = styled.div`
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 16px;
-    padding: 5px;
-`;
-
 const LoadingPage = styled.div`
     display: flex;
     align-items: center;
@@ -247,6 +198,6 @@ const LoadingPage = styled.div`
     width: 650px;
 `;
 
-function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes) {
+function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | StidTypes) {
     return items.filter((x) => x.type === type);
 }
