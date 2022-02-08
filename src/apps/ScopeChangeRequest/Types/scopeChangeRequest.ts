@@ -34,6 +34,30 @@ export interface ScopeChangeBaseModel {
     guesstimateDescription: string;
 }
 
+export interface LogEntry {
+    createdAtUtc: string;
+    createdBy: {
+        id: string;
+        oid: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    modifiedAtUtc: string;
+    modifiedBy: {
+        id: string;
+        oid: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    id: string;
+    description: string;
+    objectGuid: string;
+    eventType: string;
+    objectType: string;
+}
+
 export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     createdAtUtc: string;
     createdBy: Person;
@@ -49,6 +73,7 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     attachments: Attachment[];
     documents: Document[];
     hasComments: boolean;
+    sequenceNumber: number;
     //workflow
 }
 

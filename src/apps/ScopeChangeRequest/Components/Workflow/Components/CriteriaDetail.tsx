@@ -10,7 +10,7 @@ interface CriteriaDetailProps {
 }
 
 export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Element => {
-    const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc));
+    const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
     const { day, month, year, hour, minute } = DateTime.fromJSDate(date).toObject();
     const paddedMinutes = minute.toString().length === 1 ? `0${minute}` : minute;
 

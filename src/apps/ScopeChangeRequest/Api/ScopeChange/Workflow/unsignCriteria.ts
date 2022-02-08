@@ -15,6 +15,7 @@ export async function unsignCriteria(
 
     const requestOptions = {
         method: 'PATCH',
+        body: JSON.stringify({}),
     };
 
     await scopeChange.fetch(

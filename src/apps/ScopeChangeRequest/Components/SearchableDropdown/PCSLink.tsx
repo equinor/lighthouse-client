@@ -120,6 +120,7 @@ export const RelatedObjectsSearch = ({
                     >
                         <SelectContainer>
                             <SingleSelect
+                                meta="(Required)"
                                 label="Reference type"
                                 items={referenceTypes}
                                 handleSelectedItemChange={(change) => {

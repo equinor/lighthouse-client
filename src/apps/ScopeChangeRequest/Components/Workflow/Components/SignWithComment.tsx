@@ -1,14 +1,13 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
-import { Button, Progress } from '@equinor/eds-core-react';
+import { Button, Progress, TextField } from '@equinor/eds-core-react';
 import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 import { signCriteria } from '../../../Api/ScopeChange/Workflow';
 import { spawnConfirmationDialog } from '../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { Criteria } from '../../../Types/scopeChangeRequest';
 import { useMutation } from 'react-query';
 import { tokens } from '@equinor/eds-tokens';
-import { useTextField } from '../../../Hooks/useTextField';
 
 interface SignWithCommentProps {
     criteria: Criteria;
@@ -17,8 +16,7 @@ interface SignWithCommentProps {
 
 export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): JSX.Element => {
     const { request, refetch } = useScopeChangeAccessContext();
-
-    const { Component, text, setText } = useTextField('Add comment');
+    const [text, setText] = useState<string | undefined>();
 
     async function onSignStep() {
         if (request.currentWorkflowStep && request.currentWorkflowStep.criterias.length > 0) {
@@ -27,7 +25,9 @@ export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): J
                 (x) => x.signedAtUtc === null
             );
             const sign = async () => {
-                await signCriteria(request.id, currentStepId, criteria.id, text);
+                await signCriteria(request.id, currentStepId, criteria.id, text).then(() =>
+                    refetch()
+                );
             };
             if (
                 request.currentWorkflowStep.contributors &&
@@ -46,13 +46,7 @@ export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): J
         }
     }
 
-    const { mutateAsync, isLoading, isSuccess } = useMutation(onSignStep);
-
-    useEffect(() => {
-        if (isSuccess) {
-            refetch();
-        }
-    }, [isSuccess]);
+    const { mutateAsync, isLoading } = useMutation(onSignStep, { onSuccess: () => onCancel() });
 
     return (
         <>
@@ -60,7 +54,11 @@ export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): J
 
             <Section>
                 <Title>Comment</Title>
-                <Component />
+                <TextField
+                    id={'textField'}
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                />
             </Section>
             <ButtonContainer>
                 <Button disabled={!text || text.length === 0} onClick={() => mutateAsync()}>

@@ -5,7 +5,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { Icon, Progress } from '@equinor/eds-core-react';
 import { Criteria, WorkflowStep } from '../../../Types/scopeChangeRequest';
 import { SelectOption } from '../../../Api/Search/PCS';
-import { reassignCriteria } from '../../../Api/ScopeChange/Workflow';
+import { reassignCriteria, unsignCriteria } from '../../../Api/ScopeChange/Workflow';
 import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useConditionalRender } from '../../../Hooks/useConditionalRender';
 import { useLoading } from '../../../Hooks/useLoading';
@@ -36,6 +36,7 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
         if (person) {
             reassignMutation({ type: 'RequireProcosysUserSignature', value: person.value });
             setPerson(null);
+            setShowReassign(false);
         }
     }, [person]);
 
@@ -46,7 +47,9 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
                 (x) => x.signedAtUtc === null
             );
             const sign = async () => {
-                await signCriteria(request.id, currentStepId, criteria.id, signComment);
+                await signCriteria(request.id, currentStepId, criteria.id, signComment).then(() =>
+                    refetch()
+                );
             };
             if (
                 request.currentWorkflowStep.contributors &&
@@ -100,22 +103,19 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
         await reassignCriteria(request.id, step.id, criteria.id, {
             type: type,
             value: value,
-        });
+        }).then(() => refetch());
     };
 
-    const {
-        mutateAsync: reassignMutation,
-        isLoading,
-        isSuccess: reassignDone,
-    } = useMutation(reassign);
+    const reject = async () => {
+        await unsignCriteria(request.id, step.id, criteria.id).then(() => refetch());
+    };
 
-    const { mutateAsync: signMutation, isSuccess: signDone } = useMutation(onSignStep);
+    const { mutateAsync: reassignMutation, isLoading } = useMutation(reassign);
+    const { mutateAsync: rejectMutation } = useMutation(reject);
 
-    useEffect(() => {
-        refetch();
-    }, [signDone, reassignDone]);
+    const { mutateAsync: signMutation, isLoading: signLoading } = useMutation(onSignStep);
 
-    const { Loading } = useLoading(<Progress.Dots color="primary" />, isLoading);
+    const { Loading } = useLoading(<Progress.Dots color="primary" />, isLoading || signLoading);
 
     const signActions: MenuItem[] = [
         {
@@ -131,6 +131,7 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
         {
             label: CriteriaActions.Reject,
             icon: <Icon name="assignment_return" color="grey" />,
+            onClick: () => rejectMutation(),
         },
     ];
 

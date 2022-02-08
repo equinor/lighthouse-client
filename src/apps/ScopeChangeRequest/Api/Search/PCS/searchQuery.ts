@@ -11,7 +11,7 @@ export const searchQueryOrigin = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
-    const searchIdDev = 103743;
+    const searchIdDev = 105215;
     const searchIdProd = 105670;
 
     const search: PCSStructure[] = [

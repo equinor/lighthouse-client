@@ -11,8 +11,8 @@ export const searchTags = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
+    const searchIdDev = 105220;
     const searchIdProd = 105793;
-    const searchIdDev = 103745;
 
     const uri = 'api/Search';
     const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev

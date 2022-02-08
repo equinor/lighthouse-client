@@ -10,7 +10,7 @@ export async function canAddContributor(requestId: string, stepId: string): Prom
 
     const check = () =>
         scopeChange.fetch(
-            `api/scope-change-requests/${requestId}/step/${stepId}/contributors`,
+            `api/scope-change-requests/${requestId}/workflow/step/${stepId}/contributors`,
             requestOptions
         );
 

@@ -44,5 +44,5 @@ export const Field = ({ label, value, customLabel, customValue }: FieldProps): J
 };
 
 const MetaText = styled.span`
-    font-size: 0.7em;
+    font-size: 12px;
 `;

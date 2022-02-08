@@ -120,6 +120,9 @@ export const ScopeChangeRequestForm = ({
     }, [formData.fields.originSource?.value]);
 
     const isValidForm = useMemo(() => {
+        console.log(formData.fields.originSource?.value);
+        console.log(formData.isValidForm());
+        console.log(formData.getChangedData());
         return (
             formData.isValidForm() &&
             (formData.fields.originSource?.value === 'NotApplicable' ||

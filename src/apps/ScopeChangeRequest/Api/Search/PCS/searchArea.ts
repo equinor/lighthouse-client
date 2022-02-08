@@ -11,7 +11,7 @@ export const searchAreas = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
-    const searchIdDev = 103741;
+    const searchIdDev = 105219;
     const searchIdProd = 106102;
 
     const uri = 'api/Search';

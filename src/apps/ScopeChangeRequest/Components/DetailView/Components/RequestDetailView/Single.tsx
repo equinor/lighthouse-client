@@ -4,8 +4,8 @@ import { Workflow } from '../../../Workflow/Components/Workflow';
 import { Attachments } from '../../Components/Attachments';
 import { RelatedObjects } from '../../Components/RelatedObjects';
 import { OriginLink } from '../../Components/OriginLink';
-import { ChevronList } from '../ChevronList/ChevronList';
 import { BoldHeading, Section, SubHeading, Value } from './RequestDetailViewStyles';
+import { HistoryList } from '../History/HistoryList';
 
 export const SingleView = (): JSX.Element => {
     const { request } = useScopeChangeAccessContext();
@@ -81,9 +81,7 @@ export const SingleView = (): JSX.Element => {
             <Section>
                 <BoldHeading>Log</BoldHeading>
                 <Value>
-                    <ChevronList title={`Log entries (${0})`}>
-                        <p></p>
-                    </ChevronList>
+                    <HistoryList />
                 </Value>
             </Section>
         </div>

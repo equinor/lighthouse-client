@@ -23,9 +23,10 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
 
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
 
-    const { request } = useScopeChangeAccessContext();
+    const { request, refetch } = useScopeChangeAccessContext();
 
-    const onAddContribution = () => addContribution(request.id, step.id, contributor.id, comment);
+    const onAddContribution = () =>
+        addContribution(request.id, step.id, contributor.id, comment).then(() => refetch());
 
     const { mutateAsync } = useMutation(onAddContribution);
 
