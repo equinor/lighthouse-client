@@ -292,9 +292,12 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                                                             values: ['ECOM'],
                                                             filterType: models.FilterType.Basic,
                                                         };
-                                                        await filter.slicer.setSlicerState({
-                                                            filters: [basicFilter],
-                                                        });
+                                                        // await filter.slicer.setSlicerState({
+                                                        //     filters: [basicFilter],
+                                                        // });
+                                                        await filter.slicer.setFilters([
+                                                            basicFilter,
+                                                        ]);
                                                         // await report
                                                         //     ?.getActivePage()
                                                         //     .then((activePage) => {
