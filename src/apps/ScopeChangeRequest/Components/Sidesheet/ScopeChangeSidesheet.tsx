@@ -1,30 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
 import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 
-import { getScopeChangeById } from '../../Api/getScopeChange';
+import { getScopeChangeById } from '../../Api/ScopeChange';
 import { getContributionId } from '../../Functions/Access';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
 import { RequestDetailView } from '../DetailView/RequestDetailView';
 import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
-import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
+
 import { useWorkflowAccess } from '../../Hooks/useWorkflowAccess';
 import { ScopeChangeAccessContext } from './Context/scopeChangeAccessContext';
+import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
+import { IconMenu } from '../MenuButton';
+
+import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
+    const queryClient = useQueryClient();
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [performingAction, setPerformingAction] = useState<boolean>(false);
 
     const { error, data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
-        'scopeChange',
+        QueryKeys.scopechange,
         () => getScopeChangeById(item.id, scopeChangeApi),
-        { refetchOnMount: true, initialData: item }
+        { initialData: item, refetchOnWindowFocus: false, retry: false }
     );
     const scopeChangeAccess = useScopeChangeAccess(item.id);
     const workflowAccess = useWorkflowAccess(
@@ -42,11 +46,11 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         }
     }, [item]);
 
-    useEffect(() => {
-        if (!performingAction) {
-            setTimeout(async () => await refetch(), 200);
-        }
-    }, [performingAction]);
+    async function notifyChange() {
+        await queryClient.invalidateQueries([QueryKeys.history, QueryKeys.scopechange]);
+        await queryClient.refetchQueries(QueryKeys.scopechange);
+        await queryClient.refetchQueries(QueryKeys.history);
+    }
 
     const refetchScopeChange = async () => {
         await refetch();
@@ -67,15 +71,25 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     return (
         <Wrapper>
             {error && (
-                <div>Failed to fetch scope change request, please check your connection?</div>
+                <div style={{ color: 'red' }}>
+                    Network error, please check your connection and try again
+                </div>
             )}
             <TitleHeader>
-                <Title>Review scope change request</Title>
+                <Title>{data?.title}</Title>
                 <Button
                     variant="ghost_icon"
                     onClick={() => setEditMode(!editMode)}
                     disabled={!scopeChangeAccess.canPatch}
                 >
+                    <IconMenu
+                        items={[
+                            {
+                                label: 'Void request',
+                            },
+                        ]}
+                    />
+                    <Divider />
                     <Icon
                         color={
                             scopeChangeAccess.canPatch
@@ -89,12 +103,11 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             <ScopeChangeAccessContext.Provider
                 value={{
                     contributionId: workflowAccess.contributionId,
-                    performingAction,
-                    setPerformingAction,
                     request: data || item,
                     requestAccess: scopeChangeAccess,
                     signableCriterias: workflowAccess.signableCriterias,
-                    refetch: refetchScopeChange,
+                    canAddContributor: workflowAccess.canAddContributor,
+                    notifyChange,
                 }}
             >
                 {data && (
@@ -124,10 +137,14 @@ const TitleHeader = styled.div`
     align-items: center;
 `;
 
+const Divider = styled.div`
+    width: 0.3rem;
+`;
+
 const Loading = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 650px;
+    width: 1200px;
     height: 100vh;
 `;

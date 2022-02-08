@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useReducer, useState } from 'react';
-import { Button, Icon, Scrim, TextField } from '@equinor/eds-core-react';
+import React, { Fragment, useEffect, useReducer, useRef, useState } from 'react';
+import { Button, Icon, Progress, Scrim, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
 import { searchStid } from '../../../Api/Search/STID/searchStid';
@@ -29,6 +29,8 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
     const [searchText, setSearchText] = useState<string | undefined>();
     const [results, setResults] = useState<TypedSelectOption[]>([]);
     const [subResults, setSubResults] = useState<SubResult | undefined>();
+
+    const controller = useRef(new AbortController());
 
     const [
         { addDuplicate, documentsLoading, tagsLoading, hasErrored, tagContainsNoDocuments },
@@ -98,6 +100,8 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
     }
 
     const fetchResults = async (inputValue: string) => {
+        controller.current.abort();
+        controller.current = new AbortController();
         setResults([]);
         dispatch({ type: 'setDocumentsLoading', value: true });
         dispatch({ type: 'setTagsLoading', value: true });
@@ -107,13 +111,13 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
         let tagsResult: TypedSelectOption[] = [];
         let documentsResult: TypedSelectOption[] = [];
         try {
-            tagsResult = await searchStid(inputValue, 'stidtag');
+            tagsResult = await searchStid(inputValue, 'stidtag', controller.current.signal);
             dispatch({ type: 'setTagsLoading', value: false });
         } catch (e) {
             dispatch({ type: 'setHasErrored', value: true });
         }
         try {
-            documentsResult = await searchStid(inputValue, 'document');
+            documentsResult = await searchStid(inputValue, 'document', controller.current.signal);
             dispatch({ type: 'setDocumentsLoading', value: false });
         } catch (e) {
             dispatch({ type: 'setHasErrored', value: true });
@@ -167,6 +171,15 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
                         <TextField
                             id={'Stid document selector'}
                             value={searchText}
+                            inputIcon={
+                                <>
+                                    {documentsLoading || tagsLoading ? (
+                                        <Progress.Dots color="primary" />
+                                    ) : (
+                                        <Icon name="search" />
+                                    )}
+                                </>
+                            }
                             placeholder={'Type to search tag / document'}
                             onChange={(e) => {
                                 setSubResults(undefined);
