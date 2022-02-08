@@ -22,8 +22,8 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - Custom array cell type in Table
 - Support for custom header renderer in config Table
 - Support of cancellation when redirect to other view 
-
-
+- General UI updates
+- 
 ## 0.1.0-alpha
 
 ### Add
