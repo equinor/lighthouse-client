@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
+## 0.1.1-alpha
+
+### Changes
+- Readme Update (Links)
+- Labeler update.
+#### Portal
+- Homepage Background
+- Search in top-bar (disabled)
+- Tasks/Dummy tasks
+- Dependencies update
+#### Construction Progress
+- Change punch analytics uri 
+
+#### WorkSpace / PageViewer
+- Custom array cell type in Table
+- Support for custom header renderer in config Table
+- Support of cancellation when redirect to other view 
+
+
 ## 0.1.0-alpha
 
 ### Add
