@@ -10,7 +10,7 @@ import {
     themeColors,
 } from './Components';
 import { WorkOrder } from './Types';
-import { weekDiff } from './Utils';
+import { formatNumber, weekDiff } from './Utils';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
     section1: {
@@ -104,7 +104,7 @@ export function setup(appApi: ClientApi): void {
             {
                 status: 'ok',
                 title: 'Job cards created',
-                value: () => data.length.toString(),
+                value: () => formatNumber(data.length),
             },
             {
                 status: 'waring',
@@ -126,14 +126,14 @@ export function setup(appApi: ClientApi): void {
                         (wo) => weekDiff(new Date(wo.plannedStartupDate ?? new Date())).days <= 42
                     );
 
-                    return secondFiltered.length.toString();
+                    return formatNumber(secondFiltered.length);
                 },
             },
             {
                 status: 'ok',
                 title: 'Job cards in W04',
                 value: () => {
-                    return data.filter((wo) => wo.jobStatus === 'W04').length.toString();
+                    return formatNumber(data.filter((wo) => wo.jobStatus === 'W04').length);
                 },
             },
         ];
