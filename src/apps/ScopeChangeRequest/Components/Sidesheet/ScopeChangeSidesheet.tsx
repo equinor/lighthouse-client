@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
@@ -18,12 +18,15 @@ import { ScopeChangeAccessContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { IconMenu } from '../MenuButton';
 
+import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
+
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
+    const queryClient = useQueryClient();
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
 
     const { error, data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
-        'scopeChange',
+        QueryKeys.scopechange,
         () => getScopeChangeById(item.id, scopeChangeApi),
         { initialData: item, refetchOnWindowFocus: false, retry: false }
     );
@@ -42,6 +45,12 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             refetchScopeChange();
         }
     }, [item]);
+
+    async function notifyChange() {
+        await queryClient.invalidateQueries([QueryKeys.history, QueryKeys.scopechange]);
+        await queryClient.refetchQueries(QueryKeys.scopechange);
+        await queryClient.refetchQueries(QueryKeys.history);
+    }
 
     const refetchScopeChange = async () => {
         await refetch();
@@ -97,8 +106,8 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                     request: data || item,
                     requestAccess: scopeChangeAccess,
                     signableCriterias: workflowAccess.signableCriterias,
-                    refetch: refetchScopeChange,
                     canAddContributor: workflowAccess.canAddContributor,
+                    notifyChange,
                 }}
             >
                 {data && (

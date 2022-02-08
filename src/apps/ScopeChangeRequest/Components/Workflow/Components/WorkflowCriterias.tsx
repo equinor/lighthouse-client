@@ -29,7 +29,7 @@ interface WorkflowCriteriasProps {
 export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): JSX.Element => {
     const [person, setPerson] = useState<SelectOption | null>(null);
 
-    const { refetch, request } = useScopeChangeAccessContext();
+    const { request, notifyChange } = useScopeChangeAccessContext();
     const [signComment, setSignComment] = useState<string>('');
 
     useEffect(() => {
@@ -47,9 +47,7 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
                 (x) => x.signedAtUtc === null
             );
             const sign = async () => {
-                await signCriteria(request.id, currentStepId, criteria.id, signComment).then(() =>
-                    refetch()
-                );
+                await signCriteria(request.id, currentStepId, criteria.id, signComment);
             };
             if (
                 request.currentWorkflowStep.contributors &&
@@ -103,17 +101,21 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
         await reassignCriteria(request.id, step.id, criteria.id, {
             type: type,
             value: value,
-        }).then(() => refetch());
+        });
     };
 
     const reject = async () => {
-        await unsignCriteria(request.id, step.id, criteria.id).then(() => refetch());
+        await unsignCriteria(request.id, step.id, criteria.id);
     };
 
-    const { mutateAsync: reassignMutation, isLoading } = useMutation(reassign);
-    const { mutateAsync: rejectMutation } = useMutation(reject);
+    const { mutateAsync: reassignMutation, isLoading } = useMutation(reassign, {
+        onSettled: notifyChange,
+    });
+    const { mutateAsync: rejectMutation } = useMutation(reject, { onSettled: notifyChange });
 
-    const { mutateAsync: signMutation, isLoading: signLoading } = useMutation(onSignStep);
+    const { mutateAsync: signMutation, isLoading: signLoading } = useMutation(onSignStep, {
+        onSettled: notifyChange,
+    });
 
     const { Loading } = useLoading(<Progress.Dots color="primary" />, isLoading || signLoading);
 

@@ -23,12 +23,11 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
 
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
 
-    const { request, refetch } = useScopeChangeAccessContext();
+    const { request, notifyChange } = useScopeChangeAccessContext();
 
-    const onAddContribution = () =>
-        addContribution(request.id, step.id, contributor.id, comment).then(() => refetch());
+    const onAddContribution = () => addContribution(request.id, step.id, contributor.id, comment);
 
-    const { mutateAsync } = useMutation(onAddContribution);
+    const { mutateAsync } = useMutation(onAddContribution, { onSettled: notifyChange });
 
     const contributorActions: MenuItem[] = [
         {

@@ -6,10 +6,11 @@ import { getHistory } from '../../../../Api/ScopeChange/getHistory';
 import { ChevronList } from '../ChevronList/ChevronList';
 import { HistoryItem } from './HistoryItem';
 import { useEffect } from 'react';
+import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
 
 export function HistoryList(): JSX.Element {
     const { request } = useScopeChangeAccessContext();
-    const { data, remove, isLoading } = useQuery<LogEntry[]>('history', () =>
+    const { data, remove, isLoading } = useQuery<LogEntry[]>(QueryKeys.history, () =>
         getHistory(request.id)
     );
 

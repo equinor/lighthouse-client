@@ -15,7 +15,7 @@ interface SignWithCommentProps {
 }
 
 export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): JSX.Element => {
-    const { request, refetch } = useScopeChangeAccessContext();
+    const { request, notifyChange } = useScopeChangeAccessContext();
     const [text, setText] = useState<string | undefined>();
 
     async function onSignStep() {
@@ -25,9 +25,7 @@ export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): J
                 (x) => x.signedAtUtc === null
             );
             const sign = async () => {
-                await signCriteria(request.id, currentStepId, criteria.id, text).then(() =>
-                    refetch()
-                );
+                await signCriteria(request.id, currentStepId, criteria.id, text);
             };
             if (
                 request.currentWorkflowStep.contributors &&
@@ -46,7 +44,12 @@ export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): J
         }
     }
 
-    const { mutateAsync, isLoading } = useMutation(onSignStep, { onSuccess: () => onCancel() });
+    const { mutateAsync, isLoading } = useMutation(onSignStep, {
+        onSettled: async () => {
+            await notifyChange();
+            onCancel();
+        },
+    });
 
     return (
         <>

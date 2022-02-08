@@ -16,7 +16,7 @@ interface AddContributorProps {
 export const AddContributor = ({ onCancel }: AddContributorProps): JSX.Element => {
     const [contributor, setContributor] = useState<SelectOption | null>(null);
     const [text, setText] = useState<string>('');
-    const { request, refetch } = useScopeChangeAccessContext();
+    const { request, notifyChange } = useScopeChangeAccessContext();
 
     const submit = async () => {
         await addContributor(
@@ -29,7 +29,7 @@ export const AddContributor = ({ onCancel }: AddContributorProps): JSX.Element =
 
     const { mutateAsync, isLoading } = useMutation(submit, {
         onSuccess: async () => {
-            await refetch();
+            await notifyChange();
             onCancel();
         },
     });

@@ -10,7 +10,7 @@ export interface ScopeChangeAccessContextState {
     signableCriterias: StrippedCriteria[] | undefined;
     contributionId: string | undefined;
     canAddContributor: boolean;
-    refetch: () => Promise<void>;
+    notifyChange: () => Promise<void>;
 }
 
 export const ScopeChangeAccessContext = React.createContext({} as ScopeChangeAccessContextState);
