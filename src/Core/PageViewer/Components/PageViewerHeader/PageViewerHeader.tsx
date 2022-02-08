@@ -7,9 +7,10 @@ import {
     Divider,
     HeaderWrapper,
     LeftSection,
+    Line,
     RightSection,
     TabTitle,
-    Title
+    Title,
 } from './PageViewerHeaderStyles';
 
 const { Tab, List } = Tabs;
@@ -36,8 +37,6 @@ export const PageViewerHeader = ({
         <HeaderWrapper>
             <LeftSection>
                 <Title variant="h3">{title}</Title>
-            </LeftSection>
-            <RightSection>
                 <List>
                     {Object.values(viewState.pages).map((page) => {
                         const Icon = page.icon;
@@ -49,6 +48,9 @@ export const PageViewerHeader = ({
                         );
                     })}
                 </List>
+            </LeftSection>
+            <RightSection>
+                <Line />
                 {showFilter && (
                     <>
                         <Divider />
