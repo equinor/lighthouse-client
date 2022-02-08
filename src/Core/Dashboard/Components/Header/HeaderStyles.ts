@@ -8,6 +8,8 @@ export const Wrapper = styled.section`
     flex-direction: column;
     align-items: flex-start;
     align-content: center;
+    padding: 1rem 0em 1rem 0em;
+    gap: 1rem;
 `;
 
 export const ChipTab = styled(Chip)`
@@ -29,7 +31,6 @@ export const Wrap = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 1em 0 1em 0;
 `;
 export const Line = styled.div`
     width: -webkit-fill-available;
