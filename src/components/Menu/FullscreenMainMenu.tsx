@@ -10,7 +10,7 @@ import {
     HeaderLink,
     MenuColumn,
     MenuRow,
-    MenuScrim,
+    MenuScrim
 } from './FullscreenMainMenuStyles';
 import { MenuItem } from './MenuItem';
 import { filterByValue, groupeByKey } from './utils';
@@ -62,6 +62,7 @@ export const FullscreenMainMenu = (): JSX.Element => {
                                 appId={key}
                                 manifest={item}
                                 isFullMenu={true}
+                                onClick={() => toggleFullscreenMenu()}
                             />
                         );
                     })}
