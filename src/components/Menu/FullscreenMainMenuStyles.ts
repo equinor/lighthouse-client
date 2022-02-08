@@ -190,6 +190,7 @@ export const HeaderLink = styled(ReactLink)`
     background-color: transparent;
     text-decoration: none;
     align-items: flex-end;
+    align-items: center;
 
     svg {
         padding: 0.5rem;
@@ -220,5 +221,7 @@ export const FullscreenMenuGroupHeaderText = styled.h3`
     cursor: pointer;
     color: #030303;
     margin-bottom: 0.5rem;
+    font-size: 14px;
     cursor: default;
+    font-weight: 500;
 `;

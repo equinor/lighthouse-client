@@ -33,7 +33,11 @@ export const MenuItem = ({ manifest, appId, onClick, isFullMenu }: MenuItemProps
         >
             <ContentWrapper>
                 {manifest.uri && (
-                    <Icon style={{ opacity: showIcon && isActive ? 1 : 0 }} name="external_link" />
+                    <Icon
+                        size={16}
+                        style={{ opacity: showIcon && isActive ? 1 : 0 }}
+                        name="external_link"
+                    />
                 )}
                 <Title disabled={!isActive}>{manifest.title}</Title>
             </ContentWrapper>
@@ -52,7 +56,7 @@ export const MenuItem = ({ manifest, appId, onClick, isFullMenu }: MenuItemProps
         >
             <ContentWrapper>
                 {manifest.uri && (
-                    <Icon style={{ opacity: showIcon ? 1 : 0 }} name="external_link" />
+                    <Icon size={16} style={{ opacity: showIcon ? 1 : 0 }} name="external_link" />
                 )}
                 <Title>{manifest.title}</Title>
             </ContentWrapper>
