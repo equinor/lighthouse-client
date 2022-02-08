@@ -18,14 +18,21 @@ export function useScopeChangeAccess(requestId: string): OptionRequestResult {
     });
 
     useEffect(() => {
-        getRequestAccess(requestId).then((x) =>
-            setAccess((prev) => {
-                return { ...x, ...prev };
-            })
-        );
         canVoid(requestId).then((x) =>
             setAccess((prev) => {
                 return { ...prev, canVoid: x };
+            })
+        );
+        getRequestAccess(requestId).then((x) =>
+            setAccess((prev) => {
+                return {
+                    ...prev,
+                    canDelete: x.canDelete,
+                    canGet: x.canGet,
+                    canPatch: x.canPatch,
+                    canPost: x.canPost,
+                    canPut: x.canPut,
+                };
             })
         );
     }, [requestId]);

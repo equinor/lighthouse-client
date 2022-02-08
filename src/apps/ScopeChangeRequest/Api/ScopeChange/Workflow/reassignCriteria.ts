@@ -5,12 +5,18 @@ interface ReassignBody {
     value: string;
 }
 
-export async function reassignCriteria(
-    requestId: string,
-    stepId: string,
-    criteriaId: string,
-    reassign: ReassignBody
-): Promise<void> {
+export interface ReassignCriteriaParameters {
+    requestId: string;
+    stepId: string;
+    criteriaId: string;
+    reassign: ReassignBody;
+}
+export async function reassignCriteria({
+    requestId,
+    stepId,
+    criteriaId,
+    reassign,
+}: ReassignCriteriaParameters): Promise<void> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {

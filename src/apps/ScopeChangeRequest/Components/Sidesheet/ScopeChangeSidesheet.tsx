@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
 import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 
-import { getScopeChangeById } from '../../Api/ScopeChange';
+import { getScopeChangeById, voidRequest } from '../../Api/ScopeChange';
 import { getContributionId } from '../../Functions/Access';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
@@ -16,7 +16,7 @@ import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
 import { useWorkflowAccess } from '../../Hooks/useWorkflowAccess';
 import { ScopeChangeAccessContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
-import { IconMenu } from '../MenuButton';
+import { IconMenu, MenuItem } from '../MenuButton';
 
 import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
 
@@ -26,11 +26,12 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(false);
 
     const { error, data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
-        QueryKeys.scopechange,
+        QueryKeys.Scopechange,
         () => getScopeChangeById(item.id, scopeChangeApi),
         { initialData: item, refetchOnWindowFocus: false, retry: false }
     );
     const scopeChangeAccess = useScopeChangeAccess(item.id);
+
     const workflowAccess = useWorkflowAccess(
         item.id,
         data?.currentWorkflowStep?.criterias,
@@ -47,14 +48,25 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     }, [item]);
 
     async function notifyChange() {
-        await queryClient.invalidateQueries([QueryKeys.history, QueryKeys.scopechange]);
-        await queryClient.refetchQueries(QueryKeys.scopechange);
-        await queryClient.refetchQueries(QueryKeys.history);
+        await queryClient.invalidateQueries([QueryKeys.History, QueryKeys.Scopechange]);
+        await queryClient.refetchQueries(QueryKeys.Scopechange);
+        await queryClient.refetchQueries(QueryKeys.History);
     }
 
     const refetchScopeChange = async () => {
         await refetch();
     };
+    const actionMenu: MenuItem[] = useMemo(() => {
+        const actions: MenuItem[] = [];
+
+        if (scopeChangeAccess.canPatch) {
+            actions.push({
+                label: 'Void request',
+                onClick: () => voidRequest(item.id).then(notifyChange),
+            });
+        }
+        return actions;
+    }, [data]);
 
     if (!item.id) {
         return <p>Something went wrong</p>;
@@ -77,28 +89,24 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             )}
             <TitleHeader>
                 <Title>{data?.title}</Title>
-                <Button
-                    variant="ghost_icon"
-                    onClick={() => setEditMode(!editMode)}
-                    disabled={!scopeChangeAccess.canPatch}
-                >
-                    <IconMenu
-                        items={[
-                            {
-                                label: 'Void request',
-                            },
-                        ]}
-                    />
-                    <Divider />
-                    <Icon
-                        color={
-                            scopeChangeAccess.canPatch
-                                ? tokens.colors.interactive.primary__resting.hex
-                                : 'grey'
-                        }
-                        name="edit"
-                    />
-                </Button>
+                <ButtonContainer>
+                    <IconMenu items={actionMenu} />
+
+                    <Button
+                        variant="ghost_icon"
+                        onClick={() => setEditMode(!editMode)}
+                        disabled={!scopeChangeAccess.canPatch}
+                    >
+                        <Icon
+                            color={
+                                scopeChangeAccess.canPatch
+                                    ? tokens.colors.interactive.primary__resting.hex
+                                    : tokens.colors.interactive.disabled__text.hex
+                            }
+                            name="edit"
+                        />
+                    </Button>
+                </ButtonContainer>
             </TitleHeader>
             <ScopeChangeAccessContext.Provider
                 value={{
@@ -131,14 +139,17 @@ const Title = styled.div`
     font-size: 28px;
 `;
 
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3em;
+`;
+
 const TitleHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-`;
-
-const Divider = styled.div`
-    width: 0.3rem;
 `;
 
 const Loading = styled.div`

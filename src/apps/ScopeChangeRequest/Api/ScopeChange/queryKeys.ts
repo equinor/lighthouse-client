@@ -1,5 +1,5 @@
 export enum QueryKeys {
-    scopechange = 'scopechange',
-    history = 'history',
-    change = 'change',
+    Scopechange = 'scopechange',
+    History = 'history',
+    Change = 'change',
 }

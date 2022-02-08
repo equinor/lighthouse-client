@@ -7,6 +7,7 @@ import { searchQueryOrigin } from './searchQuery';
 import { searchDCN } from './searchDCN';
 import { searchNCR } from './searchNcr';
 import { searchDiscipline } from './searchDiscipline';
+import { searchFunctionalRole } from './searchFunctionalRole';
 import { searchPerson } from './searchPerson';
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 
@@ -19,7 +20,8 @@ export type ProcoSysTypes =
     | 'DCN'
     | 'NCR'
     | 'area'
-    | 'discipline';
+    | 'discipline'
+    | 'functionalRole';
 
 /**
  * TODO: convert to hook
@@ -61,6 +63,9 @@ export const searchPcs = async (
 
         case 'discipline':
             return await searchDiscipline(searchString, procosys, abortSignal);
+
+        case 'functionalRole':
+            return await searchFunctionalRole(searchString, procosys, abortSignal);
 
         default:
             // eslint-disable-next-line no-console

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { WorkflowCriterias } from './WorkflowCriterias';
+import { WorkflowCriteria } from './WorkflowCriteria';
 import { Contributor } from './Contributors';
 import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 
@@ -15,7 +15,7 @@ export function Workflow(): JSX.Element {
                         {step.criterias &&
                             step.criterias.map((criteria) => {
                                 return (
-                                    <WorkflowCriterias
+                                    <WorkflowCriteria
                                         key={criteria.id}
                                         step={step}
                                         criteria={criteria}

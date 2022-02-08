@@ -9,6 +9,7 @@ import {
 } from '../../SearchableDropdown/applyEds';
 import { useRef, useState } from 'react';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
+import { SearchableDropdownWrapper } from '../../SearchableDropdown/SearchableDropdownWrapper';
 
 interface PCSLinkProps {
     setOriginId: (originId: string | undefined) => void;
@@ -54,13 +55,7 @@ export const SearchQuery = ({ setOriginId, originId }: PCSLinkProps): JSX.Elemen
                 })}
 
             <Inline>
-                <div
-                    style={{
-                        width: '-webkit-fill-available',
-                        borderBottom: '5px solid #6F6F6F',
-                        fontSize: '16px',
-                    }}
-                >
+                <SearchableDropdownWrapper>
                     <AsyncSelect
                         cacheOptions={false}
                         defaultValue={origin}
@@ -102,7 +97,7 @@ export const SearchQuery = ({ setOriginId, originId }: PCSLinkProps): JSX.Elemen
                         }}
                         theme={(theme: Theme) => applyEDSTheme(theme)}
                     />
-                </div>
+                </SearchableDropdownWrapper>
             </Inline>
         </>
     );

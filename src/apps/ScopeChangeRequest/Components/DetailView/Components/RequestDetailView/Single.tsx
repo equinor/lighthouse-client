@@ -87,8 +87,3 @@ export const SingleView = (): JSX.Element => {
         </div>
     );
 };
-
-/**
- //TODO:
- * Do some CSS magic, Calculate height of DetailViewContainer and subtract RequestActionsContainer to make overflow work properly
- */

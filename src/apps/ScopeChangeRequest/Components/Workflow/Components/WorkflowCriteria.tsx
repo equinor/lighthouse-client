@@ -26,7 +26,7 @@ interface WorkflowCriteriasProps {
     criteria: Criteria;
 }
 
-export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): JSX.Element => {
+export const WorkflowCriteria = ({ step, criteria }: WorkflowCriteriasProps): JSX.Element => {
     const [person, setPerson] = useState<SelectOption | null>(null);
 
     const { request, notifyChange } = useScopeChangeAccessContext();
@@ -34,7 +34,12 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
 
     useEffect(() => {
         if (person) {
-            reassignMutation({ type: 'RequireProcosysUserSignature', value: person.value });
+            reassignMutation({
+                requestId: request.id,
+                stepId: step.id,
+                criteriaId: criteria.id,
+                reassign: { type: 'RequireProcosysUserSignature', value: person.value },
+            });
             setPerson(null);
             setShowReassign(false);
         }
@@ -93,22 +98,11 @@ export const WorkflowCriterias = ({ step, criteria }: WorkflowCriteriasProps): J
         setPerson(null);
     };
 
-    interface ReassignArgs {
-        value: string;
-        type: 'RequireProcosysUserSignature';
-    }
-    const reassign = async ({ value, type }: ReassignArgs) => {
-        await reassignCriteria(request.id, step.id, criteria.id, {
-            type: type,
-            value: value,
-        });
-    };
-
     const reject = async () => {
         await unsignCriteria(request.id, step.id, criteria.id);
     };
 
-    const { mutateAsync: reassignMutation, isLoading } = useMutation(reassign, {
+    const { mutateAsync: reassignMutation, isLoading } = useMutation(reassignCriteria, {
         onSettled: notifyChange,
     });
     const { mutateAsync: rejectMutation } = useMutation(reject, { onSettled: notifyChange });

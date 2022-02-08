@@ -10,8 +10,12 @@ import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
 
 export function HistoryList(): JSX.Element {
     const { request } = useScopeChangeAccessContext();
-    const { data, remove, isLoading } = useQuery<LogEntry[]>(QueryKeys.history, () =>
-        getHistory(request.id)
+    const { data, remove, isLoading } = useQuery<LogEntry[]>(
+        QueryKeys.History,
+        () => getHistory(request.id),
+        {
+            refetchOnWindowFocus: false,
+        }
     );
 
     useEffect(() => {

@@ -99,8 +99,3 @@ const SplitScreen = styled.div`
     flex-basis: 0;
     overflow: scroll;
 `;
-
-/**
- //TODO:
- * Do some CSS magic, Calculate height of DetailViewContainer and subtract RequestActionsContainer to make overflow work properly
- */

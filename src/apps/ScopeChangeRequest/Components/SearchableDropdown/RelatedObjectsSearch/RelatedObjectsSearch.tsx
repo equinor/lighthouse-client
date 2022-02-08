@@ -3,11 +3,20 @@ import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useRef, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import styled from 'styled-components';
-import { ProcoSysTypes, searchPcs } from '../../Api/Search/PCS/searchPcs';
-import { TypedSelectOption } from '../../Api/Search/searchType';
-import { searchStid, StidTypes } from '../../Api/Search/STID/searchStid';
-import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
+import { ProcoSysTypes, searchPcs } from '../../../Api/Search/PCS/searchPcs';
+import { TypedSelectOption } from '../../../Api/Search/searchType';
+import { searchStid, StidTypes } from '../../../Api/Search/STID/searchStid';
+import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from '../applyEds';
+import {
+    Column,
+    ErrorWrapper,
+    Inline,
+    SearchContainer,
+    SelectContainer,
+    Wrapper,
+    ListItem,
+    Spacer,
+} from './RelatedObjectsStyles';
 
 interface RelatedObjectsSearchProps {
     relatedObjects: TypedSelectOption[];
@@ -28,7 +37,7 @@ export const RelatedObjectsSearch = ({
     const removeRelatedObject = (value: string) =>
         setRelatedObjects((prev) => prev.filter((x) => x.value !== value));
 
-    const objects = useMemo(() => {
+    const selectedReferences = useMemo(() => {
         return relatedObjects.sort(function (a, b) {
             if (a.type < b.type) {
                 return -1;
@@ -165,22 +174,24 @@ export const RelatedObjectsSearch = ({
                 </Inline>
 
                 <Column>
-                    {objects && objects.length > 0 && (
+                    {selectedReferences && selectedReferences.length > 0 && (
                         <>
-                            {objects.map((x) => {
-                                const TypeIcon = () => getIcon(x);
+                            {selectedReferences.map((selectedReference) => {
+                                const TypeIcon = () => getIcon(selectedReference);
                                 return (
-                                    <ListItem key={x.value}>
+                                    <ListItem key={selectedReference.value}>
                                         <Inline>
                                             <TypeIcon />
                                             <Spacer />
-                                            <span style={{ fontSize: '16px' }}>{x.label}</span>
+                                            <span style={{ fontSize: '16px' }}>
+                                                {selectedReference.label}
+                                            </span>
                                         </Inline>
 
                                         <Icon
                                             color={tokens.colors.interactive.primary__resting.rgba}
                                             onClick={() => {
-                                                removeRelatedObject(x.value);
+                                                removeRelatedObject(selectedReference.value);
                                             }}
                                             name="clear"
                                         />
@@ -195,65 +206,26 @@ export const RelatedObjectsSearch = ({
     );
 };
 
-const ListItem = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    color: ${tokens.colors.interactive.primary__resting.hex};
-`;
-
-const Spacer = styled.div`
-    margin-right: 0.5em;
-`;
-
 function getIcon(x: TypedSelectOption): JSX.Element | null {
-    if (x.type === 'area') {
-        return <Icon name="pin_drop" color={tokens.colors.interactive.primary__resting.hex} />;
-    }
+    switch (x.type) {
+        case 'area':
+            return <Icon name="pin_drop" color={tokens.colors.interactive.primary__resting.hex} />;
 
-    if (x.type === 'discipline') {
-        return <Icon name="school" color={tokens.colors.interactive.primary__resting.hex} />;
-    }
+        case 'discipline':
+            return <Icon name="school" color={tokens.colors.interactive.primary__resting.hex} />;
 
-    if (x.type === 'tag') {
-        return <Icon name="tag" color={tokens.colors.interactive.primary__resting.hex} />;
-    }
+        case 'document':
+            return <Icon name="file_copy" color={tokens.colors.interactive.primary__resting.hex} />;
 
-    if (x.type === 'document') {
-        return <Icon name="file_copy" color={tokens.colors.interactive.primary__resting.hex} />;
-    }
+        case 'tag':
+            return <Icon name="tag" color={tokens.colors.interactive.primary__resting.hex} />;
 
-    return <Icon name="placeholder_icon" color={tokens.colors.interactive.primary__resting.hex} />;
+        default:
+            return (
+                <Icon
+                    name="placeholder_icon"
+                    color={tokens.colors.interactive.primary__resting.hex}
+                />
+            );
+    }
 }
-
-const SelectContainer = styled.div`
-    flex-basis: 30%;
-    border-bottom: none;
-`;
-
-const SearchContainer = styled.div`
-    flex-basis: 70%;
-    border-bottom: none;
-`;
-
-const Inline = styled.span`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-`;
-
-const Column = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-top: 0.5em;
-`;
-
-const Wrapper = styled.div`
-    width: 100%;
-`;
-
-const ErrorWrapper = styled.div`
-    font-size: 12px;
-    color: red;
-`;

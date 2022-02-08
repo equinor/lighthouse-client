@@ -19,7 +19,7 @@ import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 
 import { Field } from '../DetailView/Components/Field';
 import { Upload } from '../Upload';
-import { RelatedObjectsSearch } from '../SearchableDropdown/PCSLink';
+import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { Origin } from './Origin';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
 
@@ -37,8 +37,7 @@ export const ScopeChangeRequestForm = ({
     setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
     const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
-        phase: 'IC phase',
-        category: 'Hidden carryover',
+        phase: 'IC',
     });
 
     const [attachments, setAttachments] = useState<File[]>([]);

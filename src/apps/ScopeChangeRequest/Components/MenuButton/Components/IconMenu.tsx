@@ -25,13 +25,21 @@ export const IconMenu = ({ items, onMenuOpen }: IconMenuProps): JSX.Element => {
                 id="anchor-complex"
                 aria-controls="menu-complex"
                 aria-haspopup="true"
+                disabled={items.length === 0}
                 aria-expanded={showMenu}
                 onClick={() => {
                     setShowMenu(true);
                     onMenuOpen && onMenuOpen();
                 }}
             >
-                <Icon name="more_vertical" color={tokens.colors.interactive.primary__resting.hex} />
+                <Icon
+                    name="more_vertical"
+                    color={
+                        items.length === 0
+                            ? tokens.colors.interactive.disabled__text.hex
+                            : tokens.colors.interactive.primary__resting.hex
+                    }
+                />
             </Button>
 
             <Menu
