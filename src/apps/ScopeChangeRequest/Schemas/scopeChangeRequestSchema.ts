@@ -44,7 +44,9 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         order: 3,
         placeholderText: 'Select origin',
     },
-    originSourceId: {},
+    originSourceId: {
+        optional: true,
+    },
 
     description: {
         title: 'Description',

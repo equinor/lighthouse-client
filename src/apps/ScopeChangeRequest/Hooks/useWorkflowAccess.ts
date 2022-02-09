@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { canSign } from '../Api/ScopeChange/Access/canSign';
+import { canSign } from '../Api/ScopeChange/Access/';
+import { canAddContributor as apiCanAddContributor } from '../Api/ScopeChange/Access/Workflow/canManageContributors';
 
 interface WorkflowAccess {
     signableCriterias: Criteria[] | undefined;
     contributionId: string | undefined;
+    canAddContributor: boolean;
 }
 
 interface Criteria {
@@ -30,12 +32,15 @@ export function useWorkflowAccess(
 ): WorkflowAccess {
     const [signableCriterias, setSignableCriterias] = useState<Criteria[] | undefined>(undefined);
     const [contributionId, setContributionId] = useState<string | undefined>(undefined);
+    const [canAddContributor, setCanAddContributor] = useState<boolean>(false);
 
     useEffect(() => {
         setContributionId(undefined);
         setSignableCriterias(undefined);
 
         if (id && stepId) {
+            apiCanAddContributor(id, stepId).then((x) => setCanAddContributor(x));
+
             if (criterias && criterias.length > 0) {
                 const unfulfilledCriterias = criterias.filter((x) => x.signedState === null);
                 const verified = unfulfilledCriterias.filter(
@@ -55,5 +60,6 @@ export function useWorkflowAccess(
     return {
         signableCriterias: signableCriterias,
         contributionId: contributionId,
+        canAddContributor,
     };
 }

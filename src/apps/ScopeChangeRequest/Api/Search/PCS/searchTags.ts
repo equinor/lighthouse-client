@@ -6,12 +6,13 @@ import { Tag } from './Types/tag';
 
 export const searchTags = async (
     searchString: string,
-    procosysClient: HttpClient
+    procosysClient: HttpClient,
+    abortSignal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
+    const searchIdDev = 105220;
     const searchIdProd = 105793;
-    const searchIdDev = 103745;
 
     const uri = 'api/Search';
     const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
@@ -29,6 +30,7 @@ export const searchTags = async (
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(search),
+        signal: abortSignal,
     };
 
     await procosysClient

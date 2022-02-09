@@ -10,7 +10,7 @@ import {
     themeColors,
 } from './Components';
 import { WorkOrder } from './Types';
-import { weekDiff } from './Utils';
+import { formatNumber, weekDiff } from './Utils';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
     section1: {
@@ -83,7 +83,7 @@ export function setup(appApi: ClientApi): void {
     });
 
     // Loop Data Test for testing system..
-    workPreparation.registerDataSource(async () => {
+    workPreparation.registerDataSource(async (abortController) => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const project = 'L.O532C.002';
         const response: WorkOrder[] = await api
@@ -92,6 +92,7 @@ export function setup(appApi: ClientApi): void {
                 {
                     method: 'POST',
                     body: JSON.stringify({}),
+                    signal: abortController?.signal,
                 }
             )
             .then((res) => res.json());
@@ -103,7 +104,7 @@ export function setup(appApi: ClientApi): void {
             {
                 status: 'ok',
                 title: 'Job cards created',
-                value: () => data.length.toString(),
+                value: () => formatNumber(data.length),
             },
             {
                 status: 'waring',
@@ -125,14 +126,14 @@ export function setup(appApi: ClientApi): void {
                         (wo) => weekDiff(new Date(wo.plannedStartupDate ?? new Date())).days <= 42
                     );
 
-                    return secondFiltered.length.toString();
+                    return formatNumber(secondFiltered.length);
                 },
             },
             {
                 status: 'ok',
                 title: 'Job cards in W04',
                 value: () => {
-                    return data.filter((wo) => wo.jobStatus === 'W04').length.toString();
+                    return formatNumber(data.filter((wo) => wo.jobStatus === 'W04').length);
                 },
             },
         ];
@@ -186,9 +187,9 @@ export function setup(appApi: ClientApi): void {
         title: 'Checklists',
         reportURI: 'jca-checklist',
     });
-    construction.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
+    construction.registerFusionPowerBi('jca-punch-analytics', {
         title: 'Punch',
-        reportURI: 'punch-analytics-rls',
+        reportURI: 'jca-punch-analytics',
     });
     construction.registerFusionPowerBi('jca-handover-analytics', {
         title: 'Handover',

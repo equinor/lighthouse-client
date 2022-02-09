@@ -1,5 +1,5 @@
 import { Menu } from '@equinor/eds-core-react';
-import { useRegistry } from '@equinor/portal-client';
+import { isAppActive, useRegistry } from '@equinor/portal-client';
 import { useFactories } from '../Hooks/useFactories';
 import { AddMenuButton } from './AddMenuButton';
 
@@ -23,7 +23,7 @@ export function AddMenu({
     const { factories } = useFactories(factoryId);
     const { apps } = useRegistry();
     const activeApps = apps.reduce((acc, manifest) => {
-        if (manifest.isProduction) {
+        if (isAppActive(manifest)) {
             acc.push(manifest.shortName);
         }
         return acc;
