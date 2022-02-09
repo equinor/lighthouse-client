@@ -59,14 +59,14 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const actionMenu: MenuItem[] = useMemo(() => {
         const actions: MenuItem[] = [];
 
-        if (scopeChangeAccess.canPatch) {
+        if (scopeChangeAccess.canVoid) {
             actions.push({
-                label: 'Void request',
+                label: `${data?.isVoided ? 'Unvoid request' : 'Void request'}`,
                 onClick: () => voidRequest(item.id).then(notifyChange),
             });
         }
         return actions;
-    }, [data]);
+    }, [data?.isVoided, item.id, scopeChangeAccess.canVoid]);
 
     if (!item.id) {
         return <p>Something went wrong</p>;

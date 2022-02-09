@@ -22,6 +22,7 @@ import { Upload } from '../Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { Origin } from './Origin';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { PCSPersonRoleSearch } from '../SearchableDropdown/PCSPersonRoleSearch';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -127,6 +128,8 @@ export const ScopeChangeRequestForm = ({
         );
     }, [formData, relatedObjects]);
 
+    const [selected, setSelected] = useState<TypedSelectOption | null>(null);
+
     if (isRedirecting) {
         return (
             <LoadingPage>
@@ -176,6 +179,7 @@ export const ScopeChangeRequestForm = ({
                     label="Attachments"
                     value={<Upload attachments={attachments} setAttachments={setAttachments} />}
                 />
+                <PCSPersonRoleSearch selected={selected} setSelected={setSelected} />
             </GeneratedForm>
 
             {error && <p> Something went wrong, please check your connection and try again</p>}

@@ -64,7 +64,7 @@ export const searchPcs = async (
         case 'discipline':
             return await searchDiscipline(searchString, procosys, abortSignal);
 
-        case 'functionalRole':
+        case 'functionalrole':
             return await searchFunctionalRole(searchString, procosys, abortSignal);
 
         default:

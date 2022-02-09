@@ -4,12 +4,10 @@ import { tokens } from '@equinor/eds-tokens';
 
 import { Icon, Progress } from '@equinor/eds-core-react';
 import { Criteria, WorkflowStep } from '../../../Types/scopeChangeRequest';
-import { SelectOption } from '../../../Api/Search/PCS';
 import { reassignCriteria, unsignCriteria } from '../../../Api/ScopeChange/Workflow';
 import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useConditionalRender } from '../../../Hooks/useConditionalRender';
 import { useLoading } from '../../../Hooks/useLoading';
-import { PCSPersonSearch } from '../../SearchableDropdown/PCSPersonSearch';
 import { useEffect, useState } from 'react';
 import { MenuButton } from '../../MenuButton/Components/MenuButton';
 import { IconMenu } from '../../MenuButton/Components/IconMenu';
@@ -20,6 +18,8 @@ import { AddContributor } from './AddContributor';
 import { spawnConfirmationDialog } from '../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { signCriteria } from '../../../Api/ScopeChange/Workflow';
 import { SignWithComment } from './SignWithComment';
+import { PCSPersonRoleSearch } from '../../SearchableDropdown/PCSPersonRoleSearch';
+import { TypedSelectOption } from '../../../Api/Search/searchType';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -27,23 +27,29 @@ interface WorkflowCriteriasProps {
 }
 
 export const WorkflowCriteria = ({ step, criteria }: WorkflowCriteriasProps): JSX.Element => {
-    const [person, setPerson] = useState<SelectOption | null>(null);
+    const [selected, setSelected] = useState<TypedSelectOption | null>(null);
 
     const { request, notifyChange } = useScopeChangeAccessContext();
     const [signComment, setSignComment] = useState<string>('');
 
     useEffect(() => {
-        if (person) {
+        if (selected) {
             reassignMutation({
                 requestId: request.id,
                 stepId: step.id,
                 criteriaId: criteria.id,
-                reassign: { type: 'RequireProcosysUserSignature', value: person.value },
+                reassign: {
+                    type: `${selected.type === 'functionalRole'
+                            ? 'RequireProcosysFunctionalRoleSignature'
+                            : 'RequireProcosysUserSignature'
+                        }`,
+                    value: selected.value,
+                },
             });
-            setPerson(null);
+            setSelected(null);
             setShowReassign(false);
         }
-    }, [person]);
+    }, [selected]);
 
     async function onSignStep() {
         if (request.currentWorkflowStep && request.currentWorkflowStep.criterias.length > 0) {
@@ -75,7 +81,7 @@ export const WorkflowCriteria = ({ step, criteria }: WorkflowCriteriasProps): JS
         Component: ReassignBar,
         toggle: toggleReassign,
         set: setShowReassign,
-    } = useConditionalRender(<PCSPersonSearch person={person} setPerson={setPerson} />);
+    } = useConditionalRender(<PCSPersonRoleSearch selected={selected} setSelected={setSelected} />);
 
     const {
         Component: ContributorSelector,
@@ -95,7 +101,7 @@ export const WorkflowCriteria = ({ step, criteria }: WorkflowCriteriasProps): JS
         setShowSignWithComment(false);
         setShowReassign(false);
         setShowContributor(false);
-        setPerson(null);
+        setSelected(null);
     };
 
     const reject = async () => {
