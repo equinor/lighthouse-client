@@ -179,7 +179,6 @@ export const ScopeChangeRequestForm = ({
                     label="Attachments"
                     value={<Upload attachments={attachments} setAttachments={setAttachments} />}
                 />
-                <PCSPersonRoleSearch selected={selected} setSelected={setSelected} />
             </GeneratedForm>
 
             {error && <p> Something went wrong, please check your connection and try again</p>}

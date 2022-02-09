@@ -3,7 +3,7 @@ import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
-import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 
 import { getScopeChangeById, voidRequest } from '../../Api/ScopeChange';
 import { getContributionId } from '../../Functions/Access';
@@ -88,7 +88,10 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                 </div>
             )}
             <TitleHeader>
-                <Title>{data?.title}</Title>
+                <Title>
+                    {data?.title}
+                    {isLoading && <Progress.Dots color="primary" />}
+                </Title>
                 <ButtonContainer>
                     <IconMenu items={actionMenu} />
 

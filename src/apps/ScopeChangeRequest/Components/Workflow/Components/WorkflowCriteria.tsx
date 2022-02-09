@@ -162,7 +162,6 @@ export const WorkflowCriteria = ({ step, criteria }: WorkflowCriteriasProps): JS
                             onMenuOpen={() => closeAll()}
                             buttonText="Sign"
                         />
-                        <Divider />
                         <IconMenu items={moreActions} onMenuOpen={() => closeAll()} />
                     </Inline>
                 )}
@@ -174,11 +173,6 @@ export const WorkflowCriteria = ({ step, criteria }: WorkflowCriteriasProps): JS
         </>
     );
 };
-
-const Divider = styled.div`
-    height: 9px;
-    width: 0.5rem;
-`;
 
 const WorkflowStepViewContainer = styled.div`
     display: flex;
@@ -195,4 +189,5 @@ const WorkflowStepViewContainer = styled.div`
 const Inline = styled.div`
     display: flex;
     align-items: center;
+    gap: 1em;
 `;
