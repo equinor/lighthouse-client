@@ -5,31 +5,32 @@ import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import { useRef } from 'react';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 
-interface SelectOption {
-    label: string;
-    value: string;
-}
-
 interface PCSLinkProps {
-    person: SelectOption | null;
-    setPerson: React.Dispatch<React.SetStateAction<SelectOption | null>>;
+    selected: TypedSelectOption | null;
+    setSelected: React.Dispatch<React.SetStateAction<TypedSelectOption | null>>;
     isDisabled?: boolean;
 }
 
-export const PCSPersonSearch = ({ person, setPerson, isDisabled }: PCSLinkProps): JSX.Element => {
+export const PCSPersonRoleSearch = ({
+    selected,
+    setSelected,
+    isDisabled,
+}: PCSLinkProps): JSX.Element => {
     const controller = useRef(new AbortController());
 
-    const loadOptions = async (inputValue: string, callback: (options: SelectOption[]) => void) => {
+    const loadOptions = async (
+        inputValue: string,
+        callback: (options: TypedSelectOption[]) => void
+    ) => {
         controller.current.abort();
         controller.current = new AbortController();
         const options: TypedSelectOption[] = [];
-
         await (
-            await searchPcs(inputValue, 'person', controller.current.signal)
+            await searchPcs(inputValue, 'functionalRole', controller.current.signal)
         ).forEach((x) => options.push(x));
 
         await (
-            await searchPcs(inputValue, 'functionalRole', controller.current.signal)
+            await searchPcs(inputValue, 'person', controller.current.signal)
         ).forEach((x) => options.push(x));
 
         callback(options);
@@ -48,7 +49,7 @@ export const PCSPersonSearch = ({ person, setPerson, isDisabled }: PCSLinkProps)
                     cacheOptions={false}
                     loadOptions={loadOptions}
                     defaultOptions={false}
-                    value={person}
+                    value={selected}
                     isDisabled={isDisabled}
                     styles={applyEdsStyles()}
                     controlShouldRenderValue={true}
@@ -62,8 +63,8 @@ export const PCSPersonSearch = ({ person, setPerson, isDisabled }: PCSLinkProps)
                         }
                     }}
                     isClearable
-                    onChange={(newValue: SingleValue<SelectOption>) => {
-                        setPerson(newValue ?? null);
+                    onChange={(newValue: SingleValue<TypedSelectOption>) => {
+                        setSelected(newValue ?? null);
                     }}
                     theme={(theme: Theme) => applyEDSTheme(theme)}
                 />

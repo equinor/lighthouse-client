@@ -1,5 +1,5 @@
 export enum CriteriaActions {
-    Reassign = 'Reassign',
+    Reassign = 'Re-assign',
     AddContributor = 'Add contributor',
     Reject = 'Reject',
     Sign = 'Sign',

@@ -7,7 +7,7 @@ interface ScopeChangeAccess extends OptionRequestResult {
     canVoid: boolean;
 }
 
-export function useScopeChangeAccess(requestId: string): OptionRequestResult {
+export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
     const [access, setAccess] = useState<ScopeChangeAccess>({
         canDelete: false,
         canGet: false,
