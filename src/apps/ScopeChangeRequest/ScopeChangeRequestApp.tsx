@@ -93,6 +93,7 @@ export function setup(appApi: ClientApi): void {
             'hasComments',
             'phase',
             'workflowSteps',
+            'currentWorkflowStep',
             'guesstimateHours',
             'estimatedChangeHours',
             'actualChangeHours',
