@@ -38,7 +38,7 @@ export const searchFunctionalRole = async (
                 data.map((x: FunctionalRole) => {
                     selectOptions.push({
                         label: x.Description,
-                        value: x.Id.toString(),
+                        value: x.Code,
                         type: 'functionalRole',
                         searchValue: x.Description,
                         object: x,

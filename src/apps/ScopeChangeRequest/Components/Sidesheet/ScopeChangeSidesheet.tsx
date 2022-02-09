@@ -3,9 +3,9 @@ import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
-import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 
-import { getScopeChangeById, voidRequest } from '../../Api/ScopeChange';
+import { getScopeChangeById, unVoidRequest, voidRequest } from '../../Api/ScopeChange';
 import { getContributionId } from '../../Functions/Access';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
@@ -59,14 +59,21 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const actionMenu: MenuItem[] = useMemo(() => {
         const actions: MenuItem[] = [];
 
-        if (scopeChangeAccess.canPatch) {
-            actions.push({
-                label: 'Void request',
-                onClick: () => voidRequest(item.id).then(notifyChange),
-            });
+        if (scopeChangeAccess.canVoid) {
+            if (data?.isVoided) {
+                actions.push({
+                    label: 'Unvoid request',
+                    onClick: () => unVoidRequest(item.id).then(notifyChange),
+                });
+            } else {
+                actions.push({
+                    label: 'Void request',
+                    onClick: () => voidRequest(item.id).then(notifyChange),
+                });
+            }
         }
         return actions;
-    }, [data]);
+    }, [data?.isVoided, item.id, scopeChangeAccess.canVoid]);
 
     if (!item.id) {
         return <p>Something went wrong</p>;
@@ -88,7 +95,10 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                 </div>
             )}
             <TitleHeader>
-                <Title>{data?.title}</Title>
+                <Title>
+                    {data?.title}
+                    {isLoading && <Progress.Dots color="primary" />}
+                </Title>
                 <ButtonContainer>
                     <IconMenu items={actionMenu} />
 
