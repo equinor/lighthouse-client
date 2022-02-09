@@ -99,10 +99,12 @@ export function setup(appApi: ClientApi): void {
             'category',
             'originSource',
             'lastModified',
-            'documents',
-            'tags',
             'systems',
+            'areas',
             'commissioningPackages',
+            'tags',
+            'disciplines',
+            'documents',
             'attachments',
         ],
         headers: [
@@ -123,15 +125,55 @@ export function setup(appApi: ClientApi): void {
             { key: 'state', title: 'Status' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
             { key: 'currentWorkflowStep', title: 'Next to sign' },
-            { key: 'documents', title: 'Documents', width: 120 },
-            { key: 'systems', title: 'Systems', width: 120 },
-            { key: 'commissioningPackages', title: 'Comm pkgs', width: 120 },
-            { key: 'tags', title: 'Tags', width: 120 },
-            { key: 'attachments', title: 'Attachments', width: 120 },
+            {
+                key: 'commissioningPackages',
+                title: 'Comm Pkgs',
+                width: 120,
+            },
+            {
+                key: 'systems',
+                title: 'Systems',
+                width: 120,
+            },
+            {
+                key: 'attachments',
+                title: {
+                    Custom: () => <Icon name="attach_file" />,
+                },
+                width: 80,
+            },
+            {
+                key: 'disciplines',
+                title: {
+                    Custom: () => <Icon name="school" />,
+                },
+                width: 80,
+            },
+            {
+                key: 'areas',
+                title: {
+                    Custom: () => <Icon name="pin_drop" />,
+                },
+                width: 80,
+            },
             {
                 key: 'hasComments',
                 title: {
                     Custom: () => <Icon name="comment_chat" />,
+                },
+                width: 80,
+            },
+            {
+                key: 'documents',
+                title: {
+                    Custom: () => <Icon name="file_copy" />,
+                },
+                width: 80,
+            },
+            {
+                key: 'tags',
+                title: {
+                    Custom: () => <Icon name="tag" />,
                 },
                 width: 80,
             },

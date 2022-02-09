@@ -23,13 +23,13 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
                     status={stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus}
                     number={step.order + 1}
                 />
-                <Divider />
+
                 <WorkflowText>
                     <span>{step.name}</span>
                     {criteria.signedAtUtc ? (
                         <div
                             style={{ fontSize: '14px' }}
-                        >{`${day}/${month}/${year} ${hour}:${paddedMinutes} - ${criteria.signedBy.firstName} ${criteria.signedBy.lastName} `}</div>
+                        >{`${day}/${month}/${year} ${hour}:${paddedMinutes} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
                     ) : (
                         <div style={{ fontSize: '14px' }}>{criteria.value}</div>
                     )}
@@ -42,6 +42,7 @@ const SplitInline = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1em;
 `;
 
 const criteriaStatus = (criteria: Criteria): WorkflowStatus => {
@@ -66,8 +67,3 @@ const statusFunc = (item: WorkflowStep): WorkflowStatus => {
         return 'Inactive';
     }
 };
-
-const Divider = styled.div`
-    height: 9px;
-    width: 0.5rem;
-`;
