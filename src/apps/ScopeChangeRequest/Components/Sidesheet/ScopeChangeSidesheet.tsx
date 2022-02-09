@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { useHttpClient } from '@equinor/portal-client';
 import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 
-import { getScopeChangeById, voidRequest } from '../../Api/ScopeChange';
+import { getScopeChangeById, unVoidRequest, voidRequest } from '../../Api/ScopeChange';
 import { getContributionId } from '../../Functions/Access';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
@@ -60,10 +60,17 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         const actions: MenuItem[] = [];
 
         if (scopeChangeAccess.canVoid) {
-            actions.push({
-                label: `${data?.isVoided ? 'Unvoid request' : 'Void request'}`,
-                onClick: () => voidRequest(item.id).then(notifyChange),
-            });
+            if (data?.isVoided) {
+                actions.push({
+                    label: 'Unvoid request',
+                    onClick: () => unVoidRequest(item.id).then(notifyChange),
+                });
+            } else {
+                actions.push({
+                    label: 'Void request',
+                    onClick: () => voidRequest(item.id).then(notifyChange),
+                });
+            }
         }
         return actions;
     }, [data?.isVoided, item.id, scopeChangeAccess.canVoid]);
