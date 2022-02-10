@@ -16,7 +16,7 @@ export const searchFunctionalRole = async (
 
     const search: PCSStructure[] = [
         {
-            Key: 'LibraryFunctionalRoleName',
+            Key: 'LibraryCode',
             Value: searchString,
         },
     ];
@@ -37,10 +37,10 @@ export const searchFunctionalRole = async (
             .then((data) => {
                 data.map((x: FunctionalRole) => {
                     selectOptions.push({
-                        label: x.Description,
+                        label: x.Code,
                         value: x.Code,
                         type: 'functionalRole',
-                        searchValue: x.Description,
+                        searchValue: x.Code,
                         object: x,
                     });
                 });

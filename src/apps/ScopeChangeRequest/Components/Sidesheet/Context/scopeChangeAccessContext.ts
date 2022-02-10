@@ -11,6 +11,7 @@ export interface ScopeChangeAccessContextState {
     contributionId: string | undefined;
     canAddContributor: boolean;
     notifyChange: () => Promise<void>;
+    setErrorMessage: (value: string) => void;
 }
 
 export const ScopeChangeAccessContext = React.createContext({} as ScopeChangeAccessContextState);
