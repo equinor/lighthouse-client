@@ -16,7 +16,7 @@ interface AddContributorProps {
 export const AddContributor = ({ onCancel }: AddContributorProps): JSX.Element => {
     const [contributor, setContributor] = useState<SelectOption | null>(null);
     const [text, setText] = useState<string>('');
-    const { request, notifyChange } = useScopeChangeAccessContext();
+    const { request, notifyChange, setErrorMessage } = useScopeChangeAccessContext();
 
     const submit = async () => {
         await addContributor(
@@ -28,10 +28,11 @@ export const AddContributor = ({ onCancel }: AddContributorProps): JSX.Element =
     };
 
     const { mutateAsync, isLoading } = useMutation(submit, {
-        onSuccess: async () => {
+        onSettled: async () => {
             await notifyChange();
             onCancel();
         },
+        onError: () => setErrorMessage('Failed to assign contributor'),
     });
 
     return (

@@ -140,11 +140,12 @@ export function baseClient(
     }
 
     async function uploadFile(
-        url: string,
+        endpoint: string,
         formData: FormData
         // progressCallback?: ProgressCallback
     ) {
         const token = await getAccessToken();
+        const url = _baseUrl + endpoint;
 
         let statusCode = 0;
         try {

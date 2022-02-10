@@ -29,47 +29,25 @@ export function setup(appApi: ClientApi): void {
         return JSON.parse(await response.text());
     });
 
-    const scopeChangeExcludeKeys: (keyof ScopeChangeRequest)[] = [
+    const scopeChangeExcludeFilterKeys: (keyof ScopeChangeRequest)[] = [
         'id',
         'currentWorkflowStep',
         'workflowSteps',
     ];
 
     request.registerFilterOptions({
-        excludeKeys: scopeChangeExcludeKeys,
+        excludeKeys: scopeChangeExcludeFilterKeys,
         typeMap: {},
         initialFilters: ['state', 'phase', 'category', 'originSource', 'isVoided'],
         groupValue: {
-            signedAtDate: (item: ScopeChangeRequest): string => {
-                if (item.createdAtUtc === '') return 'unknown';
-                switch (new Date(item.createdAtUtc).getMonth()) {
-                    case 0:
-                        return 'January';
-                    case 1:
-                        return 'February';
-                    case 2:
-                        return 'March';
-                    case 3:
-                        return 'April';
-                    case 4:
-                        return 'May';
-                    case 5:
-                        return 'June';
-                    case 6:
-                        return 'July';
-                    case 7:
-                        return 'August';
-                    case 8:
-                        return 'September';
-                    case 9:
-                        return 'October';
-                    case 10:
-                        return 'November';
-                    case 11:
-                        return 'December';
-                    default:
-                        return 'Unknown';
+            NextToSign: (item: ScopeChangeRequest): string => {
+                if (item.state !== 'Open') {
+                    return 'Closed';
                 }
+                return (
+                    item.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
+                        ?.valueDescription ?? 'null'
+                );
             },
         },
     });
@@ -275,9 +253,11 @@ export function setup(appApi: ClientApi): void {
                     Cell: ({ cell }) => {
                         return (
                             <div>
-                                {cell.value.content.currentWorkflowStep?.criterias.map((x) => {
-                                    return <div key={x.id}>{x.value}</div>;
-                                })}
+                                {cell.value.content.currentWorkflowStep?.criterias
+                                    .filter((x) => x.signedAtUtc === null)
+                                    .map((x) => {
+                                        return <div key={x.id}>{x.valueDescription}</div>;
+                                    })}
                             </div>
                         );
                     },

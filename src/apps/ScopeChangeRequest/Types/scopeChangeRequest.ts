@@ -134,6 +134,7 @@ export interface Criteria {
     signedBy: Person;
     signedComment: string | null;
     signedState: 'Approved' | 'Rejected' | null;
+    valueDescription: string | null;
 }
 
 export interface Contributor {
