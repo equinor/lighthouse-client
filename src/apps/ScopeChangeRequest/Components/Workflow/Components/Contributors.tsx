@@ -20,14 +20,15 @@ interface ContributorsProps {
 
 export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Element => {
     const [comment, setComment] = useState('');
-
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
-
-    const { request, notifyChange } = useScopeChangeAccessContext();
+    const { request, notifyChange, setErrorMessage } = useScopeChangeAccessContext();
 
     const onAddContribution = () => addContribution(request.id, step.id, contributor.id, comment);
 
-    const { mutateAsync } = useMutation(onAddContribution, { onSettled: notifyChange });
+    const { mutateAsync } = useMutation(onAddContribution, {
+        onSettled: notifyChange,
+        onError: () => setErrorMessage('Failed to contribute'),
+    });
 
     const contributorActions: MenuItem[] = [
         {

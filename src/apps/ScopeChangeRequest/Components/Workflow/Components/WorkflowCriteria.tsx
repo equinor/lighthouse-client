@@ -29,7 +29,7 @@ interface WorkflowCriteriasProps {
 export const WorkflowCriteria = ({ step, criteria }: WorkflowCriteriasProps): JSX.Element => {
     const [selected, setSelected] = useState<TypedSelectOption | null>(null);
 
-    const { request, notifyChange } = useScopeChangeAccessContext();
+    const { request, notifyChange, setErrorMessage } = useScopeChangeAccessContext();
     const [signComment, setSignComment] = useState<string>('');
 
     useEffect(() => {
@@ -110,11 +110,16 @@ export const WorkflowCriteria = ({ step, criteria }: WorkflowCriteriasProps): JS
 
     const { mutateAsync: reassignMutation, isLoading } = useMutation(reassignCriteria, {
         onSettled: notifyChange,
+        onError: () => setErrorMessage('Failed to re-assign criteria'),
     });
-    const { mutateAsync: rejectMutation } = useMutation(reject, { onSettled: notifyChange });
+    const { mutateAsync: rejectMutation } = useMutation(reject, {
+        onSettled: notifyChange,
+        onError: () => setErrorMessage('Failed to reject criteria'),
+    });
 
     const { mutateAsync: signMutation, isLoading: signLoading } = useMutation(onSignStep, {
         onSettled: notifyChange,
+        onError: () => setErrorMessage('Failed to sign criteria'),
     });
 
     const { Loading } = useLoading(<Progress.Dots color="primary" />, isLoading || signLoading);

@@ -15,7 +15,7 @@ interface SignWithCommentProps {
 }
 
 export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): JSX.Element => {
-    const { request, notifyChange } = useScopeChangeAccessContext();
+    const { request, notifyChange, setErrorMessage } = useScopeChangeAccessContext();
     const [text, setText] = useState<string | undefined>();
 
     async function onSignStep() {
@@ -49,6 +49,7 @@ export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): J
             await notifyChange();
             onCancel();
         },
+        onError: () => setErrorMessage('Failed to sign step'),
     });
 
     return (

@@ -7,6 +7,7 @@ import { ProcoSysTypes, searchPcs } from '../../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
 import { searchStid, StidTypes } from '../../../Api/Search/STID/searchStid';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from '../applyEds';
+import { SearchableDropdownWrapper } from '../SearchableDropdownWrapper';
 import {
     Column,
     ErrorWrapper,
@@ -125,6 +126,7 @@ export const RelatedObjectsSearch = ({
                             display: 'flex',
                             flexDirection: 'row',
                             alignItems: 'flex-end',
+                            margin: '0.2em 0em',
                         }}
                     >
                         <SelectContainer>
@@ -145,30 +147,33 @@ export const RelatedObjectsSearch = ({
                         </SelectContainer>
                         <div style={{ flexBasis: '2%' }} />
                         <SearchContainer>
-                            <AsyncSelect
-                                isDisabled={!referenceType}
-                                cacheOptions={false}
-                                loadOptions={loadOptions}
-                                defaultOptions={false}
-                                components={applyEdsComponents()}
-                                isMulti={true}
-                                placeholder={`Type to search..`}
-                                isClearable={false}
-                                value={relatedObjects}
-                                onInputChange={() => {
-                                    setApiErrors([]);
-                                }}
-                                styles={applyEdsStyles()}
-                                controlShouldRenderValue={false}
-                                onChange={(
-                                    newValue: MultiValue<TypedSelectOption>,
-                                    actionMeta: ActionMeta<TypedSelectOption>
-                                ) => {
-                                    if (!actionMeta.option) return;
-                                    addRelatedObject(actionMeta.option);
-                                }}
-                                theme={(theme: Theme) => applyEDSTheme(theme)}
-                            />
+                            <SearchableDropdownWrapper>
+                                <AsyncSelect
+                                    isDisabled={!referenceType}
+                                    cacheOptions={false}
+                                    loadOptions={loadOptions}
+                                    defaultOptions={false}
+                                    components={applyEdsComponents()}
+                                    isMulti={true}
+                                    placeholder={`Type to search..`}
+                                    isClearable={false}
+                                    value={relatedObjects}
+                                    onInputChange={() => {
+                                        setApiErrors([]);
+                                    }}
+                                    styles={applyEdsStyles()}
+                                    controlShouldRenderValue={false}
+                                    onChange={(
+                                        newValue: MultiValue<TypedSelectOption>,
+                                        actionMeta: ActionMeta<TypedSelectOption>
+                                    ) => {
+                                        if (!actionMeta.option) return;
+                                        addRelatedObject(actionMeta.option);
+                                    }}
+                                    theme={(theme: Theme) => applyEDSTheme(theme)}
+                                />
+                            </SearchableDropdownWrapper>
+                            <div style={{ height: '0.11em' }} />
                         </SearchContainer>
                     </div>
                 </Inline>
