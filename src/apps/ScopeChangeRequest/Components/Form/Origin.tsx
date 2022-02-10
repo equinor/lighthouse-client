@@ -57,6 +57,5 @@ const Wrapper = styled.div`
     align-items: flex-end;
     justify-content: space-between;
     width: -webkit-fill-available;
-    /* min-width: 300px; */
     padding: 0.14em 0em;
 `;
