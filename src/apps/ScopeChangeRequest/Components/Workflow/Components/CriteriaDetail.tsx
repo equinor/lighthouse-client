@@ -31,7 +31,7 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
                             style={{ fontSize: '14px' }}
                         >{`${day}/${month}/${year} ${hour}:${paddedMinutes} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
                     ) : (
-                        <div style={{ fontSize: '14px' }}>{criteria.value}</div>
+                        <div style={{ fontSize: '14px' }}>{criteria.valueDescription}</div>
                     )}
                 </WorkflowText>
             </SplitInline>

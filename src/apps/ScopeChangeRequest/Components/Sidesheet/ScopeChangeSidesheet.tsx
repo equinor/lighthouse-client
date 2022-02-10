@@ -17,6 +17,7 @@ import { useWorkflowAccess } from '../../Hooks/useWorkflowAccess';
 import { ScopeChangeAccessContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { IconMenu, MenuItem } from '../MenuButton';
+import { ErrorFormat, ScopeChangeErrorBanner } from './ErrorBanner';
 
 import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
 
@@ -24,11 +25,21 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const queryClient = useQueryClient();
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<ErrorFormat | undefined>();
 
-    const { error, data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
+    const { data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
         QueryKeys.Scopechange,
         () => getScopeChangeById(item.id, scopeChangeApi),
-        { initialData: item, refetchOnWindowFocus: false, retry: false }
+        {
+            initialData: item,
+            refetchOnWindowFocus: false,
+            retry: false,
+            onError: () =>
+                setErrorMessage({
+                    message: ' Network error, please check your connection and try again',
+                    timestamp: new Date(),
+                }),
+        }
     );
     const scopeChangeAccess = useScopeChangeAccess(item.id);
 
@@ -48,9 +59,8 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     }, [item]);
 
     async function notifyChange() {
-        await queryClient.invalidateQueries([QueryKeys.History, QueryKeys.Scopechange]);
-        await queryClient.refetchQueries(QueryKeys.Scopechange);
-        await queryClient.refetchQueries(QueryKeys.History);
+        await queryClient.invalidateQueries(QueryKeys.History);
+        await queryClient.invalidateQueries(QueryKeys.Scopechange);
     }
 
     const refetchScopeChange = async () => {
@@ -86,17 +96,16 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             </Loading>
         );
     }
-
     return (
         <Wrapper>
-            {error && (
-                <div style={{ color: 'red' }}>
-                    Network error, please check your connection and try again
-                </div>
-            )}
+            <ScopeChangeErrorBanner
+                timestamp={errorMessage?.timestamp}
+                message={errorMessage?.message}
+            />
+
             <TitleHeader>
                 <Title>
-                    {data?.title}
+                    ({data?.sequenceNumber}) {data?.title}
                     {isLoading && <Progress.Dots color="primary" />}
                 </Title>
                 <ButtonContainer>
@@ -120,6 +129,8 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             </TitleHeader>
             <ScopeChangeAccessContext.Provider
                 value={{
+                    setErrorMessage: (message: string) =>
+                        setErrorMessage({ message: message, timestamp: new Date() }),
                     contributionId: workflowAccess.contributionId,
                     request: data || item,
                     requestAccess: scopeChangeAccess,
