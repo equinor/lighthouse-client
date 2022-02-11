@@ -1,9 +1,6 @@
 import { useContext } from 'react';
-import {
-    ScopeChangeAccessContext,
-    ScopeChangeAccessContextState,
-} from './scopeChangeAccessContext';
+import { ScopeChangeContext, ScopeChangeContextState } from './scopeChangeAccessContext';
 
-export function useScopeChangeAccessContext(): ScopeChangeAccessContextState {
-    return useContext(ScopeChangeAccessContext);
+export function useScopeChangeContext(): ScopeChangeContextState {
+    return useContext(ScopeChangeContext);
 }

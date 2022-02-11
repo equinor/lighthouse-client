@@ -1,15 +1,15 @@
 import { useQuery } from 'react-query';
 
 import { LogEntry } from '../../../../Types/scopeChangeRequest';
-import { useScopeChangeAccessContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { getHistory } from '../../../../Api/ScopeChange/getHistory';
+import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { getHistory } from '../../../../Api/ScopeChange/Request/getHistory';
 import { ChevronList } from '../ChevronList/ChevronList';
 import { HistoryItem } from './HistoryItem';
 import { useEffect } from 'react';
 import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
 
 export function HistoryList(): JSX.Element {
-    const { request } = useScopeChangeAccessContext();
+    const { request } = useScopeChangeContext();
     const { data, remove, isLoading } = useQuery<LogEntry[]>(
         QueryKeys.History,
         () => getHistory(request.id),

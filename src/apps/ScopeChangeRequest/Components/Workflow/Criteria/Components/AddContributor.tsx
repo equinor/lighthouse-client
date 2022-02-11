@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { PCSPersonSearch } from '../../SearchableDropdown/PCSPersonSearch';
-import { SelectOption } from '../../../Api/Search/PCS';
-import { addContributor } from '../../../Api/ScopeChange/Workflow/addContributor';
-import { Button, Progress, TextField } from '@equinor/eds-core-react';
-import { useMutation } from 'react-query';
-import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 import styled from 'styled-components';
+
+import { PCSPersonSearch } from '../../../SearchableDropdown/PCSPersonSearch';
+import { SelectOption } from '../../../../Api/Search/PCS';
+import { addContributor } from '../../../../Api/ScopeChange/Workflow/addContributor';
+import { Button, Progress, TextField } from '@equinor/eds-core-react';
+import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { tokens } from '@equinor/eds-tokens';
-import { WorkflowIcon } from './WorkflowIcon';
+import { WorkflowIcon } from '../../Components/WorkflowIcon';
+import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
+import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 
 interface AddContributorProps {
     onCancel: () => void;
@@ -16,7 +18,7 @@ interface AddContributorProps {
 export const AddContributor = ({ onCancel }: AddContributorProps): JSX.Element => {
     const [contributor, setContributor] = useState<SelectOption | null>(null);
     const [text, setText] = useState<string>('');
-    const { request, notifyChange, setErrorMessage } = useScopeChangeAccessContext();
+    const { request, setErrorMessage } = useScopeChangeContext();
 
     const submit = async () => {
         await addContributor(
@@ -27,12 +29,9 @@ export const AddContributor = ({ onCancel }: AddContributorProps): JSX.Element =
         );
     };
 
-    const { mutateAsync, isLoading } = useMutation(submit, {
-        onSettled: async () => {
-            await notifyChange();
-            onCancel();
-        },
-        onError: () => setErrorMessage('Failed to assign contributor'),
+    const { mutateAsync, isLoading } = useScopeChangeMutation(submit, {
+        onSuccess: () => onCancel(),
+        onError: (e: ServerError) => setErrorMessage(e),
     });
 
     return (

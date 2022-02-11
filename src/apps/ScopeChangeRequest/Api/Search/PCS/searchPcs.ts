@@ -6,6 +6,7 @@ import { searchSystems } from './searchSystem';
 import { searchQueryOrigin } from './searchQuery';
 import { searchDCN } from './searchDCN';
 import { searchNCR } from './searchNcr';
+import { searchSWCR } from './searchSWCR';
 import { searchDiscipline } from './searchDiscipline';
 import { searchFunctionalRole } from './searchFunctionalRole';
 import { searchPerson } from './searchPerson';
@@ -21,6 +22,7 @@ export type ProcoSysTypes =
     | 'NCR'
     | 'area'
     | 'discipline'
+    | "SWCR"
     | 'functionalRole';
 
 /**
@@ -66,6 +68,9 @@ export const searchPcs = async (
 
         case 'functionalrole':
             return await searchFunctionalRole(searchString, procosys, abortSignal);
+
+        case "swcr":
+            return await searchSWCR(searchString, procosys, abortSignal);
 
         default:
             // eslint-disable-next-line no-console

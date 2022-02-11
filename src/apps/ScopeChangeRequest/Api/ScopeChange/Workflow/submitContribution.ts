@@ -1,10 +1,15 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
+import { throwOnError } from '../Functions/throwError';
 
-export async function addContribution(
-    requestId: string,
-    stepId: string,
-    contributorId: string,
-    comment?: string
+interface SubmitContributionParams {
+    requestId: string;
+    stepId: string;
+    contributorId: string;
+    comment?: string;
+}
+
+export async function submitContribution(
+    { contributorId, requestId, stepId, comment }: SubmitContributionParams
 ): Promise<void> {
     const { scopeChange } = httpClient();
 
@@ -15,8 +20,10 @@ export async function addContribution(
             suggestion: 'SuggestRejection',
         }),
     };
-    await scopeChange.fetch(
+    const res = await scopeChange.fetch(
         `api/scope-change-requests/${requestId}/workflow/step/${stepId}/contributors/${contributorId}/contribute`,
         requestOptions
     );
+
+    await throwOnError(res);
 }

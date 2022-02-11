@@ -1,17 +1,21 @@
 import { Button, Icon, TextField, Tooltip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+
 import {
     Contributor as ContributorInterface,
     WorkflowStep,
-} from '../../../Types/scopeChangeRequest';
-import { MenuButton, MenuItem } from '../../MenuButton/';
-import { ContributorActions } from '../Types/actions';
-import { WorkflowIcon } from './WorkflowIcon';
-import { useMutation } from 'react-query';
-import { addContribution } from '../../../Api/ScopeChange/Workflow';
-import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
-import { useState } from 'react';
+} from '../../../../Types/scopeChangeRequest';
+import { MenuButton, MenuItem } from '../../../MenuButton/';
+import { ContributorActions } from '../../Types/actions';
+import { WorkflowIcon } from '../../Components/WorkflowIcon';
+import { submitContribution } from '../../../../Api/ScopeChange/Workflow';
+import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
+import { useQuery } from 'react-query';
+import { canContribute } from '../../../../Api/ScopeChange/Access';
+import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -21,27 +25,39 @@ interface ContributorsProps {
 export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Element => {
     const [comment, setComment] = useState('');
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
-    const { request, notifyChange, setErrorMessage } = useScopeChangeAccessContext();
+    const { request, setErrorMessage } = useScopeChangeContext();
 
-    const onAddContribution = () => addContribution(request.id, step.id, contributor.id, comment);
+    const checkCanContribute = () => canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id })
 
-    const { mutateAsync } = useMutation(onAddContribution, {
-        onSettled: notifyChange,
-        onError: () => setErrorMessage('Failed to contribute'),
+    const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(`step/${step.id}/contributor/${contributor.id}`, checkCanContribute, { refetchOnWindowFocus: false })
+
+
+
+
+
+    const { mutateAsync } = useScopeChangeMutation(submitContribution, {
+        onError: (e: ServerError) => setErrorMessage(e),
+        onSuccess: () => invalidateUserCanContribute(),
     });
 
-    const contributorActions: MenuItem[] = [
-        {
-            label: ContributorActions.Confirm,
-            icon: <Icon name="check_circle_outlined" color="grey" />,
-            onClick: async () => await mutateAsync(),
-        },
-        {
-            label: ContributorActions.ConfirmWithComment,
-            icon: <Icon name="comment_add" color="grey" />,
-            onClick: () => setShowCommentField((prev) => !prev),
-        },
-    ];
+
+    function makeContributorActions(): MenuItem[] {
+        const actions: MenuItem[] = [];
+
+        if (userCanContribute) {
+            actions.push({
+                label: ContributorActions.Confirm,
+                icon: <Icon name="check_circle_outlined" color="grey" />,
+                onClick: async () => await mutateAsync({ contributorId: contributor.id, requestId: request.id, stepId: step.id, comment: undefined }),
+            })
+            actions.push({
+                label: ContributorActions.ConfirmWithComment,
+                icon: <Icon name="comment_add" color="grey" />,
+                onClick: () => setShowCommentField((prev) => !prev),
+            })
+        }
+        return actions
+    }
 
     return (
         <>
@@ -61,14 +77,18 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                             </div>
                         </WorkflowText>
                     </Inline>
-                    {step.isCurrent && contributor.contribution === null && (
-                        <Inline>
-                            <MenuButton
-                                items={contributorActions}
-                                onMenuOpen={() => setShowCommentField(false)}
-                                buttonText="Confirm"
-                            />
-                        </Inline>
+                    {request.state === 'Open' && !request.isVoided && (
+                        <>
+                            {step.isCurrent && (
+                                <Inline>
+                                    <MenuButton
+                                        items={makeContributorActions()}
+                                        onMenuOpen={() => setShowCommentField(false)}
+                                        buttonText="Confirm"
+                                    />
+                                </Inline>
+                            )}
+                        </>
                     )}
                 </ContributorInnerContainer>
                 {showCommentField && (
@@ -82,7 +102,7 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                             />
                         </span>
                         <ButtonContainer>
-                            <Button disabled={!comment} onClick={() => onAddContribution()}>
+                            <Button disabled={!comment} onClick={() => mutateAsync({ contributorId: contributor.id, requestId: request.id, stepId: step.id, comment: comment })}>
                                 Confirm
                             </Button>
                             <Divider />

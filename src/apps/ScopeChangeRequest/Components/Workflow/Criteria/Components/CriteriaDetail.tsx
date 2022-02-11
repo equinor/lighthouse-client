@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
 import styled from 'styled-components';
-import { Criteria, WorkflowStatus, WorkflowStep } from '../../../Types/scopeChangeRequest';
-import { convertUtcToLocalDate } from '../Utils/utcDateToLocal';
-import { WorkflowIcon } from './WorkflowIcon';
+import { Criteria, WorkflowStatus, WorkflowStep } from '../../../../Types/scopeChangeRequest';
+import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
+import { WorkflowIcon } from '../../Components/WorkflowIcon';
 
 interface CriteriaDetailProps {
     criteria: Criteria;
@@ -11,8 +11,7 @@ interface CriteriaDetailProps {
 
 export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Element => {
     const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
-    const { day, month, year, hour, minute } = DateTime.fromJSDate(date).toObject();
-    const paddedMinutes = minute.toString().length === 1 ? `0${minute}` : minute;
+    const formattedDate = dateToDateTimeFormat(date);
 
     const stepStatus = statusFunc(step);
 
@@ -29,7 +28,7 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
                     {criteria.signedAtUtc ? (
                         <div
                             style={{ fontSize: '14px' }}
-                        >{`${day}/${month}/${year} ${hour}:${paddedMinutes} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
+                        >{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
                     ) : (
                         <div style={{ fontSize: '14px' }}>{criteria.valueDescription}</div>
                     )}
