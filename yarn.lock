@@ -472,6 +472,11 @@
     eslint-plugin-react "^7.26.1"
     eslint-plugin-react-hooks "^4.2.0"
 
+"@equinor/fusion-framework-module@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@equinor/fusion-framework-module/-/fusion-framework-module-0.1.1.tgz#97b673555bfb54c9083c9e6a129566016e2ecbd1"
+  integrity sha512-Jmnf8JM+i0hdiTr1AI+O6JG/hG22SEsmNmiN2H9+OYIcw3lGAfLyj+kTCWDagkOD6MOE9FSaE51Meu3cZf1vlA==
+
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-0.4.3.tgz#9e42981ef035beb3dd49add17acb96e8ff6f394c"
