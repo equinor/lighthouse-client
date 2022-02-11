@@ -1,8 +1,11 @@
 import { Banner, Icon, Button } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { useIsMounted } from '../../Hooks/useIsMounted';
 
 export interface ErrorFormat {
-    message: string | undefined;
+    message: ServerError | undefined;
     timestamp: Date | undefined;
 }
 
@@ -11,25 +14,46 @@ export interface ErrorFormat {
  * @returns
  */
 export function ScopeChangeErrorBanner({ message, timestamp }: ErrorFormat): JSX.Element {
-    const [errorMessage, setErrorMessage] = useState<string | null>(message ?? null);
+    const [errorMessage, setErrorMessage] = useState<ServerError | null>(message ?? null);
+
+    const isMounted = useIsMounted();
 
     useEffect(() => {
+        if (!isMounted) return;
         setErrorMessage(message ?? null);
     }, [message, timestamp]);
 
     return (
         <>
             {errorMessage && (
-                <Banner>
-                    <Banner.Icon variant="warning">
-                        <Icon name="mood_sad" />
-                    </Banner.Icon>
-                    <Banner.Message>{`${message}`}</Banner.Message>
-                    <Banner.Actions>
-                        <Button onClick={() => setErrorMessage(null)}>Dismiss</Button>
-                    </Banner.Actions>
-                </Banner>
+                <div>
+                    <Banner>
+                        <Banner.Icon variant="warning">
+                            <Icon name="mood_sad" />
+                        </Banner.Icon>
+                        <ErrorMessageContainer>
+
+                            <Banner.Message>{`${message?.detail}`}</Banner.Message>
+                            {message?.validationErrors && Object.values(message.validationErrors).map((errorArray) => {
+                                return (
+                                    <>
+                                        {errorArray.map((error) => <Banner.Message key={error}>{error}</Banner.Message>)}
+                                    </>
+                                )
+                            })}
+                        </ErrorMessageContainer>
+                        <Banner.Actions>
+                            <Button onClick={() => setErrorMessage(null)}>Dismiss</Button>
+                        </Banner.Actions>
+                    </Banner>
+                </div>
             )}
         </>
     );
 }
+
+const ErrorMessageContainer = styled.div`
+display: flex;
+flex-direction: column;
+
+`

@@ -1,4 +1,6 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
+import { throwOnError } from '../Functions/throwError';
+
 
 interface ContributorBody {
     instructionsToContributor: string;
@@ -22,8 +24,10 @@ export const addContributor = async (
         body: JSON.stringify(payload),
     };
 
-    await scopeChange.fetch(
+    const res = await scopeChange.fetch(
         `api/scope-change-requests/${requestId}/workflow/step/${stepId}/contributors`,
         requestOptions
     );
+
+    await throwOnError(res);
 };

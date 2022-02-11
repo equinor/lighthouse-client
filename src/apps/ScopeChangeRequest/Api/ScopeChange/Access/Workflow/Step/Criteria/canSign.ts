@@ -1,11 +1,13 @@
-import { httpClient } from '../../../../../../Core/Client/Functions/HttpClient';
-import { checkOptionsRequest } from '../optionsRequestChecker';
+import { httpClient } from '../../../../../../../../Core/Client/Functions/HttpClient';
+import { checkOptionsRequest } from '../../../optionsRequestChecker';
 
-export async function canSign(
-    requestId: string,
-    stepId: string,
-    criteriaId: string
-): Promise<boolean> {
+interface CanSignParams {
+    requestId: string;
+    stepId: string;
+    criteriaId: string;
+}
+
+export async function canSign({ criteriaId, requestId, stepId }: CanSignParams): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {

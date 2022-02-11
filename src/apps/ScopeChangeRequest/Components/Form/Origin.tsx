@@ -3,10 +3,12 @@ import styled from 'styled-components';
 import { SearchNCR } from './Origins/SearchNCR';
 import { SearchDCN } from './Origins/SearchDCN';
 import { SearchQuery } from './Origins/SearchQuery';
+import { SearchSWCR } from './Origins/SearchSWCR';
 import { SelectPunch } from './Origins/SelectPunch';
 import { OriginType } from '../../Types/scopeChangeRequest';
 import { Field } from '../../../../packages/Form/src/Types/field';
 import { MultiSelect } from '@equinor/eds-core-react';
+
 
 interface OriginProps {
     originSource: Field<OriginType> | undefined;
@@ -40,7 +42,7 @@ export const Origin = ({ originId, originSource }: OriginProps): JSX.Element => 
                 return <SelectPunch setOriginId={setOriginId} originId={originId?.value} />;
 
             case 'SWCR':
-                return <></>;
+                return <SearchSWCR setOriginId={setOriginId} originId={originId?.value} />;
 
             default:
                 return (

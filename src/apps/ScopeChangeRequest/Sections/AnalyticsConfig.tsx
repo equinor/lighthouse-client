@@ -4,12 +4,12 @@ import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
     return [
         {
-            title: 'Req. pending approval',
+            title: 'Pending requests',
             value: () => data.filter((x) => x.state === 'Open').length.toString(),
             status: 'default',
         },
         {
-            title: 'Mhrs pending approval',
+            title: 'Pending mhrs',
             value: () => {
                 let total = 0;
                 data.filter((x) => x.state === 'Open').forEach(
@@ -20,7 +20,7 @@ export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
             status: 'default',
         },
         {
-            title: 'Total requests',
+            title: 'Requests',
             value: () => {
                 return data.length.toString();
             },

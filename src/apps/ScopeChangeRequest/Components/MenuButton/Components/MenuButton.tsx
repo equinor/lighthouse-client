@@ -39,7 +39,7 @@ export const MenuButton = ({ items, buttonText, onMenuOpen }: MenuButtonProps): 
                 open={showMenu}
                 anchorEl={anchorRef.current}
                 onClose={closeMenu}
-                placement="bottom"
+                placement="bottom-start"
             >
                 {items.map((x, i) => {
                     const Icon = () => x.icon ?? <span></span>;

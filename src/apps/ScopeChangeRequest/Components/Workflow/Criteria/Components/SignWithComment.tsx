@@ -2,12 +2,13 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
-import { useScopeChangeAccessContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
-import { signCriteria } from '../../../Api/ScopeChange/Workflow';
-import { spawnConfirmationDialog } from '../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { Criteria } from '../../../Types/scopeChangeRequest';
-import { useMutation } from 'react-query';
+import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { signCriteria } from '../../../../Api/ScopeChange/Workflow';
+import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { Criteria } from '../../../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
+import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
+import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 
 interface SignWithCommentProps {
     criteria: Criteria;
@@ -15,17 +16,20 @@ interface SignWithCommentProps {
 }
 
 export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): JSX.Element => {
-    const { request, notifyChange, setErrorMessage } = useScopeChangeAccessContext();
+    const { request, setErrorMessage } = useScopeChangeContext();
     const [text, setText] = useState<string | undefined>();
 
-    async function onSignStep() {
+    interface OnSignStepAction {
+        action: 'Approved' | 'Rejected';
+    }
+    async function onSignStep({ action }: OnSignStepAction) {
         if (request.currentWorkflowStep && request.currentWorkflowStep.criterias.length > 0) {
             const currentStepId = request.currentWorkflowStep.id;
             const unsignedCriterias = request.currentWorkflowStep.criterias.filter(
                 (x) => x.signedAtUtc === null
             );
             const sign = async () => {
-                await signCriteria(request.id, currentStepId, criteria.id, text);
+                await signCriteria(request.id, currentStepId, criteria.id, action, text);
             };
             if (
                 request.currentWorkflowStep.contributors &&
@@ -38,18 +42,14 @@ export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): J
                     sign
                 );
             } else {
-                sign();
+                await sign();
             }
             setText('');
         }
     }
 
-    const { mutateAsync, isLoading } = useMutation(onSignStep, {
-        onSettled: async () => {
-            await notifyChange();
-            onCancel();
-        },
-        onError: () => setErrorMessage('Failed to sign step'),
+    const { mutateAsync, isLoading } = useScopeChangeMutation(onSignStep, {
+        onError: (e: ServerError) => setErrorMessage(e),
     });
 
     return (
@@ -65,7 +65,10 @@ export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): J
                 />
             </Section>
             <ButtonContainer>
-                <Button disabled={!text || text.length === 0} onClick={() => mutateAsync()}>
+                <Button
+                    disabled={!text || text.length === 0}
+                    onClick={() => mutateAsync({ action: 'Approved' }).then(() => onCancel())}
+                >
                     Sign
                 </Button>
                 <Divider />

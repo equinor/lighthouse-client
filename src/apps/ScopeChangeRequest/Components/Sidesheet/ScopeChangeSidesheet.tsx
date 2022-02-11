@@ -1,11 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
 import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 
-import { getScopeChangeById, unVoidRequest, voidRequest } from '../../Api/ScopeChange';
+import { getScopeChangeById, unVoidRequest, voidRequest } from '../../Api/ScopeChange/Request';
 import { getContributionId } from '../../Functions/Access';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
@@ -13,13 +13,14 @@ import { tokens } from '@equinor/eds-tokens';
 import { RequestDetailView } from '../DetailView/RequestDetailView';
 import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
 
-import { useWorkflowAccess } from '../../Hooks/useWorkflowAccess';
-import { ScopeChangeAccessContext } from './Context/scopeChangeAccessContext';
+import { ScopeChangeContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { IconMenu, MenuItem } from '../MenuButton';
 import { ErrorFormat, ScopeChangeErrorBanner } from './ErrorBanner';
 
 import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
+import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const queryClient = useQueryClient();
@@ -36,54 +37,68 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             retry: false,
             onError: () =>
                 setErrorMessage({
-                    message: ' Network error, please check your connection and try again',
+                    message: {
+                        detail: "Failed to connect to server",
+                        statusCode: 0,
+                        title: "Fetch failed",
+                        validationErrors: {}
+                    },
                     timestamp: new Date(),
                 }),
         }
     );
-    const scopeChangeAccess = useScopeChangeAccess(item.id);
 
-    const workflowAccess = useWorkflowAccess(
-        item.id,
-        data?.currentWorkflowStep?.criterias,
-        data?.currentWorkflowStep?.contributors,
-        data?.currentWorkflowStep?.id,
-        getContributionId
-    );
+    const scopeChangeAccess = useScopeChangeAccess(item.id);
 
     useEffect(() => {
         if (item) {
             remove();
             refetchScopeChange();
         }
-    }, [item]);
+    }, [item.id]);
 
-    async function notifyChange() {
-        await queryClient.invalidateQueries(QueryKeys.History);
-        await queryClient.invalidateQueries(QueryKeys.Scopechange);
-    }
+    const notifyChange = useCallback(async () => {
+        await queryClient.fetchQuery(QueryKeys.History);
+        await queryClient.fetchQuery(QueryKeys.Scopechange);
+    }, [queryClient]);
 
     const refetchScopeChange = async () => {
         await refetch();
     };
+
     const actionMenu: MenuItem[] = useMemo(() => {
         const actions: MenuItem[] = [];
 
-        if (scopeChangeAccess.canVoid) {
+        if (scopeChangeAccess.canUnVoid) {
             if (data?.isVoided) {
                 actions.push({
                     label: 'Unvoid request',
                     onClick: () => unVoidRequest(item.id).then(notifyChange),
                 });
-            } else {
+            }
+        }
+        if (scopeChangeAccess.canVoid) {
+            if (!data?.isVoided) {
                 actions.push({
                     label: 'Void request',
-                    onClick: () => voidRequest(item.id).then(notifyChange),
+                    onClick: () =>
+                        spawnConfirmationDialog(
+                            'Are you sure you want to void this request',
+                            'Void confirmation',
+                            () => voidRequest(item.id).then(notifyChange)
+                        ),
                 });
             }
         }
+
         return actions;
-    }, [data?.isVoided, item.id, scopeChangeAccess.canVoid]);
+    }, [
+        data?.isVoided,
+        item.id,
+        notifyChange,
+        scopeChangeAccess.canUnVoid,
+        scopeChangeAccess.canVoid,
+    ]);
 
     if (!item.id) {
         return <p>Something went wrong</p>;
@@ -127,16 +142,13 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                     </Button>
                 </ButtonContainer>
             </TitleHeader>
-            <ScopeChangeAccessContext.Provider
+            <ScopeChangeContext.Provider
                 value={{
-                    setErrorMessage: (message: string) =>
+                    queryClient: queryClient,
+                    setErrorMessage: (message: ServerError) =>
                         setErrorMessage({ message: message, timestamp: new Date() }),
-                    contributionId: workflowAccess.contributionId,
                     request: data || item,
                     requestAccess: scopeChangeAccess,
-                    signableCriterias: workflowAccess.signableCriterias,
-                    canAddContributor: workflowAccess.canAddContributor,
-                    notifyChange,
                 }}
             >
                 {data && (
@@ -151,7 +163,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         )}
                     </div>
                 )}
-            </ScopeChangeAccessContext.Provider>
+            </ScopeChangeContext.Provider>
         </Wrapper>
     );
 };

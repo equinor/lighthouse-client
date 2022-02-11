@@ -1,5 +1,5 @@
 import { patchScopeChange } from './patchScopeChange';
-import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../Types/scopeChangeRequest';
+import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../../Types/scopeChangeRequest';
 
 /**
  *
@@ -34,4 +34,7 @@ export async function initiateScopeChange(request: ScopeChangeRequest): Promise<
     };
 
     await patchScopeChange(payload);
+
+
+
 }
