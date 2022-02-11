@@ -14,7 +14,7 @@ export function useScopeChangeMutation<
     TContext = unknown
 >(
     mutationFn: MutationFunction<TData, TVariables>,
-    options?: Omit<UseMutationOptions<TData, TError, TVariables, TContext>, 'mutationFn'>
+    options?: Omit<UseMutationOptions<TData, TError, TVariables, TContext>, 'mutationFn' | "onSettled">
 ): UseMutationResult<TData, TError, TVariables, TContext> {
     const queryClient = useQueryClient();
     function invalidate() {

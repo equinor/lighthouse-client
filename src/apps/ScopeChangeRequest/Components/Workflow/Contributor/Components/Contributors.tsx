@@ -1,7 +1,7 @@
 import { Button, Icon, TextField, Tooltip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
     Contributor as ContributorInterface,
@@ -29,11 +29,15 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
 
     const checkCanContribute = () => canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id })
 
-    const { data: userCanContribute } = useQuery(`step/${step.id}/contributor/${contributor.id}`, checkCanContribute, { refetchOnWindowFocus: false })
+    const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(`step/${step.id}/contributor/${contributor.id}`, checkCanContribute, { refetchOnWindowFocus: false })
+
+
+
 
 
     const { mutateAsync } = useScopeChangeMutation(submitContribution, {
         onError: (e: ServerError) => setErrorMessage(e),
+        onSuccess: () => invalidateUserCanContribute(),
     });
 
 
@@ -75,7 +79,7 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                     </Inline>
                     {request.state === 'Open' && !request.isVoided && (
                         <>
-                            {step.isCurrent && contributor.contribution === null && (
+                            {step.isCurrent && (
                                 <Inline>
                                     <MenuButton
                                         items={makeContributorActions()}
