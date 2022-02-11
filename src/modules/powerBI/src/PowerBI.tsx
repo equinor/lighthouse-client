@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { Embed, models, Report, service, VisualDescriptor } from 'powerbi-client';
+import { Embed, models, Report, service } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
 import { useEffect, useState } from 'react';
@@ -28,7 +28,16 @@ const ErrorWrapper = styled.div`
     align-items: center;
     justify-content: center;
 `;
+const FilterWrapper = styled.div`
+    display: flex;
+    background: ${tokens.colors.ui.background__light.rgba};
+    border-bottom: 1.5px solid ${tokens.colors.ui.background__medium.rgba};
+    height: 200px;
+`;
 
+const FilterGroupWrap = styled.div`
+    border-right: 2px solid ${tokens.colors.ui.background__medium.rgba};
+`;
 const Heading = styled.h1`
     color: ${tokens.colors.text.static_icons__tertiary.rgba};
     margin-bottom: 0;
@@ -47,6 +56,7 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [activePageName, setActivePageName] = useState<string>('');
 
     const [slicerFilters, setSlicerFilters] = useState<PowerBiFilter[] | null>(null);
     const [activeFilters, setActiveFilters] = useState<
@@ -83,6 +93,12 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             },
         ],
         [
+            'pageChanged',
+            function (event) {
+                setActivePageName(event.detail.newPage.name);
+            },
+        ],
+        [
             'dataSelected',
             function (e) {
                 if (e) {
@@ -107,6 +123,44 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
         ],
     ]);
 
+    /**
+     * Function to handle "Select All" checkbox.
+     * Will either add all possible filter values to current target, or remove all depending
+     * on if checkbox is ticked or not.
+     */
+    const handleOnSelectAll = async (group: PowerBiFilter, filter: PowerBiFilterItem) => {
+        try {
+            const allFilterValues = group.filterVals;
+
+            if (
+                activeFilters[filter.type]?.length === allFilterValues?.length &&
+                activeFilters[filter.type]?.every(
+                    (value, index) => value === allFilterValues[index]
+                )
+            ) {
+                // All filters are applied already, remove all
+                setActiveFilters((prev) => ({ ...prev, [filter.type]: [] }));
+                await group.slicer.setSlicerState({ filters: [] });
+            } else {
+                //Apply all possible filters
+                const slicerFilter: models.IBasicFilter = {
+                    $schema: 'http://powerbi.com/product/schema#basic',
+                    target: filter.target!,
+                    filterType: models.FilterType.Basic,
+                    operator: 'In',
+                    values: group.filterVals,
+                };
+                setActiveFilters((prev) => ({ ...prev, [filter.type]: group.filterVals }));
+                await group.slicer?.setSlicerState({ filters: [slicerFilter] });
+            }
+        } catch (errors) {
+            console.error("Couldn't select all filters", errors);
+        }
+    };
+
+    /** Main function for handling user events on checkboxes for filters.
+     * Will set new filters on slicer, or remove depending on if it already exists or not.
+     */
     const handleOnChange = async (group: PowerBiFilter, filter: PowerBiFilterItem) => {
         try {
             const change = filter.value;
@@ -144,6 +198,24 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
         }
     };
 
+    /**
+     * Function for resetting all active filters.
+     * Need to go through every slicer and set its filter state to empty.
+     * Could not remove all filters on e.g. active page, so will need to loop through here.
+     */
+    const resetFilter = async () => {
+        try {
+            if (activeFilters && slicerFilters) {
+                for (const filter of slicerFilters) {
+                    await filter.slicer.setSlicerState({ filters: [] });
+                }
+                setActiveFilters({});
+            }
+        } catch (errors) {
+            console.error('Couldnt remove filters', errors);
+        }
+    };
+
     const handleChangeGroup = (filter: PowerBiFilter) => {
         if (filterGroupVisible?.find((a) => a === filter.type) !== undefined) {
             setFilterGroupVisible(filterGroupVisible.filter((a) => a !== filter.type));
@@ -151,17 +223,28 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             setFilterGroupVisible((prev) => [...(prev ? prev : []), filter.type]);
         }
     };
+
+    /**
+     * Effect should be triggered when report has first loaded,
+     * initializing all possible filters and also checking for default active filters.
+     * Also need to handle when user changes page, so this effect has to also be triggered when
+     * page is changed.
+     */
     useEffect(() => {
         if (report && isLoaded) {
             (async () => {
                 const filters = await getFilters(report);
-                const activeFilters = await getActiveFilterValues(filters);
+                const defaultActiveFilters = await getActiveFilterValues(filters);
                 setSlicerFilters(filters);
-                setActiveFilters(activeFilters);
+                setActiveFilters(defaultActiveFilters);
             })();
         }
-    }, [report, isLoaded]);
+    }, [report, isLoaded, activePageName]);
 
+    /**
+     * Effect should be triggered when activeFilters has changed.
+     * Some filters may not longer be applicable, therefore the need to get filters again.
+     */
     useEffect(() => {
         if (report && isLoaded) {
             (async () => {
@@ -170,6 +253,7 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             })();
         }
     }, [activeFilters]);
+
     return (
         <>
             {error ? (
@@ -184,20 +268,26 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             ) : (
                 <Wrapper>
                     {slicerFilters && (
-                        <div style={{ display: 'flex' }}>
-                            <FilterGroup
-                                slicerFilters={slicerFilters}
-                                filterGroupVisible={filterGroupVisible}
-                                handleChangeGroup={handleChangeGroup}
-                            />
-
-                            <FilterItems
-                                filterGroupVisible={filterGroupVisible}
-                                handleOnChange={handleOnChange}
-                                slicerFilters={slicerFilters}
-                                activeFilters={activeFilters}
-                            />
-                        </div>
+                        <FilterWrapper>
+                            <FilterGroupWrap>
+                                <FilterGroup
+                                    slicerFilters={slicerFilters}
+                                    filterGroupVisible={filterGroupVisible}
+                                    handleChangeGroup={handleChangeGroup}
+                                    resetFilter={resetFilter}
+                                />
+                            </FilterGroupWrap>
+                            {slicerFilters.map((group) => (
+                                <FilterItems
+                                    filterGroupVisible={filterGroupVisible}
+                                    handleOnChange={handleOnChange}
+                                    handleOnSelectAll={handleOnSelectAll}
+                                    activeFilters={activeFilters}
+                                    group={group}
+                                    key={group.type}
+                                />
+                            ))}
+                        </FilterWrapper>
                     )}
                     <PageNavigation report={report} />
                     <PowerBIEmbed
