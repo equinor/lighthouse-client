@@ -8,6 +8,7 @@ import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 import { OriginLink } from './Components/DetailView/Components/OriginLink';
 import { Icon } from '@equinor/eds-core-react';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
+import { Item } from '../../packages/StatusBar';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -33,12 +34,16 @@ export function setup(appApi: ClientApi): void {
         'id',
         'currentWorkflowStep',
         'workflowSteps',
+        "isVoided",
+        "state",
+        "originSource",
+        "originSourceId"
     ];
 
     request.registerFilterOptions({
         excludeKeys: scopeChangeExcludeFilterKeys,
         typeMap: {},
-        initialFilters: ['state', 'phase', 'category', 'originSource', 'isVoided'],
+        initialFilters: ['State', 'phase', 'category', 'Origin', 'isVoided'],
         groupValue: {
             NextToSign: (item: ScopeChangeRequest): string => {
                 if (item.state !== 'Open') {
@@ -49,6 +54,15 @@ export function setup(appApi: ClientApi): void {
                         ?.valueDescription ?? 'null'
                 );
             },
+            State: (item: ScopeChangeRequest): string => {
+                if (item.isVoided) {
+                    return "Voided";
+                }
+                return item.state;
+            },
+            Origin: (item: ScopeChangeRequest) => {
+                return item.originSource;
+            }
         },
     });
 
@@ -267,15 +281,6 @@ export function setup(appApi: ClientApi): void {
                     },
                 },
             },
-            // {
-            //     key: 'isVoided',
-            //     type: {
-            //         Cell: ({ cell }) => {
-            //             return <div>{cell.value.content.isVoided.toString()}</div>;
-            //         },
-            //     },
-            // },
-
             {
                 key: 'currentWorkflowStep',
                 type: {
@@ -318,10 +323,6 @@ export function setup(appApi: ClientApi): void {
 
     request.registerStatusItems(statusBarData);
 
-    // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
-    // request.registerWorkflowEditorOptions({
-    //     endpoint: `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflowId}/templates`,
-    // });
 }
 
 export const analyticsOptions: AnalyticsOptions<ScopeChangeRequest> = {

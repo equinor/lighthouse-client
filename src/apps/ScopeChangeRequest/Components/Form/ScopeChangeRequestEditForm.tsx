@@ -3,10 +3,14 @@ import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect, useState } from 'react';
 import { patchScopeChange, uploadAttachment } from '../../Api/ScopeChange/Request';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { ProcoSysTypes } from '../../Api/Search/PCS';
+import { TypedSelectOption } from '../../Api/Search/searchType';
+import { StidTypes } from '../../Api/Search/STID/searchStid';
 import { useScopeChangeMutation } from '../../Hooks/useScopechangeMutation';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { Field } from '../DetailView/Components/Field';
+import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { Upload } from '../Upload';
 import { Origin } from './Origin';
@@ -21,12 +25,46 @@ export const ScopeChangeRequestEditForm = ({
     cancel,
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
     const [attachments, setAttachments] = useState<File[]>([]);
+    const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
+
+
+
+    useEffect(() => {
+        const relations: TypedSelectOption[] = [];
+
+        request.commissioningPackages.forEach((x) => relations.push({
+            label: `COMM_${x.procosysNumber}`, value: x.procosysNumber, object: x, searchValue: x.procosysNumber, type: "commpkg"
+        }));
+
+        request.systems.forEach((x) => relations.push({
+            label: `SYS_${x.procosysCode}`, value: x.procosysCode, object: x, searchValue: x.procosysCode, type: "system"
+        }));
+
+        request.tags.forEach((x) => relations.push({
+            label: `TAG_${x.procosysNumber}`, value: x.procosysNumber, object: x, searchValue: x.procosysNumber, type: "tag"
+        }));
+
+        request.documents.forEach((x) => relations.push({
+            label: `DOC_${x.stidDocumentNumber}`, value: x.stidDocumentNumber, object: x, searchValue: x.stidDocumentNumber, type: "document"
+        }));
+
+        // request.areas.forEach((x) => relations.push({
+        //     label: x., value: x.procosysNumber, object: x, searchValue: x.procosysNumber, type: "area"
+        // }));
+
+        // request.disciplines.forEach((x) => relations.push({
+        //     label: x.procosysNumber, value: x.procosysNumber, object: x, searchValue: x.procosysNumber, type: "commpkg"
+        // }));
+        setRelatedObjects(relations)
+
+    }, [request])
 
     const { setErrorMessage } = useScopeChangeContext();
 
     const formData = useForm(scopeChangeRequestSchema, {
         id: request.id,
         phase: request.phase,
+        category: request.category,
         description: request.description,
         guesstimateDescription: request.guesstimateDescription ?? undefined,
         guesstimateHours: request.guesstimateHours ?? undefined,
@@ -36,16 +74,24 @@ export const ScopeChangeRequestEditForm = ({
     });
 
     const onSubmit = async () => {
+
+        const tags = filterElementsByType(relatedObjects, 'tag');
+        const systems = filterElementsByType(relatedObjects, 'system');
+        const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
+        const areas = filterElementsByType(relatedObjects, 'area');
+        const disciplines = filterElementsByType(relatedObjects, 'discipline');
+        const documents = filterElementsByType(relatedObjects, 'document');
+
+
         await patchScopeChange({
             ...request,
             ...formData.getChangedData(),
-            tagNumbers: request.tags.map((x) => x.procosysNumber) || [],
-            systemIds: request.systems.map((x) => Number(x.procosysCode)) || [],
-            commissioningPackageNumbers:
-                request.commissioningPackages.map((x) => x.procosysNumber) || [],
-            areaCodes: [],
-            disciplineCodes: [],
-            documentNumbers: request.documents.map((x) => x.id) || [],
+            tagNumbers: tags?.map((x) => x.value) || [],
+            systemIds: systems?.map((x) => Number(x.value)) || [],
+            commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
+            documentNumbers: documents.map((x) => x.value) || [],
+            areaCodes: areas.map((x) => x.value) || [],
+            disciplineCodes: disciplines.map((x) => x.value) || [],
         });
 
         attachments.forEach(async (attachment) => {
@@ -61,7 +107,7 @@ export const ScopeChangeRequestEditForm = ({
 
     const SaveButton = () => {
         return (
-            <Button onClick={async () => await mutateAsync()}>
+            <Button disabled={!formData.isValidForm()} onClick={async () => await mutateAsync()}>
                 {isLoading ? <Progress.Dots color="primary" /> : <span>Save</span>}
             </Button>
         );
@@ -95,6 +141,15 @@ export const ScopeChangeRequestEditForm = ({
                             originId: formData.fields.originSourceId,
                         },
                     },
+                    {
+                        Component: RelatedObjectsSearch,
+                        order: 6,
+                        title: 'References',
+                        props: {
+                            relatedObjects: relatedObjects,
+                            setRelatedObjects: setRelatedObjects,
+                        },
+                    },
                 ]}
             >
                 <Field
@@ -105,3 +160,7 @@ export const ScopeChangeRequestEditForm = ({
         </>
     );
 };
+
+function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | StidTypes) {
+    return items.filter((x) => x.type === type);
+}
