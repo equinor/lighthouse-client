@@ -639,10 +639,10 @@
   resolved "https://registry.yarnpkg.com/@microsoft/dynamicproto-js/-/dynamicproto-js-1.1.4.tgz#40e1c0ad20743fcee1604a7df2c57faf0aa1af87"
   integrity sha512-Ot53G927ykMF8cQ3/zq4foZtdk+Tt1YpX7aUTHxBU7UHNdkEiBvBfZSq+rnlUmKCJ19VatwPG4mNzvcGpBj4og==
 
-"@microsoft/microsoft-graph-types@^2.7.0":
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/@microsoft/microsoft-graph-types/-/microsoft-graph-types-2.11.0.tgz#0e1d3a0795855fc726e08836b1d3c4a72a8bcd00"
-  integrity sha512-v4Wuxp+kbcxeJGmb2UHbcukNr05XItFYXL+U3ReignI3Vl8tp1vfq0hkqP35Fun2QpqHJiu8Rkxj1MUF8d82ag==
+"@microsoft/microsoft-graph-types@^2.13.0":
+  version "2.13.0"
+  resolved "https://registry.yarnpkg.com/@microsoft/microsoft-graph-types/-/microsoft-graph-types-2.13.0.tgz#aa584e4897665df5a9c8869a226264cd6ec5882b"
+  integrity sha512-63FfWBLcyNo8tMP4oPcdqHQvk4ehuWpiUMjVLD7zJXPENIowpdwudP969AALkKzlwsjWImamdivGKd2Zc8Z1Uw==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
