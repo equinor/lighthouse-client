@@ -48,7 +48,7 @@ export const IconMenu = ({ items, onMenuOpen }: IconMenuProps): JSX.Element => {
                 open={showMenu}
                 anchorEl={anchorRef.current}
                 onClose={closeMenu}
-                placement="bottom"
+                placement="left"
             >
                 {items.map((x, i) => {
                     const Icon = () => x.icon ?? null;

@@ -117,7 +117,7 @@ const AttachmentsList = styled.div`
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: -webkit-fill-available;
 `;
 
 const AttachmentsContainer = styled.div`

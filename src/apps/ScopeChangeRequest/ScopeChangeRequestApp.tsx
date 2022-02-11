@@ -55,9 +55,25 @@ export function setup(appApi: ClientApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'id',
         enableSelectRows: true,
+        customColumns: [
+            {
+                Header: "Current step",
+                accessor: "currentWorkflowStep",
+                Cell: ({ cell }: any) => {
+                    return (
+                        <div>
+                            {cell.row.original.currentWorkflowStep ? <div>{cell.row.original.currentWorkflowStep.name}</div> : ""}
+                        </div>
+                    );
+                },
+                id: "CurrentStep",
+                width: 180,
+                Aggregated: () => console.log("-"),
+                aggregate: 'count',
+            }
+        ],
         hiddenColumns: [
             'id',
-            // 'currentWorkflowStep',
             'description',
             'guesstimateDescription',
             'createdBy',
@@ -71,7 +87,9 @@ export function setup(appApi: ClientApi): void {
             'hasComments',
             'phase',
             'workflowSteps',
+            "CurrentStep",
             'currentWorkflowStep',
+            "state",
             'guesstimateHours',
             'estimatedChangeHours',
             'actualChangeHours',
@@ -101,7 +119,7 @@ export function setup(appApi: ClientApi): void {
             { key: 'modifiedAtUtc', title: 'Last updated' },
             { key: 'modifiedBy', title: 'Modified by' },
             { key: 'description', title: 'Description' },
-            { key: 'state', title: 'Status' },
+            { key: 'state', title: 'State' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
             { key: 'currentWorkflowStep', title: 'Next to sign' },
             {
@@ -174,7 +192,17 @@ export function setup(appApi: ClientApi): void {
                 key: 'createdAtUtc',
                 type: 'Date',
             },
-
+            {
+                key: "state",
+                type: {
+                    Cell: ({ cell }: any) => {
+                        const request: ScopeChangeRequest = cell.value.content;
+                        return <div>
+                            {request.isVoided ? "VOIDED" : request.state}
+                        </div>
+                    }
+                }
+            },
             {
                 key: 'workflowSteps',
                 type: {
@@ -239,14 +267,15 @@ export function setup(appApi: ClientApi): void {
                     },
                 },
             },
-            {
-                key: 'isVoided',
-                type: {
-                    Cell: ({ cell }) => {
-                        return <div>{cell.value.content.isVoided.toString()}</div>;
-                    },
-                },
-            },
+            // {
+            //     key: 'isVoided',
+            //     type: {
+            //         Cell: ({ cell }) => {
+            //             return <div>{cell.value.content.isVoided.toString()}</div>;
+            //         },
+            //     },
+            // },
+
             {
                 key: 'currentWorkflowStep',
                 type: {

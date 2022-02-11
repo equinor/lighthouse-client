@@ -1,7 +1,12 @@
-import { httpClient } from '../../../../../../Core/Client/Functions/HttpClient';
-import { checkOptionsRequest } from '../optionsRequestChecker';
+import { httpClient } from '../../../../../../../Core/Client/Functions/HttpClient';
+import { checkOptionsRequest } from '../../optionsRequestChecker';
 
-export async function canAddContributor(requestId: string, stepId: string): Promise<boolean> {
+interface CanAddContributorParams {
+    requestId: string;
+    stepId: string;
+}
+
+export async function canAddContributor({ requestId, stepId }: CanAddContributorParams): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {

@@ -1,10 +1,13 @@
-import { httpClient } from '../../../../../../Core/Client/Functions/HttpClient';
-import { checkOptionsRequest } from '../optionsRequestChecker';
+import { httpClient } from '../../../../../../../../Core/Client/Functions/HttpClient';
+import { checkOptionsRequest } from '../../../optionsRequestChecker';
 
-export async function canReassign(
-    requestId: string,
-    stepId: string,
-    criteriaId: string
+interface CanReassignParams {
+    requestId: string;
+    stepId: string;
+    criteriaId: string;
+}
+
+export async function canReassign({ criteriaId, requestId, stepId }: CanReassignParams
 ): Promise<boolean> {
     const { scopeChange } = httpClient();
 

@@ -9,8 +9,7 @@ import { useHttpClient } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import { getScopeChangeById, postScopeChange } from '../../Api/ScopeChange';
-import { uploadAttachment } from '../../Api/ScopeChange/attachment';
+import { getScopeChangeById, postScopeChange, uploadAttachment } from '../../Api/ScopeChange/Request';
 import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
@@ -22,6 +21,8 @@ import { Upload } from '../Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { Origin } from './Origin';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { ErrorFormat, ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
+import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -42,6 +43,8 @@ export const ScopeChangeRequestForm = ({
 
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
+    const [errorMessage, setErrorMessage] = useState<ErrorFormat | undefined>();
+
 
     const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
@@ -54,6 +57,8 @@ export const ScopeChangeRequestForm = ({
         const areas = filterElementsByType(relatedObjects, 'area');
         const disciplines = filterElementsByType(relatedObjects, 'discipline');
         const documents = filterElementsByType(relatedObjects, 'document');
+
+
 
         const scID = await postScopeChange(
             {
@@ -70,7 +75,10 @@ export const ScopeChangeRequestForm = ({
         );
         if (scID) {
             attachments.forEach(async (attachment) => {
-                await uploadAttachment(scID, attachment);
+                await uploadAttachment({
+                    file: attachment,
+                    requestId: scID
+                });
             });
             setIsRedirecting(true);
 
@@ -78,9 +86,16 @@ export const ScopeChangeRequestForm = ({
         }
     };
 
+
+    const { mutateAsync, isLoading: attachmentsLoading } = useMutation(uploadAttachment, {
+        retry: 2,
+        retryDelay: 2,
+    })
+
     const { mutate, isLoading, error } = useMutation(createScopeChangeMutation, {
         retry: 2,
         retryDelay: 2,
+        onError: (e: ServerError) => setErrorMessage({ message: e, timestamp: new Date() })
     });
 
     const redirect = async (scopeChangeId: string) => {
@@ -137,6 +152,10 @@ export const ScopeChangeRequestForm = ({
 
     return (
         <>
+            <ScopeChangeErrorBanner
+                timestamp={errorMessage?.timestamp}
+                message={errorMessage?.message}
+            />
             <TitleHeader>
                 <span style={{ fontSize: '28px' }}>Create scope change request</span>
                 <Icon
@@ -177,8 +196,6 @@ export const ScopeChangeRequestForm = ({
                     value={<Upload attachments={attachments} setAttachments={setAttachments} />}
                 />
             </GeneratedForm>
-
-            {error && <p> Something went wrong, please check your connection and try again</p>}
         </>
     );
 };

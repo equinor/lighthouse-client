@@ -17,7 +17,7 @@ export const ChevronList = ({ children, title }: CommPkgProps): JSX.Element => {
                 <IconWrapper>
                     <Icon name={`chevron_${isShowing ? 'up' : 'down'}`} />
                 </IconWrapper>
-                <div style={{ fontSize: '14px' }}>{title}</div>
+                <div style={{ fontSize: '14px', lineHeight: "20px" }}>{title}</div>
             </ListWrapper>
             <List />
         </Wrapper>
@@ -34,6 +34,7 @@ const Wrapper = styled.div`
 `;
 
 const ListWrapper = styled.div`
+    gap: 22px;
     display: flex;
     font-size: 16px;
     height: 16px;

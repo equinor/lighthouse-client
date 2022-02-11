@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 import { SectionRow } from '../../../../Styles/Section';
-import { useScopeChangeAccessContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { Workflow } from '../../../Workflow/Components/Workflow';
 import { Attachments } from '../../Components/Attachments';
 import { RelatedObjects } from '../../Components/RelatedObjects';
 import { OriginLink } from '../../Components/OriginLink';
 import { BoldHeading, Section, SubHeading, Value } from './RequestDetailViewStyles';
-import { ChevronList } from '../ChevronList/ChevronList';
+import { HistoryList } from '../History/HistoryList';
 
 export const SplitView = (): JSX.Element => {
-    const { request } = useScopeChangeAccessContext();
+    const { request } = useScopeChangeContext();
 
     return (
         <SplitScreen>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <h2>Request</h2>
+                <BoldHeading>Request</BoldHeading>
                 <SectionRow>
                     <Section>
                         <SubHeading>Phase</SubHeading>
@@ -23,7 +23,7 @@ export const SplitView = (): JSX.Element => {
 
                     <Section>
                         <SubHeading>State</SubHeading>
-                        <Value>{request.state}</Value>
+                        <Value>{request.isVoided ? 'Voided' : request.state}</Value>
                     </Section>
                 </SectionRow>
                 <SectionRow>
@@ -77,15 +77,13 @@ export const SplitView = (): JSX.Element => {
             </div>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
                 <div>
-                    <h2>Workflow</h2>
+                    <BoldHeading>Workflow</BoldHeading>
                     <Workflow />
                 </div>
                 <Section>
                     <BoldHeading>Log</BoldHeading>
                     <Value>
-                        <ChevronList title={`Log entries (${0})`}>
-                            <p></p>
-                        </ChevronList>
+                        <HistoryList />
                     </Value>
                 </Section>
             </div>
@@ -98,4 +96,5 @@ const SplitScreen = styled.div`
     flex-direction: row;
     flex-basis: 0;
     overflow: scroll;
+    padding: 2em 0em
 `;

@@ -1,9 +1,14 @@
-import { Button } from '@equinor/eds-core-react';
+import { Button, Progress } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
-import { useEffect } from 'react';
-import { patchScopeChange } from '../../Api/ScopeChange/patchScopeChange';
+import { useEffect, useState } from 'react';
+import { patchScopeChange, uploadAttachment } from '../../Api/ScopeChange/Request';
+import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { useScopeChangeMutation } from '../../Hooks/useScopechangeMutation';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { Field } from '../DetailView/Components/Field';
+import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
+import { Upload } from '../Upload';
 import { Origin } from './Origin';
 
 interface ScopeChangeRequestEditFormProps {
@@ -15,6 +20,10 @@ export const ScopeChangeRequestEditForm = ({
     request,
     cancel,
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
+    const [attachments, setAttachments] = useState<File[]>([]);
+
+    const { setErrorMessage } = useScopeChangeContext();
+
     const formData = useForm(scopeChangeRequestSchema, {
         id: request.id,
         phase: request.phase,
@@ -38,10 +47,24 @@ export const ScopeChangeRequestEditForm = ({
             disciplineCodes: [],
             documentNumbers: request.documents.map((x) => x.id) || [],
         });
+
+        attachments.forEach(async (attachment) => {
+            await uploadAttachment({ requestId: request.id, file: attachment });
+        });
+
+        if (!error) cancel();
     };
 
+    const { isLoading, error, mutateAsync } = useScopeChangeMutation(onSubmit, {
+        onError: (e: ServerError) => setErrorMessage(e),
+    });
+
     const SaveButton = () => {
-        return <Button onClick={onSubmit}>Save</Button>;
+        return (
+            <Button onClick={async () => await mutateAsync()}>
+                {isLoading ? <Progress.Dots color="primary" /> : <span>Save</span>}
+            </Button>
+        );
     };
 
     const CancelButton = () => {
@@ -57,61 +80,28 @@ export const ScopeChangeRequestEditForm = ({
     }, [formData.fields.originSource?.value]);
 
     return (
-        <GeneratedForm
-            formData={formData}
-            editMode={false}
-            buttons={[CancelButton, SaveButton]}
-            customFields={[
-                {
-                    Component: Origin,
-                    order: 3,
-                    title: '',
-                    props: {
-                        originSource: formData.fields.originSource,
-                        originId: formData.fields.originSourceId,
+        <>
+            <GeneratedForm
+                formData={formData}
+                editMode={false}
+                buttons={[CancelButton, SaveButton]}
+                customFields={[
+                    {
+                        Component: Origin,
+                        order: 3,
+                        title: '',
+                        props: {
+                            originSource: formData.fields.originSource,
+                            originId: formData.fields.originSourceId,
+                        },
                     },
-                },
-
-                // {
-                //     Component: PCSLink,
-                //     order: 6,
-                //     title: 'References',
-                //     props: {
-                //         relatedObjects: relatedObjects,
-                //         setRelatedObjects: setRelatedObjects,
-                //     },
-                // },
-            ]}
-        >
-            {/* <Inline>
-                <div style={{ fontSize: '18px', fontWeight: 'bold' }}>Documents</div>
-                <StidSelector appendDocuments={appendDocuments} documents={stidDocuments} />
-            </Inline>
-            {stidDocuments &&
-                stidDocuments.map((x) => {
-                    return (
-                        <Chip key={x.docNo}>
-                            <StidDocument document={x} />
-
-                            <Button
-                                variant="ghost_icon"
-                                onClick={() => {
-                                    removeDocument(x.docNo);
-                                }}
-                            >
-                                <Icon
-                                    color={tokens.colors.interactive.primary__resting.rgba}
-                                    name="clear"
-                                />
-                            </Button>
-                        </Chip>
-                    );
-                })}
-
-            <Field
-                label="Attachments"
-                value={<Upload attachments={attachments} setAttachments={setAttachments} />}
-            /> */}
-        </GeneratedForm>
+                ]}
+            >
+                <Field
+                    label="Attachments"
+                    value={<Upload attachments={attachments} setAttachments={setAttachments} />}
+                />
+            </GeneratedForm>
+        </>
     );
 };
