@@ -66,7 +66,7 @@ export const FilterItems = ({
     handleOnSelectAll,
     activeFilters,
     group,
-}: FilterItemsProps) => {
+}: FilterItemsProps): JSX.Element | null => {
     const [searchValue, setSearchValue] = useState<string | undefined>();
     const handleOnSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value);

@@ -30,7 +30,7 @@ export const PowerBIFilter = ({
     report,
     activePageName,
     isFilterActive,
-}: PowerBIFilterProps) => {
+}: PowerBIFilterProps): JSX.Element | null => {
     const [slicerFilters, setSlicerFilters] = useState<PowerBiFilter[] | null>(null);
     const [activeFilters, setActiveFilters] = useState<
         Record<string, (string | number | boolean)[]>

@@ -49,7 +49,7 @@ export const FilterGroup = ({
     filterGroupVisible,
     handleChangeGroup,
     resetFilter,
-}: FilterGroupProps) => {
+}: FilterGroupProps): JSX.Element => {
     const [filterSearchValue, setFilterSearchValue] = useState<string | undefined>();
     const handleOnSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
