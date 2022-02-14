@@ -8,6 +8,7 @@ export interface ScopeChangeContextState {
     request: ScopeChangeRequest;
     requestAccess: OptionRequestResult;
     setErrorMessage: (value: ServerError) => void;
+    isRefetching: boolean;
 }
 
 export const ScopeChangeContext = React.createContext({} as ScopeChangeContextState);

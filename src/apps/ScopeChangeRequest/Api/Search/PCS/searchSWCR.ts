@@ -1,7 +1,6 @@
 import { HttpClient } from '@equinor/http-client';
 import { isProduction } from '../../../../../Core/Client/Functions';
 import { TypedSelectOption } from '../searchType';
-import { Query } from './Types/query';
 import { PCSStructure } from './Types/searchStructure';
 import { SWCR } from './Types/swcr';
 
@@ -17,7 +16,7 @@ export const searchSWCR = async (
 
     const search: PCSStructure[] = [
         {
-            Key: "SwcrHeader",
+            Key: 'SwcrHeader',
             Value: searchString,
         },
     ];
@@ -39,7 +38,7 @@ export const searchSWCR = async (
                 data.map((x: SWCR) => {
                     selectOptions.push({
                         label: x.Header,
-                        value: x.Id.toString(),
+                        value: x.SwcrNo.toString(),
                         type: 'SWCR',
                         searchValue: x.Id.toString(),
                         object: x,

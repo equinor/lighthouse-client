@@ -27,7 +27,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
     const queryClient = useQueryClient();
 
-    const { data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
+    const { data, refetch, remove, isLoading, isRefetching } = useQuery<ScopeChangeRequest>(
         QueryKeys.Scopechange,
         () => getScopeChangeById(item.id, scopeChangeApi),
         {
@@ -136,6 +136,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             </TitleHeader>
             <ScopeChangeContext.Provider
                 value={{
+                    isRefetching: isRefetching,
                     setErrorMessage: (message: ServerError) => setErrorMessage(message),
                     request: data || item,
                     requestAccess: scopeChangeAccess,
