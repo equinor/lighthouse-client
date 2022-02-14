@@ -1,35 +1,29 @@
-import { Icon } from '@equinor/eds-core-react';
-import { Result, IconContainer, ResultLabel } from './stidSelectorStyles';
+import { Checkbox } from '@equinor/eds-core-react';
+import { ResultLabel, ResultItem } from './stidSelectorStyles';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
+import { useState } from 'react';
 
-interface ResultsProps {
-    results: TypedSelectOption[];
-    handleClick: (x: TypedSelectOption) => void;
+interface ResultProps {
+    result: TypedSelectOption;
+    handleClick: (result: TypedSelectOption, action: 'Add' | 'Remove') => void;
+    isSelected: (x: TypedSelectOption) => boolean;
 }
 
-export const Results = ({ results, handleClick }: ResultsProps): JSX.Element => {
+export const Result = ({ result, handleClick, isSelected }: ResultProps): JSX.Element => {
+    const [isChecked, setIsChecked] = useState(isSelected(result));
+
     return (
         <>
-            {results &&
-                results.map((x) => {
-                    return (
-                        <Result key={x.value}>
-                            <IconContainer>
-                                <Icon name={x.type === 'stidtag' ? 'tag' : 'file_copy'} />
-                            </IconContainer>
-                            <ResultLabel>{x.label}</ResultLabel>
-                            <IconContainer>
-                                <Icon
-                                    name={x.type === 'stidtag' ? 'arrow_forward' : 'add'}
-                                    style={{ cursor: 'pointer' }}
-                                    onClick={() => {
-                                        handleClick(x);
-                                    }}
-                                />
-                            </IconContainer>
-                        </Result>
-                    );
-                })}
+            <ResultItem key={result.value}>
+                <Checkbox
+                    checked={isChecked}
+                    onChange={() => {
+                        handleClick(result, isChecked ? 'Remove' : 'Add');
+                        setIsChecked((prev) => !prev);
+                    }}
+                />
+                <ResultLabel>{result.label}</ResultLabel>
+            </ResultItem>
         </>
     );
 };

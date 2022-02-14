@@ -43,3 +43,17 @@ export const ListItem = styled.div`
 export const Spacer = styled.div`
     margin-right: 0.5em;
 `;
+
+export const Title = styled.div`
+    line-height: 24px;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+`;
+
+export const TitleBar = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`;

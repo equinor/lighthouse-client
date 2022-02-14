@@ -1,5 +1,5 @@
 import { SectionRow } from '../../../../Styles/Section';
-import { useScopeChangeAccessContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { Workflow } from '../../../Workflow/Components/Workflow';
 import { Attachments } from '../../Components/Attachments';
 import { RelatedObjects } from '../../Components/RelatedObjects';
@@ -8,7 +8,7 @@ import { BoldHeading, Section, SubHeading, Value } from './RequestDetailViewStyl
 import { HistoryList } from '../History/HistoryList';
 
 export const SingleView = (): JSX.Element => {
-    const { request } = useScopeChangeAccessContext();
+    const { request } = useScopeChangeContext();
 
     return (
         <div>
@@ -21,7 +21,7 @@ export const SingleView = (): JSX.Element => {
 
                 <Section>
                     <SubHeading>State</SubHeading>
-                    <Value>{request.state}</Value>
+                    <Value>{request.isVoided ? 'Voided' : request.state}</Value>
                 </Section>
             </SectionRow>
             <SectionRow>
@@ -65,8 +65,10 @@ export const SingleView = (): JSX.Element => {
                     <RelatedObjects
                         systems={request.systems}
                         commPkgs={request.commissioningPackages}
-                        tags={request.tags}
                         documents={request.documents}
+                        areas={request.areas}
+                        disciplines={request.disciplines}
+                        tags={request.tags}
                     />
                 </Value>
             </Section>
