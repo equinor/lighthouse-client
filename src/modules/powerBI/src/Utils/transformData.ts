@@ -9,7 +9,7 @@ export const transformData = (data: string): { type: string; values: string[] } 
     const type = rawData.shift() || '';
 
     // FilterCleanup
-    const values = rawData.filter((data) => data !== '');
+    const values = rawData.filter((data) => data !== '""' && data !== '');
     return {
         type,
         values,
