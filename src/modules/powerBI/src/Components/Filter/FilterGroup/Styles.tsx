@@ -9,7 +9,6 @@ export const Container = styled.div`
     min-width: 200px;
     word-wrap: break-word;
     height: 180px;
-    gap: 0.5rem;
 `;
 
 export const FilterGroupContainer = styled.div`
