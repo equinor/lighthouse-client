@@ -80,7 +80,7 @@ export function useFusionClient(
                     },
                 },
             },
-            filters: filters ?? undefined,
+            // filters: filters ?? undefined,
         };
     }
 
