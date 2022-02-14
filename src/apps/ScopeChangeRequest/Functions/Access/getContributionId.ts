@@ -13,7 +13,7 @@ export function getContributionId(
 ): string | undefined {
     const foundContributor = contributors
         .filter((contributor) => contributor.contribution === null)
-        .find(async (contributor) => await canContribute(requestId, stepId, contributor.id));
+        .find(async (contributor) => await canContribute({ requestId: requestId, stepId: stepId, contributorId: contributor.id }));
     if (foundContributor) {
         return foundContributor.id;
     }

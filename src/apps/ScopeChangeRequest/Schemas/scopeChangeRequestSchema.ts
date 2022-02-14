@@ -39,7 +39,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         title: 'Change origin',
         inputType: {
             type: 'SingleSelect',
-            selectOptions: ['NCR', 'DCN', 'Query', 'Punch', 'NotApplicable'],
+            selectOptions: ['NCR', 'DCN', 'Query', 'Punch', "SWCR", 'NotApplicable'],
         },
         order: 3,
         placeholderText: 'Select origin',

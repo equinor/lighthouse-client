@@ -67,11 +67,23 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     systems: System[];
     attachments: Attachment[];
     documents: Document[];
-    disciplines: unknown[];
-    areas: unknown[];
+    disciplines: Discipline[];
+    areas: Area[];
     hasComments: boolean;
     sequenceNumber: number;
     //workflow
+}
+
+export interface Discipline {
+    id: string;
+    procosysCode: string;
+    procosysId: number;
+}
+
+export interface Area {
+    id: string;
+    procosysCode: string;
+    procosysId: number;
 }
 
 export interface Document {

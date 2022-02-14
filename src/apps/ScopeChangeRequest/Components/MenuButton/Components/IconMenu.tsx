@@ -48,12 +48,12 @@ export const IconMenu = ({ items, onMenuOpen }: IconMenuProps): JSX.Element => {
                 open={showMenu}
                 anchorEl={anchorRef.current}
                 onClose={closeMenu}
-                placement="bottom"
+                placement="left"
             >
                 {items.map((x, i) => {
                     const Icon = () => x.icon ?? null;
                     return (
-                        <Menu.Item onClick={() => x.onClick && x.onClick()} key={x.label + i}>
+                        <Menu.Item disabled={x.isDisabled} onClick={() => x.onClick && x.onClick()} key={x.label + i}>
                             <Icon />
                             <MenuText>{x.label}</MenuText>
                         </Menu.Item>

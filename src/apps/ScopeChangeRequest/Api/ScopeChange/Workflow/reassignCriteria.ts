@@ -1,4 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
+import { throwOnError } from '../../../Functions/throwError';
 
 interface ReassignBody {
     type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';
@@ -23,8 +24,11 @@ export async function reassignCriteria({
         method: 'PATCH',
         body: JSON.stringify(reassign),
     };
-    await scopeChange.fetch(
+
+    const response = await scopeChange.fetch(
         `api/scope-change-requests/${requestId}/workflow/step/${stepId}/reassign/${criteriaId}`,
         requestOptions
     );
+
+    await throwOnError(response);
 }
