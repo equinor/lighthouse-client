@@ -192,9 +192,9 @@ export function baseClient(
 
             if (response.status) statusCode = response.status;
 
-            if (response && !response.ok) {
-                initializeError(NetworkError, { httpStatusCode: statusCode, url });
-            }
+            // if (response && !response.ok) {
+            //     initializeError(NetworkError, { httpStatusCode: statusCode, url });
+            // }
             return response;
         } catch (Exception) {
             initializeError(NetworkError, { httpStatusCode: statusCode, url });
