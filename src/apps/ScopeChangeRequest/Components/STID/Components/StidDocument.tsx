@@ -2,7 +2,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
 
 import styled from 'styled-components';
-import { Document } from '../Api/STID/Types/Document';
+import { Document } from '../../../Api/STID/Types/Document';
 
 interface StidDocumentProps {
     document: Document;

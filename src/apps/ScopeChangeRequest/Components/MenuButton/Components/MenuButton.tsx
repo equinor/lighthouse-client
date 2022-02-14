@@ -44,7 +44,7 @@ export const MenuButton = ({ items, buttonText, onMenuOpen }: MenuButtonProps): 
                 {items.map((x, i) => {
                     const Icon = () => x.icon ?? <span></span>;
                     return (
-                        <Menu.Item onClick={() => x.onClick && x.onClick()} key={x.label + i}>
+                        <Menu.Item disabled={x.isDisabled} onClick={() => x.onClick && x.onClick()} key={x.label + i}>
                             <Icon />
                             <MenuText>{x.label}</MenuText>
                         </Menu.Item>

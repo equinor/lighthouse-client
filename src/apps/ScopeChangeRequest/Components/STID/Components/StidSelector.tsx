@@ -1,19 +1,20 @@
-import React, { Fragment, useEffect, useReducer, useRef, useState } from 'react';
-import { Button, Icon, Progress, Scrim, TextField } from '@equinor/eds-core-react';
+import React, { Fragment, useEffect, useReducer, useState } from 'react';
+import { Button, Icon, Progress, Scrim, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
-import { searchStid } from '../../../Api/Search/STID/searchStid';
+import { searchStid, StidTypes } from '../../../Api/Search/STID/searchStid';
 import { useHttpClient } from '../../../../../Core/Client/Hooks/useApiClient';
-import { Document } from '../../../Api/STID/Types/Document';
 import { getDocumentsByTag } from '../../../Api/STID/getDocumentsByTag';
-import { sort } from '../../SearchableDropdown/sort';
-import { Results } from './Results';
+import { Result } from './Results';
 import { SubResults } from './SubResult';
 import { AdvancedSearch, StidHeader, StidWrapper, Title } from './stidSelectorStyles';
+import { useCancellationToken } from '../../../Hooks/useCancellationToken';
+import { ProcoSysTypes, searchPcs } from '../../../Api/Search/PCS';
 
 interface StidSelectorProps {
-    documents: Document[];
-    appendDocuments: (documents: Document[]) => void;
+    documents: TypedSelectOption[];
+    appendItem: (item: TypedSelectOption) => void;
+    removeItem: (value: string) => void;
 }
 
 export interface SubResult {
@@ -21,7 +22,11 @@ export interface SubResult {
     documents: TypedSelectOption[];
 }
 
-export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps): JSX.Element => {
+export const StidSelector = ({
+    appendItem,
+    documents,
+    removeItem,
+}: StidSelectorProps): JSX.Element => {
     const { STID } = useHttpClient();
 
     //controls
@@ -29,8 +34,13 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
     const [searchText, setSearchText] = useState<string | undefined>();
     const [results, setResults] = useState<TypedSelectOption[]>([]);
     const [subResults, setSubResults] = useState<SubResult | undefined>();
+    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>();
 
-    const controller = useRef(new AbortController());
+    const { abort, getSignal } = useCancellationToken();
+
+    function checkDuplicate(x: TypedSelectOption): boolean {
+        return documents.map((x) => x.value).includes(x.value);
+    }
 
     const [
         { addDuplicate, documentsLoading, tagsLoading, hasErrored, tagContainsNoDocuments },
@@ -49,6 +59,16 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
         }
     };
 
+    const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
+        'document',
+        'discipline',
+        'area',
+        'commpkg',
+        'tag',
+        'system',
+        // 'stidtag',
+    ];
+
     useEffect(() => {
         if (!searchText || searchText.length === 0) {
             setResults([]);
@@ -58,39 +78,46 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
 
     const handleReturnClick = () => setSubResults(undefined);
 
-    const handleClick = async (x: TypedSelectOption) => {
-        dispatch({ type: 'setAddDuplicate', value: false });
-        dispatch({ type: 'setTagContainsNoDocuments', value: false });
-        if (x.type === 'document') {
-            const selectedDocument = x.object as Document;
-            //Prevent duplicates
-            if (!documents.map((x) => x.docNo).includes(selectedDocument.docNo)) {
-                appendDocuments([selectedDocument]);
-            } else {
-                dispatch({ type: 'setAddDuplicate', value: true });
-            }
-            popResult(x.value);
-        } else {
-            const documents = await getDocumentsByTag('JCA', x.value, STID);
-            if (documents.length === 0) {
-                dispatch({ type: 'setTagContainsNoDocuments', value: true });
-                popResult(x.value);
-            } else {
-                setSubResults({
-                    tagName: x.label,
-                    documents: documents.map((x) => {
-                        return {
-                            label: `DOC_${x.docNo}`,
-                            searchValue: x.docNo,
-                            object: x,
-                            type: 'document',
-                            value: x.docNo,
-                        };
-                    }),
-                });
+    async function handleClick(result: TypedSelectOption, action: 'Add' | 'Remove') {
+        if (result.type === 'stidtag') {
+            await handleStidTagSelected(result);
+            return;
+        }
+
+        if (action === 'Add') {
+            if (!checkDuplicate(result)) {
+                appendItem(result);
+                return;
             }
         }
-    };
+        if (action === 'Remove') {
+            if (checkDuplicate(result)) {
+                removeItem(result.value);
+                return;
+            }
+        }
+    }
+
+    async function handleStidTagSelected(item: TypedSelectOption) {
+        const documents = await getDocumentsByTag('JCA', item.value, STID);
+        if (documents.length === 0) {
+            dispatch({ type: 'setTagContainsNoDocuments', value: true });
+            popResult(item.value);
+        } else {
+            setSubResults({
+                tagName: item.label,
+                documents: documents.map((x) => {
+                    return {
+                        label: `DOC_${x.docNo}`,
+                        searchValue: x.docNo,
+                        object: x,
+                        type: 'document',
+                        value: x.docNo,
+                    };
+                }),
+            });
+        }
+    }
 
     function resetStates() {
         setResults([]);
@@ -100,30 +127,51 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
     }
 
     const fetchResults = async (inputValue: string) => {
-        controller.current.abort();
-        controller.current = new AbortController();
-        setResults([]);
-        dispatch({ type: 'setDocumentsLoading', value: true });
-        dispatch({ type: 'setTagsLoading', value: true });
-        dispatch({ type: 'setHasErrored', value: false });
-        dispatch({ type: 'setTagContainsNoDocuments', value: false });
+        //Aborts previous api call
+        abort();
+        switch (referenceType) {
+            case 'commpkg': {
+                const commPkgs = await searchPcs(inputValue, 'commpkg', getSignal());
+                setResults(commPkgs);
+                break;
+            }
 
-        let tagsResult: TypedSelectOption[] = [];
-        let documentsResult: TypedSelectOption[] = [];
-        try {
-            tagsResult = await searchStid(inputValue, 'stidtag', controller.current.signal);
-            dispatch({ type: 'setTagsLoading', value: false });
-        } catch (e) {
-            dispatch({ type: 'setHasErrored', value: true });
+            case 'system': {
+                const commPkgs = await searchPcs(inputValue, 'system', getSignal());
+                setResults(commPkgs);
+                break;
+            }
+
+            case 'tag': {
+                const commPkgs = await searchPcs(inputValue, 'tag', getSignal());
+                setResults(commPkgs);
+                break;
+            }
+
+            case 'discipline': {
+                const commPkgs = await searchPcs(inputValue, 'discipline', getSignal());
+                setResults(commPkgs);
+                break;
+            }
+
+            case 'area': {
+                const commPkgs = await searchPcs(inputValue, 'area', getSignal());
+                setResults(commPkgs);
+                break;
+            }
+
+            case 'stidtag': {
+                const tagsResult = await searchStid(inputValue, 'stidtag', getSignal());
+                setResults(tagsResult);
+                break;
+            }
+
+            case 'document': {
+                const documentsResult = await searchStid(inputValue, 'document', getSignal());
+                setResults(documentsResult);
+                break;
+            }
         }
-        try {
-            documentsResult = await searchStid(inputValue, 'document', controller.current.signal);
-            dispatch({ type: 'setDocumentsLoading', value: false });
-        } catch (e) {
-            dispatch({ type: 'setHasErrored', value: true });
-        }
-        const combined = [...documentsResult, ...tagsResult];
-        setResults(combined.sort((a, b) => sort(a, b, inputValue)));
     };
 
     return (
@@ -168,27 +216,45 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
                         </StidHeader>
                         <br />
 
-                        <TextField
-                            id={'Stid document selector'}
-                            value={searchText}
-                            inputIcon={
-                                <>
-                                    {documentsLoading || tagsLoading ? (
-                                        <Progress.Dots color="primary" />
-                                    ) : (
-                                        <Icon name="search" />
-                                    )}
-                                </>
-                            }
-                            placeholder={'Type to search tag / document'}
-                            onChange={(e) => {
-                                setSubResults(undefined);
-                                setSearchText(e.target.value || undefined);
-                                if (e.target.value && e.target.value.length > 0) {
-                                    fetchResults(e.target.value);
+                        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1em' }}>
+                            <SingleSelect
+                                meta="(Required)"
+                                label="Reference type"
+                                items={referenceTypes}
+                                handleSelectedItemChange={(change) => {
+                                    if (!change.selectedItem) {
+                                        setReferenceType(undefined);
+                                    } else {
+                                        setReferenceType(
+                                            change.selectedItem as ProcoSysTypes | StidTypes
+                                        );
+                                    }
+                                    setResults([]);
+                                }}
+                            />
+
+                            <TextField
+                                id={'Stid document selector'}
+                                value={searchText}
+                                inputIcon={
+                                    <>
+                                        {documentsLoading || tagsLoading ? (
+                                            <Progress.Dots color="primary" />
+                                        ) : (
+                                            <Icon name="search" />
+                                        )}
+                                    </>
                                 }
-                            }}
-                        />
+                                placeholder={'Type to search tag / document'}
+                                onChange={(e) => {
+                                    setSubResults(undefined);
+                                    setSearchText(e.target.value || undefined);
+                                    if (e.target.value && e.target.value.length > 0) {
+                                        fetchResults(e.target.value);
+                                    }
+                                }}
+                            />
+                        </div>
                         <div style={{ height: '12px' }}>
                             {tagContainsNoDocuments && (
                                 <div style={{ color: 'red' }}>This tag contains no documents</div>
@@ -214,7 +280,17 @@ export const StidSelector = ({ appendDocuments, documents }: StidSelectorProps):
                                 handleClick={handleClick}
                             />
                         ) : (
-                            <Results results={results} handleClick={handleClick} />
+                            <>
+                                {results &&
+                                    results.map((result) => (
+                                        <Result
+                                            key={result.value}
+                                            handleClick={handleClick}
+                                            result={result}
+                                            isSelected={checkDuplicate}
+                                        />
+                                    ))}
+                            </>
                         )}
 
                         <br />

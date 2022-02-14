@@ -49,11 +49,13 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                 label: ContributorActions.Confirm,
                 icon: <Icon name="check_circle_outlined" color="grey" />,
                 onClick: async () => await mutateAsync({ contributorId: contributor.id, requestId: request.id, stepId: step.id, comment: undefined }),
+                isDisabled: !userCanContribute
             })
             actions.push({
                 label: ContributorActions.ConfirmWithComment,
                 icon: <Icon name="comment_add" color="grey" />,
                 onClick: () => setShowCommentField((prev) => !prev),
+                isDisabled: !userCanContribute
             })
         }
         return actions

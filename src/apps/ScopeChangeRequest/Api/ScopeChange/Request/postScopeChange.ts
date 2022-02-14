@@ -1,7 +1,6 @@
 import { HttpClient } from '@equinor/http-client';
 import { ScopeChangeRequestFormModel } from '../../../Types/scopeChangeRequest';
-import { throwOnError } from '../Functions/throwError';
-
+import { throwOnError } from '../../../Functions/throwError';
 
 export async function postScopeChange(
     scopeChange: ScopeChangeRequestFormModel,
@@ -18,7 +17,7 @@ export async function postScopeChange(
         body: JSON.stringify(payload),
     };
 
-    const res = await client.fetch(`api/scope-change-requests`, requestOptions)
+    const res = await client.fetch(`api/scope-change-requests`, requestOptions);
 
     await throwOnError(res);
 

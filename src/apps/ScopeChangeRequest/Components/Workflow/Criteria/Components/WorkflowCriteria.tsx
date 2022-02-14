@@ -50,17 +50,20 @@ export const WorkflowCriteria = ({ step, criteria, canAddContributor }: Workflow
                 label: CriteriaActions.Sign,
                 icon: <Icon name="check_circle_outlined" color="grey" />,
                 onClick: () => signMutation({ action: 'Approved' }),
+                isDisabled: !userCanSign
             });
             actions.push({
                 label: 'Sign with comment',
                 icon: <Icon name="comment_add" color="grey" />,
                 onClick: () => setShowSignWithComment(true),
+                isDisabled: !userCanSign
             });
             if (step.order !== 0) {
                 actions.push({
                     label: 'Reject',
                     icon: <Icon name="assignment_return" color="grey" />,
                     onClick: () => signMutation({ action: 'Rejected' }),
+                    isDisabled: !userCanSign
                 });
             }
         }
@@ -74,6 +77,7 @@ export const WorkflowCriteria = ({ step, criteria, canAddContributor }: Workflow
                 label: CriteriaActions.Reassign,
                 icon: <Icon name="assignment_user" color="grey" />,
                 onClick: () => toggleReassign(),
+                isDisabled: !userCanReassign
             });
         }
         if (userCanUnsign) {
@@ -85,13 +89,15 @@ export const WorkflowCriteria = ({ step, criteria, canAddContributor }: Workflow
                         requestId: request.id,
                         stepId: step.id,
                     }),
+                isDisabled: !userCanUnsign
             });
         }
-        if (canAddContributor) {
+        if (canAddContributor && step.isCurrent) {
             actions.push({
                 label: CriteriaActions.AddContributor,
                 icon: <Icon name="group_add" color="grey" />,
                 onClick: () => toggleContributorSelector(),
+                isDisabled: !canAddContributor
             });
         }
         return actions;
@@ -121,29 +127,28 @@ export const WorkflowCriteria = ({ step, criteria, canAddContributor }: Workflow
         action: 'Approved' | 'Rejected';
     }
     async function onSignStep({ action }: OnSignStepAction) {
-        if (request.currentWorkflowStep && request.currentWorkflowStep.criterias.length > 0) {
-            const currentStepId = request.currentWorkflowStep.id;
-            const unsignedCriterias = request.currentWorkflowStep.criterias.filter(
-                (x) => x.signedAtUtc === null
+
+        const unsignedCriterias = request.workflowSteps.find((x) => x.id === step.id)?.criterias.filter(
+            (x) => x.signedAtUtc === null
+        );
+        const sign = async () => {
+            await signCriteria(request.id, step.id, criteria.id, action, signComment);
+        };
+        if (
+            step.contributors &&
+            step.contributors.some((x) => x.contribution === null) && unsignedCriterias &&
+            unsignedCriterias.length === 1
+        ) {
+            spawnConfirmationDialog(
+                'Not all contributors have responded yet, are you sure you want to continue?',
+                'Warning',
+                sign
             );
-            const sign = async () => {
-                await signCriteria(request.id, currentStepId, criteria.id, action, signComment);
-            };
-            if (
-                request.currentWorkflowStep.contributors &&
-                request.currentWorkflowStep.contributors.some((x) => x.contribution === null) &&
-                unsignedCriterias.length === 1
-            ) {
-                spawnConfirmationDialog(
-                    'Not all contributors have responded yet, are you sure you want to continue?',
-                    'Warning',
-                    sign
-                );
-            } else {
-                await sign();
-            }
-            setSignComment('');
+        } else {
+            await sign();
         }
+        setSignComment('');
+
     }
 
     const {
@@ -170,13 +175,17 @@ export const WorkflowCriteria = ({ step, criteria, canAddContributor }: Workflow
         onError: (e: ServerError) => setErrorMessage(e),
     });
 
-    const { mutateAsync: signMutation, isLoading: signLoading } = useScopeChangeMutation(
+    const { mutateAsync: signMutation, isLoading: signLoading, error } = useScopeChangeMutation(
         onSignStep,
         {
             onError: (e: ServerError) => setErrorMessage(e),
             onSuccess: () => setSignComment("")
         }
     );
+
+    useEffect(() => {
+        console.log(error)
+    }, [error])
 
     const { mutateAsync: unSignMutation, isLoading: unSignLoading } = useScopeChangeMutation(
         unsignCriteria,

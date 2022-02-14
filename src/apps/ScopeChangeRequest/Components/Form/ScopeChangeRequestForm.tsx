@@ -9,15 +9,18 @@ import { useHttpClient } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import { getScopeChangeById, postScopeChange, uploadAttachment } from '../../Api/ScopeChange/Request';
+import {
+    getScopeChangeById,
+    postScopeChange,
+    uploadAttachment,
+} from '../../Api/ScopeChange/Request';
 import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 
-import { Field } from '../DetailView/Components/Field';
-import { Upload } from '../Upload';
+import { Upload } from '../Attachments/Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { Origin } from './Origin';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
@@ -45,7 +48,6 @@ export const ScopeChangeRequestForm = ({
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
     const [errorMessage, setErrorMessage] = useState<ErrorFormat | undefined>();
 
-
     const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
     const { scopeChange } = useHttpClient();
@@ -57,8 +59,6 @@ export const ScopeChangeRequestForm = ({
         const areas = filterElementsByType(relatedObjects, 'area');
         const disciplines = filterElementsByType(relatedObjects, 'discipline');
         const documents = filterElementsByType(relatedObjects, 'document');
-
-
 
         const scID = await postScopeChange(
             {
@@ -77,7 +77,7 @@ export const ScopeChangeRequestForm = ({
             attachments.forEach(async (attachment) => {
                 await uploadAttachment({
                     file: attachment,
-                    requestId: scID
+                    requestId: scID,
                 });
             });
             setIsRedirecting(true);
@@ -86,16 +86,10 @@ export const ScopeChangeRequestForm = ({
         }
     };
 
-
-    const { mutateAsync, isLoading: attachmentsLoading } = useMutation(uploadAttachment, {
+    const { mutate, isLoading } = useMutation(createScopeChangeMutation, {
         retry: 2,
         retryDelay: 2,
-    })
-
-    const { mutate, isLoading, error } = useMutation(createScopeChangeMutation, {
-        retry: 2,
-        retryDelay: 2,
-        onError: (e: ServerError) => setErrorMessage({ message: e, timestamp: new Date() })
+        onError: (e: ServerError) => setErrorMessage({ message: e, timestamp: new Date() }),
     });
 
     const redirect = async (scopeChangeId: string) => {
@@ -183,7 +177,7 @@ export const ScopeChangeRequestForm = ({
                     {
                         Component: RelatedObjectsSearch,
                         order: 6,
-                        title: 'References',
+                        title: '',
                         props: {
                             relatedObjects: relatedObjects,
                             setRelatedObjects: setRelatedObjects,
@@ -191,14 +185,27 @@ export const ScopeChangeRequestForm = ({
                     },
                 ]}
             >
-                <Field
-                    label="Attachments"
-                    value={<Upload attachments={attachments} setAttachments={setAttachments} />}
-                />
+                <Section>
+                    <Title>Attachments</Title>
+                    <Upload attachments={attachments} setAttachments={setAttachments} />
+                </Section>
             </GeneratedForm>
         </>
     );
 };
+
+export const Section = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+`;
+
+export const Title = styled.div`
+    line-height: 24px;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+`;
 
 const TitleHeader = styled.div`
     display: flex;

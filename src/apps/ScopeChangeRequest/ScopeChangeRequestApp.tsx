@@ -8,7 +8,6 @@ import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 import { OriginLink } from './Components/DetailView/Components/OriginLink';
 import { Icon } from '@equinor/eds-core-react';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
-import { Item } from '../../packages/StatusBar';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -34,10 +33,10 @@ export function setup(appApi: ClientApi): void {
         'id',
         'currentWorkflowStep',
         'workflowSteps',
-        "isVoided",
-        "state",
-        "originSource",
-        "originSourceId"
+        'isVoided',
+        'state',
+        'originSource',
+        'originSourceId',
     ];
 
     request.registerFilterOptions({
@@ -56,13 +55,13 @@ export function setup(appApi: ClientApi): void {
             },
             State: (item: ScopeChangeRequest): string => {
                 if (item.isVoided) {
-                    return "Voided";
+                    return 'Voided';
                 }
                 return item.state;
             },
             Origin: (item: ScopeChangeRequest) => {
                 return item.originSource;
-            }
+            },
         },
     });
 
@@ -71,20 +70,24 @@ export function setup(appApi: ClientApi): void {
         enableSelectRows: true,
         customColumns: [
             {
-                Header: "Current step",
-                accessor: "currentWorkflowStep",
+                Header: 'Current step',
+                accessor: 'currentWorkflowStep',
                 Cell: ({ cell }: any) => {
                     return (
                         <div>
-                            {cell.row.original.currentWorkflowStep ? <div>{cell.row.original.currentWorkflowStep.name}</div> : ""}
+                            {cell.row.original.currentWorkflowStep ? (
+                                <div>{cell.row.original.currentWorkflowStep.name}</div>
+                            ) : (
+                                ''
+                            )}
                         </div>
                     );
                 },
-                id: "CurrentStep",
+                id: 'CurrentStep',
                 width: 180,
-                Aggregated: () => console.log("-"),
+                Aggregated: () => console.log('-'),
                 aggregate: 'count',
-            }
+            },
         ],
         hiddenColumns: [
             'id',
@@ -101,9 +104,9 @@ export function setup(appApi: ClientApi): void {
             'hasComments',
             'phase',
             'workflowSteps',
-            "CurrentStep",
+            'CurrentStep',
             'currentWorkflowStep',
-            "state",
+            'state',
             'guesstimateHours',
             'estimatedChangeHours',
             'actualChangeHours',
@@ -207,15 +210,13 @@ export function setup(appApi: ClientApi): void {
                 type: 'Date',
             },
             {
-                key: "state",
+                key: 'state',
                 type: {
                     Cell: ({ cell }: any) => {
                         const request: ScopeChangeRequest = cell.value.content;
-                        return <div>
-                            {request.isVoided ? "VOIDED" : request.state}
-                        </div>
-                    }
-                }
+                        return <div>{request.isVoided ? 'VOIDED' : request.state}</div>;
+                    },
+                },
             },
             {
                 key: 'workflowSteps',
@@ -247,6 +248,14 @@ export function setup(appApi: ClientApi): void {
             },
             {
                 key: 'documents',
+                type: 'Array',
+            },
+            {
+                key: 'areas',
+                type: 'Array',
+            },
+            {
+                key: 'disciplines',
                 type: 'Array',
             },
             {
@@ -322,7 +331,6 @@ export function setup(appApi: ClientApi): void {
     // request.registerAnalyticsOptions(analyticsOptions);
 
     request.registerStatusItems(statusBarData);
-
 }
 
 export const analyticsOptions: AnalyticsOptions<ScopeChangeRequest> = {

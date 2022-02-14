@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { throwOnError } from '../Functions/throwError';
+import { throwOnError } from '../../../Functions/throwError';
 
 interface SubmitContributionParams {
     requestId: string;
@@ -8,9 +8,12 @@ interface SubmitContributionParams {
     comment?: string;
 }
 
-export async function submitContribution(
-    { contributorId, requestId, stepId, comment }: SubmitContributionParams
-): Promise<void> {
+export async function submitContribution({
+    contributorId,
+    requestId,
+    stepId,
+    comment,
+}: SubmitContributionParams): Promise<void> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {

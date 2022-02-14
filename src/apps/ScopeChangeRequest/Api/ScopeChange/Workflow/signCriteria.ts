@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { throwOnError } from '../Functions/throwError';
+import { throwOnError } from '../../../Functions/throwError';
 
 export async function signCriteria(
     requestId: string,
@@ -17,6 +17,7 @@ export async function signCriteria(
             signedState: verdict,
         }),
     };
+
     const res = await scopeChange.fetch(
         `api/scope-change-requests/${requestId}/workflow/step/${stepId}/sign/${criteriaId}`,
         requestOptions

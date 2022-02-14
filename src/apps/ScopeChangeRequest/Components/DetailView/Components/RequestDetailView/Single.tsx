@@ -65,8 +65,10 @@ export const SingleView = (): JSX.Element => {
                     <RelatedObjects
                         systems={request.systems}
                         commPkgs={request.commissioningPackages}
-                        tags={request.tags}
                         documents={request.documents}
+                        areas={request.areas}
+                        disciplines={request.disciplines}
+                        tags={request.tags}
                     />
                 </Value>
             </Section>

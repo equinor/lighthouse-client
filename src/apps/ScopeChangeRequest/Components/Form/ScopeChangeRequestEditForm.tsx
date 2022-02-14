@@ -12,7 +12,7 @@ import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { Field } from '../DetailView/Components/Field';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
-import { Upload } from '../Upload';
+import { Upload } from '../Attachments/Upload';
 import { Origin } from './Origin';
 
 interface ScopeChangeRequestEditFormProps {
@@ -27,26 +27,48 @@ export const ScopeChangeRequestEditForm = ({
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
-
-
     useEffect(() => {
         const relations: TypedSelectOption[] = [];
 
-        request.commissioningPackages.forEach((x) => relations.push({
-            label: `COMM_${x.procosysNumber}`, value: x.procosysNumber, object: x, searchValue: x.procosysNumber, type: "commpkg"
-        }));
+        request.commissioningPackages.forEach((x) =>
+            relations.push({
+                label: `COMM_${x.procosysNumber}`,
+                value: x.procosysNumber,
+                object: x,
+                searchValue: x.procosysNumber,
+                type: 'commpkg',
+            })
+        );
 
-        request.systems.forEach((x) => relations.push({
-            label: `SYS_${x.procosysCode}`, value: x.procosysCode, object: x, searchValue: x.procosysCode, type: "system"
-        }));
+        request.systems.forEach((x) =>
+            relations.push({
+                label: `SYS_${x.procosysCode}`,
+                value: x.procosysCode,
+                object: x,
+                searchValue: x.procosysCode,
+                type: 'system',
+            })
+        );
 
-        request.tags.forEach((x) => relations.push({
-            label: `TAG_${x.procosysNumber}`, value: x.procosysNumber, object: x, searchValue: x.procosysNumber, type: "tag"
-        }));
+        request.tags.forEach((x) =>
+            relations.push({
+                label: `TAG_${x.procosysNumber}`,
+                value: x.procosysNumber,
+                object: x,
+                searchValue: x.procosysNumber,
+                type: 'tag',
+            })
+        );
 
-        request.documents.forEach((x) => relations.push({
-            label: `DOC_${x.stidDocumentNumber}`, value: x.stidDocumentNumber, object: x, searchValue: x.stidDocumentNumber, type: "document"
-        }));
+        request.documents.forEach((x) =>
+            relations.push({
+                label: `DOC_${x.stidDocumentNumber}`,
+                value: x.stidDocumentNumber,
+                object: x,
+                searchValue: x.stidDocumentNumber,
+                type: 'document',
+            })
+        );
 
         // request.areas.forEach((x) => relations.push({
         //     label: x., value: x.procosysNumber, object: x, searchValue: x.procosysNumber, type: "area"
@@ -55,9 +77,8 @@ export const ScopeChangeRequestEditForm = ({
         // request.disciplines.forEach((x) => relations.push({
         //     label: x.procosysNumber, value: x.procosysNumber, object: x, searchValue: x.procosysNumber, type: "commpkg"
         // }));
-        setRelatedObjects(relations)
-
-    }, [request])
+        setRelatedObjects(relations);
+    }, [request]);
 
     const { setErrorMessage } = useScopeChangeContext();
 
@@ -74,14 +95,12 @@ export const ScopeChangeRequestEditForm = ({
     });
 
     const onSubmit = async () => {
-
         const tags = filterElementsByType(relatedObjects, 'tag');
         const systems = filterElementsByType(relatedObjects, 'system');
         const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
         const areas = filterElementsByType(relatedObjects, 'area');
         const disciplines = filterElementsByType(relatedObjects, 'discipline');
         const documents = filterElementsByType(relatedObjects, 'document');
-
 
         await patchScopeChange({
             ...request,

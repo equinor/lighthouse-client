@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { throwOnError } from '../Functions/throwError';
+import { throwOnError } from '../../../Functions/throwError';
 
 interface ReassignBody {
     type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';

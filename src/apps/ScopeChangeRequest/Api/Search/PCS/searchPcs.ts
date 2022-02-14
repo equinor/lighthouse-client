@@ -13,17 +13,16 @@ import { searchPerson } from './searchPerson';
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 
 export type ProcoSysTypes =
+    | PCSOrigins
     | 'tag'
     | 'commpkg'
     | 'system'
-    | 'Query'
     | 'person'
-    | 'DCN'
-    | 'NCR'
     | 'area'
     | 'discipline'
-    | "SWCR"
     | 'functionalRole';
+
+export type PCSOrigins = 'Query' | 'DCN' | 'NCR' | 'SWCR';
 
 /**
  * TODO: convert to hook
@@ -69,7 +68,7 @@ export const searchPcs = async (
         case 'functionalrole':
             return await searchFunctionalRole(searchString, procosys, abortSignal);
 
-        case "swcr":
+        case 'swcr':
             return await searchSWCR(searchString, procosys, abortSignal);
 
         default:

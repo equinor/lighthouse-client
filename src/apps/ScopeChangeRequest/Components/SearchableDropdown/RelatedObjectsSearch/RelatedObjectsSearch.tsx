@@ -6,6 +6,7 @@ import AsyncSelect from 'react-select/async';
 import { ProcoSysTypes, searchPcs } from '../../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
 import { searchStid, StidTypes } from '../../../Api/Search/STID/searchStid';
+import { StidSelector } from '../../STID';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from '../applyEds';
 import { SearchableDropdownWrapper } from '../SearchableDropdownWrapper';
 import {
@@ -17,6 +18,8 @@ import {
     Wrapper,
     ListItem,
     Spacer,
+    Title,
+    TitleBar,
 } from './RelatedObjectsStyles';
 
 interface RelatedObjectsSearchProps {
@@ -118,6 +121,15 @@ export const RelatedObjectsSearch = ({
                     apiErrors.map((name) => {
                         return <ErrorWrapper key={name}>Failed to fetch {name}</ErrorWrapper>;
                     })}
+                <TitleBar>
+                    <Title>References</Title>
+
+                    <StidSelector
+                        documents={relatedObjects}
+                        appendItem={addRelatedObject}
+                        removeItem={removeRelatedObject}
+                    />
+                </TitleBar>
                 <Inline>
                     <div
                         style={{

@@ -1,19 +1,28 @@
 import styled from 'styled-components';
-import { CommissioningPackage, Tag, System, Document } from '../../../Types/scopeChangeRequest';
+import {
+    CommissioningPackage,
+    Tag,
+    System,
+    Document,
+    Discipline,
+    Area,
+} from '../../../Types/scopeChangeRequest';
 
 import { ChevronList } from './ChevronList/ChevronList';
 import { Tag as TagComp } from './Tags/Tag';
+import { Area as AreaComp } from './Area/Area';
+import { Discipline as DisciplineComp } from './Discipline/Discipline';
 import { CommPkg } from './CommPkg/CommPkg';
 import { System as SystemComp } from './Systems/System';
-import { StidDocument as StidVisual } from '../../StidDocument';
+import { StidDocument as StidVisual } from '../../STID';
 import { useStidDocumentResolver } from '../../../Hooks/useStidDocumentResolver';
 
 interface RelatedObjectsProps {
     systems?: System[];
     commPkgs?: CommissioningPackage[];
     tags?: Tag[];
-    areas?: unknown[];
-    disciplines?: unknown[];
+    areas?: Area[];
+    disciplines?: Discipline[];
     documents?: Document[];
 }
 
@@ -22,6 +31,8 @@ export const RelatedObjects = ({
     systems,
     tags,
     documents: inputDocuments,
+    disciplines,
+    areas,
 }: RelatedObjectsProps): JSX.Element => {
     const { documents } = useStidDocumentResolver(inputDocuments);
 
@@ -60,6 +71,26 @@ export const RelatedObjects = ({
                     <>
                         {documents.map((x) => (
                             <StidVisual key={x.docNo} document={x} />
+                        ))}
+                    </>
+                </ChevronList>
+            )}
+
+            {disciplines && (
+                <ChevronList title={`Disciplines (${disciplines.length})`}>
+                    <>
+                        {disciplines.map((x) => (
+                            <DisciplineComp key={x.id} discipline={x} />
+                        ))}
+                    </>
+                </ChevronList>
+            )}
+
+            {areas && (
+                <ChevronList title={`Areas (${areas.length})`}>
+                    <>
+                        {areas.map((x) => (
+                            <AreaComp key={x.id} area={x} />
                         ))}
                     </>
                 </ChevronList>

@@ -64,6 +64,8 @@ export const SplitView = (): JSX.Element => {
                             commPkgs={request.commissioningPackages}
                             tags={request.tags}
                             documents={request.documents}
+                            areas={request.areas}
+                            disciplines={request.disciplines}
                         />
                     </Value>
                 </Section>
@@ -96,5 +98,5 @@ const SplitScreen = styled.div`
     flex-direction: row;
     flex-basis: 0;
     overflow: scroll;
-    padding: 2em 0em
+    padding: 2em 0em;
 `;

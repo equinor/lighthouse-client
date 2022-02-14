@@ -25,7 +25,7 @@ export const SelectPunch = ({ setOriginId, originId }: SelectPunchProps): JSX.El
             );
 
             if (!res.ok) {
-                throw new Error("Invalid punch");
+                throw new Error('Invalid punch');
             }
             setIsValidPunch(true);
             setOriginId(plNumber);
