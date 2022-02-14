@@ -6,7 +6,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../../components/Icon/Icon';
 import { usePowerBI } from './api';
-import { PageNavigation } from './Components';
+import { PageNavigation, PowerBIFilter } from './Components';
 import { Filter } from './models/filter';
 import './style.css';
 
@@ -39,37 +39,42 @@ interface PowerBiProps {
         showFilter?: boolean;
         enableNavigation?: boolean;
     };
+    isFilterActive?: boolean;
 }
 
-export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JSX.Element => {
+export const PowerBI = ({
+    reportUri,
+    filterOptions,
+    options,
+    isFilterActive = false,
+}: PowerBiProps): JSX.Element => {
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
     //TODO custom loading
     const eventHandlersMap = new Map([
         [
             'loaded',
             function () {
-                console.log('Report has loaded');
+                setIsLoaded(true);
             },
         ],
         [
             'rendered',
             function () {
-                console.log('Report has rendered');
-
-                // Update display message
-                //setMessage('The report is rendered');
+                setIsLoaded(true);
             },
         ],
+        ['error', function (event?: service.ICustomEvent<any>) {}],
         [
-            'error',
-            function (event?: service.ICustomEvent<any>) {
-                if (event) {
-                    console.error(event.detail);
-                }
+            'pageChanged',
+            function (event) {
+                setIsLoaded(false);
             },
         ],
+        ['dataSelected', function (e) {}],
+        ['selectionChanged', function (e) {}],
     ]);
 
     return (
@@ -85,6 +90,12 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                 </ErrorWrapper>
             ) : (
                 <Wrapper>
+                    <PowerBIFilter
+                        report={report}
+                        isLoaded={isLoaded}
+                        isFilterActive={isFilterActive}
+                    />
+
                     <PageNavigation report={report} />
                     <PowerBIEmbed
                         embedConfig={config}
