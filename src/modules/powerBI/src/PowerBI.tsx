@@ -39,14 +39,14 @@ interface PowerBiProps {
         showFilter?: boolean;
         enableNavigation?: boolean;
     };
-    isFilterActive: boolean;
+    isFilterActive?: boolean;
 }
 
 export const PowerBI = ({
     reportUri,
     filterOptions,
     options,
-    isFilterActive,
+    isFilterActive = false,
 }: PowerBiProps): JSX.Element => {
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();

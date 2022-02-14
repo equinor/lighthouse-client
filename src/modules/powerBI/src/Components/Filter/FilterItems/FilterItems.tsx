@@ -1,8 +1,8 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import React, { useMemo, useState } from 'react';
-import styled from 'styled-components';
-import { PowerBiFilter, PowerBiFilterItem } from '../../Types';
-import { Header } from './Header';
+import { PowerBiFilter, PowerBiFilterItem } from '../../../Types';
+import { Header } from '../Header';
+import { CheckboxItem, CheckboxWrap, FilterGroupContainer } from './Styles';
 
 type ItemProps = {
     activeFilters: (string | number | boolean)[];
@@ -16,7 +16,7 @@ const Item = ({ activeFilters, filter, group, handleOnChange }: ItemProps) => {
     }, [activeFilters, filter.value]);
 
     return (
-        <div>
+        <CheckboxItem>
             <Checkbox
                 onChange={async () => {
                     await handleOnChange(group, filter);
@@ -24,22 +24,9 @@ const Item = ({ activeFilters, filter, group, handleOnChange }: ItemProps) => {
                 checked={isActive}
                 label={filter.value}
             />
-        </div>
+        </CheckboxItem>
     );
 };
-
-const FilterGroupContainer = styled.div`
-    width: 250px;
-    overflow: scroll;
-    padding: 0.5rem;
-`;
-
-const CheckboxWrap = styled.div`
-    svg {
-        height: 16px;
-        width: 16px;
-    }
-`;
 
 const searchFilterItems = (
     filterItems: PowerBiFilterItem[],

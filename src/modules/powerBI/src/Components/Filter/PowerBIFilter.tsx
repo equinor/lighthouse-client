@@ -1,24 +1,11 @@
-import { tokens } from '@equinor/eds-tokens';
 import { models, Report } from 'powerbi-client';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { PowerBiFilter, PowerBiFilterItem } from '../../Types';
 import { getActiveFilterValues, getFilters } from '../../Utils';
 import { FilterGroup } from './FilterGroup';
 import { FilterItems } from './FilterItems';
-type FilterWrapperProps = {
-    isFilterActive: boolean;
-};
-const FilterWrapper = styled.div<FilterWrapperProps>`
-    display: ${(props) => (props.isFilterActive ? 'flex' : 'none')};
-    background: ${tokens.colors.ui.background__light.rgba};
-    border-bottom: 1.5px solid ${tokens.colors.ui.background__medium.rgba};
-    height: 200px;
-`;
+import { FilterGroupWrap, FilterWrapper } from './Styles';
 
-const FilterGroupWrap = styled.div`
-    border-right: 2px solid ${tokens.colors.ui.background__medium.rgba};
-`;
 type PowerBIFilterProps = {
     report: Report | undefined;
     isLoaded: boolean;
