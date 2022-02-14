@@ -209,7 +209,13 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                 for (const filter of slicerFilters) {
                     await filter.slicer.setSlicerState({ filters: [] });
                 }
-                setActiveFilters({});
+
+                const emptyActiveFilters: Record<string, (string | number | boolean)[]> = {};
+                for (const key in activeFilters) {
+                    emptyActiveFilters[key] = [];
+                }
+
+                setActiveFilters(emptyActiveFilters);
             }
         } catch (errors) {
             console.error('Couldnt remove filters', errors);
