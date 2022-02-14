@@ -80,10 +80,10 @@ export function setup(appApi: ClientApi): void {
     //const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const pages = appApi.createPageViewer();
 
-    pages.registerFusionPowerBi('swcr-analytics-rls', {
-        title: 'SWCR Analytics',
-        reportURI: 'swcr-analytics-rls',
-    });
+    // pages.registerFusionPowerBi('swcr-analytics-rls', {
+    //     title: 'SWCR Analytics',
+    //     reportURI: 'swcr-analytics-rls',
+    // });
 
     // const workPreparation = commissioning.registerDashboard<WP>('work-preparation', {
     //     title: 'Work Preparation',
@@ -146,13 +146,21 @@ export function setup(appApi: ClientApi): void {
     //     title: 'LCI Hanging Garden',
     //     reportURI: 'lci-hanging-gardens',
     // });
+    pages.registerFusionPowerBi('jca-installation', {
+        title: 'Installation',
+        reportURI: 'jca-installation',
+    });
+    pages.registerFusionPowerBi('jca-handover-analytics', {
+        title: 'Handover',
+        reportURI: 'jca-handover-analytics',
+    });
     pages.registerFusionPowerBi('jca-checklist', {
         title: 'Checklist Analytics',
         reportURI: 'jca-checklist',
     });
     pages.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
         title: 'Punch Analytics',
-        reportURI: 'punch-analytics-rls',
+        reportURI: 'jca-punch-analytics',
     });
 
     /** 

@@ -6,7 +6,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../../components/Icon/Icon';
 import { usePowerBI } from './api';
-import { PageNavigation } from './Components';
+import { PageNavigation, PowerBIFilter } from './Components';
 import { Filter } from './models/filter';
 import './style.css';
 
@@ -39,11 +39,19 @@ interface PowerBiProps {
         showFilter?: boolean;
         enableNavigation?: boolean;
     };
+    isFilterActive?: boolean;
 }
 
-export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JSX.Element => {
+export const PowerBI = ({
+    reportUri,
+    filterOptions,
+    options,
+    isFilterActive = false,
+}: PowerBiProps): JSX.Element => {
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
+    const [isLoaded, setIsLoaded] = useState<boolean>(false);
+    const [activePageName, setActivePageName] = useState<string>('');
 
     //TODO custom loading
     const eventHandlersMap = new Map([
@@ -51,6 +59,8 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             'loaded',
             function () {
                 console.log('Report has loaded');
+
+                setIsLoaded(true);
             },
         ],
         [
@@ -58,8 +68,9 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             function () {
                 console.log('Report has rendered');
 
+                setIsLoaded(true);
+
                 // Update display message
-                //setMessage('The report is rendered');
             },
         ],
         [
@@ -67,6 +78,35 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             function (event?: service.ICustomEvent<any>) {
                 if (event) {
                     console.error(event.detail);
+                }
+            },
+        ],
+        [
+            'pageChanged',
+            function (event) {
+                setActivePageName(event.detail.newPage.name);
+            },
+        ],
+        [
+            'dataSelected',
+            function (e) {
+                if (e) {
+                    console.log(e.detail);
+                    if (e.detail.dataPoints && e.detail.dataPoints.length > 0) {
+                        e.detail.dataPoints.forEach((p) => {
+                            p.identity.forEach((element) => {
+                                console.log(element.target.column, element.equals);
+                            });
+                        });
+                    }
+                }
+            },
+        ],
+        [
+            'selectionChanged',
+            function (e) {
+                if (e) {
+                    console.log('"electionChanged" ', e);
                 }
             },
         ],
@@ -85,6 +125,13 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                 </ErrorWrapper>
             ) : (
                 <Wrapper>
+                    <PowerBIFilter
+                        report={report}
+                        isLoaded={isLoaded}
+                        activePageName={activePageName}
+                        isFilterActive={isFilterActive}
+                    />
+
                     <PageNavigation report={report} />
                     <PowerBIEmbed
                         embedConfig={config}
