@@ -40,6 +40,7 @@ export const PageViewerPages = ({
                                     reportUri={page.reportURI}
                                     filterOptions={page.filter}
                                     options={page.options}
+                                    isFilterActive={isFilterActive}
                                 />
                             )}
                         </Page>
