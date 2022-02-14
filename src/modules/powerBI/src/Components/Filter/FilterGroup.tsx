@@ -25,12 +25,7 @@ const FilterGroupContainer = styled.div`
         width: 16px;
     }
 `;
-type FilterGroupProps = {
-    slicerFilters: PowerBiFilter[];
-    filterGroupVisible: string[] | undefined;
-    handleChangeGroup: (filter: PowerBiFilter) => void;
-    resetFilter: () => Promise<void>;
-};
+
 const searchSlicerFilters = (
     slicerFilters: PowerBiFilter[],
     filterValue: string | undefined
@@ -41,6 +36,13 @@ const searchSlicerFilters = (
         curr.type.toLowerCase().includes(filterValue.toLowerCase()) && acc.push(curr);
         return acc;
     }, [] as PowerBiFilter[]);
+};
+
+type FilterGroupProps = {
+    slicerFilters: PowerBiFilter[];
+    filterGroupVisible: string[] | undefined;
+    handleChangeGroup: (filter: PowerBiFilter) => void;
+    resetFilter: () => Promise<void>;
 };
 export const FilterGroup = ({
     slicerFilters,
@@ -60,7 +62,9 @@ export const FilterGroup = ({
             <Header title="Select Filter Type" onSearch={handleOnSearchChange} />
 
             <FilterGroupContainer>
-                <div onClick={async () => await resetFilter()}>Reset filter</div>
+                <div onClick={async () => await resetFilter()} style={{ cursor: 'pointer' }}>
+                    Reset filters
+                </div>
 
                 {searchSlicerFilters(slicerFilters, filterSearchValue).map((filter, index) => {
                     return (

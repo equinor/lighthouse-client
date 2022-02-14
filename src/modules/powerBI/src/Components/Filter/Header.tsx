@@ -1,4 +1,4 @@
-import { Icon, Search } from '@equinor/eds-core-react';
+import { Button, Icon, Search } from '@equinor/eds-core-react';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -13,7 +13,10 @@ const Container = styled.div`
 const Title = styled.div`
     font-weight: 600;
 `;
-
+const SearchButton = styled(Button)`
+    width: 36px;
+    height: 36px;
+`;
 type HeaderProps = {
     title: string;
     onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -32,11 +35,9 @@ export const Header = ({ title, onSearch }: HeaderProps) => {
                     onChange={onSearch}
                 />
             )}
-            <Icon
-                name={isSearchActive ? 'chevron_right' : 'search'}
-                onClick={() => setIsSearchActive(!isSearchActive)}
-                size={24}
-            />
+            <SearchButton variant="ghost_icon" onClick={() => setIsSearchActive(!isSearchActive)}>
+                <Icon name={isSearchActive ? 'chevron_right' : 'search'} size={24} />
+            </SearchButton>
         </Container>
     );
 };
