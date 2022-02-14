@@ -1,5 +1,4 @@
 import { useAuthenticate } from '@equinor/authentication';
-import { EdsProvider } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
 import { Client as ClientProps, ClientContextProvider } from '@equinor/portal-client';
@@ -23,6 +22,13 @@ const GlobalStyle = createGlobalStyle`
 
     p {
         font-size: 13px !important;
+    }
+    pre {
+        font-family: Equinor;
+        font-size: 13px !important;
+        font-weight: 400;
+        line-height: 1.250em;
+        text-align: left;
     }
 
     ::-webkit-scrollbar {
@@ -53,21 +59,19 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
 
     return isAuthenticated ? (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <EdsProvider density={'compact'}>
-                <QueryClientProvider client={queryClient}>
-                    <GlobalStyle />
-                    <ConfirmationDialog />
-                    <ClientContextProvider>
-                        <BrowserRouter>
-                            <ClientTopBar />
-                            <MainLayout>
-                                <ClientRoutes />
-                            </MainLayout>
-                        </BrowserRouter>
-                        <FactoryComponent />
-                    </ClientContextProvider>
-                </QueryClientProvider>
-            </EdsProvider>
+            <QueryClientProvider client={queryClient}>
+                <GlobalStyle />
+                <ConfirmationDialog />
+                <ClientContextProvider>
+                    <BrowserRouter>
+                        <ClientTopBar />
+                        <MainLayout>
+                            <ClientRoutes />
+                        </MainLayout>
+                    </BrowserRouter>
+                    <FactoryComponent />
+                </ClientContextProvider>
+            </QueryClientProvider>
         </ErrorBoundary>
     ) : (
         <>

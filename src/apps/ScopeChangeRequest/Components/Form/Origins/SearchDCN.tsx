@@ -9,6 +9,7 @@ import {
 } from '../../SearchableDropdown/applyEds';
 import { useRef, useState } from 'react';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
+import { SearchableDropdownWrapper } from '../../SearchableDropdown/SearchableDropdownWrapper';
 
 interface PCSLinkProps {
     setOriginId: (originId: string | undefined) => void;
@@ -17,7 +18,7 @@ interface PCSLinkProps {
 
 export const SearchDCN = ({ setOriginId, originId }: PCSLinkProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
-    const debounce = useRef(new Date());
+    const controller = useRef(new AbortController());
 
     const origin: TypedSelectOption | null = originId
         ? {
@@ -35,15 +36,20 @@ export const SearchDCN = ({ setOriginId, originId }: PCSLinkProps): JSX.Element 
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
     ) => {
+        controller.current.abort();
+        controller.current = new AbortController();
         const options: TypedSelectOption[] = [];
 
         try {
-            await (await searchPcs(inputValue, 'DCN')).map((x) => options.push(x));
+            await (
+                await searchPcs(inputValue, 'DCN', controller.current.signal)
+            ).map((x) => options.push(x));
         } catch (e) {
             setApiErrors((prev) => [...prev, 'DCN']);
         }
-
-        callback(options);
+        if (options.length > 0) {
+            callback(options);
+        }
     };
 
     return (
@@ -55,29 +61,11 @@ export const SearchDCN = ({ setOriginId, originId }: PCSLinkProps): JSX.Element 
                 })}
 
             <Inline>
-                <div
-                    style={{ width: '211px', borderBottom: '5px solid #6F6F6F', fontSize: '16px' }}
-                >
+                <SearchableDropdownWrapper>
                     <AsyncSelect
                         cacheOptions={false}
                         defaultValue={origin}
-                        loadOptions={(
-                            inputValue: string,
-                            callback: (
-                                options: OptionsOrGroups<
-                                    TypedSelectOption,
-                                    GroupBase<TypedSelectOption>
-                                >
-                            ) => void
-                        ) => {
-                            const start = debounce.current;
-                            setTimeout(() => {
-                                if (start === debounce.current) {
-                                    loadOptions(inputValue, callback);
-                                }
-                            }, 300);
-                            return;
-                        }}
+                        loadOptions={loadOptions}
                         defaultOptions={false}
                         styles={applyEdsStyles()}
                         components={applyEdsComponents()}
@@ -94,12 +82,11 @@ export const SearchDCN = ({ setOriginId, originId }: PCSLinkProps): JSX.Element 
                             setOriginId(newValue?.value ?? undefined);
                         }}
                         onInputChange={() => {
-                            debounce.current = new Date();
                             setApiErrors([]);
                         }}
                         theme={(theme: Theme) => applyEDSTheme(theme)}
                     />
-                </div>
+                </SearchableDropdownWrapper>
             </Inline>
         </>
     );

@@ -25,7 +25,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         placeholderText: 'Select phase',
     },
     category: {
-        title: 'Category',
+        title: 'Change category',
         inputType: {
             type: 'SingleSelect',
             selectOptions: async () => {
@@ -44,17 +44,19 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         order: 3,
         placeholderText: 'Select origin',
     },
-    originSourceId: {},
+    originSourceId: {
+        optional: true,
+    },
 
     description: {
-        title: 'Description',
+        title: 'Scope description',
         inputType: { type: 'TextArea' },
         order: 4,
         placeholderText: 'Please add description',
     },
     guesstimateHours: {
-        title: 'Guesstimate hours',
-        optional: true,
+        title: 'Guess direct Mhrs',
+        optional: false,
         inputType: { type: 'NumberInput' },
         order: 5,
     },

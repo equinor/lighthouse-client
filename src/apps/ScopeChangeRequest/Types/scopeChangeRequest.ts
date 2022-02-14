@@ -12,12 +12,8 @@ export type StrippedCriteria = Pick<Criteria, 'id' | 'value' | 'signedState'>;
 
 export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCN';
 
-export interface Origin {
-    type: OriginType;
-    id?: string;
-}
-
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
+export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
 export interface ScopeChangeBaseModel {
     id: string;
@@ -29,8 +25,32 @@ export interface ScopeChangeBaseModel {
     originSourceId?: string;
     originSource: OriginType;
     actualChangeHours: number;
-    guesstimateHours: string;
+    guesstimateHours: number;
     guesstimateDescription: string;
+}
+
+export interface LogEntry {
+    createdAtUtc: string;
+    createdBy: {
+        id: string;
+        oid: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    modifiedAtUtc: string;
+    modifiedBy: {
+        id: string;
+        oid: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    id: string;
+    description: string;
+    objectGuid: string;
+    eventType: string;
+    objectType: string;
 }
 
 export interface ScopeChangeRequest extends ScopeChangeBaseModel {
@@ -47,6 +67,10 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     systems: System[];
     attachments: Attachment[];
     documents: Document[];
+    disciplines: unknown[];
+    areas: unknown[];
+    hasComments: boolean;
+    sequenceNumber: number;
     //workflow
 }
 
@@ -106,14 +130,15 @@ export interface Criteria {
     id: string;
     type: string;
     value: string;
-    signedAtUtc: string;
+    signedAtUtc: string | null;
     signedBy: Person;
-    signedComment: string;
+    signedComment: string | null;
     signedState: 'Approved' | 'Rejected' | null;
+    valueDescription: string | null;
 }
 
 export interface Contributor {
-    createdAtUtc: Date;
+    createdAtUtc: Date | null;
     createdBy: Person;
     modifiedAtUtc: Date;
     modifiedBy: Person;

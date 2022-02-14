@@ -17,7 +17,7 @@ export function createSeriesByKeys<T>(
     const categories = dataItem.reduce((acc, item) => {
         acc = acc || [];
         const index = acc.findIndex((i) => i === item[categoryKey]);
-        if (index === -1) {
+        if (index === -1 && item[categoryKey] !== null) {
             acc.push(item[categoryKey]);
         }
         return acc;

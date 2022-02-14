@@ -1,11 +1,12 @@
 import { Accordion, Menu, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { isProduction, useClientContext } from '@equinor/portal-client';
+import { isAppActive, useClientContext } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
 import { AddMenu } from '../../Core/DataFactory';
 import Icon from '../Icon/Icon';
 import { AccordionHeader, AccordionHeaderTitle, AccordionPanel } from './MainMenuExpandedStyles';
-import { MenuItem, MenuItemExternalLink, MenuItemLink, MenuItemTitleLink } from './MainMenuStyles';
+import { MenuItemTitleLink } from './MainMenuStyles';
+import { MenuItem } from './MenuItem';
 import {
     GroupLink,
     LinkIcon,
@@ -16,12 +17,12 @@ import {
     SmallItem,
     Title,
 } from './Styles';
-import { filterByValue, getURL, groupeByKey } from './utils';
+import { filterByValue, groupeByKey } from './utils';
 
 const { Item } = Accordion;
 
 export const MainMenu = (): JSX.Element => {
-    const isProd = isProduction();
+    // const isProd = isProduction();
     const {
         settings: { appsPanelActive },
         registry,
@@ -35,14 +36,11 @@ export const MainMenu = (): JSX.Element => {
         const value = event.target.value;
         setSearchValue(value);
     };
-    // useEffect(() => {
-    //     toggleAppPanel(true);
-    // }, []);
 
     const GroupedMenu = useMemo(
         () =>
             groupeByKey(
-                apps.filter((a) => a.isProduction),
+                apps.filter((a) => isAppActive(a)),
                 'groupe'
             ),
         [apps]
@@ -101,24 +99,12 @@ export const MainMenu = (): JSX.Element => {
                                     </AccordionHeaderTitle>
                                 </AccordionHeader>
                                 <AccordionPanel>
-                                    {filteredList[key].map((item) => (
-                                        <MenuItemLink
-                                            className="link"
-                                            key={`link-${item.shortName}`}
-                                            to={getURL(item, key)}
-                                            title={
-                                                !item.isProduction && isProd
-                                                    ? 'Disabled'
-                                                    : item.title
-                                            }
-                                            style={
-                                                !item.isProduction && isProd
-                                                    ? { color: '#e3e3e3' }
-                                                    : {}
-                                            }
-                                        >
-                                            {item.title}
-                                        </MenuItemLink>
+                                    {filteredList[key].map((manifest) => (
+                                        <MenuItem
+                                            key={`acc-${manifest.shortName}`}
+                                            appId={key}
+                                            manifest={manifest}
+                                        />
                                     ))}
                                 </AccordionPanel>
                             </Item>
@@ -167,45 +153,12 @@ export const MainMenu = (): JSX.Element => {
                                         <Title> {appGroups[key].name}</Title>
                                     </MenuItemTitleLink>
 
-                                    {filteredList[key].map((item) => (
+                                    {filteredList[key].map((manifest) => (
                                         <MenuItem
-                                            key={`link-${item.shortName}`}
-                                            active={location.pathname.includes(
-                                                `${key}/${item.shortName}`
-                                            )}
-                                        >
-                                            {item.uri ? (
-                                                <MenuItemExternalLink
-                                                    href={item.uri}
-                                                    style={
-                                                        !item.isProduction && isProd
-                                                            ? { color: '#e3e3e3' }
-                                                            : {}
-                                                    }
-                                                    target="_blank"
-                                                >
-                                                    {!item.isProduction && isProd
-                                                        ? 'Disabled'
-                                                        : item.title}
-                                                </MenuItemExternalLink>
-                                            ) : (
-                                                <MenuItemLink
-                                                    to={getURL(item, key)}
-                                                    title={
-                                                        !item.isProduction && isProd
-                                                            ? 'Disabled'
-                                                            : item.title
-                                                    }
-                                                    style={
-                                                        !item.isProduction && isProd
-                                                            ? { color: '#e3e3e3' }
-                                                            : {}
-                                                    }
-                                                >
-                                                    {item.title}
-                                                </MenuItemLink>
-                                            )}
-                                        </MenuItem>
+                                            key={`acc-${manifest.shortName}`}
+                                            appId={key}
+                                            manifest={manifest}
+                                        />
                                     ))}
                                 </Menu>
                             </PopoverWrapper>

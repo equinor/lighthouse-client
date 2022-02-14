@@ -1,0 +1,31 @@
+@startuml
+
+title CreateClient
+createClient -> clinetOptions : appsManifests and appGroupes
+config <-- getConfig: fetch appConfig.json
+
+clintConfig <-- getClientConfig: fetch app config from azure function
+config -> getClientConfig
+
+clintConfig --> registerClintConfig: register client-config in clinet context/state
+clintConfig -> evnSetup: setup curretn evnironment for client
+clintConfig -> setupClientAuthProvider
+
+authProvider <- setupClientAuthProvider: setup client authprovider
+authProvider -> setupUserData
+
+userdata <- setupUserData
+userdata --> registerUserData: register user data in client context/state
+
+apps <- appProvider: get apps/appconfig for current evironment
+clintConfig -> appProvider
+clinetOptions -> appProvider
+
+apps -> setupApps
+clintConfig -> setupApps
+authProvider -> setupApps
+
+configuredApps <- setupApps
+configuredApps --> registerClientRegistry
+
+@enduml

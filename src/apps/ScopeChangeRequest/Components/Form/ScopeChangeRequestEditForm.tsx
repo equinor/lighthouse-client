@@ -1,7 +1,7 @@
 import { Button } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect } from 'react';
-import { patchScopeChange } from '../../Api';
+import { patchScopeChange } from '../../Api/ScopeChange/patchScopeChange';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { Origin } from './Origin';

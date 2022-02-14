@@ -1,11 +1,7 @@
-import { Person } from './person';
-
 export interface FunctionalRole {
     Code: string;
+    LibraryType__Id: string;
+    Path: string;
+    Id: number;
     Description: string;
-    Email?: any;
-    InformationEmail?: any;
-    UsePersonalEmail: boolean;
-    Classification: string;
-    Persons: Person[];
 }

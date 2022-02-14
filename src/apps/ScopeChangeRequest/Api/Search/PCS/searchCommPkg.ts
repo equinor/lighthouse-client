@@ -4,7 +4,8 @@ import { CommPkg } from './Types/commpkg';
 
 export const searchCommPkg = async (
     searchString: string,
-    procosysClient: HttpClient
+    procosysClient: HttpClient,
+    signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
@@ -14,7 +15,7 @@ export const searchCommPkg = async (
     )}&includeClosedProjects=false&itemsPerPage=10&includeVoidedCommPkgs=true&includeDecommissioningPkgs=false&api-version=4.1`;
     const url = `${uri}?${queryParameters}`;
     await procosysClient
-        .fetch(url)
+        .fetch(url, { signal })
         .then((response) => response.json())
         .then((data) => {
             data['Items'].map((x: CommPkg) => {

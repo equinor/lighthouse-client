@@ -6,12 +6,13 @@ import { isProduction } from '../../../../../Core/Client/Functions';
 
 export const searchDiscipline = async (
     searchString: string,
-    procosysClient: HttpClient
+    procosysClient: HttpClient,
+    signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
+    const searchIdDev = 105218;
     const searchIdProd = 106105;
-    const searchIdDev = 103742;
 
     const uri = 'api/Search';
     const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
@@ -29,6 +30,7 @@ export const searchDiscipline = async (
     const requestOptions = {
         method: 'POST',
         body: JSON.stringify(search),
+        signal,
     };
 
     await procosysClient

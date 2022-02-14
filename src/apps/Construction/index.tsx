@@ -1,23 +1,24 @@
-import { AnalyticsOptions, SidesheetContent, themeColors } from '@equinor/Diagrams';
+import { AnalyticsOptions } from '@equinor/Diagrams';
+import { baseClient } from '@equinor/http-client';
 import { ClientApi } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
-import { baseClient } from '../../Core/httpClient/src';
-import { CriticalWoTable } from './Components';
-import { cols } from './Components/DetailsPage/tableConfig';
-import { WorkOrder } from './mocData/mockData';
-import { weekDiff } from './Utils';
+import {
+    cols,
+    ConstructionVisual,
+    CriticalWoTable,
+    SidesheetContent,
+    themeColors,
+} from './Components';
+import { WorkOrder } from './Types';
+import { formatNumber, weekDiff } from './Utils';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
     section1: {
         chart1: {
-            type: 'constructionChart',
+            type: 'customVisual',
             options: {
-                timeChartOptions: {
-                    categoriesKey: 'jobStatusCutoffs',
-                    title: 'Job Statuses',
-                    type: 'column',
-                },
-                title: 'Job Statuses',
+                component: ConstructionVisual,
+                componentProps: { title: 'Job Statuses' },
             },
         },
     },
@@ -41,13 +42,20 @@ const analyticsOptions: AnalyticsOptions<WorkOrder> = {
                 colors: [...themeColors.bar],
             },
         },
-        chart3: {
+        chart2: {
             type: 'customVisual',
             options: {
                 component: CriticalWoTable,
                 componentProps: { enableGrouping: true, initialGroupBy: 'discipline' },
             },
         },
+        // chart3: {
+        //     type: 'customVisual',
+        //     options: {
+        //         component: CriticalWoTable,
+        //         componentProps: { enableGrouping: true, initialGroupBy: 'discipline' },
+        //     },
+        // },
     },
 };
 const detailsPage: AnalyticsOptions<WorkOrder> = {
@@ -75,7 +83,7 @@ export function setup(appApi: ClientApi): void {
     });
 
     // Loop Data Test for testing system..
-    workPreparation.registerDataSource(async () => {
+    workPreparation.registerDataSource(async (abortController) => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const project = 'L.O532C.002';
         const response: WorkOrder[] = await api
@@ -84,6 +92,7 @@ export function setup(appApi: ClientApi): void {
                 {
                     method: 'POST',
                     body: JSON.stringify({}),
+                    signal: abortController?.signal,
                 }
             )
             .then((res) => res.json());
@@ -95,7 +104,7 @@ export function setup(appApi: ClientApi): void {
             {
                 status: 'ok',
                 title: 'Job cards created',
-                value: () => data.length.toString(),
+                value: () => formatNumber(data.length),
             },
             {
                 status: 'waring',
@@ -109,22 +118,22 @@ export function setup(appApi: ClientApi): void {
                     //Find all workorders that have status W01, W02 or W03
 
                     const filter = ['W01', 'W02', 'W03'];
-                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatus));
+                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatus ?? ''));
 
                     // Find all the first filtered WOs that are due in one week or less
 
                     const secondFiltered = firstFiltered.filter(
-                        (wo) => weekDiff(new Date(wo.plannedStartupDate)).days <= 42
+                        (wo) => weekDiff(new Date(wo.plannedStartupDate ?? new Date())).days <= 42
                     );
 
-                    return secondFiltered.length.toString();
+                    return formatNumber(secondFiltered.length);
                 },
             },
             {
                 status: 'ok',
                 title: 'Job cards in W04',
                 value: () => {
-                    return data.filter((wo) => wo.jobStatus === 'W04').length.toString();
+                    return formatNumber(data.filter((wo) => wo.jobStatus === 'W04').length);
                 },
             },
         ];
@@ -178,9 +187,9 @@ export function setup(appApi: ClientApi): void {
         title: 'Checklists',
         reportURI: 'jca-checklist',
     });
-    construction.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
+    construction.registerFusionPowerBi('jca-punch-analytics', {
         title: 'Punch',
-        reportURI: 'punch-analytics-rls',
+        reportURI: 'jca-punch-analytics',
     });
     construction.registerFusionPowerBi('jca-handover-analytics', {
         title: 'Handover',

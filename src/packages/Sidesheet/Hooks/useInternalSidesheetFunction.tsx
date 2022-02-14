@@ -1,31 +1,52 @@
-import { useAtom } from '@dbeining/react-atom';
-
 import { getSidesheetContext } from '../context/sidesheetContext';
 import { dispatch } from '../State/actions';
+import { SidesheetState } from '../State/sidesheetState';
 
+type ToggleFunction = (prev: boolean) => boolean;
 interface InternalSidesheetFunctions {
-    closeSidesheet: () => void;
-    togglePinned: () => void;
+    closeSidesheet(): void;
+    togglePinned(): void;
+    setWidth(width: number): void;
+    setIsMinimized(isMinimized: ToggleFunction | boolean): void;
 }
 
 export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
-    const currentState = useAtom(getSidesheetContext());
-
     function togglePinned(): void {
-        dispatch(getSidesheetContext(), () => {
+        dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {
             return {
                 ...currentState,
                 isPinned: currentState.isPinned ? undefined : true,
             };
         });
     }
+    function setWidth(width: number): void {
+        dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {
+            return {
+                ...currentState,
+                width,
+            };
+        });
+    }
+    function setIsMinimized(isMinimized: (prev: boolean) => boolean | boolean): void {
+        dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {
+            return {
+                ...currentState,
+                isMinimized:
+                    typeof isMinimized === 'function'
+                        ? isMinimized(currentState.isMinimized)
+                        : isMinimized,
+            };
+        });
+    }
 
     function closeSidesheet(): void {
-        dispatch(getSidesheetContext(), () => {
+        dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {
             return {
+                ...currentState,
                 SidesheetComponent: undefined,
                 props: undefined,
                 isPinned: undefined,
+                width: currentState.defaultWidth,
             };
         });
     }
@@ -33,5 +54,7 @@ export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
     return {
         togglePinned,
         closeSidesheet,
+        setWidth,
+        setIsMinimized,
     };
 }

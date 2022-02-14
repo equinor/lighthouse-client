@@ -1,11 +1,13 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { ClientApi } from '@equinor/portal-client';
-import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ScopeChangeSideSheet } from './Components/Sidesheet/ScopeChangeSidesheet';
 import { ScopeChangeRequestForm } from './Components/Form/ScopeChangeRequestForm';
-import { WorkflowCompact } from './Components/Workflow/WorkflowCompact';
+import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import { statusBarData } from './Sections/AnalyticsConfig';
 import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
+import { OriginLink } from './Components/DetailView/Components/OriginLink';
+import { Icon } from '@equinor/eds-core-react';
+import { httpClient } from '../../Core/Client/Functions/HttpClient';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -17,7 +19,7 @@ export function setup(appApi: ClientApi): void {
         component: ScopeChangeRequestForm,
     });
 
-    request.registerDataSource(async () => {
+    request.registerDataSource(async (): Promise<ScopeChangeRequest[]> => {
         // const plantId = 'PCS$JOHAN_CASTBERG';
         // const projectName = 'L.O532C.002';
         // const projectId = 177433
@@ -27,47 +29,25 @@ export function setup(appApi: ClientApi): void {
         return JSON.parse(await response.text());
     });
 
-    const scopeChangeExcludeKeys: (keyof ScopeChangeRequest)[] = [
+    const scopeChangeExcludeFilterKeys: (keyof ScopeChangeRequest)[] = [
         'id',
         'currentWorkflowStep',
         'workflowSteps',
     ];
 
     request.registerFilterOptions({
-        excludeKeys: scopeChangeExcludeKeys,
+        excludeKeys: scopeChangeExcludeFilterKeys,
         typeMap: {},
         initialFilters: ['state', 'phase', 'category', 'originSource', 'isVoided'],
         groupValue: {
-            signedAtDate: (item: ScopeChangeRequest): string => {
-                if (item.createdAtUtc === '') return 'unknown';
-                switch (new Date(item.createdAtUtc).getMonth()) {
-                    case 0:
-                        return 'January';
-                    case 1:
-                        return 'February';
-                    case 2:
-                        return 'March';
-                    case 3:
-                        return 'April';
-                    case 4:
-                        return 'May';
-                    case 5:
-                        return 'June';
-                    case 6:
-                        return 'July';
-                    case 7:
-                        return 'August';
-                    case 8:
-                        return 'September';
-                    case 9:
-                        return 'October';
-                    case 10:
-                        return 'November';
-                    case 11:
-                        return 'December';
-                    default:
-                        return 'Unknown';
+            NextToSign: (item: ScopeChangeRequest): string => {
+                if (item.state !== 'Open') {
+                    return 'Closed';
                 }
+                return (
+                    item.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
+                        ?.valueDescription ?? 'null'
+                );
             },
         },
     });
@@ -77,12 +57,7 @@ export function setup(appApi: ClientApi): void {
         enableSelectRows: true,
         hiddenColumns: [
             'id',
-            'currentWorkflowStep',
-            'attachments',
-            'systems',
-            'tags',
-            'commissioningPackages',
-            'documents',
+            // 'currentWorkflowStep',
             'description',
             'guesstimateDescription',
             'createdBy',
@@ -91,17 +66,28 @@ export function setup(appApi: ClientApi): void {
             'originSourceId',
         ],
         columnOrder: [
+            'sequenceNumber',
             'title',
+            'hasComments',
             'phase',
             'workflowSteps',
+            'currentWorkflowStep',
             'guesstimateHours',
             'estimatedChangeHours',
             'actualChangeHours',
             'category',
             'originSource',
             'lastModified',
+            'systems',
+            'areas',
+            'commissioningPackages',
+            'tags',
+            'disciplines',
+            'documents',
+            'attachments',
         ],
         headers: [
+            { key: 'sequenceNumber', title: 'Id' },
             { key: 'title', title: 'Title' },
             { key: 'phase', title: 'Phase' },
             { key: 'workflowSteps', title: 'Workflow' },
@@ -117,19 +103,64 @@ export function setup(appApi: ClientApi): void {
             { key: 'description', title: 'Description' },
             { key: 'state', title: 'Status' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
+            { key: 'currentWorkflowStep', title: 'Next to sign' },
+            {
+                key: 'commissioningPackages',
+                title: 'Comm Pkgs',
+                width: 120,
+            },
+            {
+                key: 'systems',
+                title: 'Systems',
+                width: 120,
+            },
+            {
+                key: 'attachments',
+                title: {
+                    Custom: () => <Icon name="attach_file" />,
+                },
+                width: 80,
+            },
+            {
+                key: 'disciplines',
+                title: {
+                    Custom: () => <Icon name="school" />,
+                },
+                width: 80,
+            },
+            {
+                key: 'areas',
+                title: {
+                    Custom: () => <Icon name="pin_drop" />,
+                },
+                width: 80,
+            },
+            {
+                key: 'hasComments',
+                title: {
+                    Custom: () => <Icon name="comment_chat" />,
+                },
+                width: 80,
+            },
+            {
+                key: 'documents',
+                title: {
+                    Custom: () => <Icon name="file_copy" />,
+                },
+                width: 80,
+            },
+            {
+                key: 'tags',
+                title: {
+                    Custom: () => <Icon name="tag" />,
+                },
+                width: 80,
+            },
         ],
         customCellView: [
             {
-                key: 'createdBy',
-                type: {
-                    Cell: ({ cell }: any) => {
-                        return <div>{cell.value.content.createdBy?.firstName}</div>;
-                    },
-                },
-            },
-            {
                 key: 'modifiedAtUtc',
-                type: 'Date',
+                type: 'RelativeDate',
             },
             {
                 key: 'guesstimateHours',
@@ -161,10 +192,74 @@ export function setup(appApi: ClientApi): void {
                 },
             },
             {
+                key: 'tags',
+                type: 'Array',
+            },
+            {
+                key: 'systems',
+                type: 'Array',
+            },
+            {
+                key: 'attachments',
+                type: 'Array',
+            },
+            {
+                key: 'documents',
+                type: 'Array',
+            },
+            {
+                key: 'commissioningPackages',
+                type: 'Array',
+            },
+            {
+                key: 'hasComments',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        return (
+                            <Icon
+                                name={cell.value.content.hasComments ? 'comment_chat' : 'comment'}
+                                color={cell.value.content.hasComments ? 'black' : 'grey'}
+                            />
+                        );
+                    },
+                },
+            },
+            {
+                key: 'originSource',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        return (
+                            <div>
+                                <OriginLink
+                                    type={cell.value.content.originSource}
+                                    id={cell.value.content.originSourceId}
+                                />
+                            </div>
+                        );
+                    },
+                },
+            },
+            {
                 key: 'isVoided',
                 type: {
                     Cell: ({ cell }) => {
                         return <div>{cell.value.content.isVoided.toString()}</div>;
+                    },
+                },
+            },
+            {
+                key: 'currentWorkflowStep',
+                type: {
+                    Cell: ({ cell }) => {
+                        return (
+                            <div>
+                                {cell.value.content.currentWorkflowStep?.criterias
+                                    .filter((x) => x.signedAtUtc === null)
+                                    .map((x) => {
+                                        return <div key={x.id}>{x.valueDescription}</div>;
+                                    })}
+                            </div>
+                        );
                     },
                 },
             },

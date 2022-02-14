@@ -6,12 +6,12 @@ import { ScopeChangeRequest } from '../../../Types/scopeChangeRequest';
 
 export interface ScopeChangeAccessContextState {
     request: ScopeChangeRequest;
-    performingAction: boolean;
-    setPerformingAction: (value: boolean) => void;
     requestAccess: OptionRequestResult;
     signableCriterias: StrippedCriteria[] | undefined;
     contributionId: string | undefined;
-    refetch: () => Promise<void>;
+    canAddContributor: boolean;
+    notifyChange: () => Promise<void>;
+    setErrorMessage: (value: string) => void;
 }
 
 export const ScopeChangeAccessContext = React.createContext({} as ScopeChangeAccessContextState);

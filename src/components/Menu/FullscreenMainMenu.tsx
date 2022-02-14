@@ -8,13 +8,12 @@ import {
     FullscreenMenuGroupHeaderText,
     FullscreenMenuWrapper,
     HeaderLink,
-    Link,
     MenuColumn,
-    MenuItemExternalLink,
     MenuRow,
-    MenuScrim,
+    MenuScrim
 } from './FullscreenMainMenuStyles';
-import { filterByValue, getURL, groupeByKey } from './utils';
+import { MenuItem } from './MenuItem';
+import { filterByValue, groupeByKey } from './utils';
 
 export const FullscreenMainMenu = (): JSX.Element => {
     const [searchValue, setSearchValue] = useState('');
@@ -57,25 +56,14 @@ export const FullscreenMainMenu = (): JSX.Element => {
                     </HeaderLink>
 
                     {filteredList[key].map((item) => {
-                        return item.uri ? (
-                            <MenuItemExternalLink
-                                href={item.uri}
-                                style={!item.isProduction ? { color: '#e3e3e3' } : {}}
-                                target="_blank"
-                            >
-                                {item.title}
-                            </MenuItemExternalLink>
-                        ) : (
-                            <Link
-                                active={location.pathname.includes(`${key}/${item.shortName}`)}
-                                key={`link-${item.shortName}`}
-                                to={getURL(item, key)}
+                        return (
+                            <MenuItem
+                                key={`acc-${item.shortName}`}
+                                appId={key}
+                                manifest={item}
+                                isFullMenu={true}
                                 onClick={() => toggleFullscreenMenu()}
-                                title={!item.isProduction ? 'Disabled' : item.title}
-                                disabled={!item.isProduction}
-                            >
-                                {item.title}
-                            </Link>
+                            />
                         );
                     })}
                 </FullscreenMenuAppGroup>
@@ -99,33 +87,6 @@ export const FullscreenMainMenu = (): JSX.Element => {
                     <MenuColumn>{appColumn(3)}</MenuColumn>
                     <MenuColumn>{appColumn(4)}</MenuColumn>
                 </MenuRow>
-                {/* <FullscreenMenuItems>
-                <Title className="noBorder">
-                    <Icon name={'fullscreen'} title={'Menu'} color={'#007079'} />
-                    <FullscreenMenuGroupHeaderText style={{ cursor: 'default' }}>
-                    Menu
-                    </FullscreenMenuGroupHeaderText>
-                </Title>
-                <MenuItem
-                onClick={() => {
-                    appsPanelActive ? toggleAppPanel() : null;
-                    toggleFullscreenMenu();
-                }}
-                >
-                <FullscreenMenuItemText>Minimized</FullscreenMenuItemText>
-                </MenuItem>
-                <MenuItem
-                onClick={() => {
-                    !appsPanelActive ? toggleAppPanel() : null;
-                    toggleFullscreenMenu();
-                }}
-                >
-                <FullscreenMenuItemText>Standard</FullscreenMenuItemText>
-                </MenuItem>
-                <MenuItem>
-                <FullscreenMenuItemText disabled={true}>Expand all</FullscreenMenuItemText>
-                </MenuItem>
-            </FullscreenMenuItems> */}
             </FullscreenMenuWrapper>
         </MenuScrim>
     );

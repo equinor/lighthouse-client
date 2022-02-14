@@ -29,7 +29,7 @@ export const Field = ({ label, value, customLabel, customValue }: FieldProps): J
                 bold={customLabel?.bold}
                 faded={customLabel?.faded}
             >
-                <span>{label}</span>
+                <span style={{ fontSize: '12px' }}>{label}</span>
                 <MetaText>{customLabel?.meta}</MetaText>
             </SectionText>
             <SectionText
@@ -44,5 +44,5 @@ export const Field = ({ label, value, customLabel, customValue }: FieldProps): J
 };
 
 const MetaText = styled.span`
-    font-size: 0.7em;
+    font-size: 12px;
 `;

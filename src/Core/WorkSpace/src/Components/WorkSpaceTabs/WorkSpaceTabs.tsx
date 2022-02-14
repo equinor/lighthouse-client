@@ -10,6 +10,7 @@ interface CompletionViewTabsProps {
 }
 
 export const WorkSpaceTabs = ({ tabs, activeTab }: CompletionViewTabsProps): JSX.Element => {
+    //Todo add loading spinner here !!!!!!!!
     return (
         <Panels>
             {tabs.map((tab, index) => {

@@ -3,6 +3,9 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.section`
     padding: 2rem;
+    overflow: scroll;
+    height: -webkit-fill-available;
+    background-color: ${tokens.colors.ui.background__light.rgba};
 `;
 
 export const Header = styled.div`
@@ -52,7 +55,7 @@ export const Main = styled.div`
     margin: 0.5rem;
     height: 500px;
     width: 100%;
-    background-color: ${tokens.colors.ui.background__light.rgba};
+    background-color: ${tokens.colors.ui.background__default.rgba};
 `;
 
 interface SideItemProps {
@@ -63,5 +66,5 @@ export const SideItem = styled.div`
     margin: 0.5rem;
     height: ${({ height }: SideItemProps) => `${height || 325}px`};
     width: 100%;
-    background-color: ${tokens.colors.ui.background__light.rgba};
+    background-color: ${tokens.colors.ui.background__default.rgba};
 `;

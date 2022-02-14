@@ -21,6 +21,11 @@ const Wrap = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: flex-end;
+    padding: 1rem 0 1rem 0;
+`;
+const HeaderTab = styled(Tab)`
+    height: 25px;
+    overflow-x: visible;
 `;
 
 type PageNavigationProps = {
@@ -43,14 +48,13 @@ export const PageNavigation = ({ report }: PageNavigationProps) => {
                 <Wrap>
                     {pages.map((page) => {
                         return (
-                            <Tab
+                            <HeaderTab
                                 key={page.name}
                                 onClick={() => handleClick(page)}
                                 active={page.name === activePage?.name ? true : false}
-                                style={{ overflowX: 'visible' }}
                             >
                                 <TabText>{page.displayName}</TabText>
-                            </Tab>
+                            </HeaderTab>
                         );
                     })}
                     <Line />

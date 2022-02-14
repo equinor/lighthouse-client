@@ -1,4 +1,4 @@
-import { Avatar, TopBar } from '@equinor/eds-core-react';
+import { Avatar, Search, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
 import { SupportButton } from '../../Core/Client/Support/Support';
@@ -38,6 +38,13 @@ const ClientTopBar = (): JSX.Element => {
                     ) : (
                         <Avatar alt="User avatar" src={userImageUrl} />
                     )}
+
+                    <Search
+                        disabled
+                        aria-label="sitewide"
+                        id="search-normal"
+                        placeholder="Search..."
+                    />
                 </Icons>
             </TopBar.Actions>
             <SupportButton />
