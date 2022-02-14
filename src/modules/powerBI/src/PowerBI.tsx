@@ -57,7 +57,7 @@ export const PowerBI = ({
     const eventHandlersMap = new Map([
         [
             'loaded',
-            async function () {
+            function () {
                 console.log('Report has loaded');
 
                 setIsLoaded(true);
@@ -65,7 +65,7 @@ export const PowerBI = ({
         ],
         [
             'rendered',
-            async function () {
+            function () {
                 console.log('Report has rendered');
 
                 setIsLoaded(true);
