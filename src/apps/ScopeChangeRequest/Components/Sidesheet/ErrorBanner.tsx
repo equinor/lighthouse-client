@@ -6,22 +6,23 @@ import { useIsMounted } from '../../Hooks/useIsMounted';
 
 export interface ErrorFormat {
     message: ServerError | undefined;
-    timestamp: Date | undefined;
 }
 
 /**
  * Provides a uniform banner for error messages in the sidesheet
  * @returns
  */
-export function ScopeChangeErrorBanner({ message, timestamp }: ErrorFormat): JSX.Element {
+export function ScopeChangeErrorBanner({ message }: ErrorFormat): JSX.Element {
     const [errorMessage, setErrorMessage] = useState<ServerError | null>(message ?? null);
 
     const isMounted = useIsMounted();
 
     useEffect(() => {
         if (!isMounted) return;
-        setErrorMessage(message ?? null);
-    }, [message, timestamp]);
+        if (message) {
+            setErrorMessage(message ?? null);
+        }
+    }, [message]);
 
     return (
         <>
@@ -32,18 +33,27 @@ export function ScopeChangeErrorBanner({ message, timestamp }: ErrorFormat): JSX
                             <Icon name="mood_sad" />
                         </Banner.Icon>
                         <ErrorMessageContainer>
-
                             <Banner.Message>{`${message?.detail}`}</Banner.Message>
-                            {message?.validationErrors && Object.values(message.validationErrors).map((errorArray) => {
-                                return (
-                                    <>
-                                        {errorArray.map((error) => <Banner.Message key={error}>{error}</Banner.Message>)}
-                                    </>
-                                )
-                            })}
+                            {message?.validationErrors &&
+                                Object.values(message.validationErrors).map((errorArray) => {
+                                    return (
+                                        <>
+                                            {errorArray.map((error) => (
+                                                <Banner.Message key={error}>{error}</Banner.Message>
+                                            ))}
+                                        </>
+                                    );
+                                })}
                         </ErrorMessageContainer>
                         <Banner.Actions>
-                            <Button onClick={() => setErrorMessage(null)}>Dismiss</Button>
+                            <Button
+                                onClick={() => {
+                                    setErrorMessage(null);
+                                    message = undefined;
+                                }}
+                            >
+                                Dismiss
+                            </Button>
                         </Banner.Actions>
                     </Banner>
                 </div>
@@ -53,7 +63,6 @@ export function ScopeChangeErrorBanner({ message, timestamp }: ErrorFormat): JSX
 }
 
 const ErrorMessageContainer = styled.div`
-display: flex;
-flex-direction: column;
-
-`
+    display: flex;
+    flex-direction: column;
+`;

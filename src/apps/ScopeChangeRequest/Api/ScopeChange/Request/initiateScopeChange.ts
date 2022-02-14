@@ -34,7 +34,4 @@ export async function initiateScopeChange(request: ScopeChangeRequest): Promise<
     };
 
     await patchScopeChange(payload);
-
-
-
 }

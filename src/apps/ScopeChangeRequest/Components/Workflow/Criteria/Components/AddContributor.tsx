@@ -12,10 +12,10 @@ import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 
 interface AddContributorProps {
-    onCancel: () => void;
+    close: () => void;
 }
 
-export const AddContributor = ({ onCancel }: AddContributorProps): JSX.Element => {
+export const AddContributor = ({ close }: AddContributorProps): JSX.Element => {
     const [contributor, setContributor] = useState<SelectOption | null>(null);
     const [text, setText] = useState<string>('');
     const { request, setErrorMessage } = useScopeChangeContext();
@@ -30,7 +30,7 @@ export const AddContributor = ({ onCancel }: AddContributorProps): JSX.Element =
     };
 
     const { mutateAsync, isLoading } = useScopeChangeMutation(submit, {
-        onSuccess: () => onCancel(),
+        onSuccess: () => close(),
         onError: (e: ServerError) => setErrorMessage(e),
     });
 
@@ -60,7 +60,7 @@ export const AddContributor = ({ onCancel }: AddContributorProps): JSX.Element =
                             Assign
                         </Button>
                         <Divider />
-                        <Button variant="outlined" onClick={() => onCancel()}>
+                        <Button variant="outlined" onClick={() => close()}>
                             Cancel
                         </Button>
                     </ButtonContainer>

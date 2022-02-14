@@ -11,7 +11,7 @@ import { AdvancedSearch, StidHeader, StidWrapper, Title } from './stidSelectorSt
 import { useCancellationToken } from '../../../Hooks/useCancellationToken';
 import { ProcoSysTypes, searchPcs } from '../../../Api/Search/PCS';
 
-interface StidSelectorProps {
+interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
     appendItem: (item: TypedSelectOption) => void;
     removeItem: (value: string) => void;
@@ -22,11 +22,11 @@ export interface SubResult {
     documents: TypedSelectOption[];
 }
 
-export const StidSelector = ({
+export const AdvancedDocumentSearch = ({
     appendItem,
     documents,
     removeItem,
-}: StidSelectorProps): JSX.Element => {
+}: AdvancedDocumentSearchProps): JSX.Element => {
     const { STID } = useHttpClient();
 
     //controls

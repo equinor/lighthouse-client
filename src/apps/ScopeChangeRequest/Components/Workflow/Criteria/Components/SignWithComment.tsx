@@ -12,10 +12,10 @@ import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 
 interface SignWithCommentProps {
     criteria: Criteria;
-    onCancel: () => void;
+    close: () => void;
 }
 
-export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): JSX.Element => {
+export const SignWithComment = ({ criteria, close }: SignWithCommentProps): JSX.Element => {
     const { request, setErrorMessage } = useScopeChangeContext();
     const [text, setText] = useState<string | undefined>();
 
@@ -67,12 +67,12 @@ export const SignWithComment = ({ criteria, onCancel }: SignWithCommentProps): J
             <ButtonContainer>
                 <Button
                     disabled={!text || text.length === 0}
-                    onClick={() => mutateAsync({ action: 'Approved' }).then(() => onCancel())}
+                    onClick={() => mutateAsync({ action: 'Approved' }).then(() => close())}
                 >
                     Sign
                 </Button>
                 <Divider />
-                <Button variant="outlined" onClick={() => onCancel()}>
+                <Button variant="outlined" onClick={() => close()}>
                     Cancel
                 </Button>
             </ButtonContainer>

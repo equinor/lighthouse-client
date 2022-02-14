@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async';
 import { ProcoSysTypes, searchPcs } from '../../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
 import { searchStid, StidTypes } from '../../../Api/Search/STID/searchStid';
-import { StidSelector } from '../../STID';
+import { AdvancedDocumentSearch } from '../../STID';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from '../applyEds';
 import { SearchableDropdownWrapper } from '../SearchableDropdownWrapper';
 import {
@@ -124,7 +124,7 @@ export const RelatedObjectsSearch = ({
                 <TitleBar>
                     <Title>References</Title>
 
-                    <StidSelector
+                    <AdvancedDocumentSearch
                         documents={relatedObjects}
                         appendItem={addRelatedObject}
                         removeItem={removeRelatedObject}

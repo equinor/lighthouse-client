@@ -17,67 +17,18 @@ import { Origin } from './Origin';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
-    cancel: () => void;
+    close: () => void;
 }
 
 export const ScopeChangeRequestEditForm = ({
     request,
-    cancel,
+    close,
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
     useEffect(() => {
-        const relations: TypedSelectOption[] = [];
-
-        request.commissioningPackages.forEach((x) =>
-            relations.push({
-                label: `COMM_${x.procosysNumber}`,
-                value: x.procosysNumber,
-                object: x,
-                searchValue: x.procosysNumber,
-                type: 'commpkg',
-            })
-        );
-
-        request.systems.forEach((x) =>
-            relations.push({
-                label: `SYS_${x.procosysCode}`,
-                value: x.procosysCode,
-                object: x,
-                searchValue: x.procosysCode,
-                type: 'system',
-            })
-        );
-
-        request.tags.forEach((x) =>
-            relations.push({
-                label: `TAG_${x.procosysNumber}`,
-                value: x.procosysNumber,
-                object: x,
-                searchValue: x.procosysNumber,
-                type: 'tag',
-            })
-        );
-
-        request.documents.forEach((x) =>
-            relations.push({
-                label: `DOC_${x.stidDocumentNumber}`,
-                value: x.stidDocumentNumber,
-                object: x,
-                searchValue: x.stidDocumentNumber,
-                type: 'document',
-            })
-        );
-
-        // request.areas.forEach((x) => relations.push({
-        //     label: x., value: x.procosysNumber, object: x, searchValue: x.procosysNumber, type: "area"
-        // }));
-
-        // request.disciplines.forEach((x) => relations.push({
-        //     label: x.procosysNumber, value: x.procosysNumber, object: x, searchValue: x.procosysNumber, type: "commpkg"
-        // }));
-        setRelatedObjects(relations);
+        unpackRelatedObjects(request, setRelatedObjects);
     }, [request]);
 
     const { setErrorMessage } = useScopeChangeContext();
@@ -117,7 +68,7 @@ export const ScopeChangeRequestEditForm = ({
             await uploadAttachment({ requestId: request.id, file: attachment });
         });
 
-        if (!error) cancel();
+        if (!error) close();
     };
 
     const { isLoading, error, mutateAsync } = useScopeChangeMutation(onSubmit, {
@@ -134,7 +85,7 @@ export const ScopeChangeRequestEditForm = ({
 
     const CancelButton = () => {
         return (
-            <Button variant="outlined" color="danger" onClick={cancel}>
+            <Button variant="outlined" color="danger" onClick={close}>
                 Cancel
             </Button>
         );
@@ -182,4 +133,72 @@ export const ScopeChangeRequestEditForm = ({
 
 function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | StidTypes) {
     return items.filter((x) => x.type === type);
+}
+
+function unpackRelatedObjects(
+    request: ScopeChangeRequest,
+    setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>
+) {
+    const relations: TypedSelectOption[] = [];
+
+    request.commissioningPackages.forEach((x) =>
+        relations.push({
+            label: `COMM_${x.procosysNumber}`,
+            value: x.procosysNumber,
+            object: x,
+            searchValue: x.procosysNumber,
+            type: 'commpkg',
+        })
+    );
+
+    request.systems.forEach((x) =>
+        relations.push({
+            label: `SYS_${x.procosysCode}`,
+            value: x.procosysCode,
+            object: x,
+            searchValue: x.procosysCode,
+            type: 'system',
+        })
+    );
+
+    request.tags.forEach((x) =>
+        relations.push({
+            label: `TAG_${x.procosysNumber}`,
+            value: x.procosysNumber,
+            object: x,
+            searchValue: x.procosysNumber,
+            type: 'tag',
+        })
+    );
+
+    request.documents.forEach((x) =>
+        relations.push({
+            label: `DOC_${x.stidDocumentNumber}`,
+            value: x.stidDocumentNumber,
+            object: x,
+            searchValue: x.stidDocumentNumber,
+            type: 'document',
+        })
+    );
+
+    request.areas.forEach((x) =>
+        relations.push({
+            label: x.procosysCode,
+            value: x.procosysCode,
+            object: x,
+            searchValue: x.procosysCode,
+            type: 'area',
+        })
+    );
+
+    request.disciplines.forEach((x) =>
+        relations.push({
+            label: x.procosysCode,
+            value: x.procosysCode,
+            object: x,
+            searchValue: x.procosysCode,
+            type: 'discipline',
+        })
+    );
+    setRelatedObjects(relations);
 }

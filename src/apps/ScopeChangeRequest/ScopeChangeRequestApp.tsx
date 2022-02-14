@@ -85,7 +85,7 @@ export function setup(appApi: ClientApi): void {
                 },
                 id: 'CurrentStep',
                 width: 180,
-                Aggregated: () => console.log('-'),
+                Aggregated: () => null,
                 aggregate: 'count',
             },
         ],
@@ -293,7 +293,7 @@ export function setup(appApi: ClientApi): void {
             {
                 key: 'currentWorkflowStep',
                 type: {
-                    Cell: ({ cell }) => {
+                    Cell: ({ cell }: any) => {
                         return (
                             <div>
                                 {cell.value.content.currentWorkflowStep?.criterias

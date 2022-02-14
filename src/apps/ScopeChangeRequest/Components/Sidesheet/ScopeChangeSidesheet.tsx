@@ -6,7 +6,6 @@ import { useHttpClient } from '@equinor/portal-client';
 import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 
 import { getScopeChangeById, unVoidRequest, voidRequest } from '../../Api/ScopeChange/Request';
-import { getContributionId } from '../../Functions/Access';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
@@ -16,17 +15,17 @@ import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
 import { ScopeChangeContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { IconMenu, MenuItem } from '../MenuButton';
-import { ErrorFormat, ScopeChangeErrorBanner } from './ErrorBanner';
+import { ScopeChangeErrorBanner } from './ErrorBanner';
 
 import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
 import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
-    const queryClient = useQueryClient();
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<ErrorFormat | undefined>();
+    const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
+    const queryClient = useQueryClient();
 
     const { data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
         QueryKeys.Scopechange,
@@ -37,13 +36,9 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             retry: false,
             onError: () =>
                 setErrorMessage({
-                    message: {
-                        detail: "Failed to connect to server",
-                        statusCode: 0,
-                        title: "Fetch failed",
-                        validationErrors: {}
-                    },
-                    timestamp: new Date(),
+                    detail: 'Failed to connect to server',
+                    title: 'Fetch failed',
+                    validationErrors: {},
                 }),
         }
     );
@@ -51,7 +46,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const scopeChangeAccess = useScopeChangeAccess(item.id);
 
     useEffect(() => {
-        if (item) {
+        if (item.id) {
             remove();
             refetchScopeChange();
         }
@@ -62,9 +57,9 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         await queryClient.fetchQuery(QueryKeys.Scopechange);
     }, [queryClient]);
 
-    const refetchScopeChange = async () => {
+    const refetchScopeChange = useCallback(async () => {
         await refetch();
-    };
+    }, [refetch]);
 
     const actionMenu: MenuItem[] = useMemo(() => {
         const actions: MenuItem[] = [];
@@ -113,10 +108,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     }
     return (
         <Wrapper>
-            <ScopeChangeErrorBanner
-                timestamp={errorMessage?.timestamp}
-                message={errorMessage?.message}
-            />
+            <ScopeChangeErrorBanner message={errorMessage} />
 
             <TitleHeader>
                 <Title>
@@ -144,9 +136,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             </TitleHeader>
             <ScopeChangeContext.Provider
                 value={{
-                    queryClient: queryClient,
-                    setErrorMessage: (message: ServerError) =>
-                        setErrorMessage({ message: message, timestamp: new Date() }),
+                    setErrorMessage: (message: ServerError) => setErrorMessage(message),
                     request: data || item,
                     requestAccess: scopeChangeAccess,
                 }}
@@ -156,7 +146,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         {editMode ? (
                             <ScopeChangeRequestEditForm
                                 request={data}
-                                cancel={() => setEditMode(false)}
+                                close={() => setEditMode(false)}
                             />
                         ) : (
                             <RequestDetailView />

@@ -3,9 +3,9 @@
  */
 export interface ServerError {
     detail: string;
-    statusCode: number;
+    statusCode?: number;
     title: string;
-    validationErrors: ValidationError
+    validationErrors: ValidationError;
 }
 
 export interface ValidationError {

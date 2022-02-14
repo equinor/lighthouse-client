@@ -24,7 +24,7 @@ import { Upload } from '../Attachments/Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { Origin } from './Origin';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
-import { ErrorFormat, ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
+import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 
 interface ScopeChangeRequestFormProps {
@@ -46,7 +46,7 @@ export const ScopeChangeRequestForm = ({
 
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
-    const [errorMessage, setErrorMessage] = useState<ErrorFormat | undefined>();
+    const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
 
     const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
@@ -75,10 +75,7 @@ export const ScopeChangeRequestForm = ({
         );
         if (scID) {
             attachments.forEach(async (attachment) => {
-                await uploadAttachment({
-                    file: attachment,
-                    requestId: scID,
-                });
+                await mutateAsync({ file: attachment, requestId: scID });
             });
             setIsRedirecting(true);
 
@@ -86,10 +83,12 @@ export const ScopeChangeRequestForm = ({
         }
     };
 
+    const { mutateAsync } = useMutation(uploadAttachment, { retry: 2, retryDelay: 2 });
+
     const { mutate, isLoading } = useMutation(createScopeChangeMutation, {
         retry: 2,
         retryDelay: 2,
-        onError: (e: ServerError) => setErrorMessage({ message: e, timestamp: new Date() }),
+        onError: (e: ServerError) => setErrorMessage(e),
     });
 
     const redirect = async (scopeChangeId: string) => {
@@ -146,10 +145,7 @@ export const ScopeChangeRequestForm = ({
 
     return (
         <>
-            <ScopeChangeErrorBanner
-                timestamp={errorMessage?.timestamp}
-                message={errorMessage?.message}
-            />
+            <ScopeChangeErrorBanner message={errorMessage} />
             <TitleHeader>
                 <span style={{ fontSize: '28px' }}>Create scope change request</span>
                 <Icon
