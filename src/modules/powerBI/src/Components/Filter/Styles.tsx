@@ -14,3 +14,12 @@ export const FilterWrapper = styled.div<FilterWrapperProps>`
 export const FilterGroupWrap = styled.div`
     border-right: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
+export const MenuItems = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.2rem;
+`;
+export const ResetFilter = styled.div`
+    cursor: pointer;
+`;

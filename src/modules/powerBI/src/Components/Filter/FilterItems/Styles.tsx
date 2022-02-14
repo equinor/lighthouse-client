@@ -17,6 +17,7 @@ export const CheckboxWrap = styled.span`
     overflow-y: scroll;
     span {
         padding: 2px;
+        font-size: 1rem;
     }
     svg {
         height: 16px;

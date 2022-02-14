@@ -11,9 +11,7 @@ export const Container = styled.div`
     height: 180px;
     gap: 0.5rem;
 `;
-export const ResetFilter = styled.div`
-    cursor: pointer;
-`;
+
 export const FilterGroupContainer = styled.div`
     height: 100%;
     overflow-x: hidden;
@@ -26,7 +24,9 @@ export const CheckboxWrap = styled.span`
 
     span {
         padding: 2px;
+        font-size: 1rem;
     }
+
     svg {
         height: 16px;
         width: 16px;

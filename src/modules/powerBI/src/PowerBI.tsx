@@ -95,7 +95,6 @@ export const PowerBI = ({
                         isLoaded={isLoaded}
                         isFilterActive={isFilterActive}
                     />
-
                     <PageNavigation report={report} />
                     <PowerBIEmbed
                         embedConfig={config}

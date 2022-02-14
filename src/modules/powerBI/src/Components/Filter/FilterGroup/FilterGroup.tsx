@@ -2,31 +2,18 @@ import { Checkbox } from '@equinor/eds-core-react';
 import React, { useState } from 'react';
 import { PowerBiFilter } from '../../../Types';
 import { Header } from '../Header';
-import { CheckboxItem, CheckboxWrap, Container, FilterGroupContainer, ResetFilter } from './Styles';
-
-const searchSlicerFilters = (
-    slicerFilters: PowerBiFilter[],
-    filterValue: string | undefined
-): PowerBiFilter[] => {
-    if (!filterValue) return slicerFilters;
-
-    return slicerFilters.reduce((acc, curr) => {
-        curr.type.toLowerCase().includes(filterValue.toLowerCase()) && acc.push(curr);
-        return acc;
-    }, [] as PowerBiFilter[]);
-};
+import { searchSlicerFilters } from './searchSlicerFilters';
+import { CheckboxItem, CheckboxWrap, Container, FilterGroupContainer } from './Styles';
 
 type FilterGroupProps = {
     slicerFilters: PowerBiFilter[];
     filterGroupVisible: string[] | undefined;
     handleChangeGroup: (filter: PowerBiFilter) => void;
-    resetFilter: () => Promise<void>;
 };
 export const FilterGroup = ({
     slicerFilters,
     filterGroupVisible,
     handleChangeGroup,
-    resetFilter,
 }: FilterGroupProps): JSX.Element => {
     const [filterSearchValue, setFilterSearchValue] = useState<string | undefined>();
     const handleOnSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,8 +27,6 @@ export const FilterGroup = ({
             <Header title="Select Filter Type" onSearch={handleOnSearchChange} />
 
             <FilterGroupContainer>
-                <ResetFilter onClick={async () => await resetFilter()}>Reset filters</ResetFilter>
-
                 <CheckboxWrap>
                     {searchSlicerFilters(slicerFilters, filterSearchValue).map((filter) => {
                         return (
