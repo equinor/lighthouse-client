@@ -21,7 +21,7 @@ export function usePowerBI(
         embedUrl: undefined,
         tokenType: models.TokenType.Embed,
         accessToken: undefined,
-        permissions: models.Permissions.All,
+        // permissions: models.Permissions.All,
         settings: undefined,
     });
 

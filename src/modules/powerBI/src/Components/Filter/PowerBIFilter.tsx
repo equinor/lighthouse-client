@@ -9,13 +9,11 @@ import { FilterGroupWrap, FilterWrapper } from './Styles';
 type PowerBIFilterProps = {
     report: Report | undefined;
     isLoaded: boolean;
-    activePageName: string;
     isFilterActive: boolean;
 };
 export const PowerBIFilter = ({
     isLoaded,
     report,
-    activePageName,
     isFilterActive,
 }: PowerBIFilterProps): JSX.Element | null => {
     const [slicerFilters, setSlicerFilters] = useState<PowerBiFilter[] | null>(null);
@@ -146,7 +144,7 @@ export const PowerBIFilter = ({
                 setActiveFilters(defaultActiveFilters);
             })();
         }
-    }, [report, isLoaded, activePageName]);
+    }, [report, isLoaded]);
 
     /**
      * Effect should be triggered when activeFilters has changed.

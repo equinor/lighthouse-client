@@ -51,65 +51,30 @@ export const PowerBI = ({
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
-    const [activePageName, setActivePageName] = useState<string>('');
 
     //TODO custom loading
     const eventHandlersMap = new Map([
         [
             'loaded',
             function () {
-                console.log('Report has loaded');
-
                 setIsLoaded(true);
             },
         ],
         [
             'rendered',
             function () {
-                console.log('Report has rendered');
-
                 setIsLoaded(true);
-
-                // Update display message
             },
         ],
-        [
-            'error',
-            function (event?: service.ICustomEvent<any>) {
-                if (event) {
-                    console.error(event.detail);
-                }
-            },
-        ],
+        ['error', function (event?: service.ICustomEvent<any>) {}],
         [
             'pageChanged',
             function (event) {
-                setActivePageName(event.detail.newPage.name);
+                setIsLoaded(false);
             },
         ],
-        [
-            'dataSelected',
-            function (e) {
-                if (e) {
-                    console.log(e.detail);
-                    if (e.detail.dataPoints && e.detail.dataPoints.length > 0) {
-                        e.detail.dataPoints.forEach((p) => {
-                            p.identity.forEach((element) => {
-                                console.log(element.target.column, element.equals);
-                            });
-                        });
-                    }
-                }
-            },
-        ],
-        [
-            'selectionChanged',
-            function (e) {
-                if (e) {
-                    console.log('"electionChanged" ', e);
-                }
-            },
-        ],
+        ['dataSelected', function (e) {}],
+        ['selectionChanged', function (e) {}],
     ]);
 
     return (
@@ -128,7 +93,6 @@ export const PowerBI = ({
                     <PowerBIFilter
                         report={report}
                         isLoaded={isLoaded}
-                        activePageName={activePageName}
                         isFilterActive={isFilterActive}
                     />
 

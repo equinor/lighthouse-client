@@ -80,72 +80,11 @@ export function setup(appApi: ClientApi): void {
     //const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const pages = appApi.createPageViewer();
 
-    // pages.registerFusionPowerBi('swcr-analytics-rls', {
-    //     title: 'SWCR Analytics',
-    //     reportURI: 'swcr-analytics-rls',
-    // });
+    pages.registerFusionPowerBi('swcr-analytics-rls', {
+        title: 'SWCR Analytics',
+        reportURI: 'swcr-analytics-rls',
+    });
 
-    // const workPreparation = commissioning.registerDashboard<WP>('work-preparation', {
-    //     title: 'Work Preparation',
-    // });
-
-    // // Loop Data Test for testing system..
-    // workPreparation.registerDataSource(async () => {
-    //     const plantId = 'PCS$JOHAN_CASTBERG';
-    //     const project = 'L.O532C.002';
-    //     const response = await api.fetch(
-    //         `https://api-lighthouse-production.playground.radix.equinor.com/loops/${plantId}/${project}`
-    //     );
-
-    //     return JSON.parse(await response.text());
-    // });
-
-    // const excludeKeys: (keyof WP)[] = [
-    //     'tagNo',
-    //     'functionTags',
-    //     'contentChecklists',
-    //     'description',
-    //     'commPk',
-    //     'mcPk',
-    //     'signedAt',
-    //     'createdAt',
-    // ];
-
-    // workPreparation.registerFilterOptions({ excludeKeys });
-
-    // workPreparation.registerPage({
-    //     title: 'Jobcards',
-    //     pageId: 'workPreparationJobCards',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions,
-    // });
-
-    // workPreparation.registerPage({
-    //     title: 'Hours',
-    //     pageId: 'workPreparationHours',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions2,
-    // });
-    // workPreparation.registerPage({
-    //     title: 'Details',
-    //     pageId: 'workPreparationDetails',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions,
-    // });
-    // workPreparation.registerPage({
-    //     title: 'Hold',
-    //     pageId: 'workPreparationDetailsHold',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions2,
-    // });
-
-    /** 
-    Remove LCI hanging garden, since its not relevant for Commissioning
-    */
-    // construction.registerFusionPowerBi('lci-hanging-gardens', {
-    //     title: 'LCI Hanging Garden',
-    //     reportURI: 'lci-hanging-gardens',
-    // });
     pages.registerFusionPowerBi('jca-installation', {
         title: 'Installation',
         reportURI: 'jca-installation',
