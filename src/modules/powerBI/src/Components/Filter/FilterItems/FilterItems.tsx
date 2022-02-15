@@ -8,7 +8,11 @@ import { CheckboxWrap, FilterGroupContainer } from './Styles';
 
 type FilterItemsProps = {
     filterGroupVisible: string[] | undefined;
-    handleOnChange: (group: PowerBiFilter, filter: PowerBiFilterItem) => Promise<void>;
+    handleOnChange: (
+        group: PowerBiFilter,
+        filter: PowerBiFilterItem,
+        singleClick?: boolean
+    ) => Promise<void>;
     handleOnSelectAll: (group: PowerBiFilter, filter: PowerBiFilterItem) => Promise<void>;
     activeFilters: Record<string, (string | number | boolean)[]>;
     group: PowerBiFilter;

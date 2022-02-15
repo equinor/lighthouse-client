@@ -39,8 +39,8 @@ export const FilterGroup = ({
                                         filterGroupVisible?.find((a) => a === filter.type) !==
                                         undefined
                                     }
-                                    label={filter.type}
                                 />
+                                <label>{filter.type}</label>
                             </CheckboxItem>
                         );
                     })}
