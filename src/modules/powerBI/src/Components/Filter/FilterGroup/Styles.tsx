@@ -25,7 +25,6 @@ export const CheckboxWrap = styled.span`
         padding: 2px;
         font-size: 1rem;
     }
-
     svg {
         height: 16px;
         width: 16px;
@@ -33,6 +32,11 @@ export const CheckboxWrap = styled.span`
 `;
 
 export const CheckboxItem = styled.div`
+    display: flex;
+    align-items: center;
+    > label {
+        font-size: 1rem;
+    }
     :hover {
         background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
     }

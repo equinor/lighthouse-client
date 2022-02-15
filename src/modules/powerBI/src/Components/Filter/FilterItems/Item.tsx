@@ -7,7 +7,11 @@ type ItemProps = {
     activeFilters: (string | number | boolean)[];
     filter: PowerBiFilterItem;
     group: PowerBiFilter;
-    handleOnChange: (group: PowerBiFilter, filter: PowerBiFilterItem) => Promise<void>;
+    handleOnChange: (
+        group: PowerBiFilter,
+        filter: PowerBiFilterItem,
+        singleClick?: boolean
+    ) => Promise<void>;
 };
 export const Item = ({ activeFilters, filter, group, handleOnChange }: ItemProps) => {
     const isActive = useMemo(() => {
@@ -21,8 +25,14 @@ export const Item = ({ activeFilters, filter, group, handleOnChange }: ItemProps
                     await handleOnChange(group, filter);
                 }}
                 checked={isActive}
-                label={filter.value}
             />
+            <label
+                onClick={async () => {
+                    await handleOnChange(group, filter, true);
+                }}
+            >
+                {filter.value}
+            </label>
         </CheckboxItem>
     );
 };

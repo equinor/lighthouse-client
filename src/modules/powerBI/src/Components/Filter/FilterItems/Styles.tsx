@@ -25,6 +25,12 @@ export const CheckboxWrap = styled.span`
     }
 `;
 export const CheckboxItem = styled.div`
+    display: flex;
+    align-items: center;
+    > label {
+        font-size: 1rem;
+        cursor: pointer;
+    }
     :hover {
         background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
     }
