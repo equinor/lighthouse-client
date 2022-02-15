@@ -1,16 +1,24 @@
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
 import styled from 'styled-components';
+import {
+    SystemBanner,
+    useSystemMessage
+} from '../../Core/Messages/System/Compoenents/SystemMessage';
 import { useSideSheet } from '../../packages/Sidesheet/context/sidesheetContext';
 import { getWidth } from '../../packages/Sidesheet/Utils/getWidth';
 import { FullscreenMainMenu } from '../Menu/FullscreenMainMenu';
 import { MainMenu } from '../Menu/MainMenu';
 
+interface WrapperProps {
+    systemMessageActive?: boolean;
+}
 const Wrapper = styled.div`
     position: fixed;
-    top: 48px;
+    top: ${({ systemMessageActive }: WrapperProps) => (systemMessageActive ? '96px' : '48px')};
     height: calc(100vh - 48px);
     display: flex;
+    flex-direction: column;
     width: 100vw;
 `;
 const ChildrenWrapper = styled.div`
@@ -41,10 +49,14 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
         settings: { appsPanelActive, fullscreenMenuActive },
     } = useClientContext();
     const sideSheet = useSideSheet();
+    const messageData = useSystemMessage();
 
     return (
-        <Wrapper>
+        <Wrapper systemMessageActive={messageData.isActive}>
             {fullscreenMenuActive && <FullscreenMainMenu />}
+            {messageData.isActive && (
+                <SystemBanner {...messageData} handleClose={messageData.handleClose} />
+            )}
             <MainMenuWrapper panelActive={appsPanelActive}>
                 <MainMenu />
             </MainMenuWrapper>

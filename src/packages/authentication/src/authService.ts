@@ -52,15 +52,13 @@ export function authenticationProvider(
     configuration: Configuration,
     customLoginRequest: RedirectRequest = defaultLoginRequest
 ): AuthenticationProvider {
-    const publicClient: PublicClientApplication = new PublicClientApplication(
-        configuration
-    );
+    const publicClient: PublicClientApplication = new PublicClientApplication(configuration);
 
     const authProperties: AuthProperties = {
         account: null,
         loginError: false,
         isAuthenticated: false,
-        loginRequest: customLoginRequest
+        loginRequest: customLoginRequest,
     };
 
     async function logout(): Promise<void> {
@@ -82,7 +80,7 @@ export function authenticationProvider(
         return {
             account: user,
             forceRefresh: false,
-            scopes: ['openid', 'profile', 'User.Read', 'offline_access']
+            scopes: ['openid', 'profile', 'User.Read', 'offline_access'],
         };
     }
 
@@ -101,7 +99,7 @@ export function authenticationProvider(
             if (!authProperties.account) return '';
             const { accessToken } = await publicClient.acquireTokenSilent({
                 account: authProperties.account,
-                scopes: scopes ? scopes : defaultLoginRequest.scopes
+                scopes: scopes ? scopes : defaultLoginRequest.scopes,
             });
             if (accessToken) {
                 return accessToken;
@@ -111,9 +109,7 @@ export function authenticationProvider(
                 return '';
             }
         } catch (error) {
-            return await acquireTokenPopup(
-                scopes ? scopes : defaultLoginRequest.scopes
-            );
+            return await acquireTokenPopup(scopes ? scopes : defaultLoginRequest.scopes);
         }
     };
 
@@ -121,7 +117,7 @@ export function authenticationProvider(
         if (!authProperties.account) return '';
         const { accessToken } = await publicClient.acquireTokenPopup({
             account: authProperties.account,
-            scopes: scopes
+            scopes: scopes,
         });
 
         if (accessToken) {
@@ -137,9 +133,7 @@ export function authenticationProvider(
         return authProperties.isAuthenticated;
     }
 
-    async function silentOrRedirectToAuthenticate(
-        logRequest?: LoggingFunction
-    ) {
+    async function silentOrRedirectToAuthenticate(logRequest?: LoggingFunction) {
         try {
             const response = await publicClient.acquireTokenSilent(
                 loginSilentlyRequest(publicClient.getAllAccounts()[0])
@@ -150,9 +144,7 @@ export function authenticationProvider(
             logRequest && logRequest('Silent token acquisition failed.');
             if (error instanceof InteractionRequiredAuthError) {
                 console.log('Acquiring token using redirect');
-                publicClient
-                    .acquireTokenRedirect(authProperties.loginRequest)
-                    .then();
+                publicClient.acquireTokenRedirect(authProperties.loginRequest).then();
             } else {
                 logRequest ? logRequest(error) : console.error(error);
             }
@@ -184,6 +176,6 @@ export function authenticationProvider(
         getCurrentUser,
         isAuthenticated,
         getAccessToken,
-        getUserName
+        getUserName,
     };
 }
