@@ -12,7 +12,7 @@ export const searchSWCR = async (
     const selectOptions: TypedSelectOption[] = [];
 
     const searchIdDev = 105222;
-    const searchIdProd = 0;
+    const searchIdProd = 106827;
 
     const search: PCSStructure[] = [
         {

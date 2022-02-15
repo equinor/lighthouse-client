@@ -1,17 +1,22 @@
-import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import { LogEntry } from '../../../../Types/scopeChangeRequest';
+import {
+    convertUtcToLocalDate,
+    dateToDateTimeFormat,
+} from '../../../Workflow/Utils/dateFormatting';
 
 interface HistoryItemProps {
     item: LogEntry;
 }
 
 export function HistoryItem({ item }: HistoryItemProps): JSX.Element {
+    const date = convertUtcToLocalDate(new Date(item.createdAtUtc));
+    const formattedDate = dateToDateTimeFormat(date);
+
     return (
         <ItemWrapper>
             <MetaText>
-                {`${DateTime.fromJSDate(new Date(item.createdAtUtc)).toRelative()} by ${item.createdBy.firstName
-                    } ${item.createdBy.lastName}`}
+                {`${formattedDate} by ${item.createdBy.firstName} ${item.createdBy.lastName}`}
             </MetaText>
             <Text>{item.description}</Text>
         </ItemWrapper>

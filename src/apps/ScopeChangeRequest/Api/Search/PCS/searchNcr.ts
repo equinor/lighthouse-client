@@ -11,7 +11,7 @@ export const searchNCR = async (
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
     const searchIdDev = 105217;
-    const searchIdProd = 105600;
+    const searchIdProd = 106826;
 
     const search: PCSStructure[] = [
         {

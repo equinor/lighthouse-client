@@ -1,7 +1,9 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { System as SystemInterface } from '../../../../Types/scopeChangeRequest';
-import { isProduction } from '../../../../../../Core/Client/';
+import { System as SystemInterface } from '../../../../../Types/scopeChangeRequest';
+import { isProduction } from '../../../../../../../Core/Client/';
+import { Wrapper } from '../WrapperStyles';
+import { Icon } from '@equinor/eds-core-react';
 
 interface SystemProps {
     system: SystemInterface;
@@ -9,7 +11,8 @@ interface SystemProps {
 
 export const System = ({ system }: SystemProps): JSX.Element => {
     return (
-        <TagWrapper key={system.id}>
+        <Wrapper key={system.id}>
+            <Icon name="placeholder_icon" />
             <Link
                 href={`https://${isProduction() ? 'procosys' : 'procosystest'
                     }.equinor.com/JOHAN_CASTBERG/Completion#System|${system.procosysId}`}
@@ -17,7 +20,7 @@ export const System = ({ system }: SystemProps): JSX.Element => {
             >
                 SYS_{system.procosysCode}
             </Link>
-        </TagWrapper>
+        </Wrapper>
     );
 };
 
@@ -25,14 +28,4 @@ const Link = styled.a`
     font-size: 16px;
     text-decoration: underline;
     color: ${tokens.colors.interactive.primary__resting.hex};
-`;
-
-const TagWrapper = styled.div`
-    display: flex;
-    font-size: 16px;
-    height: 16px;
-    justify-content: space-between;
-    align-items: center;
-    color: ${tokens.colors.interactive.primary__resting.hex};
-    margin: 0.2rem 0rem;
 `;

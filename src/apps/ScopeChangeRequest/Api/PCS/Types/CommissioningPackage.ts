@@ -1,0 +1,32 @@
+export interface CommissioningPackage {
+    Id: number;
+    TagNo: string;
+    Description: string;
+    RegisterCode: string;
+    RegisterDescription: string;
+    StatusCode: string;
+    StatusDescription: string;
+    TagFunctionCode: string;
+    TagFunctionDescription: string;
+    CommPkgNo: string | null;
+    McPkgNo: string | null;
+    PurchaseOrderNo: string;
+    CallOffNo: string;
+    ProjectDescription: string;
+    Sequence?: any;
+    MountedOnTagNo?: any;
+    Remark?: any;
+    SystemCode: string | null;
+    SystemDescription: string | null;
+    DisciplineCode: string;
+    DisciplineDescription: string;
+    AreaCode: string | null;
+    AreaDescription: string | null;
+    EngineeringCodeCode: string;
+    EngineeringCodeDescription: string;
+    ContractorCode: string;
+    ContractorDescription: string;
+    HasPreservation: boolean;
+    PreservationMigrated?: any;
+    PurchaseOrderTitle: string;
+}

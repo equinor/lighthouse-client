@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
-import { Icon, Progress } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 
 import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
@@ -19,6 +19,7 @@ import { TypedSelectOption } from '../../../../Api/Search/searchType';
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
+import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -35,6 +36,8 @@ export const WorkflowCriteria = ({
     const { request, setErrorMessage } = useScopeChangeContext();
     const [signComment, setSignComment] = useState<string>('');
     const [showSignWithComment, setShowSignWithComment] = useState(false);
+
+    const isBusy = useApiActionObserver();
 
     const { canReassign, canSign, canUnsign } = useWorkflowCriteriaOptions(
         request.id,
@@ -61,7 +64,7 @@ export const WorkflowCriteria = ({
             if (step.order !== 0) {
                 actions.push({
                     label: 'Reject',
-                    icon: <Icon name="assignment_return" color="grey" />,
+                    icon: <Icon name="close_circle_outlined" color="grey" />,
                     onClick: () => signMutation({ action: 'Rejected' }),
                     isDisabled: !canSign,
                 });
@@ -169,24 +172,18 @@ export const WorkflowCriteria = ({
         setSelected(null);
     };
 
-    const { mutateAsync: reassignMutation, isLoading } = useScopeChangeMutation(reassignCriteria, {
+    const { mutateAsync: reassignMutation } = useScopeChangeMutation(reassignCriteria, {
         onError: (e: ServerError) => setErrorMessage(e),
     });
 
-    const { mutateAsync: signMutation, isLoading: signLoading } = useScopeChangeMutation(
-        onSignStep,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-            onSuccess: () => setSignComment(''),
-        }
-    );
+    const { mutateAsync: signMutation } = useScopeChangeMutation(onSignStep, {
+        onError: (e: ServerError) => setErrorMessage(e),
+        onSuccess: () => setSignComment(''),
+    });
 
-    const { mutateAsync: unSignMutation, isLoading: unSignLoading } = useScopeChangeMutation(
-        unsignCriteria,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-        }
-    );
+    const { mutateAsync: unSignMutation } = useScopeChangeMutation(unsignCriteria, {
+        onError: (e: ServerError) => setErrorMessage(e),
+    });
 
     return (
         <>
@@ -202,13 +199,18 @@ export const WorkflowCriteria = ({
                         items={makeSignOptions()}
                         onMenuOpen={() => closeAll()}
                         buttonText="Sign"
+                        isDisabled={isBusy}
                     />
 
-                    <IconMenu items={makeMoreActions()} onMenuOpen={() => closeAll()} />
+                    <IconMenu
+                        isDisabled={isBusy}
+                        items={makeMoreActions()}
+                        onMenuOpen={() => closeAll()}
+                    />
                 </Inline>
             </WorkflowStepViewContainer>
 
-            {(isLoading || signLoading || unSignLoading) && <Progress.Dots color="primary" />}
+            {/* {(isLoading || signLoading || unSignLoading) && <Progress.Dots color="primary" />} */}
 
             <ContributorSelector />
             {showSignWithComment && (
