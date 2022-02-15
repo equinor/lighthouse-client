@@ -12,7 +12,7 @@ export const ConfirmationDialog = (): JSX.Element | null => {
     return (
         <>
             <Scrim isDismissable={false} style={{ zIndex: 1000 }}>
-                <Dialog style={{ width: '110%', minWidth: '350px' }}>
+                <DialogContainer>
                     <DialogPadding>
                         <TitleSection>{dialog.dialogTitle}</TitleSection>
                         <p>{dialog.dialogText}</p>
@@ -38,11 +38,16 @@ export const ConfirmationDialog = (): JSX.Element | null => {
                             </Button>
                         </ButtonContainer>
                     </DialogPadding>
-                </Dialog>
+                </DialogContainer>
             </Scrim>
         </>
     );
 };
+
+const DialogContainer = styled(Dialog)`
+    width: 110%;
+    min-width: 350px;
+`;
 
 const ButtonContainer = styled.div`
     display: flex;
