@@ -76,7 +76,7 @@ export const appGroups: Record<Apps, AppGroupe> = {
         columnId: 1,
     },
     ConstructionAndCommissioning: {
-        name: 'Construction And Commissioning',
+        name: 'Construction and Commissioning',
         icon: ConstructionManagementIcon,
         columnId: 2,
     },
