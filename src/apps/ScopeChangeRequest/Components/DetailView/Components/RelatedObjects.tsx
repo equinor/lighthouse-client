@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import {
     CommissioningPackage,
     Tag,
@@ -7,7 +8,6 @@ import {
     Discipline,
     Area,
 } from '../../../Types/scopeChangeRequest';
-
 import { ChevronList } from './ChevronList/ChevronList';
 import { Tag as TagComp } from './RelatedObjects/Tags/Tag';
 import { Area as AreaComp } from './RelatedObjects/Area/Area';
@@ -27,11 +27,11 @@ interface RelatedObjectsProps {
 
 export const RelatedObjects = ({
     commPkgs = [],
-    systems,
-    tags,
-    documents,
-    disciplines,
-    areas,
+    systems = [],
+    tags = [],
+    documents = [],
+    disciplines = [],
+    areas = [],
 }: RelatedObjectsProps): JSX.Element => {
     // const resolvedCommissioningPackages = useCommissioningPackageResolver(
     //     commPkgs?.map((x) => x.procosysNumber)
