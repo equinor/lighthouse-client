@@ -48,7 +48,7 @@ export const ModelViewer: React.FC<CustomClientApi> = (appApi: CustomClientApi):
             setThreeDInstance(instance);
 
             if (isAuthenticated) {
-                await instance.loadModel(114, 4, geometryFilter);
+                await instance.loadModel(971, 70, geometryFilter);
             }
         }
 
