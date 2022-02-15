@@ -1,8 +1,9 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useCallback, useState } from 'react';
-import { FileRejection, useDropzone } from 'react-dropzone';
+import { FileRejection } from 'react-dropzone';
 import styled from 'styled-components';
+import { Attachments } from './Attachments';
 
 interface UploadProps {
     attachments: File[];
@@ -25,7 +26,7 @@ export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Elemen
     };
 
     const onDrop = useCallback(
-        (acceptedFiles, fileRejections: FileRejection[]) => {
+        async (acceptedFiles, fileRejections: FileRejection[]) => {
             setRejectedFiles(fileRejections);
             if (acceptedFiles[0]) {
                 addFile(acceptedFiles[0]);
@@ -34,28 +35,9 @@ export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Elemen
         [addFile]
     );
 
-    const { getRootProps, getInputProps } = useDropzone({
-        onDrop,
-        maxSize: maxSizeInBytes,
-    });
-
     return (
         <Wrapper>
-            <AttachmentsContainer {...getRootProps()}>
-                <DropHere>
-                    <Icon
-                        style={{ width: '32px', height: '32px' }}
-                        name={'cloud_upload'}
-                        color={tokens.colors.interactive.primary__resting.rgba}
-                    />
-                    <input {...getInputProps()} />
-
-                    <span style={{ fontSize: '16px' }}>Drop files or browse to upload</span>
-                    <span style={{ fontSize: '12px' }}>
-                        Max size: {maxSizeInBytes / 1000 ** 2}MB
-                    </span>
-                </DropHere>
-            </AttachmentsContainer>
+            <Attachments onDrop={onDrop} maxSizeInBytes={maxSizeInBytes} />
             {attachments.map((attachment, i) => {
                 return (
                     <AttachmentsList key={i}>
@@ -78,7 +60,7 @@ export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Elemen
                                 style={{ margin: '0em 0.5em' }}
                                 color={tokens.colors.interactive.primary__resting.rgba}
                                 onClick={() => removeAttachment(attachment.name)}
-                                name="delete_forever"
+                                name="clear"
                             />
                         </Inline>
                     </AttachmentsList>
@@ -118,21 +100,4 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: -webkit-fill-available;
-`;
-
-const AttachmentsContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 96px;
-    width: 592px;
-    cursor: pointer;
-    border: 2px dotted ${tokens.colors.interactive.primary__resting.hex};
-`;
-
-const DropHere = styled.div`
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
 `;

@@ -12,7 +12,7 @@ export const ConfirmationDialog = (): JSX.Element | null => {
     return (
         <>
             <Scrim isDismissable={false} style={{ zIndex: 1000 }}>
-                <Dialog style={{ width: '110%' }}>
+                <Dialog style={{ width: '110%', minWidth: '350px' }}>
                     <DialogPadding>
                         <TitleSection>{dialog.dialogTitle}</TitleSection>
                         <p>{dialog.dialogText}</p>

@@ -1,5 +1,4 @@
-
-import { WorkflowStepContainer } from '../Step'
+import { WorkflowStepContainer } from '../Step';
 import { useScopeChangeContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 
 export function Workflow(): JSX.Element {
@@ -7,9 +6,9 @@ export function Workflow(): JSX.Element {
 
     return (
         <div>
-            {request.workflowSteps.map((step) => <WorkflowStepContainer key={step.id} step={step} />
-            )}
+            {request.workflowSteps.map((step) => (
+                <WorkflowStepContainer key={step.id} step={step} />
+            ))}
         </div>
     );
 }
-

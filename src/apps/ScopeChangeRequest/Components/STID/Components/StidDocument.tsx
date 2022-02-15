@@ -1,18 +1,42 @@
 import { tokens } from '@equinor/eds-tokens';
-import { Icon } from '@equinor/eds-core-react';
+import { Icon, Progress } from '@equinor/eds-core-react';
 
 import styled from 'styled-components';
-import { Document } from '../../../Api/STID/Types/Document';
+import { Document } from '../../../Types/scopeChangeRequest';
+import { useQuery } from 'react-query';
+import { getDocumentById } from '../../../Api/STID/getDocumentById';
 
 interface StidDocumentProps {
     document: Document;
 }
 
 export const StidDocument = ({ document }: StidDocumentProps): JSX.Element => {
-    const revDate = new Date(document.revDate).toISOString().slice(0, 10);
     const handleRedirect = (docNo: string) => {
         window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
     };
+
+    const { data } = useQuery(
+        ['document', `${document.stidDocumentNumber}`],
+        () => getDocumentById(document.stidDocumentNumber, 'JCA'),
+        {
+            staleTime: Infinity,
+            cacheTime: Infinity,
+        }
+    );
+
+    if (!data) {
+        return (
+            <>
+                <div>{document.stidDocumentNumber}</div>
+                <Progress.Dots color="primary" size={32} />
+            </>
+        );
+    }
+
+    const revDate = data.currentRevision.revDate
+        ? new Date(data.currentRevision.revDate).toISOString().slice(0, 10)
+        : 'Loading';
+
     return (
         <Wrapper>
             <IconWrapper>
@@ -25,14 +49,14 @@ export const StidDocument = ({ document }: StidDocumentProps): JSX.Element => {
                         color: `${tokens.colors.interactive.primary__resting.rgba}`,
                     }}
                 >
-                    <Link onClick={() => handleRedirect(document.docNo)}>
+                    <Link onClick={() => handleRedirect(data.docNo)}>
                         <Details>
-                            {document.docNo} - {document.docTitle}
+                            {data.docNo} - {data.docTitle}
                         </Details>
                     </Link>
                     <Inline>
                         <MetaData>
-                            {`Revision ${document.revNo} | Rev date ${revDate} | Reason for issue ${document.reasonForIssue}`}
+                            {`Revision ${data.currentRevision.revNo} | Rev date ${revDate} | Reason for issue ${data.reasonForIssue}`}
                         </MetaData>
                     </Inline>
                 </LineBreaks>
@@ -73,6 +97,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
     max-width: 650px;
     padding: 0.2em 0em;
+    gap: 0.5em;
 `;
 
 const Link = styled.span`

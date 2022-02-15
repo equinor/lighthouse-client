@@ -1,7 +1,9 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { CommissioningPackage } from '../../../../Types/scopeChangeRequest';
-import { isProduction } from '../../../../../../Core/Client/';
+import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
+import { isProduction } from '../../../../../../../Core/Client/';
+import { Wrapper } from '../WrapperStyles';
+import { Icon } from '@equinor/eds-core-react';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
@@ -9,7 +11,8 @@ interface CommPkgProps {
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     return (
-        <TagWrapper key={commPkg.id}>
+        <Wrapper key={commPkg.id}>
+            <Icon name="placeholder_icon" />
             <Link
                 href={`https://${isProduction() ? 'procosys' : 'procosystest'
                     }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
@@ -17,7 +20,7 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
             >
                 COMM_{commPkg.procosysNumber}
             </Link>
-        </TagWrapper>
+        </Wrapper>
     );
 };
 
@@ -25,14 +28,4 @@ const Link = styled.a`
     font-size: 16px;
     text-decoration: underline;
     color: ${tokens.colors.interactive.primary__resting.hex};
-`;
-
-const TagWrapper = styled.div`
-    display: flex;
-    font-size: 16px;
-    height: 16px;
-    justify-content: space-between;
-    align-items: center;
-    color: ${tokens.colors.interactive.primary__resting.hex};
-    margin: 0.2rem 0rem;
 `;

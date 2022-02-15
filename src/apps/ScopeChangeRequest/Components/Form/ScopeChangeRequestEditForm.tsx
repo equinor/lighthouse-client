@@ -154,7 +154,7 @@ function unpackRelatedObjects(
     request.systems.forEach((x) =>
         relations.push({
             label: `SYS_${x.procosysCode}`,
-            value: x.procosysCode,
+            value: x.procosysId.toString(),
             object: x,
             searchValue: x.procosysCode,
             type: 'system',
