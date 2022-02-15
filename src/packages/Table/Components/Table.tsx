@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useCallback, useLayoutEffect } from 'react';
+import React, { PropsWithChildren, useCallback, useLayoutEffect, useRef } from 'react';
 import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 import { useTable } from '../Hooks/useTable';
@@ -12,17 +12,21 @@ import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 interface DataTableProps<TData extends TableData> {
     options: TableOptions<TData>;
     FilterComponent?: React.FC<{ filterId: string }>;
+    height?: number;
+    itemSize?: number;
 }
 
-const topBarHeight = 64;
-const itemSize = 35;
+const DEFAULT_HEIGHT = 600;
+const DEFAULT_ITEM_SIZE = 35;
 
 export function Table<TData extends TableData = TableData>({
     options,
     FilterComponent,
+    itemSize,
+    height,
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
     const hooks = RegisterReactTableHooks<TData>({ rowSelect: options.enableSelectRows || false });
-
+    const ref = useRef<HTMLDivElement>(null);
     const defaultColumn = useDefaultColumn(options);
 
     const {
@@ -39,11 +43,13 @@ export function Table<TData extends TableData = TableData>({
         (cell, e) => {
             options?.onCellClick && options.onCellClick(cell, e);
         },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [options.onCellClick]
     );
 
     useLayoutEffect(() => {
         options?.columnOrder && setColumnOrder(options.columnOrder);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options?.columnOrder]);
 
     return (
@@ -64,12 +70,12 @@ export function Table<TData extends TableData = TableData>({
                     </div>
                 ))}
             </div>
-            <div {...getTableBodyProps()}>
+            <div {...getTableBodyProps()} ref={ref}>
                 <List
-                    height={800 - topBarHeight}
+                    height={height || DEFAULT_HEIGHT}
                     itemCount={rows.length}
                     width={totalColumnsWidth + 10}
-                    itemSize={itemSize}
+                    itemSize={itemSize || DEFAULT_ITEM_SIZE}
                     itemData={{
                         rows,
                         prepareRow,
@@ -101,9 +107,11 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     if (!row) return null;
     data.prepareRow(row);
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const handleClick = useCallback(() => {
         //data.setSelected && data.setSelected(row.original);
         data?.onSelect && data.onSelect(row.original);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.onSelect, row]);
 
     return (
