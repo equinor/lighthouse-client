@@ -17,22 +17,26 @@ import { System as SystemComp } from './RelatedObjects/Systems/System';
 import { StidDocument as StidVisual } from '../../STID';
 
 interface RelatedObjectsProps {
-    systems?: System[];
-    commPkgs?: CommissioningPackage[];
-    tags?: Tag[];
-    areas?: Area[];
-    disciplines?: Discipline[];
-    documents?: Document[];
+    systems: System[];
+    commPkgs: CommissioningPackage[];
+    tags: Tag[];
+    areas: Area[];
+    disciplines: Discipline[];
+    documents: Document[];
 }
 
 export const RelatedObjects = ({
-    commPkgs,
+    commPkgs = [],
     systems,
     tags,
     documents,
     disciplines,
     areas,
 }: RelatedObjectsProps): JSX.Element => {
+    // const resolvedCommissioningPackages = useCommissioningPackageResolver(
+    //     commPkgs?.map((x) => x.procosysNumber)
+    // );
+
     return (
         <Wrapper>
             {tags && tags.length > 0 && (
@@ -67,7 +71,7 @@ export const RelatedObjects = ({
                 <ChevronList title={`Documents (${documents.length})`}>
                     <>
                         {documents.map((x) => (
-                            <StidVisual key={x.stidDocumentNumber} document={x} />
+                            <StidVisual key={x.stidDocumentNumber} docNo={x.stidDocumentNumber} />
                         ))}
                     </>
                 </ChevronList>

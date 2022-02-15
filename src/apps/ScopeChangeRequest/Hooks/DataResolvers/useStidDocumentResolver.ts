@@ -1,6 +1,6 @@
-import { Document } from '../Types/scopeChangeRequest';
-import { Document as StidDocument } from '../Api/STID/Types/Document';
-import { getDocumentById } from '../Api/STID/getDocumentById';
+import { Document } from '../../Types/scopeChangeRequest';
+import { Document as StidDocument } from '../../Api/STID/Types/Document';
+import { getDocumentById } from '../../Api/STID/getDocumentById';
 import { useEffect, useState } from 'react';
 
 interface StidDocuments {

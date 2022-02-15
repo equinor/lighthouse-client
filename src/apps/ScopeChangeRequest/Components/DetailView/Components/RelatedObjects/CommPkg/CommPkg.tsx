@@ -1,9 +1,9 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { isProduction } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
+import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
@@ -11,7 +11,7 @@ interface CommPkgProps {
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     return (
-        <Wrapper key={commPkg.id}>
+        <Wrapper key={commPkg.procosysId}>
             <Icon name="placeholder_icon" />
             <Link
                 href={`https://${isProduction() ? 'procosys' : 'procosystest'

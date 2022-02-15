@@ -2,32 +2,27 @@ import { tokens } from '@equinor/eds-tokens';
 import { Icon, Progress } from '@equinor/eds-core-react';
 
 import styled from 'styled-components';
-import { Document } from '../../../Types/scopeChangeRequest';
 import { useQuery } from 'react-query';
 import { getDocumentById } from '../../../Api/STID/getDocumentById';
 
 interface StidDocumentProps {
-    document: Document;
+    docNo: string;
 }
 
-export const StidDocument = ({ document }: StidDocumentProps): JSX.Element => {
+export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
     const handleRedirect = (docNo: string) => {
         window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
     };
 
-    const { data } = useQuery(
-        ['document', `${document.stidDocumentNumber}`],
-        () => getDocumentById(document.stidDocumentNumber, 'JCA'),
-        {
-            staleTime: Infinity,
-            cacheTime: Infinity,
-        }
-    );
+    const { data } = useQuery(['document', `${docNo}`], () => getDocumentById(docNo, 'JCA'), {
+        staleTime: Infinity,
+        cacheTime: Infinity,
+    });
 
     if (!data) {
         return (
             <>
-                <div>{document.stidDocumentNumber}</div>
+                <div>{docNo}</div>
                 <Progress.Dots color="primary" size={32} />
             </>
         );
