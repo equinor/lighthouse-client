@@ -16,8 +16,8 @@ interface DataTableProps<TData extends TableData> {
     itemSize?: number;
 }
 
-const defaultHeight = 600;
-const defaultItemSize = 35;
+const DEFAULT_HEIGHT = 600;
+const DEFAULT_ITEM_SIZE = 35;
 
 export function Table<TData extends TableData = TableData>({
     options,
@@ -72,10 +72,10 @@ export function Table<TData extends TableData = TableData>({
             </div>
             <div {...getTableBodyProps()} ref={ref}>
                 <List
-                    height={height || defaultHeight}
+                    height={height || DEFAULT_HEIGHT}
                     itemCount={rows.length}
                     width={totalColumnsWidth + 10}
-                    itemSize={itemSize || defaultItemSize}
+                    itemSize={itemSize || DEFAULT_ITEM_SIZE}
                     itemData={{
                         rows,
                         prepareRow,
