@@ -22,7 +22,7 @@ const onClickDownloadAttachment = async (
     };
 
     await scopeChange
-        .fetch(`api/scope-change-requestss/${requestId}/attachments/${attachmentId}`, requestInit)
+        .fetch(`api/scope-change-requests/${requestId}/attachments/${attachmentId}`, requestInit)
         .then((response) => {
             if (!response.ok) throw new Error('Failed to get attachment');
             return response.blob();
