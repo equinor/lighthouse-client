@@ -1,33 +1,45 @@
 import styled from 'styled-components';
-import { CommissioningPackage, Tag, System, Document } from '../../../Types/scopeChangeRequest';
 
+import {
+    CommissioningPackage,
+    Tag,
+    System,
+    Document,
+    Discipline,
+    Area,
+} from '../../../Types/scopeChangeRequest';
 import { ChevronList } from './ChevronList/ChevronList';
-import { Tag as TagComp } from './Tags/Tag';
-import { CommPkg } from './CommPkg/CommPkg';
-import { System as SystemComp } from './Systems/System';
-import { StidDocument as StidVisual } from '../../StidDocument';
-import { useStidDocumentResolver } from '../../../Hooks/useStidDocumentResolver';
+import { Tag as TagComp } from './RelatedObjects/Tags/Tag';
+import { Area as AreaComp } from './RelatedObjects/Area/Area';
+import { Discipline as DisciplineComp } from './RelatedObjects/Discipline/Discipline';
+import { CommPkg } from './RelatedObjects/CommPkg/CommPkg';
+import { System as SystemComp } from './RelatedObjects/Systems/System';
+import { StidDocument as StidVisual } from '../../STID';
 
 interface RelatedObjectsProps {
-    systems?: System[];
-    commPkgs?: CommissioningPackage[];
-    tags?: Tag[];
-    areas?: unknown[];
-    disciplines?: unknown[];
-    documents?: Document[];
+    systems: System[];
+    commPkgs: CommissioningPackage[];
+    tags: Tag[];
+    areas: Area[];
+    disciplines: Discipline[];
+    documents: Document[];
 }
 
 export const RelatedObjects = ({
-    commPkgs,
-    systems,
-    tags,
-    documents: inputDocuments,
+    commPkgs = [],
+    systems = [],
+    tags = [],
+    documents = [],
+    disciplines = [],
+    areas = [],
 }: RelatedObjectsProps): JSX.Element => {
-    const { documents } = useStidDocumentResolver(inputDocuments);
+    // const resolvedCommissioningPackages = useCommissioningPackageResolver(
+    //     commPkgs?.map((x) => x.procosysNumber)
+    // );
 
     return (
         <Wrapper>
-            {tags && (
+            {tags && tags.length > 0 && (
                 <ChevronList title={`Tags (${tags?.length})`}>
                     <>
                         {tags.map((x) => (
@@ -36,7 +48,7 @@ export const RelatedObjects = ({
                     </>
                 </ChevronList>
             )}
-            {commPkgs && (
+            {commPkgs && commPkgs.length > 0 && (
                 <ChevronList title={`Comm pkgs (${commPkgs.length})`}>
                     <>
                         {commPkgs.map((x) => (
@@ -45,7 +57,7 @@ export const RelatedObjects = ({
                     </>
                 </ChevronList>
             )}
-            {systems && (
+            {systems && systems.length > 0 && (
                 <ChevronList title={`Systems (${systems.length})`}>
                     <>
                         {systems.map((x) => (
@@ -55,11 +67,31 @@ export const RelatedObjects = ({
                 </ChevronList>
             )}
 
-            {documents && (
+            {documents && documents.length > 0 && (
                 <ChevronList title={`Documents (${documents.length})`}>
                     <>
                         {documents.map((x) => (
-                            <StidVisual key={x.docNo} document={x} />
+                            <StidVisual key={x.stidDocumentNumber} docNo={x.stidDocumentNumber} />
+                        ))}
+                    </>
+                </ChevronList>
+            )}
+
+            {disciplines && disciplines.length > 0 && (
+                <ChevronList title={`Disciplines (${disciplines.length})`}>
+                    <>
+                        {disciplines.map((x) => (
+                            <DisciplineComp key={x.id} discipline={x} />
+                        ))}
+                    </>
+                </ChevronList>
+            )}
+
+            {areas && areas.length > 0 && (
+                <ChevronList title={`Areas (${areas.length})`}>
+                    <>
+                        {areas.map((x) => (
+                            <AreaComp key={x.id} area={x} />
                         ))}
                     </>
                 </ChevronList>
@@ -72,4 +104,5 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 1em;
 `;

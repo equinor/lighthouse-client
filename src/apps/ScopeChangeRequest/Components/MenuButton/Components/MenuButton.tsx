@@ -7,9 +7,15 @@ interface MenuButtonProps {
     items: MenuItem[];
     buttonText: string;
     onMenuOpen?: () => void;
+    isDisabled?: boolean;
 }
 
-export const MenuButton = ({ items, buttonText, onMenuOpen }: MenuButtonProps): JSX.Element => {
+export const MenuButton = ({
+    items,
+    buttonText,
+    onMenuOpen,
+    isDisabled,
+}: MenuButtonProps): JSX.Element => {
     const anchorRef = useRef<HTMLButtonElement>(null);
     const [showMenu, setShowMenu] = useState(false);
 
@@ -25,6 +31,7 @@ export const MenuButton = ({ items, buttonText, onMenuOpen }: MenuButtonProps): 
                 aria-controls="menu-complex"
                 aria-haspopup="true"
                 aria-expanded={showMenu}
+                disabled={isDisabled}
                 onClick={() => {
                     setShowMenu(true);
                     onMenuOpen && onMenuOpen();
@@ -39,12 +46,16 @@ export const MenuButton = ({ items, buttonText, onMenuOpen }: MenuButtonProps): 
                 open={showMenu}
                 anchorEl={anchorRef.current}
                 onClose={closeMenu}
-                placement="bottom"
+                placement="left"
             >
                 {items.map((x, i) => {
                     const Icon = () => x.icon ?? <span></span>;
                     return (
-                        <Menu.Item onClick={() => x.onClick && x.onClick()} key={x.label + i}>
+                        <Menu.Item
+                            disabled={x.isDisabled}
+                            onClick={() => x.onClick && x.onClick()}
+                            key={x.label + i}
+                        >
                             <Icon />
                             <MenuText>{x.label}</MenuText>
                         </Menu.Item>

@@ -1,8 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-import { SearchNCR } from './Origins/SearchNCR';
-import { SearchDCN } from './Origins/SearchDCN';
-import { SearchQuery } from './Origins/SearchQuery';
+import { SearchOrigin } from './Origins/SearchOrigin';
 import { SelectPunch } from './Origins/SelectPunch';
 import { OriginType } from '../../Types/scopeChangeRequest';
 import { Field } from '../../../../packages/Form/src/Types/field';
@@ -28,20 +26,43 @@ export const Origin = ({ originId, originSource }: OriginProps): JSX.Element => 
     const SelectedComponent = useMemo(() => {
         switch (originSource?.value) {
             case 'NCR':
-                return <SearchNCR setOriginId={setOriginId} originId={originId?.value} />;
+                return (
+                    <SearchOrigin
+                        setOriginId={setOriginId}
+                        originId={originId?.value}
+                        type={'NCR'}
+                    />
+                );
 
             case 'DCN':
-                return <SearchDCN setOriginId={setOriginId} originId={originId?.value} />;
+                return (
+                    <SearchOrigin
+                        setOriginId={setOriginId}
+                        originId={originId?.value}
+                        type={'DCN'}
+                    />
+                );
 
             case 'Query':
-                return <SearchQuery setOriginId={setOriginId} originId={originId?.value} />;
+                return (
+                    <SearchOrigin
+                        setOriginId={setOriginId}
+                        originId={originId?.value}
+                        type={'Query'}
+                    />
+                );
 
             case 'Punch':
                 return <SelectPunch setOriginId={setOriginId} originId={originId?.value} />;
 
             case 'SWCR':
-                return <></>;
-
+                return (
+                    <SearchOrigin
+                        setOriginId={setOriginId}
+                        originId={originId?.value}
+                        type={'SWCR'}
+                    />
+                );
             default:
                 return (
                     <MultiSelect disabled={true} items={[]} meta="(Required)" label={'Origin ID'} />

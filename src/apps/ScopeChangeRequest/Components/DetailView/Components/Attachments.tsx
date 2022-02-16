@@ -79,6 +79,6 @@ export const Link = styled.a`
     display: flex;
     color: ${tokens.colors.interactive.primary__resting.rgba};
     cursor: pointer;
-    textdecorationline: underline;
+    text-decoration: underline;
     padding: 8px 0px;
 `;

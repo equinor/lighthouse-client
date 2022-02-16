@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { canVoid } from '../Api/ScopeChange/Access/canVoid';
+import { canUnVoid, canVoid } from '../Api/ScopeChange/Access/canVoid';
 import { OptionRequestResult } from '../Api/ScopeChange/Access/optionsRequestChecker';
 import { getRequestAccess } from '../Api/ScopeChange/Access/requestAccess';
 
 interface ScopeChangeAccess extends OptionRequestResult {
     canVoid: boolean;
+    canUnVoid: boolean;
 }
 
 export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
@@ -15,12 +16,19 @@ export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
         canPost: false,
         canPut: false,
         canVoid: false,
+        canUnVoid: false,
     });
 
     useEffect(() => {
         canVoid(requestId).then((x) =>
             setAccess((prev) => {
                 return { ...prev, canVoid: x };
+            })
+        );
+
+        canUnVoid(requestId).then((x) =>
+            setAccess((prev) => {
+                return { ...prev, canUnVoid: x };
             })
         );
         getRequestAccess(requestId).then((x) =>

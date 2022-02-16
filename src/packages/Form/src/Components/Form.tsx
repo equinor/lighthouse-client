@@ -55,7 +55,11 @@ export const GeneratedForm = <T, K extends keyof T>({
                             if (isCustomComponent(field)) {
                                 const { Component, props, title } = field as unknown as CustomField;
                                 return (
-                                    <VisualField label={title} value={<Component {...props} />} />
+                                    <VisualField
+                                        key={title + index}
+                                        label={title}
+                                        value={<Component {...props} />}
+                                    />
                                 );
                             }
 
@@ -73,6 +77,7 @@ export const GeneratedForm = <T, K extends keyof T>({
             })}
             {children}
 
+            <div style={{ height: '2em' }} />
             <ButtonContainer>
                 {buttons &&
                     buttons.map((Component, index) => {

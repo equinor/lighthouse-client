@@ -1,20 +1,30 @@
 import styled from 'styled-components';
 import { SectionRow } from '../../../../Styles/Section';
-import { useScopeChangeAccessContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { Workflow } from '../../../Workflow/Components/Workflow';
 import { Attachments } from '../../Components/Attachments';
 import { RelatedObjects } from '../../Components/RelatedObjects';
 import { OriginLink } from '../../Components/OriginLink';
-import { BoldHeading, Section, SubHeading, Value } from './RequestDetailViewStyles';
-import { ChevronList } from '../ChevronList/ChevronList';
+import {
+    BoldHeading,
+    Section,
+    SubHeading,
+    Value,
+    WorkflowLoadingHeader,
+} from './RequestDetailViewStyles';
+import { HistoryList } from '../History/HistoryList';
+import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
+import { Progress } from '@equinor/eds-core-react';
 
 export const SplitView = (): JSX.Element => {
-    const { request } = useScopeChangeAccessContext();
+    const { request } = useScopeChangeContext();
+
+    const isBusy = useApiActionObserver();
 
     return (
         <SplitScreen>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <h2>Request</h2>
+                <BoldHeading>Request</BoldHeading>
                 <SectionRow>
                     <Section>
                         <SubHeading>Phase</SubHeading>
@@ -23,7 +33,7 @@ export const SplitView = (): JSX.Element => {
 
                     <Section>
                         <SubHeading>State</SubHeading>
-                        <Value>{request.state}</Value>
+                        <Value>{request.isVoided ? 'Voided' : request.state}</Value>
                     </Section>
                 </SectionRow>
                 <SectionRow>
@@ -56,17 +66,26 @@ export const SplitView = (): JSX.Element => {
                     </Section>
                 </SectionRow>
 
-                <Section>
-                    <BoldHeading>References</BoldHeading>
-                    <Value>
-                        <RelatedObjects
-                            systems={request.systems}
-                            commPkgs={request.commissioningPackages}
-                            tags={request.tags}
-                            documents={request.documents}
-                        />
-                    </Value>
-                </Section>
+                {(request.documents.length > 0 ||
+                    request.systems.length > 0 ||
+                    request.commissioningPackages.length > 0 ||
+                    request.areas.length > 0 ||
+                    request.disciplines.length > 0 ||
+                    request.tags.length > 0) && (
+                        <Section>
+                            <BoldHeading>References</BoldHeading>
+                            <Value>
+                                <RelatedObjects
+                                    systems={request.systems}
+                                    commPkgs={request.commissioningPackages}
+                                    documents={request.documents}
+                                    areas={request.areas}
+                                    disciplines={request.disciplines}
+                                    tags={request.tags}
+                                />
+                            </Value>
+                        </Section>
+                    )}
 
                 <Section>
                     <BoldHeading>Attachments</BoldHeading>
@@ -76,16 +95,17 @@ export const SplitView = (): JSX.Element => {
                 </Section>
             </div>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <div>
-                    <h2>Workflow</h2>
+                <Section>
+                    <WorkflowLoadingHeader>
+                        <BoldHeading>Workflow</BoldHeading>
+                        {isBusy && <Progress.Dots color="primary" />}
+                    </WorkflowLoadingHeader>
                     <Workflow />
-                </div>
+                </Section>
                 <Section>
                     <BoldHeading>Log</BoldHeading>
                     <Value>
-                        <ChevronList title={`Log entries (${0})`}>
-                            <p></p>
-                        </ChevronList>
+                        <HistoryList />
                     </Value>
                 </Section>
             </div>
@@ -98,4 +118,5 @@ const SplitScreen = styled.div`
     flex-direction: row;
     flex-basis: 0;
     overflow: scroll;
+    padding: 2em 0em;
 `;

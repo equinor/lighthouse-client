@@ -10,12 +10,13 @@ export const ResultLabel = styled.div`
     overflow: hidden;
     white-space: nowrap;
     max-width: 500px;
+    font-size: 16px;
+    color: ${tokens.colors.interactive.primary__resting.hex};
 `;
 
-export const Result = styled.div`
+export const ResultItem = styled.div`
     display: flex;
     align-items: center;
-    justify-content: space-between;
     width: 635px;
 `;
 

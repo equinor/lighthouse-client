@@ -33,12 +33,16 @@ export function setup(appApi: ClientApi): void {
         'id',
         'currentWorkflowStep',
         'workflowSteps',
+        'isVoided',
+        'state',
+        'originSource',
+        'originSourceId',
     ];
 
     request.registerFilterOptions({
         excludeKeys: scopeChangeExcludeFilterKeys,
         typeMap: {},
-        initialFilters: ['state', 'phase', 'category', 'originSource', 'isVoided'],
+        initialFilters: ['State', 'phase', 'category', 'Origin', 'isVoided'],
         groupValue: {
             NextToSign: (item: ScopeChangeRequest): string => {
                 if (item.state !== 'Open') {
@@ -49,21 +53,58 @@ export function setup(appApi: ClientApi): void {
                         ?.valueDescription ?? 'null'
                 );
             },
+            State: (item: ScopeChangeRequest): string => {
+                if (item.isVoided) {
+                    return 'Voided';
+                }
+                return item.state;
+            },
+            Origin: (item: ScopeChangeRequest) => {
+                return item.originSource;
+            },
         },
     });
 
     request.registerTableOptions({
         objectIdentifierKey: 'id',
         enableSelectRows: true,
+        customColumns: [
+            {
+                Header: 'Current step',
+                accessor: 'currentWorkflowStep',
+                Cell: ({ cell }: any) => {
+                    return (
+                        <div>
+                            {cell.row.original.currentWorkflowStep ? (
+                                <div>{cell.row.original.currentWorkflowStep.name}</div>
+                            ) : (
+                                ''
+                            )}
+                        </div>
+                    );
+                },
+                id: 'CurrentStep',
+                width: 180,
+                Aggregated: () => null,
+                aggregate: 'count',
+            },
+        ],
         hiddenColumns: [
             'id',
-            // 'currentWorkflowStep',
             'description',
             'guesstimateDescription',
             'createdBy',
             'createdAtUtc',
             'modifiedBy',
             'originSourceId',
+            'tags',
+            'systems',
+            'commissioningPackages',
+            'areas',
+            'documents',
+            'attachments',
+            'isVoided',
+            'disciplines',
         ],
         columnOrder: [
             'sequenceNumber',
@@ -71,7 +112,9 @@ export function setup(appApi: ClientApi): void {
             'hasComments',
             'phase',
             'workflowSteps',
+            'CurrentStep',
             'currentWorkflowStep',
+            'state',
             'guesstimateHours',
             'estimatedChangeHours',
             'actualChangeHours',
@@ -101,40 +144,40 @@ export function setup(appApi: ClientApi): void {
             { key: 'modifiedAtUtc', title: 'Last updated' },
             { key: 'modifiedBy', title: 'Modified by' },
             { key: 'description', title: 'Description' },
-            { key: 'state', title: 'Status' },
+            { key: 'state', title: 'State' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
             { key: 'currentWorkflowStep', title: 'Next to sign' },
-            {
-                key: 'commissioningPackages',
-                title: 'Comm Pkgs',
-                width: 120,
-            },
-            {
-                key: 'systems',
-                title: 'Systems',
-                width: 120,
-            },
-            {
-                key: 'attachments',
-                title: {
-                    Custom: () => <Icon name="attach_file" />,
-                },
-                width: 80,
-            },
-            {
-                key: 'disciplines',
-                title: {
-                    Custom: () => <Icon name="school" />,
-                },
-                width: 80,
-            },
-            {
-                key: 'areas',
-                title: {
-                    Custom: () => <Icon name="pin_drop" />,
-                },
-                width: 80,
-            },
+            // {
+            //     key: 'commissioningPackages',
+            //     title: 'Comm Pkgs',
+            //     width: 120,
+            // },
+            // {
+            //     key: 'systems',
+            //     title: 'Systems',
+            //     width: 120,
+            // },
+            // {
+            //     key: 'attachments',
+            //     title: {
+            //         Custom: () => <Icon name="attach_file" />,
+            //     },
+            //     width: 80,
+            // },
+            // {
+            //     key: 'disciplines',
+            //     title: {
+            //         Custom: () => <Icon name="school" />,
+            //     },
+            //     width: 80,
+            // },
+            // {
+            //     key: 'areas',
+            //     title: {
+            //         Custom: () => <Icon name="pin_drop" />,
+            //     },
+            //     width: 80,
+            // },
             {
                 key: 'hasComments',
                 title: {
@@ -142,20 +185,20 @@ export function setup(appApi: ClientApi): void {
                 },
                 width: 80,
             },
-            {
-                key: 'documents',
-                title: {
-                    Custom: () => <Icon name="file_copy" />,
-                },
-                width: 80,
-            },
-            {
-                key: 'tags',
-                title: {
-                    Custom: () => <Icon name="tag" />,
-                },
-                width: 80,
-            },
+            // {
+            //     key: 'documents',
+            //     title: {
+            //         Custom: () => <Icon name="file_copy" />,
+            //     },
+            //     width: 80,
+            // },
+            // {
+            //     key: 'tags',
+            //     title: {
+            //         Custom: () => <Icon name="tag" />,
+            //     },
+            //     width: 80,
+            // },
         ],
         customCellView: [
             {
@@ -174,7 +217,15 @@ export function setup(appApi: ClientApi): void {
                 key: 'createdAtUtc',
                 type: 'Date',
             },
-
+            {
+                key: 'state',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        const request: ScopeChangeRequest = cell.value.content;
+                        return <div>{request.isVoided ? 'VOIDED' : request.state}</div>;
+                    },
+                },
+            },
             {
                 key: 'workflowSteps',
                 type: {
@@ -191,26 +242,34 @@ export function setup(appApi: ClientApi): void {
                     },
                 },
             },
-            {
-                key: 'tags',
-                type: 'Array',
-            },
-            {
-                key: 'systems',
-                type: 'Array',
-            },
-            {
-                key: 'attachments',
-                type: 'Array',
-            },
-            {
-                key: 'documents',
-                type: 'Array',
-            },
-            {
-                key: 'commissioningPackages',
-                type: 'Array',
-            },
+            // {
+            //     key: 'tags',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'systems',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'attachments',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'documents',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'areas',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'disciplines',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'commissioningPackages',
+            //     type: 'Array',
+            // },
             {
                 key: 'hasComments',
                 type: {
@@ -240,17 +299,9 @@ export function setup(appApi: ClientApi): void {
                 },
             },
             {
-                key: 'isVoided',
-                type: {
-                    Cell: ({ cell }) => {
-                        return <div>{cell.value.content.isVoided.toString()}</div>;
-                    },
-                },
-            },
-            {
                 key: 'currentWorkflowStep',
                 type: {
-                    Cell: ({ cell }) => {
+                    Cell: ({ cell }: any) => {
                         return (
                             <div>
                                 {cell.value.content.currentWorkflowStep?.criterias
@@ -281,18 +332,13 @@ export function setup(appApi: ClientApi): void {
     };
     request.registerGardenOptions({
         gardenKey: 'originSource',
-        itemKey: 'title',
+        itemKey: 'sequenceNumber',
         fieldSettings: {},
     });
 
     // request.registerAnalyticsOptions(analyticsOptions);
 
     request.registerStatusItems(statusBarData);
-
-    // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
-    // request.registerWorkflowEditorOptions({
-    //     endpoint: `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflowId}/templates`,
-    // });
 }
 
 export const analyticsOptions: AnalyticsOptions<ScopeChangeRequest> = {

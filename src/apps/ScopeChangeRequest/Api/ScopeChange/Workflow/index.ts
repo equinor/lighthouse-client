@@ -1,4 +1,4 @@
-export * from './addContribution';
+export * from './submitContribution';
 export * from './addContributor';
 export * from './reassignCriteria';
 export * from './signCriteria';
