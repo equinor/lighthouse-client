@@ -5,15 +5,17 @@ import 'powerbi-report-authoring';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../../components/Icon/Icon';
+import { useElementData } from '../../../packages/Utils/Hooks/useElementData';
 import { usePowerBI } from './api';
 import { PageNavigation, PowerBIFilter } from './Components';
 import { Filter } from './models/filter';
 import './style.css';
 
 const Wrapper = styled.div`
+    overflow: hidden;
     position: relative;
     width: 100%;
-    height: calc(100vh - 110px);
+    height: 100%;
 `;
 
 const ErrorWrapper = styled.div`
@@ -32,6 +34,21 @@ const Heading = styled.h1`
     margin-bottom: 0;
 `;
 
+const TopBar = styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+`;
+
+const PBIWrapper = styled.div<{ height: number }>`
+    overflow: scroll;
+    position: absolute;
+    top: ${(props) => props.height}px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+`;
 interface PowerBiProps {
     reportUri: string;
     filterOptions?: Filter[];
@@ -39,18 +56,23 @@ interface PowerBiProps {
         showFilter?: boolean;
         enableNavigation?: boolean;
     };
+    aspectRatio?: number;
     isFilterActive?: boolean;
 }
-
+const TOP_BAR_FILTER_HEIGHT = 248;
+const TOP_BAR_HEIGHT = 48;
 export const PowerBI = ({
     reportUri,
     filterOptions,
     options,
     isFilterActive = false,
+    aspectRatio = 0.41,
 }: PowerBiProps): JSX.Element => {
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+    const [ref, { width }] = useElementData();
 
     //TODO custom loading
     const eventHandlersMap = new Map([
@@ -76,7 +98,6 @@ export const PowerBI = ({
         ['dataSelected', function (e) {}],
         ['selectionChanged', function (e) {}],
     ]);
-
     return (
         <>
             {error ? (
@@ -89,26 +110,32 @@ export const PowerBI = ({
                     <Heading>{error.message}</Heading>
                 </ErrorWrapper>
             ) : (
-                <Wrapper>
-                    <PowerBIFilter
-                        report={report}
-                        isLoaded={isLoaded}
-                        isFilterActive={isFilterActive}
-                    />
-                    <PageNavigation report={report} />
-                    <PowerBIEmbed
-                        embedConfig={config}
-                        eventHandlers={eventHandlersMap}
-                        getEmbeddedComponent={(embedObject: Embed) => {
-                            console.log(
-                                `Embedded object of type "${embedObject.embedtype}" received`
-                            );
-                            setReport(embedObject as Report);
+                <Wrapper ref={ref}>
+                    <TopBar>
+                        <PowerBIFilter
+                            report={report}
+                            isLoaded={isLoaded}
+                            isFilterActive={isFilterActive}
+                        />
+                        <PageNavigation report={report} />
+                    </TopBar>
+                    <PBIWrapper height={isFilterActive ? TOP_BAR_FILTER_HEIGHT : TOP_BAR_HEIGHT}>
+                        <div style={{ height: `${width * aspectRatio}px` }}>
+                            <PowerBIEmbed
+                                embedConfig={config}
+                                eventHandlers={eventHandlersMap}
+                                getEmbeddedComponent={(embedObject: Embed) => {
+                                    console.log(
+                                        `Embedded object of type "${embedObject.embedtype}" received`
+                                    );
+                                    setReport(embedObject as Report);
 
-                            window['report'] = embedObject;
-                        }}
-                        cssClassName="pbiEmbed"
-                    />
+                                    window['report'] = embedObject;
+                                }}
+                                cssClassName="pbiEmbed"
+                            />
+                        </div>
+                    </PBIWrapper>
                 </Wrapper>
             )}
         </>
