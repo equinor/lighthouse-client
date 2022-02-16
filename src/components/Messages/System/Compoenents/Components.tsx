@@ -50,14 +50,7 @@ interface Return extends SystemMessage {
 }
 
 export function useSystemMessage(): Return {
-    const { customHttpClient } = useMemo(
-        () =>
-            httpClient({
-                scope: 'api://ffaae7c8-a790-47e9-81cf-286b1ca380ce/default',
-                baseUrl: '',
-            }),
-        []
-    );
+    const { appConfig } = useMemo(() => httpClient(), []);
 
     const [isActive, setIsActive] = useState<boolean>(false);
     const [message, setMessage] = useState<SystemMessage | undefined>();
@@ -68,7 +61,7 @@ export function useSystemMessage(): Return {
 
     useEffect(() => {
         (async () => {
-            const response = await customHttpClient.get('http://localhost:7071/api/serviceMessage');
+            const response = await appConfig.get('api/serviceMessage');
             const data = await response.json();
 
             if (data.message) {
@@ -76,7 +69,7 @@ export function useSystemMessage(): Return {
                 setIsActive(true);
             }
         })();
-    }, [customHttpClient]);
+    }, [appConfig]);
 
     return {
         ...message,

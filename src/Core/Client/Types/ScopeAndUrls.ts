@@ -1,4 +1,5 @@
 export interface Scope {
+    appConfig: string;
     fusion: string;
     procosys: string;
     echoModelDistClient: string;
@@ -9,6 +10,7 @@ export interface Scope {
     STID: string;
 }
 export interface Urls {
+    appConfig: string;
     echoModelDistClient: string;
     fusion: string;
     procosys: string;
