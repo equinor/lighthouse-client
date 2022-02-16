@@ -13,7 +13,7 @@ import './style.css';
 const Wrapper = styled.div`
     position: relative;
     width: 100%;
-    height: calc(100vh - 110px);
+    height: 100%;
 `;
 
 const ErrorWrapper = styled.div`
@@ -96,19 +96,21 @@ export const PowerBI = ({
                         isFilterActive={isFilterActive}
                     />
                     <PageNavigation report={report} />
-                    <PowerBIEmbed
-                        embedConfig={config}
-                        eventHandlers={eventHandlersMap}
-                        getEmbeddedComponent={(embedObject: Embed) => {
-                            console.log(
-                                `Embedded object of type "${embedObject.embedtype}" received`
-                            );
-                            setReport(embedObject as Report);
+                    <div style={{ height: '-webkit-fill-available' }}>
+                        <PowerBIEmbed
+                            embedConfig={config}
+                            eventHandlers={eventHandlersMap}
+                            getEmbeddedComponent={(embedObject: Embed) => {
+                                console.log(
+                                    `Embedded object of type "${embedObject.embedtype}" received`
+                                );
+                                setReport(embedObject as Report);
 
-                            window['report'] = embedObject;
-                        }}
-                        cssClassName="pbiEmbed"
-                    />
+                                window['report'] = embedObject;
+                            }}
+                            cssClassName="pbiEmbed"
+                        />
+                    </div>
                 </Wrapper>
             )}
         </>
