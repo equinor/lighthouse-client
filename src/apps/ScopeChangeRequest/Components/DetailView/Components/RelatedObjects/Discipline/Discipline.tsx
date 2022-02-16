@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Discipline as DisciplineInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
 import { getDisciplineByCode } from '../../../../../Api/PCS/getDisciplineByCode';
+import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
 
 interface DisciplineProps {
     discipline: DisciplineInterface;
@@ -12,7 +13,7 @@ interface DisciplineProps {
 
 export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
     const { data } = useQuery(
-        ['discipline', discipline.procosysId, discipline.procosysCode],
+        [QueryKeys.Discipline, discipline.procosysId, discipline.procosysCode],
         () => getDisciplineByCode(discipline.procosysCode),
         {
             staleTime: Infinity,

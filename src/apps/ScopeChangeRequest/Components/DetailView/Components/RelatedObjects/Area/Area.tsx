@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Area as AreaInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
 import { getAreaByCode } from '../../../../../Api/PCS/getAreaByCode';
+import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
 
 interface AreaProps {
     area: AreaInterface;
@@ -12,7 +13,7 @@ interface AreaProps {
 
 export const Area = ({ area }: AreaProps): JSX.Element => {
     const { data } = useQuery(
-        ['area', area.procosysId, area.procosysCode],
+        [QueryKeys.Area, area.procosysId, area.procosysCode],
         () => getAreaByCode(area.procosysCode),
         {
             staleTime: Infinity,

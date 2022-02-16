@@ -4,6 +4,7 @@ import { Icon } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { getDocumentById } from '../../../Api/STID/getDocumentById';
+import { QueryKeys } from '../../../Api/ScopeChange/queryKeys';
 
 interface StidDocumentProps {
     docNo: string;
@@ -14,10 +15,14 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
         window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
     };
 
-    const { data } = useQuery(['document', `${docNo}`], () => getDocumentById(docNo, 'JCA'), {
-        staleTime: Infinity,
-        cacheTime: Infinity,
-    });
+    const { data } = useQuery(
+        [QueryKeys.Document, `${docNo}`],
+        () => getDocumentById(docNo, 'JCA'),
+        {
+            staleTime: Infinity,
+            cacheTime: Infinity,
+        }
+    );
 
     function transformIsoDate(date: string | undefined) {
         if (!date) return '-';

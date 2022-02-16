@@ -8,13 +8,14 @@ import { useQuery } from 'react-query';
 import { getSystems } from '../../../../../Api/PCS/getSystems';
 import { useEffect, useState } from 'react';
 import { System as PCSSystem } from '../../../../../Api/Search/PCS/Types/system';
+import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
 
 interface SystemProps {
     system: SystemInterface;
 }
 
 export const System = ({ system }: SystemProps): JSX.Element => {
-    const { data } = useQuery('systems', getSystems, {
+    const { data } = useQuery(QueryKeys.Systems, getSystems, {
         staleTime: Infinity,
         cacheTime: Infinity,
     });

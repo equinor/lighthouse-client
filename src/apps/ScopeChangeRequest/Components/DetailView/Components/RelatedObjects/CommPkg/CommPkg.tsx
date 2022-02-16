@@ -6,6 +6,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { useQuery } from 'react-query';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
+import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
@@ -13,13 +14,11 @@ interface CommPkgProps {
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     const { data } = useQuery(
-        ['commPkg', commPkg.procosysId, commPkg.procosysNumber],
+        [QueryKeys.CommPkg, commPkg.procosysId, commPkg.procosysNumber],
         () => getCommPkgById(commPkg.procosysId),
         {
             staleTime: Infinity,
             cacheTime: Infinity,
-            retry: 0,
-            retryDelay: Infinity,
         }
     );
 

@@ -6,6 +6,7 @@ import { isProduction } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { getTagById } from '../../../../../Api/PCS/getTagById';
 import { useQuery } from 'react-query';
+import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
 
 interface TagProps {
     tag: TagInterface;
@@ -13,7 +14,7 @@ interface TagProps {
 
 export const Tag = ({ tag }: TagProps): JSX.Element => {
     const { data } = useQuery(
-        ['tag', tag.procosysId, tag.procosysNumber],
+        [QueryKeys.Tag, tag.procosysId, tag.procosysNumber],
         () => getTagById(tag.procosysId),
         {
             staleTime: Infinity,
