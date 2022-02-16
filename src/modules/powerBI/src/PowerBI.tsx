@@ -72,7 +72,7 @@ export const PowerBI = ({
     const [report, setReport] = useState<Report>();
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
-    const [ref, { awaitableHeight, width, height }] = useElementData();
+    const [ref, { width }] = useElementData();
 
     //TODO custom loading
     const eventHandlersMap = new Map([
