@@ -5,12 +5,16 @@ import 'powerbi-report-authoring';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Icon from '../../../components/Icon/Icon';
+import { useElementData } from '../../../packages/Utils/Hooks/useElementData';
 import { usePowerBI } from './api';
 import { PageNavigation, PowerBIFilter } from './Components';
 import { Filter } from './models/filter';
 import './style.css';
 
 const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
     position: relative;
     width: 100%;
     height: 100%;
@@ -32,6 +36,17 @@ const Heading = styled.h1`
     margin-bottom: 0;
 `;
 
+const StickyWrapper = styled.div`
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    top: 0;
+`;
+
+const PBIWrapper = styled.div`
+    flex: 0 0 92%;
+`;
 interface PowerBiProps {
     reportUri: string;
     filterOptions?: Filter[];
@@ -76,7 +91,6 @@ export const PowerBI = ({
         ['dataSelected', function (e) {}],
         ['selectionChanged', function (e) {}],
     ]);
-
     return (
         <>
             {error ? (
@@ -90,13 +104,15 @@ export const PowerBI = ({
                 </ErrorWrapper>
             ) : (
                 <Wrapper>
-                    <PowerBIFilter
-                        report={report}
-                        isLoaded={isLoaded}
-                        isFilterActive={isFilterActive}
-                    />
-                    <PageNavigation report={report} />
-                    <div style={{ height: '-webkit-fill-available' }}>
+                    <StickyWrapper>
+                        <PowerBIFilter
+                            report={report}
+                            isLoaded={isLoaded}
+                            isFilterActive={isFilterActive}
+                        />
+                        <PageNavigation report={report} />
+                    </StickyWrapper>
+                    <PBIWrapper>
                         <PowerBIEmbed
                             embedConfig={config}
                             eventHandlers={eventHandlersMap}
@@ -110,7 +126,7 @@ export const PowerBI = ({
                             }}
                             cssClassName="pbiEmbed"
                         />
-                    </div>
+                    </PBIWrapper>
                 </Wrapper>
             )}
         </>
