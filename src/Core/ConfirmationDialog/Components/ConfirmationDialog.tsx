@@ -12,7 +12,7 @@ export const ConfirmationDialog = (): JSX.Element | null => {
     return (
         <>
             <Scrim isDismissable={false} style={{ zIndex: 1000 }}>
-                <Dialog style={{ width: '110%' }}>
+                <DialogContainer>
                     <DialogPadding>
                         <TitleSection>{dialog.dialogTitle}</TitleSection>
                         <p>{dialog.dialogText}</p>
@@ -21,14 +21,13 @@ export const ConfirmationDialog = (): JSX.Element | null => {
                                 onClick={() => {
                                     clearConfirmationDialog();
                                 }}
-                                variant={'ghost_icon'}
+                                variant={'outlined'}
                                 color={'danger'}
                             >
                                 Cancel
                             </Button>
                             <HorizontalDivider />
                             <Button
-                                variant={'ghost_icon'}
                                 onClick={() => {
                                     clearConfirmationDialog();
                                     dialog.onConfirm && dialog.onConfirm();
@@ -38,17 +37,24 @@ export const ConfirmationDialog = (): JSX.Element | null => {
                             </Button>
                         </ButtonContainer>
                     </DialogPadding>
-                </Dialog>
+                </DialogContainer>
             </Scrim>
         </>
     );
 };
+
+const DialogContainer = styled(Dialog)`
+    width: 100%;
+    padding: 0.8rem 0.8rem;
+    min-width: 350px;
+`;
 
 const ButtonContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     padding: 0.5em;
+    align-items: center;
 `;
 
 const HorizontalDivider = styled.div`

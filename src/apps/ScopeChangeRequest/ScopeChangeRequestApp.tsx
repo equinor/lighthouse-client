@@ -97,6 +97,14 @@ export function setup(appApi: ClientApi): void {
             'createdAtUtc',
             'modifiedBy',
             'originSourceId',
+            'tags',
+            'systems',
+            'commissioningPackages',
+            'areas',
+            'documents',
+            'attachments',
+            'isVoided',
+            'disciplines',
         ],
         columnOrder: [
             'sequenceNumber',
@@ -139,37 +147,37 @@ export function setup(appApi: ClientApi): void {
             { key: 'state', title: 'State' },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
             { key: 'currentWorkflowStep', title: 'Next to sign' },
-            {
-                key: 'commissioningPackages',
-                title: 'Comm Pkgs',
-                width: 120,
-            },
-            {
-                key: 'systems',
-                title: 'Systems',
-                width: 120,
-            },
-            {
-                key: 'attachments',
-                title: {
-                    Custom: () => <Icon name="attach_file" />,
-                },
-                width: 80,
-            },
-            {
-                key: 'disciplines',
-                title: {
-                    Custom: () => <Icon name="school" />,
-                },
-                width: 80,
-            },
-            {
-                key: 'areas',
-                title: {
-                    Custom: () => <Icon name="pin_drop" />,
-                },
-                width: 80,
-            },
+            // {
+            //     key: 'commissioningPackages',
+            //     title: 'Comm Pkgs',
+            //     width: 120,
+            // },
+            // {
+            //     key: 'systems',
+            //     title: 'Systems',
+            //     width: 120,
+            // },
+            // {
+            //     key: 'attachments',
+            //     title: {
+            //         Custom: () => <Icon name="attach_file" />,
+            //     },
+            //     width: 80,
+            // },
+            // {
+            //     key: 'disciplines',
+            //     title: {
+            //         Custom: () => <Icon name="school" />,
+            //     },
+            //     width: 80,
+            // },
+            // {
+            //     key: 'areas',
+            //     title: {
+            //         Custom: () => <Icon name="pin_drop" />,
+            //     },
+            //     width: 80,
+            // },
             {
                 key: 'hasComments',
                 title: {
@@ -177,20 +185,20 @@ export function setup(appApi: ClientApi): void {
                 },
                 width: 80,
             },
-            {
-                key: 'documents',
-                title: {
-                    Custom: () => <Icon name="file_copy" />,
-                },
-                width: 80,
-            },
-            {
-                key: 'tags',
-                title: {
-                    Custom: () => <Icon name="tag" />,
-                },
-                width: 80,
-            },
+            // {
+            //     key: 'documents',
+            //     title: {
+            //         Custom: () => <Icon name="file_copy" />,
+            //     },
+            //     width: 80,
+            // },
+            // {
+            //     key: 'tags',
+            //     title: {
+            //         Custom: () => <Icon name="tag" />,
+            //     },
+            //     width: 80,
+            // },
         ],
         customCellView: [
             {
@@ -234,34 +242,34 @@ export function setup(appApi: ClientApi): void {
                     },
                 },
             },
-            {
-                key: 'tags',
-                type: 'Array',
-            },
-            {
-                key: 'systems',
-                type: 'Array',
-            },
-            {
-                key: 'attachments',
-                type: 'Array',
-            },
-            {
-                key: 'documents',
-                type: 'Array',
-            },
-            {
-                key: 'areas',
-                type: 'Array',
-            },
-            {
-                key: 'disciplines',
-                type: 'Array',
-            },
-            {
-                key: 'commissioningPackages',
-                type: 'Array',
-            },
+            // {
+            //     key: 'tags',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'systems',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'attachments',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'documents',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'areas',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'disciplines',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'commissioningPackages',
+            //     type: 'Array',
+            // },
             {
                 key: 'hasComments',
                 type: {
@@ -324,7 +332,7 @@ export function setup(appApi: ClientApi): void {
     };
     request.registerGardenOptions({
         gardenKey: 'originSource',
-        itemKey: 'title',
+        itemKey: 'sequenceNumber',
         fieldSettings: {},
     });
 
