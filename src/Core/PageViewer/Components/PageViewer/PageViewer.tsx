@@ -1,11 +1,10 @@
-import { Tabs } from '@equinor/eds-core-react';
 import { PopoutSidesheet } from '@equinor/sidesheet';
 import { useState } from 'react';
 import { ViewState } from '../../Types/State';
 import { NoPages } from '../NoDataViewer/NoPages';
 import { PageViewerHeader } from '../PageViewerHeader/PageViewerHeader';
 import { PageViewerPages } from '../PageViewerPages/PageViewerPages';
-import { PageViewWrapper } from './PageViewerStyles';
+import { PageViewWrapper, TabsWrapper } from './PageViewerStyles';
 
 export function PageViewer(props: ViewState): JSX.Element {
     const [activePage, setActivePage] = useState(0);
@@ -22,7 +21,7 @@ export function PageViewer(props: ViewState): JSX.Element {
 
     if (Object.values(props.pages).length === 0) return <NoPages />;
     return (
-        <Tabs activeTab={activePage} onChange={handleChange}>
+        <TabsWrapper activeTab={activePage} onChange={handleChange}>
             <PageViewerHeader
                 {...props}
                 viewState={props}
@@ -38,6 +37,6 @@ export function PageViewer(props: ViewState): JSX.Element {
                 />
             </PageViewWrapper>
             <PopoutSidesheet />
-        </Tabs>
+        </TabsWrapper>
     );
 }

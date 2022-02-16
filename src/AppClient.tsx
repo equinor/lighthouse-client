@@ -16,6 +16,7 @@ import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
 const GlobalStyle = createGlobalStyle`
     body {
         font-family: Equinor;
+        background-color: ${tokens.colors.ui.background__light.rgba};
         font-size: 13px;
         margin: 0;
     };
@@ -32,8 +33,8 @@ const GlobalStyle = createGlobalStyle`
     }
 
     ::-webkit-scrollbar {
-        width: .3rem;
-        height: .3rem;
+        height: 0.3rem;
+        width: 0.5rem;
     }
 
         /* Track */
