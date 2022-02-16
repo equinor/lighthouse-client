@@ -1,19 +1,32 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { Area as AreaInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
+import { getAreaByCode } from '../../../../../Api/PCS/getAreaByCode';
 
 interface AreaProps {
     area: AreaInterface;
 }
 
 export const Area = ({ area }: AreaProps): JSX.Element => {
+    const { data } = useQuery(
+        ['area', area.procosysId, area.procosysCode],
+        () => getAreaByCode(area.procosysCode),
+        {
+            staleTime: Infinity,
+            cacheTime: Infinity,
+        }
+    );
+
     return (
         <Wrapper key={area.id}>
             <Icon color={tokens.colors.interactive.primary__resting.hex} name="pin_drop" />
 
-            <Link>LOC_{area.procosysCode}</Link>
+            <Link>
+                LOC_{area.procosysCode} - {data?.Description}
+            </Link>
         </Wrapper>
     );
 };

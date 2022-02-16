@@ -1,18 +1,31 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { Discipline as DisciplineInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
+import { getDisciplineByCode } from '../../../../../Api/PCS/getDisciplineByCode';
 
 interface DisciplineProps {
     discipline: DisciplineInterface;
 }
 
 export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
+    const { data } = useQuery(
+        ['discipline', discipline.procosysId, discipline.procosysCode],
+        () => getDisciplineByCode(discipline.procosysCode),
+        {
+            staleTime: Infinity,
+            cacheTime: Infinity,
+        }
+    );
+
     return (
         <Wrapper key={discipline.id}>
             <Icon name="school" color={tokens.colors.interactive.primary__resting.hex} />
-            <Link>DISC_{discipline.procosysCode}</Link>
+            <Link>
+                DISC_{discipline.procosysCode} - {data?.Description}
+            </Link>
         </Wrapper>
     );
 };

@@ -4,12 +4,30 @@ import { System as SystemInterface } from '../../../../../Types/scopeChangeReque
 import { isProduction } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
+import { useQuery } from 'react-query';
+import { getSystems } from '../../../../../Api/PCS/getSystems';
+import { useEffect, useState } from 'react';
+import { System as PCSSystem } from '../../../../../Api/Search/PCS/Types/system';
 
 interface SystemProps {
     system: SystemInterface;
 }
 
 export const System = ({ system }: SystemProps): JSX.Element => {
+    const { data } = useQuery('systems', getSystems, {
+        staleTime: Infinity,
+        cacheTime: Infinity,
+    });
+
+    const [foundSystem, setFoundSystem] = useState<PCSSystem | null>();
+
+    useEffect(() => {
+        if (data) {
+            const match = data.find((x) => x.Id === system.procosysId);
+            setFoundSystem(match);
+        }
+    }, [data, system.procosysId]);
+
     return (
         <Wrapper key={system.id}>
             <Icon name="placeholder_icon" />
@@ -18,7 +36,7 @@ export const System = ({ system }: SystemProps): JSX.Element => {
                     }.equinor.com/JOHAN_CASTBERG/Completion#System|${system.procosysId}`}
                 target="_blank"
             >
-                SYS_{system.procosysCode}
+                SYS_{system.procosysCode} - {foundSystem?.Description}
             </Link>
         </Wrapper>
     );

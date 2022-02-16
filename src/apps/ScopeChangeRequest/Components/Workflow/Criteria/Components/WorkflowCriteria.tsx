@@ -19,7 +19,10 @@ import { TypedSelectOption } from '../../../../Api/Search/searchType';
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
-import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
+
+interface OnSignStepAction {
+    action: 'Approved' | 'Rejected';
+}
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -36,8 +39,6 @@ export const WorkflowCriteria = ({
     const { request, setErrorMessage } = useScopeChangeContext();
     const [signComment, setSignComment] = useState<string>('');
     const [showSignWithComment, setShowSignWithComment] = useState(false);
-
-    const isBusy = useApiActionObserver();
 
     const { canReassign, canSign, canUnsign } = useWorkflowCriteriaOptions(
         request.id,
@@ -125,9 +126,6 @@ export const WorkflowCriteria = ({
         }
     }, [criteria.id, request.id, selected, step.id]);
 
-    interface OnSignStepAction {
-        action: 'Approved' | 'Rejected';
-    }
     async function onSignStep({ action }: OnSignStepAction) {
         const unsignedCriterias = request.workflowSteps
             .find((x) => x.id === step.id)
@@ -195,18 +193,16 @@ export const WorkflowCriteria = ({
                 )}
 
                 <Inline>
-                    <MenuButton
-                        items={makeSignOptions()}
-                        onMenuOpen={() => closeAll()}
-                        buttonText="Sign"
-                        isDisabled={isBusy}
-                    />
-
-                    <IconMenu
-                        isDisabled={isBusy}
-                        items={makeMoreActions()}
-                        onMenuOpen={() => closeAll()}
-                    />
+                    {makeSignOptions().length > 0 && (
+                        <MenuButton
+                            items={makeSignOptions()}
+                            onMenuOpen={() => closeAll()}
+                            buttonText="Sign"
+                        />
+                    )}
+                    {makeMoreActions().length > 0 && (
+                        <IconMenu items={makeMoreActions()} onMenuOpen={() => closeAll()} />
+                    )}
                 </Inline>
             </WorkflowStepViewContainer>
 

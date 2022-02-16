@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { Icon, Progress } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
@@ -19,18 +19,10 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
         cacheTime: Infinity,
     });
 
-    if (!data) {
-        return (
-            <>
-                <div>{docNo}</div>
-                <Progress.Dots color="primary" size={32} />
-            </>
-        );
+    function transformIsoDate(date: string | undefined) {
+        if (!date) return '-';
+        return new Date(date).toISOString().slice(0, 10);
     }
-
-    const revDate = data.currentRevision.revDate
-        ? new Date(data.currentRevision.revDate).toISOString().slice(0, 10)
-        : 'Loading';
 
     return (
         <Wrapper>
@@ -44,14 +36,16 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
                         color: `${tokens.colors.interactive.primary__resting.rgba}`,
                     }}
                 >
-                    <Link onClick={() => handleRedirect(data.docNo)}>
+                    <Link onClick={() => handleRedirect(docNo)}>
                         <Details>
-                            {data.docNo} - {data.docTitle}
+                            {docNo} - {data?.docTitle}
                         </Details>
                     </Link>
                     <Inline>
                         <MetaData>
-                            {`Revision ${data.currentRevision.revNo} | Rev date ${revDate} | Reason for issue ${data.reasonForIssue}`}
+                            {`Revision ${data?.currentRevision.revNo} | Rev date ${transformIsoDate(
+                                data?.revDate
+                            )} | Reason for issue ${data?.reasonForIssue}`}
                         </MetaData>
                     </Inline>
                 </LineBreaks>

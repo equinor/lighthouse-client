@@ -30,3 +30,16 @@ export interface Tag {
     PreservationMigrated: null;
     PurchaseOrderTitle: string;
 }
+
+export interface AdditionalField {
+    Id: number;
+    Label: string;
+    Value: string;
+    Type: string;
+    Unit?: any;
+}
+
+export interface TagWrapper {
+    Tag: Tag;
+    AdditionalFields: AdditionalField[];
+}
