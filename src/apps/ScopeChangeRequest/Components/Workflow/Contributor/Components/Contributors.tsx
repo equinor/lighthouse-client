@@ -1,7 +1,7 @@
 import { Button, Icon, TextField, Tooltip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import {
     Contributor as ContributorInterface,
@@ -16,6 +16,7 @@ import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation
 import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
+import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -27,19 +28,21 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
     const { request, setErrorMessage } = useScopeChangeContext();
 
-    const checkCanContribute = () => canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id })
+    const isBusy = useApiActionObserver();
 
-    const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(`step/${step.id}/contributor/${contributor.id}`, checkCanContribute, { refetchOnWindowFocus: false })
+    const checkCanContribute = () =>
+        canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
 
-
-
-
+    const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
+        `step/${step.id}/contributor/${contributor.id}`,
+        checkCanContribute,
+        { refetchOnWindowFocus: false }
+    );
 
     const { mutateAsync } = useScopeChangeMutation(submitContribution, {
         onError: (e: ServerError) => setErrorMessage(e),
         onSuccess: () => invalidateUserCanContribute(),
     });
-
 
     function makeContributorActions(): MenuItem[] {
         const actions: MenuItem[] = [];
@@ -48,17 +51,23 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
             actions.push({
                 label: ContributorActions.Confirm,
                 icon: <Icon name="check_circle_outlined" color="grey" />,
-                onClick: async () => await mutateAsync({ contributorId: contributor.id, requestId: request.id, stepId: step.id, comment: undefined }),
-                isDisabled: !userCanContribute
-            })
+                onClick: async () =>
+                    await mutateAsync({
+                        contributorId: contributor.id,
+                        requestId: request.id,
+                        stepId: step.id,
+                        comment: undefined,
+                    }),
+                isDisabled: !userCanContribute,
+            });
             actions.push({
                 label: ContributorActions.ConfirmWithComment,
                 icon: <Icon name="comment_add" color="grey" />,
                 onClick: () => setShowCommentField((prev) => !prev),
-                isDisabled: !userCanContribute
-            })
+                isDisabled: !userCanContribute,
+            });
         }
-        return actions
+        return actions;
     }
 
     return (
@@ -87,6 +96,7 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                                         items={makeContributorActions()}
                                         onMenuOpen={() => setShowCommentField(false)}
                                         buttonText="Confirm"
+                                        isDisabled={isBusy}
                                     />
                                 </Inline>
                             )}
@@ -104,7 +114,17 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                             />
                         </span>
                         <ButtonContainer>
-                            <Button disabled={!comment} onClick={() => mutateAsync({ contributorId: contributor.id, requestId: request.id, stepId: step.id, comment: comment })}>
+                            <Button
+                                disabled={!comment}
+                                onClick={() =>
+                                    mutateAsync({
+                                        contributorId: contributor.id,
+                                        requestId: request.id,
+                                        stepId: step.id,
+                                        comment: comment,
+                                    })
+                                }
+                            >
                                 Confirm
                             </Button>
                             <Divider />

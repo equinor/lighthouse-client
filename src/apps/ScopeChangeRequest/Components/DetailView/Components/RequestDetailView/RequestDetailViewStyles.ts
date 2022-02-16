@@ -19,5 +19,11 @@ export const Section = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 1em;
-    margin-right: 2em;
+`;
+
+export const WorkflowLoadingHeader = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
 `;

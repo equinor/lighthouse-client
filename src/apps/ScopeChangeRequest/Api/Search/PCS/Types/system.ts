@@ -1,7 +1,7 @@
 export interface System {
     Code: string;
-    Id: string;
+    Id: number;
     Description: string;
-    //Subsystem
+    /** Subsystem */
     Path: string;
 }

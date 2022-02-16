@@ -2,17 +2,29 @@ import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
 
 import styled from 'styled-components';
-import { Document } from '../../../Api/STID/Types/Document';
+import { useQuery } from 'react-query';
+import { getDocumentById } from '../../../Api/STID/getDocumentById';
+import { QueryKeys } from '../../../Api/ScopeChange/queryKeys';
+import { transformIsoDate } from '../../Workflow/Utils/dateFormatting';
 
 interface StidDocumentProps {
-    document: Document;
+    docNo: string;
 }
 
-export const StidDocument = ({ document }: StidDocumentProps): JSX.Element => {
-    const revDate = new Date(document.revDate).toISOString().slice(0, 10);
+export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
     const handleRedirect = (docNo: string) => {
         window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
     };
+
+    const { data } = useQuery(
+        [QueryKeys.Document, `${docNo}`],
+        () => getDocumentById(docNo, 'JCA'),
+        {
+            staleTime: Infinity,
+            cacheTime: Infinity,
+        }
+    );
+
     return (
         <Wrapper>
             <IconWrapper>
@@ -25,14 +37,16 @@ export const StidDocument = ({ document }: StidDocumentProps): JSX.Element => {
                         color: `${tokens.colors.interactive.primary__resting.rgba}`,
                     }}
                 >
-                    <Link onClick={() => handleRedirect(document.docNo)}>
+                    <Link onClick={() => handleRedirect(docNo)}>
                         <Details>
-                            {document.docNo} - {document.docTitle}
+                            {docNo} - {data?.docTitle}
                         </Details>
                     </Link>
                     <Inline>
                         <MetaData>
-                            {`Revision ${document.revNo} | Rev date ${revDate} | Reason for issue ${document.reasonForIssue}`}
+                            {`Revision ${data?.currentRevision.revNo} | Rev date ${transformIsoDate(
+                                data?.revDate
+                            )} | Reason for issue ${data?.reasonForIssue}`}
                         </MetaData>
                     </Inline>
                 </LineBreaks>
@@ -73,6 +87,7 @@ const Wrapper = styled.div`
     justify-content: space-between;
     max-width: 650px;
     padding: 0.2em 0em;
+    gap: 0.5em;
 `;
 
 const Link = styled.span`
