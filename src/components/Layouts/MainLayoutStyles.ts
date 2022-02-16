@@ -1,19 +1,16 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-interface CssProps {
-    sideSheetWidth?: number;
-}
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ systemMessageActive: boolean }>`
     position: fixed;
-    top: 48px;
-    height: calc(100vh - 48px);
+    top: ${({ systemMessageActive }) => (systemMessageActive ? 96 : 48)}px;
+    height: calc(100vh - ${({ systemMessageActive }) => (systemMessageActive ? 96 : 48)}px);
     display: flex;
     width: 100vw;
 `;
-export const ChildrenWrapper = styled.div`
+export const ChildrenWrapper = styled.div<{ sideSheetWidth?: number }>`
     height: 100%;
-    width: calc(100vw - ${({ sideSheetWidth }: CssProps) => 48 + (sideSheetWidth || 0)}px);
+    width: calc(100vw - ${({ sideSheetWidth }) => 48 + (sideSheetWidth || 0)}px);
     transition: width 0.2s ease;
 `;
 export const MainMenuWrapper = styled.div`

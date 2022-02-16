@@ -2,7 +2,7 @@ import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { httpClient } from '@equinor/portal-client';
 import { useEffect, useMemo, useState } from 'react';
-import Icon from '../../../../components/Icon/Icon';
+import Icon from '../../../Icon/Icon';
 import { Banner } from './SystemMassageStyles';
 
 export interface SystemMessage {
@@ -68,9 +68,9 @@ export function useSystemMessage(): Return {
 
     useEffect(() => {
         (async () => {
-            const response = await customHttpClient.get('http://localhost:7071/api/systemMessage');
+            const response = await customHttpClient.get('http://localhost:7071/api/serviceMessage');
             const data = await response.json();
-            console.log('systemMessage', data);
+
             if (data.message) {
                 setMessage(data);
                 setIsActive(true);
@@ -85,7 +85,11 @@ export function useSystemMessage(): Return {
     };
 }
 
-export function SystemBanner({ handleClose, message, type }: SystemBannerProps): JSX.Element {
+export function ServiceMessageBanner({
+    handleClose,
+    message,
+    type,
+}: SystemBannerProps): JSX.Element {
     const { iconColor, icon, buttonColor, background } = systemBannerMap[type || 'default'];
 
     return (
