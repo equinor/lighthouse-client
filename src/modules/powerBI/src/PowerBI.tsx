@@ -12,12 +12,11 @@ import { Filter } from './models/filter';
 import './style.css';
 
 const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    overflow: scroll;
+    overflow: hidden;
     position: relative;
     width: 100%;
     height: 100%;
+    overflow: auto;
 `;
 
 const ErrorWrapper = styled.div`
@@ -36,16 +35,20 @@ const Heading = styled.h1`
     margin-bottom: 0;
 `;
 
-const StickyWrapper = styled.div`
-    position: sticky;
+const TopBar = styled.div`
+    position: relative;
     display: flex;
     flex-direction: column;
     height: fit-content;
-    top: 0;
 `;
 
-const PBIWrapper = styled.div`
-    flex: 0 0 92%;
+const PBIWrapper = styled.div<{ height: number }>`
+    overflow: scroll;
+    position: absolute;
+    top: ${(props) => props.height}px;
+    left: 0;
+    right: 0;
+    bottom: 0;
 `;
 interface PowerBiProps {
     reportUri: string;
@@ -54,18 +57,23 @@ interface PowerBiProps {
         showFilter?: boolean;
         enableNavigation?: boolean;
     };
+    aspectRatio?: number;
     isFilterActive?: boolean;
 }
-
+const TOP_BAR_FILTER_HEIGHT = 248;
+const TOP_BAR_HEIGHT = 48;
 export const PowerBI = ({
     reportUri,
     filterOptions,
     options,
     isFilterActive = false,
+    aspectRatio = 0.41,
 }: PowerBiProps): JSX.Element => {
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+    const [ref, { awaitableHeight, width, height }] = useElementData();
 
     //TODO custom loading
     const eventHandlersMap = new Map([
@@ -103,29 +111,31 @@ export const PowerBI = ({
                     <Heading>{error.message}</Heading>
                 </ErrorWrapper>
             ) : (
-                <Wrapper>
-                    <StickyWrapper>
+                <Wrapper ref={ref}>
+                    <TopBar>
                         <PowerBIFilter
                             report={report}
                             isLoaded={isLoaded}
                             isFilterActive={isFilterActive}
                         />
                         <PageNavigation report={report} />
-                    </StickyWrapper>
-                    <PBIWrapper>
-                        <PowerBIEmbed
-                            embedConfig={config}
-                            eventHandlers={eventHandlersMap}
-                            getEmbeddedComponent={(embedObject: Embed) => {
-                                console.log(
-                                    `Embedded object of type "${embedObject.embedtype}" received`
-                                );
-                                setReport(embedObject as Report);
+                    </TopBar>
+                    <PBIWrapper height={isFilterActive ? TOP_BAR_FILTER_HEIGHT : TOP_BAR_HEIGHT}>
+                        <div style={{ height: `${width * aspectRatio}px` }}>
+                            <PowerBIEmbed
+                                embedConfig={config}
+                                eventHandlers={eventHandlersMap}
+                                getEmbeddedComponent={(embedObject: Embed) => {
+                                    console.log(
+                                        `Embedded object of type "${embedObject.embedtype}" received`
+                                    );
+                                    setReport(embedObject as Report);
 
-                                window['report'] = embedObject;
-                            }}
-                            cssClassName="pbiEmbed"
-                        />
+                                    window['report'] = embedObject;
+                                }}
+                                cssClassName="pbiEmbed"
+                            />
+                        </div>
                     </PBIWrapper>
                 </Wrapper>
             )}
