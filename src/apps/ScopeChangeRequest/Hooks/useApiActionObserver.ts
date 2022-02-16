@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useIsFetching, useIsMutating } from 'react-query';
 
 export function useApiActionObserver(): boolean {
+    const [isFetching, setIsFetching] = useState<boolean>(false);
     const queriesFetching = useIsFetching();
     const mutating = useIsMutating();
 
@@ -12,8 +13,6 @@ export function useApiActionObserver(): boolean {
     useEffect(() => {
         setIsFetching(queriesFetching > 0);
     }, [queriesFetching]);
-
-    const [isFetching, setIsFetching] = useState<boolean>(false);
 
     return isFetching;
 }

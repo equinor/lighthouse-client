@@ -1,6 +1,6 @@
 export interface Area {
     Id: number;
-    ParentId: null;
+    ParentId: unknown | null;
     Code: string;
     Description: string;
 }

@@ -206,8 +206,6 @@ export const WorkflowCriteria = ({
                 </Inline>
             </WorkflowStepViewContainer>
 
-            {/* {(isLoading || signLoading || unSignLoading) && <Progress.Dots color="primary" />} */}
-
             <ContributorSelector />
             {showSignWithComment && (
                 <SignWithComment criteria={criteria} close={() => setShowSignWithComment(false)} />

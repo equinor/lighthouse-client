@@ -1,5 +1,5 @@
 export interface CommissioningPackage {
-    BluelineStatus: null;
+    BluelineStatus: unknown | null;
     CommPkgNo: string;
     CommStatus: string;
     CommissioningHandoverStatus: string;
@@ -14,5 +14,5 @@ export interface CommissioningPackage {
     OperationHandoverStatus: string;
     System: string;
     SystemId: number;
-    YellowlineStatus: null;
+    YellowlineStatus: unknown | null;
 }

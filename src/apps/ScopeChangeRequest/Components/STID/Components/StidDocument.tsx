@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { getDocumentById } from '../../../Api/STID/getDocumentById';
 import { QueryKeys } from '../../../Api/ScopeChange/queryKeys';
+import { transformIsoDate } from '../../Workflow/Utils/dateFormatting';
 
 interface StidDocumentProps {
     docNo: string;
@@ -23,11 +24,6 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
             cacheTime: Infinity,
         }
     );
-
-    function transformIsoDate(date: string | undefined) {
-        if (!date) return '-';
-        return new Date(date).toISOString().slice(0, 10);
-    }
 
     return (
         <Wrapper>

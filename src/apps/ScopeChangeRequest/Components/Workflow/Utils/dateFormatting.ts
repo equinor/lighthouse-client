@@ -14,3 +14,8 @@ export function dateToDateTimeFormat(date: Date): string {
 
     return `${day}/${month}/${year} ${hour}:${paddedMinutes}`;
 }
+
+export function transformIsoDate(date: string | undefined): string {
+    if (!date) return '-';
+    return new Date(date).toISOString().slice(0, 10);
+}

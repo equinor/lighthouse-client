@@ -8,7 +8,7 @@ import { uploadAttachment } from '../../Api/ScopeChange/Request';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 import { Attachments } from './Attachments';
 
-const maxSizeInBytes = 100 * 1000 ** 2;
+const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const HotUpload = (): JSX.Element => {
     const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
 
@@ -32,7 +32,7 @@ export const HotUpload = (): JSX.Element => {
 
     return (
         <Wrapper>
-            <Attachments onDrop={onDrop} maxSizeInBytes={maxSizeInBytes} isLoading={isLoading} />
+            <Attachments onDrop={onDrop} maxSizeInBytes={MAX_SIZE_IN_BYTES} isLoading={isLoading} />
 
             {rejectedFiles && rejectedFiles.length > 0 && (
                 <>

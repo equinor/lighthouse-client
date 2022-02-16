@@ -13,15 +13,15 @@ export interface Tag {
     PurchaseOrderNo: string;
     CallOffNo: string;
     ProjectDescription: string;
-    Sequence: null;
-    MountedOnTagNo: null;
-    Remark: null;
-    SystemCode: null;
-    SystemDescription: null;
+    Sequence: unknown | null;
+    MountedOnTagNo: unknown | null;
+    Remark: unknown | null;
+    SystemCode: unknown | null;
+    SystemDescription: unknown | null;
     DisciplineCode: string;
     DisciplineDescription: string;
-    AreaCode: null;
-    AreaDescription: null;
+    AreaCode: unknown | null;
+    AreaDescription: unknown | null;
     EngineeringCodeCode: string;
     EngineeringCodeDescription: string;
     ContractorCode: string;
@@ -31,15 +31,6 @@ export interface Tag {
     PurchaseOrderTitle: string;
 }
 
-export interface AdditionalField {
-    Id: number;
-    Label: string;
-    Value: string;
-    Type: string;
-    Unit?: any;
-}
-
 export interface TagWrapper {
     Tag: Tag;
-    AdditionalFields: AdditionalField[];
 }

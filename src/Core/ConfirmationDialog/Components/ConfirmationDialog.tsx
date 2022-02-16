@@ -21,14 +21,13 @@ export const ConfirmationDialog = (): JSX.Element | null => {
                                 onClick={() => {
                                     clearConfirmationDialog();
                                 }}
-                                variant={'ghost_icon'}
+                                variant={'outlined'}
                                 color={'danger'}
                             >
                                 Cancel
                             </Button>
                             <HorizontalDivider />
                             <Button
-                                variant={'ghost_icon'}
                                 onClick={() => {
                                     clearConfirmationDialog();
                                     dialog.onConfirm && dialog.onConfirm();
@@ -45,7 +44,8 @@ export const ConfirmationDialog = (): JSX.Element | null => {
 };
 
 const DialogContainer = styled(Dialog)`
-    width: 110%;
+    width: 100%;
+    padding: 0.8rem 0.8rem;
     min-width: 350px;
 `;
 
@@ -54,6 +54,7 @@ const ButtonContainer = styled.div`
     flex-direction: row;
     justify-content: flex-end;
     padding: 0.5em;
+    align-items: center;
 `;
 
 const HorizontalDivider = styled.div`
