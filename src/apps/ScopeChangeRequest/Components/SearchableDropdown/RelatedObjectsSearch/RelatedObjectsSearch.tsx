@@ -1,11 +1,12 @@
 import { Icon, SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { ProcoSysTypes, searchPcs } from '../../../Api/Search/PCS/searchPcs';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
 import { searchStid, StidTypes } from '../../../Api/Search/STID/searchStid';
+import { useCancellationToken } from '../../../Hooks/useCancellationToken';
 import { AdvancedDocumentSearch } from '../../STID';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from '../applyEds';
 import { SearchableDropdownWrapper } from '../SearchableDropdownWrapper';
@@ -32,8 +33,20 @@ export const RelatedObjectsSearch = ({
     setRelatedObjects,
 }: RelatedObjectsSearchProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
-    const controller = useRef(new AbortController());
-    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>();
+    const { abort, getSignal } = useCancellationToken();
+
+    const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
+        'document',
+        'discipline',
+        'area',
+        'commpkg',
+        'tag',
+        'system',
+    ];
+
+    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>(
+        referenceTypes[0]
+    );
 
     const addRelatedObject = (value: TypedSelectOption) =>
         setRelatedObjects((prev) => [...prev, value]);
@@ -59,11 +72,9 @@ export const RelatedObjectsSearch = ({
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
     ) => {
-        controller.current.abort();
-        controller.current = new AbortController();
+        abort();
 
-        const search = (type: ProcoSysTypes) =>
-            searchPcs(inputValue, type, controller.current.signal);
+        const search = (type: ProcoSysTypes) => searchPcs(inputValue, type, getSignal());
 
         switch (referenceType) {
             case 'system': {
@@ -97,21 +108,12 @@ export const RelatedObjectsSearch = ({
             }
 
             case 'document': {
-                const results = await searchStid(inputValue, 'document', controller.current.signal);
+                const results = await searchStid(inputValue, 'document', getSignal());
                 callback(results);
                 return;
             }
         }
     };
-
-    const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
-        'document',
-        'discipline',
-        'area',
-        'commpkg',
-        'tag',
-        'system',
-    ];
 
     return (
         <Wrapper>
@@ -146,6 +148,7 @@ export const RelatedObjectsSearch = ({
                                 meta="(Required)"
                                 label="Reference type"
                                 items={referenceTypes}
+                                value={referenceType}
                                 handleSelectedItemChange={(change) => {
                                     if (!change.selectedItem) {
                                         setReferenceType(undefined);

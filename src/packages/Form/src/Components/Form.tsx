@@ -77,6 +77,7 @@ export const GeneratedForm = <T, K extends keyof T>({
             })}
             {children}
 
+            <div style={{ height: '2em' }} />
             <ButtonContainer>
                 {buttons &&
                     buttons.map((Component, index) => {

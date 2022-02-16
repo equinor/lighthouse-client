@@ -21,7 +21,7 @@ export async function searchSystems(
             .map((x) =>
                 selectOptions.push({
                     label: `SYS_${x.Code} - ${x.Description}`,
-                    value: x.Id,
+                    value: x.Id.toString(),
                     searchValue: x.Code,
                     type: 'system',
                     object: x,

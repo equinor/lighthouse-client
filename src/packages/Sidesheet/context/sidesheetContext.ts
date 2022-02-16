@@ -2,7 +2,10 @@ import { Atom, useAtom } from '@dbeining/react-atom';
 import { createGlobalSidesheetState } from '../State/actions';
 import { SidesheetState } from '../State/sidesheetState';
 
-const MIN_WIDTH = 30;
+/**MIN_WIDTH side sheet width */
+const MIN_WIDTH = 48;
+
+/**DEFAULT_WIDTH side sheet width */
 const DEFAULT_WIDTH = 650;
 
 export const SidesheetCoreContext = createGlobalSidesheetState({

@@ -69,21 +69,38 @@ export const PowerBIFilter = ({
     /** Main function for handling user events on checkboxes for filters.
      * Will set new filters on slicer, or remove depending on if it already exists or not.
      */
-    const handleOnChange = async (group: PowerBiFilter, filter: PowerBiFilterItem) => {
+    const handleOnChange = async (
+        group: PowerBiFilter,
+        filter: PowerBiFilterItem,
+        singleClick = false
+    ) => {
         try {
             const change = filter.value;
 
-            // Get POWERBI filter
             let newConditions: (string | number | boolean)[] = [];
+
             if (activeFilters) {
-                if (activeFilters[filter.type]?.includes(change)) {
-                    newConditions = activeFilters[filter.type].filter((a) => a !== change);
+                /** Either clicking on a label, only selecting this single one, deselect all others if any,
+                 *  or clicking on a checkbox, selecting multiple ones, or deselecting.
+                 */
+                if (singleClick) {
+                    if (activeFilters[filter.type]?.includes(change)) {
+                        newConditions = activeFilters[filter.type].filter((a) => a === change);
+                    } else {
+                        newConditions = [change];
+                    }
+                    setActiveFilters((prev) => ({ ...prev, [filter.type]: newConditions }));
                 } else {
-                    newConditions = [...activeFilters[filter.type], change];
+                    if (activeFilters[filter.type]?.includes(change)) {
+                        newConditions = activeFilters[filter.type].filter((a) => a !== change);
+                    } else {
+                        newConditions = [...activeFilters[filter.type], change];
+                    }
+                    setActiveFilters((prev) => ({ ...prev, [filter.type]: newConditions }));
                 }
-                setActiveFilters((prev) => ({ ...prev, [filter.type]: newConditions }));
             }
-            // Set POWERBI filter to the new filter, not overriding previous filters
+
+            /**  Set POWERBI filter to the new filter */
             const slicerFilter: models.IAdvancedFilter = {
                 $schema: 'http://powerbi.com/product/schema#advanced',
                 target: filter!.target!,
