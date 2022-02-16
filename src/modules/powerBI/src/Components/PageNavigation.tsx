@@ -21,7 +21,9 @@ const Wrap = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: flex-end;
-    padding: 1rem 0 1rem 0;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: ${tokens.colors.ui.background__light.rgba};
 `;
 const HeaderTab = styled(Tab)`
     height: 25px;
@@ -45,20 +47,22 @@ export const PageNavigation = ({ report }: PageNavigationProps) => {
     return (
         <>
             {pages && (
-                <Wrap>
-                    {pages.map((page) => {
-                        return (
-                            <HeaderTab
-                                key={page.name}
-                                onClick={() => handleClick(page)}
-                                active={page.name === activePage?.name ? true : false}
-                            >
-                                <TabText>{page.displayName}</TabText>
-                            </HeaderTab>
-                        );
-                    })}
-                    <Line />
-                </Wrap>
+                <div>
+                    <Wrap>
+                        {pages.map((page) => {
+                            return (
+                                <HeaderTab
+                                    key={page.name}
+                                    onClick={() => handleClick(page)}
+                                    active={page.name === activePage?.name ? true : false}
+                                >
+                                    <TabText>{page.displayName}</TabText>
+                                </HeaderTab>
+                            );
+                        })}
+                        <Line />
+                    </Wrap>
+                </div>
             )}
         </>
     );

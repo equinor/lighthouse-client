@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.section`
-    height: 100%;
+    height: 10%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
