@@ -15,10 +15,15 @@ import { HistoryList } from '../History/HistoryList';
 import { HotUpload } from '../../../Attachments/HotUpload';
 import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
 import { Progress } from '@equinor/eds-core-react';
+import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
+import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 
 export const SingleView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
-    const isBusy = useApiActionObserver();
+    const isBusy = useApiActionObserver(
+        [QueryKeys.Step],
+        [MutationKeys.Contribute, MutationKeys.Sign, MutationKeys.Reassign, MutationKeys.Unsign]
+    );
 
     return (
         <div>

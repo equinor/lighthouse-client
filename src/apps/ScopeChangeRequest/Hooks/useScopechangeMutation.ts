@@ -4,6 +4,8 @@ import {
     UseMutationOptions,
     UseMutationResult,
     useQueryClient,
+    MutationKey,
+    QueryKey,
 } from 'react-query';
 import { QueryKeys } from '../Api/ScopeChange/queryKeys';
 
@@ -13,27 +15,25 @@ export function useScopeChangeMutation<
     TVariables = void,
     TContext = unknown
 >(
+    mutationKey: MutationKey,
     mutationFn: MutationFunction<TData, TVariables>,
     options?: Omit<
         UseMutationOptions<TData, TError, TVariables, TContext>,
         'mutationFn' | 'onSettled'
-    >
+    >,
+    invalidateKeys?: QueryKey
 ): UseMutationResult<TData, TError, TVariables, TContext> {
     const queryClient = useQueryClient();
+
     function invalidate() {
-        queryClient.invalidateQueries(QueryKeys.Scopechange);
-        queryClient.invalidateQueries(QueryKeys.History);
-        /**
-         * Invalidate all options
-         */
-        const keys = queryClient
-            .getQueryCache()
-            .getAll()
-            .map((query) => query.queryKey);
-        keys.filter((queryKey) => queryKey.toString().startsWith('step') === true).forEach(
-            (queryKey) => queryClient.invalidateQueries(queryKey)
-        );
+        if (invalidateKeys) {
+            queryClient.invalidateQueries(invalidateKeys);
+        } else {
+            queryClient.invalidateQueries(QueryKeys.Scopechange);
+            queryClient.invalidateQueries(QueryKeys.History);
+            queryClient.invalidateQueries(QueryKeys.Step);
+        }
     }
 
-    return useMutation(mutationFn, { ...options, onSettled: invalidate });
+    return useMutation(mutationKey, mutationFn, { ...options, onSettled: invalidate });
 }

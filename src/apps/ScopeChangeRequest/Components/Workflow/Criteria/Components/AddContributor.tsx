@@ -10,6 +10,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
+import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 
 interface AddContributorProps {
     close: () => void;
@@ -29,7 +30,7 @@ export const AddContributor = ({ close }: AddContributorProps): JSX.Element => {
         );
     };
 
-    const { mutateAsync, isLoading } = useScopeChangeMutation(submit, {
+    const { mutateAsync, isLoading } = useScopeChangeMutation([MutationKeys.Contribute], submit, {
         onSuccess: () => close(),
         onError: (e: ServerError) => setErrorMessage(e),
     });

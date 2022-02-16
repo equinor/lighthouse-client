@@ -15,12 +15,17 @@ import {
 import { HistoryList } from '../History/HistoryList';
 import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
 import { Progress } from '@equinor/eds-core-react';
+import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
+import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
+import { HotUpload } from '../../../Attachments/HotUpload';
 
 export const SplitView = (): JSX.Element => {
-    const { request } = useScopeChangeContext();
+    const { request, requestAccess } = useScopeChangeContext();
 
-    const isBusy = useApiActionObserver();
-
+    const isBusy = useApiActionObserver(
+        [QueryKeys.Step, QueryKeys.Contributor, QueryKeys.Criteria],
+        [MutationKeys.Contribute, MutationKeys.Sign, MutationKeys.Reassign, MutationKeys.Unsign]
+    );
     return (
         <SplitScreen>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
@@ -90,6 +95,7 @@ export const SplitView = (): JSX.Element => {
                 <Section>
                     <BoldHeading>Attachments</BoldHeading>
                     <Value>
+                        {requestAccess.canPatch && <HotUpload />}
                         <Attachments attachments={request.attachments} requestId={request.id} />
                     </Value>
                 </Section>

@@ -22,6 +22,7 @@ export const Column = styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 0.5em;
+    gap: 0.2em;
 `;
 
 export const Wrapper = styled.div`

@@ -14,6 +14,7 @@ export function setup(appApi: ClientApi): void {
         CustomSidesheet: ScopeChangeSideSheet,
     });
 
+    appApi.shortName;
     request.registerDataCreator({
         title: 'Scope change',
         component: ScopeChangeRequestForm,

@@ -61,6 +61,7 @@ const Highlight = styled.div`
 
 const Wrapper = styled.div`
     display: flex;
+    min-width: 300px;
     flex-direction: column;
     width: -webkit-fill-available;
 `;

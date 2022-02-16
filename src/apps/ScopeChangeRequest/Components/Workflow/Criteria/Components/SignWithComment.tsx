@@ -9,6 +9,7 @@ import { Criteria } from '../../../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
 import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
+import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 
 interface SignWithCommentProps {
     criteria: Criteria;
@@ -48,7 +49,7 @@ export const SignWithComment = ({ criteria, close }: SignWithCommentProps): JSX.
         }
     }
 
-    const { mutateAsync, isLoading } = useScopeChangeMutation(onSignStep, {
+    const { mutateAsync, isLoading } = useScopeChangeMutation([MutationKeys.Sign], onSignStep, {
         onError: (e: ServerError) => setErrorMessage(e),
     });
 

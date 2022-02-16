@@ -17,6 +17,8 @@ import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
+import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
+import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -28,18 +30,26 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
     const { request, setErrorMessage } = useScopeChangeContext();
 
-    const isBusy = useApiActionObserver();
+    const isBusy = useApiActionObserver([QueryKeys.Contributor], []);
 
     const checkCanContribute = () =>
         canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
 
     const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
-        `step/${step.id}/contributor/${contributor.id}`,
+        ['step', step.id, 'contributor', contributor.id],
         checkCanContribute,
-        { refetchOnWindowFocus: false }
+        {
+            refetchOnWindowFocus: false,
+            onError: (e: string) =>
+                setErrorMessage({
+                    detail: e,
+                    title: 'Failed to get permissions',
+                    validationErrors: {},
+                }),
+        }
     );
 
-    const { mutateAsync } = useScopeChangeMutation(submitContribution, {
+    const { mutateAsync } = useScopeChangeMutation([MutationKeys.Contribute], submitContribution, {
         onError: (e: ServerError) => setErrorMessage(e),
         onSuccess: () => invalidateUserCanContribute(),
     });
@@ -90,7 +100,7 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                     </Inline>
                     {request.state === 'Open' && !request.isVoided && (
                         <>
-                            {step.isCurrent && (
+                            {step.isCurrent && makeContributorActions().length > 0 && (
                                 <Inline>
                                     <MenuButton
                                         items={makeContributorActions()}
