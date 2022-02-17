@@ -14,6 +14,7 @@ import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { Upload } from '../Attachments/Upload';
 import { Origin } from './Origin';
+import { MutationKeys } from '../../Api/ScopeChange/mutationKeys';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -71,9 +72,13 @@ export const ScopeChangeRequestEditForm = ({
         if (!error) close();
     };
 
-    const { isLoading, error, mutateAsync } = useScopeChangeMutation(onSubmit, {
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { isLoading, error, mutateAsync } = useScopeChangeMutation(
+        [MutationKeys.ScopeChange],
+        onSubmit,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
     const SaveButton = () => {
         return (
@@ -122,10 +127,8 @@ export const ScopeChangeRequestEditForm = ({
                     },
                 ]}
             >
-                <Field
-                    label="Attachments"
-                    value={<Upload attachments={attachments} setAttachments={setAttachments} />}
-                />
+                <h3>Attachments</h3>
+                <Upload attachments={attachments} setAttachments={setAttachments} />
             </GeneratedForm>
         </>
     );

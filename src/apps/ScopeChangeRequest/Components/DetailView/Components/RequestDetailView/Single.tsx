@@ -15,10 +15,12 @@ import { HistoryList } from '../History/HistoryList';
 import { HotUpload } from '../../../Attachments/HotUpload';
 import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
 import { Progress } from '@equinor/eds-core-react';
+import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
+import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 
 export const SingleView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
-    const isBusy = useApiActionObserver();
+    const isBusy = useApiActionObserver([QueryKeys.Step], [MutationKeys.Step, MutationKeys.Sign]);
 
     return (
         <div>
@@ -28,7 +30,6 @@ export const SingleView = (): JSX.Element => {
                     <SubHeading>Phase</SubHeading>
                     <Value>{request.phase}</Value>
                 </Section>
-
                 <Section>
                     <SubHeading>State</SubHeading>
                     <Value>{request.isVoided ? 'Voided' : request.state}</Value>
@@ -58,10 +59,12 @@ export const SingleView = (): JSX.Element => {
                     <SubHeading>Guesstimate mhrs</SubHeading>
                     <Value>{request.guesstimateHours}</Value>
                 </Section>
-                <Section>
-                    <SubHeading>Guesstimate description</SubHeading>
-                    <Value>{request.guesstimateDescription}</Value>
-                </Section>
+                {request.guesstimateDescription && (
+                    <Section>
+                        <SubHeading>Guesstimate description</SubHeading>
+                        <Value>{request.guesstimateDescription}</Value>
+                    </Section>
+                )}
             </SectionRow>
 
             <Section>

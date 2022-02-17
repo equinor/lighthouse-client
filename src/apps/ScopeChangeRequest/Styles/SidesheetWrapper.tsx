@@ -7,6 +7,6 @@ export const Wrapper = styled.div`
     background: #fff;
     max-width: 1200px;
     grid-area: sidebar;
-    margin-left: 1.5em;
+    margin: 0em 1em;
     overflow: scroll;
 `;

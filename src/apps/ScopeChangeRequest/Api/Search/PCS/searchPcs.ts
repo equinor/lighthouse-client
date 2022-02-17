@@ -8,7 +8,6 @@ import { searchDCN } from './searchDCN';
 import { searchNCR } from './searchNcr';
 import { searchSWCR } from './searchSWCR';
 import { searchDiscipline } from './searchDiscipline';
-import { searchFunctionalRole } from './searchFunctionalRole';
 import { searchPerson } from './searchPerson';
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 
@@ -33,7 +32,7 @@ export type PCSOrigins = 'Query' | 'DCN' | 'NCR' | 'SWCR';
  */
 export const searchPcs = async (
     searchString: string,
-    searchItem: ProcoSysTypes,
+    searchItem: Omit<ProcoSysTypes, 'functionalRole'>,
     abortSignal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const { procosys } = httpClient();
@@ -64,9 +63,6 @@ export const searchPcs = async (
 
         case 'discipline':
             return await searchDiscipline(searchString, procosys, abortSignal);
-
-        case 'functionalrole':
-            return await searchFunctionalRole(searchString, procosys, abortSignal);
 
         case 'swcr':
             return await searchSWCR(searchString, procosys, abortSignal);

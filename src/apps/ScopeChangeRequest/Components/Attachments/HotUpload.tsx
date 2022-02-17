@@ -7,6 +7,7 @@ import { useScopeChangeMutation } from '../../Hooks/useScopechangeMutation';
 import { uploadAttachment } from '../../Api/ScopeChange/Request';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 import { Attachments } from './Attachments';
+import { MutationKeys } from '../../Api/ScopeChange/mutationKeys';
 
 const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const HotUpload = (): JSX.Element => {
@@ -14,11 +15,15 @@ export const HotUpload = (): JSX.Element => {
 
     const { request, setErrorMessage } = useScopeChangeContext();
 
-    const { isLoading, mutateAsync } = useScopeChangeMutation(uploadAttachment, {
-        retry: 2,
-        retryDelay: 2,
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { isLoading, mutateAsync } = useScopeChangeMutation(
+        [MutationKeys.Attachment, MutationKeys.ScopeChange],
+        uploadAttachment,
+        {
+            retry: 2,
+            retryDelay: 2,
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
     const onDrop = useCallback(
         async (acceptedFiles, fileRejections: FileRejection[]) => {
