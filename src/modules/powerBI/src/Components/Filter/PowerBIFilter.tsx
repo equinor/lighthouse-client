@@ -42,7 +42,11 @@ export const PowerBIFilter = ({
         allVisibleFilterValues: string[]
     ) => {
         try {
-            if (allVisibleFilterValues.every((a) => activeFilters[group.type]?.includes(a))) {
+            if (
+                allVisibleFilterValues.every((visibleValue) =>
+                    activeFilters[group.type]?.includes(visibleValue)
+                )
+            ) {
                 /**
                  * All visible filters are applied.
                  * Remove the visible ones, and keep the ones not visible
