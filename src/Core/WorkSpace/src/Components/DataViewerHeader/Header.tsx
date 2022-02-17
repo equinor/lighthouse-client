@@ -20,7 +20,6 @@ interface CompletionViewHeaderProps {
     title: string;
     tabs: TabItem[];
     handleFilter: VoidFunction;
-    toggleFullscreen: VoidFunction;
     activeFilter: boolean;
 }
 
@@ -29,7 +28,6 @@ export const CompletionViewHeader = ({
     tabs,
     handleFilter,
     activeFilter,
-    toggleFullscreen,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key } = useDataContext();
     const { factory, setSelected } = useFactory(key);
@@ -68,13 +66,6 @@ export const CompletionViewHeader = ({
                 <Divider />
                 <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
                     <Icon name={'filter_alt'} />
-                </TabButton>
-                <TabButton
-                    onClick={toggleFullscreen}
-                    aria-selected={activeFilter}
-                    title="Fullscreen"
-                >
-                    <Icon name={'fullscreen'} />
                 </TabButton>
             </RightSection>
         </HeaderWrapper>
