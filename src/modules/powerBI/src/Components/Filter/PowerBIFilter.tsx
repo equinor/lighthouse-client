@@ -33,7 +33,7 @@ export const PowerBIFilter = ({
 
     /**
      * Function to handle "Select All" checkbox.
-     * Will either add all visble filter values to current target, or remove all depending
+     * Will either add all visible filter values to current target, or remove all depending
      * on if checkbox is ticked or not.
      */
     const handleOnSelectAll = async (
