@@ -47,8 +47,8 @@ export const FilterItems = ({
                         onChange={async () =>
                             await handleOnSelectAll(group, filterValues[0], allSearchedFilterValues)
                         }
-                        checked={allSearchedFilterValues.every((a) =>
-                            activeFilters[group.type]?.includes(a)
+                        checked={allSearchedFilterValues.every((visibleFilterValue) =>
+                            activeFilters[group.type]?.includes(visibleFilterValue)
                         )}
                         label="Select all"
                     />
