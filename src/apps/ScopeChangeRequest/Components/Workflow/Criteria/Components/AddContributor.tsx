@@ -30,10 +30,14 @@ export const AddContributor = ({ close }: AddContributorProps): JSX.Element => {
         );
     };
 
-    const { mutateAsync, isLoading } = useScopeChangeMutation([MutationKeys.Contribute], submit, {
-        onSuccess: () => close(),
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { mutateAsync, isLoading } = useScopeChangeMutation(
+        [MutationKeys.Contribute, MutationKeys.Step],
+        submit,
+        {
+            onSuccess: () => close(),
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
     return (
         <>

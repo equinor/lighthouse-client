@@ -27,6 +27,7 @@ export function useScopeChangeMutation<
 
     function invalidate() {
         if (invalidateKeys) {
+            debugger;
             queryClient.invalidateQueries(invalidateKeys);
         } else {
             queryClient.invalidateQueries(QueryKeys.Scopechange);

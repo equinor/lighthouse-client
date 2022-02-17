@@ -36,10 +36,13 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
         canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
 
     const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
-        ['step', step.id, 'contributor', contributor.id],
+        [QueryKeys.Step, step.id, QueryKeys.Contributor, contributor.id],
         checkCanContribute,
         {
             refetchOnWindowFocus: false,
+            retry: 3,
+            staleTime: 5 * 1000 * 60,
+            cacheTime: 5 * 1000 * 60,
             onError: (e: string) =>
                 setErrorMessage({
                     detail: e,
@@ -49,10 +52,14 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
         }
     );
 
-    const { mutateAsync } = useScopeChangeMutation([MutationKeys.Contribute], submitContribution, {
-        onError: (e: ServerError) => setErrorMessage(e),
-        onSuccess: () => invalidateUserCanContribute(),
-    });
+    const { mutateAsync } = useScopeChangeMutation(
+        [MutationKeys.Contribute, MutationKeys.Step],
+        submitContribution,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+            onSuccess: () => invalidateUserCanContribute(),
+        }
+    );
 
     function makeContributorActions(): MenuItem[] {
         const actions: MenuItem[] = [];

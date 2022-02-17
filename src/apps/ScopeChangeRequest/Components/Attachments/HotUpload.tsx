@@ -16,7 +16,7 @@ export const HotUpload = (): JSX.Element => {
     const { request, setErrorMessage } = useScopeChangeContext();
 
     const { isLoading, mutateAsync } = useScopeChangeMutation(
-        [MutationKeys.Attachment],
+        [MutationKeys.Attachment, MutationKeys.ScopeChange],
         uploadAttachment,
         {
             retry: 2,

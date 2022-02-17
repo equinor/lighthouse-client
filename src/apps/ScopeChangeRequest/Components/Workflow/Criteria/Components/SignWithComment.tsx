@@ -49,9 +49,13 @@ export const SignWithComment = ({ criteria, close }: SignWithCommentProps): JSX.
         }
     }
 
-    const { mutateAsync, isLoading } = useScopeChangeMutation([MutationKeys.Sign], onSignStep, {
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { mutateAsync, isLoading } = useScopeChangeMutation(
+        [MutationKeys.Sign, MutationKeys.Step],
+        onSignStep,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
     return (
         <>

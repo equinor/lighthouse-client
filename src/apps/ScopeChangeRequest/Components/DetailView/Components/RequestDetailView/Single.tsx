@@ -20,10 +20,7 @@ import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 
 export const SingleView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
-    const isBusy = useApiActionObserver(
-        [QueryKeys.Step],
-        [MutationKeys.Contribute, MutationKeys.Sign, MutationKeys.Reassign, MutationKeys.Unsign]
-    );
+    const isBusy = useApiActionObserver([QueryKeys.Step], [MutationKeys.Step, MutationKeys.Sign]);
 
     return (
         <div>
@@ -33,7 +30,6 @@ export const SingleView = (): JSX.Element => {
                     <SubHeading>Phase</SubHeading>
                     <Value>{request.phase}</Value>
                 </Section>
-
                 <Section>
                     <SubHeading>State</SubHeading>
                     <Value>{request.isVoided ? 'Voided' : request.state}</Value>
@@ -63,10 +59,12 @@ export const SingleView = (): JSX.Element => {
                     <SubHeading>Guesstimate mhrs</SubHeading>
                     <Value>{request.guesstimateHours}</Value>
                 </Section>
-                <Section>
-                    <SubHeading>Guesstimate description</SubHeading>
-                    <Value>{request.guesstimateDescription}</Value>
-                </Section>
+                {request.guesstimateDescription && (
+                    <Section>
+                        <SubHeading>Guesstimate description</SubHeading>
+                        <Value>{request.guesstimateDescription}</Value>
+                    </Section>
+                )}
             </SectionRow>
 
             <Section>

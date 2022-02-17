@@ -127,10 +127,8 @@ export const ScopeChangeRequestEditForm = ({
                     },
                 ]}
             >
-                <Field
-                    label="Attachments"
-                    value={<Upload attachments={attachments} setAttachments={setAttachments} />}
-                />
+                <h3>Attachments</h3>
+                <Upload attachments={attachments} setAttachments={setAttachments} />
             </GeneratedForm>
         </>
     );

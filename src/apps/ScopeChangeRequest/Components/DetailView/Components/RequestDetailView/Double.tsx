@@ -23,7 +23,7 @@ export const SplitView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
 
     const isBusy = useApiActionObserver(
-        [QueryKeys.Step, QueryKeys.Contributor, QueryKeys.Criteria],
+        [QueryKeys.Step],
         [MutationKeys.Contribute, MutationKeys.Sign, MutationKeys.Reassign, MutationKeys.Unsign]
     );
     return (

@@ -49,6 +49,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         if (item.id) {
             remove();
             refetchScopeChange();
+            queryClient.invalidateQueries(QueryKeys.Step);
         }
     }, [item.id]);
 

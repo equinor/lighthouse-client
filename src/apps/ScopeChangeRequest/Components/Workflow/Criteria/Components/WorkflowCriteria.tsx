@@ -21,6 +21,7 @@ import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
 import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 import { useQueryClient } from 'react-query';
+import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
 
 interface OnSignStepAction {
     action: 'Approved' | 'Rejected';
@@ -136,9 +137,11 @@ export const WorkflowCriteria = ({
             .find((x) => x.id === step.id)
             ?.criterias.filter((x) => x.signedAtUtc === null);
         const sign = async () => {
-            await signCriteria(request.id, step.id, criteria.id, action, signComment).then(() =>
-                queryClient.invalidateQueries()
-            );
+            await signCriteria(request.id, step.id, criteria.id, action, signComment).then(() => {
+                queryClient.invalidateQueries(QueryKeys.Scopechange);
+                queryClient.invalidateQueries(QueryKeys.Step);
+                queryClient.invalidateQueries(QueryKeys.History);
+            });
         };
         if (
             step.contributors &&
@@ -178,20 +181,24 @@ export const WorkflowCriteria = ({
     };
 
     const { mutateAsync: reassignMutation } = useScopeChangeMutation(
-        [MutationKeys.Reassign],
+        [MutationKeys.Step, MutationKeys.Reassign],
         reassignCriteria,
         {
             onError: (e: ServerError) => setErrorMessage(e),
         }
     );
 
-    const { mutateAsync: signMutation } = useScopeChangeMutation([MutationKeys.Sign], onSignStep, {
-        onError: (e: ServerError) => setErrorMessage(e),
-        onSuccess: () => setSignComment(''),
-    });
+    const { mutateAsync: signMutation } = useScopeChangeMutation(
+        [MutationKeys.Step, MutationKeys.Sign],
+        onSignStep,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+            onSuccess: () => setSignComment(''),
+        }
+    );
 
     const { mutateAsync: unSignMutation } = useScopeChangeMutation(
-        [MutationKeys.Unsign],
+        [MutationKeys.Step, MutationKeys.Unsign],
         unsignCriteria,
         {
             onError: (e: ServerError) => setErrorMessage(e),

@@ -17,7 +17,7 @@ export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element 
     const { data: isAllowedToAddContributor } = useQuery(
         ['step', step.id],
         checkContributorAccess,
-        { refetchOnWindowFocus: false }
+        { refetchOnWindowFocus: false, staleTime: 5 * 1000 * 60, cacheTime: 5 * 1000 * 60 }
     );
 
     return (

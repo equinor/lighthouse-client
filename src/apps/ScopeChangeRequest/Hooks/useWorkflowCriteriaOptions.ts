@@ -26,6 +26,8 @@ export function useWorkflowCriteriaOptions(
     > = {
         refetchOnWindowFocus: false,
         retry: 3,
+        staleTime: 5 * 1000 * 60,
+        cacheTime: 5 * 1000 * 60,
         onError: (e: string) => {
             if (errorPipe) {
                 errorPipe({ detail: e, title: 'Query failed', validationErrors: {} });
