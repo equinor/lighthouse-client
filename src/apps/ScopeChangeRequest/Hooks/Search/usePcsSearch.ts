@@ -1,23 +1,27 @@
-import { useQuery } from 'react-query';
-import { getFunctionalRoles } from '../Api/PCS/getFunctionalRoles';
-import { getSystems } from '../Api/PCS/getSystems';
-import { TypedSelectOption } from '../Api/Search/searchType';
-import { QueryKeys } from '../Api/ScopeChange/queryKeys';
-import { ProcoSysTypes } from '../Api/Search/PCS/searchPcs';
-import { searchTags } from '../Api/Search/PCS/searchTags';
-import { httpClient } from '../../../Core/Client/Functions';
-import { searchCommPkg } from '../Api/Search/PCS/searchCommPkg';
-import { searchQueryOrigin } from '../Api/Search/PCS/searchQuery';
-import { searchDCN } from '../Api/Search/PCS/searchDCN';
-import { searchSWCR } from '../Api/Search/PCS/searchSWCR';
-import { searchAreas } from '../Api/Search/PCS/searchArea';
-import { searchPerson } from '../Api/Search/PCS/searchPerson';
-import { searchDiscipline } from '../Api/Search/PCS/searchDiscipline';
-import { searchNCR } from '../Api/Search/PCS/searchNcr';
+import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
+import { getSystems } from '../../Api/PCS/getSystems';
+import { TypedSelectOption } from '../../Api/Search/searchType';
+import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
+import { searchTags } from '../../Api/Search/PCS/searchTags';
+import { httpClient } from '../../../../Core/Client/Functions';
+import { searchCommPkg } from '../../Api/Search/PCS/searchCommPkg';
+import { searchQueryOrigin } from '../../Api/Search/PCS/searchQuery';
+import { searchDCN } from '../../Api/Search/PCS/searchDCN';
+import { searchSWCR } from '../../Api/Search/PCS/searchSWCR';
+import { searchAreas } from '../../Api/Search/PCS/searchArea';
+import { searchPerson } from '../../Api/Search/PCS/searchPerson';
+import { searchDiscipline } from '../../Api/Search/PCS/searchDiscipline';
+import { searchNCR } from '../../Api/Search/PCS/searchNcr';
+import { useInfiniteCachedQuery } from '../React-Query/useInfiniteCachedQuery';
 import Fuse from 'fuse.js';
 
 interface PCSSearch {
-    search: (searchValue: string, type: ProcoSysTypes) => Promise<TypedSelectOption[]>;
+    searchPCS: (
+        searchValue: string,
+        type: ProcoSysTypes,
+        signal?: AbortSignal
+    ) => Promise<TypedSelectOption[]>;
 }
 
 /**
@@ -26,18 +30,14 @@ interface PCSSearch {
  * @returns
  */
 export function usePcsSearch(): PCSSearch {
-    const { data: systems, refetch: refetchSystems } = useQuery([QueryKeys.Systems], getSystems, {
-        staleTime: 10 * 1000 * 60 * 60,
-        cacheTime: 10 * 1000 * 60 * 60,
-    });
+    const { data: systems, refetch: refetchSystems } = useInfiniteCachedQuery(
+        [QueryKeys.Systems],
+        getSystems
+    );
 
-    const { data: functionalRoles, refetch: refetchFunctionalRoles } = useQuery(
+    const { data: functionalRoles, refetch: refetchFunctionalRoles } = useInfiniteCachedQuery(
         [QueryKeys.FunctionalRole],
-        getFunctionalRoles,
-        {
-            staleTime: 10 * 1000 * 60 * 60,
-            cacheTime: 10 * 1000 * 60 * 60,
-        }
+        getFunctionalRoles
     );
 
     const { procosys } = httpClient();
@@ -89,6 +89,10 @@ export function usePcsSearch(): PCSSearch {
             case 'tag': {
                 return await searchTags(searchValue, procosys, signal);
             }
+
+            default: {
+                throw new Error('Unknown searchItem');
+            }
         }
     }
 
@@ -126,7 +130,7 @@ export function usePcsSearch(): PCSSearch {
 
         return fuse.search(searchValue).map((x): TypedSelectOption => {
             return {
-                label: `SYS_${x.item.Code} - ${x.item.Description}`,
+                label: `${x.item.Code} - ${x.item.Description}`,
                 object: x,
                 searchValue: x.item.Code,
                 type: 'system',
@@ -136,6 +140,6 @@ export function usePcsSearch(): PCSSearch {
     }
 
     return {
-        search: search,
+        searchPCS: search,
     };
 }

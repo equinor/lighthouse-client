@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import styled from 'styled-components';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
-import { useScopeChangeMutation } from '../../Hooks/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { uploadAttachment } from '../../Api/ScopeChange/Request';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 import { Attachments } from './Attachments';

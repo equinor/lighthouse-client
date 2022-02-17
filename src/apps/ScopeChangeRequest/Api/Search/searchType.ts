@@ -1,4 +1,4 @@
-import { ProcoSysTypes } from './PCS/searchPcs';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { StidTypes } from './STID/searchStid';
 
 interface SelectOption {

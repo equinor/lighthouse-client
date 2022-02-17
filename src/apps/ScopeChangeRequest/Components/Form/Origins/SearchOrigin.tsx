@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { GroupBase, OptionsOrGroups } from 'react-select';
-import { searchPcs, PCSOrigins } from '../../../Api/Search/PCS/searchPcs';
+import { PCSOrigins } from '../../../Types/ProCoSys/ProCoSysTypes';
 
 import { useState } from 'react';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
 import { SearchableSingleSelect } from './SearchableSingleSelect';
+import { usePcsSearch } from '../../../Hooks/Search/usePcsSearch';
 
 interface PCSLinkProps {
     setOriginId: (originId: string | undefined) => void;
@@ -14,6 +15,7 @@ interface PCSLinkProps {
 
 export const SearchOrigin = ({ setOriginId, originId, type }: PCSLinkProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
+    const { searchPCS } = usePcsSearch();
 
     const origin: TypedSelectOption | null = originId
         ? {
@@ -35,7 +37,7 @@ export const SearchOrigin = ({ setOriginId, originId, type }: PCSLinkProps): JSX
         const options: TypedSelectOption[] = [];
 
         try {
-            await (await searchPcs(inputValue, type, signal)).map((x) => options.push(x));
+            await (await searchPCS(inputValue, type, signal)).map((x) => options.push(x));
         } catch (e) {
             setApiErrors((prev) => [...prev, type]);
         }

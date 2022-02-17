@@ -31,7 +31,7 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
                         }.equinor.com/JOHAN_CASTBERG/Completion#Tag|${tag.procosysId}`}
                     target="_blank"
                 >
-                    TAG_{tag.procosysNumber}
+                    {tag.procosysNumber}
                 </Link>
                 - <div>{data?.Description}</div>
             </TagText>

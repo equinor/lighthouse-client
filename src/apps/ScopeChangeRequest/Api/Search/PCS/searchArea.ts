@@ -39,7 +39,7 @@ export const searchAreas = async (
         .then((data: Area[]) => {
             data.forEach((x: Area) => {
                 selectOptions.push({
-                    label: `AREA_${x.Code} - ${x.Description}`,
+                    label: `${x.Code} - ${x.Description}`,
                     value: x.Code,
                     type: 'area',
                     searchValue: x.Code,
