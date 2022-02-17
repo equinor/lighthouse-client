@@ -1,9 +1,9 @@
 export interface FunctionalRole {
     Code: string;
     Description: string;
-    Email: null;
-    InformationEmail: null;
-    UsePersonalEmail: null;
+    Email: string | null;
+    InformationEmail: string | null;
+    UsePersonalEmail: boolean | null;
     Classification: 'SCOPECHANGE';
     Persons: Person[];
 }

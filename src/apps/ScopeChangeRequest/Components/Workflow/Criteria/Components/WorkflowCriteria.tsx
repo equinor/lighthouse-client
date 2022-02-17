@@ -121,8 +121,8 @@ export const WorkflowCriteria = ({
                 criteriaId: criteria.id,
                 reassign: {
                     type: `${selected.type === 'functionalRole'
-                            ? 'RequireProcosysFunctionalRoleSignature'
-                            : 'RequireProcosysUserSignature'
+                        ? 'RequireProcosysFunctionalRoleSignature'
+                        : 'RequireProcosysUserSignature'
                         }`,
                     value: selected.value,
                 },
@@ -149,7 +149,7 @@ export const WorkflowCriteria = ({
             unsignedCriterias &&
             unsignedCriterias.length === 1
         ) {
-            await spawnConfirmationDialog(
+            spawnConfirmationDialog(
                 'Not all contributors have responded yet, are you sure you want to continue?',
                 'Warning',
                 sign

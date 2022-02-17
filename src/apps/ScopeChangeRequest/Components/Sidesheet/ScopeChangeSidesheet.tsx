@@ -108,56 +108,54 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         );
     }
     return (
-        <>
-            <Wrapper>
-                <ScopeChangeErrorBanner message={errorMessage} requestId={item.id} />
-                <TitleHeader>
-                    <Title>
-                        ({data?.sequenceNumber}) {data?.title}
-                        {isLoading && <Progress.Dots color="primary" />}
-                    </Title>
-                    <ButtonContainer>
-                        <IconMenu items={actionMenu} />
+        <Wrapper>
+            <ScopeChangeErrorBanner message={errorMessage} requestId={item.id} />
+            <TitleHeader>
+                <Title>
+                    ({data?.sequenceNumber}) {data?.title}
+                    {isLoading && <Progress.Dots color="primary" />}
+                </Title>
+                <ButtonContainer>
+                    <IconMenu items={actionMenu} />
 
-                        <Button
-                            variant="ghost_icon"
-                            onClick={() => setEditMode(!editMode)}
-                            disabled={!scopeChangeAccess.canPatch}
-                        >
-                            <Icon
-                                color={
-                                    scopeChangeAccess.canPatch
-                                        ? tokens.colors.interactive.primary__resting.hex
-                                        : tokens.colors.interactive.disabled__text.hex
-                                }
-                                name="edit"
+                    <Button
+                        variant="ghost_icon"
+                        onClick={() => setEditMode(!editMode)}
+                        disabled={!scopeChangeAccess.canPatch}
+                    >
+                        <Icon
+                            color={
+                                scopeChangeAccess.canPatch
+                                    ? tokens.colors.interactive.primary__resting.hex
+                                    : tokens.colors.interactive.disabled__text.hex
+                            }
+                            name="edit"
+                        />
+                    </Button>
+                </ButtonContainer>
+            </TitleHeader>
+            <ScopeChangeContext.Provider
+                value={{
+                    isRefetching: isRefetching,
+                    setErrorMessage: (message: ServerError) => setErrorMessage(message),
+                    request: data || item,
+                    requestAccess: scopeChangeAccess,
+                }}
+            >
+                {data && (
+                    <div>
+                        {editMode ? (
+                            <ScopeChangeRequestEditForm
+                                request={data}
+                                close={() => setEditMode(false)}
                             />
-                        </Button>
-                    </ButtonContainer>
-                </TitleHeader>
-                <ScopeChangeContext.Provider
-                    value={{
-                        isRefetching: isRefetching,
-                        setErrorMessage: (message: ServerError) => setErrorMessage(message),
-                        request: data || item,
-                        requestAccess: scopeChangeAccess,
-                    }}
-                >
-                    {data && (
-                        <div>
-                            {editMode ? (
-                                <ScopeChangeRequestEditForm
-                                    request={data}
-                                    close={() => setEditMode(false)}
-                                />
-                            ) : (
-                                <RequestDetailView />
-                            )}
-                        </div>
-                    )}
-                </ScopeChangeContext.Provider>
-            </Wrapper>
-        </>
+                        ) : (
+                            <RequestDetailView />
+                        )}
+                    </div>
+                )}
+            </ScopeChangeContext.Provider>
+        </Wrapper>
     );
 };
 
