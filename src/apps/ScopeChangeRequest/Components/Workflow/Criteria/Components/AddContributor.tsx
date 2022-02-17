@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import { PCSPersonSearch } from '../../../SearchableDropdown/PCSPersonSearch';
-import { SelectOption } from '../../../../Api/Search/PCS';
 import { addContributor } from '../../../../Api/ScopeChange/Workflow/addContributor';
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
@@ -11,13 +10,14 @@ import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
+import { TypedSelectOption } from '../../../../Api/Search/searchType';
 
 interface AddContributorProps {
     close: () => void;
 }
 
 export const AddContributor = ({ close }: AddContributorProps): JSX.Element => {
-    const [contributor, setContributor] = useState<SelectOption | null>(null);
+    const [contributor, setContributor] = useState<TypedSelectOption | null>(null);
     const [text, setText] = useState<string>('');
     const { request, setErrorMessage } = useScopeChangeContext();
 
@@ -101,6 +101,9 @@ const ButtonContainer = styled.div`
 `;
 
 const Section = styled.div`
+    display: flex;
+    gap: 0.6em;
+    flex-direction: column;
     margin: 0.2rem;
     width: 100%;
 `;

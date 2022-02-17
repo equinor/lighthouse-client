@@ -1,7 +1,7 @@
 import { useSTIDSearch } from './useStidSearch';
 import { usePcsSearch } from './usePcsSearch';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
-import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 
 interface ReferenceSearch {

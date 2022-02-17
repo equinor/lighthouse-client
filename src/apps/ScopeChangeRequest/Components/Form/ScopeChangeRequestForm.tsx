@@ -14,7 +14,7 @@ import {
     postScopeChange,
     uploadAttachment,
 } from '../../Api/ScopeChange/Request';
-import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';

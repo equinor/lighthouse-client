@@ -2,7 +2,7 @@ import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
 import { getSystems } from '../../Api/PCS/getSystems';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
-import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { searchTags } from '../../Api/Search/PCS/searchTags';
 import { httpClient } from '../../../../Core/Client/Functions';
 import { searchCommPkg } from '../../Api/Search/PCS/searchCommPkg';
@@ -88,6 +88,10 @@ export function usePcsSearch(): PCSSearch {
 
             case 'tag': {
                 return await searchTags(searchValue, procosys, signal);
+            }
+
+            default: {
+                throw new Error('Unknown searchItem');
             }
         }
     }

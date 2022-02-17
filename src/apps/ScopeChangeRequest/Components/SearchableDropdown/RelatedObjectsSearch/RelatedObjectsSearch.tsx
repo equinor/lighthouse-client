@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { ProcoSysTypes } from '../../../Api/Search/PCS/searchPcs';
+import { ProcoSysTypes } from '../../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
 import { StidTypes } from '../../../Api/Search/STID/searchStid';
 import { useCancellationToken } from '../../../Hooks/useCancellationToken';

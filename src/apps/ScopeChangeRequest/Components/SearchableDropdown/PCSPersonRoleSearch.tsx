@@ -1,14 +1,14 @@
 import { SingleValue, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { useQuery } from 'react-query';
 
-import { searchPcs } from '../../Api/Search/PCS/searchPcs';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
 import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
 import { sort } from '../../Functions/sort';
 import { useCancellationToken } from '../../Hooks/useCancellationToken';
+import { usePcsSearch } from '../../Hooks/Search/usePcsSearch';
+import { useInfiniteCachedQuery } from '../../Hooks/React-Query/useInfiniteCachedQuery';
 
 interface PCSLinkProps {
     selected: TypedSelectOption | null;
@@ -23,10 +23,9 @@ export const PCSPersonRoleSearch = ({
 }: PCSLinkProps): JSX.Element => {
     const { abort, getSignal } = useCancellationToken();
 
-    const { data } = useQuery([QueryKeys.FunctionalRole], getFunctionalRoles, {
-        staleTime: Infinity,
-        cacheTime: Infinity,
-    });
+    const { searchPCS } = usePcsSearch();
+
+    const { data } = useInfiniteCachedQuery([QueryKeys.FunctionalRole], getFunctionalRoles);
 
     const loadOptions = async (
         inputValue: string,
@@ -35,7 +34,7 @@ export const PCSPersonRoleSearch = ({
         abort();
         const options: TypedSelectOption[] = [];
 
-        await (await searchPcs(inputValue, 'person', getSignal())).forEach((x) => options.push(x));
+        await (await searchPCS(inputValue, 'person', getSignal())).forEach((x) => options.push(x));
 
         if (data) {
             const matches = data.filter((x) =>

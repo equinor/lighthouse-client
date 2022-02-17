@@ -2,14 +2,15 @@ import React, { Fragment, useEffect, useReducer, useState } from 'react';
 import { Button, Icon, Progress, Scrim, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
-import { searchStid, StidTypes } from '../../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../../Api/Search/STID/searchStid';
 import { useHttpClient } from '../../../../../Core/Client/Hooks/useApiClient';
 import { getDocumentsByTag } from '../../../Api/STID/getDocumentsByTag';
 import { Result } from './Results';
 import { SubResults } from './SubResult';
 import { AdvancedSearch, StidHeader, StidWrapper, Title } from './stidSelectorStyles';
 import { useCancellationToken } from '../../../Hooks/useCancellationToken';
-import { ProcoSysTypes, searchPcs } from '../../../Api/Search/PCS';
+import { ProcoSysTypes } from '../../../Types/ProCoSys/ProCoSysTypes';
+import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -28,6 +29,8 @@ export const AdvancedDocumentSearch = ({
     removeItem,
 }: AdvancedDocumentSearchProps): JSX.Element => {
     const { STID } = useHttpClient();
+
+    const { search } = useReferencesSearch();
 
     //controls
     const [isOpen, setIsOpen] = useState(false);
@@ -129,49 +132,55 @@ export const AdvancedDocumentSearch = ({
     const fetchResults = async (inputValue: string) => {
         //Aborts previous api call
         abort();
-        switch (referenceType) {
-            case 'commpkg': {
-                const commPkgs = await searchPcs(inputValue, 'commpkg', getSignal());
-                setResults(commPkgs);
-                break;
-            }
+        if (!referenceType) return;
 
-            case 'system': {
-                const commPkgs = await searchPcs(inputValue, 'system', getSignal());
-                setResults(commPkgs);
-                break;
-            }
+        const data = await search(inputValue, referenceType, getSignal());
 
-            case 'tag': {
-                const commPkgs = await searchPcs(inputValue, 'tag', getSignal());
-                setResults(commPkgs);
-                break;
-            }
+        setResults(data);
 
-            case 'discipline': {
-                const commPkgs = await searchPcs(inputValue, 'discipline', getSignal());
-                setResults(commPkgs);
-                break;
-            }
+        // switch (referenceType) {
+        //     case 'commpkg': {
+        //         const commPkgs = await searchPcs(inputValue, 'commpkg', getSignal());
+        //         setResults(commPkgs);
+        //         break;
+        //     }
 
-            case 'area': {
-                const commPkgs = await searchPcs(inputValue, 'area', getSignal());
-                setResults(commPkgs);
-                break;
-            }
+        //     case 'system': {
+        //         const commPkgs = await searchPcs(inputValue, 'system', getSignal());
+        //         setResults(commPkgs);
+        //         break;
+        //     }
 
-            case 'stidtag': {
-                const tagsResult = await searchStid(inputValue, 'stidtag', getSignal());
-                setResults(tagsResult);
-                break;
-            }
+        //     case 'tag': {
+        //         const commPkgs = await searchPcs(inputValue, 'tag', getSignal());
+        //         setResults(commPkgs);
+        //         break;
+        //     }
 
-            case 'document': {
-                const documentsResult = await searchStid(inputValue, 'document', getSignal());
-                setResults(documentsResult);
-                break;
-            }
-        }
+        //     case 'discipline': {
+        //         const commPkgs = await searchPcs(inputValue, 'discipline', getSignal());
+        //         setResults(commPkgs);
+        //         break;
+        //     }
+
+        //     case 'area': {
+        //         const commPkgs = await searchPcs(inputValue, 'area', getSignal());
+        //         setResults(commPkgs);
+        //         break;
+        //     }
+
+        //     case 'stidtag': {
+        //         const tagsResult = await searchStid(inputValue, 'stidtag', getSignal());
+        //         setResults(tagsResult);
+        //         break;
+        //     }
+
+        //     case 'document': {
+        //         const documentsResult = await searchStid(inputValue, 'document', getSignal());
+        //         setResults(documentsResult);
+        //         break;
+        //     }
+        // }
     };
 
     return (

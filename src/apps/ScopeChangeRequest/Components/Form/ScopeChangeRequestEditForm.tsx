@@ -3,7 +3,7 @@ import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect, useState } from 'react';
 import { patchScopeChange, uploadAttachment } from '../../Api/ScopeChange/Request';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
-import { ProcoSysTypes } from '../../Api/Search/PCS';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';

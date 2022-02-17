@@ -9,7 +9,10 @@ export function useInfiniteCachedQuery<
 >(
     queryKey: TQueryKey,
     queryFn: QueryFunction<TQueryFnData, TQueryKey>,
-    options?: Omit<UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>, 'queryKey' | 'queryFn'>
+    options?: Omit<
+        UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>,
+        'queryKey' | 'queryFn' | 'staleTime' | 'cacheTime'
+    >
 ): UseQueryResult<TData, TError> {
     return useQuery(queryKey, queryFn, {
         ...options,
