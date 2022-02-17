@@ -49,6 +49,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         if (item.id) {
             remove();
             refetchScopeChange();
+            queryClient.invalidateQueries(QueryKeys.Step);
         }
     }, [item.id]);
 
@@ -108,8 +109,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     }
     return (
         <Wrapper>
-            <ScopeChangeErrorBanner message={errorMessage} />
-
+            <ScopeChangeErrorBanner message={errorMessage} requestId={item.id} />
             <TitleHeader>
                 <Title>
                     ({data?.sequenceNumber}) {data?.title}

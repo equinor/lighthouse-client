@@ -17,6 +17,8 @@ import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
+import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
+import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -28,21 +30,36 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
     const { request, setErrorMessage } = useScopeChangeContext();
 
-    const isBusy = useApiActionObserver();
+    const isBusy = useApiActionObserver([QueryKeys.Contributor], []);
 
     const checkCanContribute = () =>
         canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
 
     const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
-        `step/${step.id}/contributor/${contributor.id}`,
+        [QueryKeys.Step, step.id, QueryKeys.Contributor, contributor.id],
         checkCanContribute,
-        { refetchOnWindowFocus: false }
+        {
+            refetchOnWindowFocus: false,
+            retry: 3,
+            staleTime: 5 * 1000 * 60,
+            cacheTime: 5 * 1000 * 60,
+            onError: (e: string) =>
+                setErrorMessage({
+                    detail: e,
+                    title: 'Failed to get permissions',
+                    validationErrors: {},
+                }),
+        }
     );
 
-    const { mutateAsync } = useScopeChangeMutation(submitContribution, {
-        onError: (e: ServerError) => setErrorMessage(e),
-        onSuccess: () => invalidateUserCanContribute(),
-    });
+    const { mutateAsync } = useScopeChangeMutation(
+        [MutationKeys.Contribute, MutationKeys.Step],
+        submitContribution,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+            onSuccess: () => invalidateUserCanContribute(),
+        }
+    );
 
     function makeContributorActions(): MenuItem[] {
         const actions: MenuItem[] = [];
@@ -90,7 +107,7 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                     </Inline>
                     {request.state === 'Open' && !request.isVoided && (
                         <>
-                            {step.isCurrent && (
+                            {step.isCurrent && makeContributorActions().length > 0 && (
                                 <Inline>
                                     <MenuButton
                                         items={makeContributorActions()}
