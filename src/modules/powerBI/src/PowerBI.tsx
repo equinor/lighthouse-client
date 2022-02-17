@@ -97,6 +97,17 @@ export const PowerBI = ({
         ],
         ['dataSelected', function (e) {}],
         ['selectionChanged', function (e) {}],
+        [
+            'visualClicked',
+            function (e) {
+                /**Chiclet slicers are visuals inside the report that will have an impact
+                 * on what filters are to be shown if they are clicked, so an update is needed..
+                 */
+                if ((e.detail.visual.type as string).startsWith('Chiclet')) {
+                    setIsLoaded(false);
+                }
+            },
+        ],
     ]);
     return (
         <>
