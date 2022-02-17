@@ -42,7 +42,7 @@ export function setup(appApi: ClientApi): void {
     request.registerFilterOptions({
         excludeKeys: scopeChangeExcludeFilterKeys,
         typeMap: {},
-        initialFilters: ['State', 'phase', 'category', 'Origin', 'isVoided'],
+        initialFilters: ['State', 'phase', 'category', 'Origin', 'Step', 'NextToSign'],
         groupValue: {
             NextToSign: (item: ScopeChangeRequest): string => {
                 if (item.state !== 'Open') {
@@ -61,6 +61,9 @@ export function setup(appApi: ClientApi): void {
             },
             Origin: (item: ScopeChangeRequest) => {
                 return item.originSource;
+            },
+            Step: (item: ScopeChangeRequest) => {
+                return item?.currentWorkflowStep?.name ?? '(Blank)';
             },
         },
     });
