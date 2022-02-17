@@ -1,7 +1,11 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { throwOnError } from '../../../Functions/throwError';
 
-export async function voidRequest(requestId: string): Promise<void> {
+interface VoidParams {
+    requestId: string;
+}
+
+export async function voidRequest({ requestId }: VoidParams): Promise<void> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
@@ -15,7 +19,7 @@ export async function voidRequest(requestId: string): Promise<void> {
     await throwOnError(res);
 }
 
-export async function unVoidRequest(requestId: string): Promise<void> {
+export async function unVoidRequest({ requestId }: VoidParams): Promise<void> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {

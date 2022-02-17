@@ -26,6 +26,7 @@ import { Origin } from './Origin';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
 import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { usePreloadCaching } from '../../Hooks/usePreloadCaching';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -43,6 +44,8 @@ export const ScopeChangeRequestForm = ({
     const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
         phase: 'IC',
     });
+
+    usePreloadCaching();
 
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
