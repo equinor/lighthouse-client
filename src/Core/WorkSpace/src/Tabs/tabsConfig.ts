@@ -1,9 +1,9 @@
 import React from 'react';
-import { AnalyticsIcon } from '../../../../icons/Analytics';
-import { BoardsIcon } from '../../../../icons/Board';
-import { GantIcon } from '../../../../icons/Gant';
-import { TableIcon } from '../../../../icons/TableIcon';
-import { TreeIcon } from '../../../../icons/Tree';
+import { Analytics } from '../Icons/Analytics';
+import { Gantt } from '../Icons/Gantt';
+import { Garden } from '../Icons/Garden';
+import { Table } from '../Icons/Table';
+import { Tree } from '../Icons/Tree';
 import { AnalyticsTab } from './AnalyticsTab';
 import { GardenTab } from './GardenTab';
 import { ListTab as TableTab } from './ListTab';
@@ -21,39 +21,39 @@ export interface TabsConfigItem {
 const tabsConfig: TabsConfigItem[] = [
     {
         title: 'Tree',
-        icon: TreeIcon,
+        icon: Tree,
         viewComponent: TreeTab,
     },
     {
         title: 'Table',
-        icon: TableIcon,
+        icon: Table,
         viewComponent: TableTab,
     },
     {
         title: 'Garden',
-        icon: BoardsIcon,
+        icon: Garden,
         viewComponent: GardenTab,
     },
     {
         title: 'Timeline',
-        icon: GantIcon,
+        icon: Gantt,
         viewComponent: TimelineTab,
     },
     {
         title: 'Analytics',
-        icon: AnalyticsIcon,
+        icon: Analytics,
         viewComponent: AnalyticsTab,
     },
     {
         title: 'PowerBI',
         //Todo add PowerBI icon
-        icon: AnalyticsIcon,
+        icon: Analytics,
         viewComponent: PowerBiTab,
     },
     {
         title: 'Editor',
         //Todo add Editor icon
-        icon: GantIcon,
+        icon: Gantt,
         viewComponent: VisualEditorTab,
     },
 ];
