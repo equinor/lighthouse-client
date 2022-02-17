@@ -6,10 +6,9 @@ import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 import { ProcoSysTypes } from '../../Api/Search/PCS';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
-import { useScopeChangeMutation } from '../../Hooks/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { Field } from '../DetailView/Components/Field';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { Upload } from '../Attachments/Upload';
@@ -146,7 +145,7 @@ function unpackRelatedObjects(
 
     request.commissioningPackages.forEach((x) =>
         relations.push({
-            label: `COMM_${x.procosysNumber}`,
+            label: `${x.procosysNumber}`,
             value: x.procosysNumber,
             object: x,
             searchValue: x.procosysNumber,
@@ -156,7 +155,7 @@ function unpackRelatedObjects(
 
     request.systems.forEach((x) =>
         relations.push({
-            label: `SYS_${x.procosysCode}`,
+            label: `${x.procosysCode}`,
             value: x.procosysId.toString(),
             object: x,
             searchValue: x.procosysCode,
@@ -166,7 +165,7 @@ function unpackRelatedObjects(
 
     request.tags.forEach((x) =>
         relations.push({
-            label: `TAG_${x.procosysNumber}`,
+            label: `${x.procosysNumber}`,
             value: x.procosysNumber,
             object: x,
             searchValue: x.procosysNumber,
@@ -176,7 +175,7 @@ function unpackRelatedObjects(
 
     request.documents.forEach((x) =>
         relations.push({
-            label: `DOC_${x.stidDocumentNumber}`,
+            label: `${x.stidDocumentNumber}`,
             value: x.stidDocumentNumber,
             object: x,
             searchValue: x.stidDocumentNumber,

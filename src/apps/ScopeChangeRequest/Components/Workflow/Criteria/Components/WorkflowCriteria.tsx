@@ -7,7 +7,7 @@ import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { reassignCriteria, unsignCriteria } from '../../../../Api/ScopeChange/Workflow';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useConditionalRender } from '../../../../Hooks/useConditionalRender';
-import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { CriteriaDetail } from './CriteriaDetail';
 import { CriteriaActions } from '../../Types/actions';
 import { AddContributor } from './AddContributor';
@@ -121,8 +121,8 @@ export const WorkflowCriteria = ({
                 criteriaId: criteria.id,
                 reassign: {
                     type: `${selected.type === 'functionalRole'
-                        ? 'RequireProcosysFunctionalRoleSignature'
-                        : 'RequireProcosysUserSignature'
+                            ? 'RequireProcosysFunctionalRoleSignature'
+                            : 'RequireProcosysUserSignature'
                         }`,
                     value: selected.value,
                 },
