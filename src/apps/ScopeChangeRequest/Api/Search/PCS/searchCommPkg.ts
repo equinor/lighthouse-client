@@ -20,7 +20,7 @@ export const searchCommPkg = async (
         .then((data) => {
             data['Items'].map((x: CommPkg) => {
                 selectOptions.push({
-                    label: `COMM_${x.CommPkgNo} - ${x.Description}`,
+                    label: `${x.CommPkgNo} - ${x.Description}`,
                     value: x.CommPkgNo,
                     type: 'commpkg',
                     searchValue: x.CommPkgNo,

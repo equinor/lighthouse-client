@@ -7,7 +7,7 @@ import {
     MutationKey,
     QueryKey,
 } from 'react-query';
-import { QueryKeys } from '../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
 
 export function useScopeChangeMutation<
     TData = unknown,
@@ -27,7 +27,6 @@ export function useScopeChangeMutation<
 
     function invalidate() {
         if (invalidateKeys) {
-            debugger;
             queryClient.invalidateQueries(invalidateKeys);
         } else {
             queryClient.invalidateQueries(QueryKeys.Scopechange);

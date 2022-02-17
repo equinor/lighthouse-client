@@ -7,7 +7,7 @@ import { signCriteria } from '../../../../Api/ScopeChange/Workflow';
 import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { Criteria } from '../../../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
-import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 

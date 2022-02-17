@@ -8,7 +8,7 @@ import { Button, Progress, TextField } from '@equinor/eds-core-react';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
-import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 

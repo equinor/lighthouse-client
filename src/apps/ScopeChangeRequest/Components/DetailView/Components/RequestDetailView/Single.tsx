@@ -13,7 +13,7 @@ import {
 } from './RequestDetailViewStyles';
 import { HistoryList } from '../History/HistoryList';
 import { HotUpload } from '../../../Attachments/HotUpload';
-import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
+import { useApiActionObserver } from '../../../../Hooks/React-Query/useApiActionObserver';
 import { Progress } from '@equinor/eds-core-react';
 import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
 import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';

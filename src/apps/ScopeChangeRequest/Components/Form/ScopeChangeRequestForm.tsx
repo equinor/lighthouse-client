@@ -26,7 +26,7 @@ import { Origin } from './Origin';
 import { StidTypes } from '../../Api/Search/STID/searchStid';
 import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
-import { usePreloadCaching } from '../../Hooks/usePreloadCaching';
+import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;

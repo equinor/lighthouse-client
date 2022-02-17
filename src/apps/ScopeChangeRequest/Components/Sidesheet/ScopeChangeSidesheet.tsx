@@ -20,9 +20,9 @@ import { ScopeChangeErrorBanner } from './ErrorBanner';
 import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
 import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
-import { useScopeChangeMutation } from '../../Hooks/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { MutationKeys } from '../../Api/ScopeChange/mutationKeys';
-import { usePreloadCaching } from '../../Hooks/usePreloadCaching';
+import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { scopeChange: scopeChangeApi } = useHttpClient();
