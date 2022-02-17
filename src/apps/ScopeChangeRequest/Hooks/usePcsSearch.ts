@@ -105,11 +105,11 @@ export function usePcsSearch(): PCSSearch {
 
         return fuse.search(searchValue).map((x): TypedSelectOption => {
             return {
-                label: x.Code,
+                label: x.item.Code,
                 object: x,
-                searchValue: x.Code,
+                searchValue: x.item.Code,
                 type: 'functionalRole',
-                value: x.Code,
+                value: x.item.Code,
             };
         });
     }
@@ -126,11 +126,11 @@ export function usePcsSearch(): PCSSearch {
 
         return fuse.search(searchValue).map((x): TypedSelectOption => {
             return {
-                label: `SYS_${x.Code} - ${x.Description}`,
+                label: `SYS_${x.item.Code} - ${x.item.Description}`,
                 object: x,
-                searchValue: x.Code,
+                searchValue: x.item.Code,
                 type: 'system',
-                value: x.Id.toString(),
+                value: x.item.Id.toString(),
             };
         });
     }
