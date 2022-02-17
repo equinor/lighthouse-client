@@ -6,4 +6,6 @@ export enum MutationKeys {
     Attachment = 'attachment',
     ScopeChange = 'scopechange',
     Step = 'step',
+    Void = 'void',
+    Unvoid = 'unvoid',
 }
