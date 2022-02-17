@@ -1,4 +1,4 @@
-export const HAagingGarden = (): JSX.Element => {
+export const Garden = (): JSX.Element => {
     return (
         <svg
             width="24"

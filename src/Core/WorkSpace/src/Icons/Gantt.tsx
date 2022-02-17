@@ -1,4 +1,4 @@
-export const Gant = (): JSX.Element => {
+export const Gantt = (): JSX.Element => {
     return (
         <svg
             width="24"
