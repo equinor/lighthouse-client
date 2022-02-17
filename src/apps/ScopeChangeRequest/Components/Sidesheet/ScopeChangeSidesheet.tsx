@@ -49,6 +49,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         if (item.id) {
             remove();
             refetchScopeChange();
+            queryClient.invalidateQueries(QueryKeys.Step);
         }
     }, [item.id]);
 
@@ -107,55 +108,56 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         );
     }
     return (
-        <Wrapper>
-            <ScopeChangeErrorBanner message={errorMessage} />
+        <>
+            <Wrapper>
+                <ScopeChangeErrorBanner message={errorMessage} requestId={item.id} />
+                <TitleHeader>
+                    <Title>
+                        ({data?.sequenceNumber}) {data?.title}
+                        {isLoading && <Progress.Dots color="primary" />}
+                    </Title>
+                    <ButtonContainer>
+                        <IconMenu items={actionMenu} />
 
-            <TitleHeader>
-                <Title>
-                    ({data?.sequenceNumber}) {data?.title}
-                    {isLoading && <Progress.Dots color="primary" />}
-                </Title>
-                <ButtonContainer>
-                    <IconMenu items={actionMenu} />
-
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => setEditMode(!editMode)}
-                        disabled={!scopeChangeAccess.canPatch}
-                    >
-                        <Icon
-                            color={
-                                scopeChangeAccess.canPatch
-                                    ? tokens.colors.interactive.primary__resting.hex
-                                    : tokens.colors.interactive.disabled__text.hex
-                            }
-                            name="edit"
-                        />
-                    </Button>
-                </ButtonContainer>
-            </TitleHeader>
-            <ScopeChangeContext.Provider
-                value={{
-                    isRefetching: isRefetching,
-                    setErrorMessage: (message: ServerError) => setErrorMessage(message),
-                    request: data || item,
-                    requestAccess: scopeChangeAccess,
-                }}
-            >
-                {data && (
-                    <div>
-                        {editMode ? (
-                            <ScopeChangeRequestEditForm
-                                request={data}
-                                close={() => setEditMode(false)}
+                        <Button
+                            variant="ghost_icon"
+                            onClick={() => setEditMode(!editMode)}
+                            disabled={!scopeChangeAccess.canPatch}
+                        >
+                            <Icon
+                                color={
+                                    scopeChangeAccess.canPatch
+                                        ? tokens.colors.interactive.primary__resting.hex
+                                        : tokens.colors.interactive.disabled__text.hex
+                                }
+                                name="edit"
                             />
-                        ) : (
-                            <RequestDetailView />
-                        )}
-                    </div>
-                )}
-            </ScopeChangeContext.Provider>
-        </Wrapper>
+                        </Button>
+                    </ButtonContainer>
+                </TitleHeader>
+                <ScopeChangeContext.Provider
+                    value={{
+                        isRefetching: isRefetching,
+                        setErrorMessage: (message: ServerError) => setErrorMessage(message),
+                        request: data || item,
+                        requestAccess: scopeChangeAccess,
+                    }}
+                >
+                    {data && (
+                        <div>
+                            {editMode ? (
+                                <ScopeChangeRequestEditForm
+                                    request={data}
+                                    close={() => setEditMode(false)}
+                                />
+                            ) : (
+                                <RequestDetailView />
+                            )}
+                        </div>
+                    )}
+                </ScopeChangeContext.Provider>
+            </Wrapper>
+        </>
     );
 };
 

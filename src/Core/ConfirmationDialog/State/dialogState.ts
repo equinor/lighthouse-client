@@ -1,5 +1,5 @@
 export interface DialogState {
     dialogTitle: string;
     dialogText: string;
-    onConfirm: (() => void) | undefined;
+    onConfirm: (() => Promise<void> | void) | undefined;
 }

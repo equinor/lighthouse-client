@@ -28,9 +28,9 @@ export const ConfirmationDialog = (): JSX.Element | null => {
                             </Button>
                             <HorizontalDivider />
                             <Button
-                                onClick={() => {
+                                onClick={async () => {
                                     clearConfirmationDialog();
-                                    dialog.onConfirm && dialog.onConfirm();
+                                    dialog.onConfirm && (await dialog.onConfirm());
                                 }}
                             >
                                 Ok

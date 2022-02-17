@@ -17,7 +17,7 @@ export const searchDocuments = async (
         .then((data) => {
             data.map((x: Document) => {
                 selectOptions.push({
-                    label: `DOC_${x.docNo}`,
+                    label: `DOC_${x.docNo} - ${x.docTitle}`,
                     value: x.docNo,
                     type: 'document',
                     searchValue: x.docNo,
