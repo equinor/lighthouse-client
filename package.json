@@ -25,7 +25,7 @@
     "@cognite/reveal": "^2.2.2",
     "@cognite/sdk": "5.6.1",
     "@dbeining/react-atom": "^4.1.21",
-    "@equinor/eds-core-react": "^0.14.2",
+    "@equinor/eds-core-react": "^0.17.0",
     "@equinor/eds-icons": "^0.10.0",
     "@equinor/eds-tokens": "^0.7.0",
     "@equinor/fusion-framework-module": "^0.1.1",
