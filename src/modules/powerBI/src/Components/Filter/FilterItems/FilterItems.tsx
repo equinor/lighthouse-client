@@ -13,7 +13,11 @@ type FilterItemsProps = {
         filter: PowerBiFilterItem,
         singleClick?: boolean
     ) => Promise<void>;
-    handleOnSelectAll: (group: PowerBiFilter, filter: PowerBiFilterItem) => Promise<void>;
+    handleOnSelectAll: (
+        group: PowerBiFilter,
+        filter: PowerBiFilterItem,
+        allVisibleFilterValues: string[]
+    ) => Promise<void>;
     activeFilters: Record<string, (string | number | boolean)[]>;
     group: PowerBiFilter;
 };
@@ -33,17 +37,23 @@ export const FilterItems = ({
 
     if (filterGroupVisible.includes(group.type)) {
         const filterValues = Object.values(group.value);
+        const searchedFilterItems = searchFilterItems(filterValues, searchValue);
+        const allSearchedFilterValues = searchedFilterItems.map((x) => x.value);
         return (
             <FilterGroupContainer>
                 <Header title={group.type} onSearch={handleOnSearchChange} />
                 <CheckboxWrap>
                     <Checkbox
-                        onChange={async () => await handleOnSelectAll(group, filterValues[0])}
-                        checked={activeFilters[group.type]?.length === filterValues.length}
+                        onChange={async () =>
+                            await handleOnSelectAll(group, filterValues[0], allSearchedFilterValues)
+                        }
+                        checked={allSearchedFilterValues.every((a) =>
+                            activeFilters[group.type]?.includes(a)
+                        )}
                         label="Select all"
                     />
 
-                    {searchFilterItems(filterValues, searchValue).map((filter) => {
+                    {searchedFilterItems.map((filter) => {
                         return (
                             <Item
                                 activeFilters={activeFilters[filter.type] || []}

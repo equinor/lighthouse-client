@@ -33,32 +33,58 @@ export const PowerBIFilter = ({
 
     /**
      * Function to handle "Select All" checkbox.
-     * Will either add all possible filter values to current target, or remove all depending
+     * Will either add all visble filter values to current target, or remove all depending
      * on if checkbox is ticked or not.
      */
-    const handleOnSelectAll = async (group: PowerBiFilter, filter: PowerBiFilterItem) => {
+    const handleOnSelectAll = async (
+        group: PowerBiFilter,
+        filter: PowerBiFilterItem,
+        allVisibleFilterValues: string[]
+    ) => {
         try {
-            const allFilterValues = group.filterVals;
+            if (allVisibleFilterValues.every((a) => activeFilters[group.type]?.includes(a))) {
+                /**
+                 * All visible filters are applied.
+                 * Remove the visible ones, and keep the ones not visible
+                 * if they are applied.
+                 */
+                const newFilters = activeFilters[group.type]?.filter(
+                    (filterVal) => !allVisibleFilterValues.includes(filterVal.toString())
+                );
 
-            if (
-                activeFilters[filter.type]?.length === allFilterValues?.length &&
-                activeFilters[filter.type]?.every(
-                    (value, index) => value === allFilterValues[index]
-                )
-            ) {
-                // All filters are applied already, remove all
-                setActiveFilters((prev) => ({ ...prev, [filter.type]: [] }));
-                await group.slicer.setSlicerState({ filters: [] });
-            } else {
-                //Apply all possible filters
                 const slicerFilter: models.IBasicFilter = {
                     $schema: 'http://powerbi.com/product/schema#basic',
                     target: filter.target!,
                     filterType: models.FilterType.Basic,
                     operator: 'In',
-                    values: group.filterVals,
+                    values: newFilters,
                 };
-                setActiveFilters((prev) => ({ ...prev, [filter.type]: group.filterVals }));
+                setActiveFilters((prev) => ({ ...prev, [filter.type]: newFilters }));
+                await group.slicer.setSlicerState({
+                    filters: newFilters.length !== 0 ? [slicerFilter] : [],
+                });
+            } else {
+                /**
+                 * Not all visible filter items are applied.
+                 * Apply all the visible filter items,
+                 * and also keep the not visible filter items that have been applied.
+                 */
+
+                const newFilter = [
+                    ...new Set(activeFilters[filter.type].concat(allVisibleFilterValues)),
+                ];
+
+                const slicerFilter: models.IBasicFilter = {
+                    $schema: 'http://powerbi.com/product/schema#basic',
+                    target: filter.target!,
+                    filterType: models.FilterType.Basic,
+                    operator: 'In',
+                    values: newFilter,
+                };
+                setActiveFilters((prev) => ({
+                    ...prev,
+                    [filter.type]: newFilter,
+                }));
                 await group.slicer?.setSlicerState({ filters: [slicerFilter] });
             }
         } catch (errors) {
