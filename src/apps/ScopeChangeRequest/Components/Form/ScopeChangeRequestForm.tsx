@@ -145,7 +145,7 @@ export const ScopeChangeRequestForm = ({
 
     return (
         <>
-            <ScopeChangeErrorBanner message={errorMessage} />
+            <ScopeChangeErrorBanner message={errorMessage} requestId={'0'} />
             <TitleHeader>
                 <span style={{ fontSize: '28px' }}>Create scope change request</span>
                 <Icon

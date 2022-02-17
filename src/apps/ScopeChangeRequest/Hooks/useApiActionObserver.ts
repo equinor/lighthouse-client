@@ -1,10 +1,20 @@
 import { useEffect, useState } from 'react';
-import { useIsFetching, useIsMutating } from 'react-query';
+import { MutationKey, QueryKey, useIsFetching, useIsMutating } from 'react-query';
 
-export function useApiActionObserver(): boolean {
+/**
+ * Listens for actions on the queries specified
+ * @param queryKeys
+ * @param mutationKeys
+ * @returns
+ */
+
+export function useApiActionObserver(
+    queryKeys: QueryKey | undefined,
+    mutationKeys: MutationKey | undefined
+): boolean {
     const [isFetching, setIsFetching] = useState<boolean>(false);
-    const queriesFetching = useIsFetching();
-    const mutating = useIsMutating();
+    const queriesFetching = useIsFetching(queryKeys);
+    const mutating = useIsMutating(mutationKeys);
 
     useEffect(() => {
         setIsFetching(mutating > 0);

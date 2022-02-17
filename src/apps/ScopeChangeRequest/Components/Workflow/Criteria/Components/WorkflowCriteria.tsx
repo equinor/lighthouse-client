@@ -19,6 +19,9 @@ import { TypedSelectOption } from '../../../../Api/Search/searchType';
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
+import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
+import { useQueryClient } from 'react-query';
+import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
 
 interface OnSignStepAction {
     action: 'Approved' | 'Rejected';
@@ -40,10 +43,13 @@ export const WorkflowCriteria = ({
     const [signComment, setSignComment] = useState<string>('');
     const [showSignWithComment, setShowSignWithComment] = useState(false);
 
+    const queryClient = useQueryClient();
+
     const { canReassign, canSign, canUnsign } = useWorkflowCriteriaOptions(
         request.id,
         criteria.id,
-        step.id
+        step.id,
+        setErrorMessage
     );
 
     function makeSignOptions(): MenuItem[] {
@@ -131,7 +137,11 @@ export const WorkflowCriteria = ({
             .find((x) => x.id === step.id)
             ?.criterias.filter((x) => x.signedAtUtc === null);
         const sign = async () => {
-            await signCriteria(request.id, step.id, criteria.id, action, signComment);
+            await signCriteria(request.id, step.id, criteria.id, action, signComment).then(() => {
+                queryClient.invalidateQueries(QueryKeys.Scopechange);
+                queryClient.invalidateQueries(QueryKeys.Step);
+                queryClient.invalidateQueries(QueryKeys.History);
+            });
         };
         if (
             step.contributors &&
@@ -139,7 +149,7 @@ export const WorkflowCriteria = ({
             unsignedCriterias &&
             unsignedCriterias.length === 1
         ) {
-            spawnConfirmationDialog(
+            await spawnConfirmationDialog(
                 'Not all contributors have responded yet, are you sure you want to continue?',
                 'Warning',
                 sign
@@ -170,18 +180,30 @@ export const WorkflowCriteria = ({
         setSelected(null);
     };
 
-    const { mutateAsync: reassignMutation } = useScopeChangeMutation(reassignCriteria, {
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { mutateAsync: reassignMutation } = useScopeChangeMutation(
+        [MutationKeys.Step, MutationKeys.Reassign],
+        reassignCriteria,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
-    const { mutateAsync: signMutation } = useScopeChangeMutation(onSignStep, {
-        onError: (e: ServerError) => setErrorMessage(e),
-        onSuccess: () => setSignComment(''),
-    });
+    const { mutateAsync: signMutation } = useScopeChangeMutation(
+        [MutationKeys.Step, MutationKeys.Sign],
+        onSignStep,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+            onSuccess: () => setSignComment(''),
+        }
+    );
 
-    const { mutateAsync: unSignMutation } = useScopeChangeMutation(unsignCriteria, {
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { mutateAsync: unSignMutation } = useScopeChangeMutation(
+        [MutationKeys.Step, MutationKeys.Unsign],
+        unsignCriteria,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
     return (
         <>
