@@ -9,6 +9,7 @@ export const FilterWrapper = styled.div<FilterWrapperProps>`
     background: ${tokens.colors.ui.background__light.rgba};
     border-bottom: 1.5px solid ${tokens.colors.ui.background__medium.rgba};
     height: 200px;
+    overflow-x: auto;
 `;
 
 export const FilterGroupWrap = styled.div`
