@@ -451,7 +451,7 @@ export const apps: AppManifest[] = [
             setup: scopeChangeSetup,
         },
         tags: [],
-        appEnv: 'dev',
+        appEnv: 'test',
     },
     {
         title: 'Management of change',
