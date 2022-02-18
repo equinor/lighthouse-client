@@ -6,7 +6,7 @@ import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
 import { getSystems } from '../../../../../Api/PCS/getSystems';
 import { useEffect, useState } from 'react';
-import { System as PCSSystem } from '../../../../../Api/Search/PCS/Types/system';
+import { System as PCSSystem } from '../../../../../Types/ProCoSys/system';
 import { QueryKeys } from '../../../../../Enums/queryKeys';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 

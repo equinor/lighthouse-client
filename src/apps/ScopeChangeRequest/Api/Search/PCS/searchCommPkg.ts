@@ -1,6 +1,6 @@
 import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
-import { CommPkg } from './Types/commpkg';
+import { CommissioningPackage } from '../../../Types/ProCoSys/CommissioningPackage';
 
 export const searchCommPkg = async (
     searchString: string,
@@ -18,7 +18,7 @@ export const searchCommPkg = async (
         .fetch(url, { signal })
         .then((response) => response.json())
         .then((data) => {
-            data['Items'].map((x: CommPkg) => {
+            data['Items'].map((x: CommissioningPackage) => {
                 selectOptions.push({
                     label: `${x.CommPkgNo} - ${x.Description}`,
                     value: x.CommPkgNo,
