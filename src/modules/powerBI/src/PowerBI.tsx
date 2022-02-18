@@ -16,6 +16,7 @@ const Wrapper = styled.div`
     position: relative;
     width: 100%;
     height: 100%;
+    background-color: ${tokens.colors.ui.background__light.rgba};
 `;
 
 const ErrorWrapper = styled.div`

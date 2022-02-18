@@ -16,7 +16,6 @@ import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
 const GlobalStyle = createGlobalStyle`
     body {
         font-family: Equinor;
-        background-color: ${tokens.colors.ui.background__light.rgba};
         font-size: 13px;
         margin: 0;
     };
