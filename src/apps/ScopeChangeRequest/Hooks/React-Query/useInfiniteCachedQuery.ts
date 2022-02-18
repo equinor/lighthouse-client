@@ -1,6 +1,13 @@
 import { QueryFunction, QueryKey, useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
+import { CacheTime } from '../../Enums/cacheTimes';
 
-const LONG_CACHE = 10 * 1000 * 60 * 60;
+/**
+ * React query hook that caches the query for 10 hours
+ * @param queryKey
+ * @param queryFn
+ * @param options
+ * @returns
+ */
 export function useInfiniteCachedQuery<
     TQueryFnData = unknown,
     TError = unknown,
@@ -16,7 +23,7 @@ export function useInfiniteCachedQuery<
 ): UseQueryResult<TData, TError> {
     return useQuery(queryKey, queryFn, {
         ...options,
-        staleTime: LONG_CACHE,
-        cacheTime: LONG_CACHE,
+        staleTime: CacheTime.TenHours,
+        cacheTime: CacheTime.TenHours,
     });
 }

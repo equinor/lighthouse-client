@@ -15,10 +15,11 @@ import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChange
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
-import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useApiActionObserver } from '../../../../Hooks/React-Query/useApiActionObserver';
-import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
-import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
+import { QueryKeys } from '../../../../Enums/queryKeys';
+import { MutationKeys } from '../../../../Enums/mutationKeys';
+import { CacheTime } from '../../../../Enums/cacheTimes';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -41,8 +42,8 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
         {
             refetchOnWindowFocus: false,
             retry: 3,
-            staleTime: 5 * 1000 * 60,
-            cacheTime: 5 * 1000 * 60,
+            staleTime: CacheTime.FiveMinutes,
+            cacheTime: CacheTime.FiveMinutes,
             onError: (e: string) =>
                 setErrorMessage({
                     detail: e,

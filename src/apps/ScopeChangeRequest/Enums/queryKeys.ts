@@ -12,4 +12,7 @@ export enum QueryKeys {
     Contributor = 'contributor',
     Criteria = 'criteria',
     FunctionalRole = 'functionalrole',
+    References = 'references',
+    Void = 'void',
+    Unvoid = 'unvoid',
 }

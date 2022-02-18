@@ -6,7 +6,8 @@ import { getHistory } from '../../../../Api/ScopeChange/Request/getHistory';
 import { ChevronList } from '../ChevronList/ChevronList';
 import { HistoryItem } from './HistoryItem';
 import { useEffect } from 'react';
-import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../../../Enums/queryKeys';
+import { CacheTime } from '../../../../Enums/cacheTimes';
 
 export function HistoryList(): JSX.Element {
     const { request } = useScopeChangeContext();
@@ -14,6 +15,8 @@ export function HistoryList(): JSX.Element {
         QueryKeys.History,
         () => getHistory(request.id),
         {
+            cacheTime: CacheTime.FiveMinutes,
+            staleTime: CacheTime.FiveMinutes,
             refetchOnWindowFocus: false,
         }
     );

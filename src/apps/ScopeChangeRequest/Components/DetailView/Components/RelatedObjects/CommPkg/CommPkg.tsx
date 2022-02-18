@@ -4,22 +4,18 @@ import { isProduction } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
-import { useQuery } from 'react-query';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
-import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../../../../Enums/queryKeys';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
 }
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
-    const { data } = useQuery(
-        [QueryKeys.CommPkg, commPkg.procosysId, commPkg.procosysNumber],
-        () => getCommPkgById(commPkg.procosysId),
-        {
-            staleTime: Infinity,
-            cacheTime: Infinity,
-        }
+    const { data } = useInfiniteCachedQuery(
+        [QueryKeys.References, QueryKeys.CommPkg, commPkg.procosysId, commPkg.procosysNumber],
+        () => getCommPkgById(commPkg.procosysId)
     );
 
     return (

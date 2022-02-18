@@ -5,9 +5,9 @@ import styled from 'styled-components';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { uploadAttachment } from '../../Api/ScopeChange/Request';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { Attachments } from './Attachments';
-import { MutationKeys } from '../../Api/ScopeChange/mutationKeys';
+import { MutationKeys } from '../../Enums/mutationKeys';
 
 const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const HotUpload = (): JSX.Element => {

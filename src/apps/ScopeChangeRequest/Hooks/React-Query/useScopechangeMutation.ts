@@ -7,7 +7,7 @@ import {
     MutationKey,
     QueryKey,
 } from 'react-query';
-import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../Enums/queryKeys';
 
 export function useScopeChangeMutation<
     TData = unknown,
