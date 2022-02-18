@@ -1,24 +1,25 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { Discipline as DisciplineInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
 import { getDisciplineByCode } from '../../../../../Api/PCS/getDisciplineByCode';
-import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../../../../Enums/queryKeys';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 
 interface DisciplineProps {
     discipline: DisciplineInterface;
 }
 
 export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
-    const { data } = useQuery(
-        [QueryKeys.Discipline, discipline.procosysId, discipline.procosysCode],
-        () => getDisciplineByCode(discipline.procosysCode),
-        {
-            staleTime: Infinity,
-            cacheTime: Infinity,
-        }
+    const { data } = useInfiniteCachedQuery(
+        [
+            QueryKeys.References,
+            QueryKeys.Discipline,
+            discipline.procosysId,
+            discipline.procosysCode,
+        ],
+        () => getDisciplineByCode(discipline.procosysCode)
     );
 
     return (

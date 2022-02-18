@@ -17,15 +17,23 @@ import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { IconMenu, MenuItem } from '../MenuButton';
 import { ScopeChangeErrorBanner } from './ErrorBanner';
 
-import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../Enums/queryKeys';
 import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
+import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
+import { MutationKeys } from '../../Enums/mutationKeys';
+import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
     const queryClient = useQueryClient();
+
+    /**
+     * Preloads systems, functional roles and other static low memory lists
+     */
+    usePreloadCaching();
 
     const { data, refetch, remove, isLoading, isRefetching } = useQuery<ScopeChangeRequest>(
         QueryKeys.Scopechange,
@@ -45,17 +53,12 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
     const scopeChangeAccess = useScopeChangeAccess(item.id);
 
-    useEffect(() => {
-        if (item.id) {
-            remove();
-            refetchScopeChange();
-        }
-    }, [item.id]);
+    const { mutateAsync: unvoidMutation } = useScopeChangeMutation(
+        [MutationKeys.Unvoid],
+        unVoidRequest
+    );
 
-    const notifyChange = useCallback(async () => {
-        await queryClient.fetchQuery(QueryKeys.History);
-        await queryClient.fetchQuery(QueryKeys.Scopechange);
-    }, [queryClient]);
+    const { mutateAsync: voidMutation } = useScopeChangeMutation([MutationKeys.Void], voidRequest);
 
     const refetchScopeChange = useCallback(async () => {
         await refetch();
@@ -68,7 +71,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             if (data?.isVoided) {
                 actions.push({
                     label: 'Unvoid request',
-                    onClick: () => unVoidRequest(item.id).then(notifyChange),
+                    onClick: async () => await unvoidMutation({ requestId: item.id }),
                 });
             }
         }
@@ -80,7 +83,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         spawnConfirmationDialog(
                             'Are you sure you want to void this request',
                             'Void confirmation',
-                            () => voidRequest(item.id).then(notifyChange)
+                            async () => await voidMutation({ requestId: item.id })
                         ),
                 });
             }
@@ -90,10 +93,19 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     }, [
         data?.isVoided,
         item.id,
-        notifyChange,
         scopeChangeAccess.canUnVoid,
         scopeChangeAccess.canVoid,
+        unvoidMutation,
+        voidMutation,
     ]);
+
+    useEffect(() => {
+        if (item.id) {
+            remove();
+            refetchScopeChange();
+            queryClient.invalidateQueries(QueryKeys.Step);
+        }
+    }, [item.id, queryClient, refetchScopeChange, remove]);
 
     if (!item.id) {
         return <p>Something went wrong</p>;
@@ -108,8 +120,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     }
     return (
         <Wrapper>
-            <ScopeChangeErrorBanner message={errorMessage} />
-
+            <ScopeChangeErrorBanner message={errorMessage} requestId={item.id} />
             <TitleHeader>
                 <Title>
                     ({data?.sequenceNumber}) {data?.title}

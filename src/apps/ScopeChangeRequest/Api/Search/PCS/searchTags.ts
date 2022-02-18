@@ -39,7 +39,7 @@ export const searchTags = async (
         .then((data: Tag[]) => {
             data.forEach((x: Tag) => {
                 selectOptions.push({
-                    label: `TAG_${x.TagNo} - ${x.Description}`,
+                    label: `${x.TagNo} - ${x.Description}`,
                     value: x.TagNo,
                     type: 'tag',
                     searchValue: x.TagNo,

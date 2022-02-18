@@ -1,9 +1,14 @@
 import { SingleValue, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { searchPcs } from '../../Api/Search/PCS/searchPcs';
+
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
-import { useRef } from 'react';
 import { TypedSelectOption } from '../../Api/Search/searchType';
+import { QueryKeys } from '../../Enums/queryKeys';
+import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
+import { sort } from '../../Functions/sort';
+import { useCancellationToken } from '../../Hooks/useCancellationToken';
+import { usePcsSearch } from '../../Hooks/Search/usePcsSearch';
+import { useInfiniteCachedQuery } from '../../Hooks/React-Query/useInfiniteCachedQuery';
 
 interface PCSLinkProps {
     selected: TypedSelectOption | null;
@@ -16,24 +21,40 @@ export const PCSPersonRoleSearch = ({
     setSelected,
     isDisabled,
 }: PCSLinkProps): JSX.Element => {
-    const controller = useRef(new AbortController());
+    const { abort, getSignal } = useCancellationToken();
+
+    const { searchPCS } = usePcsSearch();
+
+    const { data } = useInfiniteCachedQuery([QueryKeys.FunctionalRole], getFunctionalRoles);
 
     const loadOptions = async (
         inputValue: string,
         callback: (options: TypedSelectOption[]) => void
     ) => {
-        controller.current.abort();
-        controller.current = new AbortController();
+        abort();
         const options: TypedSelectOption[] = [];
-        await (
-            await searchPcs(inputValue, 'functionalRole', controller.current.signal)
-        ).forEach((x) => options.push(x));
 
-        await (
-            await searchPcs(inputValue, 'person', controller.current.signal)
-        ).forEach((x) => options.push(x));
+        await (await searchPCS(inputValue, 'person', getSignal())).forEach((x) => options.push(x));
 
-        callback(options);
+        if (data) {
+            const matches = data.filter((x) =>
+                x.Code.toLowerCase().startsWith(inputValue.toLowerCase())
+            );
+            matches.forEach((x) => {
+                const selectOption: TypedSelectOption = {
+                    label: x.Code,
+                    value: x.Code,
+                    object: x,
+                    searchValue: x.Code,
+                    type: 'functionalRole',
+                };
+                options.push(selectOption);
+            });
+        }
+
+        const sorted = options.sort((a, b) => sort(a, b, inputValue));
+
+        callback(sorted);
     };
 
     return (

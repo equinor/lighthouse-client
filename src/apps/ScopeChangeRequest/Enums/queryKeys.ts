@@ -8,4 +8,11 @@ export enum QueryKeys {
     Systems = 'systems',
     Discipline = 'discipline',
     Area = 'area',
+    Step = 'step',
+    Contributor = 'contributor',
+    Criteria = 'criteria',
+    FunctionalRole = 'functionalrole',
+    References = 'references',
+    Void = 'void',
+    Unvoid = 'unvoid',
 }

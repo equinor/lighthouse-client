@@ -22,11 +22,11 @@ const onClickDownloadAttachment = async (
     };
 
     await scopeChange
-        .fetch(
-            `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/scope-change-requests/${requestId}/attachments/${attachmentId}`,
-            requestInit
-        )
-        .then((response) => response.blob())
+        .fetch(`api/scope-change-requests/${requestId}/attachments/${attachmentId}`, requestInit)
+        .then((response) => {
+            if (!response.ok) throw new Error('Failed to get attachment');
+            return response.blob();
+        })
         .then((blob) => {
             // Create blob link to download
             const url = window.URL.createObjectURL(new Blob([blob]));
@@ -54,13 +54,13 @@ export const Attachments = ({ attachments, requestId }: AttachmentProps): JSX.El
                     return (
                         <Wrapper key={x.id}>
                             <Link
-                                onClick={() =>
-                                    onClickDownloadAttachment(requestId, x.id, x.fileName)
-                                }
+                                onClick={() => {
+                                    onClickDownloadAttachment(requestId, x.id, x.fileName);
+                                }}
                             >
                                 <span>{x.fileName}</span>
                             </Link>
-                            <span>{Math.round(x.fileSize / 1000 ** 2)}MB</span>
+                            <span>{Math.round(x.fileSize / 1000 ** 2)} MB</span>
                         </Wrapper>
                     );
                 })}

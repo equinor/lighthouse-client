@@ -14,7 +14,7 @@ import {
     postScopeChange,
     uploadAttachment,
 } from '../../Api/ScopeChange/Request';
-import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
@@ -23,9 +23,10 @@ import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 import { Upload } from '../Attachments/Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { Origin } from './Origin';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../Types/STID/STIDTypes';
 import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
+import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -43,6 +44,8 @@ export const ScopeChangeRequestForm = ({
     const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
         phase: 'IC',
     });
+
+    usePreloadCaching();
 
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
@@ -145,7 +148,7 @@ export const ScopeChangeRequestForm = ({
 
     return (
         <>
-            <ScopeChangeErrorBanner message={errorMessage} />
+            <ScopeChangeErrorBanner message={errorMessage} requestId={'0'} />
             <TitleHeader>
                 <span style={{ fontSize: '28px' }}>Create scope change request</span>
                 <Icon

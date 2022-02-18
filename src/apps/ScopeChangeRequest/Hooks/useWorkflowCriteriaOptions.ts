@@ -1,5 +1,7 @@
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryOptions } from 'react-query';
 import { canReassign, canUnsign, canSign } from '../Api/ScopeChange/Access';
+import { ServerError } from '../Types/ScopeChange/ServerError';
+import { CacheTime } from '../Enums/cacheTimes';
 
 interface CriteriaOptions {
     canSign: boolean | undefined;
@@ -10,7 +12,8 @@ interface CriteriaOptions {
 export function useWorkflowCriteriaOptions(
     requestId: string,
     criteriaId: string,
-    stepId: string
+    stepId: string,
+    errorPipe?: (value: ServerError) => void
 ): CriteriaOptions {
     const params = {
         criteriaId,
@@ -18,21 +21,38 @@ export function useWorkflowCriteriaOptions(
         stepId,
     };
 
-    const checkCanSign = () => canSign(params);
-    const { data: userCanSign } = useQuery(`step/${stepId}/criteria/${criteriaId}`, checkCanSign, {
+    const queryParams: Omit<
+        UseQueryOptions<boolean, string, boolean, string[]>,
+        'queryKey' | 'queryFn'
+    > = {
         refetchOnWindowFocus: false,
-    });
+        retry: 3,
+        staleTime: CacheTime.FiveMinutes,
+        cacheTime: CacheTime.FiveMinutes,
+        onError: (e: string) => {
+            if (errorPipe) {
+                errorPipe({ detail: e, title: 'Query failed', validationErrors: {} });
+            }
+        },
+    };
+
+    const checkCanSign = () => canSign(params);
+    const { data: userCanSign } = useQuery(
+        ['step', stepId, 'criteria', criteriaId],
+        checkCanSign,
+        queryParams
+    );
     const checkCanReassign = () => canReassign(params);
     const { data: userCanReassign } = useQuery(
-        `step/${stepId}/criteria/${criteriaId}`,
+        ['step', stepId, 'criteria', criteriaId],
         checkCanReassign,
-        { refetchOnWindowFocus: false }
+        queryParams
     );
     const checkCanUnsign = () => canUnsign(params);
     const { data: userCanUnsign } = useQuery(
-        `step/${stepId}/criteria/${criteriaId}`,
+        ['step', stepId, 'criteria', criteriaId],
         checkCanUnsign,
-        { refetchOnWindowFocus: false }
+        queryParams
     );
 
     return {

@@ -2,18 +2,18 @@ import { Button, Progress } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect, useState } from 'react';
 import { patchScopeChange, uploadAttachment } from '../../Api/ScopeChange/Request';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
-import { ProcoSysTypes } from '../../Api/Search/PCS';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
-import { useScopeChangeMutation } from '../../Hooks/useScopechangeMutation';
+import { StidTypes } from '../../Types/STID/STIDTypes';
+import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { Field } from '../DetailView/Components/Field';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { Upload } from '../Attachments/Upload';
 import { Origin } from './Origin';
+import { MutationKeys } from '../../Enums/mutationKeys';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -71,9 +71,13 @@ export const ScopeChangeRequestEditForm = ({
         if (!error) close();
     };
 
-    const { isLoading, error, mutateAsync } = useScopeChangeMutation(onSubmit, {
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { isLoading, error, mutateAsync } = useScopeChangeMutation(
+        [MutationKeys.ScopeChange],
+        onSubmit,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
     const SaveButton = () => {
         return (
@@ -122,10 +126,8 @@ export const ScopeChangeRequestEditForm = ({
                     },
                 ]}
             >
-                <Field
-                    label="Attachments"
-                    value={<Upload attachments={attachments} setAttachments={setAttachments} />}
-                />
+                <h3>Attachments</h3>
+                <Upload attachments={attachments} setAttachments={setAttachments} />
             </GeneratedForm>
         </>
     );
@@ -143,7 +145,7 @@ function unpackRelatedObjects(
 
     request.commissioningPackages.forEach((x) =>
         relations.push({
-            label: `COMM_${x.procosysNumber}`,
+            label: `${x.procosysNumber}`,
             value: x.procosysNumber,
             object: x,
             searchValue: x.procosysNumber,
@@ -153,7 +155,7 @@ function unpackRelatedObjects(
 
     request.systems.forEach((x) =>
         relations.push({
-            label: `SYS_${x.procosysCode}`,
+            label: `${x.procosysCode}`,
             value: x.procosysId.toString(),
             object: x,
             searchValue: x.procosysCode,
@@ -163,7 +165,7 @@ function unpackRelatedObjects(
 
     request.tags.forEach((x) =>
         relations.push({
-            label: `TAG_${x.procosysNumber}`,
+            label: `${x.procosysNumber}`,
             value: x.procosysNumber,
             object: x,
             searchValue: x.procosysNumber,
@@ -173,7 +175,7 @@ function unpackRelatedObjects(
 
     request.documents.forEach((x) =>
         relations.push({
-            label: `DOC_${x.stidDocumentNumber}`,
+            label: `${x.stidDocumentNumber}`,
             value: x.stidDocumentNumber,
             object: x,
             searchValue: x.stidDocumentNumber,

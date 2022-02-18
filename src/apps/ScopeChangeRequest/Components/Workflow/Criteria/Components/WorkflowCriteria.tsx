@@ -7,7 +7,7 @@ import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { reassignCriteria, unsignCriteria } from '../../../../Api/ScopeChange/Workflow';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useConditionalRender } from '../../../../Hooks/useConditionalRender';
-import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { CriteriaDetail } from './CriteriaDetail';
 import { CriteriaActions } from '../../Types/actions';
 import { AddContributor } from './AddContributor';
@@ -17,8 +17,11 @@ import { SignWithComment } from './SignWithComment';
 import { PCSPersonRoleSearch } from '../../../SearchableDropdown/PCSPersonRoleSearch';
 import { TypedSelectOption } from '../../../../Api/Search/searchType';
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
-import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
+import { MutationKeys } from '../../../../Enums/mutationKeys';
+import { useQueryClient } from 'react-query';
+import { QueryKeys } from '../../../../Enums/queryKeys';
 
 interface OnSignStepAction {
     action: 'Approved' | 'Rejected';
@@ -40,10 +43,13 @@ export const WorkflowCriteria = ({
     const [signComment, setSignComment] = useState<string>('');
     const [showSignWithComment, setShowSignWithComment] = useState(false);
 
+    const queryClient = useQueryClient();
+
     const { canReassign, canSign, canUnsign } = useWorkflowCriteriaOptions(
         request.id,
         criteria.id,
-        step.id
+        step.id,
+        setErrorMessage
     );
 
     function makeSignOptions(): MenuItem[] {
@@ -131,7 +137,11 @@ export const WorkflowCriteria = ({
             .find((x) => x.id === step.id)
             ?.criterias.filter((x) => x.signedAtUtc === null);
         const sign = async () => {
-            await signCriteria(request.id, step.id, criteria.id, action, signComment);
+            await signCriteria(request.id, step.id, criteria.id, action, signComment).then(() => {
+                queryClient.invalidateQueries(QueryKeys.Scopechange);
+                queryClient.invalidateQueries(QueryKeys.Step);
+                queryClient.invalidateQueries(QueryKeys.History);
+            });
         };
         if (
             step.contributors &&
@@ -170,24 +180,38 @@ export const WorkflowCriteria = ({
         setSelected(null);
     };
 
-    const { mutateAsync: reassignMutation } = useScopeChangeMutation(reassignCriteria, {
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { mutateAsync: reassignMutation } = useScopeChangeMutation(
+        [MutationKeys.Step, MutationKeys.Reassign],
+        reassignCriteria,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
-    const { mutateAsync: signMutation } = useScopeChangeMutation(onSignStep, {
-        onError: (e: ServerError) => setErrorMessage(e),
-        onSuccess: () => setSignComment(''),
-    });
+    const { mutateAsync: signMutation } = useScopeChangeMutation(
+        [MutationKeys.Step, MutationKeys.Sign],
+        onSignStep,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+            onSuccess: () => setSignComment(''),
+        }
+    );
 
-    const { mutateAsync: unSignMutation } = useScopeChangeMutation(unsignCriteria, {
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { mutateAsync: unSignMutation } = useScopeChangeMutation(
+        [MutationKeys.Step, MutationKeys.Unsign],
+        unsignCriteria,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
     return (
         <>
             <WorkflowStepViewContainer key={criteria.id}>
                 {ReassignBarIsShowing ? (
-                    <ReassignBar />
+                    <ReassignPadding>
+                        <ReassignBar />
+                    </ReassignPadding>
                 ) : (
                     <CriteriaDetail criteria={criteria} step={step} />
                 )}
@@ -213,6 +237,11 @@ export const WorkflowCriteria = ({
         </>
     );
 };
+
+const ReassignPadding = styled.div`
+    padding: 0em 0.5em;
+    width: 100%;
+`;
 
 const WorkflowStepViewContainer = styled.div`
     display: flex;

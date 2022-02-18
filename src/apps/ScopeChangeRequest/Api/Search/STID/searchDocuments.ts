@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { Document } from '../../STID/Types/Document';
+import { Document } from '../../../Types/STID/Document';
 import { TypedSelectOption } from '../searchType';
 
 export const searchDocuments = async (
@@ -17,7 +17,7 @@ export const searchDocuments = async (
         .then((data) => {
             data.map((x: Document) => {
                 selectOptions.push({
-                    label: `DOC_${x.docNo}`,
+                    label: `DOC_${x.docNo} - ${x.docTitle}`,
                     value: x.docNo,
                     type: 'document',
                     searchValue: x.docNo,

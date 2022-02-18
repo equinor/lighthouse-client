@@ -13,14 +13,19 @@ import {
     WorkflowLoadingHeader,
 } from './RequestDetailViewStyles';
 import { HistoryList } from '../History/HistoryList';
-import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
+import { useApiActionObserver } from '../../../../Hooks/React-Query/useApiActionObserver';
 import { Progress } from '@equinor/eds-core-react';
+import { QueryKeys } from '../../../../Enums/queryKeys';
+import { MutationKeys } from '../../../../Enums/mutationKeys';
+import { HotUpload } from '../../../Attachments/HotUpload';
 
 export const SplitView = (): JSX.Element => {
-    const { request } = useScopeChangeContext();
+    const { request, requestAccess } = useScopeChangeContext();
 
-    const isBusy = useApiActionObserver();
-
+    const isBusy = useApiActionObserver(
+        [QueryKeys.Step],
+        [MutationKeys.Contribute, MutationKeys.Sign, MutationKeys.Reassign, MutationKeys.Unsign]
+    );
     return (
         <SplitScreen>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
@@ -90,6 +95,7 @@ export const SplitView = (): JSX.Element => {
                 <Section>
                     <BoldHeading>Attachments</BoldHeading>
                     <Value>
+                        {requestAccess.canPatch && <HotUpload />}
                         <Attachments attachments={request.attachments} requestId={request.id} />
                     </Value>
                 </Section>
@@ -119,4 +125,5 @@ const SplitScreen = styled.div`
     flex-basis: 0;
     overflow: scroll;
     padding: 2em 0em;
+    gap: 1em;
 `;

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { canUnVoid, canVoid } from '../Api/ScopeChange/Access/canVoid';
 import { OptionRequestResult } from '../Api/ScopeChange/Access/optionsRequestChecker';
 import { getRequestAccess } from '../Api/ScopeChange/Access/requestAccess';
+import { QueryKeys } from '../Enums/queryKeys';
+import { CacheTime } from '../Enums/cacheTimes';
 
 interface ScopeChangeAccess extends OptionRequestResult {
     canVoid: boolean;
@@ -19,18 +22,25 @@ export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
         canUnVoid: false,
     });
 
-    useEffect(() => {
-        canVoid(requestId).then((x) =>
-            setAccess((prev) => {
-                return { ...prev, canVoid: x };
-            })
-        );
+    const { data: userCanVoid } = useQuery([QueryKeys.Void], () => canVoid(requestId), {
+        cacheTime: CacheTime.FiveMinutes,
+        staleTime: CacheTime.FiveMinutes,
+    });
 
-        canUnVoid(requestId).then((x) =>
-            setAccess((prev) => {
-                return { ...prev, canUnVoid: x };
-            })
-        );
+    const { data: userCanUnvoid } = useQuery([QueryKeys.Unvoid], () => canUnVoid(requestId), {
+        cacheTime: CacheTime.FiveMinutes,
+        staleTime: CacheTime.FiveMinutes,
+    });
+
+    useEffect(() => {
+        setAccess((prev) => {
+            return { ...prev, canVoid: userCanVoid ?? false };
+        });
+
+        setAccess((prev) => {
+            return { ...prev, canUnVoid: userCanUnvoid ?? false };
+        });
+
         getRequestAccess(requestId).then((x) =>
             setAccess((prev) => {
                 return {
@@ -43,7 +53,7 @@ export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
                 };
             })
         );
-    }, [requestId]);
+    }, [requestId, userCanUnvoid, userCanVoid]);
 
     return access;
 }

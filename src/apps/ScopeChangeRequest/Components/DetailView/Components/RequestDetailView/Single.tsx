@@ -13,12 +13,18 @@ import {
 } from './RequestDetailViewStyles';
 import { HistoryList } from '../History/HistoryList';
 import { HotUpload } from '../../../Attachments/HotUpload';
-import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
+import { useApiActionObserver } from '../../../../Hooks/React-Query/useApiActionObserver';
 import { Progress } from '@equinor/eds-core-react';
+import { QueryKeys } from '../../../../Enums/queryKeys';
+import { MutationKeys } from '../../../../Enums/mutationKeys';
 
 export const SingleView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
-    const isBusy = useApiActionObserver();
+    const workflowLoading = useApiActionObserver(
+        [QueryKeys.Step],
+        [MutationKeys.Step, MutationKeys.Sign]
+    );
+    const referencesLoading = useApiActionObserver([QueryKeys.References], []);
 
     return (
         <div>
@@ -28,7 +34,6 @@ export const SingleView = (): JSX.Element => {
                     <SubHeading>Phase</SubHeading>
                     <Value>{request.phase}</Value>
                 </Section>
-
                 <Section>
                     <SubHeading>State</SubHeading>
                     <Value>{request.isVoided ? 'Voided' : request.state}</Value>
@@ -58,16 +63,18 @@ export const SingleView = (): JSX.Element => {
                     <SubHeading>Guesstimate mhrs</SubHeading>
                     <Value>{request.guesstimateHours}</Value>
                 </Section>
-                <Section>
-                    <SubHeading>Guesstimate description</SubHeading>
-                    <Value>{request.guesstimateDescription}</Value>
-                </Section>
+                {request.guesstimateDescription && (
+                    <Section>
+                        <SubHeading>Guesstimate description</SubHeading>
+                        <Value>{request.guesstimateDescription}</Value>
+                    </Section>
+                )}
             </SectionRow>
 
             <Section>
                 <WorkflowLoadingHeader>
                     <BoldHeading>Workflow</BoldHeading>
-                    {isBusy && <Progress.Dots color="primary" />}
+                    {workflowLoading && <Progress.Dots color="primary" />}
                 </WorkflowLoadingHeader>
                 <Workflow />
             </Section>
@@ -79,7 +86,10 @@ export const SingleView = (): JSX.Element => {
                 request.disciplines.length > 0 ||
                 request.tags.length > 0) && (
                     <Section>
-                        <BoldHeading>References</BoldHeading>
+                        <WorkflowLoadingHeader>
+                            <BoldHeading>References</BoldHeading>
+                            {referencesLoading && <Progress.Dots color="primary" />}
+                        </WorkflowLoadingHeader>
                         <Value>
                             <RelatedObjects
                                 systems={request.systems}
