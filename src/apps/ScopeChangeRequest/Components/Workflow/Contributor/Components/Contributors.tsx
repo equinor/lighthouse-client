@@ -12,11 +12,11 @@ import { ContributorActions } from '../../Types/actions';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { submitContribution } from '../../../../Api/ScopeChange/Workflow';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
 import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
-import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
+import { useApiActionObserver } from '../../../../Hooks/React-Query/useApiActionObserver';
 import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
 import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
 
