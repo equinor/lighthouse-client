@@ -3,14 +3,19 @@ import { tokens } from '@equinor/eds-tokens';
 import { httpClient } from '@equinor/portal-client';
 import { useEffect, useMemo, useState } from 'react';
 import Icon from '../../../Icon/Icon';
-import { Banner } from './SystemMassageStyles';
+import { Banner } from './ServiceMessageBannerStyles';
 
-export interface SystemMessage {
+export interface ServiceMessage {
     message?: string;
+    link?: {
+        url: string;
+        title: string;
+    };
+
     type?: 'info' | 'warning' | 'default';
 }
 
-interface SystemBannerProps extends SystemMessage {
+interface SystemBannerProps extends ServiceMessage {
     handleClose(): void;
 }
 
@@ -44,16 +49,23 @@ const systemBannerMap: SystemBannerMap = {
     },
 };
 
-interface Return extends SystemMessage {
+interface Return extends ServiceMessage {
     isActive: boolean;
     handleClose(): void;
 }
 
-export function useSystemMessage(): Return {
-    const { appConfig } = useMemo(() => httpClient(), []);
+export function useServiceMessage(): Return {
+    const { customHttpClient } = useMemo(
+        () =>
+            httpClient({
+                scope: 'api://ffaae7c8-a790-47e9-81cf-286b1ca380ce/default',
+                baseUrl: '',
+            }),
+        []
+    );
 
     const [isActive, setIsActive] = useState<boolean>(false);
-    const [message, setMessage] = useState<SystemMessage | undefined>();
+    const [message, setMessage] = useState<ServiceMessage | undefined>();
 
     function handleClose() {
         setIsActive(false);
@@ -61,15 +73,15 @@ export function useSystemMessage(): Return {
 
     useEffect(() => {
         (async () => {
-            const response = await appConfig.get('api/serviceMessage');
+            const response = await customHttpClient.get('http://localhost:7071/api/serviceMessage');
             const data = await response.json();
-
+            // TODO add local storage support to dismiss message.
             if (data.message) {
                 setMessage(data);
                 setIsActive(true);
             }
         })();
-    }, [appConfig]);
+    }, [customHttpClient]);
 
     return {
         ...message,
@@ -82,6 +94,7 @@ export function ServiceMessageBanner({
     handleClose,
     message,
     type,
+    link,
 }: SystemBannerProps): JSX.Element {
     const { iconColor, icon, buttonColor, background } = systemBannerMap[type || 'default'];
 
@@ -90,7 +103,12 @@ export function ServiceMessageBanner({
             <Banner.Icon>
                 <Icon name={icon} />
             </Banner.Icon>
-            <Banner.Message>{message || ''}</Banner.Message>
+            {/* <Banner.Message> */}
+            <pre>
+                {message || ''}
+                {link && <a href={link.url}>{link.title}</a>}
+            </pre>
+            {/* </Banner.Message> */}
             <Banner.Actions>
                 <Button variant="ghost" color={buttonColor} onClick={handleClose}>
                     <Icon name="close" />

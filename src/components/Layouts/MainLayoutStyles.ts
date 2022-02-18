@@ -1,10 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const Wrapper = styled.div<{ systemMessageActive: boolean }>`
+export const Wrapper = styled.div<{ serviceMessageActive: boolean }>`
     position: fixed;
-    top: ${({ systemMessageActive }) => (systemMessageActive ? 96 : 48)}px;
-    height: calc(100vh - ${({ systemMessageActive }) => (systemMessageActive ? 96 : 48)}px);
+    top: ${({ serviceMessageActive }) => (serviceMessageActive ? 96 : 48)}px;
+    height: calc(100vh - ${({ serviceMessageActive }) => (serviceMessageActive ? 96 : 48)}px);
     display: flex;
     width: 100vw;
 `;

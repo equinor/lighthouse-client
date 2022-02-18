@@ -66,6 +66,7 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
                 <ClientContextProvider>
                     <BrowserRouter>
                         <ClientTopBar />
+
                         <MainLayout>
                             <ClientRoutes />
                         </MainLayout>

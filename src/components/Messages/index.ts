@@ -1,2 +1,2 @@
-export * from './System/Compoenents/Components';
+export * from './Service/Components/ServiceMessageBanner';
 
