@@ -1,5 +1,5 @@
+import { httpClient } from '@equinor/portal-client';
 import { useCallback, useEffect, useState } from 'react';
-import { useHttpClient } from '../../../Core/Client/Hooks';
 import SwcrSignature from '../models/SwcrSignature';
 
 type UseSignatures = {
@@ -11,12 +11,11 @@ const useSignatures = (swcrId: string): UseSignatures => {
     const [signatures, setSignatures] = useState<SwcrSignature[]>([]);
     const [signaturesFetching, setSignaturesFetching] = useState<boolean>(false);
 
-    const { customHttpClient } = useHttpClient('5a842df8-3238-415d-b168-9f16a6a6031b/.default');
-
     const getSignatures = useCallback(async (swcrId: string) => {
         setSignaturesFetching(true);
+        const { fusion } = httpClient();
         try {
-            const result = await customHttpClient.fetch(
+            const result = await fusion.fetch(
                 `https://pro-s-dataproxy-ci.azurewebsites.net/api/contexts/71db33bb-cb1b-42cf-b5bf-969c77e40931/swcr/${swcrId}/signatures`
             );
 
