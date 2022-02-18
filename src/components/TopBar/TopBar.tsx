@@ -3,8 +3,9 @@ import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
 import { SupportButton } from '../../Core/Client/Support/Support';
 import Icon from '../Icon/Icon';
+import { DevBar } from './DevBar/DevBar';
 import Logo from './Logo/Logo';
-import { BetaTag, Icons, TopBarWrapper } from './TopBarStyle';
+import { Icons, TopBarWrapper } from './TopBarStyle';
 
 const ClientTopBar = (): JSX.Element => {
     const {
@@ -26,10 +27,7 @@ const ClientTopBar = (): JSX.Element => {
                 <Logo />
             </TopBar.Header>
             <TopBar.CustomContent>
-                <BetaTag>
-                    <b>UNDER DEVELOPMENT - {clientEnv.toUpperCase()} </b>
-                    <p>This site contains test data.</p>
-                </BetaTag>
+                <DevBar env={clientEnv} />
             </TopBar.CustomContent>
             <TopBar.Actions>
                 <Icons>
