@@ -23,7 +23,7 @@ import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 import { Upload } from '../Attachments/Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { Origin } from './Origin';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../Types/STID/STIDTypes';
 import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';

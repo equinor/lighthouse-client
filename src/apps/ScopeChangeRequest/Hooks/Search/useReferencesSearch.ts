@@ -1,6 +1,6 @@
 import { useSTIDSearch } from './useStidSearch';
 import { usePcsSearch } from './usePcsSearch';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../Types/STID/STIDTypes';
 import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 

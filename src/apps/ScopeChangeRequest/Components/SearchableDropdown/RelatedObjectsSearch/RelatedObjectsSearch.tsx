@@ -5,7 +5,7 @@ import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react
 import AsyncSelect from 'react-select/async';
 import { ProcoSysTypes } from '../../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
-import { StidTypes } from '../../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../../Types/STID/STIDTypes';
 import { useCancellationToken } from '../../../Hooks/useCancellationToken';
 import { AdvancedDocumentSearch } from '../../STID';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from '../applyEds';

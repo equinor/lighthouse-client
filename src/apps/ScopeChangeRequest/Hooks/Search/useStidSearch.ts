@@ -1,5 +1,5 @@
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../Types/STID/STIDTypes';
 import { searchTags } from '../../Api/Search/STID/searchTags';
 import { searchDocuments } from '../../Api/Search/STID/searchDocuments';
 
@@ -28,6 +28,10 @@ export function useSTIDSearch(): StidSearch {
             }
             case 'document': {
                 return await searchDocuments(searchValue, signal);
+            }
+
+            default: {
+                throw new Error('Unknown searchItem');
             }
         }
     }

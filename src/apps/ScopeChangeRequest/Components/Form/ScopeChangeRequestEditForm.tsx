@@ -5,7 +5,7 @@ import { patchScopeChange, uploadAttachment } from '../../Api/ScopeChange/Reques
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../Types/STID/STIDTypes';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
