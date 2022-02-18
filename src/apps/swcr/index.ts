@@ -9,7 +9,7 @@ import { fieldSettings } from './utilities/gardenSetup';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.fusion]);
+    const api = baseClient(appApi.authProvider, ['5a842df8-3238-415d-b168-9f16a6a6031b/.default']);
 
     const swcr = appApi.createWorkSpace<SwcrPackage>({
         CustomSidesheet: SwcrSideSheet,
@@ -17,7 +17,7 @@ export function setup(appApi: ClientApi): void {
 
     swcr.registerDataSource(async () => {
         const response = await api.fetch(
-            `https://pro-s-dataproxy-fprd.azurewebsites.net/api/contexts/3380fe7d-e5b7-441f-8ce9-a8c3133ee499/swcr`
+            `https://pro-s-dataproxy-ci.azurewebsites.net/api/contexts/71db33bb-cb1b-42cf-b5bf-969c77e40931/swcr`
         );
         const swcrPackages = JSON.parse(await response.text()) as SwcrPackage[];
 
