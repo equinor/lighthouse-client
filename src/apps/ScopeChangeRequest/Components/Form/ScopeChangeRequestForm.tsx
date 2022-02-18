@@ -9,19 +9,24 @@ import { useHttpClient } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import { getScopeChangeById, postScopeChange } from '../../Api/ScopeChange';
-import { uploadAttachment } from '../../Api/ScopeChange/attachment';
-import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
+import {
+    getScopeChangeById,
+    postScopeChange,
+    uploadAttachment,
+} from '../../Api/ScopeChange/Request';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 
-import { Field } from '../DetailView/Components/Field';
-import { Upload } from '../Upload';
+import { Upload } from '../Attachments/Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { Origin } from './Origin';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../Types/STID/STIDTypes';
+import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
+import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -40,8 +45,11 @@ export const ScopeChangeRequestForm = ({
         phase: 'IC',
     });
 
+    usePreloadCaching();
+
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
+    const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
 
     const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
@@ -70,7 +78,7 @@ export const ScopeChangeRequestForm = ({
         );
         if (scID) {
             attachments.forEach(async (attachment) => {
-                await uploadAttachment(scID, attachment);
+                await mutateAsync({ file: attachment, requestId: scID });
             });
             setIsRedirecting(true);
 
@@ -78,9 +86,12 @@ export const ScopeChangeRequestForm = ({
         }
     };
 
-    const { mutate, isLoading, error } = useMutation(createScopeChangeMutation, {
+    const { mutateAsync } = useMutation(uploadAttachment, { retry: 2, retryDelay: 2 });
+
+    const { mutate, isLoading } = useMutation(createScopeChangeMutation, {
         retry: 2,
         retryDelay: 2,
+        onError: (e: ServerError) => setErrorMessage(e),
     });
 
     const redirect = async (scopeChangeId: string) => {
@@ -137,6 +148,7 @@ export const ScopeChangeRequestForm = ({
 
     return (
         <>
+            <ScopeChangeErrorBanner message={errorMessage} requestId={'0'} />
             <TitleHeader>
                 <span style={{ fontSize: '28px' }}>Create scope change request</span>
                 <Icon
@@ -164,7 +176,7 @@ export const ScopeChangeRequestForm = ({
                     {
                         Component: RelatedObjectsSearch,
                         order: 6,
-                        title: 'References',
+                        title: '',
                         props: {
                             relatedObjects: relatedObjects,
                             setRelatedObjects: setRelatedObjects,
@@ -172,16 +184,27 @@ export const ScopeChangeRequestForm = ({
                     },
                 ]}
             >
-                <Field
-                    label="Attachments"
-                    value={<Upload attachments={attachments} setAttachments={setAttachments} />}
-                />
+                <Section>
+                    <Title>Attachments</Title>
+                    <Upload attachments={attachments} setAttachments={setAttachments} />
+                </Section>
             </GeneratedForm>
-
-            {error && <p> Something went wrong, please check your connection and try again</p>}
         </>
     );
 };
+
+export const Section = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+`;
+
+export const Title = styled.div`
+    line-height: 24px;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+`;
 
 const TitleHeader = styled.div`
     display: flex;

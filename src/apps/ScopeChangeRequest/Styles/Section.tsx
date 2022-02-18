@@ -26,5 +26,6 @@ export const SectionRow = styled.div`
     flex-direction: row;
     align-items: flex-start;
     width: 100%;
+    gap: 2em;
     justify-content: flex-start;
 `;

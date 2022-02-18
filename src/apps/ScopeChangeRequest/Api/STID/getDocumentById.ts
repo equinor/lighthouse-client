@@ -1,5 +1,5 @@
-import { HttpClient } from '@equinor/http-client';
-import { Document } from './Types/Document';
+import { httpClient } from '../../../../Core/Client/Functions';
+import { Document } from '../../Types/STID/Document';
 
 /**
  * Resolves document by document number
@@ -8,13 +8,11 @@ import { Document } from './Types/Document';
  * @param stidClient
  * @returns
  */
-export async function getDocumentById(
-    instCode: string,
-    docNo: string,
-    stidClient: HttpClient
-): Promise<Document> {
+export async function getDocumentById(docNo: string, instCode: string): Promise<Document> {
+    const { STID } = httpClient();
+
     const uri = `${instCode}/document`;
     const queryParameters = `docNo=${encodeURIComponent(docNo)}`;
     const url = `/${uri}?${queryParameters}`;
-    return await stidClient.fetch(url).then((response) => response.json());
+    return await STID.fetch(url).then((response) => response.json());
 }

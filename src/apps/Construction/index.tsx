@@ -71,73 +71,73 @@ const detailsPage: AnalyticsOptions<WorkOrder> = {
 };
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.FAM]);
+    // const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.FAM]);
     const construction = appApi.createPageViewer();
 
     /** 
     Remove SWCR analytics, since its not relevant for Construction
     */
 
-    const workPreparation = construction.registerDashboard<WorkOrder>('work-preparation', {
-        title: 'Work Preparation',
-    });
+    // const workPreparation = construction.registerDashboard<WorkOrder>('work-preparation', {
+    //     title: 'Work Preparation',
+    // });
 
-    // Loop Data Test for testing system..
-    workPreparation.registerDataSource(async (abortController) => {
-        // const plantId = 'PCS$JOHAN_CASTBERG';
-        // const project = 'L.O532C.002';
-        const response: WorkOrder[] = await api
-            .fetch(
-                `https://fam-synapse-api-dev.azurewebsites.net/v0.1/procosys/completionworkorderswithcutoff/JCA`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({}),
-                    signal: abortController?.signal,
-                }
-            )
-            .then((res) => res.json());
+    // // Loop Data Test for testing system..
+    // workPreparation.registerDataSource(async (abortController) => {
+    //     // const plantId = 'PCS$JOHAN_CASTBERG';
+    //     // const project = 'L.O532C.002';
+    //     const response: WorkOrder[] = await api
+    //         .fetch(
+    //             `https://fam-synapse-api-dev.azurewebsites.net/v0.1/procosys/completionworkorderswithcutoff/JCA`,
+    //             {
+    //                 method: 'POST',
+    //                 body: JSON.stringify({}),
+    //                 signal: abortController?.signal,
+    //             }
+    //         )
+    //         .then((res) => res.json());
 
-        return response;
-    });
-    workPreparation.registerKpi((data) => {
-        return [
-            {
-                status: 'ok',
-                title: 'Job cards created',
-                value: () => formatNumber(data.length),
-            },
-            {
-                status: 'waring',
-                title: 'Critical status',
-                tooltipContent:
-                    'Workorders that have status W01, W02 or W03 and it is six weeks or less until planned start date',
-                value: () => {
-                    // critical WO: Workorder which havent reached status W04
-                    // and 1 week left until plannedStartAtDate
+    //     return response;
+    // });
+    // workPreparation.registerKpi((data) => {
+    //     return [
+    //         {
+    //             status: 'ok',
+    //             title: 'Job cards created',
+    //             value: () => formatNumber(data.length),
+    //         },
+    //         {
+    //             status: 'waring',
+    //             title: 'Critical status',
+    //             tooltipContent:
+    //                 'Workorders that have status W01, W02 or W03 and it is six weeks or less until planned start date',
+    //             value: () => {
+    //                 // critical WO: Workorder which havent reached status W04
+    //                 // and 1 week left until plannedStartAtDate
 
-                    //Find all workorders that have status W01, W02 or W03
+    //                 //Find all workorders that have status W01, W02 or W03
 
-                    const filter = ['W01', 'W02', 'W03'];
-                    const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatus ?? ''));
+    //                 const filter = ['W01', 'W02', 'W03'];
+    //                 const firstFiltered = data.filter((wo) => filter.includes(wo.jobStatus ?? ''));
 
-                    // Find all the first filtered WOs that are due in one week or less
+    //                 // Find all the first filtered WOs that are due in one week or less
 
-                    const secondFiltered = firstFiltered.filter(
-                        (wo) => weekDiff(new Date(wo.plannedStartupDate ?? new Date())).days <= 42
-                    );
+    //                 const secondFiltered = firstFiltered.filter(
+    //                     (wo) => weekDiff(new Date(wo.plannedStartupDate ?? new Date())).days <= 42
+    //                 );
 
-                    return formatNumber(secondFiltered.length);
-                },
-            },
-            {
-                status: 'ok',
-                title: 'Job cards in W04',
-                value: () => {
-                    return formatNumber(data.filter((wo) => wo.jobStatus === 'W04').length);
-                },
-            },
-        ];
-    });
+    //                 return formatNumber(secondFiltered.length);
+    //             },
+    //         },
+    //         {
+    //             status: 'ok',
+    //             title: 'Job cards in W04',
+    //             value: () => {
+    //                 return formatNumber(data.filter((wo) => wo.jobStatus === 'W04').length);
+    //             },
+    //         },
+    //     ];
+    // });
 
     // const excludeKeys: (keyof WorkOrder)[] = [];
 
@@ -154,19 +154,19 @@ export function setup(appApi: ClientApi): void {
 
     // workPreparation.registerFilterOptions({ excludeKeys });
 
-    workPreparation.registerPage({
-        title: 'Jobcards',
-        pageId: 'workPreparationJobCards',
-        type: 'AnalyticsPage',
-        ...analyticsOptions,
-    });
+    // workPreparation.registerPage({
+    //     title: 'Jobcards',
+    //     pageId: 'workPreparationJobCards',
+    //     type: 'AnalyticsPage',
+    //     ...analyticsOptions,
+    // });
 
-    workPreparation.registerPage({
-        title: 'Details',
-        pageId: 'workPreparationDetails',
-        type: 'AnalyticsPage',
-        ...detailsPage,
-    });
+    // workPreparation.registerPage({
+    //     title: 'Details',
+    //     pageId: 'workPreparationDetails',
+    //     type: 'AnalyticsPage',
+    //     ...detailsPage,
+    // });
 
     /** 
     Remove LCI hanging garden, since its not relevant for Construction
@@ -175,6 +175,10 @@ export function setup(appApi: ClientApi): void {
     //     title: 'LCI Hanging Garden',
     //     reportURI: 'lci-hanging-gardens',
     // });
+    construction.registerFusionPowerBi('jca-work-preparation', {
+        title: 'Work Preparation',
+        reportURI: 'jca-work-preparation',
+    });
     construction.registerFusionPowerBi('jca-installation', {
         title: 'Installation',
         reportURI: 'jca-installation',

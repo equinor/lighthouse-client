@@ -20,9 +20,13 @@ export const SelectPunch = ({ setOriginId, originId }: SelectPunchProps): JSX.El
         setIsChecking(true);
 
         try {
-            await procosys.fetch(
+            const res = await procosys.fetch(
                 `api/PunchListItem?plantId=PCS%24JOHAN_CASTBERG&punchItemId=${plNumber}&api-version=4.1`
             );
+
+            if (!res.ok) {
+                throw new Error('Invalid punch');
+            }
             setIsValidPunch(true);
             setOriginId(plNumber);
         } catch (e) {

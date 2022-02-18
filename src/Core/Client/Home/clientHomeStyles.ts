@@ -9,6 +9,7 @@ export const Wrapper = styled.section`
 `;
 
 export const Header = styled.div`
+    height: fit-content;
     margin: 0.5rem;
 `;
 
@@ -16,6 +17,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: row;
     width: fit-content;
+    height: fit-content;
     width: 100%;
 `;
 

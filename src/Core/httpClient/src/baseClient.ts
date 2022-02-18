@@ -139,12 +139,9 @@ export function baseClient(
         return _fetch(url, requestInit);
     }
 
-    async function uploadFile(
-        url: string,
-        formData: FormData
-        // progressCallback?: ProgressCallback
-    ) {
+    async function uploadFile(endpoint: string, formData: FormData) {
         const token = await getAccessToken();
+        const url = _baseUrl + endpoint;
 
         let statusCode = 0;
         try {
@@ -167,28 +164,6 @@ export function baseClient(
             initializeError(NetworkError, { httpStatusCode: statusCode, url });
             throw Exception;
         }
-
-        // if (progressCallback) {
-        //     try {
-        //         const reader = response.body?.getReader();
-        //         let bytesReceived = 0;
-
-        //         while (bytesReceived !== total) {
-        //             const result = await reader?.read();
-        //             if (result?.done) {
-        //                 break;
-        //             }
-        //             bytesReceived += result ? result.value.byteLength : 0;
-        //             progressCallback(bytesReceived / total);
-        //         }
-
-        //         return response;
-        //     } catch {
-        //         return response;
-        //     }
-        // } else {
-        //     return response;
-        // }
     }
 
     /**
@@ -217,9 +192,9 @@ export function baseClient(
 
             if (response.status) statusCode = response.status;
 
-            if (response && !response.ok) {
-                initializeError(NetworkError, { httpStatusCode: statusCode, url });
-            }
+            // if (response && !response.ok) {
+            //     initializeError(NetworkError, { httpStatusCode: statusCode, url });
+            // }
             return response;
         } catch (Exception) {
             initializeError(NetworkError, { httpStatusCode: statusCode, url });

@@ -1,72 +1,132 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { useHttpClient } from '@equinor/portal-client';
-import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 
-import { getScopeChangeById, voidRequest } from '../../Api/ScopeChange';
-import { getContributionId } from '../../Functions/Access';
+import {
+    getScopeChangeById,
+    initiateScopeChange,
+    unVoidRequest,
+    voidRequest,
+} from '../../Api/ScopeChange/Request';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
 import { RequestDetailView } from '../DetailView/RequestDetailView';
 import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
 
-import { useWorkflowAccess } from '../../Hooks/useWorkflowAccess';
-import { ScopeChangeAccessContext } from './Context/scopeChangeAccessContext';
+import { ScopeChangeContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { IconMenu, MenuItem } from '../MenuButton';
+import { ScopeChangeErrorBanner } from './ErrorBanner';
 
-import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../Enums/queryKeys';
+import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
+import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
+import { MutationKeys } from '../../Enums/mutationKeys';
+import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
-    const queryClient = useQueryClient();
     const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
+    const queryClient = useQueryClient();
 
-    const { error, data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
+    /**
+     * Preloads systems, functional roles and other static low memory lists
+     */
+    usePreloadCaching();
+
+    const { data, refetch, remove, isLoading, isRefetching } = useQuery<ScopeChangeRequest>(
         QueryKeys.Scopechange,
         () => getScopeChangeById(item.id, scopeChangeApi),
-        { initialData: item, refetchOnWindowFocus: false, retry: false }
+        {
+            initialData: item,
+            refetchOnWindowFocus: false,
+            retry: false,
+            onError: () =>
+                setErrorMessage({
+                    detail: 'Failed to connect to server',
+                    title: 'Fetch failed',
+                    validationErrors: {},
+                }),
+        }
     );
+
     const scopeChangeAccess = useScopeChangeAccess(item.id);
 
-    const workflowAccess = useWorkflowAccess(
-        item.id,
-        data?.currentWorkflowStep?.criterias,
-        data?.currentWorkflowStep?.contributors,
-        data?.currentWorkflowStep?.id,
-        getContributionId
+    const { mutateAsync: unvoidMutation } = useScopeChangeMutation(
+        [MutationKeys.Unvoid],
+        unVoidRequest
     );
 
-    useEffect(() => {
-        if (item) {
-            remove();
-            refetchScopeChange();
-        }
-    }, [item]);
+    const { mutateAsync: voidMutation } = useScopeChangeMutation([MutationKeys.Void], voidRequest);
 
-    async function notifyChange() {
-        await queryClient.invalidateQueries([QueryKeys.History, QueryKeys.Scopechange]);
-        await queryClient.refetchQueries(QueryKeys.Scopechange);
-        await queryClient.refetchQueries(QueryKeys.History);
-    }
+    const { mutateAsync: initiate } = useScopeChangeMutation(
+        [MutationKeys.ScopeChange],
+        initiateScopeChange
+    );
 
-    const refetchScopeChange = async () => {
+    const refetchScopeChange = useCallback(async () => {
         await refetch();
-    };
+    }, [refetch]);
+
     const actionMenu: MenuItem[] = useMemo(() => {
         const actions: MenuItem[] = [];
 
         if (scopeChangeAccess.canPatch) {
-            actions.push({
-                label: 'Void request',
-                onClick: () => voidRequest(item.id).then(notifyChange),
-            });
+            if (item.state === 'Draft') {
+                actions.push({
+                    label: 'Initiate request',
+                    onClick: async () => await initiate({ request: data ?? item }),
+                });
+            }
         }
+
+        if (scopeChangeAccess.canUnVoid) {
+            if (data?.isVoided) {
+                actions.push({
+                    label: 'Unvoid request',
+                    onClick: async () => await unvoidMutation({ requestId: item.id }),
+                });
+            }
+        }
+        if (scopeChangeAccess.canVoid) {
+            if (!data?.isVoided) {
+                actions.push({
+                    label: 'Void request',
+                    onClick: () =>
+                        spawnConfirmationDialog(
+                            'Are you sure you want to void this request',
+                            'Void confirmation',
+                            async () => await voidMutation({ requestId: item.id })
+                        ),
+                });
+            }
+        }
+
         return actions;
-    }, [data]);
+    }, [
+        data,
+        initiate,
+        item,
+        scopeChangeAccess.canPatch,
+        scopeChangeAccess.canUnVoid,
+        scopeChangeAccess.canVoid,
+        unvoidMutation,
+        voidMutation,
+    ]);
+
+    useEffect(() => {
+        if (item.id) {
+            remove();
+            refetchScopeChange();
+            queryClient.invalidateQueries(QueryKeys.Step);
+        }
+    }, [item.id, queryClient, refetchScopeChange, remove]);
 
     if (!item.id) {
         return <p>Something went wrong</p>;
@@ -79,16 +139,14 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             </Loading>
         );
     }
-
     return (
         <Wrapper>
-            {error && (
-                <div style={{ color: 'red' }}>
-                    Network error, please check your connection and try again
-                </div>
-            )}
+            <ScopeChangeErrorBanner message={errorMessage} requestId={item.id} />
             <TitleHeader>
-                <Title>{data?.title}</Title>
+                <Title>
+                    ({data?.sequenceNumber}) {data?.title}
+                    {isLoading && <Progress.Dots color="primary" />}
+                </Title>
                 <ButtonContainer>
                     <IconMenu items={actionMenu} />
 
@@ -108,14 +166,12 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                     </Button>
                 </ButtonContainer>
             </TitleHeader>
-            <ScopeChangeAccessContext.Provider
+            <ScopeChangeContext.Provider
                 value={{
-                    contributionId: workflowAccess.contributionId,
+                    isRefetching: isRefetching,
+                    setErrorMessage: (message: ServerError) => setErrorMessage(message),
                     request: data || item,
                     requestAccess: scopeChangeAccess,
-                    signableCriterias: workflowAccess.signableCriterias,
-                    canAddContributor: workflowAccess.canAddContributor,
-                    notifyChange,
                 }}
             >
                 {data && (
@@ -123,14 +179,14 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         {editMode ? (
                             <ScopeChangeRequestEditForm
                                 request={data}
-                                cancel={() => setEditMode(false)}
+                                close={() => setEditMode(false)}
                             />
                         ) : (
                             <RequestDetailView />
                         )}
                     </div>
                 )}
-            </ScopeChangeAccessContext.Provider>
+            </ScopeChangeContext.Provider>
         </Wrapper>
     );
 };

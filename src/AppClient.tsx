@@ -32,8 +32,8 @@ const GlobalStyle = createGlobalStyle`
     }
 
     ::-webkit-scrollbar {
-        width: .3rem;
-        height: .3rem;
+        height: 0.3rem;
+        width: 0.5rem;
     }
 
         /* Track */

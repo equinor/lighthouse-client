@@ -1,13 +1,13 @@
 import { Icon } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
-import { SubResult } from './StidSelector';
-import { ResultLabel, IconContainer, Result, Title } from './stidSelectorStyles';
+import { SubResult } from './AdvancedDocumentSearch';
+import { ResultLabel, IconContainer, Title, ResultItem } from './advancedSearchStyles';
 
 interface SubResultsProps {
     subResults: SubResult | undefined;
     handleReturnClick: () => void;
-    handleClick: (x: TypedSelectOption) => void;
+    handleClick: (x: TypedSelectOption, action: 'Add' | 'Remove') => void;
 }
 
 export const SubResults = ({
@@ -32,7 +32,7 @@ export const SubResults = ({
                             {subResults.documents.map((x) => {
                                 return (
                                     <>
-                                        <Result key={x.value}>
+                                        <ResultItem key={x.value}>
                                             <IconContainer>
                                                 <Icon name="file_copy" />
                                             </IconContainer>
@@ -42,11 +42,11 @@ export const SubResults = ({
                                                     name="add"
                                                     style={{ cursor: 'pointer' }}
                                                     onClick={() => {
-                                                        handleClick(x);
+                                                        handleClick(x, 'Add');
                                                     }}
                                                 />
                                             </IconContainer>
-                                        </Result>
+                                        </ResultItem>
                                     </>
                                 );
                             })}

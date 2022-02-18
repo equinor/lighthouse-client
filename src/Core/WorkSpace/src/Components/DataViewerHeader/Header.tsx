@@ -1,12 +1,11 @@
 import { useFactory } from '@equinor/DataFactory';
 import { Tabs } from '@equinor/eds-core-react';
 import { useFilteredData } from '@equinor/filter';
-
 import Icon from '../../../../../components/Icon/Icon';
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { useDataContext } from '../../Context/DataProvider';
 import { TabButton } from '../ToggleButton';
-import { Divider, HeaderWrapper, LeftSection, RightSection, TabTitle, Title } from './HeaderStyles';
+import { Divider, HeaderWrapper, LeftSection, RightSection, Title } from './HeaderStyles';
 
 const { Tab, List } = Tabs;
 
@@ -15,12 +14,12 @@ interface TabItem {
     title: string;
 }
 
-type HandleFilter = () => void;
+type VoidFunction = () => void;
 
 interface CompletionViewHeaderProps {
     title: string;
     tabs: TabItem[];
-    handleFilter: HandleFilter;
+    handleFilter: VoidFunction;
     activeFilter: boolean;
 }
 
@@ -43,7 +42,11 @@ export const CompletionViewHeader = ({
             <RightSection>
                 {factory && (
                     <>
-                        <TabButton onClick={setSelected} aria-selected={false}>
+                        <TabButton
+                            onClick={setSelected}
+                            aria-selected={false}
+                            title={factory.title}
+                        >
                             <Icon name={'add'} />
                             {factory.title}
                         </TabButton>
@@ -54,15 +57,14 @@ export const CompletionViewHeader = ({
                     {tabs.map((tab) => {
                         const Icon = tab.icon;
                         return (
-                            <Tab key={`tab-${tab.icon}`}>
+                            <Tab key={`tab-${tab.icon}`} title={tab.title}>
                                 <Icon />
-                                <TabTitle>{tab.title}</TabTitle>
                             </Tab>
                         );
                     })}
                 </List>
                 <Divider />
-                <TabButton onClick={handleFilter} aria-selected={activeFilter}>
+                <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
                     <Icon name={'filter_alt'} />
                 </TabButton>
             </RightSection>

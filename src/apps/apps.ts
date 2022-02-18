@@ -1,7 +1,6 @@
-import { AppGroups, AppManifest } from '@equinor/portal-client';
+import { AppGroupe, AppGroups, AppManifest } from '@equinor/portal-client';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
-import { CompletionManagementIcon } from '../icons/Completion management icon';
 import { ConstructionManagementIcon } from '../icons/construction management icon';
 import { EngineeringManagementIcon } from '../icons/Engineering management icon';
 import { HomeIcon } from '../icons/Home icon';
@@ -13,12 +12,11 @@ import { ReportIcon } from '../icons/Report icon';
 import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
-import { setup as checklistSetup } from './checklistApp';
 import { setup as commissioningSetup } from './Commissioning';
 import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
-import { setup as loopSetup } from './Loop/loopApp';
+
 import {
     BusinessCaseReport,
     LCIReport,
@@ -44,19 +42,18 @@ export enum Apps {
     AssetData = 'AssetData',
     Top = 'Top',
     Collaboration = 'Collaboration',
-    ProgressAndStatus = 'ProgressAndStatus',
-    CompletionManagement = 'CompletionManagement',
-    ConstructionManagement = 'ConstructionManagement',
-    EngineeringManagement = 'EngineeringManagement',
+    Progress = 'Progress',
+    ConstructionAndCommissioning = 'ConstructionAndCommissioning',
+    Engineering = 'Engineering',
     ProjectInformation = 'ProjectInformation',
     QueriesAndRequests = 'QueriesAndRequests',
-    QualityAndCompliance = 'QualityAndCompliance',
+    QualityAndRisk = 'QualityAndRisk',
     ProjectControl = 'ProjectControl',
     Reports = 'Reports',
     SSU = 'SSU',
 }
 
-export const appGroups: AppGroups = {
+export const appGroups: Record<Apps, AppGroupe> = {
     AssetData: {
         name: 'Asset data',
         icon: AssetDataIcon,
@@ -72,18 +69,18 @@ export const appGroups: AppGroups = {
         icon: CollaborationIcon,
         columnId: 4,
     },
-    ProgressAndStatus: {
-        name: 'Progress and status',
+    Progress: {
+        name: 'Progress',
         icon: ProgressAndStatusIcon,
         columnId: 1,
     },
-    ConstructionManagement: {
-        name: 'Construction management',
+    ConstructionAndCommissioning: {
+        name: 'Construction and Commissioning',
         icon: ConstructionManagementIcon,
         columnId: 2,
     },
-    EngineeringManagement: {
-        name: 'Engineering management',
+    Engineering: {
+        name: 'Engineering',
         icon: EngineeringManagementIcon,
         columnId: 2,
     },
@@ -97,8 +94,8 @@ export const appGroups: AppGroups = {
         icon: QueriesAndRequests,
         columnId: 3,
     },
-    QualityAndCompliance: {
-        name: 'Quality and compliance',
+    QualityAndRisk: {
+        name: 'Quality and risk',
         icon: QualityIcon,
         columnId: 3,
     },
@@ -111,12 +108,6 @@ export const appGroups: AppGroups = {
         name: 'SSU',
         icon: SSUIcon,
         columnId: 1,
-    },
-
-    CompletionManagement: {
-        name: 'Completion management',
-        icon: CompletionManagementIcon,
-        columnId: 2,
     },
     Reports: {
         name: 'Reports',
@@ -165,7 +156,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart',
-        appEnv: 'test',
+        appEnv: 'prod',
         tags: [],
     },
     {
@@ -191,12 +182,22 @@ export const apps: AppManifest[] = [
 
         appEnv: 'test',
     },
-    // ProgressAndStatus
+    {
+        title: 'Barrier Management Tool',
+        shortName: 'bmt',
+        color: '#0364B8',
+        groupe: Apps.SSU,
+        icon: '',
+        uri: 'https://fusion.equinor.com/apps/bmt/65728fee-185d-4a0c-a91d-8e3f3781dad8',
+        appEnv: 'prod',
+        tags: ['Fusion', 'Link'],
+    },
+    // Progress
     {
         title: 'Overview',
         shortName: 'overview',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.Progress,
         icon: '',
         tags: [],
         app: {
@@ -207,7 +208,7 @@ export const apps: AppManifest[] = [
         title: 'Engineering',
         shortName: 'engineering',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.Progress,
         icon: '',
         tags: [],
         app: {
@@ -218,7 +219,7 @@ export const apps: AppManifest[] = [
         title: 'Construction',
         shortName: 'construction',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.Progress,
         icon: '',
         tags: [],
         app: {
@@ -232,7 +233,7 @@ export const apps: AppManifest[] = [
         title: 'Commissioning',
         shortName: 'commissioning',
         color: '#0364B8',
-        groupe: Apps.ProgressAndStatus,
+        groupe: Apps.Progress,
         icon: '',
         tags: [],
         app: {
@@ -242,12 +243,12 @@ export const apps: AppManifest[] = [
 
         appEnv: 'dev',
     },
-    // Engineering management
+    // Engineering
     {
         title: 'Control object status',
         shortName: 'object-status',
         color: '#0364B8',
-        groupe: Apps.EngineeringManagement,
+        groupe: Apps.Engineering,
         icon: '',
         tags: [],
     },
@@ -255,7 +256,7 @@ export const apps: AppManifest[] = [
         title: 'LCI hanging garden',
         shortName: 'lci-garden',
         color: '#0364B8',
-        groupe: Apps.EngineeringManagement,
+        groupe: Apps.Engineering,
         icon: '',
         app: {
             appType: 'PowerBI',
@@ -269,7 +270,7 @@ export const apps: AppManifest[] = [
         title: 'LCI portal',
         shortName: 'lci-portal',
         color: '#0364B8',
-        groupe: Apps.EngineeringManagement,
+        groupe: Apps.Engineering,
         icon: '',
         tags: [],
     },
@@ -277,7 +278,7 @@ export const apps: AppManifest[] = [
         title: 'MDR analytics',
         shortName: 'mdr',
         color: '#0364B8',
-        groupe: Apps.EngineeringManagement,
+        groupe: Apps.Engineering,
         icon: '',
         app: {
             appType: 'PowerBI',
@@ -287,12 +288,12 @@ export const apps: AppManifest[] = [
 
         appEnv: 'test',
     },
-    // Construction management
+    // Construction And Commissioning
     {
         title: 'Work order',
         shortName: 'work-order',
         color: '#0364B8',
-        groupe: Apps.ConstructionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         app: {
             appType: 'DataViewer',
@@ -300,12 +301,11 @@ export const apps: AppManifest[] = [
         },
         tags: ['Job'],
     },
-    // CompletionManagement
     {
         title: 'Project explorer',
         shortName: 'project-explorer',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
     },
@@ -313,19 +313,18 @@ export const apps: AppManifest[] = [
         title: 'Checklist',
         shortName: 'checklist',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
         app: {
             appType: 'DataViewer',
-            setup: checklistSetup,
         },
     },
     {
         title: 'Handover',
         shortName: 'handover',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
         app: {
@@ -338,7 +337,7 @@ export const apps: AppManifest[] = [
         title: 'Heat trace installation',
         shortName: 'heat-trace',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
         app: {
@@ -351,19 +350,18 @@ export const apps: AppManifest[] = [
         title: 'Loop',
         shortName: 'loop',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
         app: {
             appType: 'DataViewer',
-            setup: loopSetup,
         },
     },
     {
         title: 'N2He',
         shortName: 'N2He',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
         app: {
@@ -374,17 +372,17 @@ export const apps: AppManifest[] = [
         title: 'Preservation',
         shortName: 'preservation',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Preservation',
         tags: ['link', 'procosys'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Punch',
         shortName: 'punch',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
         app: {
@@ -395,7 +393,7 @@ export const apps: AppManifest[] = [
         title: 'SWCR',
         shortName: 'swcr',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
         app: {
@@ -408,21 +406,21 @@ export const apps: AppManifest[] = [
         title: 'Commisisoning procedure',
         shortName: 'commisisoning-procedure',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         uri: 'https://fusion.equinor.com/apps/dcp',
         tags: ['link', 'fusion'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Invitation for punch out ',
         shortName: 'ipo',
         color: '#0364B8',
-        groupe: Apps.CompletionManagement,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/InvitationForPunchOut',
         tags: ['link', 'procosys'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // Queries and requests
     {
@@ -432,19 +430,6 @@ export const apps: AppManifest[] = [
         groupe: Apps.QueriesAndRequests,
         icon: '',
         tags: [],
-    },
-    {
-        title: 'Change request',
-        shortName: 'change',
-        color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
-        icon: '',
-        app: {
-            appType: 'DataViewer',
-            setup: scopeChangeSetup,
-        },
-        tags: [],
-        appEnv: 'dev',
     },
     // ProjectControl
     {
@@ -456,35 +441,52 @@ export const apps: AppManifest[] = [
         tags: [],
     },
     {
-        title: 'Scope change control',
-        shortName: 'sca',
+        title: 'Scope change request',
+        shortName: 'change',
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
+        app: {
+            appType: 'DataViewer',
+            setup: scopeChangeSetup,
+        },
         tags: [],
+        appEnv: 'test',
     },
-    // QualityAndCompliance
+    {
+        title: 'Management of change',
+        shortName: 'moc',
+        color: '#0364B8',
+        groupe: Apps.ProjectControl,
+        icon: '',
+        uri: 'https://fusion.equinor.com/apps/management-of-change/3380fe7d-e5b7-441f-8ce9-a8c3133ee499',
+        tags: ['Link', 'Fusion'],
+        appEnv: 'prod',
+    },
+    {
+        title: 'Project control and analysis',
+        shortName: 'pcaa',
+        color: '#0364B8',
+        groupe: Apps.ProjectControl,
+        icon: '',
+        uri: 'https://fusion.equinor.com/apps/project-control-and-analysis/3380fe7d-e5b7-441f-8ce9-a8c3133ee499',
+        tags: ['Link', 'Fusion'],
+        appEnv: 'prod',
+    },
+    // QualityAndRisk
     {
         title: 'Dispensations',
         shortName: 'dispensations',
         color: '#0364B8',
-        groupe: Apps.QualityAndCompliance,
+        groupe: Apps.QualityAndRisk,
         icon: '',
         tags: [],
     },
     {
-        title: 'N-comformacy request',
-        shortName: 'n-comformacy-request',
-        color: '#0364B8',
-        groupe: Apps.QualityAndCompliance,
-        icon: '',
-        tags: [],
-    },
-    {
-        title: 'Non-comformacy',
+        title: 'Non conformity',
         shortName: 'non-comformacy',
         color: '#0364B8',
-        groupe: Apps.QualityAndCompliance,
+        groupe: Apps.QualityAndRisk,
         icon: '',
         app: {
             appType: 'PowerBI',
@@ -497,7 +499,7 @@ export const apps: AppManifest[] = [
         title: 'Quality deviation',
         shortName: 'quality-deviation',
         color: '#0364B8',
-        groupe: Apps.QualityAndCompliance,
+        groupe: Apps.QualityAndRisk,
         icon: '',
         app: {
             appType: 'PowerBI',
@@ -514,29 +516,6 @@ export const apps: AppManifest[] = [
         groupe: Apps.QueriesAndRequests,
         icon: '',
         tags: [],
-    },
-    {
-        title: 'Query analytics',
-        shortName: 'query-analytics',
-        color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
-        icon: '',
-        app: {
-            appType: 'PowerBI',
-            component: QueryReport,
-        },
-        tags: ['PowerBI'],
-        appEnv: 'test',
-    },
-    {
-        title: 'Queries',
-        shortName: 'queries',
-        color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
-        icon: '',
-        uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Search?searchType=Query',
-        tags: ['link', 'procosys'],
-        appEnv: 'test',
     },
     // Reports
     // {
@@ -557,7 +536,7 @@ export const apps: AppManifest[] = [
         icon: 'tag',
         uri: 'https://fusion.equinor.com/apps/meetings',
         tags: ['fuison', 'link', 'external'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Review',
@@ -567,7 +546,30 @@ export const apps: AppManifest[] = [
         icon: 'tag',
         uri: 'https://fusion.equinor.com/apps/reviews/255d8c0a-7893-4c21-ab42-62c652ea8129',
         tags: ['fuison', 'link', 'external'],
+        appEnv: 'prod',
+    },
+    {
+        title: 'Query analytics',
+        shortName: 'query-analytics',
+        color: '#0364B8',
+        groupe: Apps.Collaboration,
+        icon: '',
+        app: {
+            appType: 'PowerBI',
+            component: QueryReport,
+        },
+        tags: ['PowerBI'],
         appEnv: 'test',
+    },
+    {
+        title: 'Queries',
+        shortName: 'queries',
+        color: '#0364B8',
+        groupe: Apps.Collaboration,
+        icon: '',
+        uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Search?searchType=Query',
+        tags: ['link', 'procosys'],
+        appEnv: 'prod',
     },
     // Asset Data
     {
@@ -591,7 +593,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://stid.equinor.com/JCA/search?type=doc&revstatus=OF%2CUA%2CRE%2CPL%2COF-P',
         tags: ['3D', 'Asset', 'Map', 'Doc'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Tags',
@@ -601,6 +603,6 @@ export const apps: AppManifest[] = [
         icon: 'tag',
         uri: 'https://stid.equinor.com/JCA/search?type=tag&tagstatus=A%2CP%2CR%2CF',
         tags: ['Tag', 'Data', 'Functional Location'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
 ];
