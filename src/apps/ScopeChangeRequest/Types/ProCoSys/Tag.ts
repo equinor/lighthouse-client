@@ -1,3 +1,8 @@
+export interface SearchTag {
+    TagNo: string;
+    Id: string;
+    Description: string;
+}
 export interface Tag {
     Id: number;
     TagNo: string;
