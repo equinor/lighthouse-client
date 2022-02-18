@@ -5,7 +5,12 @@ import styled from 'styled-components';
 import { useHttpClient } from '@equinor/portal-client';
 import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 
-import { getScopeChangeById, unVoidRequest, voidRequest } from '../../Api/ScopeChange/Request';
+import {
+    getScopeChangeById,
+    initiateScopeChange,
+    unVoidRequest,
+    voidRequest,
+} from '../../Api/ScopeChange/Request';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
@@ -60,12 +65,26 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
     const { mutateAsync: voidMutation } = useScopeChangeMutation([MutationKeys.Void], voidRequest);
 
+    const { mutateAsync: initiate } = useScopeChangeMutation(
+        [MutationKeys.ScopeChange],
+        initiateScopeChange
+    );
+
     const refetchScopeChange = useCallback(async () => {
         await refetch();
     }, [refetch]);
 
     const actionMenu: MenuItem[] = useMemo(() => {
         const actions: MenuItem[] = [];
+
+        if (scopeChangeAccess.canPatch) {
+            if (item.state === 'Draft') {
+                actions.push({
+                    label: 'Initiate request',
+                    onClick: async () => await initiate({ request: data ?? item }),
+                });
+            }
+        }
 
         if (scopeChangeAccess.canUnVoid) {
             if (data?.isVoided) {
@@ -91,8 +110,10 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
         return actions;
     }, [
-        data?.isVoided,
-        item.id,
+        data,
+        initiate,
+        item,
+        scopeChangeAccess.canPatch,
         scopeChangeAccess.canUnVoid,
         scopeChangeAccess.canVoid,
         unvoidMutation,

@@ -5,7 +5,12 @@ import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../../Types/
  *
  * @param request
  */
-export async function initiateScopeChange(request: ScopeChangeRequest): Promise<void> {
+
+interface InitiateScopeChangeParams {
+    request: ScopeChangeRequest;
+}
+
+export async function initiateScopeChange({ request }: InitiateScopeChangeParams): Promise<void> {
     const scopeChange: ScopeChangeRequestFormModel = {
         ...request,
         actualChangeHours: request.actualChangeHours,
