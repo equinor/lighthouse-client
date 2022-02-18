@@ -1,6 +1,7 @@
 import { useQuery, UseQueryOptions } from 'react-query';
 import { canReassign, canUnsign, canSign } from '../Api/ScopeChange/Access';
-import { ServerError } from '../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../Types/ScopeChange/ServerError';
+import { CacheTime } from '../Enums/cacheTimes';
 
 interface CriteriaOptions {
     canSign: boolean | undefined;
@@ -26,8 +27,8 @@ export function useWorkflowCriteriaOptions(
     > = {
         refetchOnWindowFocus: false,
         retry: 3,
-        staleTime: 5 * 1000 * 60,
-        cacheTime: 5 * 1000 * 60,
+        staleTime: CacheTime.FiveMinutes,
+        cacheTime: CacheTime.FiveMinutes,
         onError: (e: string) => {
             if (errorPipe) {
                 errorPipe({ detail: e, title: 'Query failed', validationErrors: {} });

@@ -278,8 +278,8 @@ const Header = styled.div`
 `;
 
 const Content = styled.div`
-display: flex;
-overflow scroll;
+    display: flex;
+    overflow: scroll;
 `;
 
 const Wrapper = styled.div`

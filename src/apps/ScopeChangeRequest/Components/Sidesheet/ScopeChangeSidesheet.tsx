@@ -17,11 +17,11 @@ import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { IconMenu, MenuItem } from '../MenuButton';
 import { ScopeChangeErrorBanner } from './ErrorBanner';
 
-import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../Enums/queryKeys';
 import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
-import { MutationKeys } from '../../Api/ScopeChange/mutationKeys';
+import { MutationKeys } from '../../Enums/mutationKeys';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {

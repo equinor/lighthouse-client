@@ -25,7 +25,7 @@ import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch
 import { Origin } from './Origin';
 import { StidTypes } from '../../Types/STID/STIDTypes';
 import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 
 interface ScopeChangeRequestFormProps {

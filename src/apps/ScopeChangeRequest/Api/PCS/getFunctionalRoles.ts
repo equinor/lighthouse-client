@@ -1,4 +1,4 @@
-import { FunctionalRole } from './Types/functionalRole';
+import { FunctionalRole } from '../../Types/ProCoSys/functionalRole';
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
 /**
  * Returns a list of all the functional roles for scope change

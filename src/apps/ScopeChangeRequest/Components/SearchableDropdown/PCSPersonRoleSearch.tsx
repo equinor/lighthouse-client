@@ -3,7 +3,7 @@ import AsyncSelect from 'react-select/async';
 
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../Enums/queryKeys';
 import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
 import { sort } from '../../Functions/sort';
 import { useCancellationToken } from '../../Hooks/useCancellationToken';

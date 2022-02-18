@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { useIsMounted } from '../../Hooks/useIsMounted';
 
 export interface ErrorFormat {

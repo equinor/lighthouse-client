@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { Document } from '../../STID/Types/Document';
+import { Document } from '../../../Types/STID/Document';
 import { TypedSelectOption } from '../searchType';
 
 export const searchDocuments = async (

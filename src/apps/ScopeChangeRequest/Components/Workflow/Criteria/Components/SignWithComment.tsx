@@ -8,8 +8,8 @@ import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDial
 import { Criteria } from '../../../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
-import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
-import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
+import { ServerError } from '../../../../Types/ScopeChange/ServerError';
+import { MutationKeys } from '../../../../Enums/mutationKeys';
 
 interface SignWithCommentProps {
     criteria: Criteria;
