@@ -8,6 +8,7 @@ import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 import { OriginLink } from './Components/DetailView/Components/OriginLink';
 import { Icon } from '@equinor/eds-core-react';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
+import { ScopeChangeItemView } from './Garden/ScopeChangeGardenItem';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -29,47 +30,41 @@ export function setup(appApi: ClientApi): void {
         return JSON.parse(await response.text());
     });
 
-    const scopeChangeExcludeKeys: (keyof ScopeChangeRequest)[] = [
+    const scopeChangeExcludeFilterKeys: (keyof ScopeChangeRequest)[] = [
         'id',
         'currentWorkflowStep',
         'workflowSteps',
+        'isVoided',
+        'state',
+        'originSource',
+        'originSourceId',
     ];
 
     request.registerFilterOptions({
-        excludeKeys: scopeChangeExcludeKeys,
+        excludeKeys: scopeChangeExcludeFilterKeys,
         typeMap: {},
-        initialFilters: ['state', 'phase', 'category', 'originSource', 'isVoided'],
+        initialFilters: ['State', 'phase', 'category', 'Origin', 'Step', 'NextToSign'],
         groupValue: {
-            signedAtDate: (item: ScopeChangeRequest): string => {
-                if (item.createdAtUtc === '') return 'unknown';
-                switch (new Date(item.createdAtUtc).getMonth()) {
-                    case 0:
-                        return 'January';
-                    case 1:
-                        return 'February';
-                    case 2:
-                        return 'March';
-                    case 3:
-                        return 'April';
-                    case 4:
-                        return 'May';
-                    case 5:
-                        return 'June';
-                    case 6:
-                        return 'July';
-                    case 7:
-                        return 'August';
-                    case 8:
-                        return 'September';
-                    case 9:
-                        return 'October';
-                    case 10:
-                        return 'November';
-                    case 11:
-                        return 'December';
-                    default:
-                        return 'Unknown';
+            NextToSign: (item: ScopeChangeRequest): string => {
+                if (item.state !== 'Open') {
+                    return 'Closed';
                 }
+                return (
+                    item.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
+                        ?.valueDescription ?? 'null'
+                );
+            },
+            State: (item: ScopeChangeRequest): string => {
+                if (item.isVoided) {
+                    return 'Voided';
+                }
+                return item.state;
+            },
+            Origin: (item: ScopeChangeRequest) => {
+                return item.originSource;
+            },
+            Step: (item: ScopeChangeRequest) => {
+                return item?.currentWorkflowStep?.name ?? '(Blank)';
             },
         },
     });
@@ -77,15 +72,43 @@ export function setup(appApi: ClientApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'id',
         enableSelectRows: true,
+        customColumns: [
+            {
+                Header: 'Current step',
+                accessor: 'currentWorkflowStep',
+                Cell: ({ cell }: any) => {
+                    return (
+                        <div>
+                            {cell.row.original.currentWorkflowStep ? (
+                                <div>{cell.row.original.currentWorkflowStep.name}</div>
+                            ) : (
+                                ''
+                            )}
+                        </div>
+                    );
+                },
+                id: 'CurrentStep',
+                width: 180,
+                Aggregated: () => null,
+                aggregate: 'count',
+            },
+        ],
         hiddenColumns: [
             'id',
-            // 'currentWorkflowStep',
             'description',
             'guesstimateDescription',
             'createdBy',
             'createdAtUtc',
             'modifiedBy',
             'originSourceId',
+            'tags',
+            'systems',
+            'commissioningPackages',
+            'areas',
+            'documents',
+            'attachments',
+            'isVoided',
+            'disciplines',
         ],
         columnOrder: [
             'sequenceNumber',
@@ -93,26 +116,31 @@ export function setup(appApi: ClientApi): void {
             'hasComments',
             'phase',
             'workflowSteps',
+            'CurrentStep',
+            'currentWorkflowStep',
+            'state',
             'guesstimateHours',
             'estimatedChangeHours',
             'actualChangeHours',
             'category',
             'originSource',
             'lastModified',
-            'documents',
-            'tags',
             'systems',
+            'areas',
             'commissioningPackages',
+            'tags',
+            'disciplines',
+            'documents',
             'attachments',
         ],
         headers: [
-            { key: 'sequenceNumber', title: 'Id' },
+            { key: 'sequenceNumber', title: 'Id', width: 60 },
             { key: 'title', title: 'Title' },
-            { key: 'phase', title: 'Phase' },
+            { key: 'phase', title: 'Phase', width: 60 },
             { key: 'workflowSteps', title: 'Workflow' },
-            { key: 'guesstimateHours', title: 'Guesstimate' },
-            { key: 'estimatedChangeHours', title: 'Estimate hours' },
-            { key: 'actualChangeHours', title: 'Actual' },
+            { key: 'guesstimateHours', title: 'Guesstimate', width: 60 },
+            { key: 'estimatedChangeHours', title: 'Estimate hours', width: 60 },
+            { key: 'actualChangeHours', title: 'Actual', width: 60 },
             { key: 'category', title: 'Change category' },
             { key: 'originSource', title: 'Change origin' },
             { key: 'createdAtUtc', title: 'Created at' },
@@ -120,14 +148,40 @@ export function setup(appApi: ClientApi): void {
             { key: 'modifiedAtUtc', title: 'Last updated' },
             { key: 'modifiedBy', title: 'Modified by' },
             { key: 'description', title: 'Description' },
-            { key: 'state', title: 'Status' },
+            { key: 'state', title: 'State', width: 80 },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
             { key: 'currentWorkflowStep', title: 'Next to sign' },
-            { key: 'documents', title: 'Documents', width: 120 },
-            { key: 'systems', title: 'Systems', width: 120 },
-            { key: 'commissioningPackages', title: 'Comm pkgs', width: 120 },
-            { key: 'tags', title: 'Tags', width: 120 },
-            { key: 'attachments', title: 'Attachments', width: 120 },
+            // {
+            //     key: 'commissioningPackages',
+            //     title: 'Comm Pkgs',
+            //     width: 120,
+            // },
+            // {
+            //     key: 'systems',
+            //     title: 'Systems',
+            //     width: 120,
+            // },
+            // {
+            //     key: 'attachments',
+            //     title: {
+            //         Custom: () => <Icon name="attach_file" />,
+            //     },
+            //     width: 80,
+            // },
+            // {
+            //     key: 'disciplines',
+            //     title: {
+            //         Custom: () => <Icon name="school" />,
+            //     },
+            //     width: 80,
+            // },
+            // {
+            //     key: 'areas',
+            //     title: {
+            //         Custom: () => <Icon name="pin_drop" />,
+            //     },
+            //     width: 80,
+            // },
             {
                 key: 'hasComments',
                 title: {
@@ -135,6 +189,20 @@ export function setup(appApi: ClientApi): void {
                 },
                 width: 80,
             },
+            // {
+            //     key: 'documents',
+            //     title: {
+            //         Custom: () => <Icon name="file_copy" />,
+            //     },
+            //     width: 80,
+            // },
+            // {
+            //     key: 'tags',
+            //     title: {
+            //         Custom: () => <Icon name="tag" />,
+            //     },
+            //     width: 80,
+            // },
         ],
         customCellView: [
             {
@@ -153,7 +221,15 @@ export function setup(appApi: ClientApi): void {
                 key: 'createdAtUtc',
                 type: 'Date',
             },
-
+            {
+                key: 'state',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        const request: ScopeChangeRequest = cell.value.content;
+                        return <div>{request.isVoided ? 'VOIDED' : request.state}</div>;
+                    },
+                },
+            },
             {
                 key: 'workflowSteps',
                 type: {
@@ -170,26 +246,34 @@ export function setup(appApi: ClientApi): void {
                     },
                 },
             },
-            {
-                key: 'tags',
-                type: 'Array',
-            },
-            {
-                key: 'systems',
-                type: 'Array',
-            },
-            {
-                key: 'attachments',
-                type: 'Array',
-            },
-            {
-                key: 'documents',
-                type: 'Array',
-            },
-            {
-                key: 'commissioningPackages',
-                type: 'Array',
-            },
+            // {
+            //     key: 'tags',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'systems',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'attachments',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'documents',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'areas',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'disciplines',
+            //     type: 'Array',
+            // },
+            // {
+            //     key: 'commissioningPackages',
+            //     type: 'Array',
+            // },
             {
                 key: 'hasComments',
                 type: {
@@ -219,22 +303,16 @@ export function setup(appApi: ClientApi): void {
                 },
             },
             {
-                key: 'isVoided',
-                type: {
-                    Cell: ({ cell }) => {
-                        return <div>{cell.value.content.isVoided.toString()}</div>;
-                    },
-                },
-            },
-            {
                 key: 'currentWorkflowStep',
                 type: {
-                    Cell: ({ cell }) => {
+                    Cell: ({ cell }: any) => {
                         return (
                             <div>
-                                {cell.value.content.currentWorkflowStep?.criterias.map((x) => {
-                                    return <div key={x.id}>{x.value}</div>;
-                                })}
+                                {cell.value.content.currentWorkflowStep?.criterias
+                                    .filter((x) => x.signedAtUtc === null)
+                                    .map((x) => {
+                                        return <div key={x.id}>{x.valueDescription}</div>;
+                                    })}
                             </div>
                         );
                     },
@@ -258,18 +336,16 @@ export function setup(appApi: ClientApi): void {
     };
     request.registerGardenOptions({
         gardenKey: 'originSource',
-        itemKey: 'title',
+        itemKey: 'sequenceNumber',
         fieldSettings: {},
+        customViews: {
+            customItemView: ScopeChangeItemView,
+        },
     });
 
     // request.registerAnalyticsOptions(analyticsOptions);
 
     request.registerStatusItems(statusBarData);
-
-    // const workflowId = '6752c4c4-214d-4aae-ff2d-08d9bb10809e';
-    // request.registerWorkflowEditorOptions({
-    //     endpoint: `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/workflows/${workflowId}/templates`,
-    // });
 }
 
 export const analyticsOptions: AnalyticsOptions<ScopeChangeRequest> = {

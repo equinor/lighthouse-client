@@ -8,13 +8,13 @@ interface StatusBarProps {
 export function StatusBar({ data }: StatusBarProps): JSX.Element {
     return (
         <StatusWrapper>
-            {data.map(({ title, value, description, status }, index) => (
+            {data.map(({ title, value, description, weeklyChange }, index) => (
                 <Item
                     key={title + index}
                     title={title}
                     value={value}
                     description={description}
-                    status={status}
+                    weeklyChange={weeklyChange}
                 />
             ))}
         </StatusWrapper>

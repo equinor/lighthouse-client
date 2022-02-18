@@ -15,6 +15,8 @@ export function TextArea<T>({ field, editMode }: TextAreaProps<T>): JSX.Element 
                     multiline
                     disabled={editMode ? !field?.editable : false}
                     value={field?.value}
+                    style={{ resize: 'vertical', minHeight: '5rem' }}
+                    draggable={false}
                     placeholder={field.placeholderText}
                     onChange={(e) => {
                         if (!e.target.value || e.target.value.length < 1) {

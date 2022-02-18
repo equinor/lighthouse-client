@@ -1,16 +1,14 @@
 import React from 'react';
 
 import { OptionRequestResult } from '../../../Api/ScopeChange/Access/optionsRequestChecker';
-import { StrippedCriteria } from '../../../Types/scopeChangeRequest';
+import { ServerError } from '../../../Types/ScopeChange/ServerError';
 import { ScopeChangeRequest } from '../../../Types/scopeChangeRequest';
 
-export interface ScopeChangeAccessContextState {
+export interface ScopeChangeContextState {
     request: ScopeChangeRequest;
     requestAccess: OptionRequestResult;
-    signableCriterias: StrippedCriteria[] | undefined;
-    contributionId: string | undefined;
-    canAddContributor: boolean;
-    notifyChange: () => Promise<void>;
+    setErrorMessage: (value: ServerError) => void;
+    isRefetching: boolean;
 }
 
-export const ScopeChangeAccessContext = React.createContext({} as ScopeChangeAccessContextState);
+export const ScopeChangeContext = React.createContext({} as ScopeChangeContextState);

@@ -6,7 +6,7 @@ import { YammerFeed } from './Sosial/yammer';
 import { Task } from './Task/Task';
 
 export const ClientHome = (): JSX.Element => {
-    const { user } = useSettings();
+    const { user, clientEnv } = useSettings();
     return (
         <Wrapper>
             <Header>
@@ -14,7 +14,9 @@ export const ClientHome = (): JSX.Element => {
             </Header>
             <Container>
                 <MainColumn>
-                    <PowerBIHome reportUri={'cd49f2ce-0cb7-4807-a8ef-29f239fe0457'} />
+                    {clientEnv !== 'prod' && (
+                        <PowerBIHome reportUri={'cd49f2ce-0cb7-4807-a8ef-29f239fe0457'} />
+                    )}
                     {/* <KpiBar>
                         <KpiGroup
                             title="Safety indicators"

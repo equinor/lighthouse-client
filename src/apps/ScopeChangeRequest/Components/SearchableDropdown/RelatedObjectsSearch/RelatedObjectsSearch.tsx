@@ -1,12 +1,15 @@
 import { Icon, SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { ProcoSysTypes, searchPcs } from '../../../Api/Search/PCS/searchPcs';
+import { ProcoSysTypes } from '../../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
-import { searchStid, StidTypes } from '../../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../../Types/STID/STIDTypes';
+import { useCancellationToken } from '../../../Hooks/useCancellationToken';
+import { AdvancedDocumentSearch } from '../../STID';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from '../applyEds';
+import { SearchableDropdownWrapper } from '../SearchableDropdownWrapper';
 import {
     Column,
     ErrorWrapper,
@@ -16,7 +19,10 @@ import {
     Wrapper,
     ListItem,
     Spacer,
+    Title,
+    TitleBar,
 } from './RelatedObjectsStyles';
+import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
 
 interface RelatedObjectsSearchProps {
     relatedObjects: TypedSelectOption[];
@@ -28,8 +34,21 @@ export const RelatedObjectsSearch = ({
     setRelatedObjects,
 }: RelatedObjectsSearchProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
-    const controller = useRef(new AbortController());
-    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>();
+    const { abort, getSignal } = useCancellationToken();
+    const { search: searchReferences } = useReferencesSearch();
+
+    const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
+        'document',
+        'discipline',
+        'area',
+        'commpkg',
+        'tag',
+        'system',
+    ];
+
+    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>(
+        referenceTypes[0]
+    );
 
     const addRelatedObject = (value: TypedSelectOption) =>
         setRelatedObjects((prev) => [...prev, value]);
@@ -55,59 +74,13 @@ export const RelatedObjectsSearch = ({
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
     ) => {
-        controller.current.abort();
-        controller.current = new AbortController();
+        abort();
 
-        const search = (type: ProcoSysTypes) =>
-            searchPcs(inputValue, type, controller.current.signal);
+        if (!referenceType) return;
 
-        switch (referenceType) {
-            case 'system': {
-                const results = await search('system');
-                callback(results);
-                return;
-            }
-
-            case 'area': {
-                const results = await search('area');
-                callback(results);
-                return;
-            }
-
-            case 'commpkg': {
-                const results = await search('commpkg');
-                callback(results);
-                return;
-            }
-
-            case 'tag': {
-                const results = await search('tag');
-                callback(results);
-                return;
-            }
-
-            case 'discipline': {
-                const results = await search('discipline');
-                callback(results);
-                return;
-            }
-
-            case 'document': {
-                const results = await searchStid(inputValue, 'document', controller.current.signal);
-                callback(results);
-                return;
-            }
-        }
+        const results = await searchReferences(inputValue, referenceType, getSignal());
+        callback(results);
     };
-
-    const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
-        'document',
-        'discipline',
-        'area',
-        'commpkg',
-        'tag',
-        'system',
-    ];
 
     return (
         <Wrapper>
@@ -117,6 +90,15 @@ export const RelatedObjectsSearch = ({
                     apiErrors.map((name) => {
                         return <ErrorWrapper key={name}>Failed to fetch {name}</ErrorWrapper>;
                     })}
+                <TitleBar>
+                    <Title>References</Title>
+
+                    <AdvancedDocumentSearch
+                        documents={relatedObjects}
+                        appendItem={addRelatedObject}
+                        removeItem={removeRelatedObject}
+                    />
+                </TitleBar>
                 <Inline>
                     <div
                         style={{
@@ -125,6 +107,7 @@ export const RelatedObjectsSearch = ({
                             display: 'flex',
                             flexDirection: 'row',
                             alignItems: 'flex-end',
+                            margin: '0.2em 0em',
                         }}
                     >
                         <SelectContainer>
@@ -132,6 +115,7 @@ export const RelatedObjectsSearch = ({
                                 meta="(Required)"
                                 label="Reference type"
                                 items={referenceTypes}
+                                value={referenceType}
                                 handleSelectedItemChange={(change) => {
                                     if (!change.selectedItem) {
                                         setReferenceType(undefined);
@@ -145,30 +129,33 @@ export const RelatedObjectsSearch = ({
                         </SelectContainer>
                         <div style={{ flexBasis: '2%' }} />
                         <SearchContainer>
-                            <AsyncSelect
-                                isDisabled={!referenceType}
-                                cacheOptions={false}
-                                loadOptions={loadOptions}
-                                defaultOptions={false}
-                                components={applyEdsComponents()}
-                                isMulti={true}
-                                placeholder={`Type to search..`}
-                                isClearable={false}
-                                value={relatedObjects}
-                                onInputChange={() => {
-                                    setApiErrors([]);
-                                }}
-                                styles={applyEdsStyles()}
-                                controlShouldRenderValue={false}
-                                onChange={(
-                                    newValue: MultiValue<TypedSelectOption>,
-                                    actionMeta: ActionMeta<TypedSelectOption>
-                                ) => {
-                                    if (!actionMeta.option) return;
-                                    addRelatedObject(actionMeta.option);
-                                }}
-                                theme={(theme: Theme) => applyEDSTheme(theme)}
-                            />
+                            <SearchableDropdownWrapper>
+                                <AsyncSelect
+                                    isDisabled={!referenceType}
+                                    cacheOptions={false}
+                                    loadOptions={loadOptions}
+                                    defaultOptions={false}
+                                    components={applyEdsComponents()}
+                                    isMulti={true}
+                                    placeholder={`Type to search..`}
+                                    isClearable={false}
+                                    value={relatedObjects}
+                                    onInputChange={() => {
+                                        setApiErrors([]);
+                                    }}
+                                    styles={applyEdsStyles()}
+                                    controlShouldRenderValue={false}
+                                    onChange={(
+                                        newValue: MultiValue<TypedSelectOption>,
+                                        actionMeta: ActionMeta<TypedSelectOption>
+                                    ) => {
+                                        if (!actionMeta.option) return;
+                                        addRelatedObject(actionMeta.option);
+                                    }}
+                                    theme={(theme: Theme) => applyEDSTheme(theme)}
+                                />
+                            </SearchableDropdownWrapper>
+                            <div style={{ height: '0.11em' }} />
                         </SearchContainer>
                     </div>
                 </Inline>

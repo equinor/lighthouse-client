@@ -1,1 +1,2 @@
-export * from './Components/StidSelector';
+export * from './Components/AdvancedDocumentSearch';
+export * from './Components/StidDocument';

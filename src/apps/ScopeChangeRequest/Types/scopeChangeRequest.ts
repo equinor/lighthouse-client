@@ -12,11 +12,6 @@ export type StrippedCriteria = Pick<Criteria, 'id' | 'value' | 'signedState'>;
 
 export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCN';
 
-export interface Origin {
-    type: OriginType;
-    id?: string;
-}
-
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
 export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
@@ -30,7 +25,7 @@ export interface ScopeChangeBaseModel {
     originSourceId?: string;
     originSource: OriginType;
     actualChangeHours: number;
-    guesstimateHours: string;
+    guesstimateHours: number;
     guesstimateDescription: string;
 }
 
@@ -72,9 +67,23 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     systems: System[];
     attachments: Attachment[];
     documents: Document[];
+    disciplines: Discipline[];
+    areas: Area[];
     hasComments: boolean;
     sequenceNumber: number;
     //workflow
+}
+
+export interface Discipline {
+    id: string;
+    procosysCode: string;
+    procosysId: number;
+}
+
+export interface Area {
+    id: string;
+    procosysCode: string;
+    procosysId: number;
 }
 
 export interface Document {
@@ -137,6 +146,7 @@ export interface Criteria {
     signedBy: Person;
     signedComment: string | null;
     signedState: 'Approved' | 'Rejected' | null;
+    valueDescription: string | null;
 }
 
 export interface Contributor {

@@ -1,6 +1,6 @@
 import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
-import { Person } from './Types/person';
+import { Person } from '../../../Types/ProCoSys/person';
 
 export const searchPerson = async (
     searchString: string,

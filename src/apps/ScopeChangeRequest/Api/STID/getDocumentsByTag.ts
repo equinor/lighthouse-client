@@ -1,5 +1,5 @@
 import { HttpClient } from '@equinor/http-client';
-import { Document } from './Types/Document';
+import { Document } from '../../Types/STID/Document';
 
 /**
  * Returns all stid documents related to a given tag
