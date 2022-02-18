@@ -444,15 +444,7 @@ export const apps: AppManifest[] = [
         tags: [],
     },
     {
-        title: 'Scope change control',
-        shortName: 'sca',
-        color: '#0364B8',
-        groupe: Apps.ProjectControl,
-        icon: '',
-        tags: [],
-    },
-    {
-        title: 'Change request',
+        title: 'Scope change request',
         shortName: 'change',
         color: '#0364B8',
         groupe: Apps.ProjectControl,

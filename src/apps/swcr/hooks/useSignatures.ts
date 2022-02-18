@@ -13,32 +13,29 @@ const useSignatures = (swcrId: string): UseSignatures => {
 
     const { customHttpClient } = useHttpClient('5a842df8-3238-415d-b168-9f16a6a6031b/.default');
 
-    const getSignatures = useCallback(
-        async (swcrId: string) => {
-            setSignaturesFetching(true);
-            try {
-                const result = await customHttpClient.fetch(
-                    `https://pro-s-dataproxy-ci.azurewebsites.net/api/contexts/71db33bb-cb1b-42cf-b5bf-969c77e40931/swcr/${swcrId}/signatures`
-                );
+    const getSignatures = useCallback(async (swcrId: string) => {
+        setSignaturesFetching(true);
+        try {
+            const result = await customHttpClient.fetch(
+                `https://pro-s-dataproxy-ci.azurewebsites.net/api/contexts/71db33bb-cb1b-42cf-b5bf-969c77e40931/swcr/${swcrId}/signatures`
+            );
 
-                const parsedSignatures = JSON.parse(await result.text()) as SwcrSignature[];
+            const parsedSignatures = JSON.parse(await result.text()) as SwcrSignature[];
 
-                setSignatures(
-                    parsedSignatures.sort((a, b) =>
-                        a.ranking.localeCompare(b.ranking, undefined, {
-                            numeric: true,
-                            sensitivity: 'base',
-                        })
-                    ) || []
-                );
-            } catch {
-                setSignatures([]);
-            } finally {
-                setSignaturesFetching(false);
-            }
-        },
-        [customHttpClient]
-    );
+            setSignatures(
+                parsedSignatures.sort((a, b) =>
+                    a.ranking.localeCompare(b.ranking, undefined, {
+                        numeric: true,
+                        sensitivity: 'base',
+                    })
+                ) || []
+            );
+        } catch {
+            setSignatures([]);
+        } finally {
+            setSignaturesFetching(false);
+        }
+    }, []);
 
     useEffect(() => {
         getSignatures(swcrId);
