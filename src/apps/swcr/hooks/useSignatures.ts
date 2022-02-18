@@ -11,34 +11,31 @@ const useSignatures = (swcrId: string): UseSignatures => {
     const [signatures, setSignatures] = useState<SwcrSignature[]>([]);
     const [signaturesFetching, setSignaturesFetching] = useState<boolean>(false);
 
-    const apiClient = useHttpClient().fusion;
+    const { customHttpClient } = useHttpClient('5a842df8-3238-415d-b168-9f16a6a6031b/.default');
 
-    const getSignatures = useCallback(
-        async (swcrId: string) => {
-            setSignaturesFetching(true);
-            try {
-                const result = await apiClient.fetch(
-                    `https://pro-s-dataproxy-fprd.azurewebsites.net/api/contexts/3380fe7d-e5b7-441f-8ce9-a8c3133ee499/swcr/${swcrId}/signatures`
-                );
+    const getSignatures = useCallback(async (swcrId: string) => {
+        setSignaturesFetching(true);
+        try {
+            const result = await customHttpClient.fetch(
+                `https://pro-s-dataproxy-ci.azurewebsites.net/api/contexts/71db33bb-cb1b-42cf-b5bf-969c77e40931/swcr/${swcrId}/signatures`
+            );
 
-                const parsedSignatures = JSON.parse(await result.text()) as SwcrSignature[];
+            const parsedSignatures = JSON.parse(await result.text()) as SwcrSignature[];
 
-                setSignatures(
-                    parsedSignatures.sort((a, b) =>
-                        a.ranking.localeCompare(b.ranking, undefined, {
-                            numeric: true,
-                            sensitivity: 'base',
-                        })
-                    ) || []
-                );
-            } catch {
-                setSignatures([]);
-            } finally {
-                setSignaturesFetching(false);
-            }
-        },
-        [apiClient]
-    );
+            setSignatures(
+                parsedSignatures.sort((a, b) =>
+                    a.ranking.localeCompare(b.ranking, undefined, {
+                        numeric: true,
+                        sensitivity: 'base',
+                    })
+                ) || []
+            );
+        } catch {
+            setSignatures([]);
+        } finally {
+            setSignaturesFetching(false);
+        }
+    }, []);
 
     useEffect(() => {
         getSignatures(swcrId);
