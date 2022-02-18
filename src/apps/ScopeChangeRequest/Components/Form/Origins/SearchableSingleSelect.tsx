@@ -31,6 +31,7 @@ interface PCSLinkProps {
     ) => void;
     onInputChange?: (newValue: string, actionMeta: InputActionMeta) => void;
     placeholder?: string;
+    isDisabled?: boolean;
 }
 
 export const SearchableSingleSelect = ({
@@ -38,6 +39,7 @@ export const SearchableSingleSelect = ({
     defaultValue,
     onChange,
     onInputChange,
+    isDisabled,
 }: PCSLinkProps): JSX.Element => {
     const { abort, getSignal } = useCancellationToken();
 
@@ -56,11 +58,12 @@ export const SearchableSingleSelect = ({
             <AsyncSelect<TypedSelectOption>
                 cacheOptions={false}
                 defaultValue={defaultValue}
+                isDisabled={isDisabled}
                 loadOptions={search}
                 defaultOptions={false}
                 styles={applyEdsStyles()}
                 components={applyEdsComponents()}
-                placeholder={`16121`}
+                placeholder={`Type to search..`}
                 noOptionsMessage={(obj: { inputValue: string }) => {
                     if (!obj.inputValue || obj.inputValue.length === 0) {
                         return <></>;

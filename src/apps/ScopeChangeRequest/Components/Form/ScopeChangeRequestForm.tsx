@@ -14,7 +14,7 @@ import {
     postScopeChange,
     uploadAttachment,
 } from '../../Api/ScopeChange/Request';
-import { ProcoSysTypes } from '../../Api/Search/PCS/searchPcs';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
@@ -23,10 +23,10 @@ import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 import { Upload } from '../Attachments/Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { Origin } from './Origin';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../Types/STID/STIDTypes';
 import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
 import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
-import { usePreloadCaching } from '../../Hooks/usePreloadCaching';
+import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;

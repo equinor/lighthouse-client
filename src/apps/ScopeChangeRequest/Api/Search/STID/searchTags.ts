@@ -17,7 +17,7 @@ export const searchTags = async (
         .then((data) => {
             data.map((x: Tag) => {
                 selectOptions.push({
-                    label: `TAG_${x.tagNo}`,
+                    label: `${x.tagNo}`,
                     value: x.tagNo,
                     type: 'stidtag',
                     searchValue: x.tagNo,

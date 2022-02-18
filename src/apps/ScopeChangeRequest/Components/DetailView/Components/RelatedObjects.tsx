@@ -33,10 +33,6 @@ export const RelatedObjects = ({
     disciplines = [],
     areas = [],
 }: RelatedObjectsProps): JSX.Element => {
-    // const resolvedCommissioningPackages = useCommissioningPackageResolver(
-    //     commPkgs?.map((x) => x.procosysNumber)
-    // );
-
     return (
         <Wrapper>
             {tags && tags.length > 0 && (
