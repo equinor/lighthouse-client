@@ -17,11 +17,11 @@ import { SignWithComment } from './SignWithComment';
 import { PCSPersonRoleSearch } from '../../../SearchableDropdown/PCSPersonRoleSearch';
 import { TypedSelectOption } from '../../../../Api/Search/searchType';
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
-import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
-import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
+import { MutationKeys } from '../../../../Enums/mutationKeys';
 import { useQueryClient } from 'react-query';
-import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../../../Enums/queryKeys';
 
 interface OnSignStepAction {
     action: 'Approved' | 'Rejected';
@@ -209,7 +209,9 @@ export const WorkflowCriteria = ({
         <>
             <WorkflowStepViewContainer key={criteria.id}>
                 {ReassignBarIsShowing ? (
-                    <ReassignBar />
+                    <ReassignPadding>
+                        <ReassignBar />
+                    </ReassignPadding>
                 ) : (
                     <CriteriaDetail criteria={criteria} step={step} />
                 )}
@@ -235,6 +237,11 @@ export const WorkflowCriteria = ({
         </>
     );
 };
+
+const ReassignPadding = styled.div`
+    padding: 0em 0.5em;
+    width: 100%;
+`;
 
 const WorkflowStepViewContainer = styled.div`
     display: flex;

@@ -15,10 +15,10 @@ import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChange
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
-import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useApiActionObserver } from '../../../../Hooks/React-Query/useApiActionObserver';
-import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
-import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
+import { QueryKeys } from '../../../../Enums/queryKeys';
+import { MutationKeys } from '../../../../Enums/mutationKeys';
 
 interface ContributorsProps {
     step: WorkflowStep;

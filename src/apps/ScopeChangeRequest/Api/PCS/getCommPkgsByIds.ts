@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
-import { CommissioningPackage } from './Types/CommissioningPackage';
+import { CommissioningPackage } from '../../Types/ProCoSys/CommissioningPackage';
 
 export async function getCommPkgsByIds(commPkgNumbers: string[]): Promise<CommissioningPackage[]> {
     const { procosys } = httpClient();

@@ -1,6 +1,6 @@
 import { useQuery, UseQueryOptions } from 'react-query';
 import { canReassign, canUnsign, canSign } from '../Api/ScopeChange/Access';
-import { ServerError } from '../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../Types/ScopeChange/ServerError';
 
 interface CriteriaOptions {
     canSign: boolean | undefined;

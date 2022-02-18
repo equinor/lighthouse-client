@@ -5,7 +5,7 @@ import { useQuery } from 'react-query';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
-import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../../../Enums/queryKeys';
 
 interface WorkflowStepProps {
     step: WorkflowStep;
