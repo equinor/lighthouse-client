@@ -1,19 +1,23 @@
 import { FC } from 'react';
-import { HandoverMcpkg } from '../../../models/HandoverResources';
+import { HandoverMcpkg } from '../../../models/handoverResources';
 import { Column, Table } from '@equinor/Table';
-import { McStatusCell } from '../handoverSidesheetStatuses/McStatusCell';
-import { RfocStatusCell } from '../handoverSidesheetStatuses/RfocStatusCell';
-import { RfccStatusCell } from '../handoverSidesheetStatuses/RfccStatusCell';
-import { comparePackage, getRFCCStatus, getRFOCStatus } from '../handoverSidesheetStatuses/utility';
-import { CellWithLink } from '../handoverSidesheetStatuses/CellWithLink';
-import { NoResourceData } from '../handoverSidesheetStatuses/NoResourceData';
+import {
+    CellWithLink,
+    comparePackage,
+    getRFCCStatus,
+    getRFOCStatus,
+    McStatusCell,
+    NoResourceData,
+    RfccStatusCell,
+    RfocStatusCell,
+} from '../HandoverSidesheetStatuses';
 
-export type McPackagesTabProps = {
+type McPackagesTabProps = {
     packages: HandoverMcpkg[];
     isFetching: boolean;
 };
 
-const McPackagesTab: FC<McPackagesTabProps> = ({ packages, isFetching }) => {
+export const McPackagesTab: FC<McPackagesTabProps> = ({ packages, isFetching }) => {
     if (isFetching) return <NoResourceData>Fetching MC Packages</NoResourceData>;
 
     if (!packages.length) return <NoResourceData>No MC Packages</NoResourceData>;
@@ -55,5 +59,3 @@ const McPackagesTab: FC<McPackagesTabProps> = ({ packages, isFetching }) => {
 
     return <Table options={{ columns: columns, data: packages }}></Table>;
 };
-
-export default McPackagesTab;

@@ -1,9 +1,9 @@
 import { CellProps } from 'react-table';
 import styled from 'styled-components';
-import { HandoverWorkOrder } from '../../../models/HandoverResources';
 import { followUpColorMapRecord } from '../../../utility/handoverItemMapping';
 import tinycolor from 'tinycolor2';
 import { createGradient, createGradientBackground, getHandoverWorkOrderStatus } from './utility';
+import { HandoverWorkOrder } from '../../../models';
 
 type StyleProps = {
     display: string;

@@ -1,4 +1,4 @@
-import { HandoverPackage, HandoverPackageStatus } from '../models/HandoverPackage';
+import { HandoverPackage, HandoverPackageStatus } from '../models/handoverPackage';
 import { tokens } from '@equinor/eds-tokens';
 
 export type FollowUpStatuses =

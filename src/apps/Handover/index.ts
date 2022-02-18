@@ -1,17 +1,8 @@
 import { ClientApi } from '@equinor/app-builder';
-import { HandoverPackage } from './Garden/models/HandoverPackage';
-import { baseClient } from '../../../packages/httpClient/src';
-import { fieldSettings } from './Garden/utility/gardenSetup';
-import { HandoverGroupByView } from './Garden/CustomViews/HandoverGroupByView';
-import { HandoverGardenItem } from './Garden/CustomViews/HandoverGardenItem';
-import { HandoverSideSheet } from './Garden/CustomViews/HandoverSideSheet';
-import { sortPackagesByStatus } from './Garden/utility/sortFunctions';
-import { getMaxVolumeFromData } from './Garden/utility/getKeyFunctions';
-
-export type HandoverCustomGroupByKeys = {
-    weeklyDaily: 'Weekly' | 'Daily';
-    plannedForecast: 'Planned' | 'Forecast';
-};
+import { baseClient } from '@equinor/http-client';
+import { HandoverGardenItem, HandoverGroupByView, HandoverSideSheet } from './Garden/CustomViews';
+import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
+import { fieldSettings, getMaxVolumeFromData, sortPackagesByStatus } from './Garden/utility';
 
 export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.fusion]);

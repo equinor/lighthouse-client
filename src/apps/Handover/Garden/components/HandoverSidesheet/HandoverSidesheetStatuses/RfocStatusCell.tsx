@@ -1,18 +1,18 @@
 import { CellProps } from 'react-table';
 import tinycolor from 'tinycolor2';
-import { HandoverPackageStatus } from '../../../models/HandoverPackage';
-import { HandoverMcpkg } from '../../../models/HandoverResources';
 import { colorMap } from '../../../utility/handoverItemMapping';
+import { HandoverPackageStatus, HandoverMcpkg } from '../../../models';
 import { Pill, PillProps } from './PillStyle';
 import { createGradient, createGradientBackground } from './utility';
 
-export const RfccStatusCell = (
-    props: CellProps<HandoverMcpkg, { rfccStatus: HandoverPackageStatus }>
+export const RfocStatusCell = (
+    props: CellProps<HandoverMcpkg, { rfocStatus: HandoverPackageStatus }>
 ): JSX.Element => {
     const {
-        value: { rfccStatus },
+        value: { rfocStatus },
     } = props;
-    const background = createGradient(colorMap[rfccStatus]);
+
+    const background = createGradient(colorMap[rfocStatus]);
 
     const styling: PillProps = {
         backgroundImage: createGradientBackground(background),
@@ -23,6 +23,5 @@ export const RfccStatusCell = (
             })
             .toHexString(),
     };
-
-    return <Pill {...styling}>{rfccStatus.replace('RFCC ', '')}</Pill>;
+    return <Pill {...styling}>{rfocStatus.replace('RFOC ', '')}</Pill>;
 };

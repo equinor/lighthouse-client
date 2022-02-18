@@ -1,15 +1,13 @@
-import { HandoverWorkOrder } from '../../../models/HandoverResources';
-import { NoResourceData } from '../handoverSidesheetStatuses/NoResourceData';
 import { Column, Table } from '@equinor/Table';
-import { CellWithLink } from '../handoverSidesheetStatuses/CellWithLink';
-import { WorkOrderStatusCell } from '../handoverSidesheetStatuses/WorkerOrderStatusCell';
+import { HandoverWorkOrder } from '../../../models';
+import { CellWithLink, NoResourceData, WorkOrderStatusCell } from '../HandoverSidesheetStatuses';
 
-export type TabProps = {
+type TabProps = {
     packages: HandoverWorkOrder[];
     isFetching: boolean;
 };
 
-const WorkOrderTab = ({ packages, isFetching }: TabProps): JSX.Element => {
+export const WorkOrderTab = ({ packages, isFetching }: TabProps): JSX.Element => {
     if (isFetching) return <NoResourceData>Fetching MC Packages</NoResourceData>;
 
     if (!packages.length) return <NoResourceData>No MC Packages</NoResourceData>;
@@ -41,5 +39,3 @@ const WorkOrderTab = ({ packages, isFetching }: TabProps): JSX.Element => {
 
     return <Table options={{ columns: columns, data: packages }}></Table>;
 };
-
-export default WorkOrderTab;

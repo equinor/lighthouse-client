@@ -1,6 +1,6 @@
+import { useApiClient } from '@equinor/portal-client';
 import { useCallback, useEffect, useState, useMemo } from 'react';
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { HandoverResourceTypeMap } from '../models/HandoverResources';
+import { HandoverResourceTypeMap } from '../models/handoverResources';
 
 type UseHandoverResource<T extends keyof HandoverResourceTypeMap> = {
     data: HandoverResourceTypeMap[T][];

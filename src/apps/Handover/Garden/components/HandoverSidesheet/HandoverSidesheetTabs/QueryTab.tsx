@@ -1,14 +1,13 @@
-import { HandoverQuery } from '../../../models/HandoverResources';
-import { NoResourceData } from '../handoverSidesheetStatuses/NoResourceData';
 import { Column, Table } from '@equinor/Table';
-import { CellWithLink } from '../handoverSidesheetStatuses/CellWithLink';
+import { HandoverQuery } from '../../../models';
+import { CellWithLink, NoResourceData } from '../HandoverSidesheetStatuses';
 
-export type TabProps = {
+type TabProps = {
     packages: HandoverQuery[];
     isFetching: boolean;
 };
 
-const QueryTab = ({ packages, isFetching }: TabProps): JSX.Element => {
+export const QueryTab = ({ packages, isFetching }: TabProps): JSX.Element => {
     if (isFetching) return <NoResourceData>Fetching Query Packages</NoResourceData>;
 
     if (!packages.length) return <NoResourceData>No Query Packages</NoResourceData>;
@@ -38,5 +37,3 @@ const QueryTab = ({ packages, isFetching }: TabProps): JSX.Element => {
 
     return <Table options={{ columns: columns, data: packages }}></Table>;
 };
-
-export default QueryTab;

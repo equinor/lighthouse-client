@@ -1,6 +1,5 @@
-import { HandoverPackage } from '../../models/HandoverPackage';
+import { HandoverPackage } from '../../models/handoverPackage';
 import { FC, memo } from 'react';
-
 import { Popover } from '@equinor/eds-core-react';
 import { Status } from '../../utility/handoverItemMapping';
 import {
@@ -13,9 +12,7 @@ import {
     WarningContainer,
     WarningText,
 } from './styles';
-import { WarningIcon } from '../WarningIcon';
-import { SizeIcons } from '../SizeIcons';
-import { FlagIcon } from '../FlagIcon';
+import { FlagIcon, SizeIcons, WarningIcon } from '../Icons';
 
 type ItemSize = 'small' | 'medium' | 'large';
 

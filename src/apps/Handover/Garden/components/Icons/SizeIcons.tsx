@@ -1,4 +1,4 @@
-import { getTextColor, Status } from '../utility/handoverItemMapping';
+import { getTextColor, Status } from '../../utility/handoverItemMapping';
 
 type SizeIconsProps = {
     size: string;

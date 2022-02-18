@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { HandoverPackage } from '../../../models/HandoverPackage';
-import { HandoverDetails } from '../../../models/HandoverResources';
+import { HandoverDetails, HandoverPackage } from '../../../models';
 
 const StringCell = ({ value }: { value: string }) => <>{value.trim() ? value.trim() : 'N/A'}</>;
 
@@ -51,7 +50,11 @@ type DetailsTabProps = {
     dataIsFetching: boolean;
 };
 
-const DetailsTab = ({ commpkg, nextToSign, dataIsFetching }: DetailsTabProps): JSX.Element => {
+export const DetailsTab = ({
+    commpkg,
+    nextToSign,
+    dataIsFetching,
+}: DetailsTabProps): JSX.Element => {
     const NextToSign = useMemo(() => {
         if (dataIsFetching) return <>Loading...</>;
 
@@ -205,5 +208,3 @@ const DetailsTab = ({ commpkg, nextToSign, dataIsFetching }: DetailsTabProps): J
         </TabContent>
     );
 };
-
-export default DetailsTab;

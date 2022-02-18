@@ -1,4 +1,4 @@
-import { HandoverPackage } from '../models/HandoverPackage';
+import { HandoverPackage } from '../models/handoverPackage';
 import { colorMap, getStatus, Status } from './handoverItemMapping';
 
 export type McProgress = {

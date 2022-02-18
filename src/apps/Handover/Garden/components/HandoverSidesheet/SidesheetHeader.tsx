@@ -1,7 +1,7 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { HandoverPackage } from '../../models/HandoverPackage';
+import { HandoverPackage } from '../../models/handoverPackage';
 
 type SidesheetHeaderProps = {
     handoverPackage: HandoverPackage;

@@ -1,14 +1,13 @@
-import { HandoverUnsignedAction } from '../../../models/HandoverResources';
-import { NoResourceData } from '../handoverSidesheetStatuses/NoResourceData';
 import { Column, Table } from '@equinor/Table';
-import { CellWithLink } from '../handoverSidesheetStatuses/CellWithLink';
+import { HandoverUnsignedAction } from '../../../models';
+import { CellWithLink, NoResourceData } from '../HandoverSidesheetStatuses';
 
-export type TabProps = {
+type TabProps = {
     packages: HandoverUnsignedAction[];
     isFetching: boolean;
 };
 
-const UnsignedActionTab = ({ packages, isFetching }: TabProps): JSX.Element => {
+export const UnsignedActionTab = ({ packages, isFetching }: TabProps): JSX.Element => {
     if (isFetching) return <NoResourceData>Fetching MC Packages</NoResourceData>;
 
     if (!packages.length) return <NoResourceData>No MC Packages</NoResourceData>;
@@ -29,5 +28,3 @@ const UnsignedActionTab = ({ packages, isFetching }: TabProps): JSX.Element => {
 
     return <Table options={{ columns: columns, data: packages }}></Table>;
 };
-
-export default UnsignedActionTab;

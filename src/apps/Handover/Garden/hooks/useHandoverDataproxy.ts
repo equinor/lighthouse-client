@@ -20,7 +20,9 @@ type UseHandoverData<T> = {
     dataFetching: boolean;
 };
 
-const useHandoverData = <T extends unknown>(getPackages?: GetPackages): UseHandoverData<T> => {
+export const useHandoverData = <T extends unknown>(
+    getPackages?: GetPackages
+): UseHandoverData<T> => {
     const [data, setData] = useState<T[]>([]);
     const [dataFetching, setDataFetching] = useState<boolean>(false);
 
@@ -57,5 +59,3 @@ const useHandoverData = <T extends unknown>(getPackages?: GetPackages): UseHando
         dataFetching: dataFetching,
     };
 };
-
-export default useHandoverData;

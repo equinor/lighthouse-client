@@ -1,14 +1,13 @@
-import { HandoverNCR } from '../../../models/HandoverResources';
-import { CellWithLink } from '../handoverSidesheetStatuses/CellWithLink';
-import { NoResourceData } from '../handoverSidesheetStatuses/NoResourceData';
 import { Column, Table } from '@equinor/Table';
+import { HandoverNCR } from '../../../models';
+import { CellWithLink, NoResourceData } from '../HandoverSidesheetStatuses';
 
-export type TabProps = {
+type TabProps = {
     packages: HandoverNCR[];
     isFetching: boolean;
 };
 
-const NcrTab = ({ packages, isFetching }: TabProps): JSX.Element => {
+export const NcrTab = ({ packages, isFetching }: TabProps): JSX.Element => {
     if (isFetching) return <NoResourceData>Fetching NCr Packages</NoResourceData>;
 
     if (!packages.length) return <NoResourceData>No NCr Packages</NoResourceData>;
@@ -28,5 +27,3 @@ const NcrTab = ({ packages, isFetching }: TabProps): JSX.Element => {
     ];
     return <Table options={{ columns: columns, data: packages }}></Table>;
 };
-
-export default NcrTab;

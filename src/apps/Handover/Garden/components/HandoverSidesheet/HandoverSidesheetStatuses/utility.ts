@@ -1,11 +1,11 @@
 import { SortByFn } from 'react-table';
 import tinycolor from 'tinycolor2';
-import { HandoverPackageStatus } from '../../../models/HandoverPackage';
 import {
     HandoverMcpkg,
     HandoverResourceTypes,
     HandoverWorkOrder,
-} from '../../../models/HandoverResources';
+    HandoverPackageStatus,
+} from '../../../models';
 import { colorMap, FollowUpStatuses } from '../../../utility/handoverItemMapping';
 
 export const createGradient = (color: string, isDemolition?: boolean): string[] => {

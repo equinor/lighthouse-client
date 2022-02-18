@@ -1,20 +1,20 @@
 import styled from 'styled-components';
 import { Tabs } from '@equinor/eds-core-react';
-
-import { HandoverPackage } from '../models/HandoverPackage';
+import { HandoverPackage } from '../models/handoverPackage';
 import useHandoverResource from '../hooks/useHandoverResource';
 import { useState } from 'react';
-
-import { SidesheetHeader } from '../components/handoverSidesheet/SidesheetHeader';
-import DetailsTab from '../components/handoverSidesheet/handoverSidesheetTabs/DetailsTab';
-import McPackagesTab from '../components/handoverSidesheet/handoverSidesheetTabs/McPackagesTab';
-import NcrTab from '../components/handoverSidesheet/handoverSidesheetTabs/NcrTab';
-import PunchTab from '../components/handoverSidesheet/handoverSidesheetTabs/PunchTab';
-import QueryTab from '../components/handoverSidesheet/handoverSidesheetTabs/QueryTab';
-import SwcrTab from '../components/handoverSidesheet/handoverSidesheetTabs/SwcrTab';
-import UnsignedActionTab from '../components/handoverSidesheet/handoverSidesheetTabs/UnsignedActionTab';
-import UnsignedTaskTab from '../components/handoverSidesheet/handoverSidesheetTabs/UnsignedTasksTab';
-import WorkOrderTab from '../components/handoverSidesheet/handoverSidesheetTabs/WorkOrdersTab';
+import {
+    DetailsTab,
+    McPackagesTab,
+    NcrTab,
+    PunchTab,
+    QueryTab,
+    SidesheetHeader,
+    SwcrTab,
+    UnsignedActionTab,
+    UnsignedTaskTab,
+    WorkOrderTab,
+} from '../components/HandoverSidesheet';
 
 const SideSheetContainer = styled.div`
     display: flex;
