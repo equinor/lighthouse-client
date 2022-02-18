@@ -7,7 +7,7 @@ import { useHttpClient } from '../../../../../Core/Client/Hooks/useApiClient';
 import { getDocumentsByTag } from '../../../Api/STID/getDocumentsByTag';
 import { Result } from './Results';
 import { SubResults } from './SubResult';
-import { AdvancedSearch, StidHeader, StidWrapper, Title } from './stidSelectorStyles';
+import { AdvancedSearch, StidHeader, StidWrapper, Title } from './advancedSearchStyles';
 import { useCancellationToken } from '../../../Hooks/useCancellationToken';
 import { ProcoSysTypes } from '../../../Types/ProCoSys/ProCoSysTypes';
 import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
