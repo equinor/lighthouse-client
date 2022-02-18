@@ -8,6 +8,7 @@ import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 import { OriginLink } from './Components/DetailView/Components/OriginLink';
 import { Icon } from '@equinor/eds-core-react';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
+import { ScopeChangeItemView } from './Garden/ScopeChangeGardenItem';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -337,6 +338,9 @@ export function setup(appApi: ClientApi): void {
         gardenKey: 'originSource',
         itemKey: 'sequenceNumber',
         fieldSettings: {},
+        customViews: {
+            customItemView: ScopeChangeItemView,
+        },
     });
 
     // request.registerAnalyticsOptions(analyticsOptions);

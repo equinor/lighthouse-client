@@ -1,6 +1,6 @@
 import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
-import { System } from './Types/system';
+import { System } from '../../../Types/ProCoSys/system';
 
 export async function searchSystems(
     searchString: string,
