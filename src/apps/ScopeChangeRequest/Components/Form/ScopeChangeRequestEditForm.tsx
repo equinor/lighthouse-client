@@ -2,7 +2,7 @@ import { Button, Progress } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect, useState } from 'react';
 import { patchScopeChange, uploadAttachment } from '../../Api/ScopeChange/Request';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { StidTypes } from '../../Types/STID/STIDTypes';
@@ -13,7 +13,7 @@ import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { Upload } from '../Attachments/Upload';
 import { Origin } from './Origin';
-import { MutationKeys } from '../../Api/ScopeChange/mutationKeys';
+import { MutationKeys } from '../../Enums/mutationKeys';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;

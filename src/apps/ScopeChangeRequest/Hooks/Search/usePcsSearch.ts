@@ -1,7 +1,7 @@
 import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
 import { getSystems } from '../../Api/PCS/getSystems';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../Enums/queryKeys';
 import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { searchTags } from '../../Api/Search/PCS/searchTags';
 import { httpClient } from '../../../../Core/Client/Functions';

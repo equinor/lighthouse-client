@@ -6,7 +6,7 @@ import { getHistory } from '../../../../Api/ScopeChange/Request/getHistory';
 import { ChevronList } from '../ChevronList/ChevronList';
 import { HistoryItem } from './HistoryItem';
 import { useEffect } from 'react';
-import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../../../Enums/queryKeys';
 
 export function HistoryList(): JSX.Element {
     const { request } = useScopeChangeContext();

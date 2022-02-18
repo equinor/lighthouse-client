@@ -8,8 +8,8 @@ import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChange
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
-import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
-import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
+import { ServerError } from '../../../../Types/ScopeChange/ServerError';
+import { MutationKeys } from '../../../../Enums/mutationKeys';
 import { TypedSelectOption } from '../../../../Api/Search/searchType';
 
 interface AddContributorProps {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MutationKey, QueryKey, useIsFetching, useIsMutating } from 'react-query';
+import { QueryKey, useIsFetching, useIsMutating, useQueryClient } from 'react-query';
 
 /**
  * Listens for actions on the queries specified
@@ -10,15 +10,30 @@ import { MutationKey, QueryKey, useIsFetching, useIsMutating } from 'react-query
 
 export function useApiActionObserver(
     queryKeys: QueryKey | undefined,
-    mutationKeys: MutationKey | undefined
+    mutationKeys: string[] | undefined
 ): boolean {
     const [isFetching, setIsFetching] = useState<boolean>(false);
     const queriesFetching = useIsFetching(queryKeys);
     const mutating = useIsMutating(mutationKeys);
+    const queryClient = useQueryClient();
 
     useEffect(() => {
-        setIsFetching(mutating > 0);
-    }, [mutating]);
+        let active = false;
+        mutationKeys &&
+            mutationKeys.forEach((x: string) => {
+                if (
+                    queryClient.isMutating({
+                        mutationKey: x,
+                    }) > 0
+                ) {
+                    setIsFetching(true);
+                    active = true;
+                }
+            });
+        if (active === false) {
+            setIsFetching(false);
+        }
+    }, [mutating, mutationKeys, queryClient]);
 
     useEffect(() => {
         setIsFetching(queriesFetching > 0);

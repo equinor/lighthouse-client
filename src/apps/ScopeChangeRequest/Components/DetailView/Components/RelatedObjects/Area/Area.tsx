@@ -1,24 +1,20 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { Area as AreaInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
 import { getAreaByCode } from '../../../../../Api/PCS/getAreaByCode';
-import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../../../../Enums/queryKeys';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 
 interface AreaProps {
     area: AreaInterface;
 }
 
 export const Area = ({ area }: AreaProps): JSX.Element => {
-    const { data } = useQuery(
+    const { data } = useInfiniteCachedQuery(
         [QueryKeys.Area, area.procosysId, area.procosysCode],
-        () => getAreaByCode(area.procosysCode),
-        {
-            staleTime: Infinity,
-            cacheTime: Infinity,
-        }
+        () => getAreaByCode(area.procosysCode)
     );
 
     return (

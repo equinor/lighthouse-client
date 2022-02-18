@@ -15,8 +15,8 @@ import {
 import { HistoryList } from '../History/HistoryList';
 import { useApiActionObserver } from '../../../../Hooks/React-Query/useApiActionObserver';
 import { Progress } from '@equinor/eds-core-react';
-import { QueryKeys } from '../../../../Api/ScopeChange/queryKeys';
-import { MutationKeys } from '../../../../Api/ScopeChange/mutationKeys';
+import { QueryKeys } from '../../../../Enums/queryKeys';
+import { MutationKeys } from '../../../../Enums/mutationKeys';
 import { HotUpload } from '../../../Attachments/HotUpload';
 
 export const SplitView = (): JSX.Element => {

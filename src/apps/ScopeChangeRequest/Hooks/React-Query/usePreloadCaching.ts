@@ -1,4 +1,4 @@
-import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
+import { QueryKeys } from '../../Enums/queryKeys';
 import { getSystems } from '../../Api/PCS/getSystems';
 import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
 import { useInfiniteCachedQuery } from './useInfiniteCachedQuery';
