@@ -11,10 +11,10 @@ import { searchDCN } from '../../Api/Search/PCS/searchDCN';
 import { searchSWCR } from '../../Api/Search/PCS/searchSWCR';
 import { searchAreas } from '../../Api/Search/PCS/searchArea';
 import { searchPerson } from '../../Api/Search/PCS/searchPerson';
-import { searchDiscipline } from '../../Api/Search/PCS/searchDiscipline';
 import { searchNCR } from '../../Api/Search/PCS/searchNcr';
 import { useInfiniteCachedQuery } from '../React-Query/useInfiniteCachedQuery';
 import Fuse from 'fuse.js';
+import { getDisciplines } from '../../Api/PCS/getDisciplines';
 
 interface PCSSearch {
     searchPCS: (
@@ -38,6 +38,11 @@ export function usePcsSearch(): PCSSearch {
     const { data: functionalRoles, refetch: refetchFunctionalRoles } = useInfiniteCachedQuery(
         [QueryKeys.FunctionalRole],
         getFunctionalRoles
+    );
+
+    const { data: disciplines, refetch: refetchDisciplines } = useInfiniteCachedQuery(
+        [QueryKeys.Discipline],
+        getDisciplines
     );
 
     const { procosys } = httpClient();
@@ -71,7 +76,7 @@ export function usePcsSearch(): PCSSearch {
             }
 
             case 'discipline': {
-                return await searchDiscipline(searchValue, procosys, signal);
+                return await searchDiscipline(searchValue);
             }
 
             case 'functionalRole': {
@@ -113,6 +118,28 @@ export function usePcsSearch(): PCSSearch {
                 object: x,
                 searchValue: x.item.Code,
                 type: 'functionalRole',
+                value: x.item.Code,
+            };
+        });
+    }
+
+    async function searchDiscipline(searchValue: string) {
+        if (!disciplines) {
+            await refetchDisciplines();
+        }
+
+        const options = {
+            keys: ['Code'],
+        };
+
+        const fuse = new Fuse(disciplines || [], options);
+
+        return fuse.search(searchValue).map((x): TypedSelectOption => {
+            return {
+                label: `${x.item.Code} - ${x.item.Description}`,
+                object: x,
+                searchValue: x.item.Code,
+                type: 'discipline',
                 value: x.item.Code,
             };
         });

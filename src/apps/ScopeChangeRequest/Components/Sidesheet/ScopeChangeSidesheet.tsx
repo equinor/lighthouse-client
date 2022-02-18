@@ -23,6 +23,7 @@ import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { MutationKeys } from '../../Api/ScopeChange/mutationKeys';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
+import { getDisciplines } from '../../Api/PCS/getDisciplines';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { scopeChange: scopeChangeApi } = useHttpClient();
@@ -120,6 +121,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     }
     return (
         <Wrapper>
+            <Button onClick={async () => await getDisciplines()}> Get disciplines</Button>
             <ScopeChangeErrorBanner message={errorMessage} requestId={item.id} />
             <TitleHeader>
                 <Title>
