@@ -8,6 +8,7 @@ import { ScopeChangeRequest, WorkflowStep } from './Types/scopeChangeRequest';
 import { OriginLink } from './Components/DetailView/Components/OriginLink';
 import { Icon } from '@equinor/eds-core-react';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
+import { ScopeChangeItemView } from './Garden/ScopeChangeGardenItem';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -42,7 +43,7 @@ export function setup(appApi: ClientApi): void {
     request.registerFilterOptions({
         excludeKeys: scopeChangeExcludeFilterKeys,
         typeMap: {},
-        initialFilters: ['State', 'phase', 'category', 'Origin', 'isVoided'],
+        initialFilters: ['State', 'phase', 'category', 'Origin', 'Step', 'NextToSign'],
         groupValue: {
             NextToSign: (item: ScopeChangeRequest): string => {
                 if (item.state !== 'Open') {
@@ -61,6 +62,9 @@ export function setup(appApi: ClientApi): void {
             },
             Origin: (item: ScopeChangeRequest) => {
                 return item.originSource;
+            },
+            Step: (item: ScopeChangeRequest) => {
+                return item?.currentWorkflowStep?.name ?? '(Blank)';
             },
         },
     });
@@ -130,13 +134,13 @@ export function setup(appApi: ClientApi): void {
             'attachments',
         ],
         headers: [
-            { key: 'sequenceNumber', title: 'Id' },
+            { key: 'sequenceNumber', title: 'Id', width: 60 },
             { key: 'title', title: 'Title' },
-            { key: 'phase', title: 'Phase' },
+            { key: 'phase', title: 'Phase', width: 60 },
             { key: 'workflowSteps', title: 'Workflow' },
-            { key: 'guesstimateHours', title: 'Guesstimate' },
-            { key: 'estimatedChangeHours', title: 'Estimate hours' },
-            { key: 'actualChangeHours', title: 'Actual' },
+            { key: 'guesstimateHours', title: 'Guesstimate', width: 60 },
+            { key: 'estimatedChangeHours', title: 'Estimate hours', width: 60 },
+            { key: 'actualChangeHours', title: 'Actual', width: 60 },
             { key: 'category', title: 'Change category' },
             { key: 'originSource', title: 'Change origin' },
             { key: 'createdAtUtc', title: 'Created at' },
@@ -144,7 +148,7 @@ export function setup(appApi: ClientApi): void {
             { key: 'modifiedAtUtc', title: 'Last updated' },
             { key: 'modifiedBy', title: 'Modified by' },
             { key: 'description', title: 'Description' },
-            { key: 'state', title: 'State' },
+            { key: 'state', title: 'State', width: 80 },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
             { key: 'currentWorkflowStep', title: 'Next to sign' },
             // {
@@ -334,6 +338,9 @@ export function setup(appApi: ClientApi): void {
         gardenKey: 'originSource',
         itemKey: 'sequenceNumber',
         fieldSettings: {},
+        customViews: {
+            customItemView: ScopeChangeItemView,
+        },
     });
 
     // request.registerAnalyticsOptions(analyticsOptions);

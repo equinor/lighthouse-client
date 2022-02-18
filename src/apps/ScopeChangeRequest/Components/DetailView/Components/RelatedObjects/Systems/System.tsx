@@ -4,21 +4,18 @@ import { System as SystemInterface } from '../../../../../Types/scopeChangeReque
 import { isProduction } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
-import { useQuery } from 'react-query';
 import { getSystems } from '../../../../../Api/PCS/getSystems';
 import { useEffect, useState } from 'react';
-import { System as PCSSystem } from '../../../../../Api/Search/PCS/Types/system';
-import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
+import { System as PCSSystem } from '../../../../../Types/ProCoSys/system';
+import { QueryKeys } from '../../../../../Enums/queryKeys';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 
 interface SystemProps {
     system: SystemInterface;
 }
 
 export const System = ({ system }: SystemProps): JSX.Element => {
-    const { data } = useQuery(QueryKeys.Systems, getSystems, {
-        staleTime: Infinity,
-        cacheTime: Infinity,
-    });
+    const { data } = useInfiniteCachedQuery(QueryKeys.Systems, getSystems);
 
     const [foundSystem, setFoundSystem] = useState<PCSSystem | null>();
 

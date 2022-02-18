@@ -25,6 +25,7 @@ export const ChevronList = ({ children, title }: CommPkgProps): JSX.Element => {
 const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
     gap: 0.5em;
 `;
 

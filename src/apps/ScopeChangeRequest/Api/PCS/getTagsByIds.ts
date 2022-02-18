@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
-import { Tag } from './Types/Tag';
+import { Tag } from '../../Types/ProCoSys/Tag';
 
 export async function getTagsByIds(tagNos: string[]): Promise<Tag[]> {
     const { procosys } = httpClient();

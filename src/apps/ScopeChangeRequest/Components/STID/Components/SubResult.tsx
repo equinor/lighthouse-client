@@ -1,8 +1,8 @@
 import { Icon } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
-import { SubResult } from './StidSelector';
-import { ResultLabel, IconContainer, Title, ResultItem } from './stidSelectorStyles';
+import { SubResult } from './AdvancedDocumentSearch';
+import { ResultLabel, IconContainer, Title, ResultItem } from './advancedSearchStyles';
 
 interface SubResultsProps {
     subResults: SubResult | undefined;

@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { ServerError } from '../Types/ServerError';
+import { ServerError } from '../../../Types/ScopeChange/ServerError';
 
 
 interface AttachmentParams {

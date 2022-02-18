@@ -1,7 +1,7 @@
 import { Report } from 'powerbi-client';
 import { createPowerBiFilter, getSlicerData } from '.';
 import { PowerBiFilter } from '../Types';
-
+const HIDDEN_FILTER_PREFIX = 'xx';
 /**
  * Get all slicer filters on mount and after a slicer filter is set.
  * Some filters may be removed after a slicer filter is set.
@@ -18,5 +18,5 @@ export async function getFilters(reportInstance: Report): Promise<PowerBiFilter[
         })
     );
 
-    return filters;
+    return filters.filter((f) => !f.type.startsWith(HIDDEN_FILTER_PREFIX));
 }

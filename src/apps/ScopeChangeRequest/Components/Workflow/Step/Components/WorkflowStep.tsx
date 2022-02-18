@@ -5,6 +5,8 @@ import { useQuery } from 'react-query';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
+import { QueryKeys } from '../../../../Enums/queryKeys';
+import { CacheTime } from '../../../../Enums/cacheTimes';
 
 interface WorkflowStepProps {
     step: WorkflowStep;
@@ -15,9 +17,13 @@ export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element 
     const checkContributorAccess = () =>
         canAddContributor({ requestId: request.id, stepId: step.id });
     const { data: isAllowedToAddContributor } = useQuery(
-        `step/${step.id}`,
+        [QueryKeys.Step, step.id],
         checkContributorAccess,
-        { refetchOnWindowFocus: false }
+        {
+            refetchOnWindowFocus: false,
+            staleTime: CacheTime.FiveMinutes,
+            cacheTime: CacheTime.FiveMinutes,
+        }
     );
 
     return (

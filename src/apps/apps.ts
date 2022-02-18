@@ -12,12 +12,11 @@ import { ReportIcon } from '../icons/Report icon';
 import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { ModelViewer } from './3DModel/src/3DModel';
-import { setup as checklistSetup } from './checklistApp';
 import { setup as commissioningSetup } from './Commissioning';
 import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './handoverApp';
 import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
-import { setup as loopSetup } from './Loop/loopApp';
+
 import {
     BusinessCaseReport,
     LCIReport,
@@ -25,7 +24,7 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport
+    SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
@@ -157,7 +156,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart',
-        appEnv: 'test',
+        appEnv: 'prod',
         tags: [],
     },
     {
@@ -190,7 +189,7 @@ export const apps: AppManifest[] = [
         groupe: Apps.SSU,
         icon: '',
         uri: 'https://fusion.equinor.com/apps/bmt/65728fee-185d-4a0c-a91d-8e3f3781dad8',
-        appEnv: 'test',
+        appEnv: 'prod',
         tags: ['Fusion', 'Link'],
     },
     // Progress
@@ -319,7 +318,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            setup: checklistSetup,
         },
     },
     {
@@ -357,7 +355,6 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'DataViewer',
-            setup: loopSetup,
         },
     },
     {
@@ -379,7 +376,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Preservation',
         tags: ['link', 'procosys'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Punch',
@@ -413,7 +410,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://fusion.equinor.com/apps/dcp',
         tags: ['link', 'fusion'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Invitation for punch out ',
@@ -423,7 +420,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/InvitationForPunchOut',
         tags: ['link', 'procosys'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // Queries and requests
     {
@@ -444,15 +441,7 @@ export const apps: AppManifest[] = [
         tags: [],
     },
     {
-        title: 'Scope change control',
-        shortName: 'sca',
-        color: '#0364B8',
-        groupe: Apps.ProjectControl,
-        icon: '',
-        tags: [],
-    },
-    {
-        title: 'Change request',
+        title: 'Scope change request',
         shortName: 'change',
         color: '#0364B8',
         groupe: Apps.ProjectControl,
@@ -472,7 +461,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://fusion.equinor.com/apps/management-of-change/3380fe7d-e5b7-441f-8ce9-a8c3133ee499',
         tags: ['Link', 'Fusion'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Project control and analysis',
@@ -482,7 +471,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://fusion.equinor.com/apps/project-control-and-analysis/3380fe7d-e5b7-441f-8ce9-a8c3133ee499',
         tags: ['Link', 'Fusion'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // QualityAndRisk
     {
@@ -547,7 +536,7 @@ export const apps: AppManifest[] = [
         icon: 'tag',
         uri: 'https://fusion.equinor.com/apps/meetings',
         tags: ['fuison', 'link', 'external'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Review',
@@ -557,7 +546,7 @@ export const apps: AppManifest[] = [
         icon: 'tag',
         uri: 'https://fusion.equinor.com/apps/reviews/255d8c0a-7893-4c21-ab42-62c652ea8129',
         tags: ['fuison', 'link', 'external'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Query analytics',
@@ -580,7 +569,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://procosys.equinor.com/JOHAN_CASTBERG/Search?searchType=Query',
         tags: ['link', 'procosys'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // Asset Data
     {
@@ -604,7 +593,7 @@ export const apps: AppManifest[] = [
         icon: '',
         uri: 'https://stid.equinor.com/JCA/search?type=doc&revstatus=OF%2CUA%2CRE%2CPL%2COF-P',
         tags: ['3D', 'Asset', 'Map', 'Doc'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Tags',
@@ -614,6 +603,6 @@ export const apps: AppManifest[] = [
         icon: 'tag',
         uri: 'https://stid.equinor.com/JCA/search?type=tag&tagstatus=A%2CP%2CR%2CF',
         tags: ['Tag', 'Data', 'Functional Location'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
 ];

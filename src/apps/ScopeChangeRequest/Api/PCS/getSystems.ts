@@ -1,7 +1,7 @@
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
-import { System } from '../Search/PCS/Types/system';
+import { System } from '../../Types/ProCoSys/system';
 
-export async function getSystems() {
+export async function getSystems(): Promise<System[]> {
     const { procosys } = httpClient();
 
     const res: Promise<System[]> = await procosys
