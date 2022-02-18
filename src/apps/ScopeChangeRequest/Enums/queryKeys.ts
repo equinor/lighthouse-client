@@ -13,4 +13,6 @@ export enum QueryKeys {
     Criteria = 'criteria',
     FunctionalRole = 'functionalrole',
     References = 'references',
+    Void = 'void',
+    Unvoid = 'unvoid',
 }

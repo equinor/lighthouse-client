@@ -19,6 +19,7 @@ import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useApiActionObserver } from '../../../../Hooks/React-Query/useApiActionObserver';
 import { QueryKeys } from '../../../../Enums/queryKeys';
 import { MutationKeys } from '../../../../Enums/mutationKeys';
+import { CacheTime } from '../../../../Enums/cacheTimes';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -41,8 +42,8 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
         {
             refetchOnWindowFocus: false,
             retry: 3,
-            staleTime: 5 * 1000 * 60,
-            cacheTime: 5 * 1000 * 60,
+            staleTime: CacheTime.FiveMinutes,
+            cacheTime: CacheTime.FiveMinutes,
             onError: (e: string) =>
                 setErrorMessage({
                     detail: e,

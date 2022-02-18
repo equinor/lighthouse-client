@@ -125,4 +125,5 @@ const SplitScreen = styled.div`
     flex-basis: 0;
     overflow: scroll;
     padding: 2em 0em;
+    gap: 1em;
 `;
