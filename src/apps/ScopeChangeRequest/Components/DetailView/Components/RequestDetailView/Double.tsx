@@ -15,18 +15,14 @@ import {
 import { HistoryList } from '../History/HistoryList';
 import { Progress } from '@equinor/eds-core-react';
 import { HotUpload } from '../../../Attachments/HotUpload';
-import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
-import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
-import { useIsFetching, useIsMutating } from 'react-query';
+import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
+import { useIsReferencesLoading } from '../../../../Hooks/React-Query/useIsReferencesLoading';
 
 export const SplitView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
 
-    const { workflowKeys: workflowMutationKeys } = useScopechangeMutationKeyGen(request.id);
-    const { workflowKeys } = useScopechangeQueryKeyGen(request.id);
-
-    const workflowFetching = useIsFetching(workflowKeys.baseKey);
-    const workflowMutating = useIsMutating(workflowMutationKeys.baseKey);
+    const workflowLoading = useIsWorkflowLoading();
+    const referencesLoading = useIsReferencesLoading();
 
     return (
         <SplitScreen>
@@ -81,6 +77,7 @@ export const SplitView = (): JSX.Element => {
                     request.tags.length > 0) && (
                     <Section>
                         <BoldHeading>References</BoldHeading>
+                        {referencesLoading && <Progress.Dots color="primary" />}
                         <Value>
                             <RelatedObjects
                                 systems={request.systems}
@@ -106,9 +103,7 @@ export const SplitView = (): JSX.Element => {
                 <Section>
                     <WorkflowLoadingHeader>
                         <BoldHeading>Workflow</BoldHeading>
-                        {(workflowFetching > 0 || workflowMutating > 0) && (
-                            <Progress.Dots color="primary" />
-                        )}
+                        {workflowLoading && <Progress.Dots color="primary" />}
                     </WorkflowLoadingHeader>
                     <Workflow />
                 </Section>

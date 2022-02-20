@@ -19,6 +19,7 @@ import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { CacheTime } from '../../../../Enums/cacheTimes';
 import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -29,6 +30,7 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
     const [comment, setComment] = useState('');
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
     const { request, setErrorMessage } = useScopeChangeContext();
+    const workflowLoading = useIsWorkflowLoading();
 
     const { workflowKeys } = useScopechangeQueryKeyGen(request.id);
     const { workflowKeys: workflowMutationKeys } = useScopechangeMutationKeyGen(request.id);
@@ -109,15 +111,17 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                     </Inline>
                     {request.state === 'Open' && !request.isVoided && (
                         <>
-                            {step.isCurrent && makeContributorActions().length > 0 && (
-                                <Inline>
-                                    <MenuButton
-                                        items={makeContributorActions()}
-                                        onMenuOpen={() => setShowCommentField(false)}
-                                        buttonText="Confirm"
-                                    />
-                                </Inline>
-                            )}
+                            {step.isCurrent &&
+                                !workflowLoading &&
+                                makeContributorActions().length > 0 && (
+                                    <Inline>
+                                        <MenuButton
+                                            items={makeContributorActions()}
+                                            onMenuOpen={() => setShowCommentField(false)}
+                                            buttonText="Confirm"
+                                        />
+                                    </Inline>
+                                )}
                         </>
                     )}
                 </ContributorInnerContainer>

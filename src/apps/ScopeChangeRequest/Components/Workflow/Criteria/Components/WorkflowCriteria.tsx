@@ -22,6 +22,7 @@ import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteri
 import { useQueryClient } from 'react-query';
 import { QueryKeys } from '../../../../Enums/queryKeys';
 import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
 
 interface OnSignStepAction {
     action: 'Approved' | 'Rejected';
@@ -45,6 +46,7 @@ export const WorkflowCriteria = ({
 
     const queryClient = useQueryClient();
     const { workflowKeys } = useScopechangeMutationKeyGen(request.id);
+    const workflowLoading = useIsWorkflowLoading();
 
     const { criteriaUnsignKey, criteriaReassignKey, criteriaSignKey } = workflowKeys;
 
@@ -226,14 +228,14 @@ export const WorkflowCriteria = ({
                 )}
 
                 <Inline>
-                    {makeSignOptions().length > 0 && (
+                    {!workflowLoading && makeSignOptions().length > 0 && (
                         <MenuButton
                             items={makeSignOptions()}
                             onMenuOpen={() => closeAll()}
                             buttonText="Sign"
                         />
                     )}
-                    {makeMoreActions().length > 0 && (
+                    {!workflowLoading && makeMoreActions().length > 0 && (
                         <IconMenu items={makeMoreActions()} onMenuOpen={() => closeAll()} />
                     )}
                 </Inline>
