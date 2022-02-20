@@ -20,9 +20,9 @@ import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
 import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
 import { useQueryClient } from 'react-query';
-import { QueryKeys } from '../../../../Enums/queryKeys';
 import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
 import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
+import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 
 interface OnSignStepAction {
     action: 'Approved' | 'Rejected';
@@ -46,6 +46,7 @@ export const WorkflowCriteria = ({
 
     const queryClient = useQueryClient();
     const { workflowKeys } = useScopechangeMutationKeyGen(request.id);
+    const { baseKey } = useScopechangeQueryKeyGen(request.id);
     const workflowLoading = useIsWorkflowLoading();
 
     const { criteriaUnsignKey, criteriaReassignKey, criteriaSignKey } = workflowKeys;
@@ -144,9 +145,7 @@ export const WorkflowCriteria = ({
             ?.criterias.filter((x) => x.signedAtUtc === null);
         const sign = async () => {
             await signCriteria(request.id, step.id, criteria.id, action, signComment).then(() => {
-                queryClient.invalidateQueries(QueryKeys.Scopechange);
-                queryClient.invalidateQueries(QueryKeys.Step);
-                queryClient.invalidateQueries(QueryKeys.History);
+                queryClient.invalidateQueries(baseKey);
             });
         };
         if (

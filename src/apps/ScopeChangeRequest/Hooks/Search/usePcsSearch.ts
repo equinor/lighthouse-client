@@ -1,7 +1,6 @@
 import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
 import { getSystems } from '../../Api/PCS/getSystems';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { QueryKeys } from '../../Enums/queryKeys';
 import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { searchTags } from '../../Api/Search/PCS/searchTags';
 import { httpClient } from '../../../../Core/Client/Functions';
@@ -15,6 +14,7 @@ import { searchNCR } from '../../Api/Search/PCS/searchNcr';
 import { useInfiniteCachedQuery } from '../React-Query/useInfiniteCachedQuery';
 import Fuse from 'fuse.js';
 import { getDisciplines } from '../../Api/PCS/getDisciplines';
+import { useProcosysQueryKeyGen } from '../React-Query/useProcosysQueryKeyGen';
 
 interface PCSSearch {
     searchPCS: (
@@ -30,18 +30,20 @@ interface PCSSearch {
  * @returns
  */
 export function usePcsSearch(): PCSSearch {
+    const { disciplinesKey, functionalRolesKey, systemsKey } = useProcosysQueryKeyGen();
+
     const { data: systems, refetch: refetchSystems } = useInfiniteCachedQuery(
-        [QueryKeys.Systems],
+        systemsKey,
         getSystems
     );
 
     const { data: functionalRoles, refetch: refetchFunctionalRoles } = useInfiniteCachedQuery(
-        [QueryKeys.FunctionalRole],
+        functionalRolesKey,
         getFunctionalRoles
     );
 
     const { data: disciplines, refetch: refetchDisciplines } = useInfiniteCachedQuery(
-        [QueryKeys.Discipline],
+        disciplinesKey,
         getDisciplines
     );
 
