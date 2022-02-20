@@ -1,7 +1,7 @@
 export enum QueryKeys {
     Scopechange = 'scopechange',
     History = 'history',
-    Change = 'change',
+
     CommPkg = 'commPkg',
     Document = 'document',
     Tag = 'tag',

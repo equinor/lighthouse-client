@@ -16,10 +16,9 @@ import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopech
 import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
 import { ServerError } from '../../../../Types/ScopeChange/ServerError';
-import { useApiActionObserver } from '../../../../Hooks/React-Query/useApiActionObserver';
-import { QueryKeys } from '../../../../Enums/queryKeys';
-import { MutationKeys } from '../../../../Enums/mutationKeys';
 import { CacheTime } from '../../../../Enums/cacheTimes';
+import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -31,13 +30,14 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
     const { request, setErrorMessage } = useScopeChangeContext();
 
-    const isBusy = useApiActionObserver([QueryKeys.Contributor], []);
+    const { workflowKeys } = useScopechangeQueryKeyGen(request.id);
+    const { workflowKeys: workflowMutationKeys } = useScopechangeMutationKeyGen(request.id);
 
     const checkCanContribute = () =>
         canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
 
     const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
-        [QueryKeys.Step, step.id, QueryKeys.Contributor, contributor.id],
+        workflowKeys.contributorKey(step.id, contributor.id),
         checkCanContribute,
         {
             refetchOnWindowFocus: false,
@@ -54,7 +54,8 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
     );
 
     const { mutateAsync } = useScopeChangeMutation(
-        [MutationKeys.Contribute, MutationKeys.Step],
+        request.id,
+        workflowMutationKeys.contributeKey(step.id, contributor.id),
         submitContribution,
         {
             onError: (e: ServerError) => setErrorMessage(e),
@@ -114,7 +115,6 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                                         items={makeContributorActions()}
                                         onMenuOpen={() => setShowCommentField(false)}
                                         buttonText="Confirm"
-                                        isDisabled={isBusy}
                                     />
                                 </Inline>
                             )}
