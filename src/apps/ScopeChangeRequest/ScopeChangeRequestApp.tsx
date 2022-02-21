@@ -51,7 +51,7 @@ export function setup(appApi: ClientApi): void {
                 }
                 return (
                     item.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
-                        ?.valueDescription ?? 'null'
+                        ?.valueDescription ?? '(Blank)'
                 );
             },
             State: (item: ScopeChangeRequest): string => {
