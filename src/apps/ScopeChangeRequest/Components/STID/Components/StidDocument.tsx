@@ -3,9 +3,10 @@ import { Icon } from '@equinor/eds-core-react';
 
 import styled from 'styled-components';
 import { getDocumentById } from '../../../Api/STID/getDocumentById';
-import { QueryKeys } from '../../../Enums/queryKeys';
 import { transformIsoDate } from '../../Workflow/Utils/dateFormatting';
 import { useInfiniteCachedQuery } from '../../../Hooks/React-Query/useInfiniteCachedQuery';
+import { useScopechangeQueryKeyGen } from '../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { useScopeChangeContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 
 interface StidDocumentProps {
     docNo: string;
@@ -16,9 +17,11 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
         window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
     };
 
-    const { data } = useInfiniteCachedQuery(
-        [QueryKeys.References, QueryKeys.Document, `${docNo}`],
-        () => getDocumentById(docNo, 'JCA')
+    const { request } = useScopeChangeContext();
+    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+
+    const { data } = useInfiniteCachedQuery(referencesKeys.document(docNo), () =>
+        getDocumentById(docNo, 'JCA')
     );
 
     return (

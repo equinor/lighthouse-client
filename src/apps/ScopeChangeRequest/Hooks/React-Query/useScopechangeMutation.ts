@@ -5,9 +5,8 @@ import {
     UseMutationResult,
     useQueryClient,
     MutationKey,
-    QueryKey,
 } from 'react-query';
-import { QueryKeys } from '../../Enums/queryKeys';
+import { useScopechangeQueryKeyGen } from './useScopechangeQueryKeyGen';
 
 export function useScopeChangeMutation<
     TData = unknown,
@@ -15,24 +14,19 @@ export function useScopeChangeMutation<
     TVariables = void,
     TContext = unknown
 >(
+    requestId: string,
     mutationKey: MutationKey,
     mutationFn: MutationFunction<TData, TVariables>,
     options?: Omit<
         UseMutationOptions<TData, TError, TVariables, TContext>,
         'mutationFn' | 'onSettled'
-    >,
-    invalidateKeys?: QueryKey
+    >
 ): UseMutationResult<TData, TError, TVariables, TContext> {
     const queryClient = useQueryClient();
+    const { baseKey } = useScopechangeQueryKeyGen(requestId);
 
     function invalidate() {
-        if (invalidateKeys) {
-            queryClient.invalidateQueries(invalidateKeys);
-        } else {
-            queryClient.invalidateQueries(QueryKeys.Scopechange);
-            queryClient.invalidateQueries(QueryKeys.History);
-            queryClient.invalidateQueries(QueryKeys.Step);
-        }
+        queryClient.invalidateQueries(baseKey);
     }
 
     return useMutation(mutationKey, mutationFn, { ...options, onSettled: invalidate });

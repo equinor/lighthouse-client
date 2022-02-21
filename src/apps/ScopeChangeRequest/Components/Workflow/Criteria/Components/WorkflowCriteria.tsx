@@ -19,9 +19,10 @@ import { TypedSelectOption } from '../../../../Api/Search/searchType';
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
 import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
-import { MutationKeys } from '../../../../Enums/mutationKeys';
 import { useQueryClient } from 'react-query';
-import { QueryKeys } from '../../../../Enums/queryKeys';
+import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
+import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 
 interface OnSignStepAction {
     action: 'Approved' | 'Rejected';
@@ -44,6 +45,11 @@ export const WorkflowCriteria = ({
     const [showSignWithComment, setShowSignWithComment] = useState(false);
 
     const queryClient = useQueryClient();
+    const { workflowKeys } = useScopechangeMutationKeyGen(request.id);
+    const { baseKey } = useScopechangeQueryKeyGen(request.id);
+    const workflowLoading = useIsWorkflowLoading();
+
+    const { criteriaUnsignKey, criteriaReassignKey, criteriaSignKey } = workflowKeys;
 
     const { canReassign, canSign, canUnsign } = useWorkflowCriteriaOptions(
         request.id,
@@ -120,10 +126,11 @@ export const WorkflowCriteria = ({
                 stepId: step.id,
                 criteriaId: criteria.id,
                 reassign: {
-                    type: `${selected.type === 'functionalRole'
+                    type: `${
+                        selected.type === 'functionalRole'
                             ? 'RequireProcosysFunctionalRoleSignature'
                             : 'RequireProcosysUserSignature'
-                        }`,
+                    }`,
                     value: selected.value,
                 },
             });
@@ -138,9 +145,7 @@ export const WorkflowCriteria = ({
             ?.criterias.filter((x) => x.signedAtUtc === null);
         const sign = async () => {
             await signCriteria(request.id, step.id, criteria.id, action, signComment).then(() => {
-                queryClient.invalidateQueries(QueryKeys.Scopechange);
-                queryClient.invalidateQueries(QueryKeys.Step);
-                queryClient.invalidateQueries(QueryKeys.History);
+                queryClient.invalidateQueries(baseKey);
             });
         };
         if (
@@ -171,7 +176,9 @@ export const WorkflowCriteria = ({
         Component: ContributorSelector,
         toggle: toggleContributorSelector,
         set: setShowContributor,
-    } = useConditionalRender(<AddContributor close={() => setShowContributor(false)} />);
+    } = useConditionalRender(
+        <AddContributor close={() => setShowContributor(false)} step={step} />
+    );
 
     const closeAll = () => {
         setShowSignWithComment(false);
@@ -181,7 +188,8 @@ export const WorkflowCriteria = ({
     };
 
     const { mutateAsync: reassignMutation } = useScopeChangeMutation(
-        [MutationKeys.Step, MutationKeys.Reassign],
+        request.id,
+        criteriaReassignKey(step.id, criteria.id),
         reassignCriteria,
         {
             onError: (e: ServerError) => setErrorMessage(e),
@@ -189,7 +197,8 @@ export const WorkflowCriteria = ({
     );
 
     const { mutateAsync: signMutation } = useScopeChangeMutation(
-        [MutationKeys.Step, MutationKeys.Sign],
+        request.id,
+        criteriaSignKey(step.id, criteria.id),
         onSignStep,
         {
             onError: (e: ServerError) => setErrorMessage(e),
@@ -198,7 +207,8 @@ export const WorkflowCriteria = ({
     );
 
     const { mutateAsync: unSignMutation } = useScopeChangeMutation(
-        [MutationKeys.Step, MutationKeys.Unsign],
+        request.id,
+        criteriaUnsignKey(step.id, criteria.id),
         unsignCriteria,
         {
             onError: (e: ServerError) => setErrorMessage(e),
@@ -217,14 +227,14 @@ export const WorkflowCriteria = ({
                 )}
 
                 <Inline>
-                    {makeSignOptions().length > 0 && (
+                    {!workflowLoading && makeSignOptions().length > 0 && (
                         <MenuButton
                             items={makeSignOptions()}
                             onMenuOpen={() => closeAll()}
                             buttonText="Sign"
                         />
                     )}
-                    {makeMoreActions().length > 0 && (
+                    {!workflowLoading && makeMoreActions().length > 0 && (
                         <IconMenu items={makeMoreActions()} onMenuOpen={() => closeAll()} />
                     )}
                 </Inline>
@@ -232,7 +242,11 @@ export const WorkflowCriteria = ({
 
             <ContributorSelector />
             {showSignWithComment && (
-                <SignWithComment criteria={criteria} close={() => setShowSignWithComment(false)} />
+                <SignWithComment
+                    criteria={criteria}
+                    step={step}
+                    close={() => setShowSignWithComment(false)}
+                />
             )}
         </>
     );
