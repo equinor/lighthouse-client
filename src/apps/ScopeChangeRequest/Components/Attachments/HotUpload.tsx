@@ -7,7 +7,7 @@ import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMu
 import { uploadAttachment } from '../../Api/ScopeChange/Request';
 import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { Attachments } from './Attachments';
-import { MutationKeys } from '../../Enums/mutationKeys';
+import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
 
 const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const HotUpload = (): JSX.Element => {
@@ -15,8 +15,11 @@ export const HotUpload = (): JSX.Element => {
 
     const { request, setErrorMessage } = useScopeChangeContext();
 
+    const { uploadAttachmentKey } = useScopechangeMutationKeyGen(request.id);
+
     const { isLoading, mutateAsync } = useScopeChangeMutation(
-        [MutationKeys.Attachment, MutationKeys.ScopeChange],
+        request.id,
+        uploadAttachmentKey(),
         uploadAttachment,
         {
             retry: 2,

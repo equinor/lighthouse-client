@@ -97,7 +97,7 @@ export const ScopeChangeRequestForm = ({
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
-        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId, scopeChange));
+        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId));
         clearActiveFactory();
     };
 

@@ -7,15 +7,19 @@ import { Icon } from '@equinor/eds-core-react';
 import { getSystems } from '../../../../../Api/PCS/getSystems';
 import { useEffect, useState } from 'react';
 import { System as PCSSystem } from '../../../../../Types/ProCoSys/system';
-import { QueryKeys } from '../../../../../Enums/queryKeys';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
+import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
 
 interface SystemProps {
     system: SystemInterface;
 }
 
 export const System = ({ system }: SystemProps): JSX.Element => {
-    const { data } = useInfiniteCachedQuery(QueryKeys.Systems, getSystems);
+    const { request } = useScopeChangeContext();
+    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+
+    const { data } = useInfiniteCachedQuery(referencesKeys.systems, getSystems);
 
     const [foundSystem, setFoundSystem] = useState<PCSSystem | null>();
 
@@ -30,8 +34,9 @@ export const System = ({ system }: SystemProps): JSX.Element => {
         <Wrapper key={system.id}>
             <Icon name="placeholder_icon" />
             <Link
-                href={`https://${isProduction() ? 'procosys' : 'procosystest'
-                    }.equinor.com/JOHAN_CASTBERG/Completion#System|${system.procosysId}`}
+                href={`https://${
+                    isProduction() ? 'procosys' : 'procosystest'
+                }.equinor.com/JOHAN_CASTBERG/Completion#System|${system.procosysId}`}
                 target="_blank"
             >
                 SYS_{system.procosysCode} - {foundSystem?.Description}

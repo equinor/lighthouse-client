@@ -5,19 +5,20 @@ import { useQuery } from 'react-query';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
-import { QueryKeys } from '../../../../Enums/queryKeys';
 import { CacheTime } from '../../../../Enums/cacheTimes';
+import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 
 interface WorkflowStepProps {
     step: WorkflowStep;
 }
 export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element {
     const { request } = useScopeChangeContext();
+    const { workflowKeys } = useScopechangeQueryKeyGen(request.id);
 
     const checkContributorAccess = () =>
         canAddContributor({ requestId: request.id, stepId: step.id });
     const { data: isAllowedToAddContributor } = useQuery(
-        [QueryKeys.Step, step.id],
+        workflowKeys.canAddContributorKey(step.id),
         checkContributorAccess,
         {
             refetchOnWindowFocus: false,
