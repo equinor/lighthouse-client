@@ -1,20 +1,18 @@
-import { BaseClient } from '@equinor/http-client';
-import { Document } from '../../STID/Types/Document';
+import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
+import { Document } from '../../../Types/STID/Document';
 import { TypedSelectOption } from '../searchType';
 
 export const searchDocuments = async (
     searchString: string,
-    stidClient: BaseClient
+    signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
+    const { STID } = httpClient();
 
-    //Test https://stidapitest.equinor.com
-    const baseUrl = 'https://stidapi.equinor.com';
-    const uri = 'JCA/documents';
-    const queryParameters = `docNo=${encodeURI(searchString)}&skip=0&take=50&noContentAs200=true`;
-    const url = `${baseUrl}/${uri}?${queryParameters}`;
-    await stidClient
-        .fetch(url)
+    const uri = '/JCA/documents';
+    const queryParameters = `docNo=${encodeURI(searchString)}&skip=0&take=10&noContentAs200=true`;
+    const url = `${uri}?${queryParameters}`;
+    await STID.fetch(url, { signal })
         .then((response) => response.json())
         .then((data) => {
             data.map((x: Document) => {

@@ -5,6 +5,8 @@ export const Wrapper = styled.div`
     height: 100%;
     z-index: 100;
     background: #fff;
-    width: 640px;
+    max-width: 1200px;
     grid-area: sidebar;
+    margin: 0em 1em;
+    overflow: scroll;
 `;

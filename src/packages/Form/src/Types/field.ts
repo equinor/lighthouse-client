@@ -10,11 +10,11 @@ export interface Field<Type> {
     value: Type;
     isDirty: boolean;
     isValid: boolean;
-    title: string;
+    title: string | undefined;
     optional: boolean;
     editable: boolean;
     order: number;
-    inputType: InputType;
+    inputType: InputType | undefined;
     setValue: Setter<Type>;
     placeholderText: string;
 }

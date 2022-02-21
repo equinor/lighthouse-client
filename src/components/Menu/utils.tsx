@@ -1,3 +1,5 @@
+import { AppManifest } from '@equinor/portal-client';
+
 export function filterByValue<T, K extends keyof T>(
     list: Record<string, T[]>,
     value: string,
@@ -56,4 +58,8 @@ export function groupeByKey<T, K extends keyof T>(list: T[], key: K) {
         }
         return acc;
     }, {} as Record<string, T[]>);
+}
+
+export function getURL(item: AppManifest, key: string): string {
+    return item.shortName === '/' ? '/' : `${key}/${item.shortName}`;
 }

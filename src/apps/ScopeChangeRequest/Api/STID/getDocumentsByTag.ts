@@ -1,5 +1,5 @@
-import { BaseClient } from '../../../../../packages/httpClient/src';
-import { Document } from './Types/Document';
+import { HttpClient } from '@equinor/http-client';
+import { Document } from '../../Types/STID/Document';
 
 /**
  * Returns all stid documents related to a given tag
@@ -11,13 +11,12 @@ import { Document } from './Types/Document';
 export async function getDocumentsByTag(
     instCode: string,
     tagNo: string,
-    stidClient: BaseClient
+    stidClient: HttpClient
     //TODO:
     //docCategory?: string
 ): Promise<Document[]> {
-    const baseUrl = 'https://stidapi.equinor.com';
     const uri = `${instCode}/tag/document-refs`;
     const queryParameters = `tagNo=${encodeURIComponent(tagNo)}&noContentAs200=true`;
-    const url = `${baseUrl}/${uri}?${queryParameters}`;
+    const url = `${uri}?${queryParameters}`;
     return await stidClient.fetch(url).then((response) => response.json());
 }

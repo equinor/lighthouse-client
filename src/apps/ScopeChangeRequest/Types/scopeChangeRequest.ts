@@ -1,47 +1,89 @@
-export interface ScopeChangeRequestFormModel {
-    title: string;
-    description: string;
-    phase: string;
-    origin: string;
-    category: string;
-    guesstimateHours: string;
-    guesstimateDescription: string;
-    TagNumbers: string[];
-    CommissioningPackageNumbers: string[];
-    SystemIds: string[];
+export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
+    tagNumbers: string[];
+    commissioningPackageNumbers: string[];
+    systemIds: number[];
+    areaCodes: string[];
+    disciplineCodes: string[];
     documentNumbers: string[];
+    setAsOpen?: boolean;
     //workflow
 }
+export type StrippedCriteria = Pick<Criteria, 'id' | 'value' | 'signedState'>;
+
+export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCN';
 
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
+export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
-export interface ScopeChangeRequest {
+export interface ScopeChangeBaseModel {
     id: string;
     title: string;
     description: string;
     phase: string;
-    origin: string;
     category: string;
     estimatedChangeHours: number;
+    originSourceId?: string;
+    originSource: OriginType;
     actualChangeHours: number;
+    guesstimateHours: number;
+    guesstimateDescription: string;
+}
+
+export interface LogEntry {
+    createdAtUtc: string;
+    createdBy: {
+        id: string;
+        oid: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    modifiedAtUtc: string;
+    modifiedBy: {
+        id: string;
+        oid: string;
+        firstName: string;
+        lastName: string;
+        email: string;
+    };
+    id: string;
+    description: string;
+    objectGuid: string;
+    eventType: string;
+    objectType: string;
+}
+
+export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     createdAtUtc: string;
     createdBy: Person;
     modifiedAtUtc: string;
     modifiedBy: Person;
     state: ScopeChangeRequestState;
+    isVoided: boolean;
     currentWorkflowStep?: WorkflowStep;
     workflowSteps: WorkflowStep[];
-    guesstimateHours: string;
-    guesstimateDescription: string;
     tags: Tag[];
-    TagNumbers: string[];
-    CommissioningPackageNumbers: string[];
     commissioningPackages: CommissioningPackage[];
     systems: System[];
-    SystemIds: System[];
     attachments: Attachment[];
     documents: Document[];
+    disciplines: Discipline[];
+    areas: Area[];
+    hasComments: boolean;
+    sequenceNumber: number;
     //workflow
+}
+
+export interface Discipline {
+    id: string;
+    procosysCode: string;
+    procosysId: number;
+}
+
+export interface Area {
+    id: string;
+    procosysCode: string;
+    procosysId: number;
 }
 
 export interface Document {
@@ -58,6 +100,7 @@ export interface Attachment {
     id: string;
     modifiedAtUtc: string | null;
     modifiedBy: string | null;
+    fileSize: number;
 }
 
 export interface CommissioningPackage {
@@ -75,7 +118,7 @@ export interface Tag {
 export interface System {
     id: string;
     procosysId: number;
-    procosysNumber: string;
+    procosysCode: string;
 }
 
 export interface Person {
@@ -99,22 +142,23 @@ export interface Criteria {
     id: string;
     type: string;
     value: string;
-    signedAtUtc: string;
+    signedAtUtc: string | null;
     signedBy: Person;
-    signedComment: string;
-    signedState: 'Approved' | 'Rejected';
+    signedComment: string | null;
+    signedState: 'Approved' | 'Rejected' | null;
+    valueDescription: string | null;
 }
 
 export interface Contributor {
-    createdAtUtc: Date;
+    createdAtUtc: Date | null;
     createdBy: Person;
     modifiedAtUtc: Date;
     modifiedBy: Person;
     plant: string;
     id: string;
-    messageToContributor: string;
+    instructionsToContributor: string;
     person: Person;
-    contribution: Contribution;
+    contribution: Contribution | null;
 }
 
 export interface Contribution {

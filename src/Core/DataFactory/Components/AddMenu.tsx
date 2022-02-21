@@ -1,5 +1,5 @@
 import { Menu } from '@equinor/eds-core-react';
-import React from 'react';
+import { isAppActive, useRegistry } from '@equinor/portal-client';
 import { useFactories } from '../Hooks/useFactories';
 import { AddMenuButton } from './AddMenuButton';
 
@@ -21,6 +21,13 @@ export function AddMenu({
     onMouseEnter,
 }: AddMenuProps): JSX.Element | null {
     const { factories } = useFactories(factoryId);
+    const { apps } = useRegistry();
+    const activeApps = apps.reduce((acc, manifest) => {
+        if (isAppActive(manifest)) {
+            acc.push(manifest.shortName);
+        }
+        return acc;
+    }, [] as string[]);
     if (!isOpen) return null;
     return (
         <Menu
@@ -29,9 +36,13 @@ export function AddMenu({
             onMouseLeave={handleClose}
             onMouseEnter={onMouseEnter}
         >
-            {factories.map((factory) => (
-                <AddMenuButton key={factory.factoryId} factory={factory} scope={scope} />
-            ))}
+            {factories.map((factory) =>
+                activeApps.includes(factory.factoryId) ? (
+                    <AddMenuButton key={factory.factoryId} factory={factory} scope={scope} />
+                ) : (
+                    <></>
+                )
+            )}
         </Menu>
     );
 }

@@ -1,5 +1,5 @@
-import { useApiClient } from '@equinor/portal-client';
 import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useHttpClient } from '../../../../Core/Client/Hooks';
 import { HandoverResourceTypeMap } from '../models/handoverResources';
 
 type UseHandoverResource<T extends keyof HandoverResourceTypeMap> = {
@@ -18,7 +18,7 @@ const useHandoverResource = <T extends keyof HandoverResourceTypeMap>(
     This causes an infinite render loop when added as dependency to getData.
      apiClient should be stable, but does not look to be the case.   
     **/
-    const apiClient = useApiClient();
+    const apiClient = useHttpClient();
     const fusionApi = useMemo(() => apiClient.fusion, [apiClient]);
 
     const getData = useCallback(async () => {

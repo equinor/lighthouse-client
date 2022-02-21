@@ -10,12 +10,16 @@ interface CompletionViewTabsProps {
 }
 
 export const WorkSpaceTabs = ({ tabs, activeTab }: CompletionViewTabsProps): JSX.Element => {
+    //Todo add loading spinner here !!!!!!!!
     return (
         <Panels>
             {tabs.map((tab, index) => {
                 const ViewComponent = tab.viewComponent;
                 return (
-                    <Panel key={`panel-${tab.title}`} style={{ paddingTop: 0 }}>
+                    <Panel
+                        key={`panel-${tab.title}`}
+                        style={{ padding: '1rem', width: 'max-content' }}
+                    >
                         {activeTab == index && <ViewComponent />}
                     </Panel>
                 );

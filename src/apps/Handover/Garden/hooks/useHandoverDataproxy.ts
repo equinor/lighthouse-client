@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
+import { useHttpClient } from '../../../../Core/Client/Hooks';
 
 type HandoverPackageTypes =
     | 'mcpkg'
@@ -26,7 +26,7 @@ export const useHandoverData = <T extends unknown>(
     const [data, setData] = useState<T[]>([]);
     const [dataFetching, setDataFetching] = useState<boolean>(false);
 
-    const apiClient = useApiClient().fusion;
+    const apiClient = useHttpClient().fusion;
 
     const getSignatures = useCallback(async () => {
         setDataFetching(true);

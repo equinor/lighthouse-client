@@ -3,7 +3,8 @@ import { ApexOptions } from 'apexcharts';
 import { useMemo, useState } from 'react';
 import Chart from 'react-apexcharts';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { timeChartSeries, TimeDimension } from '../../Utils/createTime';
+import { TimeDimension } from '../../Types';
+import { timeChartSeries } from '../../Utils/createTime';
 import { TimeChip, TimeWrapper } from './Styles/Styles';
 import { TimeBarChartProps } from './Types/timeVisualOptions';
 

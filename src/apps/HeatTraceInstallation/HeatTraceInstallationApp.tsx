@@ -1,8 +1,8 @@
-import { pipetestData } from './pipetestData';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { Pipetest } from './Types/Pipetest';
+import { ClientApi } from '@equinor/portal-client';
 import { CustomSidesheet } from './CustomSidesheet';
-import { ClientApi } from '@equinor/app-builder';
+import { pipetestData } from './pipetestData';
+import { Pipetest } from './Types/Pipetest';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<Pipetest>({
@@ -26,7 +26,7 @@ export function setup(appApi: ClientApi): void {
         hiddenColumns: ['tagTree'],
         enableSelectRows: true,
         headers: [
-            { key: 'name', title: 'Name' },
+            { key: 'name', title: 'Name', width: 1000 },
             { key: 'description', title: 'Description' },
             { key: 'checklists', title: 'Checklists' },
             { key: 'lineAndSpools', title: 'Line and spools' },

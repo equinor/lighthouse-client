@@ -1,4 +1,5 @@
 import { Schema } from '@equinor/Form';
+import { httpClient } from '../../../Core/Client/Functions/HttpClient';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
 interface Category {
@@ -23,9 +24,8 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         order: 2,
         placeholderText: 'Select phase',
     },
-
     category: {
-        title: 'Category',
+        title: 'Change category',
         inputType: {
             type: 'SingleSelect',
             selectOptions: async () => {
@@ -35,15 +35,28 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         order: 3,
         placeholderText: 'Select category',
     },
+    originSource: {
+        title: 'Change origin',
+        inputType: {
+            type: 'SingleSelect',
+            selectOptions: ['NCR', 'DCN', 'Query', 'Punch', "SWCR", 'NotApplicable'],
+        },
+        order: 3,
+        placeholderText: 'Select origin',
+    },
+    originSourceId: {
+        optional: true,
+    },
+
     description: {
-        title: 'Description',
+        title: 'Scope description',
         inputType: { type: 'TextArea' },
         order: 4,
         placeholderText: 'Please add description',
     },
     guesstimateHours: {
-        title: 'Guesstimate hours',
-        optional: true,
+        title: 'Guess direct Mhrs',
+        optional: false,
         inputType: { type: 'NumberInput' },
         order: 5,
     },
@@ -61,6 +74,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
  * @returns
  */
 const getCategories = async (): Promise<string[]> => {
+    const { scopeChange } = httpClient();
     let selectOptions: string[] = [];
     const requestOptions = {
         method: 'GET',
@@ -68,10 +82,8 @@ const getCategories = async (): Promise<string[]> => {
             'Content-Type': 'application/json',
         },
     };
-    await fetch(
-        `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/categories`,
-        requestOptions
-    )
+    await scopeChange
+        .fetch(`api/categories`, requestOptions)
         .then((response) => response.json())
         .then((data) => {
             selectOptions = data.map((x: Category) => x.name);
@@ -81,6 +93,8 @@ const getCategories = async (): Promise<string[]> => {
 };
 
 const getPhases = async (): Promise<string[]> => {
+    const { scopeChange } = httpClient();
+
     let selectOptions: string[] = [];
     const requestOptions = {
         method: 'GET',
@@ -88,10 +102,8 @@ const getPhases = async (): Promise<string[]> => {
             'Content-Type': 'application/json',
         },
     };
-    await fetch(
-        `https://app-ppo-scope-change-control-api-dev.azurewebsites.net/api/phases`,
-        requestOptions
-    )
+    await scopeChange
+        .fetch(`api/phases`, requestOptions)
         .then((response) => response.json())
         .then((data) => {
             selectOptions = data.map((x: Category) => x.name);

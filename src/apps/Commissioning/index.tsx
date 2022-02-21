@@ -1,5 +1,5 @@
-import { ClientApi } from '@equinor/app-builder';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { ClientApi } from '@equinor/portal-client';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 interface Checklist {
@@ -85,74 +85,21 @@ export function setup(appApi: ClientApi): void {
         reportURI: 'swcr-analytics-rls',
     });
 
-    // const workPreparation = commissioning.registerDashboard<WP>('work-preparation', {
-    //     title: 'Work Preparation',
-    // });
-
-    // // Loop Data Test for testing system..
-    // workPreparation.registerDataSource(async () => {
-    //     const plantId = 'PCS$JOHAN_CASTBERG';
-    //     const project = 'L.O532C.002';
-    //     const response = await api.fetch(
-    //         `https://api-lighthouse-production.playground.radix.equinor.com/loops/${plantId}/${project}`
-    //     );
-
-    //     return JSON.parse(await response.text());
-    // });
-
-    // const excludeKeys: (keyof WP)[] = [
-    //     'tagNo',
-    //     'functionTags',
-    //     'contentChecklists',
-    //     'description',
-    //     'commPk',
-    //     'mcPk',
-    //     'signedAt',
-    //     'createdAt',
-    // ];
-
-    // workPreparation.registerFilterOptions({ excludeKeys });
-
-    // workPreparation.registerPage({
-    //     title: 'Jobcards',
-    //     pageId: 'workPreparationJobCards',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions,
-    // });
-
-    // workPreparation.registerPage({
-    //     title: 'Hours',
-    //     pageId: 'workPreparationHours',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions2,
-    // });
-    // workPreparation.registerPage({
-    //     title: 'Details',
-    //     pageId: 'workPreparationDetails',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions,
-    // });
-    // workPreparation.registerPage({
-    //     title: 'Hold',
-    //     pageId: 'workPreparationDetailsHold',
-    //     type: 'AnalyticsPage',
-    //     ...analyticsOptions2,
-    // });
-
-    /** 
-    Remove LCI hanging garden, since its not relevant for Commissioning
-    */
-    // construction.registerFusionPowerBi('lci-hanging-gardens', {
-    //     title: 'LCI Hanging Garden',
-    //     reportURI: 'lci-hanging-gardens',
-    // });
+    pages.registerFusionPowerBi('jca-installation', {
+        title: 'Installation',
+        reportURI: 'jca-installation',
+    });
+    pages.registerFusionPowerBi('jca-handover-analytics', {
+        title: 'Handover',
+        reportURI: 'jca-handover-analytics',
+    });
     pages.registerFusionPowerBi('jca-checklist', {
         title: 'Checklist Analytics',
         reportURI: 'jca-checklist',
     });
     pages.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
         title: 'Punch Analytics',
-        reportURI: 'punch-analytics-rls',
+        reportURI: 'jca-punch-analytics',
     });
 
     /** 

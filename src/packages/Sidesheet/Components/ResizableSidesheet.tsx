@@ -1,35 +1,36 @@
-import { Resizable } from 're-resizable';
-import styled from 'styled-components';
+import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useState } from 'react';
-import { useAtom } from '@dbeining/react-atom';
-import { getSidesheetContext } from '../context/sidesheetContext';
+import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import { Resizable } from 're-resizable';
+import { useEffect } from 'react';
+import styled from 'styled-components';
+import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
+import { useSideSheet } from '../context/sidesheetContext';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
-import { Icon } from '@equinor/eds-core-react';
 
 export const ResizableSidesheet = (): JSX.Element | null => {
-    const { closeSidesheet, togglePinned } = useInternalSidesheetFunction();
+    const { SidesheetComponent, props, isPinned, minWidth, width, isMinimized, defaultWidth } =
+        useSideSheet();
+    const { closeSidesheet, togglePinned, setIsMinimized, setWidth } =
+        useInternalSidesheetFunction();
 
-    const [isMinimized, setIsMinimized] = useState<boolean>(false);
-    const defaultWidth = 650;
-    const [width, setWidth] = useState<number>(defaultWidth);
-
-    const minWidth = 40;
-
-    const { SidesheetComponent, props, isPinned } = useAtom(getSidesheetContext());
     const handleMinimize = () => {
         setIsMinimized((prev) => !prev);
     };
 
+    useEffect(() => {
+        SidesheetComponent && setWidth(defaultWidth);
+        return () => {
+            isPinned && setWidth(0);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     if (isMinimized) {
         return (
-            <div>
-                <Icon
-                    name="chevron_left"
-                    color={tokens.colors.interactive.primary__resting.hex}
-                    onClick={handleMinimize}
-                />
-            </div>
+            <Button variant="ghost_icon" onClick={handleMinimize}>
+                <Icon name="chevron_left" color={tokens.colors.interactive.primary__resting.hex} />
+            </Button>
         );
     }
 
@@ -38,7 +39,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     return (
         <div>
             <Resizable
-                size={{ width: width, height: '100%' }}
+                size={{ width: width, height: window.innerHeight - 55 }}
                 maxWidth={'100vh'}
                 onResizeStop={(e, direction, ref, d) => {
                     if (width + d.width < minWidth) {
@@ -50,29 +51,39 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                 }}
             >
                 <Header>
-                    <Icon
-                        name="chevron_right"
-                        color={tokens.colors.interactive.primary__resting.hex}
-                        onClick={handleMinimize}
-                    />
+                    <Button variant="ghost_icon" onClick={handleMinimize}>
+                        <Icon
+                            name="chevron_right"
+                            size={24}
+                            color={tokens.colors.interactive.primary__resting.hex}
+                        />
+                    </Button>
 
                     <span>
-                        <Icon
-                            name={'thumb_pin'}
-                            onClick={togglePinned}
-                            color={
-                                isPinned ? tokens.colors.interactive.primary__resting.hex : 'grey'
-                            }
-                        />
-                        <Icon
-                            name="close"
-                            color={tokens.colors.interactive.primary__resting.hex}
-                            onClick={closeSidesheet}
-                        />
+                        <Button variant="ghost_icon" onClick={togglePinned}>
+                            <Icon
+                                name={'thumb_pin'}
+                                size={24}
+                                color={
+                                    isPinned
+                                        ? tokens.colors.interactive.primary__resting.hex
+                                        : 'grey'
+                                }
+                            />
+                        </Button>
+                        <Button variant="ghost_icon" onClick={closeSidesheet}>
+                            <Icon
+                                name="close"
+                                size={24}
+                                color={tokens.colors.interactive.primary__resting.hex}
+                            />
+                        </Button>
                     </span>
                 </Header>
 
-                <SidesheetComponent {...props} />
+                <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
+                    <SidesheetComponent {...props} />
+                </ErrorBoundary>
             </Resizable>
         </div>
     );

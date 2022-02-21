@@ -1,5 +1,4 @@
 import { BarChartVisual, LineChartVisual, TableVisual, TimeChart } from '@equinor/Diagrams';
-import { ConstructionVisual } from '..';
 import { Options } from '../Types';
 import { HorizontalBarVisual } from '../Visuals/HorizontalBarVisual/HorizontalBarVisual';
 import { ChartsWrapper, Circular, Loading } from './GetChartsStyles';
@@ -9,10 +8,6 @@ export function getChart<T>(
     config: Options<T> = { type: 'default' },
     isLoading?: boolean
 ): JSX.Element {
-    let Component: React.FC<{ data: T[] }> = () => <></>;
-    if (config.type === 'customVisual') {
-        Component = config.options.component;
-    }
     switch (config.type) {
         case 'barChart':
             return (
@@ -58,7 +53,7 @@ export function getChart<T>(
             return (
                 <ChartsWrapper>
                     {/* {!isLoading ? ( */}
-                    <div style={{ display: 'flex', flexDirection: 'column', overflow: 'scroll' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <TableVisual<any> data={data} options={config.options} />
                     </div>
                     {/* ) : (
@@ -67,19 +62,6 @@ export function getChart<T>(
                             Loading...
                         </Loading>
                     )} */}
-                </ChartsWrapper>
-            );
-        case 'constructionChart':
-            return (
-                <ChartsWrapper>
-                    {!isLoading ? (
-                        <ConstructionVisual data={data} options={config.options} />
-                    ) : (
-                        <Loading>
-                            <Circular />
-                            Loading...
-                        </Loading>
-                    )}
                 </ChartsWrapper>
             );
         case 'horizontalBarChart':
@@ -96,10 +78,11 @@ export function getChart<T>(
                 </ChartsWrapper>
             );
         case 'customVisual':
+            const Component = config.options.component;
             return (
                 <ChartsWrapper>
                     {!isLoading ? (
-                        <Component data={data} />
+                        <Component data={data} {...config.options.componentProps} />
                     ) : (
                         <Loading>
                             <Circular />

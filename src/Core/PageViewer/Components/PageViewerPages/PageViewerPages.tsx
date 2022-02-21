@@ -36,7 +36,12 @@ export const PageViewerPages = ({
                     return (
                         <Page key={`panel-${key}`} style={{ paddingTop: 0 }}>
                             {activePage == index && (
-                                <PowerBI reportUri={page.reportURI} filterOptions={page.filter} />
+                                <PowerBI
+                                    reportUri={page.reportURI}
+                                    filterOptions={page.filter}
+                                    options={page.options}
+                                    isFilterActive={isFilterActive}
+                                />
                             )}
                         </Page>
                     );

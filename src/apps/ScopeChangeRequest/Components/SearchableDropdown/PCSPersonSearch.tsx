@@ -1,52 +1,34 @@
-import { useApiClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { SingleValue, Theme } from 'react-select';
-import AsyncSelect from 'react-select/async';
-import { searchPcs } from '../../Api/Search/PCS/searchPcs';
-import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './applyEds';
-
-interface SelectOption {
-    label: string;
-    value: string;
-}
+import { GroupBase, OptionsOrGroups, SingleValue } from 'react-select';
+import { SearchableSingleSelect } from '../Form/Origins/SearchableSingleSelect';
+import { TypedSelectOption } from '../../Api/Search/searchType';
+import { usePcsSearch } from '../../Hooks/Search/usePcsSearch';
 
 interface PCSLinkProps {
-    person: SelectOption | undefined;
-    setPerson: React.Dispatch<React.SetStateAction<SelectOption | undefined>>;
+    person: TypedSelectOption | null;
+    setPerson: React.Dispatch<React.SetStateAction<TypedSelectOption | null>>;
+    isDisabled?: boolean;
 }
 
-export const PCSPersonSearch = ({ person, setPerson }: PCSLinkProps): JSX.Element => {
-    const { procosys } = useApiClient();
+export const PCSPersonSearch = ({ setPerson, isDisabled }: PCSLinkProps): JSX.Element => {
+    const { searchPCS } = usePcsSearch();
 
-    const loadOptions = async (inputValue: string, callback: (options: SelectOption[]) => void) => {
-        callback(await searchPcs(inputValue, 'person', procosys));
+    const loadOptions = async (
+        inputValue: string,
+        signal: AbortSignal,
+        callback: (
+            options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
+        ) => void
+    ) => {
+        callback(await searchPCS(inputValue, 'person', signal));
     };
 
     return (
-        <>
-            <div style={{ width: '600px', borderBottom: '5px solid #6F6F6F', fontSize: '16px' }}>
-                <AsyncSelect
-                    cacheOptions={false}
-                    loadOptions={loadOptions}
-                    defaultOptions={false}
-                    value={person}
-                    styles={applyEdsStyles()}
-                    controlShouldRenderValue={false}
-                    components={{ ...applyEdsComponents() }}
-                    placeholder={`Type to search..`}
-                    noOptionsMessage={(obj: { inputValue: string }) => {
-                        if (!obj.inputValue || obj.inputValue.length === 0) {
-                            return <></>;
-                        } else {
-                            return <div>No results</div>;
-                        }
-                    }}
-                    isClearable
-                    onChange={(newValue: SingleValue<SelectOption>) => {
-                        setPerson(newValue ?? undefined);
-                    }}
-                    theme={(theme: Theme) => applyEDSTheme(theme)}
-                />
-            </div>
-        </>
+        <SearchableSingleSelect
+            isDisabled={isDisabled}
+            loadOptions={loadOptions}
+            onChange={(newValue: SingleValue<TypedSelectOption>) => {
+                setPerson(newValue ?? null);
+            }}
+        />
     );
 };

@@ -8,6 +8,7 @@ import {
     UseGroupByColumnOptions,
     CellProps,
     Cell,
+    HeaderProps,
 } from 'react-table';
 
 export type TableData = Record<string | number, unknown>;
@@ -18,6 +19,7 @@ export type ColumnOptions<T extends TableData> = {
     customColumns?: CustomColumn<T>[];
     headers?: CustomHeader<T>[];
     customCellView?: CustomCell<T>[];
+    hiddenColumnsCount?: number;
 };
 
 /**
@@ -37,7 +39,9 @@ export type CellRenderProps<T> = {
 type ObjectOrTableData<T> = T extends object ? T : TableData;
 
 export type CustomColumn<T> = Column<ObjectOrTableData<T>> &
-    Required<Pick<Column<ObjectOrTableData<T>>, 'Aggregated' | 'aggregate' | 'Header' | 'id'>>;
+    Required<
+        Pick<Column<ObjectOrTableData<T>>, 'Aggregated' | 'aggregate' | 'Header' | 'id' | 'width'>
+    >;
 
 export type CustomCellType<T, D extends TableData> = {
     /** Custom cell to be display. Has access to table data object when used as a method */
@@ -48,6 +52,10 @@ export type CellType<T, D extends TableData = TableData> =
     | 'Date'
     | 'Description'
     | 'Status'
+    | 'Link'
+    | 'Progress'
+    | 'Array'
+    | 'RelativeDate'
     | CustomCellType<T, D>;
 
 export type CustomCell<T> = {
@@ -61,12 +69,22 @@ export type CustomCell<T> = {
     cellAttributeFn?: CellAttributeFn<T>;
 };
 
+export type CustomHeaderType<T> = {
+    /** Custom Header to be displayed. Has access to table data object when used as a method */
+    Custom: Renderer<HeaderProps<ObjectOrTableData<T>>>;
+};
+
+export type HeaderType<T> = string | CustomHeaderType<T>;
+
 export type CustomHeader<T> = {
     /** Unique key to specify which column the custom header is added to */
     key: keyof T;
 
-    /** Title which is shown instead of default header title */
-    title: string;
+    /** Title which is shown instead of default header title. Either string og object with custom Header renderer */
+    title: HeaderType<T>;
+
+    /** Optional width parameter for the column in px */
+    width?: number;
 };
 
 export type Column<T extends object = TableData> = ColumnDefault<T> &
@@ -86,15 +104,15 @@ declare module 'react-table' {
     //@ts-ignore
     export interface TableOptions<TData extends TableData = TableData>
         extends UseExpandedOptions<TData>,
-        UseFiltersOptions<TData>,
-        UseGlobalFiltersOptions<TData>,
-        UseGroupByOptions<TData>,
-        UsePaginationOptions<TData>,
-        UseResizeColumnsOptions<TData>,
-        UseRowSelectOptions<TData>,
-        UseRowStateOptions<TData>,
-        UseSortByOptions<TData>,
-        TableData {
+            UseFiltersOptions<TData>,
+            UseGlobalFiltersOptions<TData>,
+            UseGroupByOptions<TData>,
+            UsePaginationOptions<TData>,
+            UseResizeColumnsOptions<TData>,
+            UseRowSelectOptions<TData>,
+            UseRowStateOptions<TData>,
+            UseSortByOptions<TData>,
+            TableData {
         /** Set to true if checkboxes should be shown */
         enableSelectRows?: boolean;
         /** Click handler for cells */
@@ -109,16 +127,16 @@ declare module 'react-table' {
     //@ts-ignore
     export interface ColumnInstance<TData extends TableData = TableData>
         extends UseFiltersColumnProps<TData>,
-        UseGroupByColumnProps<TData>,
-        UseResizeColumnsColumnProps<TData>,
-        UseSortByColumnProps<TData> {
+            UseGroupByColumnProps<TData>,
+            UseResizeColumnsColumnProps<TData>,
+            UseSortByColumnProps<TData> {
         align: any; // TODO : what is it used for
     }
 
     //@ts-ignore
     export interface TableInstance<D extends TableData>
         extends UsePaginationInstanceProps<D>,
-        UseColumnOrderInstanceProps<D> {
+            UseColumnOrderInstanceProps<D> {
         pageSizes?: number[];
         data: D[];
     }
@@ -126,7 +144,7 @@ declare module 'react-table' {
     //@ts-ignore
     export interface Cell<D extends TableData>
         extends UseTableCellProps<D>,
-        UseGroupByCellProps<D> { }
+            UseGroupByCellProps<D> {}
 
     //@ts-ignore
     export type Column<TData extends TableData> = Column<TData>;
@@ -135,7 +153,7 @@ declare module 'react-table' {
     export type PluginHook<TData extends TableData> = PluginHookDefault<TData>;
 
     //@ts-ignore
-    export interface TableState<D extends TableData> extends Partial<UseGroupByState<D>> { }
+    export interface TableState<D extends TableData> extends Partial<UseGroupByState<D>> {}
 }
 
 export type { TableOptions, Cell, TableInstance, CellProps } from 'react-table';

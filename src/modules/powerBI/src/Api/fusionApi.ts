@@ -1,5 +1,5 @@
 import { NetworkError } from '@equinor/http-client';
-import { useApiClient } from '@equinor/portal-client';
+import { useHttpClient } from '@equinor/portal-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
 import { useState } from 'react';
 import { Filter, PowerBiFilter } from '../models/filter';
@@ -21,10 +21,16 @@ interface useFusionClientReturn {
     getConfig: () => Promise<IReportEmbedConfiguration>;
     error: NetworkError | undefined;
 }
-export function useFusionClient(resource: string, filterOptions?: Filter[]): useFusionClientReturn {
-    const { fusion } = useApiClient();
+export function useFusionClient(
+    resource: string,
+    filterOptions?: Filter[],
+    options?: {
+        showFilter?: boolean;
+        enablePageNavigation?: boolean;
+    }
+): useFusionClientReturn {
+    const { fusion } = useHttpClient();
     const [error, setError] = useState<NetworkError>();
-
     const baseUri = 'https://app-ppo-proxy-dev.azurewebsites.net/fusion/reports';
 
     const filters: PowerBiFilter[] = [];
@@ -67,10 +73,10 @@ export function useFusionClient(resource: string, filterOptions?: Filter[]): use
                 panes: {
                     filters: {
                         expanded: false,
-                        visible: false,
+                        visible: options?.showFilter ?? false,
                     },
                     pageNavigation: {
-                        visible: false,
+                        visible: options?.enablePageNavigation ?? false,
                     },
                 },
             },

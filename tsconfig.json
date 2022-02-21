@@ -21,7 +21,6 @@
             "@equinor/Kpi": ["./src/packages/KPI"],
             "@equinor/portal-client": ["./src/Core/Client"],
             "@equinor/sidesheet": ["./src/packages/Sidesheet"],
-            "@equinor/app-builder": ["./src/Core/AppBuilder"],
             "@equinor/GroupView": ["./src/Core/GroupView"],
             "@equinor/WorkSpace": ["./src/Core/WorkSpace"],
             "@equinor/PageViewer": ["./src/Core/PageViewer"],
@@ -35,14 +34,11 @@
             "@equinor/Diagrams": ["./src/packages/Diagrams"],
             "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
             "@equinor/Table": ["./src/packages/Table"],
-            "@equinor/authentication": ["./packages/authentication"],
-            "@equinor/http-client": ["./packages/httpClient"],
-            "@equinor/lighthouse-core": ["./packages/core"],
-            "@equinor/lighthouse-hooks": ["./packages/hooks"],
-            "@equinor/lighthouse-components": ["./packages/components"],
-            "@equinor/lighthouse-conf": ["./packages/configuration"],
-            "@equinor/lighthouse-util": ["./packages/util"],
-            "@equinor/lighthouse-typeGuard": ["./packages/typeGuard"]
+            "@equinor/authentication": ["./src/packages/authentication"],
+            "@equinor/http-client": ["./src/Core/httpClient"],
+            "@equinor/hooks": ["./src/hooks"],
+            "@equinor/Utils": ["./src/packages/Utils"],
+            "@equinor/typeGuard": ["./src/packages/typeGuard"]
         }
     },
     "compileOnSave": true,

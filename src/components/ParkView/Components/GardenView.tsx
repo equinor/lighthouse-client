@@ -54,7 +54,7 @@ export function GardenView<T>(): JSX.Element | null {
     const columnKeys = useMemo(
         () =>
             Object.keys(garden).sort(
-                fieldSettings[gardenKey]?.getColumnSort || defaultSortFunction
+                fieldSettings?.[gardenKey]?.getColumnSort || defaultSortFunction
             ),
         [fieldSettings, garden, gardenKey]
     );

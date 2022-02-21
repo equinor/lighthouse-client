@@ -10,7 +10,7 @@ import {
     WorkflowEditorOptions,
 } from './State';
 
-export type DataSource<T> = () => Promise<T[]>;
+export type DataSource<T> = (abortController?: AbortController) => Promise<T[]>;
 export type Validator<T> = (data: unknown[]) => T[];
 export type FactoryOptions = Omit<Factory, 'factoryId'>;
 

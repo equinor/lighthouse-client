@@ -1,9 +1,30 @@
-client:
-    - ./src/**
+GithubActions:
+    - .github/**
 
-configuration:
+Apps:
+    - ./src/apps/**
+
+Core:
+    - ./src/Core/**
+
+Packages:
+    - ./src/packages/**
+
+WorkSpace:
+    - ./src/Core/WorkSpace/**
+
+PageViewer:
+    - ./src/Core/PageViewer/**
+
+Client:
+    - ./src/Core/Client/**
+
+Configuration:
     - ./*
 
-dependencies:
+Pipelines:
+    - ./pipelines/*
+
+Dependencies:
     - package.json
     - yarn.lock

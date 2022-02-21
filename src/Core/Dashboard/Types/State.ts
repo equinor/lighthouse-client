@@ -38,7 +38,7 @@ export interface CustomPage<T> {
     data: T[];
 }
 
-export type DataSource<T> = () => Promise<T[]>;
+export type DataSource<T> = (abortController?: AbortController) => Promise<T[]>;
 export type Validator<T> = (data: unknown[]) => T[];
 
 export interface FilterOptions<T> {

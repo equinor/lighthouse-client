@@ -84,6 +84,7 @@ stages:
           repository: '${{ variables.repositoryName }}'
           containerRegistry: '${{ variables.containerRegistry }}'
           appName: '${{ variables.appName }}'
+          appConfigName: '${{ variables.appConfigName }}'
 
   # Deploy to test environment
   - stage: test
@@ -112,6 +113,7 @@ stages:
           repository: '${{ variables.repositoryName }}'
           containerRegistry: '${{ variables.containerRegistry }}'
           appName: '${{ variables.appName }}'
+          appConfigName: '${{ variables.appConfigName }}'
 
   # Deploy to prod environment
   - stage: prod
@@ -140,3 +142,4 @@ stages:
           repository: '${{ variables.repositoryName }}'
           containerRegistry: '${{ variables.containerRegistry }}'
           appName: '${{ variables.appName }}'
+          appConfigName: '${{ variables.appConfigName }}'

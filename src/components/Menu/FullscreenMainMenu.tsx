@@ -1,34 +1,26 @@
-import {
-    FullscreenMenuAppColumn,
-    FullscreenMenuItems,
-    FullscreenMenuWrapper,
-    MenuItem,
-    FullscreenMenuItemText,
-    FullscreenMenuGroupHeaderLink,
-    FullscreenMenuGroupHeaderText,
-    Title,
-    FullscreenMenuAppGroup,
-    FullscreenSearchWrapper,
-} from './Styles';
 import { Search } from '@equinor/eds-core-react';
-import { Manifests } from '@equinor/app-builder';
 import { tokens } from '@equinor/eds-tokens';
-import { Link } from 'react-router-dom';
-import Icon from '../Icon/Icon';
-import { filterByValue, groupeByKey } from './utils';
+import { useClientContext } from '@equinor/portal-client';
 import { useMemo, useState } from 'react';
-import { isProduction, useClientContext } from '@equinor/portal-client';
+import Icon from '../Icon/Icon';
+import {
+    FullscreenMenuAppGroup,
+    FullscreenMenuGroupHeaderText,
+    FullscreenMenuWrapper,
+    HeaderLink,
+    MenuColumn,
+    MenuRow,
+    MenuScrim
+} from './FullscreenMainMenuStyles';
+import { MenuItem } from './MenuItem';
+import { filterByValue, groupeByKey } from './utils';
 
-interface FullscreenMainMenuProps {
-    manifests: Manifests;
-}
-
-export const FullscreenMainMenu = ({ manifests }: FullscreenMainMenuProps): JSX.Element => {
-    const isProd = isProduction();
-    const { apps, appGroups } = manifests;
-    const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
+export const FullscreenMainMenu = (): JSX.Element => {
     const [searchValue, setSearchValue] = useState('');
-    const { appsPanelActive, toggleAppPanel, toggleFullscreenMenu } = useClientContext();
+    const { registry, toggleFullscreenMenu } = useClientContext();
+
+    const { apps, appGroups } = registry;
+    const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
 
     const filteredList = filterByValue(GroupedMenu, searchValue, 'title');
 
@@ -45,7 +37,7 @@ export const FullscreenMainMenu = ({ manifests }: FullscreenMainMenuProps): JSX.
             const CustomIcon = appGroups[key].icon;
             return (
                 <FullscreenMenuAppGroup key={key}>
-                    <FullscreenMenuGroupHeaderLink
+                    <HeaderLink
                         to={`${key}`}
                         className="noBorder"
                         onClick={() => toggleFullscreenMenu()}
@@ -61,67 +53,41 @@ export const FullscreenMainMenu = ({ manifests }: FullscreenMainMenuProps): JSX.
                         <FullscreenMenuGroupHeaderText>
                             {appGroups[key].name}
                         </FullscreenMenuGroupHeaderText>
-                    </FullscreenMenuGroupHeaderLink>
-                    <div className="noBorder">
-                        {filteredList[key].map((item) => (
-                            <Link
-                                className="link"
-                                key={`link-${item.shortName}`}
-                                to={`${key}/${item.shortName}`}
+                    </HeaderLink>
+
+                    {filteredList[key].map((item) => {
+                        return (
+                            <MenuItem
+                                key={`acc-${item.shortName}`}
+                                appId={key}
+                                manifest={item}
+                                isFullMenu={true}
                                 onClick={() => toggleFullscreenMenu()}
-                                title={!item.isProduction && isProd ? 'Disabled' : item.title}
-                                style={!item.isProduction && isProd ? { color: '#e3e3e3' } : {}}
-                            >
-                                {item.title}
-                            </Link>
-                        ))}
-                    </div>
+                            />
+                        );
+                    })}
                 </FullscreenMenuAppGroup>
             );
         });
 
     return (
-        <FullscreenMenuWrapper>
-            <FullscreenSearchWrapper>
-                <Search
-                    aria-label="sitewide"
-                    id="search-normal"
-                    placeholder="Search"
-                    onChange={handleOnChange}
-                />
-            </FullscreenSearchWrapper>
-            <FullscreenMenuAppColumn>{appColumn(1)}</FullscreenMenuAppColumn>
-            <FullscreenMenuAppColumn>{appColumn(2)}</FullscreenMenuAppColumn>
-            <FullscreenMenuAppColumn>{appColumn(3)}</FullscreenMenuAppColumn>
-            <FullscreenMenuAppColumn>{appColumn(4)}</FullscreenMenuAppColumn>
-
-            <FullscreenMenuItems>
-                <Title className="noBorder">
-                    <Icon name={'fullscreen'} title={'Menu'} color={'#007079'} />
-                    <FullscreenMenuGroupHeaderText style={{ cursor: 'default' }}>
-                        Menu
-                    </FullscreenMenuGroupHeaderText>
-                </Title>
-                <MenuItem
-                    onClick={() => {
-                        appsPanelActive ? toggleAppPanel() : null;
-                        toggleFullscreenMenu();
-                    }}
-                >
-                    <FullscreenMenuItemText>Minimized</FullscreenMenuItemText>
-                </MenuItem>
-                <MenuItem
-                    onClick={() => {
-                        !appsPanelActive ? toggleAppPanel() : null;
-                        toggleFullscreenMenu();
-                    }}
-                >
-                    <FullscreenMenuItemText>Standard</FullscreenMenuItemText>
-                </MenuItem>
-                <MenuItem>
-                    <FullscreenMenuItemText disabled={true}>Expand all</FullscreenMenuItemText>
-                </MenuItem>
-            </FullscreenMenuItems>
-        </FullscreenMenuWrapper>
+        <MenuScrim onClick={() => toggleFullscreenMenu()}>
+            <FullscreenMenuWrapper>
+                <MenuRow>
+                    <Search
+                        aria-label="sitewide"
+                        id="search-normal"
+                        placeholder="Search"
+                        onChange={handleOnChange}
+                    />
+                </MenuRow>
+                <MenuRow>
+                    <MenuColumn>{appColumn(1)}</MenuColumn>
+                    <MenuColumn>{appColumn(2)}</MenuColumn>
+                    <MenuColumn>{appColumn(3)}</MenuColumn>
+                    <MenuColumn>{appColumn(4)}</MenuColumn>
+                </MenuRow>
+            </FullscreenMenuWrapper>
+        </MenuScrim>
     );
 };

@@ -1,43 +1,34 @@
-import { BaseClient } from '@equinor/http-client';
+import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
-import { PCSStructure } from './Types/searchStructure';
-import { System } from './Types/system';
+import { System } from '../../../Types/ProCoSys/system';
 
-export const searchSystem = async (
+export async function searchSystems(
     searchString: string,
-    procosysClient: BaseClient
-): Promise<TypedSelectOption[]> => {
+    procosysClient: HttpClient,
+    signal?: AbortSignal
+): Promise<TypedSelectOption[]> {
     const selectOptions: TypedSelectOption[] = [];
-
-    const search: PCSStructure[] = [
-        {
-            Key: 'LibraryCode',
-            Value: searchString,
-        },
-    ];
-
-    const requestOptions = {
-        method: 'POST',
-        body: JSON.stringify(search),
-    };
-
-    await procosysClient
+    const res: Promise<System[]> = await procosysClient
         .fetch(
-            `https://procosyswebapi.equinor.com/api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=105667&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
-            requestOptions
+            'api/Systems?plantId=PCS%24JOHAN_CASTBERG&projectId=177433&onlyActiveSystems=true&api-version=4.1',
+            { signal }
         )
-        .then((response) => response.json())
-        .then((data) => {
-            data.map((x: System) => {
+        .then((x) => x.json());
+
+    try {
+        (await res)
+            .filter((x) => x.Code.includes(searchString))
+            .map((x) =>
                 selectOptions.push({
-                    label: `SYS_${x.Code} - ${x.Description}`,
-                    value: x.Code,
+                    label: `${x.Code} - ${x.Description}`,
+                    value: x.Id.toString(),
                     searchValue: x.Code,
                     type: 'system',
                     object: x,
-                });
-            });
-        });
-
-    return selectOptions || [];
-};
+                })
+            );
+    } catch (e) {
+        console.error(e);
+    }
+    return selectOptions;
+}

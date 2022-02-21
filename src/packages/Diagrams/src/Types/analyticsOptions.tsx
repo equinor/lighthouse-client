@@ -1,4 +1,3 @@
-import { ConstructionGraphOptions } from '..';
 import { BarChartOptions } from '../Visuals/BarVisual/Types/barVisualOptions';
 import { HorizontalBarChartOptions } from '../Visuals/HorizontalBarVisual/Types/barVisualOptions';
 import { LineChartOptions } from '../Visuals/LineVisual/LineChartVisual';
@@ -19,11 +18,6 @@ interface ControlledTimeBarChart<T> {
     options: TimeBarChartOptions<T>;
 }
 
-interface ConstructionChart<T> {
-    type: 'constructionChart';
-    options: ConstructionGraphOptions<T>;
-}
-
 interface Table<T> {
     type: 'table';
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -40,9 +34,13 @@ interface CustomVisual<T> {
     type: 'customVisual';
     options: CustomVisualOptions<T>;
 }
-
+export type CustomVisualArgs<T> = {
+    data: T[];
+    [x: string]: unknown;
+};
 interface CustomVisualOptions<T> {
-    component: React.FC<{ data: T[] }>;
+    component: React.ComponentType<CustomVisualArgs<T>>;
+    componentProps?: { [x: string]: unknown };
 }
 interface Default {
     type: 'default';
@@ -55,7 +53,6 @@ export type Options<T> =
     | CustomVisual<T>
     | HorizontalBarChart<T>
     | Table<T>
-    | ConstructionChart<T>
     | Default;
 
 interface Section<T> {

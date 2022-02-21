@@ -1,21 +1,20 @@
-import { BaseClient } from '../../../../../../packages/httpClient/src';
+import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
-import { Person } from './Types/person';
+import { Person } from '../../../Types/ProCoSys/person';
 
 export const searchPerson = async (
     searchString: string,
-    procosysClient: BaseClient
+    procosysClient: HttpClient,
+    signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
-
-    const baseUrl = 'https://procosyswebapi.equinor.com/api';
-    const uri = 'Person/PersonSearch';
+    const uri = 'api/Person/PersonSearch';
     const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&searchString=${encodeURIComponent(
         searchString
     )}&numberOfRows=10&api-version=4.1`;
-    const url = `${baseUrl}/${uri}?${queryParameters}`;
+    const url = `${uri}?${queryParameters}`;
     await procosysClient
-        .fetch(url)
+        .fetch(url, { signal })
         .then((response) => response.json())
         .then((data) => {
             data.map((x: Person) => {

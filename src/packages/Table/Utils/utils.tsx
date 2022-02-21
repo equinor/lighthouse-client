@@ -1,18 +1,59 @@
 import { Row, SortByFn } from 'react-table';
-import { DateCell, DescriptionCell, StatusCell } from '../Components/Cells';
-import { CellType, CustomCell, CustomCellType, CustomHeader, TableData } from '../types';
+import {
+    DateCell,
+    DescriptionCell,
+    StatusCell,
+    LinkCell,
+    ProgressCell,
+    ArrayCell,
+    RelativeDateCell,
+} from '../Components/Cells';
+import {
+    CellType,
+    CustomCell,
+    CustomCellType,
+    CustomHeader,
+    TableData,
+    HeaderType,
+    CustomHeaderType,
+} from '../types';
 
+const isCustomHeader = <T extends TableData>(arg: HeaderType<T>): arg is CustomHeaderType<T> => {
+    return (arg as CustomHeaderType<T>).Custom !== undefined;
+};
+/**
+ * Function to find custom headers if there are any.
+ * Will return a custom Header renderer object or string.
+ * String can either just be the key, if nothing is passed to custom header config, or custom title string.
+ */
 export const findCustomHeader = <T extends TableData>(
     key: keyof T,
     headers?: CustomHeader<T>[]
-): string | keyof T => {
+) => {
     if (headers === undefined || headers.length === 0) return key;
 
     const customHeaderIndex = headers.findIndex((header) => header.key === key);
 
     if (customHeaderIndex > -1) {
-        return headers[customHeaderIndex].title;
+        const headerType = headers[customHeaderIndex].title;
+        if (isCustomHeader(headerType)) {
+            return headerType.Custom;
+        }
+        return headerType;
     } else return key;
+};
+
+export const findCustomColumnWidth = <T extends TableData>(
+    key: keyof T,
+    headers?: CustomHeader<T>[]
+): number | undefined => {
+    if (headers === undefined || headers.length === 0) return undefined;
+
+    const customHeaderIndex = headers.findIndex((header) => header.key === key);
+
+    if (customHeaderIndex > -1) {
+        return headers[customHeaderIndex].width;
+    } else undefined;
 };
 
 const isCustomCell = <T, D extends TableData>(arg: CellType<T>): arg is CustomCellType<T, D> => {
@@ -40,6 +81,14 @@ export const findCustomCell = <T extends TableData>(
                 return DescriptionCell;
             case 'Status':
                 return StatusCell;
+            case 'Link':
+                return LinkCell;
+            case 'Progress':
+                return ProgressCell;
+            case 'Array':
+                return ArrayCell;
+            case 'RelativeDate':
+                return RelativeDateCell;
             default:
                 return 'Incorrect cell type given';
         }
