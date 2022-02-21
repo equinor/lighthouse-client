@@ -189,6 +189,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
 const Title = styled.div`
     font-size: 28px;
+    max-width: 500px;
 `;
 
 const ButtonContainer = styled.div`
