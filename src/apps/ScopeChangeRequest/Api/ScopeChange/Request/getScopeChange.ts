@@ -1,9 +1,8 @@
-import { HttpClient } from '@equinor/http-client';
+import { httpClient } from '../../../../../Core/Client/Functions';
 import { ScopeChangeRequest } from '../../../Types/scopeChangeRequest';
 
-export async function getScopeChangeById(
-    id: string,
-    client: HttpClient
-): Promise<ScopeChangeRequest> {
-    return await client.fetch(`api/scope-change-requests/${id}`).then((x) => x.json());
+export async function getScopeChangeById(id: string): Promise<ScopeChangeRequest> {
+    const { scopeChange } = httpClient();
+
+    return await scopeChange.fetch(`api/scope-change-requests/${id}`).then((x) => x.json());
 }

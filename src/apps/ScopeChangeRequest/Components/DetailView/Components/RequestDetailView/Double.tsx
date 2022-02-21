@@ -13,19 +13,17 @@ import {
     WorkflowLoadingHeader,
 } from './RequestDetailViewStyles';
 import { HistoryList } from '../History/HistoryList';
-import { useApiActionObserver } from '../../../../Hooks/React-Query/useApiActionObserver';
 import { Progress } from '@equinor/eds-core-react';
-import { QueryKeys } from '../../../../Enums/queryKeys';
-import { MutationKeys } from '../../../../Enums/mutationKeys';
 import { HotUpload } from '../../../Attachments/HotUpload';
+import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
+import { useIsReferencesLoading } from '../../../../Hooks/React-Query/useIsReferencesLoading';
 
 export const SplitView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
 
-    const isBusy = useApiActionObserver(
-        [QueryKeys.Step],
-        [MutationKeys.Contribute, MutationKeys.Sign, MutationKeys.Reassign, MutationKeys.Unsign]
-    );
+    const workflowLoading = useIsWorkflowLoading();
+    const referencesLoading = useIsReferencesLoading();
+
     return (
         <SplitScreen>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
@@ -77,20 +75,21 @@ export const SplitView = (): JSX.Element => {
                     request.areas.length > 0 ||
                     request.disciplines.length > 0 ||
                     request.tags.length > 0) && (
-                        <Section>
-                            <BoldHeading>References</BoldHeading>
-                            <Value>
-                                <RelatedObjects
-                                    systems={request.systems}
-                                    commPkgs={request.commissioningPackages}
-                                    documents={request.documents}
-                                    areas={request.areas}
-                                    disciplines={request.disciplines}
-                                    tags={request.tags}
-                                />
-                            </Value>
-                        </Section>
-                    )}
+                    <Section>
+                        <BoldHeading>References</BoldHeading>
+                        {referencesLoading && <Progress.Dots color="primary" />}
+                        <Value>
+                            <RelatedObjects
+                                systems={request.systems}
+                                commPkgs={request.commissioningPackages}
+                                documents={request.documents}
+                                areas={request.areas}
+                                disciplines={request.disciplines}
+                                tags={request.tags}
+                            />
+                        </Value>
+                    </Section>
+                )}
 
                 <Section>
                     <BoldHeading>Attachments</BoldHeading>
@@ -104,7 +103,7 @@ export const SplitView = (): JSX.Element => {
                 <Section>
                     <WorkflowLoadingHeader>
                         <BoldHeading>Workflow</BoldHeading>
-                        {isBusy && <Progress.Dots color="primary" />}
+                        {workflowLoading && <Progress.Dots color="primary" />}
                     </WorkflowLoadingHeader>
                     <Workflow />
                 </Section>
