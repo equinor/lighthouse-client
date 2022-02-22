@@ -10,8 +10,16 @@ import { defaultSortFunction } from '../Utils/utilities';
 
 export function GardenView<T>(): JSX.Element | null {
     const refresh = useRefresh();
-    const { data, groupByKeys, gardenKey, options, status, fieldSettings, customView } =
-        useParkViewContext<T>();
+    const {
+        data,
+        groupByKeys,
+        gardenKey,
+        options,
+        status,
+        fieldSettings,
+        customView,
+        customGroupByKeys,
+    } = useParkViewContext<T>();
 
     const garden = useMemo(
         () =>
@@ -22,9 +30,18 @@ export function GardenView<T>(): JSX.Element | null {
                 groupByKeys,
                 status,
                 options?.groupDescriptionFunc,
-                fieldSettings
+                fieldSettings,
+                customGroupByKeys
             ),
-        [data, fieldSettings, gardenKey, groupByKeys, options?.groupDescriptionFunc, status]
+        [
+            data,
+            fieldSettings,
+            gardenKey,
+            groupByKeys,
+            options?.groupDescriptionFunc,
+            status,
+            customGroupByKeys,
+        ]
     );
 
     const Header = customView?.customHeaderView || GroupHeader;
