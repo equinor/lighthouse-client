@@ -25,14 +25,14 @@ export const SidesheetHeader = ({ handoverPackage }: SidesheetHeaderProps): JSX.
         <>
             <Title>
                 {commpkgNo}
-                <a href={url} target={'_blank'} rel="noreferrer">
+                {/* <a href={url} target={'_blank'} rel="noreferrer">
                     <Button variant="ghost">
                         <Icon
                             color={tokens.colors.interactive.primary__resting.hex}
                             name="external_link"
                         />
                     </Button>
-                </a>
+                </a> */}
             </Title>
             <Description>{description}</Description>
         </>
