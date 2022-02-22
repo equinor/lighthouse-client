@@ -9,8 +9,9 @@ import {
     FilterItemWrapper,
     SearchButton,
     Title,
-    Wrapper
+    Wrapper,
 } from './FilterGroup-Styles';
+import { camelCaseToHumanReadable } from '../Utils/camelCaseToHumanReadable';
 
 interface FilterGroupeComponentProps {
     filterGroup: FilterGroup;
@@ -86,7 +87,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                         onKeyPress={handleOnKeyPress}
                     />
                 ) : (
-                    <Title>{filterGroup.type}</Title>
+                    <Title>{camelCaseToHumanReadable(filterGroup.type)}</Title>
                 )}
                 <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
                     <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
