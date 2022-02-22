@@ -93,6 +93,38 @@ export function setup(appApi: ClientApi): void {
                 Aggregated: () => null,
                 aggregate: 'count',
             },
+            {
+                Header: 'Last signed',
+                accessor: 'workflowSteps',
+                Cell: ({ cell }: any) => {
+                    const request = cell.row.original as ScopeChangeRequest;
+                    if (!request) return null;
+                    if (request.state !== 'Open') {
+                        return '';
+                    } else {
+                        const dateArray: DateTime[] = [];
+
+                        request.workflowSteps.forEach((step) =>
+                            step.criterias.forEach((criteria) => {
+                                if (criteria.signedAtUtc) {
+                                    dateArray.push(
+                                        DateTime.fromJSDate(new Date(criteria.signedAtUtc))
+                                    );
+                                }
+                            })
+                        );
+
+                        const maxDate = DateTime.max(...dateArray);
+                        if (!maxDate) return null;
+
+                        return <div>{maxDate.toRelative()}</div>;
+                    }
+                },
+                id: 'LastSigned',
+                width: 180,
+                Aggregated: () => null,
+                aggregate: 'count',
+            },
         ],
         hiddenColumns: [
             'id',
@@ -179,33 +211,6 @@ export function setup(appApi: ClientApi): void {
                     Cell: ({ cell }: any) => {
                         const request: ScopeChangeRequest = cell.value.content;
                         return <div>{request.isVoided ? 'Voided' : request.state}</div>;
-                    },
-                },
-            },
-            {
-                key: 'test' as keyof ScopeChangeRequest,
-                type: {
-                    Cell: ({ cell }: any) => {
-                        const request = cell.value.content as ScopeChangeRequest;
-                        if (request.state !== 'Open') {
-                            return '';
-                        } else {
-                            const dateArray: DateTime[] = [];
-
-                            request.workflowSteps.forEach((step) =>
-                                step.criterias.forEach((criteria) => {
-                                    if (criteria.signedAtUtc) {
-                                        dateArray.push(
-                                            DateTime.fromJSDate(new Date(criteria.signedAtUtc))
-                                        );
-                                    }
-                                })
-                            );
-
-                            const maxDate = DateTime.max(...dateArray);
-
-                            return <div>{maxDate.toString()}</div>;
-                        }
                     },
                 },
             },
