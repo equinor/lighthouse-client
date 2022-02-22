@@ -55,7 +55,19 @@ const GlobalStyle = createGlobalStyle`
 
 const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Element => {
     const isAuthenticated = useAuthenticate(authProvider);
-    const queryClient = new QueryClient();
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                refetchOnWindowFocus: false,
+                retry: 3,
+                retryDelay: 1000,
+            },
+            mutations: {
+                retry: 3,
+                retryDelay: 1000,
+            },
+        },
+    });
 
     return isAuthenticated ? (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
