@@ -42,7 +42,7 @@ export function SingleSelect<T>({
                     handleSelectedItemChange={(select) => {
                         field.setValue(
                             !select.selectedItem
-                                ? (undefined as unknown as T)
+                                ? ('' as unknown as T)
                                 : (select.selectedItem as unknown as T)
                         );
                     }}

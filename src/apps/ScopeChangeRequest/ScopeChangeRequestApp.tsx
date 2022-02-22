@@ -9,6 +9,7 @@ import { OriginLink } from './Components/DetailView/Components/OriginLink';
 import { Icon } from '@equinor/eds-core-react';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ScopeChangeItemView } from './Garden/ScopeChangeGardenItem';
+import { getLastSigned } from './Functions/getLastSigned';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -51,7 +52,7 @@ export function setup(appApi: ClientApi): void {
                 }
                 return (
                     item.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
-                        ?.valueDescription ?? 'null'
+                        ?.valueDescription ?? '(Blank)'
                 );
             },
             State: (item: ScopeChangeRequest): string => {
@@ -88,6 +89,21 @@ export function setup(appApi: ClientApi): void {
                     );
                 },
                 id: 'CurrentStep',
+                width: 180,
+                Aggregated: () => null,
+                aggregate: 'count',
+            },
+            {
+                Header: 'Last signed',
+                accessor: 'workflowSteps',
+                Cell: ({ cell }: any) => {
+                    const request = cell.row.original as ScopeChangeRequest;
+
+                    const lastSigned = getLastSigned(request);
+                    if (!lastSigned) return null;
+                    return <div>{lastSigned.toRelative()}</div>;
+                },
+                id: 'LastSigned',
                 width: 180,
                 Aggregated: () => null,
                 aggregate: 'count',
