@@ -17,10 +17,10 @@ export const CellWithLink = <T extends Record<string, unknown>>({
     return (
         <Link
             style={{ display: 'flex', alignItems: 'center' }}
-            href={url}
-            target={'_blank'}
-            rel="noreferrer"
-            title="Open package in ProCoSys"
+        // href={url}
+        // target={'_blank'}
+        // rel="noreferrer"
+        // title="Open package in ProCoSys"
         >
             {content}
             <Icon
