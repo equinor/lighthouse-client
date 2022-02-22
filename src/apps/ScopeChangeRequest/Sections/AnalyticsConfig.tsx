@@ -1,5 +1,6 @@
 import { StatusItem } from '../../../packages/StatusBar';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
+import { kFormatter } from '../Functions/kFormatter';
 
 export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
     return [
@@ -16,11 +17,7 @@ export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
                 data.filter((x) => x.guesstimateHours).forEach(
                     (x) => (total += x.guesstimateHours)
                 );
-
-                if (total > 1000) {
-                    return `${(total / 1000).toFixed(2)}K`;
-                }
-                return total.toString();
+                return kFormatter(total).toString();
             },
         },
         {
@@ -35,11 +32,7 @@ export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
                     (x) => (total += x.guesstimateHours)
                 );
 
-                if (total > 1000) {
-                    return `${(total / 1000).toFixed(2)}K`;
-                }
-
-                return total.toString();
+                return kFormatter(total).toString();
             },
         },
         {
@@ -55,10 +48,7 @@ export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
                     (x) => (total += x.guesstimateHours)
                 );
 
-                if (total > 1000) {
-                    return `${(total / 1000).toFixed(2)}K`;
-                }
-                return total.toString();
+                return kFormatter(total).toString();
             },
         },
     ];
