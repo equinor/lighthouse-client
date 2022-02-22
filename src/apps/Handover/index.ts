@@ -27,7 +27,9 @@ export function setup(appApi: ClientApi): void {
         weeklyDaily: 'Weekly',
         plannedForecast: 'Planned',
     };
-
+    handover.registerTableOptions({
+        objectIdentifierKey: 'commpkgNo',
+    });
     handover.registerGardenOptions({
         gardenKey: 'RFCC' as keyof HandoverPackage, // HOW to handled this ????
         itemKey: 'commpkgNo',
