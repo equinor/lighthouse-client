@@ -176,6 +176,7 @@ export const RelatedObjectsSearch = ({
                                         </Inline>
 
                                         <Icon
+                                            style={{ cursor: 'pointer' }}
                                             color={tokens.colors.interactive.primary__resting.rgba}
                                             onClick={() => {
                                                 removeRelatedObject(selectedReference.value);

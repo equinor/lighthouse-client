@@ -184,7 +184,7 @@ export const ScopeChangeRequestForm = ({
                     },
                 ]}
             >
-                <Section>
+                <Section style={{ margin: '0em 0.5em' }}>
                     <Title>Attachments</Title>
                     <Upload attachments={attachments} setAttachments={setAttachments} />
                 </Section>
