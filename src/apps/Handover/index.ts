@@ -1,19 +1,17 @@
-import { baseClient } from '@equinor/http-client';
 import { ClientApi, httpClient } from '@equinor/portal-client';
 import { HandoverGardenItem, HandoverGroupByView, HandoverSideSheet } from './Garden/CustomViews';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
 import { fieldSettings, getMaxVolumeFromData, sortPackagesByStatus } from './Garden/utility';
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.fusion]);
     const handover = appApi.createWorkSpace<HandoverPackage>({
         CustomSidesheet: HandoverSideSheet,
     });
 
     handover.registerDataSource(async () => {
         const { fusion } = httpClient();
-        const response = await api.fetch(
-            `https://pro-s-dataproxy-ci.azurewebsites.net/api/contexts/71db33bb-cb1b-42cf-b5bf-969c77e40931/handover/`
+        const response = await fusion.fetch(
+            `https://pro-s-dataproxy-fprd.azurewebsites.net/api/contexts/3380fe7d-e5b7-441f-8ce9-a8c3133ee499/handover/`
         );
         const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
         [];

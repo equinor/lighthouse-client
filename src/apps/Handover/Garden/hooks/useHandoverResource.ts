@@ -25,7 +25,7 @@ const useHandoverResource = <T extends keyof HandoverResourceTypeMap>(
         setDataIsFetching(true);
         try {
             const result = await fusionApi.fetch(
-                `https://pro-s-dataproxy-fprd.azurewebsites.net/api/contexts/3380fe7d-e5b7-441f-8ce9-a8c3133ee499/handover/${packageId}/${packageType}`
+                `https://pro-s-dataproxy-ci.azurewebsites.net/api/contexts/94dd5f4d-17f1-4312-bf75-ad75f4d9572c/handover/${packageId}/${packageType}`
             );
 
             const parsedSignatures = JSON.parse(
