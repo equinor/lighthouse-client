@@ -37,9 +37,9 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     if (!SidesheetComponent) return null;
 
     return (
-        <div>
+        <div style={{ height: '100%' }}>
             <Resizable
-                size={{ width: width, height: window.innerHeight - 55 }}
+                size={{ width: width, height: '100%' }}
                 maxWidth={'100vh'}
                 onResizeStop={(e, direction, ref, d) => {
                     if (width + d.width < minWidth) {
@@ -82,7 +82,9 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                 </Header>
 
                 <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
-                    <SidesheetComponent {...props} />
+                    <div style={{ height: '95%' }}>
+                        <SidesheetComponent {...props} />
+                    </div>
                 </ErrorBoundary>
             </Resizable>
         </div>
@@ -93,4 +95,5 @@ const Header = styled.div`
     display: flex;
     padding: 5px;
     justify-content: space-between;
+    height: 5%;
 `;
