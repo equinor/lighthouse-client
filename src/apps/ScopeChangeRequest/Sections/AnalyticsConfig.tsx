@@ -16,6 +16,10 @@ export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
                 data.filter((x) => x.guesstimateHours).forEach(
                     (x) => (total += x.guesstimateHours)
                 );
+
+                if (total > 1000) {
+                    return `${(total / 1000).toFixed(2)}K`;
+                }
                 return total.toString();
             },
         },
@@ -30,6 +34,11 @@ export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
                 data.filter((x) => x.state === 'Open').forEach(
                     (x) => (total += x.guesstimateHours)
                 );
+
+                if (total > 1000) {
+                    return `${(total / 1000).toFixed(2)}K`;
+                }
+
                 return total.toString();
             },
         },
@@ -45,6 +54,10 @@ export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
                 data.filter((x) => x.state === 'Closed').forEach(
                     (x) => (total += x.guesstimateHours)
                 );
+
+                if (total > 1000) {
+                    return `${(total / 1000).toFixed(2)}K`;
+                }
                 return total.toString();
             },
         },
