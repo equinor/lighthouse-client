@@ -15,7 +15,7 @@ export function setup(appApi: ClientApi): void {
     swcr.registerDataSource(async () => {
         const { fusion } = httpClient();
         const response = await fusion.fetch(
-            `https://pro-s-dataproxy-ci.azurewebsites.net/api/contexts/71db33bb-cb1b-42cf-b5bf-969c77e40931/swcr`
+            `https://pro-s-dataproxy-fprd.azurewebsites.net/api/contexts/65728fee-185d-4a0c-a91d-8e3f3781dad8/swcr`
         );
         const swcrPackages = JSON.parse(await response.text()) as SwcrPackage[];
 
