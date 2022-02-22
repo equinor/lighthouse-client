@@ -79,11 +79,11 @@ export function SwcrSideSheet(item: SwcrPackage): JSX.Element {
             <SideSheetContainer>
                 <Header>
                     <h3>{item.swcrNo}</h3>
-                    <a target="_BLANK" href={item.url} rel="noreferrer">
+                    {/* <a target="_BLANK" href={item.url} rel="noreferrer">
                         <Button key="linkToProcosys" variant="ghost">
                             Open in ProCoSys
                         </Button>
-                    </a>
+                    </a> */}
                 </Header>
                 <h3>{item.title}</h3>
                 <TagsAndAttachmentBlock>
