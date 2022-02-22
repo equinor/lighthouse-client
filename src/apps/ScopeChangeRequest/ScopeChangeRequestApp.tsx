@@ -9,7 +9,7 @@ import { OriginLink } from './Components/DetailView/Components/OriginLink';
 import { Icon } from '@equinor/eds-core-react';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ScopeChangeItemView } from './Garden/ScopeChangeGardenItem';
-import { DateTime } from 'luxon';
+import { getLastSigned } from './Functions/getLastSigned';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -98,27 +98,10 @@ export function setup(appApi: ClientApi): void {
                 accessor: 'workflowSteps',
                 Cell: ({ cell }: any) => {
                     const request = cell.row.original as ScopeChangeRequest;
-                    if (!request) return null;
-                    if (request.state !== 'Open') {
-                        return '';
-                    } else {
-                        const dateArray: DateTime[] = [];
 
-                        request.workflowSteps.forEach((step) =>
-                            step.criterias.forEach((criteria) => {
-                                if (criteria.signedAtUtc) {
-                                    dateArray.push(
-                                        DateTime.fromJSDate(new Date(criteria.signedAtUtc))
-                                    );
-                                }
-                            })
-                        );
-
-                        const maxDate = DateTime.max(...dateArray);
-                        if (!maxDate) return null;
-
-                        return <div>{maxDate.toRelative()}</div>;
-                    }
+                    const lastSigned = getLastSigned(request);
+                    if (!lastSigned) return null;
+                    return <div>{lastSigned.toRelative()}</div>;
                 },
                 id: 'LastSigned',
                 width: 180,
