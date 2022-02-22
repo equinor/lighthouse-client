@@ -9,6 +9,7 @@ import { OriginLink } from './Components/DetailView/Components/OriginLink';
 import { Icon } from '@equinor/eds-core-react';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ScopeChangeItemView } from './Garden/ScopeChangeGardenItem';
+import { DateTime } from 'luxon';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -51,7 +52,7 @@ export function setup(appApi: ClientApi): void {
                 }
                 return (
                     item.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
-                        ?.valueDescription ?? 'null'
+                        ?.valueDescription ?? '(Blank)'
                 );
             },
             State: (item: ScopeChangeRequest): string => {
@@ -178,6 +179,33 @@ export function setup(appApi: ClientApi): void {
                     Cell: ({ cell }: any) => {
                         const request: ScopeChangeRequest = cell.value.content;
                         return <div>{request.isVoided ? 'Voided' : request.state}</div>;
+                    },
+                },
+            },
+            {
+                key: 'test' as keyof ScopeChangeRequest,
+                type: {
+                    Cell: ({ cell }: any) => {
+                        const request = cell.value.content as ScopeChangeRequest;
+                        if (request.state !== 'Open') {
+                            return '';
+                        } else {
+                            const dateArray: DateTime[] = [];
+
+                            request.workflowSteps.forEach((step) =>
+                                step.criterias.forEach((criteria) => {
+                                    if (criteria.signedAtUtc) {
+                                        dateArray.push(
+                                            DateTime.fromJSDate(new Date(criteria.signedAtUtc))
+                                        );
+                                    }
+                                })
+                            );
+
+                            const maxDate = DateTime.max(...dateArray);
+
+                            return <div>{maxDate.toString()}</div>;
+                        }
                     },
                 },
             },

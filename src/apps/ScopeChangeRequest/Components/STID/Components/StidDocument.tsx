@@ -44,8 +44,11 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
                     <Inline>
                         <MetaData>
                             {`Revision ${data?.currentRevision.revNo} | Rev date ${transformIsoDate(
-                                data?.revDate
-                            )} | Reason for issue ${data?.reasonForIssue}`}
+                                data?.currentRevision.revDate
+                            )} ${data?.currentRevision.reasonForIssue
+                                    ? `| Reason for issue ${data?.currentRevision.reasonForIssue}`
+                                    : ''
+                                } `}
                         </MetaData>
                     </Inline>
                 </LineBreaks>
