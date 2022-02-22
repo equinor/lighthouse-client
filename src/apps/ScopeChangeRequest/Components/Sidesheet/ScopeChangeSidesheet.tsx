@@ -75,7 +75,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         const actions: MenuItem[] = [];
 
         if (scopeChangeAccess.canPatch) {
-            if (item.state === 'Draft') {
+            if (data?.state === 'Draft') {
                 actions.push({
                     label: 'Initiate request',
                     onClick: async () => await initiate({ request: data ?? item }),
