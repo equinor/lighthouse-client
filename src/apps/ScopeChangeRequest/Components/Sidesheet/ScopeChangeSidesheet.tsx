@@ -4,12 +4,7 @@ import styled from 'styled-components';
 
 import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 
-import {
-    getScopeChangeById,
-    initiateScopeChange,
-    unVoidRequest,
-    voidRequest,
-} from '../../Api/ScopeChange/Request';
+import { getScopeChangeById, unVoidRequest, voidRequest } from '../../Api/ScopeChange/Request';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
@@ -33,7 +28,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
 
     usePreloadCaching();
-    const { voidKey, unvoidKey, patchKey } = useScopechangeMutationKeyGen(item.id);
+    const { voidKey, unvoidKey } = useScopechangeMutationKeyGen(item.id);
     const { baseKey } = useScopechangeQueryKeyGen(item.id);
     const { data, refetch, remove, isLoading, isRefetching } = useQuery<ScopeChangeRequest>(
         baseKey,
@@ -61,27 +56,12 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
     const { mutateAsync: voidMutation } = useScopeChangeMutation(item.id, voidKey(), voidRequest);
 
-    const { mutateAsync: initiate } = useScopeChangeMutation(
-        item.id,
-        patchKey(),
-        initiateScopeChange
-    );
-
     const refetchScopeChange = useCallback(async () => {
         await refetch();
     }, [refetch]);
 
     const actionMenu: MenuItem[] = useMemo(() => {
         const actions: MenuItem[] = [];
-
-        if (scopeChangeAccess.canPatch) {
-            if (item.state === 'Draft') {
-                actions.push({
-                    label: 'Initiate request',
-                    onClick: async () => await initiate({ request: data ?? item }),
-                });
-            }
-        }
 
         if (scopeChangeAccess.canUnVoid) {
             if (data?.isVoided) {
@@ -108,9 +88,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         return actions;
     }, [
         data,
-        initiate,
         item,
-        scopeChangeAccess.canPatch,
         scopeChangeAccess.canUnVoid,
         scopeChangeAccess.canVoid,
         unvoidMutation,
@@ -171,7 +149,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                 }}
             >
                 {data && (
-                    <div>
+                    <>
                         {editMode ? (
                             <ScopeChangeRequestEditForm
                                 request={data}
@@ -180,7 +158,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         ) : (
                             <RequestDetailView />
                         )}
-                    </div>
+                    </>
                 )}
             </ScopeChangeContext.Provider>
         </Wrapper>
@@ -189,6 +167,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
 const Title = styled.div`
     font-size: 28px;
+    max-width: 500px;
 `;
 
 const ButtonContainer = styled.div`

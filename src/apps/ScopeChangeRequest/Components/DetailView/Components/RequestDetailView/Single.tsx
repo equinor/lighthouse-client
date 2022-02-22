@@ -25,7 +25,7 @@ export const SingleView = (): JSX.Element => {
 
     return (
         <div>
-            <h2>Request</h2>
+            <BoldHeading>Request</BoldHeading>
             <SectionRow>
                 <Section>
                     <SubHeading>Phase</SubHeading>
@@ -82,23 +82,23 @@ export const SingleView = (): JSX.Element => {
                 request.areas.length > 0 ||
                 request.disciplines.length > 0 ||
                 request.tags.length > 0) && (
-                <Section>
-                    <WorkflowLoadingHeader>
-                        <BoldHeading>References</BoldHeading>
-                        {referencesLoading && <Progress.Dots color="primary" />}
-                    </WorkflowLoadingHeader>
-                    <Value>
-                        <RelatedObjects
-                            systems={request.systems}
-                            commPkgs={request.commissioningPackages}
-                            documents={request.documents}
-                            areas={request.areas}
-                            disciplines={request.disciplines}
-                            tags={request.tags}
-                        />
-                    </Value>
-                </Section>
-            )}
+                    <Section>
+                        <WorkflowLoadingHeader>
+                            <BoldHeading>References</BoldHeading>
+                            {referencesLoading && <Progress.Dots color="primary" />}
+                        </WorkflowLoadingHeader>
+                        <Value>
+                            <RelatedObjects
+                                systems={request.systems}
+                                commPkgs={request.commissioningPackages}
+                                documents={request.documents}
+                                areas={request.areas}
+                                disciplines={request.disciplines}
+                                tags={request.tags}
+                            />
+                        </Value>
+                    </Section>
+                )}
 
             <Section>
                 <BoldHeading>Attachments</BoldHeading>
