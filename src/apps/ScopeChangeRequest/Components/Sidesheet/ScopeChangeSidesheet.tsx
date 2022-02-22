@@ -74,15 +74,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const actionMenu: MenuItem[] = useMemo(() => {
         const actions: MenuItem[] = [];
 
-        if (scopeChangeAccess.canPatch) {
-            if (data?.state === 'Draft') {
-                actions.push({
-                    label: 'Initiate request',
-                    onClick: async () => await initiate({ request: data ?? item }),
-                });
-            }
-        }
-
         if (scopeChangeAccess.canUnVoid) {
             if (data?.isVoided) {
                 actions.push({
@@ -108,9 +99,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         return actions;
     }, [
         data,
-        initiate,
         item,
-        scopeChangeAccess.canPatch,
         scopeChangeAccess.canUnVoid,
         scopeChangeAccess.canVoid,
         unvoidMutation,
@@ -171,7 +160,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                 }}
             >
                 {data && (
-                    <div>
+                    <>
                         {editMode ? (
                             <ScopeChangeRequestEditForm
                                 request={data}
@@ -180,7 +169,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         ) : (
                             <RequestDetailView />
                         )}
-                    </div>
+                    </>
                 )}
             </ScopeChangeContext.Provider>
         </Wrapper>
