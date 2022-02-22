@@ -4,12 +4,7 @@ import styled from 'styled-components';
 
 import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 
-import {
-    getScopeChangeById,
-    initiateScopeChange,
-    unVoidRequest,
-    voidRequest,
-} from '../../Api/ScopeChange/Request';
+import { getScopeChangeById, unVoidRequest, voidRequest } from '../../Api/ScopeChange/Request';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
@@ -33,7 +28,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
 
     usePreloadCaching();
-    const { voidKey, unvoidKey, patchKey } = useScopechangeMutationKeyGen(item.id);
+    const { voidKey, unvoidKey } = useScopechangeMutationKeyGen(item.id);
     const { baseKey } = useScopechangeQueryKeyGen(item.id);
     const { data, refetch, remove, isLoading, isRefetching } = useQuery<ScopeChangeRequest>(
         baseKey,
@@ -60,12 +55,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     );
 
     const { mutateAsync: voidMutation } = useScopeChangeMutation(item.id, voidKey(), voidRequest);
-
-    const { mutateAsync: initiate } = useScopeChangeMutation(
-        item.id,
-        patchKey(),
-        initiateScopeChange
-    );
 
     const refetchScopeChange = useCallback(async () => {
         await refetch();
