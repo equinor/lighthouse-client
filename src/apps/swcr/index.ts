@@ -17,6 +17,9 @@ export function setup(appApi: ClientApi): void {
         const response = await fusion.fetch(
             `https://pro-s-dataproxy-fprd.azurewebsites.net/api/contexts/65728fee-185d-4a0c-a91d-8e3f3781dad8/swcr`
         );
+
+        //pro-s-dataproxy-ci.azurewebsites.net/api/contexts/b9a3246a-ddb5-4086-b4ec-dd4b0e88b700/swcr
+
         const swcrPackages = JSON.parse(await response.text()) as SwcrPackage[];
 
         return swcrPackages.sort(sortPackagesByStatusAndNumber);
