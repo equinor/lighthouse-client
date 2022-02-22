@@ -75,21 +75,21 @@ export const SplitView = (): JSX.Element => {
                     request.areas.length > 0 ||
                     request.disciplines.length > 0 ||
                     request.tags.length > 0) && (
-                    <Section>
-                        <BoldHeading>References</BoldHeading>
-                        {referencesLoading && <Progress.Dots color="primary" />}
-                        <Value>
-                            <RelatedObjects
-                                systems={request.systems}
-                                commPkgs={request.commissioningPackages}
-                                documents={request.documents}
-                                areas={request.areas}
-                                disciplines={request.disciplines}
-                                tags={request.tags}
-                            />
-                        </Value>
-                    </Section>
-                )}
+                        <Section>
+                            <BoldHeading>References</BoldHeading>
+                            {referencesLoading && <Progress.Dots color="primary" />}
+                            <Value>
+                                <RelatedObjects
+                                    systems={request.systems}
+                                    commPkgs={request.commissioningPackages}
+                                    documents={request.documents}
+                                    areas={request.areas}
+                                    disciplines={request.disciplines}
+                                    tags={request.tags}
+                                />
+                            </Value>
+                        </Section>
+                    )}
 
                 <Section>
                     <BoldHeading>Attachments</BoldHeading>
@@ -100,13 +100,11 @@ export const SplitView = (): JSX.Element => {
                 </Section>
             </div>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <Section>
-                    <WorkflowLoadingHeader>
-                        <BoldHeading>Workflow</BoldHeading>
-                        {workflowLoading && <Progress.Dots color="primary" />}
-                    </WorkflowLoadingHeader>
-                    <Workflow />
-                </Section>
+                <WorkflowLoadingHeader>
+                    <BoldHeading>Workflow</BoldHeading>
+                    {workflowLoading && <Progress.Dots color="primary" />}
+                </WorkflowLoadingHeader>
+                <Workflow />
                 <Section>
                     <BoldHeading>Log</BoldHeading>
                     <Value>

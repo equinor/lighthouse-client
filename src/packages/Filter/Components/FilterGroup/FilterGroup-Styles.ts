@@ -5,6 +5,7 @@ import styled from 'styled-components';
 export const Title = styled.h4`
     margin: 0.2rem;
     white-space: nowrap;
+    font-size: 14px;
 `;
 
 export const Wrapper = styled.div`

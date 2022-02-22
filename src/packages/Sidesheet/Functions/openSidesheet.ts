@@ -10,6 +10,7 @@ export function openSidesheet<T>(SidesheetContent?: React.FC<T>, props?: T): voi
     dispatch(getSidesheetContext(), (state) => {
         return {
             ...state,
+            isMinimized: false,
             SidesheetComponent: (SidesheetContent as React.FC<unknown>) || DefaultDataView,
             props,
             isPinned: isPinned,
