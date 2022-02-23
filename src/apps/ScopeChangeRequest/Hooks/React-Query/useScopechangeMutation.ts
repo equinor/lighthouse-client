@@ -27,6 +27,7 @@ export function useScopeChangeMutation<
 
     function invalidate() {
         queryClient.invalidateQueries(baseKey);
+        queryClient.invalidateQueries();
     }
 
     return useMutation(mutationKey, mutationFn, { ...options, onSettled: invalidate });
