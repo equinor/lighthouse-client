@@ -41,4 +41,8 @@ export function setup(appApi: ClientApi): void {
         },
         customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
     });
+
+    handover.registerPowerBIOptions({
+        reportId: 'jca-handover-analytics',
+    });
 }
