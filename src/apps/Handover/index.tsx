@@ -1,8 +1,13 @@
 import { ClientApi, httpClient } from '@equinor/portal-client';
 import { HandoverGardenItem, HandoverGroupByView, HandoverSideSheet } from './Garden/CustomViews';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
-import { fieldSettings, getMaxVolumeFromData, sortPackagesByStatus } from './Garden/utility';
-
+import {
+    fieldSettings,
+    getDotsColor,
+    getMaxVolumeFromData,
+    sortPackagesByStatus,
+} from './Garden/utility';
+import { Status } from './Garden/components/commonStyles';
 export function setup(appApi: ClientApi): void {
     const handover = appApi.createWorkSpace<HandoverPackage>({
         CustomSidesheet: HandoverSideSheet,
@@ -29,6 +34,40 @@ export function setup(appApi: ClientApi): void {
     };
     handover.registerTableOptions({
         objectIdentifierKey: 'commpkgNo',
+        hiddenColumns: [
+            'siteCode',
+            'projectIdentifier',
+            'projectDescription',
+            'priority1',
+            'priority2',
+            'priority3',
+            'description',
+            'url',
+            'id',
+            'forecastTacDate',
+        ],
+        customCellView: [
+            {
+                key: 'commpkgStatus',
+                type: {
+                    Cell: ({ cell }) => {
+                        const commStatus = cell.value.content.commpkgStatus;
+                        const commStatusColor = getDotsColor(commStatus);
+                        return <Status color={commStatusColor}>{commStatus}</Status>;
+                    },
+                },
+            },
+            {
+                key: 'mcStatus',
+                type: {
+                    Cell: ({ cell }) => {
+                        const mcStatus = cell.value.content.mcStatus;
+                        const mcStatusColor = getDotsColor(mcStatus);
+                        return <Status color={mcStatusColor}>{mcStatus}</Status>;
+                    },
+                },
+            },
+        ],
     });
     handover.registerGardenOptions({
         gardenKey: 'RFCC' as keyof HandoverPackage, // HOW to handled this ????

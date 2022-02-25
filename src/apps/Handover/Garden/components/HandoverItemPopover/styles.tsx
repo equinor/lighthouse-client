@@ -106,19 +106,3 @@ export const Statuses = styled.div`
         }
     }
 `;
-type StatusProps = {
-    color: string;
-};
-export const Status = styled.div<StatusProps>`
-    width: 40px;
-    height: 24px;
-    display: flex;
-    align-self: center;
-    border: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 600;
-    border-radius: 12px;
-    background: ${(p) => p.color};
-`;
