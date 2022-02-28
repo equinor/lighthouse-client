@@ -5,6 +5,7 @@ import { FilterGroup } from '../../Types/FilterItem';
 import { FilterGroupeComponent } from '../FilterGroup/FilterGroup';
 import { Title } from '../FilterGroup/FilterGroup-Styles';
 import Icon from '../Icon/Icon';
+import { camelCaseToHumanReadable } from '../Utils/camelCaseToHumanReadable';
 import {
     AddButton,
     FilterGroups,
@@ -14,7 +15,7 @@ import {
     SearchButton,
     SearchFilterWrapper,
     SelectBar,
-    Wrapper
+    Wrapper,
 } from './FilterView-style';
 
 function createTypeKeys(filter: FilterGroup[]): string[] {
@@ -128,7 +129,7 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                                     <div key={key + i}>
                                         <Checkbox
                                             title={key}
-                                            label={key}
+                                            label={camelCaseToHumanReadable(key)}
                                             value={key}
                                             disabled={activeFilters.includes(key)}
                                             checked={activeFiltersTypes.includes(key)}

@@ -47,6 +47,7 @@ export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Elemen
                             style={{
                                 color: `${tokens.colors.interactive.primary__resting.rgba}`,
                                 cursor: 'pointer',
+                                textDecoration: 'none',
                             }}
                         >
                             {attachment.name}

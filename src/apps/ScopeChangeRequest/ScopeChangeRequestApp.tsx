@@ -9,6 +9,7 @@ import { OriginLink } from './Components/DetailView/Components/OriginLink';
 import { Icon } from '@equinor/eds-core-react';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ScopeChangeItemView } from './Garden/ScopeChangeGardenItem';
+import { getLastSigned } from './Functions/getLastSigned';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -51,7 +52,7 @@ export function setup(appApi: ClientApi): void {
                 }
                 return (
                     item.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
-                        ?.valueDescription ?? 'null'
+                        ?.valueDescription ?? '(Blank)'
                 );
             },
             State: (item: ScopeChangeRequest): string => {
@@ -92,13 +93,27 @@ export function setup(appApi: ClientApi): void {
                 Aggregated: () => null,
                 aggregate: 'count',
             },
+            {
+                Header: 'Last signed',
+                accessor: 'workflowSteps',
+                Cell: ({ cell }: any) => {
+                    const request = cell.row.original as ScopeChangeRequest;
+
+                    const lastSigned = getLastSigned(request);
+                    if (!lastSigned) return null;
+                    return <div>{lastSigned.toRelative()}</div>;
+                },
+                id: 'LastSigned',
+                width: 180,
+                Aggregated: () => null,
+                aggregate: 'count',
+            },
         ],
         hiddenColumns: [
             'id',
             'description',
             'guesstimateDescription',
             'createdBy',
-            'createdAtUtc',
             'modifiedBy',
             'originSourceId',
             'tags',
@@ -151,37 +166,6 @@ export function setup(appApi: ClientApi): void {
             { key: 'state', title: 'State', width: 80 },
             { key: 'guesstimateDescription', title: 'Guesstimate description' },
             { key: 'currentWorkflowStep', title: 'Next to sign' },
-            // {
-            //     key: 'commissioningPackages',
-            //     title: 'Comm Pkgs',
-            //     width: 120,
-            // },
-            // {
-            //     key: 'systems',
-            //     title: 'Systems',
-            //     width: 120,
-            // },
-            // {
-            //     key: 'attachments',
-            //     title: {
-            //         Custom: () => <Icon name="attach_file" />,
-            //     },
-            //     width: 80,
-            // },
-            // {
-            //     key: 'disciplines',
-            //     title: {
-            //         Custom: () => <Icon name="school" />,
-            //     },
-            //     width: 80,
-            // },
-            // {
-            //     key: 'areas',
-            //     title: {
-            //         Custom: () => <Icon name="pin_drop" />,
-            //     },
-            //     width: 80,
-            // },
             {
                 key: 'hasComments',
                 title: {
@@ -189,20 +173,6 @@ export function setup(appApi: ClientApi): void {
                 },
                 width: 80,
             },
-            // {
-            //     key: 'documents',
-            //     title: {
-            //         Custom: () => <Icon name="file_copy" />,
-            //     },
-            //     width: 80,
-            // },
-            // {
-            //     key: 'tags',
-            //     title: {
-            //         Custom: () => <Icon name="tag" />,
-            //     },
-            //     width: 80,
-            // },
         ],
         customCellView: [
             {
@@ -213,10 +183,7 @@ export function setup(appApi: ClientApi): void {
                 key: 'guesstimateHours',
                 type: 'Description',
             },
-            {
-                key: 'estimatedChangeHours',
-                type: 'Description',
-            },
+
             {
                 key: 'createdAtUtc',
                 type: 'Date',
@@ -226,7 +193,7 @@ export function setup(appApi: ClientApi): void {
                 type: {
                     Cell: ({ cell }: any) => {
                         const request: ScopeChangeRequest = cell.value.content;
-                        return <div>{request.isVoided ? 'VOIDED' : request.state}</div>;
+                        return <div>{request.isVoided ? 'Voided' : request.state}</div>;
                     },
                 },
             },
@@ -246,34 +213,37 @@ export function setup(appApi: ClientApi): void {
                     },
                 },
             },
-            // {
-            //     key: 'tags',
-            //     type: 'Array',
-            // },
-            // {
-            //     key: 'systems',
-            //     type: 'Array',
-            // },
-            // {
-            //     key: 'attachments',
-            //     type: 'Array',
-            // },
-            // {
-            //     key: 'documents',
-            //     type: 'Array',
-            // },
-            // {
-            //     key: 'areas',
-            //     type: 'Array',
-            // },
-            // {
-            //     key: 'disciplines',
-            //     type: 'Array',
-            // },
-            // {
-            //     key: 'commissioningPackages',
-            //     type: 'Array',
-            // },
+            {
+                key: 'estimatedChangeHours',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        const request: ScopeChangeRequest = cell.value.content;
+                        return (
+                            <div>
+                                {request.estimatedChangeHours > 0 ? (
+                                    request.estimatedChangeHours
+                                ) : (
+                                    <></>
+                                )}
+                            </div>
+                        );
+                    },
+                },
+            },
+            {
+                key: 'actualChangeHours',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        const request: ScopeChangeRequest = cell.value.content;
+                        return (
+                            <div>
+                                {request.actualChangeHours > 0 ? request.actualChangeHours : <></>}
+                            </div>
+                        );
+                    },
+                },
+            },
+
             {
                 key: 'hasComments',
                 type: {

@@ -13,7 +13,8 @@ import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { Upload } from '../Attachments/Upload';
 import { Origin } from './Origin';
-import { MutationKeys } from '../../Enums/mutationKeys';
+import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { Section, Title } from './ScopeChangeRequestForm';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -26,6 +27,8 @@ export const ScopeChangeRequestEditForm = ({
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
+
+    const { patchKey } = useScopechangeMutationKeyGen(request.id);
 
     useEffect(() => {
         unpackRelatedObjects(request, setRelatedObjects);
@@ -72,7 +75,8 @@ export const ScopeChangeRequestEditForm = ({
     };
 
     const { isLoading, error, mutateAsync } = useScopeChangeMutation(
-        [MutationKeys.ScopeChange],
+        request.id,
+        patchKey(),
         onSubmit,
         {
             onError: (e: ServerError) => setErrorMessage(e),
@@ -126,8 +130,10 @@ export const ScopeChangeRequestEditForm = ({
                     },
                 ]}
             >
-                <h3>Attachments</h3>
-                <Upload attachments={attachments} setAttachments={setAttachments} />
+                <Section style={{ margin: '0em 0.5em' }}>
+                    <Title>Attachments</Title>
+                    <Upload attachments={attachments} setAttachments={setAttachments} />
+                </Section>
             </GeneratedForm>
         </>
     );

@@ -16,10 +16,7 @@ export const WorkSpaceTabs = ({ tabs, activeTab }: CompletionViewTabsProps): JSX
             {tabs.map((tab, index) => {
                 const ViewComponent = tab.viewComponent;
                 return (
-                    <Panel
-                        key={`panel-${tab.title}`}
-                        style={{ padding: '1rem', width: 'max-content' }}
-                    >
+                    <Panel key={`panel-${tab.title}`}>
                         {activeTab == index && <ViewComponent />}
                     </Panel>
                 );

@@ -56,8 +56,10 @@ export function FilterProvider<T>({
             setFilter(initialData, localFilter);
         } else {
             const filter = createFilterData(initialData, options);
-            dispatch(actions.setFilter(filter));
-            persistOptions && persistOptions.setFilter(filter);
+            if (!(Object.keys(filterData).length > 0)) {
+                dispatch(actions.setFilter(filter));
+                persistOptions && persistOptions.setFilter(filter);
+            }
             setFilter(initialData, filter);
         }
     }, [initialData, options, persistOptions, setFilter]);
