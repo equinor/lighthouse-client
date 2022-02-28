@@ -20,26 +20,9 @@ export function setup(appApi: ClientApi): void {
         );
         const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
         [];
-        const filterKeys: (keyof HandoverPackage)[] = [
-            'commpkgStatus',
-            'responsible',
-            'mcDisciplineCodes',
-            'area',
-            'phase',
-            'system',
-            'priority1',
-            'priority2',
-            'priority3',
-        ];
-        const exludedKeys = Object.keys(parsedResponse[0]).filter((a) => !filterKeys.includes(a));
-        console.log(exludedKeys);
-
         return parsedResponse.sort(sortPackagesByStatus);
     });
 
-    // handover.registerFilterOptions({});
-
-    //  handover.registerTableOptions({ objectIdentifierKey: '' });
     handover.registerFilterOptions({
         excludeKeys: [
             'siteCode',
