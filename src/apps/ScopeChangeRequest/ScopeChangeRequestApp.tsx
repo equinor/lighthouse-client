@@ -269,6 +269,7 @@ export function setup(appApi: ClientApi): void {
                         return (
                             <div>
                                 <OriginLink
+                                    onlyUnderlineOnHover={true}
                                     type={cell.value.content.originSource}
                                     id={cell.value.content.originSourceId}
                                 />
