@@ -22,7 +22,7 @@ export function setup(appApi: ClientApi): void {
     handover.registerDataSource(async () => {
         const { fusion } = httpClient();
         const response = await fusion.fetch(
-            `https://pro-s-dataproxy-fprd.azurewebsites.net/api/contexts/3380fe7d-e5b7-441f-8ce9-a8c3133ee499/handover/`
+            `https://pro-s-dataproxy-fprd.azurewebsites.net/api/contexts/65728fee-185d-4a0c-a91d-8e3f3781dad8/handover/`
         );
         const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
         [];
