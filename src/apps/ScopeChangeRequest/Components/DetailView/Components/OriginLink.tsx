@@ -100,4 +100,7 @@ const Link = styled.div`
     text-decoration: ${({ hideUnderline }: { hideUnderline: boolean }) =>
         hideUnderline ? 'none' : 'underline'};
     cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 `;
