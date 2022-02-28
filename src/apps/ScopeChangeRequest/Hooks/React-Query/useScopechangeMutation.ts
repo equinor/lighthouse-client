@@ -6,7 +6,6 @@ import {
     useQueryClient,
     MutationKey,
 } from 'react-query';
-import { useScopechangeQueryKeyGen } from './useScopechangeQueryKeyGen';
 
 export function useScopeChangeMutation<
     TData = unknown,
@@ -23,10 +22,8 @@ export function useScopeChangeMutation<
     >
 ): UseMutationResult<TData, TError, TVariables, TContext> {
     const queryClient = useQueryClient();
-    const { baseKey } = useScopechangeQueryKeyGen(requestId);
 
     function invalidate() {
-        queryClient.invalidateQueries(baseKey);
         queryClient.invalidateQueries();
     }
 
