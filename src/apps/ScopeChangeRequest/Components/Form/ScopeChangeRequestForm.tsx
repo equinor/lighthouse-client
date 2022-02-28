@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
@@ -46,6 +46,7 @@ export const ScopeChangeRequestForm = ({
     });
 
     usePreloadCaching();
+    const queryClient = useQueryClient();
 
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
@@ -99,6 +100,7 @@ export const ScopeChangeRequestForm = ({
 
         openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId));
         clearActiveFactory();
+        queryClient.invalidateQueries();
     };
 
     useEffect(() => {
