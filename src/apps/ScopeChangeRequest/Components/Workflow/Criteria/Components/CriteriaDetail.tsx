@@ -18,25 +18,40 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
     return (
         <>
             <SplitInline>
-                <WorkflowIcon
-                    status={stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus}
-                    number={step.order + 1}
-                />
+                <FixedIconContainer>
+                    <WorkflowIcon
+                        status={stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus}
+                        number={step.order + 1}
+                    />
+                </FixedIconContainer>
 
                 <WorkflowText>
                     <span>{step.name}</span>
                     {criteria.signedAtUtc ? (
-                        <div
-                            style={{ fontSize: '14px' }}
-                        >{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
+                        <>
+                            <div
+                                style={{ fontSize: '14px' }}
+                            >{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
+                            {criteria.signedComment && (
+                                <q style={{ fontSize: '14px' }}>{criteria.signedComment}</q>
+                            )}
+                        </>
                     ) : (
-                        <div style={{ fontSize: '14px' }}>{criteria.valueDescription}</div>
+                        <>
+                            <div style={{ fontSize: '14px' }}>{criteria.valueDescription}</div>
+                        </>
                     )}
                 </WorkflowText>
             </SplitInline>
         </>
     );
 };
+
+const FixedIconContainer = styled.div`
+    width: 29px;
+    height: 29px;
+`;
+
 const SplitInline = styled.div`
     display: flex;
     align-items: center;
