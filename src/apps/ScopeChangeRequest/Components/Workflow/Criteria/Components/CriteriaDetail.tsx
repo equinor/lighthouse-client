@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import { Criteria, WorkflowStatus, WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
