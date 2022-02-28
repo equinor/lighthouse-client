@@ -38,7 +38,8 @@
             "@equinor/http-client": ["./src/Core/httpClient"],
             "@equinor/hooks": ["./src/hooks"],
             "@equinor/Utils": ["./src/packages/Utils"],
-            "@equinor/typeGuard": ["./src/packages/typeGuard"]
+            "@equinor/typeGuard": ["./src/packages/typeGuard"],
+            "@equinor/echo3dweb-viewer": ["./packages/echo3dViewer"]
         }
     },
     "compileOnSave": true,

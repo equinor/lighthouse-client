@@ -37,6 +37,7 @@ export default defineConfig({
             '@equinor/hooks': path.resolve(__dirname, './src/hooks'),
             '@equinor/Utils': path.resolve(__dirname, './src/packages/Utils/'),
             '@equinor/Kpi': path.resolve(__dirname, './src/packages/KPI'),
+            "@equinor/echo3dweb-viewer":  path.resolve(__dirname, "./packages/echo3dViewer")
         },
     },
     build: {
