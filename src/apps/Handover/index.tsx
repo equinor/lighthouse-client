@@ -1,5 +1,10 @@
 import { ClientApi, httpClient } from '@equinor/portal-client';
-import { HandoverGardenItem, HandoverGroupByView, HandoverSideSheet } from './Garden/CustomViews';
+import {
+    HandoverGardenHeader,
+    HandoverGardenItem,
+    HandoverGroupByView,
+    HandoverSideSheet,
+} from './Garden/CustomViews';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
 import {
     fieldSettings,
@@ -78,6 +83,7 @@ export function setup(appApi: ClientApi): void {
         customViews: {
             customGroupByView: HandoverGroupByView,
             customItemView: HandoverGardenItem,
+            customHeaderView: HandoverGardenHeader,
         },
         customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
     });
