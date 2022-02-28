@@ -5,17 +5,20 @@ import { Tag as TagInterface } from '../../../../../Types/scopeChangeRequest';
 import { isProduction } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { getTagById } from '../../../../../Api/PCS/getTagById';
-import { QueryKeys } from '../../../../../Enums/queryKeys';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
+import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 
 interface TagProps {
     tag: TagInterface;
 }
 
 export const Tag = ({ tag }: TagProps): JSX.Element => {
-    const { data } = useInfiniteCachedQuery(
-        [QueryKeys.References, QueryKeys.Tag, tag.procosysId, tag.procosysNumber],
-        () => getTagById(tag.procosysId)
+    const { request } = useScopeChangeContext();
+    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+
+    const { data } = useInfiniteCachedQuery(referencesKeys.tag(tag.procosysNumber), () =>
+        getTagById(tag.procosysId)
     );
 
     return (
@@ -23,8 +26,9 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
             <Icon color={tokens.colors.interactive.primary__resting.hex} name="tag" />
             <TagText>
                 <Link
-                    href={`https://${isProduction() ? 'procosys' : 'procosystest'
-                        }.equinor.com/JOHAN_CASTBERG/Completion#Tag|${tag.procosysId}`}
+                    href={`https://${
+                        isProduction() ? 'procosys' : 'procosystest'
+                    }.equinor.com/JOHAN_CASTBERG/Completion#Tag|${tag.procosysId}`}
                     target="_blank"
                 >
                     {tag.procosysNumber}

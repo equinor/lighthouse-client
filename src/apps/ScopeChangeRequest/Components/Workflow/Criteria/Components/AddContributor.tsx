@@ -9,17 +9,20 @@ import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { ServerError } from '../../../../Types/ScopeChange/ServerError';
-import { MutationKeys } from '../../../../Enums/mutationKeys';
 import { TypedSelectOption } from '../../../../Api/Search/searchType';
+import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { WorkflowStep } from '../../../../Types/scopeChangeRequest';
 
 interface AddContributorProps {
+    step: WorkflowStep;
     close: () => void;
 }
 
-export const AddContributor = ({ close }: AddContributorProps): JSX.Element => {
+export const AddContributor = ({ close, step }: AddContributorProps): JSX.Element => {
     const [contributor, setContributor] = useState<TypedSelectOption | null>(null);
     const [text, setText] = useState<string>('');
     const { request, setErrorMessage } = useScopeChangeContext();
+    const { workflowKeys } = useScopechangeMutationKeyGen(request.id);
 
     const submit = async () => {
         await addContributor(
@@ -31,7 +34,8 @@ export const AddContributor = ({ close }: AddContributorProps): JSX.Element => {
     };
 
     const { mutateAsync, isLoading } = useScopeChangeMutation(
-        [MutationKeys.Contribute, MutationKeys.Step],
+        request.id,
+        workflowKeys.addContributorKey(step.id),
         submit,
         {
             onSuccess: () => close(),

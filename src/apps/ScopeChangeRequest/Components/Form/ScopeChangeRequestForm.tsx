@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
 import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
@@ -46,6 +46,7 @@ export const ScopeChangeRequestForm = ({
     });
 
     usePreloadCaching();
+    const queryClient = useQueryClient();
 
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
@@ -97,8 +98,9 @@ export const ScopeChangeRequestForm = ({
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
-        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId, scopeChange));
+        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId));
         clearActiveFactory();
+        queryClient.invalidateQueries();
     };
 
     useEffect(() => {
@@ -184,7 +186,7 @@ export const ScopeChangeRequestForm = ({
                     },
                 ]}
             >
-                <Section>
+                <Section style={{ margin: '0em 0.5em' }}>
                     <Title>Attachments</Title>
                     <Upload attachments={attachments} setAttachments={setAttachments} />
                 </Section>

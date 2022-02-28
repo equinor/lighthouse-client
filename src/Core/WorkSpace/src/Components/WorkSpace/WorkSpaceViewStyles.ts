@@ -5,4 +5,5 @@ export const DataViewWrapper = styled.section`
     flex-direction: row;
     align-content: flex-start;
     justify-content: space-between;
+    height: 90%;
 `;

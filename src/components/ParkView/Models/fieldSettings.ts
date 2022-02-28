@@ -1,8 +1,12 @@
 export type GetSortFunction = (a: string, b: string) => number;
-export type GetKeyFunction<T> = (item: T, itemKey?: keyof T) => string[];
+export type GetKeyFunction<T> = (
+    item: T,
+    itemKey: keyof T | string,
+    customGroupByKeys?: Record<string, unknown>
+) => string[] | string;
 
 export type FieldSetting<ItemType> = {
-    key?: keyof ItemType;
+    key?: keyof ItemType | string;
     label?: string;
     getKey?: GetKeyFunction<ItemType>;
     getColumnSort?: GetSortFunction;
