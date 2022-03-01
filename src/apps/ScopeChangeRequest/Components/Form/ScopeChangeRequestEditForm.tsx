@@ -1,4 +1,4 @@
-import { Button, Progress } from '@equinor/eds-core-react';
+import { Button, Icon, Progress } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect, useState } from 'react';
 import { patchScopeChange, uploadAttachment } from '../../Api/ScopeChange/Request';
@@ -11,10 +11,13 @@ import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
-import { Upload } from '../Attachments/Upload';
 import { Origin } from './Origin';
 import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
 import { Section, Title } from './ScopeChangeRequestForm';
+import { HotUpload } from '../Attachments/HotUpload';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
+import { deleteAttachment } from '../../Api/ScopeChange/Request/attachment';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -28,10 +31,20 @@ export const ScopeChangeRequestEditForm = ({
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
-    const { patchKey } = useScopechangeMutationKeyGen(request.id);
+    const { patchKey, deleteAttachmentKey } = useScopechangeMutationKeyGen(request.id);
+    const { mutateAsync: removeAttachment } = useScopeChangeMutation(
+        request.id,
+        deleteAttachmentKey(),
+        deleteAttachment
+    );
 
     useEffect(() => {
         unpackRelatedObjects(request, setRelatedObjects);
+        setAttachments(
+            request.attachments.map((x): File => {
+                return new File([], x.fileName);
+            })
+        );
     }, [request]);
 
     const { setErrorMessage } = useScopeChangeContext();
@@ -132,12 +145,63 @@ export const ScopeChangeRequestEditForm = ({
             >
                 <Section style={{ margin: '0em 0.5em' }}>
                     <Title>Attachments</Title>
-                    <Upload attachments={attachments} setAttachments={setAttachments} />
+                    <HotUpload />
+                    {request.attachments.map((attachment, i) => {
+                        return (
+                            <AttachmentsList key={i}>
+                                <a
+                                    // href={URL.createObjectURL(
+                                    //     new File(attachment.blobPath, attachment.fileName)
+                                    // )}
+                                    // download
+                                    style={{
+                                        color: `${tokens.colors.interactive.primary__resting.rgba}`,
+                                        cursor: 'pointer',
+                                        textDecoration: 'none',
+                                    }}
+                                >
+                                    {attachment.fileName}
+                                </a>
+                                <Inline>
+                                    <div>
+                                        {attachment.fileSize &&
+                                            (attachment?.fileSize / 1000 ** 2).toFixed(2)}
+                                        MB
+                                    </div>
+                                    <Icon
+                                        style={{ margin: '0em 0.5em' }}
+                                        color={tokens.colors.interactive.primary__resting.rgba}
+                                        onClick={() =>
+                                            removeAttachment({
+                                                requestId: request.id,
+                                                attachmentId: attachment.id,
+                                            })
+                                        }
+                                        name="clear"
+                                    />
+                                </Inline>
+                            </AttachmentsList>
+                        );
+                    })}
                 </Section>
             </GeneratedForm>
         </>
     );
 };
+
+const Inline = styled.span`
+    display: flex;
+    align-items: center;
+`;
+
+const AttachmentsList = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.5em 0em;
+    font-size: 16px;
+    align-items: center;
+`;
 
 function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | StidTypes) {
     return items.filter((x) => x.type === type);

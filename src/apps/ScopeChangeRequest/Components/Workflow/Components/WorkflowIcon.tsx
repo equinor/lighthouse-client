@@ -20,12 +20,14 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
 
         case 'Completed':
             return (
-                <Icon
-                    name="check_circle_outlined"
-                    height={'28.8'}
-                    width={'28.8'}
-                    color={tokens.colors.interactive.primary__resting.hex}
-                />
+                <IconWrapper>
+                    <Icon
+                        name="check_circle_outlined"
+                        height={'28.8'}
+                        width={'28.8'}
+                        color={tokens.colors.interactive.primary__resting.hex}
+                    />
+                </IconWrapper>
             );
 
         case 'Inactive':
@@ -47,6 +49,11 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
             );
     }
 }
+
+const IconWrapper = styled.div`
+    width: 24px;
+    height: 24px;
+`;
 
 const GreenCircle = styled.div`
     justify-content: center;
