@@ -126,11 +126,10 @@ export const WorkflowCriteria = ({
                 stepId: step.id,
                 criteriaId: criteria.id,
                 reassign: {
-                    type: `${
-                        selected.type === 'functionalRole'
+                    type: `${selected.type === 'functionalRole'
                             ? 'RequireProcosysFunctionalRoleSignature'
                             : 'RequireProcosysUserSignature'
-                    }`,
+                        }`,
                     value: selected.value,
                 },
             });
@@ -261,8 +260,6 @@ const WorkflowStepViewContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
     width: -webkit-fill-available;
     &:hover {
         background-color: ${tokens.colors.interactive.primary__selected_hover.hex};

@@ -108,7 +108,7 @@ export const SingleView = (): JSX.Element => {
                 </Value>
             </Section>
 
-            <Section>
+            <Section style={{ paddingBottom: '1em' }}>
                 <BoldHeading>Log</BoldHeading>
                 <Value>
                     <HistoryList />
