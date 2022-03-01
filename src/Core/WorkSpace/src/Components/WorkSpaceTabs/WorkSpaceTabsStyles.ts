@@ -6,3 +6,8 @@ export const Panels = styled(Tabs.Panels)`
     width: -webkit-fill-available;
     height: -webkit-fill-available;
 `;
+export const Panel = styled(Tabs.Panel)`
+    padding: 0;
+    height: 100%;
+    width: 100%;
+`;

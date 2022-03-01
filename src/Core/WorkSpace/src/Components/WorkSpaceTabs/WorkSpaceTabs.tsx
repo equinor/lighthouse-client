@@ -1,8 +1,5 @@
-import { Tabs } from '@equinor/eds-core-react';
 import { TabsConfigItem } from '../../Tabs/tabsConfig';
-import { Panels } from './WorkSpaceTabsStyles';
-
-const { Panel } = Tabs;
+import { Panel, Panels } from './WorkSpaceTabsStyles';
 
 interface CompletionViewTabsProps {
     tabs: TabsConfigItem[];

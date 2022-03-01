@@ -2,18 +2,19 @@ import { tokens } from '@equinor/eds-tokens';
 
 import styled from 'styled-components';
 
-/**TODO: max-heigh is hardcoded to make the garden scale correct. Expanded filter panel brakes this.
- * This needs to be removed at some point
- **/
+export const Container = styled.div`
+    display: grid;
+    grid-template-rows: auto 1fr;
+    width: 100%;
+    height: 100%;
+`;
 export const Wrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    overflow: scroll;
-    height: 100vh;
     width: 100%;
     align-items: flex-start;
-    max-height: calc(100vh - 176px);
+    overflow: scroll;
 `;
 export const Col = styled.div`
     display: flex;

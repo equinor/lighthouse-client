@@ -7,11 +7,11 @@ import {
     FlagUnsignedAction,
     IconsContainer,
     PopoverContainer,
-    Status as StatusStyle,
     Statuses,
     WarningContainer,
     WarningText,
 } from './styles';
+import { Status as StatusStyle } from '../commonStyles';
 import { FlagIcon, SizeIcons, WarningIcon } from '../Icons';
 
 type ItemSize = 'small' | 'medium' | 'large';
