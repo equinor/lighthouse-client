@@ -133,8 +133,7 @@ export const ScopeChangeRequestForm = ({
         return (
             formData.isValidForm() &&
             (formData.fields.originSource?.value === 'NotApplicable' ||
-                formData.fields.originSourceId?.value) &&
-            relatedObjects.length > 0
+                formData.fields.originSourceId?.value)
         );
     }, [formData, relatedObjects]);
 

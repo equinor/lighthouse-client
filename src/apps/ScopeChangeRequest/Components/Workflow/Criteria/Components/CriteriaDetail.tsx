@@ -49,6 +49,9 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
 const FixedIconContainer = styled.div`
     width: 29px;
     height: 29px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const SplitInline = styled.div`
