@@ -88,7 +88,7 @@
     "@typescript-eslint/parser": "^4.28.5",
     "@vitejs/plugin-react": "^1.1.1",
     "clean-webpack-plugin": "^4.0.0",
-    "copy-webpack-plugin": "^9.0.1",
+    "copy-webpack-plugin": "^10.2.4",
     "css-loader": "^6.4.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
