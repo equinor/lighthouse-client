@@ -1,7 +1,7 @@
 import { Button, Icon, Progress } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect, useState } from 'react';
-import { patchScopeChange, uploadAttachment } from '../../Api/ScopeChange/Request';
+import { patchScopeChange } from '../../Api/ScopeChange/Request';
 import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
@@ -28,7 +28,6 @@ export const ScopeChangeRequestEditForm = ({
     request,
     close,
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
-    const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
     const { patchKey, deleteAttachmentKey } = useScopechangeMutationKeyGen(request.id);
@@ -40,11 +39,6 @@ export const ScopeChangeRequestEditForm = ({
 
     useEffect(() => {
         unpackRelatedObjects(request, setRelatedObjects);
-        setAttachments(
-            request.attachments.map((x): File => {
-                return new File([], x.fileName);
-            })
-        );
     }, [request]);
 
     const { setErrorMessage } = useScopeChangeContext();
@@ -78,10 +72,6 @@ export const ScopeChangeRequestEditForm = ({
             documentNumbers: documents.map((x) => x.value) || [],
             areaCodes: areas.map((x) => x.value) || [],
             disciplineCodes: disciplines.map((x) => x.value) || [],
-        });
-
-        attachments.forEach(async (attachment) => {
-            await uploadAttachment({ requestId: request.id, file: attachment });
         });
 
         if (!error) close();
@@ -150,10 +140,6 @@ export const ScopeChangeRequestEditForm = ({
                         return (
                             <AttachmentsList key={i}>
                                 <a
-                                    // href={URL.createObjectURL(
-                                    //     new File(attachment.blobPath, attachment.fileName)
-                                    // )}
-                                    // download
                                     style={{
                                         color: `${tokens.colors.interactive.primary__resting.rgba}`,
                                         cursor: 'pointer',
