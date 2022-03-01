@@ -10,6 +10,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ScopeChangeItemView } from './Garden/ScopeChangeGardenItem';
 import { getLastSigned } from './Functions/getLastSigned';
+import { tokens } from '@equinor/eds-tokens';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
@@ -248,10 +249,14 @@ export function setup(appApi: ClientApi): void {
                 key: 'hasComments',
                 type: {
                     Cell: ({ cell }: any) => {
+                        if (!cell.value.content.hasComments) {
+                            return null;
+                        }
+
                         return (
                             <Icon
-                                name={cell.value.content.hasComments ? 'comment_chat' : 'comment'}
-                                color={cell.value.content.hasComments ? 'black' : 'grey'}
+                                name={'comment_chat'}
+                                color={`${tokens.colors.text.static_icons__default.hex}`}
                             />
                         );
                     },
@@ -264,6 +269,7 @@ export function setup(appApi: ClientApi): void {
                         return (
                             <div>
                                 <OriginLink
+                                    onlyUnderlineOnHover={true}
                                     type={cell.value.content.originSource}
                                     id={cell.value.content.originSourceId}
                                 />
