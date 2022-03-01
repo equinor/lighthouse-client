@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { useSignalRHub } from './useSignalRHub';
-import { httpClient } from '@equinor/portal-client';
+import { httpClient, useClientContext } from '@equinor/portal-client';
 import { useQuery } from 'react-query';
 import { getUnReadNotificationCardsAsync } from '../API/getUnreadNotifications';
 import { getReadNotificationCardsAsync } from '../API/getReadNotifications';
@@ -18,13 +18,17 @@ export function useNotificationCenter(
 ): NotificationCenter {
     const { fusion } = httpClient();
 
+    const {
+        internal: {
+            authProvider: { getCurrentUser },
+        },
+    } = useClientContext();
+
     const { data: readNotifications, isFetching: isFetchingUnRead } = useQuery('Read', () =>
-        getReadNotificationCardsAsync({ personIdentifier: 'dfeaa8de-92d2-4ee4-b171-6caba0c163bf' })
+        getReadNotificationCardsAsync(getCurrentUser()?.localAccountId || '')
     );
     const { data: unreadNotifications, isFetching: isFetchingRead } = useQuery('Unread', () =>
-        getUnReadNotificationCardsAsync({
-            personIdentifier: 'dfeaa8de-92d2-4ee4-b171-6caba0c163bf',
-        })
+        getUnReadNotificationCardsAsync(getCurrentUser()?.localAccountId || '')
     );
 
     const { hubConnection, isEstablishingHubConnection } = useSignalRHub(
