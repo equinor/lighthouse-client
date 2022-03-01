@@ -37,6 +37,7 @@ export const CommStatus = styled.div<CommStatusProps>`
     > strong:first-child {
         margin-right: 32px;
     }
+    justify-content: space-between;
 `;
 
 export const IconsContainer = styled.div`
