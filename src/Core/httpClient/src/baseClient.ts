@@ -22,6 +22,7 @@ export interface HttpClient {
     post(url: string, init?: RequestInit | undefined): Promise<Response>;
     put(url: string, init?: RequestInit | undefined): Promise<Response>;
     delete(url: string, init?: RequestInit | undefined): Promise<Response>;
+    getAccessToken(): Promise<string>;
     uploadFile(
         url: string,
         formData: FormData,
@@ -226,6 +227,7 @@ export function baseClient(
         uploadFile,
         fetch: _fetch,
         fetchWithToken,
+        getAccessToken,
         isAuthenticated,
         setBaseUrl,
         setScopes,
