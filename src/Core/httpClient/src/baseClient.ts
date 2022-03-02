@@ -28,6 +28,7 @@ export interface HttpClient {
         progressCallback?: ProgressCallback,
         init?: RequestInit | undefined
     ): Promise<Response>;
+    getAccessToken(): Promise<string>;
     fetchWithToken(
         endpoint: string,
         token: string,
@@ -226,6 +227,7 @@ export function baseClient(
         uploadFile,
         fetch: _fetch,
         fetchWithToken,
+        getAccessToken,
         isAuthenticated,
         setBaseUrl,
         setScopes,

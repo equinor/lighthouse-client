@@ -1,5 +1,5 @@
 import { NetworkError } from '@equinor/http-client';
-import { useHttpClient } from '@equinor/portal-client';
+import { isProduction, useHttpClient } from '@equinor/portal-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
 import { useState } from 'react';
 import { Filter, PowerBiFilter } from '../models/filter';
@@ -30,8 +30,9 @@ export function useFusionClient(
     }
 ): useFusionClientReturn {
     const { fusion } = useHttpClient();
-    const [error, setError] = useState<NetworkError>();
-    const baseUri = 'https://app-ppo-proxy-dev.azurewebsites.net/fusion/reports';
+    fusion.setBaseUrl(`https://pro-s-reports-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/`);
+    const [error] = useState<NetworkError>();
+    const baseUri = `reports`;
 
     const filters: PowerBiFilter[] = [];
     filterOptions?.forEach((filterOption) => {
@@ -51,22 +52,11 @@ export function useFusionClient(
         }
     }
 
-    async function getPowerBiToken() {
-        try {
-            const tokenUri = `${baseUri}/${resource}/token`;
-            const response = await fusion.fetch(tokenUri);
-            return await response.json();
-        } catch (error: any) {
-            const networkError = error as NetworkError;
-            setError(networkError);
-        }
-    }
-
     async function getConfig(): Promise<IReportEmbedConfiguration> {
         const { embedConfig } = await getEmbedInfo();
-        const { token } = await getPowerBiToken();
+        const token = await fusion.fetch(`reports/${resource}/token`).then((x) => x.json());
         return {
-            accessToken: token,
+            accessToken: token['token'],
             embedUrl: embedConfig.embedUrl,
             id: embedConfig.reportId,
             settings: {
