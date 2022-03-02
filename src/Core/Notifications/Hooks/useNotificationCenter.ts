@@ -12,6 +12,7 @@ interface NotificationCenter {
     isFetchingRead: boolean;
     isFetchingUnRead: boolean;
     isEstablishingHubConnection: boolean;
+    unreadNotificationsCount: number;
 }
 
 export function useNotificationCenter(
@@ -29,7 +30,7 @@ export function useNotificationCenter(
     );
 
     const { hubConnection } = useSignalRHub(
-        'https://pro-s-portal-ci.azurewebsites.net/signalr/hubs/notifications/?negotiateVersion=1',
+        `${fusion.getBaseUrl()}/signalr/hubs/notifications/?negotiateVersion=1`,
         fusion.getAccessToken
     );
 
@@ -49,5 +50,6 @@ export function useNotificationCenter(
         isFetchingUnRead,
         notificationCards: notifications,
         isEstablishingHubConnection: false,
+        unreadNotificationsCount: unreadNotifications?.count || 0,
     };
 }

@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button, Icon, Scrim, Tabs } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { useNotificationCenter } from '../Hooks/useNotificationCenter';
@@ -8,7 +8,7 @@ import { useQueryClient } from 'react-query';
 import { useNotificationQueryKeys } from '../Hooks/useNotificationQueryKeys';
 
 export function NotificationsDrawer(): JSX.Element {
-    const [isOpen, setIsOpen] = useState<boolean>(true);
+    const [isVisible, setIsVisible] = useState<boolean>(true);
     const [activeTab, setActiveTab] = useState<number>(0);
     const queryClient = useQueryClient();
     const { unread } = useNotificationQueryKeys();
@@ -17,21 +17,21 @@ export function NotificationsDrawer(): JSX.Element {
     const onNotification = () => queryClient.invalidateQueries(unread);
     const notificationCenter = useNotificationCenter(onNotification);
 
-    useEffect(() => {
-        console.log('toggling bar');
-    }, [isOpen]);
-
     return (
         <>
             <Icon
                 style={{ cursor: 'pointer' }}
                 color={tokens.colors.interactive.primary__resting.hex}
-                name="notifications"
+                name={
+                    notificationCenter.unreadNotificationsCount > 0
+                        ? 'notifications_active'
+                        : 'notifications'
+                }
                 onClick={() => {
-                    setIsOpen(isOpen);
+                    setIsVisible(true);
                 }}
             />
-            {isOpen && (
+            {isVisible && (
                 <Scrim
                     isDismissable
                     style={{
@@ -51,7 +51,7 @@ export function NotificationsDrawer(): JSX.Element {
                             <Button
                                 variant="ghost_icon"
                                 onClick={() => {
-                                    setIsOpen(false);
+                                    setIsVisible(false);
                                 }}
                             >
                                 <Icon
