@@ -8,10 +8,10 @@ import { useQueryClient } from 'react-query';
 import { useNotificationQueryKeys } from '../Hooks/useNotificationQueryKeys';
 
 export function NotificationsDrawer(): JSX.Element {
-    const [isVisible, setIsVisible] = useState<boolean>(true);
+    const [isVisible, setIsVisible] = useState<boolean>(false);
     const [activeTab, setActiveTab] = useState<number>(0);
     const queryClient = useQueryClient();
-    const { unread } = useNotificationQueryKeys();
+    const { unreadKey: unread } = useNotificationQueryKeys();
 
     const handleChange = (index: number) => setActiveTab(index);
     const onNotification = () => queryClient.invalidateQueries(unread);
@@ -32,21 +32,9 @@ export function NotificationsDrawer(): JSX.Element {
                 }}
             />
             {isVisible && (
-                <Scrim
-                    isDismissable
-                    style={{
-                        position: 'fixed',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        textAlign: 'center',
-                        minHeight: '100vh',
-                        width: '100vw',
-                        zIndex: 1000,
-                    }}
-                >
-                    <StidWrapper>
-                        <StidHeader>
+                <Scrim isDismissable>
+                    <Wrapper>
+                        <Header>
                             <Title>Notifications</Title>
                             <Button
                                 variant="ghost_icon"
@@ -59,7 +47,7 @@ export function NotificationsDrawer(): JSX.Element {
                                     color={tokens.colors.interactive.primary__resting.hex}
                                 />
                             </Button>
-                        </StidHeader>
+                        </Header>
                         <Tabs activeTab={activeTab} onChange={handleChange}>
                             <Tabs.List>
                                 <Tabs.Tab>Notifications </Tabs.Tab>
@@ -69,7 +57,7 @@ export function NotificationsDrawer(): JSX.Element {
                                 <Tabs.Panel>
                                     <div>
                                         {notificationCenter.notificationCards
-                                            .sort((a) => (a ? -1 : 1))
+                                            .sort((a) => (a.seenByUser ? -1 : 1))
                                             .sort((a, b) => {
                                                 const date1 = new Date(a.created).getTime();
                                                 const date2 = new Date(b.created).getTime();
@@ -85,33 +73,14 @@ export function NotificationsDrawer(): JSX.Element {
                                 </Tabs.Panel>
                             </Tabs.Panels>
                         </Tabs>
-                    </StidWrapper>
+                    </Wrapper>
                 </Scrim>
             )}
         </>
     );
 }
 
-export const IconContainer = styled.div`
-    height: 24px;
-    width: 24px;
-    color: ${tokens.colors.interactive.primary__resting.hex};
-`;
-export const ResultLabel = styled.div`
-    overflow: hidden;
-    white-space: nowrap;
-    max-width: 500px;
-    font-size: 16px;
-    color: ${tokens.colors.interactive.primary__resting.hex};
-`;
-
-export const ResultItem = styled.div`
-    display: flex;
-    align-items: center;
-    width: 635px;
-`;
-
-export const StidWrapper = styled.div`
+const Wrapper = styled.div`
     background-color: white;
     width: 640px;
     height: 200px;
@@ -121,23 +90,12 @@ export const StidWrapper = styled.div`
     padding: 20px;
 `;
 
-export const Title = styled.h2`
+const Title = styled.h2`
     font-weight: normal;
 `;
 
-export const StidHeader = styled.div`
+const Header = styled.div`
     align-items: center;
     display: flex;
     justify-content: space-between;
-`;
-
-export const AdvancedSearch = styled.div`
-    height: 48px;
-    width: 178px;
-    display: flex;
-    align-items: center;
-    color: ${tokens.colors.interactive.primary__resting.hex};
-    justify-content: space-evenly;
-    font-size: 14px;
-    cursor: pointer;
 `;

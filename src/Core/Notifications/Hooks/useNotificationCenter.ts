@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useSignalRHub } from './useSignalRHub';
 import { useHttpClient } from '@equinor/portal-client';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 import { getUnreadNotificationCardsAsync } from '../API/getUnreadNotifications';
 import { getReadNotificationCardsAsync } from '../API/getReadNotifications';
 import { Notification } from '../Types/Notification';
@@ -20,7 +20,7 @@ export function useNotificationCenter(
 ): NotificationCenter {
     const { fusion } = useHttpClient();
 
-    const { read, unread } = useNotificationQueryKeys();
+    const { readKey: read, unreadKey: unread } = useNotificationQueryKeys();
 
     const { data: readNotifications, isFetching: isFetchingUnRead } = useQuery(read, () =>
         getReadNotificationCardsAsync()
@@ -34,12 +34,23 @@ export function useNotificationCenter(
         fusion.getAccessToken
     );
 
+    const queryClient = useQueryClient();
+    const { unreadKey } = useNotificationQueryKeys();
+
+    const onNotificationRecieved = useCallback(
+        (notification: Notification) => {
+            onNotification && onNotification(notification);
+            queryClient.invalidateQueries(unreadKey);
+        },
+        [onNotification, queryClient, unreadKey]
+    );
+
     useEffect(() => {
         if (hubConnection) {
-            hubConnection.on('notifications', onNotification);
-            return () => hubConnection.off('notifications', onNotification);
+            hubConnection.on('notifications', onNotificationRecieved);
+            return () => hubConnection.off('notifications', onNotificationRecieved);
         }
-    }, [hubConnection, onNotification]);
+    }, [hubConnection, onNotificationRecieved]);
 
     const notifications = useMemo(() => {
         return readNotifications?.value.concat(unreadNotifications?.value || []) || [];

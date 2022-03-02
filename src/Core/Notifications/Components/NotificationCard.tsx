@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { DateTime } from 'luxon';
 import { useMutation, useQueryClient } from 'react-query';
 
@@ -7,7 +6,14 @@ import { readNotificationAsync } from '../API/readNotification';
 import { useNotificationQueryKeys } from '../Hooks/useNotificationQueryKeys';
 import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
 import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
-
+import {
+    DetailText,
+    LeftSection,
+    NotificationTitle,
+    RightSection,
+    TimeStamp,
+    Wrapper,
+} from './NotificationCardStyles';
 interface NotificationCardProps {
     notification: Notification;
 }
@@ -43,11 +49,14 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
                 </LeftSection>
                 <RightSection>
                     <a
-                        onClick={() => mutateAsync({ notificationId: notification.id })}
-                        href={
-                            notification.card?.actions?.find((x) => x.type === 'Action.OpenUrl')
-                                ?.url
-                        }
+                        onClick={() => {
+                            window.open(
+                                notification.card?.actions?.find((x) => x.type === 'Action.OpenUrl')
+                                    ?.url,
+                                '_blank'
+                            );
+                            mutateAsync({ notificationId: notification.id });
+                        }}
                     >
                         <ClickableIcon name="chevron_right" />
                     </a>
@@ -56,38 +65,3 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
         </>
     );
 };
-
-const NotificationTitle = styled.div`
-    font-size: 16px;
-`;
-const TimeStamp = styled.div`
-    font-size: 10px;
-`;
-
-const RightSection = styled.div`
-    display: flex;
-`;
-
-const LeftSection = styled.div`
-    display: flex;
-    gap: 1em;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-`;
-
-const Wrapper = styled.div`
-    display: flex;
-    height: 35px;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    border-top: 1px #e7deea solid;
-    padding: 0 0.5em;
-`;
-
-const DetailText = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-`;

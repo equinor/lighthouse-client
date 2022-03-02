@@ -45,4 +45,4 @@ export interface CardAction {
     title: string;
 }
 
-declare type PersonAccountType = 'Consultant' | 'Employee' | 'External' | 'Local';
+type PersonAccountType = 'Consultant' | 'Employee' | 'External' | 'Local';

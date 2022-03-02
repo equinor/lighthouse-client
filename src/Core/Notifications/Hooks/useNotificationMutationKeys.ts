@@ -4,16 +4,15 @@ interface NotificationKeys {
 }
 
 /**
- * Querykeys for notifications
- * @returns
+ * MutationKeys for notifications
  */
 export function useNotificationMutationKeys(): NotificationKeys {
     const baseKey = ['notifications'];
 
-    const queryKeys = {
+    const mutationKeys = {
         baseKey: baseKey,
         read: [...baseKey, 'read'],
     };
 
-    return queryKeys;
+    return mutationKeys;
 }
