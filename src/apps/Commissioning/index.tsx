@@ -80,9 +80,9 @@ export function setup(appApi: ClientApi): void {
     //const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const pages = appApi.createPageViewer();
 
-    pages.registerFusionPowerBi('swcr-analytics-rls', {
+    pages.registerFusionPowerBi('pp-swcr-analytics', {
         title: 'SWCR Analytics',
-        reportURI: 'swcr-analytics-rls',
+        reportURI: 'pp-swcr-analytics',
     });
 
     pages.registerFusionPowerBi('pp-installation', {
