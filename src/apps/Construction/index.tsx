@@ -183,9 +183,9 @@ export function setup(appApi: ClientApi): void {
         title: 'Installation',
         reportURI: 'pp-installation',
     });
-    construction.registerFusionPowerBi('pp-checklist', {
+    construction.registerFusionPowerBi('pp-checklist-analytics', {
         title: 'Checklists',
-        reportURI: 'pp-checklist',
+        reportURI: 'pp-checklist-analytics',
     });
     construction.registerFusionPowerBi('pp-punch-analytics', {
         title: 'Punch',

@@ -80,26 +80,26 @@ export function setup(appApi: ClientApi): void {
     //const api = baseClient(appApi.authProvider, [appApi.appConfig.procosys]);
     const pages = appApi.createPageViewer();
 
-    pages.registerFusionPowerBi('swcr-analytics-rls', {
+    pages.registerFusionPowerBi('pp-swcr-analytics', {
         title: 'SWCR Analytics',
-        reportURI: 'swcr-analytics-rls',
+        reportURI: 'pp-swcr-analytics',
     });
 
-    pages.registerFusionPowerBi('jca-installation', {
+    pages.registerFusionPowerBi('pp-installation', {
         title: 'Installation',
-        reportURI: 'jca-installation',
+        reportURI: 'pp-installation',
     });
-    pages.registerFusionPowerBi('jca-handover-analytics', {
+    pages.registerFusionPowerBi('pp-handover-analytics', {
         title: 'Handover',
-        reportURI: 'jca-handover-analytics',
+        reportURI: 'pp-handover-analytics',
     });
-    pages.registerFusionPowerBi('jca-checklist', {
+    pages.registerFusionPowerBi('pp-checklist-analytics', {
         title: 'Checklist Analytics',
-        reportURI: 'jca-checklist',
+        reportURI: 'pp-checklist-analytics',
     });
-    pages.registerFusionPowerBi('ec2496e8-e440-441c-8e20-73d3a9d56f74', {
-        title: 'Punch Analytics',
-        reportURI: 'jca-punch-analytics',
+    pages.registerFusionPowerBi('pp-punch-analytics', {
+        title: 'Punch',
+        reportURI: 'pp-punch-analytics',
     });
 
     /** 
