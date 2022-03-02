@@ -28,6 +28,8 @@ export function useSignalRHub(hubUrl: string, getToken: () => Promise<string>): 
         } finally {
             setIsEstablishingHubConnection(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        //getToken function should be here but is unstable and causes infinite loop
     }, [hubUrl]);
 
     useEffect(() => {
@@ -35,7 +37,8 @@ export function useSignalRHub(hubUrl: string, getToken: () => Promise<string>): 
         return () => {
             hubConnection === null || hubConnection === void 0 ? void 0 : hubConnection.stop();
         };
-    }, [createHubConnectionAsync, hubConnection]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [createHubConnectionAsync]);
 
     return { hubConnection, hubConnectionError, isEstablishingHubConnection };
 }

@@ -40,7 +40,7 @@ export interface CardBody {
 }
 
 export interface CardAction {
-    type: string;
+    type: 'Action.OpenUrl';
     url: string;
     title: string;
 }
