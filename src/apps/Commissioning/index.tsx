@@ -89,9 +89,9 @@ export function setup(appApi: ClientApi): void {
         title: 'Installation',
         reportURI: 'pp-installation',
     });
-    pages.registerFusionPowerBi('jca-handover-analytics', {
+    pages.registerFusionPowerBi('pp-handover-analytics', {
         title: 'Handover',
-        reportURI: 'jca-handover-analytics',
+        reportURI: 'pp-handover-analytics',
     });
     pages.registerFusionPowerBi('pp-checklist-analytics', {
         title: 'Checklist Analytics',
