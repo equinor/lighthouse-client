@@ -1,11 +1,12 @@
 import styled from 'styled-components';
-import { Notification } from '../Types/Notification';
 import { DateTime } from 'luxon';
-import { ClickableIcon } from './ClickableIcon';
 import { useMutation, useQueryClient } from 'react-query';
+
+import { Notification } from '../Types/Notification';
 import { readNotificationAsync } from '../API/readNotification';
 import { useNotificationQueryKeys } from '../Hooks/useNotificationQueryKeys';
 import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
+import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
 
 interface NotificationCardProps {
     notification: Notification;

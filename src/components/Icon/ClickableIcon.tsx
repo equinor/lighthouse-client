@@ -9,6 +9,7 @@ export interface ClickableIconProps {
 
 /**
  * TODO: Make union type of available EDS icons
+ * Expand with props as needed
  * Wraps EDS icon and styles it so its clickable
  * @returns Clickable SVG
  */
