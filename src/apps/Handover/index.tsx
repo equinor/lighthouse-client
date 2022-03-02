@@ -1,4 +1,4 @@
-import { ClientApi, httpClient } from '@equinor/portal-client';
+import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
 import {
     HandoverGardenHeader,
     HandoverGardenItem,
@@ -21,9 +21,15 @@ export function setup(appApi: ClientApi): void {
 
     handover.registerDataSource(async () => {
         const { fusion } = httpClient();
-        const response = await fusion.fetch(
-            `https://pro-s-dataproxy-fprd.azurewebsites.net/api/contexts/65728fee-185d-4a0c-a91d-8e3f3781dad8/handover/`
+        fusion.setBaseUrl(
+            `https://pro-s-dataproxy-${
+                isProduction() ? 'fprd' : 'ci'
+            }.azurewebsites.net/api/contexts/`
         );
+        const contextId = isProduction()
+            ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
+            : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
+        const response = await fusion.fetch(`${contextId}/handover/`);
         const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
         [];
 

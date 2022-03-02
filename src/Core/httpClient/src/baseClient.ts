@@ -29,6 +29,7 @@ export interface HttpClient {
         progressCallback?: ProgressCallback,
         init?: RequestInit | undefined
     ): Promise<Response>;
+    getAccessToken(): Promise<string>;
     fetchWithToken(
         endpoint: string,
         token: string,
