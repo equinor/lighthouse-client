@@ -7,6 +7,7 @@ import {
     ProgressCell,
     ArrayCell,
     RelativeDateCell,
+    NumberCell,
 } from '../Components/Cells';
 import {
     CellType,
@@ -89,6 +90,8 @@ export const findCustomCell = <T extends TableData>(
                 return ArrayCell;
             case 'RelativeDate':
                 return RelativeDateCell;
+            case 'Number':
+                return NumberCell;
             default:
                 return 'Incorrect cell type given';
         }
