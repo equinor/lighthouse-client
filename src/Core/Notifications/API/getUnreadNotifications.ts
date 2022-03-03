@@ -1,11 +1,8 @@
-import { httpClient, isProduction } from '@equinor/portal-client';
+import { httpClient } from '@equinor/portal-client';
 import { NotificationList } from '../Types/NotificationList';
 
 export async function getUnreadNotificationCardsAsync(): Promise<NotificationList> {
-    const { fusion } = httpClient();
-    fusion.setBaseUrl(
-        `https://pro-s-notification-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/`
-    );
+    const { fusionNotifications } = httpClient();
 
     const filterFromDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 30).toISOString();
     //30 days from today
@@ -13,7 +10,7 @@ export async function getUnreadNotificationCardsAsync(): Promise<NotificationLis
 
     const order = `$orderby=created%20desc`;
 
-    return await fusion
+    return await fusionNotifications
         .fetch(`persons/me/notifications?$filter=${encodeURIComponent(filter)}&${order}`)
         .then((x) => x.json());
 }
