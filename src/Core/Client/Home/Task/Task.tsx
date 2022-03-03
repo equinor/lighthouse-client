@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { isProduction, useClientContext } from '@equinor/portal-client';
+import { useClientContext } from '@equinor/portal-client';
 import { useEffect, useState } from 'react';
 import { httpClient } from '../../Functions/HttpClient';
 import { getDummyTask } from './dummyTask';
@@ -22,14 +22,11 @@ export const Task = (): JSX.Element => {
     }, [clientEnv, user]);
 
     useEffect(() => {
-        const { fusion } = httpClient();
-        fusion.setBaseUrl(
-            `https://pro-s-fusiontasks-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/`
-        );
+        const { fusionTasks } = httpClient();
 
         async function getTasks(): Promise<ProcosysTasks[] | undefined> {
             try {
-                const response = await fusion.get('persons/me/tasks/procosys');
+                const response = await fusionTasks.get('persons/me/tasks/procosys');
                 return await response.json();
             } catch (error) {
                 console.error('Fails to get tasks: ', error);
