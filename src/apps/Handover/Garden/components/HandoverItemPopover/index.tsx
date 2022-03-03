@@ -7,11 +7,11 @@ import {
     FlagUnsignedAction,
     IconsContainer,
     PopoverContainer,
-    Status as StatusStyle,
     Statuses,
     WarningContainer,
     WarningText,
 } from './styles';
+import { Status as StatusStyle } from '../commonStyles';
 import { FlagIcon, SizeIcons, WarningIcon } from '../Icons';
 
 type ItemSize = 'small' | 'medium' | 'large';
@@ -59,13 +59,15 @@ const HandoverItemPopoverWrapper: FC<HandoverItemPopoverProps> = ({
                     <p>
                         {data.projectIdentifier}, {data.projectDescription}
                     </p>
+                    <p>{data.description}</p>
                     <hr />
                     <CommStatus barColor={barColor} textColor={textColor}>
                         <strong>{`Milestone: ${status}`}</strong>
                         <span>
                             <SizeIcons status={status} size={size} />
+
+                            <strong> {`Volume: ${data.volume} (${size})`}</strong>
                         </span>
-                        <strong> {`Volume: ${data.volume} (${size})`}</strong>
                     </CommStatus>
                     <IconsContainer>
                         {showWarningIcon && (
