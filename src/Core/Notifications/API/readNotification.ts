@@ -1,4 +1,4 @@
-import { httpClient, isProduction } from '@equinor/portal-client';
+import { httpClient } from '@equinor/portal-client';
 
 interface ReadNotificationAsyncParams {
     notificationId: string;
@@ -7,13 +7,9 @@ interface ReadNotificationAsyncParams {
 export async function readNotificationAsync({
     notificationId,
 }: ReadNotificationAsyncParams): Promise<void> {
-    const { fusion } = httpClient();
+    const { fusionNotifications } = httpClient();
 
-    fusion.setBaseUrl(
-        `https://pro-s-notification-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/`
-    );
-
-    await fusion.fetch(`notifications/${notificationId}?api-version=1.0`, {
+    await fusionNotifications.fetch(`notifications/${notificationId}?api-version=1.0`, {
         method: 'PATCH',
         body: JSON.stringify({
             seenByUser: true,

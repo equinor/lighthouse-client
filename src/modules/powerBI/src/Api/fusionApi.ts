@@ -1,5 +1,5 @@
 import { NetworkError } from '@equinor/http-client';
-import { isProduction, useHttpClient } from '@equinor/portal-client';
+import { useHttpClient } from '@equinor/portal-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
 import { useState } from 'react';
 import { Filter, PowerBiFilter } from '../models/filter';
@@ -29,8 +29,8 @@ export function useFusionClient(
         enablePageNavigation?: boolean;
     }
 ): useFusionClientReturn {
-    const { fusion } = useHttpClient();
-    fusion.setBaseUrl(`https://pro-s-reports-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/`);
+    const { fusionPbi } = useHttpClient();
+
     const [error] = useState<NetworkError>();
     const baseUri = `reports`;
 
@@ -42,7 +42,7 @@ export function useFusionClient(
     async function getEmbedInfo() {
         try {
             const embedUri = `${baseUri}/${resource}/config/embedinfo`;
-            const response = await fusion.fetch(embedUri);
+            const response = await fusionPbi.fetch(embedUri);
 
             const data = await response.json();
             window['embedInfo'] = data;
@@ -54,7 +54,7 @@ export function useFusionClient(
 
     async function getConfig(): Promise<IReportEmbedConfiguration> {
         const { embedConfig } = await getEmbedInfo();
-        const token = await fusion.fetch(`reports/${resource}/token`).then((x) => x.json());
+        const token = await fusionPbi.fetch(`reports/${resource}/token`).then((x) => x.json());
         return {
             accessToken: token['token'],
             embedUrl: embedConfig.embedUrl,
