@@ -48,5 +48,6 @@ export const searchSWCR = async (
     } catch (e) {
         console.warn(e);
     }
+
     return selectOptions || [];
 };
