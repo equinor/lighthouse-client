@@ -15,36 +15,32 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
     const stepStatus = statusFunc(step);
 
     return (
-        <>
-            <SplitInline>
-                <FixedIconContainer>
-                    <WorkflowIcon
-                        status={stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus}
-                        number={step.order + 1}
-                    />
-                </FixedIconContainer>
+        <SplitInline>
+            <FixedIconContainer>
+                <WorkflowIcon
+                    status={stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus}
+                    number={step.order + 1}
+                />
+            </FixedIconContainer>
 
-                <WorkflowText>
-                    <span>{step.name}</span>
-                    {criteria.signedAtUtc ? (
-                        <>
-                            <div
-                                style={{ fontSize: '14px' }}
-                            >{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
-                            {criteria.signedComment && (
-                                <q style={{ fontSize: '14px' }}>{criteria.signedComment}</q>
-                            )}
-                        </>
-                    ) : (
-                        <>
-                            <div style={{ fontSize: '14px' }}>{criteria.valueDescription}</div>
-                        </>
-                    )}
-                </WorkflowText>
-            </SplitInline>
-        </>
+            <WorkflowText>
+                <span>{step.name}</span>
+                {criteria.signedAtUtc ? (
+                    <DetailText>
+                        <div>{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
+                        {criteria.signedComment && <q>{criteria.signedComment}</q>}
+                    </DetailText>
+                ) : (
+                    <DetailText>{criteria.valueDescription}</DetailText>
+                )}
+            </WorkflowText>
+        </SplitInline>
     );
 };
+
+const DetailText = styled.div`
+    font-size: 14px;
+`;
 
 const FixedIconContainer = styled.div`
     width: 29px;

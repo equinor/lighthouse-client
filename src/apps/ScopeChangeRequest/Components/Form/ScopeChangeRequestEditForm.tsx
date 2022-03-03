@@ -139,15 +139,7 @@ export const ScopeChangeRequestEditForm = ({
                     {request.attachments.map((attachment, i) => {
                         return (
                             <AttachmentsList key={i}>
-                                <a
-                                    style={{
-                                        color: `${tokens.colors.interactive.primary__resting.rgba}`,
-                                        cursor: 'pointer',
-                                        textDecoration: 'none',
-                                    }}
-                                >
-                                    {attachment.fileName}
-                                </a>
+                                <AttachmentName>{attachment.fileName}</AttachmentName>
                                 <Inline>
                                     <div>
                                         {attachment.fileSize &&
@@ -174,6 +166,12 @@ export const ScopeChangeRequestEditForm = ({
         </>
     );
 };
+
+const AttachmentName = styled.a`
+    color: ${tokens.colors.interactive.primary__resting.rgba};
+    cursor: 'pointer';
+    text-decoration: 'none';
+`;
 
 const Inline = styled.span`
     display: flex;
