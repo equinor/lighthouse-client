@@ -56,13 +56,23 @@ export function NotificationsDrawer(): JSX.Element {
                             <Tabs.Panels>
                                 <Tabs.Panel>
                                     <div>
-                                        {notificationCenter.notificationCards
-                                            .sort((a) => (a.seenByUser ? -1 : 1))
-                                            .sort((a, b) => {
-                                                const date1 = new Date(a.created).getTime();
-                                                const date2 = new Date(b.created).getTime();
-                                                return date2 - date1;
-                                            })
+                                        {notificationCenter.unreadNotificationCards
+                                            .sort(
+                                                (a, b) =>
+                                                    new Date(b.created).getTime() -
+                                                    new Date(a.created).getTime()
+                                            )
+                                            .map((x) => (
+                                                <NotificationCardNew key={x.id} notification={x} />
+                                            ))}
+                                    </div>
+                                    <div>
+                                        {notificationCenter.readNotificationCards
+                                            .sort(
+                                                (a, b) =>
+                                                    new Date(b.created).getTime() -
+                                                    new Date(a.created).getTime()
+                                            )
                                             .map((x) => (
                                                 <NotificationCardNew key={x.id} notification={x} />
                                             ))}
