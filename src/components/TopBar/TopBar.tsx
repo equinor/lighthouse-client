@@ -37,7 +37,7 @@ const ClientTopBar = (): JSX.Element => {
                     ) : (
                         <Avatar alt="User avatar" src={userImageUrl} />
                     )}
-                    <NotificationsDrawer />
+                    {/* <NotificationsDrawer /> */}
                     <Search
                         disabled
                         aria-label="sitewide"
