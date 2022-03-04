@@ -93,20 +93,18 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
             }
         }
         if (idResolver) {
-            idResolver(id).then((x) => {
-                if (x) {
-                    onSelect(x);
-                    return;
-                }
-            });
+            const item = await idResolver(id);
+            if (item) {
+                onSelect(item);
+                return;
+            }
         } else {
-            getData().then(() => {
-                const item = findItem(id);
-                if (item) {
-                    onSelect(item);
-                    return;
-                }
-            });
+            await getData();
+            const item = findItem(id);
+            if (item) {
+                onSelect(item);
+                return;
+            }
         }
         openSidesheet(Fallback);
     }, [data, findItem, getData, idResolver, location.hash, onSelect]);
