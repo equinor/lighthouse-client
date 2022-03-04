@@ -70,6 +70,9 @@ export interface WorkflowEditorOptions {
 
 export interface WorkSpaceConfig<T> {
     name: string;
+    objectIdentifier: string;
+    onSelect?: (item: T) => void;
+    idResolver?: (id: string) => Promise<T>;
     dataSource?: DataSource<T>;
     validator?: (data: unknown[]) => T[];
     viewComponent?: React.FC<DataViewerProps<T>>;

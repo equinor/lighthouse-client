@@ -15,6 +15,7 @@ export function useWorkSpace<T>(): WorkSpaceConfig<T> {
         console.warn(`No DataView registered on path/key:  ${key}`);
         return {
             name: `Unknown DataView ${key}`,
+            objectIdentifier: 'Unknown objectIdentifier',
         };
     }
 }

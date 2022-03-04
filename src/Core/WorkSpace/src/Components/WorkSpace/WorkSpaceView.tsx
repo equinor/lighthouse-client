@@ -1,6 +1,6 @@
 import { FilterProvider, FilterView } from '@equinor/filter';
-import { PopoutSidesheet } from '@equinor/sidesheet';
-import { useMemo, useState } from 'react';
+import { openSidesheet, PopoutSidesheet } from '@equinor/sidesheet';
+import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
@@ -10,6 +10,7 @@ import { CompletionViewHeader } from '../DataViewerHeader/Header';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { DataViewWrapper, Tabs } from './WorkSpaceViewStyles';
+import { Fallback } from '../FallbackSidesheet/Fallback';
 
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const {
@@ -21,6 +22,9 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         powerBiOptions,
         filterOptions,
         workflowEditorOptions,
+        onSelect,
+        idResolver,
+        objectIdentifier,
     } = useWorkSpace();
     const { data } = useDataContext();
     const { id } = useParams();
@@ -66,6 +70,23 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     function handleFilter() {
         setActiveFilter((state) => !state);
     }
+
+    useEffect(() => {
+        if (location.hash.length > 0 && onSelect) {
+            const id = location.hash.split('/')[1];
+            if (data) {
+                const item = data.find((x) => x[objectIdentifier] === id);
+                if (item) {
+                    onSelect(item);
+                }
+            }
+            if (idResolver) {
+                idResolver(id).then((x) => onSelect(x));
+            } else {
+                openSidesheet(Fallback);
+            }
+        }
+    }, [location, idResolver, onSelect, data, objectIdentifier]);
 
     if (!viewIsActive) return <NoDataView />;
     return (
