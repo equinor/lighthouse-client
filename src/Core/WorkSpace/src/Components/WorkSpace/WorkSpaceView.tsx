@@ -1,6 +1,6 @@
 import { FilterProvider, FilterView } from '@equinor/filter';
 import { openSidesheet, PopoutSidesheet } from '@equinor/sidesheet';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
@@ -26,7 +26,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         idResolver,
         objectIdentifier,
     } = useWorkSpace();
-    const { data } = useDataContext();
+    const { data, getData } = useDataContext();
     const { id } = useParams();
     const currentId = useMemo(() => id && `/${id}`, [id]);
     const navigate = useNavigate();
@@ -71,22 +71,52 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         setActiveFilter((state) => !state);
     }
 
-    useEffect(() => {
-        if (location.hash.length > 0 && onSelect) {
-            const id = location.hash.split('/')[1];
-            if (data) {
-                const item = data.find((x) => x[objectIdentifier] === id);
-                if (item) {
-                    onSelect(item);
-                }
+    const findItem = useCallback(
+        (id: string): unknown | undefined => {
+            const item = data.find((x) => x[objectIdentifier] === id);
+            if (objectIdentifier in item) {
+                return item;
             }
-            if (idResolver) {
-                idResolver(id).then((x) => onSelect(x));
-            } else {
-                openSidesheet(Fallback);
+            return undefined;
+        },
+        [data, objectIdentifier]
+    );
+
+    const mountSidesheetFromUrl = useCallback(async () => {
+        if (!onSelect) return;
+        const id = location.hash.split('/')[1];
+        if (data) {
+            const item = findItem(id);
+            if (item) {
+                onSelect(item);
+                return;
             }
         }
-    }, [location, idResolver, onSelect, data, objectIdentifier]);
+        if (idResolver) {
+            const item = await idResolver(id);
+            if (item) {
+                onSelect(item);
+                return;
+            }
+        } else {
+            await getData();
+            const item = findItem(id);
+            if (item) {
+                onSelect(item);
+                return;
+            }
+        }
+        openSidesheet(Fallback);
+    }, [data, findItem, getData, idResolver, location.hash, onSelect]);
+
+    /**
+     * Store sidesheet state in url
+     */
+    useEffect(() => {
+        if (location.hash.length > 0 && onSelect) {
+            mountSidesheetFromUrl();
+        }
+    }, [location.hash.length, mountSidesheetFromUrl, onSelect]);
 
     if (!viewIsActive) return <NoDataView />;
     return (
