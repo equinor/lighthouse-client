@@ -43,7 +43,7 @@ const useHandoverResource = <T extends keyof HandoverResourceTypeMap>(
         } finally {
             setDataIsFetching(false);
         }
-    }, [packageId, packageType]);
+    }, [packageId, packageType, contextId]);
 
     useEffect(() => {
         getData();
