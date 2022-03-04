@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useSignalRHub } from './useSignalRHub';
 import { useHttpClient } from '@equinor/portal-client';
 import { useQuery, useQueryClient } from 'react-query';
@@ -8,24 +8,25 @@ import { Notification } from '../Types/Notification';
 import { useNotificationQueryKeys } from './useNotificationQueryKeys';
 
 interface NotificationCenter {
-    notificationCards: Notification[];
     isFetchingRead: boolean;
     isFetchingUnRead: boolean;
     isEstablishingHubConnection: boolean;
     unreadNotificationsCount: number;
+    unreadNotificationCards: Notification[];
+    readNotificationCards: Notification[];
 }
 
 export function useNotificationCenter(
     onNotification: (notification: Notification) => void
 ): NotificationCenter {
     const { fusion } = useHttpClient();
+    const queryClient = useQueryClient();
+    const { readKey, unreadKey } = useNotificationQueryKeys();
 
-    const { readKey: read, unreadKey: unread } = useNotificationQueryKeys();
-
-    const { data: readNotifications, isFetching: isFetchingUnRead } = useQuery(read, () =>
+    const { data: readNotifications, isFetching: isFetchingUnRead } = useQuery(readKey, () =>
         getReadNotificationCardsAsync()
     );
-    const { data: unreadNotifications, isFetching: isFetchingRead } = useQuery(unread, () =>
+    const { data: unreadNotifications, isFetching: isFetchingRead } = useQuery(unreadKey, () =>
         getUnreadNotificationCardsAsync()
     );
 
@@ -33,9 +34,6 @@ export function useNotificationCenter(
         `${fusion.getBaseUrl()}/signalr/hubs/notifications/?negotiateVersion=1`,
         fusion.getAccessToken
     );
-
-    const queryClient = useQueryClient();
-    const { unreadKey } = useNotificationQueryKeys();
 
     const onNotificationRecieved = useCallback(
         (notification: Notification) => {
@@ -52,15 +50,12 @@ export function useNotificationCenter(
         }
     }, [hubConnection, onNotificationRecieved]);
 
-    const notifications = useMemo(() => {
-        return readNotifications?.value.concat(unreadNotifications?.value || []) || [];
-    }, [readNotifications, unreadNotifications]);
-
     return {
         isFetchingRead,
         isFetchingUnRead,
-        notificationCards: notifications,
         isEstablishingHubConnection: false,
+        readNotificationCards: readNotifications?.value ?? [],
+        unreadNotificationCards: unreadNotifications?.value || [],
         unreadNotificationsCount: unreadNotifications?.count || 0,
     };
 }

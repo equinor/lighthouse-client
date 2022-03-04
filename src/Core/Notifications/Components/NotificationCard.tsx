@@ -14,6 +14,7 @@ import {
     TimeStamp,
     Wrapper,
 } from './NotificationCardStyles';
+import { Button } from '@equinor/eds-core-react';
 interface NotificationCardProps {
     notification: Notification;
 }
@@ -41,13 +42,26 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
                         <circle cx="6" cy="6" r="5.5" fill={'#E7DEEA'} />
                     </svg>
                     <DetailText>
-                        <NotificationTitle>{notification.title}</NotificationTitle>
+                        <NotificationTitle
+                            style={{ color: `${notification.seenByUser ? 'grey' : 'red'}` }}
+                        >
+                            {notification.title}
+                        </NotificationTitle>
                         <TimeStamp>
                             {DateTime.fromJSDate(new Date(notification.created)).toRelative()}
                         </TimeStamp>
                     </DetailText>
                 </LeftSection>
                 <RightSection>
+                    {!notification.seenByUser && (
+                        <Button
+                            variant="outlined"
+                            onClick={() => mutateAsync({ notificationId: notification.id })}
+                        >
+                            Mark as read
+                        </Button>
+                    )}
+
                     <a
                         onClick={() => {
                             window.open(

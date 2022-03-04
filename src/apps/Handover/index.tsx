@@ -17,13 +17,13 @@ import { statusBarData } from './Garden/components/statusItems';
 export function setup(appApi: ClientApi): void {
     const handover = appApi.createWorkSpace<HandoverPackage>({
         CustomSidesheet: HandoverSideSheet,
+        objectIdentifier: 'id',
     });
 
     handover.registerDataSource(async () => {
         const { fusion } = httpClient();
         fusion.setBaseUrl(
-            `https://pro-s-dataproxy-${
-                isProduction() ? 'fprd' : 'ci'
+            `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'
             }.azurewebsites.net/api/contexts/`
         );
         const contextId = isProduction()

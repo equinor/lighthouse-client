@@ -16,6 +16,7 @@ export type FactoryOptions = Omit<Factory, 'factoryId'>;
 
 export interface ViewerOptions<T> {
     initialState: T[];
+    objectIdentifier: keyof T;
     viewerId: string;
     dataFactoryCreator(factory: Factory): void;
     openSidesheet(SidesheetContent?: React.FC<any>, props?: any): void;
@@ -41,6 +42,7 @@ export interface ViewOptions<T> {
 
 export interface WorkSpaceApi<T> {
     registerDataSource: (dataSource: DataSource<T>) => void;
+    registerIdResolver: (idResolver: (id: string) => Promise<T>) => void;
     registerDataCreator: (factory: FactoryOptions) => void;
     registerDataValidator: (validator: Validator<T>) => void;
     registerCustomContentView: (
