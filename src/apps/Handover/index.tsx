@@ -79,6 +79,38 @@ export function setup(appApi: ClientApi): void {
                     },
                 },
             },
+            {
+                key: 'progress',
+                type: 'Number',
+            },
+            {
+                key: 'volume',
+                type: 'Number',
+            },
+            {
+                key: 'mcPkgsCount',
+                type: 'Number',
+            },
+            {
+                key: 'mcPkgsRFCCShippedCount',
+                type: 'Number',
+            },
+            {
+                key: 'mcPkgsRFCCSigned',
+                type: 'Number',
+            },
+            {
+                key: 'mcPkgsRFOCShipped',
+                type: 'Number',
+            },
+            {
+                key: 'mcPkgsRFOCSigned',
+                type: 'Number',
+            },
+            {
+                key: 'createdDate',
+                type: 'Date',
+            },
         ],
     });
     handover.registerGardenOptions({

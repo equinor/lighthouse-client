@@ -22,13 +22,13 @@ export interface HttpClient {
     post(url: string, init?: RequestInit | undefined): Promise<Response>;
     put(url: string, init?: RequestInit | undefined): Promise<Response>;
     delete(url: string, init?: RequestInit | undefined): Promise<Response>;
+    getAccessToken(): Promise<string>;
     uploadFile(
         url: string,
         formData: FormData,
         progressCallback?: ProgressCallback,
         init?: RequestInit | undefined
     ): Promise<Response>;
-    getAccessToken(): Promise<string>;
     fetchWithToken(
         endpoint: string,
         token: string,
@@ -37,6 +37,7 @@ export interface HttpClient {
     isAuthenticated(): boolean;
     setBaseUrl(baseUrl: string): void;
     setScopes(scopes: string[]): void;
+    getBaseUrl(): string | undefined;
 }
 
 export function baseClient(
@@ -219,6 +220,10 @@ export function baseClient(
         return await fetchWithToken(url, accessToken, requestInit);
     }
 
+    function getBaseUrl(): string | undefined {
+        return baseUrl;
+    }
+
     return {
         get,
         post,
@@ -231,6 +236,7 @@ export function baseClient(
         isAuthenticated,
         setBaseUrl,
         setScopes,
+        getBaseUrl,
     };
 }
 
