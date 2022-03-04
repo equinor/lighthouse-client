@@ -10,6 +10,7 @@ export interface Scope {
     fusionNotifications: string;
     fusionTasks: string;
     fusionPbi: string;
+    fusionDataproxy: string;
 }
 export interface Urls {
     echoModelDistClient: string;
@@ -23,4 +24,5 @@ export interface Urls {
     fusionNotifications: string;
     fusionTasks: string;
     fusionPbi: string;
+    fusionDataproxy: string;
 }
