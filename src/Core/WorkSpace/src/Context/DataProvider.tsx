@@ -37,15 +37,13 @@ interface DataState {
     workflowEditorOptions?: WorkflowEditorOptions;
 }
 interface DataContextState extends DataState {
-    getData: VoidFunction;
+    getData: () => Promise<void>;
     isLoading: boolean;
     error: unknown;
 }
 interface DataProviderProps {
     children: React.ReactNode;
 }
-
-type VoidFunction = () => void;
 
 export enum DataAction {
     getData = 'getData',
@@ -123,7 +121,9 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         <DataContext.Provider
             value={{
                 ...state,
-                getData: refetch,
+                getData: async () => {
+                    await refetch();
+                },
                 isLoading,
                 error,
             }}
