@@ -7,6 +7,7 @@ import { Pipetest } from './Types/Pipetest';
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<Pipetest>({
         CustomSidesheet: CustomSidesheet,
+        objectIdentifier: 'name',
     });
 
     request.registerDataSource(async () => {
