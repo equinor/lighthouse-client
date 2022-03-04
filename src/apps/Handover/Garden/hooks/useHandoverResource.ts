@@ -23,12 +23,14 @@ const useHandoverResource = <T extends keyof HandoverResourceTypeMap>(
     **/
     const apiClient = useHttpClient();
     const fusionApi = useMemo(() => apiClient.fusion, [apiClient]);
-
+    fusionApi.setBaseUrl(
+        `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/api/contexts/`
+    );
     const getData = useCallback(async () => {
         setDataIsFetching(true);
         try {
             const result = await fusionApi.fetch(
-                `api/contexts/${contextId}/handover/${packageId}/${packageType}`
+                `${contextId}/handover/${packageId}/${packageType}`
             );
 
             const parsedSignatures = JSON.parse(
