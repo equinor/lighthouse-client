@@ -308,6 +308,7 @@ export const apps: AppManifest[] = [
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
+        appEnv: 'dev',
     },
     {
         title: 'Project explorer',
