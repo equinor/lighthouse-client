@@ -60,7 +60,7 @@ function start(item: CommPkg): string {
 
 export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
-    const commPkg = appApi.createWorkSpace<CommPkg>({});
+    const commPkg = appApi.createWorkSpace<CommPkg>({ objectIdentifier: 'Id' });
 
     commPkg.registerDataSource(async () => {
         const plantId = 'PCS$JOHAN_CASTBERG';

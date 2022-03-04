@@ -15,11 +15,17 @@ import { tokens } from '@equinor/eds-tokens';
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<ScopeChangeRequest>({
         CustomSidesheet: ScopeChangeSideSheet,
+        objectIdentifier: 'id',
     });
 
     request.registerDataCreator({
         title: 'Scope change',
         component: ScopeChangeRequestForm,
+    });
+
+    request.registerIdResolver(async (id: string): Promise<ScopeChangeRequest> => {
+        const { scopeChange } = httpClient();
+        return await (await scopeChange.fetch(`api/scope-change-requests/${id}`)).json();
     });
 
     request.registerDataSource(async (): Promise<ScopeChangeRequest[]> => {

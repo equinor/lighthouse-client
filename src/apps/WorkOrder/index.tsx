@@ -33,7 +33,9 @@ export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [
         'api://460842ad-e295-4449-a96a-362b1e46ce45/.default',
     ]);
-    const commPkg = appApi.createWorkSpace<WorkOrder>({});
+    const commPkg = appApi.createWorkSpace<WorkOrder>({
+        objectIdentifier: 'mcPkgNo',
+    });
 
     commPkg.registerDataSource(async () => {
         const response = await api.fetch(

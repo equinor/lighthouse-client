@@ -30,7 +30,13 @@ import {
  * @return {*}  {DataViewerApi<T>}
  */
 export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
-    const onSelect = (item: T) => options.openSidesheet(options.CustomSidesheet, item);
+    const onSelect = (item: T) => {
+        const url = new URL(window.location.href);
+        url.hash = `${options.viewerId}/${item[options.objectIdentifier]}`;
+        window.history.pushState({}, '', url);
+        options.openSidesheet(options.CustomSidesheet, item);
+    };
+
     //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
 
     dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => {
@@ -41,6 +47,8 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
         return {
             ...state,
             [options.viewerId]: {
+                onSelect: onSelect as (item: unknown) => void,
+                objectIdentifier: options.objectIdentifier as string,
                 name: options.viewerId,
                 initialState: options.initialState,
             },
@@ -65,6 +73,15 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
                 [options.viewerId]: {
                     ...state[options.viewerId],
                     dataSource,
+                },
+            }));
+        },
+        registerIdResolver(idResolverFunction: (id: string) => Promise<T>) {
+            dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => ({
+                ...state,
+                [options.viewerId]: {
+                    ...state[options.viewerId],
+                    idResolver: idResolverFunction,
                 },
             }));
         },
