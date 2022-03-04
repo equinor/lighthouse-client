@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon';
 import styled from 'styled-components';
 import { Criteria, WorkflowStatus, WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
@@ -16,27 +15,41 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
     const stepStatus = statusFunc(step);
 
     return (
-        <>
-            <SplitInline>
+        <SplitInline>
+            <FixedIconContainer>
                 <WorkflowIcon
                     status={stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus}
                     number={step.order + 1}
                 />
+            </FixedIconContainer>
 
-                <WorkflowText>
-                    <span>{step.name}</span>
-                    {criteria.signedAtUtc ? (
-                        <div
-                            style={{ fontSize: '14px' }}
-                        >{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
-                    ) : (
-                        <div style={{ fontSize: '14px' }}>{criteria.valueDescription}</div>
-                    )}
-                </WorkflowText>
-            </SplitInline>
-        </>
+            <WorkflowText>
+                <span>{step.name}</span>
+                {criteria.signedAtUtc ? (
+                    <DetailText>
+                        <div>{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
+                        {criteria.signedComment && <q>{criteria.signedComment}</q>}
+                    </DetailText>
+                ) : (
+                    <DetailText>{criteria.valueDescription}</DetailText>
+                )}
+            </WorkflowText>
+        </SplitInline>
     );
 };
+
+const DetailText = styled.div`
+    font-size: 14px;
+`;
+
+const FixedIconContainer = styled.div`
+    width: 29px;
+    height: 29px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 const SplitInline = styled.div`
     display: flex;
     align-items: center;

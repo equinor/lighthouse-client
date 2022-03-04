@@ -13,7 +13,9 @@ const excludeKeys: (keyof WorkOrder)[] = [
 ];
 
 export function setup(appApi: ClientApi): void {
-    const commPkg = appApi.createWorkSpace<WorkOrder>({});
+    const commPkg = appApi.createWorkSpace<WorkOrder>({
+        objectIdentifier: 'workOrderId',
+    });
 
     const contextId = '71db33bb-cb1b-42cf-b5bf-969c77e40931';
     commPkg.registerDataSource(async () => {

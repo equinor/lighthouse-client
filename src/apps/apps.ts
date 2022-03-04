@@ -235,7 +235,7 @@ export const apps: AppManifest[] = [
             setup: constructionSetup,
         },
 
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Commissioning',

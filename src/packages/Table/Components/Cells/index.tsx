@@ -5,3 +5,4 @@ export * from './LinkCell';
 export * from './ProgressCell';
 export * from './ArrayCell';
 export * from './RelativeDateCell';
+export * from './NumberCell';
