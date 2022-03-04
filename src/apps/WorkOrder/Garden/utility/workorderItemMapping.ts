@@ -15,7 +15,7 @@ const materialColorMap: Record<MatStatus, string> = {
     AVAILABLE: statusColorMap.PA,
     NOT_AVAILABLE: statusColorMap.PB,
 };
-const materialStatusMap: Partial<Record<MaterialStatus, string>> = {
+const materialPackageStatusMap: Partial<Record<MaterialStatus, string>> = {
     MN: 'OK',
     M10: 'OK',
     M11: 'OK',
@@ -29,6 +29,19 @@ const materialStatusMap: Partial<Record<MaterialStatus, string>> = {
     M4: 'NOT_AVAILABLE',
 };
 
+export const materialStatusMap: Partial<Record<MaterialStatus, string>> = {
+    M10: 'Material requested to job site',
+    M12: 'Material received on job site',
+    M2: 'Materials linked to Smartpack/Jobcard',
+    M6: 'Material partly delivered',
+    M7: 'Materials fully delivered',
+    M9: 'Material returned',
+    MN: 'No Material required',
+    MN1: 'Additional material to be issued Offshore from Min/Max Stock',
+    MNX1: 'Materials not linked to Smartpack/Jobcard',
+    MNX2: 'Materials partially linked to Smartpack/Jobcard',
+};
+
 export const getMccrStatusColor = (workOrder: WorkOrder): string => {
     const status = workOrder.mccrStatus;
     if (!status) {
@@ -38,8 +51,9 @@ export const getMccrStatusColor = (workOrder: WorkOrder): string => {
 };
 
 export const getMatStatusColor = (workOrder: WorkOrder): string => {
-    const materialStatus = materialStatusMap[workOrder.materialStatus];
+    const materialStatus = materialPackageStatusMap[workOrder.materialStatus];
     return materialColorMap[materialStatus] || statusColorMap.OS;
 };
 
-export const getMatStatus = (workOrder: WorkOrder) => materialStatusMap[workOrder.materialStatus];
+export const getMatStatus = (workOrder: WorkOrder) =>
+    materialPackageStatusMap[workOrder.materialStatus];

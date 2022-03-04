@@ -1,5 +1,8 @@
 export type MaterialStatus =
     | 'MN'
+    | 'MN1'
+    | 'MNX1'
+    | 'MNX2'
     | 'M13'
     | 'M12'
     | 'M11'
