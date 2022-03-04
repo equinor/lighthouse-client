@@ -19,17 +19,25 @@ export function setup(appApi: ClientApi): void {
         CustomSidesheet: HandoverSideSheet,
         objectIdentifier: 'id',
     });
+    handover.registerIdResolver(async (id) => {
+        const { fusionDataproxy } = httpClient();
 
-    handover.registerDataSource(async () => {
-        const { fusion } = httpClient();
-        fusion.setBaseUrl(
-            `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'
-            }.azurewebsites.net/api/contexts/`
-        );
         const contextId = isProduction()
             ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
             : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-        const response = await fusion.fetch(`${contextId}/handover/`);
+        const response = await fusionDataproxy.fetch(`api/contexts/${contextId}/handover/`);
+        const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
+        [];
+        return parsedResponse.find((pkg) => pkg.id === id);
+    });
+
+    handover.registerDataSource(async () => {
+        const { fusionDataproxy } = httpClient();
+
+        const contextId = isProduction()
+            ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
+            : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
+        const response = await fusionDataproxy.fetch(`api/contexts/${contextId}/handover/`);
         const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
         [];
 

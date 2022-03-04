@@ -76,7 +76,7 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
                 },
             }));
         },
-        registerIdResolver(idResolverFunction: (id: string) => Promise<T>) {
+        registerIdResolver(idResolverFunction: (id: string) => Promise<T | undefined>) {
             dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => ({
                 ...state,
                 [options.viewerId]: {
