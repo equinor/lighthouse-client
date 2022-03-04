@@ -23,10 +23,8 @@ export function useNotificationCenter(
     const queryClient = useQueryClient();
     const { readKey, unreadKey } = useNotificationQueryKeys();
 
-    const { data: readNotifications, isFetching: isFetchingUnRead } = useQuery(
-        readKey,
-        () => getReadNotificationCardsAsync(),
-        { cacheTime: 5 * 1000, refetchInterval: 5 * 1000 }
+    const { data: readNotifications, isFetching: isFetchingUnRead } = useQuery(readKey, () =>
+        getReadNotificationCardsAsync()
     );
     const { data: unreadNotifications, isFetching: isFetchingRead } = useQuery(unreadKey, () =>
         getUnreadNotificationCardsAsync()
