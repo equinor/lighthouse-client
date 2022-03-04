@@ -12,17 +12,26 @@ export function setup(appApi: ClientApi): void {
         CustomSidesheet: SwcrSideSheet,
         objectIdentifier: 'swcrNo',
     });
+    swcr.registerIdResolver(async (id) => {
+        //HACK: fix this when we can lookup swcr by id
+        const { fusionDataproxy } = httpClient();
 
-    swcr.registerDataSource(async () => {
-        const { fusion } = httpClient();
-        fusion.setBaseUrl(
-            `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'
-            }.azurewebsites.net/api/contexts/`
-        );
         const contextId = isProduction()
             ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
             : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-        const response = await fusion.fetch(`${contextId}/swcr`);
+        const response = await fusionDataproxy.fetch(`api/contexts/${contextId}/swcr`);
+
+        const swcrPackages = JSON.parse(await response.text()) as SwcrPackage[];
+        return swcrPackages.find((pkg) => pkg.swcrNo === id);
+    });
+
+    swcr.registerDataSource(async () => {
+        const { fusionDataproxy } = httpClient();
+
+        const contextId = isProduction()
+            ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
+            : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
+        const response = await fusionDataproxy.fetch(`api/contexts/${contextId}/swcr`);
 
         //pro-s-dataproxy-ci.azurewebsites.net/api/contexts/b9a3246a-ddb5-4086-b4ec-dd4b0e88b700/swcr
 

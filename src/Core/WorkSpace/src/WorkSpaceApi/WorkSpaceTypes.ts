@@ -42,7 +42,7 @@ export interface ViewOptions<T> {
 
 export interface WorkSpaceApi<T> {
     registerDataSource: (dataSource: DataSource<T>) => void;
-    registerIdResolver: (idResolver: (id: string) => Promise<T>) => void;
+    registerIdResolver: (idResolver: (id: string) => Promise<T | undefined>) => void;
     registerDataCreator: (factory: FactoryOptions) => void;
     registerDataValidator: (validator: Validator<T>) => void;
     registerCustomContentView: (

@@ -22,15 +22,13 @@ const useHandoverResource = <T extends keyof HandoverResourceTypeMap>(
      apiClient should be stable, but does not look to be the case.   
     **/
     const apiClient = useHttpClient();
-    const fusionApi = useMemo(() => apiClient.fusion, [apiClient]);
-    fusionApi.setBaseUrl(
-        `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/api/contexts/`
-    );
+    const fusionApi = useMemo(() => apiClient.fusionDataproxy, [apiClient]);
+
     const getData = useCallback(async () => {
         setDataIsFetching(true);
         try {
             const result = await fusionApi.fetch(
-                `${contextId}/handover/${packageId}/${packageType}`
+                `api/contexts/${contextId}/handover/${packageId}/${packageType}`
             );
 
             const parsedSignatures = JSON.parse(
