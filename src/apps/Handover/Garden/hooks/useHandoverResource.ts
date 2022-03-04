@@ -1,4 +1,4 @@
-import { httpClient, isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/portal-client';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useHttpClient } from '../../../../Core/Client/Hooks';
 import { HandoverResourceTypeMap } from '../models/handoverResources';
