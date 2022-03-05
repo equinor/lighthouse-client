@@ -1,5 +1,6 @@
 import { useFactory } from '@equinor/DataFactory';
 import { Progress, Tabs } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { useFilteredData } from '@equinor/filter';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
@@ -65,7 +66,16 @@ export const CompletionViewHeader = ({
                         ) : (
                             `Updated ${timestamp}`
                         )}
-                        <ClickableIcon size={32} name="refresh" onClick={() => dataApi.refetch()} />
+                        <ClickableIcon
+                            size={32}
+                            name="refresh"
+                            color={
+                                dataApi.isStale
+                                    ? tokens.colors.infographic.primary__energy_red_100.hex
+                                    : tokens.colors.interactive.primary__resting.hex
+                            }
+                            onClick={() => dataApi.refetch()}
+                        />
                     </RefreshButton>
                 </TitleHeader>
                 {statusFunc && <StatusBar data={statusFunc(data)} />}
