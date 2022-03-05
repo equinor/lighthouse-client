@@ -33,7 +33,8 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const location = useLocation();
 
     const { tabs, viewIsActive } = useConfiguredTabs(
-        treeOptions,
+        //Dont know why??
+        treeOptions as any,
         tableOptions,
         gardenOptions,
         timelineOptions,

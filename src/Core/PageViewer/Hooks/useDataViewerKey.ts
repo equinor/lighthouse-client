@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 
-function getDataViewerKey(pathname: string): string {
+function getWorkspaceKey(pathname: string): string {
     const pathNames = pathname.split('/');
 
     if (pathNames[2]) {
@@ -12,5 +12,5 @@ function getDataViewerKey(pathname: string): string {
 
 export function useLocationKey(): string {
     const location = useLocation();
-    return getDataViewerKey(location.pathname);
+    return getWorkspaceKey(location.pathname);
 }
