@@ -1,5 +1,5 @@
 import { useFactory } from '@equinor/DataFactory';
-import { Button, Progress, Tabs } from '@equinor/eds-core-react';
+import { Progress, Tabs } from '@equinor/eds-core-react';
 import { useFilteredData } from '@equinor/filter';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
