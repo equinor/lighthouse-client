@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { useAtom } from '@dbeining/react-atom';
 import { useMemo } from 'react';
-import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useDataViewerKey';
+import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useWorkspaceKey';
 import { getWorkSpaceContext, WorkSpaceConfig } from './workspaceState';
 
 export function useWorkSpace<T>(): WorkSpaceConfig<T> {

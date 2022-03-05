@@ -6,7 +6,7 @@ import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
 import styled from 'styled-components';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
-import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useDataViewerKey';
+import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useWorkspaceKey';
 import {
     getWorkSpaceContext,
     PowerBiOptions,
