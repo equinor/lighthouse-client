@@ -92,11 +92,11 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
 
     useEffect(() => {
         dispatch(actions.setOptions(initialState));
-        dataApi.remove();
+        queryApi.remove();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [key]);
 
-    const dataApi = useQuery(
+    const queryApi = useQuery(
         key,
         async () => {
             if (!dataSource) return;
@@ -106,56 +106,56 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     );
 
     useEffect(() => {
-        dataApi.refetch();
+        queryApi.refetch();
     }, [dataSource]);
 
     const queryClient = useQueryClient();
 
     function patchRecord(id: string, item: unknown, identifier?: string) {
         const query = queryClient.getQueryCache().find(key);
-        if (!query || !dataApi.data) return;
+        if (!query || !queryApi.data) return;
 
-        const patchIndex = dataApi.data.findIndex(
+        const patchIndex = queryApi.data.findIndex(
             (record: any) => record[identifier ?? options.objectIdentifier] === id
         );
         if (patchIndex === -1) return;
 
-        query.setData((dataApi.data[patchIndex] = item));
+        query.setData((queryApi.data[patchIndex] = item));
     }
 
     function deleteRecord(id: string, identifier?: string) {
         const query = queryClient.getQueryCache().find(key);
-        if (!query || !dataApi.data) return;
+        if (!query || !queryApi.data) return;
 
         query.setData(
-            dataApi.data.filter(
+            queryApi.data.filter(
                 (record: any) => record[identifier ?? options.objectIdentifier] !== id
             )
         );
     }
 
     function getRecord(id: string, identifier?: string) {
-        if (!dataApi.data) return;
+        if (!queryApi.data) return;
 
-        return dataApi.data.find(
+        return queryApi.data.find(
             (record: any) => record[identifier ?? options.objectIdentifier] === id
         );
     }
 
     function insertRecord(item: unknown) {
         const query = queryClient.getQueryCache().find(key);
-        if (!query || !dataApi.data) return;
+        if (!query || !queryApi.data) return;
 
-        query.setData([item, ...dataApi.data]);
+        query.setData([item, ...queryApi.data]);
     }
 
     return (
         <DataContext.Provider
             value={{
                 ...state,
-                data: dataApi.data || [],
+                data: queryApi.data || [],
                 dataApi: {
-                    ...dataApi,
+                    ...queryApi,
                     insertRecord,
                     getRecord,
                     deleteRecord,
@@ -163,11 +163,11 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
                 },
             }}
         >
-            {dataApi.isLoading ? (
+            {queryApi.isLoading ? (
                 <Loading>
                     <CircularProgress value={0} size={48} />
                 </Loading>
-            ) : dataApi.error ? (
+            ) : queryApi.error ? (
                 <Loading>
                     <Icon name="error_outlined" />
                     Something went wrong
