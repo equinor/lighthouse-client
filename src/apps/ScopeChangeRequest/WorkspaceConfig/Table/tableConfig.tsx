@@ -1,10 +1,10 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { OriginLink } from '../Components/DetailView/Components/OriginLink';
-import { WorkflowCompact } from '../Components/Workflow/Components/WorkflowCompact';
-import { getLastSigned } from '../Functions/getLastSigned';
-import { ScopeChangeRequest, WorkflowStep } from '../Types/scopeChangeRequest';
+import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
+import { OriginLink } from '../../Components/DetailView/Components/OriginLink';
+import { WorkflowCompact } from './WorkflowCompact';
+import { getLastSigned } from './getLastSigned';
+import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',

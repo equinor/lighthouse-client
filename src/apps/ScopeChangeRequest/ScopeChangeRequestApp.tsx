@@ -4,9 +4,9 @@ import { ScopeChangeRequest } from './Types/scopeChangeRequest';
 import { dataCreator } from './WorkspaceConfig/dataCreatorConfig';
 import { dataSource, idResolver } from './WorkspaceConfig/dataOptions';
 import { filterConfig } from './WorkspaceConfig/filterConfig';
-import { gardenConfig } from './WorkspaceConfig/gardenConfig';
+import { gardenConfig } from './WorkspaceConfig/Garden/gardenConfig';
 import { statusBarConfig } from './WorkspaceConfig/statusBarConfig';
-import { tableConfig } from './WorkspaceConfig/tableConfig';
+import { tableConfig } from './WorkspaceConfig/Table/tableConfig';
 
 export function setup(appApi: ClientApi): void {
     appApi

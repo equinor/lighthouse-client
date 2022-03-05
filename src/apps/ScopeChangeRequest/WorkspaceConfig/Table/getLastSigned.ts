@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
+import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 
 export function getLastSigned(request: ScopeChangeRequest): DateTime | null {
     if (!request || request.state === 'Draft') return null;
