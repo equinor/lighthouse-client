@@ -1,8 +1,8 @@
 import { StatusItem } from '../../../packages/StatusBar';
-import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 import { kFormatter } from '../Functions/kFormatter';
+import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
-export function statusBarData(data: ScopeChangeRequest[]): StatusItem[] {
+export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
     return [
         {
             title: 'Requests',

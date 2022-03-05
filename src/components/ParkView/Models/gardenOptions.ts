@@ -1,5 +1,5 @@
 import React from 'react';
-import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { DataSet, Data } from './data';
 import { FieldSettings } from './fieldSettings';
 

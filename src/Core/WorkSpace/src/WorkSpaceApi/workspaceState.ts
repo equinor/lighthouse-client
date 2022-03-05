@@ -72,7 +72,7 @@ export interface WorkSpaceConfig<T> {
     name: string;
     objectIdentifier: string;
     onSelect?: (item: T) => void;
-    idResolver?: (id: string) => Promise<T>;
+    idResolver?: (id: string) => Promise<T | undefined>;
     dataSource?: DataSource<T>;
     validator?: (data: unknown[]) => T[];
     viewComponent?: React.FC<DataViewerProps<T>>;
@@ -80,13 +80,15 @@ export interface WorkSpaceConfig<T> {
     filterOptions?: FilterOptions<T>;
     tableOptions?: TableOptions<T>;
     treeOptions?: TreeOptions<T>;
-    timelineOptions?: any;
+    timelineOptions?: TimeLineOptions;
     gardenOptions?: GardenOptions<T>;
     analyticsOptions?: AnalyticsOptions<T>;
     statusFunc?: StatusFunc<T>;
-    powerBiOptions?: any;
+    powerBiOptions?: PowerBiOptions;
     workflowEditorOptions?: WorkflowEditorOptions;
 }
+
+export interface TimeLineOptions { }
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

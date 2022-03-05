@@ -1,4 +1,4 @@
-import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 
 export type DataSet<T> = {
     groupKey: keyof T;

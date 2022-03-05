@@ -1,4 +1,4 @@
-import { TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { ParkViewProvider } from '../Context/ParkViewProvider';
 import { NoTreeOptions } from './NoTreeOptions';
 import { TreeView } from './TreeView';

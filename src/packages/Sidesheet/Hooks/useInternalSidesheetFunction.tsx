@@ -40,6 +40,8 @@ export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
     }
 
     function closeSidesheet(): void {
+        //HACK: should somehow be handled from the workspace
+        history.pushState('', document.title, window.location.pathname);
         dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {
             return {
                 ...currentState,
