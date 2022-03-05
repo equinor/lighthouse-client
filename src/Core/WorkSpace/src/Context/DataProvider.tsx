@@ -8,14 +8,15 @@ import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useDataViewerKey';
 import {
+    getWorkSpaceContext,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
     WorkflowEditorOptions,
 } from '../WorkSpaceApi/workspaceState';
-import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
+import { useAtom } from '@dbeining/react-atom';
 
 interface DataState {
     key: string;
@@ -77,9 +78,10 @@ export function ClientReducer(state: DataState, action: Action): DataState {
 
 export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
-    const options = useWorkSpace();
+    const currentWorkspace = useAtom(getWorkSpaceContext());
+    const options = currentWorkspace[key];
 
-    const { dataSource } = options;
+    const { dataSource, objectIdentifier } = options;
 
     const initialState: DataState = {
         key,
@@ -116,7 +118,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         if (!query || !queryApi.data) return;
 
         const patchIndex = queryApi.data.findIndex(
-            (record: any) => record[identifier ?? options.objectIdentifier] === id
+            (record: any) => record[identifier ?? objectIdentifier] === id
         );
         if (patchIndex === -1) return;
 
@@ -128,18 +130,14 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         if (!query || !queryApi.data) return;
 
         query.setData(
-            queryApi.data.filter(
-                (record: any) => record[identifier ?? options.objectIdentifier] !== id
-            )
+            queryApi.data.filter((record: any) => record[identifier ?? objectIdentifier] !== id)
         );
     }
 
     function getRecord(id: string, identifier?: string) {
         if (!queryApi.data) return;
 
-        return queryApi.data.find(
-            (record: any) => record[identifier ?? options.objectIdentifier] === id
-        );
+        return queryApi.data.find((record: any) => record[identifier ?? objectIdentifier] === id);
     }
 
     function insertRecord(item: unknown) {

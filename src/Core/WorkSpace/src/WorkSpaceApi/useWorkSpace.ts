@@ -12,9 +12,9 @@ export function useWorkSpace<T>(): WorkSpaceConfig<T> {
     if (currentView) {
         return currentView as WorkSpaceConfig<T>;
     } else {
-        console.warn(`No DataView registered on path/key:  ${key}`);
+        console.warn(`No workspace registered on path/key:  ${key}`);
         return {
-            name: `Unknown DataView ${key}`,
+            name: `Unknown Workspace ${key}`,
             objectIdentifier: 'Unknown objectIdentifier',
         };
     }
