@@ -18,6 +18,14 @@ export const LeftSection = styled.div`
     width: -webkit-fill-available;
     border-bottom: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
+
+export const TitleHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+`;
+
 export const RightSection = styled.div`
     display: flex;
     flex-direction: row;
