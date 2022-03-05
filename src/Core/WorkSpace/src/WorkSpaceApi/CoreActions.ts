@@ -1,5 +1,5 @@
 import { Atom, deref, swap } from '@dbeining/react-atom';
-import { WorkSpaceState } from './State';
+import { WorkSpaceState } from './workspaceState';
 
 export function dispatch(
     globalState: Atom<WorkSpaceState>,

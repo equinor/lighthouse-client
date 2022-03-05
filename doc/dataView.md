@@ -49,7 +49,7 @@ interface DataView {
 To be able to configure routes and create different `Data Views` by providing a setup function and.
 
 ```TS
-type AppType = "DataViewer" | "SomeApp" | "CustomApp"
+type AppType = "Workspace" | "SomeApp" | "CustomApp"
 
 interface App {
     appType: AppType;
