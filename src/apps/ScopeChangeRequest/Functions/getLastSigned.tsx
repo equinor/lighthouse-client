@@ -5,7 +5,7 @@ export function getLastSigned(request: ScopeChangeRequest): DateTime | null {
     if (!request || request.state === 'Draft') return null;
 
     const dateArray: DateTime[] = [];
-
+    if (!request.workflowSteps) return null;
     request.workflowSteps.forEach((step) =>
         step.criterias.forEach((criteria) => {
             if (criteria.signedAtUtc) {
