@@ -26,6 +26,12 @@ export const TitleHeader = styled.div`
     align-items: center;
 `;
 
+export const RefreshButton = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
 export const RightSection = styled.div`
     display: flex;
     flex-direction: row;

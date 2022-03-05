@@ -1,5 +1,5 @@
 import { useFactory } from '@equinor/DataFactory';
-import { Button, Tabs } from '@equinor/eds-core-react';
+import { Button, Progress, Tabs } from '@equinor/eds-core-react';
 import { useFilteredData } from '@equinor/filter';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
@@ -12,6 +12,7 @@ import {
     Divider,
     HeaderWrapper,
     LeftSection,
+    RefreshButton,
     RightSection,
     Title,
     TitleHeader,
@@ -49,6 +50,7 @@ export const CompletionViewHeader = ({
     }
 
     useEffect(() => {
+        setTimestamp(makeTimestamp(dataApi.dataUpdatedAt));
         setInterval(() => setTimestamp(makeTimestamp(dataApi.dataUpdatedAt)), 1000 * 60);
     }, [dataApi.dataUpdatedAt]);
 
@@ -57,10 +59,14 @@ export const CompletionViewHeader = ({
             <LeftSection>
                 <TitleHeader>
                     <Title variant="h3">{title}</Title>
-                    <div>
-                        {`Updated ${timestamp}`}
-                        <ClickableIcon name="refresh" onClick={() => dataApi.refetch()} />
-                    </div>
+                    <RefreshButton>
+                        {dataApi.isFetching ? (
+                            <Progress.Dots color="primary" />
+                        ) : (
+                            `Updated ${timestamp}`
+                        )}
+                        <ClickableIcon size={32} name="refresh" onClick={() => dataApi.refetch()} />
+                    </RefreshButton>
                 </TitleHeader>
                 {statusFunc && <StatusBar data={statusFunc(data)} />}
             </LeftSection>
