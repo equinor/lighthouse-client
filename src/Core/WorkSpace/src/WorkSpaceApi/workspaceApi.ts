@@ -41,15 +41,10 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
 
     //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
 
-    function updateState(
-        propertyName: keyof WorkSpaceConfig<T>,
-        update: WorkSpaceConfig<T>[typeof propertyName]
-    ) {
+    function updateState(update: Partial<WorkSpaceConfig<unknown>>) {
         dispatch(getWorkSpaceContext(), (state: WorkSpaceState) => {
             const newState = state;
-            if (update) {
-                newState[options.viewerId][propertyName] = update as any;
-            }
+            newState[options.viewerId] = { ...update, ...newState[options.viewerId] };
             return newState;
         });
     }
@@ -84,17 +79,17 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
             return workspaceAPI;
         },
         registerDataSource(dataSource: DataSource<T>) {
-            updateState('dataSource', dataSource);
+            updateState({ dataSource });
 
             return workspaceAPI;
         },
         registerIdResolver(idResolver: IdResolverFunc<T>) {
-            updateState('idResolver', idResolver.idResolver);
+            updateState({ idResolver: idResolver.idResolver });
 
             return workspaceAPI;
         },
         registerDataValidator(validator: Validator<T>) {
-            updateState('validator', validator);
+            updateState({ validator });
 
             return workspaceAPI;
         },
@@ -102,13 +97,15 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
             viewComponent: React.FC<DataViewerProps<T>>,
             viewOptions: ViewOptions<T>
         ) {
-            updateState('viewComponent', viewComponent);
-            updateState('viewOptions', viewOptions);
+            updateState({
+                viewComponent: viewComponent as React.FC<DataViewerProps<unknown>>,
+                viewOptions: viewOptions as ViewOptions<unknown>,
+            });
 
             return workspaceAPI;
         },
         registerFilterOptions(filterOptions: any) {
-            updateState('filterOptions', filterOptions);
+            updateState({ filterOptions });
 
             return workspaceAPI;
         },
@@ -118,38 +115,42 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
          *
          */
         registerTableOptions<T>(tableOptions: Omit<TableOptions<T>, 'onSelect'>) {
-            updateState('tableOptions', { ...tableOptions, onSelect });
+            updateState({
+                tableOptions: { onSelect, ...tableOptions } as TableOptions<unknown>,
+            });
 
             return workspaceAPI;
         },
         registerTreeOptions<T>(treeOptions: Omit<TreeOptions<T>, 'onSelect'>) {
-            updateState('treeOptions', { ...treeOptions, onSelect });
+            updateState({ treeOptions: { ...treeOptions, onSelect } as TreeOptions<unknown> });
 
             return workspaceAPI;
         },
 
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
-            updateState('gardenOptions', { ...gardenOptions, onSelect });
+            updateState({
+                gardenOptions: { ...gardenOptions, onSelect } as GardenOptions<unknown>,
+            });
 
             return workspaceAPI;
         },
         registerAnalyticsOptions<T>(analyticsOptions: AnalyticsOptions<T>) {
-            updateState('analyticsOptions', analyticsOptions);
+            updateState({ analyticsOptions: analyticsOptions as AnalyticsOptions<unknown> });
 
             return workspaceAPI;
         },
         registerStatusItems<T>(statusFunc: StatusFunc<T>) {
-            updateState('statusFunc', statusFunc);
+            updateState({ statusFunc: statusFunc as StatusFunc<unknown> });
 
             return workspaceAPI;
         },
         registerPowerBIOptions(powerBiOptions: PowerBiOptions) {
-            updateState('powerBiOptions', powerBiOptions);
+            updateState({ powerBiOptions });
 
             return workspaceAPI;
         },
         registerWorkflowEditorOptions(workflowEditorOptions: WorkflowEditorOptions) {
-            updateState('workflowEditorOptions', workflowEditorOptions);
+            updateState({ workflowEditorOptions });
 
             return workspaceAPI;
         },
