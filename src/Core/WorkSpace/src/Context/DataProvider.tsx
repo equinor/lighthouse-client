@@ -1,27 +1,26 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { FilterOptions } from '@equinor/filter';
-import { useCancellation } from '@equinor/Utils';
 import { createContext, useContext, useEffect, useReducer } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
 import styled from 'styled-components';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
-import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useDataViewerKey';
+import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useWorkspaceKey';
 import {
+    getWorkSpaceContext,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
     WorkflowEditorOptions,
-} from '../WorkSpaceApi/State';
-import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
+} from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
+import { useAtom } from '@dbeining/react-atom';
 
 interface DataState {
     key: string;
     name: string;
-    data: any[];
     subData: Record<string, any[]>;
     item: Record<string, unknown>;
     viewComponent?: React.FC<DataViewerProps<unknown>>;
@@ -37,23 +36,28 @@ interface DataState {
     workflowEditorOptions?: WorkflowEditorOptions;
 }
 interface DataContextState extends DataState {
-    getData: VoidFunction;
-    isLoading: boolean;
-    error: unknown;
+    data: any[];
+    dataApi: DataApi;
 }
+
+type DataApi = DataOperations & UseQueryResult<unknown[] | undefined, unknown>;
+
+interface DataOperations {
+    patchRecord: (id: string, item: unknown, identifier?: string) => void;
+    deleteRecord: (id: string, identifier?: string) => void;
+    getRecord: (id: string, identifier?: string) => void;
+    insertRecord: (item: unknown) => void;
+}
+
 interface DataProviderProps {
     children: React.ReactNode;
 }
 
-type VoidFunction = () => void;
-
 export enum DataAction {
-    getData = 'getData',
     setOptions = 'setOptions',
 }
 
 export const actions = {
-    getData: createCustomAction(DataAction.getData, (data: any[]) => ({ data })),
     setOptions: createCustomAction(DataAction.setOptions, (options) => ({ options })),
 };
 
@@ -65,10 +69,8 @@ const DataContext = createContext({} as DataContextState);
 
 export function ClientReducer(state: DataState, action: Action): DataState {
     switch (action.type) {
-        case getType(actions.getData):
-            return { ...state, data: action.data };
         case getType(actions.setOptions):
-            return { ...state, ...action.options, data: [] };
+            return { ...state, ...action.options };
         default:
             return state;
     }
@@ -76,63 +78,94 @@ export function ClientReducer(state: DataState, action: Action): DataState {
 
 export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
-    const options = useWorkSpace();
+    const currentWorkspace = useAtom(getWorkSpaceContext());
+    const options = currentWorkspace[key];
 
-    const { dataSource } = options;
+    const { dataSource, objectIdentifier } = options;
 
     const initialState: DataState = {
         key,
-        data: [],
         subData: {},
         item: {},
         ...options,
     };
-    const { abortController, viewId } = useCancellation(key);
+
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
     useEffect(() => {
         dispatch(actions.setOptions(initialState));
+        queryApi.remove();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [key]);
 
-    const { refetch, data, isLoading, error } = useQuery(
+    const queryApi = useQuery(
         key,
         async () => {
             if (!dataSource) return;
-
-            const data = await dataSource(abortController);
-            if (viewId !== key) {
-                return;
-            }
-            dispatch(actions.getData(data));
-            return data;
+            return await dataSource();
         },
-        { refetchOnWindowFocus: false }
+        { refetchOnWindowFocus: false, staleTime: 1 * 1000 * 60 * 60 }
     );
 
     useEffect(() => {
-        if (!data) return;
-        dispatch(actions.getData(data));
-    }, [data]);
-
-    useEffect(() => {
-        refetch();
+        queryApi.refetch();
     }, [dataSource]);
+
+    const queryClient = useQueryClient();
+
+    function patchRecord(id: string, item: unknown, identifier?: string) {
+        const query = queryClient.getQueryCache().find(key);
+        if (!query || !queryApi.data) return;
+
+        const patchIndex = queryApi.data.findIndex(
+            (record: any) => record[identifier ?? objectIdentifier] === id
+        );
+        if (patchIndex === -1) return;
+
+        query.setData((queryApi.data[patchIndex] = item));
+    }
+
+    function deleteRecord(id: string, identifier?: string) {
+        const query = queryClient.getQueryCache().find(key);
+        if (!query || !queryApi.data) return;
+
+        query.setData(
+            queryApi.data.filter((record: any) => record[identifier ?? objectIdentifier] !== id)
+        );
+    }
+
+    function getRecord(id: string, identifier?: string) {
+        if (!queryApi.data) return;
+
+        return queryApi.data.find((record: any) => record[identifier ?? objectIdentifier] === id);
+    }
+
+    function insertRecord(item: unknown) {
+        const query = queryClient.getQueryCache().find(key);
+        if (!query || !queryApi.data) return;
+
+        query.setData([item, ...queryApi.data]);
+    }
 
     return (
         <DataContext.Provider
             value={{
                 ...state,
-                getData: refetch,
-                isLoading,
-                error,
+                data: queryApi.data || [],
+                dataApi: {
+                    ...queryApi,
+                    insertRecord,
+                    getRecord,
+                    deleteRecord,
+                    patchRecord,
+                },
             }}
         >
-            {isLoading ? (
+            {queryApi.isLoading ? (
                 <Loading>
                     <CircularProgress value={0} size={48} />
                 </Loading>
-            ) : error ? (
+            ) : queryApi.error ? (
                 <Loading>
                     <Icon name="error_outlined" />
                     Something went wrong
