@@ -29,9 +29,10 @@ export function useFusionClient(
         enablePageNavigation?: boolean;
     }
 ): useFusionClientReturn {
-    const { fusion } = useHttpClient();
-    const [error, setError] = useState<NetworkError>();
-    const baseUri = 'https://app-ppo-proxy-dev.azurewebsites.net/fusion/reports';
+    const { fusionPbi } = useHttpClient();
+
+    const [error] = useState<NetworkError>();
+    const baseUri = `reports`;
 
     const filters: PowerBiFilter[] = [];
     filterOptions?.forEach((filterOption) => {
@@ -41,7 +42,7 @@ export function useFusionClient(
     async function getEmbedInfo() {
         try {
             const embedUri = `${baseUri}/${resource}/config/embedinfo`;
-            const response = await fusion.fetch(embedUri);
+            const response = await fusionPbi.fetch(embedUri);
 
             const data = await response.json();
             window['embedInfo'] = data;
@@ -51,22 +52,11 @@ export function useFusionClient(
         }
     }
 
-    async function getPowerBiToken() {
-        try {
-            const tokenUri = `${baseUri}/${resource}/token`;
-            const response = await fusion.fetch(tokenUri);
-            return await response.json();
-        } catch (error: any) {
-            const networkError = error as NetworkError;
-            setError(networkError);
-        }
-    }
-
     async function getConfig(): Promise<IReportEmbedConfiguration> {
         const { embedConfig } = await getEmbedInfo();
-        const { token } = await getPowerBiToken();
+        const token = await fusionPbi.fetch(`reports/${resource}/token`).then((x) => x.json());
         return {
-            accessToken: token,
+            accessToken: token['token'],
             embedUrl: embedConfig.embedUrl,
             id: embedConfig.reportId,
             settings: {

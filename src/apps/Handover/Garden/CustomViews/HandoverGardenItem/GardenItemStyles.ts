@@ -12,6 +12,7 @@ export const HandoverItem = styled(Item)<HandoverItemProps>`
     box-sizing: border-box;
     white-space: nowrap;
     justify-content: space-between;
+    border: 1px solid #dcdcdc;
 `;
 
 export const MidSection = styled.div<{ expanded: boolean }>`

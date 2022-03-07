@@ -1,5 +1,5 @@
 import { createGarden } from '../Services/createGarden';
-import { Wrapper, Col } from '../Styles/common';
+import { Wrapper, Col, Container } from '../Styles/common';
 import { TreeColumn } from './TreeColumn';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { FilterSelector } from './GroupingSelector';
@@ -61,7 +61,7 @@ export function GardenView<T>(): JSX.Element | null {
 
     if (!data || !garden) return null;
     return (
-        <>
+        <Container>
             <FilterSelector<T> />
             <Wrapper>
                 {garden &&
@@ -81,6 +81,6 @@ export function GardenView<T>(): JSX.Element | null {
                         </Col>
                     ))}
             </Wrapper>
-        </>
+        </Container>
     );
 }

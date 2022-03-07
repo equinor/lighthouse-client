@@ -6,6 +6,7 @@ import Icon from '../Icon/Icon';
 import { DevBar } from './DevBar/DevBar';
 import Logo from './Logo/Logo';
 import { Icons, TopBarWrapper } from './TopBarStyle';
+import { NotificationsDrawer } from '../../Core/Notifications/Components/NotificationsDrawer';
 
 const ClientTopBar = (): JSX.Element => {
     const {
@@ -36,7 +37,7 @@ const ClientTopBar = (): JSX.Element => {
                     ) : (
                         <Avatar alt="User avatar" src={userImageUrl} />
                     )}
-
+                    {/* <NotificationsDrawer /> */}
                     <Search
                         disabled
                         aria-label="sitewide"

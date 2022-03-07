@@ -79,11 +79,13 @@ export const colorMap: Record<Status, string> = {
     PA: '#ff4081',
     OK: '#00c853',
 };
-
+export const dotsColorMap: Record<Extract<Status, 'OS'>, string> = {
+    OS: '#9E9E9E',
+};
 export const getDotsColor = (status: HandoverPackageStatus) => {
     switch (status) {
         case 'OS':
-            return colorMap.OS;
+            return dotsColorMap.OS;
         case 'PA':
             return colorMap.PA;
         case 'PB':
