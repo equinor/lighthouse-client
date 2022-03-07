@@ -1,8 +1,14 @@
 import { Popover } from '@equinor/eds-core-react';
+import {
+    FlagIcon,
+    SizeIcons,
+    PopoverProgressBar,
+    PopoverContainer,
+    PopoverStatus as StatusStyle,
+} from '@equinor/GardenUtils';
 import { memo } from 'react';
 import { WorkOrder } from '../../models';
-import { FlagIcon, SizeIcons } from '../Icons';
-import { CommStatus, PopoverContainer, Statuses, Status as StatusStyle, HoldBy } from './styles';
+import { Statuses, HoldBy } from './styles';
 type ItemSize = 'small' | 'medium' | 'large';
 
 export type ItemOptions = {
@@ -38,7 +44,7 @@ const WorkOrderPopoverWrapper = ({
                     </p>
                     <p>{data.description}</p>
                     <hr />
-                    <CommStatus barColor={barColor} textColor={textColor}>
+                    <PopoverProgressBar barColor={barColor} textColor={textColor}>
                         <strong>Status: {milestone}</strong>
 
                         <div>
@@ -47,7 +53,7 @@ const WorkOrderPopoverWrapper = ({
                                 Volume: {data.estimatedHours} ({size})
                             </strong>
                         </div>
-                    </CommStatus>
+                    </PopoverProgressBar>
                     {data.holdBy && (
                         <HoldBy>
                             <FlagIcon color={'black'} /> Hold by

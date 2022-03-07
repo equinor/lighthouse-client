@@ -1,14 +1,7 @@
-import { MaterialStatus, WorkOrder } from '../models';
+import { MaterialStatus, statusColorMap } from '@equinor/GardenUtils';
+import { WorkOrder } from '../models';
 
-type Status = 'OS' | 'PB' | 'PA' | 'OK';
 type MatStatus = 'OK' | 'AVAILABLE' | 'NOT_AVAILABLE';
-
-const statusColorMap: Record<Status, string> = {
-    OS: '#9e9e9e',
-    PB: '#ffc107',
-    PA: '#ff4081',
-    OK: '#00c853',
-};
 
 const materialColorMap: Record<MatStatus, string> = {
     OK: statusColorMap.OK,
@@ -27,19 +20,6 @@ const materialPackageStatusMap: Partial<Record<MaterialStatus, string>> = {
     M2: 'NOT_AVAILABLE',
     M3: 'NOT_AVAILABLE',
     M4: 'NOT_AVAILABLE',
-};
-
-export const materialStatusMap: Partial<Record<MaterialStatus, string>> = {
-    M10: 'Material requested to job site',
-    M12: 'Material received on job site',
-    M2: 'Materials linked to Smartpack/Jobcard',
-    M6: 'Material partly delivered',
-    M7: 'Materials fully delivered',
-    M9: 'Material returned',
-    MN: 'No Material required',
-    MN1: 'Additional material to be issued Offshore from Min/Max Stock',
-    MNX1: 'Materials not linked to Smartpack/Jobcard',
-    MNX2: 'Materials partially linked to Smartpack/Jobcard',
 };
 
 export const getMccrStatusColor = (workOrder: WorkOrder): string => {

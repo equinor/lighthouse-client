@@ -1,7 +1,6 @@
+import { CellWithLink, TabTable } from '@equinor/GardenUtils';
 import { Column } from 'react-table';
 import { WorkOrderMccr } from '../../../models';
-import { CellWithLink } from './Cells/CellWithLink';
-import { TabTable } from './TabTable';
 
 export type MccrTabProps = {
     packages: WorkOrderMccr[];

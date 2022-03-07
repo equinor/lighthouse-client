@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { SizeIcons, StatusCircle, FlagIcon } from '@equinor/GardenUtils';
+import { useRef, useState } from 'react';
 import { useParkViewContext } from '../../../../../components/ParkView/Context/ParkViewProvider';
 import { CustomItemView } from '../../../../../components/ParkView/Models/gardenOptions';
 import { WorkOrder } from '../../models';
@@ -10,7 +11,6 @@ import {
     getTextColorForStatus,
     getMatStatus,
 } from '../../utility';
-import { FlagIcon, SizeIcons, StatusCircle } from '../Icons';
 import { WorkOrderPopover } from '../Popover/WorkOrderPopover';
 import {
     Circles,

@@ -1,8 +1,9 @@
-import { MaterialStatus, WorkOrder } from '../models';
-import { followUpColorMap, FollowUpStatuses, orderedProCoSysStatuses } from './pcsFollowUp';
-import { ProcosysStatuses, proCoSysWorkOrderColorMap } from './pcsWorkOrder';
+import { FollowUpStatuses, MaterialStatus, ProcosysStatuses } from '@equinor/GardenUtils';
+import { WorkOrder } from '../models';
+import { followUpColorMap, orderedProCoSysStatuses } from './pcsFollowUp';
+import { proCoSysWorkOrderColorMap } from './pcsWorkOrder';
 
-const getWoStatusFromDates = (workOrder: WorkOrder): string => {
+const getWoStatusFromDates = (workOrder: WorkOrder): ProcosysStatuses => {
     if (workOrder.w10ActualDate) return ProcosysStatuses.SentToPlanning;
     if (workOrder.w9ActualDate) return ProcosysStatuses.ASBuiltCompleted;
     if (workOrder.w8ActualDate) return ProcosysStatuses.SentDC;
@@ -22,7 +23,7 @@ const getWoStatusFromDates = (workOrder: WorkOrder): string => {
  * If there are no appropriate jobStatus values, the status will be based on
  * w1-w10 actual date properties.
  */
-export const getWoStatus = (workOrder: WorkOrder): string => {
+export const getWoStatus = (workOrder: WorkOrder): ProcosysStatuses => {
     switch (workOrder.jobStatus) {
         case 'W01':
             return ProcosysStatuses.Prepared;

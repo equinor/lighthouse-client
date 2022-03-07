@@ -1,7 +1,7 @@
+import { sortByNumber } from '@equinor/GardenUtils';
 import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
 import { WorkOrder } from '../models';
 import { columnKeyAccessor } from './groupByUtils';
-import { sortByNumber } from './sortPackages';
 export type ExtendedGardenFields = 'fwp' | 'hwp' | 'wp';
 export const fieldSettings: FieldSettings<WorkOrder, ExtendedGardenFields> = {
     wp: {

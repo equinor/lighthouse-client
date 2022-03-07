@@ -14,7 +14,9 @@ const Circle = styled.div<StatusIconProps>`
     border-radius: 50%;
     margin: 0px 1px;
 `;
-
+/**
+ * Component displaying a circle with some predefined styles for the Garden package item.
+ */
 export const StatusCircle = ({ statusColor }: StatusIconProps): JSX.Element => (
     <Circle statusColor={statusColor} />
 );

@@ -1,8 +1,8 @@
 import { Tabs } from '@equinor/eds-core-react';
+import { SideSheetContainer } from '@equinor/GardenUtils';
 import { useState } from 'react';
 import { WorkOrder } from '../../models';
 import { useMaterial, useMccr } from './hooks';
-import { SideSheetContainer } from './styles';
 import { DetailsTab, MccrTab } from './Tabs';
 import { MaterialTab } from './Tabs/MaterialTab';
 
@@ -20,7 +20,7 @@ export const WorkorderSideSheet = (workorder: WorkOrder): JSX.Element => {
     const { mccr, isFetching: mccrIsFetching, error: mccrError } = useMccr(workorder.workOrderId);
 
     return (
-        <SideSheetContainer style={{ overflow: 'auto', height: '100%' }}>
+        <SideSheetContainer>
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <Tabs.List>
                     <Tabs.Tab>Details</Tabs.Tab>

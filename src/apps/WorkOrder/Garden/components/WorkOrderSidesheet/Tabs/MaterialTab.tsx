@@ -1,7 +1,7 @@
+import { TabTable } from '@equinor/GardenUtils';
 import { Column } from '@equinor/Table';
 import { WorkOrderMaterial } from '../../../models';
 import { AvailableItemCell } from './Cells/AvailableItemCell';
-import { TabTable } from './TabTable';
 
 export type MaterialPackagesTabProps = {
     packages: WorkOrderMaterial[];
@@ -55,6 +55,6 @@ export const MaterialTab = ({ packages, error, isFetching }: MaterialPackagesTab
         packages={packages}
         error={error}
         isFetching={isFetching}
-        resourceName="Materal Packages"
+        resourceName="Material Packages"
     />
 );

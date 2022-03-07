@@ -1,20 +1,21 @@
 import { Column, Table } from '@equinor/Table';
 import styled from 'styled-components';
-import { WorkOrderMaterial, WorkOrderMccr } from '../../../models';
 export const NoResourceData = styled.div`
     text-align: center;
     padding: 20px;
     font-size: 30px;
 `;
-type Packages = WorkOrderMccr | WorkOrderMaterial;
-type TabTableProps<T extends Packages> = {
+type TabTableProps<T extends Record<string | number, unknown>> = {
     packages: T[];
     columns: Column<T>[];
     isFetching: boolean;
     error: Error | null;
     resourceName: string;
 };
-export const TabTable = <T extends Packages>(props: TabTableProps<T>) => {
+/**
+ * Component for displaying data in tabular format inside the Garden's package sidesheet.
+ */
+export const TabTable = <T extends Record<string | number, unknown>>(props: TabTableProps<T>) => {
     const { packages, columns, error, isFetching, resourceName } = props;
 
     if (isFetching) return <NoResourceData>{`Fetching ${resourceName}`}</NoResourceData>;

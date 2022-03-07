@@ -1,7 +1,6 @@
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
 import { WorkOrder } from '../models';
-import { getYearAndWeekFromString } from './dateUtils';
-
+import { getYearAndWeekFromString } from '@equinor/GardenUtils';
 export const getGroupBy = (groupBy: string) => {
     switch (groupBy) {
         case 'wp':

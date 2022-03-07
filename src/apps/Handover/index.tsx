@@ -23,7 +23,8 @@ export function setup(appApi: ClientApi): void {
     handover.registerDataSource(async () => {
         const { fusion } = httpClient();
         fusion.setBaseUrl(
-            `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'
+            `https://pro-s-dataproxy-${
+                isProduction() ? 'fprd' : 'ci'
             }.azurewebsites.net/api/contexts/`
         );
         const contextId = isProduction()
