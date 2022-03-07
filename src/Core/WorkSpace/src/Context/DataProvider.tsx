@@ -40,7 +40,11 @@ interface DataContextState extends DataState {
     dataApi: DataApi;
 }
 
-type DataApi = DataOperations & UseQueryResult<unknown[] | undefined, unknown>;
+type DataApi = DataOperations & UseQueryResult<unknown[] | undefined, unknown> & QueryInformation;
+
+interface QueryInformation {
+    queryKey: string;
+}
 
 interface DataOperations {
     patchRecord: (id: string, item: unknown, identifier?: string) => void;
@@ -154,6 +158,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
                 data: queryApi.data || [],
                 dataApi: {
                     ...queryApi,
+                    queryKey: key,
                     insertRecord,
                     getRecord,
                     deleteRecord,
