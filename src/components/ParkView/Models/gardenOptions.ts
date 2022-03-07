@@ -44,7 +44,7 @@ export interface GardenOptions<T> {
     groupByKeys?: (keyof T)[];
     customGroupByKeys?: Record<string, unknown>;
     customStateFunction?: (data: T[]) => Record<string, unknown>;
-
+    sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     fieldSettings?: FieldSettings<T, string>;
     customViews?: CustomView<T>;
     options?: Options<T>;
