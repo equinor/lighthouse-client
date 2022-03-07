@@ -19,19 +19,6 @@ export const LeftSection = styled.div`
     border-bottom: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
 
-export const TitleHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-items: center;
-`;
-
-export const RefreshButton = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;
-
 export const RightSection = styled.div`
     display: flex;
     flex-direction: row;
