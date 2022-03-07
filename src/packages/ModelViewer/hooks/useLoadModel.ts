@@ -8,7 +8,6 @@ export function useModel(loadFullModel?: boolean): void {
     useEffect(() => {
         if (echo3DClient && currentPlant) {
             (async () => {
-                echo3DClient.viewer.cameraControlsEnabled = true;
                 const model = await echo3DClient.viewer.addCadModel({
                     modelId: currentPlant.id,
                     revisionId: currentPlant.revisionNumber,
@@ -18,8 +17,6 @@ export function useModel(loadFullModel?: boolean): void {
                 if (loadFullModel) {
                     echo3DClient.viewer.fitCameraToModel(model);
                 }
-
-                // echo3DClient.viewer.removeModel(model),
             })();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -10,7 +10,7 @@ Based on Echo 3d viewer.
 - [] Show help page if current model is not awaitable for user.
 - [x] simple menu.
 - [] Proper menu buttons functionality
-- [] get env scope and urls
+- [x] get env scope and urls
 
 ## For later
 - [] Multi select model when more is present.

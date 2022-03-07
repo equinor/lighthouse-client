@@ -55,21 +55,15 @@ const Viewer: React.FC<ViewerProps> = ({
      */
     useEffect(() => {
         if (!authProvider) return;
-        const getModelDistributionToken = () =>
-            authProvider.getAccessToken([
-                'd484c551-acf8-45bc-b1e8-3f4373bd0d42/user_impersonation',
-            ]);
-        const getHierarchyToken = () =>
-            authProvider.getAccessToken([
-                'ebc04930-bf9c-43e5-98bc-bc90865600b8/user_impersonation',
-            ]);
+        const getModelDistributionToken = () => authProvider.getAccessToken([scope.echoModelDist]);
+        const getHierarchyToken = () => authProvider.getAccessToken([scope.echoHierarchy]);
 
         const modelDistributionConfig = {
-            baseUrl: 'https://app-echomodeldist-dev.azurewebsites.net',
+            baseUrl: urls.echoModelDist,
             getAccessToken: getModelDistributionToken,
         };
         const hierarchyConfig = {
-            baseUrl: 'https://app-echo-hierarchy-dev.azurewebsites.net',
+            baseUrl: urls.echoHierarchy,
             getAccessToken: getHierarchyToken,
         };
         const renderConfig: RendererConfiguration = {
@@ -86,10 +80,10 @@ const Viewer: React.FC<ViewerProps> = ({
                     hierarchyConfig,
                     renderConfig
                 );
+                client.viewer.cameraControlsEnabled = true;
                 const plants = await getModels(client.modelApiClient);
                 setPlantState(selectPlantByContext(plants, echoPlantId));
                 setEcho3DClient(client);
-
                 if (tags) {
                     selectTags(tags, padding);
                 }
@@ -105,18 +99,29 @@ const Viewer: React.FC<ViewerProps> = ({
             <Wrapper>
                 <canvas ref={viewerRef} />
             </Wrapper>
-            <MessageWrapper>
-                {isLoading && <Message>Loading...</Message>}
-                {message && (
-                    <Message
-                        onClick={() => {
-                            setMessage();
-                        }}
-                    >
-                        {message.message}
-                    </Message>
-                )}
-            </MessageWrapper>
+            {(message || isLoading) && (
+                <MessageWrapper>
+                    {isLoading && <Message>Loading...</Message>}
+                    {message && (
+                        <Message
+                            onClick={() => {
+                                setMessage();
+                            }}
+                        >
+                            {message.message}
+                            {message.type === 'NoPlant' && (
+                                <Button
+                                    onClick={() => {
+                                        window.open(
+                                            `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
+                                        );
+                                    }}
+                                ></Button>
+                            )}
+                        </Message>
+                    )}
+                </MessageWrapper>
+            )}
             <WrapperMenu>
                 <Menu>
                     <Button

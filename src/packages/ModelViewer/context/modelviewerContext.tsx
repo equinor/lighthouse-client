@@ -35,7 +35,6 @@ export const ModelViewerContextProvider = ({
         model: undefined,
         selection: undefined,
     });
-
     function setPlantState(plantState: Partial<ModelViewerState>) {
         setState((s) => ({ ...s, ...plantState }));
     }
