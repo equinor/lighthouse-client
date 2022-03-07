@@ -78,9 +78,6 @@ export const CompletionViewHeader = ({
                     })}
                 </List>
                 <Divider />
-                <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
-                    <Icon name={'filter_alt'} />
-                </TabButton>
                 <TabButton
                     color={
                         dataApi.isStale
@@ -96,6 +93,9 @@ export const CompletionViewHeader = ({
                     onClick={() => dataApi.refetch()}
                 >
                     <ClickableIcon size={32} name="refresh" />
+                </TabButton>
+                <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
+                    <Icon name={'filter_alt'} />
                 </TabButton>
             </RightSection>
         </HeaderWrapper>
