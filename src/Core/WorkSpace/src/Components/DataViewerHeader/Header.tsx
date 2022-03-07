@@ -82,19 +82,20 @@ export const CompletionViewHeader = ({
                     <Icon name={'filter_alt'} />
                 </TabButton>
                 <TabButton
+                    color={
+                        dataApi.isStale
+                            ? tokens.colors.infographic.primary__energy_red_100.hex
+                            : 'grey'
+                    }
                     aria-selected={false}
-                    title={`Updated: ${timestamp}`}
+                    title={
+                        dataApi.isStale
+                            ? 'This data is over 1 hour old and might be outdated'
+                            : `Updated: ${timestamp}`
+                    }
                     onClick={() => dataApi.refetch()}
                 >
-                    <ClickableIcon
-                        size={32}
-                        name="refresh"
-                        color={
-                            dataApi.isStale
-                                ? tokens.colors.infographic.primary__energy_red_100.hex
-                                : tokens.colors.interactive.primary__resting.hex
-                        }
-                    />
+                    <ClickableIcon size={32} name="refresh" />
                 </TabButton>
             </RightSection>
         </HeaderWrapper>
