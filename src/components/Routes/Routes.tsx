@@ -42,7 +42,7 @@ export function ClientRoutes(): JSX.Element {
                 );
             })}
             {apps.map((route) => {
-                if (route.app?.appType === 'DataViewer') {
+                if (route.app?.appType === 'Workspace') {
                     const api = { ...route, authProvider, appConfig };
                     return (
                         <Route key={route.shortName + route.groupe}>
