@@ -92,6 +92,7 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
                 e3dTagNos,
                 convertCancelTokenToAbort(localCancellationToken)
             );
+            if (nodesByTagList.results.length === 0) throw Error("No nodes found with the current tag selection");
 
             this.createSelectionAaBB(nodesByTagList.results);
 

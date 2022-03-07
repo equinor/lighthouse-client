@@ -5,18 +5,18 @@ export * from './controls/CameraControlsExtended';
 export * from './controls/FirstPersonCameraControls';
 export { MultiPointerCache } from './controls/MultiPointerCache';
 export { Echo3dClient } from './services/echo3dClient';
+export * from './services/echo3dMultiSelectionActions';
+export * from './services/echo3dMultiSelectionHandler';
 export { Echo3dSelectionHandler } from './services/echo3dSelectionHandler';
 export { Echo3dViewer } from './services/echo3DViewer';
 // ApiException is exported twice, this will cause an error so need to export all exports from generated files
-export {
+export type {
     AabbModel,
     ApiException as HierarchyApiException,
     DataMaintenanceClient,
     HierarchyClient,
     HierarchyNodeModel,
-    HierarchyNodeModelListResult,
-    IAabbModel,
-    IDataMaintenanceClient,
+    HierarchyNodeModelListResult, IDataMaintenanceClient,
     IHierarchyClient,
     IHierarchyNodeModel,
     IHierarchyNodeModelListResult,
@@ -26,8 +26,7 @@ export {
     IStatusClient,
     IStringListResult,
     IUInt32ListResult,
-    IVector3Model,
-    NodeWithLeafNodes,
+    IVector3Model, NodeWithLeafNodes,
     NodeWithLeafNodesListResult,
     SimpleNodeModel,
     StatusClient,
@@ -35,15 +34,14 @@ export {
     UInt32ListResult,
     Vector3Model
 } from './services/generated/EchoHierarchyApiClient';
-export {
+export type {
     ApiException as ModelApiException,
     ApiStatusClient,
     AssetDownloadDto,
     AssetDownloadToken,
     AssetMetadataDto,
     AssetMetadataSimpleDto,
-    AssetUploadToken,
-    IApiStatusClient,
+    AssetUploadToken, IApiStatusClient,
     IAssetDownloadDto,
     IAssetDownloadToken,
     IAssetMetadataDto,
@@ -57,8 +55,7 @@ export {
     IRevealRevision3D,
     IRevealRevisionOutputs,
     IRevisionCameraProperties,
-    IStream,
-    ModelAdminClient,
+    IStream, ModelAdminClient,
     ModelsClient,
     ModelStates,
     ProblemDetails,
@@ -85,12 +82,12 @@ export {
 export { setupEcho3dWeb } from './setup/echo3dwebSetup';
 export { initializeEcho3dClient } from './setup/initializeEcho3dClient';
 export { initializeEcho3dViewer } from './setup/initializeEcho3dViewer';
-export { ApiServiceConfiguration } from './types/apiServiceConfiguration';
-export { EchoSetupObject } from './types/echoSetupObject';
-export { ModelData } from './types/modelData';
-export { RendererConfiguration } from './types/rendererConfiguration';
-export { SelectedNodeInformation } from './types/selectedNodeInformation';
-export { TrackEventBySignature } from './types/trackEventBySignature';
+export type { ApiServiceConfiguration } from './types/apiServiceConfiguration';
+export type { EchoSetupObject } from './types/echoSetupObject';
+export type { ModelData } from './types/modelData';
+export type { RendererConfiguration } from './types/rendererConfiguration';
+export type { SelectedNodeInformation } from './types/selectedNodeInformation';
+export type { TrackEventBySignature } from './types/trackEventBySignature';
 export {
     clamp,
     clampAngle,
