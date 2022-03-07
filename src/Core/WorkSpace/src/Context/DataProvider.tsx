@@ -61,6 +61,8 @@ export enum DataAction {
     setOptions = 'setOptions',
 }
 
+const ONE_HOUR = 1000 * 60 * 60;
+
 export const actions = {
     setOptions: createCustomAction(DataAction.setOptions, (options) => ({ options })),
 };
@@ -107,7 +109,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
             if (!dataSource) return;
             return await dataSource();
         },
-        { refetchOnWindowFocus: false, staleTime: 1 * 1000 * 60 * 60 }
+        { refetchOnWindowFocus: false, staleTime: ONE_HOUR }
     );
 
     useEffect(() => {

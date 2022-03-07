@@ -1,5 +1,5 @@
 import { useFactory } from '@equinor/DataFactory';
-import { Progress, Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilteredData } from '@equinor/filter';
 import { DateTime } from 'luxon';
@@ -9,15 +9,7 @@ import Icon from '../../../../../components/Icon/Icon';
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { useDataContext } from '../../Context/DataProvider';
 import { TabButton } from '../ToggleButton';
-import {
-    Divider,
-    HeaderWrapper,
-    LeftSection,
-    RefreshButton,
-    RightSection,
-    Title,
-    TitleHeader,
-} from './HeaderStyles';
+import { Divider, HeaderWrapper, LeftSection, RightSection, Title } from './HeaderStyles';
 
 const { Tab, List } = Tabs;
 
@@ -58,26 +50,7 @@ export const CompletionViewHeader = ({
     return (
         <HeaderWrapper>
             <LeftSection>
-                <TitleHeader>
-                    <Title variant="h3">{title}</Title>
-                    <RefreshButton>
-                        {dataApi.isFetching ? (
-                            <Progress.Dots color="primary" />
-                        ) : (
-                            `Updated ${timestamp}`
-                        )}
-                        <ClickableIcon
-                            size={32}
-                            name="refresh"
-                            color={
-                                dataApi.isStale
-                                    ? tokens.colors.infographic.primary__energy_red_100.hex
-                                    : tokens.colors.interactive.primary__resting.hex
-                            }
-                            onClick={() => dataApi.refetch()}
-                        />
-                    </RefreshButton>
-                </TitleHeader>
+                <Title variant="h3">{title}</Title>
                 {statusFunc && <StatusBar data={statusFunc(data)} />}
             </LeftSection>
             <RightSection>
@@ -107,6 +80,21 @@ export const CompletionViewHeader = ({
                 <Divider />
                 <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
                     <Icon name={'filter_alt'} />
+                </TabButton>
+                <TabButton
+                    aria-selected={false}
+                    title={`Updated: ${timestamp}`}
+                    onClick={() => dataApi.refetch()}
+                >
+                    <ClickableIcon
+                        size={32}
+                        name="refresh"
+                        color={
+                            dataApi.isStale
+                                ? tokens.colors.infographic.primary__energy_red_100.hex
+                                : tokens.colors.interactive.primary__resting.hex
+                        }
+                    />
                 </TabButton>
             </RightSection>
         </HeaderWrapper>
