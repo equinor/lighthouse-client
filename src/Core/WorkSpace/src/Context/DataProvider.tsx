@@ -83,15 +83,14 @@ export function ClientReducer(state: DataState, action: Action): DataState {
 export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
     const currentWorkspace = useAtom(getWorkSpaceContext());
-    const options = currentWorkspace[key];
 
-    const { dataSource, objectIdentifier } = options;
+    const { dataSource, objectIdentifier } = currentWorkspace[key];
 
     const initialState: DataState = {
         key,
         subData: {},
         item: {},
-        ...options,
+        ...currentWorkspace[key],
     };
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
