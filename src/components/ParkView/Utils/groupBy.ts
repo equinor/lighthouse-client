@@ -1,5 +1,5 @@
 import { FieldSettings } from '../Models/fieldSettings';
-import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { Data } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
 import { StatusView } from '../Models/gardenOptions';

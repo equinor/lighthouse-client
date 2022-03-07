@@ -6,7 +6,6 @@ import Icon from '../Icon/Icon';
 import { DevBar } from './DevBar/DevBar';
 import Logo from './Logo/Logo';
 import { Icons, TopBarWrapper } from './TopBarStyle';
-import { NotificationsDrawer } from '../../Core/Notifications/Components/NotificationsDrawer';
 
 const ClientTopBar = (): JSX.Element => {
     const {
