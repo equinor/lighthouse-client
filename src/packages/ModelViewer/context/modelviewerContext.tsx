@@ -55,7 +55,7 @@ export const ModelViewerContextProvider = ({
     }
 
     function selectTags(tags?: string[], padding?: number) {
-        setState((s) => ({ ...s, tags, padding }));
+        setState((s) => ({ ...s, tags, padding: padding || s.padding }));
     }
 
     useEffect(() => {

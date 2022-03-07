@@ -9,17 +9,7 @@ export const Wrapper = styled.div`
 export const PortalModelViewer: React.FC<CustomClientApi> = (): JSX.Element => {
     return (
         <Wrapper>
-            <ModelViewer
-                tags={[
-                    // '82EL068-417',
-                    // '82EL068-417-B01',
-                    '56L00420A',
-                    '56L00420B',
-                    '56L00440A',
-                    '56L00446A',
-                ]}
-                padding={0}
-            />
+            <ModelViewer loadFullModel={true} />
         </Wrapper>
     );
 };

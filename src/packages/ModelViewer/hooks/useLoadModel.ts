@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useModelViewerContext } from '../context/modelviewerContext';
+import { useModelViewerContext } from '../context/modelViewerContext';
 import { geometryFilter } from '../utils/geometryFilter';
 
 export function useModel(loadFullModel?: boolean): void {
