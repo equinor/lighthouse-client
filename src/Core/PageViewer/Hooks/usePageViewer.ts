@@ -2,7 +2,7 @@
 import { useAtom } from '@dbeining/react-atom';
 import { getContext } from '../Api/pageViewerState';
 import { ViewState } from '../Types/State';
-import { useLocationKey } from './useDataViewerKey';
+import { useLocationKey } from './usePageViewerKey';
 
 export function usePageViewer(): ViewState {
     const key = useLocationKey();

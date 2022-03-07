@@ -2,7 +2,11 @@ import { tokens } from '@equinor/eds-tokens';
 import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
-const Button = styled.button`
+export type BoxProps = {
+    color?: string;
+};
+
+const Button = styled.button<BoxProps>`
     display: flex;
     align-items: center;
     background: transparent;
@@ -27,7 +31,7 @@ const Button = styled.button`
     cursor: pointer;
 
     > svg > path {
-        fill: rgb(150, 150, 150);
+        fill: ${(props) => (props.color ? props.color : '150, 150, 150')};
     }
 
     :hover {
