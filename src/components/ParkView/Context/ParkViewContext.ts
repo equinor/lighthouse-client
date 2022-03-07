@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { TreeOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { DataSet } from '../Models/data';
 import { GardenOptions } from '../Models/gardenOptions';
 

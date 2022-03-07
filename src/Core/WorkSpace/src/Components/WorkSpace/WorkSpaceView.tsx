@@ -26,14 +26,15 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         idResolver,
         objectIdentifier,
     } = useWorkSpace();
-    const { data, getData } = useDataContext();
+    const { data, dataApi } = useDataContext();
     const { id } = useParams();
     const currentId = useMemo(() => id && `/${id}`, [id]);
     const navigate = useNavigate();
     const location = useLocation();
 
     const { tabs, viewIsActive } = useConfiguredTabs(
-        treeOptions,
+        //Dont know why??
+        treeOptions as any,
         tableOptions,
         gardenOptions,
         timelineOptions,
@@ -99,7 +100,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
                 return;
             }
         } else {
-            await getData();
+            await dataApi.refetch();
             const item = findItem(id);
             if (item) {
                 onSelect(item);
@@ -107,7 +108,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
             }
         }
         openSidesheet(Fallback);
-    }, [data, findItem, getData, idResolver, location.hash, onSelect]);
+    }, [data, findItem, idResolver, location.hash, onSelect]);
 
     /**
      * Store sidesheet state in url
