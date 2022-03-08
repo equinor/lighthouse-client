@@ -8,9 +8,14 @@ import { OriginType } from '../../../Types/scopeChangeRequest';
 interface OriginLinkProps {
     type: OriginType;
     id?: string;
+    onlyUnderlineOnHover?: boolean;
 }
 
-export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
+export const OriginLink = ({
+    type,
+    id,
+    onlyUnderlineOnHover = false,
+}: OriginLinkProps): JSX.Element => {
     async function onClickRedirectOrigin(id: string) {
         const pcsId = await getDocumentIdByNo(id);
         window.open(
@@ -23,12 +28,22 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
         switch (type) {
             case 'DCN': {
                 if (!id) return <div>Error query without id</div>;
-                return <Link onClick={() => onClickRedirectOrigin(id)}>{id}</Link>;
+                return (
+                    <Link
+                        hideUnderline={onlyUnderlineOnHover}
+                        onClick={() => onClickRedirectOrigin(id)}
+                    >
+                        {id}
+                    </Link>
+                );
             }
             case 'NCR': {
                 if (!id) return <div>Error query without id</div>;
                 return (
-                    <Link onClick={() => onClickRedirectOrigin(id)}>
+                    <Link
+                        hideUnderline={onlyUnderlineOnHover}
+                        onClick={() => onClickRedirectOrigin(id)}
+                    >
                         {type} - {id}
                     </Link>
                 );
@@ -36,7 +51,10 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
             case 'Query': {
                 if (!id) return <div>Error query without id</div>;
                 return (
-                    <Link onClick={() => onClickRedirectOrigin(id)}>
+                    <Link
+                        hideUnderline={onlyUnderlineOnHover}
+                        onClick={() => onClickRedirectOrigin(id)}
+                    >
                         {type} - {id}
                     </Link>
                 );
@@ -45,6 +63,7 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
                 if (!id) return <div>Error query without id</div>;
                 return (
                     <Link
+                        hideUnderline={onlyUnderlineOnHover}
                         onClick={() =>
                             window.open(
                                 `https://${isProduction() ? 'procosys' : 'procosystest'
@@ -59,7 +78,10 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
             case 'SWCR': {
                 if (!id) return <div>Error query without id</div>;
                 return (
-                    <Link onClick={() => onClickRedirectOrigin(id)}>
+                    <Link
+                        hideUnderline={onlyUnderlineOnHover}
+                        onClick={() => onClickRedirectOrigin(id)}
+                    >
                         {type} - {id}
                     </Link>
                 );
@@ -68,13 +90,17 @@ export const OriginLink = ({ type, id }: OriginLinkProps): JSX.Element => {
                 return <div>Not applicable</div>;
             }
         }
-    }, [type, id]);
+    }, [type, id, onlyUnderlineOnHover]);
 
     return <div>{Component}</div>;
 };
 
 const Link = styled.div`
     color: ${tokens.colors.interactive.primary__resting.hex};
-    text-decoration: underline;
+    text-decoration: ${({ hideUnderline }: { hideUnderline: boolean }) =>
+        hideUnderline ? 'none' : 'underline'};
     cursor: pointer;
+    &:hover {
+        text-decoration: underline;
+    }
 `;

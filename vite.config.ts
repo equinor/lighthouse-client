@@ -37,6 +37,7 @@ export default defineConfig({
             '@equinor/hooks': path.resolve(__dirname, './src/hooks'),
             '@equinor/Utils': path.resolve(__dirname, './src/packages/Utils/'),
             '@equinor/Kpi': path.resolve(__dirname, './src/packages/KPI'),
+            '@equinor/GardenUtils': path.resolve(__dirname, './src/packages/GardenUtils'),
         },
     },
     build: {

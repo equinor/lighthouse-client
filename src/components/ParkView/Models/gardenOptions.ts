@@ -1,5 +1,5 @@
 import React from 'react';
-import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { DataSet, Data } from './data';
 import { FieldSettings } from './fieldSettings';
 
@@ -44,7 +44,7 @@ export interface GardenOptions<T> {
     groupByKeys?: (keyof T)[];
     customGroupByKeys?: Record<string, unknown>;
     customStateFunction?: (data: T[]) => Record<string, unknown>;
-
+    sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     fieldSettings?: FieldSettings<T, string>;
     customViews?: CustomView<T>;
     options?: Options<T>;
