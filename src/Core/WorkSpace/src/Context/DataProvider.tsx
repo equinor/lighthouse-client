@@ -17,7 +17,6 @@ import {
 } from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
 import { useAtom } from '@dbeining/react-atom';
-import { ResponseMode } from '@azure/msal-common';
 
 interface DataState {
     key: string;
