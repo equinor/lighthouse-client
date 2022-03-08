@@ -20,7 +20,7 @@ export interface AuthenticationProvider {
      * @return {*}  {Promise<void>}
      */
     logout: () => Promise<void>;
-    getCurrentUser: () => AccountInfo | undefined;
+    getCurrentUser: () => AccountInfo | null;
     handleLogin: (logRequest?: LoggingFunction) => Promise<void>;
     isAuthenticated: () => boolean;
     getAccessToken: (scope?: string[]) => Promise<string>;
@@ -84,10 +84,9 @@ export function authenticationProvider(
         };
     }
 
-    function getCurrentUser(): AccountInfo | undefined {
-        return publicClient
-            .getAllAccounts()
-            .find((x) => x.idTokenClaims && x.idTokenClaims['aud'] === configuration.auth.clientId);
+    function getCurrentUser(): AccountInfo | null {
+        authProperties.account = publicClient.getAllAccounts()[0];
+        return authProperties.account;
     }
 
     function getUserName(): string {
@@ -136,10 +135,9 @@ export function authenticationProvider(
 
     async function silentOrRedirectToAuthenticate(logRequest?: LoggingFunction) {
         try {
-            const account = getCurrentUser();
-            if (!account) throw new Error('Cant find active account');
-
-            const response = await publicClient.acquireTokenSilent(loginSilentlyRequest(account));
+            const response = await publicClient.acquireTokenSilent(
+                loginSilentlyRequest(publicClient.getAllAccounts()[0])
+            );
             authProperties.account = response.account;
             authProperties.isAuthenticated = true;
         } catch (error) {
