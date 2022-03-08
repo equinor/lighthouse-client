@@ -1,4 +1,5 @@
 import { TopBar } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const Icons = styled.div`
@@ -8,6 +9,16 @@ export const Icons = styled.div`
     > * {
         margin-left: 1rem;
     }
+`;
+
+export const Action = styled.button<{ disabled?: boolean }>`
+    background: none;
+    border: none;
+    color: ${({ disabled }) =>
+        disabled
+            ? tokens.colors.interactive.disabled__text.rgba
+            : tokens.colors.interactive.primary__resting.rgba};
+    cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
 `;
 
 export const TopBarWrapper = styled(TopBar)`
