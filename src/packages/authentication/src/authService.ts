@@ -87,7 +87,7 @@ export function authenticationProvider(
     function getCurrentUser(): AccountInfo | undefined {
         return publicClient
             .getAllAccounts()
-            .find((x) => x['idTokenClaims']['aud'] === configuration.auth.clientId);
+            .find((x) => x.idTokenClaims && x.idTokenClaims['aud'] === configuration.auth.clientId);
     }
 
     function getUserName(): string {
