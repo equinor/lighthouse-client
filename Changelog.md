@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
+## 0.2.2-alpha
+
+### Prod
+- Construction Progress
+
+### Test
+- Workspace refresh functionality.
+- Workspace UI updates
+
+## 0.2.1-alpha
+### Test General
+- Fix fusion scopes
+- Update PBI reports
 ## 0.2.0-alpha
 
 ### General
