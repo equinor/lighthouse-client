@@ -5,11 +5,11 @@ import { tokens } from '@equinor/eds-tokens';
 import { useAppConfig, useAuthProvider, useFacility } from '@equinor/portal-client';
 import { useEffect, useRef } from 'react';
 import Icon from '../../components/Icon/Icon';
-import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
+import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewer';
 import { useModel } from './hooks/useLoadModel';
 import { Menu, Message, MessageWrapper, Wrapper, WrapperMenu } from './ModelViewerStyles';
 import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
-
+('');
 export interface ModelViewerProps {
     tags?: string[];
     loadFullModel?: boolean;
