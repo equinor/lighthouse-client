@@ -1,9 +1,10 @@
 import { CellProps } from 'react-table';
 import tinycolor from 'tinycolor2';
 import { colorMap } from '../../../utility/handoverItemMapping';
-import { HandoverPackageStatus, HandoverMcpkg } from '../../../models';
+import { HandoverPackageStatus } from '../../../models';
 import { Pill, PillProps } from './PillStyle';
 import { createGradient, createGradientBackground } from './utility';
+import { HandoverMcpkg } from '@equinor/GardenUtils';
 
 export const RfocStatusCell = (
     props: CellProps<HandoverMcpkg, { rfocStatus: HandoverPackageStatus }>
