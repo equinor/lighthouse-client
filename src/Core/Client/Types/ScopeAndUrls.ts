@@ -7,6 +7,10 @@ export interface Scope {
     pipeTest?: string;
     FAM: string;
     STID: string;
+    fusionNotifications: string;
+    fusionTasks: string;
+    fusionPbi: string;
+    fusionDataproxy: string;
 }
 export interface Urls {
     echoModelDistClient: string;
@@ -17,4 +21,8 @@ export interface Urls {
     pipeTest?: string;
     FAM: string;
     STID: string;
+    fusionNotifications: string;
+    fusionTasks: string;
+    fusionPbi: string;
+    fusionDataproxy: string;
 }
