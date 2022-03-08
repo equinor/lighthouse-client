@@ -61,14 +61,14 @@ const ErrorDetails = styled.div`
 
 const ErrorContainer = styled.div`
     min-width: 250px;
-    min-height: 50px;
+    min-height: 15px;
     width: -webkit-fill-available;
     height: auto;
     border-radius: 5px;
     background-color: ${tokens.colors.ui.background__danger.hex};
     display: flex;
     align-items: center;
-    padding: 1em 1.5em;
+    padding: 1em 1em;
     display: flex;
     flex-direction: column;
     gap: 0.7em;

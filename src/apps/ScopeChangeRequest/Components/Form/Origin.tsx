@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { SearchOrigin } from './Origins/SearchOrigin';
 import { SelectPunch } from './Origins/SelectPunch';
+import { SelectSWCR } from './Origins/SelectSWCR';
 import { OriginType } from '../../Types/scopeChangeRequest';
 import { Field } from '../../../../packages/Form/src/Types/field';
 import { MultiSelect } from '@equinor/eds-core-react';
@@ -56,13 +57,7 @@ export const Origin = ({ originId, originSource }: OriginProps): JSX.Element => 
                 return <SelectPunch setOriginId={setOriginId} originId={originId?.value} />;
 
             case 'SWCR':
-                return (
-                    <SearchOrigin
-                        setOriginId={setOriginId}
-                        originId={originId?.value}
-                        type={'SWCR'}
-                    />
-                );
+                return <SelectSWCR setOriginId={setOriginId} originId={originId?.value} />;
             default:
                 return (
                     <MultiSelect disabled={true} items={[]} meta="(Required)" label={'Origin ID'} />

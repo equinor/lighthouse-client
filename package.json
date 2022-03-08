@@ -32,6 +32,7 @@
     "@microsoft/applicationinsights-react-js": "^3.2.2",
     "@microsoft/applicationinsights-web": "^2.7.3",
     "@microsoft/microsoft-graph-types": "^2.7.0",
+    "@microsoft/signalr": "^6.0.2",
     "apexcharts": "^3.29.0",
     "chart.js": "^3.7.0",
     "chartjs-plugin-zoom": "^1.2.0",

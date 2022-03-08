@@ -89,4 +89,6 @@ export type HandoverPackage = {
     tacIsShipped: boolean;
     url: string;
     volume: number;
+    yellowLineStatus: string;
+    blueLineStatus: string;
 };
