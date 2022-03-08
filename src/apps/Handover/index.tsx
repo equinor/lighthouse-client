@@ -10,6 +10,7 @@ import {
     fieldSettings,
     getDotsColor,
     getMaxVolumeFromData,
+    hiddenColumns,
     sortPackagesByStatus,
 } from './Garden/utility';
 import { Status } from './Garden/components/commonStyles';
@@ -47,18 +48,7 @@ export function setup(appApi: ClientApi): void {
     };
     handover.registerTableOptions({
         objectIdentifierKey: 'commpkgNo',
-        hiddenColumns: [
-            'siteCode',
-            'projectIdentifier',
-            'projectDescription',
-            'priority1',
-            'priority2',
-            'priority3',
-            'description',
-            'url',
-            'id',
-            'forecastTacDate',
-        ],
+        hiddenColumns: hiddenColumns,
         customCellView: [
             {
                 key: 'commpkgStatus',
