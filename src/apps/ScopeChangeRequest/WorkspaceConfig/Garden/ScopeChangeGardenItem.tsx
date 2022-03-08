@@ -1,7 +1,7 @@
-import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
-import { Item } from '../../../components/ParkView/Styles/item';
+import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { Item } from '../../../../components/ParkView/Styles/item';
 import styled from 'styled-components';
-import { CustomItemView } from '../../../components/ParkView/Models/gardenOptions';
+import { CustomItemView } from '../../../../components/ParkView/Models/gardenOptions';
 
 const ScopeChangeItem = styled(Item)`
     width: 100%;

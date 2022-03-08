@@ -11,6 +11,7 @@ import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { DataViewWrapper, Tabs } from './WorkSpaceViewStyles';
 import { Fallback } from '../FallbackSidesheet/Fallback';
+import { useSideSheet } from '../../../../../packages/Sidesheet/context/sidesheetContext';
 
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const {
@@ -26,14 +27,15 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         idResolver,
         objectIdentifier,
     } = useWorkSpace();
-    const { data, getData } = useDataContext();
+    const { data, dataApi } = useDataContext();
     const { id } = useParams();
     const currentId = useMemo(() => id && `/${id}`, [id]);
     const navigate = useNavigate();
     const location = useLocation();
 
     const { tabs, viewIsActive } = useConfiguredTabs(
-        treeOptions,
+        //Dont know why??
+        treeOptions as any,
         tableOptions,
         gardenOptions,
         timelineOptions,
@@ -99,7 +101,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
                 return;
             }
         } else {
-            await getData();
+            await dataApi.refetch();
             const item = findItem(id);
             if (item) {
                 onSelect(item);
@@ -107,7 +109,18 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
             }
         }
         openSidesheet(Fallback);
-    }, [data, findItem, getData, idResolver, location.hash, onSelect]);
+    }, [data, findItem, idResolver, location.hash, onSelect]);
+
+    /**
+     * Removes hash from url when closed
+     */
+
+    const { props: sidesheetProps, SidesheetComponent } = useSideSheet();
+    useEffect(() => {
+        if (!sidesheetProps && !SidesheetComponent) {
+            window.history.pushState({}, document.title, location.pathname);
+        }
+    }, [sidesheetProps, SidesheetComponent, location.pathname]);
 
     /**
      * Store sidesheet state in url
