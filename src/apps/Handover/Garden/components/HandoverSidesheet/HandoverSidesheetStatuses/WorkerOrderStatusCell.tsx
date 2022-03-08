@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { followUpColorMapRecord } from '../../../utility/handoverItemMapping';
 import tinycolor from 'tinycolor2';
 import { createGradient, createGradientBackground, getHandoverWorkOrderStatus } from './utility';
-import { HandoverWorkOrder } from '../../../models';
+import { HandoverWorkOrder } from '@equinor/GardenUtils';
 
 type StyleProps = {
     display: string;

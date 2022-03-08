@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 /**
  * Styled component to wrap the package's sidesheet in.
  */

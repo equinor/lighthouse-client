@@ -30,5 +30,3 @@ export const sortPackages = (data: WorkOrder[], ...groupByKeys: (keyof WorkOrder
         );
     });
 };
-export const sortByNumber = (a: string, b: string): number =>
-    a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });

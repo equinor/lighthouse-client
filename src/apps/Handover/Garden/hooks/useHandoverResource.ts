@@ -1,7 +1,7 @@
+import { HandoverResourceTypeMap } from '@equinor/GardenUtils';
 import { isProduction } from '@equinor/portal-client';
 import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useHttpClient } from '../../../../Core/Client/Hooks';
-import { HandoverResourceTypeMap } from '../models/handoverResources';
 
 type UseHandoverResource<T extends keyof HandoverResourceTypeMap> = {
     data: HandoverResourceTypeMap[T][];

@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { getYearAndWeekFromString } from '@equinor/GardenUtils';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
 import { HandoverPackage, HandoverCustomGroupByKeys } from '../models';
 
@@ -40,16 +40,6 @@ const getKeyData = (item: HandoverPackage, groupBy: keyof HandoverPackage): stri
         .replace('forecast', 'planned')
         .replace('Forecast', 'Planned') as keyof HandoverPackage;
     return item[groupByPlanned] as string;
-};
-
-export const getYearAndWeekFromDate = (date: Date): string => {
-    const dateTime = DateTime.local(date.getFullYear(), date.getMonth() + 1, date.getDate());
-    return `${dateTime.weekYear}-${dateTime.weekNumber}`;
-};
-
-export const getYearAndWeekFromString = (dateString: string): string => {
-    const date = new Date(dateString);
-    return DateTime.fromJSDate(date).isValid ? getYearAndWeekFromDate(date) : 'N/A';
 };
 
 export const getDateFromString = (dateString: string): string => dateString || 'N/A';
