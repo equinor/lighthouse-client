@@ -143,7 +143,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
                 />
                 <FilterView isActive={activeFilter} />
                 <DataViewWrapper>
-                    <WorkSpaceTabs tabs={tabs} activeTab={activeTab} />
+                    <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
                 </DataViewWrapper>
             </Tabs>
             <PopoutSidesheet />
