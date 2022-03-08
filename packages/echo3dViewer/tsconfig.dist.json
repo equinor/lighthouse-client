@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [ // Exclude tests from the dist file
+    "dist/",
+    "jest.config.ts",
+    "src/__tests__/**",
+    "coverage/"
+  ]
+}

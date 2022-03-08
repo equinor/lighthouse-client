@@ -24,13 +24,10 @@ export function internalUpdateFacility(
     update: ((facility: Facility) => Partial<Facility>) | Partial<Facility>
 ): void {
     internalUpdateContext((state) => {
-        const facility = typeof update === 'function' ? update(state.facility) : update;
+        const facility = typeof update === 'function' ? update(state) : update;
         return {
             ...state,
-            facility: {
-                ...state.facility,
-                ...facility,
-            },
+            ...facility,
         };
     });
 }
@@ -51,7 +48,7 @@ export function internalUpdateProject(
 }
 
 export function internalUpdateFusionContext(
-    update: ((project: FusionContext) => Partial<FusionContext>) | Partial<FusionContext>
+    update: ((fusionContext?: FusionContext) => FusionContext) | FusionContext
 ): void {
     internalUpdateContext((state) => {
         const fusionContext = typeof update === 'function' ? update(state.fusionContext) : update;

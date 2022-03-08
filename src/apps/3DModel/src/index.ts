@@ -1,1 +1,2 @@
-export * from './3DModel';
+export * from './PortalModelViewer';
+

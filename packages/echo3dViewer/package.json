@@ -1,0 +1,51 @@
+{
+    "name": "@equinor/echo3dweb-viewer",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/src/index.js",
+    "types": "dist/src/index.d.ts",
+    "source": "src/index.ts",
+    "files": [
+        "dist/"
+    ],
+    "scripts": {
+        "start": "tsc --build --watch ./tsconfig.dist.json",
+        "build": "tsc --build ./tsconfig.dist.json",
+        "test": "jest --watchAll --coverage=false",
+        "test:coverage": "npm test -- --coverage --watchAll=false",
+        "test-focus": "jest --watch --coverage=false",
+        "lint": "run-p lint:*",
+        "lint:prettier": "prettier ./src/ \"!test*\" --check",
+        "lint:eslint": "eslint --ext .ts --ext .tsx --ext .js . --max-warnings=0",
+        "fix:prettier": "prettier ./src/ \"!test*\" --write",
+        "update-api-client:model-distribution": "nswag openapi2tsclient /output:src/services/generated/EchoModelDistributionApiClient.ts /input:https://app-echomodeldist-dev.azurewebsites.net/swagger/v1/swagger.json /ClassName:\"{controller}Client\" /NullValue:undefined /GenerateClientInterfaces:true /GenerateOptionalParameters:true /SupportsStrictNullChecks:true /EnumStyle:StringLiteral /ServiceSchemes:https /OperationGenerationMode:MultipleClientsFromFirstTagAndOperationId /UseAbortSignal:true /runtime:Net50",
+        "update-api-client:hierarchy": "nswag openapi2tsclient /output:src/services/generated/EchoHierarchyApiClient.ts /input:https://localhost:5001/swagger/v2/swagger.json /ClassName:\"{controller}Client\" /NullValue:undefined /GenerateClientInterfaces:true /GenerateOptionalParameters:true /SupportsStrictNullChecks:true /EnumStyle:StringLiteral /ServiceSchemes:https /OperationGenerationMode:MultipleClientsFromFirstTagAndOperationId /UseAbortSignal:true /runtime:Net50"
+    },
+    "author": "Equinor ASA",
+    "license": "",
+    "devDependencies": {
+        "@cognite/reveal": "^2.3.0",
+        "@cognite/sdk": "^5.6.2",
+        "@types/jest": "^27.4.0",
+        "eslint-plugin-jsdoc": "^37.6.1",
+        "jest": "^27.4.7",
+        "nswag": "^13.15.5",
+        "ts-jest": "^27.1.3",
+        "ts-loader": "^9.2.6",
+        "typescript": "4.5.4",
+        "webpack": "^5.66.0",
+        "webpack-cli": "^4.9.1",
+        "@testing-library/user-event": "^13.2.1",
+        "@testing-library/dom": "^8.11.2",
+        "webpack-dev-server": "^4.7.3"
+    },
+    "peerDependencies": {
+        "@cognite/reveal": "^2.3.0",
+        "@cognite/sdk": "^5.6.2"
+    },
+    "dependencies": {
+        "@esfx/async-canceltoken": "^1.0.0-pre.30",
+        "camera-controls": "1.34.1",
+        "hold-event": "^0.1.0"
+    }
+}
