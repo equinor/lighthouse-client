@@ -62,11 +62,11 @@ export class ClientContextProvider implements IClientContextProvider {
         update: ((facility: Facility) => Partial<Facility>) | Partial<Facility>
     ): void {
         this.updateContext((state) => {
-            const facility = typeof update === 'function' ? update(state.facility) : update;
+            const facility = typeof update === 'function' ? update(state) : update;
             return {
                 ...state,
                 facility: {
-                    ...state.facility,
+                    ...state,
                     ...facility,
                 },
             };
@@ -92,15 +92,18 @@ export class ClientContextProvider implements IClientContextProvider {
         update: ((project: FusionContext) => Partial<FusionContext>) | Partial<FusionContext>
     ): void {
         this.updateContext((state) => {
-            const fusionContext =
-                typeof update === 'function' ? update(state.fusionContext) : update;
-            return {
-                ...state,
-                fusionContext: {
-                    ...state.fusionContext,
-                    ...fusionContext,
-                },
-            };
+            if (state.fusionContext) {
+                const fusionContext =
+                    typeof update === 'function' ? update(state.fusionContext) : update;
+                return {
+                    ...state,
+                    fusionContext: {
+                        ...state.fusionContext,
+                        ...fusionContext,
+                    },
+                };
+            }
+            return state;
         });
     }
 

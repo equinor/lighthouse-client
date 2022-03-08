@@ -290,7 +290,7 @@
   dependencies:
     comlink "4.3.1"
 
-"@cognite/reveal@^2.2.2":
+"@cognite/reveal@^2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@cognite/reveal/-/reveal-2.3.0.tgz#9a4e90b2767e43d0459ef6ea42bc85d2ac34f1bf"
   integrity sha512-g4rC5GqZqUiDy8HKYukwOT54JYBxZ/4DknAfXL7hyQCeFgOdFwggxenNneOIuaCBhrplkMydH0oXXkBORcK3mg==
@@ -326,10 +326,10 @@
     query-string "^5.1.1"
     url "^0.11.0"
 
-"@cognite/sdk@5.6.1":
-  version "5.6.1"
-  resolved "https://registry.yarnpkg.com/@cognite/sdk/-/sdk-5.6.1.tgz#eeec9d6c26646c4b10c58d2b03d5405a9e542195"
-  integrity sha512-GIHQ47WD6GqUPWQRf/bXR4fy9n2eAQpS7/A91M1pBmbbtaoMvzqDQX2YCFO/+KkbydwV9WDbl0bHlLH6rcCGKg==
+"@cognite/sdk@5.6.2":
+  version "5.6.2"
+  resolved "https://registry.yarnpkg.com/@cognite/sdk/-/sdk-5.6.2.tgz#122c0d306c02aa39793b80584c17707b775f32f1"
+  integrity sha512-AOi+sFiQoCcRFrb3v4s/GuLGyAlVTxFtug3743g8IJwBUyxUoka3D72pkI6wlBp8JFrijwfJ2gfsk6FfmvDr9Q==
   dependencies:
     "@cognite/sdk-core" "^3.4.1"
     lodash "^4.17.11"
@@ -483,6 +483,77 @@
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@equinor/fusion-framework-module/-/fusion-framework-module-0.1.1.tgz#97b673555bfb54c9083c9e6a129566016e2ecbd1"
   integrity sha512-Jmnf8JM+i0hdiTr1AI+O6JG/hG22SEsmNmiN2H9+OYIcw3lGAfLyj+kTCWDagkOD6MOE9FSaE51Meu3cZf1vlA==
+
+"@esfx/async-canceltoken@^1.0.0-pre.30":
+  version "1.0.0-pre.30"
+  resolved "https://registry.yarnpkg.com/@esfx/async-canceltoken/-/async-canceltoken-1.0.0-pre.30.tgz#c2f9ad2cd98b092e2ceaa341e46c31a55f02bfd3"
+  integrity sha512-4he0W+ZKH4OO4RvGfmATIibO5JzGLQqwm4Dp3X15bWnguDTmmOFt3Qt169Doij/gXxn2aPpZvxUaYIEebi8Xig==
+  dependencies:
+    "@esfx/cancelable" "^1.0.0-pre.30"
+    "@esfx/collections-linkedlist" "^1.0.0-pre.24"
+    "@esfx/disposable" "^1.0.0-pre.30"
+    "@esfx/internal-guards" "^1.0.0-pre.23"
+    "@esfx/internal-tag" "^1.0.0-pre.19"
+    tslib "^2.1.0"
+
+"@esfx/cancelable@^1.0.0-pre.30":
+  version "1.0.0-pre.30"
+  resolved "https://registry.yarnpkg.com/@esfx/cancelable/-/cancelable-1.0.0-pre.30.tgz#e53437149a11efb8cb3c825a193b2fff750b2172"
+  integrity sha512-fo0+/D3tEcSOHdZ8HiCR7qOKl5Tkk6Nw6QJNNXSQ0ejlpP3HU4S2i0rb/tjHQ1EkUcWZfB3g2jzfL0ioQSEgGg==
+  dependencies:
+    "@esfx/disposable" "^1.0.0-pre.30"
+    "@esfx/internal-deprecate" "^1.0.0-pre.24"
+    "@esfx/internal-guards" "^1.0.0-pre.23"
+    "@esfx/internal-tag" "^1.0.0-pre.19"
+
+"@esfx/collection-core@^1.0.0-pre.24":
+  version "1.0.0-pre.24"
+  resolved "https://registry.yarnpkg.com/@esfx/collection-core/-/collection-core-1.0.0-pre.24.tgz#1683aef2f7a1a7a5e76bb65e35f783739e16d63e"
+  integrity sha512-OIgMS91JmjSoRWD7u/DfnDzo8vDggeTeUPRi1p5WhyboY0+IwmetEqgeHZb8bpka/SsmtYX5qxqEjeqNXqh+pA==
+  dependencies:
+    "@esfx/internal-deprecate" "^1.0.0-pre.24"
+    "@esfx/internal-guards" "^1.0.0-pre.23"
+
+"@esfx/collections-linkedlist@^1.0.0-pre.24":
+  version "1.0.0-pre.24"
+  resolved "https://registry.yarnpkg.com/@esfx/collections-linkedlist/-/collections-linkedlist-1.0.0-pre.24.tgz#60957049ff248db39984d1db1d1f406c41c519e7"
+  integrity sha512-Maya8jXH0xvzyfeSH88/j2b5gavO/mluslgIC2Ttdz8rh6+3o8/pVYriceH/Jinn4pgTEzDhO6Rn/aruZG0+Ug==
+  dependencies:
+    "@esfx/collection-core" "^1.0.0-pre.24"
+    "@esfx/equatable" "^1.0.0-pre.19"
+    "@esfx/internal-guards" "^1.0.0-pre.23"
+
+"@esfx/disposable@^1.0.0-pre.30":
+  version "1.0.0-pre.30"
+  resolved "https://registry.yarnpkg.com/@esfx/disposable/-/disposable-1.0.0-pre.30.tgz#1068ffa66625c278ad85ee3640b3ba4042dd792c"
+  integrity sha512-njBGIQO+HW+lMqqMjURC+MWn+55ufulgebPLXzlxbwVSz5hZkoCsv6n9sIBQbnvg/PYQmWK5Dk6gDSmFfihTUg==
+
+"@esfx/equatable@^1.0.0-pre.19":
+  version "1.0.0-pre.19"
+  resolved "https://registry.yarnpkg.com/@esfx/equatable/-/equatable-1.0.0-pre.19.tgz#ae6ff1475271af10c27fe8d094f5890e49b0849b"
+  integrity sha512-+f6Xm6GOigyGx7t0D0IyG9Z0AuYDhNWjwV49vs5uNG/+0VQAOSYjmnpSzTZRYcYwxW52DmWJWFYNY8bvCDD2ag==
+
+"@esfx/internal-deprecate@^1.0.0-pre.24":
+  version "1.0.0-pre.24"
+  resolved "https://registry.yarnpkg.com/@esfx/internal-deprecate/-/internal-deprecate-1.0.0-pre.24.tgz#74c5ded9c30edec5f4f99392641ebc020ed197fc"
+  integrity sha512-TSU5k04+nuVQdyfYhaVXxyskdiwYQHgwN20J3cbyRrm/YFi2dOoFSLFvkMNh7LNOPGWSOg6pfAm3kd23ISR3Ow==
+
+"@esfx/internal-guards@^1.0.0-pre.23":
+  version "1.0.0-pre.23"
+  resolved "https://registry.yarnpkg.com/@esfx/internal-guards/-/internal-guards-1.0.0-pre.23.tgz#f37abddc54387dc50fd7b29b5075651080d58935"
+  integrity sha512-y2svuwRERA2eKF1T/Stq+O8kPjicFQcUTob5je3L6iloOHnOD0sX6aQLvheWmTXXS7hAnjlyMeSN/ec84BRyHg==
+  dependencies:
+    "@esfx/type-model" "^1.0.0-pre.23"
+
+"@esfx/internal-tag@^1.0.0-pre.19":
+  version "1.0.0-pre.19"
+  resolved "https://registry.yarnpkg.com/@esfx/internal-tag/-/internal-tag-1.0.0-pre.19.tgz#30568e9892065a14ccfe826947ca3eaedc9b9727"
+  integrity sha512-/v1D5LfvBnbvHzL22Vh6yobrOTVCBhsW/l9M+/GRA51eqCN27yTmWGaYUSd1QXp2vxHwNr0sfckVoNtTzeaIqQ==
+
+"@esfx/type-model@^1.0.0-pre.23":
+  version "1.0.0-pre.23"
+  resolved "https://registry.yarnpkg.com/@esfx/type-model/-/type-model-1.0.0-pre.23.tgz#437c6749eaf254efe469a0450999bbce0393f13a"
+  integrity sha512-jwcSY9pqEmGoDNhfT+0LUmSTyk6zXF/pbgKb7KU7mTfCrWfVCT/ve61cD1CreerDRBSat/s55se0lJXwDSjhuA==
 
 "@eslint/eslintrc@^0.4.3":
   version "0.4.3"
@@ -1681,6 +1752,11 @@ camelize@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/camelize/-/camelize-1.0.0.tgz#164a5483e630fa4321e5af07020e531831b2609b"
   integrity sha1-FkpUg+Yw+kMh5a8HAg5TGDGyYJs=
+
+camera-controls@^1.34.1:
+  version "1.34.1"
+  resolved "https://registry.yarnpkg.com/camera-controls/-/camera-controls-1.34.1.tgz#e67d759e5df6cd1119273e1910419ba62951c27b"
+  integrity sha512-cw1zfO3pVB87VHz0TVTtfBpv3C7hMi11Ia7utGiskDOJRngOtm8U9JPDqD7QGpJL1f+M8y7aZXRDJtGkRGTHsQ==
 
 caniuse-lite@^1.0.30001286:
   version "1.0.30001312"
@@ -3290,6 +3366,11 @@ hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.3.0, hoist-non-react-
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
   dependencies:
     react-is "^16.7.0"
+
+hold-event@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/hold-event/-/hold-event-0.1.0.tgz#1a370d6f416caecebe9d88ba9996064607848575"
+  integrity sha512-k4RvgnpTn8ZIPmFoHYnSRfyhfUTV+L2K5ruuIHT2IdgJqvNc6BCHGd/fSck9imqxW25xsxONZo9NN1DPlnbnLg==
 
 hpack.js@^2.1.6:
   version "2.1.6"

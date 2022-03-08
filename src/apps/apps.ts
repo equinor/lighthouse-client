@@ -11,12 +11,11 @@ import { QueriesAndRequests } from '../icons/Queries and requests icon';
 import { ReportIcon } from '../icons/Report icon';
 import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
-import { ModelViewer } from './3DModel/src/3DModel';
+import { PortalModelViewer } from './3DModel/src';
 import { setup as commissioningSetup } from './Commissioning';
 import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './Handover';
 import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
-
 import {
     BusinessCaseReport,
     LCIReport,
@@ -24,7 +23,7 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
@@ -604,7 +603,7 @@ export const apps: AppManifest[] = [
         tags: ['3D', 'Asset', 'Map'],
         app: {
             appType: 'CustomApp',
-            component: ModelViewer,
+            component: PortalModelViewer,
         },
         appEnv: 'dev',
     },

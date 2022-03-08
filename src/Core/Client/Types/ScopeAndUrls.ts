@@ -1,7 +1,8 @@
 export interface Scope {
     fusion: string;
     procosys: string;
-    echoModelDistClient: string;
+    echoModelDist: string;
+    echoHierarchy: string;
     scopeChange: string;
     constructionProgress: string;
     pipeTest?: string;
@@ -13,10 +14,11 @@ export interface Scope {
     fusionDataproxy: string;
 }
 export interface Urls {
-    echoModelDistClient: string;
+    echoModelDist: string;
+    echoHierarchy: string;
     fusion: string;
     procosys: string;
-    copeChange: string;
+    scopeChange: string;
     constructionProgress: string;
     pipeTest?: string;
     FAM: string;

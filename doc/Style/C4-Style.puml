@@ -4,8 +4,9 @@
 ' ##################################
 
 !define CONTAINER_BG_COLOR #438DD5
-!define FUNCTION_BG_COLOR #438DD5
+!define FUNCTION_BG_COLOR #438355
 !define HOC_BG_COLOR #119DA4
+!define APP_BG_COLOR #119DA4
 !define CC_BG_COLOR #43e3ff
 !define SFC_BG_COLOR #13505B
 
@@ -22,8 +23,15 @@ skinparam rectangle<<container>> {
 skinparam rectangle<<function>> {
     StereotypeFontColor ELEMENT_FONT_COLOR
     FontColor ELEMENT_FONT_COLOR
-    BackgroundColor CONTAINER_BG_COLOR
-    BorderColor #3C7FC0
+    BackgroundColor FUNCTION_BG_COLOR
+    BorderColor #438322
+}
+
+skinparam rectangle<<app>> {
+    StereotypeFontColor ELEMENT_FONT_COLOR
+    FontColor ELEMENT_FONT_COLOR
+    BackgroundColor APP_BG_COLOR
+    BorderColor #119D44
 }
 
 skinparam database<<container>> {
@@ -80,6 +88,9 @@ endlegend
 
 !define Function(e_alias, e_label, e_techn) rectangle "==e_label\n//<size:TECHN_FONT_SIZE>e_techn</size>//" <<function>> as e_alias
 !define Function(e_alias, e_label, e_techn, e_descr) rectangle "==e_label\n//<size:TECHN_FONT_SIZE>[e_techn]</size>//\n\n e_descr" <<function>> as e_alias
+
+!define App(e_alias, e_label, e_techn) rectangle "==e_label\n//<size:TECHN_FONT_SIZE>e_techn</size>//" <<app>> as e_alias
+!define App(e_alias, e_label, e_techn, e_descr) rectangle "==e_label\n//<size:TECHN_FONT_SIZE>[e_techn]</size>//\n\n e_descr" <<app>> as e_alias
 
 !define HOC(e_alias, e_label, e_techn) rectangle "==e_label\n//<size:TECHN_FONT_SIZE>[e_techn]</size>//" <<Higer order component>> as e_alias
 !define HOC(e_alias, e_label, e_techn, e_descr) rectangle "==e_label\n//<size:TECHN_FONT_SIZE>[e_techn]</size>//\n\n e_descr" <<Higer order component>> as e_alias
