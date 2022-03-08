@@ -7,6 +7,7 @@ import { DevBar } from './DevBar/DevBar';
 import Logo from './Logo/Logo';
 import { Action, Icons, TopBarWrapper } from './TopBarStyle';
 
+
 const ClientTopBar = (): JSX.Element => {
     const {
         toggleFullscreenMenu,

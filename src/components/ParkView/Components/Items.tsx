@@ -7,13 +7,14 @@ interface RenderItemsProps<T> {
 }
 
 export function Items<T>({ data, columnExpanded }: RenderItemsProps<T>): JSX.Element | null {
-    const { itemKey, customView, status, onSelect } = useParkViewContext<T>();
+    const { itemKey, customView, status, onSelect, sortData, groupByKeys, gardenKey } =
+        useParkViewContext<T>();
 
     const View = (customView as any)?.customItemView;
-
+    const sortedData = sortData ? sortData(data, gardenKey, ...groupByKeys) : data;
     return (
         <>
-            {Object.keys(data).map((key, index) =>
+            {Object.keys(sortedData).map((key, index) =>
                 View ? (
                     <View
                         data={data[key]}
