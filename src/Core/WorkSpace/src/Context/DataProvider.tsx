@@ -17,6 +17,7 @@ import {
 } from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
 import { useAtom } from '@dbeining/react-atom';
+import { ResponseMode } from '@azure/msal-common';
 
 interface DataState {
     key: string;
@@ -107,7 +108,13 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         key,
         async () => {
             if (!dataSource) return;
-            return await dataSource();
+
+            const response = await dataSource();
+
+            if (Array.isArray(response)) {
+                return response;
+            }
+            throw response;
         },
         { refetchOnWindowFocus: false, staleTime: ONE_HOUR }
     );
