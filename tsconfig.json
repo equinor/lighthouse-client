@@ -32,7 +32,6 @@
             "@equinor/ErrorBoundary": ["./src/Core/ErrorBoundary"],
             "@equinor/StatusBar": ["./src/packages/2StatusBar"],
             "@equinor/Diagrams": ["./src/packages/Diagrams"],
-            "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
             "@equinor/Table": ["./src/packages/Table"],
             "@equinor/authentication": ["./src/packages/authentication"],
             "@equinor/http-client": ["./src/Core/httpClient"],
