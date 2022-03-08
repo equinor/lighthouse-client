@@ -10,7 +10,7 @@ export const Title = styled.p`
 
 export const Groupe = styled.div`
     padding: 0.1rem;
-    min-width: 200px;
+    width: 180px;
     display: flex;
     align-items: center;
     position: relative;
