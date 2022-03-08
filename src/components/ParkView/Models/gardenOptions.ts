@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MemoExoticComponent } from 'react';
 import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
 import { DataSet, Data } from './data';
 import { FieldSettings } from './fieldSettings';
@@ -34,7 +34,7 @@ export interface CustomHeaderView<T> {
 export interface CustomView<T> {
     customItemView?: React.FC<CustomItemView<T>>;
     customGroupView?: React.FC<CustomGroupView<T>>;
-    customHeaderView?: React.FC<CustomHeaderView<T>>;
+    customHeaderView?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
     customGroupByView?: React.FC;
 }
 
