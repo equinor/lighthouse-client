@@ -109,7 +109,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
             if (!dataSource) return;
             return await dataSource();
         },
-        { refetchOnWindowFocus: false, staleTime: ONE_HOUR }
+        { refetchOnWindowFocus: false, staleTime: ONE_HOUR, initialData: [] }
     );
 
     useEffect(() => {
