@@ -21,8 +21,4 @@ export function useModel(loadFullModel?: boolean): void {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [echo3DClient, currentPlant]);
-
-    useEffect(() => {
-        //
-    }, []);
 }

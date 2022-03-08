@@ -9,7 +9,6 @@ import { ModelViewerContextProvider, useModelViewerContext } from './context/mod
 import { useModel } from './hooks/useLoadModel';
 import { Menu, Message, MessageWrapper, Wrapper, WrapperMenu } from './ModelViewerStyles';
 import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
-('');
 export interface ModelViewerProps {
     tags?: string[];
     loadFullModel?: boolean;
