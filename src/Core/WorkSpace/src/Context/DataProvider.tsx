@@ -1,9 +1,7 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 import { FilterOptions } from '@equinor/filter';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
-import styled from 'styled-components';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useWorkspaceKey';
@@ -173,23 +171,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
                 },
             }}
         >
-            {queryApi.isLoading ? (
-                <Loading>
-                    <CircularProgress value={0} size={48} />
-                </Loading>
-            ) : queryApi.error ? (
-                <Loading>
-                    <span>
-                        <Icon name="error_outlined" />
-                        Something went wrong
-                    </span>
-                    <Button variant="outlined" onClick={() => queryApi.refetch()}>
-                        Try again
-                    </Button>
-                </Loading>
-            ) : (
-                children
-            )}
+            {children}
         </DataContext.Provider>
     );
 };
@@ -197,12 +179,3 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
 export function useDataContext(): DataContextState {
     return useContext(DataContext);
 }
-
-const Loading = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-    gap: 0.5em;
-`;
