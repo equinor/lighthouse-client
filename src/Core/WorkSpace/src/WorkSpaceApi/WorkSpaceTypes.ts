@@ -8,14 +8,18 @@ import {
     TableOptions,
     TreeOptions,
     WorkflowEditorOptions,
-} from './State';
+} from './workspaceState';
 
 export type DataSource<T> = (abortController?: AbortController) => Promise<T[]>;
 export type Validator<T> = (data: unknown[]) => T[];
 export type FactoryOptions = Omit<Factory, 'factoryId'>;
+export interface IdResolverFunc<T> {
+    idResolver: (id: string) => Promise<T | undefined>;
+}
 
 export interface ViewerOptions<T> {
     initialState: T[];
+    objectIdentifier: keyof T;
     viewerId: string;
     dataFactoryCreator(factory: Factory): void;
     openSidesheet(SidesheetContent?: React.FC<any>, props?: any): void;
@@ -40,20 +44,20 @@ export interface ViewOptions<T> {
 }
 
 export interface WorkSpaceApi<T> {
-    registerDataSource: (dataSource: DataSource<T>) => void;
-    registerDataCreator: (factory: FactoryOptions) => void;
-    registerDataValidator: (validator: Validator<T>) => void;
+    registerDataSource: (dataSource: DataSource<T>) => WorkSpaceApi<T>;
+    registerIdResolver: (idResolver: IdResolverFunc<T>) => WorkSpaceApi<T>;
+    registerDataCreator: (factory: FactoryOptions) => WorkSpaceApi<T>;
+    registerDataValidator: (validator: Validator<T>) => WorkSpaceApi<T>;
     registerCustomContentView: (
         viewComponent: React.FC<DataViewerProps<T>>,
         viewOptions: ViewOptions<T>
-    ) => void;
-    registerFilterOptions: (options: FilterOptions<T>) => void;
-    registerTableOptions: (options: TableOptions<T>) => void;
-    registerTreeOptions: (options: TreeOptions<T>) => void;
-    registerGanttOptions: (options: any) => void;
-    registerGardenOptions: (options: GardenOptions<T>) => void;
-    registerAnalyticsOptions: (options: AnalyticsOptions<T>) => void;
-    registerStatusItems: (options: StatusFunc<T>) => void;
-    registerPowerBIOptions: (options: PowerBiOptions) => void;
-    registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => void;
+    ) => WorkSpaceApi<T>;
+    registerFilterOptions: (options: FilterOptions<T>) => WorkSpaceApi<T>;
+    registerTableOptions: (options: TableOptions<T>) => WorkSpaceApi<T>;
+    registerTreeOptions: (options: TreeOptions<T>) => WorkSpaceApi<T>;
+    registerGardenOptions: (options: GardenOptions<T>) => WorkSpaceApi<T>;
+    registerAnalyticsOptions: (options: AnalyticsOptions<T>) => WorkSpaceApi<T>;
+    registerStatusItems: (options: StatusFunc<T>) => WorkSpaceApi<T>;
+    registerPowerBIOptions: (options: PowerBiOptions) => WorkSpaceApi<T>;
+    registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => WorkSpaceApi<T>;
 }

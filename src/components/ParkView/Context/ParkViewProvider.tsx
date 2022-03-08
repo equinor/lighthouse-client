@@ -72,5 +72,6 @@ export function useParkViewContext<T>() {
         options: parkViewContext.options as Options<T>,
         data: parkViewContext.data as T[],
         fieldSettings: parkViewContext.fieldSettings as FieldSettings<T, string>,
+        sortData: parkViewContext.sortData as (data: T[], ...groupByKeys: (keyof T)[]) => T[],
     };
 }

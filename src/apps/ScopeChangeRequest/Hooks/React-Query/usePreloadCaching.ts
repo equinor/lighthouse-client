@@ -13,12 +13,4 @@ export function usePreloadCaching(): void {
     useInfiniteCachedQuery(systemsKey, getSystems);
     useInfiniteCachedQuery(functionalRolesKey, getFunctionalRoles);
     useInfiniteCachedQuery(disciplinesKey, getDisciplines);
-
-    // const queryClient = useQueryClient();
-
-    // useEffect(() => {
-    //     return () => {
-    //         queryClient.removeQueries(baseKey);
-    //     };
-    // }, []);
 }
