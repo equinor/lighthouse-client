@@ -1,5 +1,5 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { CircularProgress, Icon } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 import { FilterOptions } from '@equinor/filter';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
@@ -107,7 +107,13 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         key,
         async () => {
             if (!dataSource) return;
-            return await dataSource();
+
+            const response = await dataSource();
+
+            if (Array.isArray(response)) {
+                return response;
+            }
+            throw response;
         },
         { refetchOnWindowFocus: false, staleTime: ONE_HOUR, initialData: [] }
     );
@@ -173,8 +179,13 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
                 </Loading>
             ) : queryApi.error ? (
                 <Loading>
-                    <Icon name="error_outlined" />
-                    Something went wrong
+                    <span>
+                        <Icon name="error_outlined" />
+                        Something went wrong
+                    </span>
+                    <Button variant="outlined" onClick={() => queryApi.refetch()}>
+                        Try again
+                    </Button>
                 </Loading>
             ) : (
                 children
@@ -192,4 +203,6 @@ const Loading = styled.div`
     justify-content: center;
     align-items: center;
     height: 100vh;
+    flex-direction: column;
+    gap: 0.5em;
 `;
