@@ -1,7 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+
 /**
- * Styled component to use in a details view.
+ * Styled table component to use in a details view tab for sidesheet.
  */
 export const Table = styled.table`
     width: 100%;

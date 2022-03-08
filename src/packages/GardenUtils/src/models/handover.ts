@@ -2,7 +2,6 @@ export type HandoverChild = {
     commpkgId: string;
     url: string;
 };
-
 export type HandoverDetails = {
     nextToSign: string;
 } & HandoverChild;

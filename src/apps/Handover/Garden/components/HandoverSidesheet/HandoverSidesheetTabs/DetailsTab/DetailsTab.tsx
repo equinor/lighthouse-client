@@ -1,9 +1,7 @@
+import { formatDateString, HandoverDetails, StringCell, Table } from '@equinor/GardenUtils';
 import { useMemo } from 'react';
-import { HandoverDetails, HandoverPackage } from '../../../../models';
-import { TabContent, Table } from './DetailsTabStyles';
-import { formatDateString } from './utils';
-
-const StringCell = ({ value }: { value: string }) => <>{value.trim() ? value.trim() : 'N/A'}</>;
+import { HandoverPackage } from '../../../../models';
+import { TabContent } from './DetailsTabStyles';
 
 const DateCell = ({ date }: { date: string }) => <>{formatDateString(date)}</>;
 

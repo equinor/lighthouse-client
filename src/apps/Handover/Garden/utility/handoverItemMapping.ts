@@ -1,42 +1,12 @@
 import { HandoverPackage, HandoverPackageStatus } from '../models/handoverPackage';
 import { tokens } from '@equinor/eds-tokens';
-
-export type FollowUpStatuses =
-    | 'WO Finished'
-    | 'Material and Workorder OK'
-    | 'Material and Workorder Available'
-    | 'Material and/or Workorder not Available';
-
+import { FollowUpStatuses, statusColorMap } from '@equinor/GardenUtils';
+//TODO see if it works with hex value colors
 export const followUpColorMapRecord: Record<FollowUpStatuses, string> = {
     'WO Finished': 'hsla(218, 100%, 52%, 1)',
-    'Material and Workorder OK': 'hsla(123, 70%, 65%, 1)',
-    'Material and Workorder Available': 'rgb(255, 255, 0)',
-    'Material and/or Workorder not Available': 'hsla(12, 85%, 72%, 1)',
-};
-
-export type MaterialStatus =
-    | 'M10'
-    | 'M12'
-    | 'M2'
-    | 'M6'
-    | 'M7'
-    | 'M9'
-    | 'MN'
-    | 'MN1'
-    | 'MNX1'
-    | 'MNX2';
-
-export const materialStatusMap: Record<MaterialStatus, string> = {
-    M10: 'Material requested to job site',
-    M12: 'Material received on job site',
-    M2: 'Materials linked to Smartpack/Jobcard',
-    M6: 'Material partly delivered',
-    M7: 'Materials fully delivered',
-    M9: 'Material returned',
-    MN: 'No Material required',
-    MN1: 'Additional material to be issued Offshore from Min/Max Stock',
-    MNX1: 'Materials not linked to Smartpack/Jobcard',
-    MNX2: 'Materials partially linked to Smartpack/Jobcard',
+    'Material and WorkOrder OK': 'hsla(123, 70%, 65%, 1)',
+    'Material and WorkOrder Available': 'rgb(255, 255, 0)',
+    'Material and/or WorkOrder not Available': 'hsla(12, 85%, 72%, 1)',
 };
 
 export type Status =
@@ -79,19 +49,17 @@ export const colorMap: Record<Status, string> = {
     PA: '#ff4081',
     OK: '#00c853',
 };
-export const dotsColorMap: Record<Extract<Status, 'OS'>, string> = {
-    OS: '#9E9E9E',
-};
+
 export const getDotsColor = (status: HandoverPackageStatus) => {
     switch (status) {
         case 'OS':
-            return dotsColorMap.OS;
+            return statusColorMap.OS;
         case 'PA':
-            return colorMap.PA;
+            return statusColorMap.PA;
         case 'PB':
-            return colorMap.PB;
+            return statusColorMap.PB;
         default:
-            return colorMap.OK;
+            return statusColorMap.OK;
     }
 };
 

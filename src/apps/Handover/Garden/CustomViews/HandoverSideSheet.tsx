@@ -15,14 +15,7 @@ import {
     UnsignedTaskTab,
     WorkOrderTab,
 } from '../components/HandoverSidesheet';
-
-const SideSheetContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    padding: 16px;
-    width: 100%;
-`;
+import { SideSheetContainer } from '@equinor/GardenUtils';
 
 export function HandoverSideSheet(handoverPackage: HandoverPackage): JSX.Element {
     const [activeTab, setActiveTab] = useState<number>(0);

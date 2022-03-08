@@ -1,7 +1,7 @@
+import { sortByNumber } from '@equinor/GardenUtils';
 import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
 import { HandoverPackage } from '../models/handoverPackage';
 import { getDateKey, getProgressKey } from './getKeyFunctions';
-import { sortByNumber } from './sortFunctions';
 
 export type ExtendedGardenFields = 'RFCC' | 'TAC' | 'RFOC' | 'DCC' | 'RFRC';
 

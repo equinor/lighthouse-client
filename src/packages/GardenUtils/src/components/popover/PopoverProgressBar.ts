@@ -4,6 +4,11 @@ type PopoverProgressBarProps = {
     barColor: string;
     textColor: string;
 };
+
+/**
+ * Styled component to display a progress bar with
+ * background color and text color for other elements.
+ */
 export const PopoverProgressBar = styled.div<PopoverProgressBarProps>`
     display: flex;
     border-radius: 4px;

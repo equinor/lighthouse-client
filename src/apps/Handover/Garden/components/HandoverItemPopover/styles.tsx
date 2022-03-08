@@ -1,45 +1,5 @@
 import styled from 'styled-components';
 
-export const PopoverContainer = styled.div`
-    white-space: nowrap;
-
-    hr {
-        border: 1px solid #dcdcdc;
-    }
-
-    h5 {
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    p {
-        margin: 0;
-        font-size: 12px;
-    }
-`;
-
-export type CommStatusProps = {
-    barColor: string;
-    textColor: string;
-};
-export const CommStatus = styled.div<CommStatusProps>`
-    display: flex;
-    border-radius: 4px;
-    font-size: 12px;
-    height: 24px;
-    padding: 4px 8px;
-    margin-top: 16px;
-    text-transform: capitalize;
-    background: ${(p) => p.barColor};
-    color: ${(p) => p.textColor};
-    line-height: 24px;
-    text-align: center;
-    > strong:first-child {
-        margin-right: 32px;
-    }
-    justify-content: space-between;
-`;
-
 export const IconsContainer = styled.div`
     display: grid;
     grid-template-columns: 2fr 1fr;

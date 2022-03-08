@@ -3,16 +3,20 @@ import { FC, memo } from 'react';
 import { Popover } from '@equinor/eds-core-react';
 import { Status } from '../../utility/handoverItemMapping';
 import {
-    CommStatus,
     FlagUnsignedAction,
     IconsContainer,
-    PopoverContainer,
     Statuses,
     WarningContainer,
     WarningText,
 } from './styles';
-import { Status as StatusStyle } from '../commonStyles';
-import { FlagIcon, SizeIcons, WarningIcon } from '../Icons';
+import {
+    FlagIcon,
+    PopoverContainer,
+    SizeIcons,
+    WarningIcon,
+    PopoverStatus as StatusStyle,
+    PopoverProgressBar,
+} from '@equinor/GardenUtils';
 
 type ItemSize = 'small' | 'medium' | 'large';
 
@@ -61,14 +65,14 @@ const HandoverItemPopoverWrapper: FC<HandoverItemPopoverProps> = ({
                     </p>
                     <p>{data.description}</p>
                     <hr />
-                    <CommStatus barColor={barColor} textColor={textColor}>
+                    <PopoverProgressBar barColor={barColor} textColor={textColor}>
                         <strong>{`Milestone: ${status}`}</strong>
                         <span>
-                            <SizeIcons status={status} size={size} />
+                            <SizeIcons color={textColor} size={size} />
 
                             <strong> {`Volume: ${data.volume} (${size})`}</strong>
                         </span>
-                    </CommStatus>
+                    </PopoverProgressBar>
                     <IconsContainer>
                         {showWarningIcon && (
                             <WarningContainer>

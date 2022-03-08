@@ -1,6 +1,7 @@
+import { HandoverMcpkg } from '@equinor/GardenUtils';
 import { CellProps } from '@equinor/Table';
 import tinycolor from 'tinycolor2';
-import { HandoverPackageStatus, HandoverMcpkg } from '../../../models';
+import { HandoverPackageStatus } from '../../../models';
 import { Pill, PillProps } from './PillStyle';
 import { createGradientBackground, getPunchStatusGradient } from './utility';
 

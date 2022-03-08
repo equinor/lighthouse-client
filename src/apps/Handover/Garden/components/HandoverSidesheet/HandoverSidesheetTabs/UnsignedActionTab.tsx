@@ -1,30 +1,31 @@
-import { Column, Table } from '@equinor/Table';
-import { HandoverUnsignedAction } from '../../../models';
-import { CellWithLink, NoResourceData } from '../HandoverSidesheetStatuses';
-
+import { CellWithLink, HandoverUnsignedAction, TabTable } from '@equinor/GardenUtils';
+import { Column } from '@equinor/Table';
+const columns: Column<HandoverUnsignedAction>[] = [
+    {
+        id: 'actionNumber',
+        Header: '#',
+        accessor: ({ actionNumber, url }) => ({ content: actionNumber, url }),
+        Cell: CellWithLink,
+    },
+    {
+        id: 'title',
+        Header: 'Title',
+        accessor: (pkg) => pkg.title,
+    },
+];
 type TabProps = {
     packages: HandoverUnsignedAction[];
     isFetching: boolean;
 };
 
 export const UnsignedActionTab = ({ packages, isFetching }: TabProps): JSX.Element => {
-    if (isFetching) return <NoResourceData>Fetching MC Packages</NoResourceData>;
-
-    if (!packages.length) return <NoResourceData>No MC Packages</NoResourceData>;
-
-    const columns: Column<HandoverUnsignedAction>[] = [
-        {
-            id: 'actionNumber',
-            Header: '#',
-            accessor: ({ actionNumber, url }) => ({ content: actionNumber, url }),
-            Cell: CellWithLink,
-        },
-        {
-            id: 'title',
-            Header: 'Title',
-            accessor: (pkg) => pkg.title,
-        },
-    ];
-
-    return <Table options={{ columns: columns, data: packages }}></Table>;
+    return (
+        <TabTable
+            columns={columns}
+            packages={packages}
+            isFetching={isFetching}
+            resourceName="MC Packages"
+            error={null}
+        />
+    );
 };

@@ -1,4 +1,3 @@
-export * from './CellWithLink';
 export * from './McStatusCell';
 export * from './NoResourceData';
 export * from './PillStyle';

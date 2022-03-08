@@ -4,7 +4,6 @@ import { getDotsColor, getStatus, getTextColor, createProgressGradient } from '.
 import { CustomItemView } from '../../../../../components/ParkView/Models/gardenOptions';
 import { useParkViewContext } from '../../../../../components/ParkView/Context/ParkViewProvider';
 import { HandoverItemPopover, ItemOptions } from '../../components/HandoverItemPopover';
-import { SizeIcons, FlagIcon, StatusCircle, WarningIcon } from '../../components/Icons';
 import {
     HandoverExpanded,
     HandoverExpandedTitle,
@@ -15,6 +14,7 @@ import {
     Title,
 } from './GardenItemStyles';
 import { itemSize } from './utils';
+import { FlagIcon, SizeIcons, StatusCircle, WarningIcon } from '@equinor/GardenUtils';
 
 export function HandoverExpandedView({ data }: { data: HandoverPackage }): JSX.Element {
     return (
@@ -69,7 +69,7 @@ export function HandoverGardenItem({
                 onClick={onClick}
             >
                 <Icons>
-                    <SizeIcons size={size} status={status} />
+                    <SizeIcons size={size} color={textColor} />
                     {data.hasUnsignedActions && <FlagIcon color={textColor} />}
                 </Icons>
                 <MidSection expanded={columnExpanded}>

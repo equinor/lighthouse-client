@@ -3,6 +3,9 @@ import styled from 'styled-components';
 type StatusProps = {
     color: string;
 };
+/**
+ * Styled component to display a package status with circular background color.
+ */
 export const PopoverStatus = styled.div<StatusProps>`
     width: 40px;
     height: 24px;

@@ -12,7 +12,7 @@ import {
     getMaxVolumeFromData,
     sortPackagesByStatus,
 } from './Garden/utility';
-import { Status } from './Garden/components/commonStyles';
+import { PopoverStatus as Status } from '@equinor/GardenUtils';
 import { statusBarData } from './Garden/components/statusItems';
 export function setup(appApi: ClientApi): void {
     const handover = appApi.createWorkSpace<HandoverPackage>({

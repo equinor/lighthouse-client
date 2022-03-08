@@ -3,7 +3,8 @@ import tinycolor from 'tinycolor2';
 import { colorMap } from '../../../utility/handoverItemMapping';
 import { Pill, PillProps } from './PillStyle';
 import { createGradient, createGradientBackground } from './utility';
-import { HandoverPackageStatus, HandoverMcpkg } from '../../../models';
+import { HandoverPackageStatus } from '../../../models';
+import { HandoverMcpkg } from '@equinor/GardenUtils';
 
 export const RfccStatusCell = (
     props: CellProps<HandoverMcpkg, { rfccStatus: HandoverPackageStatus }>

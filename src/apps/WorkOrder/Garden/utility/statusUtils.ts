@@ -1,4 +1,9 @@
-import { FollowUpStatuses, MaterialStatus, ProcosysStatuses } from '@equinor/GardenUtils';
+import {
+    FollowUpStatuses,
+    materialAvailable,
+    materialOk,
+    ProcosysStatuses,
+} from '@equinor/GardenUtils';
 import { WorkOrder } from '../models';
 import { followUpColorMap, orderedProCoSysStatuses } from './pcsFollowUp';
 import { proCoSysWorkOrderColorMap } from './pcsWorkOrder';
@@ -58,34 +63,6 @@ export const getWoStatus = (workOrder: WorkOrder): ProcosysStatuses => {
 
     return getWoStatusFromDates(workOrder);
 };
-
-const prepareMaterialStatus = (status: MaterialStatus): string[] => {
-    const statusLower = status.toLowerCase();
-
-    let number = statusLower.replace(/[^0-9]+/, '');
-    if (number.length === 1) {
-        number = '0' + number;
-    }
-
-    if (!number.length) {
-        return [statusLower];
-    }
-
-    return [statusLower, 'm' + number];
-};
-const woHasMaterialStatus = (workOrder: WorkOrder, ...statuses: MaterialStatus[]) => {
-    const materialStatuses = statuses
-        .map((status) => prepareMaterialStatus(status))
-        .reduce((all, current) => all.concat(current), []);
-    const woMaterialStatus = workOrder.materialStatus.toLowerCase();
-    return materialStatuses.filter(
-        (materialStatus) => woMaterialStatus.indexOf(materialStatus) === 0
-    ).length;
-};
-const materialOk = (workOrder: WorkOrder) => woHasMaterialStatus(workOrder, 'M12', 'M13', 'MN');
-
-const materialAvailable = (workOrder: WorkOrder) =>
-    woHasMaterialStatus(workOrder, 'M7', 'M9', 'M10', 'M11', 'MN');
 
 /**
  * Function to retrieve "follow up" status of a package based on the package's projectProgress
