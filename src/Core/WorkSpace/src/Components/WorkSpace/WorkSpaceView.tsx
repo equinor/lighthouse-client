@@ -117,8 +117,9 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     const { props: sidesheetProps, SidesheetComponent } = useSideSheet();
     useEffect(() => {
+        if (location.hash.length > 0) return;
         if (!sidesheetProps && !SidesheetComponent) {
-            window.history.pushState({}, document.title, location.pathname);
+            navigate(location.pathname, { replace: true });
         }
     }, [sidesheetProps, SidesheetComponent, location.pathname]);
 
@@ -126,6 +127,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
      * Store sidesheet state in url
      */
     useEffect(() => {
+        if (sidesheetProps || SidesheetComponent) return;
         if (location.hash.length > 0 && onSelect) {
             mountSidesheetFromUrl();
         }

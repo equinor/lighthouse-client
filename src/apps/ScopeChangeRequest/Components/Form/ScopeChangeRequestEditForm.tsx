@@ -66,6 +66,7 @@ export const ScopeChangeRequestEditForm = ({
         await patchScopeChange({
             ...request,
             ...formData.getChangedData(),
+            originSourceId: request.originSourceId,
             tagNumbers: tags?.map((x) => x.value) || [],
             systemIds: systems?.map((x) => Number(x.value)) || [],
             commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],

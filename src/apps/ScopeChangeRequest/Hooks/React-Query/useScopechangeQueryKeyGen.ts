@@ -1,3 +1,5 @@
+import { useDataContext } from '../../../../Core/WorkSpace/src/Context/DataProvider';
+
 /**
  * Hook for generating queryKeys
  * @param requestId
@@ -7,6 +9,10 @@ export function useScopechangeQueryKeyGen(requestId: string) {
     const baseKey = ['scopechange', requestId];
     const workflowBaseKey = [...baseKey, 'workflow'];
     const referencesBaseKey = [...baseKey, 'references'];
+
+    const {
+        dataApi: { queryKey },
+    } = useDataContext();
 
     const workflowKeys = {
         baseKey: workflowBaseKey,
@@ -50,6 +56,7 @@ export function useScopechangeQueryKeyGen(requestId: string) {
     };
 
     const scopeChangeKeys = {
+        listKey: queryKey,
         baseKey: baseKey,
         historyKey: [...baseKey, 'history'],
         referencesKeys: referencesKeys,
