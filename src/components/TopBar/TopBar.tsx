@@ -36,6 +36,7 @@ const ClientTopBar = (): JSX.Element => {
                     ) : (
                         <Avatar alt="User avatar" src={userImageUrl} />
                     )}
+                    <Icon name="support" color={tokens.colors.ui.background__medium.rgba} />
                     {/* <NotificationsDrawer /> */}
                     <Action
                         title="Service Request Form for Johan Castberg Portal"
