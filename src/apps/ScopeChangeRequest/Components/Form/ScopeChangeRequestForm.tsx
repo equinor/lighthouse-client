@@ -110,7 +110,7 @@ export const ScopeChangeRequestForm = ({
     const SubmitButton = () => {
         return (
             <Button disabled={!isValidForm || isLoading} onClick={() => mutate({ draft: false })}>
-                Initiate request
+                Submit
             </Button>
         );
     };
@@ -122,7 +122,7 @@ export const ScopeChangeRequestForm = ({
                 variant={'outlined'}
                 onClick={() => mutate({ draft: true })}
             >
-                {isLoading ? <CircularProgress value={0} size={16} /> : <div>Save as draft</div>}
+                {isLoading ? <CircularProgress value={0} size={16} /> : <div>Save</div>}
             </Button>
         );
     };
