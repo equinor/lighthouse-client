@@ -1,5 +1,5 @@
 @startuml Lighthouse
-' !includeurl /Style/C4-Style.puml
+!includeurl /Style/C4-Style.puml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
 !define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
@@ -16,69 +16,144 @@ skinparam roundCorner 15
 skinparam linetype polyline
 
 Person(user, "User", $sprite="users")  
-Container(webClient, "WebClient", "webClient", $sprite="react")  
-Rel(user, webClient, " ")
 
-' Facility Asset Model Section 
-System_Boundary(fam, "Facility Asset Model | Lighhouse") {
-    Container(famEventHub, "FamEvenHub", "EvenHub")  
-    Container(famApi, "Fam Api", "web API")  
-    ContainerDb(famDb, "Fam DB", "MIPS | Procosys | Stid  | osv...", $sprite="database") 
-    Rel_L(famEventHub, famDb, " ") 
-    Rel_L(famDb, "famApi", " ")  
-}
+    Container(webClient, "WebClient", "Lighhouse web Client | Project Portal", $sprite="react")  
+    Rel(user, webClient, " ")
 
-' Facility Asset Model Section 
-Boundary(lightgouse, "Lighthouse | API's") {
-    ContainerDb(scopeChangeControlDB, "Scope Change Control", "New Data", $sprite="database")  
-    ContainerDb(pipeTestDB, "Heat Trace", "New Data", $sprite="database") 
 
-    Container(scopeChangeControlApi, "Scope Change Control", "web API", $sprite="dotnet")
-    Container(constructionProgressApi, "Construction Progress", "web API", $sprite="dotnet")
-    Container(pipeTest, "Pipe Test Release Control", "web API", $sprite="dotnet")
-    Container(dataAdapter, "Lighthouse", "Adapter")
+    Function(clinetConfig, "Clinet Config", "Azure Functions")
+    Function(serviceMessage, "Service Message", "Azure Functions")
 
+    ' Container(lighthouseApi, "Lighthouse Settings | App", "Lighthouse user settings | app") 
+    ' ContainerDb(lighthouseDB, "Lighthouse Settings | App Data", "User Settings and apps Manifests for Lighthpouse Web Client", $sprite="database")  
+    ' Rel_Down(lighthouseApi, lighthouseDB, "Read | Write", "https")
+
+    ' Container(bookmarks, "Lighhouse Bookmarks", "Bookmarks Api") 
+    ' ContainerDb(bookmarksDB, "Bookmarks Data", "API", $sprite="database")  
+    ' Rel_Down(bookmarks, bookmarksDB, "Read | Write", "https")
     
-    ' Rel(constructionProgressApi, constructionProgressDB, "Read")
-    Rel_Down(pipeTest, pipeTestDB, "Read / Write")
-    Rel_Down(scopeChangeControlApi, scopeChangeControlDB, "Read / Write")
+    ' Container(workSpace, "Workspace", "Project Workspace configurations API") 
+    ' ContainerDb(workSpaceDB, "Workspace Data", "App Manifets", $sprite="database")  
+    ' Rel_Down(workSpace, workSpaceDB, "Read | Write", "https")
 
-    Rel(webClient, scopeChangeControlApi, " ")
-    Rel(webClient, constructionProgressApi, " ")
-    Rel(webClient, pipeTest, " ")
+    ' lighthouse
+    ' Rel_Down("webClient", "workSpace",  "Read", "https")  
+    ' Rel_Down("webClient", "bookmarks",  "Read | Write", "https")
+    ' Rel_Down("webClient", "lighthouseApi",  "Read | Write", "https")  
+    Rel_L("webClient", "clinetConfig",  "Read", "https")  
+    Rel_R("webClient", "serviceMessage",  "Read", "https")  
 
-    Rel_Down(famApi, scopeChangeControlApi, " ") 
-    Rel_Down(famApi, constructionProgressApi, " ") 
-    Rel_Down(famApi, pipeTest, " ") 
+    Boundary(apps, "Lighthouse Apps") {
+        App(scope, "ScopeChange", "Workspace App")
+        App(relesControl, "Releas Control", "Workspace App")
+        App(swcr, "Swcr", "Workspace App")
+        App(handover, "Handover", "Workspace App")
+        App(contruction, "ConstructionProgress", "PowerBi Apps")
+        App(workorder, "WorkOrder", "PowerBi Apps")
+
+        Rel_Down("webClient", "scope",  "Mounts")  
+        Rel_Down("webClient", "relesControl",  "Mounts")  
+        Rel_Down("webClient", "swcr",  "Mounts")  
+        Rel_Down("webClient", "handover",  "Mounts")  
+        Rel_Down("webClient", "contruction",  "Mounts")  
+        Rel_Down("webClient", "workorder",  "Mounts")  
+    }
+
+    ' lightgouseData
+    Boundary(lightgouseAppData, "Lighthouse App Data | API's") {
+        ContainerDb(scopeChangeControlDB, "Scope Change Control", "New Data", $sprite="database")  
+        ContainerDb(pipeTestDB, "Heat Trace", "New Data", $sprite="database") 
+
+        Container(scopeChangeControlApi, "Scope Change Control", "web API", $sprite="dotnet")
+        Container(pipeTest, "Pipe Test Release Control", "web API", $sprite="dotnet")
+        Container(famAdapter, "Lighthouse", "FAM Adapter")
+
+        Rel_Down( scopeChangeControlApi, famAdapter, " ")
+        Rel_Down( pipeTest, famAdapter, " ")
+
+        ' Rel(constructionProgressApi, constructionProgressDB, "Read")
+        Rel_Down(pipeTest, pipeTestDB, "Read | Write", "https")
+        Rel_Down(scopeChangeControlApi, scopeChangeControlDB, "Read | Write", "https")
+
+        Rel(scope, scopeChangeControlApi, "Read | Write", "https")
+        Rel(relesControl, pipeTest, "Read | Write", "https")
+    }
+
+
+
+' Fution
+Boundary(fusion, 'Fuison Ecosystem') {
+    Container(task, "Task", "Fusion Task API")  
+    Container(context, "Context", "Fusion Context Api")  
+    Container(notifications, "Notifications", "Fusion Task API")  
+    Container(powerbi, "Powerbi", "Fuison PowerBi Api")
+    ' Container(portal, "Portal", "Fuison Portal for futur implementation off fusion Apps")
+
+    Rel_Down("webClient","task", "Read", "https")  
+    Rel_Down("webClient", "context",  "Read", "https")  
+    Rel_Down("webClient", "notifications",  "Read", "https")  
+    Rel_Down("webClient", "powerbi",  "Read", "https")  
+    ' Rel_Down("webClient", "portal",  "Read", "https")  
 }
 
-Boundary(extenals, 'Externals') {
-    Container(mips, "MIPS", "Api") 
-    Container(mipsTIEAdapter, "MIPS TIE Adapter", "adapter") 
+Boundary(externalDataAPI, 'Equinor Data API') {
+    Container(stid, "STID", "web API")  
+    Rel("scope", "stid",  "Read", "https")  
+
 }
 
-Container(tie, "TIE", "TIE1.5 / TIE 2.0")
-
-Boundary(externalEquinorAdapters, 'Equinor Data Adapters') {
-    Container(stid, "STID", "Adapter")  
-    Container(procosys, "ProCoSys", "Adapter")
-    Container(commonLib, "CommonLib", "Adapter")  
-    Container(mipsAdapter, "Mips", "Adapter")  
+Boundary(externalApi, 'Equinor API') {
+    Container(commonLib, "CommonLib", "web API")  
+    Rel("webClient", "commonLib",  "Read", "https")  
 }
 
-Rel(tie, mipsAdapter, "Write")
+Boundary(famGroup, 'FAM Data API') {
 
-Rel_Down(mips, tie, "Write")
-Rel_Down(stid, famEventHub, "Write")
-Rel_Down(procosys, famEventHub, "Write")
-Rel_Down(commonLib, famEventHub, "Write")
-Rel_Down(dataAdapter, famEventHub, "Write")
-Rel_Down(mipsAdapter, famEventHub, "Write")
+    Container(famApiGold, "Fam Gold Data Api", "web API")   
+    Container(famApiSilver, "Fam Silver Data Api", "web API")   
 
-Rel_L( scopeChangeControlApi, dataAdapter, " ")
-Rel_L( constructionProgressApi, dataAdapter, " ")
-Rel_R( pipeTest, dataAdapter, " ")
+    Rel_Down("swcr", "famApiGold",  "Read", "https") 
+    Rel_Down("workorder", "famApiGold",  "Read", "https") 
+    Rel_Down("handover", "famApiGold",  "Read", "https") 
+    Rel_Down("contruction", "famApiSilver",  "Read", "https") 
+}
 
+' Facility Asset Model Section 
+' System_Boundary(fam, "Facility Asset Model | Lighhouse") {
+'     Container(famEventHub, "FamEvenHub", "EvenHub")  
+'     Container(famApi2, "Fam Data API", "API")  
+'     Container(powerBIReports, "powerBI", "Reports")  
+'     ContainerDb(famDb, "Fam DB", "MIPS | Procosys | Stid  | osv...", $sprite="database") 
+'     Rel_L(famEventHub, famDb, " ") 
+'     Rel_L(famDb, famApi2, " ")  
+'     Rel(powerBIReports, famDb, "Read")  
+
+'     Boundary(extenals, 'Externals') {
+'         Container(mips, "MIPS", "Api") 
+'         Container(mipsTIEAdapter, "MIPS TIE Adapter", "adapter") 
+'     }
+
+'     Container(tie, "TIE", "TIE1.5 / TIE 2.0")
+
+'     Boundary(externalEquinorAdapters, 'Equinor Data Adapters') {
+'         Container(stidAdapter, "STID", "Adapter")  
+'         Container(procosysAdapter, "ProCoSys", "Adapter")  
+'         Container(mipsAdapter, "Mips", "Adapter")  
+'         Container(dataAdapter, "Lighthouse", "Adapter")  
+'     }
+
+'     Rel(tie, mipsAdapter, "Write")
+
+'     Rel(mips, tie, "Write")
+'     Rel(stidAdapter, famEventHub, "Write")
+'     Rel(procosysAdapter, famEventHub, "Write")
+'     Rel(dataAdapter, famEventHub, "Write")
+'     Rel(mipsAdapter, famEventHub, "Write")
+
+'     Rel_L(webClient, famApi, "Read", "https") 
+'     Rel(scopeChangeControlApi, famApi, " ") 
+'     Rel(pipeTest, famApi, " ") 
   
+' }
 
 @enduml

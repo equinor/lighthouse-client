@@ -1,32 +1,30 @@
-export interface ClientContext {
-    facility: Facility;
-    project: Project;
-    fusionContext: FusionContext;
-}
-
 export interface Project {
     projectId: string;
 }
+export interface ClientContext extends Facility {
+    project: Project;
+    fusionContext?: FusionContext | undefined;
+}
+
 export interface Facility {
     facilityId: string;
     procosysPlantId: string;
     fusionContextId: string;
     sapPlantId: string;
+    echoPlantId: string;
     title: string;
-    parentFacility?: string;
-    subFacilities?: string[];
 }
 
 export interface FusionContext {
-    created: Date;
+    created: string;
     externalId: string;
     id: string;
     isActive: boolean;
     isDeleted: boolean;
     title: string;
     type: FusionContextType;
-    updated: Date;
-    value: ContextValue;
+    updated: string;
+    value?: ContextValue;
 }
 
 interface FusionContextType {
@@ -37,7 +35,7 @@ interface FusionContextType {
 
 interface ContextValue {
     identity: string;
-    parentFacility: string;
+    parentFacility: string | undefined;
     sapPlant: string;
     schema: string;
     subFacilities: string[];

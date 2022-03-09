@@ -21,7 +21,6 @@ export default defineConfig({
         alias: {
             '@equinor/StatusBar': path.resolve(__dirname, './src/packages/StatusBar'),
             '@equinor/Diagrams': path.resolve(__dirname, './src/packages/Diagrams'),
-            '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),
             '@equinor/authentication': path.resolve(__dirname, './packages/authentication/'),
             '@equinor/http-client': path.resolve(__dirname, './packages/httpClient/'),
             '@equinor/client': path.resolve(__dirname, './packages/configuration/'),
@@ -95,7 +94,6 @@ With vite
         "paths": {
             "@equinor/StatusBar": ["./src/packages/2StatusBar"],
             "@equinor/Diagrams": ["./src/packages/Diagrams"],
-            "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
             "@equinor/authentication": ["./packages/authentication"],
             "@equinor/http-client": ["./packages/httpClient"],
             "@equinor/util": ["./packages/util"],
@@ -130,7 +128,6 @@ With webpack:
         "paths": {
             "@equinor/StatusBar": ["./src/packages/2StatusBar"],
             "@equinor/Diagrams": ["./src/packages/Diagrams"],
-            "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
             "@equinor/authentication": ["./packages/authentication"],
             "@equinor/http-client": ["./packages/httpClient"],
             "@equinor/lighthouse-core": ["./packages/core"],

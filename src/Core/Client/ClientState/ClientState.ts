@@ -14,6 +14,37 @@ const INITIAL_STATE = {
         isProduction: false,
         clientEnv: 'dev',
     },
+    context: {
+        project: {
+            projectId: 'jca',
+        },
+        facilityId: 'jca',
+        procosysPlantId: 'PCS$JOHAN_CASTBERG',
+        fusionContextId: '65728fee-185d-4a0c-a91d-8e3f3781dad8',
+        sapPlantId: '1930',
+        echoPlantId: 'jca',
+        title: 'Johan Castberg',
+        fusionContext: {
+            id: '65728fee-185d-4a0c-a91d-8e3f3781dad8',
+            externalId: 'JCA',
+            type: {
+                id: '',
+                isChildType: false,
+                parentTypeIds: [] as string[],
+            },
+            value: {
+                identity: 'JCA',
+                sapPlant: '1930',
+                schema: 'PCS$JOHAN_CASTBERG',
+                subFacilities: [] as string[],
+            },
+            title: 'Johan Castberg',
+            isActive: true,
+            isDeleted: false,
+            created: '2020-02-27T07:58:11.6966667+00:00',
+            updated: '2020-07-16T21:00:08.391739+00:00',
+        },
+    },
 } as GlobalClientState;
 
 /** @type {Atom<GlobalClientState>}  Main State in Application*/

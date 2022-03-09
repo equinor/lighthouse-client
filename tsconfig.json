@@ -32,14 +32,14 @@
             "@equinor/ErrorBoundary": ["./src/Core/ErrorBoundary"],
             "@equinor/StatusBar": ["./src/packages/2StatusBar"],
             "@equinor/Diagrams": ["./src/packages/Diagrams"],
-            "@equinor/ThreeDViewer": ["./src/packages/ThreeDViewer"],
             "@equinor/Table": ["./src/packages/Table"],
             "@equinor/authentication": ["./src/packages/authentication"],
             "@equinor/http-client": ["./src/Core/httpClient"],
             "@equinor/hooks": ["./src/hooks"],
             "@equinor/Utils": ["./src/packages/Utils"],
             "@equinor/typeGuard": ["./src/packages/typeGuard"],
-            "@equinor/GardenUtils": ["./src/packages/GardenUtils"]
+            "@equinor/GardenUtils": ["./src/packages/GardenUtils"],
+            "@equinor/echo3dweb-viewer": ["./packages/echo3dViewer/src"]
         }
     },
     "compileOnSave": true,

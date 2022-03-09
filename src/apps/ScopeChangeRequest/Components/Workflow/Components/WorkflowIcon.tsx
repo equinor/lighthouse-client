@@ -1,13 +1,12 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+import { CriteriaStatus } from '../Criteria/Components/CriteriaDetail';
 
 interface WorkflowIconProps {
-    status: WorkflowStatus;
+    status: CriteriaStatus;
     number?: number | string;
 }
-
-type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
 export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element {
     switch (status) {
@@ -18,7 +17,7 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
                 </GreenCircle>
             );
 
-        case 'Completed':
+        case 'Approved':
             return (
                 <IconWrapper>
                     <Icon
@@ -30,15 +29,25 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
                 </IconWrapper>
             );
 
+        case 'Rejected': {
+            return (
+                <IconWrapper>
+                    <Icon
+                        name="close_circle_outlined"
+                        height={'28.8'}
+                        width={'28.8'}
+                        color={tokens.colors.infographic.primary__energy_red_100.hex}
+                    />
+                </IconWrapper>
+            );
+        }
+
         case 'Inactive':
             return (
                 <GreyCircle>
                     <span>{number}</span>
                 </GreyCircle>
             );
-
-        case 'Failed':
-            return <Icon name="remove_outlined" height={'28.8'} width={'28.8'} color="grey" />;
 
         default:
             return (
