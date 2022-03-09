@@ -43,7 +43,12 @@ export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element 
             {step.contributors &&
                 step.contributors.map((contributor) => {
                     return (
-                        <Contributor key={contributor.id} step={step} contributor={contributor} />
+                        <Contributor
+                            key={contributor.id}
+                            step={step}
+                            contributor={contributor}
+                            canRemoveContributor={isAllowedToAddContributor ?? false}
+                        />
                     );
                 })}
         </WorkflowStepWrapper>
