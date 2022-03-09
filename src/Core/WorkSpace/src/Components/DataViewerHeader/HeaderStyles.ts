@@ -3,11 +3,12 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.section`
-    height: 100%;
+    height: fit-content;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
+    grid-row: 1/2;
 `;
 
 export const LeftSection = styled.div`
@@ -17,6 +18,7 @@ export const LeftSection = styled.div`
     width: -webkit-fill-available;
     border-bottom: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
+
 export const RightSection = styled.div`
     display: flex;
     flex-direction: row;

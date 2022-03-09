@@ -1,46 +1,32 @@
-import { baseClient } from '@equinor/http-client';
-import { ClientApi } from '@equinor/portal-client';
-
-export interface WorkOrder {
-    plant: string;
-    projectName: string;
-    commPkgNo: string;
-    mcPkgNo: string;
-    description: string;
-    plantName: string;
-    remark: string;
-    responsibleCode: string;
-    responsibleDescription: string;
-    areaCode: string;
-    areaDescription: string;
-    discipline: string;
-    lastUpdated: string;
-}
+import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import { WorkOrderItem, WorkorderSideSheet } from './Garden/components';
+import { WorkOrder } from './Garden/models';
+import { fieldSettings } from './Garden/utility/gardenSetup';
+import { sortPackages } from './Garden/utility/sortPackages';
 
 const excludeKeys: (keyof WorkOrder)[] = [
     'description',
-    'mcPkgNo',
-    'lastUpdated',
-    'projectName',
-    'plantName',
-    'plant',
-    'responsibleDescription',
-    'remark',
-    'areaDescription',
+    'commpkgNumber',
+    'proCoSysSiteName',
+    'responsibleCode',
 ];
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [
-        'api://460842ad-e295-4449-a96a-362b1e46ce45/.default',
-    ]);
-    const commPkg = appApi.createWorkSpace<WorkOrder>({});
+    const commPkg = appApi.createWorkSpace<WorkOrder>({
+        objectIdentifier: 'workOrderId',
+        CustomSidesheet: WorkorderSideSheet,
+    });
 
+    const contextId = isProduction()
+        ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
+        : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
     commPkg.registerDataSource(async () => {
-        const response = await api.fetch(
-            `https://app-ppo-construction-progress-api-dev.azurewebsites.net/McPkg`
-        );
+        const { fusionDataproxy } = httpClient();
 
-        return JSON.parse(await response.text()).items;
+        const response = await fusionDataproxy.fetch(`api/contexts/${contextId}/work-orders`);
+
+        const parsedResponse = JSON.parse(await response.text()) as WorkOrder[];
+        return parsedResponse.slice(0, 100);
     });
 
     commPkg.registerFilterOptions({
@@ -51,9 +37,14 @@ export function setup(appApi: ClientApi): void {
         objectIdentifierKey: 'mcPkgNo',
     });
     commPkg.registerGardenOptions({
-        gardenKey: 'discipline',
-        itemKey: 'mcPkgNo',
-        groupByKeys: ['commPkgNo'],
+        gardenKey: 'fwp' as keyof WorkOrder,
+        itemKey: 'workOrderNumber',
+        fieldSettings: fieldSettings,
+        customViews: {
+            customItemView: WorkOrderItem,
+        },
+        sortData: sortPackages,
+
         // status: { statusItemFunc, shouldAggregate: true },
         //options: { groupDescriptionFunc },
     });

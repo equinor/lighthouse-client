@@ -2,21 +2,31 @@ export interface Scope {
     appConfig: string;
     fusion: string;
     procosys: string;
-    echoModelDistClient: string;
+    echoModelDist: string;
+    echoHierarchy: string;
     scopeChange: string;
     constructionProgress: string;
     pipeTest?: string;
     FAM: string;
     STID: string;
+    fusionNotifications: string;
+    fusionTasks: string;
+    fusionPbi: string;
+    fusionDataproxy: string;
 }
 export interface Urls {
     appConfig: string;
-    echoModelDistClient: string;
+    echoModelDist: string;
+    echoHierarchy: string;
     fusion: string;
     procosys: string;
-    copeChange: string;
+    scopeChange: string;
     constructionProgress: string;
     pipeTest?: string;
     FAM: string;
     STID: string;
+    fusionNotifications: string;
+    fusionTasks: string;
+    fusionPbi: string;
+    fusionDataproxy: string;
 }

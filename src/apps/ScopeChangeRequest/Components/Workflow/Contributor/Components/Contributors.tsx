@@ -12,11 +12,15 @@ import { ContributorActions } from '../../Types/actions';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { submitContribution } from '../../../../Api/ScopeChange/Workflow';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
-import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
-import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
+import { ServerError } from '../../../../Types/ScopeChange/ServerError';
+import { CacheTime } from '../../../../Enums/cacheTimes';
+import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
+import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -27,22 +31,40 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
     const [comment, setComment] = useState('');
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
     const { request, setErrorMessage } = useScopeChangeContext();
+    const workflowLoading = useIsWorkflowLoading();
 
-    const isBusy = useApiActionObserver();
+    const { workflowKeys } = useScopechangeQueryKeyGen(request.id);
+    const { workflowKeys: workflowMutationKeys } = useScopechangeMutationKeyGen(request.id);
 
     const checkCanContribute = () =>
         canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
 
     const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
-        `step/${step.id}/contributor/${contributor.id}`,
+        workflowKeys.contributorKey(step.id, contributor.id),
         checkCanContribute,
-        { refetchOnWindowFocus: false }
+        {
+            refetchOnWindowFocus: false,
+            retry: 3,
+            staleTime: CacheTime.FiveMinutes,
+            cacheTime: CacheTime.FiveMinutes,
+            onError: (e: string) =>
+                setErrorMessage({
+                    detail: e,
+                    title: 'Failed to get permissions',
+                    validationErrors: {},
+                }),
+        }
     );
 
-    const { mutateAsync } = useScopeChangeMutation(submitContribution, {
-        onError: (e: ServerError) => setErrorMessage(e),
-        onSuccess: () => invalidateUserCanContribute(),
-    });
+    const { mutateAsync } = useScopeChangeMutation(
+        request.id,
+        workflowMutationKeys.contributeKey(step.id, contributor.id),
+        submitContribution,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+            onSuccess: () => invalidateUserCanContribute(),
+        }
+    );
 
     function makeContributorActions(): MenuItem[] {
         const actions: MenuItem[] = [];
@@ -90,16 +112,17 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
                     </Inline>
                     {request.state === 'Open' && !request.isVoided && (
                         <>
-                            {step.isCurrent && (
-                                <Inline>
-                                    <MenuButton
-                                        items={makeContributorActions()}
-                                        onMenuOpen={() => setShowCommentField(false)}
-                                        buttonText="Confirm"
-                                        isDisabled={isBusy}
-                                    />
-                                </Inline>
-                            )}
+                            {step.isCurrent &&
+                                !workflowLoading &&
+                                makeContributorActions().length > 0 && (
+                                    <Inline>
+                                        <MenuButton
+                                            items={makeContributorActions()}
+                                            onMenuOpen={() => setShowCommentField(false)}
+                                            buttonText="Confirm"
+                                        />
+                                    </Inline>
+                                )}
                         </>
                     )}
                 </ContributorInnerContainer>
@@ -172,20 +195,18 @@ const Inline = styled.span`
     align-items: center;
 `;
 
-type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
-
 function contributorStatus(
     contributor: ContributorInterface,
     currentStep: boolean
-): WorkflowStatus {
+): CriteriaStatus {
     if (contributor.contribution) {
-        return 'Completed';
+        return 'Approved';
     }
 
     if (currentStep) {
         return 'Active';
     } else {
-        return 'Failed';
+        return 'Inactive';
     }
 }
 

@@ -1,6 +1,6 @@
 import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
-import { System } from './Types/system';
+import { System } from '../../../Types/ProCoSys/system';
 
 export async function searchSystems(
     searchString: string,
@@ -20,7 +20,7 @@ export async function searchSystems(
             .filter((x) => x.Code.includes(searchString))
             .map((x) =>
                 selectOptions.push({
-                    label: `SYS_${x.Code} - ${x.Description}`,
+                    label: `${x.Code} - ${x.Description}`,
                     value: x.Id.toString(),
                     searchValue: x.Code,
                     type: 'system',

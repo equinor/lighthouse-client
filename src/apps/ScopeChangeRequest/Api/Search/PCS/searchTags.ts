@@ -1,8 +1,8 @@
 import { HttpClient } from '@equinor/http-client';
 import { isProduction } from '../../../../../Core/Client/Functions';
 import { TypedSelectOption } from '../searchType';
-import { PCSStructure } from './Types/searchStructure';
-import { Tag } from './Types/tag';
+import { PCSStructure } from './searchStructure';
+import { SearchTag } from '../../../Types/ProCoSys/Tag';
 
 export const searchTags = async (
     searchString: string,
@@ -36,10 +36,10 @@ export const searchTags = async (
     await procosysClient
         .fetch(url, requestOptions)
         .then((response) => response.json())
-        .then((data: Tag[]) => {
-            data.forEach((x: Tag) => {
+        .then((data: SearchTag[]) => {
+            data.forEach((x: SearchTag) => {
                 selectOptions.push({
-                    label: `TAG_${x.TagNo} - ${x.Description}`,
+                    label: `${x.TagNo} - ${x.Description}`,
                     value: x.TagNo,
                     type: 'tag',
                     searchValue: x.TagNo,

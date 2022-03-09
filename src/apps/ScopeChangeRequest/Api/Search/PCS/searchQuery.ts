@@ -1,8 +1,8 @@
 import { HttpClient } from '@equinor/http-client';
 import { isProduction } from '../../../../../Core/Client/Functions';
 import { TypedSelectOption } from '../searchType';
-import { Query } from './Types/query';
-import { PCSStructure } from './Types/searchStructure';
+import { Query } from '../../../Types/ProCoSys/query';
+import { PCSStructure } from './searchStructure';
 
 export const searchQueryOrigin = async (
     searchString: string,

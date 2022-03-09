@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Field } from '../../../apps/ScopeChangeRequest/Components/DetailView/Components/Field';
 import { useHttpClient } from '../../../Core/Client/Hooks';
-import { WorkflowEditorOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/State';
+import { WorkflowEditorOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 
 interface Workflow {
     id: string;
@@ -278,8 +278,8 @@ const Header = styled.div`
 `;
 
 const Content = styled.div`
-display: flex;
-overflow scroll;
+    display: flex;
+    overflow: scroll;
 `;
 
 const Wrapper = styled.div`

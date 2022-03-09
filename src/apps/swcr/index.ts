@@ -1,5 +1,4 @@
-import { baseClient } from '@equinor/http-client';
-import { ClientApi } from '@equinor/portal-client';
+import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
 import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
 import { SwcrItemView } from './CustomViews/SwcrGardenItem';
 import { SwcrGroupView } from './CustomViews/SwcrGroupView';
@@ -9,16 +8,24 @@ import { fieldSettings } from './utilities/gardenSetup';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 
 export function setup(appApi: ClientApi): void {
-    const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.fusion]);
-
     const swcr = appApi.createWorkSpace<SwcrPackage>({
         CustomSidesheet: SwcrSideSheet,
+        objectIdentifier: 'swcrNo',
     });
 
     swcr.registerDataSource(async () => {
-        const response = await api.fetch(
-            `https://pro-s-dataproxy-fprd.azurewebsites.net/api/contexts/3380fe7d-e5b7-441f-8ce9-a8c3133ee499/swcr`
+        const { fusion } = httpClient();
+        fusion.setBaseUrl(
+            `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'
+            }.azurewebsites.net/api/contexts/`
         );
+        const contextId = isProduction()
+            ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
+            : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
+        const response = await fusion.fetch(`${contextId}/swcr`);
+
+        //pro-s-dataproxy-ci.azurewebsites.net/api/contexts/b9a3246a-ddb5-4086-b4ec-dd4b0e88b700/swcr
+
         const swcrPackages = JSON.parse(await response.text()) as SwcrPackage[];
 
         return swcrPackages.sort(sortPackagesByStatusAndNumber);
@@ -26,6 +33,7 @@ export function setup(appApi: ClientApi): void {
 
     swcr.registerFilterOptions({
         typeMap: { siteCode: 'Site Code' },
+        initialFilters: ['status', 'projectIdentifier', 'contract', 'supplier', 'system', 'types'],
         excludeKeys: [
             'description',
             'nextsToSign',

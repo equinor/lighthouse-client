@@ -125,7 +125,6 @@ const webpackConfig: Configuration = {
         alias: {
             '@equinor/StatusBar': path.resolve(__dirname, './src/packages/StatusBar'),
             '@equinor/Diagrams': path.resolve(__dirname, './src/packages/Diagrams'),
-            '@equinor/ThreeDViewer': path.resolve(__dirname, './src/packages/ThreeDViewer'),
             '@equinor/Form': path.resolve(__dirname, './src/packages/Form'),
             '@equinor/authentication': path.resolve(__dirname, './packages/authentication/'),
             '@equinor/http-client': path.resolve(__dirname, './packages/httpClient/'),

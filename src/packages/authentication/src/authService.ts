@@ -4,7 +4,7 @@ import {
     InteractionRequiredAuthError,
     PublicClientApplication,
     RedirectRequest,
-    SilentRequest
+    SilentRequest,
 } from '@azure/msal-browser';
 import { defaultLoginRequest } from './authProviderConfig';
 

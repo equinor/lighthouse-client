@@ -13,13 +13,16 @@ import {
     WorkflowLoadingHeader,
 } from './RequestDetailViewStyles';
 import { HistoryList } from '../History/HistoryList';
-import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
 import { Progress } from '@equinor/eds-core-react';
+import { HotUpload } from '../../../Attachments/HotUpload';
+import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
+import { useIsReferencesLoading } from '../../../../Hooks/React-Query/useIsReferencesLoading';
 
 export const SplitView = (): JSX.Element => {
-    const { request } = useScopeChangeContext();
+    const { request, requestAccess } = useScopeChangeContext();
 
-    const isBusy = useApiActionObserver();
+    const workflowLoading = useIsWorkflowLoading();
+    const referencesLoading = useIsReferencesLoading();
 
     return (
         <SplitScreen>
@@ -74,6 +77,7 @@ export const SplitView = (): JSX.Element => {
                     request.tags.length > 0) && (
                         <Section>
                             <BoldHeading>References</BoldHeading>
+                            {referencesLoading && <Progress.Dots color="primary" />}
                             <Value>
                                 <RelatedObjects
                                     systems={request.systems}
@@ -90,18 +94,17 @@ export const SplitView = (): JSX.Element => {
                 <Section>
                     <BoldHeading>Attachments</BoldHeading>
                     <Value>
+                        {requestAccess.canPatch && <HotUpload />}
                         <Attachments attachments={request.attachments} requestId={request.id} />
                     </Value>
                 </Section>
             </div>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <Section>
-                    <WorkflowLoadingHeader>
-                        <BoldHeading>Workflow</BoldHeading>
-                        {isBusy && <Progress.Dots color="primary" />}
-                    </WorkflowLoadingHeader>
-                    <Workflow />
-                </Section>
+                <WorkflowLoadingHeader>
+                    <BoldHeading>Workflow</BoldHeading>
+                    {workflowLoading && <Progress.Dots color="primary" />}
+                </WorkflowLoadingHeader>
+                <Workflow />
                 <Section>
                     <BoldHeading>Log</BoldHeading>
                     <Value>
@@ -119,4 +122,5 @@ const SplitScreen = styled.div`
     flex-basis: 0;
     overflow: scroll;
     padding: 2em 0em;
+    gap: 1em;
 `;

@@ -1,7 +1,8 @@
 import { Typography } from '@equinor/eds-core-react';
-import { readAppConfig, useClientContext } from '@equinor/portal-client';
+import { useClientContext } from '@equinor/portal-client';
 import { useEffect, useState } from 'react';
 import { httpClient } from '../../Functions/HttpClient';
+import { getDummyTask } from './dummyTask';
 import NoTasks from './NoTasks';
 import { TaskItem } from './TaskItem';
 import { ContentWrapper, Wrapper } from './TaskStyle';
@@ -9,63 +10,23 @@ import { ProcosysTasks } from './types';
 
 export const Task = (): JSX.Element => {
     const {
-        settings: { userImageUrl, user },
+        settings: { userImageUrl, user, clientEnv },
     } = useClientContext();
 
     const [procosysTasks, setTasks] = useState<ProcosysTasks[]>([]);
-    console.log(user);
-    useEffect(() => {
-        if (user) {
-            setTasks((t) =>
-                t.length > 0
-                    ? t
-                    : ([
-                          {
-                              title: 'This is a link to active test task',
-                              url: '#',
-                              dueDate: '08/02/2022',
-                              assignedTo: {
-                                  person: {
-                                      name: user.givenName,
-                                  },
-                              },
-                          },
-                          {
-                              title: 'This is a link to overdue test task',
-                              url: '#',
-                              dueDate: '01/02/2022',
-                              assignedTo: {
-                                  person: {
-                                      name: user.givenName,
-                                  },
-                              },
-                          },
-                          {
-                              title: 'This is a link to overdue test task',
-                              url: '#',
-                              dueDate: '01/01/2022',
-                              assignedTo: {
-                                  person: {
-                                      name: user.givenName,
-                                  },
-                              },
-                          },
-                      ] as ProcosysTasks[])
-            );
-        }
-    }, [user]);
 
     useEffect(() => {
-        const { scope } = readAppConfig();
-        const { customHttpClient } = httpClient({
-            scope: scope.fusion,
-        });
+        if (user) {
+            setTasks((t) => (t.length > 0 ? t : getDummyTask(clientEnv, user)));
+        }
+    }, [clientEnv, user]);
+
+    useEffect(() => {
+        const { fusionTasks } = httpClient();
 
         async function getTasks(): Promise<ProcosysTasks[] | undefined> {
             try {
-                const response = await customHttpClient.get(
-                    'https://pro-s-fusiontasks-fprd.azurewebsites.net/persons/me/tasks/procosys'
-                );
+                const response = await fusionTasks.get('persons/me/tasks/procosys');
                 return await response.json();
             } catch (error) {
                 console.error('Fails to get tasks: ', error);

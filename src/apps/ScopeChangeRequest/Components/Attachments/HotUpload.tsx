@@ -3,10 +3,11 @@ import { useCallback, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import styled from 'styled-components';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
-import { useScopeChangeMutation } from '../../Hooks/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { uploadAttachment } from '../../Api/ScopeChange/Request';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { Attachments } from './Attachments';
+import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
 
 const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const HotUpload = (): JSX.Element => {
@@ -14,11 +15,18 @@ export const HotUpload = (): JSX.Element => {
 
     const { request, setErrorMessage } = useScopeChangeContext();
 
-    const { isLoading, mutateAsync } = useScopeChangeMutation(uploadAttachment, {
-        retry: 2,
-        retryDelay: 2,
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { uploadAttachmentKey } = useScopechangeMutationKeyGen(request.id);
+
+    const { isLoading, mutateAsync } = useScopeChangeMutation(
+        request.id,
+        uploadAttachmentKey(),
+        uploadAttachment,
+        {
+            retry: 2,
+            retryDelay: 2,
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
     const onDrop = useCallback(
         async (acceptedFiles, fileRejections: FileRejection[]) => {

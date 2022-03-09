@@ -1,7 +1,6 @@
-import { Tabs } from '@equinor/eds-core-react';
 import { FilterProvider, FilterView } from '@equinor/filter';
-import { PopoutSidesheet } from '@equinor/sidesheet';
-import { useMemo, useState } from 'react';
+import { openSidesheet, PopoutSidesheet } from '@equinor/sidesheet';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
@@ -10,7 +9,9 @@ import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { CompletionViewHeader } from '../DataViewerHeader/Header';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
-import { DataViewWrapper } from './WorkSpaceViewStyles';
+import { DataViewWrapper, Tabs } from './WorkSpaceViewStyles';
+import { Fallback } from '../FallbackSidesheet/Fallback';
+import { useSideSheet } from '../../../../../packages/Sidesheet/context/sidesheetContext';
 
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const {
@@ -22,15 +23,19 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         powerBiOptions,
         filterOptions,
         workflowEditorOptions,
+        onSelect,
+        idResolver,
+        objectIdentifier,
     } = useWorkSpace();
-    const { data } = useDataContext();
+    const { data, dataApi } = useDataContext();
     const { id } = useParams();
     const currentId = useMemo(() => id && `/${id}`, [id]);
     const navigate = useNavigate();
     const location = useLocation();
 
     const { tabs, viewIsActive } = useConfiguredTabs(
-        treeOptions,
+        //Dont know why??
+        treeOptions as any,
         tableOptions,
         gardenOptions,
         timelineOptions,
@@ -68,6 +73,66 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         setActiveFilter((state) => !state);
     }
 
+    const findItem = useCallback(
+        (id: string): unknown | undefined => {
+            const item = data.find((x) => x[objectIdentifier] === id);
+            if (objectIdentifier in item) {
+                return item;
+            }
+            return undefined;
+        },
+        [data, objectIdentifier]
+    );
+
+    const mountSidesheetFromUrl = useCallback(async () => {
+        if (!onSelect) return;
+        const id = location.hash.split('/')[1];
+        if (data) {
+            const item = findItem(id);
+            if (item) {
+                onSelect(item);
+                return;
+            }
+        }
+        if (idResolver) {
+            const item = await idResolver(id);
+            if (item) {
+                onSelect(item);
+                return;
+            }
+        } else {
+            await dataApi.refetch();
+            const item = findItem(id);
+            if (item) {
+                onSelect(item);
+                return;
+            }
+        }
+        openSidesheet(Fallback);
+    }, [data, findItem, idResolver, location.hash, onSelect]);
+
+    /**
+     * Removes hash from url when closed
+     */
+
+    const { props: sidesheetProps, SidesheetComponent } = useSideSheet();
+    useEffect(() => {
+        if (location.hash.length > 0) return;
+        if (!sidesheetProps && !SidesheetComponent) {
+            navigate(location.pathname, { replace: true });
+        }
+    }, [sidesheetProps, SidesheetComponent, location.pathname]);
+
+    /**
+     * Store sidesheet state in url
+     */
+    useEffect(() => {
+        if (sidesheetProps || SidesheetComponent) return;
+        if (location.hash.length > 0 && onSelect) {
+            mountSidesheetFromUrl();
+        }
+    }, [location.hash.length, mountSidesheetFromUrl, onSelect]);
+
     if (!viewIsActive) return <NoDataView />;
     return (
         <FilterProvider initialData={data} options={filterOptions}>
@@ -80,7 +145,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
                 />
                 <FilterView isActive={activeFilter} />
                 <DataViewWrapper>
-                    <WorkSpaceTabs tabs={tabs} activeTab={activeTab} />
+                    <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
                 </DataViewWrapper>
             </Tabs>
             <PopoutSidesheet />

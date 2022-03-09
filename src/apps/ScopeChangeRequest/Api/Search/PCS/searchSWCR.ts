@@ -1,8 +1,8 @@
 import { HttpClient } from '@equinor/http-client';
 import { isProduction } from '../../../../../Core/Client/Functions';
 import { TypedSelectOption } from '../searchType';
-import { PCSStructure } from './Types/searchStructure';
-import { SWCR } from './Types/swcr';
+import { PCSStructure } from './searchStructure';
+import { SWCR } from '../../../Types/ProCoSys/swcr';
 
 export const searchSWCR = async (
     searchString: string,
@@ -48,5 +48,6 @@ export const searchSWCR = async (
     } catch (e) {
         console.warn(e);
     }
+
     return selectOptions || [];
 };

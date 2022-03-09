@@ -1,6 +1,6 @@
 import { TypedSelectOption } from '../searchType';
-import { PCSStructure } from './Types/searchStructure';
-import { Area } from './Types/area';
+import { PCSStructure } from './searchStructure';
+import { Area } from '../../../Types/ProCoSys/area';
 import { HttpClient } from '../../../../../Core/httpClient/src';
 import { isProduction } from '../../../../../Core/Client/Functions';
 
@@ -39,7 +39,7 @@ export const searchAreas = async (
         .then((data: Area[]) => {
             data.forEach((x: Area) => {
                 selectOptions.push({
-                    label: `AREA_${x.Code} - ${x.Description}`,
+                    label: `${x.Code} - ${x.Description}`,
                     value: x.Code,
                     type: 'area',
                     searchValue: x.Code,

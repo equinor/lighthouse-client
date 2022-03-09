@@ -29,11 +29,19 @@ export function ParkViewProvider<T>({
         dispatch(actions.setGardenKey(gardenKey));
     }
 
+    function setCustomGroupKeys(groupKeys: Record<string, unknown>): void {
+        dispatch(actions.setCustomGroupKeys(groupKeys));
+    }
+    //Runs on every filter update
     useEffect(() => {
-        if (data && data.length > 0) {
-            dispatch(actions.setData(data as unknown[]));
-        }
-    }, [data]);
+        if (!(data && data?.length > 0)) return;
+
+        dispatch(actions.setData(data as unknown[]));
+
+        const customState = (parkViewOptions as GardenOptions<T>)?.customStateFunction?.(data);
+
+        customState && dispatch(actions.setCustomState(customState));
+    }, [data, parkViewOptions]);
 
     return (
         <ParkViewContext.Provider
@@ -41,6 +49,7 @@ export function ParkViewProvider<T>({
                 ...state,
                 setGroupKeys,
                 setGardenKey,
+                setCustomGroupKeys,
             }}
         >
             {children}
@@ -57,9 +66,12 @@ export function useParkViewContext<T>() {
         itemKey: parkViewContext.itemKey as keyof T,
         groupByKeys: parkViewContext.groupByKeys as (keyof T)[],
         customView: parkViewContext.customViews as CustomView<T>,
+        customGroupByKeys: parkViewContext.customGroupByKeys || {},
+        customState: parkViewContext.customState || {},
         status: parkViewContext.status as StatusView<T>,
         options: parkViewContext.options as Options<T>,
         data: parkViewContext.data as T[],
         fieldSettings: parkViewContext.fieldSettings as FieldSettings<T, string>,
+        sortData: parkViewContext.sortData as (data: T[], ...groupByKeys: (keyof T)[]) => T[],
     };
 }

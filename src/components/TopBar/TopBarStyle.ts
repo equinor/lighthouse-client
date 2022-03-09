@@ -1,4 +1,5 @@
 import { TopBar } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const Icons = styled.div`
@@ -8,6 +9,16 @@ export const Icons = styled.div`
     > * {
         margin-left: 1rem;
     }
+`;
+
+export const Action = styled.button<{ disabled?: boolean }>`
+    background: none;
+    border: none;
+    color: ${({ disabled }) =>
+        disabled
+            ? tokens.colors.interactive.disabled__text.rgba
+            : tokens.colors.interactive.primary__resting.rgba};
+    cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
 `;
 
 export const TopBarWrapper = styled(TopBar)`
@@ -20,19 +31,4 @@ export const TopBarWrapper = styled(TopBar)`
     > header {
         padding-left: 1.5rem;
     }
-`;
-
-export const BetaTag = styled.div`
-    padding: 0 1rem;
-    position: absolute;
-    left: 40%;
-    top: 0px;
-    left: 33%;
-    display: flex;
-    background: #ff7e29;
-    color: #fff;
-    align-items: center;
-    justify-content: space-between;
-    width: 30%;
-    min-width: 400px;
 `;

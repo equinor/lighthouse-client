@@ -61,8 +61,8 @@ const Highlight = styled.div`
 
 const Wrapper = styled.div`
     display: flex;
+    min-width: 300px;
     flex-direction: column;
-    width: -webkit-fill-available;
 `;
 
 const AttachmentsContainer = styled.div`
@@ -70,7 +70,7 @@ const AttachmentsContainer = styled.div`
     justify-content: center;
     align-items: center;
     height: 96px;
-    width: 592px;
+    width: -webkit-fill-available;
     cursor: pointer;
     border: 2px dotted ${tokens.colors.interactive.primary__resting.hex};
 `;

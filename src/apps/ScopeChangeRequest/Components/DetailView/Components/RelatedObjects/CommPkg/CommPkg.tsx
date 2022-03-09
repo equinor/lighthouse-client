@@ -4,22 +4,21 @@ import { isProduction } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
-import { useQuery } from 'react-query';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
-import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
+import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
 }
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
-    const { data } = useQuery(
-        [QueryKeys.CommPkg, commPkg.procosysId, commPkg.procosysNumber],
-        () => getCommPkgById(commPkg.procosysId),
-        {
-            staleTime: Infinity,
-            cacheTime: Infinity,
-        }
+    const { request } = useScopeChangeContext();
+    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+
+    const { data } = useInfiniteCachedQuery(referencesKeys.commPkg(commPkg.procosysNumber), () =>
+        getCommPkgById(commPkg.procosysId)
     );
 
     return (
@@ -27,8 +26,9 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
             <Icon name="placeholder_icon" />
             <TagText>
                 <Link
-                    href={`https://${isProduction() ? 'procosys' : 'procosystest'
-                        }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
+                    href={`https://${
+                        isProduction() ? 'procosys' : 'procosystest'
+                    }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
                     target="_blank"
                 >
                     COMM_{commPkg.procosysNumber}

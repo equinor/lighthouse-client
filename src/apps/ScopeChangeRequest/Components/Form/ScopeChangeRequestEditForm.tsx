@@ -1,19 +1,23 @@
-import { Button, Progress } from '@equinor/eds-core-react';
+import { Button, Icon, Progress } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect, useState } from 'react';
-import { patchScopeChange, uploadAttachment } from '../../Api/ScopeChange/Request';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
-import { ProcoSysTypes } from '../../Api/Search/PCS';
+import { patchScopeChange } from '../../Api/ScopeChange/Request';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
+import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
-import { useScopeChangeMutation } from '../../Hooks/useScopechangeMutation';
+import { StidTypes } from '../../Types/STID/STIDTypes';
+import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { Field } from '../DetailView/Components/Field';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
-import { Upload } from '../Attachments/Upload';
 import { Origin } from './Origin';
+import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { Section, Title } from './ScopeChangeRequestForm';
+import { HotUpload } from '../Attachments/HotUpload';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
+import { deleteAttachment } from '../../Api/ScopeChange/Request/attachment';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -24,8 +28,14 @@ export const ScopeChangeRequestEditForm = ({
     request,
     close,
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
-    const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
+
+    const { patchKey, deleteAttachmentKey } = useScopechangeMutationKeyGen(request.id);
+    const { mutateAsync: removeAttachment } = useScopeChangeMutation(
+        request.id,
+        deleteAttachmentKey(),
+        deleteAttachment
+    );
 
     useEffect(() => {
         unpackRelatedObjects(request, setRelatedObjects);
@@ -56,6 +66,7 @@ export const ScopeChangeRequestEditForm = ({
         await patchScopeChange({
             ...request,
             ...formData.getChangedData(),
+            originSourceId: request.originSourceId,
             tagNumbers: tags?.map((x) => x.value) || [],
             systemIds: systems?.map((x) => Number(x.value)) || [],
             commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
@@ -64,16 +75,17 @@ export const ScopeChangeRequestEditForm = ({
             disciplineCodes: disciplines.map((x) => x.value) || [],
         });
 
-        attachments.forEach(async (attachment) => {
-            await uploadAttachment({ requestId: request.id, file: attachment });
-        });
-
         if (!error) close();
     };
 
-    const { isLoading, error, mutateAsync } = useScopeChangeMutation(onSubmit, {
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { isLoading, error, mutateAsync } = useScopeChangeMutation(
+        request.id,
+        patchKey(),
+        onSubmit,
+        {
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
     const SaveButton = () => {
         return (
@@ -122,14 +134,59 @@ export const ScopeChangeRequestEditForm = ({
                     },
                 ]}
             >
-                <Field
-                    label="Attachments"
-                    value={<Upload attachments={attachments} setAttachments={setAttachments} />}
-                />
+                <Section style={{ margin: '0em 0.5em' }}>
+                    <Title>Attachments</Title>
+                    <HotUpload />
+                    {request.attachments.map((attachment, i) => {
+                        return (
+                            <AttachmentsList key={i}>
+                                <AttachmentName>{attachment.fileName}</AttachmentName>
+                                <Inline>
+                                    <div>
+                                        {attachment.fileSize &&
+                                            (attachment?.fileSize / 1000 ** 2).toFixed(2)}
+                                        MB
+                                    </div>
+                                    <Icon
+                                        style={{ margin: '0em 0.5em' }}
+                                        color={tokens.colors.interactive.primary__resting.rgba}
+                                        onClick={() =>
+                                            removeAttachment({
+                                                requestId: request.id,
+                                                attachmentId: attachment.id,
+                                            })
+                                        }
+                                        name="clear"
+                                    />
+                                </Inline>
+                            </AttachmentsList>
+                        );
+                    })}
+                </Section>
             </GeneratedForm>
         </>
     );
 };
+
+const AttachmentName = styled.a`
+    color: ${tokens.colors.interactive.primary__resting.rgba};
+    cursor: 'pointer';
+    text-decoration: 'none';
+`;
+
+const Inline = styled.span`
+    display: flex;
+    align-items: center;
+`;
+
+const AttachmentsList = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.5em 0em;
+    font-size: 16px;
+    align-items: center;
+`;
 
 function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | StidTypes) {
     return items.filter((x) => x.type === type);
@@ -143,7 +200,7 @@ function unpackRelatedObjects(
 
     request.commissioningPackages.forEach((x) =>
         relations.push({
-            label: `COMM_${x.procosysNumber}`,
+            label: `${x.procosysNumber}`,
             value: x.procosysNumber,
             object: x,
             searchValue: x.procosysNumber,
@@ -153,7 +210,7 @@ function unpackRelatedObjects(
 
     request.systems.forEach((x) =>
         relations.push({
-            label: `SYS_${x.procosysCode}`,
+            label: `${x.procosysCode}`,
             value: x.procosysId.toString(),
             object: x,
             searchValue: x.procosysCode,
@@ -163,7 +220,7 @@ function unpackRelatedObjects(
 
     request.tags.forEach((x) =>
         relations.push({
-            label: `TAG_${x.procosysNumber}`,
+            label: `${x.procosysNumber}`,
             value: x.procosysNumber,
             object: x,
             searchValue: x.procosysNumber,
@@ -173,7 +230,7 @@ function unpackRelatedObjects(
 
     request.documents.forEach((x) =>
         relations.push({
-            label: `DOC_${x.stidDocumentNumber}`,
+            label: `${x.stidDocumentNumber}`,
             value: x.stidDocumentNumber,
             object: x,
             searchValue: x.stidDocumentNumber,

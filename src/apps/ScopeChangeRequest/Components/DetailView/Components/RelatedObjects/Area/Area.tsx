@@ -1,24 +1,23 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { Area as AreaInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
 import { getAreaByCode } from '../../../../../Api/PCS/getAreaByCode';
-import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
+import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 
 interface AreaProps {
     area: AreaInterface;
 }
 
 export const Area = ({ area }: AreaProps): JSX.Element => {
-    const { data } = useQuery(
-        [QueryKeys.Area, area.procosysId, area.procosysCode],
-        () => getAreaByCode(area.procosysCode),
-        {
-            staleTime: Infinity,
-            cacheTime: Infinity,
-        }
+    const { request } = useScopeChangeContext();
+    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+
+    const { data } = useInfiniteCachedQuery(referencesKeys.area(area.procosysCode), () =>
+        getAreaByCode(area.procosysCode)
     );
 
     return (

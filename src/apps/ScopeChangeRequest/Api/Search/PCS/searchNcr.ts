@@ -1,8 +1,8 @@
 import { isProduction } from '../../../../../Core/Client/Functions';
 import { HttpClient } from '../../../../../Core/httpClient/src';
 import { TypedSelectOption } from '../searchType';
-import { NCR } from './Types/ncr';
-import { PCSStructure } from './Types/searchStructure';
+import { NCR } from '../../../Types/ProCoSys/ncr';
+import { PCSStructure } from './searchStructure';
 
 export const searchNCR = async (
     searchString: string,

@@ -2,10 +2,11 @@ import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
 
 import styled from 'styled-components';
-import { useQuery } from 'react-query';
 import { getDocumentById } from '../../../Api/STID/getDocumentById';
-import { QueryKeys } from '../../../Api/ScopeChange/queryKeys';
 import { transformIsoDate } from '../../Workflow/Utils/dateFormatting';
+import { useInfiniteCachedQuery } from '../../../Hooks/React-Query/useInfiniteCachedQuery';
+import { useScopechangeQueryKeyGen } from '../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { useScopeChangeContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
 
 interface StidDocumentProps {
     docNo: string;
@@ -16,13 +17,11 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
         window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
     };
 
-    const { data } = useQuery(
-        [QueryKeys.Document, `${docNo}`],
-        () => getDocumentById(docNo, 'JCA'),
-        {
-            staleTime: Infinity,
-            cacheTime: Infinity,
-        }
+    const { request } = useScopeChangeContext();
+    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+
+    const { data } = useInfiniteCachedQuery(referencesKeys.document(docNo), () =>
+        getDocumentById(docNo, 'JCA')
     );
 
     return (
@@ -45,8 +44,11 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
                     <Inline>
                         <MetaData>
                             {`Revision ${data?.currentRevision.revNo} | Rev date ${transformIsoDate(
-                                data?.revDate
-                            )} | Reason for issue ${data?.reasonForIssue}`}
+                                data?.currentRevision.revDate
+                            )} ${data?.currentRevision.reasonForIssue
+                                    ? `| Reason for issue ${data?.currentRevision.reasonForIssue}`
+                                    : ''
+                                } `}
                         </MetaData>
                     </Inline>
                 </LineBreaks>

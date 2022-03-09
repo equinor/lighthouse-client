@@ -1,2 +1,2 @@
 export * from './src';
-export * from './src/WorkSpaceApi/Api';
+export * from './src/WorkSpaceApi/workspaceApi';

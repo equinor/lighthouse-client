@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
-import { useHttpClient } from '@equinor/portal-client';
 import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 
 import { getScopeChangeById, unVoidRequest, voidRequest } from '../../Api/ScopeChange/Request';
@@ -17,19 +16,23 @@ import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { IconMenu, MenuItem } from '../MenuButton';
 import { ScopeChangeErrorBanner } from './ErrorBanner';
 
-import { QueryKeys } from '../../Api/ScopeChange/queryKeys';
 import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { ServerError } from '../../Api/ScopeChange/Types/ServerError';
+import { ServerError } from '../../Types/ScopeChange/ServerError';
+import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
+import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
+import { useScopechangeQueryKeyGen } from '../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
-    const { scopeChange: scopeChangeApi } = useHttpClient();
     const [editMode, setEditMode] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
-    const queryClient = useQueryClient();
 
+    usePreloadCaching();
+    const { voidKey, unvoidKey } = useScopechangeMutationKeyGen(item.id);
+    const { baseKey } = useScopechangeQueryKeyGen(item.id);
     const { data, refetch, remove, isLoading, isRefetching } = useQuery<ScopeChangeRequest>(
-        QueryKeys.Scopechange,
-        () => getScopeChangeById(item.id, scopeChangeApi),
+        baseKey,
+        () => getScopeChangeById(item.id),
         {
             initialData: item,
             refetchOnWindowFocus: false,
@@ -45,17 +48,13 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
     const scopeChangeAccess = useScopeChangeAccess(item.id);
 
-    useEffect(() => {
-        if (item.id) {
-            remove();
-            refetchScopeChange();
-        }
-    }, [item.id]);
+    const { mutateAsync: unvoidMutation } = useScopeChangeMutation(
+        item.id,
+        unvoidKey(),
+        unVoidRequest
+    );
 
-    const notifyChange = useCallback(async () => {
-        await queryClient.fetchQuery(QueryKeys.History);
-        await queryClient.fetchQuery(QueryKeys.Scopechange);
-    }, [queryClient]);
+    const { mutateAsync: voidMutation } = useScopeChangeMutation(item.id, voidKey(), voidRequest);
 
     const refetchScopeChange = useCallback(async () => {
         await refetch();
@@ -68,7 +67,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             if (data?.isVoided) {
                 actions.push({
                     label: 'Unvoid request',
-                    onClick: () => unVoidRequest(item.id).then(notifyChange),
+                    onClick: async () => await unvoidMutation({ requestId: item.id }),
                 });
             }
         }
@@ -80,7 +79,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         spawnConfirmationDialog(
                             'Are you sure you want to void this request',
                             'Void confirmation',
-                            () => voidRequest(item.id).then(notifyChange)
+                            async () => await voidMutation({ requestId: item.id })
                         ),
                 });
             }
@@ -88,12 +87,20 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
         return actions;
     }, [
-        data?.isVoided,
-        item.id,
-        notifyChange,
+        data,
+        item,
         scopeChangeAccess.canUnVoid,
         scopeChangeAccess.canVoid,
+        unvoidMutation,
+        voidMutation,
     ]);
+
+    useEffect(() => {
+        if (item.id) {
+            remove();
+            refetchScopeChange();
+        }
+    }, [item.id]);
 
     if (!item.id) {
         return <p>Something went wrong</p>;
@@ -108,11 +115,10 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     }
     return (
         <Wrapper>
-            <ScopeChangeErrorBanner message={errorMessage} />
-
+            <ScopeChangeErrorBanner message={errorMessage} requestId={item.id} />
             <TitleHeader>
                 <Title>
-                    ({data?.sequenceNumber}) {data?.title}
+                    {data?.sequenceNumber}, {data?.title}
                     {isLoading && <Progress.Dots color="primary" />}
                 </Title>
                 <ButtonContainer>
@@ -143,7 +149,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                 }}
             >
                 {data && (
-                    <div>
+                    <>
                         {editMode ? (
                             <ScopeChangeRequestEditForm
                                 request={data}
@@ -152,7 +158,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         ) : (
                             <RequestDetailView />
                         )}
-                    </div>
+                    </>
                 )}
             </ScopeChangeContext.Provider>
         </Wrapper>
@@ -161,6 +167,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
 const Title = styled.div`
     font-size: 28px;
+    max-width: 500px;
 `;
 
 const ButtonContainer = styled.div`

@@ -5,21 +5,20 @@ import { Tag as TagInterface } from '../../../../../Types/scopeChangeRequest';
 import { isProduction } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { getTagById } from '../../../../../Api/PCS/getTagById';
-import { useQuery } from 'react-query';
-import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
+import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 
 interface TagProps {
     tag: TagInterface;
 }
 
 export const Tag = ({ tag }: TagProps): JSX.Element => {
-    const { data } = useQuery(
-        [QueryKeys.Tag, tag.procosysId, tag.procosysNumber],
-        () => getTagById(tag.procosysId),
-        {
-            staleTime: Infinity,
-            cacheTime: Infinity,
-        }
+    const { request } = useScopeChangeContext();
+    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+
+    const { data } = useInfiniteCachedQuery(referencesKeys.tag(tag.procosysNumber), () =>
+        getTagById(tag.procosysId)
     );
 
     return (
@@ -27,11 +26,12 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
             <Icon color={tokens.colors.interactive.primary__resting.hex} name="tag" />
             <TagText>
                 <Link
-                    href={`https://${isProduction() ? 'procosys' : 'procosystest'
-                        }.equinor.com/JOHAN_CASTBERG/Completion#Tag|${tag.procosysId}`}
+                    href={`https://${
+                        isProduction() ? 'procosys' : 'procosystest'
+                    }.equinor.com/JOHAN_CASTBERG/Completion#Tag|${tag.procosysId}`}
                     target="_blank"
                 >
-                    TAG_{tag.procosysNumber}
+                    {tag.procosysNumber}
                 </Link>
                 - <div>{data?.Description}</div>
             </TagText>

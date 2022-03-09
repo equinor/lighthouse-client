@@ -3,9 +3,9 @@ import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { ProcoSysTypes, searchPcs } from '../../../Api/Search/PCS/searchPcs';
+import { ProcoSysTypes } from '../../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
-import { searchStid, StidTypes } from '../../../Api/Search/STID/searchStid';
+import { StidTypes } from '../../../Types/STID/STIDTypes';
 import { useCancellationToken } from '../../../Hooks/useCancellationToken';
 import { AdvancedDocumentSearch } from '../../STID';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from '../applyEds';
@@ -22,6 +22,7 @@ import {
     Title,
     TitleBar,
 } from './RelatedObjectsStyles';
+import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
 
 interface RelatedObjectsSearchProps {
     relatedObjects: TypedSelectOption[];
@@ -34,6 +35,7 @@ export const RelatedObjectsSearch = ({
 }: RelatedObjectsSearchProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const { abort, getSignal } = useCancellationToken();
+    const { search: searchReferences } = useReferencesSearch();
 
     const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
         'document',
@@ -74,45 +76,10 @@ export const RelatedObjectsSearch = ({
     ) => {
         abort();
 
-        const search = (type: ProcoSysTypes) => searchPcs(inputValue, type, getSignal());
+        if (!referenceType) return;
 
-        switch (referenceType) {
-            case 'system': {
-                const results = await search('system');
-                callback(results);
-                return;
-            }
-
-            case 'area': {
-                const results = await search('area');
-                callback(results);
-                return;
-            }
-
-            case 'commpkg': {
-                const results = await search('commpkg');
-                callback(results);
-                return;
-            }
-
-            case 'tag': {
-                const results = await search('tag');
-                callback(results);
-                return;
-            }
-
-            case 'discipline': {
-                const results = await search('discipline');
-                callback(results);
-                return;
-            }
-
-            case 'document': {
-                const results = await searchStid(inputValue, 'document', getSignal());
-                callback(results);
-                return;
-            }
-        }
+        const results = await searchReferences(inputValue, referenceType, getSignal());
+        callback(results);
     };
 
     return (
@@ -209,6 +176,7 @@ export const RelatedObjectsSearch = ({
                                         </Inline>
 
                                         <Icon
+                                            style={{ cursor: 'pointer' }}
                                             color={tokens.colors.interactive.primary__resting.rgba}
                                             onClick={() => {
                                                 removeRelatedObject(selectedReference.value);

@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { canUnVoid, canVoid } from '../Api/ScopeChange/Access/canVoid';
 import { OptionRequestResult } from '../Api/ScopeChange/Access/optionsRequestChecker';
 import { getRequestAccess } from '../Api/ScopeChange/Access/requestAccess';
+import { CacheTime } from '../Enums/cacheTimes';
+import { useScopechangeQueryKeyGen } from './React-Query/useScopechangeQueryKeyGen';
 
 interface ScopeChangeAccess extends OptionRequestResult {
     canVoid: boolean;
@@ -19,18 +22,27 @@ export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
         canUnVoid: false,
     });
 
-    useEffect(() => {
-        canVoid(requestId).then((x) =>
-            setAccess((prev) => {
-                return { ...prev, canVoid: x };
-            })
-        );
+    const { canUnVoidKey, canVoidKey } = useScopechangeQueryKeyGen(requestId);
 
-        canUnVoid(requestId).then((x) =>
-            setAccess((prev) => {
-                return { ...prev, canUnVoid: x };
-            })
-        );
+    const { data: userCanVoid } = useQuery(canVoidKey(), () => canVoid(requestId), {
+        cacheTime: CacheTime.FiveMinutes,
+        staleTime: CacheTime.FiveMinutes,
+    });
+
+    const { data: userCanUnvoid } = useQuery(canUnVoidKey(), () => canUnVoid(requestId), {
+        cacheTime: CacheTime.FiveMinutes,
+        staleTime: CacheTime.FiveMinutes,
+    });
+
+    useEffect(() => {
+        setAccess((prev) => {
+            return { ...prev, canVoid: userCanVoid ?? false };
+        });
+
+        setAccess((prev) => {
+            return { ...prev, canUnVoid: userCanUnvoid ?? false };
+        });
+
         getRequestAccess(requestId).then((x) =>
             setAccess((prev) => {
                 return {
@@ -43,7 +55,7 @@ export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
                 };
             })
         );
-    }, [requestId]);
+    }, [requestId, userCanUnvoid, userCanVoid]);
 
     return access;
 }

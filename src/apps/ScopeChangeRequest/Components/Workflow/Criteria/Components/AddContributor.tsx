@@ -2,23 +2,27 @@ import { useState } from 'react';
 import styled from 'styled-components';
 
 import { PCSPersonSearch } from '../../../SearchableDropdown/PCSPersonSearch';
-import { SelectOption } from '../../../../Api/Search/PCS';
 import { addContributor } from '../../../../Api/ScopeChange/Workflow/addContributor';
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
-import { useScopeChangeMutation } from '../../../../Hooks/useScopechangeMutation';
-import { ServerError } from '../../../../Api/ScopeChange/Types/ServerError';
+import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
+import { ServerError } from '../../../../Types/ScopeChange/ServerError';
+import { TypedSelectOption } from '../../../../Api/Search/searchType';
+import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { WorkflowStep } from '../../../../Types/scopeChangeRequest';
 
 interface AddContributorProps {
+    step: WorkflowStep;
     close: () => void;
 }
 
-export const AddContributor = ({ close }: AddContributorProps): JSX.Element => {
-    const [contributor, setContributor] = useState<SelectOption | null>(null);
+export const AddContributor = ({ close, step }: AddContributorProps): JSX.Element => {
+    const [contributor, setContributor] = useState<TypedSelectOption | null>(null);
     const [text, setText] = useState<string>('');
     const { request, setErrorMessage } = useScopeChangeContext();
+    const { workflowKeys } = useScopechangeMutationKeyGen(request.id);
 
     const submit = async () => {
         await addContributor(
@@ -29,10 +33,15 @@ export const AddContributor = ({ close }: AddContributorProps): JSX.Element => {
         );
     };
 
-    const { mutateAsync, isLoading } = useScopeChangeMutation(submit, {
-        onSuccess: () => close(),
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const { mutateAsync, isLoading } = useScopeChangeMutation(
+        request.id,
+        workflowKeys.addContributorKey(step.id),
+        submit,
+        {
+            onSuccess: () => close(),
+            onError: (e: ServerError) => setErrorMessage(e),
+        }
+    );
 
     return (
         <>
@@ -96,6 +105,9 @@ const ButtonContainer = styled.div`
 `;
 
 const Section = styled.div`
+    display: flex;
+    gap: 0.6em;
+    flex-direction: column;
     margin: 0.2rem;
     width: 100%;
 `;

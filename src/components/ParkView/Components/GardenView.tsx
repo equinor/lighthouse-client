@@ -1,5 +1,5 @@
 import { createGarden } from '../Services/createGarden';
-import { Wrapper, Col } from '../Styles/common';
+import { Wrapper, Col, Container } from '../Styles/common';
 import { TreeColumn } from './TreeColumn';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { FilterSelector } from './GroupingSelector';
@@ -10,8 +10,16 @@ import { defaultSortFunction } from '../Utils/utilities';
 
 export function GardenView<T>(): JSX.Element | null {
     const refresh = useRefresh();
-    const { data, groupByKeys, gardenKey, options, status, fieldSettings, customView } =
-        useParkViewContext<T>();
+    const {
+        data,
+        groupByKeys,
+        gardenKey,
+        options,
+        status,
+        fieldSettings,
+        customView,
+        customGroupByKeys,
+    } = useParkViewContext<T>();
 
     const garden = useMemo(
         () =>
@@ -22,9 +30,18 @@ export function GardenView<T>(): JSX.Element | null {
                 groupByKeys,
                 status,
                 options?.groupDescriptionFunc,
-                fieldSettings
+                fieldSettings,
+                customGroupByKeys
             ),
-        [data, fieldSettings, gardenKey, groupByKeys, options?.groupDescriptionFunc, status]
+        [
+            data,
+            fieldSettings,
+            gardenKey,
+            groupByKeys,
+            options?.groupDescriptionFunc,
+            status,
+            customGroupByKeys,
+        ]
     );
 
     const Header = customView?.customHeaderView || GroupHeader;
@@ -44,7 +61,7 @@ export function GardenView<T>(): JSX.Element | null {
 
     if (!data || !garden) return null;
     return (
-        <>
+        <Container>
             <FilterSelector<T> />
             <Wrapper>
                 {garden &&
@@ -64,6 +81,6 @@ export function GardenView<T>(): JSX.Element | null {
                         </Col>
                     ))}
             </Wrapper>
-        </>
+        </Container>
     );
 }

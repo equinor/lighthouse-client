@@ -4,21 +4,22 @@ import { System as SystemInterface } from '../../../../../Types/scopeChangeReque
 import { isProduction } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
-import { useQuery } from 'react-query';
 import { getSystems } from '../../../../../Api/PCS/getSystems';
 import { useEffect, useState } from 'react';
-import { System as PCSSystem } from '../../../../../Api/Search/PCS/Types/system';
-import { QueryKeys } from '../../../../../Api/ScopeChange/queryKeys';
+import { System as PCSSystem } from '../../../../../Types/ProCoSys/system';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
+import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
 
 interface SystemProps {
     system: SystemInterface;
 }
 
 export const System = ({ system }: SystemProps): JSX.Element => {
-    const { data } = useQuery(QueryKeys.Systems, getSystems, {
-        staleTime: Infinity,
-        cacheTime: Infinity,
-    });
+    const { request } = useScopeChangeContext();
+    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+
+    const { data } = useInfiniteCachedQuery(referencesKeys.systems, getSystems);
 
     const [foundSystem, setFoundSystem] = useState<PCSSystem | null>();
 
@@ -33,8 +34,9 @@ export const System = ({ system }: SystemProps): JSX.Element => {
         <Wrapper key={system.id}>
             <Icon name="placeholder_icon" />
             <Link
-                href={`https://${isProduction() ? 'procosys' : 'procosystest'
-                    }.equinor.com/JOHAN_CASTBERG/Completion#System|${system.procosysId}`}
+                href={`https://${
+                    isProduction() ? 'procosys' : 'procosystest'
+                }.equinor.com/JOHAN_CASTBERG/Completion#System|${system.procosysId}`}
                 target="_blank"
             >
                 SYS_{system.procosysCode} - {foundSystem?.Description}

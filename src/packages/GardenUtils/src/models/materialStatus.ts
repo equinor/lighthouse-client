@@ -1,0 +1,17 @@
+export type MaterialStatus =
+    | 'MN'
+    | 'MN1'
+    | 'MNX1'
+    | 'MNX2'
+    | 'M13'
+    | 'M12'
+    | 'M11'
+    | 'M10'
+    | 'M9'
+    | 'M8'
+    | 'M7'
+    | 'M6'
+    | 'M5'
+    | 'M4'
+    | 'M3'
+    | 'M2';

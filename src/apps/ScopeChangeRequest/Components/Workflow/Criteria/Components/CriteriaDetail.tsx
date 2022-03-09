@@ -1,6 +1,5 @@
-import { DateTime } from 'luxon';
 import styled from 'styled-components';
-import { Criteria, WorkflowStatus, WorkflowStep } from '../../../../Types/scopeChangeRequest';
+import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 
@@ -9,34 +8,57 @@ interface CriteriaDetailProps {
     step: WorkflowStep;
 }
 
+export type CriteriaStatus = 'Approved' | 'Rejected' | 'Inactive' | 'Active';
+
+function statusFunc(criteria: Criteria, step: WorkflowStep): CriteriaStatus {
+    if (!criteria.signedState) {
+        return step.isCurrent ? 'Active' : 'Inactive';
+    } else if (criteria.signedState === 'Approved') {
+        return 'Approved';
+    } else {
+        return 'Rejected';
+    }
+}
+
 export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Element => {
     const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
     const formattedDate = dateToDateTimeFormat(date);
 
-    const stepStatus = statusFunc(step);
+    const stepStatus = statusFunc(criteria, step);
 
     return (
-        <>
-            <SplitInline>
-                <WorkflowIcon
-                    status={stepStatus === 'Active' ? criteriaStatus(criteria) : stepStatus}
-                    number={step.order + 1}
-                />
+        <SplitInline>
+            <FixedIconContainer>
+                <WorkflowIcon status={stepStatus} number={step.order + 1} />
+            </FixedIconContainer>
 
-                <WorkflowText>
-                    <span>{step.name}</span>
-                    {criteria.signedAtUtc ? (
-                        <div
-                            style={{ fontSize: '14px' }}
-                        >{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
-                    ) : (
-                        <div style={{ fontSize: '14px' }}>{criteria.valueDescription}</div>
-                    )}
-                </WorkflowText>
-            </SplitInline>
-        </>
+            <WorkflowText>
+                <span>{step.name}</span>
+                {criteria.signedAtUtc ? (
+                    <DetailText>
+                        <div>{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
+                        {criteria.signedComment && <q>{criteria.signedComment}</q>}
+                    </DetailText>
+                ) : (
+                    <DetailText>{criteria.valueDescription}</DetailText>
+                )}
+            </WorkflowText>
+        </SplitInline>
     );
 };
+
+const DetailText = styled.div`
+    font-size: 14px;
+`;
+
+const FixedIconContainer = styled.div`
+    width: 29px;
+    height: 29px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
 const SplitInline = styled.div`
     display: flex;
     align-items: center;
@@ -44,25 +66,8 @@ const SplitInline = styled.div`
     gap: 1em;
 `;
 
-const criteriaStatus = (criteria: Criteria): WorkflowStatus => {
-    if (criteria.signedAtUtc === null) {
-        return 'Active';
-    } else {
-        return 'Completed';
-    }
-};
 const WorkflowText = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 `;
-
-const statusFunc = (item: WorkflowStep): WorkflowStatus => {
-    if (item.isCompleted) {
-        return 'Completed';
-    } else if (item.isCurrent) {
-        return 'Active';
-    } else {
-        return 'Inactive';
-    }
-};
