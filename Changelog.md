@@ -9,7 +9,8 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ## 0.2.3-alpha
 
 ### Test
-- Bug fixes
+- Scopechange bug fixes
+- Moved support icon up to topbar
 
 ## 0.2.2-alpha
 
