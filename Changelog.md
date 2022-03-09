@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
+
+## 0.2.3-alpha
+
+### Test
+- Bug fixes
+
 ## 0.2.2-alpha
 
 ### Prod
