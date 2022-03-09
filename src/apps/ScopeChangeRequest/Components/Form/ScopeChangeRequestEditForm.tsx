@@ -18,6 +18,14 @@ import { HotUpload } from '../Attachments/HotUpload';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { deleteAttachment } from '../../Api/ScopeChange/Request/attachment';
+import { useScopechangeQueryKeyGen } from '../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { Tag } from '../../Types/ProCoSys/Tag';
+import { useQueryCacheLookup } from '../../Hooks/React-Query/useQueryCacheLookup';
+import { Document } from '../../Types/STID/Document';
+import { Area } from '../../Types/ProCoSys/area';
+import { Discipline } from '../../Types/ProCoSys/discipline';
+import { CommissioningPackage } from '../../Types/ProCoSys/CommissioningPackage';
+import { System } from '../../Types/ProCoSys/system';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -29,6 +37,10 @@ export const ScopeChangeRequestEditForm = ({
     close,
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
+    // const queryClient = useQueryClient();
+    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+
+    const { getQueryData } = useQueryCacheLookup();
 
     const { patchKey, deleteAttachmentKey } = useScopechangeMutationKeyGen(request.id);
     const { mutateAsync: removeAttachment } = useScopeChangeMutation(
@@ -38,7 +50,7 @@ export const ScopeChangeRequestEditForm = ({
     );
 
     useEffect(() => {
-        unpackRelatedObjects(request, setRelatedObjects);
+        unpackRelatedObjects(request, setRelatedObjects, getQueryData, referencesKeys);
     }, [request]);
 
     const { setErrorMessage } = useScopeChangeContext();
@@ -192,70 +204,162 @@ function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | 
     return items.filter((x) => x.type === type);
 }
 
-function unpackRelatedObjects(
+async function unpackRelatedObjects(
     request: ScopeChangeRequest,
-    setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>
+    setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>,
+    getQueryData: <T>(queryKey: string[]) => T | undefined,
+    referencesKeys: {
+        baseKey: string[];
+        disciplines: string[];
+        systems: string[];
+        document: (documentId: string) => string[];
+        area: (areaId: string) => string[];
+        tag: (tagId: string) => string[];
+        commPkg: (commPkgId: string) => string[];
+    }
 ) {
     const relations: TypedSelectOption[] = [];
 
-    request.commissioningPackages.forEach((x) =>
-        relations.push({
-            label: `${x.procosysNumber}`,
-            value: x.procosysNumber,
-            object: x,
-            searchValue: x.procosysNumber,
-            type: 'commpkg',
-        })
-    );
+    request.commissioningPackages.forEach((x) => {
+        const data = getQueryData<CommissioningPackage>(referencesKeys.commPkg(x.procosysNumber));
 
-    request.systems.forEach((x) =>
-        relations.push({
-            label: `${x.procosysCode}`,
-            value: x.procosysId.toString(),
-            object: x,
-            searchValue: x.procosysCode,
-            type: 'system',
-        })
-    );
+        if (data) {
+            relations.push({
+                label: `${x.procosysNumber} ${data.Description}`,
+                value: x.procosysNumber,
+                object: x,
+                searchValue: x.procosysNumber,
+                type: 'commpkg',
+            });
+        } else {
+            relations.push({
+                label: `${x.procosysNumber}`,
+                value: x.procosysNumber,
+                object: x,
+                searchValue: x.procosysNumber,
+                type: 'commpkg',
+            });
+        }
+    });
 
-    request.tags.forEach((x) =>
-        relations.push({
-            label: `${x.procosysNumber}`,
-            value: x.procosysNumber,
-            object: x,
-            searchValue: x.procosysNumber,
-            type: 'tag',
-        })
-    );
+    setRelatedObjects(relations);
 
-    request.documents.forEach((x) =>
-        relations.push({
-            label: `${x.stidDocumentNumber}`,
-            value: x.stidDocumentNumber,
-            object: x,
-            searchValue: x.stidDocumentNumber,
-            type: 'document',
-        })
-    );
+    request.systems.forEach((x) => {
+        const systems = getQueryData<System[]>(referencesKeys.systems);
 
-    request.areas.forEach((x) =>
-        relations.push({
-            label: x.procosysCode,
-            value: x.procosysCode,
-            object: x,
-            searchValue: x.procosysCode,
-            type: 'area',
-        })
-    );
+        if (systems) {
+            const system = systems.find((loc) => loc.Code === x.procosysCode);
+            relations.push({
+                label: `${x.procosysCode} ${system?.Description}`,
+                value: x.procosysId.toString(),
+                object: x,
+                searchValue: x.procosysCode,
+                type: 'system',
+            });
+        } else {
+            relations.push({
+                label: `${x.procosysCode}`,
+                value: x.procosysId.toString(),
+                object: x,
+                searchValue: x.procosysCode,
+                type: 'system',
+            });
+        }
+    });
 
-    request.disciplines.forEach((x) =>
-        relations.push({
-            label: x.procosysCode,
-            value: x.procosysCode,
-            object: x,
-            searchValue: x.procosysCode,
-            type: 'discipline',
-        })
-    );
+    setRelatedObjects(relations);
+
+    request.tags.forEach((x) => {
+        const data = getQueryData<Tag>(referencesKeys.tag(x.procosysNumber));
+
+        if (data) {
+            relations.push({
+                label: `${x.procosysNumber} ${data.Description}`,
+                value: x.procosysNumber,
+                object: data,
+                searchValue: x.procosysNumber,
+                type: 'tag',
+            });
+        } else {
+            relations.push({
+                label: `${x.procosysNumber}`,
+                value: x.procosysNumber,
+                object: x,
+                searchValue: x.procosysNumber,
+                type: 'tag',
+            });
+        }
+    });
+
+    setRelatedObjects(relations);
+
+    request.documents.forEach((x) => {
+        const data = getQueryData<Document>(referencesKeys.document(x.stidDocumentNumber));
+
+        if (data) {
+            relations.push({
+                label: `${x.stidDocumentNumber} ${data.docTitle}`,
+                value: x.stidDocumentNumber,
+                object: x,
+                searchValue: x.stidDocumentNumber,
+                type: 'document',
+            });
+        } else {
+            relations.push({
+                label: `${x.stidDocumentNumber}`,
+                value: x.stidDocumentNumber,
+                object: x,
+                searchValue: x.stidDocumentNumber,
+                type: 'document',
+            });
+        }
+    });
+
+    setRelatedObjects(relations);
+
+    request.areas.forEach((x) => {
+        const data = getQueryData<Area>(referencesKeys.area(x.procosysCode));
+
+        if (data) {
+            relations.push({
+                label: `${x.procosysCode} ${data.Description}`,
+                value: x.procosysCode,
+                object: x,
+                searchValue: x.procosysCode,
+                type: 'area',
+            });
+        } else {
+            relations.push({
+                label: x.procosysCode,
+                value: x.procosysCode,
+                object: x,
+                searchValue: x.procosysCode,
+                type: 'area',
+            });
+        }
+    });
+
+    request.disciplines.forEach((x) => {
+        const data = getQueryData<Discipline[]>(referencesKeys.disciplines);
+
+        if (data) {
+            const discipline = data?.find((discipline) => discipline.Code === x.procosysCode);
+            relations.push({
+                label: `${x.procosysCode} ${discipline?.Description}`,
+                value: x.procosysCode,
+                object: x,
+                searchValue: x.procosysCode,
+                type: 'discipline',
+            });
+        } else {
+            relations.push({
+                label: x.procosysCode,
+                value: x.procosysCode,
+                object: x,
+                searchValue: x.procosysCode,
+                type: 'discipline',
+            });
+        }
+    });
     setRelatedObjects(relations);
 }

@@ -10,6 +10,10 @@ export function useScopechangeMutationKeyGen(requestId: string) {
         baseKey: [baseKey, 'workflow'],
         stepKey: (stepId: string) => [...workflowKeys.baseKey, 'step', stepId],
         addContributorKey: (stepId: string) => [...workflowKeys.stepKey(stepId), 'addContributor'],
+        deleteContributorKey: (stepId: string) => [
+            ...workflowKeys.stepKey(stepId),
+            'removeContributor',
+        ],
 
         criteriaKey: (stepId: string, criteriaId: string) => [
             ...workflowKeys.stepKey(stepId),
