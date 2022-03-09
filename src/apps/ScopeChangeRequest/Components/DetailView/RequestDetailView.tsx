@@ -25,7 +25,7 @@ export const RequestDetailView = (): JSX.Element => {
             {request.state === 'Draft' && !request.isVoided && (
                 <ActionBar>
                     <Button onClick={() => initiate({ request: request })}>
-                        {isLoading ? <Progress.Dots color="neutral" /> : 'Initiate request'}
+                        {isLoading ? <Progress.Dots color="neutral" /> : 'Submit request'}
                     </Button>
                 </ActionBar>
             )}

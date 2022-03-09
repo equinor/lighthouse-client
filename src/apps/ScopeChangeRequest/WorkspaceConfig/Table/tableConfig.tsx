@@ -237,6 +237,9 @@ const statusDotFunc = (item: WorkflowStep) => {
         return 'Active';
     }
 
+    if (item.criterias.some((x) => x.signedState === 'Rejected')) {
+        return 'Rejected';
+    }
     switch (item.isCompleted) {
         case true:
             return 'Completed';
