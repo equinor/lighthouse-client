@@ -20,6 +20,7 @@ import { CacheTime } from '../../../../Enums/cacheTimes';
 import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
 import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
+import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -194,20 +195,18 @@ const Inline = styled.span`
     align-items: center;
 `;
 
-type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
-
 function contributorStatus(
     contributor: ContributorInterface,
     currentStep: boolean
-): WorkflowStatus {
+): CriteriaStatus {
     if (contributor.contribution) {
-        return 'Completed';
+        return 'Approved';
     }
 
     if (currentStep) {
         return 'Active';
     } else {
-        return 'Failed';
+        return 'Inactive';
     }
 }
 

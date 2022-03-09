@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 interface WorkflowProps<T> {
     steps: T[];
-    statusDotFunc: (item: T) => 'Completed' | 'Inactive' | 'Active';
+    statusDotFunc: (item: T) => 'Completed' | 'Inactive' | 'Active' | 'Rejected';
     stepName?: keyof T;
     spanDirection?: 'vertical' | 'horizontal';
     dotSize?: number;
