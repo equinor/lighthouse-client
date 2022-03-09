@@ -31,7 +31,14 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
                 (x) => x.signedAtUtc === null
             );
             const sign = async () => {
-                await signCriteria(request.id, step.id, criteria.id, action, text);
+                await signCriteria({
+                    closeRequest: false,
+                    criteriaId: criteria.id,
+                    verdict: action,
+                    stepId: step.id,
+                    comment: text,
+                    requestId: request.id,
+                });
             };
             if (
                 request.currentWorkflowStep.contributors &&
