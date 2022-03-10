@@ -76,6 +76,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const findItem = useCallback(
         (id: string): unknown | undefined => {
             const item = data.find((x) => x[objectIdentifier] === id);
+            if (!item) return;
             if (objectIdentifier in item) {
                 return item;
             }

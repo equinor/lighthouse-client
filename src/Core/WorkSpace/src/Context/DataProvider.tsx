@@ -16,6 +16,8 @@ import {
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
 import { useAtom } from '@dbeining/react-atom';
 import { usePrefetchQueries } from '../Hooks/usePrefetchQueries';
+import * as queryCacheOperations from '../Functions/DataOperations';
+import { QueryCacheArgs } from '../Functions/DataOperations/queryCacheArgs';
 
 interface DataState {
     key: string;
@@ -125,39 +127,26 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         queryApi.refetch();
     }, [dataSource]);
 
-    function patchRecord(id: string, item: unknown, identifier?: string) {
-        const query = queryClient.getQueryCache().find(key);
-        if (!query || !queryApi.data) return;
+    const workspaceInternalApi: QueryCacheArgs = {
+        key,
+        objectIdentifier,
+        queryApi,
+        queryClient,
+    };
 
-        const patchIndex = queryApi.data.findIndex(
-            (record: any) => record[identifier ?? objectIdentifier] === id
-        );
-        if (patchIndex === -1) return;
+    /** Patches a record in the queryCache */
+    const patchRecord = (id: string, item: unknown, identifier?: string) =>
+        queryCacheOperations.patchRecord({ id, item, identifier }, workspaceInternalApi);
 
-        query.setData((queryApi.data[patchIndex] = item));
-    }
+    /** Patches a record in the queryCache */
+    const deleteRecord = (id: string, identifier?: string) =>
+        queryCacheOperations.deleteRecord({ id, identifier }, workspaceInternalApi);
 
-    function deleteRecord(id: string, identifier?: string) {
-        const query = queryClient.getQueryCache().find(key);
-        if (!query || !queryApi.data) return;
+    const getRecord = (id: string, identifier?: string) =>
+        queryCacheOperations.getRecord({ id, identifier }, workspaceInternalApi);
 
-        query.setData(
-            queryApi.data.filter((record: any) => record[identifier ?? objectIdentifier] !== id)
-        );
-    }
-
-    function getRecord(id: string, identifier?: string) {
-        if (!queryApi.data) return;
-
-        return queryApi.data.find((record: any) => record[identifier ?? objectIdentifier] === id);
-    }
-
-    function insertRecord(item: unknown) {
-        const query = queryClient.getQueryCache().find(key);
-        if (!query || !queryApi.data) return;
-
-        query.setData([item, ...queryApi.data]);
-    }
+    const insertRecord = (item: unknown) =>
+        queryCacheOperations.insertRecord({ item }, workspaceInternalApi);
 
     return (
         <DataContext.Provider
