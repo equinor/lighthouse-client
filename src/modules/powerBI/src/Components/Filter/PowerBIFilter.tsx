@@ -56,12 +56,19 @@ export const PowerBIFilter = ({
                     (filterVal) => !allVisibleFilterValues.includes(filterVal.toString())
                 );
 
-                const slicerFilter: models.IBasicFilter = {
-                    $schema: 'http://powerbi.com/product/schema#basic',
-                    target: filter.target!,
-                    filterType: models.FilterType.Basic,
-                    operator: 'In',
-                    values: newFilters,
+                const slicerFilter: models.IAdvancedFilter = {
+                    $schema: 'http://powerbi.com/product/schema#advanced',
+                    target: filter!.target!,
+                    filterType: models.FilterType.Advanced,
+                    logicalOperator: 'Or',
+                    conditions:
+                        newFilters.length < 0
+                            ? undefined
+                            : newFilters.map((x) =>
+                                  x === '(Blank)'
+                                      ? { operator: 'IsBlank' }
+                                      : { operator: 'Is', value: x }
+                              ),
                 };
                 setActiveFilters((prev) => ({ ...prev, [filter.type]: newFilters }));
                 await group.slicer.setSlicerState({
@@ -78,12 +85,20 @@ export const PowerBIFilter = ({
                     ...new Set(activeFilters[filter.type].concat(allVisibleFilterValues)),
                 ];
 
-                const slicerFilter: models.IBasicFilter = {
-                    $schema: 'http://powerbi.com/product/schema#basic',
-                    target: filter.target!,
-                    filterType: models.FilterType.Basic,
-                    operator: 'In',
-                    values: newFilter,
+                /**  Set POWERBI filter to the new filter */
+                const slicerFilter: models.IAdvancedFilter = {
+                    $schema: 'http://powerbi.com/product/schema#advanced',
+                    target: filter!.target!,
+                    filterType: models.FilterType.Advanced,
+                    logicalOperator: 'Or',
+                    conditions:
+                        newFilter.length < 0
+                            ? undefined
+                            : newFilter.map((x) =>
+                                  x === '(Blank)'
+                                      ? { operator: 'IsBlank' }
+                                      : { operator: 'Is', value: x }
+                              ),
                 };
                 setActiveFilters((prev) => ({
                     ...prev,
@@ -139,11 +154,13 @@ export const PowerBIFilter = ({
                 conditions:
                     newConditions.length < 0
                         ? undefined
-                        : newConditions.map((x) =>
-                              x === '(Blank)'
-                                  ? { operator: 'IsBlank' }
-                                  : { operator: 'Is', value: x }
-                          ),
+                        : newConditions.map((x) => {
+                              if (x === '(Blank)') {
+                                  return { operator: 'IsBlank' };
+                              }
+
+                              return { operator: 'Is', value: x };
+                          }),
             };
             await group.slicer?.setSlicerState({
                 filters: newConditions.length > 0 ? [slicerFilter] : [],
