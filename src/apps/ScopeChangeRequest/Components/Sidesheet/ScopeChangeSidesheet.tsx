@@ -146,7 +146,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                 value={{
                     isRefetching: isRefetching,
                     setErrorMessage: (message: ServerError) => setErrorMessage(message),
-                    request: data || item,
+                    request: data ?? item,
                     requestAccess: scopeChangeAccess,
                 }}
             >

@@ -51,6 +51,7 @@ export const ScopeChangeRequestEditForm = ({
     );
 
     useEffect(() => {
+        setRelatedObjects([]);
         unpackRelatedObjects(
             request,
             setRelatedObjects,
@@ -58,6 +59,10 @@ export const ScopeChangeRequestEditForm = ({
             addToQueryCache
         );
     }, [request]);
+
+    useEffect(() => {
+        return () => close();
+    }, [request.id]);
 
     const { setErrorMessage } = useScopeChangeContext();
 
