@@ -56,13 +56,6 @@ export const PowerBIFilter = ({
                     (filterVal) => !allVisibleFilterValues.includes(filterVal.toString())
                 );
 
-                // const slicerFilter: models.IBasicFilter = {
-                //     $schema: 'http://powerbi.com/product/schema#basic',
-                //     target: filter.target!,
-                //     filterType: models.FilterType.Basic,
-                //     operator: 'In',
-                //     values: newFilters,
-                // };
                 const slicerFilter: models.IAdvancedFilter = {
                     $schema: 'http://powerbi.com/product/schema#advanced',
                     target: filter!.target!,
@@ -92,13 +85,6 @@ export const PowerBIFilter = ({
                     ...new Set(activeFilters[filter.type].concat(allVisibleFilterValues)),
                 ];
 
-                // const slicerFilter: models.IBasicFilter = {
-                //     $schema: 'http://powerbi.com/product/schema#basic',
-                //     target: filter.target!,
-                //     filterType: models.FilterType.Basic,
-                //     operator: 'In',
-                //     values: newFilter,
-                // };
                 /**  Set POWERBI filter to the new filter */
                 const slicerFilter: models.IAdvancedFilter = {
                     $schema: 'http://powerbi.com/product/schema#advanced',
