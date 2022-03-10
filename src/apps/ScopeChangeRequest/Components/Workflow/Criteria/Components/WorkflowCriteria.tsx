@@ -4,15 +4,17 @@ import { Icon } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 
 import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
-import { reassignCriteria, unsignCriteria } from '../../../../Api/ScopeChange/Workflow';
+import {
+    reassignCriteria,
+    unsignCriteria,
+    signCriteria,
+} from '../../../../Api/ScopeChange/Workflow/';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useConditionalRender } from '../../../../Hooks/useConditionalRender';
-import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { CriteriaDetail } from './CriteriaDetail';
 import { CriteriaActions } from '../../Types/actions';
 import { AddContributor } from './AddContributor';
 import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { signCriteria } from '../../../../Api/ScopeChange/Workflow';
 import { SignWithComment } from './SignWithComment';
 import { PCSPersonRoleSearch } from '../../../SearchableDropdown/PCSPersonRoleSearch';
 import { TypedSelectOption } from '../../../../Api/Search/searchType';
@@ -20,9 +22,10 @@ import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
 import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
 import { useQueryClient } from 'react-query';
-import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
+import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
 import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
-import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 
 interface OnSignStepAction {
     action: 'Approved' | 'Rejected';
@@ -46,8 +49,8 @@ export const WorkflowCriteria = ({
     const [showSignWithComment, setShowSignWithComment] = useState(false);
 
     const queryClient = useQueryClient();
-    const { workflowKeys } = useScopechangeMutationKeyGen(request.id);
-    const { baseKey } = useScopechangeQueryKeyGen(request.id);
+    const { workflowKeys } = scopeChangeMutationKeys(request.id);
+    const { baseKey } = scopeChangeQueryKeys(request.id);
     const workflowLoading = useIsWorkflowLoading();
 
     const { criteriaUnsignKey, criteriaReassignKey, criteriaSignKey } = workflowKeys;

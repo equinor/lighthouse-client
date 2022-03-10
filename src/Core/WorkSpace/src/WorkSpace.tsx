@@ -3,6 +3,7 @@ import { ClientApi } from '@equinor/portal-client';
 import ErrorFallback from '../../ErrorBoundary/Components/ErrorFallback';
 import { WorkSpaceView } from './Components/WorkSpace/WorkSpaceView';
 import { DataProvider } from './Context/DataProvider';
+import { ReactQueryDevtools } from 'react-query/devtools';
 
 export type WorkspaceProps = Omit<ClientApi, 'createWorkSpace' | 'createPageViewer'>;
 
@@ -12,6 +13,7 @@ export const WorkSpace = (props: WorkspaceProps): JSX.Element => {
             <DataProvider>
                 <WorkSpaceView {...props} />
             </DataProvider>
+            <ReactQueryDevtools initialIsOpen={false} />
         </ErrorBoundary>
     );
 };

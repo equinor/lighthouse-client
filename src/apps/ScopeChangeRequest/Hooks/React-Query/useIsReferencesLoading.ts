@@ -1,12 +1,10 @@
 import { useIsFetching } from 'react-query';
-import { useScopeChangeContext } from '../../Components/Sidesheet/Context/useScopeChangeAccessContext';
-import { useScopechangeQueryKeyGen } from './useScopechangeQueryKeyGen';
+import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
 
 export function useIsReferencesLoading(): boolean {
-    const { request } = useScopeChangeContext();
-    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+    const { baseKey } = proCoSysQueryKeys();
 
-    const referencesFetching = useIsFetching(referencesKeys.baseKey);
+    const referencesFetching = useIsFetching(baseKey);
 
     return referencesFetching > 0;
 }
