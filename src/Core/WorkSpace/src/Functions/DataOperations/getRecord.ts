@@ -5,9 +5,9 @@ interface GetRecordParams {
     identifier?: string;
 }
 
-export function getRecord(
+export function getRecord<T>(
     { id, identifier }: GetRecordParams,
-    { objectIdentifier, queryApi }: QueryCacheArgs
+    { objectIdentifier, queryApi }: QueryCacheArgs<T>
 ) {
     if (!queryApi.data) return;
 

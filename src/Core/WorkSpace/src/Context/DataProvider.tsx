@@ -127,7 +127,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         queryApi.refetch();
     }, [dataSource]);
 
-    const workspaceInternalApi: QueryCacheArgs = {
+    const workspaceInternalApi: QueryCacheArgs<unknown> = {
         key,
         objectIdentifier,
         queryApi,

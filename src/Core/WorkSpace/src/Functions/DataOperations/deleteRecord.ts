@@ -5,9 +5,9 @@ interface deleteRecordParams {
     identifier?: string;
 }
 
-export function deleteRecord(
+export function deleteRecord<T>(
     { id, identifier }: deleteRecordParams,
-    { objectIdentifier, key, queryApi, queryClient }: QueryCacheArgs
+    { objectIdentifier, key, queryApi, queryClient }: QueryCacheArgs<T>
 ): void {
     const query = queryClient.getQueryCache().find(key);
     if (!query || !queryApi.data) return;

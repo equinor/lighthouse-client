@@ -1,14 +1,14 @@
 import { QueryCacheArgs } from './queryCacheArgs';
 
-interface PatchRecordParams {
+interface PatchRecordParams<T> {
     id: string;
-    item: unknown;
+    item: T;
     identifier?: string;
 }
 
-export function patchRecord(
-    { id, item, identifier }: PatchRecordParams,
-    { queryApi, queryClient, key, objectIdentifier }: QueryCacheArgs
+export function patchRecord<T>(
+    { id, item, identifier }: PatchRecordParams<T>,
+    { queryApi, queryClient, key, objectIdentifier }: QueryCacheArgs<T>
 ): void {
     const query = queryClient.getQueryCache().find(key);
     if (!query || !queryApi.data) return;
@@ -18,5 +18,9 @@ export function patchRecord(
     );
     if (patchIndex === -1) return;
 
-    query.setData((queryApi.data[patchIndex] = item));
+    query.setData([
+        ...queryApi.data.slice(0, patchIndex),
+        item,
+        queryApi.data.slice(patchIndex + 1),
+    ]);
 }

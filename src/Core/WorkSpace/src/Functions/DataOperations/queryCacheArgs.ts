@@ -1,8 +1,8 @@
 import { QueryClient, UseQueryResult } from 'react-query';
 
-export interface QueryCacheArgs {
+export interface QueryCacheArgs<T> {
     queryClient: QueryClient;
     key: string;
-    queryApi: UseQueryResult<any[] | undefined, unknown>;
+    queryApi: UseQueryResult<T[] | undefined, unknown>;
     objectIdentifier: string;
 }
