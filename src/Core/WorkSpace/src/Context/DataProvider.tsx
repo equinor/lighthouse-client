@@ -15,6 +15,7 @@ import {
 } from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
 import { useAtom } from '@dbeining/react-atom';
+import { usePrefetchQueries } from '../Hooks/usePrefetchQueries';
 
 interface DataState {
     key: string;
@@ -84,7 +85,11 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
     const currentWorkspace = useAtom(getWorkSpaceContext());
 
-    const { dataSource, objectIdentifier } = currentWorkspace[key];
+    const { dataSource, objectIdentifier, prefetchQueriesOptions } = currentWorkspace[key];
+
+    const queryClient = useQueryClient();
+
+    usePrefetchQueries(prefetchQueriesOptions ?? []);
 
     const initialState: DataState = {
         key,
@@ -119,8 +124,6 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     useEffect(() => {
         queryApi.refetch();
     }, [dataSource]);
-
-    const queryClient = useQueryClient();
 
     function patchRecord(id: string, item: unknown, identifier?: string) {
         const query = queryClient.getQueryCache().find(key);
