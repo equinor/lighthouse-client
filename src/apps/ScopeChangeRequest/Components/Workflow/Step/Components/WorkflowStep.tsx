@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { canAddContributor } from '../../../../Api/ScopeChange/Access/Workflow/Step/canManageContributors';
-import { useQuery } from 'react-query';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
 import { CacheTime } from '../../../../Enums/cacheTimes';
 import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { useScopeChangeQuery } from '../../../../Hooks/React-Query/useScopeChangeQuery';
 
 interface WorkflowStepProps {
     step: WorkflowStep;
@@ -17,9 +17,10 @@ export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element 
 
     const checkContributorAccess = () =>
         canAddContributor({ requestId: request.id, stepId: step.id });
-    const { data: isAllowedToAddContributor } = useQuery(
+    const { data: isAllowedToAddContributor } = useScopeChangeQuery(
         workflowKeys.canAddContributorKey(step.id),
         checkContributorAccess,
+        'Failed to get permissions',
         {
             refetchOnWindowFocus: false,
             staleTime: CacheTime.FiveMinutes,

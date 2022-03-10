@@ -13,14 +13,13 @@ import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { submitContribution } from '../../../../Api/ScopeChange/Workflow';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
-import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
-import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { CacheTime } from '../../../../Enums/cacheTimes';
 import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
 import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
 import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
+import { useScopeChangeQuery } from '../../../../Hooks/React-Query/useScopeChangeQuery';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -30,7 +29,7 @@ interface ContributorsProps {
 export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Element => {
     const [comment, setComment] = useState('');
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
-    const { request, setErrorMessage } = useScopeChangeContext();
+    const { request } = useScopeChangeContext();
     const workflowLoading = useIsWorkflowLoading();
 
     const { workflowKeys } = useScopechangeQueryKeyGen(request.id);
@@ -39,20 +38,13 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
     const checkCanContribute = () =>
         canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
 
-    const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
+    const { data: userCanContribute, remove: invalidateUserCanContribute } = useScopeChangeQuery(
         workflowKeys.contributorKey(step.id, contributor.id),
         checkCanContribute,
+        'Failed to get permissions',
         {
-            refetchOnWindowFocus: false,
-            retry: 3,
             staleTime: CacheTime.FiveMinutes,
             cacheTime: CacheTime.FiveMinutes,
-            onError: (e: string) =>
-                setErrorMessage({
-                    detail: e,
-                    title: 'Failed to get permissions',
-                    validationErrors: {},
-                }),
         }
     );
 
@@ -61,7 +53,6 @@ export const Contributor = ({ step, contributor }: ContributorsProps): JSX.Eleme
         workflowMutationKeys.contributeKey(step.id, contributor.id),
         submitContribution,
         {
-            onError: (e: ServerError) => setErrorMessage(e),
             onSuccess: () => invalidateUserCanContribute(),
         }
     );
