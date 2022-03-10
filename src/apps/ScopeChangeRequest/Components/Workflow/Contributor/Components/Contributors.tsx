@@ -10,18 +10,18 @@ import {
 import { MenuButton, MenuItem, IconMenu } from '../../../MenuButton/';
 import { ContributorActions } from '../../Types/actions';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
-import { submitContribution } from '../../../../Api/ScopeChange/Workflow';
+import { submitContribution } from '../../../../Api/ScopeChange/Workflow/';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
 import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { CacheTime } from '../../../../Enums/cacheTimes';
-import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
-import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
 import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
 import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
 import { removeContributor } from '../../../../Api/ScopeChange/Workflow/removeContributor';
+import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
+import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -40,8 +40,8 @@ export const Contributor = ({
 
     const workflowLoading = useIsWorkflowLoading();
 
-    const { workflowKeys } = useScopechangeQueryKeyGen(request.id);
-    const { workflowKeys: workflowMutationKeys } = useScopechangeMutationKeyGen(request.id);
+    const { workflowKeys } = scopeChangeQueryKeys(request.id);
+    const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(request.id);
 
     const { mutateAsync: removeContributorAsync } = useScopeChangeMutation(
         request.id,

@@ -12,20 +12,22 @@ import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { Origin } from './Origin';
-import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
 import { Section, Title } from './ScopeChangeRequestForm';
 import { HotUpload } from '../Attachments/HotUpload';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { deleteAttachment } from '../../Api/ScopeChange/Request/attachment';
-import { useScopechangeQueryKeyGen } from '../../Hooks/React-Query/useScopechangeQueryKeyGen';
-import { Tag } from '../../Types/ProCoSys/Tag';
 import { useQueryCacheLookup } from '../../Hooks/React-Query/useQueryCacheLookup';
-import { Document } from '../../Types/STID/Document';
-import { Area } from '../../Types/ProCoSys/area';
-import { Discipline } from '../../Types/ProCoSys/discipline';
-import { CommissioningPackage } from '../../Types/ProCoSys/CommissioningPackage';
-import { System } from '../../Types/ProCoSys/system';
+import { getCommPkgById } from '../../Api/PCS/getCommPkgById';
+import { FetchQueryOptions } from 'react-query';
+import { getSystems } from '../../Api/PCS/getSystems';
+import { getDisciplines } from '../../Api/PCS/getDisciplines';
+import { getTagById } from '../../Api/PCS/getTagById';
+import { getDocumentById } from '../../Api/STID/getDocumentById';
+import { getAreaByCode } from '../../Api/PCS/getAreaByCode';
+import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
+import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
+import { stidQueryKeys } from '../../Keys/STIDQueryKeys';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -38,19 +40,25 @@ export const ScopeChangeRequestEditForm = ({
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
     // const queryClient = useQueryClient();
-    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
 
-    const { getQueryData } = useQueryCacheLookup();
+    const { addToQueryCache } = useQueryCacheLookup();
 
-    const { patchKey, deleteAttachmentKey } = useScopechangeMutationKeyGen(request.id);
+    const referencesKeys = proCoSysQueryKeys();
+    const stid = stidQueryKeys();
+    const { patchKey, deleteAttachmentKey } = scopeChangeMutationKeys(request.id);
     const { mutateAsync: removeAttachment } = useScopeChangeMutation(
         request.id,
-        deleteAttachmentKey(),
+        deleteAttachmentKey,
         deleteAttachment
     );
 
     useEffect(() => {
-        unpackRelatedObjects(request, setRelatedObjects, getQueryData, referencesKeys);
+        unpackRelatedObjects(
+            request,
+            setRelatedObjects,
+            { ...referencesKeys, ...stid },
+            addToQueryCache
+        );
     }, [request]);
 
     const { setErrorMessage } = useScopeChangeContext();
@@ -92,7 +100,7 @@ export const ScopeChangeRequestEditForm = ({
 
     const { isLoading, error, mutateAsync } = useScopeChangeMutation(
         request.id,
-        patchKey(),
+        patchKey,
         onSubmit,
         {
             onError: (e: ServerError) => setErrorMessage(e),
@@ -138,7 +146,7 @@ export const ScopeChangeRequestEditForm = ({
                     {
                         Component: RelatedObjectsSearch,
                         order: 6,
-                        title: 'References',
+                        title: '',
                         props: {
                             relatedObjects: relatedObjects,
                             setRelatedObjects: setRelatedObjects,
@@ -207,7 +215,6 @@ function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | 
 async function unpackRelatedObjects(
     request: ScopeChangeRequest,
     setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>,
-    getQueryData: <T>(queryKey: string[]) => T | undefined,
     referencesKeys: {
         baseKey: string[];
         disciplines: string[];
@@ -216,150 +223,114 @@ async function unpackRelatedObjects(
         area: (areaId: string) => string[];
         tag: (tagId: string) => string[];
         commPkg: (commPkgId: string) => string[];
-    }
+    },
+    addToQueryCache: <T>(
+        queryKey: string[],
+        queryFn: () => Promise<T>,
+        options?: FetchQueryOptions<T, unknown, T, string[]> | undefined
+    ) => Promise<T>
 ) {
-    const relations: TypedSelectOption[] = [];
-
     request.commissioningPackages.forEach((x) => {
-        const data = getQueryData<CommissioningPackage>(referencesKeys.commPkg(x.procosysNumber));
-
-        if (data) {
-            relations.push({
-                label: `${x.procosysNumber} ${data.Description}`,
-                value: x.procosysNumber,
-                object: x,
-                searchValue: x.procosysNumber,
-                type: 'commpkg',
-            });
-        } else {
-            relations.push({
-                label: `${x.procosysNumber}`,
-                value: x.procosysNumber,
-                object: x,
-                searchValue: x.procosysNumber,
-                type: 'commpkg',
-            });
-        }
+        addToQueryCache(referencesKeys.commPkg(x.procosysNumber), () =>
+            getCommPkgById(x.procosysId)
+        ).then((commPkg) =>
+            setRelatedObjects((prev) => [
+                ...prev,
+                {
+                    label: `${x.procosysNumber} ${commPkg.Description}`,
+                    value: x.procosysNumber,
+                    object: x,
+                    searchValue: x.procosysNumber,
+                    type: 'commpkg',
+                },
+            ])
+        );
     });
 
-    setRelatedObjects(relations);
+    request.tags.forEach((x) => {
+        addToQueryCache(referencesKeys.tag(x.procosysNumber), () => getTagById(x.procosysId)).then(
+            (tag) =>
+                setRelatedObjects((prev) => [
+                    ...prev,
+                    {
+                        label: `${x.procosysNumber} ${tag.Description}`,
+                        value: x.procosysNumber,
+                        object: tag,
+                        searchValue: x.procosysNumber,
+                        type: 'tag',
+                    },
+                ])
+        );
+    });
 
+    //TODO: JCA injected
+    request.documents.forEach((x) => {
+        addToQueryCache(referencesKeys.document(x.stidDocumentNumber), () =>
+            getDocumentById(x.stidDocumentNumber, 'JCA')
+        ).then((doc) =>
+            setRelatedObjects((prev) => [
+                ...prev,
+                {
+                    label: `${x.stidDocumentNumber} ${doc.docTitle}`,
+                    value: x.stidDocumentNumber,
+                    object: doc,
+                    searchValue: x.stidDocumentNumber,
+                    type: 'document',
+                },
+            ])
+        );
+    });
+
+    request.areas.forEach((x) => {
+        addToQueryCache(referencesKeys.area(x.procosysCode), () => getAreaByCode(x.procosysCode))
+            .then((area) =>
+                setRelatedObjects((prev) => [
+                    ...prev,
+                    {
+                        label: `${x.procosysCode} ${area.Description}`,
+                        value: x.procosysCode,
+                        object: area,
+                        searchValue: x.procosysCode,
+                        type: 'area',
+                    },
+                ])
+            )
+            .catch(() => fallback(x));
+    });
+
+    const disciplines = await addToQueryCache(referencesKeys.disciplines, getDisciplines);
+    request.disciplines.forEach((x) => {
+        const match = disciplines.find((discipline) => discipline.Code === x.procosysCode);
+
+        setRelatedObjects((prev) => [
+            ...prev,
+            {
+                label: `${x.procosysCode} ${match?.Description}`,
+                value: x.procosysCode,
+                object: x,
+                searchValue: x.procosysCode,
+                type: 'discipline',
+            },
+        ]);
+    });
+
+    const systems = await addToQueryCache(referencesKeys.systems, getSystems);
     request.systems.forEach((x) => {
-        const systems = getQueryData<System[]>(referencesKeys.systems);
+        const system = systems.find((loc) => loc.Code === x.procosysCode);
 
-        if (systems) {
-            const system = systems.find((loc) => loc.Code === x.procosysCode);
-            relations.push({
+        setRelatedObjects((prev) => [
+            ...prev,
+            {
                 label: `${x.procosysCode} ${system?.Description}`,
                 value: x.procosysId.toString(),
                 object: x,
                 searchValue: x.procosysCode,
                 type: 'system',
-            });
-        } else {
-            relations.push({
-                label: `${x.procosysCode}`,
-                value: x.procosysId.toString(),
-                object: x,
-                searchValue: x.procosysCode,
-                type: 'system',
-            });
-        }
+            },
+        ]);
     });
 
-    setRelatedObjects(relations);
-
-    request.tags.forEach((x) => {
-        const data = getQueryData<Tag>(referencesKeys.tag(x.procosysNumber));
-
-        if (data) {
-            relations.push({
-                label: `${x.procosysNumber} ${data.Description}`,
-                value: x.procosysNumber,
-                object: data,
-                searchValue: x.procosysNumber,
-                type: 'tag',
-            });
-        } else {
-            relations.push({
-                label: `${x.procosysNumber}`,
-                value: x.procosysNumber,
-                object: x,
-                searchValue: x.procosysNumber,
-                type: 'tag',
-            });
-        }
-    });
-
-    setRelatedObjects(relations);
-
-    request.documents.forEach((x) => {
-        const data = getQueryData<Document>(referencesKeys.document(x.stidDocumentNumber));
-
-        if (data) {
-            relations.push({
-                label: `${x.stidDocumentNumber} ${data.docTitle}`,
-                value: x.stidDocumentNumber,
-                object: x,
-                searchValue: x.stidDocumentNumber,
-                type: 'document',
-            });
-        } else {
-            relations.push({
-                label: `${x.stidDocumentNumber}`,
-                value: x.stidDocumentNumber,
-                object: x,
-                searchValue: x.stidDocumentNumber,
-                type: 'document',
-            });
-        }
-    });
-
-    setRelatedObjects(relations);
-
-    request.areas.forEach((x) => {
-        const data = getQueryData<Area>(referencesKeys.area(x.procosysCode));
-
-        if (data) {
-            relations.push({
-                label: `${x.procosysCode} ${data.Description}`,
-                value: x.procosysCode,
-                object: x,
-                searchValue: x.procosysCode,
-                type: 'area',
-            });
-        } else {
-            relations.push({
-                label: x.procosysCode,
-                value: x.procosysCode,
-                object: x,
-                searchValue: x.procosysCode,
-                type: 'area',
-            });
-        }
-    });
-
-    request.disciplines.forEach((x) => {
-        const data = getQueryData<Discipline[]>(referencesKeys.disciplines);
-
-        if (data) {
-            const discipline = data?.find((discipline) => discipline.Code === x.procosysCode);
-            relations.push({
-                label: `${x.procosysCode} ${discipline?.Description}`,
-                value: x.procosysCode,
-                object: x,
-                searchValue: x.procosysCode,
-                type: 'discipline',
-            });
-        } else {
-            relations.push({
-                label: x.procosysCode,
-                value: x.procosysCode,
-                object: x,
-                searchValue: x.procosysCode,
-                type: 'discipline',
-            });
-        }
-    });
-    setRelatedObjects(relations);
+    function fallback(x: TypedSelectOption) {
+        setRelatedObjects((prev) => [...prev, x]);
+    }
 }

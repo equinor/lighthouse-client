@@ -1,4 +1,4 @@
-import { QueryKey, useQueryClient } from 'react-query';
+import { FetchQueryOptions, QueryKey, useQueryClient } from 'react-query';
 import { Query, QueryState } from 'react-query/types/core/query';
 
 interface QueryCacheLookup {
@@ -6,6 +6,11 @@ interface QueryCacheLookup {
     getQueryState: (queryKey: string[]) => QueryState<unknown, unknown> | undefined;
     getCacheByKey: (queryKey: string[]) => Query<unknown, unknown, unknown, QueryKey> | undefined;
     isInQueryCache: (queryKey: string[]) => boolean;
+    addToQueryCache<T>(
+        queryKey: string[],
+        queryFn: () => Promise<T>,
+        options?: FetchQueryOptions<T, unknown, T, string[]> | undefined
+    ): Promise<T>;
 }
 
 export function useQueryCacheLookup(): QueryCacheLookup {
@@ -54,10 +59,30 @@ export function useQueryCacheLookup(): QueryCacheLookup {
         return queryClient.getQueryCache().find(queryKey) ? true : false;
     }
 
+    /**
+     * Adds a new api call to the cache
+     * @param queryKey
+     * @param queryFn
+     * @param options
+     * @returns
+     */
+    async function addToQueryCache<T>(
+        queryKey: string[],
+        queryFn: () => Promise<T>,
+        options?: FetchQueryOptions<T, unknown, T, string[]>
+    ): Promise<T> {
+        if (isInQueryCache(queryKey) && getQueryData<T>(queryKey)) {
+            //Compiler being tricky
+            return getQueryData<T>(queryKey) as T;
+        }
+        return await queryClient.fetchQuery(queryKey, queryFn, options);
+    }
+
     return {
         getQueryData,
         getQueryState,
         getCacheByKey,
         isInQueryCache,
+        addToQueryCache,
     };
 }

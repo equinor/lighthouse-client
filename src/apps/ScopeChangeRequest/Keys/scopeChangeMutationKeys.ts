@@ -1,13 +1,30 @@
-/**
- * Hook for generating mutationKeys
- * @param requestId
- * @returns
- */
-export function useScopechangeMutationKeyGen(requestId: string) {
+interface WorkflowKeys {
+    baseKey: string[];
+    stepKey: (stepId: string) => string[];
+    addContributorKey: (stepId: string) => string[];
+    deleteContributorKey: (stepId: string) => string[];
+    criteriaKey: (stepId: string, criteriaId: string) => string[];
+    criteriaSignKey: (stepId: string, criteriaId: string) => string[];
+    criteriaUnsignKey: (stepId: string, criteriaId: string) => string[];
+    criteriaReassignKey: (stepId: string, criteriaId: string) => string[];
+    contributeKey: (stepId: string, contributionId: string) => string[];
+}
+
+interface ScopeChangeMutationKeys {
+    baseKey: string[];
+    patchKey: string[];
+    uploadAttachmentKey: string[];
+    deleteAttachmentKey: string[];
+    voidKey: string[];
+    unvoidKey: string[];
+    workflowKeys: WorkflowKeys;
+}
+
+export function scopeChangeMutationKeys(requestId: string): ScopeChangeMutationKeys {
     const baseKey = ['scopechange', requestId];
 
     const workflowKeys = {
-        baseKey: [baseKey, 'workflow'],
+        baseKey: [...baseKey, 'workflow'],
         stepKey: (stepId: string) => [...workflowKeys.baseKey, 'step', stepId],
         addContributorKey: (stepId: string) => [...workflowKeys.stepKey(stepId), 'addContributor'],
         deleteContributorKey: (stepId: string) => [
@@ -42,11 +59,11 @@ export function useScopechangeMutationKeyGen(requestId: string) {
 
     const scopeChangeKeys = {
         baseKey: baseKey,
-        patchKey: () => [...scopeChangeKeys.baseKey, 'patch'],
-        uploadAttachmentKey: () => [...scopeChangeKeys.baseKey, 'attachments', 'upload'],
-        deleteAttachmentKey: () => [...scopeChangeKeys.baseKey, 'attachments', 'delete'],
-        voidKey: () => [...scopeChangeKeys.baseKey, 'void'],
-        unvoidKey: () => [...scopeChangeKeys.baseKey, 'unvoid'],
+        patchKey: [...baseKey, 'patch'],
+        uploadAttachmentKey: [...baseKey, 'attachments', 'upload'],
+        deleteAttachmentKey: [...baseKey, 'attachments', 'delete'],
+        voidKey: [...baseKey, 'void'],
+        unvoidKey: [...baseKey, 'unvoid'],
         workflowKeys: workflowKeys,
     };
 

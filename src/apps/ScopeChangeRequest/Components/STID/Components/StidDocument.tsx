@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import { getDocumentById } from '../../../Api/STID/getDocumentById';
 import { transformIsoDate } from '../../Workflow/Utils/dateFormatting';
 import { useInfiniteCachedQuery } from '../../../Hooks/React-Query/useInfiniteCachedQuery';
-import { useScopechangeQueryKeyGen } from '../../../Hooks/React-Query/useScopechangeQueryKeyGen';
-import { useScopeChangeContext } from '../../Sidesheet/Context/useScopeChangeAccessContext';
+import { stidQueryKeys } from '../../../Keys/STIDQueryKeys';
 
 interface StidDocumentProps {
     docNo: string;
@@ -16,13 +15,9 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
     const handleRedirect = (docNo: string) => {
         window.open(`https://lci.equinor.com/JCA/doc?docNo=${docNo}`);
     };
+    const { document } = stidQueryKeys();
 
-    const { request } = useScopeChangeContext();
-    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
-
-    const { data } = useInfiniteCachedQuery(referencesKeys.document(docNo), () =>
-        getDocumentById(docNo, 'JCA')
-    );
+    const { data } = useInfiniteCachedQuery(document(docNo), () => getDocumentById(docNo, 'JCA'));
 
     return (
         <Wrapper>

@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { signCriteria } from '../../../../Api/ScopeChange/Workflow';
+import { signCriteria } from '../../../../Api/ScopeChange/Workflow/';
 import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { ServerError } from '../../../../Types/ScopeChange/ServerError';
-import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
 
 interface SignWithCommentProps {
     criteria: Criteria;
@@ -20,7 +20,7 @@ interface SignWithCommentProps {
 export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps): JSX.Element => {
     const { request, setErrorMessage } = useScopeChangeContext();
     const [text, setText] = useState<string | undefined>();
-    const { workflowKeys } = useScopechangeMutationKeyGen(request.id);
+    const { workflowKeys } = scopeChangeMutationKeys(request.id);
 
     interface OnSignStepAction {
         action: 'Approved' | 'Rejected';
