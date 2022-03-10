@@ -71,11 +71,9 @@ export function useQueryCacheLookup(): QueryCacheLookup {
         queryFn: () => Promise<T>,
         options?: FetchQueryOptions<T, unknown, T, string[]>
     ): Promise<T> {
-        if (isInQueryCache(queryKey) && getQueryData<T>(queryKey)) {
-            //Compiler being tricky
-            return getQueryData<T>(queryKey) as T;
-        }
-        return await queryClient.fetchQuery(queryKey, queryFn, options);
+        return (
+            getQueryData<T>(queryKey) ?? (await queryClient.fetchQuery(queryKey, queryFn, options))
+        );
     }
 
     return {

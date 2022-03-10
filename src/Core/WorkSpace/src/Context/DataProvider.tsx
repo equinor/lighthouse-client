@@ -109,7 +109,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     }, [key]);
 
     const queryApi = useQuery(
-        key,
+        [key],
         async () => {
             if (!dataSource) return;
 

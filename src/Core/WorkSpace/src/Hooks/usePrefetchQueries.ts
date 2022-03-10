@@ -13,5 +13,5 @@ export function usePrefetchQueries(
             async (query) =>
                 await queryClient.prefetchQuery(query.queryKey, query.queryFn, query.options)
         );
-    }, [prefetchQueriesOptions, queryClient]);
+    }, [prefetchQueriesOptions]);
 }
