@@ -45,6 +45,7 @@ export interface ViewOptions<T> {
 }
 
 export interface WorkSpaceApi<T> {
+    /** Use with caution, only cache small datasets */
     registerPrefetchQueries: (queryOptions: PrefetchQueriesOptions[]) => WorkSpaceApi<T>;
     registerDataSource: (dataSource: DataSource<T>) => WorkSpaceApi<T>;
     registerIdResolver: (idResolver: IdResolverFunc<T>) => WorkSpaceApi<T>;
