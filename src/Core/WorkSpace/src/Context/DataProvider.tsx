@@ -15,6 +15,9 @@ import {
 } from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
 import { useAtom } from '@dbeining/react-atom';
+import { usePrefetchQueries } from '../Hooks/usePrefetchQueries';
+import * as queryCacheOperations from '../Functions/DataOperations';
+import { QueryCacheArgs } from '../Functions/DataOperations/queryCacheArgs';
 
 interface DataState {
     key: string;
@@ -84,7 +87,11 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
     const currentWorkspace = useAtom(getWorkSpaceContext());
 
-    const { dataSource, objectIdentifier } = currentWorkspace[key];
+    const { dataSource, objectIdentifier, prefetchQueriesOptions } = currentWorkspace[key];
+
+    const queryClient = useQueryClient();
+
+    usePrefetchQueries(prefetchQueriesOptions ?? []);
 
     const initialState: DataState = {
         key,
@@ -102,7 +109,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     }, [key]);
 
     const queryApi = useQuery(
-        key,
+        [key],
         async () => {
             if (!dataSource) return;
 
@@ -120,41 +127,26 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         queryApi.refetch();
     }, [dataSource]);
 
-    const queryClient = useQueryClient();
+    const workspaceInternalApi: QueryCacheArgs<unknown> = {
+        key,
+        objectIdentifier,
+        queryApi,
+        queryClient,
+    };
 
-    function patchRecord(id: string, item: unknown, identifier?: string) {
-        const query = queryClient.getQueryCache().find(key);
-        if (!query || !queryApi.data) return;
+    /** Patches a record in the queryCache */
+    const patchRecord = (id: string, item: unknown, identifier?: string) =>
+        queryCacheOperations.patchRecord({ id, item, identifier }, workspaceInternalApi);
 
-        const patchIndex = queryApi.data.findIndex(
-            (record: any) => record[identifier ?? objectIdentifier] === id
-        );
-        if (patchIndex === -1) return;
+    /** Patches a record in the queryCache */
+    const deleteRecord = (id: string, identifier?: string) =>
+        queryCacheOperations.deleteRecord({ id, identifier }, workspaceInternalApi);
 
-        query.setData((queryApi.data[patchIndex] = item));
-    }
+    const getRecord = (id: string, identifier?: string) =>
+        queryCacheOperations.getRecord({ id, identifier }, workspaceInternalApi);
 
-    function deleteRecord(id: string, identifier?: string) {
-        const query = queryClient.getQueryCache().find(key);
-        if (!query || !queryApi.data) return;
-
-        query.setData(
-            queryApi.data.filter((record: any) => record[identifier ?? objectIdentifier] !== id)
-        );
-    }
-
-    function getRecord(id: string, identifier?: string) {
-        if (!queryApi.data) return;
-
-        return queryApi.data.find((record: any) => record[identifier ?? objectIdentifier] === id);
-    }
-
-    function insertRecord(item: unknown) {
-        const query = queryClient.getQueryCache().find(key);
-        if (!query || !queryApi.data) return;
-
-        query.setData([item, ...queryApi.data]);
-    }
+    const insertRecord = (item: unknown) =>
+        queryCacheOperations.insertRecord({ item }, workspaceInternalApi);
 
     return (
         <DataContext.Provider

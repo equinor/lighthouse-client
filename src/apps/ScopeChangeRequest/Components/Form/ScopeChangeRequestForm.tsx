@@ -27,6 +27,8 @@ import { StidTypes } from '../../Types/STID/STIDTypes';
 import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
 import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
+import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
+import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -78,8 +80,17 @@ export const ScopeChangeRequestForm = ({
             scopeChange
         );
         if (scID) {
+            const { baseKey } = scopeChangeQueryKeys(scID);
             attachments.forEach(async (attachment) => {
-                await mutateAsync({ file: attachment, requestId: scID });
+                await mutateAsync({ file: attachment, requestId: scID })
+                    .then(() => queryClient.invalidateQueries(baseKey))
+                    .catch(() =>
+                        spawnConfirmationDialog(
+                            "We're terribly sorry",
+                            'Some attachments failed to upload',
+                            () => void 0
+                        )
+                    );
             });
             setIsRedirecting(true);
 

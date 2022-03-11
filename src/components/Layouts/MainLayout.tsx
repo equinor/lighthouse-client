@@ -1,6 +1,4 @@
 import { useClientContext } from '@equinor/portal-client';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { useGlobalClientState } from '../../Core/Client/ClientState/ClientState';
 import { useSideSheet } from '../../packages/Sidesheet/context/sidesheetContext';
 import { getWidth } from '../../packages/Sidesheet/Utils/getWidth';
 import { FullscreenMainMenu } from '../Menu/FullscreenMainMenu';
@@ -18,9 +16,6 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
     } = useClientContext();
     const sideSheet = useSideSheet();
     const messageData = useServiceMessage();
-    const {
-        settings: { clientEnv },
-    } = useGlobalClientState();
 
     return (
         <Wrapper serviceMessageActive={messageData.isActive}>
@@ -30,7 +25,6 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
             </MainMenuWrapper>
             <ChildrenWrapper sideSheetWidth={getWidth(sideSheet)}>{children}</ChildrenWrapper>
             {messageData.isActive && <ServiceMessageBanner {...messageData} />}
-            {clientEnv === 'dev' && <ReactQueryDevtools initialIsOpen={false} />}
         </Wrapper>
     );
 };

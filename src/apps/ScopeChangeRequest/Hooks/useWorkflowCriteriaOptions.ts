@@ -2,7 +2,7 @@ import { useQuery, UseQueryOptions } from 'react-query';
 import { canReassign, canUnsign, canSign } from '../Api/ScopeChange/Access';
 import { ServerError } from '../Types/ScopeChange/ServerError';
 import { CacheTime } from '../Enums/cacheTimes';
-import { useScopechangeQueryKeyGen } from './React-Query/useScopechangeQueryKeyGen';
+import { scopeChangeQueryKeys } from '../Keys/scopeChangeQueryKeys';
 
 interface CriteriaOptions {
     canSign: boolean | undefined;
@@ -36,7 +36,7 @@ export function useWorkflowCriteriaOptions(
             }
         },
     };
-    const { workflowKeys } = useScopechangeQueryKeyGen(requestId);
+    const { workflowKeys } = scopeChangeQueryKeys(requestId);
     const { criteriaCanSignKey, criteriaCanReassignKey, criteriaCanUnsignKey } = workflowKeys;
 
     const checkCanSign = () => canSign(params);

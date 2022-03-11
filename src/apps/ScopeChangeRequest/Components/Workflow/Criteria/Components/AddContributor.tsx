@@ -10,8 +10,8 @@ import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { TypedSelectOption } from '../../../../Api/Search/searchType';
-import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
 import { WorkflowStep } from '../../../../Types/scopeChangeRequest';
+import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
 
 interface AddContributorProps {
     step: WorkflowStep;
@@ -22,7 +22,7 @@ export const AddContributor = ({ close, step }: AddContributorProps): JSX.Elemen
     const [contributor, setContributor] = useState<TypedSelectOption | null>(null);
     const [text, setText] = useState<string>('');
     const { request, setErrorMessage } = useScopeChangeContext();
-    const { workflowKeys } = useScopechangeMutationKeyGen(request.id);
+    const { workflowKeys } = scopeChangeMutationKeys(request.id);
 
     const submit = async () => {
         await addContributor(
