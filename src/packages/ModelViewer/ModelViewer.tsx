@@ -5,7 +5,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useAppConfig, useAuthProvider, useFacility } from '@equinor/portal-client';
 import { useEffect, useRef } from 'react';
 import Icon from '../../components/Icon/Icon';
-import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewer';
+import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
 import { Menu, Message, MessageWrapper, Wrapper, WrapperMenu } from './ModelViewerStyles';
 import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
@@ -29,7 +29,7 @@ export const ModelViewer: React.FC<ModelViewerProps> = (props: ModelViewerProps)
     );
 };
 
-const Viewer: React.FC<ViewerProps> = ({
+export const Viewer: React.FC<ViewerProps> = ({
     tags,
     loadFullModel,
     padding = 1,
@@ -88,6 +88,7 @@ const Viewer: React.FC<ViewerProps> = ({
                 }
             } catch (ex) {
                 console.log(ex);
+                setMessage({ message: 'Failed to setup Echo 3D web client', type: 'NoPlant' });
             }
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +108,7 @@ const Viewer: React.FC<ViewerProps> = ({
                                 setMessage();
                             }}
                         >
-                            {message.message}
+                            <h2>{message.message}</h2>
                             {message.type === 'NoPlant' && (
                                 <Button
                                     onClick={() => {
@@ -115,7 +116,9 @@ const Viewer: React.FC<ViewerProps> = ({
                                             `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
                                         );
                                     }}
-                                ></Button>
+                                >
+                                    Apply for access
+                                </Button>
                             )}
                         </Message>
                     )}
