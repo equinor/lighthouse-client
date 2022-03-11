@@ -1,8 +1,14 @@
 import { Button, Icon } from '@equinor/eds-core-react';
-import { models, Report } from 'powerbi-client';
+import { Report } from 'powerbi-client';
 import { useEffect, useState } from 'react';
 import { PowerBiFilter, PowerBiFilterItem } from '../../Types';
-import { getActiveFilterValues, getFilters } from '../../Utils';
+import {
+    areAllVisibleFiltersApplied,
+    createAdvancedPbiFilter,
+    getActiveFilterValues,
+    getFilters,
+    removeVisibleFilters,
+} from '../../Utils';
 import { FilterGroup } from './FilterGroup';
 import { FilterItems } from './FilterItems';
 import { FilterGroupWrap, FilterWrapper, MenuItems, ResetFilter } from './Styles';
@@ -42,34 +48,13 @@ export const PowerBIFilter = ({
         allVisibleFilterValues: string[]
     ) => {
         try {
-            if (
-                allVisibleFilterValues.every((visibleValue) =>
-                    activeFilters[group.type]?.includes(visibleValue)
-                )
-            ) {
-                /**
-                 * All visible filters are applied.
-                 * Remove the visible ones, and keep the ones not visible
-                 * if they are applied.
-                 */
-                const newFilters = activeFilters[group.type]?.filter(
-                    (filterVal) => !allVisibleFilterValues.includes(filterVal.toString())
+            if (areAllVisibleFiltersApplied(allVisibleFilterValues, activeFilters[group.type])) {
+                const newFilters = removeVisibleFilters(
+                    allVisibleFilterValues,
+                    activeFilters[group.type]
                 );
+                const slicerFilter = createAdvancedPbiFilter(filter, newFilters);
 
-                const slicerFilter: models.IAdvancedFilter = {
-                    $schema: 'http://powerbi.com/product/schema#advanced',
-                    target: filter!.target!,
-                    filterType: models.FilterType.Advanced,
-                    logicalOperator: 'Or',
-                    conditions:
-                        newFilters.length < 0
-                            ? undefined
-                            : newFilters.map((x) =>
-                                  x === '(Blank)'
-                                      ? { operator: 'IsBlank' }
-                                      : { operator: 'Is', value: x }
-                              ),
-                };
                 setActiveFilters((prev) => ({ ...prev, [filter.type]: newFilters }));
                 await group.slicer.setSlicerState({
                     filters: newFilters.length !== 0 ? [slicerFilter] : [],
@@ -84,22 +69,8 @@ export const PowerBIFilter = ({
                 const newFilter = [
                     ...new Set(activeFilters[filter.type].concat(allVisibleFilterValues)),
                 ];
+                const slicerFilter = createAdvancedPbiFilter(filter, newFilter);
 
-                /**  Set POWERBI filter to the new filter */
-                const slicerFilter: models.IAdvancedFilter = {
-                    $schema: 'http://powerbi.com/product/schema#advanced',
-                    target: filter!.target!,
-                    filterType: models.FilterType.Advanced,
-                    logicalOperator: 'Or',
-                    conditions:
-                        newFilter.length < 0
-                            ? undefined
-                            : newFilter.map((x) =>
-                                  x === '(Blank)'
-                                      ? { operator: 'IsBlank' }
-                                      : { operator: 'Is', value: x }
-                              ),
-                };
                 setActiveFilters((prev) => ({
                     ...prev,
                     [filter.type]: newFilter,
@@ -144,24 +115,8 @@ export const PowerBIFilter = ({
                     setActiveFilters((prev) => ({ ...prev, [filter.type]: newConditions }));
                 }
             }
+            const slicerFilter = createAdvancedPbiFilter(filter, newConditions);
 
-            /**  Set POWERBI filter to the new filter */
-            const slicerFilter: models.IAdvancedFilter = {
-                $schema: 'http://powerbi.com/product/schema#advanced',
-                target: filter!.target!,
-                filterType: models.FilterType.Advanced,
-                logicalOperator: 'Or',
-                conditions:
-                    newConditions.length < 0
-                        ? undefined
-                        : newConditions.map((x) => {
-                              if (x === '(Blank)') {
-                                  return { operator: 'IsBlank' };
-                              }
-
-                              return { operator: 'Is', value: x };
-                          }),
-            };
             await group.slicer?.setSlicerState({
                 filters: newConditions.length > 0 ? [slicerFilter] : [],
             });
