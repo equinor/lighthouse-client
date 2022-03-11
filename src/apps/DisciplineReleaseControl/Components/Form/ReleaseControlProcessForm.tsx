@@ -6,7 +6,7 @@ import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useHttpClient } from '@equinor/portal-client';
-import { openSidesheet } from '@equinor/sidesheet';
+// import { openSidesheet } from '@equinor/sidesheet';
 
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
 
@@ -16,8 +16,8 @@ import { releaseControlProcessSchema } from './ReleaseControlProcessSchema';
 import { ServerError } from '../../Api/Types/ServerError';
 import { postReleaseControl } from '../../Api/Request/postReleaseControl';
 import { uploadAttachment } from '../../Api/Request';
-import { ReleaseControlSidesheet } from '../Sidesheet/ReleaseControlSidesheet';
-import { getReleaseControlById } from '../../Api/Request/getReleaseControl';
+// import { ReleaseControlSidesheet } from '../Sidesheet/ReleaseControlSidesheet';
+// import { getReleaseControlById } from '../../Api/Request/getReleaseControl';
 import { Origin } from './Origin';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { Upload } from '../Attachments/Upload';
@@ -92,7 +92,10 @@ export const ReleaseControlProcessForm = ({
     const redirect = async (releaseControlId: string) => {
         if (!releaseControlId) return;
 
-        openSidesheet(ReleaseControlSidesheet, await getReleaseControlById(releaseControlId, releaseControls));
+        // openSidesheet(
+        //     ReleaseControlSidesheet,
+        //     await getReleaseControlById(releaseControlId, releaseControls)
+        // );
         clearActiveFactory();
     };
 
