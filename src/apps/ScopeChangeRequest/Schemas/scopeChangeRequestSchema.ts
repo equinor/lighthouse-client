@@ -2,10 +2,6 @@ import { Schema } from '@equinor/Form';
 import { httpClient } from '../../../Core/Client/Functions/HttpClient';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
-interface Category {
-    name: string;
-}
-
 export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
     title: {
         title: 'Title',
@@ -39,7 +35,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         title: 'Change origin',
         inputType: {
             type: 'SingleSelect',
-            selectOptions: ['NCR', 'DCN', 'Query', 'Punch', "SWCR", 'NotApplicable'],
+            selectOptions: ['NCR', 'DCN', 'Query', 'Punch', 'SWCR', 'NotApplicable'],
         },
         order: 3,
         placeholderText: 'Select origin',
@@ -67,47 +63,4 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         order: 5,
         placeholderText: 'Please make your best guess...',
     },
-};
-
-/**
- * TODO: Move
- * @returns
- */
-const getCategories = async (): Promise<string[]> => {
-    const { scopeChange } = httpClient();
-    let selectOptions: string[] = [];
-    const requestOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-    await scopeChange
-        .fetch(`api/categories`, requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-            selectOptions = data.map((x: Category) => x.name);
-        });
-
-    return selectOptions;
-};
-
-const getPhases = async (): Promise<string[]> => {
-    const { scopeChange } = httpClient();
-
-    let selectOptions: string[] = [];
-    const requestOptions = {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-    await scopeChange
-        .fetch(`api/phases`, requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-            selectOptions = data.map((x: Category) => x.name);
-        });
-
-    return selectOptions;
 };
