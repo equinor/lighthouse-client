@@ -16,7 +16,7 @@ import { useReleaseControlContext } from '../../../Sidesheet/Context/useReleaseC
 import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
 import { ElectroView } from '../../../Electro/ElectroView';
 import { pipetestData } from '../../../../pipetestData';
-import { Pipetest } from '../../../../Types/Pipetest';
+import { Pipetest } from '../../../../Types/pipetest';
 
 export const SingleView = (): JSX.Element => {
     const { process } = useReleaseControlContext();

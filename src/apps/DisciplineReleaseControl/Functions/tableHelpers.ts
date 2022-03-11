@@ -1,5 +1,5 @@
 import { CheckListStatus, CheckListStepTag } from '../Types/drcEnums';
-import { CheckList } from '../Types/Pipetest';
+import { CheckList } from '../Types/pipetest';
 import { getPipetestStatusForStep } from './statusHelpers';
 
 export const checklistTagFunc = (item: CheckList) => {

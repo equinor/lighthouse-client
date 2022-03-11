@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Pipetest, Tag } from '../../Types/Pipetest';
+import { Pipetest, Tag } from '../../Types/pipetest';
 import { ElectroNode } from './ElectroNode';
 
 interface ElectroViewProps {

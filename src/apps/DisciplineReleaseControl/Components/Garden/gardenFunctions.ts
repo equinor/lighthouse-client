@@ -1,7 +1,7 @@
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
 import { getPipetestStatus } from '../../Functions/statusHelpers';
 import { PipetestStatus, PipetestStatusOrder } from '../../Types/drcEnums';
-import { Pipetest } from '../../Types/Pipetest';
+import { Pipetest } from '../../Types/pipetest';
 
 export function getPipetestStatusEnumByValue(enumValue: string): string {
     return Object.keys(PipetestStatus).filter((x) => PipetestStatus[x] == enumValue)[0];

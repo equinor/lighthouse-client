@@ -5,7 +5,7 @@ import {
     PipetestStatusOrder,
     CheckListStepTag,
 } from '../Types/drcEnums';
-import { CheckList, Pipetest } from '../Types/Pipetest';
+import { CheckList, Pipetest } from '../Types/pipetest';
 
 export function sortPipetests(pipetests: Pipetest[]): Pipetest[] {
     pipetests.sort((a, b) => getPipetestStatusSortValue(a) - getPipetestStatusSortValue(b));

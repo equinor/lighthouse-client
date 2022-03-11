@@ -1,8 +1,8 @@
-import { DateTime } from 'luxon';
 import styled from 'styled-components';
-import { Criteria, WorkflowStatus, WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
+import { Criteria, WorkflowStep } from '../../../../Types/disciplineReleaseControl';
+import { WorkflowStatus } from '../../../../../ScopeChangeRequest/Types/scopeChangeRequest';
 
 interface CriteriaDetailProps {
     criteria: Criteria;

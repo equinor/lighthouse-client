@@ -1,5 +1,5 @@
 import { ReleaseControlItem, MidSection, Title } from './GardenItemStyles';
-import { Pipetest } from '../../Types/Pipetest';
+import { Pipetest } from '../../Types/pipetest';
 import { CustomItemView } from '../../../../components/ParkView/Models/gardenOptions';
 import { getGardenItemColor } from './gardenFunctions';
 

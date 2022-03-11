@@ -19,7 +19,7 @@ import { Wrapper } from '../../Styles/SidesheetWrapper';
 // import { ProcessDetailView } from '../DetailView/ProcessDetailView';
 import { ReleaseControlErrorBanner } from './ErrorBanner';
 // import { DisciplineReleaseControl } from '../../Types/disciplineReleaseControl';
-import { Pipetest } from '../../Types/Pipetest';
+import { Pipetest } from '../../Types/pipetest';
 import { Viewer } from '../../../../packages/ModelViewer/ModelViewer';
 import { useFacility } from '@equinor/portal-client';
 import { Tabs } from '@equinor/eds-core-react';

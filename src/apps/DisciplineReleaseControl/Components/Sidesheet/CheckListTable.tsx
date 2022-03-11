@@ -1,5 +1,5 @@
 import { Column, Table } from '@equinor/Table';
-import { CheckListType } from '../../Types/Pipetest';
+import { CheckListType } from '../../Types/pipetest';
 
 type TableProps = {
     checkLists: CheckListType[];

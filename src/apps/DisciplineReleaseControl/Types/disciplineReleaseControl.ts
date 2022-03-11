@@ -1,4 +1,4 @@
-import { Pipetest } from './Pipetest';
+import { Pipetest } from './pipetest';
 
 export interface DisciplineReleaseControlFormModel extends DisciplineReleaseControlBaseModel {
     tagNumbers: string[];
@@ -12,6 +12,7 @@ export interface DisciplineReleaseControlFormModel extends DisciplineReleaseCont
 }
 
 export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCN';
+export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
 export interface Origin {
     type: OriginType;
@@ -125,10 +126,11 @@ export interface Criteria {
     id: string;
     type: string;
     value: string;
-    signedAtUtc: string;
+    signedAtUtc: string | null;
     signedBy: Person;
-    signedComment: string;
-    signedState: 'Approved' | 'Rejected';
+    signedComment: string | null;
+    signedState: 'Approved' | 'Rejected' | null;
+    valueDescription: string | null;
 }
 
 export interface Contributor {

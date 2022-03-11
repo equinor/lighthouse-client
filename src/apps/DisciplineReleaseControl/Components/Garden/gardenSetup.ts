@@ -1,6 +1,6 @@
 import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
 
-import { Pipetest } from '../../Types/Pipetest';
+import { Pipetest } from '../../Types/pipetest';
 import { getStatusKey, getSystemKey, groupBySystem, sortByPipetestStatus } from './gardenFunctions';
 
 export type ExtendedGardenFields = 'system';

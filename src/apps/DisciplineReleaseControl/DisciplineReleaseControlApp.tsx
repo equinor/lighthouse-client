@@ -5,7 +5,7 @@ import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSi
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import { getPipetestStatus, sortPipetestChecklist, sortPipetests } from './Functions/statusHelpers';
 import { fieldSettings } from './Components/Garden/gardenSetup';
-import { Pipetest } from './Types/Pipetest';
+import { Pipetest } from './Types/pipetest';
 import { ReleaseControlGardenItem } from './Components/Garden/ReleaseControlGardenItem';
 import { checklistTagFunc, createChecklistSteps, getHTList } from './Functions/tableHelpers';
 
