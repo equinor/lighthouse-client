@@ -1,17 +1,13 @@
 import styled from 'styled-components';
 import { LogEntry } from '../../../../Types/scopeChangeRequest';
-import {
-    convertUtcToLocalDate,
-    dateToDateTimeFormat,
-} from '../../../Workflow/Utils/dateFormatting';
+import { dateToDateTimeFormat } from '../../../Workflow/Utils/dateFormatting';
 
 interface HistoryItemProps {
     item: LogEntry;
 }
 
 export function HistoryItem({ item }: HistoryItemProps): JSX.Element {
-    const date = convertUtcToLocalDate(new Date(item.createdAtUtc));
-    const formattedDate = dateToDateTimeFormat(date);
+    const formattedDate = dateToDateTimeFormat(new Date(item.createdAtUtc));
 
     return (
         <ItemWrapper>
