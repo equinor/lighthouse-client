@@ -7,7 +7,7 @@ export interface Pipetest {
     // description: string;
     // dueDate: string;
     // lineAndSpools: string[][];
-    // tagTree: Record<string, unknown>;
+    tagTree: Record<string, unknown>;
 }
 
 export interface CheckList {

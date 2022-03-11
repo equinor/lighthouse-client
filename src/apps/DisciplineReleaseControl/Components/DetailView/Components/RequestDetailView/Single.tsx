@@ -15,11 +15,11 @@ import { Progress } from '@equinor/eds-core-react';
 import { useReleaseControlContext } from '../../../Sidesheet/Context/useReleaseControlAccessContext';
 import { useApiActionObserver } from '../../../../Hooks/useApiActionObserver';
 import { ElectroView } from '../../../Electro/ElectroView';
-import { Pipetest } from '../../../../Types/Pipetest';
 import { pipetestData } from '../../../../pipetestData';
+import { Pipetest } from '../../../../Types/Pipetest';
 
 export const SingleView = (): JSX.Element => {
-    const { process, requestAccess } = useReleaseControlContext();
+    const { process } = useReleaseControlContext();
     const isBusy = useApiActionObserver();
 
     return (
