@@ -1,10 +1,10 @@
 export const pipetestData = [
     {
-        //finn alle checklist som har tag.register pipe test (pt)
+        //finn alle checkList som har tag.register pipe test (pt)
         name: '5602-L057', // Er samme som tag no tatt bort #T-XXXX (dette nr kan kobles til mcpkg)
         description: 'Pipetest 1', // Kommer fra mcpkg link
         dueDate: '2022-01-25T00:00:00.000000Z',
-        checklists: [
+        checkLists: [
             {
                 tagNo: '#T-5602-L057',
                 responsible: 'KVF',
@@ -13,7 +13,7 @@ export const pipetestData = [
                 commPk: '5602-M03', // for info senere
                 mcPk: '5602-L057', // for info senere
                 // ta med felt for id til sjekkliste - nyttig for link i frontend mot procosys
-                mcStatus: "Completed",
+                mcStatus: 'Completed',
             },
             {
                 tagNo: '#M-5602-L057',
@@ -22,7 +22,7 @@ export const pipetestData = [
                 status: 'OK',
                 commPk: '5650-M01',
                 mcPk: '5650-S007',
-                mcStatus: "Inactive",
+                mcStatus: 'Inactive',
             },
             {
                 tagNo: '#Z-5602-L057',
@@ -31,7 +31,7 @@ export const pipetestData = [
                 status: 'OK',
                 commPk: '5650-M01',
                 mcPk: '5650-C007',
-                mcStatus: "Inactive",
+                mcStatus: 'Inactive',
             },
             {
                 tagNo: '#X-5602-L057',
@@ -40,7 +40,7 @@ export const pipetestData = [
                 status: 'OK',
                 commPk: '5650-M01',
                 mcPk: '5650-M007',
-                mcStatus: "Completed",
+                mcStatus: 'Completed',
             },
             // {
             //     tagNo: '#T-5602-L057',
@@ -55,11 +55,11 @@ export const pipetestData = [
 
         // hva mangler her - varmekabler osv - har bare prosessoversikt nå
         // tabell i MIPS som er testnr og varmekabel
-        // når vi har fått tagnr på varmekabler så kan vi finne checklists som hører til varmekabel
+        // når vi har fått tagnr på varmekabler så kan vi finne checkLists som hører til varmekabel
         // disse sjekklistene hører da også til pipe test
         // varmekabler er separat i pcs
 
-        // har enda ikke bestem om vi skal ha et pipe test objekt med checklist og neste steg som skal signeres
+        // har enda ikke bestem om vi skal ha et pipe test objekt med checkList og neste steg som skal signeres
         // eller basert på oppgaver/task for
         // spesielt ved endringer senere så er signerings workflow nyttig - ikke i pcs
 
@@ -112,11 +112,11 @@ export const pipetestData = [
         },
     },
     {
-        //finn alle checklist som har tag.register pipe test (pt)
+        //finn alle checkList som har tag.register pipe test (pt)
         name: '5602-L058', // Er samme som tag no tatt bort #T-XXXX (dette nr kan kobles til mcpkg)
         description: 'Pipetest 2', // Kommer fra mcpkg link
         dueDate: '2022-02-25T00:00:00.000000Z',
-        checklists: [
+        checkLists: [
             {
                 tagNo: '#T-5602-L058',
                 responsible: 'KVF',
@@ -125,7 +125,7 @@ export const pipetestData = [
                 commPk: '5602-M03', // for info senere
                 mcPk: '5602-L057', // for info senere
                 // ta med felt for id til sjekkliste - nyttig for link i frontend mot procosys
-                mcStatus: "Completed",
+                mcStatus: 'Completed',
             },
             {
                 tagNo: '#M-5602-L058',
@@ -134,7 +134,7 @@ export const pipetestData = [
                 status: 'OK',
                 commPk: '5650-M01',
                 mcPk: '5650-S007',
-                mcStatus: "Completed",
+                mcStatus: 'Completed',
             },
             {
                 tagNo: '#Z-5602-L058',
@@ -143,7 +143,7 @@ export const pipetestData = [
                 status: 'OK',
                 commPk: '5650-M01',
                 mcPk: '5650-C007',
-                mcStatus: "Completed",
+                mcStatus: 'Completed',
             },
         ],
 
@@ -217,11 +217,11 @@ export const pipetestData = [
         },
     },
     {
-        //finn alle checklist som har tag.register pipe test (pt)
+        //finn alle checkList som har tag.register pipe test (pt)
         name: '5602-L059', // Er samme som tag no tatt bort #T-XXXX (dette nr kan kobles til mcpkg)
         description: 'Pipetest 3', // Kommer fra mcpkg link
         dueDate: '2022-04-25T00:00:00.000000Z',
-        checklists: [
+        checkLists: [
             {
                 tagNo: '#T-5602-L059',
                 responsible: 'KVF',
@@ -230,7 +230,7 @@ export const pipetestData = [
                 commPk: '5602-M03', // for info senere
                 mcPk: '5602-L057', // for info senere
                 // ta med felt for id til sjekkliste - nyttig for link i frontend mot procosys
-                mcStatus: "Completed",
+                mcStatus: 'Completed',
             },
             {
                 tagNo: '#M-5602-L059',
@@ -239,7 +239,7 @@ export const pipetestData = [
                 status: 'OK',
                 commPk: '5650-M01',
                 mcPk: '5650-S007',
-                mcStatus: "Error",
+                mcStatus: 'Error',
             },
             {
                 tagNo: '#Z-5602-L059',
@@ -248,7 +248,7 @@ export const pipetestData = [
                 status: 'OK',
                 commPk: '5650-M01',
                 mcPk: '5650-C007',
-                mcStatus: "Completed",
+                mcStatus: 'Completed',
             },
         ],
 
@@ -319,7 +319,7 @@ export const pipetestData = [
     },
 ];
 
-// export const checklists = [
+// export const checkLists = [
 //     {
 //         tagNo: '#T-5602-L057',
 //         responsible: 'KVF',

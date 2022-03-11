@@ -1,16 +1,22 @@
 import { ClientApi } from '@equinor/portal-client';
-import styled from 'styled-components';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ReleaseControlProcessForm } from './Components/Form/ReleaseControlProcessForm';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
-import { getPipetestStatus, sortPipetestChecklist, sortPipetests } from './Functions/statusHelpers';
-import { WorkflowStep } from './Types/disciplineReleaseControl';
-import { Checklist, Pipetest, PipetestStatus } from './Types/Pipetest';
+import {
+    getPipetestStatus,
+    getPipetestStatusForStep,
+    sortPipetestChecklist,
+    sortPipetests,
+} from './Functions/statusHelpers';
+import { fieldSettings } from './Components/Garden/gardenSetup';
+import { CheckListStatus, CheckListStepTag } from './Types/drcEnums';
+import { CheckList, Pipetest } from './Types/Pipetest';
+import { ReleaseControlGardenItem } from './Components/Garden/ReleaseControlGardenItem';
 
 export function setup(appApi: ClientApi): void {
     const request = appApi.createWorkSpace<Pipetest>({
-        // CustomSidesheet: ReleaseControlSidesheet,
+        CustomSidesheet: ReleaseControlSidesheet,
         objectIdentifier: 'name',
     });
 
@@ -28,11 +34,7 @@ export function setup(appApi: ClientApi): void {
     request.registerDataSource(async () => {
         const { FAM } = httpClient();
         const response = await FAM.fetch(`/v0.1/procosys/pipetest/JCA`);
-        let json = JSON.parse(await response.text());
-        // json = json.splice(0, 2);
-        // const inc: any = json.find(x => x.name === '9202-L401');
-        // const json2 : [] = [];
-        // json2.push(inc);
+        const json = JSON.parse(await response.text());
         json.map((pipetest: Pipetest) => {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
             pipetest.status = getPipetestStatus(pipetest.checkLists);
@@ -47,7 +49,12 @@ export function setup(appApi: ClientApi): void {
     request.registerFilterOptions({
         excludeKeys: releaseControlExcludeKeys,
         typeMap: {},
-        // initialFilters: ['status'],
+        initialFilters: ['status', 'System'],
+        groupValue: {
+            System: (item: Pipetest): string => {
+                return item.name.substring(0, 2);
+            },
+        },
     });
 
     request.registerTableOptions({
@@ -57,106 +64,142 @@ export function setup(appApi: ClientApi): void {
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Pipetest', width: 200 },
-            { key: 'status', title: 'Status', width: 400 },
-            { key: 'checkLists', title: 'HT' },
-            // { key: 'workflowSteps', title: 'Workflow' },
+            { key: 'status', title: 'Status', width: 300 },
+            { key: 'checkLists', title: 'Process', width: 260 },
         ],
         customCellView: [
             {
                 key: 'checkLists',
                 type: {
                     Cell: ({ cell }: any) => {
-                        let htList = '';
-                        cell.value.content.checkLists
-                            .filter((x) => x.isHeatTrace)
-                            .forEach((ht: Checklist) => {
-                                htList !== '' ? (htList += ', ') : null;
-                                htList += ht.tagNo;
-                            });
-                        return htList;
+                        return (
+                            <WorkflowCompact
+                                steps={createChecklistSteps(cell.value.content.checkLists)}
+                                statusDotFunc={checklistTagFunc}
+                                spanDirection={'horizontal'}
+                                dotSize={22}
+                            />
+                        );
                     },
                 },
             },
-            // {
-            //     key: 'createdAtUtc',
-            //     type: 'Date',
-            // },
-            // {
-            //     key: 'workflowSteps',
-            //     type: {
-            //         Cell: ({ cell }: any) => {
-            //             return (
-            //                 <div>
-            //                     <WorkflowCompact
-            //                         steps={cell.value.content.workflowSteps}
-            //                         statusDotFunc={statusDotFunc}
-            //                         spanDirection={'horizontal'}
-            //                         dotSize={15}
-            //                     />
-            //                 </div>
-            //             );
-            //         },
-            //     },
-            // },
-            // {
-            //     key: 'checklists',
-            //     type: {
-            //         Cell: ({ cell }: any) => {
-            //             return (
-            //                 <div>
-            //                     <WorkflowCompact
-            //                         steps={createChecklistSteps(cell.value.content.checklists)}
-            //                         statusDotFunc={checklistTagFunc}
-            //                         spanDirection={'horizontal'}
-            //                         dotSize={30}
-            //                         ellipseDot={true}
-            //                     />
-            //                 </div>
-            //             );
-            //         },
-            //     },
-            // },
+        ],
+        customColumns: [
+            {
+                id: 'htList',
+                Header: 'Heattraces',
+                Aggregated: () => null,
+                width: 1700,
+                aggregate: 'count',
+                //TODO own file
+                Cell: (cell) => {
+                    let htList = '';
+                    const usedHts: string[] = [];
+                    let htCount = 0;
+                    cell.row.values.checkLists.content.checkLists
+                        .filter((x) => x.isHeatTrace)
+                        .forEach((ht: CheckList) => {
+                            if (htCount < 3 && !usedHts.some((x) => x === ht.tagNo)) {
+                                htList !== '' ? (htList += ', ') : null;
+                                htList += ht.tagNo;
+                            }
+                            if (!usedHts.some((x) => x === ht.tagNo)) {
+                                htCount = htCount += 1;
+                            }
+                            usedHts.push(ht.tagNo);
+                        });
+                    if (htCount > 3) {
+                        htList += ' (+' + (htCount - 3).toString() + ')';
+                    }
+                    return htList;
+                },
+            },
         ],
     });
 
-    request.registerGardenOptions({ gardenKey: 'status', itemKey: 'name' });
+    request.registerGardenOptions({
+        gardenKey: 'status',
+        itemKey: 'name',
+        fieldSettings: fieldSettings,
+        customViews: {
+            customItemView: ReleaseControlGardenItem,
+        },
+    });
 
-    const statusDotFunc = (item: WorkflowStep) => {
-        if (item.isCurrent) {
-            return 'Active';
-        }
-
-        switch (item.isCompleted) {
-            case true:
-                return 'Completed';
-
-            case false:
+    //TODO - move
+    const checklistTagFunc = (item: CheckList) => {
+        switch (item?.status) {
+            case CheckListStatus.Inactive:
                 return 'Inactive';
+            case CheckListStatus.OK:
+                return 'Completed';
+            case CheckListStatus.PunchBError:
+                return 'Completed';
+            case CheckListStatus.Outstanding:
+                return 'Outstanding';
+            case CheckListStatus.PunchAError:
+                return 'Error';
         }
+        return 'Error';
     };
 }
 
-// function createChecklistSteps(data: Checklist[]): Checklist[] {
-//     const allWorkflowSteps = ['#B', '#T', '#C', '#H', '#X', '#Z', '#M'];
-//     const workflowSteps: Checklist[] = [];
-//     for (let i = 0; i < allWorkflowSteps.length; i++) {
-//         const foundStep = data.find((x) => x.tagNo.substring(0, 2) === allWorkflowSteps[i]);
-//         if (foundStep !== undefined) {
-//             foundStep.workflowStepText = foundStep?.tagNo.substring(0, 2);
-//             workflowSteps.push(foundStep);
-//         } else {
-//             workflowSteps.push({
-//                 tagNo: allWorkflowSteps[i],
-//                 responsible: '',
-//                 formType: '',
-//                 status: '',
-//                 commPk: '',
-//                 mcPk: '',
-//                 mcStatus: 'Inactive',
-//                 workflowStepText: allWorkflowSteps[i].substring(0, 2),
-//             });
-//         }
-//     }
+//TODO - move / refactor
+function createChecklistSteps(data: CheckList[]): CheckList[] {
+    const allWorkflowSteps = [
+        CheckListStepTag.Bolttensioning,
+        CheckListStepTag.PressureTest,
+        CheckListStepTag.ChemicalCleaning,
+        CheckListStepTag.HotOilFlushing,
+        CheckListStepTag.Painting,
+        CheckListStepTag.HtTest,
+        CheckListStepTag.Insulation,
+        CheckListStepTag.HtRetest,
+        CheckListStepTag.Marking,
+    ];
+    const workflowSteps: CheckList[] = [];
+    for (let i = 0; i < allWorkflowSteps.length; i++) {
+        const foundSteps = data.filter((x) => x.tagNo.substring(0, 2) === allWorkflowSteps[i]);
+        const htTestStep =
+            allWorkflowSteps[i] === CheckListStepTag.HtTest ||
+            allWorkflowSteps[i] === CheckListStepTag.HtRetest;
+        const formularType =
+            allWorkflowSteps[i] === CheckListStepTag.HtTest
+                ? CheckListStepTag.HtTest
+                : CheckListStepTag.HtRetest;
+        if (foundSteps.length !== 0 && !htTestStep) {
+            const workflowStep = foundSteps[0];
+            workflowStep.status = getPipetestStatusForStep(foundSteps);
+            workflowStep.workflowStepText = foundSteps[0]?.tagNo.substring(1, 2);
+            workflowSteps.push(workflowStep);
+        } else if (
+            htTestStep &&
+            data.some((x) => x.isHeatTrace) &&
+            data.some((x) => x.formularType === formularType)
+        ) {
+            const foundTestSteps = data.filter((x) => x.formularType === formularType);
+            const workflowStep = foundTestSteps[0];
+            workflowStep.status = getPipetestStatusForStep(foundTestSteps);
+            workflowStep.workflowStepText = formularType === CheckListStepTag.HtTest ? '1' : '2';
+            workflowSteps.push(workflowStep);
+        } else {
+            workflowSteps.push({
+                tagNo: allWorkflowSteps[i],
+                responsible: '',
+                formularType: '',
+                formularGroup: '',
+                status: CheckListStatus.Inactive,
+                revision: '',
+                test: '',
+                isHeatTrace: false,
+                workflowStepText: htTestStep
+                    ? allWorkflowSteps[i] === CheckListStepTag.HtTest
+                        ? '1'
+                        : '2'
+                    : allWorkflowSteps[i].substring(1, 2),
+            });
+        }
+    }
 
-//     return workflowSteps;
-// }
+    return workflowSteps;
+}

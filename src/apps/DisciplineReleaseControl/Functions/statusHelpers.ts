@@ -1,125 +1,130 @@
 import {
-    Checklist,
-    Pipetest,
-    PipetestChecklistOrder,
+    CheckListStatus,
+    PipetestCheckListOrder,
     PipetestStatus,
     PipetestStatusOrder,
-    PipetestTestStatus,
-} from '../Types/Pipetest';
-
-export function sortPipetestChecklist(checklists: Checklist[]): Checklist[] {
-    checklists.sort((a, b) => getChecklistSortValue(a) - getChecklistSortValue(b));
-    return checklists;
-}
-
-export function getChecklistSortValue(checklist: Checklist): number {
-    let number: number = PipetestChecklistOrder.Unknown;
-    if (!checklist.isHeatTrace) {
-        switch (checklist.tagNo.substring(0, 2)) {
-            case '#B':
-                number = PipetestChecklistOrder.Bolttensioning;
-                break;
-            case '#X':
-                number = PipetestChecklistOrder.Painting;
-                break;
-            case '#Z':
-                number = PipetestChecklistOrder.Insulation;
-                break;
-            case '#M':
-                number = PipetestChecklistOrder.Marking;
-                break;
-        }
-    } else {
-        if (checklist.formularType === PipetestTestStatus.ATest) {
-            number = PipetestChecklistOrder.HtTest;
-        } else if (checklist.formularType === PipetestTestStatus.BTest) {
-            number = PipetestChecklistOrder.HtRetest;
-        }
-    }
-    return number;
-}
-
-export function getPipetestStatus(checkLists: Checklist[]): PipetestStatus {
-    let status: PipetestStatus = PipetestStatus.Complete;
-    console.log(checkLists);
-    for (let i = 0; i < checkLists.length; i++) {
-        const checklist = checkLists[i];
-        if (!checklist.isHeatTrace) {
-            switch (checklist.tagNo.substring(0, 2)) {
-                case '#B':
-                    if (!isChecklistOk(checklist)) {
-                        status = PipetestStatus.ReadyForBolttensioning;
-                        return status;
-                    }
-                    break;
-                // case '#T-':
-                //     if (!isChecklistOk(checklist)) {
-                //         status = PipetestStatus.ReadyForPiping;
-                //         return status;
-                //     }
-                //     break;
-                case '#X':
-                    if (!isChecklistOk(checklist)) {
-                        status = PipetestStatus.ReadyForPainting;
-                        return status;
-                    }
-                    break;
-                case '#Z':
-                    if (!isChecklistOk(checklist)) {
-                        status = PipetestStatus.ReadyForInsulation;
-                        return status;
-                    }
-                    break;
-                case '#M':
-                    if (!isChecklistOk(checklist)) {
-                        status = PipetestStatus.ReadyForMarking;
-                        return status;
-                    }
-            }
-        } else {
-            if (checklist.formularType === PipetestTestStatus.ATest) {
-                if (!isChecklistOk(checklist)) {
-                    status = PipetestStatus.ReadyForHtTest;
-                    return status;
-                }
-            } else if (checklist.formularType === PipetestTestStatus.BTest) {
-                if (!isChecklistOk(checklist)) {
-                    status = PipetestStatus.ReadyForHtRetest;
-                    return status;
-                }
-            }
-        }
-        //if no other status matches but the checklist is stilln not completed/ok - we set the status to unknown
-        if (
-            !isChecklistOk(checklist) &&
-            checklist.tagNo.substring(0, 2) !== '#C' &&
-            checklist.tagNo.substring(0, 2) !== '#H' &&
-            checklist.tagNo.substring(0, 2) !== '#T'
-        ) {
-            status = PipetestStatus.Unknown;
-            return status;
-        }
-    }
-    return status;
-}
-
-export function isChecklistOk(checklist: Checklist): boolean {
-    return checklist.status === 'OK' || checklist.status === 'PB' ? true : false;
-}
+    CheckListStepTag,
+} from '../Types/drcEnums';
+import { CheckList, Pipetest } from '../Types/Pipetest';
 
 export function sortPipetests(pipetests: Pipetest[]): Pipetest[] {
     pipetests.sort((a, b) => getPipetestStatusSortValue(a) - getPipetestStatusSortValue(b));
     return pipetests;
 }
 
+export function sortPipetestChecklist(checkLists: CheckList[]): CheckList[] {
+    checkLists.sort((a, b) => getChecklistSortValue(a) - getChecklistSortValue(b));
+    return checkLists;
+}
+
+export function getChecklistSortValue(checkList: CheckList): number {
+    let number: number = PipetestCheckListOrder.Unknown;
+    if (!checkList.isHeatTrace) {
+        switch (checkList.tagNo.substring(0, 2)) {
+            case CheckListStepTag.Bolttensioning:
+                number = PipetestCheckListOrder.Bolttensioning;
+                break;
+            case CheckListStepTag.PressureTest:
+                number = PipetestCheckListOrder.PressureTest;
+                break;
+            case CheckListStepTag.Painting:
+                number = PipetestCheckListOrder.Painting;
+                break;
+            case CheckListStepTag.Insulation:
+                number = PipetestCheckListOrder.Insulation;
+                break;
+            case CheckListStepTag.Marking:
+                number = PipetestCheckListOrder.Marking;
+                break;
+        }
+    } else {
+        if (checkList.formularType === CheckListStepTag.HtTest) {
+            number = PipetestCheckListOrder.HtTest;
+        } else if (checkList.formularType === CheckListStepTag.HtRetest) {
+            number = PipetestCheckListOrder.HtRetest;
+        }
+    }
+    return number;
+}
+
+export function getPipetestStatus(checkLists: CheckList[]): PipetestStatus {
+    if (!isCheckListStepOk(checkLists, CheckListStepTag.Bolttensioning)) {
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForBolttensioning)
+            ? PipetestStatus.ReadyForBolttensioning
+            : PipetestStatus.Unknown;
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.PressureTest)) {
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForPressureTest)
+            ? PipetestStatus.ReadyForPressureTest
+            : PipetestStatus.Unknown;
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Painting)) {
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForPainting)
+            ? PipetestStatus.ReadyForPainting
+            : PipetestStatus.Unknown;
+    } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTest)) {
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForHtTest)
+            ? PipetestStatus.ReadyForHtTest
+            : PipetestStatus.Unknown;
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Insulation)) {
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForInsulation)
+            ? PipetestStatus.ReadyForInsulation
+            : PipetestStatus.Unknown;
+    } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtRetest)) {
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForHtRetest)
+            ? PipetestStatus.ReadyForHtRetest
+            : PipetestStatus.Unknown;
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Marking)) {
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForMarking)
+            ? PipetestStatus.ReadyForMarking
+            : PipetestStatus.Unknown;
+    } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTemporary)) {
+        return PipetestStatus.Unknown;
+    } else {
+        return PipetestStatus.Complete;
+    }
+}
+
+export function isCheckListStepOk(checkLists: CheckList[], step: CheckListStepTag): boolean {
+    return checkLists
+        .filter((x) => x.tagNo.substring(0, 2) === step)
+        .every((x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError);
+}
+
+export function isCheckListTestOk(checkLists: CheckList[], type: CheckListStepTag): boolean {
+    return checkLists
+        .filter((x) => x.formularType === type)
+        .every((x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError);
+}
+
+//TODO - fix for when tests are double OS
+export function isCheckListStepsInRightOrder(
+    checkLists: CheckList[],
+    checkListStep: PipetestStatusOrder
+): boolean {
+    let rightOrder = true;
+    checkLists = checkLists.filter((x) => getChecklistSortValue(x) > checkListStep);
+    //TODO - check statuses in group, and not individually
+    if (
+        checkLists.some(
+            (x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError
+        )
+    ) {
+        rightOrder = false;
+    }
+
+    return rightOrder;
+}
+
 export function getPipetestStatusSortValue(pipetest: Pipetest): number {
     let number: number = PipetestStatusOrder.Unknown;
     switch (pipetest.status) {
         case PipetestStatus.Unknown:
-            number = 0;
+            number = PipetestStatusOrder.Unknown;
             break;
         case PipetestStatus.ReadyForBolttensioning:
             number = PipetestStatusOrder.ReadyForBolttensioning;
+            break;
+        case PipetestStatus.ReadyForPressureTest:
+            number = PipetestStatusOrder.ReadyForPressureTest;
             break;
         case PipetestStatus.ReadyForPainting:
             number = PipetestStatusOrder.ReadyForPainting;
@@ -144,4 +149,20 @@ export function getPipetestStatusSortValue(pipetest: Pipetest): number {
     return number;
 }
 
-
+export function getPipetestStatusForStep(checkLists: CheckList[]): string {
+    if (
+        checkLists.every(
+            (x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError
+        )
+    ) {
+        return CheckListStatus.OK;
+    } else if (checkLists.find((x) => x.status === CheckListStatus.Outstanding)) {
+        {
+            return CheckListStatus.Outstanding;
+        }
+    } else if (checkLists.find((x) => x.status === CheckListStatus.PunchAError)) {
+        return CheckListStatus.PunchAError;
+    } else {
+        return CheckListStatus.OK;
+    }
+}

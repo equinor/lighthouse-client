@@ -47,7 +47,7 @@ export const ModelViewerContextProvider = ({
     }
 
     function setMessage(message?: Message) {
-        setState((s) => ({ ...s, message }));
+        setState((s) => ({ ...s, message, isLoading: false }));
     }
 
     function setSelection(selection?: Echo3dMultiSelectionActions) {
