@@ -1,18 +1,32 @@
-import { useDataContext } from '../../../../Core/WorkSpace/src/Context/DataProvider';
-
 /**
- * Hook for generating queryKeys
+ * QueryKeys for scopechange queries
  * @param requestId
- * @returns
  */
-export function useScopechangeQueryKeyGen(requestId: string) {
+
+interface WorkflowKeys {
+    baseKey: string[];
+    workflowPermissionsKey: (string | string[])[];
+    stepKey: (stepId: string) => string[];
+    canAddContributorKey: (stepId: string) => string[];
+    criteriaKey: (stepId: string, criteriaId: string) => string[];
+    criteriaCanSignKey: (stepId: string, criteriaId: string) => string[];
+    criteriaCanReassignKey: (stepId: string, criteriaId: string) => string[];
+    criteriaCanUnsignKey: (stepId: string, criteriaId: string) => string[];
+    contributorKey: (stepId: string, contributionId: string) => string[];
+}
+
+interface ScopeChangeQueryKeys {
+    baseKey: string[];
+    historyKey: string[];
+    workflowKeys: WorkflowKeys;
+    requestPermissionsKey: string[];
+    canVoidKey: () => string[];
+    canUnVoidKey: () => string[];
+}
+
+export function scopeChangeQueryKeys(requestId: string): ScopeChangeQueryKeys {
     const baseKey = ['scopechange', requestId];
     const workflowBaseKey = [...baseKey, 'workflow'];
-    const referencesBaseKey = [...baseKey, 'references'];
-
-    const {
-        dataApi: { queryKey },
-    } = useDataContext();
 
     const workflowKeys = {
         baseKey: workflowBaseKey,
@@ -45,21 +59,10 @@ export function useScopechangeQueryKeyGen(requestId: string) {
             contributionId,
         ],
     };
-    const referencesKeys = {
-        baseKey: referencesBaseKey,
-        disciplines: [...referencesBaseKey, 'disciplines'],
-        systems: [...referencesBaseKey, 'systems'],
-        document: (documentId: string) => [...referencesKeys.baseKey, 'document', documentId],
-        area: (areaId: string) => [...referencesKeys.baseKey, 'area', areaId],
-        tag: (tagId: string) => [...referencesKeys.baseKey, 'tag', tagId],
-        commPkg: (commPkgId: string) => [...referencesKeys.baseKey, 'commPkg', commPkgId],
-    };
 
     const scopeChangeKeys = {
-        listKey: queryKey,
         baseKey: baseKey,
         historyKey: [...baseKey, 'history'],
-        referencesKeys: referencesKeys,
         workflowKeys: workflowKeys,
         requestPermissionsKey: [...baseKey, 'permissions'],
         canVoidKey: () => [...scopeChangeKeys.requestPermissionsKey, 'canVoid'],

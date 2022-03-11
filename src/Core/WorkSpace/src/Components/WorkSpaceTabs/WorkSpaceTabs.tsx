@@ -20,7 +20,7 @@ export const WorkSpaceTabs = ({ tabs, activeTab, title }: CompletionViewTabsProp
                 const ViewComponent = tab.viewComponent;
                 return (
                     <Panel key={`panel-${tab.title}`}>
-                        {dataApi.isError ? (
+                        {dataApi?.isError ? (
                             <Loading>
                                 <Icon
                                     color={tokens.colors.interactive.warning__resting.hex}
@@ -34,7 +34,7 @@ export const WorkSpaceTabs = ({ tabs, activeTab, title }: CompletionViewTabsProp
                                     Try again
                                 </Button>
                             </Loading>
-                        ) : dataApi.isLoading ? (
+                        ) : dataApi?.isLoading ? (
                             <Loading>
                                 <CircularProgress value={0} size={48} />
                                 <h2>Loading {title.toLowerCase()}</h2>

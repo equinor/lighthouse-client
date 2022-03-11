@@ -2,15 +2,15 @@ import { getSystems } from '../../Api/PCS/getSystems';
 import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
 import { useInfiniteCachedQuery } from './useInfiniteCachedQuery';
 import { getDisciplines } from '../../Api/PCS/getDisciplines';
-import { useProcosysQueryKeyGen } from './useProcosysQueryKeyGen';
+import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
 
 /**
  * Preloads api calls that should never invalidate
  */
 export function usePreloadCaching(): void {
-    const { disciplinesKey, functionalRolesKey, systemsKey } = useProcosysQueryKeyGen();
+    const { disciplines, systems, functionalRoles } = proCoSysQueryKeys();
 
-    useInfiniteCachedQuery(systemsKey, getSystems);
-    useInfiniteCachedQuery(functionalRolesKey, getFunctionalRoles);
-    useInfiniteCachedQuery(disciplinesKey, getDisciplines);
+    useInfiniteCachedQuery(systems, getSystems);
+    useInfiniteCachedQuery(functionalRoles, getFunctionalRoles);
+    useInfiniteCachedQuery(disciplines, getDisciplines);
 }
