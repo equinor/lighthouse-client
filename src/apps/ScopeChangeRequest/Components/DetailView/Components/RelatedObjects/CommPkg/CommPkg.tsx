@@ -5,8 +5,9 @@ import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
-import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
+import { useQuery } from 'react-query';
+import { CacheTime } from '../../../../../../DisciplineReleaseControl/Enums/cacheTimes';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
@@ -15,8 +16,13 @@ interface CommPkgProps {
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     const { commPkg: commPkgKey } = proCoSysQueryKeys();
 
-    const { data } = useInfiniteCachedQuery(commPkgKey(commPkg.procosysNumber), () =>
-        getCommPkgById(commPkg.procosysId)
+    const { data } = useQuery(
+        commPkgKey(commPkg.procosysNumber),
+        () => getCommPkgById(commPkg.procosysId),
+        {
+            cacheTime: CacheTime.TenHours,
+            staleTime: CacheTime.TenHours,
+        }
     );
 
     return (
@@ -24,13 +30,17 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
             <Icon name="placeholder_icon" />
             <TagText>
                 <Link
-                    href={`https://${isProduction() ? 'procosys' : 'procosystest'
-                        }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
+                    href={`https://${
+                        isProduction() ? 'procosys' : 'procosystest'
+                    }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
                     target="_blank"
                 >
                     COMM_{commPkg.procosysNumber}
                 </Link>
-                -<div>{data?.Description}</div>
+                -
+                <div>
+                    {data?.Description} {data?.CommPkgNo}
+                </div>
             </TagText>
         </Wrapper>
     );
