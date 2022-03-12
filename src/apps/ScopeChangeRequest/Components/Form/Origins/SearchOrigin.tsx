@@ -9,7 +9,7 @@ import { usePcsSearch } from '../../../Hooks/Search/usePcsSearch';
 
 interface PCSLinkProps {
     setOriginId: (originId: string | undefined) => void;
-    originId?: string;
+    originId?: string | null;
     type: PCSOrigins;
 }
 

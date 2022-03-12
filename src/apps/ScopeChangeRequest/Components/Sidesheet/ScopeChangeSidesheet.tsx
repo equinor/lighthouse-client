@@ -9,7 +9,6 @@ import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
 import { RequestDetailView } from '../DetailView/RequestDetailView';
-import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
 
 import { ScopeChangeContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
@@ -22,9 +21,10 @@ import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMu
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
 import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
+import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
-    const [editMode, setEditMode] = useState<boolean>(false);
+    const [editMode, setEditMode] = useState<boolean>(item.state === 'Draft');
     const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
 
     usePreloadCaching();
@@ -153,9 +153,9 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                 {data && (
                     <>
                         {editMode ? (
-                            <ScopeChangeRequestEditForm
-                                request={data}
-                                close={() => setEditMode(false)}
+                            <ScopeChangeRequestForm
+                                closeScrim={() => setEditMode(false)}
+                                scopeChangeId={item.id}
                             />
                         ) : (
                             <RequestDetailView />

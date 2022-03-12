@@ -45,11 +45,10 @@ export const Spacer = styled.div`
     margin-right: 0.5em;
 `;
 
-export const Title = styled.div`
-    line-height: 24px;
+export const Title = styled.h5`
     font-size: 18px;
-    color: black;
-    font-weight: bold;
+    line-height: 24px;
+    font-weight: 500;
 `;
 
 export const TitleBar = styled.div`
