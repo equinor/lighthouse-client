@@ -7,14 +7,10 @@ interface PerformanceObserverParams {
     fetchCallback?: (list: ApiEvent[]) => void;
 }
 
-interface PerformanceObserver {
-    status: Status;
-}
-
 export function usePerformanceObserver({
     callback,
     fetchCallback,
-}: PerformanceObserverParams): PerformanceObserver {
+}: PerformanceObserverParams): Status {
     const [status, setStatus] = useState<Status>('Healthy');
 
     useEffect(() => {
@@ -45,9 +41,7 @@ export function usePerformanceObserver({
         [callback, fetchCallback]
     );
 
-    return {
-        status,
-    };
+    return status;
 }
 
 export interface ApiEvent {

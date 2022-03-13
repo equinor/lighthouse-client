@@ -7,17 +7,15 @@ export function PerformanceObserver(): JSX.Element {
     const { status } = usePerformanceObserver({});
 
     return (
-        <>
-            <Icon
-                name="report_bug"
-                color={
-                    status === 'Healthy'
-                        ? tokens.colors.interactive.primary__resting.hex
-                        : status === 'Warning'
-                        ? tokens.colors.interactive.warning__resting.hex
-                        : tokens.colors.infographic.primary__energy_red_100.hex
-                }
-            />
-        </>
+        <Icon
+            name="report_bug"
+            color={
+                status === 'Healthy'
+                    ? tokens.colors.interactive.primary__resting.hex
+                    : status === 'Warning'
+                    ? tokens.colors.interactive.warning__resting.hex
+                    : tokens.colors.infographic.primary__energy_red_100.hex
+            }
+        />
     );
 }
