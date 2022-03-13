@@ -7,9 +7,11 @@ import { useEffect, useState } from 'react';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
 import Icon from '../../../../../components/Icon/Icon';
 import { StatusBar } from '../../../../../packages/StatusBar';
+import { useSettings } from '../../../../Client/Hooks';
+import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useDataContext } from '../../Context/DataProvider';
 import { TabButton } from '../ToggleButton';
-import { Divider, HeaderWrapper, LeftSection, RightSection, Title } from './HeaderStyles';
+import { Divider, HeaderWrapper, LeftSection, RightSection, Title, TitleBar } from './HeaderStyles';
 
 const { Tab, List } = Tabs;
 
@@ -47,10 +49,15 @@ export const CompletionViewHeader = ({
         setInterval(() => setTimestamp(makeTimestamp(dataApi.dataUpdatedAt)), 1000 * 60);
     }, [dataApi.dataUpdatedAt]);
 
+    const { clientEnv } = useSettings();
+
     return (
         <HeaderWrapper>
             <LeftSection>
-                <Title variant="h3">{title}</Title>
+                <TitleBar>
+                    <Title variant="h3">{title}</Title>
+                    {clientEnv === 'dev' && <PerformanceObserver />}
+                </TitleBar>
                 {statusFunc && <StatusBar data={statusFunc(data)} />}
             </LeftSection>
             <RightSection>
