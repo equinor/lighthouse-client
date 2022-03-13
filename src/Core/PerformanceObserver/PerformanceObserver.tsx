@@ -4,7 +4,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { usePerformanceObserver } from './usePerformanceObserver';
 
 export function PerformanceObserver(): JSX.Element {
-    const { status } = usePerformanceObserver({});
+    const status = usePerformanceObserver({});
 
     return (
         <Icon
