@@ -32,7 +32,6 @@ export function setup(appApi: ClientApi): void {
     });
 
     swcr.registerFilterOptions({
-        headerNames: { siteCode: 'Site Code' },
         defaultActiveFilters: [
             'status',
             'projectIdentifier',
