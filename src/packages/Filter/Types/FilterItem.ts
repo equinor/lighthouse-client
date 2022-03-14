@@ -21,8 +21,17 @@ export type FilterData = Record<string, FilterGroup>;
 
 export interface FilterOptions<T> {
     excludeKeys?: (keyof T)[];
-    typeMap?: Partial<Record<keyof T, string>>;
-    groupValue?: Record<string, (item: T) => string>;
+    headerNames?: Partial<Record<keyof T, string>>;
+    /** Function to transform value */
+    valueFormatter?: Record<string, (item: T) => string>;
     customRender?: Record<keyof T | string, React.FC<T>>;
-    initialFilters?: string[];
+    /**
+     * Filter sections to initially be toggled on
+     */
+    defaultActiveFilters?: string[];
+    /**
+     * Values to exclude by default
+     * Checked defaults to true
+     */
+    initialFilters?: FilterGroup[];
 }
