@@ -32,8 +32,14 @@ export function setup(appApi: ClientApi): void {
     });
 
     swcr.registerFilterOptions({
-        typeMap: { siteCode: 'Site Code' },
-        initialFilters: ['status', 'projectIdentifier', 'contract', 'supplier', 'system', 'types'],
+        defaultActiveFilters: [
+            'status',
+            'projectIdentifier',
+            'contract',
+            'supplier',
+            'system',
+            'types',
+        ],
         excludeKeys: [
             'description',
             'nextsToSign',
