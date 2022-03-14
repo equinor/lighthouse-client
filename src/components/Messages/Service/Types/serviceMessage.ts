@@ -3,9 +3,12 @@ export interface ServiceMessage {
     message?: string;
     toDate: string;
     fromDate: string;
-    link?: {
-        url: string;
-        title: string;
-    };
+    link?: Link;
     type?: 'info' | 'warning' | 'default';
 }
+
+
+export interface Link {
+    url: string;
+    title: string;
+};
