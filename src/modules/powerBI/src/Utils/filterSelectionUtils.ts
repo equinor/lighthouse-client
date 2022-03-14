@@ -28,7 +28,7 @@ export const createAdvancedPbiFilter = (
 ): models.IAdvancedFilter => {
     return {
         $schema: 'http://powerbi.com/product/schema#advanced',
-        target: filter!.target!,
+        target: filter.target!,
         filterType: models.FilterType.Advanced,
         logicalOperator: 'Or',
         conditions:
