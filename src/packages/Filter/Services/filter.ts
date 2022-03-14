@@ -17,7 +17,7 @@ export function filter<T>(data: T[], filter: FilterData, groupValue?: string): T
             .map((y) => y.value),
     }));
 
-    function valueFormatter(item: T, group: string): string {
+    function filterValueFormatter(item: T, group: string): string {
         const getValue =
             groupValueFunctions &&
             typeof groupValueFunctions[group] === 'function' &&
@@ -26,6 +26,8 @@ export function filter<T>(data: T[], filter: FilterData, groupValue?: string): T
     }
 
     return data.filter((item) =>
-        filterGroups.every((group) => !group.values.includes(valueFormatter(item, group.type)))
+        filterGroups.every(
+            (group) => !group.values.includes(filterValueFormatter(item, group.type))
+        )
     );
 }
