@@ -43,9 +43,9 @@ export function setup(appApi: ClientApi): void {
 
     request.registerFilterOptions({
         excludeKeys: releaseControlExcludeKeys,
-        typeMap: {},
-        initialFilters: ['status', 'System'],
-        groupValue: {
+        headerNames: {},
+        defaultActiveFilters: ['status', 'System'],
+        valueFormatter: {
             System: (item: Pipetest): string => {
                 return item.name.substring(0, 2);
             },
