@@ -156,6 +156,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                             <ScopeChangeRequestForm
                                 closeScrim={() => setEditMode(false)}
                                 scopeChangeId={item.id}
+                                request={data ?? item}
                             />
                         ) : (
                             <RequestDetailView />

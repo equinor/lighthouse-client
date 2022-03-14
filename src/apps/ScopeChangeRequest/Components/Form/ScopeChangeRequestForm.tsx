@@ -41,9 +41,9 @@ export const ScopeChangeRequestForm = ({
     request,
 }: ScopeChangeRequestFormProps): JSX.Element | null => {
     const { register, handleSubmit, setError, getValues, control, watch } =
-        useForm<ScopeChangeRequest>({ defaultValues: { title: request?.title ?? '' } });
+        useForm<ScopeChangeRequest>({ defaultValues: request });
 
-    const [scopeChangeId, setScopeChangeId] = useState<string | undefined>(initialId);
+    const [scopeChangeId] = useState<string | undefined>(initialId);
 
     const originSource = watch('originSource');
 
@@ -69,20 +69,24 @@ export const ScopeChangeRequestForm = ({
         }
     };
 
-    const resolveRelatedObjects = (data: ScopeChangeRequest): ScopeChangeRequestFormModel => ({
+    useEffect(() => { }, [request]);
+
+    const flattenRelatedObjects = (data: ScopeChangeRequest): ScopeChangeRequestFormModel => ({
         ...data,
-        tagNumbers: filterElementsByType(relatedObjects, 'tag').map((x) => x.value),
-        areaCodes: filterElementsByType(relatedObjects, 'area').map((x) => x.value),
-        disciplineCodes: filterElementsByType(relatedObjects, 'discipline').map((x) => x.value),
-        systemIds: filterElementsByType(relatedObjects, 'system').map((x) => Number(x.value)),
-        documentNumbers: filterElementsByType(relatedObjects, 'document').map((x) => x.value),
+        tagNumbers: filterElementsByType(relatedObjects, 'tag').map(({ value }) => value),
+        areaCodes: filterElementsByType(relatedObjects, 'area').map(({ value }) => value),
+        disciplineCodes: filterElementsByType(relatedObjects, 'discipline').map(
+            ({ value }) => value
+        ),
+        systemIds: filterElementsByType(relatedObjects, 'system').map(({ value }) => Number(value)),
+        documentNumbers: filterElementsByType(relatedObjects, 'document').map(({ value }) => value),
         commissioningPackageNumbers: filterElementsByType(relatedObjects, 'commpkg').map(
-            (x) => x.value
+            ({ value }) => value
         ),
     });
 
     const handleCreate = async (data: ScopeChangeRequest, draft: boolean): Promise<void> => {
-        const request = resolveRelatedObjects(data);
+        const request = flattenRelatedObjects(data);
 
         const id = await createScopeChangeAsync({ draft: draft, scopeChange: request });
         if (id) {
@@ -106,7 +110,7 @@ export const ScopeChangeRequestForm = ({
 
     const onSave = async (data: ScopeChangeRequest) => {
         if (scopeChangeId) {
-            await patchScopeChangeAsync({ request: resolveRelatedObjects(data), setAsOpen: false });
+            await patchScopeChangeAsync({ request: flattenRelatedObjects(data), setAsOpen: false });
         } else {
             await handleCreate(data, true);
         }
@@ -114,7 +118,7 @@ export const ScopeChangeRequestForm = ({
 
     const onSubmit = async (data: ScopeChangeRequest) => {
         if (scopeChangeId) {
-            await patchScopeChangeAsync({ request: resolveRelatedObjects(data), setAsOpen: true });
+            await patchScopeChangeAsync({ request: flattenRelatedObjects(data), setAsOpen: true });
         } else {
             await handleCreate(data, false);
         }
@@ -151,7 +155,10 @@ export const ScopeChangeRequestForm = ({
     const [attachments, setAttachments] = useState<File[]>([]);
     const origins = ['NCR', 'DCN', 'Query', 'Punch', 'SWCR', 'NotApplicable'];
 
+    /** Keeps it typesafe */
     const originSourceIdKey: keyof ScopeChangeRequest = 'originSourceId';
+    const phaseKey: keyof ScopeChangeRequest = 'phase';
+    const categoryKey: keyof ScopeChangeRequest = 'category';
 
     return (
         <>
@@ -169,12 +176,12 @@ export const ScopeChangeRequestForm = ({
 
                 <Controller<ScopeChangeRequest>
                     control={control}
-                    name={'phase'}
+                    name={phaseKey}
                     render={({ field: { onChange, value, ref } }) => (
                         <SingleSelect
                             items={phases ?? []}
                             ref={ref}
-                            value={value}
+                            value={value as unknown as string}
                             handleSelectedItemChange={(ev) => onChange(ev.selectedItem ?? '')}
                             label={'Phase'}
                             meta={REQUIRED_META}
@@ -185,12 +192,12 @@ export const ScopeChangeRequestForm = ({
                 <Inline>
                     <Controller<ScopeChangeRequest>
                         control={control}
-                        name={'category'}
+                        name={categoryKey}
                         render={({ field: { onChange, value, ref } }) => (
                             <SingleSelect
                                 items={categories ?? []}
                                 ref={ref}
-                                value={value}
+                                value={value as unknown as string}
                                 handleSelectedItemChange={(ev) => onChange(ev.selectedItem ?? '')}
                                 label={'Change category'}
                                 meta={REQUIRED_META}
@@ -204,7 +211,7 @@ export const ScopeChangeRequestForm = ({
                             <SingleSelect
                                 items={origins ?? []}
                                 ref={ref}
-                                value={value}
+                                value={value as unknown as string}
                                 handleSelectedItemChange={(ev) => onChange(ev.selectedItem ?? '')}
                                 label={'Change origin'}
                                 meta={REQUIRED_META}
