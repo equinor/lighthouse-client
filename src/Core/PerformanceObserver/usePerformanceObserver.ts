@@ -7,10 +7,7 @@ interface PerformanceObserverParams {
     fetchCallback?: (list: ApiEvent[]) => void;
 }
 
-export function usePerformanceObserver({
-    callback,
-    fetchCallback,
-}: PerformanceObserverParams): Status {
+export function usePerformanceObserver(args?: PerformanceObserverParams): Status {
     const [status, setStatus] = useState<Status>('Healthy');
 
     useEffect(() => {
@@ -24,13 +21,13 @@ export function usePerformanceObserver({
 
     const observerHandler = useCallback(
         (list: PerformanceObserverEntryList): void => {
-            callback && callback(list);
+            args?.callback && args.callback(list);
             const perfEntries: ApiEvent[] = list
                 .getEntries()
                 .map((x) => x.toJSON())
                 .filter((x: ApiEvent) => x.initiatorType === 'fetch');
 
-            fetchCallback && fetchCallback(perfEntries);
+            args?.fetchCallback && args.fetchCallback(perfEntries);
             if (perfEntries.length > 25) {
                 setStatus('Warning');
             }
@@ -38,7 +35,7 @@ export function usePerformanceObserver({
                 setStatus('Error');
             }
         },
-        [callback, fetchCallback]
+        [args]
     );
 
     return status;
