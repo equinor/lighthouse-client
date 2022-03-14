@@ -29,7 +29,7 @@ export function FilterProvider<T>({
         filteredData: [],
         filterData: {},
         options: options as FilterOptions<unknown>,
-        activeFiltersTypes: options?.initialFilters ? options.initialFilters : [],
+        activeFiltersTypes: options?.defaultActiveFilters ? options.defaultActiveFilters : [],
     };
     const [state, dispatch] = useReducer(filterReducer, initialState);
     const { filterData } = state;
