@@ -42,7 +42,7 @@ export function createFilterData<T>(dataArray: T[], options?: FilterOptions<T>):
     }, {} as FilterData);
 
     /** Add default toggled off filters */
-    options?.initialFilters?.forEach(
+    options?.defaultUncheckedValues?.forEach(
         (filterGroup) =>
         (filterData[filterGroup.type].value = {
             ...filterData[filterGroup.type].value,

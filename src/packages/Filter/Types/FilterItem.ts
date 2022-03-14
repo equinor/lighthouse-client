@@ -33,5 +33,5 @@ export interface FilterOptions<T> {
      * Values to exclude by default
      * Checked defaults to true
      */
-    initialFilters?: FilterGroup[];
+    defaultUncheckedValues?: FilterGroup[];
 }

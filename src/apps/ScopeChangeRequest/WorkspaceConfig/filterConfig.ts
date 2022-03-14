@@ -15,7 +15,7 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = {
     excludeKeys: scopeChangeExcludeFilterKeys,
     headerNames: {},
     defaultActiveFilters: ['State', 'phase', 'category', 'Origin', 'Step', 'NextToSign'],
-    initialFilters: [
+    defaultUncheckedValues: [
         {
             type: 'State',
             value: {
