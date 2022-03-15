@@ -1,9 +1,10 @@
 import { Button, Progress } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { useSideSheet } from '../../../../packages/Sidesheet/context/sidesheetContext';
-import { initiateScopeChange } from '../../Api/ScopeChange/Request';
+import { patchScopeChange } from '../../Api/ScopeChange/Request';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
+import { ScopeChangeRequestFormModel } from '../../Types/scopeChangeRequest';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { SplitView } from './Components/RequestDetailView/Double';
 import { SingleView } from './Components/RequestDetailView/Single';
@@ -16,7 +17,7 @@ export const RequestDetailView = (): JSX.Element => {
     const { mutateAsync: initiate, isLoading } = useScopeChangeMutation(
         request.id,
         patchKey,
-        initiateScopeChange
+        patchScopeChange
     );
 
     return (
@@ -24,7 +25,14 @@ export const RequestDetailView = (): JSX.Element => {
             {width > 650 ? <SplitView /> : <SingleView />}
             {request.state === 'Draft' && !request.isVoided && (
                 <ActionBar>
-                    <Button onClick={() => initiate({ request: request })}>
+                    <Button
+                        onClick={() =>
+                            initiate({
+                                request: request as unknown as ScopeChangeRequestFormModel,
+                                setAsOpen: true,
+                            })
+                        }
+                    >
                         {isLoading ? <Progress.Dots color="neutral" /> : 'Submit request'}
                     </Button>
                 </ActionBar>
