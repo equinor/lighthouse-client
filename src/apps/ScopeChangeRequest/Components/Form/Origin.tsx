@@ -1,69 +1,41 @@
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import { SearchOrigin } from './Origins/SearchOrigin';
 import { SelectPunch } from './Origins/SelectPunch';
 import { SelectSWCR } from './Origins/SelectSWCR';
-import { OriginType } from '../../Types/scopeChangeRequest';
-import { Field } from '../../../../packages/Form/src/Types/field';
 import { MultiSelect } from '@equinor/eds-core-react';
 
 interface OriginProps {
-    originSource: Field<OriginType> | undefined;
-    originId: Field<string | undefined> | undefined;
+    originSource: string | undefined;
+    originId: string | null | undefined;
+    setOriginId: (value: string | undefined) => void;
 }
 
-export const Origin = ({ originId, originSource }: OriginProps): JSX.Element => {
-    const setOriginId = useCallback(
-        (inputOriginId: string | undefined) => {
-            if (originSource) {
-                originId?.setValue(inputOriginId);
-            } else {
-                originId?.setValue(undefined);
-            }
-        },
-        [originId, originSource]
-    );
-
+export const Origin = ({ setOriginId, originSource, originId }: OriginProps): JSX.Element => {
     const SelectedComponent = useMemo(() => {
-        switch (originSource?.value) {
+        switch (originSource) {
             case 'NCR':
-                return (
-                    <SearchOrigin
-                        setOriginId={setOriginId}
-                        originId={originId?.value}
-                        type={'NCR'}
-                    />
-                );
+                return <SearchOrigin setOriginId={setOriginId} originId={originId} type={'NCR'} />;
 
             case 'DCN':
-                return (
-                    <SearchOrigin
-                        setOriginId={setOriginId}
-                        originId={originId?.value}
-                        type={'DCN'}
-                    />
-                );
+                return <SearchOrigin setOriginId={setOriginId} originId={originId} type={'DCN'} />;
 
             case 'Query':
                 return (
-                    <SearchOrigin
-                        setOriginId={setOriginId}
-                        originId={originId?.value}
-                        type={'Query'}
-                    />
+                    <SearchOrigin setOriginId={setOriginId} originId={originId} type={'Query'} />
                 );
 
             case 'Punch':
-                return <SelectPunch setOriginId={setOriginId} originId={originId?.value} />;
+                return <SelectPunch setOriginId={setOriginId} originId={originId} />;
 
             case 'SWCR':
-                return <SelectSWCR setOriginId={setOriginId} originId={originId?.value} />;
+                return <SelectSWCR setOriginId={setOriginId} originId={originId} />;
             default:
                 return (
                     <MultiSelect disabled={true} items={[]} meta="(Required)" label={'Origin ID'} />
                 );
         }
-    }, [originId?.value, originSource?.value, setOriginId]);
+    }, [originId, originSource, setOriginId]);
 
     return <Wrapper>{SelectedComponent}</Wrapper>;
 };

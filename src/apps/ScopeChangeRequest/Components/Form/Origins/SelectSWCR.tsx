@@ -7,7 +7,7 @@ import { useCancellationToken } from '../../../Hooks/useCancellationToken';
 
 interface SelectSWCRProps {
     setOriginId: (originId: string | undefined) => void;
-    originId?: string;
+    originId?: string | null;
 }
 
 export const SelectSWCR = ({ setOriginId, originId }: SelectSWCRProps): JSX.Element => {
@@ -64,7 +64,7 @@ export const SelectSWCR = ({ setOriginId, originId }: SelectSWCRProps): JSX.Elem
         <Inline>
             <Input
                 placeholder={'Enter SWCR number'}
-                defaultValue={originId}
+                defaultValue={originId ?? undefined}
                 onChange={async (e) => {
                     setIsValidSWCR(false);
                     setOriginId(undefined);

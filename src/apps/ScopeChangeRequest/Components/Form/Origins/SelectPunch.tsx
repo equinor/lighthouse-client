@@ -6,7 +6,7 @@ import { useHttpClient } from '../../../../../Core/Client/Hooks/useApiClient';
 
 interface SelectPunchProps {
     setOriginId: (originId: string | undefined) => void;
-    originId?: string;
+    originId?: string | null;
 }
 
 export const SelectPunch = ({ setOriginId, originId }: SelectPunchProps): JSX.Element => {
@@ -42,7 +42,7 @@ export const SelectPunch = ({ setOriginId, originId }: SelectPunchProps): JSX.El
             <Input
                 placeholder={'Pl item no, 7 characters'}
                 maxLength={7}
-                defaultValue={originId}
+                defaultValue={originId ?? undefined}
                 onChange={async (e) => {
                     setOriginId(undefined);
                     setIsChecking(false);
