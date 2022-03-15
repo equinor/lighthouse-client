@@ -47,11 +47,30 @@ export interface LogEntry {
         email: string;
     };
     id: string;
-    description: string;
+    title: string;
     objectGuid: string;
-    eventType: string;
+    eventType: HistoryEventType;
     objectType: string;
 }
+
+type HistoryEventType =
+    | 'RequestOpened'
+    | 'RequestClosed'
+    | 'RequestVoided'
+    | 'RequestUnvoided'
+    | 'AttachmentUploaded'
+    | 'AttachmentDeleted'
+    | 'WorkflowStepCompleted'
+    | 'WorkflowStepReopened'
+    | 'WorkflowStepCriteriaSigned'
+    | 'WorkflowStepCriteriaUnsigned'
+    | 'WorkflowStepCriteriaReassigned'
+    | 'ContributorAddedToStep'
+    | 'ContributorRemovedFromStep'
+    | 'ContributionAdded'
+    | 'ScopeChangeRequestCreated'
+    | 'ScopeChangeRequestUpdated'
+    | 'ScopeChangeRequestDeleted';
 
 export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     createdAtUtc: string;

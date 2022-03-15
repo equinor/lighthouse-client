@@ -1,12 +1,17 @@
-import { HttpClient } from '@equinor/http-client';
 import { ScopeChangeRequestFormModel } from '../../../Types/scopeChangeRequest';
 import { throwOnError } from '../../../Functions/throwError';
+import { httpClient } from '../../../../../Core/Client/Functions';
 
-export async function postScopeChange(
-    scopeChange: ScopeChangeRequestFormModel,
-    draft: boolean,
-    client: HttpClient
-): Promise<string> {
+interface PostScopeChangeParams {
+    scopeChange: ScopeChangeRequestFormModel;
+    draft: boolean;
+}
+
+export async function postScopeChange({
+    draft,
+    scopeChange,
+}: PostScopeChangeParams): Promise<string> {
+    const { scopeChange: client } = httpClient();
     const payload = {
         ...scopeChange,
         setAsOpen: !draft,
