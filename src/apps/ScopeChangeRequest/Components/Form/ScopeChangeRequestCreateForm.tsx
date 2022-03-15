@@ -76,7 +76,7 @@ export function ScopeChangeRequestCreateForm({
     return (
         <>
             <Header>
-                <Title>Create scope change request</Title>{' '}
+                <Title>Create scope change request</Title>
                 <ClickableIcon name="close" onClick={closeScrim} />
             </Header>
             <ScopeChangeForm
