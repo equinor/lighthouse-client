@@ -50,7 +50,9 @@ export const ScopeChangeRequestEditForm = ({
     }, [request]);
 
     useEffect(() => {
-        return () => close();
+        return () => {
+            request.state !== 'Draft' && close();
+        };
     }, [request.id]);
 
     const { setErrorMessage } = useScopeChangeContext();
