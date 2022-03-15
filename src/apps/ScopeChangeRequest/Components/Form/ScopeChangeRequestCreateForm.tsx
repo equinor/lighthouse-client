@@ -11,6 +11,7 @@ import {
     uploadAttachment,
 } from '../../Api/ScopeChange/Request';
 import { TypedSelectOption } from '../../Api/Search/searchType';
+import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
 import { OriginType, ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { Upload } from '../Attachments/Upload';
 import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
@@ -47,8 +48,11 @@ export function ScopeChangeRequestCreateForm({
             scopeChange: scopeChange,
         });
         if (requestId) {
+            const keys = scopeChangeQueryKeys(requestId);
+
             attachments.forEach(async (attachment) => {
                 await uploadAttachmentMutation({ file: attachment, requestId: requestId });
+                invalidateQueries(keys.baseKey);
             });
             await onCreated(requestId);
             invalidateQueries();

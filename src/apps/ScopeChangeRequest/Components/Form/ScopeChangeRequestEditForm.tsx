@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { patchScopeChange } from '../../Api/ScopeChange/Request';
+import { deleteAttachment, patchScopeChange } from '../../Api/ScopeChange/Request';
 import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
@@ -16,6 +16,9 @@ import { useForm } from 'react-hook-form';
 import { mergeRelatedObjects } from './SelectUtils';
 import { resolveRelatedObjects } from './resolveRelatedObjects';
 import { useIsMutating } from 'react-query';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
+import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -31,13 +34,13 @@ export const ScopeChangeRequestEditForm = ({
 
     const referencesKeys = proCoSysQueryKeys();
     const stid = stidQueryKeys();
-    const { patchKey } = scopeChangeMutationKeys(request.id);
+    const { patchKey, deleteAttachmentKey } = scopeChangeMutationKeys(request.id);
 
-    // const { mutateAsync: removeAttachment } = useScopeChangeMutation(
-    //     request.id,
-    //     deleteAttachmentKey,
-    //     deleteAttachment
-    // );
+    const { mutateAsync: removeAttachmentMutation } = useScopeChangeMutation(
+        request.id,
+        deleteAttachmentKey,
+        deleteAttachment
+    );
 
     useEffect(() => {
         setRelatedObjects([]);
@@ -87,34 +90,62 @@ export const ScopeChangeRequestEditForm = ({
                     relatedObjects: relatedObjects,
                 }}
             >
-                <HotUpload />
+                <div>
+                    <Title>Attachments</Title>
+                    <HotUpload />
+                    {request.attachments.map((attachment, i) => {
+                        return (
+                            <AttachmentsList key={i}>
+                                <AttachmentName>{attachment.fileName}</AttachmentName>
+                                <Inline>
+                                    <div>
+                                        {attachment.fileSize &&
+                                            (attachment?.fileSize / 1000 ** 2).toFixed(2)}
+                                        MB
+                                    </div>
+                                    <ClickableIcon
+                                        color={tokens.colors.interactive.primary__resting.rgba}
+                                        onClick={() =>
+                                            removeAttachmentMutation({
+                                                requestId: request.id,
+                                                attachmentId: attachment.id,
+                                            })
+                                        }
+                                        name="clear"
+                                    />
+                                </Inline>
+                            </AttachmentsList>
+                        );
+                    })}
+                </div>
             </ScopeChangeForm>
         </>
     );
 };
 
-// const AttachmentName = styled.a`
-//     color: ${tokens.colors.interactive.primary__resting.rgba};
-//     cursor: 'pointer';
-//     text-decoration: 'none';
-// `;
+export const Title = styled.div`
+    line-height: 24px;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+`;
 
-// const Inline = styled.span`
-//     display: flex;
-//     align-items: center;
-// `;
+const AttachmentName = styled.a`
+    color: ${tokens.colors.interactive.primary__resting.rgba};
+    cursor: 'pointer';
+    text-decoration: 'none';
+`;
 
-// const AttachmentsList = styled.div`
-//     display: flex;
-//     flex-direction: row;
-//     justify-content: space-between;
-//     margin: 0.5em 0em;
-//     font-size: 16px;
-//     align-items: center;
-// `;
+const Inline = styled.span`
+    display: flex;
+    align-items: center;
+`;
 
-// const BoldHeader = styled.h5`
-//     font-size: 18px;
-//     line-height: 24px;
-//     font-weight: 500;
-// `;
+const AttachmentsList = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.5em 0em;
+    font-size: 16px;
+    align-items: center;
+`;
