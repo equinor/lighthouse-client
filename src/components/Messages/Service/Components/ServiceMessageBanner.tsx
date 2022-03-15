@@ -32,7 +32,7 @@ const systemBannerMap: SystemBannerMap = {
         background: tokens.colors.ui.background__danger.rgba,
     },
     default: {
-        iconColor: tokens.colors.interactive.danger__text.rgba,
+        iconColor: tokens.colors.infographic.substitute__blue_ocean.rgba,
         icon: 'warning_outlined',
         buttonColor: 'secondary',
         background: tokens.colors.ui.background__default.rgba,
