@@ -4,6 +4,7 @@ import { MultiSelect } from './MultiSelect';
 import { TextArea } from './TextArea';
 import { TextInput } from './TextInput';
 import { Behaviour } from './Form';
+import { Date } from './Date';
 import { Field } from './Field';
 import { Field as FieldType } from '../Types/field';
 
@@ -84,6 +85,17 @@ export function GeneratedField<T>({
                             field={field}
                             selectItems={field.inputType.selectOptions}
                         />
+                    }
+                />
+            );
+        }
+        case 'Date': {
+            return (
+                <Field
+                    label={field.title ?? ''}
+                    customLabel={metaTag}
+                    value={
+                        <Date editMode={editMode} field={field} />
                     }
                 />
             );
