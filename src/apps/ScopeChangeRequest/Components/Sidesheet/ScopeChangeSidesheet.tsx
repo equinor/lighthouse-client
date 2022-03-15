@@ -21,7 +21,7 @@ import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMu
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
 import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
-import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
+import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(item.state === 'Draft');
@@ -153,10 +153,9 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                 {data && (
                     <>
                         {editMode ? (
-                            <ScopeChangeRequestForm
-                                closeScrim={() => setEditMode(false)}
-                                scopeChangeId={item.id}
+                            <ScopeChangeRequestEditForm
                                 request={data ?? item}
+                                close={() => setEditMode(false)}
                             />
                         ) : (
                             <RequestDetailView />
