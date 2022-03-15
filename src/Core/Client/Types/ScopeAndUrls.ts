@@ -5,7 +5,7 @@ export interface Scope {
     echoHierarchy: string;
     scopeChange: string;
     constructionProgress: string;
-    pipeTest?: string;
+    releaseControls: string;
     FAM: string;
     STID: string;
     fusionNotifications: string;
@@ -20,7 +20,7 @@ export interface Urls {
     procosys: string;
     scopeChange: string;
     constructionProgress: string;
-    pipeTest?: string;
+    releaseControls: string;
     FAM: string;
     STID: string;
     fusionNotifications: string;
