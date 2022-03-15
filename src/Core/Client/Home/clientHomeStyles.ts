@@ -65,7 +65,7 @@ interface SideItemProps {
 }
 
 export const SideItem = styled.div`
-    margin: 0.5rem;
+    margin: 1rem;
     height: ${({ height }: SideItemProps) => `${height || 325}px`};
     width: 100%;
     background-color: ${tokens.colors.ui.background__default.rgba};

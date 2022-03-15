@@ -1,6 +1,7 @@
 import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
+import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
 import Icon from '../Icon/Icon';
 import { DevBar } from './DevBar/DevBar';
 import Logo from './Logo/Logo';
@@ -36,7 +37,7 @@ const ClientTopBar = (): JSX.Element => {
                         <Avatar alt="User avatar" src={userImageUrl} />
                     )}
                     <Icon name="support" color={tokens.colors.ui.background__medium.rgba} />
-                    {/* <NotificationsDrawer /> */}
+                    <NotificationBell />
                     <Action
                         title="Service Request Form for Johan Castberg Portal"
                         onClick={() => {

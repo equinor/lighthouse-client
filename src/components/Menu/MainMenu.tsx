@@ -3,6 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { isAppActive, useClientContext } from '@equinor/portal-client';
 import { useMemo, useRef, useState } from 'react';
 import { AddMenu } from '../../Core/DataFactory';
+import { PopoutSidesheet } from '../../packages/Sidesheet/Components/PopoutSidesheet';
 import Icon from '../Icon/Icon';
 import { AccordionHeader, AccordionHeaderTitle, AccordionPanel } from './MainMenuExpandedStyles';
 import { MenuItemTitleLink } from './MainMenuStyles';
@@ -166,6 +167,7 @@ export const MainMenu = (): JSX.Element => {
                     );
                 })}
             </Accordion>
+            <PopoutSidesheet />
             <SmallItem>
                 <LinkIconWrapper
                     id="add-menu"

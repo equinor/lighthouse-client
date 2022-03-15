@@ -14,7 +14,6 @@ import {
     TimeStamp,
     Wrapper,
 } from './NotificationCardStyles';
-import { Button } from '@equinor/eds-core-react';
 interface NotificationCardProps {
     notification: Notification;
 }
@@ -32,6 +31,7 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
         <>
             <Wrapper>
                 <LeftSection>
+                    {/* TODO: resolve EDS colors */}
                     <svg
                         width={15}
                         height={15}
@@ -39,29 +39,21 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                     >
-                        <circle cx="6" cy="6" r="5.5" fill={'#E7DEEA'} />
+                        <circle
+                            cx="6"
+                            cy="6"
+                            r="5.5"
+                            fill={notification.seenByUser ? '#E7DEEA' : '#B276B2'}
+                        />
                     </svg>
                     <DetailText>
-                        <NotificationTitle
-                            style={{ color: `${notification.seenByUser ? 'grey' : 'red'}` }}
-                        >
-                            {notification.title}
-                        </NotificationTitle>
+                        <NotificationTitle>{notification.title}</NotificationTitle>
                         <TimeStamp>
                             {DateTime.fromJSDate(new Date(notification.created)).toRelative()}
                         </TimeStamp>
                     </DetailText>
                 </LeftSection>
                 <RightSection>
-                    {!notification.seenByUser && (
-                        <Button
-                            variant="outlined"
-                            onClick={() => mutateAsync({ notificationId: notification.id })}
-                        >
-                            Mark as read
-                        </Button>
-                    )}
-
                     <a
                         onClick={() => {
                             window.open(
