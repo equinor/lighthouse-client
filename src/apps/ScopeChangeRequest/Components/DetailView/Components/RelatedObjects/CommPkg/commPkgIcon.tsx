@@ -2,41 +2,44 @@ import { tokens } from '@equinor/eds-tokens';
 
 const primaryResting = tokens.colors.interactive.primary__resting.hex;
 
+type Colors = [string, string, string, string];
 interface CommPkgIconProps {
     /**
      * From top-left to bottom-right
      * I.E ["orange", "orange", "orange", "orange"]
      */
-    colors?: string[];
+    colors?: Colors;
 }
 
-export const CommPkgIcon = ({ colors = [] }: CommPkgIconProps): JSX.Element => (
+export const CommPkgIcon = ({
+    colors = [primaryResting, primaryResting, primaryResting, primaryResting],
+}: CommPkgIconProps): JSX.Element => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M10.5 20.5866L4 18.2925V10.0758L10.5 13.1346V20.5866Z"
-            fill={colors.at(2) ?? primaryResting}
-            stroke={colors.at(2) ?? primaryResting}
+            fill={colors.at(2)}
+            stroke={colors.at(2)}
             strokeWidth="2"
             strokeLinejoin="round"
         />
         <path
             d="M14.5 20.5866L21 18.2925V10.0758L14.5 13.1346V20.5866Z"
-            fill={colors.at(3) ?? primaryResting}
-            stroke={colors.at(3) ?? primaryResting}
+            fill={colors.at(3)}
+            stroke={colors.at(3)}
             strokeWidth="2"
             strokeLinejoin="round"
         />
         <path
             d="M10.5 8.92422L5.4782 6.56102L10.5 4.49322V8.92422Z"
-            fill={colors.at(0) ?? primaryResting}
-            stroke={colors.at(0) ?? primaryResting}
+            fill={colors.at(0)}
+            stroke={colors.at(0)}
             strokeWidth="2"
             strokeLinejoin="round"
         />
         <path
             d="M14.5 8.92422L19.5218 6.56102L14.5 4.49322V8.92422Z"
-            fill={colors.at(1) ?? primaryResting}
-            stroke={colors.at(1) ?? primaryResting}
+            fill={colors.at(1)}
+            stroke={colors.at(1)}
             strokeWidth="2"
             strokeLinejoin="round"
         />
