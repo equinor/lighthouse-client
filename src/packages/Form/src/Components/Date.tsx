@@ -75,7 +75,7 @@ const DateInput = styled.input`
         outline-offset: 0;
         box-shadow: none;
         outline: 2px solid var(--eds_interactive_primary__resting,rgba(0,112,121,1));
-        outline-offset: 0px
+        outline-offset: 0px;
     }
 
     ::-webkit-calendar-picker-indicator {

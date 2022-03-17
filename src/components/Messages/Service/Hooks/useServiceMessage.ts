@@ -1,7 +1,7 @@
 import { httpClient } from '@equinor/portal-client';
 import { useEffect, useMemo, useState } from 'react';
 import { ServiceMessage } from '../Types/serviceMessage';
-import { storage } from '../utils/storage';
+import { storage } from '@equinor/Utils';
 
 const SM_KEY = 'serviceMessageId';
 

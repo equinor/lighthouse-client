@@ -6,7 +6,7 @@ import { linkForm } from '../Forms/link';
 import { messageForm } from '../Forms/message';
 
 import { Link, ServiceMessage } from '../Types/serviceMessage';
-import { storage } from '../utils/storage';
+import { storage } from '@equinor/Utils';
 import { Container, ScrimContainer } from './ServiceMessagePostStyle';
 
 window['postServiceMessage'] = (prop: string) => {
