@@ -1,4 +1,4 @@
-/**@type {import ('ts-jest').InitialOptionsTsJest} */
+import { InitialOptionsTsJest } from 'ts-jest';
 export default {
     preset: 'ts-jest',
     testEnvironment: 'jsdom',
@@ -8,4 +8,4 @@ export default {
     },
     setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
     modulePathIgnorePatterns: ['<rootDir>/packages'],
-};
+} as InitialOptionsTsJest;
