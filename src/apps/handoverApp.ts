@@ -77,12 +77,12 @@ export function setup(appApi: ClientApi): void {
 
     commPkg.registerFilterOptions({
         excludeKeys: commPkgKeys,
-        typeMap: {
+        headerNames: {
             Responsible__Id: 'Responsible Id',
             Area__Id: 'Area',
             McStatus__Id: 'Mc Status',
         },
-        groupValue: {
+        valueFormatter: {
             start,
         },
     });

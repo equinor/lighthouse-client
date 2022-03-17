@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { ClientContext as context, ClientContextState } from '../ClientContext/clientContext';
 import { AppConfig } from '../Types/AppConfig';
-import { ClientContext } from '../Types/ClientContext';
+import { ClientContext, Facility, FusionContext, Project } from '../Types/ClientContext';
 import { ClientRegistry } from '../Types/ClientRegistry';
 import { ClientSettings } from '../Types/ClientSettings';
 import { UIContext } from '../Types/UIContext';
@@ -29,4 +29,14 @@ export function useRegistry(): ClientRegistry {
 export function useUIContext(): UIContext {
     const { toggleAppPanel, toggleFullscreenMenu, settings } = useClientContext();
     return { toggleAppPanel, toggleFullscreenMenu, ...settings };
+}
+
+export function useFacility(): Facility {
+    return useClientContext().context;
+}
+export function useFusionContext(): FusionContext | undefined {
+    return useClientContext().context.fusionContext;
+}
+export function useProject(): Project {
+    return useClientContext().context.project;
 }

@@ -3,6 +3,7 @@ import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
+import { FetchQueryOptions, QueryFunction } from 'react-query';
 import { TableOptions as ReactTableOptions } from 'react-table';
 import {
     CustomView,
@@ -68,9 +69,16 @@ export interface WorkflowEditorOptions {
     endpoint: string;
 }
 
+export interface PrefetchQueriesOptions {
+    queryKey: string[];
+    queryFn: QueryFunction<unknown, string[]>;
+    options?: FetchQueryOptions<unknown, unknown, unknown, string[]> | undefined;
+}
+
 export interface WorkSpaceConfig<T> {
     name: string;
     objectIdentifier: string;
+    prefetchQueriesOptions?: PrefetchQueriesOptions[];
     onSelect?: (item: T) => void;
     idResolver?: (id: string) => Promise<T | undefined>;
     dataSource?: DataSource<T>;

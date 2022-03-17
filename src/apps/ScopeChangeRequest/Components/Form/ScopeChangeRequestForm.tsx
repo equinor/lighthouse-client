@@ -27,6 +27,8 @@ import { StidTypes } from '../../Types/STID/STIDTypes';
 import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
 import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
+import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
+import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -78,8 +80,17 @@ export const ScopeChangeRequestForm = ({
             scopeChange
         );
         if (scID) {
+            const { baseKey } = scopeChangeQueryKeys(scID);
             attachments.forEach(async (attachment) => {
-                await mutateAsync({ file: attachment, requestId: scID });
+                await mutateAsync({ file: attachment, requestId: scID })
+                    .then(() => queryClient.invalidateQueries(baseKey))
+                    .catch(() =>
+                        spawnConfirmationDialog(
+                            "We're terribly sorry",
+                            'Some attachments failed to upload',
+                            () => void 0
+                        )
+                    );
             });
             setIsRedirecting(true);
 
@@ -110,7 +121,7 @@ export const ScopeChangeRequestForm = ({
     const SubmitButton = () => {
         return (
             <Button disabled={!isValidForm || isLoading} onClick={() => mutate({ draft: false })}>
-                Initiate request
+                Submit
             </Button>
         );
     };
@@ -122,7 +133,7 @@ export const ScopeChangeRequestForm = ({
                 variant={'outlined'}
                 onClick={() => mutate({ draft: true })}
             >
-                {isLoading ? <CircularProgress value={0} size={16} /> : <div>Save as draft</div>}
+                {isLoading ? <CircularProgress value={0} size={16} /> : <div>Save</div>}
             </Button>
         );
     };

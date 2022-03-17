@@ -6,18 +6,16 @@ import { Icon } from '@equinor/eds-core-react';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
-import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
 }
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
-    const { request } = useScopeChangeContext();
-    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+    const { commPkg: commPkgKey } = proCoSysQueryKeys();
 
-    const { data } = useInfiniteCachedQuery(referencesKeys.commPkg(commPkg.procosysNumber), () =>
+    const { data } = useInfiniteCachedQuery(commPkgKey(commPkg.procosysNumber), () =>
         getCommPkgById(commPkg.procosysId)
     );
 
@@ -26,9 +24,8 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
             <Icon name="placeholder_icon" />
             <TagText>
                 <Link
-                    href={`https://${
-                        isProduction() ? 'procosys' : 'procosystest'
-                    }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
+                    href={`https://${isProduction() ? 'procosys' : 'procosystest'
+                        }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
                     target="_blank"
                 >
                     COMM_{commPkg.procosysNumber}

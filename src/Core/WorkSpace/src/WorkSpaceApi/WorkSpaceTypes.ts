@@ -4,6 +4,7 @@ import { FilterOptions } from '@equinor/filter';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import {
     PowerBiOptions,
+    PrefetchQueriesOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
@@ -44,6 +45,8 @@ export interface ViewOptions<T> {
 }
 
 export interface WorkSpaceApi<T> {
+    /** Use with caution, only cache small datasets */
+    registerPrefetchQueries: (queryOptions: PrefetchQueriesOptions[]) => WorkSpaceApi<T>;
     registerDataSource: (dataSource: DataSource<T>) => WorkSpaceApi<T>;
     registerIdResolver: (idResolver: IdResolverFunc<T>) => WorkSpaceApi<T>;
     registerDataCreator: (factory: FactoryOptions) => WorkSpaceApi<T>;

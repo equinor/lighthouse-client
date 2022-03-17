@@ -6,6 +6,8 @@ import {
     useQueryClient,
     MutationKey,
 } from 'react-query';
+import { useDataContext } from '../../../../Core/WorkSpace/src/Context/DataProvider';
+import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
 
 export function useScopeChangeMutation<
     TData = unknown,
@@ -22,9 +24,14 @@ export function useScopeChangeMutation<
     >
 ): UseMutationResult<TData, TError, TVariables, TContext> {
     const queryClient = useQueryClient();
+    const {
+        dataApi: { queryKey: workspaceKey },
+    } = useDataContext();
+    const { baseKey } = scopeChangeQueryKeys(requestId);
 
     function invalidate() {
-        queryClient.invalidateQueries();
+        queryClient.invalidateQueries(baseKey);
+        queryClient.invalidateQueries(workspaceKey);
     }
 
     return useMutation(mutationKey, mutationFn, { ...options, onSettled: invalidate });

@@ -67,6 +67,7 @@ export function HandoverGardenItem({
                 backgroundColor={backgroundColor}
                 textColor={textColor}
                 onClick={onClick}
+                isExpanded={columnExpanded}
             >
                 <Icons>
                     <SizeIcons size={size} status={status} />
