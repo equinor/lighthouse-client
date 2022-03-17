@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { MainLayout } from './components/Layouts/MainLayout';
 import LoadingPage from './components/Loading/LoadingPage';
+import { ServiceMessagePost } from './components/Messages/Service/Components/ServiceMessagePost';
 import { ClientRoutes } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
@@ -73,10 +74,12 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
         <ErrorBoundary FallbackComponent={ErrorFallback}>
             <QueryClientProvider client={queryClient}>
                 <GlobalStyle />
+                <ServiceMessagePost />
                 <ConfirmationDialog />
                 <ClientContextProvider>
                     <BrowserRouter>
                         <ClientTopBar />
+
                         <MainLayout>
                             <ClientRoutes />
                         </MainLayout>

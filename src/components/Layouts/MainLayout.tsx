@@ -3,6 +3,7 @@ import { useSideSheet } from '../../packages/Sidesheet/context/sidesheetContext'
 import { getWidth } from '../../packages/Sidesheet/Utils/getWidth';
 import { FullscreenMainMenu } from '../Menu/FullscreenMainMenu';
 import { MainMenu } from '../Menu/MainMenu';
+import { ServiceMessageBanner, useServiceMessage } from '../Messages';
 import { ChildrenWrapper, MainMenuWrapper, Wrapper } from './MainLayoutStyles';
 
 interface MainLayoutProps {
@@ -14,14 +15,16 @@ export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
         settings: { fullscreenMenuActive },
     } = useClientContext();
     const sideSheet = useSideSheet();
+    const messageData = useServiceMessage();
 
     return (
-        <Wrapper>
+        <Wrapper serviceMessageActive={messageData.isActive}>
             {fullscreenMenuActive && <FullscreenMainMenu />}
             <MainMenuWrapper>
                 <MainMenu />
             </MainMenuWrapper>
             <ChildrenWrapper sideSheetWidth={getWidth(sideSheet)}>{children}</ChildrenWrapper>
+            {messageData.isActive && <ServiceMessageBanner {...messageData} />}
         </Wrapper>
     );
 };
