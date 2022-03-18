@@ -5,7 +5,15 @@ import { getStatusKey, getSystemKey, groupBySystem, sortByPipetestStatus } from 
 
 export type ExtendedGardenFields = 'system';
 
+function generateNestedKeyLiteral<T, K>(keyA: keyof T, keyB: keyof K) {
+    return `${keyA}.${keyB}`;
+}
+
 export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
     status: { label: 'Status', getKey: getStatusKey, getColumnSort: sortByPipetestStatus },
     system: { label: 'System', getKey: getSystemKey, getColumnSort: groupBySystem },
+    checkLists: {
+        label: 'HeatTraces',
+        key: 'tagNo',
+    },
 };
