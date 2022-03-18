@@ -129,14 +129,7 @@ export const Viewer: React.FC<ViewerProps> = ({
 
             <WrapperMenu>
                 <Menu>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.selectBy();
-                        }}
-                    >
-                        Test
-                    </Button>
+
                     <Button
                         variant="ghost_icon"
                         onClick={() => {
