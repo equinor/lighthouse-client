@@ -72,8 +72,7 @@ export const ModelViewerContextProvider = ({
                 const selection = new Echo3dMultiSelectionActions(
                     plantState.echo3DClient.viewer,
                     plantState.model,
-                    plantState.currentPlant.hierarchyId,
-                    plantState.echo3DClient.client
+                    plantState.currentPlant.hierarchyId
                 );
                 setSelection(selection);
                 if (!plantState.tags) return;
