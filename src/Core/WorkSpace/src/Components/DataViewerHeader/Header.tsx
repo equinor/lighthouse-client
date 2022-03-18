@@ -2,14 +2,13 @@ import { useFactory } from '@equinor/DataFactory';
 import { Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilteredData } from '@equinor/filter';
-import { DateTime } from 'luxon';
-import { useEffect, useState } from 'react';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
 import Icon from '../../../../../components/Icon/Icon';
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { useSettings } from '../../../../Client/Hooks';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useDataContext } from '../../Context/DataProvider';
+import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
 import { TabButton } from '../ToggleButton';
 import { Divider, HeaderWrapper, LeftSection, RightSection, Title, TitleBar } from './HeaderStyles';
 
@@ -38,19 +37,7 @@ export const CompletionViewHeader = ({
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
     const { data } = useFilteredData();
-    const [timestamp, setTimestamp] = useState<string | null>(
-        makeTimestamp(dataApi?.dataUpdatedAt)
-    );
-
-    function makeTimestamp(timeInMs: number): string | null {
-        if (typeof timeInMs !== 'number') return null;
-        return DateTime.fromMillis(timeInMs).toRelative({ unit: 'minutes' });
-    }
-
-    useEffect(() => {
-        setTimestamp(makeTimestamp(dataApi?.dataUpdatedAt));
-        setInterval(() => setTimestamp(makeTimestamp(dataApi?.dataUpdatedAt)), 1000 * 60);
-    }, [dataApi?.dataUpdatedAt]);
+    const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
 
     const { clientEnv } = useSettings();
 
