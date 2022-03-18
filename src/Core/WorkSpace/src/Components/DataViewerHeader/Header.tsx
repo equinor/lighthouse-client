@@ -38,16 +38,19 @@ export const CompletionViewHeader = ({
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
     const { data } = useFilteredData();
-    const [timestamp, setTimestamp] = useState<string | null>(makeTimestamp(dataApi.dataUpdatedAt));
+    const [timestamp, setTimestamp] = useState<string | null>(
+        makeTimestamp(dataApi?.dataUpdatedAt)
+    );
 
     function makeTimestamp(timeInMs: number): string | null {
+        if (typeof timeInMs !== 'number') return null;
         return DateTime.fromMillis(timeInMs).toRelative({ unit: 'minutes' });
     }
 
     useEffect(() => {
-        setTimestamp(makeTimestamp(dataApi.dataUpdatedAt));
-        setInterval(() => setTimestamp(makeTimestamp(dataApi.dataUpdatedAt)), 1000 * 60);
-    }, [dataApi.dataUpdatedAt]);
+        setTimestamp(makeTimestamp(dataApi?.dataUpdatedAt));
+        setInterval(() => setTimestamp(makeTimestamp(dataApi?.dataUpdatedAt)), 1000 * 60);
+    }, [dataApi?.dataUpdatedAt]);
 
     const { clientEnv } = useSettings();
 
@@ -87,13 +90,13 @@ export const CompletionViewHeader = ({
                 <Divider />
                 <TabButton
                     color={
-                        dataApi.isStale
+                        dataApi?.isStale
                             ? tokens.colors.infographic.primary__energy_red_100.hex
                             : 'grey'
                     }
                     aria-selected={false}
                     title={
-                        dataApi.isStale
+                        dataApi?.isStale
                             ? 'This data is over 1 hour old and might be outdated'
                             : `Updated: ${timestamp}`
                     }

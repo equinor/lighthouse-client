@@ -2,11 +2,11 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { isProduction } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
-import { Icon } from '@equinor/eds-core-react';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
+import { CommPkgIcon } from './commPkgIcon';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
@@ -21,7 +21,7 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
 
     return (
         <Wrapper key={commPkg.procosysId}>
-            <Icon name="placeholder_icon" />
+            <CommPkgIcon />
             <TagText>
                 <Link
                     href={`https://${isProduction() ? 'procosys' : 'procosystest'
