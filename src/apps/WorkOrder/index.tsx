@@ -28,7 +28,7 @@ export function setup(appApi: ClientApi): void {
     async function responseParser(response: Response) {
         const parsedResponse = JSON.parse(await response.text()) as WorkOrder[];
         return parsedResponse.slice(0, 10);
-    });
+    }
 
     appApi
         .createWorkSpace<WorkOrder>({
