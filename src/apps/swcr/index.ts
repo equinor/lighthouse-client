@@ -13,7 +13,7 @@ export function setup(appApi: ClientApi): void {
         objectIdentifier: 'swcrNo',
     });
 
-    swcr.registerDataSource(async () => {
+    async function responseAsync(signal?: AbortSignal) {
         const { fusion } = httpClient();
         fusion.setBaseUrl(
             `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'
@@ -22,14 +22,16 @@ export function setup(appApi: ClientApi): void {
         const contextId = isProduction()
             ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
             : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-        const response = await fusion.fetch(`${contextId}/swcr`);
+        return await fusion.fetch(`${contextId}/swcr`, { signal: signal });
+    }
 
-        //pro-s-dataproxy-ci.azurewebsites.net/api/contexts/b9a3246a-ddb5-4086-b4ec-dd4b0e88b700/swcr
-
-        const swcrPackages = JSON.parse(await response.text()) as SwcrPackage[];
+    async function responseParser(res: Response) {
+        const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
 
         return swcrPackages.sort(sortPackagesByStatusAndNumber);
-    });
+    }
+
+    swcr.registerDataSource({ responseAsync: responseAsync, responseParser: responseParser });
 
     swcr.registerFilterOptions({
         defaultActiveFilters: [
