@@ -19,13 +19,15 @@ export function setup(appApi: ClientApi): void {
         const json = JSON.parse(await response.text());
         json.map((pipetest: Pipetest) => {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
+            pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
             pipetest.status = getPipetestStatus(pipetest.checkLists);
             return pipetest;
         });
         sortPipetests(json);
         return json;
     };
-    const releaseControlExcludeKeys: (keyof Pipetest)[] = ['name', 'checkLists'];
+
+    const releaseControlExcludeKeys: (keyof Pipetest)[] = ['name'];
 
     const request = appApi
         .createWorkSpace<Pipetest>({
