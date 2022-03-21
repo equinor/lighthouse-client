@@ -62,7 +62,6 @@ export const ModelViewerContextProvider = ({
         (async () => {
             setMessage();
             if (
-                !plantState.tags ||
                 !plantState.echo3DClient ||
                 !plantState.model ||
                 !plantState.currentPlant
@@ -76,6 +75,7 @@ export const ModelViewerContextProvider = ({
                     plantState.currentPlant.hierarchyId
                 );
                 setSelection(selection);
+                if (!plantState.tags) return;
                 await selection.setSelectionBasedOnE3dTagNos(plantState.tags);
 
                 selection.clipSelection(true, plantState.padding);

@@ -10,25 +10,12 @@ import { ReleaseControlGardenItem } from './Components/Garden/ReleaseControlGard
 import { checklistTagFunc, createChecklistSteps, getHTList } from './Functions/tableHelpers';
 
 export function setup(appApi: ClientApi): void {
-    const request = appApi.createWorkSpace<Pipetest>({
-        CustomSidesheet: ReleaseControlSidesheet,
-        objectIdentifier: 'name',
-    });
-
-    request.registerDataCreator({
-        title: 'Release control',
-        component: ReleaseControlProcessForm,
-    });
-
-    // request.registerDataSource(async () => {
-    //     const { releaseControls } = httpClient();
-    //     const response = await releaseControls.fetch(`/api/release-control-processes`);
-    //     return JSON.parse(await response.text());
-    // });
-
-    request.registerDataSource(async () => {
+    const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
         const { FAM } = httpClient();
-        const response = await FAM.fetch(`/v0.1/procosys/pipetest/JCA`);
+        return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal: signal });
+    };
+
+    const responseParser = async (response: Response) => {
         const json = JSON.parse(await response.text());
         json.map((pipetest: Pipetest) => {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
@@ -38,20 +25,39 @@ export function setup(appApi: ClientApi): void {
         });
         sortPipetests(json);
         return json;
-    });
+    };
 
     const releaseControlExcludeKeys: (keyof Pipetest)[] = ['name'];
 
-    request.registerFilterOptions({
-        excludeKeys: releaseControlExcludeKeys,
-        headerNames: {},
-        defaultActiveFilters: ['status', 'System'],
-        valueFormatter: {
-            System: (item: Pipetest): string => {
-                return item.name.substring(0, 2);
+    const request = appApi
+        .createWorkSpace<Pipetest>({
+            CustomSidesheet: ReleaseControlSidesheet,
+            objectIdentifier: 'name',
+        })
+        .registerDataSource({
+            responseAsync: responseAsync,
+            responseParser: responseParser,
+        })
+        .registerDataCreator({
+            title: 'Release control',
+            component: ReleaseControlProcessForm,
+        })
+        .registerFilterOptions({
+            excludeKeys: releaseControlExcludeKeys,
+            headerNames: {},
+            defaultActiveFilters: ['status', 'System'],
+            valueFormatter: {
+                System: (item: Pipetest): string => {
+                    return item.name.substring(0, 2);
+                },
             },
-        },
-    });
+        });
+
+    // request.registerDataSource(async () => {
+    //     const { releaseControls } = httpClient();
+    //     const response = await releaseControls.fetch(`/api/release-control-processes`);
+    //     return JSON.parse(await response.text());
+    // });
 
     request.registerTableOptions({
         objectIdentifierKey: 'name',

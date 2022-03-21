@@ -6,7 +6,7 @@ const getObjectValue = <T>(item: T, key: string): string => item[key];
  * Creates a object representing the det tilter data based on the objects own properties.
  */
 export function createFilterData<T>(dataArray: T[], options?: FilterOptions<T>): FilterData {
-    if (dataArray.length === 0) return {};
+    if (!dataArray || dataArray.length === 0) return {};
 
     const filterData = dataArray.reduce((filterData, item) => {
         /**Adding the custom groupeValues configured if present to dataItem */

@@ -288,6 +288,7 @@ const ReassignPadding = styled.div`
 const WorkflowStepViewContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    min-height: 48px;
     align-items: center;
     width: -webkit-fill-available;
     &:hover {

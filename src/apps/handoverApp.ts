@@ -60,38 +60,39 @@ function start(item: CommPkg): string {
 
 export function setup(appApi: ClientApi): void {
     const api = baseClient(appApi.authProvider, [appApi.appConfig.scope.procosys]);
-    const commPkg = appApi.createWorkSpace<CommPkg>({ objectIdentifier: 'Id' });
+    //TODO: Extract config to consts
+    appApi
+        .createWorkSpace<CommPkg>({ objectIdentifier: 'Id' })
+        .registerDataSource({
+            responseAsync: responseAsync,
+        })
+        .registerTableOptions({ objectIdentifierKey: 'CommPkgNo' })
+        .registerGardenOptions({
+            gardenKey: 'Responsible__Id',
+            itemKey: 'CommPkgNo',
+        })
+        .registerFilterOptions({
+            excludeKeys: commPkgKeys,
+            headerNames: {
+                Responsible__Id: 'Responsible Id',
+                Area__Id: 'Area',
+                McStatus__Id: 'Mc Status',
+            },
+            valueFormatter: {
+                start,
+            },
+        });
 
-    commPkg.registerDataSource(async () => {
+    async function responseAsync(signal?: AbortSignal) {
         const plantId = 'PCS$JOHAN_CASTBERG';
         // const project = 'L.O532C.002';
-        const response = await api.fetch(
+        return await api.fetch(
             // `https://api-lighthouse-production.playground..equinor.com/commpks/${plantId}/${project}`
             `https://procosyswebapi.equinor.com/api/Search?plantId=${plantId}&savedSearchId=96128&itemsPerPage=10&paging=false&sortColumns=false&api-version=4.1`,
-            { body: JSON.stringify([]), method: 'POST' }
+            { body: JSON.stringify([]), method: 'POST', signal: signal }
         );
+    }
 
-        const data = JSON.parse(await response.text());
-        return data;
-    });
-
-    commPkg.registerFilterOptions({
-        excludeKeys: commPkgKeys,
-        headerNames: {
-            Responsible__Id: 'Responsible Id',
-            Area__Id: 'Area',
-            McStatus__Id: 'Mc Status',
-        },
-        valueFormatter: {
-            start,
-        },
-    });
-
-    commPkg.registerTableOptions({ objectIdentifierKey: 'CommPkgNo' });
-    commPkg.registerGardenOptions({
-        gardenKey: 'Responsible__Id',
-        itemKey: 'CommPkgNo',
-    });
     // commPkg.registerTreeOptions({
     //     groupByKeys: ['Status__Id', 'CommPkgNo'],
     //     rootNode: 'Responsible__Id'
