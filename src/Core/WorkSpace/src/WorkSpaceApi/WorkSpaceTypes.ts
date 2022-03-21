@@ -11,7 +11,13 @@ import {
     WorkflowEditorOptions,
 } from './workspaceState';
 
-export type DataSource<T> = (abortController?: AbortController) => Promise<T[]>;
+export interface DataSource<T> {
+    /** Function that returns the api call promise */
+    responseAsync: (signal?: AbortSignal) => Promise<Response>;
+    /** Function that parses the response to correct format, defaults to just parsing the raw response */
+    responseParser?: (Response: Response) => Promise<T[]>;
+}
+
 export type Validator<T> = (data: unknown[]) => T[];
 export type FactoryOptions = Omit<Factory, 'factoryId'>;
 export interface IdResolverFunc<T> {
