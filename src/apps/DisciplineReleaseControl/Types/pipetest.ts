@@ -4,6 +4,7 @@ export interface Pipetest {
     name: string;
     status: PipetestStatus;
     checkLists: CheckList[];
+    heatTraces: HeatTrace[];
     // description: string;
     // dueDate: string;
     // lineAndSpools: string[][];
@@ -21,6 +22,8 @@ export interface CheckList {
     isHeatTrace: boolean;
     workflowStepText: string | undefined;
 }
+
+export interface HeatTrace extends CheckList { }
 
 export type CheckListType = {
     tagNo: string;
