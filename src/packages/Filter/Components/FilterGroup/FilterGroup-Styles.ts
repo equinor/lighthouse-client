@@ -12,7 +12,7 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0.5em;
-    width: 250px;
+    width: 300px;
     min-width: 200px;
     height: fit-content;
     word-wrap: break-word;
