@@ -27,6 +27,7 @@ stages:
     displayName: 'Docker - Build and Push'
     variables:
       envName: 'build'
+      envLabel: 'non-prod'
       envRg: '${{ variables.envRgName }}'
       serviceConnection: '${{ variables.nonProdServiceConnection }}'
       envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
@@ -52,10 +53,14 @@ stages:
           condition: and(always(), ne(variables['Build.Reason'], 'PullRequest'))
           deploymentName: 'docker_build_push'
           envGroup: '${{ variables.envGroupName }}'
+          envLabel: '${{ variables.envLabel }}'
           buildCommand: buildAndPush
           dockerfilePath: '${{ variables.dockerfilePath }}'
           repository: '${{ variables.repositoryName }}'
           dockerRegistryServiceConnection: '${{ variables.dockerRegistryServiceConnectionName }}'
+          kvName: '${{ variables.kvSharedName }}'
+          kvRgName: '${{ variables.kvSharedRgName }}'
+          serviceConnection: '${{ variables.serviceConnection }}'          
 
   # Deploy to dev environment
   - stage: dev
@@ -80,7 +85,11 @@ stages:
           clientEnv: '${{ variables.envName }}'
           configURI: '${{ variables.configURI }}'
           rgName: '${{variables.rgName}}'
-          envGroup: '${{ variables.envGroupName }}'
+          kvSharedName: '${{ variables.kvSharedName }}'
+          kvName: '${{ variables.kvName }}'
+          envLabel: '${{ variables.envLabel }}'
+          envName: '${{ variables.envName }}'          
+          envGroup: "${{ variables.envGroupName }}"          
           repository: '${{ variables.repositoryName }}'
           containerRegistry: '${{ variables.containerRegistry }}'
           appName: '${{ variables.appName }}'
@@ -109,6 +118,10 @@ stages:
           clientEnv: '${{ variables.envName }}'
           configURI: '${{ variables.configURI }}'
           rgName: '${{variables.rgName}}'
+          kvSharedName: '${{ variables.kvSharedName }}'
+          kvName: '${{ variables.kvName }}'
+          envLabel: '${{ variables.envLabel }}'
+          envName: '${{ variables.envName }}'                    
           envGroup: '${{ variables.envGroupName }}'
           repository: '${{ variables.repositoryName }}'
           containerRegistry: '${{ variables.containerRegistry }}'
