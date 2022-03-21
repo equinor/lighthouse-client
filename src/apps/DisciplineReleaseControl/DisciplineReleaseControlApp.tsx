@@ -3,7 +3,12 @@ import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ReleaseControlProcessForm } from './Components/Form/ReleaseControlProcessForm';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
-import { getPipetestStatus, sortPipetestChecklist, sortPipetests } from './Functions/statusHelpers';
+import {
+    getPipetestStatus,
+    getYearAndWeekFromString,
+    sortPipetestChecklist,
+    sortPipetests,
+} from './Functions/statusHelpers';
 import { fieldSettings } from './Components/Garden/gardenSetup';
 import { Pipetest } from './Types/pipetest';
 import { ReleaseControlGardenItem } from './Components/Garden/ReleaseControlGardenItem';
@@ -45,10 +50,13 @@ export function setup(appApi: ClientApi): void {
         .registerFilterOptions({
             excludeKeys: releaseControlExcludeKeys,
             headerNames: {},
-            defaultActiveFilters: ['status', 'System'],
+            defaultActiveFilters: ['status', 'System', 'Priority'],
             valueFormatter: {
                 System: (item: Pipetest): string => {
                     return item.name.substring(0, 2);
+                },
+                Priority: (item: Pipetest): string => {
+                    return item.commPkPriority1 !== '' ? item.commPkPriority1 : 'Unknown';
                 },
             },
         });
@@ -61,13 +69,15 @@ export function setup(appApi: ClientApi): void {
 
     request.registerTableOptions({
         objectIdentifierKey: 'name',
-        columnOrder: ['name', 'status'],
-        hiddenColumns: [],
+        columnOrder: ['name', 'description', 'status'],
+        hiddenColumns: ['rfccPlanned'],
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Pipetest', width: 200 },
+            { key: 'description', title: 'Description', width: 400 },
             { key: 'status', title: 'Status', width: 300 },
             { key: 'checkLists', title: 'Process', width: 260 },
+            { key: 'commPkPriority1', title: 'Priority', width: 200 },
         ],
         customCellView: [
             {
@@ -88,10 +98,20 @@ export function setup(appApi: ClientApi): void {
         ],
         customColumns: [
             {
+                id: 'dueByWeek',
+                Header: 'Due by week',
+                Aggregated: () => null,
+                width: 300,
+                aggregate: 'count',
+                Cell: (cell) => {
+                    return getYearAndWeekFromString(cell.row.values.rfccPlanned);
+                },
+            },
+            {
                 id: 'htList',
                 Header: 'Heattraces',
                 Aggregated: () => null,
-                width: 1700,
+                width: 800,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return getHTList(cell.row.values.checkLists.content.checkLists);
