@@ -39,7 +39,7 @@ export function setup(appApi: ClientApi): void {
         return json;
     });
 
-    const releaseControlExcludeKeys: (keyof Pipetest)[] = ['name', 'checkLists'];
+    const releaseControlExcludeKeys: (keyof Pipetest)[] = ['name'];
 
     request.registerFilterOptions({
         excludeKeys: releaseControlExcludeKeys,
@@ -99,6 +99,23 @@ export function setup(appApi: ClientApi): void {
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
+        },
+        intercepters: {
+            preGroupFiltering: (data, key) =>
+                key === 'checkLists'
+                    ? data.reduce(
+                        (prev, curr) => [
+                            ...prev,
+                            {
+                                ...curr,
+                                checkLists: curr.checkLists.filter(
+                                    ({ isHeatTrace }) => isHeatTrace
+                                ),
+                            },
+                        ],
+                        [] as Pipetest[]
+                    )
+                    : data,
         },
     });
 }

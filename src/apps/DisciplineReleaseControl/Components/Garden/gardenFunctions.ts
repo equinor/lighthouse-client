@@ -14,11 +14,15 @@ export const getStatusKey: GetKeyFunction<Pipetest> = (item) => {
 
 export const sortByPipetestStatus = (a: string, b: string): number => {
     return PipetestStatusOrder[getPipetestStatusEnumByValue(a)]
-        .toString()
-        .localeCompare(PipetestStatusOrder[getPipetestStatusEnumByValue(b)].toString(), undefined, {
-            numeric: true,
-            sensitivity: 'base',
-        });
+        ?.toString()
+        ?.localeCompare(
+            PipetestStatusOrder[getPipetestStatusEnumByValue(b)].toString(),
+            undefined,
+            {
+                numeric: true,
+                sensitivity: 'base',
+            }
+        );
 };
 
 export const getSystemKey: GetKeyFunction<Pipetest> = (item) => {

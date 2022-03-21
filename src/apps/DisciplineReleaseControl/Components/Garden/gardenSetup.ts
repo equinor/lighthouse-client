@@ -8,4 +8,8 @@ export type ExtendedGardenFields = 'system';
 export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
     status: { label: 'Status', getKey: getStatusKey, getColumnSort: sortByPipetestStatus },
     system: { label: 'System', getKey: getSystemKey, getColumnSort: groupBySystem },
+    checkLists: {
+        label: 'HeatTraces',
+        key: 'tagNo',
+    },
 };
