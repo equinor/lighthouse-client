@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import {
     CheckListStatus,
     PipetestCheckListOrder,
@@ -95,23 +96,42 @@ export function isCheckListTestOk(checkLists: CheckList[], type: CheckListStepTa
         .every((x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError);
 }
 
-//TODO - fix for when tests are double OS
 export function isCheckListStepsInRightOrder(
     checkLists: CheckList[],
     checkListStep: PipetestStatusOrder
 ): boolean {
     let rightOrder = true;
+
     checkLists = checkLists.filter((x) => getChecklistSortValue(x) > checkListStep);
-    //TODO - check statuses in group, and not individually
-    if (
-        checkLists.some(
-            (x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError
-        )
-    ) {
-        rightOrder = false;
+
+    const groupedArrays = checkLists.reduce(function (r, a) {
+        r[a.formularType] = r[a.formularType] || [];
+        r[a.formularType].push(a);
+        return r;
+    }, Object.create(null));
+
+    for (const key in groupedArrays) {
+        const array = groupedArrays[key];
+        if (
+            array.every(
+                (x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError
+            )
+        ) {
+            rightOrder = false;
+        }
     }
 
     return rightOrder;
+}
+
+export function isCheckListGroupOk(checkLists: CheckList[]): boolean {
+    return checkLists.every(
+        (x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError
+    );
+}
+
+export function getPipetestStatusEnumByValue(enumValue: string): string {
+    return Object.keys(PipetestStatus).filter((x) => PipetestStatus[x] === enumValue)[0];
 }
 
 export function getPipetestStatusSortValue(pipetest: Pipetest): number {
@@ -166,3 +186,19 @@ export function getPipetestStatusForStep(checkLists: CheckList[]): string {
         return CheckListStatus.OK;
     }
 }
+
+export const getYearAndWeekFromDate = (date: Date): string => {
+    const dateTime = DateTime.local(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    return `${dateTime.weekYear}-${dateTime.weekNumber}`;
+};
+
+export const DATE_BLANKSTRING = 'No Date';
+
+export const getYearAndWeekFromString = (dateString: string, removeDays = 0): string => {
+    const date = new Date(dateString);
+    return DateTime.fromJSDate(date).isValid
+        ? getYearAndWeekFromDate(
+              removeDays ? new Date(date.setDate(date.getDate() - removeDays)) : date
+          )
+        : DATE_BLANKSTRING;
+};
