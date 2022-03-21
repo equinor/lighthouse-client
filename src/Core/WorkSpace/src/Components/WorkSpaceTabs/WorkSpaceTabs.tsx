@@ -26,7 +26,11 @@ export const WorkSpaceTabs = ({ tabs, activeTab, title }: CompletionViewTabsProp
                             <WorkspaceErrorPage>
                                 <DumpsterFireDialog
                                     navigateAction={navigate}
-                                    text={dataApi.error as string}
+                                    text={
+                                        typeof dataApi.error === 'string'
+                                            ? dataApi.error
+                                            : 'Something went wrong'
+                                    }
                                 />
                             </WorkspaceErrorPage>
                         ) : dataApi?.isLoading ? (
