@@ -2,28 +2,32 @@ GithubActions:
     - .github/**
 
 Apps:
-    - ./src/apps/**
+    - src/apps/**
 
 Core:
-    - ./src/Core/**
+    - src/Core/**
+
+Portal:
+    - src/components/Menu**
+    - src/components/TopBar**
 
 Packages:
-    - ./src/packages/**
+    - src/packages/**
 
 WorkSpace:
-    - ./src/Core/WorkSpace/**
+    - src/Core/WorkSpace/**
 
 PageViewer:
-    - ./src/Core/PageViewer/**
+    - src/Core/PageViewer/**
 
 Client:
-    - ./src/Core/Client/**
+    - src/Core/Client/**
 
 Configuration:
-    - ./*
+    - /*
 
 Pipelines:
-    - ./pipelines/*
+    - pipelines/*
 
 Dependencies:
     - package.json
