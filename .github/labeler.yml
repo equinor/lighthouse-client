@@ -7,9 +7,6 @@ Apps:
 Core:
     - src/Core/**
 
-Components:
-    - src/components/**
-
 Portal:
     - src/components/Menu**
     - src/components/TopBar**
