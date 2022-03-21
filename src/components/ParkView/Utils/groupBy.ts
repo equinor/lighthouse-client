@@ -149,10 +149,6 @@ function groupByArray<T>({
     }, [] as (string | number)[]);
 
     const groups: GardenGroups<T> = groupNames.map((groupName): DataSet<T> => {
-        function getChildArray(item: T, key: string) {
-            return item[key as keyof T] as unknown as Array<Record<string, unknown>>;
-        }
-
         const parentsContainingChildren = arr.filter((item) =>
             getChildArray(item, key as string)
                 .map((y) => (typeof y === 'object' ? y[childKey as string] : y))
@@ -164,7 +160,7 @@ function groupByArray<T>({
             isExpanded: Boolean(isExpanded),
             subGroups: [],
             value: groupName as string,
-            count: parentsContainingChildren.length,
+            count: 0,
             items: parentsContainingChildren,
         };
     });
@@ -177,11 +173,15 @@ function groupByArray<T>({
             groupKey: key as keyof T,
             isExpanded: Boolean(isExpanded),
             subGroups: [],
-            count: blanks.length,
+            count: 0,
             value: '(Blank)',
             items: blanks,
         });
     }
 
     return groups;
+}
+
+function getChildArray<T>(item: T, key: string) {
+    return item[key as keyof T] as unknown as Array<Record<string, unknown>>;
 }

@@ -101,22 +101,5 @@ export function setup(appApi: ClientApi): void {
         customViews: {
             customItemView: ReleaseControlGardenItem,
         },
-        // intercepters: {
-        //     preGroupFiltering: (data, key) =>
-        //         key === 'checkLists'
-        //             ? data.reduce(
-        //                 (prev, curr) => [
-        //                     ...prev,
-        //                     {
-        //                         ...curr,
-        //                         checkLists: curr.checkLists.filter(
-        //                             ({ isHeatTrace }) => isHeatTrace
-        //                         ),
-        //                     },
-        //                 ],
-        //                 [] as Pipetest[]
-        //             )
-        //             : data,
-        // },
     });
 }
