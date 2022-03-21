@@ -7,10 +7,6 @@ Apps:
 Core:
     - src/Core/**
 
-Portal:
-    - src/components/Menu**
-    - src/components/TopBar**
-
 Packages:
     - src/packages/**
 
@@ -20,8 +16,10 @@ WorkSpace:
 PageViewer:
     - src/Core/PageViewer/**
 
-Client:
+Portal:
     - src/Core/Client/**
+    - src/components/Menu/**
+    - src/components/TopBar/**
 
 Configuration:
     - /*
