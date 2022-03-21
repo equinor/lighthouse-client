@@ -4,15 +4,17 @@ import { Icon } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 
 import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
-import { reassignCriteria, unsignCriteria } from '../../../../Api/ScopeChange/Workflow';
+import {
+    reassignCriteria,
+    unsignCriteria,
+    signCriteria,
+} from '../../../../Api/ScopeChange/Workflow/';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useConditionalRender } from '../../../../Hooks/useConditionalRender';
-import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { CriteriaDetail } from './CriteriaDetail';
 import { CriteriaActions } from '../../Types/actions';
 import { AddContributor } from './AddContributor';
 import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { signCriteria } from '../../../../Api/ScopeChange/Workflow';
 import { SignWithComment } from './SignWithComment';
 import { PCSPersonRoleSearch } from '../../../SearchableDropdown/PCSPersonRoleSearch';
 import { TypedSelectOption } from '../../../../Api/Search/searchType';
@@ -20,12 +22,14 @@ import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
 import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
 import { useQueryClient } from 'react-query';
-import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
+import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
 import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
-import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 
 interface OnSignStepAction {
     action: 'Approved' | 'Rejected';
+    closeRequest: boolean;
 }
 
 interface WorkflowCriteriasProps {
@@ -45,8 +49,8 @@ export const WorkflowCriteria = ({
     const [showSignWithComment, setShowSignWithComment] = useState(false);
 
     const queryClient = useQueryClient();
-    const { workflowKeys } = useScopechangeMutationKeyGen(request.id);
-    const { baseKey } = useScopechangeQueryKeyGen(request.id);
+    const { workflowKeys } = scopeChangeMutationKeys(request.id);
+    const { baseKey } = scopeChangeQueryKeys(request.id);
     const workflowLoading = useIsWorkflowLoading();
 
     const { criteriaUnsignKey, criteriaReassignKey, criteriaSignKey } = workflowKeys;
@@ -65,7 +69,7 @@ export const WorkflowCriteria = ({
             actions.push({
                 label: CriteriaActions.Sign,
                 icon: <Icon name="check_circle_outlined" color="grey" />,
-                onClick: () => signMutation({ action: 'Approved' }),
+                onClick: () => signMutation({ action: 'Approved', closeRequest: false }),
                 isDisabled: !canSign,
             });
             actions.push({
@@ -74,11 +78,17 @@ export const WorkflowCriteria = ({
                 onClick: () => setShowSignWithComment(true),
                 isDisabled: !canSign,
             });
+
+            actions.push({
+                label: 'Reject and close',
+                onClick: () => signMutation({ action: 'Rejected', closeRequest: true }),
+                isDisabled: !canSign,
+            });
             if (step.order !== 0) {
                 actions.push({
                     label: 'Reject',
                     icon: <Icon name="close_circle_outlined" color="grey" />,
-                    onClick: () => signMutation({ action: 'Rejected' }),
+                    onClick: () => signMutation({ action: 'Rejected', closeRequest: false }),
                     isDisabled: !canSign,
                 });
             }
@@ -138,12 +148,31 @@ export const WorkflowCriteria = ({
         }
     }, [criteria.id, request.id, selected, step.id]);
 
-    async function onSignStep({ action }: OnSignStepAction) {
+    async function onSignStep({ action, closeRequest }: OnSignStepAction) {
+        if (closeRequest) {
+            await signCriteria({
+                closeRequest: true,
+                criteriaId: criteria.id,
+                requestId: request.id,
+                stepId: step.id,
+                verdict: 'Rejected',
+                comment: '',
+            });
+            return;
+        }
+
         const unsignedCriterias = request.workflowSteps
             .find((x) => x.id === step.id)
             ?.criterias.filter((x) => x.signedAtUtc === null);
         const sign = async () => {
-            await signCriteria(request.id, step.id, criteria.id, action, signComment).then(() => {
+            await signCriteria({
+                requestId: request.id,
+                stepId: step.id,
+                criteriaId: criteria.id,
+                verdict: action,
+                comment: signComment,
+                closeRequest: false,
+            }).then(() => {
                 queryClient.invalidateQueries(baseKey);
             });
         };

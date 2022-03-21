@@ -75,11 +75,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     const findItem = useCallback(
         (id: string): unknown | undefined => {
-            const item = data.find((x) => x[objectIdentifier] === id);
-            if (objectIdentifier in item) {
-                return item;
-            }
-            return undefined;
+            return data.find((x) => x[objectIdentifier] === id);
         },
         [data, objectIdentifier]
     );
@@ -117,8 +113,9 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     const { props: sidesheetProps, SidesheetComponent } = useSideSheet();
     useEffect(() => {
+        if (location.hash.length > 0) return;
         if (!sidesheetProps && !SidesheetComponent) {
-            window.history.pushState({}, document.title, location.pathname);
+            navigate(location.pathname, { replace: true });
         }
     }, [sidesheetProps, SidesheetComponent, location.pathname]);
 
@@ -126,6 +123,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
      * Store sidesheet state in url
      */
     useEffect(() => {
+        if (sidesheetProps || SidesheetComponent) return;
         if (location.hash.length > 0 && onSelect) {
             mountSidesheetFromUrl();
         }
@@ -137,7 +135,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <Temp props={props} tabs={tabs} />
                 <DataViewWrapper>
-                    <WorkSpaceTabs tabs={tabs} activeTab={activeTab} />
+                    <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
                 </DataViewWrapper>
             </Tabs>
             <PopoutSidesheet />

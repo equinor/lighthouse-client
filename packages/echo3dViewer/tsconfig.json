@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "rootDir": "./",
+    "sourceRoot": "./src",
+    // "baseUrl": "./src", // Disabled due to https://github.com/TypeStrong/ts-loader/issues/1391
+    "outDir": "dist",
+    "strict": true,
+    "allowJs": false,
+    "module": "ES2015",
+    "target": "ES2017",
+    "composite": true,
+    "sourceMap": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "noEmit": false,
+    "declarationMap": true
+  },
+  "references": [],
+  "exclude": [
+    "dist",
+    "jest.config.ts"
+  ],
+}

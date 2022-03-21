@@ -1,18 +1,19 @@
 import styled from 'styled-components';
 import { Item } from '../../../../../components/ParkView/Styles/item';
 
-export type HandoverItemProps = { backgroundColor: string; textColor: string };
+export type HandoverItemProps = { backgroundColor: string; textColor: string; isExpanded: boolean };
 
 export const HandoverItem = styled(Item)<HandoverItemProps>`
     display: flex;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: 100%;
-    min-width: 150px;
+    width: ${(props) => (props.isExpanded ? '100%' : '180px')};
     box-sizing: border-box;
     white-space: nowrap;
     justify-content: space-between;
     border: 1px solid #dcdcdc;
+    height: 28px;
+    align-items: center;
 `;
 
 export const MidSection = styled.div<{ expanded: boolean }>`

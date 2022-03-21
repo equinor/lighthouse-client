@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 interface WorkflowDotProps {
     height?: number;
     width?: number;
-    state: 'Active' | 'Completed' | 'Inactive';
+    state: 'Active' | 'Completed' | 'Inactive' | 'Rejected';
 }
 
 interface dotStyling {
@@ -26,6 +26,13 @@ export const WorkflowDot = ({ state, height = 15, width = 15 }: WorkflowDotProps
                     color: tokens.colors.infographic.substitute__green_succulent.hex,
                     stroke: '',
                 };
+
+            case 'Rejected': {
+                return {
+                    color: tokens.colors.infographic.primary__energy_red_100.hex,
+                    stroke: '',
+                };
+            }
 
             case 'Inactive':
                 return {

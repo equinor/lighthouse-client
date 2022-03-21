@@ -13,43 +13,49 @@ const excludeKeys: (keyof WorkOrder)[] = [
 ];
 
 export function setup(appApi: ClientApi): void {
-    const commPkg = appApi.createWorkSpace<WorkOrder>({
-        objectIdentifier: 'workOrderId',
-        CustomSidesheet: WorkorderSideSheet,
-    });
-
     const contextId = isProduction()
         ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
         : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-    commPkg.registerDataSource(async () => {
+
+    async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
         const { fusionDataproxy } = httpClient();
 
-        const response = await fusionDataproxy.fetch(`api/contexts/${contextId}/work-orders`);
+        return await fusionDataproxy.fetch(`api/contexts/${contextId}/work-orders`, {
+            signal: signal,
+        });
+    }
 
+    async function responseParser(response: Response) {
         const parsedResponse = JSON.parse(await response.text()) as WorkOrder[];
         return parsedResponse.slice(0, 10);
     });
 
-    commPkg.registerFilterOptions({
-        excludeKeys,
-    });
+    appApi
+        .createWorkSpace<WorkOrder>({
+            objectIdentifier: 'workOrderId',
+            CustomSidesheet: WorkorderSideSheet,
+        })
+        .registerDataSource({
+            responseAsync: responseAsync,
+            responseParser: responseParser,
+        })
+        .registerFilterOptions({ excludeKeys })
+        .registerTableOptions({
+            objectIdentifierKey: 'mcPkgNo',
+        })
+        .registerGardenOptions({
+            gardenKey: 'fwp' as keyof WorkOrder,
+            itemKey: 'workOrderNumber',
+            fieldSettings: fieldSettings,
+            customViews: {
+                customItemView: WorkOrderItem,
+            },
+            sortData: sortPackages,
 
-    commPkg.registerTableOptions({
-        objectIdentifierKey: 'mcPkgNo',
-    });
-    commPkg.registerGardenOptions({
-        type: 'virtual',
-        gardenKey: 'fwp' as keyof WorkOrder,
-        itemKey: 'workOrderNumber',
-        fieldSettings: fieldSettings,
-        customViews: {
-            customItemView: WorkOrderItem,
-        },
-        sortData: sortPackages,
+            // status: { statusItemFunc, shouldAggregate: true },
+            //options: { groupDescriptionFunc },
+        });
 
-        // status: { statusItemFunc, shouldAggregate: true },
-        //options: { groupDescriptionFunc },
-    });
     // commPkg.registerAnalyticsOptions(analyticsOptions);
     // commPkg.registerTreeOptions({
     //     groupByKeys: ['status', 'responsible', 'tagNo'],

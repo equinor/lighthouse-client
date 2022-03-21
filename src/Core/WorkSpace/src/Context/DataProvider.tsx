@@ -1,9 +1,7 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 import { FilterOptions } from '@equinor/filter';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
-import styled from 'styled-components';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useWorkspaceKey';
@@ -17,6 +15,10 @@ import {
 } from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
 import { useAtom } from '@dbeining/react-atom';
+import { usePrefetchQueries } from '../Hooks/usePrefetchQueries';
+import * as queryCacheOperations from '../Functions/DataOperations';
+import { QueryCacheArgs } from '../Functions/DataOperations/queryCacheArgs';
+import { checkResponseCode } from '../Functions/checkResponseCode';
 
 interface DataState {
     key: string;
@@ -86,7 +88,11 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
     const currentWorkspace = useAtom(getWorkSpaceContext());
 
-    const { dataSource, objectIdentifier } = currentWorkspace[key];
+    const { dataSource, objectIdentifier, prefetchQueriesOptions } = currentWorkspace[key];
+
+    const queryClient = useQueryClient();
+
+    usePrefetchQueries(prefetchQueriesOptions ?? []);
 
     const initialState: DataState = {
         key,
@@ -104,16 +110,27 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     }, [key]);
 
     const queryApi = useQuery(
-        key,
-        async () => {
+        [key],
+        async ({ signal }) => {
             if (!dataSource) return;
 
-            const response = await dataSource();
-
-            if (Array.isArray(response)) {
-                return response;
+            let response: Response | null;
+            try {
+                response = await dataSource.responseAsync(signal);
+            } catch (e) {
+                throw 'Server failed to respond';
             }
-            throw response;
+
+            checkResponseCode(response);
+
+            const data: unknown[] = dataSource.responseParser
+                ? await dataSource.responseParser(response)
+                : await response.json();
+
+            if (Array.isArray(data)) {
+                return data;
+            }
+            throw 'Unknown data format';
         },
         { refetchOnWindowFocus: false, staleTime: ONE_HOUR, initialData: [] }
     );
@@ -122,41 +139,26 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         queryApi.refetch();
     }, [dataSource]);
 
-    const queryClient = useQueryClient();
+    const workspaceInternalApi: QueryCacheArgs<unknown> = {
+        key,
+        objectIdentifier,
+        queryApi,
+        queryClient,
+    };
 
-    function patchRecord(id: string, item: unknown, identifier?: string) {
-        const query = queryClient.getQueryCache().find(key);
-        if (!query || !queryApi.data) return;
+    /** Patches a record in the queryCache */
+    const patchRecord = (id: string, item: unknown, identifier?: string) =>
+        queryCacheOperations.patchRecord({ id, item, identifier }, workspaceInternalApi);
 
-        const patchIndex = queryApi.data.findIndex(
-            (record: any) => record[identifier ?? objectIdentifier] === id
-        );
-        if (patchIndex === -1) return;
+    /** Patches a record in the queryCache */
+    const deleteRecord = (id: string, identifier?: string) =>
+        queryCacheOperations.deleteRecord({ id, identifier }, workspaceInternalApi);
 
-        query.setData((queryApi.data[patchIndex] = item));
-    }
+    const getRecord = (id: string, identifier?: string) =>
+        queryCacheOperations.getRecord({ id, identifier }, workspaceInternalApi);
 
-    function deleteRecord(id: string, identifier?: string) {
-        const query = queryClient.getQueryCache().find(key);
-        if (!query || !queryApi.data) return;
-
-        query.setData(
-            queryApi.data.filter((record: any) => record[identifier ?? objectIdentifier] !== id)
-        );
-    }
-
-    function getRecord(id: string, identifier?: string) {
-        if (!queryApi.data) return;
-
-        return queryApi.data.find((record: any) => record[identifier ?? objectIdentifier] === id);
-    }
-
-    function insertRecord(item: unknown) {
-        const query = queryClient.getQueryCache().find(key);
-        if (!query || !queryApi.data) return;
-
-        query.setData([item, ...queryApi.data]);
-    }
+    const insertRecord = (item: unknown) =>
+        queryCacheOperations.insertRecord({ item }, workspaceInternalApi);
 
     return (
         <DataContext.Provider
@@ -173,23 +175,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
                 },
             }}
         >
-            {queryApi.isLoading ? (
-                <Loading>
-                    <CircularProgress value={0} size={48} />
-                </Loading>
-            ) : queryApi.error ? (
-                <Loading>
-                    <span>
-                        <Icon name="error_outlined" />
-                        Something went wrong
-                    </span>
-                    <Button variant="outlined" onClick={() => queryApi.refetch()}>
-                        Try again
-                    </Button>
-                </Loading>
-            ) : (
-                children
-            )}
+            {children}
         </DataContext.Provider>
     );
 };
@@ -197,12 +183,3 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
 export function useDataContext(): DataContextState {
     return useContext(DataContext);
 }
-
-const Loading = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-    gap: 0.5em;
-`;

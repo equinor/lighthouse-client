@@ -2,7 +2,7 @@ import { Facility, FusionContext, Project } from '../Types/ClientContext';
 import {
     internalUpdateFacility,
     internalUpdateFusionContext,
-    internalUpdateProject,
+    internalUpdateProject
 } from './internal';
 
 /**
@@ -27,6 +27,6 @@ export function setSelectedProject(project: Partial<Project>): void {
  * Updating the project fusionContext.
  * @param {Partial<FusionContext>} fusionContext
  */
-export function setSelectedFusionContext(fusionContext: Partial<FusionContext>): void {
-    internalUpdateFusionContext({ ...fusionContext });
+export function setSelectedFusionContext(fusionContext: FusionContext): void {
+    internalUpdateFusionContext(fusionContext);
 }
