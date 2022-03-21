@@ -9,12 +9,14 @@ export function useScopeChangeQuery<
 >(
     queryKey: TQueryKey,
     queryFn: QueryFunction<TQueryFnData, TQueryKey>,
-    errorMessage: string,
+    fallBackErrorMessage: string,
     options?: Omit<UseQueryOptions<TQueryFnData, TError, TData, TQueryKey>, 'queryKey' | 'queryFn'>
 ): UseQueryResult<TData, TError> {
     return useQuery(queryKey, queryFn, {
         ...options,
-        onError: () => {
+        onError: (thrown) => {
+            const errorMessage =
+                typeof thrown === 'string' ? thrown : thrown['title'] ?? fallBackErrorMessage;
             sendErrorMessage({ title: errorMessage });
         },
     });

@@ -25,7 +25,6 @@ import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch
 import { Origin } from './Origin';
 import { StidTypes } from '../../Types/STID/STIDTypes';
 import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
-import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
 import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
@@ -52,7 +51,6 @@ export const ScopeChangeRequestForm = ({
 
     const [attachments, setAttachments] = useState<File[]>([]);
     const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
-    const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
 
     const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
@@ -103,7 +101,6 @@ export const ScopeChangeRequestForm = ({
     const { mutate, isLoading } = useMutation(createScopeChangeMutation, {
         retry: 2,
         retryDelay: 2,
-        onError: (e: ServerError) => setErrorMessage(e),
     });
 
     const redirect = async (scopeChangeId: string) => {
@@ -160,7 +157,7 @@ export const ScopeChangeRequestForm = ({
 
     return (
         <>
-            <ScopeChangeErrorBanner message={errorMessage} requestId={'0'} />
+            <ScopeChangeErrorBanner />
             <TitleHeader>
                 <span style={{ fontSize: '28px' }}>Create scope change request</span>
                 <Icon
