@@ -1,4 +1,3 @@
-import { tokens } from '@equinor/eds-tokens';
 import { useMemo } from 'react';
 
 interface WorkflowDotProps {
