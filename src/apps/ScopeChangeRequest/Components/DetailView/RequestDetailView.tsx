@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useSideSheet } from '../../../../packages/Sidesheet/context/sidesheetContext';
 import { initiateScopeChange } from '../../Api/ScopeChange/Request';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
-import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { SplitView } from './Components/RequestDetailView/Double';
 import { SingleView } from './Components/RequestDetailView/Single';
@@ -12,10 +12,10 @@ export const RequestDetailView = (): JSX.Element => {
     const { width } = useSideSheet();
     const { request } = useScopeChangeContext();
 
-    const { patchKey } = useScopechangeMutationKeyGen(request.id);
+    const { patchKey } = scopeChangeMutationKeys(request.id);
     const { mutateAsync: initiate, isLoading } = useScopeChangeMutation(
         request.id,
-        patchKey(),
+        patchKey,
         initiateScopeChange
     );
 
