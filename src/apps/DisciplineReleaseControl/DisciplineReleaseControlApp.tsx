@@ -75,7 +75,7 @@ export function setup(appApi: ClientApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'name',
         columnOrder: ['name', 'description', 'status'],
-        hiddenColumns: ['rfccPlanned', 'dueDateTimePeriod'],
+        hiddenColumns: ['rfccPlanned', 'dueDateTimePeriod', 'heatTraces'],
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Pipetest', width: 200 },
