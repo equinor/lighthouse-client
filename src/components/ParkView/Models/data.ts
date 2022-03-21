@@ -9,6 +9,7 @@ export type DataSet<T> = {
     count: number;
     status?: Status;
     description?: string | undefined;
+    subGroupCount: number;
 };
 
 export type Data<T> = {

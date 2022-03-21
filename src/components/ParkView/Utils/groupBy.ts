@@ -35,9 +35,25 @@ export function groupBy<T, K extends keyof T>(
                 items: [],
                 count: 0,
                 isExpanded: Boolean(isExpanded),
+                subGroupCount: 0,
             };
             acc[valueKey].items.push(item);
             acc[valueKey].count = acc[valueKey].count + 1;
+            const test = Object.values(acc[valueKey].subGroups)
+                .map((subGroup) => subGroup.subGroupCount)
+                .reduce((a, b) => {
+                    return a + b;
+                }, acc[valueKey].subGroupCount);
+            if (test) {
+                debugger;
+            }
+            acc[valueKey].subGroupCount =
+                acc[valueKey].subGroupCount +
+                Object.values(acc[valueKey].subGroups)
+                    .map((subGroup) => subGroup.subGroupCount)
+                    .reduce((a, b) => {
+                        return a + b;
+                    }, acc[valueKey].subGroupCount);
         });
         return acc;
     }, {} as Data<T>);
@@ -73,7 +89,11 @@ export function groupBy<T, K extends keyof T>(
             true,
             customGroupByKeys
         );
-        if (nextKeys.length > 0) data[key].items = [];
+        if (nextKeys.length > 0) {
+            data[key].items = [];
+            data[key].subGroupCount = Object.keys(data[key].subGroups).length;
+            // Object.keys(data[key].subGroups).length;
+        }
     });
 
     return data;

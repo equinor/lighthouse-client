@@ -34,8 +34,14 @@ export interface CustomHeaderView<T> {
 export interface CustomView<T> {
     customItemView?: React.FC<CustomItemView<T>>;
     customGroupView?: React.FC<CustomGroupView<T>>;
-    customHeaderView?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
+    customHeaderView?: React.FC<CustomHeaderView<T>>;
     customGroupByView?: React.FC;
+}
+export interface CustomVirtualView<T> {
+    customItemView?: MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;
+    customGroupView?: React.FC<CustomGroupView<T>>;
+    customHeaderView?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
+    customGroupByView: React.FC;
 }
 
 export interface GardenOptions<T> {
@@ -46,7 +52,8 @@ export interface GardenOptions<T> {
     customStateFunction?: (data: T[]) => Record<string, unknown>;
     sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     fieldSettings?: FieldSettings<T, string>;
-    customViews?: CustomView<T>;
+    type?: 'virtual' | 'normal';
+    customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
 

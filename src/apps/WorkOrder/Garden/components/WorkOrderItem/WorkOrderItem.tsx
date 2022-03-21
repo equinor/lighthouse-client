@@ -1,5 +1,6 @@
 import { SizeIcons, StatusCircle, FlagIcon } from '@equinor/GardenUtils';
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
+import { useExpand } from '../../../../../components/ParkView/Components/VirtualGarden/useExpand';
 import { useParkViewContext } from '../../../../../components/ParkView/Context/ParkViewProvider';
 import { CustomItemView } from '../../../../../components/ParkView/Models/gardenOptions';
 import { WorkOrder } from '../../models';
@@ -22,12 +23,7 @@ import {
 } from './styles';
 import { itemSize } from './utils';
 
-export const WorkOrderItem = ({
-    data,
-    itemKey,
-    onClick,
-    columnExpanded,
-}: CustomItemView<WorkOrder>) => {
+const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemView<WorkOrder>) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const anchorRef = useRef<HTMLDivElement>(null);
     const { groupByKeys, gardenKey } = useParkViewContext<WorkOrder>();
@@ -47,6 +43,20 @@ export const WorkOrderItem = ({
 
     return (
         <>
+            {/* <div
+                style={{
+                    height: '80%',
+                    width: '100%',
+                    display: 'flex',
+                    gap: '10px',
+                    marginLeft: '5px',
+                }}
+            >
+                <div>{data[itemKey]}</div>
+                {columnExpanded && (
+                    <div style={{ alignSelf: 'center', fontSize: '14px' }}>{data.description}</div>
+                )}
+            </div> */}
             <WorkOrderWrapper
                 backgroundColor={backgroundColor}
                 textColor={textColor}
@@ -58,10 +68,14 @@ export const WorkOrderItem = ({
             >
                 <SizeIcons size={size} color={textColor} />
                 {data.holdBy && <FlagIcon color={textColor} />}
-                <MidSection expanded={columnExpanded}>
+                <div>{data[itemKey]}</div>
+                {columnExpanded && (
+                    <div style={{ alignSelf: 'center', fontSize: '14px' }}>{data.description}</div>
+                )}
+                {/* <MidSection expanded={columnExpanded}>
                     {data[itemKey]}
                     {columnExpanded && <WorkorderExpandedView data={data} />}
-                </MidSection>
+                </MidSection> */}
                 <Circles>
                     <StatusCircle statusColor={matColor} />
                     <StatusCircle statusColor={mccrColor} />
@@ -94,3 +108,5 @@ export function WorkorderExpandedView({ data }: { data: WorkOrder }): JSX.Elemen
         </WorkorderExpanded>
     );
 }
+
+export default memo(WorkOrderItem);
