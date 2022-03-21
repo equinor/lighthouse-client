@@ -5,15 +5,15 @@ import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChange
 import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
 import { CacheTime } from '../../../../Enums/cacheTimes';
-import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 import { useScopeChangeQuery } from '../../../../Hooks/React-Query/useScopeChangeQuery';
+import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
 
 interface WorkflowStepProps {
     step: WorkflowStep;
 }
 export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element {
     const { request } = useScopeChangeContext();
-    const { workflowKeys } = useScopechangeQueryKeyGen(request.id);
+    const { workflowKeys } = scopeChangeQueryKeys(request.id);
 
     const checkContributorAccess = () =>
         canAddContributor({ requestId: request.id, stepId: step.id });
@@ -44,7 +44,12 @@ export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element 
             {step.contributors &&
                 step.contributors.map((contributor) => {
                     return (
-                        <Contributor key={contributor.id} step={step} contributor={contributor} />
+                        <Contributor
+                            key={contributor.id}
+                            step={step}
+                            contributor={contributor}
+                            canRemoveContributor={isAllowedToAddContributor ?? false}
+                        />
                     );
                 })}
         </WorkflowStepWrapper>

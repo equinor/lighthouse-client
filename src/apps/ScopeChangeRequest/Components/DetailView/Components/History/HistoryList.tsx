@@ -5,13 +5,13 @@ import { ChevronList } from '../ChevronList/ChevronList';
 import { HistoryItem } from './HistoryItem';
 import { useEffect } from 'react';
 import { CacheTime } from '../../../../Enums/cacheTimes';
-import { useScopechangeQueryKeyGen } from '../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
 import { useScopeChangeQuery } from '../../../../Hooks/React-Query/useScopeChangeQuery';
 
 export function HistoryList(): JSX.Element {
     const { request } = useScopeChangeContext();
 
-    const { historyKey } = useScopechangeQueryKeyGen(request.id);
+    const { historyKey } = scopeChangeQueryKeys(request.id);
 
     const { data, remove, isLoading } = useScopeChangeQuery<LogEntry[]>(
         historyKey,

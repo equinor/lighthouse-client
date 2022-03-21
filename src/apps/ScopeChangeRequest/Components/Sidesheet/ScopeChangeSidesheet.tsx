@@ -17,17 +17,19 @@ import { IconMenu, MenuItem } from '../MenuButton';
 import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
-import { useScopechangeQueryKeyGen } from '../../Hooks/React-Query/useScopechangeQueryKeyGen';
-import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
+import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
 import { useScopeChangeQuery } from '../../Hooks/React-Query/useScopeChangeQuery';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(false);
 
     usePreloadCaching();
-    const { voidKey, unvoidKey } = useScopechangeMutationKeyGen(item.id);
-    const { baseKey } = useScopechangeQueryKeyGen(item.id);
-    const { data, refetch, remove, isLoading, isError } = useScopeChangeQuery<ScopeChangeRequest>(
+
+    const { voidKey, unvoidKey } = scopeChangeMutationKeys(item.id);
+    const { baseKey } = scopeChangeQueryKeys(item.id);
+
+    const { data, refetch, remove, isLoading } = useScopeChangeQuery<ScopeChangeRequest>(
         baseKey,
         () => getScopeChangeById(item.id),
         'Failed to fetch data',
@@ -40,11 +42,11 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
     const { mutateAsync: unvoidMutation } = useScopeChangeMutation(
         item.id,
-        unvoidKey(),
+        unvoidKey,
         unVoidRequest
     );
 
-    const { mutateAsync: voidMutation } = useScopeChangeMutation(item.id, voidKey(), voidRequest);
+    const { mutateAsync: voidMutation } = useScopeChangeMutation(item.id, voidKey, voidRequest);
 
     const refetchScopeChange = useCallback(async () => {
         await refetch();
