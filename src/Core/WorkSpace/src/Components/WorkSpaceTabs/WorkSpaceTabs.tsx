@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Dialog, Typography } from '@equinor/eds-core-react';
-import { NavigateFunction, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { useDataContext } from '../../Context/DataProvider';
 import { TabsConfigItem } from '../../Tabs/tabsConfig';
@@ -25,7 +25,11 @@ export const WorkSpaceTabs = ({ tabs, activeTab, title }: CompletionViewTabsProp
                         {dataApi?.isError ? (
                             <WorkspaceErrorPage>
                                 <DumpsterFireDialog
-                                    navigateAction={navigate}
+                                    buttons={[
+                                        <Button key={1} onClick={() => navigate('/')}>
+                                            Go to homepage
+                                        </Button>,
+                                    ]}
                                     text={
                                         typeof dataApi.error === 'string'
                                             ? dataApi.error
@@ -60,13 +64,13 @@ const Loading = styled.div`
 interface DumpsterFireDialogProps {
     title?: string;
     text: string;
-    navigateAction: NavigateFunction;
+    buttons: React.ReactElement[];
 }
 
 export function DumpsterFireDialog({
-    navigateAction,
     text,
     title = 'Ooops, this is embarassing..',
+    buttons,
 }: DumpsterFireDialogProps): JSX.Element {
     return (
         <Dialog style={{ width: '600px' }}>
@@ -75,7 +79,12 @@ export function DumpsterFireDialog({
                 <Typography variant="body_short">{text}</Typography>
             </Dialog.CustomContent>
             <Dialog.Actions>
-                <Button onClick={() => navigateAction('/')}>Go to homepage</Button>
+                <>
+                    {buttons.map((comp, i) => {
+                        const Component = () => comp;
+                        return <Component key={i} />;
+                    })}
+                </>
             </Dialog.Actions>
         </Dialog>
     );

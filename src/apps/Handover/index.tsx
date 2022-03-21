@@ -23,7 +23,7 @@ export function setup(appApi: ClientApi): void {
         })
         .registerDataSource({
             responseAsync: responseAsync,
-            responseParser: responseParserp,
+            responseParser: responseParser,
         });
 
     async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
@@ -38,7 +38,7 @@ export function setup(appApi: ClientApi): void {
         return await fusion.fetch(`${contextId}/handover/`, { signal: signal });
     }
 
-    async function responseParserp(response: Response) {
+    async function responseParser(response: Response) {
         const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
         [];
 

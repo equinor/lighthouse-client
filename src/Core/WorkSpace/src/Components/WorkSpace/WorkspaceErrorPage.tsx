@@ -5,10 +5,10 @@ interface WorkspaceErrorPageProps {
 }
 
 export function WorkspaceErrorPage({ children }: WorkspaceErrorPageProps): JSX.Element {
-    return <FullPageError>{children}</FullPageError>;
+    return <CenterInAvailableSpace>{children}</CenterInAvailableSpace>;
 }
 
-const FullPageError = styled.div`
+const CenterInAvailableSpace = styled.div`
     display: flex;
     align-items: center;
     width: 100%;
