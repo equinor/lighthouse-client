@@ -1,8 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ServerError } from '../../Types/ScopeChange/ServerError';
-import { useIsMounted } from '../../Hooks/useIsMounted';
+import { useErrorMessageListener } from '../../Functions/ErrorMessage/useErrorMessageListener';
+import { Button } from '@equinor/eds-core-react';
 
 export interface ErrorFormat {
     message: ServerError | undefined;
@@ -13,42 +13,21 @@ export interface ErrorFormat {
  * Provides a uniform banner for error messages in the sidesheet
  * @returns
  */
-export function ScopeChangeErrorBanner({ message, requestId }: ErrorFormat): JSX.Element {
-    const [errorMessage, setErrorMessage] = useState<ServerError | null>(message ?? null);
-
-    const isMounted = useIsMounted();
-
-    useEffect(() => {
-        if (!isMounted) return;
-        if (message) {
-            setErrorMessage(message ?? null);
-        }
-    }, [isMounted, message]);
-
-    useEffect(() => {
-        setErrorMessage(null);
-        message = undefined;
-    }, [requestId]);
+export function ScopeChangeErrorBanner(): JSX.Element {
+    const { errors, removeErrors } = useErrorMessageListener();
 
     return (
         <div>
-            {errorMessage && (
-                <ErrorContainer>
-                    <div>{message?.detail}</div>
-                    <ErrorDetails>
-                        {message?.validationErrors &&
-                            Object.values(message.validationErrors).map((errorArray) => {
-                                return (
-                                    <>
-                                        {errorArray.map((error) => (
-                                            <div key={error}>{error}</div>
-                                        ))}
-                                    </>
-                                );
-                            })}
-                    </ErrorDetails>
-                </ErrorContainer>
-            )}
+            {errors &&
+                errors.map((message) => (
+                    <ErrorContainer key={message.title}>
+                        <div>{message.title}</div>
+                        <ErrorDetails>{message.description}</ErrorDetails>
+                        <Button variant="outlined" onClick={() => removeErrors(message)}>
+                            Dismiss
+                        </Button>
+                    </ErrorContainer>
+                ))}
         </div>
     );
 }

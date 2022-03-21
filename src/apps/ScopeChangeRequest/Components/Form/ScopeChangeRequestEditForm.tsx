@@ -2,7 +2,6 @@ import { Button, Icon, Progress } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { useEffect, useState } from 'react';
 import { patchScopeChange } from '../../Api/ScopeChange/Request';
-import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { StidTypes } from '../../Types/STID/STIDTypes';
@@ -10,7 +9,6 @@ import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMu
 import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
-import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { Origin } from './Origin';
 import { Section, Title } from './ScopeChangeRequestForm';
 import { HotUpload } from '../Attachments/HotUpload';
@@ -64,8 +62,6 @@ export const ScopeChangeRequestEditForm = ({
         return () => close();
     }, [request.id]);
 
-    const { setErrorMessage } = useScopeChangeContext();
-
     const formData = useForm(scopeChangeRequestSchema, {
         id: request.id,
         phase: request.phase,
@@ -104,10 +100,7 @@ export const ScopeChangeRequestEditForm = ({
     const { isLoading, error, mutateAsync } = useScopeChangeMutation(
         request.id,
         patchKey,
-        onSubmit,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-        }
+        onSubmit
     );
 
     const SaveButton = () => {

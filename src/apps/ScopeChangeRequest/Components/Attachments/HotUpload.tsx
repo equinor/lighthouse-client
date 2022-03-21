@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { uploadAttachment } from '../../Api/ScopeChange/Request';
-import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { Attachments } from './Attachments';
 import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
 
@@ -13,7 +12,7 @@ const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const HotUpload = (): JSX.Element => {
     const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
 
-    const { request, setErrorMessage } = useScopeChangeContext();
+    const { request } = useScopeChangeContext();
 
     const { uploadAttachmentKey } = scopeChangeMutationKeys(request.id);
 
@@ -24,7 +23,6 @@ export const HotUpload = (): JSX.Element => {
         {
             retry: 2,
             retryDelay: 2,
-            onError: (e: ServerError) => setErrorMessage(e),
         }
     );
 

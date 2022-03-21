@@ -19,7 +19,6 @@ import { SignWithComment } from './SignWithComment';
 import { PCSPersonRoleSearch } from '../../../SearchableDropdown/PCSPersonRoleSearch';
 import { TypedSelectOption } from '../../../../Api/Search/searchType';
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
-import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
 import { useQueryClient } from 'react-query';
 import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
@@ -44,7 +43,7 @@ export const WorkflowCriteria = ({
     canAddContributor,
 }: WorkflowCriteriasProps): JSX.Element => {
     const [selected, setSelected] = useState<TypedSelectOption | null>(null);
-    const { request, setErrorMessage } = useScopeChangeContext();
+    const { request } = useScopeChangeContext();
     const [signComment, setSignComment] = useState<string>('');
     const [showSignWithComment, setShowSignWithComment] = useState(false);
 
@@ -58,8 +57,7 @@ export const WorkflowCriteria = ({
     const { canReassign, canSign, canUnsign } = useWorkflowCriteriaOptions(
         request.id,
         criteria.id,
-        step.id,
-        setErrorMessage
+        step.id
     );
 
     function makeSignOptions(): MenuItem[] {
@@ -218,29 +216,19 @@ export const WorkflowCriteria = ({
     const { mutateAsync: reassignMutation } = useScopeChangeMutation(
         request.id,
         criteriaReassignKey(step.id, criteria.id),
-        reassignCriteria,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-        }
+        reassignCriteria
     );
 
     const { mutateAsync: signMutation } = useScopeChangeMutation(
         request.id,
         criteriaSignKey(step.id, criteria.id),
-        onSignStep,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-            onSuccess: () => setSignComment(''),
-        }
+        onSignStep
     );
 
     const { mutateAsync: unSignMutation } = useScopeChangeMutation(
         request.id,
         criteriaUnsignKey(step.id, criteria.id),
-        unsignCriteria,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-        }
+        unsignCriteria
     );
 
     return (
