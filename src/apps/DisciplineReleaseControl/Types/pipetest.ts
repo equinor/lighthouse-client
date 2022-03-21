@@ -5,6 +5,9 @@ export interface Pipetest {
     status: PipetestStatus;
     checkLists: CheckList[];
     heatTraces: HeatTrace[];
+    description: string;
+    commPkPriority1: string;
+    rfccPlanned: string;
     // description: string;
     // dueDate: string;
     // lineAndSpools: string[][];
