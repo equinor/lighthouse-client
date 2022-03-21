@@ -32,6 +32,7 @@ export const MenuItem = ({ manifest, appId, onClick, isFullMenu }: MenuItemProps
             disabled={!isActive}
         >
             <ContentWrapper>
+                <Title disabled={!isActive}>{manifest.title}</Title>
                 {manifest.uri && (
                     <Icon
                         size={16}
@@ -39,7 +40,6 @@ export const MenuItem = ({ manifest, appId, onClick, isFullMenu }: MenuItemProps
                         name="external_link"
                     />
                 )}
-                <Title disabled={!isActive}>{manifest.title}</Title>
             </ContentWrapper>
         </DItem>
     ) : (
@@ -55,10 +55,10 @@ export const MenuItem = ({ manifest, appId, onClick, isFullMenu }: MenuItemProps
             onMouseLeave={() => setShowIcon(false)}
         >
             <ContentWrapper>
+                <Title>{manifest.title}</Title>
                 {manifest.uri && (
                     <Icon size={16} style={{ opacity: showIcon ? 1 : 0 }} name="external_link" />
                 )}
-                <Title>{manifest.title}</Title>
             </ContentWrapper>
         </MItem>
     );

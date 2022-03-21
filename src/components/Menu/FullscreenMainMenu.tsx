@@ -1,8 +1,6 @@
 import { Search } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
 import { useMemo, useState } from 'react';
-import Icon from '../Icon/Icon';
 import {
     FullscreenMenuAppGroup,
     FullscreenMenuGroupHeaderText,
@@ -34,7 +32,6 @@ export const FullscreenMainMenu = (): JSX.Element => {
             if (key === 'Top' || appGroups[key].columnId !== columnId) {
                 return null;
             }
-            const CustomIcon = appGroups[key].icon;
             return (
                 <FullscreenMenuAppGroup key={key}>
                     <HeaderLink
@@ -42,14 +39,6 @@ export const FullscreenMainMenu = (): JSX.Element => {
                         className="noBorder"
                         onClick={() => toggleFullscreenMenu()}
                     >
-                        {CustomIcon && typeof CustomIcon !== 'string' && <CustomIcon />}
-                        {CustomIcon && typeof CustomIcon === 'string' && (
-                            <Icon
-                                name={CustomIcon}
-                                title={appGroups[key].name}
-                                color={tokens.colors.text.static_icons__secondary.rgba}
-                            />
-                        )}
                         <FullscreenMenuGroupHeaderText>
                             {appGroups[key].name}
                         </FullscreenMenuGroupHeaderText>
