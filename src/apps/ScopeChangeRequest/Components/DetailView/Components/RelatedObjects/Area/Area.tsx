@@ -5,18 +5,16 @@ import { Area as AreaInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
 import { getAreaByCode } from '../../../../../Api/PCS/getAreaByCode';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
-import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
 
 interface AreaProps {
     area: AreaInterface;
 }
 
 export const Area = ({ area }: AreaProps): JSX.Element => {
-    const { request } = useScopeChangeContext();
-    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+    const { area: areaKey } = proCoSysQueryKeys();
 
-    const { data } = useInfiniteCachedQuery(referencesKeys.area(area.procosysCode), () =>
+    const { data } = useInfiniteCachedQuery(areaKey(area.procosysCode), () =>
         getAreaByCode(area.procosysCode)
     );
 
