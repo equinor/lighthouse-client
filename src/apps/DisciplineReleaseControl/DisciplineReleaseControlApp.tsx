@@ -13,6 +13,7 @@ import { fieldSettings } from './Components/Garden/gardenSetup';
 import { Pipetest } from './Types/pipetest';
 import { ReleaseControlGardenItem } from './Components/Garden/ReleaseControlGardenItem';
 import { checklistTagFunc, createChecklistSteps, getHTList } from './Functions/tableHelpers';
+import { getTimePeriod } from './Components/Garden/gardenFunctions';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -26,6 +27,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
             pipetest.status = getPipetestStatus(pipetest.checkLists);
+            pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             return pipetest;
         });
         sortPipetests(json);
@@ -50,13 +52,16 @@ export function setup(appApi: ClientApi): void {
         .registerFilterOptions({
             excludeKeys: releaseControlExcludeKeys,
             headerNames: {},
-            defaultActiveFilters: ['status', 'System', 'Priority'],
+            defaultActiveFilters: ['status', 'System', 'Priority', 'DueDateTimePeriod'],
             valueFormatter: {
                 System: (item: Pipetest): string => {
                     return item.name.substring(0, 2);
                 },
                 Priority: (item: Pipetest): string => {
                     return item.commPkPriority1 !== '' ? item.commPkPriority1 : 'Unknown';
+                },
+                DueDateTimePeriod: (item: Pipetest): string => {
+                    return item.dueDateTimePeriod;
                 },
             },
         });
@@ -70,7 +75,7 @@ export function setup(appApi: ClientApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'name',
         columnOrder: ['name', 'description', 'status'],
-        hiddenColumns: ['rfccPlanned'],
+        hiddenColumns: ['rfccPlanned', 'dueDateTimePeriod'],
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Pipetest', width: 200 },

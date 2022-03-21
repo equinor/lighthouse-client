@@ -22,4 +22,5 @@ export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
         getKey: (item) => getYearAndWeekFromString(item.rfccPlanned),
     },
     priority: { label: 'Priority', getKey: (item) => item.commPkPriority1 },
+    dueDateTimePeriod: { label: 'Time period', getKey: (item) => item.dueDateTimePeriod },
 };
