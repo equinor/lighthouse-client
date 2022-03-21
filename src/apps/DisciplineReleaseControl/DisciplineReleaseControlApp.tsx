@@ -32,6 +32,7 @@ export function setup(appApi: ClientApi): void {
         const json = JSON.parse(await response.text());
         json.map((pipetest: Pipetest) => {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
+            pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
             pipetest.status = getPipetestStatus(pipetest.checkLists);
             return pipetest;
         });
@@ -39,7 +40,7 @@ export function setup(appApi: ClientApi): void {
         return json;
     });
 
-    const releaseControlExcludeKeys: (keyof Pipetest)[] = ['name', 'checkLists'];
+    const releaseControlExcludeKeys: (keyof Pipetest)[] = ['name'];
 
     request.registerFilterOptions({
         excludeKeys: releaseControlExcludeKeys,
@@ -100,5 +101,22 @@ export function setup(appApi: ClientApi): void {
         customViews: {
             customItemView: ReleaseControlGardenItem,
         },
+        // intercepters: {
+        //     preGroupFiltering: (data, key) =>
+        //         key === 'checkLists'
+        //             ? data.reduce(
+        //                 (prev, curr) => [
+        //                     ...prev,
+        //                     {
+        //                         ...curr,
+        //                         checkLists: curr.checkLists.filter(
+        //                             ({ isHeatTrace }) => isHeatTrace
+        //                         ),
+        //                     },
+        //                 ],
+        //                 [] as Pipetest[]
+        //             )
+        //             : data,
+        // },
     });
 }
