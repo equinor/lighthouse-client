@@ -1,8 +1,8 @@
-import { Data } from '../Models/data';
+import { GardenGroups } from '../Models/data';
 import { Count, Groupe, Title } from '../Styles/common';
 
 type GardenHeaderProps<T> = {
-    garden: Data<T>;
+    garden: GardenGroups<T>;
     columnKey: string;
 };
 

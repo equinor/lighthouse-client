@@ -138,7 +138,9 @@ function groupByArray<T>({
     /** List of all unique identifiers in child array of all arr entries  */
     const groupNames = preGroupFiltering(arr, key as string).reduce((prev, curr) => {
         const childArray = curr[key as string]
-            .map((x) => (typeof x === 'object' ? x[childKey] : x))
+            .map((nestedObject: Record<string, unknown> | string | number) =>
+                typeof nestedObject === 'object' ? nestedObject[childKey as string] : nestedObject
+            )
             .filter(
                 (v: string | number, i: number, a: Array<string | number>) => a.indexOf(v) === i
             ) as Array<number | string>;
@@ -146,7 +148,7 @@ function groupByArray<T>({
         return [...prev, ...childArray.filter((identifier) => !prev.includes(identifier))];
     }, [] as (string | number)[]);
 
-    const groups: GardenGroups<T> = groupNames.map((htIdentifier): DataSet<T> => {
+    const groups: GardenGroups<T> = groupNames.map((groupName): DataSet<T> => {
         function getChildArray(item: T, key: string) {
             return item[key as keyof T] as unknown as Array<Record<string, unknown>>;
         }
@@ -154,14 +156,14 @@ function groupByArray<T>({
         const parentsContainingChildren = arr.filter((item) =>
             getChildArray(item, key as string)
                 .map((y) => (typeof y === 'object' ? y[childKey as string] : y))
-                .includes(htIdentifier)
+                .includes(groupName)
         );
 
         return {
             groupKey: key as keyof T,
             isExpanded: Boolean(isExpanded),
             subGroups: [],
-            value: htIdentifier as string,
+            value: groupName as string,
             count: parentsContainingChildren.length,
             items: parentsContainingChildren,
         };
