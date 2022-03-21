@@ -39,7 +39,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
         title: 'Change origin',
         inputType: {
             type: 'SingleSelect',
-            selectOptions: ['NCR', 'DCN', 'Query', 'Punch', "SWCR", 'NotApplicable'],
+            selectOptions: ['NCR', 'DCN', 'Query', 'Punch', 'SWCR', 'NotApplicable'],
         },
         order: 3,
         placeholderText: 'Select origin',
@@ -56,7 +56,7 @@ export const scopeChangeRequestSchema: Schema<ScopeChangeRequest> = {
     },
     guesstimateHours: {
         title: 'Guess direct Mhrs',
-        optional: false,
+        optional: true,
         inputType: { type: 'NumberInput' },
         order: 5,
     },
