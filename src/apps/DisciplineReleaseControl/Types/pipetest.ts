@@ -12,6 +12,7 @@ export interface Pipetest {
     // dueDate: string;
     // lineAndSpools: string[][];
     tagTree: Record<string, unknown>;
+    dueDateTimePeriod: string;
 }
 
 export interface CheckList {
