@@ -11,7 +11,7 @@ export async function patchScopeChange(request: ScopeChangeRequestFormModel): Pr
 
     const res = await scopeChange.fetch(`api/scope-change-requests/${request.id}`, requestOptions);
 
-    await throwOnError(res);
+    await throwOnError(res, 'Failed to update scopechange');
 
     return await res.json();
 }
