@@ -26,7 +26,7 @@ export async function reassignCriteria({
     };
 
     const response = await scopeChange.fetch(
-        `api/scope-change-requets/${requestId}/workflow/step/${stepId}/reassign/${criteriaId}`,
+        `api/scope-change-requests/${requestId}/workflow/step/${stepId}/reassign/${criteriaId}`,
         requestOptions
     );
 

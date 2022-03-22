@@ -1,6 +1,5 @@
 import { QueryFunction, QueryKey, useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
 import { CacheTime } from '../../Enums/cacheTimes';
-import { sendErrorMessage } from '../../Functions/ErrorMessage/sendErrorMessage';
 
 /**
  * React query hook that caches the query for 10 hours
@@ -28,10 +27,5 @@ export function useInfiniteCachedQuery<
         cacheTime: CacheTime.TenHours,
         retry: 3,
         retryDelay: 1000,
-        onError: (thrown) => {
-            sendErrorMessage({
-                title: typeof thrown === 'string' ? thrown : null,
-            });
-        },
     });
 }

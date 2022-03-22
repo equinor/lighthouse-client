@@ -20,9 +20,12 @@ import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
 import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
 import { useScopeChangeQuery } from '../../Hooks/React-Query/useScopeChangeQuery';
+import { useOctopusErrorHandler } from './useOctopusErrorHandler';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(false);
+
+    useOctopusErrorHandler();
 
     usePreloadCaching();
 
@@ -32,7 +35,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { data, refetch, remove, isLoading } = useScopeChangeQuery<ScopeChangeRequest>(
         baseKey,
         () => getScopeChangeById(item.id),
-        'Failed to fetch data',
         {
             initialData: item,
         }

@@ -30,7 +30,7 @@ export async function signCriteria({
     };
 
     const res = await scopeChange.fetch(
-        `api/scope-change-requests/${requestId}/workflo/step/${stepId}/sign/${criteriaId}`,
+        `api/scope-change-requests/${requestId}/workflow/step/${stepId}/sign/${criteriaId}`,
         requestOptions
     );
 
