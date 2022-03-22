@@ -20,16 +20,18 @@ import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Fun
 import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
-import { useScopechangeQueryKeyGen } from '../../Hooks/React-Query/useScopechangeQueryKeyGen';
-import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
+import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
 
     usePreloadCaching();
-    const { voidKey, unvoidKey } = useScopechangeMutationKeyGen(item.id);
-    const { baseKey } = useScopechangeQueryKeyGen(item.id);
+
+    const { voidKey, unvoidKey } = scopeChangeMutationKeys(item.id);
+    const { baseKey } = scopeChangeQueryKeys(item.id);
+
     const { data, refetch, remove, isLoading, isRefetching } = useQuery<ScopeChangeRequest>(
         baseKey,
         () => getScopeChangeById(item.id),
@@ -48,13 +50,9 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
     const scopeChangeAccess = useScopeChangeAccess(item.id);
 
-    const { mutateAsync: unvoidMutation } = useScopeChangeMutation(
-        item.id,
-        unvoidKey(),
-        unVoidRequest
-    );
+    const { mutate: unvoidMutation } = useScopeChangeMutation(item.id, unvoidKey, unVoidRequest);
 
-    const { mutateAsync: voidMutation } = useScopeChangeMutation(item.id, voidKey(), voidRequest);
+    const { mutate: voidMutation } = useScopeChangeMutation(item.id, voidKey, voidRequest);
 
     const refetchScopeChange = useCallback(async () => {
         await refetch();
@@ -67,7 +65,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             if (data?.isVoided) {
                 actions.push({
                     label: 'Unvoid request',
-                    onClick: async () => await unvoidMutation({ requestId: item.id }),
+                    onClick: () => unvoidMutation({ requestId: item.id }),
                 });
             }
         }
@@ -79,7 +77,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         spawnConfirmationDialog(
                             'Are you sure you want to void this request',
                             'Void confirmation',
-                            async () => await voidMutation({ requestId: item.id })
+                            () => voidMutation({ requestId: item.id })
                         ),
                 });
             }
@@ -144,7 +142,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                 value={{
                     isRefetching: isRefetching,
                     setErrorMessage: (message: ServerError) => setErrorMessage(message),
-                    request: data || item,
+                    request: data ?? item,
                     requestAccess: scopeChangeAccess,
                 }}
             >

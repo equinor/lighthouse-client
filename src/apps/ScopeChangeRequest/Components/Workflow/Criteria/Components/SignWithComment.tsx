@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { Button, Progress, TextField } from '@equinor/eds-core-react';
+import { Button, TextField } from '@equinor/eds-core-react';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { signCriteria } from '../../../../Api/ScopeChange/Workflow';
+import { signCriteria } from '../../../../Api/ScopeChange/Workflow/';
 import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { ServerError } from '../../../../Types/ScopeChange/ServerError';
-import { useScopechangeMutationKeyGen } from '../../../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
 
 interface SignWithCommentProps {
     criteria: Criteria;
@@ -20,7 +20,7 @@ interface SignWithCommentProps {
 export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps): JSX.Element => {
     const { request, setErrorMessage } = useScopeChangeContext();
     const [text, setText] = useState<string | undefined>();
-    const { workflowKeys } = useScopechangeMutationKeyGen(request.id);
+    const { workflowKeys } = scopeChangeMutationKeys(request.id);
 
     interface OnSignStepAction {
         action: 'Approved' | 'Rejected';
@@ -31,7 +31,14 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
                 (x) => x.signedAtUtc === null
             );
             const sign = async () => {
-                await signCriteria(request.id, step.id, criteria.id, action, text);
+                await signCriteria({
+                    closeRequest: false,
+                    criteriaId: criteria.id,
+                    verdict: action,
+                    stepId: step.id,
+                    comment: text,
+                    requestId: request.id,
+                });
             };
             if (
                 request.currentWorkflowStep.contributors &&
@@ -50,7 +57,7 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
         }
     }
 
-    const { mutateAsync, isLoading } = useScopeChangeMutation(
+    const { mutate } = useScopeChangeMutation(
         request.id,
         workflowKeys.criteriaSignKey(step.id, criteria.id),
         onSignStep,
@@ -61,8 +68,6 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
 
     return (
         <>
-            {isLoading && <Progress.Dots color="primary" />}
-
             <Section>
                 <Title>Comment</Title>
                 <TextField
@@ -74,7 +79,10 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
             <ButtonContainer>
                 <Button
                     disabled={!text || text.length === 0}
-                    onClick={() => mutateAsync({ action: 'Approved' }).then(() => close())}
+                    onClick={() => {
+                        mutate({ action: 'Approved' });
+                        close();
+                    }}
                 >
                     Sign
                 </Button>

@@ -5,6 +5,7 @@ import { dispatch } from './CoreActions';
 import {
     getWorkSpaceContext,
     PowerBiOptions,
+    PrefetchQueriesOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
@@ -65,7 +66,12 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
         };
     });
 
-    const workspaceAPI = {
+    const workspaceAPI: WorkSpaceApi<T> = {
+        registerPrefetchQueries(queryOptions: PrefetchQueriesOptions[]) {
+            updateState({ prefetchQueriesOptions: queryOptions ?? [] });
+
+            return workspaceAPI;
+        },
         registerDataCreator(factoryOptions: FactoryOptions) {
             if (!options.dataFactoryCreator) {
                 // eslint-disable-next-line no-console
