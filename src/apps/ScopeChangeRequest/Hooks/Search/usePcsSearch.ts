@@ -14,7 +14,7 @@ import { searchNCR } from '../../Api/Search/PCS/searchNcr';
 import { useInfiniteCachedQuery } from '../React-Query/useInfiniteCachedQuery';
 import Fuse from 'fuse.js';
 import { getDisciplines } from '../../Api/PCS/getDisciplines';
-import { useProcosysQueryKeyGen } from '../React-Query/useProcosysQueryKeyGen';
+import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
 
 interface PCSSearch {
     searchPCS: (
@@ -30,7 +30,11 @@ interface PCSSearch {
  * @returns
  */
 export function usePcsSearch(): PCSSearch {
-    const { disciplinesKey, functionalRolesKey, systemsKey } = useProcosysQueryKeyGen();
+    const {
+        disciplines: disciplinesKey,
+        functionalRoles: functionalRolesKey,
+        systems: systemsKey,
+    } = proCoSysQueryKeys();
 
     const { data: systems, refetch: refetchSystems } = useInfiniteCachedQuery(
         systemsKey,

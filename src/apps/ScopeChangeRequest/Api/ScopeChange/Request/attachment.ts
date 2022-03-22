@@ -10,6 +10,7 @@ export const uploadAttachment = async ({ file, requestId }: AttachmentParams): P
     const formData = new FormData();
     const { scopeChange } = httpClient();
     formData.set('File', file, file.name);
+
     const res = await scopeChange.uploadFile(
         `api/scope-change-requests/${requestId}/attachments`,
         formData
