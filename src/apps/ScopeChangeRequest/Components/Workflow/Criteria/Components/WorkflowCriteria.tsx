@@ -215,7 +215,7 @@ export const WorkflowCriteria = ({
         setSelected(null);
     };
 
-    const { mutateAsync: reassignMutation } = useScopeChangeMutation(
+    const { mutate: reassignMutation } = useScopeChangeMutation(
         request.id,
         criteriaReassignKey(step.id, criteria.id),
         reassignCriteria,
@@ -224,7 +224,7 @@ export const WorkflowCriteria = ({
         }
     );
 
-    const { mutateAsync: signMutation } = useScopeChangeMutation(
+    const { mutate: signMutation } = useScopeChangeMutation(
         request.id,
         criteriaSignKey(step.id, criteria.id),
         onSignStep,
@@ -234,7 +234,7 @@ export const WorkflowCriteria = ({
         }
     );
 
-    const { mutateAsync: unSignMutation } = useScopeChangeMutation(
+    const { mutate: unSignMutation } = useScopeChangeMutation(
         request.id,
         criteriaUnsignKey(step.id, criteria.id),
         unsignCriteria,
