@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Button } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 
 export const MenuWrapper = styled.div`
@@ -8,22 +8,22 @@ export const MenuWrapper = styled.div`
     flex-direction: column;
 `;
 
-export const MenuItemLink = styled(Link)`
-    text-decoration: none;
-    color: inherit;
-    width: 100%;
-    height: 100%;
+export const MenuGroupe = styled.div`
+    padding: 1rem 3rem;
 `;
 
-export const MenuItemExternalLink = styled.a`
-    text-decoration: none;
-    color: inherit;
+export const Row = styled.div`
     width: 100%;
-    height: 100%;
 `;
 
-export const MenuItemTitleLink = styled.div`
-    text-decoration: none;
-    color: inherit;
-    padding: 1rem 1.5rem;
+export const RightButton = styled(Button)`
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+`;
+
+export const LeftButton = styled(Button)`
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
 `;

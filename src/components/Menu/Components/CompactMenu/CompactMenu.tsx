@@ -1,4 +1,4 @@
-import { Button, Divider } from '@equinor/eds-core-react';
+import { Divider } from '@equinor/eds-core-react';
 import { useClientContext } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import Icon from '../../../Icon/Icon';
@@ -7,7 +7,7 @@ import { groupeByKey } from '../../utils';
 import { Favorites } from '../Favourites/Favourites';
 import { GroupItem } from '../GroupeItem/GroupeItem';
 import { MenuItem } from '../MenuItem/MenuItem';
-import { MenuWrapper } from './CompactMenuStyles';
+import { LeftButton, MenuGroupe, MenuWrapper, RightButton, Row } from './CompactMenuStyles';
 
 export const CompactMenu = (): JSX.Element => {
     const {
@@ -41,13 +41,15 @@ export const CompactMenu = (): JSX.Element => {
 
     return (
         <MenuWrapper>
-            <div>
+            <Row>
                 <Favorites />
-                <Divider />
-            </div>
-            <div>
+                <MenuGroupe>
+                    <Divider />
+                </MenuGroupe>
+            </Row>
+            <Row>
                 {activeGroupe === '' ? (
-                    <div>
+                    <MenuGroupe>
                         {Object.keys(appGroups).map((key) => {
                             return (
                                 <GroupItem
@@ -59,26 +61,30 @@ export const CompactMenu = (): JSX.Element => {
                                 />
                             );
                         })}
-                    </div>
+                    </MenuGroupe>
                 ) : (
-                    <div>
-                        <Button variant="ghost" onClick={() => setActiveGroupe('')}>
-                            {appGroups[activeGroupe].name}
-                        </Button>
-                        {GroupedMenu[activeGroupe].map((manifest) => (
-                            <MenuItem
-                                key={`acc-${manifest.shortName}`}
-                                appId={activeGroupe}
-                                manifest={manifest}
-                            />
-                        ))}
-                    </div>
+                    <>
+                        <LeftButton variant="ghost" onClick={() => setActiveGroupe('')}>
+                            <Icon name="arrow_back" /> {appGroups[activeGroupe].name}
+                        </LeftButton>
+                        <MenuGroupe>
+                            {GroupedMenu[activeGroupe].map((manifest) => (
+                                <MenuItem
+                                    key={`acc-${manifest.shortName}`}
+                                    appId={activeGroupe}
+                                    manifest={manifest}
+                                />
+                            ))}
+                        </MenuGroupe>
+                    </>
                 )}
-            </div>
-            <Button variant="ghost" onClick={setExpandMenuActive}>
-                Expanded menu
-                <Icon name="chevron_right" />
-            </Button>
+            </Row>
+            <Row>
+                <RightButton variant="ghost" onClick={setExpandMenuActive}>
+                    Expanded menu
+                    <Icon name="chevron_right" />
+                </RightButton>
+            </Row>
         </MenuWrapper>
     );
 };

@@ -17,8 +17,7 @@ export const AccordionHeader = styled(Header)`
     > svg {
         padding-right: 1rem;
     }
-    /* width: 32px;
-    height: 32px; */
+    border: none;
 `;
 
 export const AccordionHeaderIcon = styled(Icon)`

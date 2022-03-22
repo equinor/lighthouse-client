@@ -3,6 +3,7 @@ import { Item } from './GroupeItemStyles';
 
 interface GroupItemProps {
     appGroup: AppGroupe;
+
     onClick?: () => void;
 }
 
