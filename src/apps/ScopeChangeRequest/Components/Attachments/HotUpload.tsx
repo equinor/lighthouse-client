@@ -33,7 +33,6 @@ export const HotUpload = (): JSX.Element => {
             setRejectedFiles(fileRejections);
             if (acceptedFiles[0]) {
                 acceptedFiles.forEach((file) => mutate({ file: file, requestId: request.id }));
-                // mutate({ file: acceptedFiles[0], requestId: request.id });
             }
         },
         [mutate, request.id]

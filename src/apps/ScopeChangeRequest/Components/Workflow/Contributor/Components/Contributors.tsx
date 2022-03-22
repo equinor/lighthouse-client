@@ -124,6 +124,10 @@ export const Contributor = ({
             : [];
     }
 
+    function shouldRenderContributorActions() {
+        return step.isCurrent && makeContributorActions().length > 0;
+    }
+
     return (
         <>
             <ContributorContainer key={contributor.id}>
@@ -145,16 +149,20 @@ export const Contributor = ({
 
                     <>
                         <Inline>
-                            {step.isCurrent &&
-                                !workflowLoading &&
-                                makeContributorActions().length > 0 && (
-                                    <MenuButton
-                                        items={makeContributorActions()}
-                                        onMenuOpen={() => setShowCommentField(false)}
-                                        buttonText="Confirm"
-                                    />
-                                )}
-                            {makeMoreActions().length > 0 && <IconMenu items={makeMoreActions()} />}
+                            {!workflowLoading && (
+                                <>
+                                    {shouldRenderContributorActions() && (
+                                        <MenuButton
+                                            items={makeContributorActions()}
+                                            onMenuOpen={() => setShowCommentField(false)}
+                                            buttonText="Confirm"
+                                        />
+                                    )}
+                                    {makeMoreActions().length > 0 && (
+                                        <IconMenu items={makeMoreActions()} />
+                                    )}
+                                </>
+                            )}
                         </Inline>
                     </>
                 </ContributorInnerContainer>
