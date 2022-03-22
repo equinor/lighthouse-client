@@ -11,7 +11,7 @@ resources:
       type: github
       name: equinor/lighthouse-infra
       endpoint: 'equinor'
-      ref: infra/move_web_dynatrace
+      ref: infra/move
 
 # Global variables for the pipeline
 variables:
@@ -66,7 +66,7 @@ stages:
   - stage: dev
     displayName: 'Deploy to dev'
     dependsOn: 'build'
-    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/dev'))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
     variables:
       envName: 'dev'
       envLabel: 'non-prod'
