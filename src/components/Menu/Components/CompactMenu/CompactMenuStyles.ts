@@ -1,10 +1,16 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+export const MenuWrapper = styled.div`
+    overflow-y: auto;
+    height: calc(100vh - 48px);
+    display: flex;
+    flex-direction: column;
+`;
+
 export const MenuItemLink = styled(Link)`
     text-decoration: none;
     color: inherit;
-
     width: 100%;
     height: 100%;
 `;
@@ -12,7 +18,6 @@ export const MenuItemLink = styled(Link)`
 export const MenuItemExternalLink = styled.a`
     text-decoration: none;
     color: inherit;
-
     width: 100%;
     height: 100%;
 `;

@@ -4,7 +4,6 @@ import { AppConfig } from '../Types/AppConfig';
 import { ClientContext, Facility, FusionContext, Project } from '../Types/ClientContext';
 import { ClientRegistry } from '../Types/ClientRegistry';
 import { ClientSettings } from '../Types/ClientSettings';
-import { UIContext } from '../Types/UIContext';
 
 export function useClientContext(): ClientContextState {
     return useContext(context);
@@ -24,11 +23,6 @@ export function useAppConfig(): AppConfig {
 
 export function useRegistry(): ClientRegistry {
     return useClientContext().registry;
-}
-
-export function useUIContext(): UIContext {
-    const { toggleAppPanel, toggleFullscreenMenu, settings } = useClientContext();
-    return { toggleAppPanel, toggleFullscreenMenu, ...settings };
 }
 
 export function useFacility(): Facility {

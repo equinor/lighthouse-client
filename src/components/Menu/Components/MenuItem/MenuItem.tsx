@@ -1,25 +1,23 @@
 import { isAppActive } from '@equinor/portal-client';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppManifest } from '../../Core/Client/Types';
-import Icon from '../Icon/Icon';
-import { ContentWrapper, DItem, MItem, Title } from './MenuItemStyles';
-import { getURL } from './utils';
+import { AppManifest } from '../../../../Core/Client/Types';
+import { getURL } from '../../utils';
+import { ContentWrapper, Item, MenuItemIcon, Title } from './MenuItemStyles';
 
 interface MenuItemProps {
     manifest: AppManifest;
     appId: string;
     onClick?: () => void;
-    isFullMenu?: boolean;
 }
 
-export const MenuItem = ({ manifest, appId, onClick, isFullMenu }: MenuItemProps): JSX.Element => {
+export const MenuItem = ({ manifest, appId, onClick }: MenuItemProps): JSX.Element => {
     const navigate = useNavigate();
     const [showIcon, setShowIcon] = useState(false);
     const isActive = useMemo(() => isAppActive(manifest), [manifest]);
 
-    return isFullMenu ? (
-        <DItem
+    return (
+        <Item
             isLink={manifest.uri !== undefined}
             active={location.pathname.includes(`${appId}/${manifest.shortName}`)}
             title={isActive ? manifest.title : 'Disabled'}
@@ -34,32 +32,13 @@ export const MenuItem = ({ manifest, appId, onClick, isFullMenu }: MenuItemProps
             <ContentWrapper>
                 <Title disabled={!isActive}>{manifest.title}</Title>
                 {manifest.uri && (
-                    <Icon
+                    <MenuItemIcon
                         size={16}
                         style={{ opacity: showIcon && isActive ? 1 : 0 }}
                         name="external_link"
                     />
                 )}
             </ContentWrapper>
-        </DItem>
-    ) : (
-        <MItem
-            isLink={manifest.uri !== undefined}
-            active={location.pathname.includes(`${appId}/${manifest.shortName}`)}
-            title={isActive ? manifest.title : 'Disabled'}
-            onClick={() => {
-                manifest.uri ? window.open(manifest.uri) : navigate(getURL(manifest, appId));
-                onClick && onClick();
-            }}
-            onMouseEnter={() => setShowIcon(true)}
-            onMouseLeave={() => setShowIcon(false)}
-        >
-            <ContentWrapper>
-                <Title>{manifest.title}</Title>
-                {manifest.uri && (
-                    <Icon size={16} style={{ opacity: showIcon ? 1 : 0 }} name="external_link" />
-                )}
-            </ContentWrapper>
-        </MItem>
+        </Item>
     );
 };

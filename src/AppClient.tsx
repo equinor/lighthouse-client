@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { MainLayout } from './components/Layouts/MainLayout';
 import LoadingPage from './components/Loading/LoadingPage';
+import { MenuProvider } from './components/Menu';
 import { ServiceMessagePost } from './components/Messages/Service/Components/ServiceMessagePost';
 import { ClientRoutes } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
@@ -78,11 +79,13 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
                 <ConfirmationDialog />
                 <ClientContextProvider>
                     <BrowserRouter>
-                        <ClientTopBar />
+                        <MenuProvider>
+                            <ClientTopBar />
 
-                        <MainLayout>
-                            <ClientRoutes />
-                        </MainLayout>
+                            <MainLayout>
+                                <ClientRoutes />
+                            </MainLayout>
+                        </MenuProvider>
                     </BrowserRouter>
                     <FactoryComponent />
                 </ClientContextProvider>

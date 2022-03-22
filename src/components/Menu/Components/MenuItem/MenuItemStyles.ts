@@ -1,6 +1,7 @@
-import { Menu, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+import Icon from '../../../Icon/Icon';
 
 interface MenuItemProps {
     isLink?: boolean;
@@ -8,26 +9,28 @@ interface MenuItemProps {
     active?: boolean;
 }
 
-export const MItem = styled(Menu.Item)`
-    color: ${({ disabled }: MenuItemProps) =>
-        disabled
-            ? tokens.colors.interactive.disabled__text.rgba
-            : tokens.colors.interactive.primary__resting.rgba};
-    cursor: ${({ disabled }: MenuItemProps) => (disabled ? 'default' : 'pointer')};
+export const MenuItemIcon = styled(Icon)``;
 
-    height: 26px;
-    padding-top: 8px;
-    padding-bottom: 0;
-    display: flex;
-    align-items: center;
-    p {
-        font-size: 14px !important;
-    }
-    padding-left: ${({ isLink }: MenuItemProps) => (isLink ? '8px' : '1.5rem')};
-    background: ${({ active }: MenuItemProps) =>
-        active ? `${tokens.colors.interactive.primary__hover_alt.rgba}` : ''};
-`;
-export const DItem = styled.div`
+// export const MItem = styled(Menu.Item)`
+//     color: ${({ disabled }: MenuItemProps) =>
+//         disabled
+//             ? tokens.colors.interactive.disabled__text.rgba
+//             : tokens.colors.interactive.primary__resting.rgba};
+//     cursor: ${({ disabled }: MenuItemProps) => (disabled ? 'default' : 'pointer')};
+
+//     height: 26px;
+//     padding-top: 8px;
+//     padding-bottom: 0;
+//     display: flex;
+//     align-items: center;
+//     p {
+//         font-size: 14px !important;
+//     }
+//     padding-left: ${({ isLink }: MenuItemProps) => (isLink ? '8px' : '1.5rem')};
+//     background: ${({ active }: MenuItemProps) =>
+//         active ? `${tokens.colors.interactive.primary__hover_alt.rgba}` : ''};
+// `;
+export const Item = styled.div`
     color: ${({ disabled }: MenuItemProps) =>
         disabled
             ? tokens.colors.interactive.disabled__text.rgba
@@ -48,7 +51,7 @@ export const DItem = styled.div`
             disabled ? 'none' : `${tokens.colors.interactive.primary__hover_alt.rgba}`};
     }
     background: ${({ active }: MenuItemProps) =>
-        active ? `${tokens.colors.interactive.primary__hover.rgba}` : ''};
+        active ? `${tokens.colors.interactive.primary__selected_highlight.rgba}` : ''};
 `;
 
 export const ContentWrapper = styled.div`
