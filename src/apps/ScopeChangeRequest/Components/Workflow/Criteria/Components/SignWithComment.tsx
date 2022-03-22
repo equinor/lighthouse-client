@@ -29,16 +29,7 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
             const unsignedCriterias = request.currentWorkflowStep.criterias.filter(
                 (x) => x.signedAtUtc === null
             );
-            const sign = async () => {
-                await signCriteria({
-                    closeRequest: false,
-                    criteriaId: criteria.id,
-                    verdict: action,
-                    stepId: step.id,
-                    comment: text,
-                    requestId: request.id,
-                });
-            };
+
             if (
                 request.currentWorkflowStep.contributors &&
                 request.currentWorkflowStep.contributors.some((x) => x.contribution === null) &&
@@ -47,10 +38,25 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
                 spawnConfirmationDialog(
                     'Not all contributors have responded yet, are you sure you want to continue?',
                     'Warning',
-                    sign
+                    async () =>
+                        await signCriteria({
+                            closeRequest: false,
+                            criteriaId: criteria.id,
+                            verdict: action,
+                            requestId: request.id,
+                            stepId: step.id,
+                            comment: text,
+                        })
                 );
             } else {
-                await sign();
+                await signCriteria({
+                    closeRequest: false,
+                    criteriaId: criteria.id,
+                    verdict: action,
+                    requestId: request.id,
+                    stepId: step.id,
+                    comment: text,
+                });
             }
             setText('');
         }
