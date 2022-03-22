@@ -8,7 +8,7 @@ import { sort } from '../../Functions/sort';
 import { useCancellationToken } from '../../Hooks/useCancellationToken';
 import { usePcsSearch } from '../../Hooks/Search/usePcsSearch';
 import { useInfiniteCachedQuery } from '../../Hooks/React-Query/useInfiniteCachedQuery';
-import { useProcosysQueryKeyGen } from '../../Hooks/React-Query/useProcosysQueryKeyGen';
+import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
 
 interface PCSLinkProps {
     selected: TypedSelectOption | null;
@@ -23,7 +23,7 @@ export const PCSPersonRoleSearch = ({
 }: PCSLinkProps): JSX.Element => {
     const { abort, getSignal } = useCancellationToken();
 
-    const { functionalRolesKey } = useProcosysQueryKeyGen();
+    const { functionalRoles: functionalRolesKey } = proCoSysQueryKeys();
 
     const { searchPCS } = usePcsSearch();
 

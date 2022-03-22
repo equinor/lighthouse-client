@@ -5,8 +5,10 @@ import { tokens } from '@equinor/eds-tokens';
 import { useAppConfig, useAuthProvider, useFacility } from '@equinor/portal-client';
 import { useEffect, useRef } from 'react';
 import Icon from '../../components/Icon/Icon';
-import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewer';
+import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
+import { T5602_M02 } from './mocTags/5602-M02';
+import { AP300 } from './mocTags/AP300';
 import { Menu, Message, MessageWrapper, Wrapper, WrapperMenu } from './ModelViewerStyles';
 import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
 export interface ModelViewerProps {
@@ -29,7 +31,7 @@ export const ModelViewer: React.FC<ModelViewerProps> = (props: ModelViewerProps)
     );
 };
 
-const Viewer: React.FC<ViewerProps> = ({
+export const Viewer: React.FC<ViewerProps> = ({
     tags,
     loadFullModel,
     padding = 1,
@@ -88,6 +90,7 @@ const Viewer: React.FC<ViewerProps> = ({
                 }
             } catch (ex) {
                 console.log(ex);
+                setMessage({ message: 'Failed to setup Echo 3D web client', type: 'NoPlant' });
             }
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,7 +110,7 @@ const Viewer: React.FC<ViewerProps> = ({
                                 setMessage();
                             }}
                         >
-                            {message.message}
+                            <h2>{message.message}</h2>
                             {message.type === 'NoPlant' && (
                                 <Button
                                     onClick={() => {
@@ -115,108 +118,101 @@ const Viewer: React.FC<ViewerProps> = ({
                                             `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
                                         );
                                     }}
-                                ></Button>
+                                >
+                                    Apply for access
+                                </Button>
                             )}
                         </Message>
                     )}
                 </MessageWrapper>
             )}
-            {!loadFullModel && (
-                <WrapperMenu>
-                    <Menu>
-                        <Button
-                            variant="ghost_icon"
-                            onClick={() => {
-                                selectTags(
-                                    [
-                                        // '82EL068-417',
-                                        // '82EL068-417-B01',
-                                        '56L00420A',
-                                        '56L00420B',
-                                        '56L00440A',
-                                        '56L00446A',
-                                    ],
-                                    padding
-                                );
-                            }}
-                        >
-                            T1
-                        </Button>
-                        <Button
-                            variant="ghost_icon"
-                            onClick={() => {
-                                selectTags(
-                                    [
-                                        // '82EL068-417',
-                                        '82EL068-417-B01',
-                                    ],
-                                    padding
-                                );
-                            }}
-                        >
-                            T2
-                        </Button>
-                        <Button
-                            variant="ghost_icon"
-                            onClick={() => {
-                                selectTags(['this will fail'], padding);
-                            }}
-                        >
-                            T3
-                        </Button>
-                        <Button
-                            variant="ghost_icon"
-                            onClick={() => {
-                                const style: NodeAppearance = {
-                                    color: [255, 0, 0] as [number, number, number],
-                                    outlineColor: 4,
-                                    renderGhosted: false,
-                                    renderInFront: true,
-                                    visible: true,
-                                };
-                                selection?.setSelectedColor(style);
-                            }}
-                        >
-                            <Icon name={'invert_colors'} />
-                        </Button>
-                        <Button
-                            title="Hidden"
-                            variant="ghost_icon"
-                            onClick={() => {
-                                selection?.setHideMode('Default');
-                            }}
-                        >
-                            <Icon name={'visibility'} />
-                        </Button>
-                        <Button
-                            title="Hidden"
-                            variant="ghost_icon"
-                            onClick={() => {
-                                selection?.setHideMode('Hidden');
-                            }}
-                        >
-                            <Icon name={'visibility_off'} />
-                        </Button>
 
-                        <Button
-                            variant="ghost_icon"
-                            onClick={() => {
-                                selection?.setHideMode('Outlined');
-                            }}
-                        >
-                            <Icon name={'puzzle'} />
-                        </Button>
-                        <Button
-                            variant="ghost_icon"
-                            onClick={() => {
-                                selection?.setHideMode('InFront');
-                            }}
-                        >
-                            <Icon name={'puzzle_filled'} />
-                        </Button>
-                    </Menu>
-                </WrapperMenu>
-            )}
+            <WrapperMenu>
+                <Menu>
+
+                    <Button
+                        variant="ghost_icon"
+                        onClick={() => {
+                            selectTags(
+                                AP300,
+                                padding
+                            );
+                        }}
+                    >
+                        T1
+                    </Button>
+                    <Button
+                        variant="ghost_icon"
+                        onClick={() => {
+                            selectTags(
+                                T5602_M02,
+                                padding
+                            );
+                        }}
+                    >
+                        T2
+                    </Button>
+                    <Button
+                        variant="ghost_icon"
+                        onClick={() => {
+                            selectTags(['this will fail'], padding);
+                        }}
+                    >
+                        T3
+                    </Button>
+                    <Button
+                        variant="ghost_icon"
+                        onClick={() => {
+                            const style: NodeAppearance = {
+                                color: [255, 0, 0] as [number, number, number],
+                                outlineColor: 4,
+                                renderGhosted: false,
+                                renderInFront: true,
+                                visible: true,
+                            };
+                            selection?.setSelectedColor(style);
+                        }}
+                    >
+                        <Icon name={'invert_colors'} />
+                    </Button>
+                    <Button
+                        title="Hidden"
+                        variant="ghost_icon"
+                        onClick={() => {
+                            selection?.setHideMode('Default');
+                        }}
+                    >
+                        <Icon name={'visibility'} />
+                    </Button>
+                    <Button
+                        title="Hidden"
+                        variant="ghost_icon"
+                        onClick={() => {
+                            selection?.setHideMode('Hidden');
+                        }}
+                    >
+                        <Icon name={'visibility_off'} />
+                    </Button>
+
+                    <Button
+                        variant="ghost_icon"
+                        onClick={() => {
+                            selection?.setHideMode('Outlined');
+                        }}
+                    >
+                        <Icon name={'puzzle'} />
+                    </Button>
+                    <Button
+                        variant="ghost_icon"
+                        onClick={() => {
+                            selection?.setHideMode('InFront');
+                        }}
+                    >
+                        <Icon name={'puzzle_filled'} />
+                    </Button>
+                </Menu>
+            </WrapperMenu>
+
         </>
     );
 };

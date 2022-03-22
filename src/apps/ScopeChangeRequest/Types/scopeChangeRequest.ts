@@ -47,7 +47,7 @@ export interface LogEntry {
         email: string;
     };
     id: string;
-    description: string;
+    title: string;
     objectGuid: string;
     eventType: string;
     objectType: string;
