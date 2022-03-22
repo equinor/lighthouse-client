@@ -50,13 +50,9 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
     const scopeChangeAccess = useScopeChangeAccess(item.id);
 
-    const { mutateAsync: unvoidMutation } = useScopeChangeMutation(
-        item.id,
-        unvoidKey,
-        unVoidRequest
-    );
+    const { mutate: unvoidMutation } = useScopeChangeMutation(item.id, unvoidKey, unVoidRequest);
 
-    const { mutateAsync: voidMutation } = useScopeChangeMutation(item.id, voidKey, voidRequest);
+    const { mutate: voidMutation } = useScopeChangeMutation(item.id, voidKey, voidRequest);
 
     const refetchScopeChange = useCallback(async () => {
         await refetch();
@@ -69,7 +65,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             if (data?.isVoided) {
                 actions.push({
                     label: 'Unvoid request',
-                    onClick: async () => await unvoidMutation({ requestId: item.id }),
+                    onClick: () => unvoidMutation({ requestId: item.id }),
                 });
             }
         }
@@ -81,7 +77,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         spawnConfirmationDialog(
                             'Are you sure you want to void this request',
                             'Void confirmation',
-                            async () => await voidMutation({ requestId: item.id })
+                            () => voidMutation({ requestId: item.id })
                         ),
                 });
             }

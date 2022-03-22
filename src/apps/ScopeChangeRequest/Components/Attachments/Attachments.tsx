@@ -4,7 +4,7 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 interface AttachmentsProps {
-    onDrop: (acceptedFiles: any, fileRejections: FileRejection[]) => Promise<void>;
+    onDrop: (acceptedFiles: File[], fileRejections: FileRejection[]) => Promise<void>;
     maxSizeInBytes: number;
     isLoading?: boolean;
 }

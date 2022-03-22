@@ -17,7 +17,7 @@ export const HotUpload = (): JSX.Element => {
 
     const { uploadAttachmentKey } = scopeChangeMutationKeys(request.id);
 
-    const { isLoading, mutateAsync } = useScopeChangeMutation(
+    const { isLoading, mutate } = useScopeChangeMutation(
         request.id,
         uploadAttachmentKey,
         uploadAttachment,
@@ -29,13 +29,13 @@ export const HotUpload = (): JSX.Element => {
     );
 
     const onDrop = useCallback(
-        async (acceptedFiles, fileRejections: FileRejection[]) => {
+        async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
             setRejectedFiles(fileRejections);
             if (acceptedFiles[0]) {
-                await mutateAsync({ file: acceptedFiles[0], requestId: request.id });
+                acceptedFiles.forEach((file) => mutate({ file: file, requestId: request.id }));
             }
         },
-        [mutateAsync, request.id]
+        [mutate, request.id]
     );
 
     return (
