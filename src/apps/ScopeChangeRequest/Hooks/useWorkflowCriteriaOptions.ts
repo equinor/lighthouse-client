@@ -1,8 +1,9 @@
-import { useQuery, UseQueryOptions } from 'react-query';
+import { UseQueryOptions } from 'react-query';
 import { canReassign, canUnsign, canSign } from '../Api/ScopeChange/Access';
 import { ServerError } from '../Types/ScopeChange/ServerError';
 import { CacheTime } from '../Enums/cacheTimes';
 import { scopeChangeQueryKeys } from '../Keys/scopeChangeQueryKeys';
+import { useScopeChangeQuery } from './React-Query/useScopeChangeQuery';
 
 interface CriteriaOptions {
     canSign: boolean | undefined;
@@ -40,21 +41,24 @@ export function useWorkflowCriteriaOptions(
     const { criteriaCanSignKey, criteriaCanReassignKey, criteriaCanUnsignKey } = workflowKeys;
 
     const checkCanSign = () => canSign(params);
-    const { data: userCanSign } = useQuery(
+    const { data: userCanSign } = useScopeChangeQuery(
         criteriaCanSignKey(stepId, criteriaId),
         checkCanSign,
+        'Failed to get permissions',
         queryParams
     );
     const checkCanReassign = () => canReassign(params);
-    const { data: userCanReassign } = useQuery(
+    const { data: userCanReassign } = useScopeChangeQuery(
         criteriaCanReassignKey(stepId, criteriaId),
         checkCanReassign,
+        'Failed to get permissions',
         queryParams
     );
     const checkCanUnsign = () => canUnsign(params);
-    const { data: userCanUnsign } = useQuery(
+    const { data: userCanUnsign } = useScopeChangeQuery(
         criteriaCanUnsignKey(stepId, criteriaId),
         checkCanUnsign,
+        'Failed to get permissions',
         queryParams
     );
 

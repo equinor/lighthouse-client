@@ -8,7 +8,6 @@ import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDial
 import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { tokens } from '@equinor/eds-tokens';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
-import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
 
 interface SignWithCommentProps {
@@ -18,7 +17,7 @@ interface SignWithCommentProps {
 }
 
 export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps): JSX.Element => {
-    const { request, setErrorMessage } = useScopeChangeContext();
+    const { request } = useScopeChangeContext();
     const [text, setText] = useState<string | undefined>();
     const { workflowKeys } = scopeChangeMutationKeys(request.id);
 
@@ -60,10 +59,7 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
     const { mutateAsync, isLoading } = useScopeChangeMutation(
         request.id,
         workflowKeys.criteriaSignKey(step.id, criteria.id),
-        onSignStep,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-        }
+        onSignStep
     );
 
     return (

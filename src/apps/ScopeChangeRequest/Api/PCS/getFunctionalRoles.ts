@@ -13,5 +13,9 @@ export async function getFunctionalRoles(): Promise<FunctionalRole[]> {
 
     const response = await procosys.fetch(request);
 
+    if (!response.ok) {
+        throw 'Failed to get functional roles';
+    }
+
     return await response.json();
 }
