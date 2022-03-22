@@ -1,5 +1,4 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { ServerError } from '../../../Types/ScopeChange/ServerError';
 
 interface AttachmentParams {
     requestId: string;
@@ -17,8 +16,7 @@ export const uploadAttachment = async ({ file, requestId }: AttachmentParams): P
     );
 
     if (!res.ok) {
-        const error: ServerError = await res.json();
-        throw error;
+        throw await res.json();
     }
 };
 

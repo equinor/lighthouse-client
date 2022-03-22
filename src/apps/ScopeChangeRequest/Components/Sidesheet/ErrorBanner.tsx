@@ -2,7 +2,7 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { useErrorMessageListener } from '../../Functions/ErrorMessage/useErrorMessageListener';
-import { Button } from '@equinor/eds-core-react';
+import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 
 export interface ErrorFormat {
     message: ServerError | undefined;
@@ -21,16 +21,24 @@ export function ScopeChangeErrorBanner(): JSX.Element {
             {errors &&
                 errors.map((message) => (
                     <ErrorContainer key={message.title}>
-                        <div>{message.title}</div>
+                        <Inline>
+                            <span></span>
+                            <div>{message.title}</div>
+                            <ClickableIcon name="close" onClick={() => removeErrors(message)} />
+                        </Inline>
                         <ErrorDetails>{message.description}</ErrorDetails>
-                        <Button variant="outlined" onClick={() => removeErrors(message)}>
-                            Dismiss
-                        </Button>
                     </ErrorContainer>
                 ))}
         </div>
     );
 }
+const Inline = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`;
 
 const ErrorDetails = styled.div`
     flex-direction: column;

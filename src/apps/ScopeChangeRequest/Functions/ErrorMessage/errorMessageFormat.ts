@@ -1,4 +1,4 @@
 export interface ErrorMessageFormat {
-    title: string;
+    title: string | null;
     description?: string;
 }
