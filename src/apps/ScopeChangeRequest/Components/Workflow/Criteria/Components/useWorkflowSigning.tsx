@@ -44,7 +44,7 @@ export function useWorkflowSigning({
             });
             return;
         }
-
+        /** Need to determine if it is the last criteria to be signed on the step */
         const unsignedCriterias = request.workflowSteps
             .find((x) => x.id === stepId)
             ?.criterias.filter((x) => x.signedAtUtc === null);
@@ -60,10 +60,9 @@ export function useWorkflowSigning({
                 queryClient.invalidateQueries(baseKey);
             });
         };
-        const step = request.workflowSteps.find((x) => x.id === stepId);
+
         if (
-            step?.contributors &&
-            step?.contributors.some((x) => x.contribution === null) &&
+            request.hasPendingContributions &&
             unsignedCriterias &&
             unsignedCriterias.length === 1
         ) {

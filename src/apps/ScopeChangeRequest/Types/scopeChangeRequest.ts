@@ -71,7 +71,6 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     areas: Area[];
     hasComments: boolean;
     sequenceNumber: number;
-    //workflow
 }
 
 export interface Discipline {

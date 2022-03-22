@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useWorkflowSigning } from './useWorkflowSigning';
 
-interface SignWithCommentBarProps {
+interface SignWithCommentProps {
     action: 'Approved' | 'Rejected';
     stepId: string;
     criteriaId: string;
@@ -15,7 +15,7 @@ export const SignWithComment = ({
     criteriaId,
     stepId,
     closeRequest,
-}: SignWithCommentBarProps): JSX.Element => {
+}: SignWithCommentProps): JSX.Element => {
     const { request } = useScopeChangeContext();
     const signMutation = useWorkflowSigning({
         criteriaId: criteriaId,
