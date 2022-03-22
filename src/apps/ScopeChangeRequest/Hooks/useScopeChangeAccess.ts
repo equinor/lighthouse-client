@@ -24,20 +24,14 @@ export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
 
     const { canUnVoidKey, canVoidKey } = scopeChangeQueryKeys(requestId);
 
-    const { data: userCanVoid } = useScopeChangeQuery(
-        canVoidKey(),
-        () => canVoid(requestId),
-        'Failed to get permissions',
-        {
-            cacheTime: CacheTime.FiveMinutes,
-            staleTime: CacheTime.FiveMinutes,
-        }
-    );
+    const { data: userCanVoid } = useScopeChangeQuery(canVoidKey(), () => canVoid(requestId), {
+        cacheTime: CacheTime.FiveMinutes,
+        staleTime: CacheTime.FiveMinutes,
+    });
 
     const { data: userCanUnvoid } = useScopeChangeQuery(
         canUnVoidKey(),
         () => canUnVoid(requestId),
-        'Failed to get permissions',
         {
             cacheTime: CacheTime.FiveMinutes,
             staleTime: CacheTime.FiveMinutes,

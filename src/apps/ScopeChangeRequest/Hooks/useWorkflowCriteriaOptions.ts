@@ -1,6 +1,5 @@
 import { UseQueryOptions } from 'react-query';
 import { canReassign, canUnsign, canSign } from '../Api/ScopeChange/Access';
-import { ServerError } from '../Types/ScopeChange/ServerError';
 import { CacheTime } from '../Enums/cacheTimes';
 import { scopeChangeQueryKeys } from '../Keys/scopeChangeQueryKeys';
 import { useScopeChangeQuery } from './React-Query/useScopeChangeQuery';
@@ -14,8 +13,7 @@ interface CriteriaOptions {
 export function useWorkflowCriteriaOptions(
     requestId: string,
     criteriaId: string,
-    stepId: string,
-    errorPipe?: (value: ServerError) => void
+    stepId: string
 ): CriteriaOptions {
     const params = {
         criteriaId,
@@ -31,11 +29,6 @@ export function useWorkflowCriteriaOptions(
         retry: 3,
         staleTime: CacheTime.FiveMinutes,
         cacheTime: CacheTime.FiveMinutes,
-        onError: (e: string) => {
-            if (errorPipe) {
-                errorPipe({ detail: e, title: 'Query failed', validationErrors: {} });
-            }
-        },
     };
     const { workflowKeys } = scopeChangeQueryKeys(requestId);
     const { criteriaCanSignKey, criteriaCanReassignKey, criteriaCanUnsignKey } = workflowKeys;
@@ -44,21 +37,18 @@ export function useWorkflowCriteriaOptions(
     const { data: userCanSign } = useScopeChangeQuery(
         criteriaCanSignKey(stepId, criteriaId),
         checkCanSign,
-        'Failed to get permissions',
         queryParams
     );
     const checkCanReassign = () => canReassign(params);
     const { data: userCanReassign } = useScopeChangeQuery(
         criteriaCanReassignKey(stepId, criteriaId),
         checkCanReassign,
-        'Failed to get permissions',
         queryParams
     );
     const checkCanUnsign = () => canUnsign(params);
     const { data: userCanUnsign } = useScopeChangeQuery(
         criteriaCanUnsignKey(stepId, criteriaId),
         checkCanUnsign,
-        'Failed to get permissions',
         queryParams
     );
 

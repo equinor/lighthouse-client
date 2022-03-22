@@ -16,7 +16,6 @@ export function HistoryList(): JSX.Element {
     const { data, remove, isLoading } = useScopeChangeQuery<LogEntry[]>(
         historyKey,
         () => getHistory(request.id),
-        'Failed to get log',
         {
             cacheTime: CacheTime.FiveMinutes,
             staleTime: CacheTime.FiveMinutes,

@@ -53,7 +53,6 @@ export const Contributor = ({
     const { data: userCanContribute, remove: invalidateUserCanContribute } = useScopeChangeQuery(
         workflowKeys.contributorKey(step.id, contributor.id),
         checkCanContribute,
-        'Failed to get permissions',
         {
             staleTime: CacheTime.FiveMinutes,
             cacheTime: CacheTime.FiveMinutes,

@@ -20,7 +20,6 @@ export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element 
     const { data: isAllowedToAddContributor } = useScopeChangeQuery(
         workflowKeys.canAddContributorKey(step.id),
         checkContributorAccess,
-        'Failed to get permissions',
         {
             refetchOnWindowFocus: false,
             staleTime: CacheTime.FiveMinutes,
