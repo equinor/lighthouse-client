@@ -159,7 +159,7 @@ export const WorkflowCriteria = ({
         <AddContributor close={() => setShowContributor(false)} step={step} />
     );
 
-    const { mutateAsync: reassignMutation } = useScopeChangeMutation(
+    const { mutate: reassignMutation } = useScopeChangeMutation(
         request.id,
         criteriaReassignKey(step.id, criteria.id),
         reassignCriteria,
@@ -168,7 +168,7 @@ export const WorkflowCriteria = ({
         }
     );
 
-    const { mutateAsync: unSignMutation } = useScopeChangeMutation(
+    const { mutate: unSignMutation } = useScopeChangeMutation(
         request.id,
         criteriaUnsignKey(step.id, criteria.id),
         unsignCriteria,

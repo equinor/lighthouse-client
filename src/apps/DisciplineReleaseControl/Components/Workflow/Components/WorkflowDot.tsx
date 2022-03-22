@@ -1,4 +1,3 @@
-import { tokens } from '@equinor/eds-tokens';
 import { useMemo } from 'react';
 
 interface WorkflowDotProps {
@@ -26,26 +25,26 @@ export const WorkflowDot = ({
             case 'Outstanding':
                 return {
                     color: '',
-                    stroke: '#6F6F6F',
+                    stroke: '#DCDCDC',
                     text: text,
                 };
 
             case 'Completed':
                 return {
-                    color: tokens.colors.infographic.substitute__green_succulent.hex,
+                    color: '#4BB748',
                     stroke: '',
                     text: text,
                 };
             case 'Inactive':
                 return {
-                    color: '#D3D3D3',
-                    stroke: '#6F6F6F',
+                    color: '#DCDCDC',
+                    stroke: '#000000',
                     text: text,
                 };
             case 'Error':
                 return {
-                    color: '#FF0000',
-                    stroke: '#FF0000',
+                    color: '#EB0000',
+                    stroke: '#EB0000',
                     text: text,
                 };
         }

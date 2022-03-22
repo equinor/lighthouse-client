@@ -1,11 +1,8 @@
+import { DateTime } from 'luxon';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
-import { getPipetestStatus } from '../../Functions/statusHelpers';
+import { getPipetestStatus, getPipetestStatusEnumByValue } from '../../Functions/statusHelpers';
 import { PipetestStatus, PipetestStatusOrder } from '../../Types/drcEnums';
 import { Pipetest } from '../../Types/pipetest';
-
-export function getPipetestStatusEnumByValue(enumValue: string): string {
-    return Object.keys(PipetestStatus).filter((x) => PipetestStatus[x] == enumValue)[0];
-}
 
 export const getStatusKey: GetKeyFunction<Pipetest> = (item) => {
     const pipetestStatusFieldKey = getPipetestStatus(item.checkLists);
@@ -34,6 +31,24 @@ export const groupBySystem = (a: string, b: string): number => {
         numeric: true,
         sensitivity: 'base',
     });
+};
+
+export const getTimePeriod = (item: Pipetest): string => {
+    const date = DateTime.fromISO(item.rfccPlanned);
+
+    const upcomingFourWeeks = (date: DateTime) =>
+        0 < date?.diffNow('weeks').weeks && date?.diffNow('weeks').weeks < 4;
+    const pastFourWeeks = (date: DateTime) =>
+        -4 < date?.diffNow('weeks').weeks && date?.diffNow('weeks').weeks < 0;
+
+    if (upcomingFourWeeks(date)) {
+        return 'Next four weeks';
+    }
+    if (pastFourWeeks(date)) {
+        return 'Past four weeks';
+    }
+
+    return 'Other';
 };
 
 export const getGardenItemColor = (item: Pipetest): string => {
