@@ -41,10 +41,14 @@ stages:
           condition: and(always(), eq(variables['Build.Reason'], 'PullRequest'))
           deploymentName: 'docker_build'
           envGroup: '${{ variables.envGroupName }}'
+          envLabel: '${{ variables.envLabel }}'
           buildCommand: build
           dockerfilePath: '${{ variables.dockerfilePath }}'
           repository: '${{ variables.repositoryName }}'
           dockerRegistryServiceConnection: '${{ variables.dockerRegistryServiceConnectionName }}'
+          kvName: '${{ variables.kvSharedName }}'
+          kvRgName: '${{ variables.kvSharedRgName }}'
+          serviceConnection: '${{ variables.serviceConnection }}'
 
       # Docker Build and Push
       - template: /src/resources/web-client/jobs/client-dockerbuild.yml@templates
