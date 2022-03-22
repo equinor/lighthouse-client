@@ -27,7 +27,6 @@ import { StidTypes } from '../../Types/STID/STIDTypes';
 import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
-import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -80,23 +79,19 @@ export const ScopeChangeRequestForm = ({
         if (scID) {
             const { baseKey } = scopeChangeQueryKeys(scID);
             attachments.forEach(async (attachment) => {
-                await mutateAsync({ file: attachment, requestId: scID })
-                    .then(() => queryClient.invalidateQueries(baseKey))
-                    .catch(() =>
-                        spawnConfirmationDialog(
-                            "We're terribly sorry",
-                            'Some attachments failed to upload',
-                            () => void 0
-                        )
-                    );
+                uploadAttachmentMutation({ file: attachment, requestId: scID });
             });
             setIsRedirecting(true);
 
             redirect(scID);
+            queryClient.invalidateQueries(baseKey);
         }
     };
 
-    const { mutateAsync } = useMutation(uploadAttachment, { retry: 2, retryDelay: 2 });
+    const { mutate: uploadAttachmentMutation } = useMutation(uploadAttachment, {
+        retry: 2,
+        retryDelay: 2,
+    });
 
     const { mutate, isLoading } = useMutation(createScopeChangeMutation, {
         retry: 2,

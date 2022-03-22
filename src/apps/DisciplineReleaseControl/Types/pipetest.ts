@@ -4,10 +4,15 @@ export interface Pipetest {
     name: string;
     status: PipetestStatus;
     checkLists: CheckList[];
+    heatTraces: HeatTrace[];
+    description: string;
+    commPkPriority1: string;
+    rfccPlanned: string;
     // description: string;
     // dueDate: string;
     // lineAndSpools: string[][];
     tagTree: Record<string, unknown>;
+    dueDateTimePeriod: string;
 }
 
 export interface CheckList {
@@ -21,6 +26,8 @@ export interface CheckList {
     isHeatTrace: boolean;
     workflowStepText: string | undefined;
 }
+
+export interface HeatTrace extends CheckList { }
 
 export type CheckListType = {
     tagNo: string;

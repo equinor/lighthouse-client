@@ -3,7 +3,7 @@ import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState'
 export type DataSet<T> = {
     groupKey: keyof T;
     value: string;
-    subGroups: Data<T>;
+    subGroups: GardenGroups<T>;
     items: T[];
     isExpanded: boolean;
     count: number;
@@ -11,6 +11,4 @@ export type DataSet<T> = {
     description?: string | undefined;
 };
 
-export type Data<T> = {
-    [key: string]: DataSet<T>;
-};
+export type GardenGroups<T> = DataSet<T>[];

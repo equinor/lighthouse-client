@@ -32,7 +32,7 @@ export const AddContributor = ({ close, step }: AddContributorProps): JSX.Elemen
         );
     };
 
-    const { mutateAsync, isLoading } = useScopeChangeMutation(
+    const { mutate, isLoading } = useScopeChangeMutation(
         request.id,
         workflowKeys.addContributorKey(step.id),
         submit,
@@ -62,7 +62,7 @@ export const AddContributor = ({ close, step }: AddContributorProps): JSX.Elemen
                     <ButtonContainer>
                         <Button
                             disabled={text.length === 0 || !contributor}
-                            onClick={async () => await mutateAsync()}
+                            onClick={() => mutate()}
                         >
                             Assign
                         </Button>
