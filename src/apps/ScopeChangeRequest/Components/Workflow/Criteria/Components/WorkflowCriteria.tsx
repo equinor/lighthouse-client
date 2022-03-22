@@ -19,7 +19,7 @@ import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKey
 import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
 import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
-import { SignWithCommentBar } from './SignWithCommentBar';
+import { SignWithComment } from './SignWithComment';
 import { useWorkflowSigning } from './useWorkflowSigning';
 
 interface WorkflowCriteriasProps {
@@ -232,7 +232,7 @@ export const WorkflowCriteria = ({
 
             <ContributorSelector />
             {showRejectWithComment && (
-                <SignWithCommentBar
+                <SignWithComment
                     action="Rejected"
                     closeRequest={false}
                     criteriaId={criteria.id}
@@ -240,7 +240,7 @@ export const WorkflowCriteria = ({
                 />
             )}
             {showSignWithComment && (
-                <SignWithCommentBar
+                <SignWithComment
                     action={'Approved'}
                     stepId={step.id}
                     criteriaId={criteria.id}
