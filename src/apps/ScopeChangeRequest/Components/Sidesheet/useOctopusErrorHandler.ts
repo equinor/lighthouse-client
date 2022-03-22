@@ -6,7 +6,7 @@ import { useGlobalMutationListener } from './useGlobalMutationListener';
 import { useGlobalQueryListener } from './useGlobalQueryListener';
 
 /**
- * Octopus error handler watches over all react query mutations and queries.
+ * Octopus error handler watches over all react-query mutations and queries.
  * If a query or mutation fails it will catch it and send it over a broadcast channel to the nearest reciever
  */
 export function useOctopusErrorHandler(): void {
