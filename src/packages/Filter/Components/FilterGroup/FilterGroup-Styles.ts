@@ -12,7 +12,9 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0.5em;
-    width: 300px;
+    width: fit-content;
+    max-width: 500px;
+    text-overflow: ellipsis;
     min-width: 200px;
     height: fit-content;
     word-wrap: break-word;

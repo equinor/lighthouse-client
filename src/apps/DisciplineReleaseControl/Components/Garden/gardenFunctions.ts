@@ -1,4 +1,4 @@
-import luxon, { DateTime } from 'luxon';
+import { DateTime } from 'luxon';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
 import { getPipetestStatus, getPipetestStatusEnumByValue } from '../../Functions/statusHelpers';
 import { PipetestStatus, PipetestStatusOrder } from '../../Types/drcEnums';
@@ -36,9 +36,9 @@ export const groupBySystem = (a: string, b: string): number => {
 export const getTimePeriod = (item: Pipetest): string => {
     const date = DateTime.fromISO(item.rfccPlanned);
 
-    const upcomingFourWeeks = (date: luxon.DateTime) =>
+    const upcomingFourWeeks = (date: DateTime) =>
         0 < date?.diffNow('weeks').weeks && date?.diffNow('weeks').weeks < 4;
-    const pastFourWeeks = (date: luxon.DateTime) =>
+    const pastFourWeeks = (date: DateTime) =>
         -4 < date?.diffNow('weeks').weeks && date?.diffNow('weeks').weeks < 0;
 
     if (upcomingFourWeeks(date)) {
