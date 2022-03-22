@@ -13,9 +13,18 @@ const scopeChangeExcludeFilterKeys: (keyof ScopeChangeRequest)[] = [
 
 export const filterConfig: FilterOptions<ScopeChangeRequest> = {
     excludeKeys: scopeChangeExcludeFilterKeys,
-    typeMap: {},
-    initialFilters: ['State', 'phase', 'category', 'Origin', 'Step', 'NextToSign'],
-    groupValue: {
+    headerNames: {},
+    defaultActiveFilters: ['State', 'phase', 'category', 'Origin', 'Step', 'NextToSign'],
+    defaultUncheckedValues: [
+        {
+            type: 'State',
+            value: {
+                Voided: { checked: false, type: 'State', value: 'Voided' },
+                Draft: { checked: false, type: 'State', value: 'Draft' },
+            },
+        },
+    ],
+    valueFormatter: {
         NextToSign: (item: ScopeChangeRequest): string => {
             if (item.state !== 'Open') {
                 return 'Closed';

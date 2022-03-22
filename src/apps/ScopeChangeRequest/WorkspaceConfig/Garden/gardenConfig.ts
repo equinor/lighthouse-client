@@ -9,4 +9,15 @@ export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
     customViews: {
         customItemView: ScopeChangeItemView,
     },
+    intercepters: {
+        postGroupSorting: (data) =>
+            data.map((group) => ({
+                ...group,
+                items: group.items.sort((a, b) => a.sequenceNumber - b.sequenceNumber),
+            })),
+        preGroupFiltering: (data, key) =>
+            key === 'originSource'
+                ? data.filter(({ sequenceNumber }) => sequenceNumber > 200)
+                : data,
+    },
 };
