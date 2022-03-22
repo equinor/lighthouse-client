@@ -11,7 +11,7 @@ resources:
       type: github
       name: equinor/lighthouse-infra
       endpoint: 'equinor'
-      ref: infra/move
+      ref: infra/move_web_dynatrace
 
 # Global variables for the pipeline
 variables:
@@ -60,13 +60,13 @@ stages:
           dockerRegistryServiceConnection: '${{ variables.dockerRegistryServiceConnectionName }}'
           kvName: '${{ variables.kvSharedName }}'
           kvRgName: '${{ variables.kvSharedRgName }}'
-          serviceConnection: '${{ variables.serviceConnection }}'          
+          serviceConnection: '${{ variables.serviceConnection }}'
 
   # Deploy to dev environment
   - stage: dev
     displayName: 'Deploy to dev'
     dependsOn: 'build'
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/dev'))
+    condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/dev'))
     variables:
       envName: 'dev'
       envLabel: 'non-prod'
@@ -88,8 +88,8 @@ stages:
           kvSharedName: '${{ variables.kvSharedName }}'
           kvName: '${{ variables.kvName }}'
           envLabel: '${{ variables.envLabel }}'
-          envName: '${{ variables.envName }}'          
-          envGroup: "${{ variables.envGroupName }}"          
+          envName: '${{ variables.envName }}'
+          envGroup: '${{ variables.envGroupName }}'
           repository: '${{ variables.repositoryName }}'
           containerRegistry: '${{ variables.containerRegistry }}'
           appName: '${{ variables.appName }}'
@@ -121,7 +121,7 @@ stages:
           kvSharedName: '${{ variables.kvSharedName }}'
           kvName: '${{ variables.kvName }}'
           envLabel: '${{ variables.envLabel }}'
-          envName: '${{ variables.envName }}'                    
+          envName: '${{ variables.envName }}'
           envGroup: '${{ variables.envGroupName }}'
           repository: '${{ variables.repositoryName }}'
           containerRegistry: '${{ variables.containerRegistry }}'
