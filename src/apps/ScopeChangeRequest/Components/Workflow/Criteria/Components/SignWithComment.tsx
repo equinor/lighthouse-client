@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { Button, Progress, TextField } from '@equinor/eds-core-react';
+import { Button, TextField } from '@equinor/eds-core-react';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { signCriteria } from '../../../../Api/ScopeChange/Workflow/';
 import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
@@ -57,7 +57,7 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
         }
     }
 
-    const { mutateAsync, isLoading } = useScopeChangeMutation(
+    const { mutate } = useScopeChangeMutation(
         request.id,
         workflowKeys.criteriaSignKey(step.id, criteria.id),
         onSignStep,
@@ -68,8 +68,6 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
 
     return (
         <>
-            {isLoading && <Progress.Dots color="primary" />}
-
             <Section>
                 <Title>Comment</Title>
                 <TextField
@@ -81,7 +79,10 @@ export const SignWithComment = ({ criteria, step, close }: SignWithCommentProps)
             <ButtonContainer>
                 <Button
                     disabled={!text || text.length === 0}
-                    onClick={() => mutateAsync({ action: 'Approved' }).then(() => close())}
+                    onClick={() => {
+                        mutate({ action: 'Approved' });
+                        close();
+                    }}
                 >
                     Sign
                 </Button>
