@@ -1,5 +1,4 @@
 import { Button, CircularProgress, Dialog, Typography } from '@equinor/eds-core-react';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { useDataContext } from '../../Context/DataProvider';
