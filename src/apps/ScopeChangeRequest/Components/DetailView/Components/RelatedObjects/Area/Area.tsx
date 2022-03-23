@@ -6,6 +6,7 @@ import { Wrapper } from '../WrapperStyles';
 import { getAreaByCode } from '../../../../../Api/PCS/getAreaByCode';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
+import { useFacility } from '../../../../../../../Core/Client/Hooks';
 
 interface AreaProps {
     area: AreaInterface;
@@ -13,10 +14,11 @@ interface AreaProps {
 
 export const Area = ({ area }: AreaProps): JSX.Element => {
     const { area: areaKey } = proCoSysQueryKeys();
+    const { procosysPlantId } = useFacility();
 
     const { data } = useInfiniteCachedQuery(
         areaKey(area.procosysCode),
-        () => getAreaByCode(area.procosysCode),
+        () => getAreaByCode(procosysPlantId, area.procosysCode),
         {
             retry: false,
             retryDelay: 5000,

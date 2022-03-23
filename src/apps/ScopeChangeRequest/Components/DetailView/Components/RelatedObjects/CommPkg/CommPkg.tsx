@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { isProduction } from '../../../../../../../Core/Client/';
+import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
@@ -14,9 +14,10 @@ interface CommPkgProps {
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     const { commPkg: commPkgKey } = proCoSysQueryKeys();
+    const { procosysPlantId } = useFacility();
 
     const { data } = useInfiniteCachedQuery(commPkgKey(commPkg.procosysNumber), () =>
-        getCommPkgById(commPkg.procosysId)
+        getCommPkgById(procosysPlantId, commPkg.procosysId)
     );
 
     return (

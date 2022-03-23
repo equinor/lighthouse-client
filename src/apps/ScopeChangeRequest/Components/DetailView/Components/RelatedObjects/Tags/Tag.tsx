@@ -2,7 +2,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { Tag as TagInterface } from '../../../../../Types/scopeChangeRequest';
-import { isProduction } from '../../../../../../../Core/Client/';
+import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { getTagById } from '../../../../../Api/PCS/getTagById';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
@@ -14,9 +14,10 @@ interface TagProps {
 
 export const Tag = ({ tag }: TagProps): JSX.Element => {
     const { tag: tagKeys } = proCoSysQueryKeys();
+    const { procosysPlantId } = useFacility();
 
     const { data } = useInfiniteCachedQuery(tagKeys(tag.procosysNumber), () =>
-        getTagById(tag.procosysId)
+        getTagById(procosysPlantId, tag.procosysId)
     );
 
     return (

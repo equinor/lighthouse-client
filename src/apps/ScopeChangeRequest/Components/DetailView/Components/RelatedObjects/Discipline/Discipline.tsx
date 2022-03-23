@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { Discipline as PCSDiscipline } from '../../../../../Types/ProCoSys/discipline';
 import { getDisciplines } from '../../../../../Api/PCS/getDisciplines';
 import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
+import { useFacility } from '../../../../../../../Core/Client/Hooks';
 
 interface DisciplineProps {
     discipline: DisciplineInterface;
@@ -15,8 +16,9 @@ interface DisciplineProps {
 
 export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
     const { disciplines: disciplinesKey } = proCoSysQueryKeys();
+    const { procosysPlantId } = useFacility();
 
-    const { data } = useInfiniteCachedQuery(disciplinesKey, getDisciplines);
+    const { data } = useInfiniteCachedQuery(disciplinesKey, () => getDisciplines(procosysPlantId));
 
     const [foundDiscipline, setFoundDiscipline] = useState<PCSDiscipline | null>();
 
