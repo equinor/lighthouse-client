@@ -108,8 +108,8 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
                 <Circles>
                     {/* <StatusCircle statusColor={matColor} />
                     <StatusCircle statusColor={mccrColor} /> */}
-                    {/* <div className="circle" />
-                    <div className="circle" /> */}
+                    <div className="circle" />
+                    <div className="circle" />
                 </Circles>
                 {/* <Progress background={progressBar} /> */}
             </WorkOrderWrapper>

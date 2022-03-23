@@ -129,14 +129,10 @@ export const Viewer: React.FC<ViewerProps> = ({
 
             <WrapperMenu>
                 <Menu>
-
                     <Button
                         variant="ghost_icon"
                         onClick={() => {
-                            selectTags(
-                                AP300,
-                                padding
-                            );
+                            selectTags(AP300, padding);
                         }}
                     >
                         T1
@@ -144,10 +140,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                     <Button
                         variant="ghost_icon"
                         onClick={() => {
-                            selectTags(
-                                T5602_M02,
-                                padding
-                            );
+                            selectTags(T5602_M02, padding);
                         }}
                     >
                         T2
@@ -212,7 +205,6 @@ export const Viewer: React.FC<ViewerProps> = ({
                     </Button>
                 </Menu>
             </WrapperMenu>
-
         </>
     );
 };

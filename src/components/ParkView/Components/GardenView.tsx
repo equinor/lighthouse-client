@@ -7,6 +7,7 @@ import { GroupHeader } from './GroupHeader';
 import { useRefresh } from '../hooks/useRefresh';
 import { useMemo } from 'react';
 import { defaultSortFunction } from '../Utils/utilities';
+import { PostGroupBySorting, PreGroupByFiltering } from '../Models/gardenOptions';
 
 export function GardenView<T>(): JSX.Element | null {
     const refresh = useRefresh();
@@ -19,44 +20,41 @@ export function GardenView<T>(): JSX.Element | null {
         fieldSettings,
         customView,
         customGroupByKeys,
+        intercepters,
     } = useParkViewContext<T>();
 
     const garden = useMemo(
         () =>
             data &&
-            createGarden(
-                data,
-                gardenKey,
-                groupByKeys,
-                status,
-                options?.groupDescriptionFunc,
-                fieldSettings,
-                customGroupByKeys
-            ),
+            createGarden({
+                dataSet: data,
+                gardenKey: gardenKey,
+                groupingKeys: groupByKeys,
+                status: status,
+                groupDescriptionFunc: options?.groupDescriptionFunc,
+                fieldSettings: fieldSettings,
+                customGroupByKeys: customGroupByKeys,
+                postGroupBySorting: intercepters?.postGroupSorting as PostGroupBySorting<T>,
+                preGroupFiltering: intercepters?.preGroupFiltering as PreGroupByFiltering<T>,
+            }),
         [
             data,
-            fieldSettings,
             gardenKey,
             groupByKeys,
-            options?.groupDescriptionFunc,
             status,
+            options?.groupDescriptionFunc,
+            fieldSettings,
             customGroupByKeys,
+            intercepters?.postGroupSorting,
+            intercepters?.preGroupFiltering,
         ]
     );
     const Header = customView?.customHeaderView || GroupHeader;
 
-    const handleHeaderClick = (columnKey: string) => {
+    const handleHeaderClick = (columnIndex: number) => {
         refresh();
-        garden[columnKey].isExpanded = !garden[columnKey].isExpanded;
+        garden[columnIndex].isExpanded = !garden[columnIndex].isExpanded;
     };
-
-    const columnKeys = useMemo(
-        () =>
-            Object.keys(garden).sort(
-                fieldSettings?.[gardenKey]?.getColumnSort || defaultSortFunction
-            ),
-        [fieldSettings, garden, gardenKey]
-    );
 
     if (!data || !garden) return null;
     return (
@@ -64,19 +62,19 @@ export function GardenView<T>(): JSX.Element | null {
             <FilterSelector<T> />
             <Wrapper>
                 {garden &&
-                    columnKeys.map((key, index) => (
+                    garden.map((column, index) => (
                         <Col key={`col-${index}`}>
                             {/* Will be created with viewerFactory configured with gardenoptions */}
                             {gardenKey && (
                                 <div
                                     style={{ width: '100%' }}
-                                    onClick={() => handleHeaderClick(key)}
+                                    onClick={() => handleHeaderClick(index)}
                                 >
-                                    <Header garden={garden} columnKey={key} />
+                                    <Header garden={garden} columnIndex={index} />
                                 </div>
                             )}
 
-                            <TreeColumn group={garden[key]} fieldSettings={fieldSettings} />
+                            <TreeColumn group={column} fieldSettings={fieldSettings} />
                         </Col>
                     ))}
             </Wrapper>

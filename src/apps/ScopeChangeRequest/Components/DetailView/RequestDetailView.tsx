@@ -13,7 +13,7 @@ export const RequestDetailView = (): JSX.Element => {
     const { request } = useScopeChangeContext();
 
     const { patchKey } = scopeChangeMutationKeys(request.id);
-    const { mutateAsync: initiate, isLoading } = useScopeChangeMutation(
+    const { mutate: initiate, isLoading } = useScopeChangeMutation(
         request.id,
         patchKey,
         initiateScopeChange

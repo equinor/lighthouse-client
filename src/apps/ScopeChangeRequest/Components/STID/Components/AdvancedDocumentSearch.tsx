@@ -196,6 +196,7 @@ export const AdvancedDocumentSearch = ({
                             />
 
                             <TextField
+                                disabled={referenceType === undefined}
                                 id={'Stid document selector'}
                                 value={searchText}
                                 inputIcon={
@@ -207,7 +208,11 @@ export const AdvancedDocumentSearch = ({
                                         )}
                                     </>
                                 }
-                                placeholder={'Type to search tag / document'}
+                                placeholder={
+                                    referenceType
+                                        ? `Type to search ${referenceType}`
+                                        : 'Please choose a reference type'
+                                }
                                 onChange={(e) => {
                                     setSubResults(undefined);
                                     setSearchText(e.target.value || undefined);

@@ -1,6 +1,6 @@
 import React, { MemoExoticComponent } from 'react';
 import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { DataSet, Data } from './data';
+import { DataSet, GardenGroups } from './data';
 import { FieldSettings } from './fieldSettings';
 
 export interface Options<T> {
@@ -27,8 +27,8 @@ export interface CustomGroupView<T> {
 }
 
 export interface CustomHeaderView<T> {
-    garden: Data<T>;
-    columnKey: string;
+    garden: GardenGroups<T>;
+    columnIndex: number;
 }
 
 export interface CustomView<T> {
@@ -59,5 +59,18 @@ export interface GardenOptions<T> {
     itemWidth?: number;
     rowHeight?: number;
     highlightColumn?: string;
+    intercepters?: GardenDataIntercepters<T>;
+
     onSelect?: (item: T) => void;
+}
+
+export type PreGroupByFiltering<T = unknown> = (arr: T[], groupByKey: string) => T[];
+export type PostGroupBySorting<T = unknown> = (
+    data: GardenGroups<T>,
+    keys: (keyof T)[]
+) => GardenGroups<T>;
+
+export interface GardenDataIntercepters<T> {
+    preGroupFiltering?: PreGroupByFiltering<T>;
+    postGroupSorting?: PostGroupBySorting<T>;
 }

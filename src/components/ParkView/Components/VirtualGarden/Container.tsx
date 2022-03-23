@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
+import { PostGroupBySorting, PreGroupByFiltering } from '../../Models/gardenOptions';
 import { createGarden } from '../../Services/createGarden';
 import { FilterSelector } from '../GroupingSelector';
 import { ExpandProvider } from './ExpandProvider';
@@ -16,20 +17,22 @@ export const VirtualContainer = <T extends unknown>() => {
         fieldSettings,
         customGroupByKeys,
         itemWidth,
+        intercepters,
     } = useParkViewContext<T>();
     const garden = useMemo(
         () =>
-            createGarden(
-                data,
-                gardenKey,
-                groupByKeys,
-                status,
-                options?.groupDescriptionFunc,
-                fieldSettings,
-                customGroupByKeys,
-                //TODO: this has to be set to true...
-                true
-            ),
+            createGarden({
+                dataSet: data,
+                groupingKeys: groupByKeys,
+                isExpanded: true,
+                gardenKey: gardenKey,
+                status: status,
+                groupDescriptionFunc: options?.groupDescriptionFunc,
+                fieldSettings: fieldSettings,
+                customGroupByKeys: customGroupByKeys,
+                postGroupBySorting: intercepters?.postGroupSorting as PostGroupBySorting<T>,
+                preGroupFiltering: intercepters?.preGroupFiltering as PreGroupByFiltering<T>,
+            }),
         [
             data,
             gardenKey,
@@ -41,7 +44,7 @@ export const VirtualContainer = <T extends unknown>() => {
         ]
     );
 
-    const amountOfColumns = useMemo(() => Object.keys(garden).length, [garden]);
+    const amountOfColumns = useMemo(() => garden.length, [garden]);
 
     useEffect(() => {
         if (garden) {

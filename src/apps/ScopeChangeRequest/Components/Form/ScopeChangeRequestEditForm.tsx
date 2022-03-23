@@ -44,7 +44,7 @@ export const ScopeChangeRequestEditForm = ({
     const referencesKeys = proCoSysQueryKeys();
     const stid = stidQueryKeys();
     const { patchKey, deleteAttachmentKey } = scopeChangeMutationKeys(request.id);
-    const { mutateAsync: removeAttachment } = useScopeChangeMutation(
+    const { mutate: removeAttachment } = useScopeChangeMutation(
         request.id,
         deleteAttachmentKey,
         deleteAttachment
@@ -101,18 +101,13 @@ export const ScopeChangeRequestEditForm = ({
         if (!error) close();
     };
 
-    const { isLoading, error, mutateAsync } = useScopeChangeMutation(
-        request.id,
-        patchKey,
-        onSubmit,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-        }
-    );
+    const { isLoading, error, mutate } = useScopeChangeMutation(request.id, patchKey, onSubmit, {
+        onError: (e: ServerError) => setErrorMessage(e),
+    });
 
     const SaveButton = () => {
         return (
-            <Button disabled={!formData.isValidForm()} onClick={async () => await mutateAsync()}>
+            <Button disabled={!formData.isValidForm()} onClick={() => mutate()}>
                 {isLoading ? <Progress.Dots color="primary" /> : <span>Save</span>}
             </Button>
         );

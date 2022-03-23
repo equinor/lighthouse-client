@@ -1,10 +1,10 @@
-import { Data } from '../../../Models/data';
+import { GardenGroups } from '../../../Models/data';
 
-export const inputNoSubGroups: Data<any> = {
-    '2022-11': {
+export const inputNoSubGroups: GardenGroups<any> = [
+    {
         groupKey: 'fwp',
         value: '2022-11',
-        subGroups: {},
+        subGroups: [],
         items: [
             {
                 rowKey: 'LN6WP04S40121DE',
@@ -14,10 +14,10 @@ export const inputNoSubGroups: Data<any> = {
         isExpanded: true,
         subGroupCount: 0,
     },
-    '2022-19': {
+    {
         groupKey: 'fwp',
         value: '2022-19',
-        subGroups: {},
+        subGroups: [],
         items: [
             {
                 rowKey: '502283',
@@ -30,17 +30,17 @@ export const inputNoSubGroups: Data<any> = {
         isExpanded: true,
         subGroupCount: 0,
     },
-};
+];
 
-export const gardenOneGroupExpandedOneGroupNotExpanded: Data<any> = {
-    '2022-11': {
+export const gardenOneGroupExpandedOneGroupNotExpanded: GardenGroups<any> = [
+    {
         groupKey: 'fwp',
         value: '2022-11',
-        subGroups: {
-            '2022-11': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2022-11',
-                subGroups: {},
+                subGroups: [],
                 items: [
                     {
                         rowKey: 'LN6WP04S40121DE',
@@ -57,20 +57,20 @@ export const gardenOneGroupExpandedOneGroupNotExpanded: Data<any> = {
                 isExpanded: false,
                 subGroupCount: 0,
             },
-        },
+        ],
         items: [],
         count: 3,
         isExpanded: true,
         subGroupCount: 1,
     },
-    '2022-19': {
+    {
         groupKey: 'fwp',
         value: '2022-19',
-        subGroups: {
-            '2022-17': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2022-17',
-                subGroups: {},
+                subGroups: [],
                 items: [
                     {
                         rowKey: '502283',
@@ -80,22 +80,22 @@ export const gardenOneGroupExpandedOneGroupNotExpanded: Data<any> = {
                 isExpanded: true,
                 subGroupCount: 0,
             },
-        },
+        ],
         items: [],
         count: 1,
         isExpanded: true,
         subGroupCount: 1,
     },
-};
-export const gardenOneGroupAllExpanded: Data<any> = {
-    '2022-11': {
+];
+export const gardenOneGroupAllExpanded: GardenGroups<any> = [
+    {
         groupKey: 'fwp',
         value: '2022-11',
-        subGroups: {
-            '2022-11': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2022-11',
-                subGroups: {},
+                subGroups: [],
                 items: [
                     {
                         rowKey: 'LN6WP04S40121DE',
@@ -112,20 +112,20 @@ export const gardenOneGroupAllExpanded: Data<any> = {
                 isExpanded: true,
                 subGroupCount: 0,
             },
-        },
+        ],
         items: [],
         count: 3,
         isExpanded: true,
         subGroupCount: 1,
     },
-    '2022-19': {
+    {
         groupKey: 'fwp',
         value: '2022-19',
-        subGroups: {
-            '2022-17': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2022-17',
-                subGroups: {},
+                subGroups: [],
                 items: [
                     {
                         rowKey: '502283',
@@ -135,27 +135,27 @@ export const gardenOneGroupAllExpanded: Data<any> = {
                 isExpanded: true,
                 subGroupCount: 0,
             },
-        },
+        ],
         items: [],
         count: 1,
         isExpanded: true,
         subGroupCount: 1,
     },
-};
+];
 
-export const gardenTwoGroupsAllExpanded: Data<any> = {
-    '2022-11': {
+export const gardenTwoGroupsAllExpanded: GardenGroups<any> = [
+    {
         groupKey: 'fwp',
         value: '2022-11',
-        subGroups: {
-            '2022-11': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2022-11',
-                subGroups: {
-                    '(Blank)': {
+                subGroups: [
+                    {
                         groupKey: 'responsibleCode',
                         value: '(Blank)',
-                        subGroups: {},
+                        subGroups: [],
                         items: [
                             {
                                 rowKey: 'LN6WP04S40121DE',
@@ -165,30 +165,30 @@ export const gardenTwoGroupsAllExpanded: Data<any> = {
                         isExpanded: true,
                         subGroupCount: 0,
                     },
-                },
+                ],
                 items: [],
                 count: 1,
                 isExpanded: true,
                 subGroupCount: 1,
             },
-        },
+        ],
         items: [],
         count: 1,
         isExpanded: true,
         subGroupCount: 1,
     },
-    '2022-19': {
+    {
         groupKey: 'fwp',
         value: '2022-19',
-        subGroups: {
-            '2022-17': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2022-17',
-                subGroups: {
-                    KSI: {
+                subGroups: [
+                    {
                         groupKey: 'responsibleCode',
                         value: 'KSI',
-                        subGroups: {},
+                        subGroups: [],
                         items: [
                             {
                                 rowKey: '502280',
@@ -201,37 +201,37 @@ export const gardenTwoGroupsAllExpanded: Data<any> = {
                         isExpanded: true,
                         subGroupCount: 0,
                     },
-                },
+                ],
                 items: [],
                 count: 2,
                 isExpanded: true,
                 subGroupCount: 1,
             },
-        },
+        ],
         items: [],
         count: 2,
         isExpanded: true,
         subGroupCount: 1,
     },
-};
+];
 
-export const gardenThreeGroupsAllExpanded: Data<any> = {
-    '2022-11': {
+export const gardenThreeGroupsAllExpanded: GardenGroups<any> = [
+    {
         groupKey: 'fwp',
         value: '2022-11',
-        subGroups: {
-            '2022-11': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2022-11',
-                subGroups: {
-                    '(Blank)': {
+                subGroups: [
+                    {
                         groupKey: 'responsibleCode',
                         value: '(Blank)',
-                        subGroups: {
-                            '2022-11': {
+                        subGroups: [
+                            {
                                 groupKey: 'wp',
                                 value: '2022-11',
-                                subGroups: {},
+                                subGroups: [],
                                 items: [
                                     {
                                         rowKey: 'LN6WP04S40121DE',
@@ -241,40 +241,40 @@ export const gardenThreeGroupsAllExpanded: Data<any> = {
                                 isExpanded: true,
                                 subGroupCount: 0,
                             },
-                        },
+                        ],
                         items: [],
                         count: 1,
                         isExpanded: true,
                         subGroupCount: 1,
                     },
-                },
+                ],
                 items: [],
                 count: 1,
                 isExpanded: true,
                 subGroupCount: 1,
             },
-        },
+        ],
         items: [],
         count: 1,
         isExpanded: true,
         subGroupCount: 1,
     },
-    '2022-19': {
+    {
         groupKey: 'fwp',
         value: '2022-19',
-        subGroups: {
-            '2022-17': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2022-17',
-                subGroups: {
-                    KSI: {
+                subGroups: [
+                    {
                         groupKey: 'responsibleCode',
                         value: 'KSI',
-                        subGroups: {
-                            '2022-17': {
+                        subGroups: [
+                            {
                                 groupKey: 'wp',
                                 value: '2022-17',
-                                subGroups: {},
+                                subGroups: [],
                                 items: [
                                     {
                                         rowKey: '502280',
@@ -287,39 +287,39 @@ export const gardenThreeGroupsAllExpanded: Data<any> = {
                                 isExpanded: true,
                                 subGroupCount: 0,
                             },
-                        },
+                        ],
                         items: [],
                         count: 2,
                         isExpanded: true,
                         subGroupCount: 1,
                     },
-                },
+                ],
                 items: [],
                 count: 2,
                 isExpanded: true,
                 subGroupCount: 1,
             },
-        },
+        ],
         items: [],
         count: 2,
         isExpanded: true,
         subGroupCount: 1,
     },
-};
+];
 
-export const gardenGroupsWithItemsInsideDifferentGroups: Data<any> = {
-    '2022-12': {
+export const gardenGroupsWithItemsInsideDifferentGroups: GardenGroups<any> = [
+    {
         groupKey: 'fwp',
         value: '2022-12',
-        subGroups: {
-            '2022-3': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2022-3',
-                subGroups: {
-                    '(Blank)': {
+                subGroups: [
+                    {
                         groupKey: 'responsibleCode',
                         value: '(Blank)',
-                        subGroups: {},
+                        subGroups: [],
                         items: [
                             {
                                 rowKey: '290880',
@@ -332,30 +332,30 @@ export const gardenGroupsWithItemsInsideDifferentGroups: Data<any> = {
                         isExpanded: true,
                         subGroupCount: 0,
                     },
-                },
+                ],
                 items: [],
                 count: 2,
                 isExpanded: true,
                 subGroupCount: 1,
             },
-        },
+        ],
         items: [],
         count: 2,
         isExpanded: true,
         subGroupCount: 1,
     },
-    '2021-49': {
+    {
         groupKey: 'fwp',
         value: '2021-49',
-        subGroups: {
-            '2021-49': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2021-49',
-                subGroups: {
-                    '(Blank)': {
+                subGroups: [
+                    {
                         groupKey: 'responsibleCode',
                         value: '(Blank)',
-                        subGroups: {},
+                        subGroups: [],
                         items: [
                             {
                                 rowKey: 'LL86001L417AKST',
@@ -365,30 +365,30 @@ export const gardenGroupsWithItemsInsideDifferentGroups: Data<any> = {
                         isExpanded: true,
                         subGroupCount: 0,
                     },
-                },
+                ],
                 items: [],
                 count: 1,
                 isExpanded: true,
                 subGroupCount: 1,
             },
-        },
+        ],
         items: [],
         count: 1,
         isExpanded: true,
         subGroupCount: 1,
     },
-    '2021-48': {
+    {
         groupKey: 'fwp',
         value: '2021-48',
-        subGroups: {
-            '2021-47': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2021-47',
-                subGroups: {
-                    '(Blank)': {
+                subGroups: [
+                    {
                         groupKey: 'responsibleCode',
                         value: '(Blank)',
-                        subGroups: {},
+                        subGroups: [],
                         items: [
                             {
                                 rowKey: 'LX17103L011P',
@@ -398,20 +398,20 @@ export const gardenGroupsWithItemsInsideDifferentGroups: Data<any> = {
                         isExpanded: false,
                         subGroupCount: 0,
                     },
-                },
+                ],
                 items: [],
                 count: 1,
                 isExpanded: true,
                 subGroupCount: 1,
             },
-            '2021-46': {
+            {
                 groupKey: 'hwp',
                 value: '2021-46',
-                subGroups: {
-                    '(Blank)': {
+                subGroups: [
+                    {
                         groupKey: 'responsibleCode',
                         value: '(Blank)',
-                        subGroups: {},
+                        subGroups: [],
                         items: [
                             {
                                 rowKey: 'LL4-6403-L014V20AKST',
@@ -421,30 +421,30 @@ export const gardenGroupsWithItemsInsideDifferentGroups: Data<any> = {
                         isExpanded: true,
                         subGroupCount: 0,
                     },
-                },
+                ],
                 items: [],
                 count: 1,
                 isExpanded: true,
                 subGroupCount: 1,
             },
-        },
+        ],
         items: [],
         count: 2,
         isExpanded: true,
         subGroupCount: 2,
     },
-    '2021-50': {
+    {
         groupKey: 'fwp',
         value: '2021-50',
-        subGroups: {
-            '2021-49': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2021-49',
-                subGroups: {
-                    '(Blank)': {
+                subGroups: [
+                    {
                         groupKey: 'responsibleCode',
                         value: '(Blank)',
-                        subGroups: {},
+                        subGroups: [],
                         items: [
                             {
                                 rowKey: 'LL1465032KST',
@@ -454,10 +454,10 @@ export const gardenGroupsWithItemsInsideDifferentGroups: Data<any> = {
                         isExpanded: true,
                         subGroupCount: 0,
                     },
-                    KSF: {
+                    {
                         groupKey: 'responsibleCode',
                         value: 'KSF',
-                        subGroups: {},
+                        subGroups: [],
                         items: [
                             {
                                 rowKey: 'LX0EC41PSV0195',
@@ -467,30 +467,30 @@ export const gardenGroupsWithItemsInsideDifferentGroups: Data<any> = {
                         isExpanded: true,
                         subGroupCount: 0,
                     },
-                },
+                ],
                 items: [],
                 count: 2,
                 isExpanded: false,
                 subGroupCount: 2,
             },
-        },
+        ],
         items: [],
         count: 2,
         isExpanded: true,
         subGroupCount: 1,
     },
-    '2021-47': {
+    {
         groupKey: 'fwp',
         value: '2021-47',
-        subGroups: {
-            '2021-37': {
+        subGroups: [
+            {
                 groupKey: 'hwp',
                 value: '2021-37',
-                subGroups: {
-                    KSF: {
+                subGroups: [
+                    {
                         groupKey: 'responsibleCode',
                         value: 'KSF',
-                        subGroups: {},
+                        subGroups: [],
                         items: [
                             {
                                 rowKey: 'LM5TC0967',
@@ -500,16 +500,16 @@ export const gardenGroupsWithItemsInsideDifferentGroups: Data<any> = {
                         isExpanded: true,
                         subGroupCount: 0,
                     },
-                },
+                ],
                 items: [],
                 count: 1,
                 isExpanded: true,
                 subGroupCount: 1,
             },
-        },
+        ],
         items: [],
         count: 1,
         isExpanded: true,
         subGroupCount: 1,
     },
-};
+];

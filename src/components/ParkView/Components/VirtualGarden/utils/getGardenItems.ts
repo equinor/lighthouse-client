@@ -11,7 +11,7 @@ export const isSubGroup = <T extends unknown>(
 
 const getSubGroupItems = <T extends unknown>(
     column: DataSet<T>,
-    subGroupKey: string,
+    subGroupKey: number,
     includeSubGroupValue = false
 ): GardenItem<T>[] => {
     const items: GardenItem<T>[] = [];
@@ -25,10 +25,9 @@ const getSubGroupItems = <T extends unknown>(
     } else if (subGroup?.subGroupCount !== 0 && !isExpanded) {
         return items;
     } else {
-        const newSubGroupKeys = Object.keys(subGroup.subGroups);
-        for (const newKey of newSubGroupKeys) {
-            items.push(...getSubGroupItems(subGroup, newKey, includeSubGroupValue));
-        }
+        subGroup.subGroups.forEach((_a, i) => {
+            items.push(...getSubGroupItems(subGroup, i, includeSubGroupValue));
+        });
     }
     return items;
 };
@@ -72,10 +71,9 @@ export const getGardenItems = <T extends unknown>(
     }
 
     const items: GardenItem<T>[] = [];
-    const subGroupKeys = Object.keys(column.subGroups);
 
-    for (const subKey of subGroupKeys) {
-        items.push(...getSubGroupItems(column, subKey, includeSubGroupValue));
-    }
+    column.subGroups.forEach((_a, i) => {
+        items.push(...getSubGroupItems(column, i, includeSubGroupValue));
+    });
     return items;
 };

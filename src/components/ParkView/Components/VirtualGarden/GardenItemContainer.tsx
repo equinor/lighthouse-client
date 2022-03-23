@@ -1,7 +1,7 @@
 import { useVirtual, VirtualItem } from 'react-virtual';
 import styled from 'styled-components';
 import { ChevronDown, ChevronUp } from '../../Icons/Chevron';
-import { Data } from '../../Models/data';
+import { GardenGroups } from '../../Models/data';
 import { FieldSettings } from '../../Models/fieldSettings';
 import { CustomItemView } from '../../Models/gardenOptions';
 import { Count } from '../../Styles/common';
@@ -19,8 +19,7 @@ type VirtualHookReturn = Pick<ReturnType<typeof useVirtual>, 'virtualItems' | 's
 type PackageContainerProps<T> = {
     virtualColumn: VirtualItem;
     rowVirtualizer: VirtualHookReturn;
-    garden: Data<T>;
-    columnKeys: string[];
+    garden: GardenGroups<T>;
     sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     gardenKey: keyof T;
     itemKey: keyof T;
@@ -33,7 +32,6 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
     const {
         rowVirtualizer,
         virtualColumn,
-        columnKeys,
         garden,
         packageChild: PackageChild,
         itemKey,
@@ -80,7 +78,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                                 itemKey={itemKey.toString()}
                                 onClick={() => {}}
                                 columnExpanded={
-                                    expand?.expandedColumns?.[columnKeys[virtualColumn.index]]
+                                    expand?.expandedColumns?.[garden[virtualColumn.index].value]
                                         ?.isExpanded ?? false
                                 }
                             />
