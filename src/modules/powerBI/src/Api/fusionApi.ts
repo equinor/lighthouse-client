@@ -2,9 +2,9 @@ import { NetworkError } from '@equinor/http-client';
 import { useHttpClient } from '@equinor/portal-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
 import { useState } from 'react';
-import { Filter, PowerBiFilter } from '../models/filter';
+import { BuiltPowerBiFilter, Filter } from '../Types/filter';
 
-const filterBuilder = (filter: Filter): PowerBiFilter => {
+const filterBuilder = (filter: Filter): BuiltPowerBiFilter => {
     return {
         $schema: 'http://powerbi.com/product/schema#basic',
         target: {
@@ -34,7 +34,7 @@ export function useFusionClient(
     const [error] = useState<NetworkError>();
     const baseUri = `reports`;
 
-    const filters: PowerBiFilter[] = [];
+    const filters: BuiltPowerBiFilter[] = [];
     filterOptions?.forEach((filterOption) => {
         filters.push(filterBuilder(filterOption));
     });

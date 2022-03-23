@@ -3,7 +3,7 @@ import { IReportEmbedConfiguration, models } from 'powerbi-client';
 import 'powerbi-report-authoring';
 import { useEffect, useState } from 'react';
 import { useFusionClient } from './Api/fusionApi';
-import { Filter } from './models/filter';
+import { Filter } from './Types/filter';
 
 interface PowerBIResult {
     config: IReportEmbedConfiguration;

@@ -8,8 +8,8 @@ import Icon from '../../../components/Icon/Icon';
 import { useElementData } from '../../../packages/Utils/Hooks/useElementData';
 import { usePowerBI } from './api';
 import { PageNavigation, PowerBIFilter } from './Components';
-import { Filter } from './models/filter';
 import './style.css';
+import { Filter } from './Types/filter';
 
 const Wrapper = styled.div`
     overflow: hidden;
