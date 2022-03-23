@@ -123,7 +123,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         },
         {
             key: 'guesstimateHours',
-            type: 'Description',
+            type: 'Number',
         },
 
         {
