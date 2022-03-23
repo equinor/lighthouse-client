@@ -210,13 +210,6 @@ export const MenuRow = styled.div`
     padding: 1rem 2rem 0rem 1rem;
 `;
 
-export const FullscreenMenuAppGroup = styled.div`
-    display: flex;
-    flex-direction: column;
-    padding: 0rem 1rem 1rem 1rem;
-    min-width: 200px;
-`;
-
 export const FullscreenMenuGroupHeaderText = styled.h3`
     text-decoration: none;
     cursor: pointer;
