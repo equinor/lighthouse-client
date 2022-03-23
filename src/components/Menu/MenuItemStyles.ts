@@ -38,7 +38,7 @@ export const DItem = styled.div`
     align-items: center;
     padding-bottom: 0.25rem;
     padding-top: 0.25rem;
-    padding-left: ${({ isLink }: MenuItemProps) => (isLink ? '8px' : '1.5rem')};
+
     p {
         font-size: 14px !important;
     }
@@ -48,7 +48,7 @@ export const DItem = styled.div`
             disabled ? 'none' : `${tokens.colors.interactive.primary__hover_alt.rgba}`};
     }
     background: ${({ active }: MenuItemProps) =>
-        active ? `${tokens.colors.interactive.primary__hover_alt.rgba}` : ''};
+        active ? `${tokens.colors.interactive.primary__hover.rgba}` : ''};
 `;
 
 export const ContentWrapper = styled.div`
@@ -56,10 +56,10 @@ export const ContentWrapper = styled.div`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    flex: 1;
+    justify-content: space-between;
 `;
-
 export const Title = styled(Typography)`
-    padding-left: 8px;
     font-size: 16px !important;
     color: ${({ disabled }: MenuItemProps) =>
         disabled

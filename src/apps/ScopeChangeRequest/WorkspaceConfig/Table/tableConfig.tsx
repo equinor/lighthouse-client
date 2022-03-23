@@ -60,6 +60,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'attachments',
         'isVoided',
         'disciplines',
+        'hasPendingContributions',
     ],
     columnOrder: [
         'sequenceNumber',

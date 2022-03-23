@@ -4,7 +4,10 @@ import { LogEntry } from '../../../Types/scopeChangeRequest';
 export async function getHistory(id: string): Promise<LogEntry[]> {
     const { scopeChange } = httpClient();
 
-    return await scopeChange
-        .fetch(`api/scope-change-requests/${id}/history`)
-        .then((history) => history.json());
+    const res = await scopeChange.fetch(`api/scope-change-requests/${id}/history`);
+
+    if (!res.ok) {
+        throw await res.json();
+    }
+    return await res.json();
 }

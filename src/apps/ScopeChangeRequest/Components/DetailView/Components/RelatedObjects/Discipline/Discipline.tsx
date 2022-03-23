@@ -4,21 +4,19 @@ import styled from 'styled-components';
 import { Discipline as DisciplineInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
-import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
 import { useEffect, useState } from 'react';
 import { Discipline as PCSDiscipline } from '../../../../../Types/ProCoSys/discipline';
 import { getDisciplines } from '../../../../../Api/PCS/getDisciplines';
+import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
 
 interface DisciplineProps {
     discipline: DisciplineInterface;
 }
 
 export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
-    const { request } = useScopeChangeContext();
-    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+    const { disciplines: disciplinesKey } = proCoSysQueryKeys();
 
-    const { data } = useInfiniteCachedQuery(referencesKeys.disciplines, getDisciplines);
+    const { data } = useInfiniteCachedQuery(disciplinesKey, getDisciplines);
 
     const [foundDiscipline, setFoundDiscipline] = useState<PCSDiscipline | null>();
 

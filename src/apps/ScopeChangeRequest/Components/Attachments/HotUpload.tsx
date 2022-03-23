@@ -7,7 +7,7 @@ import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMu
 import { uploadAttachment } from '../../Api/ScopeChange/Request';
 import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { Attachments } from './Attachments';
-import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
 
 const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const HotUpload = (): JSX.Element => {
@@ -15,11 +15,11 @@ export const HotUpload = (): JSX.Element => {
 
     const { request, setErrorMessage } = useScopeChangeContext();
 
-    const { uploadAttachmentKey } = useScopechangeMutationKeyGen(request.id);
+    const { uploadAttachmentKey } = scopeChangeMutationKeys(request.id);
 
-    const { isLoading, mutateAsync } = useScopeChangeMutation(
+    const { isLoading, mutate } = useScopeChangeMutation(
         request.id,
-        uploadAttachmentKey(),
+        uploadAttachmentKey,
         uploadAttachment,
         {
             retry: 2,
@@ -29,13 +29,13 @@ export const HotUpload = (): JSX.Element => {
     );
 
     const onDrop = useCallback(
-        async (acceptedFiles, fileRejections: FileRejection[]) => {
+        async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
             setRejectedFiles(fileRejections);
             if (acceptedFiles[0]) {
-                await mutateAsync({ file: acceptedFiles[0], requestId: request.id });
+                acceptedFiles.forEach((file) => mutate({ file: file, requestId: request.id }));
             }
         },
-        [mutateAsync, request.id]
+        [mutate, request.id]
     );
 
     return (
