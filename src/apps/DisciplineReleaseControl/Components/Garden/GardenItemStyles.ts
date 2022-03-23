@@ -7,7 +7,8 @@ export const ReleaseControlItem = styled(Item)<ReleaseControlItemProps>`
     display: flex;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: 100%;
+    width: 180px;
+    margin-left: 52px;
     min-width: 150px;
     box-sizing: border-box;
     white-space: nowrap;
