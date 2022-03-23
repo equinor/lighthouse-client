@@ -2,16 +2,20 @@ import { isAppActive } from '@equinor/portal-client';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppManifest } from '../../../../Core/Client/Types';
-import { getURL } from '../../utils';
-import { ContentWrapper, Item, MenuItemIcon, Title } from './MenuItemStyles';
+import Icon from '../../../Icon/Icon';
+import { useFavoritesContext } from '../../Context/FavoritesContext';
+import { getURL } from '../../Utils/utils';
+import { Item } from '../Sheard/Styles';
+import { ContentWrapper, IconButton, Title } from './MenuItemStyles';
 
 interface MenuItemProps {
     manifest: AppManifest;
-    appId: string;
+    groupId: string;
     onClick?: () => void;
 }
 
-export const MenuItem = ({ manifest, appId, onClick }: MenuItemProps): JSX.Element => {
+export const MenuItem = ({ manifest, groupId, onClick }: MenuItemProps): JSX.Element => {
+    const { toggleFavorite, hasFavorite } = useFavoritesContext();
     const navigate = useNavigate();
     const [showIcon, setShowIcon] = useState(false);
     const isActive = useMemo(() => isAppActive(manifest), [manifest]);
@@ -19,10 +23,12 @@ export const MenuItem = ({ manifest, appId, onClick }: MenuItemProps): JSX.Eleme
     return (
         <Item
             isLink={manifest.uri !== undefined}
-            active={location.pathname.includes(`${appId}/${manifest.shortName}`)}
+            active={location.pathname.includes(`${groupId}/${manifest.shortName}`)}
             title={isActive ? manifest.title : 'Disabled'}
-            onClick={() => {
-                manifest.uri ? window.open(manifest.uri) : navigate(getURL(manifest, appId));
+            onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                manifest.uri ? window.open(manifest.uri) : navigate(getURL(manifest, groupId));
                 onClick && onClick();
             }}
             onMouseEnter={() => setShowIcon(true)}
@@ -31,13 +37,30 @@ export const MenuItem = ({ manifest, appId, onClick }: MenuItemProps): JSX.Eleme
         >
             <ContentWrapper>
                 <Title disabled={!isActive}>{manifest.title}</Title>
-                {manifest.uri && (
-                    <MenuItemIcon
-                        size={16}
-                        style={{ opacity: showIcon && isActive ? 1 : 0 }}
-                        name="external_link"
-                    />
-                )}
+                <div>
+                    {manifest.uri && (
+                        <IconButton>
+                            <Icon
+                                size={16}
+                                style={{ opacity: showIcon && isActive ? 1 : 0 }}
+                                name="external_link"
+                            />
+                        </IconButton>
+                    )}
+                    <IconButton
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleFavorite(manifest.shortName);
+                        }}
+                    >
+                        <Icon
+                            size={16}
+                            style={{ opacity: showIcon && isActive ? 1 : 0 }}
+                            name={hasFavorite(manifest.shortName) ? 'star_filled' : 'star_outlined'}
+                        />
+                    </IconButton>
+                </div>
             </ContentWrapper>
         </Item>
     );

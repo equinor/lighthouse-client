@@ -1,38 +1,47 @@
 import { Accordion } from '@equinor/eds-core-react';
-import { apps } from '@equinor/eds-icons';
 import { useClientContext } from '@equinor/portal-client';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
+import Icon from '../../../Icon/Icon';
+import { useFavoritesContext } from '../../Context/FavoritesContext';
 import { useMenuContext } from '../../Context/MenuContext';
 import { MenuItem } from '../MenuItem/MenuItem';
-import { FavoriteHeader, FavoritePanel, HeaderIcon } from './FavouritesStyles';
+import { FavoriteHeader, FavoritePanel, HeaderIconWrapper } from './FavouritesStyles';
 
 const { Item } = Accordion;
 export const Favorites = (): JSX.Element => {
-    const [favoritesIds, setFavoriteIds] = useState<string[]>(['construction', 'commissioning']);
-    const { registry } = useClientContext();
+    const { favorites } = useFavoritesContext();
+    const {
+        registry: { apps },
+    } = useClientContext();
 
     const { activeGroupe } = useMenuContext();
 
-    const favorites = useMemo(
-        () => registry.apps.filter((app) => favoritesIds.includes(app.shortName)),
-        [apps, favoritesIds]
+    const filteredFavorites = useMemo(
+        () => apps.filter((app) => favorites.includes(app.shortName)),
+        [apps, favorites]
     );
 
     return (
         <Accordion chevronPosition="right">
             <Item>
                 <FavoriteHeader>
-                    <HeaderIcon name="star_filled" />
+                    <HeaderIconWrapper>
+                        <Icon name="star_filled" />
+                    </HeaderIconWrapper>
                     Favorites
                 </FavoriteHeader>
                 <FavoritePanel>
-                    {favorites.map((manifest) => (
-                        <MenuItem
-                            key={`acc-${manifest.shortName}`}
-                            appId={activeGroupe}
-                            manifest={manifest}
-                        />
-                    ))}
+                    {filteredFavorites.length > 0 ? (
+                        filteredFavorites.map((manifest) => (
+                            <MenuItem
+                                key={`acc-${manifest.shortName}`}
+                                groupId={activeGroupe}
+                                manifest={manifest}
+                            />
+                        ))
+                    ) : (
+                        <p>You have no favorites Selected.</p>
+                    )}
                 </FavoritePanel>
             </Item>
         </Accordion>

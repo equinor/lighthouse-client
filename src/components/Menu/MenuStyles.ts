@@ -2,7 +2,7 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const MainMenuWrapper = styled.div`
-    min-width: 360px;
+    min-width: 310px;
     border-right: 1px solid ${tokens.colors.ui.background__medium.rgba};
     background-color: ${tokens.colors.ui.background__default.rgba};
 `;

@@ -1,7 +1,6 @@
 import { Accordion } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import Icon from '../../../Icon/Icon';
 
 export const Title = styled.pre`
     /* text-decoration: none; */
@@ -25,10 +24,17 @@ export const FavoriteHeader = styled(Header)`
     padding: 0px;
 `;
 
-export const HeaderIcon = styled(Icon)``;
+export const HeaderIconWrapper = styled.div`
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
 
 export const FavoritePanel = styled(Panel)`
-    padding: 0rem 1rem 0rem 3.5rem;
+    padding: 0rem 1rem 0rem 0rem;
+    margin-left: 48px;
     border: 0px;
     background-color: transparent;
     min-height: 0;

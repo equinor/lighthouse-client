@@ -3,7 +3,7 @@ import { useClientContext } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import Icon from '../../../Icon/Icon';
 import { useMenuContext } from '../../Context/MenuContext';
-import { groupeByKey } from '../../utils';
+import { groupeByKey } from '../../Utils/utils';
 import { Favorites } from '../Favourites/Favourites';
 import { GroupItem } from '../GroupeItem/GroupeItem';
 import { MenuItem } from '../MenuItem/MenuItem';
@@ -50,7 +50,7 @@ export const CompactMenu = (): JSX.Element => {
                             {GroupedMenu[activeGroupe].map((manifest) => (
                                 <MenuItem
                                     key={`acc-${manifest.shortName}`}
-                                    appId={activeGroupe}
+                                    groupId={activeGroupe}
                                     manifest={manifest}
                                 />
                             ))}

@@ -2,7 +2,7 @@ import { Button, Icon, Search } from '@equinor/eds-core-react';
 import { useClientContext } from '@equinor/portal-client';
 import { useMemo, useState } from 'react';
 import { useMenuContext } from '../../Context/MenuContext';
-import { filterByValue, groupeByKey } from '../../utils';
+import { filterByValue, groupeByKey } from '../../Utils/utils';
 import { MenuItem } from '../MenuItem/MenuItem';
 import { AppGroup } from '../Sheard/Styles';
 import {
@@ -47,9 +47,8 @@ export const ExpandedMenu = (): JSX.Element => {
                         return (
                             <MenuItem
                                 key={`acc-${item.shortName}`}
-                                appId={key}
+                                groupId={key}
                                 manifest={item}
-                                isFullMenu={true}
                                 onClick={() => toggleMenu()}
                             />
                         );

@@ -9,7 +9,7 @@ export const MenuWrapper = styled.div`
 `;
 
 export const MenuGroup = styled.div`
-    padding: 0rem 1rem 0rem 3.5rem;
+    padding-left: 48px;
 `;
 
 export const Row = styled.div`
