@@ -38,10 +38,10 @@ export const WorkSpaceTabs = ({ tabs, activeTab, title }: CompletionViewTabsProp
                                     }
                                 />
                             </WorkspaceErrorPage>
-                        ) : dataApi?.isFetching || dataApi?.isLoading ? (
+                        ) : dataApi?.isFetching && dataApi.data?.length === 0 ? (
                             <Loading>
                                 <CircularProgress color="primary" value={0} size={48} />
-                                <h2>Loading {title.toLowerCase()}</h2>
+                                <h2>Loading {title.toLowerCase()}..</h2>
                             </Loading>
                         ) : (
                             activeTab == index && <ViewComponent />
