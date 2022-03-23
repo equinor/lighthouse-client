@@ -1,4 +1,4 @@
-export enum PipetestStatus {
+export enum PipetestStep {
     Unknown = 'Unknown',
     ReadyForBolttensioning = 'Ready for bolt tensioning (B)',
     ReadyForPressureTest = 'Ready for pressure test (T)',

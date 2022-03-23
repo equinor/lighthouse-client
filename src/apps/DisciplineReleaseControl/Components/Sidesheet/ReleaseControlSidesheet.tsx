@@ -156,7 +156,7 @@ export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
                 <Tabs.Panels>
                     <Tabs.Panel>
                         <h4>{item.description}</h4>
-                        <h4>Status: {item.status}</h4>
+                        <h4>Status: {item.step}</h4>
                         <CheckListTable checkLists={item.checkLists} />
                     </Tabs.Panel>
                     <Tabs.Panel>

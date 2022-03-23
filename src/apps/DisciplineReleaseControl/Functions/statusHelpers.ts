@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import {
     CheckListStatus,
     PipetestCheckListOrder,
-    PipetestStatus,
+    PipetestStep,
     PipetestStatusOrder,
     CheckListStepTag,
 } from '../Types/drcEnums';
@@ -48,39 +48,39 @@ export function getChecklistSortValue(checkList: CheckList): number {
     return number;
 }
 
-export function getPipetestStatus(checkLists: CheckList[]): PipetestStatus {
+export function getPipetestStatus(checkLists: CheckList[]): PipetestStep {
     if (!isCheckListStepOk(checkLists, CheckListStepTag.Bolttensioning)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForBolttensioning)
-            ? PipetestStatus.ReadyForBolttensioning
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForBolttensioning
+            : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.PressureTest)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForPressureTest)
-            ? PipetestStatus.ReadyForPressureTest
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForPressureTest
+            : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Painting)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForPainting)
-            ? PipetestStatus.ReadyForPainting
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForPainting
+            : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTest)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForHtTest)
-            ? PipetestStatus.ReadyForHtTest
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForHtTest
+            : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Insulation)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForInsulation)
-            ? PipetestStatus.ReadyForInsulation
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForInsulation
+            : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtRetest)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForHtRetest)
-            ? PipetestStatus.ReadyForHtRetest
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForHtRetest
+            : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Marking)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForMarking)
-            ? PipetestStatus.ReadyForMarking
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForMarking
+            : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTemporary)) {
-        return PipetestStatus.Unknown;
+        return PipetestStep.Unknown;
     } else {
-        return PipetestStatus.Complete;
+        return PipetestStep.Complete;
     }
 }
 
@@ -131,37 +131,37 @@ export function isCheckListGroupOk(checkLists: CheckList[]): boolean {
 }
 
 export function getPipetestStatusEnumByValue(enumValue: string): string {
-    return Object.keys(PipetestStatus).filter((x) => PipetestStatus[x] === enumValue)[0];
+    return Object.keys(PipetestStep).filter((x) => PipetestStep[x] === enumValue)[0];
 }
 
 export function getPipetestStatusSortValue(pipetest: Pipetest): number {
     let number: number = PipetestStatusOrder.Unknown;
-    switch (pipetest.status) {
-        case PipetestStatus.Unknown:
+    switch (pipetest.step) {
+        case PipetestStep.Unknown:
             number = PipetestStatusOrder.Unknown;
             break;
-        case PipetestStatus.ReadyForBolttensioning:
+        case PipetestStep.ReadyForBolttensioning:
             number = PipetestStatusOrder.ReadyForBolttensioning;
             break;
-        case PipetestStatus.ReadyForPressureTest:
+        case PipetestStep.ReadyForPressureTest:
             number = PipetestStatusOrder.ReadyForPressureTest;
             break;
-        case PipetestStatus.ReadyForPainting:
+        case PipetestStep.ReadyForPainting:
             number = PipetestStatusOrder.ReadyForPainting;
             break;
-        case PipetestStatus.ReadyForHtTest:
+        case PipetestStep.ReadyForHtTest:
             number = PipetestStatusOrder.ReadyForHtTest;
             break;
-        case PipetestStatus.ReadyForInsulation:
+        case PipetestStep.ReadyForInsulation:
             number = PipetestStatusOrder.ReadyForInsulation;
             break;
-        case PipetestStatus.ReadyForHtRetest:
+        case PipetestStep.ReadyForHtRetest:
             number = PipetestStatusOrder.ReadyForHtRetest;
             break;
-        case PipetestStatus.ReadyForMarking:
+        case PipetestStep.ReadyForMarking:
             number = PipetestStatusOrder.ReadyForMarking;
             break;
-        case PipetestStatus.Complete:
+        case PipetestStep.Complete:
             number = PipetestStatusOrder.Complete;
             break;
     }

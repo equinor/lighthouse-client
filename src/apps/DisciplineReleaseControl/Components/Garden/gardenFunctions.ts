@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
 import { getPipetestStatus, getPipetestStatusEnumByValue } from '../../Functions/statusHelpers';
-import { PipetestStatus, PipetestStatusOrder } from '../../Types/drcEnums';
+import { PipetestStep, PipetestStatusOrder } from '../../Types/drcEnums';
 import { Pipetest } from '../../Types/pipetest';
 
 export const getStatusKey: GetKeyFunction<Pipetest> = (item) => {
@@ -54,32 +54,32 @@ export const getTimePeriod = (item: Pipetest): string => {
 export const getGardenItemColor = (item: Pipetest): string => {
     let color = '#D3D3D3';
 
-    switch (item.status) {
-        case PipetestStatus.ReadyForBolttensioning:
+    switch (item.step) {
+        case PipetestStep.ReadyForBolttensioning:
             color = '#6d889a';
             break;
-        case PipetestStatus.ReadyForPressureTest:
+        case PipetestStep.ReadyForPressureTest:
             color = '#a8c8de';
             break;
-        case PipetestStatus.ReadyForPainting:
+        case PipetestStep.ReadyForPainting:
             color = '#dcdcdc';
             break;
-        case PipetestStatus.ReadyForHtTest:
+        case PipetestStep.ReadyForHtTest:
             color = '#ffe7d6';
             break;
-        case PipetestStatus.ReadyForInsulation:
+        case PipetestStep.ReadyForInsulation:
             color = '#73b1b5';
             break;
-        case PipetestStatus.ReadyForHtRetest:
+        case PipetestStep.ReadyForHtRetest:
             color = '#ffc67a';
             break;
-        case PipetestStatus.ReadyForMarking:
+        case PipetestStep.ReadyForMarking:
             color = '#e6faec';
             break;
-        case PipetestStatus.Complete:
+        case PipetestStep.Complete:
             color = '#4bb748';
             break;
-        case PipetestStatus.Unknown:
+        case PipetestStep.Unknown:
             color = '#ff92a8';
             break;
     }
