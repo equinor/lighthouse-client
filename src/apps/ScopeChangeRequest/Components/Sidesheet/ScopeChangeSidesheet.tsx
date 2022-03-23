@@ -19,8 +19,8 @@ import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMu
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
 import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
-import { useScopeChangeQuery } from '../../Hooks/React-Query/useScopeChangeQuery';
 import { useOctopusErrorHandler } from './useOctopusErrorHandler';
+import { useQuery } from 'react-query';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -32,7 +32,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { voidKey, unvoidKey } = scopeChangeMutationKeys(item.id);
     const { baseKey } = scopeChangeQueryKeys(item.id);
 
-    const { data, refetch, remove, isLoading } = useScopeChangeQuery<ScopeChangeRequest>(
+    const { data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
         baseKey,
         () => getScopeChangeById(item.id),
         {

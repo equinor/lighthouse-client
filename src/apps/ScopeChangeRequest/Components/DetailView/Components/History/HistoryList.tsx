@@ -6,14 +6,14 @@ import { HistoryItem } from './HistoryItem';
 import { useEffect } from 'react';
 import { CacheTime } from '../../../../Enums/cacheTimes';
 import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
-import { useScopeChangeQuery } from '../../../../Hooks/React-Query/useScopeChangeQuery';
+import { useQuery } from 'react-query';
 
 export function HistoryList(): JSX.Element {
     const { request } = useScopeChangeContext();
 
     const { historyKey } = scopeChangeQueryKeys(request.id);
 
-    const { data, remove, isLoading } = useScopeChangeQuery<LogEntry[]>(
+    const { data, remove, isLoading } = useQuery<LogEntry[]>(
         historyKey,
         () => getHistory(request.id),
         {

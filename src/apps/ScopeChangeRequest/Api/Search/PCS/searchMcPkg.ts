@@ -1,19 +1,16 @@
 import { HttpClient } from '@equinor/http-client';
 import { TypedSelectOption } from '../searchType';
-import { CommissioningPackage } from '../../../Types/ProCoSys/CommissioningPackage';
+import { MechanicalCompletionPackage } from '../../../Types/ProCoSys/mcPkg';
 
-export const searchCommPkg = async (
+export const searchMcPkg = async (
     searchString: string,
-    plantId: string,
     procosysClient: HttpClient,
     signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
-    const uri = 'api/CommPkg/Search';
-    const queryParameters = `plantId=${encodeURIComponent(
-        plantId
-    )}&startsWithCommPkgNo=${encodeURIComponent(
+    const uri = 'api/McPkg/Search';
+    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&startsWithMcPkgNo=${encodeURIComponent(
         searchString
     )}&includeClosedProjects=false&itemsPerPage=10&includeVoidedCommPkgs=true&includeDecommissioningPkgs=false&api-version=4.1`;
     const url = `${uri}?${queryParameters}`;
@@ -21,12 +18,12 @@ export const searchCommPkg = async (
         .fetch(url, { signal })
         .then((response) => response.json())
         .then((data) => {
-            data['Items'].map((x: CommissioningPackage) => {
+            data['Items'].map((x: MechanicalCompletionPackage) => {
                 selectOptions.push({
-                    label: `${x.CommPkgNo} - ${x.Description}`,
-                    value: x.CommPkgNo,
-                    type: 'commpkg',
-                    searchValue: x.CommPkgNo,
+                    label: `${x.McPkgNo} - ${x.Description}`,
+                    value: x.McPkgNo,
+                    type: 'mcpkg',
+                    searchValue: x.McPkgNo,
                     object: x,
                 });
             });

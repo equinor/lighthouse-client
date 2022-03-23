@@ -20,7 +20,7 @@ import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
 import { removeContributor } from '../../../../Api/ScopeChange/Workflow/removeContributor';
 import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
 import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
-import { useScopeChangeQuery } from '../../../../Hooks/React-Query/useScopeChangeQuery';
+import { useQuery } from 'react-query';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -50,7 +50,7 @@ export const Contributor = ({
     const checkCanContribute = () =>
         canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
 
-    const { data: userCanContribute, remove: invalidateUserCanContribute } = useScopeChangeQuery(
+    const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
         workflowKeys.contributorKey(step.id, contributor.id),
         checkCanContribute,
         {

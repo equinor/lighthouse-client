@@ -8,7 +8,7 @@ export async function getDocumentIdByNo(documentId: string): Promise<number> {
     );
 
     if (!res.ok) {
-        throw 'Failed to get document by id';
+        throw 'Failed to get document';
     }
     return await res.json()['Id'];
 }

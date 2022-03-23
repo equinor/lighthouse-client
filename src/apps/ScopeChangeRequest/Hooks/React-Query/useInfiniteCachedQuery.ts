@@ -23,7 +23,7 @@ export function useInfiniteCachedQuery<
 ): UseQueryResult<TData, TError> {
     return useQuery(queryKey, queryFn, {
         ...options,
-        staleTime: CacheTime.FiveMinutes,
+        staleTime: CacheTime.ThirtyMinutes,
         cacheTime: CacheTime.TenHours,
         retry: 3,
         retryDelay: 1000,
