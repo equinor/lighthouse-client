@@ -38,6 +38,7 @@ export default defineConfig({
             '@equinor/Kpi': path.resolve(__dirname, './src/packages/KPI'),
             '@equinor/GardenUtils': path.resolve(__dirname, './src/packages/GardenUtils'),
             '@equinor/echo3dweb-viewer': path.resolve(__dirname, './packages/echo3dViewer/src'),
+            '@equinor/lighthouse-powerbi': path.resolve(__dirname, './src/modules/powerBI'),
         },
     },
     build: {

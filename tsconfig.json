@@ -39,7 +39,8 @@
             "@equinor/Utils": ["./src/packages/Utils"],
             "@equinor/typeGuard": ["./src/packages/typeGuard"],
             "@equinor/GardenUtils": ["./src/packages/GardenUtils"],
-            "@equinor/echo3dweb-viewer": ["./packages/echo3dViewer/src"]
+            "@equinor/echo3dweb-viewer": ["./packages/echo3dViewer/src"],
+            "@equinor/lighthouse-powerbi": ["./src/modules/powerBI"]
         }
     },
     "compileOnSave": true,
