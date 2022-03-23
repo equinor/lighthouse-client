@@ -8,6 +8,7 @@ export interface Pipetest {
     description: string;
     commPkPriority1: string;
     rfccPlanned: string;
+    overdue: string;
     // description: string;
     // dueDate: string;
     // lineAndSpools: string[][];

@@ -14,6 +14,8 @@ import { Pipetest } from './Types/pipetest';
 import { ReleaseControlGardenItem } from './Components/Garden/ReleaseControlGardenItem';
 import { checklistTagFunc, createChecklistSteps, getHTList } from './Functions/tableHelpers';
 import { getTimePeriod } from './Components/Garden/gardenFunctions';
+import { PipetestStep } from './Types/drcEnums';
+import { DateTime } from 'luxon';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -28,6 +30,11 @@ export function setup(appApi: ClientApi): void {
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
             pipetest.step = getPipetestStatus(pipetest.checkLists);
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
+            pipetest.overdue =
+                pipetest.step !== PipetestStep.Complete &&
+                DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
+                    ? 'Yes'
+                    : 'No';
             return pipetest;
         });
         sortPipetests(json);
@@ -52,7 +59,7 @@ export function setup(appApi: ClientApi): void {
         .registerFilterOptions({
             excludeKeys: releaseControlExcludeKeys,
             headerNames: {},
-            defaultActiveFilters: ['status', 'System', 'Priority', 'DueDateTimePeriod'],
+            defaultActiveFilters: ['status', 'System', 'Priority', 'DueDateTimePeriod', 'Overdue'],
             valueFormatter: {
                 System: (item: Pipetest): string => {
                     return item.name.substring(0, 2);
@@ -62,6 +69,9 @@ export function setup(appApi: ClientApi): void {
                 },
                 DueDateTimePeriod: (item: Pipetest): string => {
                     return item.dueDateTimePeriod;
+                },
+                Overdue: (item: Pipetest): string => {
+                    return item.overdue;
                 },
             },
         });
@@ -75,7 +85,7 @@ export function setup(appApi: ClientApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'name',
         columnOrder: ['name', 'description', 'status'],
-        hiddenColumns: ['rfccPlanned', 'dueDateTimePeriod', 'heatTraces'],
+        hiddenColumns: ['rfccPlanned', 'dueDateTimePeriod', 'heatTraces', 'overdue'],
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Pipetest', width: 200 },
