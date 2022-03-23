@@ -28,7 +28,7 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
                         }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
                     target="_blank"
                 >
-                    COMM_{commPkg.procosysNumber}
+                    {commPkg.procosysNumber}
                 </Link>
                 -<div>{data?.Description}</div>
             </TagText>
