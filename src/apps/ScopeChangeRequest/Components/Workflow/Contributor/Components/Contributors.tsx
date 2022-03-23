@@ -13,15 +13,14 @@ import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { submitContribution } from '../../../../Api/ScopeChange/Workflow/';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
-import { useQuery } from 'react-query';
 import { canContribute } from '../../../../Api/ScopeChange/Access';
-import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { CacheTime } from '../../../../Enums/cacheTimes';
 import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
 import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
 import { removeContributor } from '../../../../Api/ScopeChange/Workflow/removeContributor';
 import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
 import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
+import { useScopeChangeQuery } from '../../../../Hooks/React-Query/useScopeChangeQuery';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -36,8 +35,7 @@ export const Contributor = ({
 }: ContributorsProps): JSX.Element => {
     const [comment, setComment] = useState('');
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
-    const { request, setErrorMessage } = useScopeChangeContext();
-
+    const { request } = useScopeChangeContext();
     const workflowLoading = useIsWorkflowLoading();
 
     const { workflowKeys } = scopeChangeQueryKeys(request.id);
@@ -46,27 +44,18 @@ export const Contributor = ({
     const { mutate: removeContributorAsync } = useScopeChangeMutation(
         request.id,
         workflowMutationKeys.deleteContributorKey(step.id),
-        removeContributor,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-        }
+        removeContributor
     );
 
     const checkCanContribute = () =>
         canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
 
-    const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
+    const { data: userCanContribute, remove: invalidateUserCanContribute } = useScopeChangeQuery(
         workflowKeys.contributorKey(step.id, contributor.id),
         checkCanContribute,
         {
             staleTime: CacheTime.FiveMinutes,
             cacheTime: CacheTime.FiveMinutes,
-            onError: (e: string) =>
-                setErrorMessage({
-                    detail: e,
-                    title: 'Failed to get permissions',
-                    validationErrors: {},
-                }),
         }
     );
 
@@ -75,7 +64,6 @@ export const Contributor = ({
         workflowMutationKeys.contributeKey(step.id, contributor.id),
         submitContribution,
         {
-            onError: (e: ServerError) => setErrorMessage(e),
             onSuccess: () => invalidateUserCanContribute(),
         }
     );

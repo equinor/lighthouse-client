@@ -36,7 +36,7 @@ export const System = ({ system }: SystemProps): JSX.Element => {
                     }.equinor.com/JOHAN_CASTBERG/Completion#System|${system.procosysId}`}
                 target="_blank"
             >
-                SYS_{system.procosysCode} - {foundSystem?.Description}
+                {system.procosysCode} - {foundSystem?.Description}
             </Link>
         </Wrapper>
     );

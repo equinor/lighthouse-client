@@ -31,7 +31,7 @@ export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
         <Wrapper key={discipline.id}>
             <Icon name="school" color={tokens.colors.interactive.primary__resting.hex} />
             <Link>
-                DISC_{discipline.procosysCode} - {foundDiscipline?.Description}
+                {discipline.procosysCode} - {foundDiscipline?.Description}
             </Link>
         </Wrapper>
     );

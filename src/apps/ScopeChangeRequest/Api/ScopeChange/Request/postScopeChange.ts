@@ -19,7 +19,7 @@ export async function postScopeChange(
 
     const res = await client.fetch(`api/scope-change-requests`, requestOptions);
 
-    await throwOnError(res);
+    await throwOnError(res, 'Failed to create scopechange');
 
     return await res.json();
 }

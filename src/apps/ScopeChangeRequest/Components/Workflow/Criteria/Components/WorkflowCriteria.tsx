@@ -12,7 +12,6 @@ import { CriteriaActions } from '../../Types/actions';
 import { AddContributor } from './AddContributor';
 import { PCSPersonRoleSearch } from '../../../SearchableDropdown/PCSPersonRoleSearch';
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
-import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
 import { QueryObserver, useQueryClient } from 'react-query';
 import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
@@ -33,7 +32,7 @@ export const WorkflowCriteria = ({
     criteria,
     canAddContributor,
 }: WorkflowCriteriasProps): JSX.Element => {
-    const { request, setErrorMessage } = useScopeChangeContext();
+    const { request } = useScopeChangeContext();
 
     const signMutation = useWorkflowSigning({
         criteriaId: criteria.id,
@@ -52,8 +51,7 @@ export const WorkflowCriteria = ({
     const { canReassign, canSign, canUnsign } = useWorkflowCriteriaOptions(
         request.id,
         criteria.id,
-        step.id,
-        setErrorMessage
+        step.id
     );
 
     function makeSignOptions(): MenuItem[] {
@@ -162,19 +160,13 @@ export const WorkflowCriteria = ({
     const { mutate: reassignMutation } = useScopeChangeMutation(
         request.id,
         criteriaReassignKey(step.id, criteria.id),
-        reassignCriteria,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-        }
+        reassignCriteria
     );
 
     const { mutate: unSignMutation } = useScopeChangeMutation(
         request.id,
         criteriaUnsignKey(step.id, criteria.id),
-        unsignCriteria,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-        }
+        unsignCriteria
     );
 
     const closeAll = () => {

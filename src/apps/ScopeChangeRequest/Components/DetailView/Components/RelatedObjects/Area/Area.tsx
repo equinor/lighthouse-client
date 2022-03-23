@@ -14,8 +14,13 @@ interface AreaProps {
 export const Area = ({ area }: AreaProps): JSX.Element => {
     const { area: areaKey } = proCoSysQueryKeys();
 
-    const { data } = useInfiniteCachedQuery(areaKey(area.procosysCode), () =>
-        getAreaByCode(area.procosysCode)
+    const { data } = useInfiniteCachedQuery(
+        areaKey(area.procosysCode),
+        () => getAreaByCode(area.procosysCode),
+        {
+            retry: false,
+            retryDelay: 5000,
+        }
     );
 
     return (
@@ -23,7 +28,7 @@ export const Area = ({ area }: AreaProps): JSX.Element => {
             <Icon color={tokens.colors.interactive.primary__resting.hex} name="pin_drop" />
 
             <Link>
-                LOC_{area.procosysCode} - {data?.Description}
+                {area.procosysCode} - {data?.Description}
             </Link>
         </Wrapper>
     );
