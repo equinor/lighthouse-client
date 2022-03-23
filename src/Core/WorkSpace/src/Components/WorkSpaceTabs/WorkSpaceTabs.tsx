@@ -1,4 +1,5 @@
 import { Button, CircularProgress, Dialog, Typography } from '@equinor/eds-core-react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { useDataContext } from '../../Context/DataProvider';
@@ -37,7 +38,7 @@ export const WorkSpaceTabs = ({ tabs, activeTab, title }: CompletionViewTabsProp
                                     }
                                 />
                             </WorkspaceErrorPage>
-                        ) : dataApi?.isLoading ? (
+                        ) : dataApi?.isFetching || dataApi?.isLoading ? (
                             <Loading>
                                 <CircularProgress color="primary" value={0} size={48} />
                                 <h2>Loading {title.toLowerCase()}</h2>
