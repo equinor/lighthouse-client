@@ -23,13 +23,13 @@ export const SubResults = ({
                         <IconContainer>
                             <Icon name="arrow_back" onClick={handleReturnClick} />
                         </IconContainer>
-                        <Title>{subResults.tagName}</Title>
+                        <Title>{subResults.parentName}</Title>
                         <span></span>
                     </Header>
-                    {subResults.documents.length > 0 && (
+                    {subResults.children.length > 0 && (
                         <div>
                             <br />
-                            {subResults.documents.map((x) => {
+                            {subResults.children.map((x) => {
                                 return (
                                     <>
                                         <ResultItem key={x.value}>
