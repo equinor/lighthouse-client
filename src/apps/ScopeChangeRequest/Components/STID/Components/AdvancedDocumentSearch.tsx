@@ -11,6 +11,8 @@ import { AdvancedSearch, StidHeader, StidWrapper, Title } from './advancedSearch
 import { useCancellationToken } from '../../../Hooks/useCancellationToken';
 import { ProcoSysTypes } from '../../../Types/ProCoSys/ProCoSysTypes';
 import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
+import { getMcPkgsFromCommPkg } from '../../../Api/PCS/getMcPckgsFromCommPkg';
+import { MenuItem } from '../../MenuButton';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -21,6 +23,10 @@ interface AdvancedDocumentSearchProps {
 export interface SubResult {
     tagName: string;
     documents: TypedSelectOption[];
+}
+
+export interface ExtendedTypedSelectOption extends TypedSelectOption {
+    actions?: MenuItem[];
 }
 
 export const AdvancedDocumentSearch = ({
@@ -36,7 +42,7 @@ export const AdvancedDocumentSearch = ({
     //controls
     const [isOpen, setIsOpen] = useState(false);
     const [searchText, setSearchText] = useState<string | undefined>();
-    const [results, setResults] = useState<TypedSelectOption[]>([]);
+    const [results, setResults] = useState<ExtendedTypedSelectOption[]>([]);
     const [subResults, setSubResults] = useState<SubResult | undefined>();
     const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>();
 
@@ -65,6 +71,7 @@ export const AdvancedDocumentSearch = ({
         'commpkg',
         'tag',
         'system',
+        'mcpkg',
         // 'stidtag',
     ];
 
@@ -130,7 +137,34 @@ export const AdvancedDocumentSearch = ({
         if (!referenceType) return;
         const data = await search(inputValue, referenceType, getSignal());
 
-        setResults(data);
+        switch (referenceType) {
+            case 'commpkg': {
+                setResults(
+                    data.map(
+                        (x): ExtendedTypedSelectOption => ({
+                            ...x,
+                            actions: [
+                                {
+                                    label: 'View mc pkgs',
+                                    onClick: () => {
+                                        setSearchText(undefined);
+                                        setReferenceType('mcpkg');
+                                        getMcPkgs(x).then((result) => setResults(result));
+                                    },
+                                },
+                            ],
+                        })
+                    )
+                );
+                break;
+            }
+
+            default: {
+                setResults(data);
+                break;
+            }
+        }
+
         setIsLoading(false);
     };
 
@@ -250,3 +284,16 @@ export const AdvancedDocumentSearch = ({
         </Fragment>
     );
 };
+
+async function getMcPkgs(item: TypedSelectOption) {
+    const results = await getMcPkgsFromCommPkg(item.value);
+    return results.map(
+        (value): TypedSelectOption => ({
+            label: `${value.McPkgNo} ${value.Description}`,
+            object: value,
+            searchValue: value.McPkgNo,
+            type: 'mcpkg',
+            value: value.McPkgNo,
+        })
+    );
+}

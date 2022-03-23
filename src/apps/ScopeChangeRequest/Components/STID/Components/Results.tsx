@@ -2,9 +2,11 @@ import { Checkbox } from '@equinor/eds-core-react';
 import { ResultLabel, ResultItem } from './advancedSearchStyles';
 import { TypedSelectOption } from '../../../Api/Search/searchType';
 import { useState } from 'react';
+import { ExtendedTypedSelectOption } from './AdvancedDocumentSearch';
+import { IconMenu } from '../../MenuButton';
 
 interface ResultProps {
-    result: TypedSelectOption;
+    result: ExtendedTypedSelectOption;
     handleClick: (result: TypedSelectOption, action: 'Add' | 'Remove') => void;
     isSelected: (x: TypedSelectOption) => boolean;
 }
@@ -23,6 +25,7 @@ export const Result = ({ result, handleClick, isSelected }: ResultProps): JSX.El
                     }}
                 />
                 <ResultLabel>{result.label}</ResultLabel>
+                {result.actions && <IconMenu items={result.actions} />}
             </ResultItem>
         </>
     );

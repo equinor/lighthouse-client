@@ -44,6 +44,7 @@ export const RelatedObjectsSearch = ({
         'commpkg',
         'tag',
         'system',
+        'mcpkg',
     ];
 
     const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>(

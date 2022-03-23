@@ -50,6 +50,7 @@ export const IconMenu = ({ items, onMenuOpen, isDisabled }: IconMenuProps): JSX.
                 anchorEl={anchorRef.current}
                 onClose={closeMenu}
                 placement="left"
+                style={{ zIndex: 100000 }}
             >
                 {items.map((x, i) => {
                     const Icon = () => x.icon ?? null;

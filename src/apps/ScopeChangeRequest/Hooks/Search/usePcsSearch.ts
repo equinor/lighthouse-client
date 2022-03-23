@@ -15,6 +15,7 @@ import { useInfiniteCachedQuery } from '../React-Query/useInfiniteCachedQuery';
 import Fuse from 'fuse.js';
 import { getDisciplines } from '../../Api/PCS/getDisciplines';
 import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
+import { searchMcPkg } from '../../Api/Search/PCS/searchMcPkg';
 
 interface PCSSearch {
     searchPCS: (
@@ -71,6 +72,10 @@ export function usePcsSearch(): PCSSearch {
 
             case 'SWCR': {
                 return await searchSWCR(searchValue, procosys, signal);
+            }
+
+            case 'mcpkg': {
+                return await searchMcPkg(searchValue, procosys, signal);
             }
 
             case 'area': {
