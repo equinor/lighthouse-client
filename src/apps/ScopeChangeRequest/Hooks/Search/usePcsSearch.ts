@@ -15,6 +15,7 @@ import { useInfiniteCachedQuery } from '../React-Query/useInfiniteCachedQuery';
 import Fuse from 'fuse.js';
 import { getDisciplines } from '../../Api/PCS/getDisciplines';
 import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
+import { useFacility } from '../../../../Core/Client/Hooks';
 
 interface PCSSearch {
     searchPCS: (
@@ -30,25 +31,26 @@ interface PCSSearch {
  * @returns
  */
 export function usePcsSearch(): PCSSearch {
+    const { procosysPlantId } = useFacility();
+
     const {
         disciplines: disciplinesKey,
         functionalRoles: functionalRolesKey,
         systems: systemsKey,
     } = proCoSysQueryKeys();
 
-    const { data: systems, refetch: refetchSystems } = useInfiniteCachedQuery(
-        systemsKey,
-        getSystems
+    const { data: systems, refetch: refetchSystems } = useInfiniteCachedQuery(systemsKey, () =>
+        getSystems(procosysPlantId)
     );
 
     const { data: functionalRoles, refetch: refetchFunctionalRoles } = useInfiniteCachedQuery(
         functionalRolesKey,
-        getFunctionalRoles
+        () => getFunctionalRoles(procosysPlantId)
     );
 
     const { data: disciplines, refetch: refetchDisciplines } = useInfiniteCachedQuery(
         disciplinesKey,
-        getDisciplines
+        () => getDisciplines(procosysPlantId)
     );
 
     const { procosys } = httpClient();
@@ -60,25 +62,25 @@ export function usePcsSearch(): PCSSearch {
     ): Promise<TypedSelectOption[]> {
         switch (type) {
             case 'DCN': {
-                return await searchDCN(searchValue, procosys, signal);
+                return await searchDCN(searchValue, procosysPlantId, procosys, signal);
             }
             case 'NCR': {
-                return await searchNCR(searchValue, procosys, signal);
+                return await searchNCR(searchValue, procosysPlantId, procosys, signal);
             }
             case 'Query': {
-                return await searchQueryOrigin(searchValue, procosys, signal);
+                return await searchQueryOrigin(searchValue, procosysPlantId, procosys, signal);
             }
 
             case 'SWCR': {
-                return await searchSWCR(searchValue, procosys, signal);
+                return await searchSWCR(searchValue, procosysPlantId, procosys, signal);
             }
 
             case 'area': {
-                return await searchAreas(searchValue, procosys, signal);
+                return await searchAreas(searchValue, procosysPlantId, procosys, signal);
             }
 
             case 'commpkg': {
-                return await searchCommPkg(searchValue, procosys, signal);
+                return await searchCommPkg(searchValue, procosysPlantId, procosys, signal);
             }
 
             case 'discipline': {
@@ -90,7 +92,7 @@ export function usePcsSearch(): PCSSearch {
             }
 
             case 'person': {
-                return await searchPerson(searchValue, procosys, signal);
+                return await searchPerson(searchValue, procosysPlantId, procosys, signal);
             }
 
             case 'system': {
@@ -98,7 +100,7 @@ export function usePcsSearch(): PCSSearch {
             }
 
             case 'tag': {
-                return await searchTags(searchValue, procosys, signal);
+                return await searchTags(searchValue, procosysPlantId, procosys, signal);
             }
 
             default: {

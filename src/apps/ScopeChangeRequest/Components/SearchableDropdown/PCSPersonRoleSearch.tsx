@@ -9,6 +9,7 @@ import { useCancellationToken } from '../../Hooks/useCancellationToken';
 import { usePcsSearch } from '../../Hooks/Search/usePcsSearch';
 import { useInfiniteCachedQuery } from '../../Hooks/React-Query/useInfiniteCachedQuery';
 import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
+import { useFacility } from '../../../../Core/Client/Hooks';
 
 interface PCSLinkProps {
     onSelect: (selected?: TypedSelectOption | null) => void;
@@ -17,10 +18,13 @@ interface PCSLinkProps {
 
 export const PCSPersonRoleSearch = ({ isDisabled, onSelect }: PCSLinkProps): JSX.Element => {
     const { abort, getSignal } = useCancellationToken();
+    const { procosysPlantId } = useFacility();
     const { functionalRoles: functionalRolesKey } = proCoSysQueryKeys();
     const { searchPCS } = usePcsSearch();
 
-    const { data, refetch } = useInfiniteCachedQuery(functionalRolesKey, getFunctionalRoles);
+    const { data, refetch } = useInfiniteCachedQuery(functionalRolesKey, () =>
+        getFunctionalRoles(procosysPlantId)
+    );
 
     const loadOptions = async (
         inputValue: string,
