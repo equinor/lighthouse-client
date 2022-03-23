@@ -179,7 +179,8 @@ export const Contributor = ({
                         <ButtonContainer>
                             <Button
                                 disabled={!comment}
-                                onClick={() =>
+                                onClick={() => {
+                                    setShowCommentField(false);
                                     mutate({
                                         contributorId: contributor.id,
                                         requestId: request.id,
@@ -187,8 +188,8 @@ export const Contributor = ({
                                         suggestion:
                                             comment.length > 0 ? 'Comment' : 'SuggestApproval',
                                         comment: comment,
-                                    })
-                                }
+                                    });
+                                }}
                             >
                                 Confirm
                             </Button>
