@@ -27,7 +27,7 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = {
     valueFormatter: {
         NextToSign: (item: ScopeChangeRequest): string => {
             if (item.state !== 'Open') {
-                return 'Closed';
+                return '(Blank)';
             }
             return (
                 item.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
