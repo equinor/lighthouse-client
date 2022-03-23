@@ -1,6 +1,6 @@
 import { ClientApi } from '@equinor/portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
-import { ReleaseControlProcessForm } from './Components/Form/ReleaseControlProcessForm';
+// import { ReleaseControlProcessForm } from './Components/Form/ReleaseControlProcessForm';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import {
@@ -26,7 +26,7 @@ export function setup(appApi: ClientApi): void {
         json.map((pipetest: Pipetest) => {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
-            pipetest.status = getPipetestStatus(pipetest.checkLists);
+            pipetest.step = getPipetestStatus(pipetest.checkLists);
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             return pipetest;
         });
@@ -45,10 +45,10 @@ export function setup(appApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerDataCreator({
-            title: 'Release control',
-            component: ReleaseControlProcessForm,
-        })
+        // .registerDataCreator({
+        //     title: 'Release control',
+        //     component: ReleaseControlProcessForm,
+        // })
         .registerFilterOptions({
             excludeKeys: releaseControlExcludeKeys,
             headerNames: {},
@@ -80,7 +80,7 @@ export function setup(appApi: ClientApi): void {
         headers: [
             { key: 'name', title: 'Pipetest', width: 200 },
             { key: 'description', title: 'Description', width: 400 },
-            { key: 'status', title: 'Status', width: 300 },
+            { key: 'step', title: 'Step', width: 300 },
             { key: 'checkLists', title: 'Process', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
         ],
@@ -126,7 +126,7 @@ export function setup(appApi: ClientApi): void {
     });
 
     request.registerGardenOptions({
-        gardenKey: 'status',
+        gardenKey: 'step',
         itemKey: 'name',
         type: 'normal',
         fieldSettings: fieldSettings,
