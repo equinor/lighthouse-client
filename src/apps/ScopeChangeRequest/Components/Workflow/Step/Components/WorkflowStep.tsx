@@ -40,7 +40,8 @@ export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element 
                         />
                     );
                 })}
-            {step.contributors &&
+            {step.isCurrent &&
+                step.contributors &&
                 step.contributors.map((contributor) => {
                     return (
                         <Contributor
