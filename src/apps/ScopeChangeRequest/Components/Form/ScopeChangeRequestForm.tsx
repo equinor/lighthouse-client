@@ -154,7 +154,7 @@ export const ScopeChangeRequestForm = ({
         <>
             <ScopeChangeErrorBanner />
             <TitleHeader>
-                <span style={{ fontSize: '28px' }}>Create scope change request</span>
+                <SidesheetTitle>Create scope change request</SidesheetTitle>
                 <Icon
                     onClick={() => closeScrim()}
                     name="close"
@@ -196,6 +196,10 @@ export const ScopeChangeRequestForm = ({
         </>
     );
 };
+
+export const SidesheetTitle = styled.span`
+    font-size: 28px;
+`;
 
 export const Section = styled.div`
     display: flex;
