@@ -1,21 +1,21 @@
-import { useEffect, useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { createGarden } from '../../Services/createGarden';
 import { FilterSelector } from '../GroupingSelector';
 import { ExpandProvider } from './ExpandProvider';
 import { VirtualGarden } from './VirtualGarden';
 export const VirtualContainer = <T extends unknown>() => {
+    const [widths, setWidths] = useState<number[]>([]);
+
     const {
         data,
         groupByKeys,
         gardenKey,
-        itemKey,
         options,
         status,
         fieldSettings,
-        customView,
         customGroupByKeys,
-        sortData,
+        itemWidth,
     } = useParkViewContext<T>();
     const garden = useMemo(
         () =>
@@ -26,7 +26,9 @@ export const VirtualContainer = <T extends unknown>() => {
                 status,
                 options?.groupDescriptionFunc,
                 fieldSettings,
-                customGroupByKeys
+                customGroupByKeys,
+                //TODO: this has to be set to true...
+                true
             ),
         [
             data,
@@ -39,36 +41,25 @@ export const VirtualContainer = <T extends unknown>() => {
         ]
     );
 
-    const [dimension, setDimension] = useState<{ heights: number[]; widths: number[] }>({
-        heights: [],
-        widths: [],
-    });
     const amountOfColumns = useMemo(() => Object.keys(garden).length, [garden]);
-    const amountOfMaxRows = Math.max(
-        ...Object.values(garden).map((c) =>
-            c.subGroupCount > 0 ? c.subGroupCount + c.count : c.count
-        )
-    );
-    console.log('amount of max rows', amountOfMaxRows);
+
     useEffect(() => {
         if (garden) {
-            if (amountOfColumns > 0 && amountOfMaxRows > 0) {
-                setDimension({
-                    heights: new Array(amountOfMaxRows).fill(30),
-                    widths: new Array(amountOfColumns).fill(200),
-                });
+            if (amountOfColumns > 0) {
+                setWidths(new Array(amountOfColumns).fill(itemWidth || 300));
             }
         }
-    }, [amountOfColumns, amountOfMaxRows]);
+    }, [amountOfColumns]);
 
-    if (dimension.heights.length === 0 || dimension.widths.length === 0) {
+    //TODO: Handle widths = 0 better
+    if (widths.length === 0) {
         return <h1>Length 0</h1>;
     }
 
     return (
         <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', height: '100%', gap: '1em' }}>
             <FilterSelector />
-            <ExpandProvider initialHeights={dimension.heights} initialWidths={dimension.widths}>
+            <ExpandProvider initialWidths={widths}>
                 <VirtualGarden garden={garden} />
             </ExpandProvider>
         </div>

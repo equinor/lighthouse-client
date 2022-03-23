@@ -7,12 +7,13 @@ export const WorkOrderWrapper = styled(Item)<WorkOrderItemProps>`
     display: flex;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: 100%;
+    width: 95%;
     min-width: 150px;
     box-sizing: border-box;
     white-space: nowrap;
     justify-content: space-between;
     border: 1px solid #dcdcdc;
+    height: 85%;
 `;
 
 export const Circles = styled.div`

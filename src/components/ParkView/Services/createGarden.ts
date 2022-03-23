@@ -14,7 +14,8 @@ export function createGarden<T>(
     status?: StatusView<T>,
     groupDescriptionFunc?: GroupDescriptionFunc<T>,
     fieldSettings?: FieldSettings<T, string>,
-    customGroupByKeys?: Record<string, unknown>
+    customGroupByKeys?: Record<string, unknown>,
+    columnExpanded?: boolean
 ): Data<T> {
     const allGroupingKeys: (keyof T)[] = [gardenKey];
     if (groupingKeys) {
@@ -29,7 +30,7 @@ export function createGarden<T>(
         status,
         groupDescriptionFunc,
         fieldSettings,
-        undefined,
+        columnExpanded,
         customGroupByKeys
     );
 

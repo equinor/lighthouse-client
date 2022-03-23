@@ -43,7 +43,6 @@ export function GardenView<T>(): JSX.Element | null {
             customGroupByKeys,
         ]
     );
-    console.log('garden', garden);
     const Header = customView?.customHeaderView || GroupHeader;
 
     const handleHeaderClick = (columnKey: string) => {

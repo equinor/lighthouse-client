@@ -1,11 +1,11 @@
 import { MemoExoticComponent, useCallback } from 'react';
 import { VirtualItem } from 'react-virtual';
 import styled from 'styled-components';
-import { Data, DataSet } from '../../Models/data';
+import { Data } from '../../Models/data';
 import { CustomHeaderView } from '../../Models/gardenOptions';
 import { ActionType } from './ExpandProvider';
 import { useExpandDispatch } from './useExpand';
-import { getGardenItems } from './utils';
+import { getGardenItems } from './utils/getGardenItems';
 
 const HeaderRoot = styled.div`
     position: sticky;
@@ -19,10 +19,11 @@ const Header = styled.div`
     left: 0;
     height: 35px;
     will-change: transform;
-    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     border-radius: 5px;
-    background: #f7f7f7;
     border: 1px solid white;
 `;
 type HeaderContainerProps<T> = {
@@ -30,7 +31,7 @@ type HeaderContainerProps<T> = {
     headerChild: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
     garden: Data<T>;
     columnKeys: string[];
-    highlightColumn: string;
+    highlightColumn: string | undefined;
 };
 export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T>) => {
     const {
@@ -43,7 +44,6 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
     const expandColumn = useExpandDispatch();
     const handleHeaderClick = useCallback(
         (index: number, key: string) => {
-            console.log(garden[key]);
             expandColumn({
                 type: ActionType.EXPAND_COLUMN,
                 index,
@@ -56,6 +56,8 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
     return (
         <HeaderRoot>
             {columnVirtualizer.virtualItems.map((virtualColumn) => {
+                const isHighlighted =
+                    highlightColumn === garden[columnKeys[virtualColumn.index]].value;
                 return (
                     <Header
                         onClick={() =>
@@ -64,22 +66,21 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
                         style={{
                             width: `${virtualColumn.size}px`,
                             transform: `translateX(${virtualColumn.start}px) translateY(0px)`,
-                            backgroundColor:
-                                highlightColumn === garden[columnKeys[virtualColumn.index]].value
-                                    ? 'yellow'
-                                    : 'inherit',
+                            backgroundColor: isHighlighted ? '#007079' : '#f7f7f7',
+                            color: isHighlighted ? 'white' : 'black',
                         }}
                         key={virtualColumn.index}
                     >
-                        {HeaderChild && (
+                        {HeaderChild ? (
                             <HeaderChild
                                 garden={garden}
-                                columnKey={
-                                    garden[columnKeys[virtualColumn.index]].groupKey as string
-                                }
+                                columnKey={garden[
+                                    columnKeys[virtualColumn.index]
+                                ].groupKey.toString()}
                             />
+                        ) : (
+                            garden[columnKeys[virtualColumn.index]].value
                         )}
-                        {garden[columnKeys[virtualColumn.index]].value}
                     </Header>
                 );
             })}

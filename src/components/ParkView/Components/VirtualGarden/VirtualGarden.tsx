@@ -3,38 +3,31 @@ import { Layout } from './Layout';
 import { useVirtual } from 'react-virtual';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { Fragment, useCallback, useLayoutEffect, useMemo, useRef } from 'react';
-import { PackageContainer } from './PackageContainer';
 import { CustomVirtualView } from '../../Models/gardenOptions';
 import { defaultSortFunction } from '../../Utils/utilities';
 import { useVirtualScrolling } from './useVirtualScrolling';
-import { Data } from '../../Models/data';
-import { SubGroupView } from './SubGroupView';
+import { Data, DataSet } from '../../Models/data';
+import { GardenItemContainer } from './GardenItemContainer';
 import { useExpand } from './useExpand';
+import { getRowCount } from './utils/getRowCount';
+import { useRefresh } from '../../hooks/useRefresh';
+import { getGardenItems } from './utils/getGardenItems';
+
 type VirtualGardenProps<T> = {
     garden: Data<T>;
 };
-export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<T>) => {
-    const { gardenKey, fieldSettings, customView, itemKey, sortData } = useParkViewContext<T>();
 
+export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<T>) => {
     const parentRef = useRef<HTMLDivElement | null>(null);
+
+    const { gardenKey, fieldSettings, customView, itemKey, sortData, highlightColumn, rowHeight } =
+        useParkViewContext<T>();
     const { isScrolling, scrollOffsetFn } = useVirtualScrolling(parentRef);
-    const { widths: contextWidths, heights: contextHeights } = useExpand();
-    /**
-     * Row count will not be correct if multiple group by's
-     * and there are items inside "subGroups" in garden object
-     * Because the subgroup "header" will also be added, so
-     * we could check if subgroups exists,
-     */
-    const rowCount = useMemo(
-        () =>
-            Math.max(
-                ...Object.values(garden).map((c) =>
-                    c.subGroupCount > 0 ? Object.keys(c.subGroups).length : c.count
-                )
-            ),
-        [garden]
-    );
-    const columnCount = Object.keys(garden).length;
+    const { widths: contextWidths } = useExpand();
+    const refresh = useRefresh();
+
+    const columnCount = useMemo(() => Object.keys(garden).length, [garden]);
+    const rowCount = useMemo(() => getRowCount(garden), [garden]);
 
     const columnKeys = useMemo(
         () =>
@@ -43,14 +36,12 @@ export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<
             ),
         [garden, fieldSettings, gardenKey]
     );
-
     const rowVirtualizer = useVirtual({
         size: rowCount,
         parentRef,
-        estimateSize: useCallback((index) => contextHeights[index], [contextHeights]),
-        keyExtractor: useCallback((index) => index, [contextHeights]),
+        estimateSize: useCallback(() => rowHeight || 40, [rowHeight]),
         paddingStart: 40,
-        overscan: 2,
+        // overscan: 2,
     });
     const columnVirtualizer = useVirtual({
         horizontal: true,
@@ -70,18 +61,20 @@ export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<
     const { customHeaderView: headerChild, customItemView: packageChild } =
         customView as CustomVirtualView<T>;
 
+    const handleExpand = useCallback(
+        <T extends unknown>(subGroup: DataSet<T>) => {
+            subGroup.isExpanded = !subGroup.isExpanded;
+
+            refresh();
+        },
+        [refresh]
+    );
+
     useLayoutEffect(() => {
-        const scrollIndex = columnKeys.findIndex((col) => col === '2022-2');
+        const scrollIndex = columnKeys.findIndex((col) => col === highlightColumn);
         scrollIndex !== -1 && columnVirtualizer.scrollToIndex(scrollIndex, { align: 'center' });
     }, [columnKeys, columnVirtualizer.scrollToIndex]);
 
-    const amountOfGroupBy = useMemo(
-        () =>
-            Object.values(garden)
-                .map((c) => c.subGroupCount)
-                .reduce((a, b) => a + b, 0),
-        [garden]
-    );
     return (
         <Layout
             rowTotalSize={rowVirtualizer.totalSize}
@@ -94,36 +87,27 @@ export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<
                 garden={garden}
                 headerChild={headerChild!}
                 columnKeys={columnKeys}
-                highlightColumn="2022-2"
+                highlightColumn={highlightColumn}
             />
-            {rowVirtualizer.virtualItems.map((virtualRow) => {
+            {columnVirtualizer.virtualItems.map((virtualColumn) => {
+                const currentColumnKey = columnKeys[virtualColumn.index];
+                const currentColumn = garden[currentColumnKey];
+                const columnItems = getGardenItems(currentColumn, true);
+
                 return (
-                    <Fragment key={virtualRow.index}>
-                        {amountOfGroupBy === 0 ? (
-                            <PackageContainer<T>
-                                columnVirtualizer={columnVirtualizer}
-                                garden={garden}
-                                virtualRow={virtualRow}
-                                packageProps={{
-                                    component: packageChild!,
-                                }}
-                                columnKeys={columnKeys}
-                                sortData={sortData}
-                                gardenKey={gardenKey}
-                                itemKey={itemKey}
-                            />
-                        ) : (
-                            <SubGroupView
-                                columnVirtualizer={columnVirtualizer}
-                                garden={garden}
-                                virtualRow={virtualRow}
-                                columnKeys={columnKeys}
-                                sortData={sortData}
-                                gardenKey={gardenKey}
-                                itemKey={itemKey}
-                                packageChild={packageChild!}
-                            />
-                        )}
+                    <Fragment key={virtualColumn.index}>
+                        <GardenItemContainer
+                            rowVirtualizer={rowVirtualizer}
+                            garden={garden}
+                            virtualColumn={virtualColumn}
+                            columnKeys={columnKeys}
+                            sortData={sortData}
+                            gardenKey={gardenKey}
+                            itemKey={itemKey}
+                            packageChild={packageChild!}
+                            handleExpand={handleExpand}
+                            items={columnItems}
+                        />
                     </Fragment>
                 );
             })}

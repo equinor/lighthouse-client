@@ -1,6 +1,5 @@
-import { createContext, PropsWithChildren, useEffect, useReducer, useState } from 'react';
-import { Data, DataSet } from '../../Models/data';
-import { getDescriptionWidth } from './utils';
+import { createContext, PropsWithChildren, useReducer } from 'react';
+import { getDescriptionWidth } from './utils/getDescriptionWidth';
 type Expanded = {
     isExpanded: boolean;
     index: number;
@@ -8,13 +7,10 @@ type Expanded = {
 type ExpandedItems = Record<string, Expanded>;
 type State = {
     expandedColumns: ExpandedItems;
-    expandedRows: ExpandedItems;
     widths: number[];
-    heights: number[];
 };
 export enum ActionType {
     EXPAND_COLUMN,
-    EXPAND_ROW,
 }
 
 type ExpandColumn<T> = {
@@ -24,18 +20,12 @@ type ExpandColumn<T> = {
     type: ActionType.EXPAND_COLUMN;
 };
 
-type ExpandRow = {
-    key: string;
-    index: number;
-    type: ActionType.EXPAND_ROW;
-};
-
-type Action<T> = ExpandColumn<T> | ExpandRow;
+type Action<T> = ExpandColumn<T>;
 const expandReducer = <T extends unknown>(state: State, action: Action<T>): State => {
     switch (action.type) {
         case ActionType.EXPAND_COLUMN: {
+            //TODO +10 because of gap/padding
             let width = getDescriptionWidth(action.descriptionData) + 10;
-            console.log(action);
             if (state.expandedColumns && state.expandedColumns[action.key]) {
                 const currWidths = [...state.widths];
                 currWidths[action.index] = state.expandedColumns[action.key].isExpanded
@@ -68,49 +58,15 @@ const expandReducer = <T extends unknown>(state: State, action: Action<T>): Stat
                 };
             }
         }
-        case ActionType.EXPAND_ROW: {
-            const currHeights = [...state.heights];
-            if (state.expandedRows && state.expandedRows[action.key]) {
-                currHeights[action.index] = state.expandedRows[action.key].isExpanded
-                    ? currHeights[action.index] - 100
-                    : currHeights[action.index] + 100;
-                return {
-                    ...state,
-                    expandedRows: {
-                        ...state.expandedRows,
-                        [action.key]: {
-                            ...state.expandedRows[action.key],
-                            isExpanded: !state.expandedRows[action.key].isExpanded,
-                        },
-                    },
-                    heights: currHeights,
-                };
-            } else {
-                currHeights[action.index] = currHeights[action.index] + 100;
-                return {
-                    ...state,
-                    expandedRows: {
-                        ...state.expandedRows,
-                        [action.key]: {
-                            isExpanded: true,
-                            index: action.index,
-                        },
-                    },
-                    heights: currHeights,
-                };
-            }
-        }
 
         default:
-            return { expandedColumns: {}, widths: [], heights: [], expandedRows: {} };
+            return { expandedColumns: {}, widths: [] };
     }
 };
 
 type DispatchAction<T> = (action: Action<T>) => void;
 const ExpandContext = createContext<State>({
     expandedColumns: {},
-    expandedRows: {},
-    heights: [],
     widths: [],
 });
 
@@ -120,20 +76,14 @@ function createExpandDispatchContext<T = any>() {
 const ExpandDispatchContext = createExpandDispatchContext();
 type ExpandProviderProps = {
     initialWidths: number[];
-    initialHeights: number[];
 };
-type Dimension = {
-    heights: number[];
-    widths: number[];
-};
+
 const ExpandProvider = (props: PropsWithChildren<ExpandProviderProps>) => {
-    const { initialHeights, initialWidths, children } = props;
+    const { initialWidths, children } = props;
 
     const [state, dispatch] = useReducer(expandReducer, {
         expandedColumns: {},
-        expandedRows: {},
         widths: initialWidths,
-        heights: initialHeights,
     });
 
     return (

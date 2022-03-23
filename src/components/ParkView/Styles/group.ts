@@ -9,7 +9,7 @@ export const SubGroup = styled.div`
 `;
 
 export const Pack = styled.div`
-    padding: 0.5rem 1rem;
+    /* padding: 0.5rem 1rem; */
     display: flex;
     justify-content: space-between;
     margin: 0;
@@ -18,7 +18,7 @@ export const Pack = styled.div`
     border: 1px solid ${tokens.colors.text.static_icons__tertiary.rgba};
     border-radius: 5px;
     color: ${tokens.colors.text.static_icons__default.rgba};
-    min-width: 200px;
+    /* min-width: 200px; */
     cursor: pointer;
 
     :hover {
