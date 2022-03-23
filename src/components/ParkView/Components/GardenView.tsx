@@ -7,6 +7,7 @@ import { GroupHeader } from './GroupHeader';
 import { useRefresh } from '../hooks/useRefresh';
 import { useMemo } from 'react';
 import { defaultSortFunction } from '../Utils/utilities';
+import { PostGroupBySorting, PreGroupByFiltering } from '../Models/gardenOptions';
 
 export function GardenView<T>(): JSX.Element | null {
     const refresh = useRefresh();
@@ -19,28 +20,33 @@ export function GardenView<T>(): JSX.Element | null {
         fieldSettings,
         customView,
         customGroupByKeys,
+        intercepters,
     } = useParkViewContext<T>();
 
     const garden = useMemo(
         () =>
             data &&
-            createGarden(
-                data,
-                gardenKey,
-                groupByKeys,
-                status,
-                options?.groupDescriptionFunc,
-                fieldSettings,
-                customGroupByKeys
-            ),
+            createGarden({
+                dataSet: data,
+                gardenKey: gardenKey,
+                groupingKeys: groupByKeys,
+                status: status,
+                groupDescriptionFunc: options?.groupDescriptionFunc,
+                fieldSettings: fieldSettings,
+                customGroupByKeys: customGroupByKeys,
+                postGroupBySorting: intercepters?.postGroupSorting as PostGroupBySorting<T>,
+                preGroupFiltering: intercepters?.preGroupFiltering as PreGroupByFiltering<T>,
+            }),
         [
             data,
-            fieldSettings,
             gardenKey,
             groupByKeys,
-            options?.groupDescriptionFunc,
             status,
+            options?.groupDescriptionFunc,
+            fieldSettings,
             customGroupByKeys,
+            intercepters?.postGroupSorting,
+            intercepters?.preGroupFiltering,
         ]
     );
 

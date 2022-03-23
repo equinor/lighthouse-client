@@ -1,37 +1,35 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { isProduction } from '../../../../../../../Core/Client/';
+import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
-import { Icon } from '@equinor/eds-core-react';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
-import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
+import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
+import { CommPkgIcon } from './commPkgIcon';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
 }
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
-    const { request } = useScopeChangeContext();
-    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
+    const { commPkg: commPkgKey } = proCoSysQueryKeys();
+    const { procosysPlantId } = useFacility();
 
-    const { data } = useInfiniteCachedQuery(referencesKeys.commPkg(commPkg.procosysNumber), () =>
-        getCommPkgById(commPkg.procosysId)
+    const { data } = useInfiniteCachedQuery(commPkgKey(commPkg.procosysNumber), () =>
+        getCommPkgById(procosysPlantId, commPkg.procosysId)
     );
 
     return (
         <Wrapper key={commPkg.procosysId}>
-            <Icon name="placeholder_icon" />
+            <CommPkgIcon />
             <TagText>
                 <Link
-                    href={`https://${
-                        isProduction() ? 'procosys' : 'procosystest'
-                    }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
+                    href={`https://${isProduction() ? 'procosys' : 'procosystest'
+                        }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
                     target="_blank"
                 >
-                    COMM_{commPkg.procosysNumber}
+                    {commPkg.procosysNumber}
                 </Link>
                 -<div>{data?.Description}</div>
             </TagText>
