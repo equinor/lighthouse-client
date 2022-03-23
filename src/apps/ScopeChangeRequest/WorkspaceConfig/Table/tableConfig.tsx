@@ -106,7 +106,12 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         {
             key: 'hasComments',
             title: {
-                Custom: () => <Icon name="comment_chat" />,
+                Custom: () => (
+                    <Icon
+                        color={tokens.colors.text.static_icons__default.hex}
+                        name="comment_chat"
+                    />
+                ),
             },
             width: 80,
         },
