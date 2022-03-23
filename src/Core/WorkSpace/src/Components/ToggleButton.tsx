@@ -49,7 +49,7 @@ export const TabButton = ({
     ...rest
 }: PropsWithChildren<React.HTMLAttributes<HTMLButtonElement>>): JSX.Element => {
     return (
-        <Button aria-selected {...rest}>
+        <Button style={{ fontSize: '14px' }} aria-selected {...rest}>
             {children}
         </Button>
     );
