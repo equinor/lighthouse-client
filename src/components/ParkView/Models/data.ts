@@ -7,6 +7,7 @@ export type DataSet<T> = {
     items: T[];
     isExpanded: boolean;
     count: number;
+    subGroupCount: number;
     status?: Status;
     description?: string | undefined;
 };

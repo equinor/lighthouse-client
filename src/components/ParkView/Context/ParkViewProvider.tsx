@@ -1,6 +1,12 @@
 import { useContext, useEffect, useReducer } from 'react';
 import { FieldSettings } from '../Models/fieldSettings';
-import { CustomView, GardenOptions, Options, StatusView } from '../Models/gardenOptions';
+import {
+    CustomView,
+    CustomVirtualView,
+    GardenOptions,
+    Options,
+    StatusView,
+} from '../Models/gardenOptions';
 
 import { actions } from './ParkViewActions';
 import { ParkViewContext, ParkViewProviderProps, ParkViewState } from './ParkViewContext';
@@ -65,10 +71,11 @@ export function useParkViewContext<T>() {
         gardenKey: parkViewContext.gardenKey as keyof T,
         itemKey: parkViewContext.itemKey as keyof T,
         groupByKeys: parkViewContext.groupByKeys as (keyof T)[],
-        customView: parkViewContext.customViews as CustomView<T>,
+        customView: parkViewContext.customViews as CustomView<T> | CustomVirtualView<T>,
         customGroupByKeys: parkViewContext.customGroupByKeys || {},
         customState: parkViewContext.customState || {},
         status: parkViewContext.status as StatusView<T>,
+        type: (parkViewContext.type = 'normal'),
         options: parkViewContext.options as Options<T>,
         data: parkViewContext.data as T[],
         fieldSettings: parkViewContext.fieldSettings as FieldSettings<T, string>,

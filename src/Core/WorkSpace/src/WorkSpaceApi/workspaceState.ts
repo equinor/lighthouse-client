@@ -7,6 +7,7 @@ import { FetchQueryOptions, QueryFunction } from 'react-query';
 import { TableOptions as ReactTableOptions } from 'react-table';
 import {
     CustomView,
+    CustomVirtualView,
     GardenOptions,
     StatusView,
 } from '../../../../components/ParkView/Models/gardenOptions';
@@ -52,7 +53,7 @@ export interface TreeOptions<T> {
     groupByKeys?: (keyof T)[];
     itemKey: keyof T;
     excludeKeys?: (keyof T)[];
-    customViews?: CustomView<T>;
+    customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
     onSelect?: (item: T) => void;
@@ -96,7 +97,7 @@ export interface WorkSpaceConfig<T> {
     workflowEditorOptions?: WorkflowEditorOptions;
 }
 
-export interface TimeLineOptions { }
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

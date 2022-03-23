@@ -49,21 +49,12 @@ export function GardenView<T>(): JSX.Element | null {
             intercepters?.preGroupFiltering,
         ]
     );
-
     const Header = customView?.customHeaderView || GroupHeader;
 
-    const handleHeaderClick = (columnKey: string) => {
+    const handleHeaderClick = (columnIndex: number) => {
         refresh();
-        garden[columnKey].isExpanded = !garden[columnKey].isExpanded;
+        garden[columnIndex].isExpanded = !garden[columnIndex].isExpanded;
     };
-
-    const columnKeys = useMemo(
-        () =>
-            Object.keys(garden).sort(
-                fieldSettings?.[gardenKey]?.getColumnSort || defaultSortFunction
-            ),
-        [fieldSettings, garden, gardenKey]
-    );
 
     if (!data || !garden) return null;
     return (
@@ -71,19 +62,19 @@ export function GardenView<T>(): JSX.Element | null {
             <FilterSelector<T> />
             <Wrapper>
                 {garden &&
-                    columnKeys.map((key, index) => (
+                    garden.map((column, index) => (
                         <Col key={`col-${index}`}>
                             {/* Will be created with viewerFactory configured with gardenoptions */}
                             {gardenKey && (
                                 <div
                                     style={{ width: '100%' }}
-                                    onClick={() => handleHeaderClick(key)}
+                                    onClick={() => handleHeaderClick(index)}
                                 >
-                                    <Header garden={garden} columnKey={key} />
+                                    <Header garden={garden} columnIndex={index} />
                                 </div>
                             )}
 
-                            <TreeColumn group={garden[key]} fieldSettings={fieldSettings} />
+                            <TreeColumn group={column} fieldSettings={fieldSettings} />
                         </Col>
                     ))}
             </Wrapper>

@@ -71,9 +71,11 @@ export function groupBy<T, K extends keyof T>({
                         items: [item],
                         subGroups: [],
                         description: groupDescriptionFunc(item, key),
+                        subGroupCount: 0,
                     });
                 }
             });
+
             return acc;
         }, [] as GardenGroups<T>);
     }
@@ -111,7 +113,10 @@ export function groupBy<T, K extends keyof T>({
             customGroupByKeys: customGroupByKeys,
             preGroupFiltering: preGroupFiltering,
         });
-        if (nextKeys.length > 0) gardengroups[index].items = [];
+        if (nextKeys.length > 0) {
+            gardengroups[index].items = [];
+            gardengroups[index].subGroupCount = gardengroups[index].subGroups.length;
+        }
     });
 
     return gardengroups;
@@ -162,6 +167,7 @@ function groupByArray<T>({
             value: groupName as string,
             count: 0,
             items: parentsContainingChildren,
+            subGroupCount: 0,
         };
     });
 
@@ -176,6 +182,7 @@ function groupByArray<T>({
             count: 0,
             value: '(Blank)',
             items: blanks,
+            subGroupCount: 0,
         });
     }
 

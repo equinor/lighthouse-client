@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
-import { useConfiguredTabs } from '../../Tabs/tabsConfig';
+import { TabsConfigItem, useConfiguredTabs } from '../../Tabs/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { CompletionViewHeader } from '../DataViewerHeader/Header';
 import { NoDataView } from '../NoDataViewer/NoData';
@@ -133,13 +133,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     return (
         <FilterProvider initialData={data} options={filterOptions}>
             <Tabs activeTab={activeTab} onChange={handleChange}>
-                <CompletionViewHeader
-                    {...props}
-                    tabs={tabs}
-                    handleFilter={handleFilter}
-                    activeFilter={activeFilter}
-                />
-                <FilterView isActive={activeFilter} />
+                <Temp props={props} tabs={tabs} />
                 <DataViewWrapper>
                     <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
                 </DataViewWrapper>
@@ -148,3 +142,25 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         </FilterProvider>
     );
 }
+
+type TempProps = {
+    props: WorkspaceProps;
+    tabs: TabsConfigItem[];
+};
+const Temp = ({ tabs, props }: TempProps) => {
+    const [activeFilter, setActiveFilter] = useState<boolean>(false);
+    function handleFilter() {
+        setActiveFilter((state) => !state);
+    }
+    return (
+        <>
+            <CompletionViewHeader
+                {...props}
+                tabs={tabs}
+                handleFilter={handleFilter}
+                activeFilter={activeFilter}
+            />
+            <FilterView isActive={activeFilter} />
+        </>
+    );
+};

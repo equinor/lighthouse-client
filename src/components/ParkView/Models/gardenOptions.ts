@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MemoExoticComponent } from 'react';
 import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { DataSet, GardenGroups } from './data';
 import { FieldSettings } from './fieldSettings';
@@ -28,7 +28,7 @@ export interface CustomGroupView<T> {
 
 export interface CustomHeaderView<T> {
     garden: GardenGroups<T>;
-    columnKey: string;
+    columnIndex: number;
 }
 
 export interface CustomView<T> {
@@ -36,6 +36,12 @@ export interface CustomView<T> {
     customGroupView?: React.FC<CustomGroupView<T>>;
     customHeaderView?: React.FC<CustomHeaderView<T>>;
     customGroupByView?: React.FC;
+}
+export interface CustomVirtualView<T> {
+    customItemView?: MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;
+    customGroupView?: React.FC<CustomGroupView<T>>;
+    customHeaderView?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
+    customGroupByView: React.FC;
 }
 
 export interface GardenOptions<T> {
@@ -46,9 +52,13 @@ export interface GardenOptions<T> {
     customStateFunction?: (data: T[]) => Record<string, unknown>;
     sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     fieldSettings?: FieldSettings<T, string>;
-    customViews?: CustomView<T>;
+    type?: 'virtual' | 'normal';
+    customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
+    itemWidth?: number;
+    rowHeight?: number;
+    highlightColumn?: string;
     intercepters?: GardenDataIntercepters<T>;
 
     onSelect?: (item: T) => void;
