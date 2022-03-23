@@ -8,6 +8,7 @@ import { useRefresh } from '../hooks/useRefresh';
 import { useMemo } from 'react';
 import { defaultSortFunction } from '../Utils/utilities';
 import { PostGroupBySorting, PreGroupByFiltering } from '../Models/gardenOptions';
+import { DataSet } from '../Models/data';
 
 export function GardenView<T>(): JSX.Element | null {
     const refresh = useRefresh();
@@ -50,10 +51,22 @@ export function GardenView<T>(): JSX.Element | null {
         ]
     );
     const Header = customView?.customHeaderView || GroupHeader;
+    const sortedColumns = useMemo(
+        () =>
+            garden.sort((a, b) => {
+                const columnSort = fieldSettings?.[gardenKey]?.getColumnSort;
+                if (columnSort) {
+                    return columnSort(a.value, b.value);
+                } else {
+                    return defaultSortFunction(a.value, b.value);
+                }
+            }),
+        [garden, fieldSettings, defaultSortFunction]
+    );
 
-    const handleHeaderClick = (columnIndex: number) => {
+    const handleHeaderClick = (column: DataSet<T>) => {
         refresh();
-        garden[columnIndex].isExpanded = !garden[columnIndex].isExpanded;
+        column.isExpanded = !column.isExpanded;
     };
 
     if (!data || !garden) return null;
@@ -62,15 +75,15 @@ export function GardenView<T>(): JSX.Element | null {
             <FilterSelector<T> />
             <Wrapper>
                 {garden &&
-                    garden.map((column, index) => (
+                    sortedColumns.map((column, index) => (
                         <Col key={`col-${index}`}>
                             {/* Will be created with viewerFactory configured with gardenoptions */}
                             {gardenKey && (
                                 <div
                                     style={{ width: '100%' }}
-                                    onClick={() => handleHeaderClick(index)}
+                                    onClick={() => handleHeaderClick(column)}
                                 >
-                                    <Header garden={garden} columnIndex={index} />
+                                    <Header garden={sortedColumns} columnIndex={index} />
                                 </div>
                             )}
 

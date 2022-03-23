@@ -62,11 +62,22 @@ export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<
         },
         [refresh]
     );
-
+    const sortedColumns = useMemo(
+        () =>
+            garden.sort((a, b) => {
+                const columnSort = fieldSettings?.[gardenKey]?.getColumnSort;
+                if (columnSort) {
+                    return columnSort(a.value, b.value);
+                } else {
+                    return defaultSortFunction(a.value, b.value);
+                }
+            }),
+        [garden, fieldSettings, gardenKey]
+    );
     useLayoutEffect(() => {
-        const scrollIndex = garden.findIndex((col) => col.value === highlightColumn);
+        const scrollIndex = sortedColumns.findIndex((column) => column.value === highlightColumn);
         scrollIndex !== -1 && columnVirtualizer.scrollToIndex(scrollIndex, { align: 'center' });
-    }, [garden, columnVirtualizer.scrollToIndex]);
+    }, [sortedColumns, columnVirtualizer.scrollToIndex]);
 
     return (
         <Layout
@@ -77,19 +88,19 @@ export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<
         >
             <HeaderContainer<T>
                 columnVirtualizer={columnVirtualizer}
-                garden={garden}
+                garden={sortedColumns}
                 headerChild={headerChild!}
                 highlightColumn={highlightColumn}
             />
             {columnVirtualizer.virtualItems.map((virtualColumn) => {
-                const currentColumn = garden[virtualColumn.index];
+                const currentColumn = sortedColumns[virtualColumn.index];
                 const columnItems = getGardenItems<T>(currentColumn, true);
 
                 return (
                     <Fragment key={virtualColumn.index}>
                         <GardenItemContainer
                             rowVirtualizer={rowVirtualizer}
-                            garden={garden}
+                            garden={sortedColumns}
                             virtualColumn={virtualColumn}
                             sortData={sortData}
                             gardenKey={gardenKey}

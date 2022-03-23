@@ -3,6 +3,7 @@ import { VirtualItem } from 'react-virtual';
 import styled from 'styled-components';
 import { DataSet, GardenGroups } from '../../Models/data';
 import { CustomHeaderView } from '../../Models/gardenOptions';
+import { defaultSortFunction } from '../../Utils/utilities';
 import { ActionType } from './ExpandProvider';
 import { useExpandDispatch } from './useExpand';
 import { getGardenItems } from './utils/getGardenItems';

@@ -52,7 +52,9 @@ export interface GardenOptions<T> {
     customStateFunction?: (data: T[]) => Record<string, unknown>;
     sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     fieldSettings?: FieldSettings<T, string>;
+    /** Defaults to normal. Use virtual if garden has more than 3000 DOM elements */
     type?: 'virtual' | 'normal';
+    /** Wrap custom components with memo if type: "virtual". */
     customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;

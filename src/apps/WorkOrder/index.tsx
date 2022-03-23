@@ -51,8 +51,14 @@ export function setup(appApi: ClientApi): void {
                 customItemView: WorkOrderItem,
             },
             type: 'virtual',
-
-            sortData: sortPackages,
+            intercepters: {
+                postGroupSorting: (data, keys) => {
+                    data.forEach((item, i) => {
+                        data[i].items = sortPackages(item.items, keys[0]);
+                    });
+                    return data;
+                },
+            },
 
             // status: { statusItemFunc, shouldAggregate: true },
             //options: { groupDescriptionFunc },
