@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
-import { Tag } from '../../Types/ProCoSys/Tag';
+import { Tag, TagWrapper } from '../../Types/ProCoSys/Tag';
 
 export async function getTagById(tagId: number): Promise<Tag> {
     const { procosys } = httpClient();
@@ -12,5 +12,7 @@ export async function getTagById(tagId: number): Promise<Tag> {
         throw 'Failed to get tag';
     }
 
-    return await res.json()['Tag'];
+    const parsed: TagWrapper = await res.json();
+
+    return parsed.Tag;
 }
