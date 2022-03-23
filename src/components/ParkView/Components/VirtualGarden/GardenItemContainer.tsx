@@ -1,5 +1,6 @@
 import { useVirtual, VirtualItem } from 'react-virtual';
 import styled from 'styled-components';
+import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { ChevronDown, ChevronUp } from '../../Icons/Chevron';
 import { GardenGroups } from '../../Models/data';
 import { FieldSettings } from '../../Models/fieldSettings';
@@ -35,12 +36,11 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
         garden,
         packageChild: PackageChild,
         itemKey,
-        fieldSettings,
         handleExpand,
         items,
-        sortData,
     } = props;
     const expand = useExpand();
+    const { onSelect } = useParkViewContext();
 
     return (
         <>
@@ -77,7 +77,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                             <PackageChild
                                 data={item}
                                 itemKey={itemKey.toString()}
-                                onClick={() => {}}
+                                onClick={() => onSelect(item)}
                                 columnExpanded={
                                     expand?.expandedColumns?.[garden[virtualColumn.index].value]
                                         ?.isExpanded ?? false

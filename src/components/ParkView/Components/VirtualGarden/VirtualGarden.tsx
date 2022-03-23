@@ -29,6 +29,19 @@ export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<
     const columnCount = useMemo(() => garden.length, [garden]);
     const rowCount = useMemo(() => getRowCount(garden), [garden]);
 
+    const sortedColumns = useMemo(
+        () =>
+            garden.sort((a, b) => {
+                const columnSort = fieldSettings?.[gardenKey]?.getColumnSort;
+                if (columnSort) {
+                    return columnSort(a.value, b.value);
+                } else {
+                    return defaultSortFunction(a.value, b.value);
+                }
+            }),
+        [garden, fieldSettings, gardenKey]
+    );
+
     const rowVirtualizer = useVirtual({
         size: rowCount,
         parentRef,
@@ -62,18 +75,7 @@ export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<
         },
         [refresh]
     );
-    const sortedColumns = useMemo(
-        () =>
-            garden.sort((a, b) => {
-                const columnSort = fieldSettings?.[gardenKey]?.getColumnSort;
-                if (columnSort) {
-                    return columnSort(a.value, b.value);
-                } else {
-                    return defaultSortFunction(a.value, b.value);
-                }
-            }),
-        [garden, fieldSettings, gardenKey]
-    );
+
     useLayoutEffect(() => {
         const scrollIndex = sortedColumns.findIndex((column) => column.value === highlightColumn);
         scrollIndex !== -1 && columnVirtualizer.scrollToIndex(scrollIndex, { align: 'center' });
