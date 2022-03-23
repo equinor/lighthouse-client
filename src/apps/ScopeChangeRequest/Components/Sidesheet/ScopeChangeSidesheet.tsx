@@ -167,7 +167,7 @@ const ButtonContainer = styled.div`
 const TitleHeader = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
 `;
 
 const Loading = styled.div`
