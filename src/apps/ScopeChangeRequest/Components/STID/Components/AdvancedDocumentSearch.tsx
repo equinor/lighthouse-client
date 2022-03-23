@@ -21,8 +21,8 @@ interface AdvancedDocumentSearchProps {
 }
 
 export interface SubResult {
-    tagName: string;
-    documents: TypedSelectOption[];
+    parentName: string;
+    children: TypedSelectOption[];
 }
 
 export interface ExtendedTypedSelectOption extends TypedSelectOption {
@@ -57,8 +57,8 @@ export const AdvancedDocumentSearch = ({
         if (subResults) {
             setSubResults((prev) => {
                 return {
-                    documents: prev?.documents.filter((x) => x.value !== value) || [],
-                    tagName: prev?.tagName || '',
+                    children: prev?.children.filter((x) => x.value !== value) || [],
+                    parentName: prev?.parentName || '',
                 };
             });
         }
@@ -110,8 +110,8 @@ export const AdvancedDocumentSearch = ({
             popResult(item.value);
         } else {
             setSubResults({
-                tagName: item.label,
-                documents: documents.map((x) => {
+                parentName: item.label,
+                children: documents.map((x) => {
                     return {
                         label: `DOC_${x.docNo}`,
                         searchValue: x.docNo,
@@ -150,8 +150,8 @@ export const AdvancedDocumentSearch = ({
                                     onClick: () => {
                                         getMcPkgs(commPkg).then((result) =>
                                             setSubResults({
-                                                tagName: commPkg.label,
-                                                documents: result,
+                                                parentName: commPkg.label,
+                                                children: result,
                                             })
                                         );
                                     },
