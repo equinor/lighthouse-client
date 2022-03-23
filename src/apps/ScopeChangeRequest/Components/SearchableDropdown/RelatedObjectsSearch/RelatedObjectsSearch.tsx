@@ -23,6 +23,7 @@ import {
     TitleBar,
 } from './RelatedObjectsStyles';
 import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
+import { CommPkgIcon } from '../../DetailView/Components/RelatedObjects/CommPkg/commPkgIcon';
 
 interface RelatedObjectsSearchProps {
     relatedObjects: TypedSelectOption[];
@@ -207,6 +208,9 @@ function getIcon(x: TypedSelectOption): JSX.Element | null {
 
         case 'tag':
             return <Icon name="tag" color={tokens.colors.interactive.primary__resting.hex} />;
+
+        case 'commpkg':
+            return <CommPkgIcon />;
 
         default:
             return (
