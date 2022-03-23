@@ -135,21 +135,25 @@ export const AdvancedDocumentSearch = ({
         //Aborts previous api call
         abort();
         if (!referenceType) return;
+
         const data = await search(inputValue, referenceType, getSignal());
 
         switch (referenceType) {
             case 'commpkg': {
                 setResults(
                     data.map(
-                        (x): ExtendedTypedSelectOption => ({
-                            ...x,
+                        (commPkg): ExtendedTypedSelectOption => ({
+                            ...commPkg,
                             actions: [
                                 {
                                     label: 'View mc pkgs',
                                     onClick: () => {
-                                        setSearchText(undefined);
-                                        setReferenceType('mcpkg');
-                                        getMcPkgs(x).then((result) => setResults(result));
+                                        getMcPkgs(commPkg).then((result) =>
+                                            setSubResults({
+                                                tagName: commPkg.label,
+                                                documents: result,
+                                            })
+                                        );
                                     },
                                 },
                             ],
@@ -194,7 +198,7 @@ export const AdvancedDocumentSearch = ({
                 >
                     <StidWrapper>
                         <StidHeader>
-                            <Title>Add document</Title>
+                            <Title>Add document to request</Title>
                             <Button
                                 variant="ghost_icon"
                                 onClick={() => {
@@ -230,7 +234,7 @@ export const AdvancedDocumentSearch = ({
                             />
 
                             <TextField
-                                disabled={referenceType === undefined}
+                                disabled={!referenceType}
                                 id={'Stid document selector'}
                                 value={searchText}
                                 inputIcon={
