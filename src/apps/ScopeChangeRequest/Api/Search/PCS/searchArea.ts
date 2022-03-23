@@ -6,6 +6,7 @@ import { isProduction } from '../../../../../Core/Client/Functions';
 
 export const searchAreas = async (
     searchString: string,
+    plantId: string,
     procosysClient: HttpClient,
     signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
@@ -15,7 +16,7 @@ export const searchAreas = async (
     const searchIdProd = 106102;
 
     const uri = 'api/Search';
-    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
+    const queryParameters = `plantId=${encodeURIComponent(plantId)}&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
         }&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
 
     const url = `${uri}?${queryParameters}`;

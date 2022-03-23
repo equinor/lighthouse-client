@@ -3,7 +3,6 @@ import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDial
 import { signCriteria } from '../../../../Api/ScopeChange/Workflow';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
-import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 
 export interface OnSignStepAction {
@@ -22,15 +21,13 @@ export function useWorkflowSigning({
     requestId,
     criteriaId,
     stepId,
-}: WorkflowSigningParams): UseMutateFunction<void, ServerError, OnSignStepAction, unknown> {
+}: WorkflowSigningParams): UseMutateFunction<void, unknown, OnSignStepAction, unknown> {
     const {
         workflowKeys: { criteriaSignKey },
-        baseKey,
     } = scopeChangeMutationKeys(requestId);
 
+    const { request } = useScopeChangeContext();
     const queryClient = useQueryClient();
-
-    const { request, setErrorMessage } = useScopeChangeContext();
 
     async function onSignStep({ action, closeRequest, comment }: OnSignStepAction) {
         if (closeRequest) {
@@ -48,7 +45,23 @@ export function useWorkflowSigning({
         const unsignedCriterias = request.workflowSteps
             .find((x) => x.id === stepId)
             ?.criterias.filter((x) => x.signedAtUtc === null);
-        const sign = async () => {
+
+        if (request.hasPendingContributions && unsignedCriterias?.length === 1) {
+            spawnConfirmationDialog(
+                'Not all contributors have responded yet, are you sure you want to continue?',
+                'Warning',
+                async () => {
+                    await signCriteria({
+                        requestId: request.id,
+                        stepId: stepId,
+                        criteriaId: criteriaId,
+                        verdict: action,
+                        comment: comment,
+                        closeRequest: false,
+                    }).then(() => queryClient.invalidateQueries());
+                }
+            );
+        } else {
             await signCriteria({
                 requestId: request.id,
                 stepId: stepId,
@@ -56,33 +69,14 @@ export function useWorkflowSigning({
                 verdict: action,
                 comment: comment,
                 closeRequest: false,
-            }).then(() => {
-                queryClient.invalidateQueries(baseKey);
             });
-        };
-
-        if (
-            request.hasPendingContributions &&
-            unsignedCriterias &&
-            unsignedCriterias.length === 1
-        ) {
-            spawnConfirmationDialog(
-                'Not all contributors have responded yet, are you sure you want to continue?',
-                'Warning',
-                sign
-            );
-        } else {
-            await sign();
         }
     }
 
     const { mutate: signMutation } = useScopeChangeMutation(
         requestId,
         criteriaSignKey(stepId, criteriaId),
-        onSignStep,
-        {
-            onError: (e: ServerError) => setErrorMessage(e),
-        }
+        onSignStep
     );
 
     return signMutation;
