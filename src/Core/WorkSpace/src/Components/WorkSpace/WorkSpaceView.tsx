@@ -1,17 +1,17 @@
-import { FilterProvider, FilterView } from '@equinor/filter';
+import { FilterProvider } from '@equinor/filter';
 import { openSidesheet, PopoutSidesheet } from '@equinor/sidesheet';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
-import { TabsConfigItem, useConfiguredTabs } from '../../Tabs/tabsConfig';
+import { useConfiguredTabs } from '../../Tabs/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
-import { CompletionViewHeader } from '../DataViewerHeader/Header';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { DataViewWrapper, Tabs } from './WorkSpaceViewStyles';
 import { Fallback } from '../FallbackSidesheet/Fallback';
 import { useSideSheet } from '../../../../../packages/Sidesheet/context/sidesheetContext';
+import { HeaderWrapper } from './HeaderFilterWrapper';
 
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const {
@@ -44,7 +44,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         workflowEditorOptions
     );
     const [activeTab, setActiveTab] = useState(Number(id) || 0);
-    const [activeFilter, setActiveFilter] = useState(false);
 
     // const filterLocationKey = useMemo(() => `filer-${props.shortName}`, [props.shortName]);
     // const persistOptions: FilterPersistOptions = useMemo(
@@ -68,10 +67,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
         navigate(`${location.pathname.replace(currentId || '', '')}/${index}`, { replace: true });
     };
-
-    function handleFilter() {
-        setActiveFilter((state) => !state);
-    }
 
     const findItem = useCallback(
         (id: string): unknown | undefined => {
@@ -133,7 +128,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     return (
         <FilterProvider initialData={data} options={filterOptions}>
             <Tabs activeTab={activeTab} onChange={handleChange}>
-                <Temp props={props} tabs={tabs} />
+                <HeaderWrapper props={props} tabs={tabs} />
                 <DataViewWrapper>
                     <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
                 </DataViewWrapper>
@@ -142,25 +137,3 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         </FilterProvider>
     );
 }
-
-type TempProps = {
-    props: WorkspaceProps;
-    tabs: TabsConfigItem[];
-};
-const Temp = ({ tabs, props }: TempProps) => {
-    const [activeFilter, setActiveFilter] = useState<boolean>(false);
-    function handleFilter() {
-        setActiveFilter((state) => !state);
-    }
-    return (
-        <>
-            <CompletionViewHeader
-                {...props}
-                tabs={tabs}
-                handleFilter={handleFilter}
-                activeFilter={activeFilter}
-            />
-            <FilterView isActive={activeFilter} />
-        </>
-    );
-};
