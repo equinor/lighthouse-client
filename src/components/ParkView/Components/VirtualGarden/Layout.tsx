@@ -25,7 +25,7 @@ type LayoutProps = {
  * useVirtual hooks.
  * pointerEvents is just for optimization, turned off when user is scrolling.
  */
-export const Layout = (props: PropsWithChildren<LayoutProps>) => {
+export const Layout = (props: PropsWithChildren<LayoutProps>): JSX.Element => {
     const { columnTotalSize, rowTotalSize, parentRef, isScrolling, children } = props;
 
     return (

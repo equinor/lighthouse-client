@@ -22,7 +22,6 @@ type PackageContainerProps<T> = {
     rowVirtualizer: VirtualHookReturn;
     garden: GardenGroups<T>;
     sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
-    gardenKey: keyof T;
     itemKey: keyof T;
     fieldSettings?: FieldSettings<T>;
     packageChild: React.MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;

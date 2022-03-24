@@ -17,7 +17,9 @@ type VirtualGardenProps<T> = {
     garden: GardenGroups<T>;
 };
 
-export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<T>) => {
+export const VirtualGarden = <T extends unknown>({
+    garden,
+}: VirtualGardenProps<T>): JSX.Element => {
     const parentRef = useRef<HTMLDivElement | null>(null);
 
     const { gardenKey, fieldSettings, customView, itemKey, sortData, highlightColumn, rowHeight } =
@@ -68,18 +70,23 @@ export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<
         customView as CustomVirtualView<T>;
 
     const handleExpand = useCallback(
-        <T extends unknown>(subGroup: DataSet<T>) => {
+        <T extends unknown>(subGroup: DataSet<T>): void => {
             subGroup.isExpanded = !subGroup.isExpanded;
 
             refresh();
         },
         [refresh]
     );
+    const highlightedColumn = highlightColumn ? highlightColumn(gardenKey.toString()) : undefined;
 
     useLayoutEffect(() => {
-        const scrollIndex = sortedColumns.findIndex((column) => column.value === highlightColumn);
-        scrollIndex !== -1 && columnVirtualizer.scrollToIndex(scrollIndex, { align: 'center' });
-    }, [sortedColumns, columnVirtualizer.scrollToIndex]);
+        if (highlightedColumn) {
+            const scrollIndex = sortedColumns.findIndex(
+                (column) => column.value === highlightedColumn
+            );
+            scrollIndex !== -1 && columnVirtualizer.scrollToIndex(scrollIndex, { align: 'center' });
+        }
+    }, [sortedColumns, columnVirtualizer.scrollToIndex, highlightedColumn]);
 
     return (
         <Layout
@@ -92,7 +99,7 @@ export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<
                 columnVirtualizer={columnVirtualizer}
                 garden={sortedColumns}
                 headerChild={headerChild!}
-                highlightColumn={highlightColumn}
+                highlightColumn={highlightedColumn}
             />
             {columnVirtualizer.virtualItems.map((virtualColumn) => {
                 const currentColumn = sortedColumns[virtualColumn.index];
@@ -105,7 +112,6 @@ export const VirtualGarden = <T extends unknown>({ garden }: VirtualGardenProps<
                             garden={sortedColumns}
                             virtualColumn={virtualColumn}
                             sortData={sortData}
-                            gardenKey={gardenKey}
                             itemKey={itemKey}
                             packageChild={packageChild!}
                             handleExpand={handleExpand}
