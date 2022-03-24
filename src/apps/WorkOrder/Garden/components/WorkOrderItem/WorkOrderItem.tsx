@@ -39,7 +39,7 @@ type PackageStatusReturn = {
     progressBar: string;
     status: ProcosysStatuses | FollowUpStatuses;
 };
-const blah = (
+const getWorkOrderStatuses = (
     data: WorkOrder,
     gardenKey: keyof WorkOrder,
     groupByKeys: (keyof WorkOrder)[]
@@ -83,7 +83,10 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
         matColor,
         mccrColor,
         status,
-    } = useMemo(() => blah(data, gardenKey, groupByKeys), [data, gardenKey, groupByKeys]);
+    } = useMemo(
+        () => getWorkOrderStatuses(data, gardenKey, groupByKeys),
+        [data, gardenKey, groupByKeys]
+    );
     return (
         <>
             <WorkOrderWrapper
@@ -95,25 +98,19 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
                 onMouseLeave={() => setIsOpen(false)}
                 onClick={onClick}
             >
-                {/* <SizeIcons size={size} color={textColor} /> */}
+                {/* <SizeIcons size={size} color={textColor} />*/}
                 {/* {data.holdBy && <FlagIcon color={textColor} />} */}
-                <div>{data[itemKey]}</div>
-                {columnExpanded && (
-                    <div style={{ alignSelf: 'center', fontSize: '14px' }}>{data.description}</div>
-                )}
-                {/* <MidSection expanded={columnExpanded}>
-                    {data[itemKey]}
-                    {columnExpanded && <WorkorderExpandedView data={data} />}
-                </MidSection> */}
+                {data[itemKey]}
+                {'  '}
+                {columnExpanded && data.description}
                 <Circles>
-                    {/* <StatusCircle statusColor={matColor} />
-                    <StatusCircle statusColor={mccrColor} /> */}
-                    <div className="circle" />
-                    <div className="circle" />
+                    <StatusCircle statusColor={matColor} />
+                    <StatusCircle statusColor={mccrColor} />
                 </Circles>
                 {/* <Progress background={progressBar} /> */}
             </WorkOrderWrapper>
-            {isOpen && (
+
+            {/* {isOpen && (
                 <WorkOrderPopover
                     data={data}
                     anchorRef={anchorRef}
@@ -128,7 +125,7 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
                         mccrColor,
                     }}
                 />
-            )}
+            )} */}
         </>
     );
 };

@@ -2,7 +2,7 @@ import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
 import { WorkorderSideSheet } from './Garden/components';
 import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
 import { WorkOrder } from './Garden/models';
-import { fieldSettings } from './Garden/utility/gardenSetup';
+import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
 import { sortPackages } from './Garden/utility/sortPackages';
 
 const excludeKeys: (keyof WorkOrder)[] = [
@@ -47,18 +47,22 @@ export function setup(appApi: ClientApi): void {
             gardenKey: 'fwp' as keyof WorkOrder,
             itemKey: 'workOrderNumber',
             fieldSettings: fieldSettings,
+
+            type: 'virtual',
             customViews: {
                 customItemView: WorkOrderItem,
             },
-            type: 'virtual',
             intercepters: {
                 postGroupSorting: (data, keys) => {
                     data.forEach((item, i) => {
-                        data[i].items = sortPackages(item.items, keys[0]);
+                        data[i].items = sortPackages(item.items, ...keys);
                     });
                     return data;
                 },
             },
+
+            highlightColumn: getHighlightedColumn,
+            itemWidth: getItemWidth,
 
             // status: { statusItemFunc, shouldAggregate: true },
             //options: { groupDescriptionFunc },

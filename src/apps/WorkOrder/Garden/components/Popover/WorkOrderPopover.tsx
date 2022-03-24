@@ -39,7 +39,7 @@ const WorkOrderPopoverWrapper = ({
             anchorEl={anchorRef.current}
             open={isOpen}
             placement="bottom"
-            style={{ position: 'absolute', zIndex: 10 }}
+            style={{}}
         >
             <Popover.Title>{`Wo.Number: ${data.workOrderNumber}`}</Popover.Title>
             <Popover.Content>
