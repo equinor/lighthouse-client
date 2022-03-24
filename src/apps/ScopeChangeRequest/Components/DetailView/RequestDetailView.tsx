@@ -19,8 +19,7 @@ export const RequestDetailView = (): JSX.Element => {
     const { mutate: initiate, isLoading } = useScopeChangeMutation(
         request.id,
         patchKey,
-        initiateScopeChange,
-        {}
+        initiateScopeChange
     );
 
     return (

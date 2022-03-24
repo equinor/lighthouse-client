@@ -5,9 +5,8 @@ import { Wrapper } from '../WrapperStyles';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
 import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
-import { useQuery } from 'react-query';
-import { CacheTime } from '../../../../../../DisciplineReleaseControl/Enums/cacheTimes';
 import { CommPkgIcon } from './commPkgIcon';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
@@ -17,19 +16,14 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     const { commPkg: commPkgKey } = proCoSysQueryKeys();
     const { procosysPlantId } = useFacility();
 
-    const { data } = useQuery(
-        commPkgKey(commPkg.procosysNumber),
-        () => getCommPkgById(procosysPlantId, commPkg.procosysId),
-        {
-            cacheTime: CacheTime.TenHours,
-            staleTime: CacheTime.TenHours,
-        }
+    const { data } = useInfiniteCachedQuery(commPkgKey(commPkg.procosysNumber), () =>
+        getCommPkgById(procosysPlantId, commPkg.procosysId)
     );
 
     return (
         <Wrapper key={commPkg.procosysId}>
             <CommPkgIcon />
-            <TagText>
+            <CommPkgText>
                 <Link
                     href={`https://${isProduction() ? 'procosys' : 'procosystest'
                         }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
@@ -41,12 +35,12 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
                 <div>
                     {data?.Description} {data?.CommPkgNo}
                 </div>
-            </TagText>
+            </CommPkgText>
         </Wrapper>
     );
 };
 
-const TagText = styled.div`
+const CommPkgText = styled.div`
     display: flex;
     flex-direction: row;
     gap: 0.2em;
