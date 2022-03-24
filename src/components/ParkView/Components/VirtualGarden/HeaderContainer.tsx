@@ -1,34 +1,15 @@
 import { MemoExoticComponent, useCallback } from 'react';
 import { VirtualItem } from 'react-virtual';
-import styled from 'styled-components';
 import { DataSet, GardenGroups } from '../../Models/data';
 import { CustomHeaderView } from '../../Models/gardenOptions';
 import { ActionType } from './ExpandProvider';
-import { useExpandDispatch } from './useExpand';
-import { getGardenItems } from './utils/getGardenItems';
+import { Header, HeaderRoot } from './styles';
+import { useExpandDispatch } from './hooks';
+import { getGardenItems } from './utils';
 
-const HeaderRoot = styled.div`
-    position: sticky;
-    z-index: 1;
-    top: 0;
-`;
-
-const Header = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 35px;
-    will-change: transform;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 5px;
-    border: 1px solid white;
-`;
 type HeaderContainerProps<T> = {
     columnVirtualizer: { virtualItems: VirtualItem[] };
-    headerChild: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
+    headerChild: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element> | undefined;
     garden: GardenGroups<T>;
     highlightColumn: string | undefined;
 };

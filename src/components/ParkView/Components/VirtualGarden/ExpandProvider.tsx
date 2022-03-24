@@ -1,5 +1,5 @@
 import { createContext, PropsWithChildren, useReducer } from 'react';
-import { getDescriptionWidth } from './utils/getDescriptionWidth';
+import { getDescriptionWidth } from './utils';
 type Expanded = {
     isExpanded: boolean;
     index: number;

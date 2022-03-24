@@ -5,13 +5,11 @@ import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { Fragment, useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 import { CustomVirtualView } from '../../Models/gardenOptions';
 import { defaultSortFunction } from '../../Utils/utilities';
-import { useVirtualScrolling } from './useVirtualScrolling';
 import { GardenGroups, DataSet } from '../../Models/data';
 import { GardenItemContainer } from './GardenItemContainer';
-import { useExpand } from './useExpand';
-import { getRowCount } from './utils/getRowCount';
 import { useRefresh } from '../../hooks/useRefresh';
-import { getGardenItems } from './utils/getGardenItems';
+import { useExpand, useVirtualScrolling } from './hooks';
+import { getGardenItems, getRowCount } from './utils';
 
 type VirtualGardenProps<T> = {
     garden: GardenGroups<T>;
@@ -95,10 +93,10 @@ export const VirtualGarden = <T extends unknown>({
             parentRef={parentRef}
             isScrolling={isScrolling}
         >
-            <HeaderContainer<T>
+            <HeaderContainer
                 columnVirtualizer={columnVirtualizer}
                 garden={sortedColumns}
-                headerChild={headerChild!}
+                headerChild={headerChild}
                 highlightColumn={highlightedColumn}
             />
             {columnVirtualizer.virtualItems.map((virtualColumn) => {
@@ -113,7 +111,7 @@ export const VirtualGarden = <T extends unknown>({
                             virtualColumn={virtualColumn}
                             sortData={sortData}
                             itemKey={itemKey}
-                            packageChild={packageChild!}
+                            packageChild={packageChild}
                             handleExpand={handleExpand}
                             items={columnItems}
                         />

@@ -1,5 +1,5 @@
 import { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
-import { cancelTimeout, requestTimeout } from './utils';
+import { cancelTimeout, requestTimeout } from '../utils';
 /**
  * Hook for checking if the user is scrolling...
  * TODO: check if really necessary or just adding complexity...

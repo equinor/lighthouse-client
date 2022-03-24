@@ -6,7 +6,6 @@ import {
     FollowUpStatuses,
 } from '@equinor/GardenUtils';
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
-import { useExpand } from '../../../../../components/ParkView/Components/VirtualGarden/useExpand';
 import { useParkViewContext } from '../../../../../components/ParkView/Context/ParkViewProvider';
 import { CustomItemView } from '../../../../../components/ParkView/Models/gardenOptions';
 import { WorkOrder } from '../../models';

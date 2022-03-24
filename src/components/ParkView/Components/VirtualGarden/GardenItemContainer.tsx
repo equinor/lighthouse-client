@@ -1,21 +1,15 @@
 import { useVirtual, VirtualItem } from 'react-virtual';
-import styled from 'styled-components';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { ChevronDown, ChevronUp } from '../../Icons/Chevron';
 import { GardenGroups } from '../../Models/data';
 import { FieldSettings } from '../../Models/fieldSettings';
 import { CustomItemView } from '../../Models/gardenOptions';
 import { Count } from '../../Styles/common';
-import { Pack } from '../../Styles/group';
+import { SubGroup, PackageRoot, DefaultPackage } from './styles';
 import { GardenItem } from './types/gardenItem';
-import { useExpand } from './useExpand';
-import { isSubGroup } from './utils/getGardenItems';
-const PackageRoot = styled.div`
-    position: absolute;
-    will-change: transform;
-    top: 0;
-    left: 0;
-`;
+import { useExpand } from './hooks';
+import { isSubGroup } from './utils';
+
 type VirtualHookReturn = Pick<ReturnType<typeof useVirtual>, 'virtualItems' | 'scrollToIndex'>;
 type PackageContainerProps<T> = {
     virtualColumn: VirtualItem;
@@ -24,7 +18,7 @@ type PackageContainerProps<T> = {
     sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     itemKey: keyof T;
     fieldSettings?: FieldSettings<T>;
-    packageChild: React.MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;
+    packageChild: React.MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element> | undefined;
     handleExpand: any;
     items: GardenItem<T>[] | null;
 };
@@ -57,13 +51,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                         }}
                     >
                         {isSubGroup(item) ? (
-                            <Pack
-                                style={{
-                                    width: '98%',
-                                    height: '85%',
-                                }}
-                                onClick={() => handleExpand(item)}
-                            >
+                            <SubGroup onClick={() => handleExpand(item)}>
                                 <div>
                                     {item.status?.statusElement}
                                     {item.value}
@@ -71,7 +59,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                                     <Count>({item.count})</Count>
                                 </div>
                                 {item.isExpanded ? <ChevronUp /> : <ChevronDown />}
-                            </Pack>
+                            </SubGroup>
                         ) : PackageChild ? (
                             <PackageChild
                                 data={item}
@@ -83,9 +71,9 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                                 }
                             />
                         ) : (
-                            <div style={{ backgroundColor: 'lightblue' }}>
-                                R{virtualRow.index}C{virtualColumn.index}
-                            </div>
+                            <DefaultPackage onClick={() => onSelect(item)}>
+                                {item[itemKey]}
+                            </DefaultPackage>
                         )}
                     </PackageRoot>
                 );

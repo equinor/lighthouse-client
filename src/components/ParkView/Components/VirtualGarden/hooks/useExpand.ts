@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ExpandContext, ExpandDispatchContext } from './ExpandProvider';
+import { ExpandContext, ExpandDispatchContext } from '../ExpandProvider';
 
 export const useExpand = () => {
     const context = useContext(ExpandContext);

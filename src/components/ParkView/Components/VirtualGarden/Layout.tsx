@@ -1,17 +1,6 @@
 import { PropsWithChildren } from 'react';
-import styled from 'styled-components';
+import { LayoutRoot, LayoutContainer } from './styles';
 
-const LayoutRoot = styled.div`
-    height: 100%;
-    width: 100%;
-    overflow: auto;
-`;
-const LayoutContainer = styled.div<{ width: number; height: number; isScrolling: boolean }>`
-    position: relative;
-    width: ${(props) => props.width}px;
-    height: ${(props) => props.height}px;
-    pointer-events: ${(props) => (props.isScrolling ? 'none' : 'auto')};
-`;
 type LayoutProps = {
     columnTotalSize: number;
     rowTotalSize: number;

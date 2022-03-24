@@ -54,8 +54,8 @@ export function setup(appApi: ClientApi): void {
             },
             intercepters: {
                 postGroupSorting: (data, keys) => {
-                    data.forEach((item, i) => {
-                        data[i].items = sortPackages(item.items, ...keys);
+                    data.forEach(({ items }) => {
+                        items = sortPackages(items, ...keys);
                     });
                     return data;
                 },

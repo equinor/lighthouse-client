@@ -2,10 +2,8 @@ import styled from 'styled-components';
 import { Item } from '../../../../../components/ParkView/Styles/item';
 export type WorkOrderItemProps = { backgroundColor: string; textColor: string; background: string };
 //@ts-ignore
-/* position: relative; */
 export const WorkOrderWrapper = styled(Item)<WorkOrderItemProps>`
-    position: absolute;
-    z-index: -1;
+    position: relative;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
     width: 95%;
