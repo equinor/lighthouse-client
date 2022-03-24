@@ -1,21 +1,22 @@
-import { CheckListStatus, CheckListStepTag } from '../Types/drcEnums';
+import { CheckListStatus, CheckListStepTag, PipetestCompletionStatus } from '../Types/drcEnums';
 import { CheckList, Pipetest } from '../Types/pipetest';
 import { getPipetestStatusForStep } from './statusHelpers';
 
 export const checklistTagFunc = (item: CheckList): string => {
     switch (item?.status) {
-        case CheckListStatus.Inactive:
-            return 'Inactive';
-        case CheckListStatus.OK:
-            return 'Complete';
-        case CheckListStatus.PunchBError:
-            return 'Complete';
         case CheckListStatus.Outstanding:
-            return 'Outstanding';
+            return PipetestCompletionStatus.Outstanding;
+        case CheckListStatus.OK:
+            return PipetestCompletionStatus.Complete;
+        case CheckListStatus.PunchBError:
+            return PipetestCompletionStatus.PunchBError;
         case CheckListStatus.PunchAError:
-            return 'Error';
+            return PipetestCompletionStatus.PunchAError;
+        case CheckListStatus.Inactive:
+            return PipetestCompletionStatus.Inactive;
+        default:
+            return PipetestCompletionStatus.Outstanding;
     }
-    return 'Error';
 };
 
 export function getHTList(checkLists: CheckList[]): string {
