@@ -1,14 +1,10 @@
 import { Button, Progress } from '@equinor/eds-core-react';
 import styled from 'styled-components';
-import { useFacility } from '../../../../Core/Client/Hooks';
 import { useSideSheet } from '../../../../packages/Sidesheet/context/sidesheetContext';
-import { getCommPkgById } from '../../Api/PCS/getCommPkgById';
 import { initiateScopeChange } from '../../Api/ScopeChange/Request';
-import { useEagerLoading } from '../../Hooks/React-Query/useEagerLoading';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
-import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
+import { useEagerLoadingReferences } from '../../Hooks/useEagerLoadingReferences';
 import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
-import { CommissioningPackage } from '../../Types/scopeChangeRequest';
 import { useScopeChangeContext } from '../Sidesheet/Context/useScopeChangeAccessContext';
 import { SplitView } from './Components/RequestDetailView/Double';
 import { SingleView } from './Components/RequestDetailView/Single';
@@ -16,20 +12,9 @@ import { SingleView } from './Components/RequestDetailView/Single';
 export const RequestDetailView = (): JSX.Element => {
     const { width } = useSideSheet();
     const { request } = useScopeChangeContext();
-    const { procosysPlantId } = useFacility();
     const { patchKey } = scopeChangeMutationKeys(request.id);
 
-    const keys = proCoSysQueryKeys();
-    const keyFunction = (pkg: CommissioningPackage) => keys.commPkg(pkg.procosysNumber);
-    const queryFn = async (pkg: CommissioningPackage) =>
-        await getCommPkgById(procosysPlantId, pkg.procosysId);
-
-    useEagerLoading({
-        items: request.commissioningPackages,
-        key: keyFunction,
-        queryFn: queryFn,
-        delayedStartTime: 1000,
-    });
+    useEagerLoadingReferences(request);
 
     const { mutate: initiate, isLoading } = useScopeChangeMutation(
         request.id,
