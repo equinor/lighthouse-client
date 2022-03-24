@@ -95,32 +95,23 @@ export function setup(appApi: ClientApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'name',
         columnOrder: ['name', 'description', 'commPkPriority1', 'step', 'completionStatus'],
-        hiddenColumns: ['rfccPlanned', 'dueDateTimePeriod', 'heatTraces', 'overdue'],
+        hiddenColumns: [
+            'rfccPlanned',
+            'dueDateTimePeriod',
+            'heatTraces',
+            'overdue',
+            'completionStatus',
+        ],
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Pipetest', width: 100 },
-            { key: 'description', title: 'Description', width: 500 },
+            { key: 'description', title: 'Description', width: 600 },
             { key: 'commPkPriority1', title: 'Priority', width: 90 },
             { key: 'step', title: 'Step', width: 210 },
-            { key: 'completionStatus', title: 'Completion status', width: 150 },
             { key: 'checkLists', title: 'Process', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
         ],
         customCellView: [
-            {
-                key: 'completionStatus',
-                type: {
-                    Cell: ({ cell }: any) => {
-                        const completionStatus = cell.value.content.completionStatus;
-                        const completionStatusColor = getDotsColor(completionStatus);
-                        return (
-                            <Status color={completionStatusColor}>
-                                {getShortformCompletionStatusName(completionStatus)}
-                            </Status>
-                        );
-                    },
-                },
-            },
             {
                 key: 'checkLists',
                 type: {
