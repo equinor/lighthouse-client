@@ -17,7 +17,6 @@ export function NumberInput<T>({ field, editMode }: NumberInputProps<T>): JSX.El
                     placeholder={field.placeholderText}
                     value={isNaN(field.value as unknown as number) ? undefined : field.value}
                     type="number"
-                    step={'none'}
                     onChange={(e) => {
                         if (isNaN(e.target.valueAsNumber)) {
                             field.setValue(undefined as unknown as T);
