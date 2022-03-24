@@ -1,30 +1,21 @@
-import { useClientContext } from '@equinor/portal-client';
 import { useSideSheet } from '../../packages/Sidesheet/context/sidesheetContext';
 import { getWidth } from '../../packages/Sidesheet/Utils/getWidth';
-import { FullscreenMainMenu } from '../Menu/FullscreenMainMenu';
-import { MainMenu } from '../Menu/MainMenu';
-import { ServiceMessageBanner, useServiceMessage } from '../Messages';
-import { ChildrenWrapper, MainMenuWrapper, Wrapper } from './MainLayoutStyles';
+import { Menu } from '../Menu';
+import { ChildrenWrapper, Wrapper } from './MainLayoutStyles';
 
 interface MainLayoutProps {
     children: React.ReactNode;
+    serviceMessageActive: boolean;
 }
 
-export const MainLayout = ({ children }: MainLayoutProps): JSX.Element => {
-    const {
-        settings: { fullscreenMenuActive },
-    } = useClientContext();
+export const MainLayout = ({ children, serviceMessageActive }: MainLayoutProps): JSX.Element => {
     const sideSheet = useSideSheet();
-    const messageData = useServiceMessage();
 
     return (
-        <Wrapper serviceMessageActive={messageData.isActive}>
-            {fullscreenMenuActive && <FullscreenMainMenu />}
-            <MainMenuWrapper>
-                <MainMenu />
-            </MainMenuWrapper>
-            <ChildrenWrapper sideSheetWidth={getWidth(sideSheet)}>{children}</ChildrenWrapper>
-            {messageData.isActive && <ServiceMessageBanner {...messageData} />}
+        <Wrapper serviceMessageActive={serviceMessageActive}>
+            <Menu>
+                <ChildrenWrapper sideSheetWidth={getWidth(sideSheet)}>{children}</ChildrenWrapper>
+            </Menu>
         </Wrapper>
     );
 };
