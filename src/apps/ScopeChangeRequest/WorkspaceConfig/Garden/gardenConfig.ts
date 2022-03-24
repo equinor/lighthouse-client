@@ -5,6 +5,7 @@ import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
     gardenKey: 'originSource',
     itemKey: 'sequenceNumber',
+    type: 'normal',
     fieldSettings: {},
     customViews: {
         customItemView: ScopeChangeItemView,

@@ -68,6 +68,7 @@ export function setup(appApi: ClientApi): void {
         })
         .registerTableOptions({ objectIdentifierKey: 'CommPkgNo' })
         .registerGardenOptions({
+            type: 'normal',
             gardenKey: 'Responsible__Id',
             itemKey: 'CommPkgNo',
         })
