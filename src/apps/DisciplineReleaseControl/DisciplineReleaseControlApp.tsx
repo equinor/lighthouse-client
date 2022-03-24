@@ -59,7 +59,7 @@ export function setup(appApi: ClientApi): void {
         .registerFilterOptions({
             excludeKeys: releaseControlExcludeKeys,
             headerNames: {},
-            defaultActiveFilters: ['status', 'System', 'Priority', 'DueDateTimePeriod', 'Overdue'],
+            defaultActiveFilters: ['step', 'System', 'Priority', 'DueDateTimePeriod', 'Overdue'],
             valueFormatter: {
                 System: (item: Pipetest): string => {
                     return item.name.substring(0, 2);
@@ -84,13 +84,14 @@ export function setup(appApi: ClientApi): void {
 
     request.registerTableOptions({
         objectIdentifierKey: 'name',
-        columnOrder: ['name', 'description', 'status'],
+        columnOrder: ['name', 'description', 'commPkPriority1', 'step'],
         hiddenColumns: ['rfccPlanned', 'dueDateTimePeriod', 'heatTraces', 'overdue'],
         enableSelectRows: true,
         headers: [
-            { key: 'name', title: 'Pipetest', width: 200 },
-            { key: 'description', title: 'Description', width: 400 },
-            { key: 'step', title: 'Step', width: 300 },
+            { key: 'name', title: 'Pipetest', width: 100 },
+            { key: 'description', title: 'Description', width: 600 },
+            { key: 'commPkPriority1', title: 'Priority', width: 90 },
+            { key: 'step', title: 'Step', width: 210 },
             { key: 'checkLists', title: 'Process', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
         ],
@@ -116,7 +117,7 @@ export function setup(appApi: ClientApi): void {
                 id: 'dueByWeek',
                 Header: 'Due by week',
                 Aggregated: () => null,
-                width: 300,
+                width: 120,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return getYearAndWeekFromString(cell.row.values.rfccPlanned);
@@ -126,7 +127,7 @@ export function setup(appApi: ClientApi): void {
                 id: 'htList',
                 Header: 'Heattraces',
                 Aggregated: () => null,
-                width: 800,
+                width: 500,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return getHTList(cell.row.values.checkLists.content.checkLists);
