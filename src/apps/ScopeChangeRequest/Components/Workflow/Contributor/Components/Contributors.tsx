@@ -128,6 +128,17 @@ export const Contributor = ({
         return step.isCurrent && makeContributorActions().length > 0;
     }
 
+    function handleSignClick() {
+        setShowCommentField(false);
+        mutate({
+            contributorId: contributor.id,
+            requestId: request.id,
+            stepId: step.id,
+            suggestion: comment.length > 0 ? 'Comment' : 'SuggestApproval',
+            comment: comment,
+        });
+    }
+
     return (
         <>
             <ContributorContainer key={contributor.id}>
@@ -177,20 +188,7 @@ export const Contributor = ({
                             />
                         </span>
                         <ButtonContainer>
-                            <Button
-                                disabled={!comment}
-                                onClick={() => {
-                                    setShowCommentField(false);
-                                    mutate({
-                                        contributorId: contributor.id,
-                                        requestId: request.id,
-                                        stepId: step.id,
-                                        suggestion:
-                                            comment.length > 0 ? 'Comment' : 'SuggestApproval',
-                                        comment: comment,
-                                    });
-                                }}
-                            >
+                            <Button disabled={!comment} onClick={handleSignClick}>
                                 Confirm
                             </Button>
                             <Divider />
