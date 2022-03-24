@@ -1,5 +1,5 @@
 import { CheckListStatus, CheckListStepTag } from '../Types/drcEnums';
-import { CheckList } from '../Types/pipetest';
+import { CheckList, Pipetest } from '../Types/pipetest';
 import { getPipetestStatusForStep } from './statusHelpers';
 
 export const checklistTagFunc = (item: CheckList) => {
@@ -38,6 +38,16 @@ export function getHTList(checkLists: CheckList[]): string {
         htList += ' (+' + (htCount - 3).toString() + ')';
     }
     return htList;
+}
+
+export function getPipetestsWithHTCable(pipetests: Pipetest[]): Pipetest[] {
+    const pipetestsWithHTCable: Pipetest[] = [];
+    pipetests.forEach((pipetest: Pipetest) => {
+        if (pipetest.checkLists.some((x) => x.isHeatTrace)) {
+            pipetestsWithHTCable.push(pipetest);
+        }
+    });
+    return pipetestsWithHTCable;
 }
 
 //TODO - refactor into more functions (3)
