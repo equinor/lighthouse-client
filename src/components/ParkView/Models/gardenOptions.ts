@@ -41,28 +41,27 @@ export interface CustomVirtualView<T> {
     customItemView?: MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;
     customGroupView?: React.FC<CustomGroupView<T>>;
     customHeaderView?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
-    customGroupByView: React.FC;
+    customGroupByView?: React.FC;
 }
 
 export interface GardenOptions<T> {
     gardenKey: keyof T;
     itemKey: keyof T;
+    /**  Use virtual if garden has more than 3000 DOM elements */
+    type: 'virtual' | 'normal';
     groupByKeys?: (keyof T)[];
     customGroupByKeys?: Record<string, unknown>;
     customStateFunction?: (data: T[]) => Record<string, unknown>;
     sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     fieldSettings?: FieldSettings<T, string>;
-    /** Defaults to normal. Use virtual if garden has more than 3000 DOM elements */
-    type?: 'virtual' | 'normal';
     /** Wrap custom components with memo if type: "virtual". */
     customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
-    itemWidth?: number;
+    itemWidth?: (garden: GardenGroups<T>, key: string) => number;
     rowHeight?: number;
-    highlightColumn?: string;
+    highlightColumn?: (groupBy: string) => string | undefined;
     intercepters?: GardenDataIntercepters<T>;
-
     onSelect?: (item: T) => void;
 }
 

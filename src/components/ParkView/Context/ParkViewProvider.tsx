@@ -1,4 +1,5 @@
 import { useContext, useEffect, useReducer } from 'react';
+import { GardenGroups } from '../Models/data';
 import { FieldSettings } from '../Models/fieldSettings';
 import {
     CustomView,
@@ -20,6 +21,7 @@ export function ParkViewProvider<T>({
     const initialState: ParkViewState<T> = {
         ...parkViewOptions,
         data: data,
+        type: (parkViewOptions as GardenOptions<T>).type,
         groupByKeys: parkViewOptions?.groupByKeys || [],
         onSelect: parkViewOptions.onSelect as (item: unknown) => void,
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey,
@@ -75,10 +77,13 @@ export function useParkViewContext<T>() {
         customGroupByKeys: parkViewContext.customGroupByKeys || {},
         customState: parkViewContext.customState || {},
         status: parkViewContext.status as StatusView<T>,
-        type: (parkViewContext.type = 'normal'),
         options: parkViewContext.options as Options<T>,
         data: parkViewContext.data as T[],
         fieldSettings: parkViewContext.fieldSettings as FieldSettings<T, string>,
         sortData: parkViewContext.sortData as (data: T[], ...groupByKeys: (keyof T)[]) => T[],
+        itemWidth: parkViewContext.itemWidth as (
+            gardenGroups: GardenGroups<T>,
+            groupKey: string
+        ) => number,
     };
 }
