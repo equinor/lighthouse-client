@@ -16,7 +16,8 @@ export function setup(appApi: ClientApi): void {
     async function responseAsync(signal?: AbortSignal) {
         const { fusion } = httpClient();
         fusion.setBaseUrl(
-            `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'
+            `https://pro-s-dataproxy-${
+                isProduction() ? 'fprd' : 'ci'
             }.azurewebsites.net/api/contexts/`
         );
         const contextId = isProduction()
@@ -61,6 +62,7 @@ export function setup(appApi: ClientApi): void {
     swcr.registerGardenOptions({
         gardenKey: 'dueAtDate',
         itemKey: 'swcrNo',
+        type: 'normal',
         fieldSettings,
         customViews: {
             customItemView: SwcrItemView,
