@@ -29,6 +29,7 @@ export function createTree<T>(
             subGroups: [],
             items: dataSet,
             count: 0,
+            subGroupCount: 0,
             isExpanded: false,
         };
 
@@ -50,6 +51,7 @@ export function createTree<T>(
         items: [],
         count: 0,
         isExpanded: false,
+        subGroupCount: 0,
     };
 
     return rootGroup;

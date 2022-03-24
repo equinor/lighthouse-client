@@ -17,6 +17,7 @@ interface CreateGardenArgs<T> {
     customGroupByKeys?: Record<string, unknown>;
     preGroupFiltering?: PreGroupByFiltering<T>;
     postGroupBySorting?: PostGroupBySorting<T>;
+    isExpanded?: boolean;
 }
 
 export function createGarden<T>({
@@ -29,6 +30,7 @@ export function createGarden<T>({
     postGroupBySorting = (data) => data,
     preGroupFiltering = (data) => data,
     status,
+    isExpanded,
 }: CreateGardenArgs<T>): GardenGroups<T> {
     const allGroupingKeys: (keyof T)[] = [gardenKey];
     if (groupingKeys) {
@@ -43,7 +45,7 @@ export function createGarden<T>({
         status: status,
         groupDescriptionFunc: groupDescriptionFunc,
         fieldSettings: fieldSettings,
-        isExpanded: undefined,
+        isExpanded: isExpanded,
         customGroupByKeys: customGroupByKeys,
         preGroupFiltering: preGroupFiltering,
     });

@@ -29,7 +29,8 @@ export function setup(appApi: ClientApi): void {
     async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
         const { fusion } = httpClient();
         fusion.setBaseUrl(
-            `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'
+            `https://pro-s-dataproxy-${
+                isProduction() ? 'fprd' : 'ci'
             }.azurewebsites.net/api/contexts/`
         );
         const contextId = isProduction()
@@ -114,6 +115,7 @@ export function setup(appApi: ClientApi): void {
     handover.registerGardenOptions({
         gardenKey: 'RFCC' as keyof HandoverPackage, // HOW to handled this ????
         itemKey: 'commpkgNo',
+        type: 'normal',
         fieldSettings: fieldSettings,
         customGroupByKeys: initialCustomGroupByKeys,
         customViews: {

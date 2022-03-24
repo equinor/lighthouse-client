@@ -65,6 +65,7 @@
     "react-select": "^5.2.1",
     "react-sortablejs": "^6.0.0",
     "react-table": "^7.7.0",
+    "react-virtual": "^2.10.4",
     "react-virtualized-auto-sizer": "^1.0.6",
     "react-window": "^1.8.6",
     "sortablejs": "^1.14.0",
