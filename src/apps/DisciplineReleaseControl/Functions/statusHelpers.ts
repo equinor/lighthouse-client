@@ -172,11 +172,7 @@ export function getPipetestStatusSortValue(pipetest: Pipetest): number {
 }
 
 export function getPipetestStatusForStep(checkLists: CheckList[]): string {
-    if (
-        checkLists.every(
-            (x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError
-        )
-    ) {
+    if (checkLists.every((x) => x.status === CheckListStatus.OK)) {
         return CheckListStatus.OK;
     } else if (checkLists.find((x) => x.status === CheckListStatus.Outstanding)) {
         {
@@ -184,6 +180,8 @@ export function getPipetestStatusForStep(checkLists: CheckList[]): string {
         }
     } else if (checkLists.find((x) => x.status === CheckListStatus.PunchAError)) {
         return CheckListStatus.PunchAError;
+    } else if (checkLists.find((x) => x.status === CheckListStatus.PunchBError)) {
+        return CheckListStatus.PunchBError;
     } else {
         return CheckListStatus.OK;
     }
@@ -250,4 +248,4 @@ export const getShortformCompletionStatusName = (status: string): string => {
         default:
             return CheckListStatus.Outstanding;
     }
-}
+};

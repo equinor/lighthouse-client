@@ -6,7 +6,7 @@ import { PipetestCompletionStatus } from '../../../Types/drcEnums';
 interface WorkflowDotProps {
     height?: number;
     width?: number;
-    state: 'Outstanding' | 'Complete' | 'Inactive' | 'Error';
+    state: 'Outstanding' | 'Complete' | 'Inactive' | 'PunchAError' | 'PunchBError';
     text?: string;
     active: boolean;
 }
@@ -46,10 +46,18 @@ export const WorkflowDot = ({ state, text, active }: WorkflowDotProps): JSX.Elem
                     active: active,
                     status: state,
                 };
-            case 'Error':
+            case PipetestCompletionStatus.PunchAError:
                 return {
                     color: PipetestCompletionStatusColors.PA,
                     stroke: PipetestCompletionStatusColors.PA,
+                    text: text,
+                    active: active,
+                    status: state,
+                };
+            case PipetestCompletionStatus.PunchBError:
+                return {
+                    color: PipetestCompletionStatusColors.PB,
+                    stroke: PipetestCompletionStatusColors.PB,
                     text: text,
                     active: active,
                     status: state,
@@ -58,30 +66,6 @@ export const WorkflowDot = ({ state, text, active }: WorkflowDotProps): JSX.Elem
     }, [active, state, text]);
 
     return (
-        // <svg
-        //     width={width}
-        //     height={height}
-        //     viewBox="0 0 12 12"
-        //     fill="none"
-        //     xmlns="http://www.w3.org/2000/svg"
-        // >
-        //     {!active ? (
-        //         <circle
-        //             cx="6"
-        //             cy="6"
-        //             r="5.5"
-        //             stroke={color.stroke}
-        //             fill={color.color}
-        //             strokeDasharray="2,2"
-        //         />
-        //     ) : (
-        //         <circle cx="6" cy="6" r="5.5" stroke={color.stroke} fill={color.color} />
-        //     )}
-        //     <text x="3.5" y="8" fill="#000" fontSize="0.55em">
-        //         {text}
-        //     </text>
-        // </svg>
-
         <StepCircle color={dotProps.color} active={dotProps.active} status={dotProps.status}>
             {text}
         </StepCircle>
@@ -100,7 +84,8 @@ export const StepCircle = styled.div<StepCircleProps>`
     border-radius: 17px;
     font-size: 11px;
     color: ${(p) =>
-        p.status === PipetestCompletionStatus.Complete || p.status === 'Error'
+        p.status === PipetestCompletionStatus.Complete ||
+        p.status === PipetestCompletionStatus.PunchAError
             ? '#fff'
             : p.status === PipetestCompletionStatus.Inactive
             ? '#DCDCDC'

@@ -155,7 +155,7 @@ export function setup(appApi: ClientApi): void {
         },
         intercepters: {
             postGroupSorting: (pipetest, keys) => {
-                if (keys[0] === 'dueAtDate') {
+                if ((keys[0] as unknown) === 'dueAtDate') {
                     return pipetest.sort((a, b) => {
                         let aValue = a.value.replace('-', '');
                         let bValue = b.value.replace('-', '');

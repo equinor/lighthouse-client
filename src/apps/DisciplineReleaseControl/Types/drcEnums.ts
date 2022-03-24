@@ -36,8 +36,8 @@ export enum CheckListStatus {
 export enum PipetestCompletionStatus {
     Complete = 'Complete',
     Outstanding = 'Outstanding',
-    PunchAError = 'A punch error',
-    PunchBError = 'B punch error',
+    PunchAError = 'PunchAError',
+    PunchBError = 'PunchBError',
     Inactive = 'Inactive',
 }
 
