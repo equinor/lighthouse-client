@@ -2,6 +2,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { Fragment } from 'react';
 import styled from 'styled-components';
+import { DefaultWorkflowDot } from '../../Components/Workflow/Components/DefaultWorkflowDot';
 import { WorkflowStep } from '../../Types/scopeChangeRequest';
 
 interface WorkflowProps {
@@ -56,51 +57,18 @@ function getStatusFromCriteria(signedState: string | null, isCurrent: boolean): 
 
         case isCurrent: {
             return (
-                <WorkflowDotContainer>
-                    <svg
-                        width={20}
-                        height={20}
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <circle
-                            cx="6"
-                            cy="6"
-                            r="5.5"
-                            fill={tokens.colors.interactive.primary__resting.hex}
-                            stroke={tokens.colors.interactive.primary__resting.hex}
-                        />
-                    </svg>
-                </WorkflowDotContainer>
+                <DefaultWorkflowDot
+                    stroke={tokens.colors.interactive.primary__resting.hex}
+                    fill={tokens.colors.interactive.primary__resting.hex}
+                />
             );
         }
 
         default: {
-            return (
-                <WorkflowDotContainer>
-                    <svg
-                        width={20}
-                        height={20}
-                        viewBox="0 0 12 12"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <circle cx="6" cy="6" r="5.5" stroke={'#6F6F6F'} />
-                    </svg>
-                </WorkflowDotContainer>
-            );
+            return <DefaultWorkflowDot />;
         }
     }
 }
-
-const WorkflowDotContainer = styled.div`
-    height: 24px;
-    width: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`;
 
 export const WorkflowStepContainer = styled.div`
     display: flex;
