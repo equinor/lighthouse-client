@@ -34,6 +34,9 @@ export const groupBySystem = (a: string, b: string): number => {
     });
 };
 
+export const sortByNumber = (a: string, b: string): number =>
+    a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
+
 export const getTimePeriod = (item: Pipetest): string => {
     const date = DateTime.fromISO(item.rfccPlanned);
 
