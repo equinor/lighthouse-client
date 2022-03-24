@@ -16,6 +16,7 @@ import { checklistTagFunc, createChecklistSteps, getHTList } from './Functions/t
 import { getTimePeriod } from './Components/Garden/gardenFunctions';
 import { PipetestStep } from './Types/drcEnums';
 import { DateTime } from 'luxon';
+import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -145,4 +146,6 @@ export function setup(appApi: ClientApi): void {
             customItemView: ReleaseControlGardenItem,
         },
     });
+
+    request.registerStatusItems(statusBarConfig);
 }
