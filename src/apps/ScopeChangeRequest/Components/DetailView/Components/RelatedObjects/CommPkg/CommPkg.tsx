@@ -4,8 +4,9 @@ import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
-import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
+import { useQuery } from 'react-query';
+import { CacheTime } from '../../../../../../DisciplineReleaseControl/Enums/cacheTimes';
 import { CommPkgIcon } from './commPkgIcon';
 
 interface CommPkgProps {
@@ -16,8 +17,13 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     const { commPkg: commPkgKey } = proCoSysQueryKeys();
     const { procosysPlantId } = useFacility();
 
-    const { data } = useInfiniteCachedQuery(commPkgKey(commPkg.procosysNumber), () =>
-        getCommPkgById(procosysPlantId, commPkg.procosysId)
+    const { data } = useQuery(
+        commPkgKey(commPkg.procosysNumber),
+        () => getCommPkgById(procosysPlantId, commPkg.procosysId),
+        {
+            cacheTime: CacheTime.TenHours,
+            staleTime: CacheTime.TenHours,
+        }
     );
 
     return (
@@ -31,7 +37,10 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
                 >
                     {commPkg.procosysNumber}
                 </Link>
-                -<div>{data?.Description}</div>
+                -
+                <div>
+                    {data?.Description} {data?.CommPkgNo}
+                </div>
             </TagText>
         </Wrapper>
     );
