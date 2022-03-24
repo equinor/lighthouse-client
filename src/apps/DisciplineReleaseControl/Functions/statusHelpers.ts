@@ -1,10 +1,12 @@
 import { DateTime } from 'luxon';
+import { PipetestCompletionStatusColors } from '../Styles/ReleaseControlColors';
 import {
     CheckListStatus,
     PipetestCheckListOrder,
     PipetestStep,
     PipetestStatusOrder,
     CheckListStepTag,
+    PipetestCompletionStatus,
 } from '../Types/drcEnums';
 import { CheckList, Pipetest } from '../Types/pipetest';
 
@@ -202,3 +204,50 @@ export const getYearAndWeekFromString = (dateString: string, removeDays = 0): st
           )
         : DATE_BLANKSTRING;
 };
+
+export function getPipetestCompletionStatus(pipetest: Pipetest): PipetestCompletionStatus {
+    const pipetestStepStatus = getPipetestStatus(pipetest.checkLists);
+
+    if (
+        pipetestStepStatus === PipetestStep.Complete &&
+        pipetest.checkLists.some((x) => x.status === CheckListStatus.PunchBError)
+    ) {
+        return PipetestCompletionStatus.PunchBError;
+    } else if (pipetestStepStatus === PipetestStep.Complete) {
+        return PipetestCompletionStatus.Complete;
+    } else if (pipetest.checkLists.some((x) => x.status === CheckListStatus.PunchAError)) {
+        return PipetestCompletionStatus.PunchAError;
+    } else {
+        return PipetestCompletionStatus.Outstanding;
+    }
+}
+
+export const getDotsColor = (status: PipetestCompletionStatus): string => {
+    switch (status) {
+        case PipetestCompletionStatus.Outstanding:
+            return PipetestCompletionStatusColors.OS;
+        case PipetestCompletionStatus.Complete:
+            return PipetestCompletionStatusColors.OK;
+        case PipetestCompletionStatus.PunchBError:
+            return PipetestCompletionStatusColors.PB;
+        case PipetestCompletionStatus.PunchAError:
+            return PipetestCompletionStatusColors.PA;
+        default:
+            return PipetestCompletionStatusColors.OS;
+    }
+};
+
+export const getShortformCompletionStatusName = (status: string): string => {
+    switch (status) {
+        case PipetestCompletionStatus.Outstanding:
+            return CheckListStatus.Outstanding;
+        case PipetestCompletionStatus.Complete:
+            return CheckListStatus.OK;
+        case PipetestCompletionStatus.PunchBError:
+            return CheckListStatus.PunchBError;
+        case PipetestCompletionStatus.PunchAError:
+            return CheckListStatus.PunchAError;
+        default:
+            return CheckListStatus.Outstanding;
+    }
+}

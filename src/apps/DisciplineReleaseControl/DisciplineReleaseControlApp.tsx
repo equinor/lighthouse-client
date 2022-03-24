@@ -4,7 +4,10 @@ import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import {
+    getDotsColor,
+    getPipetestCompletionStatus,
     getPipetestStatus,
+    getShortformCompletionStatusName,
     getYearAndWeekFromString,
     sortPipetestChecklist,
     sortPipetests,
@@ -12,7 +15,12 @@ import {
 import { fieldSettings } from './Components/Garden/gardenSetup';
 import { Pipetest } from './Types/pipetest';
 import { ReleaseControlGardenItem } from './Components/Garden/ReleaseControlGardenItem';
-import { checklistTagFunc, createChecklistSteps, getHTList } from './Functions/tableHelpers';
+import {
+    checklistTagFunc,
+    createChecklistSteps,
+    getHTList,
+    Status,
+} from './Functions/tableHelpers';
 import { getTimePeriod } from './Components/Garden/gardenFunctions';
 import { PipetestStep } from './Types/drcEnums';
 import { DateTime } from 'luxon';
@@ -30,6 +38,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
             pipetest.step = getPipetestStatus(pipetest.checkLists);
+            pipetest.completionStatus = getPipetestCompletionStatus(pipetest);
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             pipetest.overdue =
                 pipetest.step !== PipetestStep.Complete &&
@@ -85,18 +94,33 @@ export function setup(appApi: ClientApi): void {
 
     request.registerTableOptions({
         objectIdentifierKey: 'name',
-        columnOrder: ['name', 'description', 'commPkPriority1', 'step'],
+        columnOrder: ['name', 'description', 'commPkPriority1', 'step', 'completionStatus'],
         hiddenColumns: ['rfccPlanned', 'dueDateTimePeriod', 'heatTraces', 'overdue'],
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Pipetest', width: 100 },
-            { key: 'description', title: 'Description', width: 600 },
+            { key: 'description', title: 'Description', width: 500 },
             { key: 'commPkPriority1', title: 'Priority', width: 90 },
             { key: 'step', title: 'Step', width: 210 },
+            { key: 'completionStatus', title: 'Completion status', width: 150 },
             { key: 'checkLists', title: 'Process', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
         ],
         customCellView: [
+            {
+                key: 'completionStatus',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        const completionStatus = cell.value.content.completionStatus;
+                        const completionStatusColor = getDotsColor(completionStatus);
+                        return (
+                            <Status color={completionStatusColor}>
+                                {getShortformCompletionStatusName(completionStatus)}
+                            </Status>
+                        );
+                    },
+                },
+            },
             {
                 key: 'checkLists',
                 type: {
@@ -128,7 +152,7 @@ export function setup(appApi: ClientApi): void {
                 id: 'htList',
                 Header: 'Heattraces',
                 Aggregated: () => null,
-                width: 500,
+                width: 400,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return getHTList(cell.row.values.checkLists.content.checkLists);
@@ -144,6 +168,29 @@ export function setup(appApi: ClientApi): void {
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
+        },
+        intercepters: {
+            postGroupSorting: (pipetest, keys) => {
+                if (keys[0] === 'dueAtDate') {
+                    return pipetest.sort((a, b) => {
+                        let aValue = a.value.replace('-', '');
+                        let bValue = b.value.replace('-', '');
+
+                        if (aValue.length === 5) {
+                            // console.log(aValue)
+                            aValue = aValue.substring(0, 4) + '0' + aValue.substring(4);
+                            // console.log(aValue)
+                        }
+                        if (bValue.length === 5) {
+                            bValue = bValue.substring(0, 4) + '0' + bValue.substring(4);
+                        }
+
+                        return Number(aValue) - Number(bValue);
+                    });
+                } else {
+                    return pipetest;
+                }
+            },
         },
     });
 

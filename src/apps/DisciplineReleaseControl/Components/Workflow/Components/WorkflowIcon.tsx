@@ -7,7 +7,7 @@ interface WorkflowIconProps {
     number?: number | string;
 }
 
-type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
+type WorkflowStatus = 'Complete' | 'Active' | 'Inactive' | 'Failed';
 
 export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element {
     switch (status) {
@@ -18,7 +18,7 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
                 </GreenCircle>
             );
 
-        case 'Completed':
+        case 'Complete':
             return (
                 <Icon
                     name="check_circle_outlined"

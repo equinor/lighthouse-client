@@ -1,7 +1,8 @@
-import { ReleaseControlItem, MidSection, Title } from './GardenItemStyles';
+import { ReleaseControlItem, MidSection, Title, Circles } from './GardenItemStyles';
 import { Pipetest } from '../../Types/pipetest';
 import { CustomItemView } from '../../../../components/ParkView/Models/gardenOptions';
-import { getGardenItemColor } from './gardenFunctions';
+import { getGardenItemColor, getGardenItemCompletionColor } from './gardenFunctions';
+import { StatusCircle } from './StatusCircle';
 
 export function ReleaseControlGardenItem({
     data,
@@ -21,6 +22,9 @@ export function ReleaseControlGardenItem({
                 <MidSection>
                     <Title>{data[itemKey]}</Title>
                 </MidSection>
+                <Circles>
+                    <StatusCircle statusColor={getGardenItemCompletionColor(data)} />
+                </Circles>
             </ReleaseControlItem>
         </>
     );

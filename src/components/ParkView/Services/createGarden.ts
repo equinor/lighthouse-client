@@ -50,5 +50,5 @@ export function createGarden<T>({
         preGroupFiltering: preGroupFiltering,
     });
 
-    return postGroupBySorting(groupedData, groupingKeys || []);
+    return postGroupBySorting(groupedData, allGroupingKeys || []);
 }

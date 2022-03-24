@@ -23,4 +23,9 @@ export const MidSection = styled.div`
     padding: 0px;
 `;
 
+export const Circles = styled.div`
+    display: flex;
+    padding-right: 0px 8px;
+`;
+
 export const Title = styled.div``;
