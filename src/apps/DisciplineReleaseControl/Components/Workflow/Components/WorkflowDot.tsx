@@ -1,4 +1,3 @@
-import { string } from 'prop-types';
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import { PipetestCompletionStatusColors } from '../../../Styles/ReleaseControlColors';
