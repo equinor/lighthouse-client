@@ -7,7 +7,14 @@ import { groupeByKey } from '../../Utils/utils';
 import { Favorites } from '../Favourites/Favourites';
 import { GroupItem } from '../GroupeItem/GroupeItem';
 import { MenuItem } from '../MenuItem/MenuItem';
-import { BackButton, MenuGroup, MenuWrapper, RightButton, Row } from './CompactMenuStyles';
+import {
+    BackButton,
+    IconWrapper,
+    MenuGroup,
+    MenuWrapper,
+    RightButton,
+    Row
+} from './CompactMenuStyles';
 
 export const CompactMenu = (): JSX.Element => {
     const { registry } = useClientContext();
@@ -44,7 +51,10 @@ export const CompactMenu = (): JSX.Element => {
                 ) : (
                     <>
                         <BackButton onClick={() => setActiveGroupe('')}>
-                            <Icon name="arrow_back" /> {appGroups[activeGroupe].name}
+                            <IconWrapper>
+                                <Icon name="arrow_back" />
+                            </IconWrapper>
+                            <div>{appGroups[activeGroupe].name}</div>
                         </BackButton>
                         <MenuGroup>
                             {GroupedMenu[activeGroupe].map((manifest) => (

@@ -17,7 +17,6 @@ export const Row = styled.div`
 `;
 
 export const BackButton = styled.button`
-    font-family: Equinor;
     background: none;
     border: none;
     height: 48px;
@@ -29,9 +28,6 @@ export const BackButton = styled.button`
     font-weight: 500;
     line-height: 1.143em;
     color: ${tokens.colors.interactive.primary__resting.rgba};
-    > svg {
-        padding: 1rem;
-    }
 
     :hover {
         background: ${tokens.colors.ui.background__light.rgba};
@@ -42,4 +38,12 @@ export const RightButton = styled.div`
     display: flex;
     width: 100%;
     justify-content: flex-end;
+`;
+
+export const IconWrapper = styled.div`
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;

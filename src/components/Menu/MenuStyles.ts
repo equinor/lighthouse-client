@@ -16,5 +16,4 @@ export const Wrapper = styled.div`
 export const ChildrenWrapper = styled.div<{ sideSheetWidth?: number }>`
     height: 100%;
     width: 100%;
-    /* width: calc(100vw - ${({ sideSheetWidth }) => 48 + (sideSheetWidth || 0)}px); */
 `;

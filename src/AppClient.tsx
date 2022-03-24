@@ -8,6 +8,7 @@ import { createGlobalStyle } from 'styled-components';
 import { MainLayout } from './components/Layouts/MainLayout';
 import LoadingPage from './components/Loading/LoadingPage';
 import { MenuProvider } from './components/Menu';
+import { ServiceMessageBanner, useServiceMessage } from './components/Messages';
 import { ServiceMessagePost } from './components/Messages/Service/Components/ServiceMessagePost';
 import { ClientRoutes } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
@@ -23,7 +24,11 @@ const GlobalStyle = createGlobalStyle`
     };
 
     p {
+        font-family: Equinor;
         font-size: 13px !important;
+    }
+    button {
+        font-family: Equinor;
     }
     pre {
         font-family: Equinor;
@@ -70,6 +75,7 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
             },
         },
     });
+    const messageData = useServiceMessage();
 
     return isAuthenticated ? (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
@@ -78,15 +84,16 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
                 <ServiceMessagePost />
                 <ConfirmationDialog />
                 <ClientContextProvider>
-                    <BrowserRouter>
-                        <MenuProvider>
+                    {messageData.isActive && <ServiceMessageBanner {...messageData} />}
+                    <MenuProvider>
+                        <BrowserRouter>
                             <ClientTopBar />
 
-                            <MainLayout>
+                            <MainLayout serviceMessageActive={messageData.isActive}>
                                 <ClientRoutes />
                             </MainLayout>
-                        </MenuProvider>
-                    </BrowserRouter>
+                        </BrowserRouter>
+                    </MenuProvider>
                     <FactoryComponent />
                 </ClientContextProvider>
             </QueryClientProvider>

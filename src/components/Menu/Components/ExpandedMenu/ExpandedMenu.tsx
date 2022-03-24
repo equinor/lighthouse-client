@@ -37,7 +37,7 @@ export const ExpandedMenu = (): JSX.Element => {
             }
             return (
                 <AppGroup key={key}>
-                    <HeaderLink to={`${key}`} className="noBorder" onClick={() => toggleMenu()}>
+                    <HeaderLink to={`${key}`} onClick={() => toggleMenu()}>
                         <FullscreenMenuGroupHeaderText>
                             {appGroups[key].name}
                         </FullscreenMenuGroupHeaderText>
