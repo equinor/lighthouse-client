@@ -1,4 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
+import { throwOnError } from '../../../Functions/throwError';
 import { LogEntry } from '../../../Types/scopeChangeRequest';
 
 export async function getHistory(id: string): Promise<LogEntry[]> {
@@ -6,8 +7,7 @@ export async function getHistory(id: string): Promise<LogEntry[]> {
 
     const res = await scopeChange.fetch(`api/scope-change-requests/${id}/history`);
 
-    if (!res.ok) {
-        throw await res.json();
-    }
+    throwOnError(res, 'Failed to get log');
+
     return await res.json();
 }

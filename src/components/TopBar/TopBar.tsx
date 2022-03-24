@@ -4,6 +4,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
 import { useRef, useState } from 'react';
 import Icon from '../Icon/Icon';
+import { useMenuContext } from '../Menu';
 import { DevBar } from './DevBar/DevBar';
 import Logo from './Logo/Logo';
 import { Action, ActionWrapper, Icons, TopBarWrapper } from './TopBarStyle';
@@ -14,16 +15,17 @@ const ClientTopBar = (): JSX.Element => {
     const addMenuRef = useRef<HTMLHeadingElement>(null);
 
     const {
-        toggleFullscreenMenu,
         settings: { userImageUrl, clientEnv },
     } = useClientContext();
+
+    const { toggleMenu } = useMenuContext();
 
     return (
         <TopBarWrapper>
             <TopBar.Header>
                 <div
                     onClick={() => {
-                        toggleFullscreenMenu();
+                        toggleMenu();
                     }}
                     style={{ cursor: 'pointer' }}
                 >

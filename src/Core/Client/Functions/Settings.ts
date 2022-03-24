@@ -17,14 +17,6 @@ function internalUpdateSettings(
     });
 }
 
-export function toggleAppPanel(): void {
-    internalUpdateSettings((state) => ({ appsPanelActive: !state.appsPanelActive }));
-}
-
-export function toggleFullscreenMenu(): void {
-    internalUpdateSettings((state) => ({ fullscreenMenuActive: !state.fullscreenMenuActive }));
-}
-
 export function setLoggingState(logging: boolean): void {
     internalUpdateSettings({ logging });
 }

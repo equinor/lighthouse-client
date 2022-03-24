@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { System as SystemInterface } from '../../../../../Types/scopeChangeRequest';
-import { isProduction } from '../../../../../../../Core/Client/';
+import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
 import { getSystems } from '../../../../../Api/PCS/getSystems';
@@ -16,8 +16,8 @@ interface SystemProps {
 
 export const System = ({ system }: SystemProps): JSX.Element => {
     const { systems: systemsKey } = proCoSysQueryKeys();
-
-    const { data } = useInfiniteCachedQuery(systemsKey, getSystems);
+    const { procosysPlantId } = useFacility();
+    const { data } = useInfiniteCachedQuery(systemsKey, () => getSystems(procosysPlantId));
 
     const [foundSystem, setFoundSystem] = useState<PCSSystem | null>();
 
@@ -36,7 +36,7 @@ export const System = ({ system }: SystemProps): JSX.Element => {
                     }.equinor.com/JOHAN_CASTBERG/Completion#System|${system.procosysId}`}
                 target="_blank"
             >
-                SYS_{system.procosysCode} - {foundSystem?.Description}
+                {system.procosysCode} - {foundSystem?.Description}
             </Link>
         </Wrapper>
     );
