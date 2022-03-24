@@ -2,7 +2,7 @@ import { FieldSettings } from '../../../../components/ParkView/Models/fieldSetti
 import { getYearAndWeekFromString } from '../../Functions/statusHelpers';
 
 import { Pipetest } from '../../Types/pipetest';
-import { getStatusKey, getSystemKey, groupBySystem, sortByPipetestStatus } from './gardenFunctions';
+import { getStatusKey, getSystemKey, groupBySystem, sortByNumber, sortByPipetestStatus } from './gardenFunctions';
 
 export type ExtendedGardenFields = 'system' | 'dueAtDate' | 'priority';
 
@@ -21,6 +21,7 @@ export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
     dueAtDate: {
         label: 'Due date',
         getKey: (item) => getYearAndWeekFromString(item.rfccPlanned),
+        getColumnSort: sortByNumber,
     },
     priority: { label: 'Priority', getKey: (item) => item.commPkPriority1 },
     dueDateTimePeriod: { label: 'Time period', getKey: (item) => item.dueDateTimePeriod },

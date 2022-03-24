@@ -18,6 +18,7 @@ import { getTimePeriod } from './Components/Garden/gardenFunctions';
 import { PipetestStep } from './Types/drcEnums';
 import { DateTime } from 'luxon';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
+import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -152,29 +153,7 @@ export function setup(appApi: ClientApi): void {
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
-        },
-        intercepters: {
-            postGroupSorting: (pipetest, keys) => {
-                if ((keys[0] as unknown) === 'dueAtDate') {
-                    return pipetest.sort((a, b) => {
-                        let aValue = a.value.replace('-', '');
-                        let bValue = b.value.replace('-', '');
-
-                        if (aValue.length === 5) {
-                            // console.log(aValue)
-                            aValue = aValue.substring(0, 4) + '0' + aValue.substring(4);
-                            // console.log(aValue)
-                        }
-                        if (bValue.length === 5) {
-                            bValue = bValue.substring(0, 4) + '0' + bValue.substring(4);
-                        }
-
-                        return Number(aValue) - Number(bValue);
-                    });
-                } else {
-                    return pipetest;
-                }
-            },
+            customHeaderView: ReleaseControlGardenHeader,
         },
     });
 
