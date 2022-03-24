@@ -26,7 +26,6 @@ import {
     WorkorderExpanded,
     WorkorderExpandedTitle,
 } from './styles';
-import './test.css';
 import { itemSize } from './utils';
 type PackageStatusReturn = {
     mccrColor: string;
