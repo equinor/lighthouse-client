@@ -1,8 +1,6 @@
 import { User } from '@microsoft/microsoft-graph-types';
 
 export interface ClientSettings {
-    appsPanelActive: boolean;
-    fullscreenMenuActive: boolean;
     logging: boolean;
     isProduction: boolean;
     clientEnv: string;

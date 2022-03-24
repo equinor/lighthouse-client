@@ -1,13 +1,23 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { throwOnError } from '../../../Functions/throwError';
 
-export async function signCriteria(
-    requestId: string,
-    stepId: string,
-    criteriaId: string,
-    verdict: 'Approved' | 'Rejected',
-    comment?: string
-): Promise<void> {
+interface SignCriteriaMutation {
+    requestId: string;
+    stepId: string;
+    criteriaId: string;
+    verdict: 'Approved' | 'Rejected';
+    closeRequest: boolean;
+    comment?: string;
+}
+
+export async function signCriteria({
+    closeRequest,
+    criteriaId,
+    requestId,
+    stepId,
+    verdict,
+    comment,
+}: SignCriteriaMutation): Promise<void> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
@@ -15,6 +25,7 @@ export async function signCriteria(
         body: JSON.stringify({
             signedComment: comment,
             signedState: verdict,
+            closeRequest: closeRequest,
         }),
     };
 

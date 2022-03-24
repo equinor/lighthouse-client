@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
 import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
@@ -14,47 +13,38 @@ import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
 import { ScopeChangeContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { IconMenu, MenuItem } from '../MenuButton';
-import { ScopeChangeErrorBanner } from './ErrorBanner';
 
 import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
-import { useScopechangeQueryKeyGen } from '../../Hooks/React-Query/useScopechangeQueryKeyGen';
-import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
+import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
+import { useOctopusErrorHandler } from './useOctopusErrorHandler';
+import { useQuery } from 'react-query';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
+
+    useOctopusErrorHandler();
 
     usePreloadCaching();
-    const { voidKey, unvoidKey } = useScopechangeMutationKeyGen(item.id);
-    const { baseKey } = useScopechangeQueryKeyGen(item.id);
-    const { data, refetch, remove, isLoading, isRefetching } = useQuery<ScopeChangeRequest>(
+
+    const { voidKey, unvoidKey } = scopeChangeMutationKeys(item.id);
+    const { baseKey } = scopeChangeQueryKeys(item.id);
+
+    const { data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
         baseKey,
         () => getScopeChangeById(item.id),
         {
             initialData: item,
-            refetchOnWindowFocus: false,
-            retry: false,
-            onError: () =>
-                setErrorMessage({
-                    detail: 'Failed to connect to server',
-                    title: 'Fetch failed',
-                    validationErrors: {},
-                }),
         }
     );
 
     const scopeChangeAccess = useScopeChangeAccess(item.id);
 
-    const { mutateAsync: unvoidMutation } = useScopeChangeMutation(
-        item.id,
-        unvoidKey(),
-        unVoidRequest
-    );
+    const { mutate: unvoidMutation } = useScopeChangeMutation(item.id, unvoidKey, unVoidRequest);
 
-    const { mutateAsync: voidMutation } = useScopeChangeMutation(item.id, voidKey(), voidRequest);
+    const { mutate: voidMutation } = useScopeChangeMutation(item.id, voidKey, voidRequest);
 
     const refetchScopeChange = useCallback(async () => {
         await refetch();
@@ -67,7 +57,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             if (data?.isVoided) {
                 actions.push({
                     label: 'Unvoid request',
-                    onClick: async () => await unvoidMutation({ requestId: item.id }),
+                    onClick: () => unvoidMutation({ requestId: item.id }),
                 });
             }
         }
@@ -79,7 +69,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
                         spawnConfirmationDialog(
                             'Are you sure you want to void this request',
                             'Void confirmation',
-                            async () => await voidMutation({ requestId: item.id })
+                            () => voidMutation({ requestId: item.id })
                         ),
                 });
             }
@@ -115,7 +105,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     }
     return (
         <Wrapper>
-            <ScopeChangeErrorBanner message={errorMessage} requestId={item.id} />
             <TitleHeader>
                 <Title>
                     {data?.sequenceNumber}, {data?.title}
@@ -142,8 +131,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             </TitleHeader>
             <ScopeChangeContext.Provider
                 value={{
-                    isRefetching: isRefetching,
-                    setErrorMessage: (message: ServerError) => setErrorMessage(message),
                     request: data || item,
                     requestAccess: scopeChangeAccess,
                 }}

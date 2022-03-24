@@ -4,13 +4,16 @@ import { CommissioningPackage } from '../../../Types/ProCoSys/CommissioningPacka
 
 export const searchCommPkg = async (
     searchString: string,
+    plantId: string,
     procosysClient: HttpClient,
     signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
 
     const uri = 'api/CommPkg/Search';
-    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&startsWithCommPkgNo=${encodeURIComponent(
+    const queryParameters = `plantId=${encodeURIComponent(
+        plantId
+    )}&startsWithCommPkgNo=${encodeURIComponent(
         searchString
     )}&includeClosedProjects=false&itemsPerPage=10&includeVoidedCommPkgs=true&includeDecommissioningPkgs=false&api-version=4.1`;
     const url = `${uri}?${queryParameters}`;
