@@ -70,10 +70,11 @@ const ExpandContext = createContext<State>({
     widths: [],
 });
 
-function createExpandDispatchContext<T = any>() {
+function createExpandDispatchContext<T = unknown>() {
     return createContext<DispatchAction<T> | undefined>(undefined);
 }
 const ExpandDispatchContext = createExpandDispatchContext();
+
 type ExpandProviderProps = {
     initialWidths: number[];
 };
