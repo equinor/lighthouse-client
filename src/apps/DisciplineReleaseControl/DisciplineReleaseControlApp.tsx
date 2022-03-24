@@ -128,6 +128,7 @@ export function setup(appApi: ClientApi): void {
     request.registerGardenOptions({
         gardenKey: 'status',
         itemKey: 'name',
+        type: 'normal',
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,

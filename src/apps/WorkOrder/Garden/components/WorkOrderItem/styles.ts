@@ -4,15 +4,17 @@ export type WorkOrderItemProps = { backgroundColor: string; textColor: string; b
 //@ts-ignore
 export const WorkOrderWrapper = styled(Item)<WorkOrderItemProps>`
     position: relative;
-    display: flex;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: 100%;
+    width: 95%;
     min-width: 150px;
     box-sizing: border-box;
     white-space: nowrap;
-    justify-content: space-between;
     border: 1px solid #dcdcdc;
+    height: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 `;
 
 export const Circles = styled.div`
