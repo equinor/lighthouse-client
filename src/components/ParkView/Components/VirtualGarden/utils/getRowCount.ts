@@ -9,23 +9,23 @@ const getSubGroupCounts = <T extends unknown>(subGroup: DataSet<T>): number => {
         /** If subgroup is expanded, but it's the last subgroup - we want to count all the items  */
         count += subGroup.count;
     } else {
-        subGroup.subGroups.forEach((_a, i) => {
-            count += getSubGroupCounts(subGroup.subGroups[i]);
+        subGroup.subGroups.forEach((_, index) => {
+            count += getSubGroupCounts(subGroup.subGroups[index]);
         });
     }
 
     return count;
 };
-const getGardenRowCountPerColumn = <T extends unknown>(gardenColumn: DataSet<T>) => {
+const getGardenRowCountPerColumn = <T extends unknown>(gardenColumn: DataSet<T>): number => {
     let count = gardenColumn.subGroups.length;
-    gardenColumn.subGroups.forEach((_a, i) => {
-        const subGroup = gardenColumn.subGroups[i];
+    gardenColumn.subGroups.forEach((_, index) => {
+        const subGroup = gardenColumn.subGroups[index];
         count += getSubGroupCounts(subGroup);
     });
 
     return count;
 };
-export const getRowCount = <T extends unknown>(garden: GardenGroups<T>) => {
+export const getRowCount = <T extends unknown>(garden: GardenGroups<T>): number => {
     let count = 0;
     // If garden is not grouped, then all garden items will have subgroupcount equal to zero
     // So we can just check first item and then return.
@@ -35,8 +35,8 @@ export const getRowCount = <T extends unknown>(garden: GardenGroups<T>) => {
 
     // If garden is grouped, then we need to count all garden group headers and all items inside
     // the groups that are expanded.
-    garden.forEach((_a, i) => {
-        const columnCount = getGardenRowCountPerColumn(garden[i]);
+    garden.forEach((_, index) => {
+        const columnCount = getGardenRowCountPerColumn(garden[index]);
 
         count = count > columnCount ? count : columnCount;
     });

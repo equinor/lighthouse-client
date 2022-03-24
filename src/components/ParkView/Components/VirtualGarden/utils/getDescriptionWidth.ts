@@ -16,7 +16,7 @@ function packageHasDescription<T extends unknown>(
  * @param columnData One column from the garden
  * @returns Longest description string
  */
-export const getLongestDescription = <T extends unknown>(columnData: T[]) => {
+export const getLongestDescription = <T extends unknown>(columnData: T[]): string => {
     let longest = '';
     columnData.forEach((e: T) =>
         packageHasDescription(e) && e.description.length > longest.length
