@@ -3,7 +3,6 @@ import { useClientContext } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import Icon from '../../../Icon/Icon';
 import { useFavoritesContext } from '../../Context/FavoritesContext';
-import { useMenuContext } from '../../Context/MenuContext';
 import { MenuItem } from '../MenuItem/MenuItem';
 import { FavoriteHeader, FavoritePanel, HeaderIconWrapper } from './FavouritesStyles';
 
@@ -13,8 +12,6 @@ export const Favorites = (): JSX.Element => {
     const {
         registry: { apps },
     } = useClientContext();
-
-    const { activeGroupe } = useMenuContext();
 
     const filteredFavorites = useMemo(
         () => apps.filter((app) => favorites.includes(app.shortName)),
@@ -32,13 +29,19 @@ export const Favorites = (): JSX.Element => {
                 </FavoriteHeader>
                 <FavoritePanel>
                     {filteredFavorites.length > 0 ? (
-                        filteredFavorites.map((manifest) => (
-                            <MenuItem
-                                key={`acc-${manifest.shortName}`}
-                                groupId={activeGroupe}
-                                manifest={manifest}
-                            />
-                        ))
+                        filteredFavorites.map((manifest) => {
+                            const group =
+                                typeof manifest.groupe === 'string'
+                                    ? manifest.groupe
+                                    : manifest.groupe[0];
+                            return (
+                                <MenuItem
+                                    key={`acc-${manifest.shortName}`}
+                                    groupId={group}
+                                    manifest={manifest}
+                                />
+                            );
+                        })
                     ) : (
                         <p>You have no favorites Selected.</p>
                     )}
