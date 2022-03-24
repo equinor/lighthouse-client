@@ -39,6 +39,10 @@ export default defineConfig({
             '@equinor/GardenUtils': path.resolve(__dirname, './src/packages/GardenUtils'),
             '@equinor/echo3dweb-viewer': path.resolve(__dirname, './packages/echo3dViewer/src'),
             '@equinor/lighthouse-powerbi': path.resolve(__dirname, './src/modules/powerBI'),
+            '@equinor/lighthouse-powerbi-viewer': path.resolve(
+                __dirname,
+                './src/Core/PowerBiViewer'
+            ),
         },
     },
     build: {

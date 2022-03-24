@@ -1,5 +1,6 @@
 import { AuthenticationProvider } from '@equinor/authentication';
 import { Factory } from '@equinor/DataFactory';
+import { createPowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
 import { createPageViewer, PageViewerOptions as PageOptions } from '@equinor/PageViewer';
 import { createWorkSpace, ViewerOptions } from '@equinor/WorkSpace';
 import { AppConfigResult } from '../../Client/Types/AppConfig';
@@ -38,6 +39,12 @@ export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
                 title,
                 viewerId: shortName,
                 openSidesheet: config.openSidesheet,
+            });
+        },
+        createPowerBiViewer() {
+            return createPowerBiViewer({
+                title,
+                viewerId: shortName,
             });
         },
     };

@@ -1,14 +1,14 @@
-import { Atom, deref, swap } from '@dbeining/react-atom';
-import { CoreViewState } from '../Types/State';
+import { Atom, DeepImmutable, deref, swap, useAtom } from '@dbeining/react-atom';
+import { CoreViewState, ViewState } from '../Types/State';
 
 export function createGlobalState(defaultState: CoreViewState): Atom<CoreViewState> {
     return Atom.of(defaultState);
 }
 
-export const PageViewerCoreContext = createGlobalState({} as CoreViewState);
+export const PowerBiViewerCoreContext = createGlobalState({} as CoreViewState);
 
 export function getContext(): Atom<CoreViewState> {
-    return PageViewerCoreContext;
+    return PowerBiViewerCoreContext;
 }
 
 export function dispatch(
@@ -24,4 +24,10 @@ export function readState<S>(
 ): S {
     const state = deref<CoreViewState>(globalState);
     return read(state);
+}
+
+export function usePowerBiViewer(viewerId: string): DeepImmutable<ViewState> {
+    const state = useAtom(PowerBiViewerCoreContext);
+    // Todo: check if viewer is registered.
+    return state[viewerId];
 }
