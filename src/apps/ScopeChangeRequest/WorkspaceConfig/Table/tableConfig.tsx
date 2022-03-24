@@ -4,7 +4,7 @@ import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/worksp
 import { OriginLink } from '../../Components/DetailView/Components/OriginLink';
 import { WorkflowCompact } from './WorkflowCompact';
 import { getLastSigned } from './getLastSigned';
-import { ScopeChangeRequest, WorkflowStep } from '../../Types/scopeChangeRequest';
+import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',
@@ -60,6 +60,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'attachments',
         'isVoided',
         'disciplines',
+        'hasPendingContributions',
     ],
     columnOrder: [
         'sequenceNumber',
@@ -105,7 +106,12 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         {
             key: 'hasComments',
             title: {
-                Custom: () => <Icon name="comment_chat" />,
+                Custom: () => (
+                    <Icon
+                        color={tokens.colors.text.static_icons__default.hex}
+                        name="comment_chat"
+                    />
+                ),
             },
             width: 80,
         },
@@ -117,7 +123,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         },
         {
             key: 'guesstimateHours',
-            type: 'Description',
+            type: 'Number',
         },
 
         {
@@ -137,15 +143,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             key: 'workflowSteps',
             type: {
                 Cell: ({ cell }: any) => {
-                    return (
-                        <div>
-                            <WorkflowCompact
-                                steps={cell.value.content.workflowSteps}
-                                statusDotFunc={statusDotFunc}
-                                spanDirection={'horizontal'}
-                            />
-                        </div>
-                    );
+                    return <WorkflowCompact steps={cell.value.content.workflowSteps} />;
                 },
             },
         },
@@ -230,21 +228,4 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             },
         },
     ],
-};
-
-const statusDotFunc = (item: WorkflowStep) => {
-    if (item.isCurrent) {
-        return 'Active';
-    }
-
-    if (item.criterias.some((x) => x.signedState === 'Rejected')) {
-        return 'Rejected';
-    }
-    switch (item.isCompleted) {
-        case true:
-            return 'Completed';
-
-        case false:
-            return 'Inactive';
-    }
 };

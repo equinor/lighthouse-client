@@ -1,21 +1,37 @@
 import { FieldSettings } from '../Models/fieldSettings';
 
-import { Data } from '../Models/data';
+import { GardenGroups } from '../Models/data';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
 import { groupBy } from '../Utils/groupBy';
-import { StatusView } from '../Models/gardenOptions';
+import { PostGroupBySorting, PreGroupByFiltering, StatusView } from '../Models/gardenOptions';
 
 export type Garden<T> = Record<string, T[]>;
 
-export function createGarden<T>(
-    dataSet: T[],
-    gardenKey: keyof T,
-    groupingKeys?: (keyof T)[],
-    status?: StatusView<T>,
-    groupDescriptionFunc?: GroupDescriptionFunc<T>,
-    fieldSettings?: FieldSettings<T, string>,
-    customGroupByKeys?: Record<string, unknown>
-): Data<T> {
+interface CreateGardenArgs<T> {
+    dataSet: T[];
+    gardenKey: keyof T;
+    groupingKeys?: (keyof T)[];
+    status?: StatusView<T>;
+    groupDescriptionFunc?: GroupDescriptionFunc<T>;
+    fieldSettings?: FieldSettings<T, string>;
+    customGroupByKeys?: Record<string, unknown>;
+    preGroupFiltering?: PreGroupByFiltering<T>;
+    postGroupBySorting?: PostGroupBySorting<T>;
+    isExpanded?: boolean;
+}
+
+export function createGarden<T>({
+    dataSet,
+    gardenKey,
+    customGroupByKeys,
+    fieldSettings,
+    groupDescriptionFunc = () => '',
+    groupingKeys,
+    postGroupBySorting = (data) => data,
+    preGroupFiltering = (data) => data,
+    status,
+    isExpanded,
+}: CreateGardenArgs<T>): GardenGroups<T> {
     const allGroupingKeys: (keyof T)[] = [gardenKey];
     if (groupingKeys) {
         groupingKeys.map((x) => {
@@ -23,15 +39,16 @@ export function createGarden<T>(
         });
     }
 
-    const groupedData = groupBy(
-        dataSet,
-        allGroupingKeys,
-        status,
-        groupDescriptionFunc,
-        fieldSettings,
-        undefined,
-        customGroupByKeys
-    );
+    const groupedData = groupBy({
+        arr: dataSet,
+        keys: allGroupingKeys,
+        status: status,
+        groupDescriptionFunc: groupDescriptionFunc,
+        fieldSettings: fieldSettings,
+        isExpanded: isExpanded,
+        customGroupByKeys: customGroupByKeys,
+        preGroupFiltering: preGroupFiltering,
+    });
 
-    return groupedData;
+    return postGroupBySorting(groupedData, groupingKeys || []);
 }

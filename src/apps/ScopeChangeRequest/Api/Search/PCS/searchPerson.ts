@@ -4,14 +4,15 @@ import { Person } from '../../../Types/ProCoSys/person';
 
 export const searchPerson = async (
     searchString: string,
+    plantId: string,
     procosysClient: HttpClient,
     signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
     const uri = 'api/Person/PersonSearch';
-    const queryParameters = `plantId=PCS%24JOHAN_CASTBERG&searchString=${encodeURIComponent(
-        searchString
-    )}&numberOfRows=10&api-version=4.1`;
+    const queryParameters = `plantId=${encodeURIComponent(
+        plantId
+    )}&searchString=${encodeURIComponent(searchString)}&numberOfRows=10&api-version=4.1`;
     const url = `${uri}?${queryParameters}`;
     await procosysClient
         .fetch(url, { signal })
