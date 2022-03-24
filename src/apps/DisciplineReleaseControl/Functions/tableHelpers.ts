@@ -1,9 +1,8 @@
-import styled from 'styled-components';
 import { CheckListStatus, CheckListStepTag } from '../Types/drcEnums';
 import { CheckList, Pipetest } from '../Types/pipetest';
 import { getPipetestStatusForStep } from './statusHelpers';
 
-export const checklistTagFunc = (item: CheckList) => {
+export const checklistTagFunc = (item: CheckList): string => {
     switch (item?.status) {
         case CheckListStatus.Inactive:
             return 'Inactive';
@@ -118,21 +117,3 @@ export function createChecklistSteps(data: CheckList[]): CheckList[] {
 
     return workflowSteps;
 }
-
-type StatusProps = {
-    color: string;
-};
-
-export const Status = styled.div<StatusProps>`
-    width: 40px;
-    height: 24px;
-    display: flex;
-    align-self: center;
-    border: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 600;
-    border-radius: 12px;
-    background: ${(p) => p.color};
-`;
