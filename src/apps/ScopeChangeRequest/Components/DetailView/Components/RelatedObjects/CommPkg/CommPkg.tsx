@@ -4,9 +4,9 @@ import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
-import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
 import { CommPkgIcon } from './commPkgIcon';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
@@ -23,7 +23,7 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     return (
         <Wrapper key={commPkg.procosysId}>
             <CommPkgIcon />
-            <TagText>
+            <CommPkgText>
                 <Link
                     href={`https://${isProduction() ? 'procosys' : 'procosystest'
                         }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
@@ -31,13 +31,16 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
                 >
                     {commPkg.procosysNumber}
                 </Link>
-                -<div>{data?.Description}</div>
-            </TagText>
+                -
+                <div>
+                    {data?.Description} {data?.CommPkgNo}
+                </div>
+            </CommPkgText>
         </Wrapper>
     );
 };
 
-const TagText = styled.div`
+const CommPkgText = styled.div`
     display: flex;
     flex-direction: row;
     gap: 0.2em;

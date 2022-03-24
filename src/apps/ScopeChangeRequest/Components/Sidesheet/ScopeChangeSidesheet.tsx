@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
@@ -32,13 +32,13 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const { voidKey, unvoidKey } = scopeChangeMutationKeys(item.id);
     const { baseKey } = scopeChangeQueryKeys(item.id);
 
-    const { data, refetch, remove, isLoading } = useQuery<ScopeChangeRequest>(
-        baseKey,
-        () => getScopeChangeById(item.id),
-        {
-            initialData: item,
-        }
-    );
+    const {
+        data: request,
+        remove,
+        isLoading,
+    } = useQuery<ScopeChangeRequest>(baseKey, () => getScopeChangeById(item.id), {
+        initialData: item,
+    });
 
     const scopeChangeAccess = useScopeChangeAccess(item.id);
 
@@ -46,15 +46,11 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
     const { mutate: voidMutation } = useScopeChangeMutation(item.id, voidKey, voidRequest);
 
-    const refetchScopeChange = useCallback(async () => {
-        await refetch();
-    }, [refetch]);
-
     const actionMenu: MenuItem[] = useMemo(() => {
         const actions: MenuItem[] = [];
 
         if (scopeChangeAccess.canUnVoid) {
-            if (data?.isVoided) {
+            if (request?.isVoided) {
                 actions.push({
                     label: 'Unvoid request',
                     onClick: () => unvoidMutation({ requestId: item.id }),
@@ -62,7 +58,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             }
         }
         if (scopeChangeAccess.canVoid) {
-            if (!data?.isVoided) {
+            if (!request?.isVoided) {
                 actions.push({
                     label: 'Void request',
                     onClick: () =>
@@ -77,7 +73,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
         return actions;
     }, [
-        data,
+        request,
         item,
         scopeChangeAccess.canUnVoid,
         scopeChangeAccess.canVoid,
@@ -88,7 +84,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     useEffect(() => {
         if (item.id) {
             remove();
-            refetchScopeChange();
         }
     }, [item.id]);
 
@@ -107,7 +102,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
         <Wrapper>
             <TitleHeader>
                 <Title>
-                    {data?.sequenceNumber}, {data?.title}
+                    {request?.sequenceNumber}, {request?.title}
                     {isLoading && <Progress.Dots color="primary" />}
                 </Title>
                 <ButtonContainer>
@@ -131,15 +126,15 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             </TitleHeader>
             <ScopeChangeContext.Provider
                 value={{
-                    request: data || item,
+                    request: request || item,
                     requestAccess: scopeChangeAccess,
                 }}
             >
-                {data && (
+                {request && (
                     <>
                         {editMode ? (
                             <ScopeChangeRequestEditForm
-                                request={data}
+                                request={request}
                                 close={() => setEditMode(false)}
                             />
                         ) : (
