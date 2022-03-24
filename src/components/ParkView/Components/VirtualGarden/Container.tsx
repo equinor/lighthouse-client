@@ -1,11 +1,19 @@
 import { useEffect, useMemo, useState } from 'react';
+import styled from 'styled-components';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { PostGroupBySorting, PreGroupByFiltering } from '../../Models/gardenOptions';
 import { createGarden } from '../../Services/createGarden';
 import { FilterSelector } from '../GroupingSelector';
 import { ExpandProvider } from './ExpandProvider';
 import { VirtualGarden } from './VirtualGarden';
-export const VirtualContainer = <T extends unknown>() => {
+
+const Container = styled.div`
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    gap: 1em;
+`;
+export const VirtualContainer = <T extends unknown>(): JSX.Element => {
     const [widths, setWidths] = useState<number[]>([]);
 
     const {
@@ -19,6 +27,7 @@ export const VirtualContainer = <T extends unknown>() => {
         itemWidth,
         intercepters,
     } = useParkViewContext<T>();
+
     const garden = useMemo(
         () =>
             createGarden({
@@ -49,10 +58,11 @@ export const VirtualContainer = <T extends unknown>() => {
     useEffect(() => {
         if (garden) {
             if (amountOfColumns > 0) {
-                setWidths(new Array(amountOfColumns).fill(itemWidth || 300));
+                const width = (itemWidth && itemWidth(garden, gardenKey.toString())) || 300;
+                setWidths(new Array(amountOfColumns).fill(width));
             }
         }
-    }, [amountOfColumns]);
+    }, [amountOfColumns, itemWidth]);
 
     //TODO: Handle widths = 0 better
     if (widths.length === 0) {
@@ -60,11 +70,11 @@ export const VirtualContainer = <T extends unknown>() => {
     }
 
     return (
-        <div style={{ display: 'grid', gridTemplateRows: 'auto 1fr', height: '100%', gap: '1em' }}>
+        <Container>
             <FilterSelector />
             <ExpandProvider initialWidths={widths}>
                 <VirtualGarden garden={garden} />
             </ExpandProvider>
-        </div>
+        </Container>
     );
 };
