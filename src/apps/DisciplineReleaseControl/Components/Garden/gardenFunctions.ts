@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
 import { getPipetestStatus, getPipetestStatusEnumByValue } from '../../Functions/statusHelpers';
-import { PipetestStep, PipetestStatusOrder } from '../../Types/drcEnums';
+import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
+import { PipetestStep, PipetestStatusOrder, PipetestCompletionStatus } from '../../Types/drcEnums';
 import { Pipetest } from '../../Types/pipetest';
 
 export const getStatusKey: GetKeyFunction<Pipetest> = (item) => {
@@ -81,6 +82,27 @@ export const getGardenItemColor = (item: Pipetest): string => {
             break;
         case PipetestStep.Unknown:
             color = '#ff92a8';
+            break;
+    }
+
+    return color;
+};
+
+export const getGardenItemCompletionColor = (item: Pipetest): string => {
+    let color = '#DCDCDC';
+
+    switch (item.completionStatus) {
+        case PipetestCompletionStatus.Outstanding:
+            color = PipetestCompletionStatusColors.OS;
+            break;
+        case PipetestCompletionStatus.Complete:
+            color = PipetestCompletionStatusColors.OK;
+            break;
+        case PipetestCompletionStatus.PunchBError:
+            color = PipetestCompletionStatusColors.PB;
+            break;
+        case PipetestCompletionStatus.PunchAError:
+            color = PipetestCompletionStatusColors.PA;
             break;
     }
 

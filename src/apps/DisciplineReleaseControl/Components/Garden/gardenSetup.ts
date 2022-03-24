@@ -9,10 +9,11 @@ export type ExtendedGardenFields = 'system' | 'dueAtDate' | 'priority';
 export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
     step: { label: 'Step', getKey: getStatusKey, getColumnSort: sortByPipetestStatus },
     system: { label: 'System', getKey: getSystemKey, getColumnSort: groupBySystem },
-    checkLists: {
-        label: 'Checklists',
-        key: 'tagNo',
-    },
+    //TODO: Is this needed? (it's very slow)...
+    // checkLists: {
+    //     label: 'Checklists',
+    //     key: 'tagNo',
+    // },
     heatTraces: {
         label: 'HT cable',
         key: 'tagNo',

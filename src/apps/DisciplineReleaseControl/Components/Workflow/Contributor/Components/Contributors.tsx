@@ -195,7 +195,7 @@ const Inline = styled.span`
     align-items: center;
 `;
 
-type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
+type WorkflowStatus = 'Complete' | 'Active' | 'Inactive' | 'Failed';
 
 function contributorStatus(
     contributor: ContributorInterface,
