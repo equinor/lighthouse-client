@@ -1,18 +1,16 @@
 import { Button, Scrim } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
 import { httpClient } from '@equinor/portal-client';
+import { storage } from '@equinor/Utils';
 import { useEffect, useMemo, useState } from 'react';
 import { linkForm } from '../Forms/link';
 import { messageForm } from '../Forms/message';
-
 import { Link, ServiceMessage } from '../Types/serviceMessage';
-import { storage } from '@equinor/Utils';
 import { Container, ScrimContainer } from './ServiceMessagePostStyle';
 
 window['postServiceMessage'] = (prop: string) => {
     storage.setItem('postMessage', prop);
 };
-
 
 export function ServiceMessagePost(): JSX.Element | null {
     const [isActive, setIsActive] = useState(false);
@@ -26,37 +24,44 @@ export function ServiceMessagePost(): JSX.Element | null {
     }, []);
 
     async function postMessage() {
-        const message: ServiceMessage = { ...formDataMessage.data }
+        const message: ServiceMessage = { ...formDataMessage.data };
 
         if (formDataLink.data.title && formDataLink.data.url) {
-            message.link = formDataLink.data
+            message.link = formDataLink.data;
         }
 
-        const response = await appConfig.post('/api/serviceMessage', {
+        await appConfig.post('/api/serviceMessage', {
             body: JSON.stringify(message),
         });
 
-        console.log(response);
         storage.setItem('postMessage', 'false');
         setIsActive(false);
     }
 
     const SubmitButton = () => {
-        return <Button
-            disabled={!formDataMessage.isValidForm()}
-            onClick={() => {
-
-                postMessage()
-            }}>Submit</Button>;
+        return (
+            <Button
+                disabled={!formDataMessage.isValidForm()}
+                onClick={() => {
+                    postMessage();
+                }}
+            >
+                Submit
+            </Button>
+        );
     };
     const Cancel = () => {
-        return <Button
-            onClick={() => {
-                storage.setItem('postMessage', 'false');
-                setIsActive(false);
-            }}>Cancel</Button>;
+        return (
+            <Button
+                onClick={() => {
+                    storage.setItem('postMessage', 'false');
+                    setIsActive(false);
+                }}
+            >
+                Cancel
+            </Button>
+        );
     };
-
 
     return (
         <div>
@@ -85,8 +90,7 @@ export function ServiceMessagePost(): JSX.Element | null {
                         </Container>
                     </ScrimContainer>
                 </Scrim>
-            )
-            }
-        </div >
+            )}
+        </div>
     );
 }

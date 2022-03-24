@@ -1,21 +1,24 @@
-import { Search } from '@equinor/eds-core-react';
+import { Button, Icon, Search } from '@equinor/eds-core-react';
 import { useClientContext } from '@equinor/portal-client';
 import { useMemo, useState } from 'react';
+import { useMenuContext } from '../../Context/MenuContext';
+import { filterByValue, groupeByKey } from '../../Utils/utils';
+import { MenuItem } from '../MenuItem/MenuItem';
+import { AppGroup } from '../Sheard/Styles';
 import {
-    FullscreenMenuAppGroup,
     FullscreenMenuGroupHeaderText,
     FullscreenMenuWrapper,
     HeaderLink,
     MenuColumn,
     MenuRow,
     MenuScrim
-} from './FullscreenMainMenuStyles';
-import { MenuItem } from './MenuItem';
-import { filterByValue, groupeByKey } from './utils';
+} from './ExpandedMenuStyles';
 
-export const FullscreenMainMenu = (): JSX.Element => {
+export const ExpandedMenu = (): JSX.Element => {
     const [searchValue, setSearchValue] = useState('');
-    const { registry, toggleFullscreenMenu } = useClientContext();
+    const { registry } = useClientContext();
+
+    const { toggleMenu, setCompactMenuActive } = useMenuContext();
 
     const { apps, appGroups } = registry;
     const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
@@ -33,12 +36,8 @@ export const FullscreenMainMenu = (): JSX.Element => {
                 return null;
             }
             return (
-                <FullscreenMenuAppGroup key={key}>
-                    <HeaderLink
-                        to={`${key}`}
-                        className="noBorder"
-                        onClick={() => toggleFullscreenMenu()}
-                    >
+                <AppGroup key={key}>
+                    <HeaderLink to={`${key}`} onClick={() => toggleMenu()}>
                         <FullscreenMenuGroupHeaderText>
                             {appGroups[key].name}
                         </FullscreenMenuGroupHeaderText>
@@ -48,19 +47,18 @@ export const FullscreenMainMenu = (): JSX.Element => {
                         return (
                             <MenuItem
                                 key={`acc-${item.shortName}`}
-                                appId={key}
+                                groupId={key}
                                 manifest={item}
-                                isFullMenu={true}
-                                onClick={() => toggleFullscreenMenu()}
+                                onClick={() => toggleMenu()}
                             />
                         );
                     })}
-                </FullscreenMenuAppGroup>
+                </AppGroup>
             );
         });
 
     return (
-        <MenuScrim onClick={() => toggleFullscreenMenu()}>
+        <MenuScrim onClick={() => toggleMenu()}>
             <FullscreenMenuWrapper>
                 <MenuRow>
                     <Search
@@ -75,6 +73,11 @@ export const FullscreenMainMenu = (): JSX.Element => {
                     <MenuColumn>{appColumn(2)}</MenuColumn>
                     <MenuColumn>{appColumn(3)}</MenuColumn>
                     <MenuColumn>{appColumn(4)}</MenuColumn>
+                </MenuRow>
+                <MenuRow>
+                    <Button variant="ghost" onClick={setCompactMenuActive}>
+                        <Icon name="chevron_left" /> Compact menu
+                    </Button>
                 </MenuRow>
             </FullscreenMenuWrapper>
         </MenuScrim>
