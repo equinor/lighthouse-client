@@ -74,9 +74,17 @@ export function createChecklistSteps(data: CheckList[]): CheckList[] {
             data.some((x) => x.formularType === formularType)
         ) {
             const foundTestSteps = data.filter((x) => x.formularType === formularType);
-            const workflowStep = foundTestSteps[0];
-            workflowStep.status = getPipetestStatusForStep(foundTestSteps);
-            workflowStep.workflowStepText = formularType === CheckListStepTag.HtTest ? '1' : '2';
+            const workflowStep: CheckList = {
+                tagNo: '',
+                responsible: '',
+                formularGroup: '',
+                formularType: '',
+                status: getPipetestStatusForStep(foundTestSteps),
+                isHeatTrace: true,
+                revision: '',
+                test: '',
+                workflowStepText: formularType === CheckListStepTag.HtTest ? '1' : '2',
+            };
             workflowSteps.push(workflowStep);
         } else {
             workflowSteps.push({

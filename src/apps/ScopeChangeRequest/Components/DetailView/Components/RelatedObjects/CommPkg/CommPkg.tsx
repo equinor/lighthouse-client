@@ -1,13 +1,13 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { isProduction } from '../../../../../../../Core/Client/';
+import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
-import { Icon } from '@equinor/eds-core-react';
 import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
 import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
 import { useQuery } from 'react-query';
 import { CacheTime } from '../../../../../../DisciplineReleaseControl/Enums/cacheTimes';
+import { CommPkgIcon } from './commPkgIcon';
 
 interface CommPkgProps {
     commPkg: CommissioningPackage;
@@ -15,10 +15,11 @@ interface CommPkgProps {
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     const { commPkg: commPkgKey } = proCoSysQueryKeys();
+    const { procosysPlantId } = useFacility();
 
     const { data } = useQuery(
         commPkgKey(commPkg.procosysNumber),
-        () => getCommPkgById(commPkg.procosysId),
+        () => getCommPkgById(procosysPlantId, commPkg.procosysId),
         {
             cacheTime: CacheTime.TenHours,
             staleTime: CacheTime.TenHours,
@@ -27,15 +28,14 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
 
     return (
         <Wrapper key={commPkg.procosysId}>
-            <Icon name="placeholder_icon" />
+            <CommPkgIcon />
             <TagText>
                 <Link
-                    href={`https://${
-                        isProduction() ? 'procosys' : 'procosystest'
-                    }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
+                    href={`https://${isProduction() ? 'procosys' : 'procosystest'
+                        }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
                     target="_blank"
                 >
-                    COMM_{commPkg.procosysNumber}
+                    {commPkg.procosysNumber}
                 </Link>
                 -
                 <div>

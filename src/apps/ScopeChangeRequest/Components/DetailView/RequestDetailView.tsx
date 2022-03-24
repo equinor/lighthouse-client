@@ -1,5 +1,6 @@
 import { Button, Progress } from '@equinor/eds-core-react';
 import styled from 'styled-components';
+import { useFacility } from '../../../../Core/Client/Hooks';
 import { useSideSheet } from '../../../../packages/Sidesheet/context/sidesheetContext';
 import { getCommPkgById } from '../../Api/PCS/getCommPkgById';
 import { initiateScopeChange } from '../../Api/ScopeChange/Request';
@@ -15,12 +16,13 @@ import { SingleView } from './Components/RequestDetailView/Single';
 export const RequestDetailView = (): JSX.Element => {
     const { width } = useSideSheet();
     const { request } = useScopeChangeContext();
-
+    const { procosysPlantId } = useFacility();
     const { patchKey } = scopeChangeMutationKeys(request.id);
 
     const keys = proCoSysQueryKeys();
     const keyFunction = (pkg: CommissioningPackage) => keys.commPkg(pkg.procosysNumber);
-    const queryFn = async (pkg: CommissioningPackage) => await getCommPkgById(pkg.procosysId);
+    const queryFn = async (pkg: CommissioningPackage) =>
+        await getCommPkgById(procosysPlantId, pkg.procosysId);
 
     useEagerLoading({
         items: request.commissioningPackages,
@@ -29,10 +31,11 @@ export const RequestDetailView = (): JSX.Element => {
         delayedStartTime: 1000,
     });
 
-    const { mutateAsync: initiate, isLoading } = useScopeChangeMutation(
+    const { mutate: initiate, isLoading } = useScopeChangeMutation(
         request.id,
         patchKey,
-        initiateScopeChange
+        initiateScopeChange,
+        {}
     );
 
     return (
