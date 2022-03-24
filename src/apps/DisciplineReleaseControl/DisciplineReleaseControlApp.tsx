@@ -4,10 +4,8 @@ import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import {
-    getDotsColor,
     getPipetestCompletionStatus,
     getPipetestStatus,
-    getShortformCompletionStatusName,
     getYearAndWeekFromString,
     sortPipetestChecklist,
     sortPipetests,
@@ -15,12 +13,7 @@ import {
 import { fieldSettings } from './Components/Garden/gardenSetup';
 import { Pipetest } from './Types/pipetest';
 import { ReleaseControlGardenItem } from './Components/Garden/ReleaseControlGardenItem';
-import {
-    checklistTagFunc,
-    createChecklistSteps,
-    getHTList,
-    Status,
-} from './Functions/tableHelpers';
+import { checklistTagFunc, createChecklistSteps, getHTList } from './Functions/tableHelpers';
 import { getTimePeriod } from './Components/Garden/gardenFunctions';
 import { PipetestStep } from './Types/drcEnums';
 import { DateTime } from 'luxon';
