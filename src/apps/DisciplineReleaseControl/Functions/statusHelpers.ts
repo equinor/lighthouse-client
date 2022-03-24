@@ -189,6 +189,7 @@ export function getPipetestStatusForStep(checkLists: CheckList[]): string {
 
 export const getYearAndWeekFromDate = (date: Date): string => {
     const dateTime = DateTime.local(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    if (dateTime.weekYear === 1) return DATE_BLANKSTRING;
     return `${dateTime.weekYear}-${dateTime.weekNumber}`;
 };
 
