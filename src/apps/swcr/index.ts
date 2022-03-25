@@ -1,12 +1,14 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import { weekDiff } from '../Construction/Utils';
 import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
 import { SwcrItemView } from './CustomViews/SwcrGardenItem';
 import { SwcrGroupView } from './CustomViews/SwcrGroupView';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { SwcrPackage } from './models/SwcrPackage';
 import { fieldSettings } from './utilities/gardenSetup';
+import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
-
+import { SwcrGraph } from './CustomViews/Graph';
 export function setup(appApi: ClientApi): void {
     const swcr = appApi.createWorkSpace<SwcrPackage>({
         CustomSidesheet: SwcrSideSheet,
@@ -28,6 +30,10 @@ export function setup(appApi: ClientApi): void {
 
     async function responseParser(res: Response) {
         const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
+        const temp = swcrPackages.filter(
+            (swcr) => weekDiff(new Date(swcr.updatedAtDate)).weeks >= -60
+        );
+        console.log(temp);
 
         return swcrPackages.sort(sortPackagesByStatusAndNumber);
     }
@@ -70,4 +76,24 @@ export function setup(appApi: ClientApi): void {
             customHeaderView: SwcrHeaderView,
         },
     });
+
+    swcr.registerAnalyticsOptions({
+        section1: {
+            // chart1: {
+            //     type: 'barChart',
+            //     options: {
+            //         categoryKey: 'createdAtDate',
+            //         nameKey: 'closedAtDate',
+            //     },
+            // },
+            chart2: {
+                type: 'customVisual',
+                options: {
+                    component: SwcrGraph,
+                },
+            },
+        },
+    });
+
+    swcr.registerStatusItems(statusBarData);
 }
