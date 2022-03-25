@@ -59,6 +59,7 @@ interface PowerBiProps {
     };
     aspectRatio?: number;
     isFilterActive?: boolean;
+    activePage?: string;
 }
 const TOP_BAR_FILTER_HEIGHT = 248;
 const TOP_BAR_HEIGHT = 48;
@@ -68,6 +69,7 @@ export const PowerBI = ({
     options,
     isFilterActive = false,
     aspectRatio = 0.41,
+    activePage,
 }: PowerBiProps): JSX.Element => {
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
     const [report, setReport] = useState<Report>();
@@ -129,7 +131,7 @@ export const PowerBI = ({
                             isLoaded={isLoaded}
                             isFilterActive={isFilterActive}
                         />
-                        <PageNavigation report={report} />
+                        <PageNavigation report={report} pageId={activePage} />
                     </TopBar>
                     <PBIWrapper height={isFilterActive ? TOP_BAR_FILTER_HEIGHT : TOP_BAR_HEIGHT}>
                         <div style={{ height: `${width * aspectRatio}px` }}>

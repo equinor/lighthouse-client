@@ -8,15 +8,16 @@ export function setup(appApi: ClientApi): void {
         reportURI: 'pp-swcr-analytics',
         pages: [
             {
-                pageId: 'overview',
+                pageId: 'ReportSectionb937310a77e18f67ff37',
                 pageTitle: 'Overview',
+                default: true,
             },
             {
-                pageId: 'browser',
+                pageId: 'ReportSection272f7d54d84d16689496',
                 pageTitle: 'Browser',
             },
             {
-                pageId: 'History',
+                pageId: 'ReportSection0cb62244235c033e5151',
                 pageTitle: 'History',
             },
         ],

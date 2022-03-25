@@ -20,4 +20,5 @@ export interface FusionPowerBiOptions {
 export interface Page {
     pageId: string;
     pageTitle: string;
+    default?: boolean;
 }

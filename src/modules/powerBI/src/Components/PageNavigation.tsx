@@ -1,9 +1,9 @@
+import { Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { Page, Report } from 'powerbi-client';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { useActivePage, useGetPages } from '../Hooks';
-import { Tabs } from '@equinor/eds-core-react';
 
 const { Tab } = Tabs;
 
@@ -32,10 +32,16 @@ const HeaderTab = styled(Tab)`
 
 type PageNavigationProps = {
     report: Report | undefined;
+    pageId?: string;
 };
-export const PageNavigation = ({ report }: PageNavigationProps) => {
+export const PageNavigation = ({ report, pageId }: PageNavigationProps) => {
     const { pages } = useGetPages(report);
-    const [activePage, setActivePage] = useActivePage(report);
+    const [activePage, setActivePage, setActivePageByName] = useActivePage(report);
+
+    useEffect(() => {
+        pageId && setActivePageByName(pageId);
+    }, [pageId]);
+
     const handleClick = useCallback(
         (page: Page) => {
             if (report) {
