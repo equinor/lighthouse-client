@@ -45,7 +45,12 @@ export function setup(appApi: ClientApi): void {
         return json;
     };
 
-    const releaseControlExcludeKeys: (keyof Pipetest)[] = ['name'];
+    const releaseControlExcludeKeys: (keyof Pipetest)[] = [
+        'name',
+        'commPkPriority1',
+        'rfccPlanned',
+        'description',
+    ];
 
     const request = appApi
         .createWorkSpace<Pipetest>({
@@ -63,19 +68,20 @@ export function setup(appApi: ClientApi): void {
         .registerFilterOptions({
             excludeKeys: releaseControlExcludeKeys,
             headerNames: {},
-            defaultActiveFilters: ['step', 'System', 'Priority', 'DueDateTimePeriod', 'Overdue'],
+            defaultActiveFilters: [
+                'step',
+                'System',
+                'Priority',
+                'dueDateTimePeriod',
+                'overdue',
+                'completionStatus',
+            ],
             valueFormatter: {
                 System: (item: Pipetest): string => {
                     return item.name.substring(0, 2);
                 },
                 Priority: (item: Pipetest): string => {
                     return item.commPkPriority1 !== '' ? item.commPkPriority1 : 'Unknown';
-                },
-                DueDateTimePeriod: (item: Pipetest): string => {
-                    return item.dueDateTimePeriod;
-                },
-                Overdue: (item: Pipetest): string => {
-                    return item.overdue;
                 },
             },
         });
@@ -88,6 +94,7 @@ export function setup(appApi: ClientApi): void {
 
     request.registerTableOptions({
         objectIdentifierKey: 'name',
+        itemSize: 32,
         columnOrder: ['name', 'description', 'commPkPriority1', 'step', 'completionStatus'],
         hiddenColumns: [
             'rfccPlanned',
@@ -101,7 +108,7 @@ export function setup(appApi: ClientApi): void {
             { key: 'name', title: 'Pipetest', width: 100 },
             { key: 'description', title: 'Description', width: 600 },
             { key: 'commPkPriority1', title: 'Priority', width: 90 },
-            { key: 'step', title: 'Step', width: 210 },
+            { key: 'step', title: 'Current step', width: 210 },
             { key: 'checkLists', title: 'Process', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
         ],
@@ -135,7 +142,7 @@ export function setup(appApi: ClientApi): void {
             },
             {
                 id: 'htList',
-                Header: 'Heattraces',
+                Header: 'HT cables',
                 Aggregated: () => null,
                 width: 400,
                 aggregate: 'count',
