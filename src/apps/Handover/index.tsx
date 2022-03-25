@@ -16,12 +16,17 @@ import {
 import { Status } from './Garden/components/commonStyles';
 import { statusBarData } from './Garden/components/statusItems';
 export function setup(appApi: ClientApi): void {
-    const handover = appApi.createWorkSpace<HandoverPackage>({
-        CustomSidesheet: HandoverSideSheet,
-        objectIdentifier: 'id',
-    });
+    const handover = appApi
+        .createWorkSpace<HandoverPackage>({
+            CustomSidesheet: HandoverSideSheet,
+            objectIdentifier: 'id',
+        })
+        .registerDataSource({
+            responseAsync: responseAsync,
+            responseParser: responseParser,
+        });
 
-    handover.registerDataSource(async () => {
+    async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
         const { fusion } = httpClient();
         fusion.setBaseUrl(
             `https://pro-s-dataproxy-${
@@ -31,12 +36,15 @@ export function setup(appApi: ClientApi): void {
         const contextId = isProduction()
             ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
             : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-        const response = await fusion.fetch(`${contextId}/handover/`);
+        return await fusion.fetch(`${contextId}/handover/`, { signal: signal });
+    }
+
+    async function responseParser(response: Response) {
         const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
         [];
 
         return parsedResponse.sort(sortPackagesByStatus);
-    });
+    }
 
     // handover.registerFilterOptions({});
 
@@ -107,6 +115,7 @@ export function setup(appApi: ClientApi): void {
     handover.registerGardenOptions({
         gardenKey: 'RFCC' as keyof HandoverPackage, // HOW to handled this ????
         itemKey: 'commpkgNo',
+        type: 'normal',
         fieldSettings: fieldSettings,
         customGroupByKeys: initialCustomGroupByKeys,
         customViews: {

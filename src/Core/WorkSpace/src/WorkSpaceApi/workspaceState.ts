@@ -3,9 +3,11 @@ import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
+import { FetchQueryOptions, QueryFunction } from 'react-query';
 import { TableOptions as ReactTableOptions } from 'react-table';
 import {
     CustomView,
+    CustomVirtualView,
     GardenOptions,
     StatusView,
 } from '../../../../components/ParkView/Models/gardenOptions';
@@ -51,7 +53,7 @@ export interface TreeOptions<T> {
     groupByKeys?: (keyof T)[];
     itemKey: keyof T;
     excludeKeys?: (keyof T)[];
-    customViews?: CustomView<T>;
+    customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
     onSelect?: (item: T) => void;
@@ -68,9 +70,16 @@ export interface WorkflowEditorOptions {
     endpoint: string;
 }
 
+export interface PrefetchQueriesOptions {
+    queryKey: string[];
+    queryFn: QueryFunction<unknown, string[]>;
+    options?: FetchQueryOptions<unknown, unknown, unknown, string[]> | undefined;
+}
+
 export interface WorkSpaceConfig<T> {
     name: string;
     objectIdentifier: string;
+    prefetchQueriesOptions?: PrefetchQueriesOptions[];
     onSelect?: (item: T) => void;
     idResolver?: (id: string) => Promise<T | undefined>;
     dataSource?: DataSource<T>;
@@ -88,7 +97,7 @@ export interface WorkSpaceConfig<T> {
     workflowEditorOptions?: WorkflowEditorOptions;
 }
 
-export interface TimeLineOptions { }
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

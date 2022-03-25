@@ -23,7 +23,10 @@ const Groups = styled.div`
 
 export function TreeColumn<T>({ group, fieldSettings }: TreeColumnProps<T>): JSX.Element | null {
     const columnExpanded = group.isExpanded;
-    const subGroupKeys = useMemo(() => Object.keys(group.subGroups) || [], [group.subGroups]);
+    const subGroupKeys = useMemo(
+        () => group.subGroups.map((sub) => sub.value) || [],
+        [group.subGroups]
+    );
 
     if (!group) return null;
 
@@ -41,7 +44,7 @@ export function TreeColumn<T>({ group, fieldSettings }: TreeColumnProps<T>): JSX
                         .map((groupKey, index) => (
                             <Group
                                 key={groupKey + index}
-                                group={group.subGroups[groupKey]}
+                                group={group.subGroups[index]}
                                 columnExpanded={columnExpanded}
                                 fieldSettings={fieldSettings}
                             />
