@@ -7,10 +7,10 @@ export const FilterItemWrapper = styled.span`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
 
     :hover {
-        background-color: ${tokens.colors.interactive.primary__selected_hover
-            .rgba};
+        background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
     }
 `;
 

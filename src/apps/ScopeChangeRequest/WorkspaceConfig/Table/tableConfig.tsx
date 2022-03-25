@@ -4,7 +4,8 @@ import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/worksp
 import { OriginLink } from '../../Components/DetailView/Components/OriginLink';
 import { WorkflowCompact } from './WorkflowCompact';
 import { getLastSigned } from './getLastSigned';
-import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { Criteria, ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { Fragment } from 'react';
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',
@@ -15,13 +16,13 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             accessor: 'currentWorkflowStep',
             Cell: ({ cell }: any) => {
                 return (
-                    <div>
+                    <>
                         {cell.row.original.currentWorkflowStep ? (
-                            <div>{cell.row.original.currentWorkflowStep.name}</div>
+                            <>{cell.row.original.currentWorkflowStep.name}</>
                         ) : (
-                            ''
+                            '-'
                         )}
-                    </div>
+                    </>
                 );
             },
             id: 'CurrentStep',
@@ -36,7 +37,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 const request = cell.row.original as ScopeChangeRequest;
 
                 const lastSigned = getLastSigned(request);
-                if (!lastSigned) return null;
+                if (!lastSigned) return '-';
                 return <div>{lastSigned.toRelative()}</div>;
             },
             id: 'LastSigned',
@@ -60,12 +61,12 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'attachments',
         'isVoided',
         'disciplines',
-        'hasPendingContributions',
     ],
     columnOrder: [
         'sequenceNumber',
         'title',
         'hasComments',
+        'hasPendingContributions',
         'phase',
         'workflowSteps',
         'CurrentStep',
@@ -102,7 +103,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'description', title: 'Description' },
         { key: 'state', title: 'State', width: 80 },
         { key: 'guesstimateDescription', title: 'Guesstimate description' },
-        { key: 'currentWorkflowStep', title: 'Next to sign' },
+        { key: 'currentWorkflowStep', title: 'Next ' },
         {
             key: 'hasComments',
             title: {
@@ -114,6 +115,15 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 ),
             },
             width: 80,
+        },
+        {
+            key: 'hasPendingContributions',
+            width: 70,
+            title: {
+                Custom: () => (
+                    <Icon color={tokens.colors.text.static_icons__default.hex} name="group" />
+                ),
+            },
         },
     ],
     customCellView: [
@@ -135,7 +145,20 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
-                    return <div>{request.isVoided ? 'Voided' : request.state}</div>;
+                    return <>{request.isVoided ? 'Voided' : request.state}</>;
+                },
+            },
+        },
+        {
+            key: 'hasPendingContributions',
+            type: {
+                Cell: ({ cell }: any) => {
+                    const request: ScopeChangeRequest = cell.value.content;
+                    return request.hasPendingContributions ? (
+                        <Icon color={tokens.colors.text.static_icons__default.hex} name="group" />
+                    ) : (
+                        '-'
+                    );
                 },
             },
         },
@@ -153,13 +176,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
                     return (
-                        <div>
-                            {request.estimatedChangeHours > 0 ? (
-                                request.estimatedChangeHours
-                            ) : (
-                                <></>
-                            )}
-                        </div>
+                        <>{request.estimatedChangeHours > 0 ? request.estimatedChangeHours : ''}</>
                     );
                 },
             },
@@ -169,11 +186,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
-                    return (
-                        <div>
-                            {request.actualChangeHours > 0 ? request.actualChangeHours : <></>}
-                        </div>
-                    );
+                    return <>{request.actualChangeHours > 0 ? request.actualChangeHours : ''}</>;
                 },
             },
         },
@@ -183,7 +196,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     if (!cell.value.content.hasComments) {
-                        return null;
+                        return '-';
                     }
 
                     return (
@@ -200,13 +213,13 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     return (
-                        <div>
+                        <>
                             <OriginLink
                                 onlyUnderlineOnHover={true}
                                 type={cell.value.content.originSource}
                                 id={cell.value.content.originSourceId}
                             />
-                        </div>
+                        </>
                     );
                 },
             },
@@ -216,13 +229,13 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     return (
-                        <div>
+                        <>
                             {cell.value.content.currentWorkflowStep?.criterias
-                                .filter((x) => x.signedAtUtc === null)
-                                .map((x) => {
-                                    return <div key={x.id}>{x.valueDescription}</div>;
+                                .filter((x: Criteria) => x.signedState === null)
+                                .map((x: Criteria) => {
+                                    return <Fragment key={x.id}>{x.valueDescription}</Fragment>;
                                 })}
-                        </div>
+                        </>
                     );
                 },
             },
