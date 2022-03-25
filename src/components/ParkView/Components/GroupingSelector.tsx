@@ -1,5 +1,5 @@
 import { SingleSelect } from '@equinor/eds-core-react';
-import { useCallback, useMemo } from 'react';
+import { Fragment, useCallback, useMemo } from 'react';
 import { SelectRowWrapper, Separator } from '../Styles/groupingSelector';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { FieldSettings } from '../Models/fieldSettings';
@@ -96,7 +96,7 @@ export function FilterSelector<T>(): JSX.Element | null {
 
             {groupByKeys.map((groupByKey, index) => {
                 return (
-                    <>
+                    <Fragment key={index}>
                         <SingleSelect
                             key={groupByKey.toString()}
                             items={groupingOptions || []}
@@ -110,7 +110,7 @@ export function FilterSelector<T>(): JSX.Element | null {
                             }}
                         />
                         <Separator>then</Separator>
-                    </>
+                    </Fragment>
                 );
             })}
             {groupingOptions && groupingOptions.length > 0 && (

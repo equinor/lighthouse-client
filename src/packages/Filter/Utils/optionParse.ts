@@ -8,5 +8,5 @@ export function parseGroupValueFunctions(groupValue?: string): GrouperFunctions 
 }
 
 export function groupValueTopString<T>(options?: FilterOptions<T>): string | undefined {
-    return options && JSONfn.stringify(options.groupValue);
+    return options && JSONfn.stringify(options.valueFormatter);
 }
