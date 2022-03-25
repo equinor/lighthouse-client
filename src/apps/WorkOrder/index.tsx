@@ -1,7 +1,8 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { WorkOrderItem, WorkorderSideSheet } from './Garden/components';
+import { WorkorderSideSheet } from './Garden/components';
+import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
 import { WorkOrder } from './Garden/models';
-import { fieldSettings } from './Garden/utility/gardenSetup';
+import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
 import { sortPackages } from './Garden/utility/sortPackages';
 
 const excludeKeys: (keyof WorkOrder)[] = [
@@ -12,42 +13,61 @@ const excludeKeys: (keyof WorkOrder)[] = [
 ];
 
 export function setup(appApi: ClientApi): void {
-    const commPkg = appApi.createWorkSpace<WorkOrder>({
-        objectIdentifier: 'workOrderId',
-        CustomSidesheet: WorkorderSideSheet,
-    });
-
     const contextId = isProduction()
         ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
         : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-    commPkg.registerDataSource(async () => {
+
+    async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
         const { fusionDataproxy } = httpClient();
 
-        const response = await fusionDataproxy.fetch(`api/contexts/${contextId}/work-orders`);
+        return await fusionDataproxy.fetch(`api/contexts/${contextId}/work-orders`, {
+            signal: signal,
+        });
+    }
 
+    async function responseParser(response: Response) {
         const parsedResponse = JSON.parse(await response.text()) as WorkOrder[];
-        return parsedResponse.slice(0, 100);
-    });
+        return parsedResponse;
+    }
 
-    commPkg.registerFilterOptions({
-        excludeKeys,
-    });
+    appApi
+        .createWorkSpace<WorkOrder>({
+            objectIdentifier: 'workOrderId',
+            CustomSidesheet: WorkorderSideSheet,
+        })
+        .registerDataSource({
+            responseAsync: responseAsync,
+            responseParser: responseParser,
+        })
+        .registerFilterOptions({ excludeKeys })
+        .registerTableOptions({
+            objectIdentifierKey: 'mcPkgNo',
+        })
+        .registerGardenOptions({
+            gardenKey: 'fwp' as keyof WorkOrder,
+            itemKey: 'workOrderNumber',
+            fieldSettings: fieldSettings,
 
-    commPkg.registerTableOptions({
-        objectIdentifierKey: 'mcPkgNo',
-    });
-    commPkg.registerGardenOptions({
-        gardenKey: 'fwp' as keyof WorkOrder,
-        itemKey: 'workOrderNumber',
-        fieldSettings: fieldSettings,
-        customViews: {
-            customItemView: WorkOrderItem,
-        },
-        sortData: sortPackages,
+            type: 'virtual',
+            customViews: {
+                customItemView: WorkOrderItem,
+            },
+            intercepters: {
+                postGroupSorting: (data, keys) => {
+                    data.forEach(({ items }) => {
+                        items = sortPackages(items, ...keys);
+                    });
+                    return data;
+                },
+            },
 
-        // status: { statusItemFunc, shouldAggregate: true },
-        //options: { groupDescriptionFunc },
-    });
+            highlightColumn: getHighlightedColumn,
+            itemWidth: getItemWidth,
+
+            // status: { statusItemFunc, shouldAggregate: true },
+            //options: { groupDescriptionFunc },
+        });
+
     // commPkg.registerAnalyticsOptions(analyticsOptions);
     // commPkg.registerTreeOptions({
     //     groupByKeys: ['status', 'responsible', 'tagNo'],

@@ -1,12 +1,16 @@
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
 import { Area } from '../../Types/ProCoSys/area';
 
-export async function getAreaByCode(areaCode: string): Promise<Area> {
+export async function getAreaByCode(plantId: string, areaCode: string): Promise<Area> {
     const { procosys } = httpClient();
 
-    const responseData: Area = await procosys
-        .fetch(`api/Library/Area?plantId=PCS%24JOHAN_CASTBERG&code=${areaCode}&api-version=4.1`)
-        .then((x) => x.json());
+    const res = await procosys.fetch(
+        `api/Library/Area?plantId=PCS%24JOHAN_CASTBEG&code=${areaCode}&api-version=4.1`
+    );
 
-    return responseData;
+    if (!res.ok) {
+        throw 'Failed to get area';
+    }
+
+    return await res.json();
 }

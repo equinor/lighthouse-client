@@ -1,13 +1,17 @@
 import { httpClient } from '@equinor/portal-client';
-import { IdResolverFunc } from '../../../Core/WorkSpace/src';
+import { DataSource, IdResolverFunc } from '../../../Core/WorkSpace/src';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
-export async function dataSource(): Promise<ScopeChangeRequest[]> {
+async function responseAsync(signal?: AbortSignal): Promise<Response> {
     const { scopeChange } = httpClient();
-    const response = await scopeChange.fetch(`api/scope-change-requests`);
-
-    return JSON.parse(await response.text());
+    return await scopeChange.fetch(`api/scope-change-requests`, {
+        signal: signal,
+    });
 }
+
+export const dataSource: DataSource<ScopeChangeRequest> = {
+    responseAsync,
+};
 
 export const idResolver: IdResolverFunc<ScopeChangeRequest> = {
     idResolver: idResolverFunction,

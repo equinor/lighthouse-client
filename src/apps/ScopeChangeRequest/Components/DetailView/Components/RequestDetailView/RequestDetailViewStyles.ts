@@ -24,6 +24,6 @@ export const Section = styled.div`
 export const WorkflowLoadingHeader = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    gap: 1em;
     align-items: flex-end;
 `;

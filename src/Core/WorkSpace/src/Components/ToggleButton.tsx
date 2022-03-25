@@ -19,7 +19,7 @@ const Button = styled.button<BoxProps>`
     font-family: inherit;
     border: none;
     outline: none;
-    font-size: 1rem;
+    font-size: 14px;
     height: 48px;
     padding-left: 16px;
     padding-right: 16px;

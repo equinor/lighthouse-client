@@ -1,8 +1,13 @@
 import { httpClient } from '../../../../../Core/Client/Functions';
+import { throwOnError } from '../../../Functions/throwError';
 import { ScopeChangeRequest } from '../../../Types/scopeChangeRequest';
 
 export async function getScopeChangeById(id: string): Promise<ScopeChangeRequest> {
     const { scopeChange } = httpClient();
 
-    return await scopeChange.fetch(`api/scope-change-requests/${id}`).then((x) => x.json());
+    const res = await scopeChange.fetch(`api/scope-change-requests/${id}`);
+
+    await throwOnError(res, 'Failed to fetch data');
+
+    return await res.json();
 }

@@ -8,7 +8,6 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     setAsOpen?: boolean;
     //workflow
 }
-export type StrippedCriteria = Pick<Criteria, 'id' | 'value' | 'signedState'>;
 
 export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCN';
 
@@ -23,6 +22,7 @@ export interface ScopeChangeBaseModel {
     category: string;
     estimatedChangeHours: number;
     originSourceId?: string;
+    hasPendingContributions: boolean;
     originSource: OriginType;
     actualChangeHours: number;
     guesstimateHours: number;
@@ -47,7 +47,7 @@ export interface LogEntry {
         email: string;
     };
     id: string;
-    description: string;
+    title: string;
     objectGuid: string;
     eventType: string;
     objectType: string;
@@ -71,7 +71,6 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     areas: Area[];
     hasComments: boolean;
     sequenceNumber: number;
-    //workflow
 }
 
 export interface Discipline {

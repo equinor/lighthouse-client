@@ -12,7 +12,7 @@ export function useCount({ type, value, checked }: FilterItem): {
     const data = filteredData as Record<string, unknown>[];
 
     const updateCount = useCallback(() => {
-        const getGroupeValue = options && options.groupValue && options.groupValue[type];
+        const getGroupeValue = options && options.valueFormatter && options.valueFormatter[type];
 
         const currentCount = data.filter((item) =>
             getGroupeValue ? getGroupeValue(item) === value : item[type] === value
