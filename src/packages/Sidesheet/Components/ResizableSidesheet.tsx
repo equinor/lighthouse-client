@@ -9,8 +9,7 @@ import { useSideSheet } from '../context/sidesheetContext';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
 
 export const ResizableSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent, props, isPinned, minWidth, width, isMinimized, defaultWidth } =
-        useSideSheet();
+    const { SidesheetComponent, props, isPinned, minWidth, width, isMinimized } = useSideSheet();
     const { closeSidesheet, togglePinned, setIsMinimized, setWidth } =
         useInternalSidesheetFunction();
 
@@ -19,7 +18,8 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     };
 
     useEffect(() => {
-        SidesheetComponent && setWidth(defaultWidth);
+        /** Makes it impossible to resize sidesheet on mount?? */
+        // SidesheetComponent && setWidth(defaultWidth);
         return () => {
             isPinned && setWidth(0);
         };
@@ -40,7 +40,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         <div style={{ height: '100%' }}>
             <Resizable
                 size={{ width: width, height: '100%' }}
-                maxWidth={'100vh'}
+                // maxWidth={'100vh'}
                 onResizeStop={(e, direction, ref, d) => {
                     if (width + d.width < minWidth) {
                         //setWidth(defaultWidth);
