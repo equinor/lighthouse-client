@@ -11,7 +11,6 @@ export const Title = styled.p`
 export const Groupe = styled.div`
     padding: 0.1rem;
     width: 200px;
-    margin-left: 32px;
     display: flex;
     align-items: center;
     position: relative;
