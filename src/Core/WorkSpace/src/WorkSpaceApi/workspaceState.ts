@@ -36,6 +36,8 @@ export type TableOptions<T> = Pick<
     customCellView?: CustomCell<T>[];
     /** Add extra columns that are not part of the dataset */
     customColumns?: CustomColumn<T>[];
+    /** Height of each row */
+    itemSize?: number;
 };
 
 export interface Status {
