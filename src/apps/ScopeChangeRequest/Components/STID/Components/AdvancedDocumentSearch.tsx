@@ -7,7 +7,7 @@ import { useHttpClient } from '../../../../../Core/Client/Hooks/useApiClient';
 import { getDocumentsByTag } from '../../../Api/STID/getDocumentsByTag';
 import { Result } from './Results';
 import { SubResults } from './SubResult';
-import { AdvancedSearch, StidHeader, StidWrapper, Title } from './advancedSearchStyles';
+import { AdvancedSearch, ModalHeader, Wrapper, Title } from './advancedSearchStyles';
 import { useCancellationToken } from '../../../Hooks/useCancellationToken';
 import { ProcoSysTypes } from '../../../Types/ProCoSys/ProCoSysTypes';
 import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
@@ -158,8 +158,8 @@ export const AdvancedDocumentSearch = ({
                         width: '100vw',
                     }}
                 >
-                    <StidWrapper>
-                        <StidHeader>
+                    <Wrapper>
+                        <ModalHeader>
                             <Title>Add document</Title>
                             <Button
                                 variant="ghost_icon"
@@ -173,7 +173,7 @@ export const AdvancedDocumentSearch = ({
                                     color={tokens.colors.interactive.primary__resting.hex}
                                 />
                             </Button>
-                        </StidHeader>
+                        </ModalHeader>
                         <br />
 
                         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1em' }}>
@@ -244,7 +244,7 @@ export const AdvancedDocumentSearch = ({
                         )}
 
                         <br />
-                    </StidWrapper>
+                    </Wrapper>
                 </Scrim>
             )}
         </Fragment>
