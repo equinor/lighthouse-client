@@ -50,6 +50,7 @@ export function setup(appApi: ClientApi): void {
         'commPkPriority1',
         'rfccPlanned',
         'description',
+        'step',
     ];
 
     const request = appApi
@@ -69,7 +70,7 @@ export function setup(appApi: ClientApi): void {
             excludeKeys: releaseControlExcludeKeys,
             headerNames: {},
             defaultActiveFilters: [
-                'step',
+                'currentStep',
                 'System',
                 'Priority',
                 'dueDateTimePeriod',
@@ -77,6 +78,9 @@ export function setup(appApi: ClientApi): void {
                 'completionStatus',
             ],
             valueFormatter: {
+                currentStep: (item: Pipetest): string => {
+                    return item.step;
+                },
                 System: (item: Pipetest): string => {
                     return item.name.substring(0, 2);
                 },
