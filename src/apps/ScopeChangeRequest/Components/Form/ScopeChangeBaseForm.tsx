@@ -11,11 +11,13 @@ import { ScopeChangeFormModel } from './useScopeChangeFormState';
 interface ScopeChangeBaseFormProps {
     state: Partial<ScopeChangeFormModel>;
     handleInput: (key: keyof ScopeChangeFormModel, value: unknown) => void;
+    shouldDisableCategory?: boolean;
 }
 
 export const ScopeChangeBaseForm = ({
     handleInput,
     state,
+    shouldDisableCategory,
 }: ScopeChangeBaseFormProps): JSX.Element => {
     const { data: phases } = useQuery(['phase'], getPhases, {
         cacheTime: Infinity,
@@ -49,6 +51,7 @@ export const ScopeChangeBaseForm = ({
                     meta="(Required)"
                     initialSelectedItem={state.changeCategory?.name}
                     placeholder="Select category"
+                    disabled={shouldDisableCategory}
                     handleSelectedItemChange={(change) =>
                         handleInput(
                             'changeCategory',

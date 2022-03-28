@@ -112,7 +112,11 @@ export const ScopeChangeRequestEditForm = ({
             <FormWrapper>
                 <FlexColumn>
                     Request
-                    <ScopeChangeBaseForm handleInput={handleInput} state={state} />
+                    <ScopeChangeBaseForm
+                        handleInput={handleInput}
+                        state={state}
+                        shouldDisableCategory
+                    />
                 </FlexColumn>
 
                 <FlexColumn>
