@@ -3,15 +3,15 @@ import { openSidesheet, PopoutSidesheet } from '@equinor/sidesheet';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { WorkspaceProps } from '../..';
+import { useSideSheet } from '../../../../../packages/Sidesheet/context/sidesheetContext';
 import { useDataContext } from '../../Context/DataProvider';
 import { useConfiguredTabs } from '../../Tabs/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
+import { Fallback } from '../FallbackSidesheet/Fallback';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
-import { DataViewWrapper, Tabs } from './WorkSpaceViewStyles';
-import { Fallback } from '../FallbackSidesheet/Fallback';
-import { useSideSheet } from '../../../../../packages/Sidesheet/context/sidesheetContext';
 import { HeaderWrapper } from './HeaderFilterWrapper';
+import { DataViewWrapper, Tabs, WorkspaceWrapper } from './WorkSpaceViewStyles';
 
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const {
@@ -127,13 +127,15 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     if (!viewIsActive) return <NoDataView />;
     return (
         <FilterProvider initialData={data} options={filterOptions}>
-            <Tabs activeTab={activeTab} onChange={handleChange}>
-                <HeaderWrapper props={props} tabs={tabs} />
-                <DataViewWrapper>
-                    <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
-                </DataViewWrapper>
-            </Tabs>
-            <PopoutSidesheet />
+            <WorkspaceWrapper>
+                <Tabs activeTab={activeTab} onChange={handleChange}>
+                    <HeaderWrapper props={props} tabs={tabs} />
+                    <DataViewWrapper>
+                        <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
+                    </DataViewWrapper>
+                </Tabs>
+                <PopoutSidesheet />
+            </WorkspaceWrapper>
         </FilterProvider>
     );
 }

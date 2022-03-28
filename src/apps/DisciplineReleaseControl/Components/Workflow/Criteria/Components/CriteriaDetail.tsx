@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { Criteria, WorkflowStep } from '../../../../Types/disciplineReleaseControl';
-import { WorkflowStatus } from '../../../../../ScopeChangeRequest/Types/scopeChangeRequest';
-
 interface CriteriaDetailProps {
     criteria: Criteria;
     step: WorkflowStep;
 }
+
+export type WorkflowStatus = 'Complete' | 'Active' | 'Inactive' | 'Failed';
 
 export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Element => {
     const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
@@ -48,7 +48,7 @@ const criteriaStatus = (criteria: Criteria): WorkflowStatus => {
     if (criteria.signedAtUtc === null) {
         return 'Active';
     } else {
-        return 'Completed';
+        return 'Complete';
     }
 };
 const WorkflowText = styled.div`
@@ -59,7 +59,7 @@ const WorkflowText = styled.div`
 
 const statusFunc = (item: WorkflowStep): WorkflowStatus => {
     if (item.isCompleted) {
-        return 'Completed';
+        return 'Complete';
     } else if (item.isCurrent) {
         return 'Active';
     } else {

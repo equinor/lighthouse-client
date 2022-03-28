@@ -18,8 +18,6 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     };
 
     useEffect(() => {
-        /** Makes it impossible to resize sidesheet on mount?? */
-        // SidesheetComponent && setWidth(defaultWidth);
         return () => {
             isPinned && setWidth(0);
         };
@@ -40,7 +38,6 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         <div style={{ height: '100%' }}>
             <Resizable
                 size={{ width: width, height: '100%' }}
-                // maxWidth={'100vh'}
                 onResizeStop={(e, direction, ref, d) => {
                     if (width + d.width < minWidth) {
                         //setWidth(defaultWidth);

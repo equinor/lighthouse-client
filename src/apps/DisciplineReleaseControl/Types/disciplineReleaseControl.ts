@@ -12,7 +12,7 @@ export interface DisciplineReleaseControlFormModel extends DisciplineReleaseCont
 }
 
 export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCN';
-export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
+export type WorkflowStatus = 'Complete' | 'Active' | 'Inactive' | 'Failed';
 
 export interface Origin {
     type: OriginType;
