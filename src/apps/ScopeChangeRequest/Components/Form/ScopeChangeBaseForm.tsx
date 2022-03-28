@@ -1,10 +1,10 @@
-import { SingleSelect, TextField } from '@equinor/eds-core-react';
-import { useState } from 'react';
+import { SingleSelect } from '@equinor/eds-core-react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
 import { getCategories } from '../../Api/ScopeChange/getCategories';
 import { getPhases } from '../../Api/ScopeChange/getPhases';
+import { FormTextField } from './FormTextField';
 import { Origin } from './Origin';
 import { ScopeChangeFormModel } from './useScopeChangeFormState';
 
@@ -33,7 +33,7 @@ export const ScopeChangeBaseForm = ({
                 initialValue={state.title}
                 required
                 placeholder="Please add a title for the request"
-                onChange={(e) => handleInput('title', e)}
+                onChange={(change) => handleInput('title', change)}
             />
 
             <SingleSelect
@@ -106,43 +106,6 @@ export const ScopeChangeBaseForm = ({
                 />
             </Guesstimate>
         </BaseFormContainer>
-    );
-};
-
-interface FormTextFieldProps {
-    initialValue?: string;
-    label?: string;
-    multiline?: boolean;
-    placeholder?: string;
-    required?: boolean;
-    onChange?: (value: string) => void;
-    type?: React.HTMLInputTypeAttribute;
-}
-const FormTextField = ({
-    initialValue,
-    label,
-    multiline,
-    placeholder,
-    required,
-    onChange,
-    type,
-}: FormTextFieldProps) => {
-    const [text, setText] = useState<string>(initialValue ?? '');
-
-    return (
-        <TextField
-            id={Math.random().toString()}
-            value={text}
-            label={label}
-            multiline={multiline}
-            placeholder={placeholder}
-            type={type}
-            onInput={(e) => {
-                setText(e.target.value);
-                onChange && onChange(e.target.value);
-            }}
-            meta={required ? '(Required)' : ''}
-        />
     );
 };
 

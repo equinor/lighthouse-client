@@ -1,26 +1,38 @@
 import styled from 'styled-components';
-import { Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { Upload } from '../Attachments/Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
-import { ScopeChangeFormState } from './useScopeChangeFormState';
+import { useScopeChangeFormState } from './useScopeChangeFormState';
 import { ScopeChangeBaseForm } from './ScopeChangeBaseForm';
-import { FlexColumn, FormWrapper, Section } from './ScopeChangeForm.styles';
+import {
+    ActionBar,
+    ButtonContainer,
+    FlexColumn,
+    FormWrapper,
+    Section,
+} from './ScopeChangeForm.styles';
+import { useMutation, useQueryClient } from 'react-query';
+import { getScopeChangeById } from '../../Api/ScopeChange/Request';
+import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
+import { openSidesheet } from '@equinor/sidesheet';
+import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
+import { useCreateScopeChangeRequest } from '../../Hooks/useCreateScopeChangeRequest';
+import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 
 interface ScopeChangeRequestFormProps {
-    closeScrim: (force?: boolean) => void;
+    closeScrim: () => void;
     setHasUnsavedChanges: (value: boolean) => void;
-    formState: ScopeChangeFormState;
 }
 
 export const ScopeChangeRequestForm = ({
     closeScrim,
-    formState,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const { handleInput, state } = formState;
+    const { handleInput, isValid, state } = useScopeChangeFormState();
+    const { createScopeChangeMutation } = useCreateScopeChangeRequest();
+    const queryClient = useQueryClient();
 
     usePreloadCaching();
 
@@ -30,38 +42,78 @@ export const ScopeChangeRequestForm = ({
     const handleAttachmentsChanged = (attachments: File[]) =>
         handleInput('attachments', attachments);
 
+    const redirect = async (scopeChangeId: string) => {
+        if (!scopeChangeId) return;
+
+        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId));
+        clearActiveFactory();
+        queryClient.invalidateQueries();
+    };
+
+    const { mutate, isLoading } = useMutation(createScopeChangeMutation, {
+        retry: 2,
+        retryDelay: 2,
+        onSuccess: (id) => {
+            id && redirect(id);
+            if (!id) throw 'error';
+        },
+    });
+
+    const onMutate = (draft: boolean) =>
+        mutate({ draft: draft, model: state, references: state.references ?? [] });
+
     return (
-        <div>
-            <TitleHeader>
-                <SidesheetTitle>Create scope change request</SidesheetTitle>
-                <Icon
-                    onClick={() => closeScrim()}
-                    name="close"
-                    color={tokens.colors.interactive.primary__resting.hex}
-                />
-            </TitleHeader>
+        <>
+            <div>
+                <TitleHeader>
+                    <SidesheetTitle>Create scope change request</SidesheetTitle>
+                    <ClickableIcon name="close" onClick={closeScrim} />
+                </TitleHeader>
 
-            <FormWrapper>
-                <FlexColumn>
-                    Request
-                    <ScopeChangeBaseForm handleInput={handleInput} state={state} />
-                </FlexColumn>
+                <FormWrapper>
+                    <FlexColumn>
+                        Request
+                        <ScopeChangeBaseForm handleInput={handleInput} state={state} />
+                    </FlexColumn>
 
-                <FlexColumn>
-                    <Section>
-                        <RelatedObjectsSearch
-                            handleReferencesChanged={handleReferencesChanged}
-                            references={state.references ?? []}
+                    <FlexColumn>
+                        <Section>
+                            <RelatedObjectsSearch
+                                handleReferencesChanged={handleReferencesChanged}
+                                references={state.references ?? []}
+                            />
+                        </Section>
+                        Attachments
+                        <Upload
+                            attachments={state.attachments ?? []}
+                            handleAttachmentsChanged={handleAttachmentsChanged}
                         />
-                    </Section>
-                    Attachments
-                    <Upload
-                        attachments={state.attachments ?? []}
-                        handleAttachmentsChanged={handleAttachmentsChanged}
-                    />
-                </FlexColumn>
-            </FormWrapper>
-        </div>
+                    </FlexColumn>
+                </FormWrapper>
+            </div>
+            <ActionBar>
+                <ButtonContainer>
+                    {isLoading ? (
+                        <Button variant="ghost_icon">
+                            <CircularProgress size={32} color="primary" />
+                        </Button>
+                    ) : (
+                        <>
+                            <Button disabled={!isValid} onClick={() => onMutate(false)}>
+                                Submit
+                            </Button>
+                            <Button
+                                disabled={!isValid}
+                                onClick={() => onMutate(true)}
+                                variant="outlined"
+                            >
+                                Save
+                            </Button>
+                        </>
+                    )}
+                </ButtonContainer>
+            </ActionBar>
+        </>
     );
 };
 

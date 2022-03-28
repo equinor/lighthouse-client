@@ -1,13 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { useErrorMessageListener } from '../../Functions/ErrorMessage/useErrorMessageListener';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
-
-export interface ErrorFormat {
-    message: ServerError | undefined;
-    requestId: string;
-}
 
 /**
  * Provides a uniform banner for error messages in the sidesheet

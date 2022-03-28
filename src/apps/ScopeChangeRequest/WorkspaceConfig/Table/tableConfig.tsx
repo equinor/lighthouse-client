@@ -94,7 +94,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'guesstimateHours', title: 'Guesstimate', width: 60 },
         { key: 'estimatedChangeHours', title: 'Estimate hours', width: 60 },
         { key: 'actualChangeHours', title: 'Actual', width: 60 },
-        { key: 'changeCategory' as keyof ScopeChangeRequest, title: 'Change category' },
+        { key: 'changeCategory', title: 'Change category' },
         { key: 'originSource', title: 'Change origin' },
         { key: 'createdAtUtc', title: 'Created at' },
         { key: 'createdBy', title: 'Created by' },
