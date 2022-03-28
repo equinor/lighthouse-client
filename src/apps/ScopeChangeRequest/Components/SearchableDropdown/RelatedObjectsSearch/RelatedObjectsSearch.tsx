@@ -27,13 +27,13 @@ import { CommPkgIcon } from '../../DetailView/Components/RelatedObjects/CommPkg/
 import styled from 'styled-components';
 
 interface RelatedObjectsSearchProps {
-    relatedObjects: TypedSelectOption[];
-    setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>;
+    references: TypedSelectOption[];
+    handleReferencesChanged: (references: TypedSelectOption[]) => void;
 }
 
 export const RelatedObjectsSearch = ({
-    relatedObjects,
-    setRelatedObjects,
+    handleReferencesChanged,
+    references,
 }: RelatedObjectsSearchProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const { abort, getSignal } = useCancellationToken();
@@ -53,13 +53,13 @@ export const RelatedObjectsSearch = ({
     );
 
     const addRelatedObject = (value: TypedSelectOption) =>
-        setRelatedObjects((prev) => [...prev, value]);
+        handleReferencesChanged([...references, value]);
 
     const removeRelatedObject = (value: string) =>
-        setRelatedObjects((prev) => prev.filter((x) => x.value !== value));
+        handleReferencesChanged(references.filter((x) => x.value !== value));
 
     const selectedReferences = useMemo(() => {
-        return relatedObjects.sort(function (a, b) {
+        return references.sort(function (a, b) {
             if (a.type < b.type) {
                 return -1;
             }
@@ -68,7 +68,7 @@ export const RelatedObjectsSearch = ({
             }
             return 0;
         });
-    }, [relatedObjects]);
+    }, [references]);
 
     const loadOptions = async (
         inputValue: string,
@@ -90,7 +90,7 @@ export const RelatedObjectsSearch = ({
                 <Title>References</Title>
 
                 <AdvancedDocumentSearch
-                    documents={relatedObjects}
+                    documents={references}
                     appendItem={addRelatedObject}
                     removeItem={removeRelatedObject}
                 />
@@ -141,7 +141,7 @@ export const RelatedObjectsSearch = ({
                                     isMulti={true}
                                     placeholder={`Type to search..`}
                                     isClearable={false}
-                                    value={relatedObjects}
+                                    value={references}
                                     onInputChange={() => {
                                         setApiErrors([]);
                                     }}

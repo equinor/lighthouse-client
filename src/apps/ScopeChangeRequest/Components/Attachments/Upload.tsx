@@ -7,22 +7,20 @@ import { Attachments } from './Attachments';
 
 interface UploadProps {
     attachments: File[];
-    setAttachments: React.Dispatch<React.SetStateAction<File[]>>;
+    handleAttachmentsChanged: (attachments: File[]) => void;
 }
 
 const maxSizeInBytes = 100 * 1000 ** 2;
-export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Element => {
+export const Upload = ({ attachments, handleAttachmentsChanged }: UploadProps): JSX.Element => {
     const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
     const addFile = useCallback(
-        async (file: File) => {
-            setAttachments((prev) => [...prev, file]);
-        },
-        [setAttachments]
+        async (file: File) => handleAttachmentsChanged([...attachments, file]),
+        [attachments, handleAttachmentsChanged]
     );
 
     const removeAttachment = async (attachmentName: string | undefined) => {
         if (!attachmentName) return;
-        setAttachments((prev) => prev.filter((x) => x.name !== attachmentName));
+        handleAttachmentsChanged(attachments.filter((x) => x.name !== attachmentName));
     };
 
     const onDrop = useCallback(

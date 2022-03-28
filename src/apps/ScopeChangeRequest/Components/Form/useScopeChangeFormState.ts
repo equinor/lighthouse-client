@@ -1,21 +1,35 @@
 import { useRef, useState } from 'react';
+import { useRefresh } from '../../../../components/ParkView/hooks/useRefresh';
+import { TypedSelectOption } from '../../Api/Search/searchType';
 import { ScopeChangeBaseModel } from '../../Types/scopeChangeRequest';
 
-interface ScopeChangeFormState {
+export interface ScopeChangeFormState {
     isValid: boolean;
-    state: Partial<ScopeChangeBaseModel>;
-    handleInput: (key: keyof ScopeChangeBaseModel, value: unknown) => void;
+    state: Partial<ScopeChangeFormModel>;
+    handleInput: (key: keyof ScopeChangeFormModel, value: unknown) => void;
 }
 
+interface ScopeChangeFormModel extends ScopeChangeBaseModel {
+    attachments: File[];
+    references: TypedSelectOption[];
+}
+
+const RE_RERENDER_KEYS: (keyof ScopeChangeFormModel)[] = [
+    'references',
+    'attachments',
+    'originSource',
+];
+
 export function useScopeChangeFormState(
-    initialData?: Partial<ScopeChangeBaseModel>
+    initialData?: Partial<ScopeChangeFormModel>
 ): ScopeChangeFormState {
-    const formData = useRef<Partial<ScopeChangeBaseModel>>(initialData ?? {});
+    const formData = useRef<Partial<ScopeChangeFormModel>>(initialData ?? {});
+    const refresh = useRefresh();
 
     /** Will re-render form */
     const [isValid, setIsValid] = useState(false);
 
-    function handleInput(key: keyof ScopeChangeBaseModel, value: unknown) {
+    function handleInput(key: keyof ScopeChangeFormModel, value: unknown) {
         if (value === null) {
             /** Removes the object key */
             delete formData.current[key];
@@ -28,9 +42,12 @@ export function useScopeChangeFormState(
             setIsValid(formState);
         }
         setIsValid(checkFormState(formData.current));
+        if (RE_RERENDER_KEYS.includes(key)) {
+            refresh();
+        }
     }
 
-    const mandatoryProperties: (keyof ScopeChangeBaseModel)[] = [
+    const mandatoryProperties: (keyof ScopeChangeFormModel)[] = [
         'title',
         'category',
         'originSource',
@@ -38,7 +55,7 @@ export function useScopeChangeFormState(
         'phase',
     ];
 
-    function checkFormState(request: Partial<ScopeChangeBaseModel>): boolean {
+    function checkFormState(request: Partial<ScopeChangeFormModel>): boolean {
         if (mandatoryProperties.every((k) => Object.keys(request).includes(k))) {
             /** Validate content */
             switch (true) {

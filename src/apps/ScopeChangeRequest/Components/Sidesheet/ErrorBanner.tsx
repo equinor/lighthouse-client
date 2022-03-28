@@ -17,19 +17,18 @@ export function ScopeChangeErrorBanner(): JSX.Element {
     const { errors, removeErrors } = useErrorMessageListener();
 
     return (
-        <div>
+        <>
             {errors &&
                 errors.map((message) => (
                     <ErrorContainer key={message.title}>
                         <Inline>
-                            <span></span>
                             <div>{message.title}</div>
                             <ClickableIcon name="close" onClick={() => removeErrors(message)} />
                         </Inline>
                         <ErrorDetails>{message.description}</ErrorDetails>
                     </ErrorContainer>
                 ))}
-        </div>
+        </>
     );
 }
 const Inline = styled.div`

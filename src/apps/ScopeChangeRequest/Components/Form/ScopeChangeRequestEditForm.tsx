@@ -1,5 +1,5 @@
 import { Button, Icon, Progress } from '@equinor/eds-core-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { patchScopeChange } from '../../Api/ScopeChange/Request';
 import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
@@ -45,7 +45,6 @@ export const ScopeChangeRequestEditForm = ({
     close,
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
     const { procosysPlantId } = useFacility();
-    const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
     const { addToQueryCache } = useQueryCacheLookup();
 
     const referencesKeys = proCoSysQueryKeys();
@@ -58,11 +57,11 @@ export const ScopeChangeRequestEditForm = ({
     );
 
     useEffect(() => {
-        setRelatedObjects([]);
         unpackRelatedObjects(
             request,
             procosysPlantId,
-            setRelatedObjects,
+            state.references ?? [],
+            handleReferencesChanged,
             { ...referencesKeys, ...stid },
             addToQueryCache
         );
@@ -73,12 +72,13 @@ export const ScopeChangeRequestEditForm = ({
     }, [request.id]);
 
     const onSubmit = async () => {
-        const tags = filterElementsByType(relatedObjects, 'tag');
-        const systems = filterElementsByType(relatedObjects, 'system');
-        const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
-        const areas = filterElementsByType(relatedObjects, 'area');
-        const disciplines = filterElementsByType(relatedObjects, 'discipline');
-        const documents = filterElementsByType(relatedObjects, 'document');
+        const tags = state.references && filterElementsByType(state.references, 'tag');
+        const systems = state.references && filterElementsByType(state.references, 'system');
+        const commPkgs = state.references && filterElementsByType(state.references, 'commpkg');
+        const areas = state.references && filterElementsByType(state.references, 'area');
+        const disciplines =
+            state.references && filterElementsByType(state.references, 'discipline');
+        const documents = state.references && filterElementsByType(state.references, 'document');
 
         await patchScopeChange({
             ...request,
@@ -87,9 +87,9 @@ export const ScopeChangeRequestEditForm = ({
             tagNumbers: tags?.map((x) => x.value) || [],
             systemIds: systems?.map((x) => Number(x.value)) || [],
             commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
-            documentNumbers: documents.map((x) => x.value) || [],
-            areaCodes: areas.map((x) => x.value) || [],
-            disciplineCodes: disciplines.map((x) => x.value) || [],
+            documentNumbers: documents?.map((x) => x.value) || [],
+            areaCodes: areas?.map((x) => x.value) || [],
+            disciplineCodes: disciplines?.map((x) => x.value) || [],
         });
 
         if (!error) close();
@@ -97,7 +97,13 @@ export const ScopeChangeRequestEditForm = ({
 
     const { isLoading, error, mutate } = useScopeChangeMutation(request.id, patchKey, onSubmit);
 
-    const { handleInput, isValid, state } = useScopeChangeFormState({ ...request });
+    const { handleInput, isValid, state } = useScopeChangeFormState({
+        ...request,
+        attachments: [],
+    });
+
+    const handleReferencesChanged = (references: TypedSelectOption[]) =>
+        handleInput('references', references);
 
     return (
         <>
@@ -110,8 +116,8 @@ export const ScopeChangeRequestEditForm = ({
                 <FlexColumn>
                     <Section>
                         <RelatedObjectsSearch
-                            relatedObjects={relatedObjects}
-                            setRelatedObjects={setRelatedObjects}
+                            handleReferencesChanged={handleReferencesChanged}
+                            references={state.references ?? []}
                         />
                     </Section>
                     Attachments
@@ -169,7 +175,8 @@ function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | 
 async function unpackRelatedObjects(
     request: ScopeChangeRequest,
     plantId: string,
-    setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>,
+    references: TypedSelectOption[],
+    handleReferencesChanged: (references: TypedSelectOption[]) => void,
     referencesKeys: {
         baseKey: string[];
         disciplines: string[];
@@ -185,16 +192,18 @@ async function unpackRelatedObjects(
         options?: FetchQueryOptions<T, unknown, T, string[]> | undefined
     ) => Promise<T>
 ) {
-    const appendRelatedObjects = (x: TypedSelectOption) =>
-        setRelatedObjects((prev) => [...prev, x]);
-    const patchRelatedObjects = (x: TypedSelectOption) =>
-        setRelatedObjects((prev) => {
-            const index = prev.findIndex(({ value }) => value === x.value);
-            if (index === -1) return [...prev, x];
+    function updateReferences(x: TypedSelectOption) {
+        const index = references.findIndex(({ value }) => value === x.value);
+        if (index === -1) {
+            handleReferencesChanged([...references, x]);
+            return;
+        }
 
-            const newList = [...prev.slice(0, index), x, ...prev.slice(index + 1)];
-            return newList;
-        });
+        handleReferencesChanged([...references.slice(0, index), x, ...references.slice(index + 1)]);
+    }
+
+    const appendRelatedObjects = (x: TypedSelectOption) =>
+        handleReferencesChanged([...references, x]);
 
     request.commissioningPackages.forEach(async (x) => {
         const commPkgSelectOption: TypedSelectOption = {
@@ -210,7 +219,7 @@ async function unpackRelatedObjects(
             getCommPkgById(plantId, x.procosysId)
         );
 
-        patchRelatedObjects({
+        updateReferences({
             ...commPkgSelectOption,
             label: `${x.procosysNumber} ${commPkg.Description}`,
             object: commPkg,
@@ -231,7 +240,7 @@ async function unpackRelatedObjects(
             getTagById(plantId, x.procosysId)
         );
 
-        patchRelatedObjects({
+        updateReferences({
             ...tagSelectOption,
             label: `${x.procosysNumber} ${tag.Description}`,
             object: tag,
@@ -253,7 +262,7 @@ async function unpackRelatedObjects(
             getDocumentById(x.stidDocumentNumber, 'JCA')
         );
 
-        patchRelatedObjects({
+        updateReferences({
             ...documentSelectOption,
             label: `${x.stidDocumentNumber} ${document.docTitle}`,
             object: document,
@@ -274,7 +283,7 @@ async function unpackRelatedObjects(
             getAreaByCode(plantId, x.procosysCode)
         );
 
-        patchRelatedObjects({
+        updateReferences({
             ...areaSelectOption,
             label: `${x.procosysCode} ${area.Description}`,
             object: area,
@@ -297,7 +306,7 @@ async function unpackRelatedObjects(
 
         const match = disciplines.find((discipline) => discipline.Code === x.procosysCode);
 
-        patchRelatedObjects({
+        updateReferences({
             ...disciplineSelectOption,
             label: `${x.procosysCode} ${match?.Description}`,
             object: match,
@@ -318,7 +327,7 @@ async function unpackRelatedObjects(
 
         const system = systems.find((loc) => loc.Code === x.procosysCode);
 
-        patchRelatedObjects({
+        updateReferences({
             ...systemSelectOption,
             label: `${x.procosysCode} ${system?.Description}`,
             object: system,

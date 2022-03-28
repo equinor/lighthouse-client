@@ -23,9 +23,10 @@ export const ResultItem = styled.div`
 export const Wrapper = styled.div`
     background-color: white;
     width: 640px;
+    max-width: 640px;
     min-height: 800px;
-    max-height: 100vh;
-    overflow: scroll;
+    max-height: 1200px;
+    overflow-y: scroll;
     padding: 20px;
 `;
 

@@ -14,7 +14,7 @@ export const ActionBar = styled.div`
     height: 64px;
     width: 100%;
     border: 1px solid ${tokens.colors.interactive.disabled__border.hex};
-    position: absolute;
+    position: sticky;
     bottom: 0;
     right: 0;
     background-color: white;
