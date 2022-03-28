@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import { useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
@@ -24,6 +24,7 @@ import { Viewer } from '../../../../packages/ModelViewer/ModelViewer';
 import { useFacility } from '@equinor/portal-client';
 import { Tabs } from '@equinor/eds-core-react';
 import { CheckListTable } from './CheckListTable';
+import { useInternalSidesheetFunction } from '../../../../packages/Sidesheet/Hooks/useInternalSidesheetFunction';
 
 export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
     // const { releaseControls } = useHttpClient();
@@ -36,6 +37,13 @@ export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
+    const s = useInternalSidesheetFunction();
+    const width = window.innerWidth / 2;
+
+    useEffect(() => {
+        s.setWidth(width);
+    }, [s, width]);
+
     // const queryClient = useQueryClient();
 
     // const { data, refetch, remove, isLoading, isRefetching } = useQuery<DisciplineReleaseControl>(
@@ -156,7 +164,7 @@ export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
                 <Tabs.Panels>
                     <Tabs.Panel>
                         <h4>{item.description}</h4>
-                        <h4>Status: {item.status}</h4>
+                        <h4>Status: {item.step}</h4>
                         <CheckListTable checkLists={item.checkLists} />
                     </Tabs.Panel>
                     <Tabs.Panel>
