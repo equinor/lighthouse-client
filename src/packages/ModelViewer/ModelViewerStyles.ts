@@ -37,6 +37,10 @@ export const MessageWrapper = styled.div`
 `;
 
 export const Message = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background-color: #fff;
     padding: 0.5rem;
 `;

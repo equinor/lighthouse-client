@@ -8,26 +8,23 @@ import { sort } from '../../Functions/sort';
 import { useCancellationToken } from '../../Hooks/useCancellationToken';
 import { usePcsSearch } from '../../Hooks/Search/usePcsSearch';
 import { useInfiniteCachedQuery } from '../../Hooks/React-Query/useInfiniteCachedQuery';
-import { useProcosysQueryKeyGen } from '../../Hooks/React-Query/useProcosysQueryKeyGen';
+import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
+import { useFacility } from '../../../../Core/Client/Hooks';
 
 interface PCSLinkProps {
-    selected: TypedSelectOption | null;
-    setSelected: React.Dispatch<React.SetStateAction<TypedSelectOption | null>>;
+    onSelect: (selected?: TypedSelectOption | null) => void;
     isDisabled?: boolean;
 }
 
-export const PCSPersonRoleSearch = ({
-    selected,
-    setSelected,
-    isDisabled,
-}: PCSLinkProps): JSX.Element => {
+export const PCSPersonRoleSearch = ({ isDisabled, onSelect }: PCSLinkProps): JSX.Element => {
     const { abort, getSignal } = useCancellationToken();
-
-    const { functionalRolesKey } = useProcosysQueryKeyGen();
-
+    const { procosysPlantId } = useFacility();
+    const { functionalRoles: functionalRolesKey } = proCoSysQueryKeys();
     const { searchPCS } = usePcsSearch();
 
-    const { data, refetch } = useInfiniteCachedQuery(functionalRolesKey, getFunctionalRoles);
+    const { data, refetch } = useInfiniteCachedQuery(functionalRolesKey, () =>
+        getFunctionalRoles(procosysPlantId)
+    );
 
     const loadOptions = async (
         inputValue: string,
@@ -56,7 +53,6 @@ export const PCSPersonRoleSearch = ({
                 options.push(selectOption);
             });
         }
-
         const sorted = options.sort((a, b) => sort(a, b, inputValue));
 
         callback(sorted);
@@ -75,7 +71,6 @@ export const PCSPersonRoleSearch = ({
                     cacheOptions={false}
                     loadOptions={loadOptions}
                     defaultOptions={false}
-                    value={selected}
                     isDisabled={isDisabled}
                     styles={applyEdsStyles()}
                     controlShouldRenderValue={true}
@@ -90,7 +85,7 @@ export const PCSPersonRoleSearch = ({
                     }}
                     isClearable
                     onChange={(newValue: SingleValue<TypedSelectOption>) => {
-                        setSelected(newValue ?? null);
+                        onSelect(newValue ?? null);
                     }}
                     theme={(theme: Theme) => applyEDSTheme(theme)}
                 />
