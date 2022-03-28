@@ -22,7 +22,7 @@ import {
     Section,
 } from './ScopeChangeForm.styles';
 import styled from 'styled-components';
-import { useEditScopeChangeRequest } from '../../Hooks/useEditScopeChangeRequest';
+import { useRequestMutations } from '../../Hooks/useRequestMutations';
 import { useUnpackRelatedObjects } from '../../Hooks/useUnpackRelatedObjects';
 
 interface ScopeChangeRequestEditFormProps {
@@ -50,11 +50,16 @@ export const ScopeChangeRequestEditForm = ({
         return () => close();
     }, [request.id]);
 
-    const onSubmit = useEditScopeChangeRequest();
+    const { editScopeChangeMutation } = useRequestMutations();
 
-    const { isLoading, mutate } = useScopeChangeMutation(request.id, patchKey, onSubmit, {
-        onSuccess: close,
-    });
+    const { isLoading, mutate } = useScopeChangeMutation(
+        request.id,
+        patchKey,
+        editScopeChangeMutation,
+        {
+            onSuccess: close,
+        }
+    );
 
     const { handleInput, isValid, state } = useScopeChangeFormState({
         ...request,

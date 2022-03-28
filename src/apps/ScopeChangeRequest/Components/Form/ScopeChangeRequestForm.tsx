@@ -19,7 +19,7 @@ import { getScopeChangeById } from '../../Api/ScopeChange/Request';
 import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 import { openSidesheet } from '@equinor/sidesheet';
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import { useCreateScopeChangeRequest } from '../../Hooks/useCreateScopeChangeRequest';
+import { useRequestMutations } from '../../Hooks/useRequestMutations';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 
 interface ScopeChangeRequestFormProps {
@@ -31,7 +31,7 @@ export const ScopeChangeRequestForm = ({
     closeScrim,
 }: ScopeChangeRequestFormProps): JSX.Element => {
     const { handleInput, isValid, state } = useScopeChangeFormState();
-    const { createScopeChangeMutation } = useCreateScopeChangeRequest();
+    const { createScopeChangeMutation } = useRequestMutations();
     const queryClient = useQueryClient();
 
     usePreloadCaching();
