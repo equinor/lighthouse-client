@@ -9,6 +9,8 @@ import { fieldSettings } from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { SwcrGraph } from './CustomViews/Graph';
+import { PropsWithChildren } from 'react';
+import { CellProps } from 'react-table';
 export function setup(appApi: ClientApi): void {
     const swcr = appApi.createWorkSpace<SwcrPackage>({
         CustomSidesheet: SwcrSideSheet,
@@ -30,11 +32,6 @@ export function setup(appApi: ClientApi): void {
 
     async function responseParser(res: Response) {
         const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
-        const temp = swcrPackages.filter(
-            (swcr) => weekDiff(new Date(swcr.updatedAtDate)).weeks >= -60
-        );
-        console.log(temp);
-
         return swcrPackages.sort(sortPackagesByStatusAndNumber);
     }
 
@@ -86,13 +83,100 @@ export function setup(appApi: ClientApi): void {
             //         nameKey: 'closedAtDate',
             //     },
             // },
+            // chart1: {
+            //     type: 'customVisual',
+            //     options: {
+            //         component: SwcrGraph,
+            //         componentProps: {
+            //             graphType: 'created-closed',
+            //         },
+            //     },
+            // },
             chart2: {
                 type: 'customVisual',
                 options: {
                     component: SwcrGraph,
+                    componentProps: {
+                        graphType: 'open',
+                    },
                 },
             },
         },
+        // section3: {
+        //     chart1: {
+        //         type: 'table',
+        //         options: {
+        //             initialGroupBy: 'controlSystem',
+        //             columns: [
+        //                 {
+        //                     Header: 'Control System',
+        //                     accessor: (swcr) => swcr.controlSystem,
+        //                     id: 'controlSystem',
+        //                 },
+        //                 {
+        //                     Header: 'SWCRs',
+        //                     id: 'swcrId',
+        //                     accessor: (swcr) => swcr,
+
+        //                     Aggregated: (cell) => {
+        //                         console.log(cell.value);
+        //                         return cell.value;
+        //                     },
+        //                     //@ts-ignore
+        //                 },
+        //                 {
+        //                     Header: 'Open',
+        //                     id: 'statusOpen',
+
+        //                     accessor: (swcr) => swcr.status,
+        //                     Footer: (data) => {
+        //                         const count = data.data.reduce((acc, curr) => {
+        //                             acc =
+        //                                 curr.status !== 'Closed' &&
+        //                                 curr.status !== 'Closed - Rejected'
+        //                                     ? acc + 1
+        //                                     : acc;
+        //                             return acc;
+        //                         }, 0);
+        //                         return count;
+        //                     },
+
+        //                     //@ts-ignore
+        //                     Aggregated: ({ row }) => {
+        //                         const count = row.subRows.reduce((acc, curr) => {
+        //                             acc =
+        //                                 curr.original.status !== 'Closed' &&
+        //                                 curr.original.status !== 'Closed - Rejected'
+        //                                     ? acc + 1
+        //                                     : acc;
+        //                             return acc;
+        //                         }, 0);
+        //                         return count;
+        //                     },
+        //                 },
+        //                 {
+        //                     Header: 'Closed',
+        //                     id: 'statusClosed',
+
+        //                     accessor: (swcr) => swcr.status,
+
+        //                     //@ts-ignore
+        //                     Aggregated: ({ row }) => {
+        //                         const count = row.subRows.reduce((acc, curr) => {
+        //                             acc =
+        //                                 curr.original.status === 'Closed' ||
+        //                                 curr.original.status === 'Closed - Rejected'
+        //                                     ? acc + 1
+        //                                     : acc;
+        //                             return acc;
+        //                         }, 0);
+        //                         return count;
+        //                     },
+        //                 },
+        //             ],
+        //         },
+        //     },
+        // },
     });
 
     swcr.registerStatusItems(statusBarData);
