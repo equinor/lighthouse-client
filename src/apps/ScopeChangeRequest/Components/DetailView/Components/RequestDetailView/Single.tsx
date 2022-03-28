@@ -39,7 +39,7 @@ export const SingleView = (): JSX.Element => {
             <SectionRow>
                 <Section>
                     <SubHeading>Change category</SubHeading>
-                    <Value>{request.category}</Value>
+                    <Value>{request.changeCategory.name}</Value>
                 </Section>
 
                 <Section>

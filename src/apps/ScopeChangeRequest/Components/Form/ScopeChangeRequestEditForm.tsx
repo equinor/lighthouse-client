@@ -1,18 +1,13 @@
 import { Button, Icon, Progress } from '@equinor/eds-core-react';
-import { GeneratedForm, useForm } from '@equinor/Form';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { patchScopeChange } from '../../Api/ScopeChange/Request';
 import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
 import { StidTypes } from '../../Types/STID/STIDTypes';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
-import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
-import { Origin } from './Origin';
-import { Section, Title } from './ScopeChangeRequestForm';
 import { HotUpload } from '../Attachments/HotUpload';
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { deleteAttachment } from '../../Api/ScopeChange/Request/attachment';
 import { useQueryCacheLookup } from '../../Hooks/React-Query/useQueryCacheLookup';
@@ -27,6 +22,19 @@ import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
 import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
 import { stidQueryKeys } from '../../Keys/STIDQueryKeys';
 import { useFacility } from '../../../../Core/Client/Hooks';
+import { ScopeChangeBaseForm } from './ScopeChangeBaseForm';
+import { useScopeChangeFormState } from './useScopeChangeFormState';
+import {
+    ActionBar,
+    AttachmentName,
+    AttachmentsList,
+    ButtonContainer,
+    FlexColumn,
+    FormWrapper,
+    Inline,
+    Section,
+} from './ScopeChangeForm.styles';
+import styled from 'styled-components';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -38,7 +46,6 @@ export const ScopeChangeRequestEditForm = ({
     close,
 }: ScopeChangeRequestEditFormProps): JSX.Element => {
     const { procosysPlantId } = useFacility();
-    const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
     const { addToQueryCache } = useQueryCacheLookup();
 
     const referencesKeys = proCoSysQueryKeys();
@@ -51,11 +58,11 @@ export const ScopeChangeRequestEditForm = ({
     );
 
     useEffect(() => {
-        setRelatedObjects([]);
         unpackRelatedObjects(
             request,
             procosysPlantId,
-            setRelatedObjects,
+            state.references ?? [],
+            handleReferencesChanged,
             { ...referencesKeys, ...stid },
             addToQueryCache
         );
@@ -65,36 +72,26 @@ export const ScopeChangeRequestEditForm = ({
         return () => close();
     }, [request.id]);
 
-    const formData = useForm(scopeChangeRequestSchema, {
-        id: request.id,
-        phase: request.phase,
-        category: request.category,
-        description: request.description,
-        guesstimateDescription: request.guesstimateDescription ?? undefined,
-        guesstimateHours: request.guesstimateHours ?? undefined,
-        title: request.title,
-        originSource: request.originSource,
-        originSourceId: request.originSourceId,
-    });
-
     const onSubmit = async () => {
-        const tags = filterElementsByType(relatedObjects, 'tag');
-        const systems = filterElementsByType(relatedObjects, 'system');
-        const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
-        const areas = filterElementsByType(relatedObjects, 'area');
-        const disciplines = filterElementsByType(relatedObjects, 'discipline');
-        const documents = filterElementsByType(relatedObjects, 'document');
+        const tags = state.references && filterElementsByType(state.references, 'tag');
+        const systems = state.references && filterElementsByType(state.references, 'system');
+        const commPkgs = state.references && filterElementsByType(state.references, 'commpkg');
+        const areas = state.references && filterElementsByType(state.references, 'area');
+        const disciplines =
+            state.references && filterElementsByType(state.references, 'discipline');
+        const documents = state.references && filterElementsByType(state.references, 'document');
 
         await patchScopeChange({
             ...request,
-            ...formData.getChangedData(),
+            ...state,
+            changeCategoryId: state.changeCategory?.id ?? request.changeCategory.id,
             originSourceId: request.originSourceId,
             tagNumbers: tags?.map((x) => x.value) || [],
             systemIds: systems?.map((x) => Number(x.value)) || [],
             commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
-            documentNumbers: documents.map((x) => x.value) || [],
-            areaCodes: areas.map((x) => x.value) || [],
-            disciplineCodes: disciplines.map((x) => x.value) || [],
+            documentNumbers: documents?.map((x) => x.value) || [],
+            areaCodes: areas?.map((x) => x.value) || [],
+            disciplineCodes: disciplines?.map((x) => x.value) || [],
         });
 
         if (!error) close();
@@ -102,55 +99,34 @@ export const ScopeChangeRequestEditForm = ({
 
     const { isLoading, error, mutate } = useScopeChangeMutation(request.id, patchKey, onSubmit);
 
-    const SaveButton = () => {
-        return (
-            <Button disabled={!formData.isValidForm()} onClick={() => mutate()}>
-                {isLoading ? <Progress.Dots color="primary" /> : <span>Save</span>}
-            </Button>
-        );
-    };
+    const { handleInput, isValid, state } = useScopeChangeFormState({
+        ...request,
+        attachments: [],
+    });
 
-    const CancelButton = () => {
-        return (
-            <Button variant="outlined" color="danger" onClick={close}>
-                Cancel
-            </Button>
-        );
-    };
-
-    useEffect(() => {
-        formData.fields.originSourceId?.setValue(undefined);
-    }, [formData.fields.originSource?.value]);
+    const handleReferencesChanged = (references: TypedSelectOption[]) =>
+        handleInput('references', references);
 
     return (
-        <>
-            <GeneratedForm
-                formData={formData}
-                editMode={false}
-                buttons={[CancelButton, SaveButton]}
-                customFields={[
-                    {
-                        Component: Origin,
-                        order: 3,
-                        title: '',
-                        props: {
-                            originSource: formData.fields.originSource,
-                            originId: formData.fields.originSourceId,
-                        },
-                    },
-                    {
-                        Component: RelatedObjectsSearch,
-                        order: 6,
-                        title: '',
-                        props: {
-                            relatedObjects: relatedObjects,
-                            setRelatedObjects: setRelatedObjects,
-                        },
-                    },
-                ]}
-            >
-                <Section style={{ margin: '0em 0.5em' }}>
-                    <Title>Attachments</Title>
+        <Wrapper>
+            <FormWrapper>
+                <FlexColumn>
+                    Request
+                    <ScopeChangeBaseForm
+                        handleInput={handleInput}
+                        state={state}
+                        shouldDisableCategory
+                    />
+                </FlexColumn>
+
+                <FlexColumn>
+                    <Section>
+                        <RelatedObjectsSearch
+                            handleReferencesChanged={handleReferencesChanged}
+                            references={state.references ?? []}
+                        />
+                    </Section>
+                    Attachments
                     <HotUpload />
                     {request.attachments.map((attachment, i) => {
                         return (
@@ -177,30 +153,32 @@ export const ScopeChangeRequestEditForm = ({
                             </AttachmentsList>
                         );
                     })}
-                </Section>
-            </GeneratedForm>
-        </>
+                </FlexColumn>
+            </FormWrapper>
+            <ActionBar>
+                <ButtonContainer>
+                    {isLoading ? (
+                        <Button disabled={true}>
+                            <Progress.Dots color="primary" />
+                        </Button>
+                    ) : (
+                        <>
+                            <Button disabled={!isValid} onClick={() => mutate()}>
+                                {isLoading ? <Progress.Dots color="primary" /> : 'Save'}
+                            </Button>
+                        </>
+                    )}
+                </ButtonContainer>
+            </ActionBar>
+        </Wrapper>
     );
 };
 
-const AttachmentName = styled.a`
-    color: ${tokens.colors.interactive.primary__resting.rgba};
-    cursor: 'pointer';
-    text-decoration: 'none';
-`;
-
-const Inline = styled.span`
+const Wrapper = styled.div`
+    height: 100%;
     display: flex;
-    align-items: center;
-`;
-
-const AttachmentsList = styled.div`
-    display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    margin: 0.5em 0em;
-    font-size: 16px;
-    align-items: center;
 `;
 
 function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | StidTypes) {
@@ -210,7 +188,8 @@ function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | 
 async function unpackRelatedObjects(
     request: ScopeChangeRequest,
     plantId: string,
-    setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>,
+    references: TypedSelectOption[],
+    handleReferencesChanged: (references: TypedSelectOption[]) => void,
     referencesKeys: {
         baseKey: string[];
         disciplines: string[];
@@ -226,16 +205,18 @@ async function unpackRelatedObjects(
         options?: FetchQueryOptions<T, unknown, T, string[]> | undefined
     ) => Promise<T>
 ) {
-    const appendRelatedObjects = (x: TypedSelectOption) =>
-        setRelatedObjects((prev) => [...prev, x]);
-    const patchRelatedObjects = (x: TypedSelectOption) =>
-        setRelatedObjects((prev) => {
-            const index = prev.findIndex(({ value }) => value === x.value);
-            if (index === -1) return [...prev, x];
+    function updateReferences(x: TypedSelectOption) {
+        const index = references.findIndex(({ value }) => value === x.value);
+        if (index === -1) {
+            handleReferencesChanged([...references, x]);
+            return;
+        }
 
-            const newList = [...prev.slice(0, index), x, ...prev.slice(index + 1)];
-            return newList;
-        });
+        handleReferencesChanged([...references.slice(0, index), x, ...references.slice(index + 1)]);
+    }
+
+    const appendRelatedObjects = (x: TypedSelectOption) =>
+        handleReferencesChanged([...references, x]);
 
     request.commissioningPackages.forEach(async (x) => {
         const commPkgSelectOption: TypedSelectOption = {
@@ -251,7 +232,7 @@ async function unpackRelatedObjects(
             getCommPkgById(plantId, x.procosysId)
         );
 
-        patchRelatedObjects({
+        updateReferences({
             ...commPkgSelectOption,
             label: `${x.procosysNumber} ${commPkg.Description}`,
             object: commPkg,
@@ -272,7 +253,7 @@ async function unpackRelatedObjects(
             getTagById(plantId, x.procosysId)
         );
 
-        patchRelatedObjects({
+        updateReferences({
             ...tagSelectOption,
             label: `${x.procosysNumber} ${tag.Description}`,
             object: tag,
@@ -294,7 +275,7 @@ async function unpackRelatedObjects(
             getDocumentById(x.stidDocumentNumber, 'JCA')
         );
 
-        patchRelatedObjects({
+        updateReferences({
             ...documentSelectOption,
             label: `${x.stidDocumentNumber} ${document.docTitle}`,
             object: document,
@@ -315,7 +296,7 @@ async function unpackRelatedObjects(
             getAreaByCode(plantId, x.procosysCode)
         );
 
-        patchRelatedObjects({
+        updateReferences({
             ...areaSelectOption,
             label: `${x.procosysCode} ${area.Description}`,
             object: area,
@@ -338,7 +319,7 @@ async function unpackRelatedObjects(
 
         const match = disciplines.find((discipline) => discipline.Code === x.procosysCode);
 
-        patchRelatedObjects({
+        updateReferences({
             ...disciplineSelectOption,
             label: `${x.procosysCode} ${match?.Description}`,
             object: match,
@@ -359,7 +340,7 @@ async function unpackRelatedObjects(
 
         const system = systems.find((loc) => loc.Code === x.procosysCode);
 
-        patchRelatedObjects({
+        updateReferences({
             ...systemSelectOption,
             label: `${x.procosysCode} ${system?.Description}`,
             object: system,

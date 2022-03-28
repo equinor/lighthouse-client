@@ -1,7 +1,7 @@
 import { FactoryOptions } from '../../../Core/WorkSpace/src';
-import { ScopeChangeRequestForm } from '../Components/Form/ScopeChangeRequestForm';
+import { DataCreatorWrapper } from '../Components/Form/DataCreatorWrapper';
 
 export const dataCreator: FactoryOptions = {
     title: 'Scope change',
-    component: ScopeChangeRequestForm,
+    component: DataCreatorWrapper,
 };
