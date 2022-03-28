@@ -14,12 +14,18 @@ export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
 export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
+export interface ChangeCategory {
+    id: string;
+    name: string;
+}
+
 export interface ScopeChangeBaseModel {
     id: string;
     title: string;
     description: string;
     phase: string;
-    category: string;
+    changeCategoryId: string;
+    changeCategory: ChangeCategory;
     estimatedChangeHours: number;
     originSourceId?: string;
     hasPendingContributions: boolean;
