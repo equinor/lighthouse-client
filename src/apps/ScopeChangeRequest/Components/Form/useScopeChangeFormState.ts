@@ -20,6 +20,14 @@ const RE_RERENDER_KEYS: (keyof ScopeChangeFormModel)[] = [
     'originSource',
 ];
 
+const MANDATORY_PROPERTIES: (keyof ScopeChangeFormModel)[] = [
+    'title',
+    'originSource',
+    'description',
+    'phase',
+    'changeCategory',
+];
+
 export function useScopeChangeFormState(
     initialData?: Partial<ScopeChangeFormModel>
 ): ScopeChangeFormState {
@@ -46,36 +54,32 @@ export function useScopeChangeFormState(
         }
     }
 
-    const mandatoryProperties: (keyof ScopeChangeFormModel)[] = [
-        'title',
-        'originSource',
-        'description',
-        'phase',
-        'changeCategory',
-    ];
+    function checkString(value?: string) {
+        return !value || value.length <= 0;
+    }
 
     function checkFormState(request: Partial<ScopeChangeFormModel>): boolean {
-        if (mandatoryProperties.every((k) => Object.keys(request).includes(k))) {
+        if (MANDATORY_PROPERTIES.every((k) => Object.keys(request).includes(k))) {
             /** Validate content */
             switch (true) {
-                case !request.title || request.title.length <= 0:
+                case checkString(request.title):
                     return false;
 
-                case !request.phase || request.phase.length <= 0:
+                case checkString(request.phase):
                     return false;
 
-                case !request?.changeCategory?.id || request?.changeCategory?.id.length <= 0:
+                case checkString(request.changeCategory?.id):
                     return false;
 
-                case !request.description || request.description.length <= 0:
+                case checkString(request.description):
                     return false;
 
-                case !request.originSource || request.originSource.length <= 0:
+                case checkString(request.originSource):
                     return false;
             }
 
             if (request.originSource !== 'NotApplicable') {
-                if (!request.originSourceId || request.originSourceId?.length <= 0) {
+                if (checkString(request.originSourceId)) {
                     return false;
                 }
             }
