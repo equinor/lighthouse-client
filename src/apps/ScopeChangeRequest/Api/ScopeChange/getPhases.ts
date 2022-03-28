@@ -9,7 +9,7 @@ export const getPhases = async (): Promise<string[]> => {
     const { scopeChange } = httpClient();
     const res = await scopeChange.fetch('api/phases');
 
-    throwOnError(res);
+    throwOnError(res, 'Failed to get phases');
 
     return (await res.json()).map((x: Phase) => x.name);
 };

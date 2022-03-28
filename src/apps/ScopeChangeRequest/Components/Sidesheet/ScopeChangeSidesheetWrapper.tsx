@@ -2,12 +2,14 @@ import { useEffect } from 'react';
 import { useInternalSidesheetFunction } from '../../../../packages/Sidesheet/Hooks/useInternalSidesheetFunction';
 import { useScopeChangeMutationWatcher } from '../../Hooks/useScopeChangeMutationWatcher';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
 import { ScopeChangeErrorBanner } from './ErrorBanner';
 import { ScopeChangeSideSheet } from './ScopeChangeSidesheet';
+import { useOctopusErrorHandler } from './useOctopusErrorHandler';
 
 export function ScopeChangeSidesheetWrapper(item: ScopeChangeRequest): JSX.Element {
     useScopeChangeMutationWatcher(item.id);
+
+    useOctopusErrorHandler();
 
     const { setWidth } = useInternalSidesheetFunction();
     useEffect(() => {
@@ -16,9 +18,8 @@ export function ScopeChangeSidesheetWrapper(item: ScopeChangeRequest): JSX.Eleme
 
     return (
         <>
-            {/* <ScopeChangeErrorBanner />
-            <ScopeChangeSideSheet {...item} /> */}
-            <ScopeChangeRequestForm closeScrim={() => null}></ScopeChangeRequestForm>
+            <ScopeChangeErrorBanner />
+            <ScopeChangeSideSheet {...item} />
         </>
     );
 }

@@ -20,12 +20,18 @@ import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 import { Upload } from '../Attachments/Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
 import { StidTypes } from '../../Types/STID/STIDTypes';
-import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
 import { useScopeChangeFormState } from './useScopeChangeFormState';
 import { ScopeChangeBaseForm } from './ScopeChangeBaseForm';
 import { ScopeChangeBaseModel } from '../../Types/scopeChangeRequest';
+import {
+    ActionBar,
+    ButtonContainer,
+    FlexColumn,
+    FormWrapper,
+    Section,
+} from './ScopeChangeForm.styles';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -113,7 +119,6 @@ export const ScopeChangeRequestForm = ({
 
     return (
         <>
-            <ScopeChangeErrorBanner />
             <TitleHeader>
                 <SidesheetTitle>Create scope change request</SidesheetTitle>
                 <Icon
@@ -166,46 +171,6 @@ export const ScopeChangeRequestForm = ({
     );
 };
 
-const ButtonContainer = styled.div`
-    flex-direction: row;
-    gap: 0.5em;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 1em;
-`;
-
-const ActionBar = styled.div`
-    height: 64px;
-    width: 100%;
-    border: 1px solid ${tokens.colors.interactive.disabled__border.hex};
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background-color: white;
-`;
-
-const FlexColumn = styled.div`
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 24px;
-    height: 100%;
-`;
-
-export const Section = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 1em;
-    align-items: flex-end;
-`;
-
-const FormWrapper = styled.form`
-    display: grid;
-    grid-column: 2;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 2em;
-`;
-
 export const SidesheetTitle = styled.span`
     font-size: 28px;
 `;
@@ -222,6 +187,7 @@ const TitleHeader = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    padding: 1em 0em;
 `;
 
 const LoadingPage = styled.div`

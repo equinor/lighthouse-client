@@ -9,7 +9,7 @@ export const getCategories = async (): Promise<string[]> => {
     const { scopeChange } = httpClient();
     const res = await scopeChange.fetch('api/categories');
 
-    throwOnError(res);
+    throwOnError(res, 'Failed to get categories');
 
     return (await res.json()).map((x: Category) => x.name);
 };

@@ -25,14 +25,15 @@ export const ScopeChangeBaseForm = ({
         cacheTime: Infinity,
     });
 
-    const flushState = useRefresh();
+    const forceRerender = useRefresh();
 
     return (
-        <>
+        <BaseFormContainer>
             <FormTextField
                 label="Title"
                 initialValue={state.title}
                 required
+                placeholder="Please add a title for the request"
                 onChange={(e) => handleInput('title', e)}
             />
 
@@ -63,7 +64,8 @@ export const ScopeChangeBaseForm = ({
                     placeholder="Select origin"
                     handleSelectedItemChange={(change) => {
                         handleInput('originSource', change.selectedItem);
-                        flushState();
+                        /** Must re-render for originSource to work */
+                        forceRerender();
                     }}
                 />
                 <Origin
@@ -82,6 +84,7 @@ export const ScopeChangeBaseForm = ({
                 label="Scope description"
                 placeholder="Please add description"
                 required
+                initialValue={state.description}
                 onChange={(value) => handleInput('description', value)}
             />
 
@@ -91,21 +94,19 @@ export const ScopeChangeBaseForm = ({
                     type={'number'}
                     onChange={(value) => handleInput('guesstimateHours', Number(value))}
                     placeholder="Make your best guess.."
+                    initialValue={state.guesstimateHours?.toString()}
                 />
 
                 <FormTextField
                     label="Guesstimate description"
                     placeholder="Please add description"
                     onChange={(e) => handleInput('guesstimateDescription', e)}
+                    initialValue={state.guesstimateDescription}
                 />
             </Guesstimate>
-        </>
+        </BaseFormContainer>
     );
 };
-
-const Wrapper = styled.div`
-    /** Dont break anything */
-`;
 
 interface FormTextFieldProps {
     initialValue?: string;
@@ -143,6 +144,12 @@ const FormTextField = ({
         />
     );
 };
+
+const BaseFormContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+`;
 
 const Guesstimate = styled.div`
     display: grid;

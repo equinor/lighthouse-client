@@ -17,7 +17,7 @@ export function useScopeChangeMutationWatcher(requestId: string): void {
 
     useGlobalMutationListener({
         onMutationSettled: (mutationEvent) => {
-            queryClient.invalidateQueries(baseKey);
+            baseKey ? queryClient.invalidateQueries(baseKey) : queryClient.invalidateQueries();
             /** Only invalidate list if the mutation was a success */
             if (mutationEvent.state.status === 'success') {
                 queryClient.invalidateQueries(workspaceKey);
