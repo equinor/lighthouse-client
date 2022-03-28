@@ -106,7 +106,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
      * Removes hash from url when closed
      */
 
-    const { props: sidesheetProps, SidesheetComponent, width } = useSideSheet();
+    const { props: sidesheetProps, SidesheetComponent } = useSideSheet();
     useEffect(() => {
         if (location.hash.length > 0) return;
         if (!sidesheetProps && !SidesheetComponent) {
