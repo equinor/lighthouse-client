@@ -41,7 +41,6 @@ export function useScopeChangeFormState(
         if (isValid !== formState) {
             setIsValid(formState);
         }
-        setIsValid(checkFormState(formData.current));
         if (RE_RERENDER_KEYS.includes(key)) {
             refresh();
         }
