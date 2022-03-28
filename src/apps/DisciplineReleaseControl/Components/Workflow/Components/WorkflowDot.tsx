@@ -1,78 +1,106 @@
 import { useMemo } from 'react';
+import styled from 'styled-components';
+import { PipetestCompletionStatusColors } from '../../../Styles/ReleaseControlColors';
+import { PipetestCompletionStatus } from '../../../Types/drcEnums';
 
 interface WorkflowDotProps {
     height?: number;
     width?: number;
-    state: 'Outstanding' | 'Completed' | 'Inactive' | 'Error';
-    text?: string;
+    state: 'Outstanding' | 'Complete' | 'Inactive' | 'PunchAError' | 'PunchBError';
+    text: string;
     active: boolean;
 }
 
 interface dotStyling {
     color: string;
     stroke: string;
+    active: boolean;
+    status: string;
+    text: string;
 }
 
-export const WorkflowDot = ({
-    state,
-    height = 15,
-    width = 15,
-    text,
-    active,
-}: WorkflowDotProps): JSX.Element => {
-    const color: dotStyling = useMemo(() => {
+export const WorkflowDot = ({ state, text, active }: WorkflowDotProps): JSX.Element => {
+    const dotProps: dotStyling = useMemo(() => {
         switch (state) {
-            case 'Outstanding':
+            case PipetestCompletionStatus.Outstanding:
                 return {
-                    color: '',
-                    stroke: '#DCDCDC',
+                    color: PipetestCompletionStatusColors.OS,
+                    stroke: PipetestCompletionStatusColors.OS,
                     text: text,
+                    active: active,
+                    status: state,
                 };
 
-            case 'Completed':
+            case PipetestCompletionStatus.Complete:
                 return {
-                    color: '#4BB748',
-                    stroke: '',
+                    color: PipetestCompletionStatusColors.OK,
+                    stroke: PipetestCompletionStatusColors.OK,
                     text: text,
+                    active: active,
+                    status: state,
                 };
-            case 'Inactive':
+            case PipetestCompletionStatus.Inactive:
                 return {
-                    color: '#DCDCDC',
-                    stroke: '#000000',
+                    color: PipetestCompletionStatusColors.INACTIVE,
+                    stroke: PipetestCompletionStatusColors.INACTIVE,
                     text: text,
+                    active: active,
+                    status: state,
                 };
-            case 'Error':
+            case PipetestCompletionStatus.PunchAError:
                 return {
-                    color: '#EB0000',
-                    stroke: '#EB0000',
+                    color: PipetestCompletionStatusColors.PA,
+                    stroke: PipetestCompletionStatusColors.PA,
                     text: text,
+                    active: active,
+                    status: state,
+                };
+            case PipetestCompletionStatus.PunchBError:
+                return {
+                    color: PipetestCompletionStatusColors.PB,
+                    stroke: PipetestCompletionStatusColors.PB,
+                    text: text,
+                    active: active,
+                    status: state,
+                };
+            default:
+                return {
+                    color: PipetestCompletionStatusColors.OS,
+                    stroke: PipetestCompletionStatusColors.OS,
+                    text: text,
+                    active: active,
+                    status: state,
                 };
         }
-    }, [state]);
+    }, [active, state, text]);
 
     return (
-        <svg
-            width={width}
-            height={height}
-            viewBox="0 0 12 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            {!active ? (
-                <circle
-                    cx="6"
-                    cy="6"
-                    r="5.5"
-                    stroke={color.stroke}
-                    fill={color.color}
-                    strokeDasharray="2,2"
-                />
-            ) : (
-                <circle cx="6" cy="6" r="5.5" stroke={color.stroke} fill={color.color} />
-            )}
-            <text x="3.5" y="8" fill="#000" fontSize="0.55em">
-                {text}
-            </text>
-        </svg>
+        <StepCircle color={dotProps.color} active={dotProps.active} status={dotProps.status}>
+            {text}
+        </StepCircle>
     );
 };
+
+type StepCircleProps = {
+    color: string;
+    active: boolean;
+    status: string;
+};
+
+export const StepCircle = styled.div<StepCircleProps>`
+    width: 16px;
+    height: 16px;
+    border-radius: 17px;
+    font-size: 11px;
+    color: ${(p) =>
+        p.status === PipetestCompletionStatus.Complete ||
+        p.status === PipetestCompletionStatus.PunchAError
+            ? '#fff'
+            : p.status === PipetestCompletionStatus.Inactive
+            ? '#DCDCDC'
+            : '#000'};
+    line-height: 18px;
+    text-align: center;
+    background: ${(p) => p.color};
+    outline: ${(p) => (!p.active ? '1px dashed #DCDCDC' : null)};
+`;

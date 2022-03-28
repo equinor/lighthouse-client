@@ -1,9 +1,10 @@
 import { ClientApi } from '@equinor/portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
-import { ReleaseControlProcessForm } from './Components/Form/ReleaseControlProcessForm';
+// import { ReleaseControlProcessForm } from './Components/Form/ReleaseControlProcessForm';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import {
+    getPipetestCompletionStatus,
     getPipetestStatus,
     getYearAndWeekFromString,
     sortPipetestChecklist,
@@ -14,6 +15,10 @@ import { Pipetest } from './Types/pipetest';
 import { ReleaseControlGardenItem } from './Components/Garden/ReleaseControlGardenItem';
 import { checklistTagFunc, createChecklistSteps, getHTList } from './Functions/tableHelpers';
 import { getTimePeriod } from './Components/Garden/gardenFunctions';
+import { PipetestStep } from './Types/drcEnums';
+import { DateTime } from 'luxon';
+import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
+import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -26,15 +31,27 @@ export function setup(appApi: ClientApi): void {
         json.map((pipetest: Pipetest) => {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
-            pipetest.status = getPipetestStatus(pipetest.checkLists);
+            pipetest.step = getPipetestStatus(pipetest.checkLists);
+            pipetest.completionStatus = getPipetestCompletionStatus(pipetest);
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
+            pipetest.overdue =
+                pipetest.step !== PipetestStep.Complete &&
+                DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
+                    ? 'Yes'
+                    : 'No';
             return pipetest;
         });
         sortPipetests(json);
         return json;
     };
 
-    const releaseControlExcludeKeys: (keyof Pipetest)[] = ['name'];
+    const releaseControlExcludeKeys: (keyof Pipetest)[] = [
+        'name',
+        'commPkPriority1',
+        'rfccPlanned',
+        'description',
+        'step',
+    ];
 
     const request = appApi
         .createWorkSpace<Pipetest>({
@@ -45,23 +62,30 @@ export function setup(appApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerDataCreator({
-            title: 'Release control',
-            component: ReleaseControlProcessForm,
-        })
+        // .registerDataCreator({
+        //     title: 'Release control',
+        //     component: ReleaseControlProcessForm,
+        // })
         .registerFilterOptions({
             excludeKeys: releaseControlExcludeKeys,
             headerNames: {},
-            defaultActiveFilters: ['status', 'System', 'Priority', 'DueDateTimePeriod'],
+            defaultActiveFilters: [
+                'currentStep',
+                'System',
+                'Priority',
+                'dueDateTimePeriod',
+                'overdue',
+                'completionStatus',
+            ],
             valueFormatter: {
+                currentStep: (item: Pipetest): string => {
+                    return item.step;
+                },
                 System: (item: Pipetest): string => {
                     return item.name.substring(0, 2);
                 },
                 Priority: (item: Pipetest): string => {
                     return item.commPkPriority1 !== '' ? item.commPkPriority1 : 'Unknown';
-                },
-                DueDateTimePeriod: (item: Pipetest): string => {
-                    return item.dueDateTimePeriod;
                 },
             },
         });
@@ -74,13 +98,22 @@ export function setup(appApi: ClientApi): void {
 
     request.registerTableOptions({
         objectIdentifierKey: 'name',
-        columnOrder: ['name', 'description', 'status'],
-        hiddenColumns: ['rfccPlanned', 'dueDateTimePeriod', 'heatTraces'],
+        itemSize: 32,
+        columnOrder: ['name', 'description', 'commPkPriority1', 'step', 'completionStatus'],
+        hiddenColumns: [
+            'rfccPlanned',
+            'dueDateTimePeriod',
+            'heatTraces',
+            'overdue',
+            'completionStatus',
+            'insulationBoxes',
+        ],
         enableSelectRows: true,
         headers: [
-            { key: 'name', title: 'Pipetest', width: 200 },
-            { key: 'description', title: 'Description', width: 400 },
-            { key: 'status', title: 'Status', width: 300 },
+            { key: 'name', title: 'Pipetest', width: 100 },
+            { key: 'description', title: 'Description', width: 600 },
+            { key: 'commPkPriority1', title: 'Priority', width: 90 },
+            { key: 'step', title: 'Current step', width: 210 },
             { key: 'checkLists', title: 'Process', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
         ],
@@ -106,7 +139,7 @@ export function setup(appApi: ClientApi): void {
                 id: 'dueByWeek',
                 Header: 'Due by week',
                 Aggregated: () => null,
-                width: 300,
+                width: 120,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return getYearAndWeekFromString(cell.row.values.rfccPlanned);
@@ -114,9 +147,9 @@ export function setup(appApi: ClientApi): void {
             },
             {
                 id: 'htList',
-                Header: 'Heattraces',
+                Header: 'HT cables',
                 Aggregated: () => null,
-                width: 800,
+                width: 400,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return getHTList(cell.row.values.checkLists.content.checkLists);
@@ -126,12 +159,17 @@ export function setup(appApi: ClientApi): void {
     });
 
     request.registerGardenOptions({
-        gardenKey: 'status',
+        gardenKey: 'step',
         itemKey: 'name',
         type: 'normal',
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
+            customHeaderView: ReleaseControlGardenHeader,
         },
+        //Add highlightColumn when it is fixed
+        // highlightColumn: getHighlightedColumn,
     });
+
+    request.registerStatusItems(statusBarConfig);
 }

@@ -341,8 +341,8 @@ export const apps: AppManifest[] = [
         appEnv: 'dev',
     },
     {
-        title: 'Discipline release control',
-        shortName: 'drc',
+        title: 'Piping and Heat trace',
+        shortName: 'piping-and-ht',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
