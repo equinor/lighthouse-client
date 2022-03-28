@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
-import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
+import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { GeneratedForm, useForm } from '@equinor/Form';
 import { useHttpClient } from '@equinor/portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 
@@ -16,17 +15,23 @@ import {
 } from '../../Api/ScopeChange/Request';
 import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
-import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
 
 import { Upload } from '../Attachments/Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
-import { Origin } from './Origin';
 import { StidTypes } from '../../Types/STID/STIDTypes';
-import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
+import { useScopeChangeFormState } from './useScopeChangeFormState';
+import { ScopeChangeBaseForm } from './ScopeChangeBaseForm';
+import { ScopeChangeBaseModel } from '../../Types/scopeChangeRequest';
+import {
+    ActionBar,
+    ButtonContainer,
+    FlexColumn,
+    FormWrapper,
+    Section,
+} from './ScopeChangeForm.styles';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: (force?: boolean) => void;
@@ -39,17 +44,14 @@ interface CreateScopeChangeParams {
 
 export const ScopeChangeRequestForm = ({
     closeScrim,
-    setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
-        phase: 'IC',
-    });
+    const [attachments, setAttachments] = useState<File[]>([]);
+    const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
+
+    const { handleInput, isValid, state } = useScopeChangeFormState();
 
     usePreloadCaching();
     const queryClient = useQueryClient();
-
-    const [attachments, setAttachments] = useState<File[]>([]);
-    const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
 
     const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
 
@@ -63,9 +65,10 @@ export const ScopeChangeRequestForm = ({
         const disciplines = filterElementsByType(relatedObjects, 'discipline');
         const documents = filterElementsByType(relatedObjects, 'document');
 
+        const validatedFormModel: ScopeChangeBaseModel = state as ScopeChangeBaseModel;
         const scID = await postScopeChange(
             {
-                ...formData.data,
+                ...validatedFormModel,
                 tagNumbers: tags?.map((x) => x.value) || [],
                 systemIds: systems?.map((x) => Number(x.value)) || [],
                 commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
@@ -106,42 +109,6 @@ export const ScopeChangeRequestForm = ({
         queryClient.invalidateQueries();
     };
 
-    useEffect(() => {
-        setHasUnsavedChanges(formData.getChangedData() !== undefined || relatedObjects.length > 0);
-    }, [formData, setHasUnsavedChanges, relatedObjects]);
-
-    const SubmitButton = () => {
-        return (
-            <Button disabled={!isValidForm || isLoading} onClick={() => mutate({ draft: false })}>
-                Submit
-            </Button>
-        );
-    };
-
-    const SaveButton = () => {
-        return (
-            <Button
-                disabled={!isValidForm || isLoading}
-                variant={'outlined'}
-                onClick={() => mutate({ draft: true })}
-            >
-                {isLoading ? <CircularProgress value={0} size={16} /> : <div>Save</div>}
-            </Button>
-        );
-    };
-
-    useEffect(() => {
-        formData.fields.originSourceId?.setValue(undefined);
-    }, [formData.fields.originSource?.value]);
-
-    const isValidForm = useMemo(() => {
-        return (
-            formData.isValidForm() &&
-            (formData.fields.originSource?.value === 'NotApplicable' ||
-                formData.fields.originSourceId?.value)
-        );
-    }, [formData, relatedObjects]);
-
     if (isRedirecting) {
         return (
             <LoadingPage>
@@ -152,7 +119,6 @@ export const ScopeChangeRequestForm = ({
 
     return (
         <>
-            <ScopeChangeErrorBanner />
             <TitleHeader>
                 <SidesheetTitle>Create scope change request</SidesheetTitle>
                 <Icon
@@ -162,49 +128,51 @@ export const ScopeChangeRequestForm = ({
                 />
             </TitleHeader>
 
-            <GeneratedForm
-                formData={formData}
-                editMode={false}
-                buttons={[SubmitButton, SaveButton]}
-                customFields={[
-                    {
-                        Component: Origin,
-                        order: 3,
-                        title: '',
-                        props: {
-                            originId: formData.fields.originSourceId,
-                            originSource: formData.fields.originSource,
-                        },
-                    },
+            <FormWrapper>
+                <FlexColumn>
+                    Request
+                    <ScopeChangeBaseForm handleInput={handleInput} state={state} />
+                </FlexColumn>
 
-                    {
-                        Component: RelatedObjectsSearch,
-                        order: 6,
-                        title: '',
-                        props: {
-                            relatedObjects: relatedObjects,
-                            setRelatedObjects: setRelatedObjects,
-                        },
-                    },
-                ]}
-            >
-                <Section style={{ margin: '0em 0.5em' }}>
-                    <Title>Attachments</Title>
+                <FlexColumn>
+                    <Section>
+                        <RelatedObjectsSearch
+                            relatedObjects={relatedObjects}
+                            setRelatedObjects={setRelatedObjects}
+                        />
+                    </Section>
+                    Attachments
                     <Upload attachments={attachments} setAttachments={setAttachments} />
-                </Section>
-            </GeneratedForm>
+                </FlexColumn>
+            </FormWrapper>
+            <ActionBar>
+                <ButtonContainer>
+                    {isLoading ? (
+                        <Button disabled={true}>
+                            <Progress.Dots color="primary" />
+                        </Button>
+                    ) : (
+                        <>
+                            <Button onClick={() => mutate({ draft: false })} disabled={!isValid}>
+                                Submit
+                            </Button>
+                            <Button
+                                onClick={() => mutate({ draft: true })}
+                                disabled={!isValid}
+                                variant="outlined"
+                            >
+                                Save
+                            </Button>
+                        </>
+                    )}
+                </ButtonContainer>
+            </ActionBar>
         </>
     );
 };
 
 export const SidesheetTitle = styled.span`
     font-size: 28px;
-`;
-
-export const Section = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
 `;
 
 export const Title = styled.div`
@@ -219,6 +187,7 @@ const TitleHeader = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    padding: 1em 0em;
 `;
 
 const LoadingPage = styled.div`

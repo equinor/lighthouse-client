@@ -18,12 +18,13 @@ import {
     SelectContainer,
     Wrapper,
     ListItem,
-    Spacer,
     Title,
     TitleBar,
+    SelectedItemLabel,
 } from './RelatedObjectsStyles';
 import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
 import { CommPkgIcon } from '../../DetailView/Components/RelatedObjects/CommPkg/commPkgIcon';
+import styled from 'styled-components';
 
 interface RelatedObjectsSearchProps {
     relatedObjects: TypedSelectOption[];
@@ -85,21 +86,21 @@ export const RelatedObjectsSearch = ({
 
     return (
         <Wrapper>
+            <TitleBar>
+                <Title>References</Title>
+
+                <AdvancedDocumentSearch
+                    documents={relatedObjects}
+                    appendItem={addRelatedObject}
+                    removeItem={removeRelatedObject}
+                />
+            </TitleBar>
             <Column>
                 {apiErrors &&
                     apiErrors.length > 0 &&
                     apiErrors.map((name) => {
                         return <ErrorWrapper key={name}>Failed to fetch {name}</ErrorWrapper>;
                     })}
-                <TitleBar>
-                    <Title>References</Title>
-
-                    <AdvancedDocumentSearch
-                        documents={relatedObjects}
-                        appendItem={addRelatedObject}
-                        removeItem={removeRelatedObject}
-                    />
-                </TitleBar>
                 <Inline>
                     <div
                         style={{
@@ -169,21 +170,26 @@ export const RelatedObjectsSearch = ({
                                 return (
                                     <ListItem key={selectedReference.value}>
                                         <Inline>
-                                            <TypeIcon />
-                                            <Spacer />
-                                            <span style={{ fontSize: '16px' }}>
-                                                {selectedReference.label}
-                                            </span>
-                                        </Inline>
+                                            <IconWrapper>
+                                                <TypeIcon />
+                                            </IconWrapper>
 
-                                        <Icon
-                                            style={{ cursor: 'pointer' }}
-                                            color={tokens.colors.interactive.primary__resting.rgba}
-                                            onClick={() => {
-                                                removeRelatedObject(selectedReference.value);
-                                            }}
-                                            name="clear"
-                                        />
+                                            <SelectedItemLabel>
+                                                {selectedReference.label}
+                                            </SelectedItemLabel>
+                                        </Inline>
+                                        <IconWrapper>
+                                            <Icon
+                                                style={{ cursor: 'pointer' }}
+                                                color={
+                                                    tokens.colors.interactive.primary__resting.rgba
+                                                }
+                                                onClick={() => {
+                                                    removeRelatedObject(selectedReference.value);
+                                                }}
+                                                name="clear"
+                                            />
+                                        </IconWrapper>
                                     </ListItem>
                                 );
                             })}
@@ -194,6 +200,11 @@ export const RelatedObjectsSearch = ({
         </Wrapper>
     );
 };
+
+const IconWrapper = styled.div`
+    height: auto;
+    width: auto;
+`;
 
 function getIcon(x: TypedSelectOption): JSX.Element | null {
     switch (x.type) {
