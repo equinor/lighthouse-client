@@ -15,7 +15,7 @@ export const useGlobalQueryListener = ({ onQueryError }: useGlobalQueryListenerP
     const queryClient = useQueryClient();
 
     useEffect(() => {
-        queryClient.getQueryCache().subscribe((event) => {
+        const unsubscribe = queryClient.getQueryCache().subscribe((event) => {
             if (!event) return;
             /** Any query change has happened */
             if (event?.type === 'queryAdded' || event?.type === 'queryUpdated') {
@@ -25,6 +25,9 @@ export const useGlobalQueryListener = ({ onQueryError }: useGlobalQueryListenerP
                 }
             }
         });
+        return () => {
+            unsubscribe();
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 };

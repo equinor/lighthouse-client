@@ -11,7 +11,7 @@ export const searchDocuments = async (
     const { STID } = httpClient();
 
     const uri = `/${facilityId}/documents`;
-    const queryParameters = `docNo=${encodeURI(searchString)}&skip=0&take=10&noContentAs200=true`;
+    const queryParameters = `docNo=${encodeURI(searchString)}&skip=0&take=30&noContentAs200=true`;
     const url = `${uri}?${queryParameters}`;
     await STID.fetch(url, { signal })
         .then((response) => response.json())
