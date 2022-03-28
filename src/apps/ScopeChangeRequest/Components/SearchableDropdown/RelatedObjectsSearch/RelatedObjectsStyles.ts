@@ -16,6 +16,7 @@ export const Inline = styled.span`
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    gap: 1em;
 `;
 
 export const Column = styled.div`
@@ -41,20 +42,21 @@ export const ListItem = styled.div`
     color: ${tokens.colors.interactive.primary__resting.hex};
 `;
 
-export const Spacer = styled.div`
-    margin-right: 0.5em;
+export const SelectedItemLabel = styled.div`
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
 `;
 
 export const Title = styled.div`
-    line-height: 24px;
+    font-weight: 500;
     font-size: 18px;
-    color: black;
-    font-weight: bold;
+    line-height: 24px;
 `;
 
 export const TitleBar = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
 `;

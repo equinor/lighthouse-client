@@ -18,7 +18,7 @@ export const useGlobalMutationListener = ({
     const queryClient = useQueryClient();
 
     useEffect(() => {
-        queryClient.getMutationCache().subscribe((mutationEvent) => {
+        const unsubscribe = queryClient.getMutationCache().subscribe((mutationEvent) => {
             /** Any mutation change has happened */
             if (!mutationEvent) return;
             if (
@@ -32,5 +32,9 @@ export const useGlobalMutationListener = ({
                 onMutationError && onMutationError(mutationEvent);
             }
         });
+
+        return () => {
+            unsubscribe();
+        };
     }, []);
 };

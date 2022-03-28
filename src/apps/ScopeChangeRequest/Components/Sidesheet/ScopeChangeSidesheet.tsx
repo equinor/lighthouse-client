@@ -19,13 +19,10 @@ import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMu
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
 import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
 import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
-import { useOctopusErrorHandler } from './useOctopusErrorHandler';
 import { useQuery } from 'react-query';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(false);
-
-    useOctopusErrorHandler();
 
     usePreloadCaching();
 

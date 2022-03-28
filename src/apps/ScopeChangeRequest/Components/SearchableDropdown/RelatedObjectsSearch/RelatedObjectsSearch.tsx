@@ -18,21 +18,22 @@ import {
     SelectContainer,
     Wrapper,
     ListItem,
-    Spacer,
     Title,
     TitleBar,
+    SelectedItemLabel,
 } from './RelatedObjectsStyles';
 import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
 import { CommPkgIcon } from '../../DetailView/Components/RelatedObjects/CommPkg/commPkgIcon';
+import styled from 'styled-components';
 
 interface RelatedObjectsSearchProps {
-    relatedObjects: TypedSelectOption[];
-    setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>;
+    references: TypedSelectOption[];
+    handleReferencesChanged: (references: TypedSelectOption[]) => void;
 }
 
 export const RelatedObjectsSearch = ({
-    relatedObjects,
-    setRelatedObjects,
+    handleReferencesChanged,
+    references,
 }: RelatedObjectsSearchProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const { abort, getSignal } = useCancellationToken();
@@ -52,13 +53,13 @@ export const RelatedObjectsSearch = ({
     );
 
     const addRelatedObject = (value: TypedSelectOption) =>
-        setRelatedObjects((prev) => [...prev, value]);
+        handleReferencesChanged([...references, value]);
 
     const removeRelatedObject = (value: string) =>
-        setRelatedObjects((prev) => prev.filter((x) => x.value !== value));
+        handleReferencesChanged(references.filter((x) => x.value !== value));
 
     const selectedReferences = useMemo(() => {
-        return relatedObjects.sort(function (a, b) {
+        return references.sort(function (a, b) {
             if (a.type < b.type) {
                 return -1;
             }
@@ -67,7 +68,7 @@ export const RelatedObjectsSearch = ({
             }
             return 0;
         });
-    }, [relatedObjects]);
+    }, [references]);
 
     const loadOptions = async (
         inputValue: string,
@@ -85,21 +86,21 @@ export const RelatedObjectsSearch = ({
 
     return (
         <Wrapper>
+            <TitleBar>
+                <Title>References</Title>
+
+                <AdvancedDocumentSearch
+                    documents={references}
+                    appendItem={addRelatedObject}
+                    removeItem={removeRelatedObject}
+                />
+            </TitleBar>
             <Column>
                 {apiErrors &&
                     apiErrors.length > 0 &&
                     apiErrors.map((name) => {
                         return <ErrorWrapper key={name}>Failed to fetch {name}</ErrorWrapper>;
                     })}
-                <TitleBar>
-                    <Title>References</Title>
-
-                    <AdvancedDocumentSearch
-                        documents={relatedObjects}
-                        appendItem={addRelatedObject}
-                        removeItem={removeRelatedObject}
-                    />
-                </TitleBar>
                 <Inline>
                     <div
                         style={{
@@ -140,7 +141,7 @@ export const RelatedObjectsSearch = ({
                                     isMulti={true}
                                     placeholder={`Type to search..`}
                                     isClearable={false}
-                                    value={relatedObjects}
+                                    value={references}
                                     onInputChange={() => {
                                         setApiErrors([]);
                                     }}
@@ -169,21 +170,26 @@ export const RelatedObjectsSearch = ({
                                 return (
                                     <ListItem key={selectedReference.value}>
                                         <Inline>
-                                            <TypeIcon />
-                                            <Spacer />
-                                            <span style={{ fontSize: '16px' }}>
-                                                {selectedReference.label}
-                                            </span>
-                                        </Inline>
+                                            <IconWrapper>
+                                                <TypeIcon />
+                                            </IconWrapper>
 
-                                        <Icon
-                                            style={{ cursor: 'pointer' }}
-                                            color={tokens.colors.interactive.primary__resting.rgba}
-                                            onClick={() => {
-                                                removeRelatedObject(selectedReference.value);
-                                            }}
-                                            name="clear"
-                                        />
+                                            <SelectedItemLabel>
+                                                {selectedReference.label}
+                                            </SelectedItemLabel>
+                                        </Inline>
+                                        <IconWrapper>
+                                            <Icon
+                                                style={{ cursor: 'pointer' }}
+                                                color={
+                                                    tokens.colors.interactive.primary__resting.rgba
+                                                }
+                                                onClick={() => {
+                                                    removeRelatedObject(selectedReference.value);
+                                                }}
+                                                name="clear"
+                                            />
+                                        </IconWrapper>
                                     </ListItem>
                                 );
                             })}
@@ -194,6 +200,11 @@ export const RelatedObjectsSearch = ({
         </Wrapper>
     );
 };
+
+const IconWrapper = styled.div`
+    height: auto;
+    width: auto;
+`;
 
 function getIcon(x: TypedSelectOption): JSX.Element | null {
     switch (x.type) {
