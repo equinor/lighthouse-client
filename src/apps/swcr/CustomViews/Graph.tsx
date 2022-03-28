@@ -1,36 +1,38 @@
-import { Chart as ChartJS, registerables } from 'chart.js';
-import { DateTime } from 'luxon';
+import { Chart as ChartJS, ChartData, registerables } from 'chart.js';
 import { useRef } from 'react';
 import { Chart as ReactChart } from 'react-chartjs-2';
-import { weekDiff } from '../../Construction/Utils';
 import { SwcrPackage } from '../models/SwcrPackage';
-import { createSeries } from './__tests__/createSeries.test';
+import { ChartOptions } from 'chart.js';
+import { CustomVisualArgs } from '../../../packages/Diagrams/src';
+import { getLastWeeks } from './graphUtils';
+import { createCreatedClosedSeries, createOpenSeries } from './createSeries';
 ChartJS.register(...registerables);
 
 export const SwcrGraph = <T extends SwcrPackage>(props: CustomVisualArgs<T>) => {
-    const { data } = props;
+    const { data, graphType } = props;
     const chartRef = useRef<ChartJS>();
-    const filteredData = data.filter((swcr) => weekDiff(new Date(swcr.updatedAtDate)).weeks >= -20);
     const categories = getLastWeeks();
 
-    const series = createSeries(filteredData);
+    // const series = createCreatedClosedSeries(filteredData, categories);
+    const series =
+        graphType === 'open'
+            ? createOpenSeries(data, categories)
+            : createCreatedClosedSeries(data, categories);
 
     const chartData = {
-        labels: categories,
-        datasets: [...series],
+        labels: categories.map((cat) => `${cat.year}w${cat.weekNumber}`),
+        datasets: series,
     };
     return (
         <ReactChart
-            type="bar"
+            type={graphType === 'open' ? 'line' : 'bar'}
             ref={chartRef}
             options={chartoptions()}
-            data={chartData}
+            data={chartData as ChartData}
             height={250}
         />
     );
 };
-import { ChartOptions } from 'chart.js';
-import { CustomVisualArgs } from '../../../packages/Diagrams/src';
 
 export const chartoptions = (title?: string): ChartOptions => ({
     maintainAspectRatio: false,
@@ -65,7 +67,7 @@ export const chartoptions = (title?: string): ChartOptions => ({
             type: 'linear',
             title: {
                 display: true,
-                text: 'Bars',
+                text: '# of SWCRs',
             },
         },
 
