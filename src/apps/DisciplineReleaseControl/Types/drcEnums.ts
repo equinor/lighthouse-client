@@ -1,12 +1,12 @@
 export enum PipetestStep {
     Unknown = 'Unknown',
-    ReadyForBolttensioning = 'Ready for bolt tensioning (B)',
-    ReadyForPressureTest = 'Ready for pressure test (T)',
-    ReadyForPainting = 'Ready for painting (X)',
-    ReadyForHtTest = 'Ready for A-test (1)',
-    ReadyForInsulation = 'Ready for insulation (Z)',
-    ReadyForHtRetest = 'Ready for B-test (2)',
-    ReadyForMarking = 'Ready for marking (M)',
+    ReadyForBolttensioning = 'Bolt tensioning (B)',
+    ReadyForPressureTest = 'Pressure test (T)',
+    ReadyForPainting = 'Painting (X)',
+    ReadyForHtTest = 'A-test (1)',
+    ReadyForInsulation = 'Insulation (Z)',
+    ReadyForHtRetest = 'B-test (2)',
+    ReadyForMarking = 'Marking (M)',
     Complete = 'Complete',
 }
 
