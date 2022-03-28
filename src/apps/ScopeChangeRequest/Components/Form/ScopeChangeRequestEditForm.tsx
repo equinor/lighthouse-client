@@ -34,6 +34,7 @@ import {
     Inline,
     Section,
 } from './ScopeChangeForm.styles';
+import styled from 'styled-components';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -83,6 +84,7 @@ export const ScopeChangeRequestEditForm = ({
         await patchScopeChange({
             ...request,
             ...state,
+            changeCategoryId: state.changeCategory?.id ?? request.changeCategory.id,
             originSourceId: request.originSourceId,
             tagNumbers: tags?.map((x) => x.value) || [],
             systemIds: systems?.map((x) => Number(x.value)) || [],
@@ -106,7 +108,7 @@ export const ScopeChangeRequestEditForm = ({
         handleInput('references', references);
 
     return (
-        <>
+        <Wrapper>
             <FormWrapper>
                 <FlexColumn>
                     Request
@@ -164,9 +166,16 @@ export const ScopeChangeRequestEditForm = ({
                     )}
                 </ButtonContainer>
             </ActionBar>
-        </>
+        </Wrapper>
     );
 };
+
+const Wrapper = styled.div`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+`;
 
 function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | StidTypes) {
     return items.filter((x) => x.type === type);

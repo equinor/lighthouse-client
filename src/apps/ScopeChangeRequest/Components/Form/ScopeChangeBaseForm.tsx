@@ -2,16 +2,15 @@ import { SingleSelect, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { useRefresh } from '../../../../components/ParkView/hooks/useRefresh';
 
 import { getCategories } from '../../Api/ScopeChange/getCategories';
 import { getPhases } from '../../Api/ScopeChange/getPhases';
-import { ScopeChangeBaseModel } from '../../Types/scopeChangeRequest';
 import { Origin } from './Origin';
+import { ScopeChangeFormModel } from './useScopeChangeFormState';
 
 interface ScopeChangeBaseFormProps {
-    state: Partial<ScopeChangeBaseModel>;
-    handleInput: (key: keyof ScopeChangeBaseModel, value: unknown) => void;
+    state: Partial<ScopeChangeFormModel>;
+    handleInput: (key: keyof ScopeChangeFormModel, value: unknown) => void;
 }
 
 export const ScopeChangeBaseForm = ({
@@ -24,8 +23,6 @@ export const ScopeChangeBaseForm = ({
     const { data: categories } = useQuery(['category'], getCategories, {
         cacheTime: Infinity,
     });
-
-    const forceRerender = useRefresh();
 
     return (
         <BaseFormContainer>
@@ -47,13 +44,16 @@ export const ScopeChangeBaseForm = ({
             />
             <Section>
                 <SingleSelect
-                    items={categories ?? []}
+                    items={categories?.map(({ name }) => name) ?? []}
                     label={'Change category'}
                     meta="(Required)"
-                    initialSelectedItem={state.category}
+                    initialSelectedItem={state.changeCategory?.name}
                     placeholder="Select category"
                     handleSelectedItemChange={(change) =>
-                        handleInput('category', change.selectedItem)
+                        handleInput(
+                            'changeCategory',
+                            categories?.find(({ name }) => name === change.selectedItem)
+                        )
                     }
                 />
                 <SingleSelect
@@ -64,8 +64,6 @@ export const ScopeChangeBaseForm = ({
                     placeholder="Select origin"
                     handleSelectedItemChange={(change) => {
                         handleInput('originSource', change.selectedItem);
-                        /** Must re-render for originSource to work */
-                        forceRerender();
                     }}
                 />
                 <Origin

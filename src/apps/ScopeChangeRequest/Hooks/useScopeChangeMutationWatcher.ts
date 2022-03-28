@@ -11,6 +11,8 @@ export function useScopeChangeMutationWatcher(requestId: string): void {
     const queryClient = useQueryClient();
     const { baseKey } = scopeChangeQueryKeys(requestId);
 
+    //TODO: investigate
+    //Maybe subscribe and unsub when requestId changes
     const {
         dataApi: { queryKey: workspaceKey },
     } = useDataContext();

@@ -55,6 +55,7 @@ export const DataCreatorWrapper = ({
         const scID = await postScopeChange(
             {
                 ...validatedFormModel,
+                changeCategoryId: validatedFormModel.changeCategory.id,
                 tagNumbers: tags?.map((x) => x.value) || [],
                 systemIds: systems?.map((x) => Number(x.value)) || [],
                 commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],

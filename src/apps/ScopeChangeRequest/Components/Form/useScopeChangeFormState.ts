@@ -9,7 +9,7 @@ export interface ScopeChangeFormState {
     handleInput: (key: keyof ScopeChangeFormModel, value: unknown) => void;
 }
 
-interface ScopeChangeFormModel extends ScopeChangeBaseModel {
+export interface ScopeChangeFormModel extends Omit<ScopeChangeBaseModel, 'changeCategoryId'> {
     attachments: File[];
     references: TypedSelectOption[];
 }
@@ -49,10 +49,10 @@ export function useScopeChangeFormState(
 
     const mandatoryProperties: (keyof ScopeChangeFormModel)[] = [
         'title',
-        'category',
         'originSource',
         'description',
         'phase',
+        'changeCategory',
     ];
 
     function checkFormState(request: Partial<ScopeChangeFormModel>): boolean {
@@ -65,7 +65,7 @@ export function useScopeChangeFormState(
                 case !request.phase || request.phase.length <= 0:
                     return false;
 
-                case !request.category || request.category.length <= 0:
+                case !request?.changeCategory?.id || request?.changeCategory?.id.length <= 0:
                     return false;
 
                 case !request.description || request.description.length <= 0:
