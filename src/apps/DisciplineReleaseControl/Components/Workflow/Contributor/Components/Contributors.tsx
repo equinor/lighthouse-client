@@ -3,7 +3,6 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { useState } from 'react';
 
-
 import { MenuButton, MenuItem } from '../../../MenuButton/';
 import { ContributorActions } from '../../Types/actions';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
@@ -202,7 +201,7 @@ function contributorStatus(
     currentStep: boolean
 ): WorkflowStatus {
     if (contributor.contribution) {
-        return 'Completed';
+        return 'Complete';
     }
 
     if (currentStep) {
