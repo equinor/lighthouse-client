@@ -2,7 +2,7 @@ import { ClientSettings } from './ClientSettings';
 
 export interface UIFunctionContext {
     toggleAppPanel: VoidFunction;
-    toggleFullscreenMenu: VoidFunction;
+    toggleMenu: VoidFunction;
 }
 
 export type UIContext = UIFunctionContext & ClientSettings;

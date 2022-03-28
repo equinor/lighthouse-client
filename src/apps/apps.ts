@@ -15,7 +15,8 @@ import { PortalModelViewer } from './3DModel/src';
 import { setup as commissioningSetup } from './Commissioning';
 import { setup as constructionSetup } from './Construction';
 import { setup as handoverSetup } from './Handover';
-import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
+import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
+
 import {
     BusinessCaseReport,
     LCIReport,
@@ -340,15 +341,15 @@ export const apps: AppManifest[] = [
         appEnv: 'dev',
     },
     {
-        title: 'Heat trace installation',
-        shortName: 'heat-trace',
+        title: 'Piping and Heat trace',
+        shortName: 'piping-and-ht',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
         app: {
             appType: 'Workspace',
-            setup: heatTraceInstallationSetup,
+            setup: disciplineReleaseControlSetup,
         },
         appEnv: 'dev',
     },

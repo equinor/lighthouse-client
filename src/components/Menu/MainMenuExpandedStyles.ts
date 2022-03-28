@@ -2,6 +2,7 @@ import { Accordion } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Icon from '../Icon/Icon';
 
 export const AccordionHeaderTitle = styled(Link)`
     text-decoration: none;
@@ -13,6 +14,15 @@ export const AccordionHeaderTitle = styled(Link)`
 const { Header, Panel } = Accordion;
 
 export const AccordionHeader = styled(Header)`
+    border: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    min-height: 0px;
+    background-color: transparent;
+    display: flex;
+`;
+
+export const AccordionHeaderIcon = styled(Icon)`
     border: 0px;
     padding-top: 0px;
     padding-bottom: 0px;

@@ -16,7 +16,7 @@ export async function voidRequest({ requestId }: VoidParams): Promise<void> {
         requestOptions
     );
 
-    await throwOnError(res);
+    await throwOnError(res, 'Failed to void request');
 }
 
 export async function unVoidRequest({ requestId }: VoidParams): Promise<void> {
@@ -30,5 +30,5 @@ export async function unVoidRequest({ requestId }: VoidParams): Promise<void> {
         requestOptions
     );
 
-    await throwOnError(res);
+    await throwOnError(res, 'Failed to unvoid request');
 }

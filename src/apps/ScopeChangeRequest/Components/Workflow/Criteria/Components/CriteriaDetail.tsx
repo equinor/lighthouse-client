@@ -28,9 +28,7 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
 
     return (
         <SplitInline>
-            <FixedIconContainer>
-                <WorkflowIcon status={stepStatus} number={step.order + 1} />
-            </FixedIconContainer>
+            <WorkflowIcon status={stepStatus} number={step.order + 1} />
 
             <WorkflowText>
                 <span>{step.name}</span>
@@ -49,14 +47,6 @@ export const CriteriaDetail = ({ criteria, step }: CriteriaDetailProps): JSX.Ele
 
 const DetailText = styled.div`
     font-size: 14px;
-`;
-
-const FixedIconContainer = styled.div`
-    width: 29px;
-    height: 29px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 `;
 
 const SplitInline = styled.div`

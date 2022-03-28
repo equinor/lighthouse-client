@@ -26,11 +26,9 @@ export const Upload = ({ attachments, setAttachments }: UploadProps): JSX.Elemen
     };
 
     const onDrop = useCallback(
-        async (acceptedFiles, fileRejections: FileRejection[]) => {
+        async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
             setRejectedFiles(fileRejections);
-            if (acceptedFiles[0]) {
-                addFile(acceptedFiles[0]);
-            }
+            acceptedFiles && acceptedFiles.forEach((file) => addFile(file));
         },
         [addFile]
     );

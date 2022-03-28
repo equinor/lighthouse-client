@@ -20,9 +20,6 @@ export const PopoutSidesheet = (): JSX.Element | null => {
 };
 
 const Wrapper = styled.div`
-    position: absolute;
-    top: 0px;
-    right: 0px;
     width: auto;
     height: 100%;
     background: white;

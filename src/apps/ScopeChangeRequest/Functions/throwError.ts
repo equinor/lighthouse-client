@@ -1,8 +1,9 @@
-import { ServerError } from '../Types/ScopeChange/ServerError';
-
-export async function throwOnError(res: Response): Promise<void> {
+export async function throwOnError(res: Response, fallbackMessage?: string): Promise<void> {
     if (!res.ok) {
-        const error: ServerError = await res.json();
-        throw error;
+        if (res.body !== null) {
+            throw await res.json();
+        } else {
+            throw fallbackMessage ?? 'Something went wrong';
+        }
     }
 }
