@@ -17,6 +17,9 @@ export const DataViewWrapper = styled.section`
     overflow: hidden;
 `;
 
-export const WorkspaceWrapper = styled.div<{ sideSheetWidth?: number }>`
-    width: calc(100vw - ${({ sideSheetWidth }) => sideSheetWidth || 0}px);
+export const WorkspaceWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
 `;

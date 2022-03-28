@@ -126,8 +126,8 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     if (!viewIsActive) return <NoDataView />;
     return (
-        <WorkspaceWrapper sideSheetWidth={width}>
-            <FilterProvider initialData={data} options={filterOptions}>
+        <FilterProvider initialData={data} options={filterOptions}>
+            <WorkspaceWrapper>
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <HeaderWrapper props={props} tabs={tabs} />
                     <DataViewWrapper>
@@ -135,7 +135,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
                     </DataViewWrapper>
                 </Tabs>
                 <PopoutSidesheet />
-            </FilterProvider>
-        </WorkspaceWrapper>
+            </WorkspaceWrapper>
+        </FilterProvider>
     );
 }
