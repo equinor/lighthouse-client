@@ -7,7 +7,7 @@ interface WorkflowDotProps {
     height?: number;
     width?: number;
     state: 'Outstanding' | 'Complete' | 'Inactive' | 'PunchAError' | 'PunchBError';
-    text?: string;
+    text: string;
     active: boolean;
 }
 
@@ -16,6 +16,7 @@ interface dotStyling {
     stroke: string;
     active: boolean;
     status: string;
+    text: string;
 }
 
 export const WorkflowDot = ({ state, text, active }: WorkflowDotProps): JSX.Element => {
@@ -58,6 +59,14 @@ export const WorkflowDot = ({ state, text, active }: WorkflowDotProps): JSX.Elem
                 return {
                     color: PipetestCompletionStatusColors.PB,
                     stroke: PipetestCompletionStatusColors.PB,
+                    text: text,
+                    active: active,
+                    status: state,
+                };
+            default:
+                return {
+                    color: PipetestCompletionStatusColors.OS,
+                    stroke: PipetestCompletionStatusColors.OS,
                     text: text,
                     active: active,
                     status: state,
