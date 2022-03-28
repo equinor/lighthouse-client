@@ -102,6 +102,7 @@ export function setup(appApi: ClientApi): void {
             'heatTraces',
             'overdue',
             'completionStatus',
+            'insulationBoxes',
         ],
         enableSelectRows: true,
         headers: [
@@ -162,6 +163,8 @@ export function setup(appApi: ClientApi): void {
             customItemView: ReleaseControlGardenItem,
             customHeaderView: ReleaseControlGardenHeader,
         },
+        //Add highlightColumn when it is fixed
+        // highlightColumn: getHighlightedColumn,
     });
 
     request.registerStatusItems(statusBarConfig);
