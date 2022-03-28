@@ -13,6 +13,7 @@ export function ScopeChangeSidesheetWrapper(item: ScopeChangeRequest): JSX.Eleme
 
     const { setWidth } = useInternalSidesheetFunction();
     useEffect(() => {
+        //HACK: Increase width on mount
         setWidth(1000);
     }, []);
 
