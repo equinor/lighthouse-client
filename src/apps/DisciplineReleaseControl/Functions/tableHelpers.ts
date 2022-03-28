@@ -2,7 +2,7 @@ import { CheckListStatus, CheckListStepTag, PipetestCompletionStatus } from '../
 import { CheckList, Pipetest } from '../Types/pipetest';
 import { getPipetestStatusForStep } from './statusHelpers';
 
-export const checklistTagFunc = (item: CheckList): string => {
+export const checklistTagFunc = (item: CheckList) => {
     switch (item?.status) {
         case CheckListStatus.Outstanding:
             return PipetestCompletionStatus.Outstanding;
