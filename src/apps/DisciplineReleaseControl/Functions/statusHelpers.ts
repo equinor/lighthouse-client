@@ -1,10 +1,12 @@
 import { DateTime } from 'luxon';
+import { PipetestCompletionStatusColors } from '../Styles/ReleaseControlColors';
 import {
     CheckListStatus,
     PipetestCheckListOrder,
-    PipetestStatus,
+    PipetestStep,
     PipetestStatusOrder,
     CheckListStepTag,
+    PipetestCompletionStatus,
 } from '../Types/drcEnums';
 import { CheckList, Pipetest } from '../Types/pipetest';
 
@@ -48,39 +50,39 @@ export function getChecklistSortValue(checkList: CheckList): number {
     return number;
 }
 
-export function getPipetestStatus(checkLists: CheckList[]): PipetestStatus {
+export function getPipetestStatus(checkLists: CheckList[]): PipetestStep {
     if (!isCheckListStepOk(checkLists, CheckListStepTag.Bolttensioning)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForBolttensioning)
-            ? PipetestStatus.ReadyForBolttensioning
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForBolttensioning
+            : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.PressureTest)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForPressureTest)
-            ? PipetestStatus.ReadyForPressureTest
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForPressureTest
+            : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Painting)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForPainting)
-            ? PipetestStatus.ReadyForPainting
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForPainting
+            : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTest)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForHtTest)
-            ? PipetestStatus.ReadyForHtTest
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForHtTest
+            : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Insulation)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForInsulation)
-            ? PipetestStatus.ReadyForInsulation
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForInsulation
+            : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtRetest)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForHtRetest)
-            ? PipetestStatus.ReadyForHtRetest
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForHtRetest
+            : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Marking)) {
         return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForMarking)
-            ? PipetestStatus.ReadyForMarking
-            : PipetestStatus.Unknown;
+            ? PipetestStep.ReadyForMarking
+            : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTemporary)) {
-        return PipetestStatus.Unknown;
+        return PipetestStep.Unknown;
     } else {
-        return PipetestStatus.Complete;
+        return PipetestStep.Complete;
     }
 }
 
@@ -131,37 +133,37 @@ export function isCheckListGroupOk(checkLists: CheckList[]): boolean {
 }
 
 export function getPipetestStatusEnumByValue(enumValue: string): string {
-    return Object.keys(PipetestStatus).filter((x) => PipetestStatus[x] === enumValue)[0];
+    return Object.keys(PipetestStep).filter((x) => PipetestStep[x] === enumValue)[0];
 }
 
 export function getPipetestStatusSortValue(pipetest: Pipetest): number {
     let number: number = PipetestStatusOrder.Unknown;
-    switch (pipetest.status) {
-        case PipetestStatus.Unknown:
+    switch (pipetest.step) {
+        case PipetestStep.Unknown:
             number = PipetestStatusOrder.Unknown;
             break;
-        case PipetestStatus.ReadyForBolttensioning:
+        case PipetestStep.ReadyForBolttensioning:
             number = PipetestStatusOrder.ReadyForBolttensioning;
             break;
-        case PipetestStatus.ReadyForPressureTest:
+        case PipetestStep.ReadyForPressureTest:
             number = PipetestStatusOrder.ReadyForPressureTest;
             break;
-        case PipetestStatus.ReadyForPainting:
+        case PipetestStep.ReadyForPainting:
             number = PipetestStatusOrder.ReadyForPainting;
             break;
-        case PipetestStatus.ReadyForHtTest:
+        case PipetestStep.ReadyForHtTest:
             number = PipetestStatusOrder.ReadyForHtTest;
             break;
-        case PipetestStatus.ReadyForInsulation:
+        case PipetestStep.ReadyForInsulation:
             number = PipetestStatusOrder.ReadyForInsulation;
             break;
-        case PipetestStatus.ReadyForHtRetest:
+        case PipetestStep.ReadyForHtRetest:
             number = PipetestStatusOrder.ReadyForHtRetest;
             break;
-        case PipetestStatus.ReadyForMarking:
+        case PipetestStep.ReadyForMarking:
             number = PipetestStatusOrder.ReadyForMarking;
             break;
-        case PipetestStatus.Complete:
+        case PipetestStep.Complete:
             number = PipetestStatusOrder.Complete;
             break;
     }
@@ -170,11 +172,7 @@ export function getPipetestStatusSortValue(pipetest: Pipetest): number {
 }
 
 export function getPipetestStatusForStep(checkLists: CheckList[]): string {
-    if (
-        checkLists.every(
-            (x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError
-        )
-    ) {
+    if (checkLists.every((x) => x.status === CheckListStatus.OK)) {
         return CheckListStatus.OK;
     } else if (checkLists.find((x) => x.status === CheckListStatus.Outstanding)) {
         {
@@ -182,6 +180,8 @@ export function getPipetestStatusForStep(checkLists: CheckList[]): string {
         }
     } else if (checkLists.find((x) => x.status === CheckListStatus.PunchAError)) {
         return CheckListStatus.PunchAError;
+    } else if (checkLists.find((x) => x.status === CheckListStatus.PunchBError)) {
+        return CheckListStatus.PunchBError;
     } else {
         return CheckListStatus.OK;
     }
@@ -189,6 +189,7 @@ export function getPipetestStatusForStep(checkLists: CheckList[]): string {
 
 export const getYearAndWeekFromDate = (date: Date): string => {
     const dateTime = DateTime.local(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    if (dateTime.weekYear === 1) return DATE_BLANKSTRING;
     return `${dateTime.weekYear}-${dateTime.weekNumber}`;
 };
 
@@ -201,4 +202,51 @@ export const getYearAndWeekFromString = (dateString: string, removeDays = 0): st
               removeDays ? new Date(date.setDate(date.getDate() - removeDays)) : date
           )
         : DATE_BLANKSTRING;
+};
+
+export function getPipetestCompletionStatus(pipetest: Pipetest): PipetestCompletionStatus {
+    const pipetestStepStatus = getPipetestStatus(pipetest.checkLists);
+
+    if (
+        pipetestStepStatus === PipetestStep.Complete &&
+        pipetest.checkLists.some((x) => x.status === CheckListStatus.PunchBError)
+    ) {
+        return PipetestCompletionStatus.PunchBError;
+    } else if (pipetestStepStatus === PipetestStep.Complete) {
+        return PipetestCompletionStatus.Complete;
+    } else if (pipetest.checkLists.some((x) => x.status === CheckListStatus.PunchAError)) {
+        return PipetestCompletionStatus.PunchAError;
+    } else {
+        return PipetestCompletionStatus.Outstanding;
+    }
+}
+
+export const getDotsColor = (status: PipetestCompletionStatus): string => {
+    switch (status) {
+        case PipetestCompletionStatus.Outstanding:
+            return PipetestCompletionStatusColors.OS;
+        case PipetestCompletionStatus.Complete:
+            return PipetestCompletionStatusColors.OK;
+        case PipetestCompletionStatus.PunchBError:
+            return PipetestCompletionStatusColors.PB;
+        case PipetestCompletionStatus.PunchAError:
+            return PipetestCompletionStatusColors.PA;
+        default:
+            return PipetestCompletionStatusColors.OS;
+    }
+};
+
+export const getShortformCompletionStatusName = (status: string): string => {
+    switch (status) {
+        case PipetestCompletionStatus.Outstanding:
+            return CheckListStatus.Outstanding;
+        case PipetestCompletionStatus.Complete:
+            return CheckListStatus.OK;
+        case PipetestCompletionStatus.PunchBError:
+            return CheckListStatus.PunchBError;
+        case PipetestCompletionStatus.PunchAError:
+            return CheckListStatus.PunchAError;
+        default:
+            return CheckListStatus.Outstanding;
+    }
 };
