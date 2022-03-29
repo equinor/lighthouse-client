@@ -191,11 +191,6 @@ export const RelatedObjectsSearch = ({
     );
 };
 
-const IconWrapper = styled.div`
-    height: auto;
-    width: auto;
-`;
-
 function getIcon(x: TypedSelectOption): JSX.Element | null {
     switch (x.type) {
         case 'area':
