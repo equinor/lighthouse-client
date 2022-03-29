@@ -31,7 +31,7 @@ export function setup(appApi: ClientApi): void {
         json.map((pipetest: Pipetest) => {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
-            pipetest.step = getPipetestStatus(pipetest.checkLists);
+            pipetest.step = getPipetestStatus(pipetest);
             pipetest.completionStatus = getPipetestCompletionStatus(pipetest);
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             pipetest.overdue =
@@ -124,7 +124,7 @@ export function setup(appApi: ClientApi): void {
                     Cell: ({ cell }: any) => {
                         return (
                             <WorkflowCompact
-                                steps={createChecklistSteps(cell.value.content.checkLists)}
+                                steps={createChecklistSteps(cell.value.content)}
                                 statusDotFunc={checklistTagFunc}
                                 spanDirection={'horizontal'}
                                 dotSize={22}

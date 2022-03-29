@@ -6,7 +6,7 @@ import { PipetestStep, PipetestStatusOrder, PipetestCompletionStatus } from '../
 import { Pipetest } from '../../Types/pipetest';
 
 export const getStatusKey: GetKeyFunction<Pipetest> = (item) => {
-    const pipetestStatusFieldKey = getPipetestStatus(item.checkLists);
+    const pipetestStatusFieldKey = getPipetestStatus(item);
     return pipetestStatusFieldKey.toString();
 };
 
@@ -73,6 +73,9 @@ export const getGardenItemColor = (item: Pipetest): string => {
             break;
         case PipetestStep.Insulation:
             color = '#73b1b5';
+            break;
+        case PipetestStep.BoxInsulation:
+            color = '#A8CED1';
             break;
         case PipetestStep.HtRetest:
             color = '#ffc67a';

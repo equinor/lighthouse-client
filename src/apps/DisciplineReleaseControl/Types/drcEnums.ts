@@ -7,6 +7,7 @@ export enum PipetestStep {
     Painting = 'Painting',
     HtTest = 'A-test',
     Insulation = 'Insulation',
+    BoxInsulation = 'Box insulation',
     HtRetest = 'B-test',
     Marking = 'Marking',
     Complete = 'Complete',
@@ -21,6 +22,7 @@ export enum CheckListStepTag {
     Painting = '#X',
     HtTest = 'ELE19.1',
     Insulation = '#Z',
+    BoxInsulation = '#I',
     HtRetest = 'ELE19.2',
     HtTemporary = 'ELE99',
     Marking = '#M',
@@ -50,9 +52,10 @@ export enum PipetestCheckListOrder {
     Painting = 3,
     HtTest = 4,
     Insulation = 5,
-    HtRetest = 6,
-    Marking = 7,
-    Complete = 8,
+    BoxInsulation = 6,
+    HtRetest = 7,
+    Marking = 8,
+    Complete = 9,
 }
 
 export enum PipetestStatusOrder {
@@ -62,7 +65,8 @@ export enum PipetestStatusOrder {
     Painting = 3,
     HtTest = 4,
     Insulation = 5,
-    HtRetest = 6,
-    Marking = 7,
-    Complete = 8,
+    BoxInsulation = 6,
+    HtRetest = 7,
+    Marking = 8,
+    Complete = 9,
 }
