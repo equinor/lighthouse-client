@@ -1,29 +1,26 @@
-import { PowerBI } from "../../modules/powerBI";
-import { Filter } from '../../modules/powerBI/src/models/filter';
+import { Filter, PowerBI } from '@equinor/lighthouse-powerbi';
 
-export function MDRReport() {
-    const reportUri = "mdr"
+export function MDRReport(): JSX.Element {
+    const reportUri = 'mdr';
 
     const filterOptions: Filter[] = [
         {
-            values: ["Johan Castberg"],
+            values: ['Johan Castberg'],
             target: {
                 table: 'Dim_MasterProject',
-                column: 'Project'
+                column: 'Project',
             },
-            operator: "In"
+            operator: 'In',
         },
         {
             values: ['JCA'],
             target: {
                 column: 'FACILITY',
-                table: 'Commpkg'
+                table: 'Commpkg',
             },
-            operator: "In"
-        }
-    ]
+            operator: 'In',
+        },
+    ];
 
-    return (
-        <PowerBI reportUri={reportUri} filterOptions={filterOptions} />
-    );
+    return <PowerBI reportUri={reportUri} filterOptions={filterOptions} />;
 }

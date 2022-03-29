@@ -1,17 +1,17 @@
-import { Data } from '../Models/data';
+import { GardenGroups } from '../Models/data';
 import { Count, Groupe, Title } from '../Styles/common';
 
 type GardenHeaderProps<T> = {
-    garden: Data<T>;
-    columnKey: string;
+    garden: GardenGroups<T>;
+    columnIndex: number;
 };
 
-export function GroupHeader<T>({ garden, columnKey }: GardenHeaderProps<T>): JSX.Element {
+export function GroupHeader<T>({ garden, columnIndex }: GardenHeaderProps<T>): JSX.Element {
     return (
         <Groupe>
-            {garden[columnKey].status?.statusElement}
-            <Title>{garden[columnKey].value}</Title>
-            <Count>({garden[columnKey].count})</Count>
+            {garden[columnIndex].status?.statusElement}
+            <Title>{garden[columnIndex].value}</Title>
+            <Count>({garden[columnIndex].count})</Count>
         </Groupe>
     );
 }

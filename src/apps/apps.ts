@@ -14,8 +14,9 @@ import { SSUIcon } from '../icons/SSUIcon';
 import { PortalModelViewer } from './3DModel/src';
 import { setup as commissioningSetup } from './Commissioning';
 import { setup as constructionSetup } from './Construction';
+import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
 import { setup as handoverSetup } from './Handover';
-import { setup as heatTraceInstallationSetup } from './HeatTraceInstallation/HeatTraceInstallationApp';
+import { setup as installationSetup } from './Installation';
 import {
     BusinessCaseReport,
     LCIReport,
@@ -154,10 +155,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        uri: `${isProduction()
+        uri: `${
+            isProduction()
                 ? 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
                 : 'https://pro-s-portal-ci.azurewebsites.net/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
-            }`,
+        }`,
         appEnv: 'prod',
         tags: [],
     },
@@ -190,10 +192,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.SSU,
         icon: '',
-        uri: `${isProduction()
+        uri: `${
+            isProduction()
                 ? 'https://fusion.equinor.com/apps/bmt/65728fee-185d-4a0c-a91d-8e3f3781dad8'
                 : 'https://pro-s-portal-ci.azurewebsites.net/apps/bmt/b6552a8f-9173-416f-9fc0-996387ff7e3a'
-            }`,
+        }`,
         appEnv: 'prod',
         tags: ['Fusion', 'Link'],
     },
@@ -244,6 +247,20 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'PageView',
             setup: commissioningSetup,
+        },
+
+        appEnv: 'dev',
+    },
+    {
+        title: 'Installation',
+        shortName: 'inst',
+        color: '#0364B8',
+        groupe: Apps.Progress,
+        icon: '',
+        tags: [],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: installationSetup,
         },
 
         appEnv: 'dev',
@@ -340,15 +357,15 @@ export const apps: AppManifest[] = [
         appEnv: 'dev',
     },
     {
-        title: 'Heat trace installation',
-        shortName: 'heat-trace',
+        title: 'Piping and Heat trace',
+        shortName: 'piping-and-ht',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
         app: {
             appType: 'Workspace',
-            setup: heatTraceInstallationSetup,
+            setup: disciplineReleaseControlSetup,
         },
         appEnv: 'dev',
     },
@@ -380,8 +397,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        uri: `https://${isProduction() ? 'procosys' : 'procosystest'
-            }.equinor.com/JOHAN_CASTBERG/Preservation`,
+        uri: `https://${
+            isProduction() ? 'procosys' : 'procosystest'
+        }.equinor.com/JOHAN_CASTBERG/Preservation`,
         tags: ['link', 'procosys'],
         appEnv: 'prod',
     },
@@ -415,8 +433,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        uri: `https://${isProduction() ? 'fusion.equinor.com' : 'pro-s-portal-ci.azurewebsites.net'
-            }/apps/dcp`,
+        uri: `https://${
+            isProduction() ? 'fusion.equinor.com' : 'pro-s-portal-ci.azurewebsites.net'
+        }/apps/dcp`,
         tags: ['link', 'fusion'],
         appEnv: 'prod',
     },
@@ -426,8 +445,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        uri: `https://${isProduction() ? 'procosys' : 'procosystest'
-            }.equinor.com/JOHAN_CASTBERG/InvitationForPunchOut`,
+        uri: `https://${
+            isProduction() ? 'procosys' : 'procosystest'
+        }.equinor.com/JOHAN_CASTBERG/InvitationForPunchOut`,
         tags: ['link', 'procosys'],
         appEnv: 'prod',
     },
@@ -468,10 +488,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
-        uri: `${isProduction()
+        uri: `${
+            isProduction()
                 ? 'https://fusion.equinor.com/apps/management-of-change/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
                 : 'https://pro-s-portal-ci.azurewebsites.net/apps/management-of-change'
-            }`,
+        }`,
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -481,10 +502,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
-        uri: `${isProduction()
+        uri: `${
+            isProduction()
                 ? 'https://fusion.equinor.com/apps/project-control-and-analysis/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
                 : 'https://pro-s-portal-ci.azurewebsites.net/apps/project-control-and-analysis/b9a3246a-ddb5-4086-b4ec-dd4b0e88b700'
-            }`,
+        }`,
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -549,10 +571,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: 'tag',
-        uri: `${isProduction()
+        uri: `${
+            isProduction()
                 ? 'https://fusion.equinor.com/apps/meetings'
                 : 'https://pro-s-portal-ci.azurewebsites.net/apps/meetings'
-            } `,
+        } `,
         tags: ['fuison', 'link', 'external'],
         appEnv: 'prod',
     },
@@ -562,10 +585,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: 'tag',
-        uri: `${isProduction()
+        uri: `${
+            isProduction()
                 ? 'https://fusion.equinor.com/apps/reviews/255d8c0a-7893-4c21-ab42-62c652ea8129'
                 : 'https://pro-s-portal-ci.azurewebsites.net/apps/reviews'
-            }`,
+        }`,
         tags: ['fuison', 'link', 'external'],
         appEnv: 'prod',
     },
@@ -588,8 +612,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: '',
-        uri: `https://${isProduction() ? 'procosys' : 'procosystest'
-            }.equinor.com/JOHAN_CASTBERG/Search?searchType=Query`,
+        uri: `https://${
+            isProduction() ? 'procosys' : 'procosystest'
+        }.equinor.com/JOHAN_CASTBERG/Search?searchType=Query`,
         tags: ['link', 'procosys'],
         appEnv: 'prod',
     },
@@ -613,8 +638,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.AssetData,
         icon: '',
-        uri: `https://${isProduction() ? 'stid' : 'stidtest'
-            }.equinor.com/JCA/search?type=doc&revstatus=OF%2CUA%2CRE%2CPL%2COF-P`,
+        uri: `https://${
+            isProduction() ? 'stid' : 'stidtest'
+        }.equinor.com/JCA/search?type=doc&revstatus=OF%2CUA%2CRE%2CPL%2COF-P`,
         tags: ['3D', 'Asset', 'Map', 'Doc'],
         appEnv: 'prod',
     },
@@ -624,8 +650,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.AssetData,
         icon: 'tag',
-        uri: `https://${isProduction() ? 'stid' : 'stidtest'
-            }.equinor.com/JCA/search?type=tag&tagstatus=A%2CP%2CR%2CF`,
+        uri: `https://${
+            isProduction() ? 'stid' : 'stidtest'
+        }.equinor.com/JCA/search?type=tag&tagstatus=A%2CP%2CR%2CF`,
         tags: ['Tag', 'Data', 'Functional Location'],
         appEnv: 'prod',
     },

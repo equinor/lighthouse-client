@@ -13,7 +13,7 @@ import {
     WorkflowLoadingHeader,
 } from './RequestDetailViewStyles';
 import { HistoryList } from '../History/HistoryList';
-import { Progress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react';
 import { HotUpload } from '../../../Attachments/HotUpload';
 import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
 import { useIsReferencesLoading } from '../../../../Hooks/React-Query/useIsReferencesLoading';
@@ -42,7 +42,7 @@ export const SplitView = (): JSX.Element => {
                 <SectionRow>
                     <Section>
                         <SubHeading>Change category</SubHeading>
-                        <Value>{request.category}</Value>
+                        <Value>{request.changeCategory.name}</Value>
                     </Section>
 
                     <Section>
@@ -76,8 +76,10 @@ export const SplitView = (): JSX.Element => {
                     request.disciplines.length > 0 ||
                     request.tags.length > 0) && (
                         <Section>
-                            <BoldHeading>References</BoldHeading>
-                            {referencesLoading && <Progress.Dots color="primary" />}
+                            <WorkflowLoadingHeader>
+                                <BoldHeading>References</BoldHeading>
+                                {referencesLoading && <CircularProgress size={16} />}
+                            </WorkflowLoadingHeader>
                             <Value>
                                 <RelatedObjects
                                     systems={request.systems}
@@ -102,7 +104,7 @@ export const SplitView = (): JSX.Element => {
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
                 <WorkflowLoadingHeader>
                     <BoldHeading>Workflow</BoldHeading>
-                    {workflowLoading && <Progress.Dots color="primary" />}
+                    {workflowLoading && <CircularProgress size={16} />}
                 </WorkflowLoadingHeader>
                 <Workflow />
                 <Section>

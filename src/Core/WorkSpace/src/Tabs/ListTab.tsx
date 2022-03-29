@@ -39,6 +39,7 @@ export const ListTab = (): JSX.Element => {
                 }}
                 FilterComponent={PopupFilter}
                 height={awaitableHeight - 70}
+                itemSize={tableOptions?.itemSize}
             />
         </Wrapper>
     );

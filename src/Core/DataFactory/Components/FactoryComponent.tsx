@@ -61,7 +61,6 @@ const ScrimContainer = styled.div`
     right: 0;
     height: -webkit-fill-available;
     background: white;
-    max-width: 90vh;
     overflow: scroll;
 `;
 
@@ -70,5 +69,6 @@ const Container = styled.div`
     align-content: stretch;
     align-items: center;
     justify-content: center;
-    padding: 2em;
+    padding: 0em 2em;
+    height: 100%;
 `;

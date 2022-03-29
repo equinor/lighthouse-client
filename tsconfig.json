@@ -15,11 +15,12 @@
         "isolatedModules": true,
         "noEmit": true,
         "noImplicitAny": false,
-        "types": ["node", "vite/client"],
+        "types": ["node", "vite/client", "jest"],
         "sourceMap": true,
         "paths": {
             "@equinor/Kpi": ["./src/packages/KPI"],
             "@equinor/portal-client": ["./src/Core/Client"],
+            "@equinor/lighthouse-components":["./src/packages/Components"],
             "@equinor/sidesheet": ["./src/packages/Sidesheet"],
             "@equinor/GroupView": ["./src/Core/GroupView"],
             "@equinor/WorkSpace": ["./src/Core/WorkSpace"],
@@ -39,7 +40,9 @@
             "@equinor/Utils": ["./src/packages/Utils"],
             "@equinor/typeGuard": ["./src/packages/typeGuard"],
             "@equinor/GardenUtils": ["./src/packages/GardenUtils"],
-            "@equinor/echo3dweb-viewer": ["./packages/echo3dViewer/src"]
+            "@equinor/echo3dweb-viewer": ["./packages/echo3dViewer/src"],
+            "@equinor/lighthouse-powerbi": ["./src/modules/powerBI"],
+            "@equinor/lighthouse-powerbi-viewer": ["./src/Core/PowerBiViewer"]
         }
     },
     "compileOnSave": true,
