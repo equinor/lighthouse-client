@@ -36,7 +36,7 @@ export const TableHeadCell = styled.div<{ align?: string }>`
     flex-direction: row;
 
     font-size: 0.875rem;
-    height: 35px;
+    height: 32px;
     font-weight: 500;
     background-color: rgb(247, 247, 247);
     line-height: 1.5rem;
