@@ -106,7 +106,7 @@ export const WorkflowDot = ({
             {circleText}
             {isOpen && (
                 <WorkflowDotPopover>
-                    {popoverText}, {getShortformCompletionStatusName(state)}
+                    {popoverText}, {!active ? 'N/A' : getShortformCompletionStatusName(state)}
                 </WorkflowDotPopover>
             )}
         </StepCircle>
