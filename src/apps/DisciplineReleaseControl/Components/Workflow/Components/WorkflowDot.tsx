@@ -1,7 +1,10 @@
 import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { getShortformCompletionStatusName } from '../../../Functions/statusHelpers';
-import { PipetestCompletionStatusColors } from '../../../Styles/ReleaseControlColors';
+import {
+    PipetestCompletionStatusColors,
+    PipetestCompletionStatusHoverColors,
+} from '../../../Styles/ReleaseControlColors';
 import { PipetestCompletionStatus } from '../../../Types/drcEnums';
 import { WorkflowDotPopover } from './WorkflowDotPopover';
 
@@ -38,7 +41,9 @@ export const WorkflowDot = ({
         switch (state) {
             case PipetestCompletionStatus.Outstanding:
                 return {
-                    color: PipetestCompletionStatusColors.OS,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.OS
+                        : PipetestCompletionStatusColors.OS,
                     stroke: PipetestCompletionStatusColors.OS,
                     circleText: circleText,
                     active: active,
@@ -48,7 +53,9 @@ export const WorkflowDot = ({
 
             case PipetestCompletionStatus.Complete:
                 return {
-                    color: PipetestCompletionStatusColors.OK,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.OK
+                        : PipetestCompletionStatusColors.OK,
                     stroke: PipetestCompletionStatusColors.OK,
                     circleText: circleText,
                     active: active,
@@ -57,7 +64,9 @@ export const WorkflowDot = ({
                 };
             case PipetestCompletionStatus.Inactive:
                 return {
-                    color: PipetestCompletionStatusColors.INACTIVE,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.INACTIVE
+                        : PipetestCompletionStatusColors.INACTIVE,
                     stroke: PipetestCompletionStatusColors.INACTIVE,
                     circleText: circleText,
                     active: active,
@@ -66,7 +75,9 @@ export const WorkflowDot = ({
                 };
             case PipetestCompletionStatus.PunchAError:
                 return {
-                    color: PipetestCompletionStatusColors.PA,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.PA
+                        : PipetestCompletionStatusColors.PA,
                     stroke: PipetestCompletionStatusColors.PA,
                     circleText: circleText,
                     active: active,
@@ -75,7 +86,9 @@ export const WorkflowDot = ({
                 };
             case PipetestCompletionStatus.PunchBError:
                 return {
-                    color: PipetestCompletionStatusColors.PB,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.PB
+                        : PipetestCompletionStatusColors.PB,
                     stroke: PipetestCompletionStatusColors.PB,
                     circleText: circleText,
                     active: active,
@@ -84,7 +97,9 @@ export const WorkflowDot = ({
                 };
             default:
                 return {
-                    color: PipetestCompletionStatusColors.OS,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.OS
+                        : PipetestCompletionStatusColors.OS,
                     stroke: PipetestCompletionStatusColors.OS,
                     circleText: circleText,
                     active: active,
@@ -92,7 +107,7 @@ export const WorkflowDot = ({
                     popoverText: popoverText,
                 };
         }
-    }, [active, state, circleText, popoverText]);
+    }, [active, state, circleText, popoverText, isOpen]);
 
     return (
         <StepCircle
