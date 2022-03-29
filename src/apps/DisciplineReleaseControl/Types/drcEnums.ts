@@ -1,12 +1,14 @@
 export enum PipetestStep {
     Unknown = 'Unknown',
-    ReadyForBolttensioning = 'Bolt tensioning (B)',
-    ReadyForPressureTest = 'Pressure test (T)',
-    ReadyForPainting = 'Painting (X)',
-    ReadyForHtTest = 'A-test (1)',
-    ReadyForInsulation = 'Insulation (Z)',
-    ReadyForHtRetest = 'B-test (2)',
-    ReadyForMarking = 'Marking (M)',
+    Bolttensioning = 'Bolt tensioning',
+    PressureTest = 'Pressure test',
+    ChemicalCleaning = 'Chemical cleaning',
+    HotOilFlushing = 'Hot oil flushing',
+    Painting = 'Painting',
+    HtTest = 'A-test',
+    Insulation = 'Insulation',
+    HtRetest = 'B-test',
+    Marking = 'Marking',
     Complete = 'Complete',
 }
 
@@ -55,12 +57,12 @@ export enum PipetestCheckListOrder {
 
 export enum PipetestStatusOrder {
     Unknown = 0,
-    ReadyForBolttensioning = 1,
-    ReadyForPressureTest = 2,
-    ReadyForPainting = 3,
-    ReadyForHtTest = 4,
-    ReadyForInsulation = 5,
-    ReadyForHtRetest = 6,
-    ReadyForMarking = 7,
+    Bolttensioning = 1,
+    PressureTest = 2,
+    Painting = 3,
+    HtTest = 4,
+    Insulation = 5,
+    HtRetest = 6,
+    Marking = 7,
     Complete = 8,
 }

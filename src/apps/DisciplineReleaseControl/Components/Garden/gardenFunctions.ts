@@ -59,25 +59,25 @@ export const getGardenItemColor = (item: Pipetest): string => {
     let color = '#D3D3D3';
 
     switch (item.step) {
-        case PipetestStep.ReadyForBolttensioning:
+        case PipetestStep.Bolttensioning:
             color = '#6d889a';
             break;
-        case PipetestStep.ReadyForPressureTest:
+        case PipetestStep.PressureTest:
             color = '#a8c8de';
             break;
-        case PipetestStep.ReadyForPainting:
+        case PipetestStep.Painting:
             color = '#dcdcdc';
             break;
-        case PipetestStep.ReadyForHtTest:
+        case PipetestStep.HtTest:
             color = '#ffe7d6';
             break;
-        case PipetestStep.ReadyForInsulation:
+        case PipetestStep.Insulation:
             color = '#73b1b5';
             break;
-        case PipetestStep.ReadyForHtRetest:
+        case PipetestStep.HtRetest:
             color = '#ffc67a';
             break;
-        case PipetestStep.ReadyForMarking:
+        case PipetestStep.Marking:
             color = '#e6faec';
             break;
         case PipetestStep.Complete:
