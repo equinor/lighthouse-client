@@ -1,3 +1,4 @@
+import { User } from '@microsoft/microsoft-graph-types';
 import { useContext } from 'react';
 import { ClientContext as context, ClientContextState } from '../ClientContext/clientContext';
 import { AppConfig } from '../Types/AppConfig';
@@ -15,6 +16,9 @@ export function useContextData(): ClientContext {
 
 export function useSettings(): ClientSettings {
     return useClientContext().settings;
+}
+export function useCurrentUser(): User | undefined {
+    return useClientContext().settings.user;
 }
 
 export function useAppConfig(): AppConfig {
