@@ -37,7 +37,6 @@ export const getMonths = (data: SwcrPackage[], numberOfMonthsBack?: number) => {
     const startOfMonths = new Set<DateTime>();
     const today = DateTime.now().startOf('month');
     while (firstMonth.diff(today).as('months') < 0) {
-        debugger;
         startOfMonths.add(firstMonth);
         firstMonth = firstMonth.plus({ month: 1 }).startOf('month');
     }
