@@ -24,7 +24,6 @@ import {
 } from './RelatedObjectsStyles';
 import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
 import { CommPkgIcon } from '../../DetailView/Components/RelatedObjects/CommPkg/commPkgIcon';
-import styled from 'styled-components';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
 
 interface RelatedObjectsSearchProps {
@@ -38,7 +37,7 @@ export const RelatedObjectsSearch = ({
 }: RelatedObjectsSearchProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const { abort, getSignal } = useCancellationToken();
-    const { search: searchReferences } = useReferencesSearch();
+    const { search: searchReferences, error } = useReferencesSearch();
 
     const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
         'document',
@@ -97,6 +96,7 @@ export const RelatedObjectsSearch = ({
                 />
             </TitleBar>
             <Column>
+                {error && <div style={{ color: 'red' }}>{error}</div>}
                 {apiErrors &&
                     apiErrors.length > 0 &&
                     apiErrors.map((name) => {
