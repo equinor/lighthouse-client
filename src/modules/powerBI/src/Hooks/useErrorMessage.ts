@@ -19,7 +19,7 @@ export function useErrorMessage({ reportId, contextErrorType, message }: ErrorOp
         () => contextErrorType !== 'MissingContextRelation',
         [contextErrorType]
     );
-    console.log('accessControlError', accessControlError);
+
     const [isFetching, setIsFetching] = useState<boolean>(true);
     const [requirements, setRequirements] = useState<string>();
     const [description, setDescription] = useState<string>();
@@ -42,10 +42,11 @@ export function useErrorMessage({ reportId, contextErrorType, message }: ErrorOp
             setDescription(fetchedDescriptions?.data);
         } catch {
             setDescription(undefined);
+        } finally {
+            setRequirements(undefined);
+            setNoAccessMessage(message);
+            setIsFetching(false);
         }
-        setRequirements(undefined);
-        setNoAccessMessage(message);
-        setIsFetching(false);
     }, [fusionPbi, message]);
 
     const getReportInformation = useCallback(async () => {
@@ -71,15 +72,13 @@ export function useErrorMessage({ reportId, contextErrorType, message }: ErrorOp
 
         try {
             const response = await fusionPbi.fetch(`${baseUri}/${reportId}/description/content`);
-            console.log(response);
             const fetchedDescriptions = await response.text();
-            console.log(fetchedDescriptions);
-            console.log(await response.json());
             setDescription(fetchedDescriptions);
         } catch {
             setDescription(undefined);
+        } finally {
+            setIsFetching(false);
         }
-        setIsFetching(false);
     }, []);
 
     return {
