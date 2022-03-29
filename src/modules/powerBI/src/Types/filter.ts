@@ -1,7 +1,6 @@
-type BasicFilterOperators = "In" | "NotIn" | "All";
+type BasicFilterOperators = 'In' | 'NotIn' | 'All';
 
-export interface PowerBiFilter {
-
+export interface BuiltPowerBiFilter {
     $schema: string;
     target: {
         table: string;
@@ -13,10 +12,10 @@ export interface PowerBiFilter {
 }
 
 export interface Filter {
-    values: string[],
+    values: string[];
     target: {
-        table: string,
-        column: string,
-    }
-    operator: BasicFilterOperators
+        table: string;
+        column: string;
+    };
+    operator: BasicFilterOperators;
 }

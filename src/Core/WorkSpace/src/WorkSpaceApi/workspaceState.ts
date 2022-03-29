@@ -1,6 +1,7 @@
 import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
+import { Filter } from '@equinor/lighthouse-powerbi';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
@@ -9,9 +10,8 @@ import {
     CustomView,
     CustomVirtualView,
     GardenOptions,
-    StatusView,
+    StatusView
 } from '../../../../components/ParkView/Models/gardenOptions';
-import { Filter } from '../../../../modules/powerBI/src/models/filter';
 import { StatusItem } from '../../../../packages/StatusBar';
 import { DataSource, DataViewerProps, ViewOptions } from './WorkSpaceTypes';
 
