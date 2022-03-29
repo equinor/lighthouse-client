@@ -7,7 +7,7 @@ import {
     createAdvancedPbiFilter,
     getActiveFilterValues,
     getFilters,
-    removeVisibleFilters,
+    removeVisibleFilters
 } from '../../Utils';
 import { FilterGroup } from './FilterGroup';
 import { FilterItems } from './FilterItems';
@@ -23,6 +23,7 @@ export const PowerBIFilter = ({
     report,
     isFilterActive,
 }: PowerBIFilterProps): JSX.Element | null => {
+    console.log(isLoaded, report, isFilterActive);
     const [slicerFilters, setSlicerFilters] = useState<PowerBiFilter[] | null>(null);
     const [activeFilters, setActiveFilters] = useState<
         Record<string, (string | number | boolean)[]>
