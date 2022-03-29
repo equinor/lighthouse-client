@@ -8,7 +8,7 @@ import {
     CheckListStepTag,
     PipetestCompletionStatus,
 } from '../Types/drcEnums';
-import { CheckList, Pipetest } from '../Types/pipetest';
+import { CheckList, InsulationBox, Pipetest } from '../Types/pipetest';
 
 export function sortPipetests(pipetests: Pipetest[]): Pipetest[] {
     pipetests.sort((a, b) => getPipetestStatusSortValue(a) - getPipetestStatusSortValue(b));
@@ -50,33 +50,73 @@ export function getChecklistSortValue(checkList: CheckList): number {
     return number;
 }
 
-export function getPipetestStatus(checkLists: CheckList[]): PipetestStep {
+export function getPipetestStatus(pipetest: Pipetest): PipetestStep {
+    const checkLists = pipetest.checkLists;
     if (!isCheckListStepOk(checkLists, CheckListStepTag.Bolttensioning)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.Bolttensioning)
+        return isCheckListStepsInRightOrder(
+            checkLists,
+            PipetestStatusOrder.Bolttensioning,
+            pipetest.insulationBoxes
+        )
             ? PipetestStep.Bolttensioning
             : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.PressureTest)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.PressureTest)
+        return isCheckListStepsInRightOrder(
+            checkLists,
+            PipetestStatusOrder.PressureTest,
+            pipetest.insulationBoxes
+        )
             ? PipetestStep.PressureTest
             : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Painting)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.Painting)
+        return isCheckListStepsInRightOrder(
+            checkLists,
+            PipetestStatusOrder.Painting,
+            pipetest.insulationBoxes
+        )
             ? PipetestStep.Painting
             : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTest)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.HtTest)
+        return isCheckListStepsInRightOrder(
+            checkLists,
+            PipetestStatusOrder.HtTest,
+            pipetest.insulationBoxes
+        )
             ? PipetestStep.HtTest
             : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Insulation)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.Insulation)
+        return isCheckListStepsInRightOrder(
+            checkLists,
+            PipetestStatusOrder.Insulation,
+            pipetest.insulationBoxes
+        )
             ? PipetestStep.Insulation
             : PipetestStep.Unknown;
+    } else if (
+        pipetest.insulationBoxes.length !== 0 &&
+        !isBoxInsulationOk(pipetest.insulationBoxes)
+    ) {
+        return isCheckListStepsInRightOrder(
+            checkLists,
+            PipetestStatusOrder.BoxInsulation,
+            pipetest.insulationBoxes
+        )
+            ? PipetestStep.BoxInsulation
+            : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtRetest)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.HtRetest)
+        return isCheckListStepsInRightOrder(
+            checkLists,
+            PipetestStatusOrder.HtRetest,
+            pipetest.insulationBoxes
+        )
             ? PipetestStep.HtRetest
             : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Marking)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.Marking)
+        return isCheckListStepsInRightOrder(
+            checkLists,
+            PipetestStatusOrder.Marking,
+            pipetest.insulationBoxes
+        )
             ? PipetestStep.Marking
             : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTemporary)) {
@@ -100,12 +140,14 @@ export function isCheckListTestOk(checkLists: CheckList[], type: CheckListStepTa
 
 export function isCheckListStepsInRightOrder(
     checkLists: CheckList[],
-    checkListStep: PipetestStatusOrder
+    checkListStep: PipetestStatusOrder,
+    insulationBoxes: InsulationBox[]
 ): boolean {
     let rightOrder = true;
 
     checkLists = checkLists.filter((x) => getChecklistSortValue(x) > checkListStep);
-
+    const checkInsulationBoxes =
+        PipetestStatusOrder.BoxInsulation > checkListStep && insulationBoxes.length !== 0;
     const groupedArrays = checkLists.reduce(function (r, a) {
         r[a.formularType] = r[a.formularType] || [];
         r[a.formularType].push(a);
@@ -117,7 +159,8 @@ export function isCheckListStepsInRightOrder(
         if (
             array.every(
                 (x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError
-            )
+            ) ||
+            (checkInsulationBoxes && isBoxInsulationOk(insulationBoxes))
         ) {
             rightOrder = false;
         }
@@ -130,6 +173,38 @@ export function isCheckListGroupOk(checkLists: CheckList[]): boolean {
     return checkLists.every(
         (x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError
     );
+}
+
+export function isBoxInsulationOk(insulationBoxes: InsulationBox[]): boolean {
+    return insulationBoxes.every(
+        (x) =>
+            x.procosysStatus === CheckListStatus.OK ||
+            x.procosysStatus === CheckListStatus.PunchBError
+    );
+}
+
+export function getBoxInsulationStatus(pipetest: Pipetest): CheckListStatus {
+    if (pipetest.insulationBoxes?.length === 0) {
+        return CheckListStatus.Inactive;
+    } else if (pipetest.insulationBoxes.every((x) => x.procosysStatus === CheckListStatus.OK)) {
+        return CheckListStatus.OK;
+    } else if (
+        pipetest.insulationBoxes.find((x) => x.procosysStatus === CheckListStatus.Outstanding)
+    ) {
+        {
+            return CheckListStatus.Outstanding;
+        }
+    } else if (
+        pipetest.insulationBoxes.find((x) => x.procosysStatus === CheckListStatus.PunchAError)
+    ) {
+        return CheckListStatus.PunchAError;
+    } else if (
+        pipetest.insulationBoxes.find((x) => x.procosysStatus === CheckListStatus.PunchBError)
+    ) {
+        return CheckListStatus.PunchBError;
+    } else {
+        return CheckListStatus.Outstanding;
+    }
 }
 
 export function getPipetestStatusEnumByValue(enumValue: string): string {
@@ -157,6 +232,9 @@ export function getPipetestStatusSortValue(pipetest: Pipetest): number {
         case PipetestStep.Insulation:
             number = PipetestStatusOrder.Insulation;
             break;
+        case PipetestStep.BoxInsulation:
+            number = PipetestStatusOrder.BoxInsulation;
+            break;
         case PipetestStep.HtRetest:
             number = PipetestStatusOrder.HtRetest;
             break;
@@ -183,7 +261,7 @@ export function getPipetestStatusForStep(checkLists: CheckList[]): string {
     } else if (checkLists.find((x) => x.status === CheckListStatus.PunchBError)) {
         return CheckListStatus.PunchBError;
     } else {
-        return CheckListStatus.OK;
+        return CheckListStatus.Inactive;
     }
 }
 
@@ -205,7 +283,7 @@ export const getYearAndWeekFromString = (dateString: string, removeDays = 0): st
 };
 
 export function getPipetestCompletionStatus(pipetest: Pipetest): PipetestCompletionStatus {
-    const pipetestStepStatus = getPipetestStatus(pipetest.checkLists);
+    const pipetestStepStatus = getPipetestStatus(pipetest);
 
     if (
         pipetestStepStatus === PipetestStep.Complete &&
@@ -266,6 +344,9 @@ export function getChecklistStepName(step: CheckListStepTag): string {
             break;
         case CheckListStepTag.Insulation:
             stepName = PipetestStep.Insulation;
+            break;
+        case CheckListStepTag.BoxInsulation:
+            stepName = PipetestStep.BoxInsulation;
             break;
         case CheckListStepTag.Marking:
             stepName = PipetestStep.Marking;

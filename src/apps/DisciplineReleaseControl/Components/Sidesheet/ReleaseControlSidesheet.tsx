@@ -25,6 +25,7 @@ import { useFacility } from '@equinor/portal-client';
 import { Tabs } from '@equinor/eds-core-react';
 import { CheckListTable } from './CheckListTable';
 import { useInternalSidesheetFunction } from '../../../../packages/Sidesheet/Hooks/useInternalSidesheetFunction';
+import { BoxInsulationTable } from './BoxInsulationTable';
 
 export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
     // const { releaseControls } = useHttpClient();
@@ -166,6 +167,7 @@ export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
                         <h4>{item.description}</h4>
                         <h4>Status: {item.step}</h4>
                         <CheckListTable checkLists={item.checkLists} />
+                        <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
                     </Tabs.Panel>
                     <Tabs.Panel>
                         <ThreeDModel>

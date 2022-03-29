@@ -52,6 +52,15 @@ export type CheckListType = {
     workflowStepText: string | undefined;
 };
 
+export type InsulationBoxType = {
+    objectNo: string;
+    objectName: string;
+    objectStatusName: string;
+    objectStatus: string;
+    object3dReference: string;
+    procosysStatus: string;
+};
+
 export interface Tag {
     register: string;
     children: string[];

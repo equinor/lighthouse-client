@@ -1,6 +1,10 @@
 import { CheckListStatus, CheckListStepTag, PipetestCompletionStatus } from '../Types/drcEnums';
 import { CheckList, Pipetest } from '../Types/pipetest';
-import { getChecklistStepName, getPipetestStatusForStep } from './statusHelpers';
+import {
+    getBoxInsulationStatus,
+    getChecklistStepName,
+    getPipetestStatusForStep,
+} from './statusHelpers';
 
 export const checklistTagFunc = (item: CheckList) => {
     switch (item?.status) {
@@ -52,7 +56,7 @@ export function getPipetestsWithHTCable(pipetests: Pipetest[]): Pipetest[] {
 }
 
 //TODO - refactor into more functions (3)
-export function createChecklistSteps(data: CheckList[]): CheckList[] {
+export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
     const allWorkflowSteps = [
         CheckListStepTag.Bolttensioning,
         CheckListStepTag.PressureTest,
@@ -61,15 +65,20 @@ export function createChecklistSteps(data: CheckList[]): CheckList[] {
         CheckListStepTag.Painting,
         CheckListStepTag.HtTest,
         CheckListStepTag.Insulation,
+        CheckListStepTag.BoxInsulation,
         CheckListStepTag.HtRetest,
         CheckListStepTag.Marking,
     ];
+    const checkLists = pipetest.checkLists;
     const workflowSteps: CheckList[] = [];
     for (let i = 0; i < allWorkflowSteps.length; i++) {
-        const foundSteps = data.filter((x) => x.tagNo.substring(0, 2) === allWorkflowSteps[i]);
+        const foundSteps = checkLists.filter(
+            (x) => x.tagNo.substring(0, 2) === allWorkflowSteps[i]
+        );
         const htTestStep =
             allWorkflowSteps[i] === CheckListStepTag.HtTest ||
             allWorkflowSteps[i] === CheckListStepTag.HtRetest;
+        const boxInsulationStep = allWorkflowSteps[i] === CheckListStepTag.BoxInsulation;
         const formularType =
             allWorkflowSteps[i] === CheckListStepTag.HtTest
                 ? CheckListStepTag.HtTest
@@ -82,10 +91,10 @@ export function createChecklistSteps(data: CheckList[]): CheckList[] {
             workflowSteps.push(workflowStep);
         } else if (
             htTestStep &&
-            data.some((x) => x.isHeatTrace) &&
-            data.some((x) => x.formularType === formularType)
+            checkLists.some((x) => x.isHeatTrace) &&
+            checkLists.some((x) => x.formularType === formularType)
         ) {
-            const foundTestSteps = data.filter((x) => x.formularType === formularType);
+            const foundTestSteps = checkLists.filter((x) => x.formularType === formularType);
             const workflowStep: CheckList = {
                 tagNo: '',
                 responsible: '',
@@ -96,6 +105,20 @@ export function createChecklistSteps(data: CheckList[]): CheckList[] {
                 revision: '',
                 test: '',
                 workflowStepText: formularType === CheckListStepTag.HtTest ? '1' : '2',
+                stepName: getChecklistStepName(allWorkflowSteps[i]),
+            };
+            workflowSteps.push(workflowStep);
+        } else if (boxInsulationStep) {
+            const workflowStep: CheckList = {
+                tagNo: '',
+                responsible: '',
+                formularGroup: '',
+                formularType: '',
+                status: getBoxInsulationStatus(pipetest),
+                isHeatTrace: false,
+                revision: '',
+                test: '',
+                workflowStepText: 'I',
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
             };
             workflowSteps.push(workflowStep);
