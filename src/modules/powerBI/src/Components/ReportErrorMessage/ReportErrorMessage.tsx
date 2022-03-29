@@ -5,6 +5,7 @@ import { FC } from 'react';
 import { ContextErrorType, useErrorMessage } from '../../Hooks/useErrorMessage';
 import {
     AccordionWrapper,
+    ErrorCard,
     ErrorWrapper,
     Heading,
     HeadingWrapper,
@@ -31,8 +32,10 @@ export const ReportErrorMessage: FC<ReportErrorMessageProps> = (props) => {
                 />
                 <Heading>{errorHeader}</Heading>
             </HeadingWrapper>
-            <MarkdownViewer markdown={description || ''} />
-            {noAccessMessage}
+            <ErrorCard>
+                <h2>{noAccessMessage}</h2>
+                <MarkdownViewer markdown={description || ''} />
+            </ErrorCard>
 
             <AccordionWrapper>
                 <Item>

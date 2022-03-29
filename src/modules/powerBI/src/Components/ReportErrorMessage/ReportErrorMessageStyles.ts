@@ -1,4 +1,4 @@
-import { Accordion } from '@equinor/eds-core-react';
+import { Accordion, Card } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
@@ -26,10 +26,16 @@ export const HeadingWrapper = styled.div`
 `;
 
 export const AccordionWrapper = styled(Accordion)`
-    width: 60%;
+    margin: 1rem;
+    width: 40%;
 `;
 
 export const RequirementsWrapper = styled.div`
     max-height: 500px;
     overflow: auto;
+`;
+
+export const ErrorCard = styled(Card)`
+    margin-top: 2rem;
+    width: 40%;
 `;
