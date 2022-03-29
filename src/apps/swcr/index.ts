@@ -5,8 +5,10 @@ import { SwcrGroupView } from './CustomViews/SwcrGroupView';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { SwcrPackage } from './models/SwcrPackage';
 import { fieldSettings } from './utilities/gardenSetup';
+import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
-
+import { SwcrGraph } from './CustomViews/Graph';
+import { columns } from './utilities/tableSetup';
 export function setup(appApi: ClientApi): void {
     const swcr = appApi.createWorkSpace<SwcrPackage>({
         CustomSidesheet: SwcrSideSheet,
@@ -28,7 +30,6 @@ export function setup(appApi: ClientApi): void {
 
     async function responseParser(res: Response) {
         const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
-
         return swcrPackages.sort(sortPackagesByStatusAndNumber);
     }
 
@@ -58,7 +59,6 @@ export function setup(appApi: ClientApi): void {
     });
 
     swcr.registerTableOptions({ objectIdentifierKey: 'swcrId' });
-
     swcr.registerGardenOptions({
         gardenKey: 'dueAtDate',
         itemKey: 'swcrNo',
@@ -70,4 +70,69 @@ export function setup(appApi: ClientApi): void {
             customHeaderView: SwcrHeaderView,
         },
     });
+
+    swcr.registerAnalyticsOptions({
+        section1: {
+            chart1: {
+                type: 'customVisual',
+                options: {
+                    component: SwcrGraph,
+                    componentProps: {
+                        graphType: 'created-closed',
+                    },
+                },
+            },
+            chart2: {
+                type: 'customVisual',
+                options: {
+                    component: SwcrGraph,
+                    componentProps: {
+                        graphType: 'open',
+                    },
+                },
+            },
+        },
+        section2: {
+            chart1: {
+                type: 'customVisual',
+                options: {
+                    component: SwcrGraph,
+                    componentProps: {
+                        graphType: 'acc',
+                    },
+                },
+            },
+        },
+
+        section3: {
+            chart2: {
+                type: 'table',
+                options: {
+                    initialGroupBy: 'priority',
+                    groupBy: [
+                        {
+                            key: 'controlSystem',
+                            title: 'Control System',
+                        },
+                        {
+                            key: 'priority',
+                            title: 'Priority',
+                        },
+                        {
+                            key: 'system',
+                            title: 'System',
+                        },
+                        {
+                            key: 'types',
+                            title: 'HW/SW',
+                        },
+                    ],
+
+                    columns: columns,
+                },
+            },
+        },
+    });
+
+    swcr.registerStatusItems(statusBarData);
 }
