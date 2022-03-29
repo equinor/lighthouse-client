@@ -54,34 +54,37 @@ export const WorkflowCriteria = ({
         step.id
     );
 
+    const iconGrey = tokens.colors.text.static_icons__tertiary.hex;
+
     function makeSignOptions(): MenuItem[] {
         const actions: MenuItem[] = [];
 
         if (canSign) {
             actions.push({
                 label: CriteriaActions.Sign,
-                icon: <Icon name="check_circle_outlined" color="grey" />,
+                icon: <Icon name="check_circle_outlined" color={iconGrey} />,
                 onClick: () =>
                     signMutation({ action: 'Approved', closeRequest: false, comment: '' }),
                 isDisabled: !canSign,
             });
             actions.push({
                 label: 'Sign with comment',
-                icon: <Icon name="comment_add" color="grey" />,
+                icon: <Icon name="comment_add" color={iconGrey} />,
                 onClick: () => setShowSignWithComment(true),
                 isDisabled: !canSign,
             });
 
             actions.push({
-                label: 'Reject and close',
+                label: 'Reject with comment',
                 onClick: () =>
                     signMutation({ action: 'Rejected', closeRequest: true, comment: '' }),
+                icon: <Icon name="close_circle_outlined" color={iconGrey} />,
                 isDisabled: !canSign,
             });
             if (step.order !== 0) {
                 actions.push({
-                    label: 'Reject with comment',
-                    icon: <Icon name="close_circle_outlined" color="grey" />,
+                    label: 'Send back with comment',
+                    icon: <Icon name="undo" color={iconGrey} />,
                     onClick: () => setShowRejectWithComment(true),
                     isDisabled: !canSign,
                 });
@@ -95,7 +98,7 @@ export const WorkflowCriteria = ({
         if (canReassign) {
             actions.push({
                 label: CriteriaActions.Reassign,
-                icon: <Icon name="assignment_user" color="grey" />,
+                icon: <Icon name="assignment_user" color={iconGrey} />,
                 onClick: toggleReassign,
                 isDisabled: !canReassign,
             });
@@ -115,7 +118,7 @@ export const WorkflowCriteria = ({
         if (canAddContributor && step.isCurrent) {
             actions.push({
                 label: CriteriaActions.AddContributor,
-                icon: <Icon name="group_add" color="grey" />,
+                icon: <Icon name="group_add" color={iconGrey} />,
                 onClick: toggleContributorSelector,
                 isDisabled: !canAddContributor,
             });

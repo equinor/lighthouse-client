@@ -1,6 +1,6 @@
-import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+import { ClickableIcon } from '../../../../../../components/Icon/ClickableIcon';
 import { useConditionalRender } from '../../../../Hooks/useConditionalRender';
 
 interface CommPkgProps {
@@ -13,8 +13,8 @@ export const ChevronList = ({ children, title }: CommPkgProps): JSX.Element => {
 
     return (
         <Wrapper>
-            <ListWrapper onClick={() => toggle()}>
-                <Icon name={`chevron_${isShowing ? 'up' : 'down'}`} />
+            <ListWrapper style={{ cursor: 'pointer' }} onClick={() => toggle()}>
+                <ClickableIcon name={`chevron_${isShowing ? 'up' : 'down'}`} />
                 <div style={{ fontSize: '14px', lineHeight: '20px' }}>{title}</div>
             </ListWrapper>
             <List />
