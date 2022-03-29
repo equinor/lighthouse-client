@@ -31,10 +31,7 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
                 >
                     {commPkg.procosysNumber}
                 </Link>
-                -
-                <div>
-                    {data?.Description} {data?.CommPkgNo}
-                </div>
+                -<div>{data?.Description}</div>
             </CommPkgText>
         </Wrapper>
     );
@@ -44,6 +41,9 @@ const CommPkgText = styled.div`
     display: flex;
     flex-direction: row;
     gap: 0.2em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const Link = styled.a`
