@@ -28,6 +28,9 @@ export const searchDocuments = async (
             type: 'document',
             searchValue: x.docNo,
             object: x,
+            description: `Revision ${x.revNo} | Rev date ${new Date(
+                x.revDate
+            ).toLocaleDateString()}`,
         })
     );
 };
