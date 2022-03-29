@@ -36,10 +36,12 @@ export const ErrorWrapper = styled.div`
 `;
 
 export const ListItem = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 24fr 1fr;
+    gap: 1em;
+    text-overflow: ellipsis;
     color: ${tokens.colors.interactive.primary__resting.hex};
+    height: 52px;
 `;
 
 export const SelectedItemLabel = styled.div`
