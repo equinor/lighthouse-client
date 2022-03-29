@@ -1,20 +1,17 @@
-import { PowerBI } from "../../modules/powerBI"
-import { Filter } from "../../modules/powerBI/src/models/filter";
+import { Filter, PowerBI } from '@equinor/lighthouse-powerbi';
 
 export function QualityDeviationReport() {
-    const reportUri = "qualityd"
+    const reportUri = 'qualityd';
 
     const filterOptions: Filter[] = [
         {
-            values: ["Johan Castberg"],
+            values: ['Johan Castberg'],
             target: {
                 table: 'Dim_MasterProject',
-                column: 'Project'
+                column: 'Project',
             },
-            operator: "In"
-        }
-    ]
-    return (
-        <PowerBI reportUri={reportUri} filterOptions={filterOptions} />
-    );
+            operator: 'In',
+        },
+    ];
+    return <PowerBI reportUri={reportUri} filterOptions={filterOptions} />;
 }
