@@ -27,6 +27,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
     const { reports } = usePowerBiViewer(props.shortName);
 
     const [activePage, setActivePage] = useState<Page>();
+    const [isFilterActive, setIsFilterActive] = useState(false);
     const [activeReport, setActiveReport] = useState<FusionPowerBiOptions>();
 
     useEffect(() => {
@@ -42,8 +43,6 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
             setActiveReport(newReport);
         }
     };
-
-    const [isFilterActive, setIsFilterActive] = useState(false);
 
     function handleFilter() {
         setIsFilterActive((s) => !s);

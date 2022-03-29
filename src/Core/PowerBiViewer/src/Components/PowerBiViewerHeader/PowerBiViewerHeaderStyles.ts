@@ -57,6 +57,5 @@ export const Wrap = styled.div`
 const { Tab } = Tabs;
 
 export const HeaderTab = styled(Tab)`
-    /* height: 25px; */
     overflow-x: visible;
 `;
