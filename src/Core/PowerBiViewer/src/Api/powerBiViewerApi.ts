@@ -7,7 +7,7 @@ export interface PowerBiViewerOptions {
 }
 
 export interface PowerBIViewerInstance {
-    registerFusionPowerBi(options: FusionPowerBiOptions): void;
+    registerFusionPowerBi(options: FusionPowerBiOptions): PowerBIViewerInstance;
 }
 
 export function createPowerBiViewer({
@@ -29,7 +29,7 @@ export function createPowerBiViewer({
         };
     });
 
-    return {
+    const powerBiViewerApi = {
         registerFusionPowerBi(options: FusionPowerBiOptions) {
             dispatch(getContext(), (state: CoreViewState) => {
                 const reports: FusionPowerBiOptions[] =
@@ -45,6 +45,9 @@ export function createPowerBiViewer({
                     },
                 };
             });
+            return powerBiViewerApi;
         },
     };
+
+    return powerBiViewerApi;
 }

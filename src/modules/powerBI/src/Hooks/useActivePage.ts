@@ -1,5 +1,5 @@
-import { Page, Report } from 'powerbi-client';
-import { useCallback, useState } from 'react';
+import { Report } from 'powerbi-client';
+import { useCallback } from 'react';
 
 /**
  * Will get the active page at first render.
@@ -7,22 +7,21 @@ import { useCallback, useState } from 'react';
  */
 export const useActivePage = (
     report?: Report
-): [
-    activePage: Page | undefined,
-    setActivePage: (page: Page) => void,
-    setActivePageByName: (name: string) => void
-] => {
-    const [activePage, setActivePage] = useState<Page>();
+): {
+    // setActivePage: (page: Page) => void;
+    setActivePageByName: (name: string) => void;
+} => {
+    // const [activePage, setActivePage] = useState<Page>();
 
-    const handleChange = useCallback(
-        (page: Page) => {
-            console.log(page);
-            report?.setPage(page.name);
-            // setActivePage(page);
-        },
-        [report]
-    );
-    const handlePageChange = useCallback(
+    // const handleChange = useCallback(
+    //     (page: Page) => {
+    //         console.log(page);
+    //         report?.setPage(page.name);
+    //         // setActivePage(page);
+    //     },
+    //     [report]
+    // );
+    const setActivePageByName = useCallback(
         (name: string) => {
             report?.setPage(name);
         },
@@ -43,5 +42,5 @@ export const useActivePage = (
     //         });
     // }, [activePage, report]);
 
-    return [activePage, handleChange, handlePageChange];
+    return { setActivePageByName };
 };

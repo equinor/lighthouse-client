@@ -23,6 +23,7 @@ export type PageViewerOptions = Omit<PageOptions, 'viewerId'>;
 
 export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
     const { shortName, title } = config;
+
     return {
         ...config,
         createWorkSpace<T>(options: WorkspaceOptions<T>) {

@@ -20,6 +20,7 @@
         "paths": {
             "@equinor/Kpi": ["./src/packages/KPI"],
             "@equinor/portal-client": ["./src/Core/Client"],
+            "@equinor/lighthouse-components":["./src/packages/Components"],
             "@equinor/sidesheet": ["./src/packages/Sidesheet"],
             "@equinor/GroupView": ["./src/Core/GroupView"],
             "@equinor/WorkSpace": ["./src/Core/WorkSpace"],
