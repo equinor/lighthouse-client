@@ -1,12 +1,18 @@
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
 import { CommissioningPackage } from '../../Types/ProCoSys/CommissioningPackage';
 
-export async function getCommPkgById(commPkgNo: number): Promise<CommissioningPackage> {
+export async function getCommPkgById(
+    plantId: string,
+    commPkgNo: number
+): Promise<CommissioningPackage> {
     const { procosys } = httpClient();
 
-    const responseData: CommissioningPackage = await procosys
-        .fetch(`api/CommPkg?plantId=PCS%24JOHAN_CASTBERG&commPkgId=${commPkgNo}&api-version=4.1`)
-        .then((x) => x.json());
+    const res = await procosys.fetch(
+        `api/CommPkg?plantId=${plantId}&commPkgId=${commPkgNo}&api-version=4.1`
+    );
+    if (!res.ok) {
+        throw 'Failed to get commissioning package';
+    }
 
-    return responseData;
+    return await res.json();
 }

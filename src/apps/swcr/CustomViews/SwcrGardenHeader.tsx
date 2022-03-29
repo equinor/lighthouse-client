@@ -65,8 +65,11 @@ const getTitle = (groupKey: string, column: DataSet<SwcrPackage>): string => {
     }
 };
 
-export function SwcrHeaderView({ garden, columnKey }: CustomHeaderView<SwcrPackage>): JSX.Element {
-    const column = garden[columnKey];
+export function SwcrHeaderView({
+    garden,
+    columnIndex,
+}: CustomHeaderView<SwcrPackage>): JSX.Element {
+    const column = garden[columnIndex];
     const { count, groupKey } = column;
     const title = getTitle(groupKey, column);
 

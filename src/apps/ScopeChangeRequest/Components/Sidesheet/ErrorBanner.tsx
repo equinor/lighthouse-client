@@ -1,57 +1,37 @@
 import { tokens } from '@equinor/eds-tokens';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ServerError } from '../../Types/ScopeChange/ServerError';
-import { useIsMounted } from '../../Hooks/useIsMounted';
-
-export interface ErrorFormat {
-    message: ServerError | undefined;
-    requestId: string;
-}
+import { useErrorMessageListener } from '../../Functions/ErrorMessage/useErrorMessageListener';
+import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 
 /**
  * Provides a uniform banner for error messages in the sidesheet
  * @returns
  */
-export function ScopeChangeErrorBanner({ message, requestId }: ErrorFormat): JSX.Element {
-    const [errorMessage, setErrorMessage] = useState<ServerError | null>(message ?? null);
-
-    const isMounted = useIsMounted();
-
-    useEffect(() => {
-        if (!isMounted) return;
-        if (message) {
-            setErrorMessage(message ?? null);
-        }
-    }, [isMounted, message]);
-
-    useEffect(() => {
-        setErrorMessage(null);
-        message = undefined;
-    }, [requestId]);
+export function ScopeChangeErrorBanner(): JSX.Element {
+    const { errors, removeErrors } = useErrorMessageListener();
 
     return (
-        <div>
-            {errorMessage && (
-                <ErrorContainer>
-                    <div>{message?.detail}</div>
-                    <ErrorDetails>
-                        {message?.validationErrors &&
-                            Object.values(message.validationErrors).map((errorArray) => {
-                                return (
-                                    <>
-                                        {errorArray.map((error) => (
-                                            <div key={error}>{error}</div>
-                                        ))}
-                                    </>
-                                );
-                            })}
-                    </ErrorDetails>
-                </ErrorContainer>
-            )}
-        </div>
+        <>
+            {errors &&
+                errors.map((message) => (
+                    <ErrorContainer key={message.title}>
+                        <Inline>
+                            <div>{message.title}</div>
+                            <ClickableIcon name="close" onClick={() => removeErrors(message)} />
+                        </Inline>
+                        <ErrorDetails>{message.description}</ErrorDetails>
+                    </ErrorContainer>
+                ))}
+        </>
     );
 }
+const Inline = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+`;
 
 const ErrorDetails = styled.div`
     flex-direction: column;

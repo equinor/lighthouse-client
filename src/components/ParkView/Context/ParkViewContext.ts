@@ -14,18 +14,18 @@ export interface CustomGroupViewProps<T> {
     onClick: () => void;
 }
 
-export interface ParkViewState<T extends unknown> extends GardenOptions<T> {
+export type ParkViewState<T extends unknown> = GardenOptions<T> & {
     data: T[] | undefined;
     onSelect: (item: unknown) => void;
-}
+};
 
-export interface ParkViewContextState extends ParkViewState<unknown> {
+export type ParkViewContextState = ParkViewState<unknown> & {
     setGroupKeys: (groupKeys: string[]) => void;
     setCustomGroupKeys: (groupKeys: Record<string, unknown>) => void;
     setGardenKey: (groupeKey?: string) => void;
     setCustomState: (customState: Record<string, unknown>) => void;
     customState?: Record<string, unknown>;
-}
+};
 
 export interface ParkViewProviderProps<T> {
     children: React.ReactNode;

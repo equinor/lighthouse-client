@@ -15,7 +15,7 @@
         "isolatedModules": true,
         "noEmit": true,
         "noImplicitAny": false,
-        "types": ["node", "vite/client"],
+        "types": ["node", "vite/client", "jest"],
         "sourceMap": true,
         "paths": {
             "@equinor/Kpi": ["./src/packages/KPI"],
