@@ -24,7 +24,7 @@ import {
 } from './RelatedObjectsStyles';
 import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
 import { CommPkgIcon } from '../../DetailView/Components/RelatedObjects/CommPkg/commPkgIcon';
-import styled from 'styled-components';
+import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
 
 interface RelatedObjectsSearchProps {
     references: TypedSelectOption[];
@@ -37,7 +37,7 @@ export const RelatedObjectsSearch = ({
 }: RelatedObjectsSearchProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const { abort, getSignal } = useCancellationToken();
-    const { search: searchReferences } = useReferencesSearch();
+    const { search: searchReferences, error } = useReferencesSearch();
 
     const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
         'document',
@@ -96,6 +96,7 @@ export const RelatedObjectsSearch = ({
                 />
             </TitleBar>
             <Column>
+                {error && <div style={{ color: 'red' }}>{error}</div>}
                 {apiErrors &&
                     apiErrors.length > 0 &&
                     apiErrors.map((name) => {
@@ -169,27 +170,16 @@ export const RelatedObjectsSearch = ({
                                 const TypeIcon = () => getIcon(selectedReference);
                                 return (
                                     <ListItem key={selectedReference.value}>
-                                        <Inline>
-                                            <IconWrapper>
-                                                <TypeIcon />
-                                            </IconWrapper>
-
-                                            <SelectedItemLabel>
-                                                {selectedReference.label}
-                                            </SelectedItemLabel>
-                                        </Inline>
-                                        <IconWrapper>
-                                            <Icon
-                                                style={{ cursor: 'pointer' }}
-                                                color={
-                                                    tokens.colors.interactive.primary__resting.rgba
-                                                }
-                                                onClick={() => {
-                                                    removeRelatedObject(selectedReference.value);
-                                                }}
-                                                name="clear"
-                                            />
-                                        </IconWrapper>
+                                        <TypeIcon />
+                                        <SelectedItemLabel>
+                                            {selectedReference.label}
+                                        </SelectedItemLabel>
+                                        <ClickableIcon
+                                            name="clear"
+                                            onClick={() => {
+                                                removeRelatedObject(selectedReference.value);
+                                            }}
+                                        />
                                     </ListItem>
                                 );
                             })}
@@ -200,11 +190,6 @@ export const RelatedObjectsSearch = ({
         </Wrapper>
     );
 };
-
-const IconWrapper = styled.div`
-    height: auto;
-    width: auto;
-`;
 
 function getIcon(x: TypedSelectOption): JSX.Element | null {
     switch (x.type) {
