@@ -26,6 +26,7 @@ export interface CheckList {
     test: string;
     isHeatTrace: boolean;
     workflowStepText: string | undefined;
+    stepName: string;
 }
 
 export interface InsulationBox {

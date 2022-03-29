@@ -1,6 +1,6 @@
 import { CheckListStatus, CheckListStepTag, PipetestCompletionStatus } from '../Types/drcEnums';
 import { CheckList, Pipetest } from '../Types/pipetest';
-import { getPipetestStatusForStep } from './statusHelpers';
+import { getChecklistStepName, getPipetestStatusForStep } from './statusHelpers';
 
 export const checklistTagFunc = (item: CheckList) => {
     switch (item?.status) {
@@ -78,6 +78,7 @@ export function createChecklistSteps(data: CheckList[]): CheckList[] {
             const workflowStep = foundSteps[0];
             workflowStep.status = getPipetestStatusForStep(foundSteps);
             workflowStep.workflowStepText = foundSteps[0]?.tagNo.substring(1, 2);
+            workflowStep.stepName = getChecklistStepName(allWorkflowSteps[i]);
             workflowSteps.push(workflowStep);
         } else if (
             htTestStep &&
@@ -95,6 +96,7 @@ export function createChecklistSteps(data: CheckList[]): CheckList[] {
                 revision: '',
                 test: '',
                 workflowStepText: formularType === CheckListStepTag.HtTest ? '1' : '2',
+                stepName: getChecklistStepName(allWorkflowSteps[i]),
             };
             workflowSteps.push(workflowStep);
         } else {
@@ -112,6 +114,7 @@ export function createChecklistSteps(data: CheckList[]): CheckList[] {
                         ? '1'
                         : '2'
                     : allWorkflowSteps[i].substring(1, 2),
+                stepName: getChecklistStepName(allWorkflowSteps[i]),
             });
         }
     }

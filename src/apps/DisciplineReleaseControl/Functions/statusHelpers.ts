@@ -52,32 +52,32 @@ export function getChecklistSortValue(checkList: CheckList): number {
 
 export function getPipetestStatus(checkLists: CheckList[]): PipetestStep {
     if (!isCheckListStepOk(checkLists, CheckListStepTag.Bolttensioning)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForBolttensioning)
-            ? PipetestStep.ReadyForBolttensioning
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.Bolttensioning)
+            ? PipetestStep.Bolttensioning
             : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.PressureTest)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForPressureTest)
-            ? PipetestStep.ReadyForPressureTest
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.PressureTest)
+            ? PipetestStep.PressureTest
             : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Painting)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForPainting)
-            ? PipetestStep.ReadyForPainting
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.Painting)
+            ? PipetestStep.Painting
             : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTest)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForHtTest)
-            ? PipetestStep.ReadyForHtTest
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.HtTest)
+            ? PipetestStep.HtTest
             : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Insulation)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForInsulation)
-            ? PipetestStep.ReadyForInsulation
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.Insulation)
+            ? PipetestStep.Insulation
             : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtRetest)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForHtRetest)
-            ? PipetestStep.ReadyForHtRetest
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.HtRetest)
+            ? PipetestStep.HtRetest
             : PipetestStep.Unknown;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Marking)) {
-        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.ReadyForMarking)
-            ? PipetestStep.ReadyForMarking
+        return isCheckListStepsInRightOrder(checkLists, PipetestStatusOrder.Marking)
+            ? PipetestStep.Marking
             : PipetestStep.Unknown;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTemporary)) {
         return PipetestStep.Unknown;
@@ -142,26 +142,26 @@ export function getPipetestStatusSortValue(pipetest: Pipetest): number {
         case PipetestStep.Unknown:
             number = PipetestStatusOrder.Unknown;
             break;
-        case PipetestStep.ReadyForBolttensioning:
-            number = PipetestStatusOrder.ReadyForBolttensioning;
+        case PipetestStep.Bolttensioning:
+            number = PipetestStatusOrder.Bolttensioning;
             break;
-        case PipetestStep.ReadyForPressureTest:
-            number = PipetestStatusOrder.ReadyForPressureTest;
+        case PipetestStep.PressureTest:
+            number = PipetestStatusOrder.PressureTest;
             break;
-        case PipetestStep.ReadyForPainting:
-            number = PipetestStatusOrder.ReadyForPainting;
+        case PipetestStep.Painting:
+            number = PipetestStatusOrder.Painting;
             break;
-        case PipetestStep.ReadyForHtTest:
-            number = PipetestStatusOrder.ReadyForHtTest;
+        case PipetestStep.HtTest:
+            number = PipetestStatusOrder.HtTest;
             break;
-        case PipetestStep.ReadyForInsulation:
-            number = PipetestStatusOrder.ReadyForInsulation;
+        case PipetestStep.Insulation:
+            number = PipetestStatusOrder.Insulation;
             break;
-        case PipetestStep.ReadyForHtRetest:
-            number = PipetestStatusOrder.ReadyForHtRetest;
+        case PipetestStep.HtRetest:
+            number = PipetestStatusOrder.HtRetest;
             break;
-        case PipetestStep.ReadyForMarking:
-            number = PipetestStatusOrder.ReadyForMarking;
+        case PipetestStep.Marking:
+            number = PipetestStatusOrder.Marking;
             break;
         case PipetestStep.Complete:
             number = PipetestStatusOrder.Complete;
@@ -250,3 +250,38 @@ export const getShortformCompletionStatusName = (status: string): string => {
             return CheckListStatus.Outstanding;
     }
 };
+
+export function getChecklistStepName(step: CheckListStepTag): string {
+    let stepName: string = PipetestStep.Unknown;
+
+    switch (step) {
+        case CheckListStepTag.Bolttensioning:
+            stepName = PipetestStep.Bolttensioning;
+            break;
+        case CheckListStepTag.PressureTest:
+            stepName = PipetestStep.PressureTest;
+            break;
+        case CheckListStepTag.Painting:
+            stepName = PipetestStep.Painting;
+            break;
+        case CheckListStepTag.Insulation:
+            stepName = PipetestStep.Insulation;
+            break;
+        case CheckListStepTag.Marking:
+            stepName = PipetestStep.Marking;
+            break;
+        case CheckListStepTag.HtTest:
+            stepName = PipetestStep.HtTest;
+            break;
+        case CheckListStepTag.HtRetest:
+            stepName = PipetestStep.HtRetest;
+            break;
+        case CheckListStepTag.ChemicalCleaning:
+            stepName = PipetestStep.ChemicalCleaning;
+            break;
+        case CheckListStepTag.HotOilFlushing:
+            stepName = PipetestStep.HotOilFlushing;
+            break;
+    }
+    return stepName;
+}
