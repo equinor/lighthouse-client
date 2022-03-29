@@ -98,10 +98,9 @@ export const createOpenSeries = (data: SwcrPackage[], categories: DateTime[]): S
     categoriesArray.forEach((category) => {
         data.forEach((swcr) => {
             if (
-                isOpen(swcr, category.week)
-                // &&
-                // swcr.status !== 'Closed' &&
-                // swcr.status !== 'Closed - Rejected'
+                isOpen(swcr, category.week) &&
+                swcr.status !== 'Closed' &&
+                swcr.status !== 'Closed - Rejected'
             ) {
                 category.open++;
             }
@@ -114,6 +113,80 @@ export const createOpenSeries = (data: SwcrPackage[], categories: DateTime[]): S
             data: categoriesArray.map(({ open }) => open),
             backgroundColor: themeColors.line[0],
             borderColor: themeColors.line[0],
+        },
+    ];
+};
+type CategoriesArrayAcc = {
+    closed: number;
+    open: number;
+    created: number;
+    monthYear: Date;
+};
+const createCategoriesArrayForAccSeries = (categories: DateTime[]): CategoriesArrayAcc[] => {
+    return categories.map((category) => ({
+        closed: 0,
+        created: 0,
+        open: 0,
+        monthYear: new Date(category.toString()),
+    }));
+};
+
+export const createAccSeries = (data: SwcrPackage[], categories: DateTime[]): Series[] => {
+    const categoriesArray = createCategoriesArrayForAccSeries(categories);
+
+    categoriesArray.forEach((category) => {
+        data.forEach((swcr) => {
+            const swcrCreatedAt = DateTime.fromJSDate(new Date(swcr.createdAtDate));
+            const swcrClosedAt = DateTime.fromJSDate(new Date(swcr.closedAtDate));
+            const categoryDate = DateTime.fromJSDate(category.monthYear);
+            if (
+                swcrCreatedAt.year === categoryDate.year &&
+                swcrCreatedAt.month === categoryDate.month
+            ) {
+                category.created++;
+            }
+            if (
+                swcrClosedAt.year === categoryDate.year &&
+                swcrClosedAt.month === categoryDate.month
+            ) {
+                category.closed++;
+            }
+        });
+    });
+    const blah = categoriesArray.map((val) => val.closed);
+    const foo = blah.reduce((acc, curr) => {
+        if (acc.length > 0) {
+            curr += acc[acc.length - 1];
+        }
+
+        acc.push(curr);
+        return acc;
+    }, [] as Array<number>);
+    const foo2 = categoriesArray
+        .map((val) => val.created)
+        .reduce((acc, curr) => {
+            if (acc.length > 0) {
+                curr += acc[acc.length - 1];
+            }
+            acc.push(curr);
+            return acc;
+        }, [] as Array<number>);
+    return [
+        {
+            label: 'Closed',
+            data: foo,
+            backgroundColor: 'rgba(0, 112, 121, 0.5)',
+            borderColor: 'rgba(0, 112, 121, 0.5)',
+            //@ts-ignore
+            fill: true,
+        },
+        {
+            label: 'Created',
+            data: foo2,
+            backgroundColor: 'rgba(115, 177, 181, 0.5)',
+            borderColor: 'rgba(115, 177, 181, 0.5)',
+            //@ts-ignore
+            fill: true,
         },
     ];
 };

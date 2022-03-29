@@ -1,5 +1,4 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { weekDiff } from '../Construction/Utils';
 import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
 import { SwcrItemView } from './CustomViews/SwcrGardenItem';
 import { SwcrGroupView } from './CustomViews/SwcrGroupView';
@@ -9,8 +8,7 @@ import { fieldSettings } from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { SwcrGraph } from './CustomViews/Graph';
-import { PropsWithChildren } from 'react';
-import { CellProps } from 'react-table';
+import { columns } from './utilities/tableSetup';
 export function setup(appApi: ClientApi): void {
     const swcr = appApi.createWorkSpace<SwcrPackage>({
         CustomSidesheet: SwcrSideSheet,
@@ -61,7 +59,6 @@ export function setup(appApi: ClientApi): void {
     });
 
     swcr.registerTableOptions({ objectIdentifierKey: 'swcrId' });
-
     swcr.registerGardenOptions({
         gardenKey: 'dueAtDate',
         itemKey: 'swcrNo',
@@ -76,22 +73,15 @@ export function setup(appApi: ClientApi): void {
 
     swcr.registerAnalyticsOptions({
         section1: {
-            // chart1: {
-            //     type: 'barChart',
-            //     options: {
-            //         categoryKey: 'createdAtDate',
-            //         nameKey: 'closedAtDate',
-            //     },
-            // },
-            // chart1: {
-            //     type: 'customVisual',
-            //     options: {
-            //         component: SwcrGraph,
-            //         componentProps: {
-            //             graphType: 'created-closed',
-            //         },
-            //     },
-            // },
+            chart1: {
+                type: 'customVisual',
+                options: {
+                    component: SwcrGraph,
+                    componentProps: {
+                        graphType: 'created-closed',
+                    },
+                },
+            },
             chart2: {
                 type: 'customVisual',
                 options: {
@@ -102,81 +92,46 @@ export function setup(appApi: ClientApi): void {
                 },
             },
         },
-        // section3: {
-        //     chart1: {
-        //         type: 'table',
-        //         options: {
-        //             initialGroupBy: 'controlSystem',
-        //             columns: [
-        //                 {
-        //                     Header: 'Control System',
-        //                     accessor: (swcr) => swcr.controlSystem,
-        //                     id: 'controlSystem',
-        //                 },
-        //                 {
-        //                     Header: 'SWCRs',
-        //                     id: 'swcrId',
-        //                     accessor: (swcr) => swcr,
+        section2: {
+            chart1: {
+                type: 'customVisual',
+                options: {
+                    component: SwcrGraph,
+                    componentProps: {
+                        graphType: 'acc',
+                    },
+                },
+            },
+        },
 
-        //                     Aggregated: (cell) => {
-        //                         console.log(cell.value);
-        //                         return cell.value;
-        //                     },
-        //                     //@ts-ignore
-        //                 },
-        //                 {
-        //                     Header: 'Open',
-        //                     id: 'statusOpen',
+        section3: {
+            chart2: {
+                type: 'table',
+                options: {
+                    initialGroupBy: 'priority',
+                    groupBy: [
+                        {
+                            key: 'controlSystem',
+                            title: 'Control System',
+                        },
+                        {
+                            key: 'priority',
+                            title: 'Priority',
+                        },
+                        {
+                            key: 'system',
+                            title: 'System',
+                        },
+                        {
+                            key: 'types',
+                            title: 'HW/SW',
+                        },
+                    ],
 
-        //                     accessor: (swcr) => swcr.status,
-        //                     Footer: (data) => {
-        //                         const count = data.data.reduce((acc, curr) => {
-        //                             acc =
-        //                                 curr.status !== 'Closed' &&
-        //                                 curr.status !== 'Closed - Rejected'
-        //                                     ? acc + 1
-        //                                     : acc;
-        //                             return acc;
-        //                         }, 0);
-        //                         return count;
-        //                     },
-
-        //                     //@ts-ignore
-        //                     Aggregated: ({ row }) => {
-        //                         const count = row.subRows.reduce((acc, curr) => {
-        //                             acc =
-        //                                 curr.original.status !== 'Closed' &&
-        //                                 curr.original.status !== 'Closed - Rejected'
-        //                                     ? acc + 1
-        //                                     : acc;
-        //                             return acc;
-        //                         }, 0);
-        //                         return count;
-        //                     },
-        //                 },
-        //                 {
-        //                     Header: 'Closed',
-        //                     id: 'statusClosed',
-
-        //                     accessor: (swcr) => swcr.status,
-
-        //                     //@ts-ignore
-        //                     Aggregated: ({ row }) => {
-        //                         const count = row.subRows.reduce((acc, curr) => {
-        //                             acc =
-        //                                 curr.original.status === 'Closed' ||
-        //                                 curr.original.status === 'Closed - Rejected'
-        //                                     ? acc + 1
-        //                                     : acc;
-        //                             return acc;
-        //                         }, 0);
-        //                         return count;
-        //                     },
-        //                 },
-        //             ],
-        //         },
-        //     },
-        // },
+                    columns: columns,
+                },
+            },
+        },
     });
 
     swcr.registerStatusItems(statusBarData);
