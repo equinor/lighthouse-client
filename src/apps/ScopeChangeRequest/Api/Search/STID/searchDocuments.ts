@@ -1,4 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
+import { throwOnError } from '../../../Functions/throwError';
 import { Document } from '../../../Types/STID/Document';
 import { TypedSelectOption } from '../searchType';
 
@@ -7,25 +8,26 @@ export const searchDocuments = async (
     facilityId: string,
     signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
-    const selectOptions: TypedSelectOption[] = [];
     const { STID } = httpClient();
 
     const uri = `/${facilityId}/documents`;
     const queryParameters = `docNo=${encodeURI(searchString)}&skip=0&take=30&noContentAs200=true`;
     const url = `${uri}?${queryParameters}`;
-    await STID.fetch(url, { signal })
-        .then((response) => response.json())
-        .then((data) => {
-            data.map((x: Document) => {
-                selectOptions.push({
-                    label: `DOC_${x.docNo} - ${x.docTitle}`,
-                    value: x.docNo,
-                    type: 'document',
-                    searchValue: x.docNo,
-                    object: x,
-                });
-            });
-        });
 
-    return selectOptions || [];
+    const res = await STID.fetch(url, { signal });
+
+    if (res.status === 401 || res.status === 403) {
+        throw 'User has no access';
+    }
+    throwOnError(res);
+
+    return (await res.json()).map(
+        (x: Document): TypedSelectOption => ({
+            label: `DOC_${x.docNo} - ${x.docTitle}`,
+            value: x.docNo,
+            type: 'document',
+            searchValue: x.docNo,
+            object: x,
+        })
+    );
 };
