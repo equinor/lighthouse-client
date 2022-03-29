@@ -1,5 +1,5 @@
-import { Page, Report } from 'powerbi-client';
-import { useEffect, useState } from 'react';
+import { Report } from 'powerbi-client';
+import { useEffect } from 'react';
 
 /**
  * Gets all pages for powerbi report
@@ -7,26 +7,29 @@ import { useEffect, useState } from 'react';
  * report.setPage() will cause this to set the state every time
  * user changes a page.
  */
-export const useGetPages = (report?: Report): { pages: Page[] | undefined } => {
-    const [pages, setPages] = useState<Page[]>();
-
+export const useGetPages = (report?: Report, isDev?: boolean): void => {
     useEffect(() => {
         const getPages = () => {
             report &&
-                !pages &&
                 report.on('rendered', async () => {
                     try {
                         const pbiPages = await report.getPages();
                         // Don't want to add the pages that should be hidden for user
                         const filteredPages = pbiPages.filter((page) => page.visibility !== 1);
-                        setPages(filteredPages);
+
+                        console.log(
+                            filteredPages?.map((p) => ({
+                                pageTitle: p.displayName,
+                                pageId: p.name,
+                            }))
+                        );
                     } catch {
                         console.error('Cannot retrieve pages');
                     }
                 });
         };
-        getPages();
-    }, [report, pages]);
-
-    return { pages };
+        if (isDev) {
+            getPages();
+        }
+    }, [isDev, report]);
 };
