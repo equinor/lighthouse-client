@@ -8,8 +8,6 @@ export interface ISettingsProvider {
      * @return {*}  {ClientSettings}
      */
     readClientSettings(): Readonly<ClientSettings>;
-    toggleAppPanel(): void;
-    toggleFullscreenMenu(): void;
     setLoggingState(logging: boolean): void;
     setEnv(isProduction: boolean, clientEnv: string): void;
     setClientEnv(clientEnv: string): void;
@@ -48,16 +46,6 @@ export class SettingsProvider implements ISettingsProvider {
                 },
             };
         });
-    }
-
-    toggleAppPanel(): void {
-        this.internalUpdateSettings((state) => ({ appsPanelActive: !state.appsPanelActive }));
-    }
-
-    toggleFullscreenMenu(): void {
-        this.internalUpdateSettings((state) => ({
-            fullscreenMenuActive: !state.fullscreenMenuActive,
-        }));
     }
 
     setLoggingState(logging: boolean): void {

@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
 import {
-    CommissioningPackage,
-    Tag,
-    System,
-    Document,
-    Discipline,
-    Area,
+    ScopeChangeArea,
+    ScopeChangeDiscipline,
+    ScopeChangeDocument,
+    ScopeChangeTag,
+    ScopeChangeSystem,
+    ScopeChangeCommissioningPackage,
 } from '../../../Types/scopeChangeRequest';
 import { ChevronList } from './ChevronList/ChevronList';
 import { Tag as TagComp } from './RelatedObjects/Tags/Tag';
@@ -17,12 +17,12 @@ import { System as SystemComp } from './RelatedObjects/Systems/System';
 import { StidDocument as StidVisual } from '../../STID';
 
 interface RelatedObjectsProps {
-    systems: System[];
-    commPkgs: CommissioningPackage[];
-    tags: Tag[];
-    areas: Area[];
-    disciplines: Discipline[];
-    documents: Document[];
+    systems: ScopeChangeSystem[];
+    commPkgs: ScopeChangeCommissioningPackage[];
+    tags: ScopeChangeTag[];
+    areas: ScopeChangeArea[];
+    disciplines: ScopeChangeDiscipline[];
+    documents: ScopeChangeDocument[];
 }
 
 export const RelatedObjects = ({

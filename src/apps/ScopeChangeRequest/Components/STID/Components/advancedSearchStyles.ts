@@ -20,12 +20,13 @@ export const ResultItem = styled.div`
     width: 635px;
 `;
 
-export const StidWrapper = styled.div`
+export const Wrapper = styled.div`
     background-color: white;
     width: 640px;
+    max-width: 640px;
     min-height: 800px;
-    max-height: 100vh;
-    overflow: scroll;
+    max-height: 1200px;
+    overflow-y: scroll;
     padding: 20px;
 `;
 
@@ -33,14 +34,14 @@ export const Title = styled.h2`
     font-weight: normal;
 `;
 
-export const StidHeader = styled.div`
+export const ModalHeader = styled.div`
     align-items: center;
     display: flex;
     justify-content: space-between;
 `;
 
 export const AdvancedSearch = styled.div`
-    height: 48px;
+    height: auto;
     width: 178px;
     display: flex;
     align-items: center;

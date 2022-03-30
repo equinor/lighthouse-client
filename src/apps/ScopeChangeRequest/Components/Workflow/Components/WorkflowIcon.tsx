@@ -12,41 +12,41 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
     switch (status) {
         case 'Active':
             return (
-                <GreenCircle>
-                    <span>{number}</span>
-                </GreenCircle>
+                <FixedIconContainer>
+                    <GreenCircle>
+                        <span>{number}</span>
+                    </GreenCircle>
+                </FixedIconContainer>
             );
 
         case 'Approved':
             return (
-                <IconWrapper>
-                    <Icon
-                        name="check_circle_outlined"
-                        height={'28.8'}
-                        width={'28.8'}
-                        color={tokens.colors.interactive.primary__resting.hex}
-                    />
-                </IconWrapper>
+                <Icon
+                    name="check_circle_outlined"
+                    height={'28.8'}
+                    width={'28.8'}
+                    color={tokens.colors.interactive.primary__resting.hex}
+                />
             );
 
         case 'Rejected': {
             return (
-                <IconWrapper>
-                    <Icon
-                        name="close_circle_outlined"
-                        height={'28.8'}
-                        width={'28.8'}
-                        color={tokens.colors.infographic.primary__energy_red_100.hex}
-                    />
-                </IconWrapper>
+                <Icon
+                    name="close_circle_outlined"
+                    height={'28.8'}
+                    width={'28.8'}
+                    color={tokens.colors.infographic.primary__energy_red_100.hex}
+                />
             );
         }
 
         case 'Inactive':
             return (
-                <GreyCircle>
-                    <span>{number}</span>
-                </GreyCircle>
+                <FixedIconContainer>
+                    <GreyCircle>
+                        <span>{number}</span>
+                    </GreyCircle>
+                </FixedIconContainer>
             );
 
         default:
@@ -58,11 +58,6 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
             );
     }
 }
-
-const IconWrapper = styled.div`
-    width: 24px;
-    height: 24px;
-`;
 
 const GreenCircle = styled.div`
     justify-content: center;
@@ -85,5 +80,13 @@ const GreyCircle = styled.div`
     width: 20px;
     font-size: 14px;
     height: 20px;
-    border: 2px solid grey;
+    border: 2px solid #6f6f6f;
+`;
+
+const FixedIconContainer = styled.div`
+    width: 29px;
+    height: 29px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;

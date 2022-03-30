@@ -1,4 +1,4 @@
-import { Data } from '../Models/data';
+import { GardenGroups } from '../Models/data';
 import { groupBy } from '../Utils/groupBy';
 import { GroupDescriptionFunc } from '../Models/groupDescriptionFunc';
 import { StatusView } from '../Models/gardenOptions';
@@ -10,7 +10,7 @@ export function createTree<T>(
     groupingKeys?: (keyof T)[],
     status?: StatusView<T>,
     groupDescriptionFunc?: GroupDescriptionFunc<T>
-): Data<T> {
+): GardenGroups<T> {
     const allGroupingKeys: (keyof T)[] = [];
 
     if (groupingKeys) {
@@ -21,29 +21,37 @@ export function createTree<T>(
 
     if (allGroupingKeys.length <= 0) {
         //Wrap in rootGroup
-        const rootGroup: Data<T> = {};
+        const rootGroup: GardenGroups<T> = [];
 
         rootGroup[0] = {
             groupKey: '' as keyof T,
             value: 'Root',
-            subGroups: {},
+            subGroups: [],
             items: dataSet,
             count: 0,
+            subGroupCount: 0,
             isExpanded: false,
         };
 
         return rootGroup;
     }
 
-    const rootGroup: Data<T> = {};
+    const rootGroup: GardenGroups<T> = [];
 
     rootGroup[0] = {
         groupKey: '' as keyof T,
         value: 'Root',
-        subGroups: groupBy(dataSet, allGroupingKeys, status, groupDescriptionFunc),
+        subGroups: groupBy({
+            arr: dataSet,
+            keys: allGroupingKeys,
+            status: status,
+            groupDescriptionFunc: groupDescriptionFunc,
+            preGroupFiltering: (data) => data,
+        }),
         items: [],
         count: 0,
         isExpanded: false,
+        subGroupCount: 0,
     };
 
     return rootGroup;

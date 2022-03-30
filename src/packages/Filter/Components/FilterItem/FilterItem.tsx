@@ -26,7 +26,14 @@ export const FilterItemComponent = ({
 
     if (!isActive) return <></>;
     return (
-        <FilterItemWrapper key={itemKey} aria-label={filterItem.value} title={filterItem.value}>
+        <FilterItemWrapper
+            onClick={() => {
+                debouncedFilterItemCheck(filterItem, true);
+            }}
+            key={itemKey}
+            aria-label={filterItem.value}
+            title={filterItem.value}
+        >
             <FilterItemGroupe>
                 <Checkbox
                     indeterminate={indeterminate}
@@ -36,13 +43,7 @@ export const FilterItemComponent = ({
                         debouncedFilterItemCheck(filterItem);
                     }}
                 />
-                <FilterItemLabel
-                    onClick={() => {
-                        debouncedFilterItemCheck(filterItem, true);
-                    }}
-                >
-                    {filterItem.value.toString()}
-                </FilterItemLabel>
+                <FilterItemLabel>{filterItem.value.toString()}</FilterItemLabel>
             </FilterItemGroupe>
             <Count>({count})</Count>
         </FilterItemWrapper>

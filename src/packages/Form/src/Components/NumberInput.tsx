@@ -1,6 +1,7 @@
 import React from 'react';
 import { Input } from '@equinor/eds-core-react';
 import { Field } from '../Types/field';
+import styled from 'styled-components';
 
 interface NumberInputProps<T> {
     field: Field<T>;
@@ -11,7 +12,7 @@ export function NumberInput<T>({ field, editMode }: NumberInputProps<T>): JSX.El
     if (typeof field.value === 'number' || typeof field.value === 'undefined') {
         return (
             <>
-                <Input
+                <StyledInput
                     disabled={editMode ? !field?.editable : false}
                     placeholder={field.placeholderText}
                     value={isNaN(field.value as unknown as number) ? undefined : field.value}
@@ -29,3 +30,9 @@ export function NumberInput<T>({ field, editMode }: NumberInputProps<T>): JSX.El
     }
     return <p style={{ color: 'red' }}>{field} is not of type number or undefined</p>;
 }
+
+const StyledInput = styled(Input)`
+    ::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+`;

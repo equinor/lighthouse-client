@@ -1,13 +1,18 @@
 import { AuthenticationProvider } from '@equinor/authentication';
+import { PowerBIViewerInstance } from '@equinor/lighthouse-powerbi-viewer';
 import { PageViewerInstance } from '@equinor/PageViewer';
 import { WorkSpaceApi } from '@equinor/WorkSpace';
 import { WorkspaceOptions } from '../Service/ClientBuilder';
 import { AppConfig } from './AppConfig';
 import { AppManifest } from './AppManifest';
 
-type AppType = 'Workspace' | 'PageView' | 'CustomApp' | 'PowerBI';
+// Todo cleanup app types and  maybe create another system: look at fusion manifest for this.
+type AppType = 'Workspace' | 'PageView' | 'CustomApp' | 'PowerBI' | 'PowerBIViewer';
 
-export type CustomClientApi = Omit<ClientApi, 'createWorkSpace' | 'createPageViewer'>;
+export type CustomClientApi = Omit<
+    ClientApi,
+    'createWorkSpace' | 'createPageViewer' | 'createPowerBiViewer'
+>;
 
 export interface App {
     appType?: AppType;
@@ -20,4 +25,5 @@ export interface ClientApi extends AppManifest {
     authProvider: AuthenticationProvider;
     createWorkSpace<T>(options: WorkspaceOptions<T>): WorkSpaceApi<T>;
     createPageViewer(): PageViewerInstance;
+    createPowerBiViewer(): PowerBIViewerInstance;
 }

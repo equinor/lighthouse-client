@@ -1,4 +1,5 @@
 import { GroupView } from '@equinor/GroupView';
+import { PowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
 import { ClientHome, useClientContext } from '@equinor/portal-client';
 import { closeSidesheet } from '@equinor/sidesheet';
 import { useEffect } from 'react';
@@ -71,6 +72,17 @@ export function ClientRoutes(): JSX.Element {
                                 key={route.shortName + 'id'}
                                 path={`${route.groupe.toString()}/${route.shortName}/:id`}
                                 element={<PageView />}
+                            />
+                        </Route>
+                    );
+                }
+                if (route.app?.appType === 'PowerBIViewer') {
+                    return (
+                        <Route key={route.shortName + route.groupe}>
+                            <Route
+                                key={route.shortName}
+                                path={`${route.groupe.toString()}/${route.shortName}`}
+                                element={<PowerBiViewer {...route} />}
                             />
                         </Route>
                     );
