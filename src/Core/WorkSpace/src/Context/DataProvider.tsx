@@ -18,6 +18,7 @@ import { useAtom } from '@dbeining/react-atom';
 import { usePrefetchQueries } from '../Hooks/usePrefetchQueries';
 import * as queryCacheOperations from '../Functions/DataOperations';
 import { QueryCacheArgs } from '../Functions/DataOperations/queryCacheArgs';
+import { checkResponseCode } from '../Functions/checkResponseCode';
 
 interface DataState {
     key: string;
@@ -110,15 +111,26 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
 
     const queryApi = useQuery(
         [key],
-        async () => {
+        async ({ signal }) => {
             if (!dataSource) return;
 
-            const response = await dataSource();
-
-            if (Array.isArray(response)) {
-                return response;
+            let response: Response | null;
+            try {
+                response = await dataSource.responseAsync(signal);
+            } catch (e) {
+                throw 'Server failed to respond';
             }
-            throw response;
+
+            checkResponseCode(response);
+
+            const data: unknown[] = dataSource.responseParser
+                ? await dataSource.responseParser(response)
+                : await response.json();
+
+            if (Array.isArray(data)) {
+                return data;
+            }
+            throw 'Unknown data format';
         },
         { refetchOnWindowFocus: false, staleTime: ONE_HOUR, initialData: [] }
     );

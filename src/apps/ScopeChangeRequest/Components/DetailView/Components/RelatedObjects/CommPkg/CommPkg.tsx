@@ -1,42 +1,46 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { isProduction } from '../../../../../../../Core/Client/';
+import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
-import { Icon } from '@equinor/eds-core-react';
-import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
+import { ScopeChangeCommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
-import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
+import { CommPkgIcon } from './commPkgIcon';
+import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 
 interface CommPkgProps {
-    commPkg: CommissioningPackage;
+    commPkg: ScopeChangeCommissioningPackage;
 }
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     const { commPkg: commPkgKey } = proCoSysQueryKeys();
+    const { procosysPlantId } = useFacility();
 
     const { data } = useInfiniteCachedQuery(commPkgKey(commPkg.procosysNumber), () =>
-        getCommPkgById(commPkg.procosysId)
+        getCommPkgById(procosysPlantId, commPkg.procosysId)
     );
 
     return (
         <Wrapper key={commPkg.procosysId}>
-            <Icon name="placeholder_icon" />
-            <TagText>
+            <CommPkgIcon />
+            <CommPkgText>
                 <Link
                     href={`https://${isProduction() ? 'procosys' : 'procosystest'
                         }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
                     target="_blank"
                 >
-                    COMM_{commPkg.procosysNumber}
+                    {commPkg.procosysNumber}
                 </Link>
-                -<div>{data?.Description}</div>
-            </TagText>
+                -
+                <div>
+                    {data?.Description} {data?.CommPkgNo}
+                </div>
+            </CommPkgText>
         </Wrapper>
     );
 };
 
-const TagText = styled.div`
+const CommPkgText = styled.div`
     display: flex;
     flex-direction: row;
     gap: 0.2em;

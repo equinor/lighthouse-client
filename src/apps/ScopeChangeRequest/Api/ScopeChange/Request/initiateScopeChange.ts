@@ -15,7 +15,7 @@ export async function initiateScopeChange({ request }: InitiateScopeChangeParams
         ...request,
         actualChangeHours: request.actualChangeHours,
         estimatedChangeHours: request.estimatedChangeHours,
-        category: request.category,
+        changeCategoryId: request.changeCategory.id,
         description: request.description,
         guesstimateDescription: request.guesstimateDescription,
         guesstimateHours: request.guesstimateHours,

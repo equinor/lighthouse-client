@@ -7,6 +7,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { createGlobalStyle } from 'styled-components';
 import { MainLayout } from './components/Layouts/MainLayout';
 import LoadingPage from './components/Loading/LoadingPage';
+import { MenuProvider } from './components/Menu';
+import { ServiceMessageBanner, useServiceMessage } from './components/Messages';
+import { ServiceMessagePost } from './components/Messages/Service/Components/ServiceMessagePost';
 import { ClientRoutes } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
@@ -21,7 +24,11 @@ const GlobalStyle = createGlobalStyle`
     };
 
     p {
+        font-family: Equinor;
         font-size: 13px !important;
+    }
+    button {
+        font-family: Equinor;
     }
     pre {
         font-family: Equinor;
@@ -68,19 +75,25 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
             },
         },
     });
+    const messageData = useServiceMessage();
 
     return isAuthenticated ? (
         <ErrorBoundary FallbackComponent={ErrorFallback}>
             <QueryClientProvider client={queryClient}>
                 <GlobalStyle />
+                <ServiceMessagePost />
                 <ConfirmationDialog />
                 <ClientContextProvider>
-                    <BrowserRouter>
-                        <ClientTopBar />
-                        <MainLayout>
-                            <ClientRoutes />
-                        </MainLayout>
-                    </BrowserRouter>
+                    {messageData.isActive && <ServiceMessageBanner {...messageData} />}
+                    <MenuProvider>
+                        <BrowserRouter>
+                            <ClientTopBar />
+
+                            <MainLayout serviceMessageActive={messageData.isActive}>
+                                <ClientRoutes />
+                            </MainLayout>
+                        </BrowserRouter>
+                    </MenuProvider>
                     <FactoryComponent />
                 </ClientContextProvider>
             </QueryClientProvider>

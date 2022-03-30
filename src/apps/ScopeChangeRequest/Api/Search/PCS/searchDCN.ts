@@ -6,6 +6,7 @@ import { PCSStructure } from './searchStructure';
 
 export const searchDCN = async (
     searchString: string,
+    plantId: string,
     client: HttpClient,
     signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
@@ -29,7 +30,7 @@ export const searchDCN = async (
     try {
         await client
             .fetch(
-                `api/Search?plantId=PCS%24JOHAN_CASTBERG&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
+                `api/Search?plantId=${encodeURIComponent(plantId)}&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
                 }&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`,
                 requestOptions
             )

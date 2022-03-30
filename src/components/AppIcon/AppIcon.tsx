@@ -1,4 +1,3 @@
-import { useClientContext } from '@equinor/portal-client';
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -35,14 +34,11 @@ const IconLabel = styled.p`
 `;
 
 const AppIcon: FC<AppIconProps> = ({ icon, label }: AppIconProps): JSX.Element => {
-    const { toggleAppPanel } = useClientContext();
-
     const navigate = useNavigate();
 
     function handleClick() {
         const route = `/${label}`;
         navigate(route);
-        toggleAppPanel();
     }
 
     const Icon = icon;

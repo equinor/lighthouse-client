@@ -35,12 +35,12 @@ export const Count = styled.span`
     padding-bottom: 0.5rem;
 `;
 export const HandoverGardenHeader = (props: CustomHeaderView<HandoverPackage>) => {
-    const { columnKey, garden } = props;
+    const { columnIndex, garden } = props;
     return (
         <Groupe>
-            {garden[columnKey].status?.statusElement}
-            <Title>{garden[columnKey].value}</Title>
-            <Count>({garden[columnKey].count})</Count>
+            {garden[columnIndex].status?.statusElement}
+            <Title>{garden[columnIndex].value}</Title>
+            <Count>({garden[columnIndex].count})</Count>
         </Groupe>
     );
 };

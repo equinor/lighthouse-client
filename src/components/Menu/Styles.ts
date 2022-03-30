@@ -2,21 +2,6 @@ import { tokens } from '@equinor/eds-tokens';
 import { Link as ReactLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-interface AppsPanelWrapperProps {
-    panelActive: boolean;
-}
-
-export const MenuWrapper = styled.div`
-    overflow-y: auto;
-    height: calc(100vh - 48px);
-    display: flex;
-    flex-direction: column;
-    transition: all 0.2s ease;
-    background: ${tokens.colors.ui.background__light.rgba};
-    z-index: 1;
-    width: ${({ panelActive }: AppsPanelWrapperProps) => (panelActive ? '350px' : '48px')};
-`;
-
 export const LinkWrapper = styled(ReactLink)`
     text-decoration: none;
     padding: 0px;

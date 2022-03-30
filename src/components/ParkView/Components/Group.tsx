@@ -26,7 +26,10 @@ export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>
 
     const GroupView = customView?.customGroupView;
 
-    const subGroupKeys = useMemo(() => Object.keys(group.subGroups) || [], [group.subGroups]);
+    const subGroupKeys = useMemo(
+        () => group.subGroups.map((sub) => sub.value) || [],
+        [group.subGroups]
+    );
 
     return (
         <SubGroup>
@@ -59,10 +62,10 @@ export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>
                                 fieldSettings?.[group.subGroups?.[0]?.groupKey]?.getColumnSort ||
                                     defaultSortFunction
                             )
-                            .map((groupKey) => (
+                            .map((_, i) => (
                                 <Group
-                                    key={group.subGroups[groupKey].value}
-                                    group={group.subGroups[groupKey]}
+                                    key={group.subGroups[i].value}
+                                    group={group.subGroups[i]}
                                     columnExpanded={columnExpanded}
                                 />
                             ))}

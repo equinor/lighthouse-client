@@ -1,24 +1,32 @@
+import { AddMenu } from '@equinor/DataFactory';
 import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
 import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
+import { useRef, useState } from 'react';
 import Icon from '../Icon/Icon';
+import { useMenuContext } from '../Menu';
 import { DevBar } from './DevBar/DevBar';
 import Logo from './Logo/Logo';
-import { Action, Icons, TopBarWrapper } from './TopBarStyle';
+import { Action, ActionWrapper, Icons, TopBarWrapper } from './TopBarStyle';
 
 const ClientTopBar = (): JSX.Element => {
+    // state for open and close add menu and add menu ref for positioning.
+    const [isAddMenuOpen, setIsAddMenuOpen] = useState(false);
+    const addMenuRef = useRef<HTMLHeadingElement>(null);
+
     const {
-        toggleFullscreenMenu,
         settings: { userImageUrl, clientEnv },
     } = useClientContext();
+
+    const { toggleMenu } = useMenuContext();
 
     return (
         <TopBarWrapper>
             <TopBar.Header>
                 <div
                     onClick={() => {
-                        toggleFullscreenMenu();
+                        toggleMenu();
                     }}
                     style={{ cursor: 'pointer' }}
                 >
@@ -43,13 +51,37 @@ const ClientTopBar = (): JSX.Element => {
                         onClick={() => {
                             window.open('https://forms.office.com/r/GzdEKzkXWY');
                         }}
+                        onMouseOver={() => {
+                            setIsAddMenuOpen(false);
+                        }}
                     >
                         <Icon name="format_list_bulleted" />
                     </Action>
+                    <ActionWrapper ref={addMenuRef}>
+                        <Action
+                            title={'Add Item'}
+                            onFocus={() => setIsAddMenuOpen((s) => !s)}
+                            onMouseOver={() => {
+                                setIsAddMenuOpen(true);
+                            }}
+                            onBlur={() => setIsAddMenuOpen(false)}
+                        >
+                            <Icon name="add" />
+                        </Action>
+                        <AddMenu
+                            anchorEl={addMenuRef.current}
+                            isOpen={isAddMenuOpen}
+                            handleClose={() => setIsAddMenuOpen(false)}
+                            onMouseEnter={() => setIsAddMenuOpen(true)}
+                        />
+                    </ActionWrapper>
                     <Action
                         disabled
                         onClick={() => {
                             // Search
+                        }}
+                        onMouseOver={() => {
+                            setIsAddMenuOpen(false);
                         }}
                     >
                         <Icon name="search" />

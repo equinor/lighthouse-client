@@ -8,7 +8,6 @@ import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChange
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
-import { ServerError } from '../../../../Types/ScopeChange/ServerError';
 import { TypedSelectOption } from '../../../../Api/Search/searchType';
 import { WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
@@ -21,7 +20,7 @@ interface AddContributorProps {
 export const AddContributor = ({ close, step }: AddContributorProps): JSX.Element => {
     const [contributor, setContributor] = useState<TypedSelectOption | null>(null);
     const [text, setText] = useState<string>('');
-    const { request, setErrorMessage } = useScopeChangeContext();
+    const { request } = useScopeChangeContext();
     const { workflowKeys } = scopeChangeMutationKeys(request.id);
 
     const submit = async () => {
@@ -33,13 +32,12 @@ export const AddContributor = ({ close, step }: AddContributorProps): JSX.Elemen
         );
     };
 
-    const { mutateAsync, isLoading } = useScopeChangeMutation(
+    const { mutate, isLoading } = useScopeChangeMutation(
         request.id,
         workflowKeys.addContributorKey(step.id),
         submit,
         {
             onSuccess: () => close(),
-            onError: (e: ServerError) => setErrorMessage(e),
         }
     );
 
@@ -64,7 +62,7 @@ export const AddContributor = ({ close, step }: AddContributorProps): JSX.Elemen
                     <ButtonContainer>
                         <Button
                             disabled={text.length === 0 || !contributor}
-                            onClick={async () => await mutateAsync()}
+                            onClick={() => mutate()}
                         >
                             Assign
                         </Button>

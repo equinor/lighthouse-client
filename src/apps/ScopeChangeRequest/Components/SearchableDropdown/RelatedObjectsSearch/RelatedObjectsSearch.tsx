@@ -18,24 +18,26 @@ import {
     SelectContainer,
     Wrapper,
     ListItem,
-    Spacer,
     Title,
     TitleBar,
+    SelectedItemLabel,
 } from './RelatedObjectsStyles';
 import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
+import { CommPkgIcon } from '../../DetailView/Components/RelatedObjects/CommPkg/commPkgIcon';
+import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
 
 interface RelatedObjectsSearchProps {
-    relatedObjects: TypedSelectOption[];
-    setRelatedObjects: React.Dispatch<React.SetStateAction<TypedSelectOption[]>>;
+    references: TypedSelectOption[];
+    handleReferencesChanged: (references: TypedSelectOption[]) => void;
 }
 
 export const RelatedObjectsSearch = ({
-    relatedObjects,
-    setRelatedObjects,
+    handleReferencesChanged,
+    references,
 }: RelatedObjectsSearchProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const { abort, getSignal } = useCancellationToken();
-    const { search: searchReferences } = useReferencesSearch();
+    const { search: searchReferences, error } = useReferencesSearch();
 
     const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
         'document',
@@ -51,13 +53,13 @@ export const RelatedObjectsSearch = ({
     );
 
     const addRelatedObject = (value: TypedSelectOption) =>
-        setRelatedObjects((prev) => [...prev, value]);
+        handleReferencesChanged([...references, value]);
 
     const removeRelatedObject = (value: string) =>
-        setRelatedObjects((prev) => prev.filter((x) => x.value !== value));
+        handleReferencesChanged(references.filter((x) => x.value !== value));
 
     const selectedReferences = useMemo(() => {
-        return relatedObjects.sort(function (a, b) {
+        return references.sort(function (a, b) {
             if (a.type < b.type) {
                 return -1;
             }
@@ -66,7 +68,7 @@ export const RelatedObjectsSearch = ({
             }
             return 0;
         });
-    }, [relatedObjects]);
+    }, [references]);
 
     const loadOptions = async (
         inputValue: string,
@@ -84,21 +86,22 @@ export const RelatedObjectsSearch = ({
 
     return (
         <Wrapper>
+            <TitleBar>
+                <Title>References</Title>
+
+                <AdvancedDocumentSearch
+                    documents={references}
+                    appendItem={addRelatedObject}
+                    removeItem={removeRelatedObject}
+                />
+            </TitleBar>
             <Column>
+                {error && <div style={{ color: 'red' }}>{error}</div>}
                 {apiErrors &&
                     apiErrors.length > 0 &&
                     apiErrors.map((name) => {
                         return <ErrorWrapper key={name}>Failed to fetch {name}</ErrorWrapper>;
                     })}
-                <TitleBar>
-                    <Title>References</Title>
-
-                    <AdvancedDocumentSearch
-                        documents={relatedObjects}
-                        appendItem={addRelatedObject}
-                        removeItem={removeRelatedObject}
-                    />
-                </TitleBar>
                 <Inline>
                     <div
                         style={{
@@ -139,7 +142,7 @@ export const RelatedObjectsSearch = ({
                                     isMulti={true}
                                     placeholder={`Type to search..`}
                                     isClearable={false}
-                                    value={relatedObjects}
+                                    value={references}
                                     onInputChange={() => {
                                         setApiErrors([]);
                                     }}
@@ -167,21 +170,15 @@ export const RelatedObjectsSearch = ({
                                 const TypeIcon = () => getIcon(selectedReference);
                                 return (
                                     <ListItem key={selectedReference.value}>
-                                        <Inline>
-                                            <TypeIcon />
-                                            <Spacer />
-                                            <span style={{ fontSize: '16px' }}>
-                                                {selectedReference.label}
-                                            </span>
-                                        </Inline>
-
-                                        <Icon
-                                            style={{ cursor: 'pointer' }}
-                                            color={tokens.colors.interactive.primary__resting.rgba}
+                                        <TypeIcon />
+                                        <SelectedItemLabel>
+                                            {selectedReference.label}
+                                        </SelectedItemLabel>
+                                        <ClickableIcon
+                                            name="clear"
                                             onClick={() => {
                                                 removeRelatedObject(selectedReference.value);
                                             }}
-                                            name="clear"
                                         />
                                     </ListItem>
                                 );
@@ -207,6 +204,9 @@ function getIcon(x: TypedSelectOption): JSX.Element | null {
 
         case 'tag':
             return <Icon name="tag" color={tokens.colors.interactive.primary__resting.hex} />;
+
+        case 'commpkg':
+            return <CommPkgIcon />;
 
         default:
             return (

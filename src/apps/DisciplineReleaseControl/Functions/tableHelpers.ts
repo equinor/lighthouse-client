@@ -1,21 +1,22 @@
-import { CheckListStatus, CheckListStepTag } from '../Types/drcEnums';
-import { CheckList } from '../Types/pipetest';
+import { CheckListStatus, CheckListStepTag, PipetestCompletionStatus } from '../Types/drcEnums';
+import { CheckList, Pipetest } from '../Types/pipetest';
 import { getPipetestStatusForStep } from './statusHelpers';
 
 export const checklistTagFunc = (item: CheckList) => {
     switch (item?.status) {
-        case CheckListStatus.Inactive:
-            return 'Inactive';
-        case CheckListStatus.OK:
-            return 'Completed';
-        case CheckListStatus.PunchBError:
-            return 'Completed';
         case CheckListStatus.Outstanding:
-            return 'Outstanding';
+            return PipetestCompletionStatus.Outstanding;
+        case CheckListStatus.OK:
+            return PipetestCompletionStatus.Complete;
+        case CheckListStatus.PunchBError:
+            return PipetestCompletionStatus.PunchBError;
         case CheckListStatus.PunchAError:
-            return 'Error';
+            return PipetestCompletionStatus.PunchAError;
+        case CheckListStatus.Inactive:
+            return PipetestCompletionStatus.Inactive;
+        default:
+            return PipetestCompletionStatus.Outstanding;
     }
-    return 'Error';
 };
 
 export function getHTList(checkLists: CheckList[]): string {
@@ -38,6 +39,16 @@ export function getHTList(checkLists: CheckList[]): string {
         htList += ' (+' + (htCount - 3).toString() + ')';
     }
     return htList;
+}
+
+export function getPipetestsWithHTCable(pipetests: Pipetest[]): Pipetest[] {
+    const pipetestsWithHTCable: Pipetest[] = [];
+    pipetests.forEach((pipetest: Pipetest) => {
+        if (pipetest.checkLists.some((x) => x.isHeatTrace)) {
+            pipetestsWithHTCable.push(pipetest);
+        }
+    });
+    return pipetestsWithHTCable;
 }
 
 //TODO - refactor into more functions (3)
@@ -74,9 +85,17 @@ export function createChecklistSteps(data: CheckList[]): CheckList[] {
             data.some((x) => x.formularType === formularType)
         ) {
             const foundTestSteps = data.filter((x) => x.formularType === formularType);
-            const workflowStep = foundTestSteps[0];
-            workflowStep.status = getPipetestStatusForStep(foundTestSteps);
-            workflowStep.workflowStepText = formularType === CheckListStepTag.HtTest ? '1' : '2';
+            const workflowStep: CheckList = {
+                tagNo: '',
+                responsible: '',
+                formularGroup: '',
+                formularType: '',
+                status: getPipetestStatusForStep(foundTestSteps),
+                isHeatTrace: true,
+                revision: '',
+                test: '',
+                workflowStepText: formularType === CheckListStepTag.HtTest ? '1' : '2',
+            };
             workflowSteps.push(workflowStep);
         } else {
             workflowSteps.push({
