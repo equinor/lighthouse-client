@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { Discipline as DisciplineInterface } from '../../../../../Types/scopeChangeRequest';
+import { ScopeChangeDiscipline as DisciplineInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 import { useEffect, useState } from 'react';
