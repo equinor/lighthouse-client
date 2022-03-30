@@ -40,7 +40,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
             {rowVirtualizer.virtualItems.map((virtualRow) => {
                 const item = items?.[virtualRow.index];
                 if (!item) return null;
-                const width = isSubGroup(item) ? 100 - item.depth * 3 : 100;
+                const width = isSubGroup(item) ? 100 - (item?.depth || 0) * 3 : 100;
 
                 return (
                     <PackageRoot

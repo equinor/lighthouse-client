@@ -1,6 +1,6 @@
 import { DataSet } from '../../../Models/data';
-type GardenItemWithDepth<T> = {
+export type GardenItemWithDepth<T> = {
     item: T;
     itemDepth: number;
 };
-export type GardenItem<T extends unknown> = DataSet<T> | GardenItemWithDepth<T>;
+export type GardenItem<T> = DataSet<T> | GardenItemWithDepth<T>;

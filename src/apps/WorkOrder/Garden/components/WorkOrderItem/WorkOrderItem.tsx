@@ -103,7 +103,7 @@ const WorkOrderItem = ({
                 onMouseOver={() => setIsOpen(true)}
                 onMouseLeave={() => setIsOpen(false)}
                 onClick={onClick}
-                style={{ width: `${width}%` }}
+                style={{ width: `${columnExpanded ? 100 : width}%` }}
             >
                 {/* <SizeIcons size={size} color={textColor} />*/}
                 {/* {data.holdBy && <FlagIcon color={textColor} />} */}

@@ -115,7 +115,7 @@ export function groupBy<T, K extends keyof T>({
             isExpanded: true,
             customGroupByKeys: customGroupByKeys,
             preGroupFiltering: preGroupFiltering,
-            depth: gardengroups[index].depth + 1,
+            depth: (gardengroups[index]?.depth ?? -1) + 1,
         });
 
         if (nextKeys.length > 0) {

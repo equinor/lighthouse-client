@@ -10,7 +10,6 @@ export const WorkOrderWrapper = styled(Item)<WorkOrderItemProps>`
     box-sizing: border-box;
     white-space: nowrap;
     border: 1px solid #dcdcdc;
-    height: 85%;
     display: flex;
     align-items: center;
     justify-content: space-between;
