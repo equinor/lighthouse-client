@@ -1,99 +1,46 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 
-import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import { GeneratedForm, useForm } from '@equinor/Form';
-import { useHttpClient } from '@equinor/portal-client';
-import { openSidesheet } from '@equinor/sidesheet';
-
-import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import {
-    getScopeChangeById,
-    postScopeChange,
-    uploadAttachment,
-} from '../../Api/ScopeChange/Request';
-import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { scopeChangeRequestSchema } from '../../Schemas/scopeChangeRequestSchema';
-import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
-
 import { Upload } from '../Attachments/Upload';
 import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
-import { Origin } from './Origin';
-import { StidTypes } from '../../Types/STID/STIDTypes';
-import { ScopeChangeErrorBanner } from '../Sidesheet/ErrorBanner';
-import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
+import { useScopeChangeFormState } from './useScopeChangeFormState';
+import { ScopeChangeBaseForm } from './ScopeChangeBaseForm';
+import {
+    ActionBar,
+    ButtonContainer,
+    FlexColumn,
+    FormWrapper,
+    Section,
+} from './ScopeChangeForm.styles';
+import { useMutation, useQueryClient } from 'react-query';
+import { getScopeChangeById } from '../../Api/ScopeChange/Request';
+import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
+import { openSidesheet } from '@equinor/sidesheet';
+import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
+import { useRequestMutations } from '../../Hooks/useRequestMutations';
+import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 
 interface ScopeChangeRequestFormProps {
-    closeScrim: (force?: boolean) => void;
+    closeScrim: () => void;
     setHasUnsavedChanges: (value: boolean) => void;
-}
-
-interface CreateScopeChangeParams {
-    draft: boolean;
 }
 
 export const ScopeChangeRequestForm = ({
     closeScrim,
-    setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
-    const formData = useForm<ScopeChangeRequest>(scopeChangeRequestSchema, {
-        phase: 'IC',
-    });
-
-    usePreloadCaching();
+    const { handleInput, isValid, state } = useScopeChangeFormState();
+    const { createScopeChangeMutation } = useRequestMutations();
     const queryClient = useQueryClient();
 
-    const [attachments, setAttachments] = useState<File[]>([]);
-    const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
-    const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
+    usePreloadCaching();
 
-    const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
+    const handleReferencesChanged = (references: TypedSelectOption[]) =>
+        handleInput('references', references);
 
-    const { scopeChange } = useHttpClient();
-
-    const createScopeChangeMutation = async ({ draft }: CreateScopeChangeParams) => {
-        const tags = filterElementsByType(relatedObjects, 'tag');
-        const systems = filterElementsByType(relatedObjects, 'system');
-        const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
-        const areas = filterElementsByType(relatedObjects, 'area');
-        const disciplines = filterElementsByType(relatedObjects, 'discipline');
-        const documents = filterElementsByType(relatedObjects, 'document');
-
-        const scID = await postScopeChange(
-            {
-                ...formData.data,
-                tagNumbers: tags?.map((x) => x.value) || [],
-                systemIds: systems?.map((x) => Number(x.value)) || [],
-                commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
-                documentNumbers: documents.map((x) => x.value) || [],
-                areaCodes: areas.map((x) => x.value) || [],
-                disciplineCodes: disciplines.map((x) => x.value) || [],
-            },
-            draft,
-            scopeChange
-        );
-        if (scID) {
-            attachments.forEach(async (attachment) => {
-                await mutateAsync({ file: attachment, requestId: scID });
-            });
-            setIsRedirecting(true);
-
-            redirect(scID);
-        }
-    };
-
-    const { mutateAsync } = useMutation(uploadAttachment, { retry: 2, retryDelay: 2 });
-
-    const { mutate, isLoading } = useMutation(createScopeChangeMutation, {
-        retry: 2,
-        retryDelay: 2,
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
+    const handleAttachmentsChanged = (attachments: File[]) =>
+        handleInput('attachments', attachments);
 
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
@@ -103,101 +50,75 @@ export const ScopeChangeRequestForm = ({
         queryClient.invalidateQueries();
     };
 
-    useEffect(() => {
-        setHasUnsavedChanges(formData.getChangedData() !== undefined || relatedObjects.length > 0);
-    }, [formData, setHasUnsavedChanges, relatedObjects]);
+    const { mutate, isLoading } = useMutation(createScopeChangeMutation, {
+        retry: 2,
+        retryDelay: 2,
+        onSuccess: (id) => {
+            id && redirect(id);
+            if (!id) throw 'error';
+        },
+    });
 
-    const SubmitButton = () => {
-        return (
-            <Button disabled={!isValidForm || isLoading} onClick={() => mutate({ draft: false })}>
-                Submit
-            </Button>
-        );
-    };
-
-    const SaveButton = () => {
-        return (
-            <Button
-                disabled={!isValidForm || isLoading}
-                variant={'outlined'}
-                onClick={() => mutate({ draft: true })}
-            >
-                {isLoading ? <CircularProgress value={0} size={16} /> : <div>Save</div>}
-            </Button>
-        );
-    };
-
-    useEffect(() => {
-        formData.fields.originSourceId?.setValue(undefined);
-    }, [formData.fields.originSource?.value]);
-
-    const isValidForm = useMemo(() => {
-        return (
-            formData.isValidForm() &&
-            (formData.fields.originSource?.value === 'NotApplicable' ||
-                formData.fields.originSourceId?.value)
-        );
-    }, [formData, relatedObjects]);
-
-    if (isRedirecting) {
-        return (
-            <LoadingPage>
-                <CircularProgress value={0} size={48} />
-            </LoadingPage>
-        );
-    }
+    const onMutate = (draft: boolean) =>
+        mutate({ draft: draft, model: state, references: state.references ?? [] });
 
     return (
         <>
-            <ScopeChangeErrorBanner message={errorMessage} requestId={'0'} />
-            <TitleHeader>
-                <span style={{ fontSize: '28px' }}>Create scope change request</span>
-                <Icon
-                    onClick={() => closeScrim()}
-                    name="close"
-                    color={tokens.colors.interactive.primary__resting.hex}
-                />
-            </TitleHeader>
+            <div>
+                <TitleHeader>
+                    <SidesheetTitle>Create scope change request</SidesheetTitle>
+                    <ClickableIcon name="close" onClick={closeScrim} />
+                </TitleHeader>
 
-            <GeneratedForm
-                formData={formData}
-                editMode={false}
-                buttons={[SubmitButton, SaveButton]}
-                customFields={[
-                    {
-                        Component: Origin,
-                        order: 3,
-                        title: '',
-                        props: {
-                            originId: formData.fields.originSourceId,
-                            originSource: formData.fields.originSource,
-                        },
-                    },
+                <FormWrapper>
+                    <FlexColumn>
+                        Request
+                        <ScopeChangeBaseForm handleInput={handleInput} state={state} />
+                    </FlexColumn>
 
-                    {
-                        Component: RelatedObjectsSearch,
-                        order: 6,
-                        title: '',
-                        props: {
-                            relatedObjects: relatedObjects,
-                            setRelatedObjects: setRelatedObjects,
-                        },
-                    },
-                ]}
-            >
-                <Section style={{ margin: '0em 0.5em' }}>
-                    <Title>Attachments</Title>
-                    <Upload attachments={attachments} setAttachments={setAttachments} />
-                </Section>
-            </GeneratedForm>
+                    <FlexColumn>
+                        <Section>
+                            <RelatedObjectsSearch
+                                handleReferencesChanged={handleReferencesChanged}
+                                references={state.references ?? []}
+                            />
+                        </Section>
+                        Attachments
+                        <Upload
+                            attachments={state.attachments ?? []}
+                            handleAttachmentsChanged={handleAttachmentsChanged}
+                        />
+                    </FlexColumn>
+                </FormWrapper>
+            </div>
+            <ActionBar>
+                <ButtonContainer>
+                    {isLoading ? (
+                        <Button variant="ghost_icon">
+                            <CircularProgress size={32} color="primary" />
+                        </Button>
+                    ) : (
+                        <>
+                            <Button disabled={!isValid} onClick={() => onMutate(false)}>
+                                Submit
+                            </Button>
+                            <Button
+                                disabled={!isValid}
+                                onClick={() => onMutate(true)}
+                                variant="outlined"
+                            >
+                                Save
+                            </Button>
+                        </>
+                    )}
+                </ButtonContainer>
+            </ActionBar>
         </>
     );
 };
 
-export const Section = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
+export const SidesheetTitle = styled.span`
+    font-size: 28px;
 `;
 
 export const Title = styled.div`
@@ -212,16 +133,5 @@ const TitleHeader = styled.div`
     width: 100%;
     justify-content: space-between;
     align-items: center;
+    padding: 1em 0em;
 `;
-
-const LoadingPage = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 650px;
-`;
-
-function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | StidTypes) {
-    return items.filter((x) => x.type === type);
-}

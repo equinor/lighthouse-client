@@ -13,21 +13,23 @@ import {
     WorkflowLoadingHeader,
 } from './RequestDetailViewStyles';
 import { HistoryList } from '../History/HistoryList';
-import { Progress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react';
 import { HotUpload } from '../../../Attachments/HotUpload';
-import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
-import { useIsReferencesLoading } from '../../../../Hooks/React-Query/useIsReferencesLoading';
+import { useIsFetching } from 'react-query';
 
 export const SplitView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
 
-    const workflowLoading = useIsWorkflowLoading();
-    const referencesLoading = useIsReferencesLoading();
+    const isLoading = useIsFetching({ active: true }) > 0;
 
     return (
         <SplitScreen>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <BoldHeading>Request</BoldHeading>
+                <TitleSection>
+                    <BoldHeading>Request </BoldHeading>
+                    {isLoading && <CircularProgress size={16} />}
+                </TitleSection>
+
                 <SectionRow>
                     <Section>
                         <SubHeading>Phase</SubHeading>
@@ -42,7 +44,7 @@ export const SplitView = (): JSX.Element => {
                 <SectionRow>
                     <Section>
                         <SubHeading>Change category</SubHeading>
-                        <Value>{request.category}</Value>
+                        <Value>{request.changeCategory.name}</Value>
                     </Section>
 
                     <Section>
@@ -76,8 +78,9 @@ export const SplitView = (): JSX.Element => {
                     request.disciplines.length > 0 ||
                     request.tags.length > 0) && (
                         <Section>
-                            <BoldHeading>References</BoldHeading>
-                            {referencesLoading && <Progress.Dots color="primary" />}
+                            <WorkflowLoadingHeader>
+                                <BoldHeading>References</BoldHeading>
+                            </WorkflowLoadingHeader>
                             <Value>
                                 <RelatedObjects
                                     systems={request.systems}
@@ -102,7 +105,6 @@ export const SplitView = (): JSX.Element => {
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
                 <WorkflowLoadingHeader>
                     <BoldHeading>Workflow</BoldHeading>
-                    {workflowLoading && <Progress.Dots color="primary" />}
                 </WorkflowLoadingHeader>
                 <Workflow />
                 <Section>
@@ -115,6 +117,13 @@ export const SplitView = (): JSX.Element => {
         </SplitScreen>
     );
 };
+
+const TitleSection = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 1em;
+`;
 
 const SplitScreen = styled.div`
     display: flex;

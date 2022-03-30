@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button, CircularProgress, Icon, Progress } from '@equinor/eds-core-react';
@@ -14,72 +13,56 @@ import { ScopeChangeRequestEditForm } from '../Form/ScopeChangeRequestEditForm';
 import { ScopeChangeContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { IconMenu, MenuItem } from '../MenuButton';
-import { ScopeChangeErrorBanner } from './ErrorBanner';
 
 import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
 import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
-import { useScopechangeQueryKeyGen } from '../../Hooks/React-Query/useScopechangeQueryKeyGen';
-import { useScopechangeMutationKeyGen } from '../../Hooks/React-Query/useScopechangeMutationKeyGen';
+import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
+import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
+import { useQuery } from 'react-query';
 
 export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     const [editMode, setEditMode] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
 
     usePreloadCaching();
-    const { voidKey, unvoidKey } = useScopechangeMutationKeyGen(item.id);
-    const { baseKey } = useScopechangeQueryKeyGen(item.id);
-    const { data, refetch, remove, isLoading, isRefetching } = useQuery<ScopeChangeRequest>(
-        baseKey,
-        () => getScopeChangeById(item.id),
-        {
-            initialData: item,
-            refetchOnWindowFocus: false,
-            retry: false,
-            onError: () =>
-                setErrorMessage({
-                    detail: 'Failed to connect to server',
-                    title: 'Fetch failed',
-                    validationErrors: {},
-                }),
-        }
-    );
+
+    const { voidKey, unvoidKey } = scopeChangeMutationKeys(item.id);
+    const { baseKey } = scopeChangeQueryKeys(item.id);
+
+    const {
+        data: request,
+        remove,
+        isLoading,
+    } = useQuery<ScopeChangeRequest>(baseKey, () => getScopeChangeById(item.id), {
+        initialData: item,
+    });
 
     const scopeChangeAccess = useScopeChangeAccess(item.id);
 
-    const { mutateAsync: unvoidMutation } = useScopeChangeMutation(
-        item.id,
-        unvoidKey(),
-        unVoidRequest
-    );
+    const { mutate: unvoidMutation } = useScopeChangeMutation(item.id, unvoidKey, unVoidRequest);
 
-    const { mutateAsync: voidMutation } = useScopeChangeMutation(item.id, voidKey(), voidRequest);
-
-    const refetchScopeChange = useCallback(async () => {
-        await refetch();
-    }, [refetch]);
+    const { mutate: voidMutation } = useScopeChangeMutation(item.id, voidKey, voidRequest);
 
     const actionMenu: MenuItem[] = useMemo(() => {
         const actions: MenuItem[] = [];
 
         if (scopeChangeAccess.canUnVoid) {
-            if (data?.isVoided) {
+            if (request?.isVoided) {
                 actions.push({
                     label: 'Unvoid request',
-                    onClick: async () => await unvoidMutation({ requestId: item.id }),
+                    onClick: () => unvoidMutation({ requestId: item.id }),
                 });
             }
         }
         if (scopeChangeAccess.canVoid) {
-            if (!data?.isVoided) {
+            if (!request?.isVoided) {
                 actions.push({
                     label: 'Void request',
                     onClick: () =>
                         spawnConfirmationDialog(
                             'Are you sure you want to void this request',
                             'Void confirmation',
-                            async () => await voidMutation({ requestId: item.id })
+                            () => voidMutation({ requestId: item.id })
                         ),
                 });
             }
@@ -87,7 +70,7 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
 
         return actions;
     }, [
-        data,
+        request,
         item,
         scopeChangeAccess.canUnVoid,
         scopeChangeAccess.canVoid,
@@ -98,7 +81,6 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     useEffect(() => {
         if (item.id) {
             remove();
-            refetchScopeChange();
         }
     }, [item.id]);
 
@@ -115,10 +97,9 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
     }
     return (
         <Wrapper>
-            <ScopeChangeErrorBanner message={errorMessage} requestId={item.id} />
             <TitleHeader>
                 <Title>
-                    {data?.sequenceNumber}, {data?.title}
+                    {request?.sequenceNumber}, {request?.title}
                     {isLoading && <Progress.Dots color="primary" />}
                 </Title>
                 <ButtonContainer>
@@ -142,17 +123,15 @@ export const ScopeChangeSideSheet = (item: ScopeChangeRequest): JSX.Element => {
             </TitleHeader>
             <ScopeChangeContext.Provider
                 value={{
-                    isRefetching: isRefetching,
-                    setErrorMessage: (message: ServerError) => setErrorMessage(message),
-                    request: data || item,
+                    request: request || item,
                     requestAccess: scopeChangeAccess,
                 }}
             >
-                {data && (
+                {request && (
                     <>
                         {editMode ? (
                             <ScopeChangeRequestEditForm
-                                request={data}
+                                request={request}
                                 close={() => setEditMode(false)}
                             />
                         ) : (
@@ -180,7 +159,7 @@ const ButtonContainer = styled.div`
 const TitleHeader = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
 `;
 
 const Loading = styled.div`
