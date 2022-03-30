@@ -6,11 +6,11 @@ import { getDocumentById } from '../Api/STID/getDocumentById';
 import { proCoSysQueryKeys } from '../Keys/proCoSysQueryKeys';
 import { stidQueryKeys } from '../Keys/STIDQueryKeys';
 import {
-    Area,
-    CommissioningPackage,
-    Document,
+    ScopeChangeArea,
+    ScopeChangeCommissioningPackage,
+    ScopeChangeDocument,
     ScopeChangeRequest,
-    Tag,
+    ScopeChangeTag,
 } from '../Types/scopeChangeRequest';
 import { useEagerLoading } from './React-Query/useEagerLoading';
 
@@ -21,8 +21,8 @@ export function useEagerLoadingReferences(request: ScopeChangeRequest): void {
     const { document } = stidQueryKeys();
 
     /** Comm pkgs */
-    const keyFunction = (pkg: CommissioningPackage) => keys.commPkg(pkg.procosysNumber);
-    const queryFn = async (pkg: CommissioningPackage) =>
+    const keyFunction = (pkg: ScopeChangeCommissioningPackage) => keys.commPkg(pkg.procosysNumber);
+    const queryFn = async (pkg: ScopeChangeCommissioningPackage) =>
         await getCommPkgById(procosysPlantId, pkg.procosysId);
     useEagerLoading({
         items: request.commissioningPackages,
@@ -31,8 +31,9 @@ export function useEagerLoadingReferences(request: ScopeChangeRequest): void {
     });
 
     /** AREA */
-    const areaKeyFunction = (area: Area) => keys.area(area.procosysCode);
-    const getArea = async (area: Area) => await getAreaByCode(procosysPlantId, area.procosysCode);
+    const areaKeyFunction = (area: ScopeChangeArea) => keys.area(area.procosysCode);
+    const getArea = async (area: ScopeChangeArea) =>
+        await getAreaByCode(procosysPlantId, area.procosysCode);
     useEagerLoading({
         items: request.areas,
         key: areaKeyFunction,
@@ -40,8 +41,8 @@ export function useEagerLoadingReferences(request: ScopeChangeRequest): void {
     });
 
     /** TAG */
-    const tagKeyFunction = (tag: Tag) => keys.tag(tag.procosysNumber);
-    const getTag = async (tag: Tag) => await getTagById(procosysPlantId, tag.procosysId);
+    const tagKeyFunction = (tag: ScopeChangeTag) => keys.tag(tag.procosysNumber);
+    const getTag = async (tag: ScopeChangeTag) => await getTagById(procosysPlantId, tag.procosysId);
     useEagerLoading({
         items: request.tags,
         key: tagKeyFunction,
@@ -49,8 +50,10 @@ export function useEagerLoadingReferences(request: ScopeChangeRequest): void {
     });
 
     /** Documents */
-    const documentKeyFunction = (doc: Document) => document(doc.stidDocumentNumber);
-    const getDoc = async (doc: Document) => await getDocumentById(doc.stidDocumentNumber, 'JCA');
+    const documentKeyFunction = (doc: ScopeChangeDocument) => document(doc.stidDocumentNumber);
+    const getDoc = async (doc: ScopeChangeDocument) =>
+        await getDocumentById(doc.stidDocumentNumber, 'JCA');
+
     useEagerLoading({
         items: request.documents,
         key: documentKeyFunction,
