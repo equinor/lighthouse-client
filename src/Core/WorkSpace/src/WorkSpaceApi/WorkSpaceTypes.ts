@@ -4,13 +4,20 @@ import { FilterOptions } from '@equinor/filter';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import {
     PowerBiOptions,
+    PrefetchQueriesOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
     WorkflowEditorOptions,
 } from './workspaceState';
 
-export type DataSource<T> = (abortController?: AbortController) => Promise<T[]>;
+export interface DataSource<T> {
+    /** Function that returns the api call promise */
+    responseAsync: (signal?: AbortSignal) => Promise<Response>;
+    /** Function that parses the response to correct format, defaults to just parsing the raw response */
+    responseParser?: (Response: Response) => Promise<T[]>;
+}
+
 export type Validator<T> = (data: unknown[]) => T[];
 export type FactoryOptions = Omit<Factory, 'factoryId'>;
 export interface IdResolverFunc<T> {
@@ -44,6 +51,8 @@ export interface ViewOptions<T> {
 }
 
 export interface WorkSpaceApi<T> {
+    /** Use with caution, only cache small datasets */
+    registerPrefetchQueries: (queryOptions: PrefetchQueriesOptions[]) => WorkSpaceApi<T>;
     registerDataSource: (dataSource: DataSource<T>) => WorkSpaceApi<T>;
     registerIdResolver: (idResolver: IdResolverFunc<T>) => WorkSpaceApi<T>;
     registerDataCreator: (factory: FactoryOptions) => WorkSpaceApi<T>;

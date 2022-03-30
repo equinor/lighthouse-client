@@ -4,7 +4,7 @@ import { canUnVoid, canVoid } from '../Api/ScopeChange/Access/canVoid';
 import { OptionRequestResult } from '../Api/ScopeChange/Access/optionsRequestChecker';
 import { getRequestAccess } from '../Api/ScopeChange/Access/requestAccess';
 import { CacheTime } from '../Enums/cacheTimes';
-import { useScopechangeQueryKeyGen } from './React-Query/useScopechangeQueryKeyGen';
+import { scopeChangeQueryKeys } from '../Keys/scopeChangeQueryKeys';
 
 interface ScopeChangeAccess extends OptionRequestResult {
     canVoid: boolean;
@@ -22,7 +22,7 @@ export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
         canUnVoid: false,
     });
 
-    const { canUnVoidKey, canVoidKey } = useScopechangeQueryKeyGen(requestId);
+    const { canUnVoidKey, canVoidKey } = scopeChangeQueryKeys(requestId);
 
     const { data: userCanVoid } = useQuery(canVoidKey(), () => canVoid(requestId), {
         cacheTime: CacheTime.FiveMinutes,

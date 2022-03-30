@@ -1,12 +1,13 @@
-import { HttpClient } from '@equinor/http-client';
 import { ScopeChangeRequestFormModel } from '../../../Types/scopeChangeRequest';
 import { throwOnError } from '../../../Functions/throwError';
+import { httpClient } from '../../../../../Core/Client/Functions';
 
 export async function postScopeChange(
     scopeChange: ScopeChangeRequestFormModel,
-    draft: boolean,
-    client: HttpClient
+    draft: boolean
 ): Promise<string> {
+    const { scopeChange: client } = httpClient();
+
     const payload = {
         ...scopeChange,
         setAsOpen: !draft,
@@ -19,7 +20,7 @@ export async function postScopeChange(
 
     const res = await client.fetch(`api/scope-change-requests`, requestOptions);
 
-    await throwOnError(res);
+    await throwOnError(res, 'Failed to create scopechange');
 
     return await res.json();
 }

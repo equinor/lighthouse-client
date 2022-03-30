@@ -18,5 +18,12 @@ export async function getDocumentsByTag(
     const uri = `${instCode}/tag/document-refs`;
     const queryParameters = `tagNo=${encodeURIComponent(tagNo)}&noContentAs200=true`;
     const url = `${uri}?${queryParameters}`;
-    return await stidClient.fetch(url).then((response) => response.json());
+
+    const res = await stidClient.fetch(url);
+
+    if (!res.ok) {
+        throw 'Failed to get documents from STID tag';
+    }
+
+    return await res.json();
 }

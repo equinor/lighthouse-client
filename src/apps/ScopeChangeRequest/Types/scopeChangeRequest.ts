@@ -8,21 +8,27 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     setAsOpen?: boolean;
     //workflow
 }
-export type StrippedCriteria = Pick<Criteria, 'id' | 'value' | 'signedState'>;
 
 export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCN';
 
 export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
 export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
+export interface ChangeCategory {
+    id: string;
+    name: string;
+}
+
 export interface ScopeChangeBaseModel {
     id: string;
     title: string;
     description: string;
     phase: string;
-    category: string;
+    changeCategoryId: string;
+    changeCategory: ChangeCategory;
     estimatedChangeHours: number;
     originSourceId?: string;
+    hasPendingContributions: boolean;
     originSource: OriginType;
     actualChangeHours: number;
     guesstimateHours: number;
@@ -47,13 +53,14 @@ export interface LogEntry {
         email: string;
     };
     id: string;
-    description: string;
+    title: string;
     objectGuid: string;
     eventType: string;
     objectType: string;
 }
 
 export interface ScopeChangeRequest extends ScopeChangeBaseModel {
+    workflowStatus: string | null;
     createdAtUtc: string;
     createdBy: Person;
     modifiedAtUtc: string;
@@ -62,31 +69,30 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     isVoided: boolean;
     currentWorkflowStep?: WorkflowStep;
     workflowSteps: WorkflowStep[];
-    tags: Tag[];
-    commissioningPackages: CommissioningPackage[];
-    systems: System[];
+    tags: ScopeChangeTag[];
+    commissioningPackages: ScopeChangeCommissioningPackage[];
+    systems: ScopeChangeSystem[];
     attachments: Attachment[];
-    documents: Document[];
-    disciplines: Discipline[];
-    areas: Area[];
+    documents: ScopeChangeDocument[];
+    disciplines: ScopeChangeDiscipline[];
+    areas: ScopeChangeArea[];
     hasComments: boolean;
     sequenceNumber: number;
-    //workflow
 }
 
-export interface Discipline {
+export interface ScopeChangeDiscipline {
     id: string;
     procosysCode: string;
     procosysId: number;
 }
 
-export interface Area {
+export interface ScopeChangeArea {
     id: string;
     procosysCode: string;
     procosysId: number;
 }
 
-export interface Document {
+export interface ScopeChangeDocument {
     id: string;
     stidDocumentNumber: string;
     stidDocumentRevisionNumber: string;
@@ -103,19 +109,19 @@ export interface Attachment {
     fileSize: number;
 }
 
-export interface CommissioningPackage {
+export interface ScopeChangeCommissioningPackage {
     id: string;
     procosysId: number;
     procosysNumber: string;
 }
 
-export interface Tag {
+export interface ScopeChangeTag {
     id: string;
     procosysId: number;
     procosysNumber: string;
 }
 
-export interface System {
+export interface ScopeChangeSystem {
     id: string;
     procosysId: number;
     procosysCode: string;
