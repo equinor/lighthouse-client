@@ -25,10 +25,8 @@ export const Item = styled.div<MenuItemProps>`
     align-items: center;
     height: 23px;
     width: 240px;
+    font-size: 14px;
 
-    p {
-        font-size: 14px !important;
-    }
     cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
     :hover {
         background-color: ${({ disabled }) =>
