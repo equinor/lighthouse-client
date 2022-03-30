@@ -60,6 +60,7 @@ export interface LogEntry {
 }
 
 export interface ScopeChangeRequest extends ScopeChangeBaseModel {
+    workflowStatus: string | null;
     createdAtUtc: string;
     createdBy: Person;
     modifiedAtUtc: string;
