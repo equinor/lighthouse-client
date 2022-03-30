@@ -21,7 +21,12 @@ const getSubGroupItems = <T extends unknown>(
     if (includeSubGroupValue) items.push(subGroup);
 
     if (subGroup?.subGroupCount === 0 && isExpanded) {
-        items.push(...subGroup.items);
+        subGroup.items.forEach((item) => {
+            items.push({
+                item,
+                itemDepth: subGroup.depth ?? 0,
+            });
+        });
     } else if (subGroup?.subGroupCount !== 0 && !isExpanded) {
         return items;
     } else {
@@ -51,9 +56,9 @@ const getGardenColumnState = <T extends unknown>(column: DataSet<T>): ColumnStat
  * Will check if there are subgroups and iterate through them to find its items, only if the subgroup is expanded.
  * @param column A garden column
  * @param includeSubGroupValue Set to true if group value is wanted inside return value
- * @returns Array of garden items (and subgroup value if second parameter is true)
+ * @returns Array of objects with garden items and their depth (and subgroup value if second parameter is true)
  */
-export const getGardenItems = <T extends unknown>(
+export const getGardenItems = <T extends unknown = unknown>(
     column: DataSet<T> | undefined,
     includeSubGroupValue = false
 ): GardenItem<T>[] | null => {
@@ -64,7 +69,11 @@ export const getGardenItems = <T extends unknown>(
 
     if (columnState === 'No items') return null;
 
-    if (columnState === 'No subgroups') return column.items;
+    if (columnState === 'No subgroups') {
+        return column.items.map((item) => {
+            return { itemDepth: 0, item };
+        });
+    }
 
     if (columnState === 'Not Expanded') {
         return [column];

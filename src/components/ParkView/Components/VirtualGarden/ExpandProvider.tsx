@@ -1,4 +1,5 @@
 import { createContext, PropsWithChildren, useReducer } from 'react';
+import { GardenItem } from './types/gardenItem';
 import { getDescriptionWidth } from './utils';
 type Expanded = {
     isExpanded: boolean;
@@ -13,19 +14,26 @@ export enum ActionType {
     EXPAND_COLUMN,
 }
 
-type ExpandColumn<T> = {
+type ExpandColumn<T extends unknown = any> = {
     key: string;
     index: number;
-    descriptionData: T[] | null;
+    descriptionData: GardenItem<T>[] | null;
     type: ActionType.EXPAND_COLUMN;
 };
 
-type Action<T> = ExpandColumn<T>;
-const expandReducer = <T extends unknown>(state: State, action: Action<T>): State => {
+type Action = ExpandColumn;
+const expandReducer = (state: State, action: Action): State => {
     switch (action.type) {
         case ActionType.EXPAND_COLUMN: {
-            //TODO +10 because of gap/padding
-            let width = getDescriptionWidth(action.descriptionData) + 10;
+            let width = getDescriptionWidth(action.descriptionData);
+            //Edge case here: if all subgroups are collapsed, the width will be
+            // 0 since no description data. But if you expand column first and collapse
+            // all subgroups, the column wont be resized
+            if (width === 0) {
+                return {
+                    ...state,
+                };
+            }
             if (state.expandedColumns && state.expandedColumns[action.key]) {
                 const currWidths = [...state.widths];
                 currWidths[action.index] = state.expandedColumns[action.key].isExpanded
@@ -64,14 +72,14 @@ const expandReducer = <T extends unknown>(state: State, action: Action<T>): Stat
     }
 };
 
-type DispatchAction<T> = (action: Action<T>) => void;
+type DispatchAction = (action: Action) => void;
 const ExpandContext = createContext<State>({
     expandedColumns: {},
     widths: [],
 });
 
-function createExpandDispatchContext<T = unknown>() {
-    return createContext<DispatchAction<T> | undefined>(undefined);
+function createExpandDispatchContext() {
+    return createContext<DispatchAction | undefined>(undefined);
 }
 const ExpandDispatchContext = createExpandDispatchContext();
 

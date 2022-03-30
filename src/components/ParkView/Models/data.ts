@@ -10,6 +10,7 @@ export type DataSet<T> = {
     subGroupCount: number;
     status?: Status;
     description?: string | undefined;
+    depth?: number;
 };
 
 export type GardenGroups<T> = DataSet<T>[];

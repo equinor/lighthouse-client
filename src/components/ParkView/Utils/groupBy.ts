@@ -13,6 +13,7 @@ interface GroupByArgs<T, K extends keyof T> {
     isExpanded?: boolean;
     preGroupFiltering: PreGroupByFiltering<T>;
     customGroupByKeys?: Record<string, unknown>;
+    depth?: number;
 }
 
 const lookupGroup = <T>(acc: GardenGroups<T>, valueKey: string): DataSet<T> | undefined => {
@@ -28,6 +29,7 @@ export function groupBy<T, K extends keyof T>({
     isExpanded,
     preGroupFiltering,
     status,
+    depth,
 }: GroupByArgs<T, K>): GardenGroups<T> {
     const key = (keys[0] && keys[0].toString()) || undefined;
     if (!key) return [];
@@ -72,6 +74,7 @@ export function groupBy<T, K extends keyof T>({
                         subGroups: [],
                         description: groupDescriptionFunc(item, key),
                         subGroupCount: 0,
+                        depth: depth ?? 0,
                     });
                 }
             });
@@ -112,9 +115,12 @@ export function groupBy<T, K extends keyof T>({
             isExpanded: true,
             customGroupByKeys: customGroupByKeys,
             preGroupFiltering: preGroupFiltering,
+            depth: (gardengroups[index]?.depth ?? -1) + 1,
         });
+
         if (nextKeys.length > 0) {
             gardengroups[index].items = [];
+
             gardengroups[index].subGroupCount = gardengroups[index].subGroups.length;
         }
     });
@@ -168,6 +174,7 @@ function groupByArray<T>({
             count: 0,
             items: parentsContainingChildren,
             subGroupCount: 0,
+            depth: 0,
         };
     });
 
@@ -183,6 +190,7 @@ function groupByArray<T>({
             value: '(Blank)',
             items: blanks,
             subGroupCount: 0,
+            depth: 0,
         });
     }
 

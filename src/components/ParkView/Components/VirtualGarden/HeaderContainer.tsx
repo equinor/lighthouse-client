@@ -18,6 +18,7 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
     const expandColumn = useExpandDispatch();
     const handleHeaderClick = useCallback(
         (index: number, column: DataSet<T>) => {
+            debugger;
             expandColumn({
                 type: ActionType.EXPAND_COLUMN,
                 index,

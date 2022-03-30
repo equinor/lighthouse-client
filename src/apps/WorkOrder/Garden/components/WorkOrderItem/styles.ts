@@ -6,12 +6,10 @@ export const WorkOrderWrapper = styled(Item)<WorkOrderItemProps>`
     position: relative;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: 95%;
     min-width: 150px;
     box-sizing: border-box;
     white-space: nowrap;
     border: 1px solid #dcdcdc;
-    height: 85%;
     display: flex;
     align-items: center;
     justify-content: space-between;
