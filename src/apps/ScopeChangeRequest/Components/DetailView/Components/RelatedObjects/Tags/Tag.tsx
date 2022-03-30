@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ScopeChangeTag as TagInterface } from '../../../../../Types/scopeChangeRequest';
+import { Tag as TagInterface } from '../../../../../Types/scopeChangeRequest';
 import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { getTagById } from '../../../../../Api/PCS/getTagById';

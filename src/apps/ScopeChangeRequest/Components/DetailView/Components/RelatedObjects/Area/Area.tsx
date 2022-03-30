@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ScopeChangeArea as AreaInterface } from '../../../../../Types/scopeChangeRequest';
+import { Area as AreaInterface } from '../../../../../Types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
 import { getAreaByCode } from '../../../../../Api/PCS/getAreaByCode';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';

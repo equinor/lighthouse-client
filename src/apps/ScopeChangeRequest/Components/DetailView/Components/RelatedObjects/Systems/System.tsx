@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ScopeChangeSystem as SystemInterface } from '../../../../../Types/scopeChangeRequest';
+import { System as SystemInterface } from '../../../../../Types/scopeChangeRequest';
 import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
