@@ -10,15 +10,15 @@ import {
     sortPipetestChecklist,
     sortPipetests,
 } from './Functions/statusHelpers';
-import { fieldSettings } from './Components/Garden/gardenSetup';
+import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
 import { Pipetest } from './Types/pipetest';
-import { ReleaseControlGardenItem } from './Components/Garden/ReleaseControlGardenItem';
 import { checklistTagFunc, createChecklistSteps, getHTList } from './Functions/tableHelpers';
 import { getTimePeriod } from './Components/Garden/gardenFunctions';
 import { PipetestStep } from './Types/drcEnums';
 import { DateTime } from 'luxon';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
+import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -159,16 +159,18 @@ export function setup(appApi: ClientApi): void {
     });
 
     request.registerGardenOptions({
-        gardenKey: 'step',
+        gardenKey: 'dueAtDate' as any,
         itemKey: 'name',
-        type: 'normal',
+        type: 'virtual',
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
             customHeaderView: ReleaseControlGardenHeader,
         },
         //Add highlightColumn when it is fixed
-        // highlightColumn: getHighlightedColumn,
+        highlightColumn: getHighlightedColumn,
+        itemWidth: () => 200,
+        rowHeight: 22,
     });
 
     request.registerStatusItems(statusBarConfig);
