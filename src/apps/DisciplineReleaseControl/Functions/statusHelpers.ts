@@ -146,8 +146,13 @@ export function isCheckListStepsInRightOrder(
     let rightOrder = true;
 
     checkLists = checkLists.filter((x) => getChecklistSortValue(x) > checkListStep);
+    //Filter out markings if B-test is current step (they can be done at the same time)
+    if (checkListStep === PipetestStatusOrder.HtRetest) {
+        checkLists = checkLists.filter((x) => x.tagNo.substring(0, 2) !== CheckListStepTag.Marking);
+    }
     const checkInsulationBoxes =
         PipetestStatusOrder.BoxInsulation > checkListStep && insulationBoxes.length !== 0;
+
     const groupedArrays = checkLists.reduce(function (r, a) {
         r[a.formularType] = r[a.formularType] || [];
         r[a.formularType].push(a);
