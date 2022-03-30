@@ -17,6 +17,7 @@ import { CircularProgress } from '@equinor/eds-core-react';
 import { HotUpload } from '../../../Attachments/HotUpload';
 import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
 import { useIsReferencesLoading } from '../../../../Hooks/React-Query/useIsReferencesLoading';
+import { Workflow2 } from './Workflowv2';
 
 export const SplitView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
@@ -102,11 +103,13 @@ export const SplitView = (): JSX.Element => {
                 </Section>
             </div>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <WorkflowLoadingHeader>
+                {/* <WorkflowLoadingHeader>
                     <BoldHeading>Workflow</BoldHeading>
                     {workflowLoading && <CircularProgress size={16} />}
                 </WorkflowLoadingHeader>
-                <Workflow />
+                <Workflow /> */}
+
+                <Workflow2 />
                 <Section>
                     <BoldHeading>Log</BoldHeading>
                     <Value>
