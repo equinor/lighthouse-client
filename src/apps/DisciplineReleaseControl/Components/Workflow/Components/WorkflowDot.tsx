@@ -150,5 +150,5 @@ export const StepCircle = styled.div<StepCircleProps>`
     text-align: center;
     background: ${(p) => p.color};
     outline: ${(p) => (!p.active ? '1px dashed #DCDCDC' : null)};
-    cursor: pointer;
+    cursor: ${(p) => (!p.active ? 'not-allowed' : 'pointer')};
 `;
