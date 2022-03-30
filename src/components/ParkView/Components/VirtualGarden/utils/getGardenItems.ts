@@ -21,7 +21,12 @@ const getSubGroupItems = <T extends unknown>(
     if (includeSubGroupValue) items.push(subGroup);
 
     if (subGroup?.subGroupCount === 0 && isExpanded) {
-        items.push(...subGroup.items);
+        subGroup.items.forEach((item) => {
+            items.push({
+                item,
+                itemDepth: subGroup.depth,
+            });
+        });
     } else if (subGroup?.subGroupCount !== 0 && !isExpanded) {
         return items;
     } else {
@@ -64,7 +69,11 @@ export const getGardenItems = <T extends unknown>(
 
     if (columnState === 'No items') return null;
 
-    if (columnState === 'No subgroups') return column.items;
+    if (columnState === 'No subgroups') {
+        return column.items.map((item) => {
+            return { itemDepth: 0, item };
+        });
+    }
 
     if (columnState === 'Not Expanded') {
         return [column];

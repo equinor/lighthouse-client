@@ -67,7 +67,13 @@ const getWorkOrderStatuses = (
         status,
     };
 };
-const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemView<WorkOrder>) => {
+const WorkOrderItem = ({
+    data,
+    itemKey,
+    onClick,
+    columnExpanded,
+    depth,
+}: CustomItemView<WorkOrder>) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const anchorRef = useRef<HTMLDivElement>(null);
     const { groupByKeys, gardenKey } = useParkViewContext<WorkOrder>();
@@ -85,6 +91,8 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
         () => getWorkOrderStatuses(data, gardenKey, groupByKeys),
         [data, gardenKey, groupByKeys]
     );
+
+    const width = useMemo(() => (depth ? 100 - depth * 3 : 100), [depth]);
     return (
         <>
             <WorkOrderWrapper
@@ -95,6 +103,7 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
                 onMouseOver={() => setIsOpen(true)}
                 onMouseLeave={() => setIsOpen(false)}
                 onClick={onClick}
+                style={{ width: `${width}%` }}
             >
                 {/* <SizeIcons size={size} color={textColor} />*/}
                 {/* {data.holdBy && <FlagIcon color={textColor} />} */}
