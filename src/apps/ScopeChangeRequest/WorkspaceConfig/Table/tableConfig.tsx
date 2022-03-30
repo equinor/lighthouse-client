@@ -6,6 +6,8 @@ import { WorkflowCompact } from './WorkflowCompact';
 import { getLastSigned } from './getLastSigned';
 import { Criteria, ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { Fragment } from 'react';
+import styled from 'styled-components';
+import { DateTime } from 'luxon';
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',
@@ -78,7 +80,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'actualChangeHours',
         'changeCategory',
         'originSource',
-        'lastModified',
+        'modifiedAtUtc',
         'systems',
         'areas',
         'commissioningPackages',
@@ -128,20 +130,80 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             },
         },
     ],
+
     customCellView: [
         {
-            key: 'modifiedAtUtc',
-            type: 'RelativeDate',
-        },
-        {
-            key: 'guesstimateHours',
-            type: 'Number',
+            key: 'createdAtUtc',
+            type: {
+                Cell: ({ cell }: any) => {
+                    const request: ScopeChangeRequest = cell.value.content;
+                    return (
+                        <>
+                            {request.createdAtUtc
+                                ? DateTime.fromJSDate(new Date(request.createdAtUtc)).toRelative()
+                                : '-'}
+                        </>
+                    );
+                },
+            },
         },
 
         {
-            key: 'createdAtUtc',
-            type: 'Date',
+            key: 'modifiedAtUtc',
+            type: {
+                Cell: ({ cell }: any) => {
+                    const request: ScopeChangeRequest = cell.value.content;
+                    return (
+                        <>
+                            {request.modifiedAtUtc
+                                ? DateTime.fromJSDate(new Date(request.modifiedAtUtc)).toRelative()
+                                : '-'}
+                        </>
+                    );
+                },
+            },
         },
+
+        {
+            key: 'guesstimateHours',
+            type: {
+                Cell: ({ cell }: any) => {
+                    const request: ScopeChangeRequest = cell.value.content;
+                    return (
+                        <Container>
+                            {!request.guesstimateHours ? '-' : request.guesstimateHours}
+                        </Container>
+                    );
+                },
+            },
+        },
+        {
+            key: 'actualChangeHours',
+            type: {
+                Cell: ({ cell }: any) => {
+                    const request: ScopeChangeRequest = cell.value.content;
+                    return (
+                        <Container>
+                            {!request.actualChangeHours ? '-' : request.actualChangeHours}
+                        </Container>
+                    );
+                },
+            },
+        },
+        {
+            key: 'estimatedChangeHours',
+            type: {
+                Cell: ({ cell }: any) => {
+                    const request: ScopeChangeRequest = cell.value.content;
+                    return (
+                        <Container>
+                            {!request.estimatedChangeHours ? '-' : request.estimatedChangeHours}
+                        </Container>
+                    );
+                },
+            },
+        },
+
         {
             key: 'changeCategory',
             type: {
@@ -182,27 +244,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             },
         },
         {
-            key: 'estimatedChangeHours',
-            type: {
-                Cell: ({ cell }: any) => {
-                    const request: ScopeChangeRequest = cell.value.content;
-                    return (
-                        <>{request.estimatedChangeHours > 0 ? request.estimatedChangeHours : ''}</>
-                    );
-                },
-            },
-        },
-        {
-            key: 'actualChangeHours',
-            type: {
-                Cell: ({ cell }: any) => {
-                    const request: ScopeChangeRequest = cell.value.content;
-                    return <>{request.actualChangeHours > 0 ? request.actualChangeHours : ''}</>;
-                },
-            },
-        },
-
-        {
             key: 'hasComments',
             type: {
                 Cell: ({ cell }: any) => {
@@ -239,13 +280,17 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             key: 'currentWorkflowStep',
             type: {
                 Cell: ({ cell }: any) => {
+                    const request: ScopeChangeRequest = cell.value.content;
+
+                    if (!request.currentWorkflowStep) {
+                        return '-';
+                    }
+
                     return (
                         <>
-                            {cell.value.content.currentWorkflowStep?.criterias
-                                .filter((x: Criteria) => x.signedState === null)
-                                .map((x: Criteria) => {
-                                    return <Fragment key={x.id}>{x.valueDescription}</Fragment>;
-                                })}
+                            {request.currentWorkflowStep?.criterias.map((x: Criteria) => {
+                                return <Fragment key={x.id}>{x.valueDescription}</Fragment>;
+                            })}
                         </>
                     );
                 },
@@ -253,3 +298,8 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         },
     ],
 };
+
+const Container = styled.div`
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+`;
