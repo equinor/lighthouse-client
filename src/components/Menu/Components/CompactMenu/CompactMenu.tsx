@@ -8,9 +8,10 @@ import { Favorites } from '../Favourites/Favourites';
 import { GroupItem } from '../GroupeItem/GroupeItem';
 import { MenuItem } from '../MenuItem/MenuItem';
 import {
-    BackButton,
+    BackButtonWrapper,
     IconWrapper,
     MenuGroup,
+    MenuGroupHeading,
     MenuWrapper,
     RightButton,
     Row
@@ -50,12 +51,12 @@ export const CompactMenu = (): JSX.Element => {
                     </MenuGroup>
                 ) : (
                     <>
-                        <BackButton onClick={() => setActiveGroupe('')}>
-                            <IconWrapper>
+                        <BackButtonWrapper>
+                            <IconWrapper onClick={() => setActiveGroupe('')}>
                                 <Icon name="arrow_back" />
                             </IconWrapper>
-                            <div>{appGroups[activeGroupe].name}</div>
-                        </BackButton>
+                            <MenuGroupHeading>{appGroups[activeGroupe].name}</MenuGroupHeading>
+                        </BackButtonWrapper>
                         <MenuGroup>
                             {GroupedMenu[activeGroupe].map((manifest) => (
                                 <MenuItem
