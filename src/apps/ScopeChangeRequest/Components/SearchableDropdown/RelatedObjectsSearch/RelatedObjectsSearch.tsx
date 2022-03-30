@@ -1,5 +1,4 @@
-import { Icon, SingleSelect } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+import { SingleSelect } from '@equinor/eds-core-react';
 import { useMemo, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
@@ -17,14 +16,11 @@ import {
     SearchContainer,
     SelectContainer,
     Wrapper,
-    ListItem,
     Title,
     TitleBar,
-    SelectedItemLabel,
 } from './RelatedObjectsStyles';
 import { useReferencesSearch } from '../../../Hooks/Search/useReferencesSearch';
-import { CommPkgIcon } from '../../DetailView/Components/RelatedObjects/CommPkg/commPkgIcon';
-import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
+import { SelectedItem } from './SelectedItem';
 
 interface RelatedObjectsSearchProps {
     references: TypedSelectOption[];
@@ -166,23 +162,13 @@ export const RelatedObjectsSearch = ({
                 <Column>
                     {selectedReferences && selectedReferences.length > 0 && (
                         <>
-                            {selectedReferences.map((selectedReference) => {
-                                const TypeIcon = () => getIcon(selectedReference);
-                                return (
-                                    <ListItem key={selectedReference.value}>
-                                        <TypeIcon />
-                                        <SelectedItemLabel>
-                                            {selectedReference.label}
-                                        </SelectedItemLabel>
-                                        <ClickableIcon
-                                            name="clear"
-                                            onClick={() => {
-                                                removeRelatedObject(selectedReference.value);
-                                            }}
-                                        />
-                                    </ListItem>
-                                );
-                            })}
+                            {selectedReferences.map((selectedReference) => (
+                                <SelectedItem
+                                    key={selectedReference.value}
+                                    item={selectedReference}
+                                    handleRemove={removeRelatedObject}
+                                />
+                            ))}
                         </>
                     )}
                 </Column>
@@ -190,30 +176,3 @@ export const RelatedObjectsSearch = ({
         </Wrapper>
     );
 };
-
-function getIcon(x: TypedSelectOption): JSX.Element | null {
-    switch (x.type) {
-        case 'area':
-            return <Icon name="pin_drop" color={tokens.colors.interactive.primary__resting.hex} />;
-
-        case 'discipline':
-            return <Icon name="school" color={tokens.colors.interactive.primary__resting.hex} />;
-
-        case 'document':
-            return <Icon name="file_copy" color={tokens.colors.interactive.primary__resting.hex} />;
-
-        case 'tag':
-            return <Icon name="tag" color={tokens.colors.interactive.primary__resting.hex} />;
-
-        case 'commpkg':
-            return <CommPkgIcon />;
-
-        default:
-            return (
-                <Icon
-                    name="placeholder_icon"
-                    color={tokens.colors.interactive.primary__resting.hex}
-                />
-            );
-    }
-}

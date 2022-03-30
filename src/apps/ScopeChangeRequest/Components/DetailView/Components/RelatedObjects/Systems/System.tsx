@@ -46,4 +46,7 @@ const Link = styled.a`
     font-size: 16px;
     text-decoration: underline;
     color: ${tokens.colors.interactive.primary__resting.hex};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;

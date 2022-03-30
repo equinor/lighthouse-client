@@ -1,4 +1,3 @@
-import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const SelectContainer = styled.div`
@@ -33,21 +32,6 @@ export const Wrapper = styled.div`
 export const ErrorWrapper = styled.div`
     font-size: 12px;
     color: red;
-`;
-
-export const ListItem = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 24fr 1fr;
-    gap: 1em;
-    text-overflow: ellipsis;
-    color: ${tokens.colors.interactive.primary__resting.hex};
-    height: 52px;
-`;
-
-export const SelectedItemLabel = styled.div`
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 20px;
 `;
 
 export const Title = styled.div`
