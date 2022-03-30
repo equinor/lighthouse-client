@@ -3,49 +3,50 @@ import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
+
 import { IconMenu } from '../../apps/ScopeChangeRequest/Components/MenuButton';
 import { NotificationCardNew } from '../../Core/Notifications/Components/NotificationCard';
 import { useNotificationCenter } from '../../Core/Notifications/Hooks/useNotificationCenter';
 import { useNotificationQueryKeys } from '../../Core/Notifications/Hooks/useNotificationQueryKeys';
 import { Notification } from '../../Core/Notifications/Types/Notification';
-export function NotificationsTab() {
+
+export function NotificationsTab(): JSX.Element {
     const { unreadKey: unread } = useNotificationQueryKeys();
     const queryClient = useQueryClient();
     const onNotification = () => queryClient.invalidateQueries(unread);
-    const { readNotificationCards, unreadNotificationCards } =
-        useNotificationCenter(onNotification);
+    const { unreadNotificationCards } = useNotificationCenter(onNotification);
 
-    const origins = useMemo(
+    const applications = useMemo(
         () =>
-            readNotificationCards
-                .concat(unreadNotificationCards)
-                .map((x) => x.appKey)
+            unreadNotificationCards
+                .filter(({ createdByApplication }) => createdByApplication?.title !== null)
+                .map((x) => x.createdByApplication?.title)
                 .filter((v, i, a) => v && a.indexOf(v) === i),
-        [readNotificationCards, unreadNotificationCards]
+        [unreadNotificationCards]
     );
-    const [activeNotifications, setActiveNotifications] = useState<string[]>(origins);
+    const [activeNotifications, setActiveNotifications] = useState<string[]>(applications);
 
-    const handleClick = (appkey: string) =>
+    const handleClick = (application: string) =>
         setActiveNotifications((prev) =>
-            prev.includes(appkey) ? prev.filter((x) => x !== appkey) : [...prev, appkey]
+            prev.includes(application)
+                ? prev.filter((x) => x !== application)
+                : [...prev, application]
         );
 
     const [isGroupedBySource, setIsGroupedBySource] = useState(true);
 
     const isActive = (key: string) => activeNotifications.includes(key);
-    const firstLetterUppercase = (value: string) => [value[0].toUpperCase(), ...value.slice(0 + 1)];
 
-    function sortAndFilterList(list: Notification[]) {
-        return list
+    const sortAndFilterList = (list: Notification[]) =>
+        list
             .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
-            .filter((x) => activeNotifications.includes(x.appKey));
-    }
+            .filter((x) => activeNotifications.includes(x.createdByApplication?.title));
 
     return (
         <>
             <Notifications>
                 <ActiveOrigins>
-                    {origins.map((x) => (
+                    {applications.map((x) => (
                         <Chip
                             style={{
                                 backgroundColor: `${isActive(x)
@@ -56,7 +57,7 @@ export function NotificationsTab() {
                             onClick={() => handleClick(x)}
                             key={x}
                         >
-                            {firstLetterUppercase(x)}
+                            {x}
                         </Chip>
                     ))}
                 </ActiveOrigins>
@@ -74,13 +75,16 @@ export function NotificationsTab() {
 
                 {isGroupedBySource ? (
                     <Accordion>
-                        {activeNotifications.map((originName) => (
-                            <Accordion.Item key={originName}>
+                        {activeNotifications.map((applicationTitle) => (
+                            <Accordion.Item key={applicationTitle}>
                                 <Accordion.Header chevronPosition="right">
-                                    {originName}
+                                    {applicationTitle}
                                 </Accordion.Header>
                                 {sortAndFilterList(unreadNotificationCards)
-                                    .filter(({ appKey }) => originName === appKey)
+                                    .filter(
+                                        ({ createdByApplication }) =>
+                                            applicationTitle === createdByApplication?.title
+                                    )
                                     .map((notification) => (
                                         <Accordion.Panel key={notification.id}>
                                             <NotificationCardNew
@@ -95,10 +99,6 @@ export function NotificationsTab() {
                 ) : (
                     <NotificationsList>
                         {sortAndFilterList(unreadNotificationCards).map((x) => (
-                            <NotificationCardNew key={x.id} notification={x} />
-                        ))}
-
-                        {sortAndFilterList(readNotificationCards).map((x) => (
                             <NotificationCardNew key={x.id} notification={x} />
                         ))}
                     </NotificationsList>

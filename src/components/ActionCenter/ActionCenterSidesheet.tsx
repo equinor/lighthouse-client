@@ -1,7 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { AssignmentsTab } from './AssignmentsTab';
 import { NotificationsTab } from './NotificationsTab';
 
 export function ActionCenterSidesheet(): JSX.Element {
@@ -15,15 +14,15 @@ export function ActionCenterSidesheet(): JSX.Element {
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <TabsList>
                         <Tabs.Tab>Notifications </Tabs.Tab>
-                        <Tabs.Tab>Assignments </Tabs.Tab>
+                        {/* <Tabs.Tab>Assignments </Tabs.Tab> */}
                     </TabsList>
                     <Tabs.Panels>
                         <Tabs.Panel>
                             <NotificationsTab />
                         </Tabs.Panel>
-                        <Tabs.Panel>
+                        {/* <Tabs.Panel>
                             <AssignmentsTab />
-                        </Tabs.Panel>
+                        </Tabs.Panel> */}
                     </Tabs.Panels>
                 </Tabs>
             </Wrapper>
