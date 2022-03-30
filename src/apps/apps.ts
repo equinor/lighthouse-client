@@ -4,7 +4,6 @@ import { CollaborationIcon } from '../icons/Collaboration icon';
 import { ConstructionManagementIcon } from '../icons/construction management icon';
 import { EngineeringManagementIcon } from '../icons/Engineering management icon';
 import { HomeIcon } from '../icons/Home icon';
-import { ProgressAndStatusIcon } from '../icons/Progress and status icon';
 import { ProjectInformationIcon } from '../icons/ProjectInformationIcon';
 import { QualityIcon } from '../icons/Quality icon';
 import { QueriesAndRequests } from '../icons/Queries and requests icon';
@@ -12,8 +11,6 @@ import { ReportIcon } from '../icons/Report icon';
 import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { PortalModelViewer } from './3DModel/src';
-import { setup as commissioningSetup } from './Commissioning';
-import { setup as constructionSetup } from './Construction';
 import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
 import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
@@ -29,6 +26,7 @@ import {
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
 import { setup as WorkOrderSetup } from './WorkOrder';
+import { setup as workPreparationSetup } from './workPreparation';
 
 export function getApps(): AppManifest[] {
     return apps;
@@ -42,7 +40,6 @@ export enum Apps {
     AssetData = 'AssetData',
     Top = 'Top',
     Collaboration = 'Collaboration',
-    Progress = 'Progress',
     ConstructionAndCommissioning = 'ConstructionAndCommissioning',
     Engineering = 'Engineering',
     ProjectInformation = 'ProjectInformation',
@@ -68,11 +65,6 @@ export const appGroups: Record<Apps, AppGroupe> = {
         name: 'Collaboration',
         icon: CollaborationIcon,
         columnId: 4,
-    },
-    Progress: {
-        name: 'Progress',
-        icon: ProgressAndStatusIcon,
-        columnId: 1,
     },
     ConstructionAndCommissioning: {
         name: 'Construction and Commissioning',
@@ -200,70 +192,6 @@ export const apps: AppManifest[] = [
         appEnv: 'prod',
         tags: ['Fusion', 'Link'],
     },
-    // Progress
-    {
-        title: 'Overview',
-        shortName: 'overview',
-        color: '#0364B8',
-        groupe: Apps.Progress,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'PageView',
-        },
-    },
-    {
-        title: 'Engineering',
-        shortName: 'engineering',
-        color: '#0364B8',
-        groupe: Apps.Progress,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'PageView',
-        },
-    },
-    {
-        title: 'Construction',
-        shortName: 'construction',
-        color: '#0364B8',
-        groupe: Apps.Progress,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'PageView',
-            setup: constructionSetup,
-        },
-
-        appEnv: 'prod',
-    },
-    {
-        title: 'Commissioning',
-        shortName: 'commissioning',
-        color: '#0364B8',
-        groupe: Apps.Progress,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'PageView',
-            setup: commissioningSetup,
-        },
-
-        appEnv: 'dev',
-    },
-    {
-        title: 'Installation',
-        shortName: 'inst',
-        color: '#0364B8',
-        groupe: Apps.Progress,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'PowerBIViewer',
-            setup: installationSetup,
-        },
-        appEnv: 'prod',
-    },
     // Engineering
     {
         title: 'Control object status',
@@ -311,36 +239,12 @@ export const apps: AppManifest[] = [
     },
     // Construction And Commissioning
     {
-        title: 'Work order',
-        shortName: 'work-order',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        app: {
-            appType: 'Workspace',
-            setup: WorkOrderSetup,
-        },
-        tags: ['Job'],
-        appEnv: 'dev',
-    },
-    {
-        title: 'Project explorer',
-        shortName: 'project-explorer',
+        title: 'Project Browser',
+        shortName: 'project-browser',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
-    },
-    {
-        title: 'Checklist',
-        shortName: 'checklist',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'Workspace',
-        },
     },
     {
         title: 'Handover',
@@ -356,6 +260,57 @@ export const apps: AppManifest[] = [
         appEnv: 'dev',
     },
     {
+        title: 'Work order',
+        shortName: 'work-order',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        app: {
+            appType: 'Workspace',
+            setup: WorkOrderSetup,
+        },
+        tags: ['Job'],
+        appEnv: 'dev',
+    },
+    {
+        // Ny Power Bi
+        title: 'Work preparation',
+        shortName: 'work-preparation',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: workPreparationSetup,
+        },
+        appEnv: 'prod',
+    },
+    {
+        title: 'Installation',
+        shortName: 'installation',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: installationSetup,
+        },
+        appEnv: 'prod',
+    },
+    {
+        title: 'Mechanical Completion',
+        shortName: 'mc',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: [],
+        app: {
+            appType: 'Workspace',
+        },
+    },
+    {
         title: 'Piping and Heat trace',
         shortName: 'piping-and-ht',
         color: '#0364B8',
@@ -368,6 +323,31 @@ export const apps: AppManifest[] = [
         },
         appEnv: 'dev',
     },
+    {
+        title: 'Preservation',
+        shortName: 'preservation',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        uri: (isProduction: boolean) =>
+            `https://${
+                isProduction ? 'procosys' : 'procosystest'
+            }.equinor.com/JOHAN_CASTBERG/Preservation`,
+        tags: ['link', 'procosys'],
+        appEnv: 'prod',
+    },
+    {
+        title: 'Checklist',
+        shortName: 'checklist',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: [],
+        app: {
+            appType: 'Workspace',
+        },
+    },
+
     {
         title: 'Loop',
         shortName: 'loop',
@@ -389,19 +369,6 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'Workspace',
         },
-    },
-    {
-        title: 'Preservation',
-        shortName: 'preservation',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        uri: (isProduction: boolean) =>
-            `https://${
-                isProduction ? 'procosys' : 'procosystest'
-            }.equinor.com/JOHAN_CASTBERG/Preservation`,
-        tags: ['link', 'procosys'],
-        appEnv: 'prod',
     },
     {
         title: 'Punch',
@@ -428,19 +395,6 @@ export const apps: AppManifest[] = [
         appEnv: 'dev',
     },
     {
-        title: 'Commisisoning procedure',
-        shortName: 'commisisoning-procedure',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        uri: (isProduction: boolean) =>
-            `https://${
-                isProduction ? 'fusion.equinor.com' : 'pro-s-portal-ci.azurewebsites.net'
-            }/apps/dcp`,
-        tags: ['link', 'fusion'],
-        appEnv: 'prod',
-    },
-    {
         title: 'Invitation for punch out ',
         shortName: 'ipo',
         color: '#0364B8',
@@ -453,6 +407,20 @@ export const apps: AppManifest[] = [
         tags: ['link', 'procosys'],
         appEnv: 'prod',
     },
+    {
+        title: 'Commisisoning procedure',
+        shortName: 'commisisoning-procedure',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        uri: (isProduction: boolean) =>
+            `https://${
+                isProduction ? 'fusion.equinor.com' : 'pro-s-portal-ci.azurewebsites.net'
+            }/apps/dcp`,
+        tags: ['link', 'fusion'],
+        appEnv: 'prod',
+    },
+
     // Queries and requests
     {
         title: 'ATS request',
