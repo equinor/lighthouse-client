@@ -165,12 +165,12 @@ export function setup(appApi: ClientApi): void {
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
-            customHeaderView: ReleaseControlGardenHeader,
+            // customHeaderView: ReleaseControlGardenHeader,
         },
         //Add highlightColumn when it is fixed
         highlightColumn: getHighlightedColumn,
-        itemWidth: () => 200,
-        rowHeight: 22,
+        itemWidth: () => 150,
+        rowHeight: 25,
     });
 
     request.registerStatusItems(statusBarConfig);
