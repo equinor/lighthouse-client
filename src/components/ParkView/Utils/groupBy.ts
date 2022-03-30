@@ -49,14 +49,14 @@ export function groupBy<T, K extends keyof T>({
             isExpanded: isExpanded,
         });
     } else {
-        gardengroups = preGroupFiltering(arr, key).reduce((acc, item, index) => {
+        gardengroups = preGroupFiltering(arr, key).reduce((acc, item) => {
             const itemKeys: string[] | string = fieldSetting?.getKey
                 ? fieldSetting.getKey(item, fieldSetting?.key || key, customGroupByKeys)
                 : item[key];
 
             const itemKeysArray = Array.isArray(itemKeys) ? itemKeys : [itemKeys];
 
-            itemKeysArray.forEach((valueKey: string, index2) => {
+            itemKeysArray.forEach((valueKey: string) => {
                 if (!valueKey) valueKey = '(Blank)';
 
                 const group = lookupGroup(acc, valueKey);
@@ -87,7 +87,7 @@ export function groupBy<T, K extends keyof T>({
 
     const nextKeys = keys.slice(1);
 
-    gardengroups.forEach((gardenGroup, index) => {
+    gardengroups.forEach((_, index) => {
         {
             if (status) {
                 if (status.statusGroupFunc) {
