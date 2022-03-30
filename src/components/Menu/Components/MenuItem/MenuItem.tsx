@@ -1,4 +1,4 @@
-import { isAppActive } from '@equinor/portal-client';
+import { isAppActive, isProduction } from '@equinor/portal-client';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppManifest } from '../../../../Core/Client/Types';
@@ -28,7 +28,9 @@ export const MenuItem = ({ manifest, groupId, onClick }: MenuItemProps): JSX.Ele
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                manifest.uri ? window.open(manifest.uri) : navigate(getURL(manifest, groupId));
+                manifest.uri
+                    ? window.open(manifest.uri(isProduction()))
+                    : navigate(getURL(manifest, groupId));
                 onClick && onClick();
             }}
             onMouseEnter={() => setShowIcon(true)}
