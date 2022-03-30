@@ -190,7 +190,7 @@ export function WorkflowStepper({
 }: WorkflowStepperProps): JSX.Element {
     return (
         <Wrapper>
-            <LeftSection>
+            <Inner>
                 <Icons>
                     {icon}
                     {line}
@@ -199,8 +199,8 @@ export function WorkflowStepper({
                     <span>{text}</span>
                     <span>{child}</span>
                 </Text>
-            </LeftSection>
-            <Buttons>{actions}</Buttons>
+                <Buttons>{actions}</Buttons>
+            </Inner>
         </Wrapper>
     );
 }
@@ -242,9 +242,9 @@ const Text = styled.div`
     flex-direction: column;
 `;
 
-const LeftSection = styled.div`
+const Inner = styled.div`
     display: flex;
     flex-direction: row;
     gap: 1em;
-    align-items: center;
+    align-items: flex-start;
 `;
