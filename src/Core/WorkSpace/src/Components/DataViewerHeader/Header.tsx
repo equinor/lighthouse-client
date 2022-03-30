@@ -1,5 +1,5 @@
 import { useFactory } from '@equinor/DataFactory';
-import { Tabs } from '@equinor/eds-core-react';
+import { CircularProgress, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilteredData } from '@equinor/filter';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
@@ -89,7 +89,11 @@ export const CompletionViewHeader = ({
                     }
                     onClick={() => dataApi.refetch()}
                 >
-                    <ClickableIcon size={32} name="refresh" />
+                    {dataApi.isFetching ? (
+                        <CircularProgress size={24} />
+                    ) : (
+                        <ClickableIcon size={24} name="refresh" />
+                    )}
                 </TabButton>
                 <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
                     <Icon name={'filter_alt'} />
