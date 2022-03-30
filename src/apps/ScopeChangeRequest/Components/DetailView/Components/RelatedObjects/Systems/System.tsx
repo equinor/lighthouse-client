@@ -1,25 +1,23 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { System as SystemInterface } from '../../../../../Types/scopeChangeRequest';
-import { isProduction } from '../../../../../../../Core/Client/';
+import { ScopeChangeSystem as SystemInterface } from '../../../../../Types/scopeChangeRequest';
+import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
 import { getSystems } from '../../../../../Api/PCS/getSystems';
 import { useEffect, useState } from 'react';
 import { System as PCSSystem } from '../../../../../Types/ProCoSys/system';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
-import { useScopechangeQueryKeyGen } from '../../../../../Hooks/React-Query/useScopechangeQueryKeyGen';
-import { useScopeChangeContext } from '../../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
 
 interface SystemProps {
     system: SystemInterface;
 }
 
 export const System = ({ system }: SystemProps): JSX.Element => {
-    const { request } = useScopeChangeContext();
-    const { referencesKeys } = useScopechangeQueryKeyGen(request.id);
-
-    const { data } = useInfiniteCachedQuery(referencesKeys.systems, getSystems);
+    const { systems: systemsKey } = proCoSysQueryKeys();
+    const { procosysPlantId } = useFacility();
+    const { data } = useInfiniteCachedQuery(systemsKey, () => getSystems(procosysPlantId));
 
     const [foundSystem, setFoundSystem] = useState<PCSSystem | null>();
 
@@ -34,12 +32,11 @@ export const System = ({ system }: SystemProps): JSX.Element => {
         <Wrapper key={system.id}>
             <Icon name="placeholder_icon" />
             <Link
-                href={`https://${
-                    isProduction() ? 'procosys' : 'procosystest'
-                }.equinor.com/JOHAN_CASTBERG/Completion#System|${system.procosysId}`}
+                href={`https://${isProduction() ? 'procosys' : 'procosystest'
+                    }.equinor.com/JOHAN_CASTBERG/Completion#System|${system.procosysId}`}
                 target="_blank"
             >
-                SYS_{system.procosysCode} - {foundSystem?.Description}
+                {system.procosysCode} - {foundSystem?.Description}
             </Link>
         </Wrapper>
     );

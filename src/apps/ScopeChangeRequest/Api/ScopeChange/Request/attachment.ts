@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { ServerError } from '../../../Types/ScopeChange/ServerError';
+import { throwOnError } from '../../../Functions/throwError';
 
 interface AttachmentParams {
     requestId: string;
@@ -10,15 +10,13 @@ export const uploadAttachment = async ({ file, requestId }: AttachmentParams): P
     const formData = new FormData();
     const { scopeChange } = httpClient();
     formData.set('File', file, file.name);
+
     const res = await scopeChange.uploadFile(
         `api/scope-change-requests/${requestId}/attachments`,
         formData
     );
 
-    if (!res.ok) {
-        const error: ServerError = await res.json();
-        throw error;
-    }
+    await throwOnError(res, 'Failed to upload attachment');
 };
 
 interface DeleteAttachmentParams {
@@ -35,10 +33,12 @@ export const deleteAttachment = async ({
         method: 'DELETE',
     };
 
-    await scopeChange.fetch(
+    const res = await scopeChange.fetch(
         `api/scope-change-requests/${requestId}/attachments/${attachmentId}`,
         requestOptions
     );
+
+    await throwOnError(res, 'Failed to delete attachment');
 };
 
 export const getAttachment = async (requestId: string, attachmentId: string): Promise<void> => {

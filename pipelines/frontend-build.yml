@@ -27,6 +27,7 @@ stages:
     displayName: 'Docker - Build and Push'
     variables:
       envName: 'build'
+      envLabel: 'non-prod'
       envRg: '${{ variables.envRgName }}'
       serviceConnection: '${{ variables.nonProdServiceConnection }}'
       envGroupName: '$(globalPrefix)-$(fullAppName)-${{ variables.envName }}'
@@ -40,10 +41,14 @@ stages:
           condition: and(always(), eq(variables['Build.Reason'], 'PullRequest'))
           deploymentName: 'docker_build'
           envGroup: '${{ variables.envGroupName }}'
+          envLabel: '${{ variables.envLabel }}'
           buildCommand: build
           dockerfilePath: '${{ variables.dockerfilePath }}'
           repository: '${{ variables.repositoryName }}'
           dockerRegistryServiceConnection: '${{ variables.dockerRegistryServiceConnectionName }}'
+          kvName: '${{ variables.kvSharedName }}'
+          kvRgName: '${{ variables.kvSharedRgName }}'
+          serviceConnection: '${{ variables.serviceConnection }}'
 
       # Docker Build and Push
       - template: /src/resources/web-client/jobs/client-dockerbuild.yml@templates
@@ -52,10 +57,14 @@ stages:
           condition: and(always(), ne(variables['Build.Reason'], 'PullRequest'))
           deploymentName: 'docker_build_push'
           envGroup: '${{ variables.envGroupName }}'
+          envLabel: '${{ variables.envLabel }}'
           buildCommand: buildAndPush
           dockerfilePath: '${{ variables.dockerfilePath }}'
           repository: '${{ variables.repositoryName }}'
           dockerRegistryServiceConnection: '${{ variables.dockerRegistryServiceConnectionName }}'
+          kvName: '${{ variables.kvSharedName }}'
+          kvRgName: '${{ variables.kvSharedRgName }}'
+          serviceConnection: '${{ variables.serviceConnection }}'
 
   # Deploy to dev environment
   - stage: dev
@@ -80,6 +89,10 @@ stages:
           clientEnv: '${{ variables.envName }}'
           configURI: '${{ variables.configURI }}'
           rgName: '${{variables.rgName}}'
+          kvSharedName: '${{ variables.kvSharedName }}'
+          kvName: '${{ variables.kvName }}'
+          envLabel: '${{ variables.envLabel }}'
+          envName: '${{ variables.envName }}'
           envGroup: '${{ variables.envGroupName }}'
           repository: '${{ variables.repositoryName }}'
           containerRegistry: '${{ variables.containerRegistry }}'
@@ -109,6 +122,10 @@ stages:
           clientEnv: '${{ variables.envName }}'
           configURI: '${{ variables.configURI }}'
           rgName: '${{variables.rgName}}'
+          kvSharedName: '${{ variables.kvSharedName }}'
+          kvName: '${{ variables.kvName }}'
+          envLabel: '${{ variables.envLabel }}'
+          envName: '${{ variables.envName }}'
           envGroup: '${{ variables.envGroupName }}'
           repository: '${{ variables.repositoryName }}'
           containerRegistry: '${{ variables.containerRegistry }}'
@@ -138,6 +155,10 @@ stages:
           clientEnv: '${{ variables.envName }}'
           configURI: '${{ variables.configURI }}'
           rgName: '${{variables.rgName}}'
+          kvSharedName: '${{ variables.kvSharedName }}'
+          kvName: '${{ variables.kvName }}'
+          envLabel: '${{ variables.envLabel }}'
+          envName: '${{ variables.envName }}'
           envGroup: '${{ variables.envGroupName }}'
           repository: '${{ variables.repositoryName }}'
           containerRegistry: '${{ variables.containerRegistry }}'

@@ -1,5 +1,5 @@
+import { Filter } from '@equinor/lighthouse-powerbi';
 import React from 'react';
-import { Filter } from '../../../modules/powerBI/src/models/filter';
 
 export interface CoreViewState {
     [key: string]: ViewState;

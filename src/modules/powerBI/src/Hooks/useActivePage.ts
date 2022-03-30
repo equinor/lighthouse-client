@@ -1,5 +1,5 @@
-import { Page, Report } from 'powerbi-client';
-import { useCallback, useEffect, useState } from 'react';
+import { Report } from 'powerbi-client';
+import { useCallback } from 'react';
 
 /**
  * Will get the active page at first render.
@@ -7,30 +7,40 @@ import { useCallback, useEffect, useState } from 'react';
  */
 export const useActivePage = (
     report?: Report
-): [activePage: Page | undefined, setActivePage: (page: Page) => void] => {
-    const [activePage, setActivePage] = useState<Page>();
+): {
+    // setActivePage: (page: Page) => void;
+    setActivePageByName: (name: string) => void;
+} => {
+    // const [activePage, setActivePage] = useState<Page>();
 
-    const handleChange = useCallback(
-        (page: Page) => {
-            report?.setPage(page.name);
-            setActivePage(page);
+    // const handleChange = useCallback(
+    //     (page: Page) => {
+    //         console.log(page);
+    //         report?.setPage(page.name);
+    //         // setActivePage(page);
+    //     },
+    //     [report]
+    // );
+    const setActivePageByName = useCallback(
+        (name: string) => {
+            report?.setPage(name);
         },
         [report]
     );
 
-    useEffect(() => {
-        report &&
-            !activePage &&
-            report.on('rendered', async () => {
-                try {
-                    const active = await report.getActivePage();
+    // useEffect(() => {
+    //     report &&
+    //         !activePage &&
+    //         report.on('rendered', async () => {
+    //             try {
+    //                 const active = await report.getActivePage();
 
-                    setActivePage(active);
-                } catch {
-                    console.error('Cannot retrieve active page');
-                }
-            });
-    }, [activePage, report]);
+    //                 setActivePage(active);
+    //             } catch {
+    //                 console.error('Cannot retrieve active page');
+    //             }
+    //         });
+    // }, [activePage, report]);
 
-    return [activePage, handleChange];
+    return { setActivePageByName };
 };
