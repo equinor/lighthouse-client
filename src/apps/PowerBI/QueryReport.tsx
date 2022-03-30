@@ -1,7 +1,9 @@
-import { PowerBI } from '../../modules/powerBI';
+import { ClientApi } from '@equinor/portal-client';
 
-export const QueryReport = (): JSX.Element => {
-    const reportUri = 'pp-query-analytics';
-
-    return <PowerBI reportUri={reportUri} />;
-};
+export function setup(appApi: ClientApi): void {
+    appApi.createPowerBiViewer().registerFusionPowerBi({
+        reportURI: 'pp-query-analytics',
+        loadPagesInDev: true,
+        pages: [{ pageTitle: 'Home', pageId: 'ReportSection', default: true }],
+    });
+}

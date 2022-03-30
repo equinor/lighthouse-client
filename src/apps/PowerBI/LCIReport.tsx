@@ -1,7 +1,9 @@
-import { PowerBI } from '../../modules/powerBI';
+import { ClientApi } from '@equinor/portal-client';
 
-export function LCIReport() {
-    const reportUri = 'lci-hanging-gardens';
-
-    return <PowerBI reportUri={reportUri} />;
+export function setup(appApi: ClientApi): void {
+    appApi.createPowerBiViewer().registerFusionPowerBi({
+        reportURI: 'pp-lci-hanging-garden',
+        loadPagesInDev: true,
+        pages: [{ pageTitle: 'Home', pageId: 'ReportSection', default: true }],
+    });
 }
