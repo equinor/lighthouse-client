@@ -1,7 +1,7 @@
 import { httpClient } from '@equinor/portal-client';
+import { storage } from '@equinor/Utils';
 import { useEffect, useMemo, useState } from 'react';
 import { ServiceMessage } from '../Types/serviceMessage';
-import { storage } from '@equinor/Utils';
 
 const SM_KEY = 'serviceMessageId';
 
@@ -34,7 +34,7 @@ export function useServiceMessage(): Return {
 
     useEffect(() => {
         (async () => {
-            const response = await appConfig.get('/api/serviceMessage');
+            const response = await appConfig.get('api/serviceMessage');
             const data = localMessage(await response.json());
             if (data) {
                 setMessage(data);
