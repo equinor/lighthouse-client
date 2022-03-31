@@ -10,7 +10,7 @@ import {
     CustomView,
     CustomVirtualView,
     GardenOptions,
-    StatusView
+    StatusView,
 } from '../../../../components/ParkView/Models/gardenOptions';
 import { StatusItem } from '../../../../packages/StatusBar';
 import { DataSource, DataViewerProps, ViewOptions } from './WorkSpaceTypes';
@@ -80,6 +80,7 @@ export interface PrefetchQueriesOptions {
 
 export interface WorkSpaceConfig<T> {
     name: string;
+    defaultTab: number;
     objectIdentifier: string;
     prefetchQueriesOptions?: PrefetchQueriesOptions[];
     onSelect?: (item: T) => void;
@@ -99,7 +100,7 @@ export interface WorkSpaceConfig<T> {
     workflowEditorOptions?: WorkflowEditorOptions;
 }
 
-export interface TimeLineOptions {}
+export interface TimeLineOptions { }
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);
