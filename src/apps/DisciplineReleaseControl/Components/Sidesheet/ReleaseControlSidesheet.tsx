@@ -170,13 +170,15 @@ export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
                         <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
                     </Tabs.Panel>
                     <Tabs.Panel>
-                        <ThreeDModel>
-                            <Viewer
-                                echoPlantId={echoPlantId}
-                                padding={1}
-                                tags={['56L00420A', '56L00420B', '56L00440A', '56L00446A']}
-                            />
-                        </ThreeDModel>
+                        {activeTab === 1 && (
+                            <ThreeDModel>
+                                <Viewer
+                                    echoPlantId={echoPlantId}
+                                    padding={1}
+                                    tags={['56L00420A', '56L00420B', '56L00440A', '56L00446A']}
+                                />
+                            </ThreeDModel>
+                        )}
                     </Tabs.Panel>
                 </Tabs.Panels>
             </Tabs>
