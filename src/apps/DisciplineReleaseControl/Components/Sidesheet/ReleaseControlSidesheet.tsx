@@ -43,7 +43,7 @@ export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
 
     useEffect(() => {
         s.setWidth(width);
-    }, [s, width]);
+    }, [width]);
 
     // const queryClient = useQueryClient();
 
