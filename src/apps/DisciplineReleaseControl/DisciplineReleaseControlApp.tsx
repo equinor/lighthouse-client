@@ -17,7 +17,7 @@ import { getTimePeriod } from './Components/Garden/gardenFunctions';
 import { PipetestStep } from './Types/drcEnums';
 import { DateTime } from 'luxon';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
-import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
+// import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 
 export function setup(appApi: ClientApi): void {
