@@ -1,6 +1,6 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
-import { SwcrItemView } from './CustomViews/SwcrGardenItem';
+import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
+import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrGroupView } from './CustomViews/SwcrGroupView';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { SwcrPackage } from './models/SwcrPackage';
@@ -9,6 +9,10 @@ import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { SwcrGraph } from './CustomViews/Graph';
 import { columns } from './utilities/tableSetup';
+import { getYearAndWeekFromDate } from './utilities/packages';
+import { GardenGroups } from '../../components/ParkView/Models/data';
+import { getGardenItemCompletionColor } from '../DisciplineReleaseControl/Components/Garden/gardenFunctions';
+import { getGardenItems } from '../../components/ParkView/Components/VirtualGarden/utils';
 export function setup(appApi: ClientApi): void {
     const swcr = appApi.createWorkSpace<SwcrPackage>({
         CustomSidesheet: SwcrSideSheet,
@@ -62,12 +66,36 @@ export function setup(appApi: ClientApi): void {
     swcr.registerGardenOptions({
         gardenKey: 'dueAtDate',
         itemKey: 'swcrNo',
-        type: 'normal',
+        type: 'virtual',
         fieldSettings,
         customViews: {
             customItemView: SwcrItemView,
             customGroupView: SwcrGroupView,
             customHeaderView: SwcrHeaderView,
+        },
+        itemWidth: (garden: GardenGroups<SwcrPackage>, groupByKey: string) => {
+            const gardenItemList: SwcrPackage[] = [];
+            const columnName = groupByKey.replace('nextSignatureBy', 'nextToSign');
+            debugger;
+            garden.forEach((column) => {
+                const gardenItems = getGardenItems(column);
+                debugger;
+                gardenItems && gardenItemList.push(...(gardenItems as SwcrPackage[]));
+            });
+            const longestKey = Math.max.apply(
+                Math,
+                gardenItemList.map((item) => {
+                    const titleLength = item?.[columnName] ? item[columnName].length : 0;
+                    return titleLength >= item.swcrNo.length ? titleLength : item.swcrNo.length;
+                })
+            );
+            return Math.max(longestKey * 8 + 80, 120);
+        },
+        rowHeight: 20,
+        highlightColumn: (groupByKey: string) => {
+            return Boolean(groupByKey === 'createdAtDate' || groupByKey === 'dueAtDate')
+                ? getYearAndWeekFromDate(new Date())
+                : undefined;
         },
     });
 

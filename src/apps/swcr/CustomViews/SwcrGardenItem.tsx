@@ -4,17 +4,20 @@ import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { getSwcrStatusColor } from '../utilities/packages';
 import { CustomItemView } from '../../../components/ParkView/Models/gardenOptions';
+import { memo } from 'react';
 
 type SwcrItemProps = { backgroundColor: string; textColor: string };
 
-const SwcrItem = styled(Item)<SwcrItemProps>`
+const SwcrItem = styled.div<SwcrItemProps>`
     background-color: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: 100%;
+    width: 95%;
     min-width: 150px;
-    box-sizing: border-box;
-    white-space: nowrap;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    border-radius: 5px;
 `;
 
 const SwcrExpanded = styled.div`
@@ -31,6 +34,14 @@ const SwcrExpandedTitle = styled.div`
 const SwcrExpandedHours = styled.div`
     display: flex;
 `;
+export const Root = styled.div`
+    height: 80%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 5px;
+`;
 
 export function SwcrExpandedView({ data }: { data: SwcrPackage }): JSX.Element {
     return (
@@ -43,7 +54,7 @@ export function SwcrExpandedView({ data }: { data: SwcrPackage }): JSX.Element {
     );
 }
 
-export function SwcrItemView({
+function SwcrItemView({
     data,
     itemKey,
     onClick,
@@ -55,9 +66,12 @@ export function SwcrItemView({
         : tokens.colors.text.static_icons__default.rgba;
 
     return (
-        <SwcrItem backgroundColor={statusColor} textColor={textColor} onClick={onClick}>
-            {data[itemKey]}
-            {columnExpanded && <SwcrExpandedView data={data} />}
-        </SwcrItem>
+        <Root>
+            <SwcrItem backgroundColor={statusColor} textColor={textColor} onClick={onClick}>
+                {data[itemKey]}
+                {/* {columnExpanded && <SwcrExpandedView data={data} />} */}
+            </SwcrItem>
+        </Root>
     );
 }
+export default memo(SwcrItemView);

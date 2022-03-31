@@ -1,4 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
+import { memo } from 'react';
 import styled from 'styled-components';
 import { DataSet } from '../../../components/ParkView/Models/data';
 import { CustomHeaderView } from '../../../components/ParkView/Models/gardenOptions';
@@ -65,10 +66,7 @@ const getTitle = (groupKey: string, column: DataSet<SwcrPackage>): string => {
     }
 };
 
-export function SwcrHeaderView({
-    garden,
-    columnIndex,
-}: CustomHeaderView<SwcrPackage>): JSX.Element {
+function SwcrHeaderView({ garden, columnIndex }: CustomHeaderView<SwcrPackage>): JSX.Element {
     const column = garden[columnIndex];
     const { count, groupKey } = column;
     const title = getTitle(groupKey, column);
@@ -81,3 +79,4 @@ export function SwcrHeaderView({
         </Header>
     );
 }
+export default memo(SwcrHeaderView);
