@@ -68,6 +68,15 @@ export function FilterProvider<T>({
         dispatch(actions.setData(initialData));
     }, [initialData]);
 
+    useEffect(() => {
+        const filter = createFilterData(initialData, options);
+
+        dispatch(actions.setFilter(filter));
+        persistOptions && persistOptions.setFilter(filter);
+
+        setFilter(initialData, filter);
+    }, [options]);
+
     const filterItemCheck: FilterItemCheck = useCallback(
         (filterItem: FilterItem | FilterItem[], singleClick?: boolean): void => {
             const currentFilter = checkItem(filterData, filterItem, singleClick);

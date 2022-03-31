@@ -44,7 +44,7 @@ export function getHTList(checkLists: CheckList[]): string {
 export function getPipetestsWithHTCable(pipetests: Pipetest[]): Pipetest[] {
     const pipetestsWithHTCable: Pipetest[] = [];
     pipetests.forEach((pipetest: Pipetest) => {
-        if (pipetest.checkLists.some((x) => x.isHeatTrace)) {
+        if (pipetest.checkLists?.some((x) => x.isHeatTrace)) {
             pipetestsWithHTCable.push(pipetest);
         }
     });
