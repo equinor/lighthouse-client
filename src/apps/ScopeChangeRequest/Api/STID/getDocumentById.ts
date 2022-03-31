@@ -11,7 +11,7 @@ import { Document } from '../../Types/STID/Document';
 export async function getDocumentById(docNo: string, instCode: string): Promise<Document> {
     const { STID } = httpClient();
 
-    const uri = `${instCode}/docment`;
+    const uri = `${instCode}/document`;
     const queryParameters = `docNo=${encodeURIComponent(docNo)}`;
     const url = `/${uri}?${queryParameters}`;
 
