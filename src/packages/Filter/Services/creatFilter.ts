@@ -1,6 +1,9 @@
 import { FilterData, FilterOptions } from '../Types/FilterItem';
 
-const getObjectValue = <T>(item: T, key: string): string => item[key];
+const DEFAULT_VALUE = '(Blank)';
+
+const getObjectValue = <T>(item: T, key: string): string =>
+    item[key] && item[key].length > 0 ? item[key] : DEFAULT_VALUE;
 
 /**
  * Creates a object representing the det tilter data based on the objects own properties.
