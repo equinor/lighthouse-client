@@ -36,7 +36,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             pipetest.overdue =
                 pipetest.step !== PipetestStep.Complete &&
-                DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
+                    DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                     ? 'Yes'
                     : 'No';
             return pipetest;
@@ -61,34 +61,34 @@ export function setup(appApi: ClientApi): void {
         .registerDataSource({
             responseAsync: responseAsync,
             responseParser: responseParser,
-        })
-        // .registerDataCreator({
-        //     title: 'Release control',
-        //     component: ReleaseControlProcessForm,
-        // })
-        .registerFilterOptions({
-            excludeKeys: releaseControlExcludeKeys,
-            headerNames: {},
-            defaultActiveFilters: [
-                'currentStep',
-                'System',
-                'Priority',
-                'dueDateTimePeriod',
-                'overdue',
-                'completionStatus',
-            ],
-            valueFormatter: {
-                currentStep: (item: Pipetest): string => {
-                    return item.step;
-                },
-                System: (item: Pipetest): string => {
-                    return item.name.substring(0, 2);
-                },
-                Priority: (item: Pipetest): string => {
-                    return item.commPkPriority1 !== '' ? item.commPkPriority1 : 'Unknown';
-                },
-            },
         });
+    // .registerDataCreator({
+    //     title: 'Release control',
+    //     component: ReleaseControlProcessForm,
+    // })
+    // .registerFilterOptions({
+    //     excludeKeys: releaseControlExcludeKeys,
+    //     headerNames: {},
+    //     defaultActiveFilters: [
+    //         'currentStep',
+    //         'System',
+    //         'Priority',
+    //         'dueDateTimePeriod',
+    //         'overdue',
+    //         'completionStatus',
+    //     ],
+    //     valueFormatter: {
+    //         currentStep: (item: Pipetest): string => {
+    //             return item.step;
+    //         },
+    //         System: (item: Pipetest): string => {
+    //             return item.name.substring(0, 2);
+    //         },
+    //         Priority: (item: Pipetest): string => {
+    //             return item.commPkPriority1 !== '' ? item.commPkPriority1 : 'Unknown';
+    //         },
+    //     },
+    // });
 
     // request.registerDataSource(async () => {
     //     const { releaseControls } = httpClient();

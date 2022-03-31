@@ -1,6 +1,6 @@
 import { Checkbox, Search } from '@equinor/eds-core-react';
 import React, { useMemo, useState } from 'react';
-import { FilterGroup, FilterItemCheck } from '../../Types/FilterItem';
+import { FilterConfiguration, FilterItemCheck } from '../../Types/FilterItem';
 import { FilterItemComponent } from '../FilterItem/FilterItem';
 import Icon from '../Icon/Icon';
 import {
@@ -14,7 +14,7 @@ import {
 import { camelCaseToHumanReadable } from '../Utils/camelCaseToHumanReadable';
 
 interface FilterGroupeComponentProps {
-    filterGroup: FilterGroup;
+    filterGroup: FilterConfiguration;
     filterItemCheck: FilterItemCheck;
     hideTitle?: boolean;
 }
@@ -23,15 +23,15 @@ function searchByValue(items: string[], value: string) {
     return items.filter((item) => item.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
 }
 
-function allChecked(filterGroup: FilterGroup): boolean {
+function allChecked(filterGroup: FilterConfiguration): boolean {
     return checkedCount(filterGroup) === Object.keys(filterGroup.value).length;
 }
 
-function checkedCount(filterGroup: FilterGroup): number {
+function checkedCount(filterGroup: FilterConfiguration): number {
     return Object.keys(filterGroup.value).filter((key) => filterGroup.value[key].checked).length;
 }
 
-function checkIsIndeterminate(filterGroup: FilterGroup) {
+function checkIsIndeterminate(filterGroup: FilterConfiguration) {
     const maxCount = Object.keys(filterGroup.value).length;
     const count = checkedCount(filterGroup);
     return count > 0 && count < maxCount;

@@ -1,4 +1,4 @@
-import { FilterProvider } from '@equinor/filter';
+import { useFilterApi } from '@equinor/filter';
 import { openSidesheet, PopoutSidesheet } from '@equinor/sidesheet';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -21,7 +21,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         timelineOptions,
         analyticsOptions,
         powerBiOptions,
-        filterOptions,
+        filterOptions = [],
         workflowEditorOptions,
         onSelect,
         idResolver,
@@ -34,6 +34,8 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const filterApi = useFilterApi({ filterConfiguration: filterOptions, data: data });
+
     const { tabs, viewIsActive } = useConfiguredTabs(
         //Dont know why??
         treeOptions as any,
@@ -45,23 +47,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         workflowEditorOptions
     );
     const [activeTab, setActiveTab] = useState(Number(id) || defaultTab);
-
-    // const filterLocationKey = useMemo(() => `filer-${props.shortName}`, [props.shortName]);
-    // const persistOptions: FilterPersistOptions = useMemo(
-    //     () => ({
-    //         getFilter() {
-    //             const filter = storage.getItem<FilterData>(filterLocationKey);
-    //             if (typeof filter === 'object') {
-    //                 return filter;
-    //             }
-    //             return;
-    //         },
-    //         setFilter(filterData: FilterData) {
-    //             return storage.setItem(filterLocationKey, filterData);
-    //         },
-    //     }),
-    //     [filterLocationKey]
-    // );
 
     const handleChange = (index: number) => {
         setActiveTab(index);
@@ -127,16 +112,14 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     if (!viewIsActive) return <NoDataView />;
     return (
-        <FilterProvider initialData={data} options={filterOptions}>
-            <WorkspaceWrapper>
-                <Tabs activeTab={activeTab} onChange={handleChange}>
-                    <HeaderWrapper props={props} tabs={tabs} />
-                    <DataViewWrapper>
-                        <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
-                    </DataViewWrapper>
-                </Tabs>
-                <PopoutSidesheet />
-            </WorkspaceWrapper>
-        </FilterProvider>
+        <WorkspaceWrapper>
+            <Tabs activeTab={activeTab} onChange={handleChange}>
+                <HeaderWrapper props={props} tabs={tabs} />
+                <DataViewWrapper>
+                    <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
+                </DataViewWrapper>
+            </Tabs>
+            <PopoutSidesheet />
+        </WorkspaceWrapper>
     );
 }

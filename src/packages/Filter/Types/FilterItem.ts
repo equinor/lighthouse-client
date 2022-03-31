@@ -1,37 +1,18 @@
-import React from 'react';
+export type FilterOptions<T> = FilterConfiguration<T>[];
 
-export interface FilterItem {
-    value: string;
-    type: string;
-    checked: boolean;
+export interface FilterConfiguration<T> {
+    name: string;
+    /** Takes in an item and returns the filter value */
+    valueFormatter: (item: T) => FilterValueType | FilterValueType[];
+    /** Should the filter be active in the pane on mount */
+    defaultHidden?: boolean;
+    /**
+     * Insert a list of values to be default filtered
+     * Case insensitive
+     */
+    defaultUncheckedValues?: FilterValueType[];
+    /** Sort the list of values in the filtergroup, defaults to alphanumeric */
+    sort?: (values: FilterValueType[]) => FilterValueType[];
 }
 
-export type FilerItemCount = (key: string) => number;
-
-export type FilterItemCheck = (
-    filterItem: FilterItem | FilterItem[],
-    singleClick?: boolean
-) => void;
-
-export type FilterGroup = {
-    type: string;
-    value: Record<string, FilterItem>;
-};
-export type FilterData = Record<string, FilterGroup>;
-
-export interface FilterOptions<T> {
-    excludeKeys?: (keyof T)[];
-    headerNames?: Partial<Record<keyof T, string>>;
-    /** Function to transform value */
-    valueFormatter?: Record<string, (item: T) => string>;
-    customRender?: Record<keyof T | string, React.FC<T>>;
-    /**
-     * Filter sections to initially be toggled on
-     */
-    defaultActiveFilters?: string[];
-    /**
-     * Values to exclude by default
-     * Checked defaults to true
-     */
-    defaultUncheckedValues?: FilterGroup[];
-}
+export type FilterValueType = string | number | null;

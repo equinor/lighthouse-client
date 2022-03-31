@@ -1,7 +1,7 @@
 import { Checkbox, Search } from '@equinor/eds-core-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useFilter } from '../../Hooks/useFilter';
-import { FilterGroup } from '../../Types/FilterItem';
+import { FilterConfiguration } from '../../Types/FilterItem';
 import { FilterGroupeComponent } from '../FilterGroup/FilterGroup';
 import { Title } from '../FilterGroup/FilterGroup-Styles';
 import Icon from '../Icon/Icon';
@@ -18,7 +18,7 @@ import {
     Wrapper,
 } from './FilterView-style';
 
-function createTypeKeys(filter: FilterGroup[]): string[] {
+function createTypeKeys(filter: FilterConfiguration[]): string[] {
     return filter.map((item) => item.type);
 }
 
@@ -26,7 +26,7 @@ function SearchFilterKeys(keys: string[], filerValue: string): string[] {
     return keys.filter((key) => key.toLowerCase().includes(filerValue.toLowerCase()));
 }
 
-function getActiveFilters(filter: FilterGroup[]): string[] {
+function getActiveFilters(filter: FilterConfiguration[]): string[] {
     const activeFilters: string[] = [];
     filter.forEach((item) => {
         const isActive = Object.values(item.value).some((filterItem) => !filterItem.checked);
@@ -46,7 +46,7 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
     const activeFilters = useMemo(() => getActiveFilters(filter), [filter]);
     const [searchActive, setSearchActive] = useState(false);
     // const [activeFilterData, setActiveFilterData] = useState<string[]>([]);
-    const [activeFilter, setActiveFilter] = useState<FilterGroup[]>([]);
+    const [activeFilter, setActiveFilter] = useState<FilterConfiguration[]>([]);
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [isFilterSelectActive, setIsFilterSelectActive] = useState(false);
 
@@ -141,7 +141,7 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                         </FilterSelect>
                     )}
                     <FilterGroups>
-                        {activeFilter.map((filterGroup: FilterGroup, index) => (
+                        {activeFilter.map((filterGroup: FilterConfiguration, index) => (
                             <FilterGroupWrapper key={`col-${filterGroup}-${index}`}>
                                 <FilterGroupeComponent
                                     filterGroup={filterGroup}

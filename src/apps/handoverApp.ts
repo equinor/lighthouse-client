@@ -71,18 +71,18 @@ export function setup(appApi: ClientApi): void {
             type: 'normal',
             gardenKey: 'Responsible__Id',
             itemKey: 'CommPkgNo',
-        })
-        .registerFilterOptions({
-            excludeKeys: commPkgKeys,
-            headerNames: {
-                Responsible__Id: 'Responsible Id',
-                Area__Id: 'Area',
-                McStatus__Id: 'Mc Status',
-            },
-            valueFormatter: {
-                start,
-            },
         });
+    // .registerFilterOptions({
+    //     excludeKeys: commPkgKeys,
+    //     headerNames: {
+    //         Responsible__Id: 'Responsible Id',
+    //         Area__Id: 'Area',
+    //         McStatus__Id: 'Mc Status',
+    //     },
+    //     valueFormatter: {
+    //         start,
+    //     },
+    // });
 
     async function responseAsync(signal?: AbortSignal) {
         const plantId = 'PCS$JOHAN_CASTBERG';
