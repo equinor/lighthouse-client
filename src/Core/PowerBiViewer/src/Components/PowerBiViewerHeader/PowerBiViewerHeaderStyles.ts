@@ -3,13 +3,18 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.section`
-    height: 10%;
+    /* height: 10%; */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+`;
+
+export const HeaderContent = styled.section`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-end;
 `;
-
 export const LeftSection = styled.div`
     display: flex;
     flex-direction: column;
