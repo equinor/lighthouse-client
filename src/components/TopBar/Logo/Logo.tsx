@@ -1,4 +1,3 @@
-import { tokens } from '@equinor/eds-tokens';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,9 +8,9 @@ const LogoWrapper = styled.div`
     cursor: pointer;
 `;
 
-const LogoTitle = styled.p`
+const LogoTitle = styled.div`
     font-family: Equinor;
-    font-style: 16px;
+    font-size: 16px;
     line-height: 0px;
     letter-spacing: 0.2px;
     padding-left: 0.2rem;
@@ -27,12 +26,7 @@ const Logo = () => {
     return (
         <LogoWrapper onClick={() => handleClick()}>
             {/* <LogoIcon /> */}
-            <LogoTitle>
-                <span style={{ color: tokens.colors.infographic.primary__energy_red_100.rgba }}>
-                    <b>Johan Castberg </b>
-                </span>
-                <b>Portal</b>
-            </LogoTitle>
+            <LogoTitle>Johan Castberg Portal</LogoTitle>
         </LogoWrapper>
     );
 };
