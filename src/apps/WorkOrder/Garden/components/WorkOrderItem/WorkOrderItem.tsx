@@ -6,6 +6,7 @@ import {
     FollowUpStatuses,
 } from '@equinor/GardenUtils';
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import styled from 'styled-components';
 import { useParkViewContext } from '../../../../../components/ParkView/Context/ParkViewProvider';
 import { CustomItemView } from '../../../../../components/ParkView/Models/gardenOptions';
 import { WorkOrder } from '../../models';
@@ -25,6 +26,7 @@ import {
     MidSection,
     WorkorderExpanded,
     WorkorderExpandedTitle,
+    Root,
 } from './styles';
 import { itemSize } from './utils';
 type PackageStatusReturn = {
@@ -67,7 +69,14 @@ const getWorkOrderStatuses = (
         status,
     };
 };
-const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemView<WorkOrder>) => {
+
+const WorkOrderItem = ({
+    data,
+    itemKey,
+    onClick,
+    columnExpanded,
+    width = 300,
+}: CustomItemView<WorkOrder>) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const anchorRef = useRef<HTMLDivElement>(null);
     const { groupByKeys, gardenKey } = useParkViewContext<WorkOrder>();
@@ -85,8 +94,9 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
         () => getWorkOrderStatuses(data, gardenKey, groupByKeys),
         [data, gardenKey, groupByKeys]
     );
+    const maxWidth = useMemo(() => width * 0.95, [width]);
     return (
-        <>
+        <Root>
             <WorkOrderWrapper
                 backgroundColor={backgroundColor}
                 textColor={textColor}
@@ -95,19 +105,20 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
                 onMouseOver={() => setIsOpen(true)}
                 onMouseLeave={() => setIsOpen(false)}
                 onClick={onClick}
+                style={{ maxWidth }}
             >
                 {/* <SizeIcons size={size} color={textColor} />*/}
                 {/* {data.holdBy && <FlagIcon color={textColor} />} */}
                 {data[itemKey]}
                 {'  '}
-                {columnExpanded && data.description}
+
                 <Circles>
                     <StatusCircle statusColor={matColor} />
                     <StatusCircle statusColor={mccrColor} />
                 </Circles>
                 {/* <Progress background={progressBar} /> */}
             </WorkOrderWrapper>
-
+            {columnExpanded && data.description}
             {/* {isOpen && (
                 <WorkOrderPopover
                     data={data}
@@ -124,7 +135,7 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
                     }}
                 />
             )} */}
-        </>
+        </Root>
     );
 };
 

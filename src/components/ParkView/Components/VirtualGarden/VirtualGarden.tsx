@@ -13,10 +13,12 @@ import { getGardenItems, getRowCount } from './utils';
 
 type VirtualGardenProps<T> = {
     garden: GardenGroups<T>;
+    width?: number;
 };
 
 export const VirtualGarden = <T extends unknown>({
     garden,
+    width,
 }: VirtualGardenProps<T>): JSX.Element => {
     const parentRef = useRef<HTMLDivElement | null>(null);
 
@@ -114,6 +116,7 @@ export const VirtualGarden = <T extends unknown>({
                             packageChild={packageChild}
                             handleExpand={handleExpand}
                             items={columnItems}
+                            itemWidth={width}
                         />
                     </Fragment>
                 );
