@@ -1,8 +1,9 @@
 import { FilterView } from '@equinor/filter';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { WorkspaceProps } from '../..';
 import { TabsConfigItem } from '../../Tabs/tabsConfig';
 import { CompletionViewHeader } from '../DataViewerHeader/Header';
+import { useWorkSpaceKey } from '../DefaultView/Hooks/useWorkspaceKey';
 
 type HeaderWrapperProps = {
     props: WorkspaceProps;
@@ -13,6 +14,11 @@ export const HeaderWrapper = ({ tabs, props }: HeaderWrapperProps) => {
     function handleFilter() {
         setActiveFilter((state) => !state);
     }
+    const key = useWorkSpaceKey();
+    useEffect(() => {
+        setActiveFilter(false);
+    }, [key]);
+
     return (
         <>
             <CompletionViewHeader

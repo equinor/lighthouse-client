@@ -9,6 +9,7 @@ import { useSettings } from '../../../../Client/Hooks';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useDataContext } from '../../Context/DataProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
+import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { TabButton } from '../ToggleButton';
 import { Divider, HeaderWrapper, LeftSection, RightSection, Title, TitleBar } from './HeaderStyles';
 
@@ -34,11 +35,11 @@ export const CompletionViewHeader = ({
     handleFilter,
     activeFilter,
 }: CompletionViewHeaderProps): JSX.Element => {
-    const { statusFunc, key, dataApi } = useDataContext();
+    const { key, dataApi } = useDataContext();
+    const { statusFunc } = useWorkSpace();
     const { factory, setSelected } = useFactory(key);
     const { data } = useFilteredData();
     const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
-
     const { clientEnv } = useSettings();
 
     return (
