@@ -36,7 +36,7 @@ export function useServiceMessage(): Return {
         (async () => {
             const response = await appConfig.get('api/serviceMessage');
             const data = localMessage(await response.json());
-            if (data) {
+            if (data && data.id) {
                 setMessage(data);
                 setIsActive(true);
             }
