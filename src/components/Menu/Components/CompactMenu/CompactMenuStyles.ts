@@ -44,9 +44,10 @@ export const Heading = styled.div`
 `;
 
 export const RightButton = styled.div`
-    > Button {
+    > button {
         margin-right: 1rem;
     }
+
     margin-top: 3rem;
     display: flex;
     width: 100%;

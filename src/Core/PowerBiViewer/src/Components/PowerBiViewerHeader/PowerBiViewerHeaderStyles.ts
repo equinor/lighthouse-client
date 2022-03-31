@@ -3,7 +3,6 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const HeaderWrapper = styled.section`
-    /* height: 10%; */
     width: 100%;
     display: flex;
     flex-direction: column;
