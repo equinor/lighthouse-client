@@ -21,6 +21,6 @@ export const SubGroup = styled.div`
 
 export const SubGroupText = styled.div`
     display: flex;
-    margin-left: 8px;
+    margin-left: 6px;
     margin-top: 6px;
 `;

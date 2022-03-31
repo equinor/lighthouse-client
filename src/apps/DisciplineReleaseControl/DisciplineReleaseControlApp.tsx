@@ -6,6 +6,7 @@ import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompac
 import {
     getPipetestCompletionStatus,
     getPipetestStatus,
+    getShortformCompletionStatusName,
     getYearAndWeekFromString,
     sortPipetestChecklist,
     sortPipetests,
@@ -33,6 +34,9 @@ export function setup(appApi: ClientApi): void {
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
             pipetest.step = getPipetestStatus(pipetest);
             pipetest.completionStatus = getPipetestCompletionStatus(pipetest);
+            pipetest.shortformCompletionStatus = getShortformCompletionStatusName(
+                pipetest.completionStatus
+            );
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             pipetest.overdue =
                 pipetest.step !== PipetestStep.Complete &&
@@ -51,6 +55,8 @@ export function setup(appApi: ClientApi): void {
         'rfccPlanned',
         'description',
         'step',
+        'completionStatus',
+        'shortformCompletionStatus',
     ];
 
     const request = appApi
@@ -75,7 +81,7 @@ export function setup(appApi: ClientApi): void {
                 'Priority',
                 'dueDateTimePeriod',
                 'overdue',
-                'completionStatus',
+                'CompletionStatus',
             ],
             valueFormatter: {
                 currentStep: (item: Pipetest): string => {
@@ -86,6 +92,9 @@ export function setup(appApi: ClientApi): void {
                 },
                 Priority: (item: Pipetest): string => {
                     return item.commPkPriority1 !== '' ? item.commPkPriority1 : 'Unknown';
+                },
+                CompletionStatus: (item: Pipetest): string => {
+                    return item.shortformCompletionStatus;
                 },
             },
         });
@@ -99,7 +108,7 @@ export function setup(appApi: ClientApi): void {
     request.registerTableOptions({
         objectIdentifierKey: 'name',
         itemSize: 32,
-        columnOrder: ['name', 'description', 'commPkPriority1', 'step', 'completionStatus'],
+        columnOrder: ['name', 'description', 'commPkPriority1', 'step'],
         hiddenColumns: [
             'rfccPlanned',
             'dueDateTimePeriod',
@@ -107,6 +116,7 @@ export function setup(appApi: ClientApi): void {
             'overdue',
             'completionStatus',
             'insulationBoxes',
+            'shortformCompletionStatus',
         ],
         enableSelectRows: true,
         headers: [
