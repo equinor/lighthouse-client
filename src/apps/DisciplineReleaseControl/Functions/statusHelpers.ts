@@ -319,7 +319,7 @@ export const getDotsColor = (status: PipetestCompletionStatus): string => {
     }
 };
 
-export const getShortformCompletionStatusName = (status: string): string => {
+export const getShortformCompletionStatusName = (status: string): CheckListStatus => {
     switch (status) {
         case PipetestCompletionStatus.Outstanding:
             return CheckListStatus.Outstanding;

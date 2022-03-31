@@ -13,7 +13,7 @@ import {
 export type ExtendedGardenFields = 'system' | 'dueAtDate' | 'priority';
 
 export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
-    step: { label: 'Step', getKey: getStatusKey, getColumnSort: sortByPipetestStatus },
+    step: { label: 'Current step', getKey: getStatusKey, getColumnSort: sortByPipetestStatus },
     system: { label: 'System', getKey: getSystemKey, getColumnSort: groupBySystem },
     //TODO: Is this needed? (it's very slow)...
     // checkLists: {

@@ -1,9 +1,10 @@
-import { PipetestCompletionStatus, PipetestStep } from './drcEnums';
+import { CheckListStatus, PipetestCompletionStatus, PipetestStep } from './drcEnums';
 
 export interface Pipetest {
     name: string;
     step: PipetestStep;
     completionStatus: PipetestCompletionStatus;
+    shortformCompletionStatus: CheckListStatus;
     checkLists: CheckList[];
     heatTraces: HeatTrace[];
     insulationBoxes: InsulationBox[];
