@@ -63,6 +63,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<Pipetest>({
             CustomSidesheet: ReleaseControlSidesheet,
             objectIdentifier: 'name',
+            defaultTab: 1,
         })
         .registerDataSource({
             responseAsync: responseAsync,
