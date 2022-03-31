@@ -1,18 +1,45 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
-import { IconMenu, MenuButton } from '../../../MenuButton';
+import {
+    canAddContributor,
+    canAddContributor,
+    canContribute,
+} from '../../../../Api/ScopeChange/Access';
+import { submitContribution } from '../../../../Api/ScopeChange/Workflow';
+import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
+import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
+import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
+import {
+    Contributor,
+    Criteria,
+    ScopeChangeRequest,
+    WorkflowStep,
+} from '../../../../Types/scopeChangeRequest';
+import { IconMenu, MenuButton, MenuItem } from '../../../MenuButton';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { ContributorActions } from '../../../Workflow/Types/actions';
 
 export function Workflow2(): JSX.Element {
     const { request } = useScopeChangeContext();
 
     return (
         <>
-            {request.workflowSteps.map((step) =>
-                step.criterias.map((y) => <WorkflowCriteria key={y.id} criteria={y} step={step} />)
-            )}
+            {request.workflowSteps.map((step) => {
+                return (
+                    <>
+                        {step.criterias.map((criteria, index, array) => (
+                            <WorkflowCriteria
+                                key={criteria.id}
+                                criteria={criteria}
+                                step={step}
+                                shouldRenderContributors={array.length - 1 === index}
+                            />
+                        ))}
+                    </>
+                );
+            })}
         </>
     );
 }
@@ -20,9 +47,19 @@ export function Workflow2(): JSX.Element {
 interface WorkflowCriteriaProps {
     criteria: Criteria;
     step: WorkflowStep;
+    shouldRenderContributors?: boolean;
 }
 
-export function WorkflowCriteria({ criteria, step }: WorkflowCriteriaProps): JSX.Element {
+const getLastStepOrder = (req: ScopeChangeRequest) =>
+    req.workflowSteps
+        .map(({ order }) => order)
+        .reduce((prev, curr) => (prev > curr ? prev : curr), 0);
+
+export function WorkflowCriteria({
+    criteria,
+    step,
+    shouldRenderContributors,
+}: WorkflowCriteriaProps): JSX.Element {
     const icon = getCriteriaStatus(criteria, step);
     const line = step.isCurrent ? (
         <Line color="#007079" />
@@ -33,6 +70,10 @@ export function WorkflowCriteria({ criteria, step }: WorkflowCriteriaProps): JSX
         />
     );
 
+    const { request } = useScopeChangeContext();
+
+    const isLastStep = step.order === getLastStepOrder(request);
+
     const Text = (
         <>
             <StepName>{step.name}</StepName>
@@ -41,60 +82,150 @@ export function WorkflowCriteria({ criteria, step }: WorkflowCriteriaProps): JSX
         </>
     );
 
+    const contributors = shouldRenderContributors ? (
+        <>
+            {step.contributors.map((contributor) => (
+                <ContributorRender key={contributor.id} contributor={contributor} step={step} />
+            ))}
+        </>
+    ) : (
+        <></>
+    );
+
     return (
         <WorkflowStepper
-            child={
-                step.isCompleted ? (
-                    <>
-                        <WorkflowStepper
-                            icon={icon ?? <></>}
-                            text={
-                                <div>
-                                    <div>Some contributor</div>
-                                    <div>I signed this</div>
-                                </div>
-                            }
-                        />
-                        <WorkflowStepper
-                            icon={icon ?? <></>}
-                            text={
-                                <div>
-                                    <div>Some contributor</div>
-                                    <div>I signed this</div>
-                                </div>
-                            }
-                        />
-                        <WorkflowStepper
-                            icon={icon ?? <></>}
-                            text={
-                                <div>
-                                    <div>Some contributor</div>
-                                    <div>I signed this</div>
-                                </div>
-                            }
-                            actions={
-                                <>
-                                    <MenuButton buttonText="Confirm" items={[]} />
-                                    <IconMenu items={[]} />
-                                </>
-                            }
-                        />
-                    </>
-                ) : (
-                    <></>
-                )
-            }
+            child={contributors}
             icon={icon ?? <></>}
-            line={line}
+            line={!isLastStep ? line : undefined}
             text={Text}
             actions={
                 <>
-                    <MenuButton items={[]} buttonText={'Sign'} />
+                    {/* <MenuButton items={[]} buttonText={'Sign'} />
+                    <IconMenu items={[]} /> */}
+                </>
+            }
+        />
+    );
+}
+
+interface ContributorProps {
+    contributor: Contributor;
+    step: WorkflowStep;
+}
+
+function ContributorRender({ contributor, step }: ContributorProps) {
+    const canContribute = useCanContribute(contributor, step);
+
+    return (
+        <WorkflowStepper
+            text={
+                <>
+                    <StepName>{contributor.instructionsToContributor}</StepName>
+                    <DetailText>{`${contributor.person.firstName} ${contributor.person.lastName}`}</DetailText>
+                    {contributor.contribution?.comment && (
+                        <q>{contributor.contribution?.comment}</q>
+                    )}
+                </>
+            }
+            icon={<Icon name="check_circle_outlined" />}
+            actions={
+                <>
+                    <MenuButton buttonText="Confirm" items={[]} />
                     <IconMenu items={[]} />
                 </>
             }
         />
     );
+}
+
+function useContributorActions(
+    contributor: Contributor,
+    step: WorkflowStep
+): {
+    generateContributorActions: () => MenuItem[];
+    generateMoreActions: () => MenuItem[];
+} {
+    const userCanContribute = useCanContribute(contributor, step);
+    const { request } = useScopeChangeContext();
+    const { workflowKeys } = scopeChangeMutationKeys(request.id);
+
+    const { mutate } = useScopeChangeMutation(
+        request.id,
+        workflowKeys.contributeKey(step.id, contributor.id),
+        submitContribution
+    );
+
+    const { workflowKeys: workflowQueryKeys } = scopeChangeQueryKeys(request.id);
+
+    const checkContributorAccess = () =>
+        canAddContributor({ requestId: request.id, stepId: step.id });
+    const { data: canRemoveContributor } = useQuery(
+        workflowQueryKeys.canAddContributorKey(step.id),
+        checkContributorAccess
+    );
+
+    function makeContributorActions(): MenuItem[] {
+        const actions: MenuItem[] = [];
+
+        if (userCanContribute) {
+            actions.push({
+                label: ContributorActions.Confirm,
+                icon: <Icon name="check_circle_outlined" color="grey" />,
+                onClick: async () =>
+                    mutate({
+                        contributorId: contributor.id,
+                        requestId: request.id,
+                        stepId: step.id,
+                        suggestion: 'SuggestApproval',
+                        comment: undefined,
+                    }),
+                isDisabled: !userCanContribute,
+            });
+            actions.push({
+                label: ContributorActions.ConfirmWithComment,
+                icon: <Icon name="comment_add" color="grey" />,
+                onClick: () => setShowCommentField((prev) => !prev),
+                isDisabled: !userCanContribute,
+            });
+        }
+        return actions;
+    }
+
+    function makeMoreActions(): MenuItem[] {
+        return canRemoveContributor
+            ? [
+                {
+                    label: 'Remove contributor',
+                    isDisabled: !canRemoveContributor,
+                    onClick: () =>
+                        removeContributorAsync({
+                            contributorId: contributor.id,
+                            requestId: request.id,
+                            stepId: step.id,
+                        }),
+                },
+            ]
+            : [];
+    }
+    return {
+        generateContributorActions: makeContributorActions,
+        generateMoreActions: makeMoreActions,
+    };
+}
+
+function useCanContribute(contributor: Contributor, step: WorkflowStep): boolean {
+    const { request } = useScopeChangeContext();
+    const { workflowKeys } = scopeChangeQueryKeys(request.id);
+
+    const checkCanContribute = () =>
+        canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
+
+    const { data } = useQuery(
+        workflowKeys.contributorKey(step.id, contributor.id),
+        checkCanContribute
+    );
+
+    return Boolean(data);
 }
 
 const Line = styled.div<{ color: string }>`
@@ -197,6 +328,7 @@ export function WorkflowStepper({
                 </Icons>
                 <Text>
                     <span>{text}</span>
+                    <br />
                     <span>{child}</span>
                 </Text>
                 <Buttons>{actions}</Buttons>
