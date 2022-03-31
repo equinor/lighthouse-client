@@ -11,6 +11,7 @@ import { CustomItemView } from '../../../../components/ParkView/Models/gardenOpt
 import { getGardenItemColor, getGardenItemCompletionColor } from './gardenFunctions';
 import { StatusCircle } from './StatusCircle';
 import { useParkViewContext } from '../../../../components/ParkView/Context/ParkViewProvider';
+import { memo } from 'react';
 
 export function ReleaseControlExpandedView({ data }: { data: Pipetest }): JSX.Element {
     return (
@@ -19,13 +20,12 @@ export function ReleaseControlExpandedView({ data }: { data: Pipetest }): JSX.El
         </ReleaseControlExpanded>
     );
 }
-
-export function ReleaseControlGardenItem({
+const ReleaseControlGardenItem = ({
     data,
     itemKey,
     onClick,
     columnExpanded,
-}: CustomItemView<Pipetest>): JSX.Element {
+}: CustomItemView<Pipetest>) => {
     const { groupByKeys } = useParkViewContext();
 
     return (
@@ -47,4 +47,6 @@ export function ReleaseControlGardenItem({
             </ReleaseControlItem>
         </>
     );
-}
+};
+
+export default memo(ReleaseControlGardenItem);
