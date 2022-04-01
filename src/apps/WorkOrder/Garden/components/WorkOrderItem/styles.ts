@@ -12,7 +12,6 @@ export type WorkOrderItemProps = { backgroundColor: string; textColor: string; b
 export const WorkOrderWrapper = styled.div<WorkOrderItemProps>`
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: 95%;
     min-width: 150px;
     cursor: pointer;
     height: 100%;

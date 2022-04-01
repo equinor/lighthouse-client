@@ -16,6 +16,7 @@ type HeaderContainerProps<T> = {
 export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T>): JSX.Element => {
     const { columnVirtualizer, garden, headerChild: HeaderChild, highlightColumn } = props;
     const expandColumn = useExpandDispatch();
+
     const handleHeaderClick = useCallback(
         (index: number, column: DataSet<T>) => {
             expandColumn({
