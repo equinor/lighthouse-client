@@ -11,6 +11,7 @@ import {
     getDotsColor,
     getMaxVolumeFromData,
     hiddenColumns,
+    removedFilterOptions,
     sortPackagesByStatus,
 } from './Garden/utility';
 import { Status } from './Garden/components/commonStyles';
@@ -29,7 +30,8 @@ export function setup(appApi: ClientApi): void {
         .registerDataSource({
             responseAsync: responseAsync,
             responseParser: responseParser,
-        });
+        })
+        .registerFilterOptions({ excludeKeys: removedFilterOptions });
 
     async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
         const { fusion } = httpClient();
