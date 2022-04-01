@@ -9,10 +9,15 @@ import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { SwcrGraph } from './CustomViews/Graph';
 import { columns } from './utilities/tableSetup';
+enum Tabs {
+    TABLE,
+    GARDEN,
+}
 export function setup(appApi: ClientApi): void {
     const swcr = appApi.createWorkSpace<SwcrPackage>({
         CustomSidesheet: SwcrSideSheet,
         objectIdentifier: 'swcrNo',
+        defaultTab: Tabs.GARDEN,
     });
 
     async function responseAsync(signal?: AbortSignal) {
