@@ -20,8 +20,16 @@ export const VirtualGarden = <T extends unknown>({
 }: VirtualGardenProps<T>): JSX.Element => {
     const parentRef = useRef<HTMLDivElement | null>(null);
 
-    const { gardenKey, fieldSettings, customView, itemKey, sortData, highlightColumn, rowHeight } =
-        useParkViewContext<T>();
+    const {
+        gardenKey,
+        fieldSettings,
+        customView,
+        itemKey,
+        sortData,
+        highlightColumn,
+        rowHeight,
+        customGroupByKeys,
+    } = useParkViewContext<T>();
     const { isScrolling, scrollOffsetFn } = useVirtualScrolling(parentRef);
     const { widths: contextWidths } = useExpand();
     const refresh = useRefresh();
@@ -46,7 +54,7 @@ export const VirtualGarden = <T extends unknown>({
         size: rowCount,
         parentRef,
         estimateSize: useCallback(() => rowHeight || 40, [rowHeight]),
-        paddingStart: 40,
+        paddingStart: 45,
         // overscan: 2,
     });
     const columnVirtualizer = useVirtual({
@@ -63,9 +71,10 @@ export const VirtualGarden = <T extends unknown>({
         useObserver: useCallback(() => ({ height: 0, width: window.innerWidth }), []),
         overscan: 3,
     });
-
-    const { customHeaderView: headerChild, customItemView: packageChild } =
-        customView as CustomVirtualView<T>;
+    const headerChild =
+        (customView?.customHeaderView as CustomVirtualView<T>['customHeaderView']) ?? undefined;
+    const packageChild =
+        (customView?.customItemView as CustomVirtualView<T>['customItemView']) ?? undefined;
 
     const handleExpand = useCallback(
         <T extends unknown>(subGroup: DataSet<T>): void => {
@@ -75,7 +84,9 @@ export const VirtualGarden = <T extends unknown>({
         },
         [refresh]
     );
-    const highlightedColumn = highlightColumn ? highlightColumn(gardenKey.toString()) : undefined;
+    const highlightedColumn = highlightColumn
+        ? highlightColumn(gardenKey.toString(), customGroupByKeys)
+        : undefined;
 
     useLayoutEffect(() => {
         if (highlightedColumn) {
@@ -98,6 +109,7 @@ export const VirtualGarden = <T extends unknown>({
                 garden={sortedColumns}
                 headerChild={headerChild}
                 highlightColumn={highlightedColumn}
+                groupByKey={gardenKey.toString()}
             />
             {columnVirtualizer.virtualItems.map((virtualColumn) => {
                 const currentColumn = sortedColumns[virtualColumn.index];

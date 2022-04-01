@@ -29,6 +29,7 @@ export interface CustomGroupView<T> {
 export interface CustomHeaderView<T> {
     garden: GardenGroups<T>;
     columnIndex: number;
+    groupByKey?: string;
 }
 
 export interface CustomView<T> {
@@ -60,7 +61,10 @@ export interface GardenOptions<T> {
     status?: StatusView<T>;
     itemWidth?: (garden: GardenGroups<T>, key: string) => number;
     rowHeight?: number;
-    highlightColumn?: (groupBy: string) => string | undefined;
+    highlightColumn?: (
+        groupBy: string,
+        customGroupByKeys: Record<string, unknown>
+    ) => string | undefined;
     intercepters?: GardenDataIntercepters<T>;
     onSelect?: (item: T) => void;
 }

@@ -10,7 +10,7 @@ export const Header = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    height: 35px;
+    height: 40px;
     will-change: transform;
     display: flex;
     align-items: center;
