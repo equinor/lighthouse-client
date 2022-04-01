@@ -1,4 +1,3 @@
-/* eslint-disable no-unreachable */
 import { useEffect, useRef } from 'react';
 import { FilterView } from '../../../../packages/Filter/Components/FilterView/FilterView';
 import { FilterApiContext } from '../../../../packages/Filter/Context/FilterContext';

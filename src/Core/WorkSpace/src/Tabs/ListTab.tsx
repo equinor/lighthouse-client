@@ -1,4 +1,3 @@
-// import { PopupFilter, useFilteredData } from '@equinor/filter';
 import { defaultGroupByFn, Table, TableData, useColumns } from '@equinor/Table';
 import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
@@ -42,7 +41,6 @@ export const ListTab = (): JSX.Element => {
                     groupByFn: defaultGroupByFn,
                     onSelect: tableOptions?.onSelect,
                 }}
-                // FilterComponent={PopupFilter}
                 height={awaitableHeight - 70}
                 itemSize={tableOptions?.itemSize}
             />

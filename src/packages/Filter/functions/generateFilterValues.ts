@@ -1,5 +1,5 @@
 import { FilterGroup } from '../Hooks/useFilterApi';
-import { FilterOptions } from '../Types';
+import { FilterOptions, FilterValueType } from '../Types';
 
 export function generateFilterValues<T>(
     filterConfiguration: FilterOptions<T>,
@@ -19,13 +19,41 @@ export function generateFilterValues<T>(
             );
             if (!filterGroup) return;
             const value = valueFormatter(item);
-            /** Append and remove duplicates */
-            filterGroup.values = Array.isArray(value)
-                ? [...filterGroup.values.filter((oldValue) => !value.includes(oldValue)), ...value]
-                : [...filterGroup.values.filter((oldValue) => oldValue !== value), value];
+
+            if (Array.isArray(value)) {
+                if (value.length === 0) {
+                    filterGroup.values = [
+                        ...filterGroup.values.filter((value) => value !== null),
+                        null,
+                    ];
+                } else {
+                    filterGroup.values = [
+                        ...filterGroup.values.filter((oldValue) => !value.includes(oldValue)),
+                        ...value,
+                    ];
+                }
+            } else {
+                const singleValue = handlePossiblyEmptyString(value);
+
+                filterGroup.values = [
+                    ...filterGroup.values.filter((oldValue) => oldValue !== singleValue),
+                    singleValue,
+                ];
+            }
         })
     );
     return sortFilterGroups(filterGroups);
+}
+
+/**
+ * Returns null for empty string
+ * @param value
+ * @returns
+ */
+function handlePossiblyEmptyString(value: FilterValueType): FilterValueType {
+    if (typeof value !== 'string') return value;
+
+    return value.length === 0 ? null : value;
 }
 
 /**

@@ -18,8 +18,12 @@ export function doesItemPass<T>(
          * Item value is array
          */
         if (Array.isArray(itemValue)) {
+            if (itemValue.length === 0) {
+                return uncheckedValues.includes(null);
+            }
+
             /** All values in the array must be unchecked for filter to remove the item */
-            return !uncheckedValues.every((value) => itemValue.includes(value));
+            return !itemValue.every((value) => uncheckedValues.includes(value));
         } else {
             /** Returns false if it finds the value */
             return !uncheckedValues.includes(itemValue);

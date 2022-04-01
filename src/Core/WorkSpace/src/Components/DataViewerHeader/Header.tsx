@@ -36,7 +36,6 @@ export const CompletionViewHeader = ({
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
-    // const { data } = useFilteredData();
 
     const {
         filterState: { getFilteredData },

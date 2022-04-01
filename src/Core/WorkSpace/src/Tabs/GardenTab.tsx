@@ -1,4 +1,3 @@
-// import { useFilteredData } from '@equinor/filter';
 import { Garden } from '../../../../components/ParkView/Components/Garden';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useDataContext } from '../Context/DataProvider';

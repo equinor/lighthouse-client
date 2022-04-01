@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useRefresh } from '../../../components/ParkView/hooks/useRefresh';
-import { doesItemPass } from '../functions/filter';
+import { doesItemPass } from '../functions/doesItemPass';
 import { generateFilterValues } from '../functions/generateFilterValues';
 import { FilterOptions, FilterValueType } from '../Types/filter';
 import { filterGroupExists } from '../Utils/filterGroupExists';
@@ -159,7 +159,6 @@ export function useFilterApi<T>({
         newValue: FilterValueType,
         preventFiltering?: boolean
     ) {
-        debugger;
         if (filterGroupExists(groupName, filterState.current)) {
             /**
              * Group exists add or remove
