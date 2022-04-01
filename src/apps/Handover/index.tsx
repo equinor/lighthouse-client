@@ -71,7 +71,11 @@ export function setup(appApi: ClientApi): void {
                     Cell: ({ cell }) => {
                         const commStatus = cell.value.content.commpkgStatus;
                         const commStatusColor = getDotsColor(commStatus);
-                        return <Status color={commStatusColor}>{commStatus}</Status>;
+                        return (
+                            <Status color={commStatusColor} width={25} height={20}>
+                                {commStatus}
+                            </Status>
+                        );
                     },
                 },
             },
@@ -81,7 +85,11 @@ export function setup(appApi: ClientApi): void {
                     Cell: ({ cell }) => {
                         const mcStatus = cell.value.content.mcStatus;
                         const mcStatusColor = getDotsColor(mcStatus);
-                        return <Status color={mcStatusColor}>{mcStatus}</Status>;
+                        return (
+                            <Status color={mcStatusColor} width={25} height={20}>
+                                {mcStatus}
+                            </Status>
+                        );
                     },
                 },
             },
