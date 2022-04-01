@@ -82,7 +82,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                             <PackageChild
                                 data={item.item}
                                 itemKey={itemKey.toString()}
-                                onClick={() => onSelect(item)}
+                                onClick={() => onSelect(item.item)}
                                 columnExpanded={
                                     expand?.expandedColumns?.[garden[virtualColumn.index].value]
                                         ?.isExpanded ?? false
