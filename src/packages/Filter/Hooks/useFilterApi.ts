@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useRefresh } from '../../../components/ParkView/hooks/useRefresh';
-import { doesItemPass } from '../functions/doesItemPass';
+import { doesItemPassFilter } from '../functions/doesItemPass';
 import { generateFilterValues } from '../functions/generateFilterValues';
 import { FilterOptions, FilterValueType } from '../Types/filter';
 import { filterGroupExists } from '../Utils/filterGroupExists';
@@ -9,6 +9,12 @@ import { shouldFilter } from '../Utils/shouldFilter';
 export interface FilterGroup {
     name: string;
     values: FilterValueType[];
+}
+
+export interface FilterItemCount {
+    /** Item name */
+    name: FilterValueType;
+    count: number;
 }
 
 export interface FilterApi<T> {
@@ -21,6 +27,7 @@ interface FilterGroupState {
     getGroupValues: GetGroupValuesFunc;
     getInactiveGroupValues: GetGroupValuesFunc;
     checkValueIsInActive: (groupName: string, value: FilterValueType) => boolean;
+    getFilterItemCountsForGroup: (groupName: string) => FilterItemCount[];
 }
 
 export type GetGroupValuesFunc = (groupName: string) => FilterValueType[];
@@ -95,6 +102,29 @@ export function useFilterApi<T>({
         );
     }
 
+    function getFilterItemCountsForGroup(groupName: string): FilterItemCount[] {
+        const filterGroup = allFilterValues.current.find(({ name }) => name === groupName);
+        if (!filterGroup) return [];
+
+        return filterGroup.values.map(
+            (value): FilterItemCount => ({
+                name: value,
+                count: filteredData.current.filter((item) =>
+                    doesItemPassFilter(
+                        item,
+                        [
+                            {
+                                name: groupName,
+                                values: filterGroup.values.filter((oldValue) => oldValue !== value),
+                            },
+                        ],
+                        getValueFormatters()
+                    )
+                ).length,
+            })
+        );
+    }
+
     /**@internal
      *
      */
@@ -105,7 +135,7 @@ export function useFilterApi<T>({
     function filter(preventReRender?: boolean) {
         if (!data || data.length === 0) return;
         setFilteredData(
-            data.filter((item) => doesItemPass(item, getFilterState(), getValueFormatters()))
+            data.filter((item) => doesItemPassFilter(item, getFilterState(), getValueFormatters()))
         );
 
         handleShouldReRender(preventReRender);
@@ -253,6 +283,7 @@ export function useFilterApi<T>({
             reCreateFilterValue: reCreateFilterValues,
         },
         filterGroupState: {
+            getFilterItemCountsForGroup: getFilterItemCountsForGroup,
             getInactiveGroupValues: getInactiveGroupValues,
             getGroupValues: getGroupValues,
             checkValueIsInActive: checkValueIsInActive,

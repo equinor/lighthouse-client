@@ -27,7 +27,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
 }: FilterGroupeComponentProps) => {
     const {
         operations: { markAllValuesActive },
-        filterGroupState: { getInactiveGroupValues },
+        filterGroupState: { getInactiveGroupValues, getFilterItemCountsForGroup },
     } = useFilterApiContext();
 
     const [filterSearchValue, setFilterSearchValue] = useState('');
@@ -51,6 +51,8 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     function handleSearchButtonClick() {
         setSearchActive((isActive) => !isActive);
     }
+
+    const itemCounts = getFilterItemCountsForGroup(filterGroup.name);
 
     return (
         <Wrapper>
@@ -82,6 +84,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                     {groupsMatchingSearch.map((value) => (
                         <FilterItemComponent
                             key={value}
+                            count={itemCounts.find(({ name }) => name === value)?.count ?? 0}
                             //HACK: Must recieve null and not blank
                             filterItem={value === '(Blank)' ? null : value}
                             groupName={filterGroup.name}
