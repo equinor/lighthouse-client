@@ -1,3 +1,7 @@
+import { useIsFetching } from 'react-query';
+import styled from 'styled-components';
+import { CircularProgress } from '@equinor/eds-core-react';
+
 import { SectionRow } from '../../../../Styles/Section';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { Workflow } from '../../../Workflow/Components/Workflow';
@@ -13,19 +17,18 @@ import {
 } from './RequestDetailViewStyles';
 import { HistoryList } from '../History/HistoryList';
 import { HotUpload } from '../../../Attachments/HotUpload';
-import { CircularProgress } from '@equinor/eds-core-react';
-import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
-import { useIsReferencesLoading } from '../../../../Hooks/React-Query/useIsReferencesLoading';
 
 export const SingleView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
 
-    const workflowLoading = useIsWorkflowLoading();
-    const referencesLoading = useIsReferencesLoading();
+    const isLoading = useIsFetching({ active: true }) > 0;
 
     return (
         <div>
-            <BoldHeading>Request</BoldHeading>
+            <TitleSection>
+                <BoldHeading>Request </BoldHeading>
+                {isLoading && <CircularProgress size={16} />}
+            </TitleSection>
             <SectionRow>
                 <Section>
                     <SubHeading>Phase</SubHeading>
@@ -39,7 +42,7 @@ export const SingleView = (): JSX.Element => {
             <SectionRow>
                 <Section>
                     <SubHeading>Change category</SubHeading>
-                    <Value>{request.category}</Value>
+                    <Value>{request.changeCategory.name}</Value>
                 </Section>
 
                 <Section>
@@ -71,7 +74,6 @@ export const SingleView = (): JSX.Element => {
             <Section>
                 <WorkflowLoadingHeader>
                     <BoldHeading>Workflow</BoldHeading>
-                    {workflowLoading && <CircularProgress size={16} />}
                 </WorkflowLoadingHeader>
                 <Workflow />
             </Section>
@@ -85,7 +87,6 @@ export const SingleView = (): JSX.Element => {
                     <Section>
                         <WorkflowLoadingHeader>
                             <BoldHeading>References</BoldHeading>
-                            {referencesLoading && <CircularProgress size={16} />}
                         </WorkflowLoadingHeader>
                         <Value>
                             <RelatedObjects
@@ -117,3 +118,10 @@ export const SingleView = (): JSX.Element => {
         </div>
     );
 };
+
+const TitleSection = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 1em;
+`;

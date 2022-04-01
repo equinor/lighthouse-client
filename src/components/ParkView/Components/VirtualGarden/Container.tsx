@@ -65,7 +65,10 @@ export const VirtualContainer = <T extends unknown>(): JSX.Element | null => {
         <Container>
             <FilterSelector />
             <ExpandProvider initialWidths={widths}>
-                <VirtualGarden garden={garden} />
+                <VirtualGarden
+                    garden={garden}
+                    width={itemWidth && itemWidth(garden, gardenKey.toString())}
+                />
             </ExpandProvider>
         </Container>
     );

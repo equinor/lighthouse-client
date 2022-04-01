@@ -21,6 +21,7 @@ type PackageContainerProps<T> = {
     packageChild: React.MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element> | undefined;
     handleExpand: any;
     items: GardenItem<T>[] | null;
+    itemWidth?: number;
 };
 export const GardenItemContainer = <T extends unknown>(props: PackageContainerProps<T>) => {
     const {
@@ -31,6 +32,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
         itemKey,
         handleExpand,
         items,
+        itemWidth,
     } = props;
     const expand = useExpand();
     const { onSelect } = useParkViewContext();
@@ -75,6 +77,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                                         ?.isExpanded ?? false
                                 }
                                 depth={item?.itemDepth}
+                                width={itemWidth}
                             />
                         ) : (
                             <DefaultPackage onClick={() => onSelect(item)}>

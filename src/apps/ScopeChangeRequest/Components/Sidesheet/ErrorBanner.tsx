@@ -1,13 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ServerError } from '../../Types/ScopeChange/ServerError';
 import { useErrorMessageListener } from '../../Functions/ErrorMessage/useErrorMessageListener';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
-
-export interface ErrorFormat {
-    message: ServerError | undefined;
-    requestId: string;
-}
 
 /**
  * Provides a uniform banner for error messages in the sidesheet
@@ -17,19 +11,18 @@ export function ScopeChangeErrorBanner(): JSX.Element {
     const { errors, removeErrors } = useErrorMessageListener();
 
     return (
-        <div>
+        <>
             {errors &&
                 errors.map((message) => (
                     <ErrorContainer key={message.title}>
                         <Inline>
-                            <span></span>
                             <div>{message.title}</div>
                             <ClickableIcon name="close" onClick={() => removeErrors(message)} />
                         </Inline>
                         <ErrorDetails>{message.description}</ErrorDetails>
                     </ErrorContainer>
                 ))}
-        </div>
+        </>
     );
 }
 const Inline = styled.div`

@@ -36,7 +36,7 @@ export const TableHeadCell = styled.div<{ align?: string }>`
     flex-direction: row;
 
     font-size: 0.875rem;
-    height: 35px;
+    height: 32px;
     font-weight: 500;
     background-color: rgb(247, 247, 247);
     line-height: 1.5rem;
@@ -56,12 +56,9 @@ export const TableHeadCell = styled.div<{ align?: string }>`
 `;
 
 export const TableCell = styled.div<{ align?: string }>`
-    padding: 10px 0px 0px 10px;
-    /* font-size: inherit;
-    border-bottom: 1px solid rgba(224, 224, 224, 1);
-    font-weight: 400;
-    line-height: 1.43;
-    vertical-align: inherit; */
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -19,6 +19,7 @@ export interface CustomItemView<T> {
     onClick: () => void;
     columnExpanded: boolean;
     depth?: number;
+    width?: number;
 }
 
 export interface CustomGroupView<T> {

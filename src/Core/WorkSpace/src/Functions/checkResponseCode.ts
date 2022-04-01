@@ -1,4 +1,4 @@
-const SERVER_ERROR = 'Server error encountered an error and could not respond with data.';
+const SERVER_ERROR = 'Server encountered an error and could not respond with data.';
 const AUTH_ERROR =
     'It looks like you do not have access to enter this page, please apply for access and try again.';
 

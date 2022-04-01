@@ -24,7 +24,7 @@ const getSubGroupItems = <T extends unknown>(
         subGroup.items.forEach((item) => {
             items.push({
                 item,
-                itemDepth: subGroup.depth ?? 0,
+                itemDepth: subGroup.depth,
             });
         });
     } else if (subGroup?.subGroupCount !== 0 && !isExpanded) {

@@ -30,9 +30,7 @@ const expandReducer = (state: State, action: Action): State => {
             // 0 since no description data. But if you expand column first and collapse
             // all subgroups, the column wont be resized
             if (width === 0) {
-                return {
-                    ...state,
-                };
+                return state;
             }
             if (state.expandedColumns && state.expandedColumns[action.key]) {
                 const currWidths = [...state.widths];

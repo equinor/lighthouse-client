@@ -11,13 +11,15 @@ export function useScopeChangeMutationWatcher(requestId: string): void {
     const queryClient = useQueryClient();
     const { baseKey } = scopeChangeQueryKeys(requestId);
 
+    //TODO: investigate
+    //Maybe subscribe and unsub when requestId changes
     const {
         dataApi: { queryKey: workspaceKey },
     } = useDataContext();
 
     useGlobalMutationListener({
         onMutationSettled: (mutationEvent) => {
-            queryClient.invalidateQueries(baseKey);
+            baseKey ? queryClient.invalidateQueries(baseKey) : queryClient.invalidateQueries();
             /** Only invalidate list if the mutation was a success */
             if (mutationEvent.state.status === 'success') {
                 queryClient.invalidateQueries(workspaceKey);

@@ -13,7 +13,7 @@ interface GroupByArgs<T, K extends keyof T> {
     isExpanded?: boolean;
     preGroupFiltering: PreGroupByFiltering<T>;
     customGroupByKeys?: Record<string, unknown>;
-    depth?: number;
+    depth: number;
 }
 
 const lookupGroup = <T>(acc: GardenGroups<T>, valueKey: string): DataSet<T> | undefined => {
@@ -74,7 +74,7 @@ export function groupBy<T, K extends keyof T>({
                         subGroups: [],
                         description: groupDescriptionFunc(item, key),
                         subGroupCount: 0,
-                        depth: depth ?? 0,
+                        depth: depth,
                     });
                 }
             });
@@ -115,7 +115,7 @@ export function groupBy<T, K extends keyof T>({
             isExpanded: true,
             customGroupByKeys: customGroupByKeys,
             preGroupFiltering: preGroupFiltering,
-            depth: (gardengroups[index]?.depth ?? -1) + 1,
+            depth: gardengroups[index].depth + 1,
         });
 
         if (nextKeys.length > 0) {

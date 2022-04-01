@@ -15,19 +15,21 @@ import {
 import { HistoryList } from '../History/HistoryList';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { HotUpload } from '../../../Attachments/HotUpload';
-import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
-import { useIsReferencesLoading } from '../../../../Hooks/React-Query/useIsReferencesLoading';
+import { useIsFetching } from 'react-query';
 
 export const SplitView = (): JSX.Element => {
     const { request, requestAccess } = useScopeChangeContext();
 
-    const workflowLoading = useIsWorkflowLoading();
-    const referencesLoading = useIsReferencesLoading();
+    const isLoading = useIsFetching({ active: true }) > 0;
 
     return (
         <SplitScreen>
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
-                <BoldHeading>Request</BoldHeading>
+                <TitleSection>
+                    <BoldHeading>Request </BoldHeading>
+                    {isLoading && <CircularProgress size={16} />}
+                </TitleSection>
+
                 <SectionRow>
                     <Section>
                         <SubHeading>Phase</SubHeading>
@@ -42,7 +44,7 @@ export const SplitView = (): JSX.Element => {
                 <SectionRow>
                     <Section>
                         <SubHeading>Change category</SubHeading>
-                        <Value>{request.category}</Value>
+                        <Value>{request.changeCategory.name}</Value>
                     </Section>
 
                     <Section>
@@ -78,7 +80,6 @@ export const SplitView = (): JSX.Element => {
                         <Section>
                             <WorkflowLoadingHeader>
                                 <BoldHeading>References</BoldHeading>
-                                {referencesLoading && <CircularProgress size={16} />}
                             </WorkflowLoadingHeader>
                             <Value>
                                 <RelatedObjects
@@ -104,7 +105,6 @@ export const SplitView = (): JSX.Element => {
             <div style={{ display: 'flex', flexBasis: '50%', flexDirection: 'column' }}>
                 <WorkflowLoadingHeader>
                     <BoldHeading>Workflow</BoldHeading>
-                    {workflowLoading && <CircularProgress size={16} />}
                 </WorkflowLoadingHeader>
                 <Workflow />
                 <Section>
@@ -117,6 +117,13 @@ export const SplitView = (): JSX.Element => {
         </SplitScreen>
     );
 };
+
+const TitleSection = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 1em;
+`;
 
 const SplitScreen = styled.div`
     display: flex;

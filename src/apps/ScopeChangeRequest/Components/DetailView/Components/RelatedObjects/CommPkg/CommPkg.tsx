@@ -2,14 +2,14 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { isProduction, useFacility } from '../../../../../../../Core/Client/';
 import { Wrapper } from '../WrapperStyles';
-import { CommissioningPackage } from '../../../../../Types/scopeChangeRequest';
+import { ScopeChangeCommissioningPackage } from '../../../../../Types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../../Api/PCS/getCommPkgById';
 import { proCoSysQueryKeys } from '../../../../../Keys/proCoSysQueryKeys';
 import { CommPkgIcon } from './commPkgIcon';
 import { useInfiniteCachedQuery } from '../../../../../Hooks/React-Query/useInfiniteCachedQuery';
 
 interface CommPkgProps {
-    commPkg: CommissioningPackage;
+    commPkg: ScopeChangeCommissioningPackage;
 }
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {

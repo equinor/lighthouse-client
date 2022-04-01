@@ -11,7 +11,8 @@ export const Value = styled.div`
 
 export const BoldHeading = styled.div`
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 500;
+    line-height: 24px;
     margin-top: 0.5em;
 `;
 
