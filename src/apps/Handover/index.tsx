@@ -15,11 +15,16 @@ import {
 } from './Garden/utility';
 import { Status } from './Garden/components/commonStyles';
 import { statusBarData } from './Garden/components/statusItems';
+enum Tabs {
+    TABLE,
+    GARDEN,
+}
 export function setup(appApi: ClientApi): void {
     const handover = appApi
         .createWorkSpace<HandoverPackage>({
             CustomSidesheet: HandoverSideSheet,
             objectIdentifier: 'id',
+            defaultTab: Tabs.GARDEN,
         })
         .registerDataSource({
             responseAsync: responseAsync,
