@@ -22,8 +22,16 @@ export const VirtualGarden = <T extends unknown>({
 }: VirtualGardenProps<T>): JSX.Element => {
     const parentRef = useRef<HTMLDivElement | null>(null);
 
-    const { gardenKey, fieldSettings, customView, itemKey, sortData, highlightColumn, rowHeight } =
-        useParkViewContext<T>();
+    const {
+        gardenKey,
+        fieldSettings,
+        groupByKeys,
+        customView,
+        itemKey,
+        sortData,
+        highlightColumn,
+        rowHeight,
+    } = useParkViewContext<T>();
     const { isScrolling, scrollOffsetFn } = useVirtualScrolling(parentRef);
     const { widths: contextWidths } = useExpand();
     const refresh = useRefresh();
@@ -117,6 +125,10 @@ export const VirtualGarden = <T extends unknown>({
                             handleExpand={handleExpand}
                             items={columnItems}
                             itemWidth={width}
+                            customSubGroup={
+                                customView?.customGroupView as CustomVirtualView<T>['customGroupView']
+                            }
+                            groupByKeys={[gardenKey, ...groupByKeys]}
                         />
                     </Fragment>
                 );
