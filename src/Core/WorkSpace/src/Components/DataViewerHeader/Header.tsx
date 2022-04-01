@@ -1,9 +1,9 @@
 import { useFactory } from '@equinor/DataFactory';
 import { CircularProgress, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useFilteredData } from '@equinor/filter';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
 import Icon from '../../../../../components/Icon/Icon';
+import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { useSettings } from '../../../../Client/Hooks';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
@@ -36,7 +36,12 @@ export const CompletionViewHeader = ({
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
-    const { data } = useFilteredData();
+    // const { data } = useFilteredData();
+
+    const {
+        filterState: { getFilteredData },
+    } = useFilterApiContext();
+    const data = getFilteredData();
     const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
 
     const { clientEnv } = useSettings();
@@ -89,7 +94,7 @@ export const CompletionViewHeader = ({
                     }
                     onClick={() => dataApi.refetch()}
                 >
-                    {dataApi.isFetching ? (
+                    {dataApi?.isFetching ? (
                         <CircularProgress size={24} />
                     ) : (
                         <ClickableIcon size={24} name="refresh" />

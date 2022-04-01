@@ -5,6 +5,7 @@ export function generateFilterValues<T>(
     filterConfiguration: FilterOptions<T>,
     data: T[]
 ): FilterGroup[] {
+    if (!data || data.length == 0) return [];
     // Initialize all filter groups
     const filterGroups: FilterGroup[] = filterConfiguration.map(
         ({ name }): FilterGroup => ({ name: name, values: [] })
@@ -24,5 +25,17 @@ export function generateFilterValues<T>(
                 : [...filterGroup.values.filter((oldValue) => oldValue !== value), value];
         })
     );
-    return filterGroups;
+    return sortFilterGroups(filterGroups);
+}
+
+/**
+ * Sorts the filter items alphanumeric.
+ * PITFALL: Case sensitive sorting
+ * A > T > a
+ * @param groups
+ * @returns
+ */
+function sortFilterGroups(groups: FilterGroup[]): FilterGroup[] {
+    groups.forEach(({ values }) => values.sort());
+    return groups;
 }
