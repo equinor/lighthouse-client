@@ -57,7 +57,7 @@ export const VirtualContainer = <T extends unknown>(): JSX.Element | null => {
     }, [amountOfColumns, itemWidth]);
 
     //TODO: Handle widths = 0 better
-    if (widths.length === 0) {
+    if (widths.length === 0 || amountOfColumns !== widths.length) {
         return null;
     }
 

@@ -9,12 +9,19 @@ import { getGardenItems } from './utils';
 
 type HeaderContainerProps<T> = {
     columnVirtualizer: { virtualItems: VirtualItem[] };
-    headerChild: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element> | undefined;
+    headerChild?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
     garden: GardenGroups<T>;
     highlightColumn: string | undefined;
+    groupByKey: string;
 };
 export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T>): JSX.Element => {
-    const { columnVirtualizer, garden, headerChild: HeaderChild, highlightColumn } = props;
+    const {
+        columnVirtualizer,
+        garden,
+        headerChild: HeaderChild,
+        highlightColumn,
+        groupByKey,
+    } = props;
     const expandColumn = useExpandDispatch();
     const handleHeaderClick = useCallback(
         (index: number, column: DataSet<T>) => {
@@ -45,7 +52,11 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
                         key={virtualColumn.index}
                     >
                         {HeaderChild ? (
-                            <HeaderChild garden={garden} columnIndex={virtualColumn.index} />
+                            <HeaderChild
+                                garden={garden}
+                                columnIndex={virtualColumn.index}
+                                groupByKey={groupByKey}
+                            />
                         ) : (
                             garden[virtualColumn.index].value
                         )}
