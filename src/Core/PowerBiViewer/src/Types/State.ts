@@ -13,7 +13,7 @@ export interface ViewState {
 export interface FusionPowerBiOptions {
     reportURI: string;
     filter?: Filter[];
-    options?: { showFilter?: boolean; enablePageNavigation?: boolean };
+    options?: { showFilter?: boolean; enablePageNavigation?: boolean; defaultPage?: string };
     pages: Page[];
     loadPagesInDev?: boolean;
 }

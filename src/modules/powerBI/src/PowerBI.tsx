@@ -39,6 +39,7 @@ interface PowerBiProps {
     options?: {
         showFilter?: boolean;
         enableNavigation?: boolean;
+        defaultPage?: string;
     };
     aspectRatio?: number;
     isFilterActive?: boolean;

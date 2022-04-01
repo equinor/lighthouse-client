@@ -40,6 +40,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
         setActivePage(page);
         const newReport = getReportByPage(page, reports);
         if (newReport && newReport.reportURI !== activeReport?.reportURI) {
+            newReport.options = { ...newReport.options, defaultPage: page.pageId };
             setActiveReport(newReport);
         }
     };

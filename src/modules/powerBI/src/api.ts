@@ -19,7 +19,7 @@ export interface FusionPBIError {
 export function usePowerBI(
     resource: string,
     filterOptions?: Filter[],
-    options?: { showFilter?: boolean; enablePageNavigation?: boolean }
+    options?: { showFilter?: boolean; enablePageNavigation?: boolean; defaultPage?: string }
 ): PowerBIResult {
     const { getConfig } = useFusionClient(resource, filterOptions, options);
     const [error, setError] = useState<FusionPBIError>();
