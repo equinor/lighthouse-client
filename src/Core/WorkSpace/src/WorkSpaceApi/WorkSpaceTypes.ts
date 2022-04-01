@@ -28,6 +28,7 @@ export interface ViewerOptions<T> {
     initialState: T[];
     objectIdentifier: keyof T;
     viewerId: string;
+    defaultTab?: number;
     dataFactoryCreator(factory: Factory): void;
     openSidesheet(SidesheetContent?: React.FC<any>, props?: any): void;
     CustomSidesheet?: React.FC<T>;

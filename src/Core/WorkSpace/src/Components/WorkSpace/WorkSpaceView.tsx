@@ -26,6 +26,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         onSelect,
         idResolver,
         objectIdentifier,
+        defaultTab,
     } = useWorkSpace();
     const { data, dataApi } = useDataContext();
     const { id } = useParams();
@@ -43,7 +44,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         powerBiOptions,
         workflowEditorOptions
     );
-    const [activeTab, setActiveTab] = useState(Number(id) || 0);
+    const [activeTab, setActiveTab] = useState(Number(id) || defaultTab);
 
     // const filterLocationKey = useMemo(() => `filer-${props.shortName}`, [props.shortName]);
     // const persistOptions: FilterPersistOptions = useMemo(

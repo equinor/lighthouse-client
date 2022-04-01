@@ -18,12 +18,15 @@ export interface CustomItemView<T> {
     itemKey: string;
     onClick: () => void;
     columnExpanded: boolean;
+    depth?: number;
+    width?: number;
 }
 
 export interface CustomGroupView<T> {
     data: DataSet<T>;
     onClick: () => void;
     columnExpanded: boolean;
+    groupByKeys: (keyof T)[];
 }
 
 export interface CustomHeaderView<T> {
@@ -39,7 +42,7 @@ export interface CustomView<T> {
 }
 export interface CustomVirtualView<T> {
     customItemView?: MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;
-    customGroupView?: React.FC<CustomGroupView<T>>;
+    customGroupView?: MemoExoticComponent<(args: CustomGroupView<T>) => JSX.Element>;
     customHeaderView?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
     customGroupByView?: React.FC;
 }

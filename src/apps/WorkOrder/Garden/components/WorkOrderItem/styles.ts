@@ -1,20 +1,24 @@
 import styled from 'styled-components';
-import { Item } from '../../../../../components/ParkView/Styles/item';
+export const Root = styled.div`
+    height: 80%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 5px;
+`;
 export type WorkOrderItemProps = { backgroundColor: string; textColor: string; background: string };
 //@ts-ignore
-export const WorkOrderWrapper = styled(Item)<WorkOrderItemProps>`
-    position: relative;
+export const WorkOrderWrapper = styled.div<WorkOrderItemProps>`
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: 95%;
     min-width: 150px;
-    box-sizing: border-box;
-    white-space: nowrap;
-    border: 1px solid #dcdcdc;
-    height: 85%;
+    cursor: pointer;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-radius: 5px;
 `;
 
 export const Circles = styled.div`

@@ -13,10 +13,15 @@ import { getYearAndWeekFromDate } from './utilities/packages';
 import { GardenGroups } from '../../components/ParkView/Models/data';
 import { getGardenItemCompletionColor } from '../DisciplineReleaseControl/Components/Garden/gardenFunctions';
 import { getGardenItems } from '../../components/ParkView/Components/VirtualGarden/utils';
+enum Tabs {
+    TABLE,
+    GARDEN,
+}
 export function setup(appApi: ClientApi): void {
     const swcr = appApi.createWorkSpace<SwcrPackage>({
         CustomSidesheet: SwcrSideSheet,
         objectIdentifier: 'swcrNo',
+        defaultTab: Tabs.GARDEN,
     });
 
     async function responseAsync(signal?: AbortSignal) {
@@ -62,7 +67,56 @@ export function setup(appApi: ClientApi): void {
         ],
     });
 
-    swcr.registerTableOptions({ objectIdentifierKey: 'swcrId' });
+    swcr.registerTableOptions({
+        objectIdentifierKey: 'swcrId',
+        columnOrder: [
+            'swcrNo',
+            'title',
+            'system',
+            'controlSystem',
+            'priority',
+            'supplier',
+            'action',
+            'contract',
+        ],
+        headers: [
+            {
+                key: 'swcrNo',
+                title: 'Swcr',
+            },
+            {
+                key: 'title',
+                title: 'Title',
+            },
+            {
+                key: 'priority',
+                title: 'Priority',
+            },
+            {
+                key: 'system',
+                title: 'System',
+            },
+            {
+                key: 'controlSystem',
+                title: 'Control System',
+            },
+            {
+                key: 'action',
+                title: 'Action',
+            },
+            {
+                key: 'supplier',
+                title: 'Supplier',
+            },
+        ],
+        hiddenColumns: [
+            'siteCode',
+            'projectIdentifier',
+            'projectDescription',
+            'description',
+            'modification',
+        ],
+    });
     swcr.registerGardenOptions({
         gardenKey: 'dueAtDate',
         itemKey: 'swcrNo',

@@ -6,6 +6,7 @@ import { ActionType } from './ExpandProvider';
 import { Header, HeaderRoot } from './styles';
 import { useExpandDispatch } from './hooks';
 import { getGardenItems } from './utils';
+import styled from 'styled-components';
 
 type HeaderContainerProps<T> = {
     columnVirtualizer: { virtualItems: VirtualItem[] };
@@ -16,6 +17,7 @@ type HeaderContainerProps<T> = {
 export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T>): JSX.Element => {
     const { columnVirtualizer, garden, headerChild: HeaderChild, highlightColumn } = props;
     const expandColumn = useExpandDispatch();
+
     const handleHeaderClick = useCallback(
         (index: number, column: DataSet<T>) => {
             expandColumn({
@@ -49,9 +51,17 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
                         ) : (
                             garden[virtualColumn.index].value
                         )}
+                        <Count>({garden[virtualColumn.index].count})</Count>
                     </Header>
                 );
             })}
         </HeaderRoot>
     );
 };
+
+export const Count = styled.span`
+    color: #000000;
+    font-weight: 300;
+    font-size: 0.8rem;
+    margin-left: 0.8em;
+`;
