@@ -69,13 +69,13 @@ const getWorkOrderStatuses = (
         status,
     };
 };
-
 const WorkOrderItem = ({
     data,
     itemKey,
     onClick,
     columnExpanded,
-    width = 300,
+    depth,
+    width: itemWidth = 300,
 }: CustomItemView<WorkOrder>) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const anchorRef = useRef<HTMLDivElement>(null);
@@ -94,7 +94,9 @@ const WorkOrderItem = ({
         () => getWorkOrderStatuses(data, gardenKey, groupByKeys),
         [data, gardenKey, groupByKeys]
     );
-    const maxWidth = useMemo(() => width * 0.95, [width]);
+
+    const width = useMemo(() => (depth ? 100 - depth * 3 : 95), [depth]);
+    const maxWidth = useMemo(() => itemWidth * 0.95, [itemWidth]);
     return (
         <Root>
             <WorkOrderWrapper
@@ -105,7 +107,7 @@ const WorkOrderItem = ({
                 onMouseOver={() => setIsOpen(true)}
                 onMouseLeave={() => setIsOpen(false)}
                 onClick={onClick}
-                style={{ maxWidth }}
+                style={{ width: `${columnExpanded ? 100 : width}%`, maxWidth }}
             >
                 {/* <SizeIcons size={size} color={textColor} />*/}
                 {/* {data.holdBy && <FlagIcon color={textColor} />} */}
