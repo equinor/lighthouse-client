@@ -63,7 +63,56 @@ export function setup(appApi: ClientApi): void {
         ],
     });
 
-    swcr.registerTableOptions({ objectIdentifierKey: 'swcrId' });
+    swcr.registerTableOptions({
+        objectIdentifierKey: 'swcrId',
+        columnOrder: [
+            'swcrNo',
+            'title',
+            'system',
+            'controlSystem',
+            'priority',
+            'supplier',
+            'action',
+            'contract',
+        ],
+        headers: [
+            {
+                key: 'swcrNo',
+                title: 'Swcr',
+            },
+            {
+                key: 'title',
+                title: 'Title',
+            },
+            {
+                key: 'priority',
+                title: 'Priority',
+            },
+            {
+                key: 'system',
+                title: 'System',
+            },
+            {
+                key: 'controlSystem',
+                title: 'Control System',
+            },
+            {
+                key: 'action',
+                title: 'Action',
+            },
+            {
+                key: 'supplier',
+                title: 'Supplier',
+            },
+        ],
+        hiddenColumns: [
+            'siteCode',
+            'projectIdentifier',
+            'projectDescription',
+            'description',
+            'modification',
+        ],
+    });
     swcr.registerGardenOptions({
         gardenKey: 'dueAtDate',
         itemKey: 'swcrNo',
