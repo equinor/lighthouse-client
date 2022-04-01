@@ -5,7 +5,7 @@ import { GardenGroups } from '../../Models/data';
 import { FieldSettings } from '../../Models/fieldSettings';
 import { CustomGroupView, CustomItemView } from '../../Models/gardenOptions';
 import { Count } from '../../Styles/common';
-import { SubGroup, PackageRoot, DefaultPackage } from './styles';
+import { SubGroup, PackageRoot, DefaultPackage, SubGroupText } from './styles';
 import { GardenItem } from './types/gardenItem';
 import { useExpand } from './hooks';
 import { isSubGroup } from './utils';
@@ -69,13 +69,12 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                                     onClick={() => handleExpand(item)}
                                     style={{ width: `${width}%` }}
                                 >
-                                    <div>
+                                    <SubGroupText>
                                         {item.status?.statusElement}
                                         {item.value}
                                         {item.description && ' - ' + item.description}
-                                        {item.depth}
                                         <Count>({item.count})</Count>
-                                    </div>
+                                    </SubGroupText>
                                     {item.isExpanded ? <ChevronUp /> : <ChevronDown />}
                                 </SubGroup>
                             )
