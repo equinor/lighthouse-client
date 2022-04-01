@@ -18,3 +18,9 @@ export const SubGroup = styled.div`
         opacity: 0.5;
     }
 `;
+
+export const SubGroupText = styled.div`
+    display: flex;
+    margin-left: 6px;
+    margin-top: 6px;
+`;
