@@ -42,6 +42,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
             {rowVirtualizer.virtualItems.map((virtualRow) => {
                 const item = items?.[virtualRow.index];
                 if (!item) return null;
+                const width = isSubGroup(item) ? 100 - (item?.depth || 0) * 3 : 100;
 
                 return (
                     <PackageRoot
@@ -53,29 +54,34 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                         }}
                     >
                         {isSubGroup(item) ? (
-                            <SubGroup onClick={() => handleExpand(item)}>
+                            <SubGroup
+                                onClick={() => handleExpand(item)}
+                                style={{ width: `${width}%` }}
+                            >
                                 <div>
                                     {item.status?.statusElement}
                                     {item.value}
                                     {item.description && ' - ' + item.description}
+                                    {item.depth}
                                     <Count>({item.count})</Count>
                                 </div>
                                 {item.isExpanded ? <ChevronUp /> : <ChevronDown />}
                             </SubGroup>
                         ) : PackageChild ? (
                             <PackageChild
-                                data={item}
+                                data={item.item}
                                 itemKey={itemKey.toString()}
                                 onClick={() => onSelect(item)}
                                 columnExpanded={
                                     expand?.expandedColumns?.[garden[virtualColumn.index].value]
                                         ?.isExpanded ?? false
                                 }
+                                depth={item?.itemDepth}
                                 width={itemWidth}
                             />
                         ) : (
                             <DefaultPackage onClick={() => onSelect(item)}>
-                                {item[itemKey]}
+                                {item.item[itemKey]}
                             </DefaultPackage>
                         )}
                     </PackageRoot>
