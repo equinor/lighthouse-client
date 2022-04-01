@@ -1,3 +1,5 @@
+import { GardenItem, GardenItemWithDepth } from '../types/gardenItem';
+
 type PackageWithDescription<T extends unknown> = T & {
     description: string;
 };
@@ -5,24 +7,40 @@ type PackageWithDescription<T extends unknown> = T & {
 function packageHasDescription<T extends unknown>(
     packageObj: T
 ): packageObj is PackageWithDescription<T> {
-    if ((packageObj as PackageWithDescription<T>).description) {
+    if ((packageObj as PackageWithDescription<T>)?.description !== undefined) {
         return true;
     } else {
         return false;
     }
 }
-
+function columnDataIsWithDepth<T extends unknown>(
+    packageObj: GardenItem<T>[]
+): packageObj is GardenItemWithDepth<T>[] {
+    if ((packageObj[0] as GardenItemWithDepth<T>)?.item !== undefined) {
+        return true;
+    } else {
+        return false;
+    }
+}
 /**
  * @param columnData One column from the garden
  * @returns Longest description string
  */
-export const getLongestDescription = <T extends unknown>(columnData: T[]): string => {
+export const getLongestDescription = <T extends unknown>(columnData: GardenItem<T>[]): string => {
     let longest = '';
-    columnData.forEach((e: T) =>
-        packageHasDescription(e) && e.description.length > longest.length
-            ? (longest = e.description)
-            : null
-    );
+    if (columnDataIsWithDepth(columnData)) {
+        columnData.forEach(({ item }) => {
+            packageHasDescription(item) && item.description.length > longest.length
+                ? (longest = item.description)
+                : null;
+        });
+    } else {
+        columnData.forEach((e) => {
+            packageHasDescription(e) && e.description.length > longest.length
+                ? (longest = e.description)
+                : null;
+        });
+    }
     return longest;
 };
 /**
@@ -30,8 +48,10 @@ export const getLongestDescription = <T extends unknown>(columnData: T[]): strin
  * @param columnData One column from the garden
  * @returns A calculated width based on string length and font
  */
-export const getDescriptionWidth = <T extends unknown>(columnData: T[] | null): number => {
-    if (!columnData) {
+export const getDescriptionWidth = <T extends unknown>(
+    columnData: GardenItem<T>[] | null
+): number => {
+    if (!columnData || columnData.length === 0) {
         return 0;
     }
     const longestDescription = getLongestDescription(columnData);
