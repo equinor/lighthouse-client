@@ -95,7 +95,7 @@ const WorkOrderItem = ({
         [data, gardenKey, groupByKeys]
     );
 
-    const width = useMemo(() => (depth ? 100 - depth * 3 : 100), [depth]);
+    const width = useMemo(() => (depth ? 100 - depth * 3 : 95), [depth]);
     const maxWidth = useMemo(() => itemWidth * 0.95, [itemWidth]);
     return (
         <Root>
