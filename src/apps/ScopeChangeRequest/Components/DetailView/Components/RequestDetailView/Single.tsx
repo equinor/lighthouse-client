@@ -15,7 +15,7 @@ import {
     Value,
     WorkflowLoadingHeader,
 } from './RequestDetailViewStyles';
-import { HistoryList } from '../History/HistoryList';
+import { LogTab } from '../History/HistoryList';
 import { HotUpload } from '../../../Attachments/HotUpload';
 
 export const SingleView = (): JSX.Element => {
@@ -112,7 +112,7 @@ export const SingleView = (): JSX.Element => {
             <Section style={{ paddingBottom: '1em' }}>
                 <BoldHeading>Log</BoldHeading>
                 <Value>
-                    <HistoryList />
+                    <LogTab />
                 </Value>
             </Section>
         </div>
