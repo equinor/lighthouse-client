@@ -57,6 +57,7 @@ export interface LogEntry {
     objectGuid: string;
     eventType: string;
     objectType: string;
+    details: string;
 }
 
 export interface ScopeChangeRequest extends ScopeChangeBaseModel {

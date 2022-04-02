@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { getCategories } from '../../Api/ScopeChange/getCategories';
 import { getPhases } from '../../Api/ScopeChange/getPhases';
+import { scopeChangeQueries } from '../../Keys/queries';
 import { FormTextField } from './FormTextField';
 import { Origin } from './Origin';
 import { ScopeChangeFormModel } from './useScopeChangeFormState';
@@ -19,12 +20,9 @@ export const ScopeChangeBaseForm = ({
     state,
     shouldDisableCategory,
 }: ScopeChangeBaseFormProps): JSX.Element => {
-    const { data: phases } = useQuery(['phase'], getPhases, {
-        cacheTime: Infinity,
-    });
-    const { data: categories } = useQuery(['category'], getCategories, {
-        cacheTime: Infinity,
-    });
+    const { phaseQuery, categoryQuery } = scopeChangeQueries;
+    const { data: phases } = useQuery(phaseQuery);
+    const { data: categories } = useQuery(categoryQuery);
 
     return (
         <BaseFormContainer>

@@ -14,7 +14,7 @@ export function HistoryItem({ item }: HistoryItemProps): JSX.Element {
             <MetaText>
                 {`${formattedDate} by ${item.createdBy.firstName} ${item.createdBy.lastName}`}
             </MetaText>
-            <Text>{item.title}</Text>
+            <Text>{item.title.length > 0 ? item.title : item.details}</Text>
         </ItemWrapper>
     );
 }

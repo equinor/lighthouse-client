@@ -1,7 +1,5 @@
-import { useQuery, UseQueryOptions } from 'react-query';
-import { canReassign, canUnsign, canSign } from '../Api/ScopeChange/Access';
-import { CacheTime } from '../Enums/cacheTimes';
-import { scopeChangeQueryKeys } from '../Keys/scopeChangeQueryKeys';
+import { useQuery } from 'react-query';
+import { scopeChangeQueries } from '../Keys/queries';
 
 interface CriteriaOptions {
     canSign: boolean | undefined;
@@ -14,42 +12,11 @@ export function useWorkflowCriteriaOptions(
     criteriaId: string,
     stepId: string
 ): CriteriaOptions {
-    const params = {
-        criteriaId,
-        requestId,
-        stepId,
-    };
+    const { canSignQuery, canUnsignQuery, canReassignQuery } = scopeChangeQueries.workflowQueries;
 
-    const queryParams: Omit<
-        UseQueryOptions<boolean, string, boolean, string[]>,
-        'queryKey' | 'queryFn'
-    > = {
-        refetchOnWindowFocus: false,
-        retry: 3,
-        staleTime: CacheTime.FiveMinutes,
-        cacheTime: CacheTime.FiveMinutes,
-    };
-    const { workflowKeys } = scopeChangeQueryKeys(requestId);
-    const { criteriaCanSignKey, criteriaCanReassignKey, criteriaCanUnsignKey } = workflowKeys;
-
-    const checkCanSign = () => canSign(params);
-    const { data: userCanSign } = useQuery(
-        criteriaCanSignKey(stepId, criteriaId),
-        checkCanSign,
-        queryParams
-    );
-    const checkCanReassign = () => canReassign(params);
-    const { data: userCanReassign } = useQuery(
-        criteriaCanReassignKey(stepId, criteriaId),
-        checkCanReassign,
-        queryParams
-    );
-    const checkCanUnsign = () => canUnsign(params);
-    const { data: userCanUnsign } = useQuery(
-        criteriaCanUnsignKey(stepId, criteriaId),
-        checkCanUnsign,
-        queryParams
-    );
+    const { data: userCanReassign } = useQuery(canReassignQuery([requestId, stepId, criteriaId]));
+    const { data: userCanUnsign } = useQuery(canUnsignQuery([requestId, stepId, criteriaId]));
+    const { data: userCanSign } = useQuery(canSignQuery([requestId, stepId, criteriaId]));
 
     return {
         canSign: userCanSign,
