@@ -191,6 +191,8 @@ const WorkflowText = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    font-size: 16px;
+    color: ${tokens.colors.text.static_icons__default.hex};
 `;
 
 const Spacer = styled.div`

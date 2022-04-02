@@ -1,18 +1,24 @@
-import { Tabs } from '@equinor/eds-core-react';
+import { CircularProgress, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useState } from 'react';
+import { useIsFetching, useIsMutating, useQuery } from 'react-query';
 import styled from 'styled-components';
 import { useInternalSidesheetFunction } from '../../../../packages/Sidesheet/Hooks/useInternalSidesheetFunction';
+import { useScopeChangeAccess } from '../../Hooks/useScopeChangeAccess';
 import { useScopeChangeMutationWatcher } from '../../Hooks/useScopeChangeMutationWatcher';
+import { scopeChangeQueries } from '../../Keys/queries';
+import { scopeChangeQueryKeys } from '../../Keys/scopeChangeQueryKeys';
 import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
 import { HotUpload } from '../Attachments/HotUpload';
-import { HistoryList } from '../DetailView/Components/History/HistoryList';
+import { Attachments } from '../DetailView/Components/Attachments';
+import { LogTab, LogTabTitle } from '../DetailView/Components/History/HistoryList';
 import { RelatedObjects } from '../DetailView/Components/RelatedObjects';
 import { Workflow } from '../Workflow/Components/Workflow';
 import { ScopeChangeContext } from './Context/scopeChangeAccessContext';
 import { useScopeChangeContext } from './Context/useScopeChangeAccessContext';
 import { ScopeChangeErrorBanner } from './ErrorBanner';
 import { ScopeChangeSideSheet } from './ScopeChangeSidesheet';
+import { SidesheetBanner } from './SidesheetBanner';
 import { useOctopusErrorHandler } from './useOctopusErrorHandler';
 
 export function ScopeChangeSidesheetWrapper(item: ScopeChangeRequest): JSX.Element {
@@ -34,9 +40,34 @@ export function ScopeChangeSidesheetWrapper(item: ScopeChangeRequest): JSX.Eleme
     );
 }
 
+function useIsScopeChangeMutatingOrFetching(id: string): boolean {
+    const { baseKey } = scopeChangeQueryKeys(id);
+    const isFetching = useIsFetching(baseKey, { active: true }) > 0;
+    const isMutating = useIsMutating(baseKey) > 0;
+
+    return isFetching || isMutating;
+}
+
+function useGetScopeChangeRequest(
+    id: string,
+    initialData?: ScopeChangeRequest
+): ScopeChangeRequest | undefined {
+    const { baseQuery } = scopeChangeQueries;
+    const { data: request } = useQuery<ScopeChangeRequest>({
+        ...baseQuery(id),
+        initialData: initialData,
+    });
+
+    return request;
+}
+
 export function ScopeChangeSidesheetNew(item: ScopeChangeRequest): JSX.Element {
-    const [activeTab, setActiveTab] = useState(0);
-    const handleChange = (value: number) => setActiveTab(value);
+    useScopeChangeMutationWatcher(item.id);
+    useOctopusErrorHandler();
+    const { activeTab, handleChange } = useEdsTabs();
+
+    const request = useGetScopeChangeRequest(item.id, item);
+    const requestAccess = useScopeChangeAccess(item.id);
 
     const { setWidth } = useInternalSidesheetFunction();
     useEffect(() => {
@@ -46,37 +77,32 @@ export function ScopeChangeSidesheetNew(item: ScopeChangeRequest): JSX.Element {
 
     return (
         <>
+            <ScopeChangeErrorBanner />
             <ScopeChangeContext.Provider
                 value={{
-                    request: item,
-                    requestAccess: {
-                        canDelete: true,
-                        canGet: true,
-                        canPatch: true,
-                        canPost: true,
-                        canPut: true,
-                    },
+                    request: request ?? item,
+                    requestAccess: requestAccess,
                 }}
             >
                 <SidesheetBanner />
                 <Tabs activeTab={activeTab} onChange={handleChange}>
-                    <Tabs.List
-                        style={{ backgroundColor: `${tokens.colors.ui.background__light.hex}` }}
-                    >
-                        <Tabs.Tab>Request </Tabs.Tab>
-                        <Tabs.Tab>Work orders</Tabs.Tab>
-                        <Tabs.Tab>Log</Tabs.Tab>
-                    </Tabs.List>
+                    <SidesheetTabList>
+                        <Tabs.Tab>
+                            <RequestTabTitle />
+                        </Tabs.Tab>
+                        <Tabs.Tab disabled>
+                            <WorkOrderTabTitle />
+                        </Tabs.Tab>
+                        <Tabs.Tab>
+                            <LogTabTitle />
+                        </Tabs.Tab>
+                    </SidesheetTabList>
                     <Tabs.Panels>
                         <Tabs.Panel>
                             <RequestTab />
                         </Tabs.Panel>
-                        <Tabs.Panel>
-                            <div>Im a work order table</div>
-                        </Tabs.Panel>
-                        <Tabs.Panel>
-                            <HistoryList />
-                        </Tabs.Panel>
+                        <Tabs.Panel>{activeTab === 1 && <WorkOrderTab />}</Tabs.Panel>
+                        <Tabs.Panel>{activeTab === 2 && <LogTab />}</Tabs.Panel>
                     </Tabs.Panels>
                 </Tabs>
             </ScopeChangeContext.Provider>
@@ -84,29 +110,79 @@ export function ScopeChangeSidesheetNew(item: ScopeChangeRequest): JSX.Element {
     );
 }
 
-function RequestTab() {
+const SidesheetTabList = styled(Tabs.List)`
+    background-color: ${tokens.colors.ui.background__light.hex};
+`;
+
+interface EdsTabHandler {
+    activeTab: number;
+    handleChange: (value: number) => void;
+}
+
+function useEdsTabs(initialTabIndex?: number): EdsTabHandler {
+    const [activeTab, setActiveTab] = useState(initialTabIndex ?? 0);
+    const handleChange = (value: number) => setActiveTab(value);
+
+    return {
+        activeTab: activeTab,
+        handleChange: handleChange,
+    };
+}
+
+const TabTitle = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+`;
+
+function RequestTabTitle() {
     const { request } = useScopeChangeContext();
+    const isLoading = useIsScopeChangeMutatingOrFetching(request.id);
+
+    return (
+        <TabTitle>
+            Request
+            {isLoading && <CircularProgress size={16} />}
+        </TabTitle>
+    );
+}
+
+function WorkOrderTabTitle() {
+    return (
+        <TabTitle>
+            Work orders
+            {false && <CircularProgress size={16} />}
+        </TabTitle>
+    );
+}
+
+function WorkOrderTab() {
+    return <></>;
+}
+
+function RequestTab() {
+    const { request, requestAccess } = useScopeChangeContext();
 
     return (
         <Wrapper>
             <FormWrapper>
                 <FlexColumn>
-                    <span>
+                    <InnerSection>
                         <SectionHeading>Description</SectionHeading>
 
                         <Description>{request.description}</Description>
-                    </span>
+                    </InnerSection>
                 </FlexColumn>
                 <FlexColumn>
-                    <span>
+                    <InnerSection>
                         <SectionHeading>Workflow</SectionHeading>
 
                         <Workflow />
-                    </span>
+                    </InnerSection>
                 </FlexColumn>
 
                 <FlexColumn>
-                    <span>
+                    <InnerSection>
                         <SectionHeading>References</SectionHeading>
 
                         <RelatedObjects
@@ -117,19 +193,24 @@ function RequestTab() {
                             disciplines={request.disciplines}
                             tags={request.tags}
                         />
-                    </span>
-                    <span>
+                    </InnerSection>
+                    <InnerSection>
                         <SectionHeading>Attachments</SectionHeading>
-                        <HotUpload />
-                        {request.attachments.map(({ fileName, fileSize }) => (
-                            <div key={fileName}>{fileName}</div>
-                        ))}
-                    </span>
+
+                        {requestAccess.canPatch && <HotUpload />}
+                        <Attachments attachments={request.attachments} requestId={request.id} />
+                    </InnerSection>
                 </FlexColumn>
             </FormWrapper>
         </Wrapper>
     );
 }
+
+export const InnerSection = styled.span`
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+`;
 
 export const FlexColumn = styled.div`
     font-weight: 500;
@@ -154,7 +235,7 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 44px;
-    padding: 32px;
+    padding: 32px 24px;
 `;
 
 const Description = styled.div`
@@ -172,59 +253,4 @@ const SectionHeading = styled.div`
     font-weight: 500;
     line-height: 24px;
     text-align: left;
-`;
-
-export function SidesheetBanner(): JSX.Element {
-    const { request } = useScopeChangeContext();
-
-    return (
-        <Banner>
-            <BannerItem title={'Phase'} value={request.phase} />
-            <BannerItem title={'Change category'} value={request.changeCategory.name} />
-            <BannerItem
-                title={'Guesstimate'}
-                value={request.guesstimateHours ? `${request.guesstimateHours} mhr` : ''}
-            />
-        </Banner>
-    );
-}
-
-const Banner = styled.div`
-    height: 76px;
-    width: 100%;
-    background-color: ${tokens.colors.ui.background__light.hex};
-    display: flex;
-    flex-direction: row;
-    gap: 13em;
-    padding: 0em 5em;
-    align-items: center;
-`;
-
-interface BannerItemProps {
-    title: string;
-    value: string | number;
-}
-
-export function BannerItem({ title, value }: BannerItemProps): JSX.Element {
-    return (
-        <div>
-            <BannerItemTitle>{title}</BannerItemTitle>
-            <BannerItemValue>{value}</BannerItemValue>
-        </div>
-    );
-}
-
-const BannerItemTitle = styled.div`
-    font-size: 12px;
-    line-height: 16px;
-    font-weight: 500;
-    color: ${tokens.colors.text.static_icons__tertiary.hex};
-`;
-
-const BannerItemValue = styled.div`
-    font-size: 16px;
-    line-height: 24px;
-    font-weight: 400;
-    color: ${tokens.colors.text.static_icons__default.hex};
-    min-height: 24px;
 `;
