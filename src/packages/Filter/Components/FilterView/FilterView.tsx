@@ -1,5 +1,4 @@
-import { Button, Checkbox, Search } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+import { Checkbox, Search } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
 import { FilterGroup } from '../../Hooks/useFilterApi';
@@ -32,8 +31,7 @@ interface FilterViewProps {
 
 export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
     const {
-        filterState: { getAllFilterValues, checkHasActiveFilters },
-        operations: { clearActiveFilters, destroyFilter },
+        filterState: { getAllFilterValues },
         filterGroupState: { getInactiveGroupValues },
     } = useFilterApiContext();
 
@@ -72,18 +70,6 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
 
     return (
         <Wrapper isActive={isActive}>
-            <div>
-                <Button onClick={() => destroyFilter()}>Destroy filter</Button>
-                <Button onClick={() => clearActiveFilters()}>Clear active filters</Button>
-                <Icon
-                    name="filter_alt"
-                    color={
-                        checkHasActiveFilters()
-                            ? tokens.colors.interactive.primary__resting.hex
-                            : 'grey'
-                    }
-                />
-            </div>
             {isActive && (
                 <>
                     {/* TODO move SelectBar to its own component when more buttons are added*/}
@@ -145,7 +131,6 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                                 ({ name }) => name === key
                             );
                             if (!filterGroup) return;
-
                             return (
                                 <FilterGroupWrapper key={`col-${key}-${index}`}>
                                     <FilterGroupeComponent filterGroup={filterGroup} />

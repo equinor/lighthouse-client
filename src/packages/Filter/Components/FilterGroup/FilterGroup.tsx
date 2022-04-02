@@ -12,6 +12,7 @@ import {
 } from './FilterGroup-Styles';
 import { FilterGroup } from '../../Hooks/useFilterApi';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
+import { FilterValueType } from '../../Types';
 
 interface FilterGroupeComponentProps {
     filterGroup: FilterGroup;
@@ -21,6 +22,8 @@ interface FilterGroupeComponentProps {
 function searchByValue(items: string[], value: string) {
     return items.filter((item) => item.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
 }
+
+const DEFAULT_NULL_VALUE = '(Blank)';
 
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     filterGroup,
@@ -34,7 +37,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     const [searchActive, setSearchActive] = useState(false);
 
     const groupsMatchingSearch = searchByValue(
-        filterGroup.values.map((v) => v?.toString() ?? '(Blank)'),
+        filterGroup.values.map((v) => (v !== null ? v.toString() : DEFAULT_NULL_VALUE)),
         filterSearchValue
     );
 
@@ -84,9 +87,12 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                     {groupsMatchingSearch.map((value) => (
                         <FilterItemComponent
                             key={value}
-                            count={itemCounts.find(({ name }) => name === value)?.count ?? 0}
+                            count={
+                                itemCounts.find(({ name }) => name === convertFromBlank(value))
+                                    ?.count ?? 0
+                            }
                             //HACK: Must recieve null and not blank
-                            filterItem={value === '(Blank)' ? null : value}
+                            filterItem={convertFromBlank(value)}
                             groupName={filterGroup.name}
                         />
                     ))}
@@ -95,3 +101,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
         </Wrapper>
     );
 };
+
+function convertFromBlank(name: FilterValueType) {
+    return name === DEFAULT_NULL_VALUE ? null : name;
+}

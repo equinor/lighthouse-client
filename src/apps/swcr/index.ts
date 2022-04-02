@@ -39,7 +39,7 @@ export function setup(appApi: ClientApi): void {
             },
             {
                 name: 'Types',
-                valueFormatter: ({ types }) => types.split(','),
+                valueFormatter: ({ types }) => (types.length > 0 ? types.split(',') : []),
             },
         ])
         .registerTableOptions({ objectIdentifierKey: 'swcrId', columnOrder: ['system', 'types'] })

@@ -77,6 +77,9 @@ const mockArrayData: Mock[] = [
     },
     {
         names: ["Krista", "Doe", "John"]
+    },
+    {
+        names: []
     }
 ]
 
@@ -90,7 +93,7 @@ const filterArrayOptions: FilterOptions<Mock> = [
 const expectedArrayOutput: FilterGroup[] = [
     {
         name: "Name",
-        values: ["Cena", "Doe", "Jane", "John", "Jonas", "Krista"]
+        values: ["Cena", "Doe", "Jane", "John", "Jonas", "Krista", null]
     }
 ]
 
@@ -99,8 +102,11 @@ const expectedArrayOutput: FilterGroup[] = [
 describe("Create filter items from array", () => {
     it("Should not have duplicates", () => {
         const result = generateFilterValues(filterArrayOptions, mockArrayData)
-        debugger;
         expect(result).toStrictEqual(expectedArrayOutput)
     })
 })
+
+
+
+
 

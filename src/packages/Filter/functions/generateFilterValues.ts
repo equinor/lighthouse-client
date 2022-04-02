@@ -17,11 +17,13 @@ export function generateFilterValues<T>(
             const filterGroup = filterGroups.find(
                 ({ name: filterGroupName }) => name === filterGroupName
             );
+            /** Cant happen but ts */
             if (!filterGroup) return;
             const value = valueFormatter(item);
 
             if (Array.isArray(value)) {
                 if (value.length === 0) {
+                    /** Empty arrays are parsed as null */
                     filterGroup.values = [
                         ...filterGroup.values.filter((value) => value !== null),
                         null,
@@ -34,7 +36,7 @@ export function generateFilterValues<T>(
                 }
             } else {
                 const singleValue = handlePossiblyEmptyString(value);
-
+                /** Append value and prevent duplicates */
                 filterGroup.values = [
                     ...filterGroup.values.filter((oldValue) => oldValue !== singleValue),
                     singleValue,
@@ -42,6 +44,7 @@ export function generateFilterValues<T>(
             }
         })
     );
+    console.log(filterGroups);
     return sortFilterGroups(filterGroups, filterConfiguration);
 }
 
