@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { canUnVoid, canVoid } from '../Api/ScopeChange/Access/canVoid';
 import { OptionRequestResult } from '../Api/ScopeChange/Access/optionsRequestChecker';
 import { getRequestAccess } from '../Api/ScopeChange/Access/requestAccess';
-import { CacheTime } from '../Enums/cacheTimes';
-import { scopeChangeQueryKeys } from '../Keys/scopeChangeQueryKeys';
+import { scopeChangeQueries } from '../Keys/queries';
 
 interface ScopeChangeAccess extends OptionRequestResult {
     canVoid: boolean;
@@ -22,17 +20,10 @@ export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
         canUnVoid: false,
     });
 
-    const { canUnVoidKey, canVoidKey } = scopeChangeQueryKeys(requestId);
+    const { canUnvoidQuery, canVoidQuery } = scopeChangeQueries.permissionQueries;
 
-    const { data: userCanVoid } = useQuery(canVoidKey(), () => canVoid(requestId), {
-        cacheTime: CacheTime.FiveMinutes,
-        staleTime: CacheTime.FiveMinutes,
-    });
-
-    const { data: userCanUnvoid } = useQuery(canUnVoidKey(), () => canUnVoid(requestId), {
-        cacheTime: CacheTime.FiveMinutes,
-        staleTime: CacheTime.FiveMinutes,
-    });
+    const { data: userCanVoid } = useQuery(canVoidQuery(requestId));
+    const { data: userCanUnvoid } = useQuery(canUnvoidQuery(requestId));
 
     useEffect(() => {
         setAccess((prev) => {

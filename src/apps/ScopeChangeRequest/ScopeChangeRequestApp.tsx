@@ -1,5 +1,8 @@
 import { ClientApi } from '@equinor/portal-client';
-import { ScopeChangeSidesheetWrapper } from './Components/Sidesheet/ScopeChangeSidesheetWrapper';
+import {
+    ScopeChangeSidesheetNew,
+    ScopeChangeSidesheetWrapper,
+} from './Components/Sidesheet/ScopeChangeSidesheetWrapper';
 import { ScopeChangeRequest } from './Types/scopeChangeRequest';
 import { dataCreator } from './WorkspaceConfig/dataCreatorConfig';
 import { dataSource, idResolver } from './WorkspaceConfig/dataOptions';
@@ -12,7 +15,7 @@ import { tableConfig } from './WorkspaceConfig/Table/tableConfig';
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<ScopeChangeRequest>({
-            CustomSidesheet: ScopeChangeSidesheetWrapper,
+            CustomSidesheet: ScopeChangeSidesheetNew,
             objectIdentifier: 'id',
         })
         .registerDataSource(dataSource)

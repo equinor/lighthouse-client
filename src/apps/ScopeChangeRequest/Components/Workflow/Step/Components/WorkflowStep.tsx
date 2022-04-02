@@ -1,30 +1,21 @@
 import styled from 'styled-components';
 import { WorkflowStep } from '../../../../Types/scopeChangeRequest';
-import { canAddContributor } from '../../../../Api/ScopeChange/Access/Workflow/Step/canManageContributors';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
-import { CacheTime } from '../../../../Enums/cacheTimes';
-import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
 import { useQuery } from 'react-query';
+import { scopeChangeQueries } from '../../../../Keys/queries';
 
 interface WorkflowStepProps {
     step: WorkflowStep;
 }
 export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element {
     const { request } = useScopeChangeContext();
-    const { workflowKeys } = scopeChangeQueryKeys(request.id);
 
-    const checkContributorAccess = () =>
-        canAddContributor({ requestId: request.id, stepId: step.id });
+    const { canAddContributorQuery } = scopeChangeQueries.workflowQueries;
+
     const { data: isAllowedToAddContributor } = useQuery(
-        workflowKeys.canAddContributorKey(step.id),
-        checkContributorAccess,
-        {
-            refetchOnWindowFocus: false,
-            staleTime: CacheTime.FiveMinutes,
-            cacheTime: CacheTime.FiveMinutes,
-        }
+        canAddContributorQuery(request.id, step.id)
     );
 
     return (
