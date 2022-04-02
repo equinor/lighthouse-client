@@ -5,13 +5,6 @@ import { WorkOrder } from './Garden/models';
 import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
 import { sortPackages } from './Garden/utility/sortPackages';
 
-const excludeKeys: (keyof WorkOrder)[] = [
-    'description',
-    'commpkgNumber',
-    'proCoSysSiteName',
-    'responsibleCode',
-];
-
 export function setup(appApi: ClientApi): void {
     const contextId = isProduction()
         ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
@@ -39,7 +32,24 @@ export function setup(appApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerFilterOptions({ excludeKeys })
+        .registerFilterOptions([
+            {
+                name: 'Discipline',
+                valueFormatter: ({ disciplineCode }) => disciplineCode,
+            },
+            {
+                name: 'Site codes',
+                valueFormatter: ({ siteCodes }) => siteCodes,
+            },
+            {
+                name: 'Responsible code',
+                valueFormatter: ({ responsibleCode }) => responsibleCode,
+            },
+            {
+                name: 'Job status',
+                valueFormatter: ({ jobStatus }) => jobStatus,
+            },
+        ])
         .registerTableOptions({
             objectIdentifierKey: 'mcPkgNo',
         })
