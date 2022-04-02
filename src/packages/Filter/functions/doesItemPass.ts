@@ -26,7 +26,7 @@ function doesItemPassCriteria(
      */
     if (Array.isArray(item)) {
         if (item.length === 0) {
-            return uncheckedValues.includes(null);
+            return !uncheckedValues.includes(null);
         }
 
         /** All values in the array must be unchecked for filter to remove the item */
