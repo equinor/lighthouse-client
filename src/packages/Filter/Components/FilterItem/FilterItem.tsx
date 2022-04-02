@@ -1,19 +1,19 @@
 import { Checkbox } from '@equinor/eds-core-react';
+
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterValueType } from '../../Types/filter';
-import { Count, FilterItemGroupe, FilterItemLabel, FilterItemWrapper } from './FilterItem-Styles';
+import { Count, FilterItemName, FilterItemWrap } from './FilterItem-Styles';
 interface FilterItemComponentProps {
     filterItem: FilterValueType;
     groupName: string;
+    count: number;
 }
 
 export const FilterItemComponent = ({
     filterItem,
     groupName,
+    count,
 }: FilterItemComponentProps): JSX.Element => {
-    // const { count, isActive } = useCount(filterItem);
-    //TODO: Implement count
-    const count = 0;
     const {
         operations: { changeFilterItem },
         filterGroupState: { checkValueIsInActive, getGroupValues },
@@ -30,28 +30,20 @@ export const FilterItemComponent = ({
     }
 
     return (
-        <FilterItemWrapper
-            onClick={uncheckAllButThisValue}
-            key={filterItem}
-            aria-label={filterItemVisualName}
-            title={filterItemVisualName}
-        >
-            <FilterItemGroupe>
-                <Checkbox
-                    title={filterItemVisualName}
-                    checked={!isUnChecked}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        changeFilterItem(
-                            isUnChecked ? 'MarkActive' : 'MarkInactive',
-                            groupName,
-                            filterItem
-                        );
-                    }}
-                />
-                <FilterItemLabel>{filterItemVisualName}</FilterItemLabel>
-            </FilterItemGroupe>
-            <Count>({count})</Count>
-        </FilterItemWrapper>
+        <FilterItemWrap>
+            <Checkbox
+                title={filterItemVisualName}
+                checked={!isUnChecked}
+                onChange={() =>
+                    changeFilterItem(
+                        isUnChecked ? 'MarkActive' : 'MarkInactive',
+                        groupName,
+                        filterItem
+                    )
+                }
+            />
+            <FilterItemName onClick={uncheckAllButThisValue}>{filterItemVisualName}</FilterItemName>
+            <Count>({isUnChecked ? null : count})</Count>
+        </FilterItemWrap>
     );
 };
