@@ -29,6 +29,10 @@ export const FilterItemComponent = ({
         changeFilterItem('MarkActive', groupName, filterItem);
     }
 
+    if (!isUnChecked && count === 0) {
+        return <></>;
+    }
+
     return (
         <FilterItemWrap>
             <Checkbox

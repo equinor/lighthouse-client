@@ -42,7 +42,7 @@ export function generateFilterValues<T>(
             }
         })
     );
-    return sortFilterGroups(filterGroups);
+    return sortFilterGroups(filterGroups, filterConfiguration);
 }
 
 /**
@@ -63,7 +63,18 @@ function handlePossiblyEmptyString(value: FilterValueType): FilterValueType {
  * @param groups
  * @returns
  */
-function sortFilterGroups(groups: FilterGroup[]): FilterGroup[] {
-    groups.forEach(({ values }) => values.sort());
+function sortFilterGroups<T = unknown>(
+    groups: FilterGroup[],
+    filterConfig: FilterOptions<T>
+): FilterGroup[] {
+    groups.forEach(({ values, name }) => {
+        const customSort = filterConfig.find(({ name: configName }) => name === configName)?.sort;
+
+        if (customSort) {
+            customSort(values);
+        } else {
+            values.sort();
+        }
+    });
     return groups;
 }

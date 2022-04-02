@@ -4,30 +4,44 @@ import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {
         name: 'Phase',
-        valueFormatter: (item) => item.phase,
-    },
-    {
-        name: 'Category',
-        valueFormatter: (item) => item.changeCategory.name,
-    },
-    {
-        name: 'State',
-        valueFormatter: (item) => (item.isVoided ? 'Voided' : item.state),
-        defaultUncheckedValues: ['Voided', 'Draft'],
+        valueFormatter: ({ phase }) => phase,
         defaultHidden: true,
     },
     {
+        name: 'Category',
+        valueFormatter: ({ changeCategory }) => changeCategory.name,
+    },
+    {
+        name: 'State',
+        valueFormatter: ({ isVoided, state }) => (isVoided ? 'Voided' : state),
+        defaultUncheckedValues: ['Voided', 'Draft'],
+    },
+    {
         name: 'Next to sign',
-        valueFormatter: (item) =>
-            item.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
-                ?.valueDescription ?? null,
+        valueFormatter: ({ currentWorkflowStep }) =>
+            currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)?.valueDescription ??
+            null,
     },
     {
         name: 'Origin',
-        valueFormatter: (item) => item.originSource,
+        valueFormatter: ({ originSource }) => originSource,
     },
     {
         name: 'Step',
-        valueFormatter: (item) => item.currentWorkflowStep?.name ?? null,
+        valueFormatter: ({ currentWorkflowStep }) => currentWorkflowStep?.name ?? null,
+    },
+    {
+        name: 'Has comments',
+        valueFormatter: ({ hasComments }) => (hasComments ? 'Yes' : 'No'),
+        sort: (a) => a.sort((_, b) => (b === 'No' ? -1 : 1)),
+    },
+    {
+        name: 'Pending contributions',
+        valueFormatter: ({ hasPendingContributions }) => (hasPendingContributions ? 'Yes' : 'No'),
+        sort: (a) => a.sort((_, b) => (b === 'No' ? -1 : 1)),
+    },
+    {
+        name: 'Workflow status',
+        valueFormatter: ({ workflowStatus }) => workflowStatus,
     },
 ];
