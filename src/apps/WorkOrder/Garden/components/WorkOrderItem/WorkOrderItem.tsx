@@ -6,7 +6,6 @@ import {
     FollowUpStatuses,
 } from '@equinor/GardenUtils';
 import { memo, useCallback, useMemo, useRef, useState } from 'react';
-import styled from 'styled-components';
 import { useParkViewContext } from '../../../../../components/ParkView/Context/ParkViewProvider';
 import { CustomItemView } from '../../../../../components/ParkView/Models/gardenOptions';
 import { WorkOrder } from '../../models';
@@ -75,6 +74,7 @@ const WorkOrderItem = ({
     onClick,
     columnExpanded,
     depth,
+    selectedItem,
     width: itemWidth = 300,
 }: CustomItemView<WorkOrder>) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -101,6 +101,7 @@ const WorkOrderItem = ({
         <Root>
             <WorkOrderWrapper
                 backgroundColor={backgroundColor}
+                isSelected={selectedItem?.workOrderNumber === data.workOrderNumber}
                 textColor={textColor}
                 background={progressBar}
                 ref={anchorRef}

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 export const Root = styled.div`
     height: 80%;
     width: 100%;
@@ -7,7 +8,12 @@ export const Root = styled.div`
     gap: 10px;
     margin-left: 5px;
 `;
-export type WorkOrderItemProps = { backgroundColor: string; textColor: string; background: string };
+export type WorkOrderItemProps = {
+    backgroundColor: string;
+    textColor: string;
+    background: string;
+    isSelected: boolean;
+};
 //@ts-ignore
 export const WorkOrderWrapper = styled.div<WorkOrderItemProps>`
     background: ${(props) => props.backgroundColor};
@@ -19,6 +25,8 @@ export const WorkOrderWrapper = styled.div<WorkOrderItemProps>`
     align-items: center;
     justify-content: space-between;
     border-radius: 5px;
+    outline: ${(props) => (props.isSelected ? '2px dashed green' : '')};
+    outline-offset: ${(props) => (props.isSelected ? '2px' : '')};
 `;
 
 export const Circles = styled.div`
