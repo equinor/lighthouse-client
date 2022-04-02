@@ -1,5 +1,5 @@
 import { httpClient } from '@equinor/portal-client';
-import { throwOnError } from '../../Functions/throwError';
+import { throwOnError } from '../../functions/throwError';
 
 interface Category {
     id: string;

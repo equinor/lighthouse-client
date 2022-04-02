@@ -1,4 +1,4 @@
-import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { Item } from '../../../../components/ParkView/Styles/item';
 import styled from 'styled-components';
 import { CustomItemView } from '../../../../components/ParkView/Models/gardenOptions';

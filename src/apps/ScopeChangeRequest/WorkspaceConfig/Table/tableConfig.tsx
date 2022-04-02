@@ -1,10 +1,10 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { OriginLink } from '../../Components/DetailView/Components/OriginLink';
+import { OriginLink } from '../../Components/DetailView/OriginLink';
 import { WorkflowCompact } from './WorkflowCompact';
 import { getLastSigned } from './getLastSigned';
-import { Criteria, ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { Criteria, ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { Fragment } from 'react';
 import styled from 'styled-components';
 import { DateTime } from 'luxon';

@@ -1,6 +1,6 @@
 import { httpClient } from '../../../../../Core/Client/Functions';
-import { throwOnError } from '../../../Functions/throwError';
-import { ScopeChangeRequest } from '../../../Types/scopeChangeRequest';
+import { throwOnError } from '../../../functions/throwError';
+import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
 
 export async function getScopeChangeById(id: string): Promise<ScopeChangeRequest> {
     const { scopeChange } = httpClient();

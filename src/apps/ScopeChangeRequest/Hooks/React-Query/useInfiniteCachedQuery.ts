@@ -1,5 +1,5 @@
 import { QueryFunction, QueryKey, useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
-import { CacheTime } from '../../Enums/cacheTimes';
+import { CacheTime } from '../../enum/cacheTimes';
 
 /**
  * React query hook that caches the query for 10 hours

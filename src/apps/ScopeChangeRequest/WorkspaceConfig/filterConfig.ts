@@ -1,5 +1,5 @@
 import { FilterOptions } from '../../../packages/Filter/Types';
-import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
+import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 const scopeChangeExcludeFilterKeys: (keyof ScopeChangeRequest)[] = [
     'id',

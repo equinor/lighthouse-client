@@ -7,12 +7,12 @@ import {
     canUnVoid,
     canVoid,
     getRequestAccess,
-} from '../Api/ScopeChange/Access';
-import { getCategories } from '../Api/ScopeChange/getCategories';
-import { getPhases } from '../Api/ScopeChange/getPhases';
-import { getScopeChangeById } from '../Api/ScopeChange/Request';
-import { getHistory } from '../Api/ScopeChange/Request/getHistory';
-import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
+} from '../api/ScopeChange/Access';
+import { getCategories } from '../api/ScopeChange/getCategories';
+import { getPhases } from '../api/ScopeChange/getPhases';
+import { getScopeChangeById } from '../api/ScopeChange/Request';
+import { getHistory } from '../api/ScopeChange/Request/getHistory';
+import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 const scopeChangeBaseKey = (requestId: string): string[] => ['scopechange', requestId];
 const scopeChangeHistoryKey = (requestId: string): string[] => [

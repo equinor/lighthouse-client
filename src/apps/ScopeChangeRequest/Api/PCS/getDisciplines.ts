@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
-import { Discipline } from '../../Types/ProCoSys/discipline';
+import { Discipline } from '../../types/ProCoSys/discipline';
 
 /**
  * Fetches a list of all disciplines

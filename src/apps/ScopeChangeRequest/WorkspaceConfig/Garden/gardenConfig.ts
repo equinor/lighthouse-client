@@ -1,6 +1,6 @@
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { ScopeChangeItemView } from './ScopeChangeGardenItem';
-import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
+import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 
 export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
     gardenKey: 'originSource',

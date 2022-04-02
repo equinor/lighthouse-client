@@ -1,7 +1,7 @@
-import { TypedSelectOption } from '../../Api/Search/searchType';
-import { StidTypes } from '../../Types/STID/STIDTypes';
-import { searchTags } from '../../Api/Search/STID/searchTags';
-import { searchDocuments } from '../../Api/Search/STID/searchDocuments';
+import { TypedSelectOption } from '../../api/Search/searchType';
+import { StidTypes } from '../../types/STID/STIDTypes';
+import { searchTags } from '../../api/Search/STID/searchTags';
+import { searchDocuments } from '../../api/Search/STID/searchDocuments';
 import { useFacility } from '@equinor/portal-client';
 
 interface StidSearch {

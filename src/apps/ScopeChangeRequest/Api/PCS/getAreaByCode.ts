@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
-import { Area } from '../../Types/ProCoSys/area';
+import { Area } from '../../types/ProCoSys/area';
 
 export async function getAreaByCode(plantId: string, areaCode: string): Promise<Area> {
     const { procosys } = httpClient();

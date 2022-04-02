@@ -1,5 +1,5 @@
 import { patchScopeChange } from './patchScopeChange';
-import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../../Types/scopeChangeRequest';
+import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../../types/scopeChangeRequest';
 
 /**
  *

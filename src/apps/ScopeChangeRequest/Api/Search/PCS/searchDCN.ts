@@ -1,7 +1,7 @@
 import { isProduction } from '../../../../../Core/Client/Functions';
 import { HttpClient } from '../../../../../Core/httpClient/src';
 import { TypedSelectOption } from '../searchType';
-import { DCN } from '../../../Types/ProCoSys/dcn';
+import { DCN } from '../../../types/ProCoSys/dcn';
 import { PCSStructure } from './searchStructure';
 
 export const searchDCN = async (

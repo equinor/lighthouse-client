@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 
-import { TypedSelectOption } from '../../Api/Search/searchType';
+import { TypedSelectOption } from '../../api/Search/searchType';
 import { Upload } from '../Attachments/Upload';
-import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
-import { usePreloadCaching } from '../../Hooks/React-Query/usePreloadCaching';
-import { useScopeChangeFormState } from './useScopeChangeFormState';
-import { ScopeChangeBaseForm } from './ScopeChangeBaseForm';
+import { SearchReferences } from '../SearchReferences/SearchReferences';
+import { usePreloadCaching } from '../../hooks/react-Query/usePreloadCaching';
+import { useScopeChangeFormState } from '../../hooks/form/useScopeChangeFormState';
+import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import {
     ActionBar,
     ButtonContainer,
@@ -15,12 +15,12 @@ import {
     Section,
 } from './ScopeChangeForm.styles';
 import { useMutation, useQueryClient } from 'react-query';
-import { getScopeChangeById } from '../../Api/ScopeChange/Request';
-import { ScopeChangeSideSheet } from '../Sidesheet/ScopeChangeSidesheet';
+import { getScopeChangeById } from '../../api/ScopeChange/Request';
 import { openSidesheet } from '@equinor/sidesheet';
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import { useRequestMutations } from '../../Hooks/useRequestMutations';
+import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
+import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: () => void;
@@ -45,7 +45,7 @@ export const ScopeChangeRequestForm = ({
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
-        openSidesheet(ScopeChangeSideSheet, await getScopeChangeById(scopeChangeId));
+        openSidesheet(SidesheetWrapper, await getScopeChangeById(scopeChangeId));
         clearActiveFactory();
         queryClient.invalidateQueries();
     };
@@ -78,7 +78,7 @@ export const ScopeChangeRequestForm = ({
 
                     <FlexColumn>
                         <Section>
-                            <RelatedObjectsSearch
+                            <SearchReferences
                                 handleReferencesChanged={handleReferencesChanged}
                                 references={state.references ?? []}
                             />

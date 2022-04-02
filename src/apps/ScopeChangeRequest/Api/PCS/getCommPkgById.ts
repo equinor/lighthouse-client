@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
-import { CommissioningPackage } from '../../Types/ProCoSys/CommissioningPackage';
+import { CommissioningPackage } from '../../types/ProCoSys/CommissioningPackage';
 
 export async function getCommPkgById(
     plantId: string,

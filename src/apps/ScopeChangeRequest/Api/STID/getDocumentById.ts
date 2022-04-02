@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../Core/Client/Functions';
-import { Document } from '../../Types/STID/Document';
+import { Document } from '../../types/STID/Document';
 
 /**
  * Resolves document by document number

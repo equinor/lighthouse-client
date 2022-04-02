@@ -1,5 +1,5 @@
-import { ScopeChangeRequestFormModel } from '../../../Types/scopeChangeRequest';
-import { throwOnError } from '../../../Functions/throwError';
+import { ScopeChangeRequestFormModel } from '../../../types/scopeChangeRequest';
+import { throwOnError } from '../../../functions/throwError';
 import { httpClient } from '../../../../../Core/Client/Functions';
 
 export async function postScopeChange(

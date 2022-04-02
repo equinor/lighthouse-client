@@ -1,5 +1,5 @@
-import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
-import { StidTypes } from '../../Types/STID/STIDTypes';
+import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
+import { StidTypes } from '../../types/STID/STIDTypes';
 
 interface SelectOption {
     label: string;

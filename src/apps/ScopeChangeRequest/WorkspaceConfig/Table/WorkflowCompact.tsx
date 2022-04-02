@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { Fragment } from 'react';
 import styled from 'styled-components';
 import { DefaultWorkflowDot } from '../../Components/Workflow/Components/DefaultWorkflowDot';
-import { WorkflowStep } from '../../Types/scopeChangeRequest';
+import { WorkflowStep } from '../../types/scopeChangeRequest';
 
 interface WorkflowProps {
     steps: WorkflowStep[];

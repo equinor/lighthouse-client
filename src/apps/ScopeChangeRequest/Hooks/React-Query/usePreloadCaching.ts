@@ -1,8 +1,8 @@
-import { getSystems } from '../../Api/PCS/getSystems';
-import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
+import { getSystems } from '../../api/PCS/getSystems';
+import { getFunctionalRoles } from '../../api/PCS/getFunctionalRoles';
 import { useInfiniteCachedQuery } from './useInfiniteCachedQuery';
-import { getDisciplines } from '../../Api/PCS/getDisciplines';
-import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
+import { getDisciplines } from '../../api/PCS/getDisciplines';
+import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { useFacility } from '../../../../Core/Client/Hooks';
 
 /**

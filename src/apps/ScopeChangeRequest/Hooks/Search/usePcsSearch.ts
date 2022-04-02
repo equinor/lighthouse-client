@@ -1,20 +1,20 @@
-import { getFunctionalRoles } from '../../Api/PCS/getFunctionalRoles';
-import { getSystems } from '../../Api/PCS/getSystems';
-import { TypedSelectOption } from '../../Api/Search/searchType';
-import { ProcoSysTypes } from '../../Types/ProCoSys/ProCoSysTypes';
-import { searchTags } from '../../Api/Search/PCS/searchTags';
+import { getFunctionalRoles } from '../../api/PCS/getFunctionalRoles';
+import { getSystems } from '../../api/PCS/getSystems';
+import { TypedSelectOption } from '../../api/Search/searchType';
+import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
+import { searchTags } from '../../api/Search/PCS/searchTags';
 import { httpClient } from '../../../../Core/Client/Functions';
-import { searchCommPkg } from '../../Api/Search/PCS/searchCommPkg';
-import { searchQueryOrigin } from '../../Api/Search/PCS/searchQuery';
-import { searchDCN } from '../../Api/Search/PCS/searchDCN';
-import { searchSWCR } from '../../Api/Search/PCS/searchSWCR';
-import { searchAreas } from '../../Api/Search/PCS/searchArea';
-import { searchPerson } from '../../Api/Search/PCS/searchPerson';
-import { searchNCR } from '../../Api/Search/PCS/searchNcr';
-import { useInfiniteCachedQuery } from '../React-Query/useInfiniteCachedQuery';
+import { searchCommPkg } from '../../api/Search/PCS/searchCommPkg';
+import { searchQueryOrigin } from '../../api/Search/PCS/searchQuery';
+import { searchDCN } from '../../api/Search/PCS/searchDCN';
+import { searchSWCR } from '../../api/Search/PCS/searchSWCR';
+import { searchAreas } from '../../api/Search/PCS/searchArea';
+import { searchPerson } from '../../api/Search/PCS/searchPerson';
+import { searchNCR } from '../../api/Search/PCS/searchNcr';
+import { useInfiniteCachedQuery } from '../react-Query/useInfiniteCachedQuery';
 import Fuse from 'fuse.js';
-import { getDisciplines } from '../../Api/PCS/getDisciplines';
-import { proCoSysQueryKeys } from '../../Keys/proCoSysQueryKeys';
+import { getDisciplines } from '../../api/PCS/getDisciplines';
+import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { useFacility } from '../../../../Core/Client/Hooks';
 
 interface PCSSearch {

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useIsFetching, useQueryClient } from 'react-query';
-import { CacheTime } from '../../Enums/cacheTimes';
+import { CacheTime } from '../../enum/cacheTimes';
 import { useQueryCacheLookup } from './useQueryCacheLookup';
 
 interface EagerLoadingProps<T> {

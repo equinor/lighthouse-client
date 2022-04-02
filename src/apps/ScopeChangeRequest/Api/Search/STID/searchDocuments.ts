@@ -1,6 +1,6 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { throwOnError } from '../../../Functions/throwError';
-import { Document } from '../../../Types/STID/Document';
+import { throwOnError } from '../../../functions/throwError';
+import { Document } from '../../../types/STID/Document';
 import { TypedSelectOption } from '../searchType';
 
 export const searchDocuments = async (

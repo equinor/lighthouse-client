@@ -1,16 +1,16 @@
 import { Button, Icon, Progress } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
-import { TypedSelectOption } from '../../Api/Search/searchType';
-import { useScopeChangeMutation } from '../../Hooks/React-Query/useScopechangeMutation';
-import { ScopeChangeRequest } from '../../Types/scopeChangeRequest';
-import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
+import { TypedSelectOption } from '../../api/Search/searchType';
+import { useScopeChangeMutation } from '../../hooks/react-Query/useScopechangeMutation';
+import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
+import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { HotUpload } from '../Attachments/HotUpload';
 import { tokens } from '@equinor/eds-tokens';
-import { deleteAttachment } from '../../Api/ScopeChange/Request/attachment';
-import { scopeChangeMutationKeys } from '../../Keys/scopeChangeMutationKeys';
-import { ScopeChangeBaseForm } from './ScopeChangeBaseForm';
-import { useScopeChangeFormState } from './useScopeChangeFormState';
+import { deleteAttachment } from '../../api/ScopeChange/Request/attachment';
+import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
+import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
+import { useScopeChangeFormState } from '../../hooks/form/useScopeChangeFormState';
 import {
     ActionBar,
     AttachmentName,
@@ -22,8 +22,8 @@ import {
     Section,
 } from './ScopeChangeForm.styles';
 import styled from 'styled-components';
-import { useRequestMutations } from '../../Hooks/useRequestMutations';
-import { useUnpackRelatedObjects } from '../../Hooks/useUnpackRelatedObjects';
+import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
+import { useUnpackRelatedObjects } from '../../hooks/queries/useUnpackRelatedObjects';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -80,7 +80,7 @@ export const ScopeChangeRequestEditForm = ({
 
                 <FlexColumn>
                     <Section>
-                        <RelatedObjectsSearch
+                        <SearchReferences
                             handleReferencesChanged={handleReferencesChanged}
                             references={state.references ?? []}
                         />
