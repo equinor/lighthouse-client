@@ -13,6 +13,9 @@ export const SubGroup = styled.div`
     width: 98%;
     height: 85%;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     :hover {
         opacity: 0.5;

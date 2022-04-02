@@ -31,6 +31,7 @@ export const VirtualGarden = <T extends unknown>({
         sortData,
         highlightColumn,
         rowHeight,
+        customDescription,
     } = useParkViewContext<T>();
     const { isScrolling, scrollOffsetFn } = useVirtualScrolling(parentRef);
     const { widths: contextWidths } = useExpand();
@@ -108,6 +109,7 @@ export const VirtualGarden = <T extends unknown>({
                 garden={sortedColumns}
                 headerChild={headerChild}
                 highlightColumn={highlightedColumn}
+                customDescription={customDescription}
             />
             {columnVirtualizer.virtualItems.map((virtualColumn) => {
                 const currentColumn = sortedColumns[virtualColumn.index];

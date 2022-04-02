@@ -66,6 +66,8 @@ export interface GardenOptions<T> {
     highlightColumn?: (groupBy: string) => string | undefined;
     intercepters?: GardenDataIntercepters<T>;
     onSelect?: (item: T) => void;
+    /** Function that returns the string of text that is to be displayed when a column is expanded */
+    customDescription?: (item: T) => string;
 }
 
 export type PreGroupByFiltering<T = unknown> = (arr: T[], groupByKey: string) => T[];
