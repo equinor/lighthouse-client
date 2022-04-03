@@ -1,6 +1,7 @@
 import { useFactory } from '@equinor/DataFactory';
-import { CircularProgress, Tabs } from '@equinor/eds-core-react';
+import { CircularProgress, Search, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { useState } from 'react';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
 import Icon from '../../../../../components/Icon/Icon';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
@@ -79,6 +80,7 @@ export const CompletionViewHeader = ({
                     })}
                 </List>
                 <Divider />
+                <SearchButton />
                 <TabButton
                     color={
                         dataApi?.isStale
@@ -106,3 +108,51 @@ export const CompletionViewHeader = ({
         </HeaderWrapper>
     );
 };
+
+/** Search button for searching data in workspace */
+function SearchButton() {
+    const {
+        search: { clearSearch, search },
+        filterState: { getAllFilterGroups },
+    } = useFilterApiContext();
+
+    const [isActive, setIsActive] = useState(false);
+    const handleChange = () =>
+        setIsActive((prev) => {
+            if (prev === false) {
+                clearSearch();
+            }
+            return !prev;
+        });
+
+    function handleSearch(e) {
+        const value = e.target.value;
+
+        value === ''
+            ? clearSearch()
+            : search(
+                getAllFilterGroups().map(({ name }) => name),
+                value,
+                'Data'
+            );
+    }
+
+    function handleClear(e) {
+        e.isTrusted ? void 0 : clearSearch();
+    }
+
+    return (
+        <>
+            <TabButton aria-selected={false} onClick={handleChange}>
+                <Icon name="search" />
+            </TabButton>
+            {isActive && (
+                <Search
+                    onChange={handleClear}
+                    placeholder="Type to search..."
+                    onInput={handleSearch}
+                />
+            )}
+        </>
+    );
+}

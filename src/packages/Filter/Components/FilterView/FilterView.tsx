@@ -31,11 +31,11 @@ interface FilterViewProps {
 
 export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
     const {
-        filterState: { getAllFilterValues },
+        filterState: { getAllFilterGroups },
         filterGroupState: { getInactiveGroupValues },
     } = useFilterApiContext();
 
-    const filterGroupNames = createTypeKeys(getAllFilterValues());
+    const filterGroupNames = createTypeKeys(getAllFilterGroups());
     const [searchActive, setSearchActive] = useState(false);
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [isFilterSelectActive, setIsFilterSelectActive] = useState(false);
@@ -127,7 +127,7 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                     )}
                     <FilterGroups>
                         {visibleFilters.map((key: string, index) => {
-                            const filterGroup = getAllFilterValues().find(
+                            const filterGroup = getAllFilterGroups().find(
                                 ({ name }) => name === key
                             );
                             if (!filterGroup) return;

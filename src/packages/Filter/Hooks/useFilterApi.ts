@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useRefresh } from '../../../components/ParkView/hooks/useRefresh';
 import { doesItemPassFilter } from '../functions/doesItemPass';
 import { generateFilterValues } from '../functions/generateFilterValues';
+import { searchAcrossFilterGroups } from '../functions/searchAcrossFilterGroups';
 import { FilterOptions, FilterValueType } from '../Types/filter';
 import { filterGroupExists } from '../Utils/filterGroupExists';
 import { shouldFilter } from '../Utils/shouldFilter';
@@ -10,6 +11,8 @@ export interface FilterGroup {
     name: string;
     values: FilterValueType[];
 }
+
+type SearchDataSet = 'Data' | 'FilteredData';
 
 export interface FilterItemCount {
     /** Item name */
@@ -21,6 +24,7 @@ export interface FilterApi<T> {
     filterState: FilterState<T>;
     operations: FilterOperations;
     filterGroupState: FilterGroupState;
+    search: FilterSearch;
 }
 
 interface FilterGroupState {
@@ -34,9 +38,19 @@ export type GetGroupValuesFunc = (groupName: string) => FilterValueType[];
 
 interface FilterState<T> {
     checkHasActiveFilters: () => boolean;
-    getAllFilterValues: () => FilterGroup[];
+    getAllFilterGroups: () => FilterGroup[];
     getFilterState: () => FilterGroup[];
     getFilteredData: () => T[];
+}
+
+interface FilterSearch {
+    search: (
+        groupNames: string[],
+        searchValue: string,
+        searchIn: SearchDataSet,
+        preventReRender?: boolean
+    ) => void;
+    clearSearch: () => void;
 }
 
 interface FilterOperations {
@@ -258,6 +272,32 @@ export function useFilterApi<T>({
         filteredData.current = newData;
     }
 
+    /** Clears the search and filters the data using the current filterstate */
+    function clearSearch(): void {
+        filter();
+    }
+
+    /** Search across multiple filter groups for a value that matches at least one */
+    function search(
+        groupNames: string[],
+        searchValue: string,
+        searchIn: SearchDataSet,
+        preventReRender?: boolean
+    ): void {
+        if (groupNames.length === 0) return;
+
+        /** Find value formatters for the groups you want to search across */
+        const valueFormatters = getValueFormatters().filter(({ name }) =>
+            groupNames.includes(name)
+        );
+
+        const haystack = searchIn === 'Data' ? data : filteredData.current;
+        const needle = searchValue.toLowerCase();
+
+        setFilteredData(searchAcrossFilterGroups(valueFormatters, haystack, needle));
+        handleShouldReRender(preventReRender);
+    }
+
     /**
      * Will filter data on mount according to configuration parameter
      */
@@ -270,7 +310,7 @@ export function useFilterApi<T>({
             checkHasActiveFilters: checkHasActiveFilters,
             getFilterState: getFilterState,
             getFilteredData: () => filteredData.current,
-            getAllFilterValues: () => allFilterValues.current,
+            getAllFilterGroups: () => allFilterValues.current,
         },
         operations: {
             init: init,
@@ -287,6 +327,10 @@ export function useFilterApi<T>({
             getInactiveGroupValues: getInactiveGroupValues,
             getGroupValues: getGroupValues,
             checkValueIsInActive: checkValueIsInActive,
+        },
+        search: {
+            clearSearch: clearSearch,
+            search: search,
         },
     };
 }
