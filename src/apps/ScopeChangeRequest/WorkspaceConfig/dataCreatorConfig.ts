@@ -6,7 +6,7 @@ import { DataCreatorWrapper } from '../Components/Form/DataCreatorWrapper';
 export const dataCreator: FactoryOptions = {
     title: 'Scope change',
     component: DataCreatorWrapper,
-    accessCheck: async () => {
+    accessCheck: async (): Promise<boolean> => {
         const { scopeChange } = httpClient();
         const check = () => scopeChange.fetch('/api/scope-change-requests', { method: 'OPTIONS' });
         return await (
