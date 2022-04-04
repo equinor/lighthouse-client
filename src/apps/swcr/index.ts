@@ -14,187 +14,232 @@ import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { SwcrGraph } from './CustomViews/Graph';
 import { columns } from './utilities/tableSetup';
 enum Tabs {
-    TABLE,
-    GARDEN,
+    TABLE = 0,
+    GARDEN = 1,
 }
 export function setup(appApi: ClientApi): void {
-    const swcr = appApi.createWorkSpace<SwcrPackage>({
-        CustomSidesheet: SwcrSideSheet,
-        objectIdentifier: 'swcrNo',
-        defaultTab: Tabs.GARDEN,
-    });
-
-    async function responseAsync(signal?: AbortSignal) {
-        const { fusion } = httpClient();
-        fusion.setBaseUrl(
-            `https://pro-s-dataproxy-${
-                isProduction() ? 'fprd' : 'ci'
-            }.azurewebsites.net/api/contexts/`
-        );
-        const contextId = isProduction()
-            ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
-            : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-        return await fusion.fetch(`${contextId}/swcr`, { signal: signal });
-    }
-
-    async function responseParser(res: Response) {
-        const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
-        return swcrPackages.sort(sortPackagesByStatusAndNumber);
-    }
-
-    swcr.registerDataSource({ responseAsync: responseAsync, responseParser: responseParser });
-
-    swcr.registerFilterOptions({
-        defaultActiveFilters: [
-            'status',
-            'projectIdentifier',
-            'contract',
-            'supplier',
-            'system',
-            'types',
-        ],
-        excludeKeys: [
-            'description',
-            'nextsToSign',
-            'projectDescription',
-            'modification',
-            'rowKey',
-            'url',
-            'updatedAtDate',
-            'cntAttachments',
-            'title',
-            'swcrId',
-        ],
-    });
-
-    swcr.registerTableOptions({
-        objectIdentifierKey: 'swcrId',
-        columnOrder: [
-            'swcrNo',
-            'title',
-            'system',
-            'controlSystem',
-            'priority',
-            'supplier',
-            'action',
-            'contract',
-        ],
-        headers: [
+    appApi
+        .createWorkSpace<SwcrPackage>({
+            CustomSidesheet: SwcrSideSheet,
+            objectIdentifier: 'swcrNo',
+            defaultTab: Tabs.GARDEN,
+        })
+        .registerDataSource({ responseAsync: responseAsync, responseParser: responseParser })
+        .registerFilterOptions([
             {
-                key: 'swcrNo',
-                title: 'Swcr',
+                name: 'Status',
+                valueFormatter: ({ status }) => status,
             },
             {
-                key: 'title',
-                title: 'Title',
+                name: 'Project identifier',
+                valueFormatter: ({ projectIdentifier }) => projectIdentifier,
             },
             {
-                key: 'priority',
-                title: 'Priority',
+                name: 'Contract',
+                valueFormatter: ({ contract }) => contract,
             },
             {
-                key: 'system',
-                title: 'System',
+                name: 'Supplier',
+                valueFormatter: ({ supplier }) => supplier,
             },
             {
-                key: 'controlSystem',
-                title: 'Control System',
+                name: 'System',
+                valueFormatter: ({ system }) => system,
             },
             {
-                key: 'action',
-                title: 'Action',
+                name: 'Types',
+                valueFormatter: ({ types }) => (types.length > 0 ? types.split(',') : []),
             },
             {
-                key: 'supplier',
-                title: 'Supplier',
+                name: 'Plant',
+                valueFormatter: ({ siteCode }) => siteCode,
             },
-        ],
-        hiddenColumns: [
-            'siteCode',
-            'projectIdentifier',
-            'projectDescription',
-            'description',
-            'modification',
-        ],
-    });
-    swcr.registerGardenOptions({
-        gardenKey: 'dueAtDate',
-        itemKey: 'swcrNo',
-        type: 'virtual',
-        fieldSettings,
-        customViews: {
-            customItemView: SwcrItemView,
-            // customGroupView: SwcrGroupView,
-            customHeaderView: SwcrHeaderView,
-        },
-        itemWidth: getItemWidth,
-        rowHeight: 25,
-        highlightColumn: getHighlighColumn,
-        customDescription: customDescription,
-    });
-
-    swcr.registerAnalyticsOptions({
-        section1: {
-            chart1: {
-                type: 'customVisual',
-                options: {
-                    component: SwcrGraph,
-                    componentProps: {
-                        graphType: 'created-closed',
+            {
+                name: 'Priority',
+                valueFormatter: ({ priority }) => priority,
+            },
+            {
+                name: 'Control system',
+                valueFormatter: ({ controlSystem }) => controlSystem,
+            },
+            {
+                name: 'Next signature by',
+                valueFormatter: ({ nextsToSign }) => nextsToSign,
+            },
+            {
+                name: 'Last signed ranking',
+                valueFormatter: ({ latestSignRanking }) => latestSignRanking,
+            },
+            {
+                name: 'Action',
+                valueFormatter: ({ action }) => action,
+            },
+            {
+                name: 'Node',
+                valueFormatter: ({ node }) => node,
+            },
+            {
+                name: 'Estimated manhours',
+                valueFormatter: ({ estimatedManhours }) => estimatedManhours,
+            },
+            {
+                name: 'COMMPK no',
+                valueFormatter: ({ cpkgNo }) => cpkgNo,
+            },
+            {
+                name: 'COMM phase',
+                valueFormatter: ({ cpkgPhase }) => cpkgPhase,
+            },
+            {
+                name: 'Other references',
+                valueFormatter: ({ referenceTypes }) => referenceTypes,
+            },
+            {
+                name: 'Due date',
+                valueFormatter: ({ dueAtDate }) => dueAtDate,
+            },
+        ])
+        .registerTableOptions({
+            objectIdentifierKey: 'swcrId',
+            columnOrder: [
+                'swcrNo',
+                'title',
+                'system',
+                'controlSystem',
+                'priority',
+                'supplier',
+                'action',
+                'contract',
+            ],
+            headers: [
+                {
+                    key: 'swcrNo',
+                    title: 'Swcr',
+                },
+                {
+                    key: 'title',
+                    title: 'Title',
+                },
+                {
+                    key: 'priority',
+                    title: 'Priority',
+                },
+                {
+                    key: 'system',
+                    title: 'System',
+                },
+                {
+                    key: 'controlSystem',
+                    title: 'Control System',
+                },
+                {
+                    key: 'action',
+                    title: 'Action',
+                },
+                {
+                    key: 'supplier',
+                    title: 'Supplier',
+                },
+            ],
+            hiddenColumns: [
+                'siteCode',
+                'projectIdentifier',
+                'projectDescription',
+                'description',
+                'modification',
+            ],
+        })
+        .registerGardenOptions({
+            gardenKey: 'dueAtDate',
+            itemKey: 'swcrNo',
+            type: 'virtual',
+            fieldSettings,
+            customViews: {
+                customItemView: SwcrItemView,
+                customHeaderView: SwcrHeaderView,
+            },
+            itemWidth: getItemWidth,
+            rowHeight: 25,
+            highlightColumn: getHighlighColumn,
+            customDescription: customDescription,
+        })
+        .registerAnalyticsOptions({
+            section1: {
+                chart1: {
+                    type: 'customVisual',
+                    options: {
+                        component: SwcrGraph,
+                        componentProps: {
+                            graphType: 'created-closed',
+                        },
+                    },
+                },
+                chart2: {
+                    type: 'customVisual',
+                    options: {
+                        component: SwcrGraph,
+                        componentProps: {
+                            graphType: 'open',
+                        },
                     },
                 },
             },
-            chart2: {
-                type: 'customVisual',
-                options: {
-                    component: SwcrGraph,
-                    componentProps: {
-                        graphType: 'open',
+            section2: {
+                chart1: {
+                    type: 'customVisual',
+                    options: {
+                        component: SwcrGraph,
+                        componentProps: {
+                            graphType: 'acc',
+                        },
                     },
                 },
             },
-        },
-        section2: {
-            chart1: {
-                type: 'customVisual',
-                options: {
-                    component: SwcrGraph,
-                    componentProps: {
-                        graphType: 'acc',
+
+            section3: {
+                chart2: {
+                    type: 'table',
+                    options: {
+                        initialGroupBy: 'priority',
+                        groupBy: [
+                            {
+                                key: 'controlSystem',
+                                title: 'Control System',
+                            },
+                            {
+                                key: 'priority',
+                                title: 'Priority',
+                            },
+                            {
+                                key: 'system',
+                                title: 'System',
+                            },
+                            {
+                                key: 'types',
+                                title: 'HW/SW',
+                            },
+                        ],
+
+                        columns: columns,
                     },
                 },
             },
-        },
+        })
+        .registerStatusItems(statusBarData);
+}
 
-        section3: {
-            chart2: {
-                type: 'table',
-                options: {
-                    initialGroupBy: 'priority',
-                    groupBy: [
-                        {
-                            key: 'controlSystem',
-                            title: 'Control System',
-                        },
-                        {
-                            key: 'priority',
-                            title: 'Priority',
-                        },
-                        {
-                            key: 'system',
-                            title: 'System',
-                        },
-                        {
-                            key: 'types',
-                            title: 'HW/SW',
-                        },
-                    ],
+async function responseAsync(signal?: AbortSignal) {
+    const { fusion } = httpClient();
+    fusion.setBaseUrl(
+        `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/api/contexts/`
+    );
+    const contextId = isProduction()
+        ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
+        : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
+    return await fusion.fetch(`${contextId}/swcr`, { signal: signal });
+}
 
-                    columns: columns,
-                },
-            },
-        },
-    });
-
-    swcr.registerStatusItems(statusBarData);
+async function responseParser(res: Response) {
+    const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
+    return swcrPackages.sort(sortPackagesByStatusAndNumber);
 }
