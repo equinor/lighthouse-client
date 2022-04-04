@@ -5,7 +5,7 @@ export async function getAreaByCode(plantId: string, areaCode: string): Promise<
     const { procosys } = httpClient();
 
     const res = await procosys.fetch(
-        `api/Library/Area?plantId=PCS%24JOHAN_CASTBEG&code=${areaCode}&api-version=4.1`
+        `api/Library/Area?plantId=${encodeURIComponent(plantId)}&code=${areaCode}&api-version=4.1`
     );
 
     if (!res.ok) {

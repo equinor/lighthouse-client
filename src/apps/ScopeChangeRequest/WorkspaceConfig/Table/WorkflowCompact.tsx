@@ -40,6 +40,8 @@ function getStatusFromCriteria(signedState: string | null, isCurrent: boolean): 
         case signedState === 'Approved': {
             return (
                 <Icon
+                    width={14.4}
+                    height={14.4}
                     name="check_circle_outlined"
                     color={tokens.colors.interactive.primary__resting.hex}
                 />
@@ -49,6 +51,8 @@ function getStatusFromCriteria(signedState: string | null, isCurrent: boolean): 
         case signedState === 'Rejected': {
             return (
                 <Icon
+                    width={14.4}
+                    height={14.4}
                     name="close_circle_outlined"
                     color={tokens.colors.interactive.danger__resting.hex}
                 />
@@ -58,6 +62,8 @@ function getStatusFromCriteria(signedState: string | null, isCurrent: boolean): 
         case isCurrent: {
             return (
                 <DefaultWorkflowDot
+                    width={14.4}
+                    height={14.4}
                     stroke={tokens.colors.interactive.primary__resting.hex}
                     fill={tokens.colors.interactive.primary__resting.hex}
                 />
@@ -65,7 +71,7 @@ function getStatusFromCriteria(signedState: string | null, isCurrent: boolean): 
         }
 
         default: {
-            return <DefaultWorkflowDot />;
+            return <DefaultWorkflowDot height={14.4} width={14.4} />;
         }
     }
 }
