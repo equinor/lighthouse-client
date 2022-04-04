@@ -54,10 +54,14 @@ export const VirtualContainer = <T extends unknown>(): JSX.Element | null => {
             const width = (itemWidth && itemWidth(garden, gardenKey.toString())) || 300;
             setWidths(new Array(amountOfColumns).fill(width));
         }
-    }, [amountOfColumns, itemWidth]);
+    }, [amountOfColumns, gardenKey, itemWidth]);
 
     //TODO: Handle widths = 0 better
     if (widths.length === 0) {
+        return null;
+    }
+
+    if (widths.length !== amountOfColumns) {
         return null;
     }
 
@@ -65,7 +69,10 @@ export const VirtualContainer = <T extends unknown>(): JSX.Element | null => {
         <Container>
             <FilterSelector />
             <ExpandProvider initialWidths={widths}>
-                <VirtualGarden garden={garden} />
+                <VirtualGarden
+                    garden={garden}
+                    width={itemWidth && itemWidth(garden, gardenKey.toString())}
+                />
             </ExpandProvider>
         </Container>
     );

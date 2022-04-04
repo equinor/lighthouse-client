@@ -3,9 +3,9 @@ import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { ChevronDown, ChevronUp } from '../../Icons/Chevron';
 import { GardenGroups } from '../../Models/data';
 import { FieldSettings } from '../../Models/fieldSettings';
-import { CustomItemView } from '../../Models/gardenOptions';
+import { CustomGroupView, CustomItemView } from '../../Models/gardenOptions';
 import { Count } from '../../Styles/common';
-import { SubGroup, PackageRoot, DefaultPackage } from './styles';
+import { SubGroup, PackageRoot, DefaultPackage, SubGroupText } from './styles';
 import { GardenItem } from './types/gardenItem';
 import { useExpand } from './hooks';
 import { isSubGroup } from './utils';
@@ -19,8 +19,13 @@ type PackageContainerProps<T> = {
     itemKey: keyof T;
     fieldSettings?: FieldSettings<T>;
     packageChild: React.MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element> | undefined;
+    customSubGroup?: React.MemoExoticComponent<(args: CustomGroupView<T>) => JSX.Element>;
     handleExpand: any;
     items: GardenItem<T>[] | null;
+    itemWidth?: number;
+    groupByKeys: (keyof T)[];
+    selectedItem: T | null;
+    handleOnClick: (item: T) => void;
 };
 export const GardenItemContainer = <T extends unknown>(props: PackageContainerProps<T>) => {
     const {
@@ -31,15 +36,21 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
         itemKey,
         handleExpand,
         items,
+        itemWidth,
+        groupByKeys,
+        selectedItem,
+        handleOnClick,
     } = props;
     const expand = useExpand();
     const { onSelect } = useParkViewContext();
 
+    const CustomSubGroup = props?.customSubGroup;
     return (
         <>
             {rowVirtualizer.virtualItems.map((virtualRow) => {
                 const item = items?.[virtualRow.index];
                 if (!item) return null;
+                const width = isSubGroup(item) ? 100 - item.depth * 3 : 100;
 
                 return (
                     <PackageRoot
@@ -51,28 +62,46 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                         }}
                     >
                         {isSubGroup(item) ? (
-                            <SubGroup onClick={() => handleExpand(item)}>
-                                <div>
-                                    {item.status?.statusElement}
-                                    {item.value}
-                                    {item.description && ' - ' + item.description}
-                                    <Count>({item.count})</Count>
-                                </div>
-                                {item.isExpanded ? <ChevronUp /> : <ChevronDown />}
-                            </SubGroup>
+                            CustomSubGroup ? (
+                                <CustomSubGroup
+                                    columnExpanded={item.isExpanded}
+                                    data={item}
+                                    onClick={() => handleExpand(item)}
+                                    groupByKeys={groupByKeys}
+                                />
+                            ) : (
+                                <SubGroup
+                                    onClick={() => handleExpand(item)}
+                                    style={{ width: `${width}%` }}
+                                >
+                                    <SubGroupText>
+                                        {item.status?.statusElement}
+                                        {item.value}
+                                        {item.description && ' - ' + item.description}
+                                        <Count>({item.count})</Count>
+                                    </SubGroupText>
+                                    {item.isExpanded ? <ChevronUp /> : <ChevronDown />}
+                                </SubGroup>
+                            )
                         ) : PackageChild ? (
                             <PackageChild
-                                data={item}
+                                data={item.item}
                                 itemKey={itemKey.toString()}
-                                onClick={() => onSelect(item)}
+                                onClick={() => {
+                                    handleOnClick(item.item);
+                                    onSelect(item.item);
+                                }}
                                 columnExpanded={
                                     expand?.expandedColumns?.[garden[virtualColumn.index].value]
                                         ?.isExpanded ?? false
                                 }
+                                depth={item?.itemDepth}
+                                width={itemWidth}
+                                selectedItem={selectedItem}
                             />
                         ) : (
                             <DefaultPackage onClick={() => onSelect(item)}>
-                                {item[itemKey]}
+                                {item.item[itemKey]}
                             </DefaultPackage>
                         )}
                     </PackageRoot>

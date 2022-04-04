@@ -15,6 +15,10 @@ import {
 } from './Garden/utility';
 import { Status } from './Garden/components/commonStyles';
 import { statusBarData } from './Garden/components/statusItems';
+enum Tabs {
+    TABLE,
+    GARDEN,
+}
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
         weeklyDaily: 'Weekly',
@@ -24,6 +28,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<HandoverPackage>({
             CustomSidesheet: HandoverSideSheet,
             objectIdentifier: 'id',
+            defaultTab: Tabs.GARDEN,
         })
         .registerDataSource({
             responseAsync: responseAsync,
@@ -161,34 +166,4 @@ async function responseAsync(signal?: AbortSignal | undefined): Promise<Response
         ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
         : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
     return await fusion.fetch(`${contextId}/handover/`, { signal: signal });
-}
-
-function placeProgressInBracket(progress: number): string | null {
-    if (typeof progress !== 'number') return null;
-
-    if (progress === 100) return '100%';
-
-    if (progress === 0) return '0%';
-
-    switch (true) {
-        case progress <= 25: {
-            return '1-25%';
-        }
-
-        case progress <= 50: {
-            return '26-50%';
-        }
-
-        case progress <= 75: {
-            return '51-75%';
-        }
-
-        case progress <= 99: {
-            return '75-99%';
-        }
-
-        default: {
-            return null;
-        }
-    }
 }

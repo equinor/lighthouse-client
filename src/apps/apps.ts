@@ -11,6 +11,7 @@ import { ReportIcon } from '../icons/Report icon';
 import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { PortalModelViewer } from './3DModel/src';
+import { setup as checklistSetup } from './Checklist';
 import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
 import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
@@ -21,8 +22,9 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
+import { setup as punchSetup } from './Punch';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
 import { setup as WorkOrderSetup } from './WorkOrder';
@@ -148,9 +150,10 @@ export const apps: AppManifest[] = [
         groupe: Apps.ProjectInformation,
         icon: '',
         uri: (isProduction: boolean) =>
-            `${isProduction
-                ? 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
+            `${
+                isProduction
+                    ? 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
+                    : 'https://pro-s-portal-ci.azurewebsites.net/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
             }`,
         appEnv: 'prod',
         tags: [],
@@ -320,7 +323,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: disciplineReleaseControlSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'test',
     },
     {
         title: 'Preservation',
@@ -329,7 +332,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         uri: (isProduction: boolean) =>
-            `https://${isProduction ? 'procosys' : 'procosystest'
+            `https://${
+                isProduction ? 'procosys' : 'procosystest'
             }.equinor.com/JOHAN_CASTBERG/Preservation`,
         tags: ['link', 'procosys'],
         appEnv: 'prod',
@@ -340,10 +344,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        tags: [],
+        tags: ['PowerBI'],
         app: {
-            appType: 'Workspace',
+            appType: 'PowerBIViewer',
+            setup: checklistSetup,
         },
+        appEnv: 'prod',
     },
 
     {
@@ -374,10 +380,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        tags: [],
+        tags: ['PowerBI'],
         app: {
-            appType: 'Workspace',
+            appType: 'PowerBIViewer',
+            setup: punchSetup,
         },
+        appEnv: 'prod',
     },
     {
         title: 'SWCR',
@@ -399,7 +407,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         uri: (isProduction: boolean) =>
-            `https://${isProduction ? 'procosys' : 'procosystest'
+            `https://${
+                isProduction ? 'procosys' : 'procosystest'
             }.equinor.com/JOHAN_CASTBERG/InvitationForPunchOut`,
         tags: ['link', 'procosys'],
         appEnv: 'prod',
@@ -411,7 +420,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         uri: (isProduction: boolean) =>
-            `https://${isProduction ? 'fusion.equinor.com' : 'pro-s-portal-ci.azurewebsites.net'
+            `https://${
+                isProduction ? 'fusion.equinor.com' : 'pro-s-portal-ci.azurewebsites.net'
             }/apps/dcp`,
         tags: ['link', 'fusion'],
         appEnv: 'prod',
@@ -575,7 +585,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.Collaboration,
         icon: '',
         uri: (isProduction: boolean) =>
-            `https://${isProduction ? 'procosys' : 'procosystest'
+            `https://${
+                isProduction ? 'procosys' : 'procosystest'
             }.equinor.com/JOHAN_CASTBERG/Search?searchType=Query`,
         tags: ['link', 'procosys'],
         appEnv: 'prod',
@@ -601,7 +612,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.AssetData,
         icon: '',
         uri: (isProduction: boolean) =>
-            `https://${isProduction ? 'stid' : 'stidtest'
+            `https://${
+                isProduction ? 'stid' : 'stidtest'
             }.equinor.com/JCA/search?type=doc&revstatus=OF%2CUA%2CRE%2CPL%2COF-P`,
         tags: ['3D', 'Asset', 'Map', 'Doc'],
         appEnv: 'prod',
@@ -613,7 +625,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.AssetData,
         icon: 'tag',
         uri: (isProduction: boolean) =>
-            `https://${isProduction ? 'stid' : 'stidtest'
+            `https://${
+                isProduction ? 'stid' : 'stidtest'
             }.equinor.com/JCA/search?type=tag&tagstatus=A%2CP%2CR%2CF`,
         tags: ['Tag', 'Data', 'Functional Location'],
         appEnv: 'prod',

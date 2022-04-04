@@ -1,19 +1,28 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
-import { SwcrItemView } from './CustomViews/SwcrGardenItem';
-import { SwcrGroupView } from './CustomViews/SwcrGroupView';
+import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
+import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { SwcrPackage } from './models/SwcrPackage';
-import { fieldSettings } from './utilities/gardenSetup';
+import {
+    customDescription,
+    fieldSettings,
+    getHighlighColumn,
+    getItemWidth,
+} from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { SwcrGraph } from './CustomViews/Graph';
 import { columns } from './utilities/tableSetup';
+enum Tabs {
+    TABLE = 0,
+    GARDEN = 1,
+}
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<SwcrPackage>({
             CustomSidesheet: SwcrSideSheet,
             objectIdentifier: 'swcrNo',
+            defaultTab: Tabs.GARDEN,
         })
         .registerDataSource({ responseAsync: responseAsync, responseParser: responseParser })
         .registerFilterOptions([
@@ -90,17 +99,69 @@ export function setup(appApi: ClientApi): void {
                 valueFormatter: ({ dueAtDate }) => dueAtDate,
             },
         ])
-        .registerTableOptions({ objectIdentifierKey: 'swcrId', columnOrder: ['system', 'types'] })
+        .registerTableOptions({
+            objectIdentifierKey: 'swcrId',
+            columnOrder: [
+                'swcrNo',
+                'title',
+                'system',
+                'controlSystem',
+                'priority',
+                'supplier',
+                'action',
+                'contract',
+            ],
+            headers: [
+                {
+                    key: 'swcrNo',
+                    title: 'Swcr',
+                },
+                {
+                    key: 'title',
+                    title: 'Title',
+                },
+                {
+                    key: 'priority',
+                    title: 'Priority',
+                },
+                {
+                    key: 'system',
+                    title: 'System',
+                },
+                {
+                    key: 'controlSystem',
+                    title: 'Control System',
+                },
+                {
+                    key: 'action',
+                    title: 'Action',
+                },
+                {
+                    key: 'supplier',
+                    title: 'Supplier',
+                },
+            ],
+            hiddenColumns: [
+                'siteCode',
+                'projectIdentifier',
+                'projectDescription',
+                'description',
+                'modification',
+            ],
+        })
         .registerGardenOptions({
             gardenKey: 'dueAtDate',
             itemKey: 'swcrNo',
-            type: 'normal',
+            type: 'virtual',
             fieldSettings,
             customViews: {
                 customItemView: SwcrItemView,
-                customGroupView: SwcrGroupView,
                 customHeaderView: SwcrHeaderView,
             },
+            itemWidth: getItemWidth,
+            rowHeight: 25,
+            highlightColumn: getHighlighColumn,
+            customDescription: customDescription,
         })
         .registerAnalyticsOptions({
             section1: {
@@ -112,54 +173,54 @@ export function setup(appApi: ClientApi): void {
                             graphType: 'created-closed',
                         },
                     },
-                },
-                chart2: {
-                    type: 'customVisual',
-                    options: {
-                        component: SwcrGraph,
-                        componentProps: {
-                            graphType: 'open',
+                    chart2: {
+                        type: 'customVisual',
+                        options: {
+                            component: SwcrGraph,
+                            componentProps: {
+                                graphType: 'open',
+                            },
                         },
                     },
                 },
-            },
-            section2: {
-                chart1: {
-                    type: 'customVisual',
-                    options: {
-                        component: SwcrGraph,
-                        componentProps: {
-                            graphType: 'acc',
+                section2: {
+                    chart1: {
+                        type: 'customVisual',
+                        options: {
+                            component: SwcrGraph,
+                            componentProps: {
+                                graphType: 'acc',
+                            },
                         },
                     },
                 },
-            },
 
-            section3: {
-                chart2: {
-                    type: 'table',
-                    options: {
-                        initialGroupBy: 'priority',
-                        groupBy: [
-                            {
-                                key: 'controlSystem',
-                                title: 'Control System',
-                            },
-                            {
-                                key: 'priority',
-                                title: 'Priority',
-                            },
-                            {
-                                key: 'system',
-                                title: 'System',
-                            },
-                            {
-                                key: 'types',
-                                title: 'HW/SW',
-                            },
-                        ],
+                section3: {
+                    chart2: {
+                        type: 'table',
+                        options: {
+                            initialGroupBy: 'priority',
+                            groupBy: [
+                                {
+                                    key: 'controlSystem',
+                                    title: 'Control System',
+                                },
+                                {
+                                    key: 'priority',
+                                    title: 'Priority',
+                                },
+                                {
+                                    key: 'system',
+                                    title: 'System',
+                                },
+                                {
+                                    key: 'types',
+                                    title: 'HW/SW',
+                                },
+                            ],
 
-                        columns: columns,
+                            columns: columns,
+                        },
                     },
                 },
             },

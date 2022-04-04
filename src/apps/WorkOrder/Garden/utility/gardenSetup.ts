@@ -1,5 +1,8 @@
 import { getYearAndWeekFromDate, sortByNumber } from '@equinor/GardenUtils';
-import { getGardenItems } from '../../../../components/ParkView/Components/VirtualGarden/utils';
+import {
+    getGardenItems,
+    isSubGroup,
+} from '../../../../components/ParkView/Components/VirtualGarden/utils';
 import { GardenGroups } from '../../../../components/ParkView/Models/data';
 import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
 import { WorkOrder } from '../models';
@@ -50,7 +53,10 @@ export const getItemWidth = (garden: GardenGroups<WorkOrder>, groupByKey: string
     let gardenItemList: WorkOrder[] = [];
     garden.forEach((column) => {
         const gardenItems = getGardenItems(column);
-        gardenItems && gardenItemList.push(...(gardenItems as WorkOrder[]));
+        gardenItems &&
+            gardenItems.forEach((gardenItem) => {
+                !isSubGroup(gardenItem) && gardenItemList.push(gardenItem.item);
+            });
     });
 
     const longestKey = Math.max.apply(
