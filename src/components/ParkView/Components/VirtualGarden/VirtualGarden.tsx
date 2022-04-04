@@ -40,6 +40,7 @@ export const VirtualGarden = <T extends unknown>({
         highlightColumn,
         rowHeight,
         customDescription,
+        customGroupByKeys,
     } = useParkViewContext<T>();
 
     const parentRef = useRef<HTMLDivElement | null>(null);
@@ -106,8 +107,10 @@ export const VirtualGarden = <T extends unknown>({
         },
         [refresh]
     );
-    const highlightedColumn = highlightColumn ? highlightColumn(gardenKey.toString()) : undefined;
-
+    const highlightedColumn = highlightColumn
+        ? highlightColumn(gardenKey.toString(), customGroupByKeys)
+        : undefined;
+    console.log(highlightedColumn);
     useLayoutEffect(() => {
         if (highlightedColumn) {
             const scrollIndex = sortedColumns.findIndex(

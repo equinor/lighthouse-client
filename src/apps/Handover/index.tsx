@@ -1,14 +1,11 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import {
-    HandoverGardenHeader,
-    HandoverGardenItem,
-    HandoverGroupByView,
-    HandoverSideSheet,
-} from './Garden/CustomViews';
+import { HandoverGardenHeader, HandoverGroupByView, HandoverSideSheet } from './Garden/CustomViews';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
 import {
     fieldSettings,
     getDotsColor,
+    getHighlightedColumn,
+    getItemWidth,
     getMaxVolumeFromData,
     hiddenColumns,
     removedFilterOptions,
@@ -16,6 +13,7 @@ import {
 } from './Garden/utility';
 import { Status } from './Garden/components/commonStyles';
 import { statusBarData } from './Garden/components/statusItems';
+import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
 enum Tabs {
     TABLE,
     GARDEN,
@@ -130,14 +128,17 @@ export function setup(appApi: ClientApi): void {
     handover.registerGardenOptions({
         gardenKey: 'RFCC' as keyof HandoverPackage, // HOW to handled this ????
         itemKey: 'commpkgNo',
-        type: 'normal',
+        type: 'virtual',
         fieldSettings: fieldSettings,
         customGroupByKeys: initialCustomGroupByKeys,
         customViews: {
             customGroupByView: HandoverGroupByView,
             customItemView: HandoverGardenItem,
-            customHeaderView: HandoverGardenHeader,
+            // customHeaderView: HandoverGardenHeader,
         },
+        rowHeight: 30,
+        itemWidth: getItemWidth,
+        highlightColumn: getHighlightedColumn,
         customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
     });
 

@@ -62,9 +62,16 @@ export interface GardenOptions<T> {
     customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
-    itemWidth?: (garden: GardenGroups<T>, key: string) => number;
+    itemWidth?: (
+        garden: GardenGroups<T>,
+        key: string,
+        customGroupByKeys?: Record<string, unknown>
+    ) => number;
     rowHeight?: number;
-    highlightColumn?: (groupBy: string) => string | undefined;
+    highlightColumn?: (
+        groupBy: string,
+        customGroupByKeys?: Record<string, unknown>
+    ) => string | undefined;
     intercepters?: GardenDataIntercepters<T>;
     onSelect?: (item: T) => void;
     /** Function that returns the string of text that is to be displayed when a column is expanded */
