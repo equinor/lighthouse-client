@@ -124,7 +124,7 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
                         key={cell.getCellProps().key}
                         onClick={(e) => data.onCellClick(cell, e)}
                     >
-                        <span style={{ fontSize: '14px' }}>
+                        <span style={{ fontSize: '14px', width: '100%' }}>
                             {cell.isGrouped ? (
                                 <GroupCell row={row} cell={cell} />
                             ) : cell.isAggregated && cell.value ? (

@@ -48,6 +48,7 @@ export function createGarden<T>({
         isExpanded: isExpanded,
         customGroupByKeys: customGroupByKeys,
         preGroupFiltering: preGroupFiltering,
+        depth: 0,
     });
 
     return postGroupBySorting(groupedData, allGroupingKeys || []);

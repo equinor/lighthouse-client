@@ -17,7 +17,6 @@ export const ContentWrapper = styled.div`
 `;
 
 export const Title = styled(Typography)<MenuItemProps>`
-    font-size: 16px !important;
     color: ${({ disabled }) =>
         disabled
             ? tokens.colors.interactive.disabled__text.rgba

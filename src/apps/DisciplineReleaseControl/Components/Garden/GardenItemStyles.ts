@@ -12,13 +12,14 @@ export const ReleaseControlItem = styled(Item)<ReleaseControlItemProps>`
     display: flex;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: ${(props) => (props.isExpanded ? '100%' : '200px')};
-    margin-left: ${(props) => (props.isGrouped ? '32px' : null)};
-    min-width: 150px;
+    width: ${(props) => (props.isGrouped ? '85%' : '100%')};
+    margin-left: ${(props) => (props.isGrouped ? '22px' : null)};
+    min-width: 100px;
     box-sizing: border-box;
     white-space: nowrap;
     justify-content: space-between;
     border: 1px solid #dcdcdc;
+    padding: 0.18rem 0.5rem;
 `;
 
 export const MidSection = styled.div<{ expanded: boolean }>`
@@ -26,6 +27,8 @@ export const MidSection = styled.div<{ expanded: boolean }>`
     justify-content: ${(p) => (p.expanded ? 'flex-start' : 'center')};
     flex: 1;
     padding: ${(p) => (p.expanded ? '0px 8px' : '0px')};
+    font-size: 14px;
+    font-weight: 500;
 `;
 
 export const Circles = styled.div`

@@ -39,8 +39,7 @@ export const PageViewerPages = ({
                                 <PowerBI
                                     reportUri={page.reportURI}
                                     filterOptions={page.filter}
-                                    options={page.options}
-                                    isFilterActive={isFilterActive}
+                                    options={{ ...page.options, isFilterActive }}
                                 />
                             )}
                         </Page>
