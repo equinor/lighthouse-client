@@ -2,17 +2,22 @@ import { Checkbox } from '@equinor/eds-core-react';
 
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterValueType } from '../../Types/filter';
+import { DEFAULT_NULL_VALUE } from '../FilterGroup/FilterGroup';
 import { Count, FilterItemName, FilterItemWrap } from './FilterItem-Styles';
 interface FilterItemComponentProps {
     filterItem: FilterValueType;
     groupName: string;
     count: number;
+    CustomRender?: (value: FilterValueType) => JSX.Element;
 }
+
+const sanitizeFilterItemName = (value: FilterValueType) => value?.toString() ?? DEFAULT_NULL_VALUE;
 
 export const FilterItemComponent = ({
     filterItem,
     groupName,
     count,
+    CustomRender = () => <span>{sanitizeFilterItemName(filterItem)}</span>,
 }: FilterItemComponentProps): JSX.Element => {
     const {
         operations: { changeFilterItem },
@@ -20,7 +25,6 @@ export const FilterItemComponent = ({
     } = useFilterApiContext();
 
     const isUnChecked = checkValueIsInActive(groupName, filterItem);
-    const filterItemVisualName = filterItem?.toString() ?? '(Blank)';
 
     function uncheckAllButThisValue() {
         getGroupValues(groupName).forEach((value) =>
@@ -33,10 +37,11 @@ export const FilterItemComponent = ({
         return <></>;
     }
 
+    const Custom = CustomRender(filterItem);
+
     return (
         <FilterItemWrap>
             <Checkbox
-                title={filterItemVisualName}
                 checked={!isUnChecked}
                 onChange={() =>
                     changeFilterItem(
@@ -46,7 +51,7 @@ export const FilterItemComponent = ({
                     )
                 }
             />
-            <FilterItemName onClick={uncheckAllButThisValue}>{filterItemVisualName}</FilterItemName>
+            <FilterItemName onClick={uncheckAllButThisValue}>{Custom}</FilterItemName>
             {!isUnChecked && <Count>({count})</Count>}
         </FilterItemWrap>
     );

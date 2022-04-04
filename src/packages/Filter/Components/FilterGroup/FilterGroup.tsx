@@ -13,6 +13,7 @@ import {
 import { FilterGroup } from '../../Hooks/useFilterApi';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterValueType } from '../../Types';
+import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
 
 interface FilterGroupeComponentProps {
     filterGroup: FilterGroup;
@@ -23,7 +24,7 @@ function searchByValue(items: string[], value: string) {
     return items.filter((item) => item.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
 }
 
-const DEFAULT_NULL_VALUE = '(Blank)';
+export const DEFAULT_NULL_VALUE = '(Blank)';
 
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     filterGroup,
@@ -35,6 +36,8 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
 
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [searchActive, setSearchActive] = useState(false);
+
+    const { filterOptions } = useWorkSpace();
 
     const groupsMatchingSearch = searchByValue(
         filterGroup.values.map((v) => (v !== null ? v.toString() : DEFAULT_NULL_VALUE)),
@@ -90,6 +93,10 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                             count={
                                 itemCounts.find(({ name }) => name === convertFromBlank(value))
                                     ?.count ?? 0
+                            }
+                            CustomRender={
+                                filterOptions?.find(({ name }) => name === filterGroup.name)
+                                    ?.customValueRender
                             }
                             //HACK: Must recieve null and not blank
                             filterItem={convertFromBlank(value)}
