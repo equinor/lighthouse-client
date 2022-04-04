@@ -33,12 +33,10 @@ export function setup(appApi: ClientApi): void {
             {
                 name: 'Project identifier',
                 valueFormatter: ({ projectIdentifier }) => projectIdentifier,
-                defaultHidden: true,
             },
             {
                 name: 'Contract',
                 valueFormatter: ({ contract }) => contract,
-                defaultHidden: true,
             },
             {
                 name: 'Supplier',
@@ -47,7 +45,6 @@ export function setup(appApi: ClientApi): void {
             {
                 name: 'System',
                 valueFormatter: ({ system }) => system,
-                defaultHidden: true,
             },
             {
                 name: 'Types',
