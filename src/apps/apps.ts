@@ -323,7 +323,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: disciplineReleaseControlSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'test',
     },
     {
         title: 'Preservation',
