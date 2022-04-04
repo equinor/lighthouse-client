@@ -19,20 +19,21 @@ export function doesItemPassFilter<T>(
 
 function doesItemPassCriteria(
     uncheckedValues: FilterValueType[],
-    item: FilterValueType | FilterValueType[]
+    value: FilterValueType | FilterValueType[]
 ): boolean {
     /**
      * Item value is array
      */
-    if (Array.isArray(item)) {
-        if (item.length === 0) {
+    if (Array.isArray(value)) {
+        if (value.length === 0) {
             return !uncheckedValues.includes(null);
         }
 
         /** All values in the array must be unchecked for filter to remove the item */
-        return !item.every((value) => uncheckedValues.includes(value));
+        return !value.every((value) => uncheckedValues.includes(value));
     } else {
         /** Returns false if it finds the value */
-        return !uncheckedValues.includes(item);
+        /** Passes if the value is null */
+        return !uncheckedValues.includes(value);
     }
 }

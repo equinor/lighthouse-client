@@ -1,19 +1,19 @@
-import { FilterGroup } from '../Hooks/useFilterApi';
+import { FilterGroup, ValueFormatterFilter } from '../Hooks/useFilterApi';
 import { FilterOptions, FilterValueType } from '../Types';
 
 export function generateFilterValues<T>(
-    filterConfiguration: FilterOptions<T>,
+    valueFormatters: ValueFormatterFilter<T>[],
     data: T[]
 ): FilterGroup[] {
     if (!data || data.length == 0) return [];
     // Initialize all filter groups
-    const filterGroups: FilterGroup[] = filterConfiguration.map(
+    const filterGroups: FilterGroup[] = valueFormatters.map(
         ({ name }): FilterGroup => ({ name: name, values: [] })
     );
 
     /** Iterate all values */
     data.forEach((item) =>
-        filterConfiguration.forEach(({ name, valueFormatter }) => {
+        valueFormatters.forEach(({ name, valueFormatter }) => {
             const filterGroup = filterGroups.find(
                 ({ name: filterGroupName }) => name === filterGroupName
             );
@@ -35,29 +35,31 @@ export function generateFilterValues<T>(
                     ];
                 }
             } else {
-                const singleValue = handlePossiblyEmptyString(value);
+                // const singleValue = handlePossiblyEmptyString(value);
                 /** Append value and prevent duplicates */
                 filterGroup.values = [
-                    ...filterGroup.values.filter((oldValue) => oldValue !== singleValue),
-                    singleValue,
+                    ...filterGroup.values.filter((oldValue) => oldValue !== value),
+                    value,
                 ];
             }
         })
     );
+
     console.log(filterGroups);
-    return sortFilterGroups(filterGroups, filterConfiguration);
+
+    return sortFilterGroups(filterGroups, valueFormatters);
 }
 
-/**
- * Returns null for empty string
- * @param value
- * @returns
- */
-function handlePossiblyEmptyString(value: FilterValueType): FilterValueType {
-    if (typeof value !== 'string') return value;
+// /**
+//  * Returns null for empty string
+//  * @param value
+//  * @returns
+//  */
+// function handlePossiblyEmptyString(value: FilterValueType): FilterValueType {
+//     if (typeof value !== 'string') return value;
 
-    return value.length === 0 ? null : value;
-}
+//     return value.length === 0 ? null : value;
+// }
 
 /**
  * Sorts the filter items alphanumeric.
@@ -76,8 +78,28 @@ function sortFilterGroups<T = unknown>(
         if (customSort) {
             customSort(values);
         } else {
-            values.sort();
+            values.sort(defaultSortFunction);
         }
     });
     return groups;
+}
+
+function defaultSortFunction(a: FilterValueType, b: FilterValueType): number {
+    /** Place null values on top */
+    if (a === null) return -1;
+    if (b === null) return 1;
+
+    /** Ignore if a and b is not same type */
+    if (typeof b !== typeof a) return 0;
+
+    switch (typeof a) {
+        case 'number': {
+            //B has to be a number
+            return a - (b as number);
+        }
+
+        case 'string': {
+            return a.toLowerCase().localeCompare((b as string).toLowerCase());
+        }
+    }
 }

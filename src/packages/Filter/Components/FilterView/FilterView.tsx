@@ -68,6 +68,14 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
 
     const handleSearchButtonClick = () => setSearchActive((isActive) => !isActive);
 
+    const isAllVisible = visibleFilters.length === getAllFilterGroups().length;
+
+    const handleAllClick = () => {
+        isAllVisible
+            ? setVisibleFilters([])
+            : setVisibleFilters(getAllFilterGroups().map(({ name }) => name));
+    };
+
     return (
         <Wrapper isActive={isActive}>
             {isActive && (
@@ -105,6 +113,13 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                             </FilterSelectHeaderGroup>
 
                             <SearchFilterWrapper>
+                                <Checkbox
+                                    title="All"
+                                    label="All"
+                                    value="All"
+                                    onChange={handleAllClick}
+                                    checked={isAllVisible}
+                                />
                                 {SearchFilterKeys(filterGroupNames, filterSearchValue).map(
                                     (key, i) => (
                                         <div key={key + i}>

@@ -38,7 +38,6 @@ describe("Array items", () => {
 })
 
 
-
 const arrayFilterWithMultiple: FilterGroup = {
     name: "WorkflowSteps",
     values: ["step1"]
@@ -56,6 +55,24 @@ describe("Array items with multiple", () => {
 })
 
 
+const nullValuesTestFilterGroup: FilterGroup = {
+    name: "Category",
+    values: [null]
+}
+
+const nullValueTestData: ScopeChangeRequest =
+    {
+        changeCategory: { id: 1, name: null }
+    } as unknown as ScopeChangeRequest
+
+
+const valueFormatterArrayNull: ValueFormatterFilter<ScopeChangeRequest> = { name: "Category", valueFormatter: ({ changeCategory }) => changeCategory.name }
 
 
 
+describe("Null value to not pass", () => {
+    it("Should not pass", () => {
+        const result = doesItemPassFilter(nullValueTestData, [nullValuesTestFilterGroup], [valueFormatterArrayNull])
+        expect(result).toBeFalsy();
+    })
+})

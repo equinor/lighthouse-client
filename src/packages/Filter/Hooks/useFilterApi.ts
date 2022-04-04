@@ -92,7 +92,11 @@ export function useFilterApi<T>({
 }: FilterProviderProps<T>): FilterApi<T> {
     const filteredData = useRef<T[]>(data ?? []);
     const filterState = useRef<FilterGroup[]>([]);
-    const allFilterValues = useRef<FilterGroup[]>(generateFilterValues(filterConfiguration, data));
+    /**
+     * @internal
+     */
+    const getFilterState = () => filterState.current;
+    const allFilterValues = useRef<FilterGroup[]>(generateFilterValues(getValueFormatters(), data));
     const checkHasActiveFilters = () => filterState.current.length > 0;
     const triggerRerender = useRefresh();
 
@@ -108,12 +112,36 @@ export function useFilterApi<T>({
     /**
      * @internal
      * Get value formatters for the active filters
+     * Wraps the vaLue formatters in empty handlers, makes the config cleaner
      * Returns an array of objects with name and valueformatter
      */
     function getValueFormatters(): ValueFormatterFilter<T>[] {
-        return filterConfiguration.filter(({ name }) =>
-            getFilterState().map((group) => group.name === name)
-        );
+        return filterConfiguration
+            .filter(({ name }) => getFilterState().map((group) => group.name === name))
+            .map(({ name, valueFormatter }) => ({
+                name: name,
+                valueFormatter: (item) => handleEmpty(valueFormatter(item)),
+            }));
+    }
+
+    /**
+     * Handles empty values
+     * @param val
+     * @returns
+     */
+    function handleEmpty(
+        val: FilterValueType | FilterValueType[]
+    ): FilterValueType | FilterValueType[] {
+        if (val === undefined) {
+            return null;
+        }
+        if (Array.isArray(val)) {
+            return val.length === 0 ? null : val;
+        }
+        if (typeof val === 'string') {
+            return val.length === 0 ? null : val;
+        }
+        return val;
     }
 
     function getFilterItemCountsForGroup(groupName: string): FilterItemCount[] {
@@ -139,10 +167,6 @@ export function useFilterApi<T>({
         );
     }
 
-    /**@internal
-     *
-     */
-    const getFilterState = () => filterState.current;
     /**
      * @internal
      */
@@ -192,7 +216,7 @@ export function useFilterApi<T>({
     }
 
     function reCreateFilterValues(preventReRender?: boolean) {
-        allFilterValues.current = generateFilterValues(filterConfiguration, data);
+        allFilterValues.current = generateFilterValues(getValueFormatters(), data);
         !preventReRender && triggerRerender();
     }
 

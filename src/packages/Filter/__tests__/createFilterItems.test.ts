@@ -93,7 +93,7 @@ const filterArrayOptions: FilterOptions<Mock> = [
 const expectedArrayOutput: FilterGroup[] = [
     {
         name: "Name",
-        values: ["Cena", "Doe", "Jane", "John", "Jonas", "Krista", null]
+        values: [null, "Cena", "Doe", "Jane", "John", "Jonas", "Krista"]
     }
 ]
 

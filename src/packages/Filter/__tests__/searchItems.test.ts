@@ -49,7 +49,7 @@ const valueFormatters: ValueFormatterFilter<ScopeChangeRequest>[] = [
 
 describe('Free text search across multiple filtergroups', () => {
     it("Both items should pass", () => {
-        const result = searchAcrossFilterGroups(valueFormatters, mockRequests, "Mock")
+        const result = searchAcrossFilterGroups(valueFormatters, mockRequests, "mock")
         expect(result.length).toBe(2)
     })
 })
