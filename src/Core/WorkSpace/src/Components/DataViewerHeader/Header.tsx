@@ -133,7 +133,7 @@ function SearchButton() {
             : search(
                 getAllFilterGroups().map(({ name }) => name),
                 value,
-                'Data'
+                'FilteredData'
             );
     }
 

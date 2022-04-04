@@ -45,8 +45,6 @@ export function generateFilterValues<T>(
         })
     );
 
-    console.log(filterGroups);
-
     return sortFilterGroups(filterGroups, valueFormatters);
 }
 

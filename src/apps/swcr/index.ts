@@ -41,6 +41,54 @@ export function setup(appApi: ClientApi): void {
                 name: 'Types',
                 valueFormatter: ({ types }) => (types.length > 0 ? types.split(',') : []),
             },
+            {
+                name: 'Plant',
+                valueFormatter: ({ siteCode }) => siteCode,
+            },
+            {
+                name: 'Priority',
+                valueFormatter: ({ priority }) => priority,
+            },
+            {
+                name: 'Control system',
+                valueFormatter: ({ controlSystem }) => controlSystem,
+            },
+            {
+                name: 'Next signature by',
+                valueFormatter: ({ nextsToSign }) => nextsToSign,
+            },
+            {
+                name: 'Last signed ranking',
+                valueFormatter: ({ latestSignRanking }) => latestSignRanking,
+            },
+            {
+                name: 'Action',
+                valueFormatter: ({ action }) => action,
+            },
+            {
+                name: 'Node',
+                valueFormatter: ({ node }) => node,
+            },
+            {
+                name: 'Estimated manhours',
+                valueFormatter: ({ estimatedManhours }) => estimatedManhours,
+            },
+            {
+                name: 'COMMPK no',
+                valueFormatter: ({ cpkgNo }) => cpkgNo,
+            },
+            {
+                name: 'COMM phase',
+                valueFormatter: ({ cpkgPhase }) => cpkgPhase,
+            },
+            {
+                name: 'Other references',
+                valueFormatter: ({ referenceTypes }) => referenceTypes,
+            },
+            {
+                name: 'Due date',
+                valueFormatter: ({ dueAtDate }) => dueAtDate,
+            },
         ])
         .registerTableOptions({ objectIdentifierKey: 'swcrId', columnOrder: ['system', 'types'] })
         .registerGardenOptions({
@@ -132,5 +180,5 @@ async function responseAsync(signal?: AbortSignal) {
 
 async function responseParser(res: Response) {
     const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
-    return swcrPackages.sort(sortPackagesByStatusAndNumber);
+    return swcrPackages.slice(0, 100).sort(sortPackagesByStatusAndNumber);
 }

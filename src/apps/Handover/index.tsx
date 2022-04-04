@@ -42,6 +42,34 @@ export function setup(appApi: ClientApi): void {
                 name: 'System',
                 valueFormatter: ({ system }) => system,
             },
+            {
+                name: 'Comm pkg responsible',
+                valueFormatter: ({ responsible }) => responsible,
+            },
+            {
+                name: 'Comm pkg discipline',
+                valueFormatter: ({ mcDisciplineCodes }) => mcDisciplineCodes,
+            },
+            {
+                name: 'Comm pkg phase',
+                valueFormatter: ({ phase }) => phase,
+            },
+            {
+                name: 'Comm pkg priority 1',
+                valueFormatter: ({ priority1 }) => priority1,
+            },
+            {
+                name: 'Comm pkg priority 2',
+                valueFormatter: ({ priority2 }) => priority2,
+            },
+            {
+                name: 'Comm pkg priority 3',
+                valueFormatter: ({ priority3 }) => priority3,
+            },
+            {
+                name: 'Area',
+                valueFormatter: ({ area }) => area,
+            },
         ])
         .registerTableOptions({
             objectIdentifierKey: 'commpkgNo',
@@ -133,4 +161,34 @@ async function responseAsync(signal?: AbortSignal | undefined): Promise<Response
         ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
         : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
     return await fusion.fetch(`${contextId}/handover/`, { signal: signal });
+}
+
+function placeProgressInBracket(progress: number): string | null {
+    if (typeof progress !== 'number') return null;
+
+    if (progress === 100) return '100%';
+
+    if (progress === 0) return '0%';
+
+    switch (true) {
+        case progress <= 25: {
+            return '1-25%';
+        }
+
+        case progress <= 50: {
+            return '26-50%';
+        }
+
+        case progress <= 75: {
+            return '51-75%';
+        }
+
+        case progress <= 99: {
+            return '75-99%';
+        }
+
+        default: {
+            return null;
+        }
+    }
 }

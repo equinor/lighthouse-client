@@ -18,7 +18,7 @@ const valueFormatter: ValueFormatterFilter<ScopeChangeRequest> = { name: "Change
 
 describe('Free text search across one filtergroup', () => {
     it("One item should pass", () => {
-        const result = searchAcrossFilterGroups([valueFormatter], items, "Hidden")
+        const result = searchAcrossFilterGroups([valueFormatter], items, "hidden")
         expect(result.length).toBe(1)
     })
 })

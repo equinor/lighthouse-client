@@ -38,16 +38,16 @@ export function setup(appApi: ClientApi): void {
                 valueFormatter: ({ disciplineCode }) => disciplineCode,
             },
             {
-                name: 'Site codes',
-                valueFormatter: ({ siteCodes }) => siteCodes,
+                name: 'Milestone',
+                valueFormatter: ({ milestoneCode }) => milestoneCode,
             },
             {
-                name: 'Responsible code',
+                name: 'Responsible',
                 valueFormatter: ({ responsibleCode }) => responsibleCode,
             },
             {
-                name: 'Job status',
-                valueFormatter: ({ jobStatus }) => jobStatus,
+                name: 'Material status',
+                valueFormatter: ({ materialStatus }) => materialStatus,
             },
         ])
         .registerTableOptions({
