@@ -10,6 +10,8 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 ### Prod
 - [PowerBIViewer] - **BUG** - default page selection
+- [Checklist] - PowerBiViewer
+- [Punch] - PowerBiViewer
 - [Portal] - Styles update
 ### Test
 - [Workorder] - chore: add size icon, flag, progress to wo item
