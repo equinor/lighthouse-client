@@ -1,10 +1,14 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
-import { SwcrItemView } from './CustomViews/SwcrGardenItem';
-import { SwcrGroupView } from './CustomViews/SwcrGroupView';
+import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
+import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { SwcrPackage } from './models/SwcrPackage';
-import { fieldSettings } from './utilities/gardenSetup';
+import {
+    customDescription,
+    fieldSettings,
+    getHighlighColumn,
+    getItemWidth,
+} from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { SwcrGraph } from './CustomViews/Graph';
@@ -116,13 +120,17 @@ export function setup(appApi: ClientApi): void {
     swcr.registerGardenOptions({
         gardenKey: 'dueAtDate',
         itemKey: 'swcrNo',
-        type: 'normal',
+        type: 'virtual',
         fieldSettings,
         customViews: {
             customItemView: SwcrItemView,
-            customGroupView: SwcrGroupView,
+            // customGroupView: SwcrGroupView,
             customHeaderView: SwcrHeaderView,
         },
+        itemWidth: getItemWidth,
+        rowHeight: 25,
+        highlightColumn: getHighlighColumn,
+        customDescription: customDescription,
     });
 
     swcr.registerAnalyticsOptions({
