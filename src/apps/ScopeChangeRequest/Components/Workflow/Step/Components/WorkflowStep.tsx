@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { WorkflowStep } from '../../../../types/scopeChangeRequest';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { WorkflowStep } from '../../../../sTypes/scopeChangeRequest';
+import { useScopeChangeContext } from '../../../../scontext/useScopeChangeAccessContext';
 import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
 import { useQuery } from 'react-query';
-import { scopeChangeQueries } from '../../../../keys/queries';
+import { scopeChangeQueries } from '../../../../sKeys/queries';
 
 interface WorkflowStepProps {
     step: WorkflowStep;

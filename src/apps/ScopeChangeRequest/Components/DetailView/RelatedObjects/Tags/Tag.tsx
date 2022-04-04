@@ -1,12 +1,12 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ScopeChangeTag as TagInterface } from '../../../../types/scopeChangeRequest';
+import { ScopeChangeTag as TagInterface } from '../../../../sTypes/scopeChangeRequest';
 import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { Wrapper } from '../WrapperStyles';
 import { getTagById } from '../../../../api/PCS/getTagById';
-import { useInfiniteCachedQuery } from '../../../../hooks/react-Query/useInfiniteCachedQuery';
-import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
+import { useInfiniteCachedQuery } from '../../../../sHooks/react-Query/useInfiniteCachedQuery';
+import { proCoSysQueryKeys } from '../../../../sKeys/proCoSysQueryKeys';
 
 interface TagProps {
     tag: TagInterface;

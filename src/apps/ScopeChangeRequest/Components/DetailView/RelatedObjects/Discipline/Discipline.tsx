@@ -1,13 +1,13 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ScopeChangeDiscipline as DisciplineInterface } from '../../../../types/scopeChangeRequest';
+import { ScopeChangeDiscipline as DisciplineInterface } from '../../../../sTypes/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
-import { useInfiniteCachedQuery } from '../../../../hooks/react-Query/useInfiniteCachedQuery';
+import { useInfiniteCachedQuery } from '../../../../sHooks/react-Query/useInfiniteCachedQuery';
 import { useEffect, useState } from 'react';
-import { Discipline as PCSDiscipline } from '../../../../types/ProCoSys/discipline';
+import { Discipline as PCSDiscipline } from '../../../../sTypes/ProCoSys/discipline';
 import { getDisciplines } from '../../../../api/PCS/getDisciplines';
-import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
+import { proCoSysQueryKeys } from '../../../../sKeys/proCoSysQueryKeys';
 import { useFacility } from '../../../../../../Core/Client/Hooks';
 
 interface DisciplineProps {

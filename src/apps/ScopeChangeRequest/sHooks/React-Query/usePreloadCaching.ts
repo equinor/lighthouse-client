@@ -2,7 +2,7 @@ import { getSystems } from '../../api/PCS/getSystems';
 import { getFunctionalRoles } from '../../api/PCS/getFunctionalRoles';
 import { useInfiniteCachedQuery } from './useInfiniteCachedQuery';
 import { getDisciplines } from '../../api/PCS/getDisciplines';
-import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
+import { proCoSysQueryKeys } from '../../sKeys/proCoSysQueryKeys';
 import { useFacility } from '../../../../Core/Client/Hooks';
 
 /**

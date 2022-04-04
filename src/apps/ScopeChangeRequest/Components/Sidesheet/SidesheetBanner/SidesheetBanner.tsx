@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { useScopeChangeContext } from '../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../scontext/useScopeChangeAccessContext';
 
 export function SidesheetBanner(): JSX.Element {
     const { request } = useScopeChangeContext();

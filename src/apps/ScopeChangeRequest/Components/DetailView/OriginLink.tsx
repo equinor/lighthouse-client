@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import styled from 'styled-components';
 import { isProduction } from '../../../../Core/Client/Functions';
 import { getDocumentIdByNo } from '../../api/PCS/getDocumentIdByNo';
-import { OriginType } from '../../types/scopeChangeRequest';
+import { OriginType } from '../../sTypes/scopeChangeRequest';
 
 interface OriginLinkProps {
     type: OriginType;

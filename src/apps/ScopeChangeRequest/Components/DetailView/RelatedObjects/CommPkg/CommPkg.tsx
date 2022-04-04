@@ -2,11 +2,11 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { Wrapper } from '../WrapperStyles';
-import { ScopeChangeCommissioningPackage } from '../../../../types/scopeChangeRequest';
+import { ScopeChangeCommissioningPackage } from '../../../../sTypes/scopeChangeRequest';
 import { getCommPkgById } from '../../../../api/PCS/getCommPkgById';
-import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
+import { proCoSysQueryKeys } from '../../../../sKeys/proCoSysQueryKeys';
 import { CommPkgIcon } from './commPkgIcon';
-import { useInfiniteCachedQuery } from '../../../../hooks/react-Query/useInfiniteCachedQuery';
+import { useInfiniteCachedQuery } from '../../../../sHooks/react-Query/useInfiniteCachedQuery';
 
 interface CommPkgProps {
     commPkg: ScopeChangeCommissioningPackage;

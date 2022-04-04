@@ -1,14 +1,14 @@
 import { ClientApi } from '@equinor/portal-client';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 
-import { ScopeChangeRequest } from './types/scopeChangeRequest';
-import { dataCreator } from './workspaceConfig/dataCreatorConfig';
-import { dataSource, idResolver } from './workspaceConfig/dataOptions';
-import { filterConfig } from './workspaceConfig/filterConfig';
-import { gardenConfig } from './workspaceConfig/Garden/gardenConfig';
-import { prefetchQueriesOptions } from './workspaceConfig/prefetchQueryOptions';
-import { statusBarConfig } from './workspaceConfig/statusBarConfig';
-import { tableConfig } from './workspaceConfig/Table/tableConfig';
+import { ScopeChangeRequest } from './sTypes/scopeChangeRequest';
+import { dataCreator } from './sWorkspaceConfig/dataCreatorConfig';
+import { dataSource, idResolver } from './sWorkspaceConfig/dataOptions';
+import { filterConfig } from './sWorkspaceConfig/filterConfig';
+import { gardenConfig } from './sWorkspaceConfig/sGarden/gardenConfig';
+import { prefetchQueriesOptions } from './sWorkspaceConfig/prefetchQueryOptions';
+import { statusBarConfig } from './sWorkspaceConfig/statusBarConfig';
+import { tableConfig } from './sWorkspaceConfig/sTable/tableConfig';
 
 export function setup(appApi: ClientApi): void {
     appApi

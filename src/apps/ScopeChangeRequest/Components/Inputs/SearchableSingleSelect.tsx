@@ -10,7 +10,7 @@ import AsyncSelect from 'react-select/async';
 import { applyEdsComponents, applyEdsStyles, applyEDSTheme } from './SearchableDropdown/applyEds';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { SearchableDropdownWrapper } from './SearchableDropdown/SearchableDropdownWrapper';
-import { useCancellationToken } from '../../hooks/cancellationToken/useCancellationToken';
+import { useCancellationToken } from '../../sHooks/cancellationToken/useCancellationToken';
 
 interface SearchableSingleSelectProps {
     loadOptions: (

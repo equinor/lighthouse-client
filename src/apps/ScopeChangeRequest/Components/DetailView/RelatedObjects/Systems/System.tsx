@@ -1,14 +1,14 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ScopeChangeSystem as SystemInterface } from '../../../../types/scopeChangeRequest';
+import { ScopeChangeSystem as SystemInterface } from '../../../../sTypes/scopeChangeRequest';
 import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
 import { getSystems } from '../../../../api/PCS/getSystems';
 import { useEffect, useState } from 'react';
-import { System as PCSSystem } from '../../../../types/ProCoSys/system';
-import { useInfiniteCachedQuery } from '../../../../hooks/react-Query/useInfiniteCachedQuery';
-import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
+import { System as PCSSystem } from '../../../../sTypes/ProCoSys/system';
+import { useInfiniteCachedQuery } from '../../../../sHooks/react-Query/useInfiniteCachedQuery';
+import { proCoSysQueryKeys } from '../../../../sKeys/proCoSysQueryKeys';
 
 interface SystemProps {
     system: SystemInterface;

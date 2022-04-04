@@ -7,7 +7,7 @@ import {
     MutationKey,
 } from 'react-query';
 import { useDataContext } from '../../../../Core/WorkSpace/src/Context/DataProvider';
-import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
+import { scopeChangeQueryKeys } from '../../sKeys/scopeChangeQueryKeys';
 
 export function useScopeChangeMutation<
     TData = unknown,

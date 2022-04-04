@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
-import { Attachment } from '../../types/scopeChangeRequest';
+import { Attachment } from '../../sTypes/scopeChangeRequest';
 
 interface AttachmentProps {
     attachments: Attachment[];

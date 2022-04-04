@@ -7,18 +7,18 @@ import { useQuery } from 'react-query';
 import {
     Contributor as ContributorInterface,
     WorkflowStep,
-} from '../../../../types/scopeChangeRequest';
+} from '../../../../sTypes/scopeChangeRequest';
 import { MenuButton, MenuItem, IconMenu } from '../../../MenuButton/';
 import { ContributorActions } from '../../Types/actions';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { submitContribution } from '../../../../api/ScopeChange/Workflow';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
-import { useScopeChangeMutation } from '../../../../hooks/react-Query/useScopechangeMutation';
-import { useIsWorkflowLoading } from '../../../../hooks/react-Query/useIsWorkflowLoading';
+import { useScopeChangeContext } from '../../../../scontext/useScopeChangeAccessContext';
+import { useScopeChangeMutation } from '../../../../sHooks/react-Query/useScopechangeMutation';
+import { useIsWorkflowLoading } from '../../../../sHooks/react-Query/useIsWorkflowLoading';
 import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
 import { removeContributor } from '../../../../api/ScopeChange/Workflow/removeContributor';
-import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
-import { scopeChangeQueries } from '../../../../keys/queries';
+import { scopeChangeMutationKeys } from '../../../../sKeys/scopeChangeMutationKeys';
+import { scopeChangeQueries } from '../../../../sKeys/queries';
 
 interface ContributorsProps {
     step: WorkflowStep;

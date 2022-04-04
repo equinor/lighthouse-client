@@ -2,18 +2,18 @@ import { Tabs } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
 import { useInternalSidesheetFunction } from '../../../../../packages/Sidesheet/Hooks/useInternalSidesheetFunction';
-import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
-import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
-import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
-import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
-import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
-import { ScopeChangeContext } from '../../../context/scopeChangeAccessContext';
+import { useGetScopeChangeRequest } from '../../../sHooks/queries/useGetScopeChangeRequest';
+import { useEdsTabs } from '../../../sHooks/edsTabs/useEdsTabs';
+import { useScopeChangeAccess } from '../../../sHooks/queries/useScopeChangeAccess';
+import { useScopeChangeMutationWatcher } from '../../../sHooks/observers/useScopeChangeMutationWatcher';
+import { ScopeChangeRequest } from '../../../sTypes/scopeChangeRequest';
+import { ScopeChangeContext } from '../../../scontext/scopeChangeAccessContext';
 import { ScopeChangeErrorBanner } from '../../ErrorBanner/ErrorBanner';
 import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';
 import { LogTabTitle, LogTab } from '../Tabs/Log';
 import { RequestTabTitle, RequestTab } from '../Tabs/Request';
 import { WorkOrderTabTitle, WorkOrderTab } from '../Tabs/WorkOrders';
-import { useOctopusErrorHandler } from '../../../hooks/observers/useOctopusErrorHandler';
+import { useOctopusErrorHandler } from '../../../sHooks/observers/useOctopusErrorHandler';
 import { SidesheetTabList } from './SidesheetWrapper.styles';
 
 export function SidesheetWrapper(item: ScopeChangeRequest): JSX.Element {

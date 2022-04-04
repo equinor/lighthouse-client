@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Criteria, WorkflowStep } from '../../../../types/scopeChangeRequest';
+import { Criteria, WorkflowStep } from '../../../../sTypes/scopeChangeRequest';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { tokens } from '@equinor/eds-tokens';

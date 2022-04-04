@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { GroupBase, OptionsOrGroups } from 'react-select';
-import { PCSOrigins } from '../../../types/ProCoSys/ProCoSysTypes';
+import { PCSOrigins } from '../../../sTypes/ProCoSys/ProCoSysTypes';
 
 import { useState } from 'react';
 import { TypedSelectOption } from '../../../api/Search/searchType';
 import { SearchableSingleSelect } from '../SearchableSingleSelect';
-import { usePcsSearch } from '../../../hooks/search/usePcsSearch';
+import { usePcsSearch } from '../../../sHooks/search/usePcsSearch';
 
 interface PCSLinkProps {
     setOriginId: (originId: string | undefined) => void;

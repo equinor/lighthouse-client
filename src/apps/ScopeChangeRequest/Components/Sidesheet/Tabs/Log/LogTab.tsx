@@ -1,10 +1,10 @@
 import { useQuery } from 'react-query';
 
 import { CacheTime } from '../../../../enum/cacheTimes';
-import { scopeChangeQueries } from '../../../../keys/queries';
-import { LogEntry } from '../../../../types/scopeChangeRequest';
+import { scopeChangeQueries } from '../../../../sKeys/queries';
+import { LogEntry } from '../../../../sTypes/scopeChangeRequest';
 import { HistoryItem } from '../../../DetailView/History/HistoryItem';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../scontext/useScopeChangeAccessContext';
 
 export function LogTab(): JSX.Element {
     const { request } = useScopeChangeContext();
