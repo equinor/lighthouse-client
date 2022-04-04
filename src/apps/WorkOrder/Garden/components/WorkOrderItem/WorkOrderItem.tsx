@@ -99,7 +99,7 @@ const WorkOrderItem = ({
                     }}
                 />
             )}
-            <Root style={{ zIndex: 0 }}>
+            <Root>
                 <WorkOrderWrapper
                     backgroundColor={backgroundColor}
                     textColor={textColor}
