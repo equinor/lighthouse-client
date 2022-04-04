@@ -3,6 +3,7 @@ import 'powerbi-report-authoring';
 import { useEffect, useState } from 'react';
 import { useFusionClient } from './Api/fusionApi';
 import { ContextErrorType } from './Hooks/useErrorMessage';
+import { PBIOptions } from './Types';
 import { Filter } from './Types/filter';
 
 interface PowerBIResult {
@@ -19,7 +20,7 @@ export interface FusionPBIError {
 export function usePowerBI(
     resource: string,
     filterOptions?: Filter[],
-    options?: { showFilter?: boolean; enablePageNavigation?: boolean; defaultPage?: string }
+    options?: PBIOptions
 ): PowerBIResult {
     const { getConfig } = useFusionClient(resource, filterOptions, options);
     const [error, setError] = useState<FusionPBIError>();
