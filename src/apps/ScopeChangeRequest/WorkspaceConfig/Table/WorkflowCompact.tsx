@@ -14,7 +14,7 @@ interface CriteriaWithParent {
 }
 
 export function WorkflowCompact({ steps }: WorkflowProps): JSX.Element {
-    const compacted = steps.reduce((acc, { criterias, isCurrent }) => {
+    const compacted = steps?.reduce((acc, { criterias, isCurrent }) => {
         criterias.forEach(({ signedState }) =>
             acc.push({
                 isCurrent: isCurrent,

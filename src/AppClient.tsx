@@ -39,7 +39,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     ::-webkit-scrollbar {
-        height: 0.3rem;
+        height: 0.4rem;
         width: 0.5rem;
     }
 

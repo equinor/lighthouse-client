@@ -40,6 +40,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
         setActivePage(page);
         const newReport = getReportByPage(page, reports);
         if (newReport && newReport.reportURI !== activeReport?.reportURI) {
+            newReport.options = { ...newReport.options, defaultPage: page.pageId };
             setActiveReport(newReport);
         }
     };
@@ -62,10 +63,12 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
                     <PowerBI
                         reportUri={activeReport.reportURI}
                         filterOptions={activeReport.filter}
-                        options={activeReport.options}
-                        isFilterActive={isFilterActive}
-                        activePage={activePage.pageId}
-                        devLoad={activeReport.loadPagesInDev}
+                        options={{
+                            ...activeReport.options,
+                            isFilterActive,
+                            activePage: activePage.pageId,
+                            pageLoad: activeReport.loadPagesInDev,
+                        }}
                     />
                 )}
             </ContentWrapper>

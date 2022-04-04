@@ -13,8 +13,17 @@ export const SubGroup = styled.div`
     width: 98%;
     height: 85%;
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
     :hover {
         opacity: 0.5;
     }
+`;
+
+export const SubGroupText = styled.div`
+    display: flex;
+    margin-left: 4px;
+    margin-top: 6px;
 `;

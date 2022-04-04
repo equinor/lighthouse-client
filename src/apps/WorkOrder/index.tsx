@@ -5,13 +5,10 @@ import { WorkOrder } from './Garden/models';
 import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
 import { sortPackages } from './Garden/utility/sortPackages';
 
-const excludeKeys: (keyof WorkOrder)[] = [
-    'description',
-    'commpkgNumber',
-    'proCoSysSiteName',
-    'responsibleCode',
-];
-
+enum Tabs {
+    TABLE,
+    GARDEN,
+}
 export function setup(appApi: ClientApi): void {
     const contextId = isProduction()
         ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
@@ -34,12 +31,30 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<WorkOrder>({
             objectIdentifier: 'workOrderId',
             CustomSidesheet: WorkorderSideSheet,
+            defaultTab: Tabs.GARDEN,
         })
         .registerDataSource({
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerFilterOptions({ excludeKeys })
+        .registerFilterOptions([
+            {
+                name: 'Discipline',
+                valueFormatter: ({ disciplineCode }) => disciplineCode,
+            },
+            {
+                name: 'Milestone',
+                valueFormatter: ({ milestoneCode }) => milestoneCode,
+            },
+            {
+                name: 'Responsible',
+                valueFormatter: ({ responsibleCode }) => responsibleCode,
+            },
+            {
+                name: 'Material status',
+                valueFormatter: ({ materialStatus }) => materialStatus,
+            },
+        ])
         .registerTableOptions({
             objectIdentifierKey: 'mcPkgNo',
         })
@@ -63,6 +78,7 @@ export function setup(appApi: ClientApi): void {
 
             highlightColumn: getHighlightedColumn,
             itemWidth: getItemWidth,
+            rowHeight: 30,
 
             // status: { statusItemFunc, shouldAggregate: true },
             //options: { groupDescriptionFunc },
