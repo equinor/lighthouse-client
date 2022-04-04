@@ -67,6 +67,7 @@ export function setup(appApi: ClientApi): void {
 
             highlightColumn: getHighlightedColumn,
             itemWidth: getItemWidth,
+            rowHeight: 30,
 
             // status: { statusItemFunc, shouldAggregate: true },
             //options: { groupDescriptionFunc },

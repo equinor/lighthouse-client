@@ -34,13 +34,7 @@ const WorkOrderPopoverWrapper = ({
 }: WorkOrderPopoverProps) => {
     const { barColor, textColor, milestone, size, matStatus, matColor, mccrColor } = itemOptions;
     return (
-        <Popover
-            id="hover-popover"
-            anchorEl={anchorRef.current}
-            open={isOpen}
-            placement="bottom"
-            style={{}}
-        >
+        <Popover id="hover-popover" anchorEl={anchorRef.current} open={isOpen} placement="left">
             <Popover.Title>{`Wo.Number: ${data.workOrderNumber}`}</Popover.Title>
             <Popover.Content>
                 <PopoverContainer>
