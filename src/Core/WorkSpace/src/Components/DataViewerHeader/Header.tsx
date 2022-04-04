@@ -80,7 +80,7 @@ export const CompletionViewHeader = ({
                     })}
                 </List>
                 <Divider />
-                <SearchButton />
+                {/* <SearchButton /> */}
                 <TabButton
                     color={
                         dataApi?.isStale
