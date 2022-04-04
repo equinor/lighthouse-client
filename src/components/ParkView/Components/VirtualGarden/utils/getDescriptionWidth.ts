@@ -13,7 +13,7 @@ function packageHasDescription<T extends unknown>(
         return false;
     }
 }
-function columnDataIsWithDepth<T extends unknown>(
+export function columnDataIsWithDepth<T extends unknown>(
     packageObj: GardenItem<T>[]
 ): packageObj is GardenItemWithDepth<T>[] {
     if ((packageObj[0] as GardenItemWithDepth<T>)?.item !== undefined) {
@@ -22,23 +22,35 @@ function columnDataIsWithDepth<T extends unknown>(
         return false;
     }
 }
+
+const getTextLengthToBeDisplayed = <T extends unknown>(
+    gardenItem: T,
+    customDescription?: (item: T) => string
+) => {
+    if (customDescription) {
+        return customDescription(gardenItem);
+    } else {
+        return packageHasDescription(gardenItem) ? gardenItem.description : '';
+    }
+};
 /**
  * @param columnData One column from the garden
  * @returns Longest description string
  */
-export const getLongestDescription = <T extends unknown>(columnData: GardenItem<T>[]): string => {
+export const getLongestDescription = <T extends unknown>(
+    columnData: GardenItem<T>[],
+    customDescription?: (item: T | GardenItem<T>) => string
+): string => {
     let longest = '';
     if (columnDataIsWithDepth(columnData)) {
         columnData.forEach(({ item }) => {
-            packageHasDescription(item) && item.description.length > longest.length
-                ? (longest = item.description)
-                : null;
+            const textToBeDisplayed = getTextLengthToBeDisplayed(item, customDescription);
+            textToBeDisplayed.length > longest.length ? (longest = textToBeDisplayed) : null;
         });
     } else {
         columnData.forEach((e) => {
-            packageHasDescription(e) && e.description.length > longest.length
-                ? (longest = e.description)
-                : null;
+            const textToBeDisplayed = getTextLengthToBeDisplayed(e, customDescription);
+            textToBeDisplayed.length > longest.length ? (longest = textToBeDisplayed) : null;
         });
     }
     return longest;
@@ -49,12 +61,13 @@ export const getLongestDescription = <T extends unknown>(columnData: GardenItem<
  * @returns A calculated width based on string length and font
  */
 export const getDescriptionWidth = <T extends unknown>(
-    columnData: GardenItem<T>[] | null
+    columnData: GardenItem<T>[] | null,
+    customDescription?: (item: T | GardenItem<T>) => string
 ): number => {
     if (!columnData || columnData.length === 0) {
         return 0;
     }
-    const longestDescription = getLongestDescription(columnData);
+    const longestDescription = getLongestDescription(columnData, customDescription);
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     //HACK do something smart here
