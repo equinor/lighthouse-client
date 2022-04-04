@@ -1,4 +1,4 @@
-import { ScopeChangeRequest } from "../../../apps/ScopeChangeRequest/Types/scopeChangeRequest";
+import { ScopeChangeRequest } from "../../../apps/ScopeChangeRequest/types/scopeChangeRequest";
 import { generateFilterValues } from "../functions/generateFilterValues"
 import { FilterGroup } from "../Hooks/useFilterApi";
 import { FilterOptions } from "../Types";

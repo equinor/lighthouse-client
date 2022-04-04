@@ -2,25 +2,23 @@ import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 
 import {
     Contributor as ContributorInterface,
     WorkflowStep,
-} from '../../../../Types/scopeChangeRequest';
+} from '../../../../types/scopeChangeRequest';
 import { MenuButton, MenuItem, IconMenu } from '../../../MenuButton/';
 import { ContributorActions } from '../../Types/actions';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
-import { submitContribution } from '../../../../Api/ScopeChange/Workflow/';
-import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
-import { canContribute } from '../../../../Api/ScopeChange/Access';
-import { CacheTime } from '../../../../Enums/cacheTimes';
-import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
+import { submitContribution } from '../../../../api/ScopeChange/Workflow';
+import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
+import { useIsWorkflowLoading } from '../../../../hooks/React-Query/useIsWorkflowLoading';
 import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
-import { removeContributor } from '../../../../Api/ScopeChange/Workflow/removeContributor';
-import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
-import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
-import { useQuery } from 'react-query';
+import { removeContributor } from '../../../../api/ScopeChange/Workflow/removeContributor';
+import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
+import { scopeChangeQueries } from '../../../../keys/queries';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -38,7 +36,6 @@ export const Contributor = ({
     const { request } = useScopeChangeContext();
     const workflowLoading = useIsWorkflowLoading();
 
-    const { workflowKeys } = scopeChangeQueryKeys(request.id);
     const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(request.id);
 
     const { mutate: removeContributorAsync } = useScopeChangeMutation(
@@ -47,16 +44,9 @@ export const Contributor = ({
         removeContributor
     );
 
-    const checkCanContribute = () =>
-        canContribute({ contributorId: contributor.id, requestId: request.id, stepId: step.id });
-
+    const { canContributeQuery } = scopeChangeQueries.workflowQueries;
     const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
-        workflowKeys.contributorKey(step.id, contributor.id),
-        checkCanContribute,
-        {
-            staleTime: CacheTime.FiveMinutes,
-            cacheTime: CacheTime.FiveMinutes,
-        }
+        canContributeQuery(request.id, step.id, contributor.id)
     );
 
     const { mutate } = useScopeChangeMutation(
@@ -201,6 +191,8 @@ const WorkflowText = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    font-size: 16px;
+    color: ${tokens.colors.text.static_icons__default.hex};
 `;
 
 const Spacer = styled.div`
