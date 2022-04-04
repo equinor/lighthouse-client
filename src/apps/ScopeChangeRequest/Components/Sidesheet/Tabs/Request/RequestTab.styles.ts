@@ -16,6 +16,7 @@ export const Description = styled.div`
     line-height: 20px;
     letter-spacing: 0em;
     text-align: left;
+    white-space: break-spaces;
 `;
 
 export const SectionHeading = styled.div`
