@@ -23,6 +23,7 @@ export function generateFilterValues<T>(
 
             if (Array.isArray(value)) {
                 if (value.length === 0) {
+                    debugger;
                     /** Empty arrays are parsed as null */
                     filterGroup.values = [
                         ...filterGroup.values.filter((value) => value !== null),
@@ -35,8 +36,6 @@ export function generateFilterValues<T>(
                     ];
                 }
             } else {
-                // const singleValue = handlePossiblyEmptyString(value);
-                /** Append value and prevent duplicates */
                 filterGroup.values = [
                     ...filterGroup.values.filter((oldValue) => oldValue !== value),
                     value,
@@ -47,17 +46,6 @@ export function generateFilterValues<T>(
 
     return sortFilterGroups(filterGroups, valueFormatters);
 }
-
-// /**
-//  * Returns null for empty string
-//  * @param value
-//  * @returns
-//  */
-// function handlePossiblyEmptyString(value: FilterValueType): FilterValueType {
-//     if (typeof value !== 'string') return value;
-
-//     return value.length === 0 ? null : value;
-// }
 
 /**
  * Sorts the filter items alphanumeric.

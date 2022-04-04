@@ -180,5 +180,5 @@ async function responseAsync(signal?: AbortSignal) {
 
 async function responseParser(res: Response) {
     const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
-    return swcrPackages.slice(0, 100).sort(sortPackagesByStatusAndNumber);
+    return swcrPackages.sort(sortPackagesByStatusAndNumber);
 }

@@ -47,7 +47,7 @@ export const FilterItemComponent = ({
                 }
             />
             <FilterItemName onClick={uncheckAllButThisValue}>{filterItemVisualName}</FilterItemName>
-            <Count>({isUnChecked ? null : count})</Count>
+            {!isUnChecked && <Count>({count})</Count>}
         </FilterItemWrap>
     );
 };
