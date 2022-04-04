@@ -112,6 +112,5 @@ export const getItemWidth = (garden: GardenGroups<SwcrPackage>, groupByKey: stri
                 : gardenItem.item.swcrNo.length;
         })
     );
-    console.log(longestKey);
     return Math.max(longestKey * 8 + 85, 170);
 };
