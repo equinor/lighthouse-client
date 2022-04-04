@@ -28,11 +28,11 @@ export const Wrapper = styled.div`
         overflow: hidden;
         text-overflow: ellipsis;
         span {
-            padding: 0.1rem;
+            padding: 0rem;
         }
         svg {
-            height: 16px;
-            width: 16px;
+            height: 18px;
+            width: 18px;
         }
     }
 `;

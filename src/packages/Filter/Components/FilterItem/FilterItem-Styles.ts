@@ -2,41 +2,35 @@ import { Checkbox } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const FilterItemWrapper = styled.span`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-
-    :hover {
-        background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
-    }
-`;
-
-export const FilterItemLabel = styled.label`
-    cursor: pointer;
+export const AllCheckbox = styled(Checkbox)`
     padding-left: 0.5rem !important;
 `;
 
-export const FilterItemGroupe = styled.span`
-    padding: 2px;
-    height: 20px;
+export const FilterItemName = styled.span`
+    cursor: pointer;
+    font-size: 16px;
+`;
+
+export const Count = styled.span`
+    font-size: 12px;
+`;
+
+export const FilterItemWrap = styled.div`
+    grid-template-columns: 1fr 24fr 1fr;
+    width: 100%;
+    display: grid;
+    align-items: center;
+    height: 32px;
+
     > span {
         padding: 0px;
 
         > svg {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
         }
     }
-`;
-
-export const Count = styled.div`
-    padding: 0.5rem;
-    font-size: 12px;
-`;
-
-export const AllCheckbox = styled(Checkbox)`
-    padding-left: 0.5rem !important;
+    :hover {
+        background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
+    }
 `;

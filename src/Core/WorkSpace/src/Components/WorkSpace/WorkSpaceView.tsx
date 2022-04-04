@@ -1,4 +1,3 @@
-import { FilterProvider } from '@equinor/filter';
 import { openSidesheet, PopoutSidesheet } from '@equinor/sidesheet';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -11,6 +10,7 @@ import { Fallback } from '../FallbackSidesheet/Fallback';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { HeaderWrapper } from './HeaderFilterWrapper';
+import { WorkspaceFilterWrapper } from './WorkspaceFilterWrapper';
 import { DataViewWrapper, Tabs, WorkspaceWrapper } from './WorkSpaceViewStyles';
 
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
@@ -21,7 +21,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         timelineOptions,
         analyticsOptions,
         powerBiOptions,
-        filterOptions,
+        filterOptions = [],
         workflowEditorOptions,
         onSelect,
         idResolver,
@@ -45,23 +45,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         workflowEditorOptions
     );
     const [activeTab, setActiveTab] = useState(Number(id) || defaultTab);
-
-    // const filterLocationKey = useMemo(() => `filer-${props.shortName}`, [props.shortName]);
-    // const persistOptions: FilterPersistOptions = useMemo(
-    //     () => ({
-    //         getFilter() {
-    //             const filter = storage.getItem<FilterData>(filterLocationKey);
-    //             if (typeof filter === 'object') {
-    //                 return filter;
-    //             }
-    //             return;
-    //         },
-    //         setFilter(filterData: FilterData) {
-    //             return storage.setItem(filterLocationKey, filterData);
-    //         },
-    //     }),
-    //     [filterLocationKey]
-    // );
 
     const handleChange = (index: number) => {
         setActiveTab(index);
@@ -127,16 +110,16 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     if (!viewIsActive) return <NoDataView />;
     return (
-        <FilterProvider initialData={data} options={filterOptions}>
-            <WorkspaceWrapper>
+        <WorkspaceWrapper>
+            <WorkspaceFilterWrapper filterConfiguration={filterOptions}>
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <HeaderWrapper props={props} tabs={tabs} />
                     <DataViewWrapper>
                         <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
                     </DataViewWrapper>
                 </Tabs>
-                <PopoutSidesheet />
-            </WorkspaceWrapper>
-        </FilterProvider>
+            </WorkspaceFilterWrapper>
+            <PopoutSidesheet />
+        </WorkspaceWrapper>
     );
 }

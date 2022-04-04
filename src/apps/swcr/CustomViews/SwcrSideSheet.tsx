@@ -1,4 +1,4 @@
-import { Button, Chip } from '@equinor/eds-core-react';
+import { Chip } from '@equinor/eds-core-react';
 import { Fragment } from 'react';
 import styled from 'styled-components';
 import useSignatures from '../hooks/useSignatures';
