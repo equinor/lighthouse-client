@@ -40,7 +40,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             pipetest.overdue =
                 pipetest.step !== PipetestStep.Complete &&
-                DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
+                    DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                     ? 'Yes'
                     : 'No';
             return pipetest;
@@ -48,16 +48,6 @@ export function setup(appApi: ClientApi): void {
         sortPipetests(json);
         return json;
     };
-
-    const releaseControlExcludeKeys: (keyof Pipetest)[] = [
-        'name',
-        'commPkPriority1',
-        'rfccPlanned',
-        'description',
-        'step',
-        'completionStatus',
-        'shortformCompletionStatus',
-    ];
 
     const request = appApi
         .createWorkSpace<Pipetest>({
@@ -69,42 +59,34 @@ export function setup(appApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        // .registerDataCreator({
-        //     title: 'Release control',
-        //     component: ReleaseControlProcessForm,
-        // })
-        .registerFilterOptions({
-            excludeKeys: releaseControlExcludeKeys,
-            headerNames: {},
-            defaultActiveFilters: [
-                'currentStep',
-                'System',
-                'Priority',
-                'dueDateTimePeriod',
-                'overdue',
-                'CompletionStatus',
-            ],
-            valueFormatter: {
-                currentStep: (item: Pipetest): string => {
-                    return item.step;
-                },
-                System: (item: Pipetest): string => {
-                    return item.name.substring(0, 2);
-                },
-                Priority: (item: Pipetest): string => {
-                    return item.commPkPriority1 !== '' ? item.commPkPriority1 : 'Unknown';
-                },
-                CompletionStatus: (item: Pipetest): string => {
-                    return item.shortformCompletionStatus;
-                },
+        .registerFilterOptions([
+            {
+                name: 'Current step',
+                valueFormatter: ({ step }) => step,
             },
-        });
+            {
+                name: 'System',
+                valueFormatter: ({ name }) => name.substring(0, 2),
+            },
 
-    // request.registerDataSource(async () => {
-    //     const { releaseControls } = httpClient();
-    //     const response = await releaseControls.fetch(`/api/release-control-processes`);
-    //     return JSON.parse(await response.text());
-    // });
+            {
+                name: 'Priority',
+                valueFormatter: ({ commPkPriority1 }) =>
+                    commPkPriority1 !== '' ? commPkPriority1 : 'Unknown',
+            },
+            {
+                name: 'Due date time period',
+                valueFormatter: ({ dueDateTimePeriod }) => dueDateTimePeriod,
+            },
+            {
+                name: 'Overdue',
+                valueFormatter: ({ overdue }) => overdue,
+            },
+            {
+                name: 'Completion status',
+                valueFormatter: ({ completionStatus }) => completionStatus,
+            },
+        ]);
 
     request.registerTableOptions({
         objectIdentifierKey: 'name',
