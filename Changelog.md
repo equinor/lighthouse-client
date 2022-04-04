@@ -6,7 +6,21 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
 
+## 0.2.5
 
+### Prod
+- [PowerBIViewer] - **BUG** - default page selection
+- [Portal] - Styles update
+### Test
+- [Workorder] - chore: add size icon, flag, progress to wo item
+- [Garden] - Highlight selected garden item
+- [SWCR] - Virtual garden
+- [Data Factory] - Optional access check
+- [Handover] - General Updated, filter items, styling
+- [Piping and Heat trace] - released to test
+
+--- 
+  
 
 ## 0.2.3-alpha
 
@@ -16,7 +30,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - New menu
 - Scopechange
 - Moved create menu to topbar
-
+---
 ## 0.2.2-alpha
 
 ### Prod
@@ -25,11 +39,12 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ### Test
 - Workspace refresh functionality.
 - Workspace UI updates
-
+---
 ## 0.2.1-alpha
 ### Test General
 - Fix fusion scopes
 - Update PBI reports
+- ---
 ## 0.2.0-alpha
 
 ### General
@@ -43,7 +58,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ### Scope change
 - Release Scope change in test
 
-
+---
 ## 0.1.1-alpha
 
 ### Changes
@@ -62,7 +77,8 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - Support for custom header renderer in config Table
 - Support of cancellation when redirect to other view 
 - General UI updates
-- 
+
+---
 ## 0.1.0-alpha
 
 ### Add
