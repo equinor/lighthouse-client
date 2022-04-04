@@ -22,19 +22,10 @@ export function generateFilterValues<T>(
             const value = valueFormatter(item);
 
             if (Array.isArray(value)) {
-                if (value.length === 0) {
-                    debugger;
-                    /** Empty arrays are parsed as null */
-                    filterGroup.values = [
-                        ...filterGroup.values.filter((value) => value !== null),
-                        null,
-                    ];
-                } else {
-                    filterGroup.values = [
-                        ...filterGroup.values.filter((oldValue) => !value.includes(oldValue)),
-                        ...value,
-                    ];
-                }
+                filterGroup.values = [
+                    ...filterGroup.values.filter((oldValue) => !value.includes(oldValue)),
+                    ...value,
+                ];
             } else {
                 filterGroup.values = [
                     ...filterGroup.values.filter((oldValue) => oldValue !== value),
