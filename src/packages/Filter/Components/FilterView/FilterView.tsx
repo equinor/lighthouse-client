@@ -6,7 +6,6 @@ import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterGroupeComponent } from '../FilterGroup/FilterGroup';
 import { Title } from '../FilterGroup/FilterGroup-Styles';
 import Icon from '../Icon/Icon';
-import { camelCaseToHumanReadable } from '../Utils/camelCaseToHumanReadable';
 import {
     AddButton,
     FilterGroups,
@@ -125,7 +124,7 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                                         <div key={key + i}>
                                             <Checkbox
                                                 title={key}
-                                                label={camelCaseToHumanReadable(key)}
+                                                label={key}
                                                 value={key}
                                                 disabled={
                                                     visibleFilters.includes(key) &&

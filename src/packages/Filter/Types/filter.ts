@@ -13,6 +13,7 @@ export interface FilterConfiguration<T> {
     defaultUncheckedValues?: FilterValueType[];
     /** Sort the list of values in the filtergroup, defaults to alphanumeric */
     sort?: (values: FilterValueType[]) => FilterValueType[];
+    /** Custom render function for rendering the value in the filter view */
     customValueRender?: (value: FilterValueType) => JSX.Element;
 }
 

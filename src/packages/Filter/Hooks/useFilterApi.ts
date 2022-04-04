@@ -144,6 +144,11 @@ export function useFilterApi<T>({
         return val;
     }
 
+    /**
+     * Gets count for all the filter values in a filter group
+     * @param groupName
+     * @returns
+     */
     function getFilterItemCountsForGroup(groupName: string): FilterItemCount[] {
         const filterGroup = allFilterValues.current.find(({ name }) => name === groupName);
         if (!filterGroup) return [];
@@ -151,21 +156,27 @@ export function useFilterApi<T>({
         return filterGroup.values.map(
             (value): FilterItemCount => ({
                 name: value,
-                count: filteredData.current.filter((item) =>
-                    doesItemPassFilter(
-                        item,
-                        [
-                            {
-                                name: groupName,
-                                values: filterGroup.values.filter((oldValue) => oldValue !== value),
-                            },
-                        ],
-                        getValueFormatters()
-                    )
-                ).length,
+                count: getCountForFilterValue(filterGroup, value),
             })
         );
     }
+
+    /**
+     * @internal
+     */
+    const getCountForFilterValue = (filterGroup: FilterGroup, filterValue: FilterValueType) =>
+        filteredData.current.filter((item) =>
+            doesItemPassFilter(
+                item,
+                [
+                    {
+                        name: filterGroup.name,
+                        values: filterGroup.values.filter((oldValue) => oldValue !== filterValue),
+                    },
+                ],
+                getValueFormatters()
+            )
+        ).length;
 
     /**
      * @internal
