@@ -24,6 +24,8 @@ type PackageContainerProps<T> = {
     items: GardenItem<T>[] | null;
     itemWidth?: number;
     groupByKeys: (keyof T)[];
+    selectedItem: T | null;
+    handleOnClick: (item: T) => void;
 };
 export const GardenItemContainer = <T extends unknown>(props: PackageContainerProps<T>) => {
     const {
@@ -36,9 +38,12 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
         items,
         itemWidth,
         groupByKeys,
+        selectedItem,
+        handleOnClick,
     } = props;
     const expand = useExpand();
     const { onSelect } = useParkViewContext();
+
     const CustomSubGroup = props?.customSubGroup;
     return (
         <>
@@ -82,13 +87,17 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                             <PackageChild
                                 data={item.item}
                                 itemKey={itemKey.toString()}
-                                onClick={() => onSelect(item.item)}
+                                onClick={() => {
+                                    handleOnClick(item.item);
+                                    onSelect(item.item);
+                                }}
                                 columnExpanded={
                                     expand?.expandedColumns?.[garden[virtualColumn.index].value]
                                         ?.isExpanded ?? false
                                 }
                                 depth={item?.itemDepth}
                                 width={itemWidth}
+                                selectedItem={selectedItem}
                             />
                         ) : (
                             <DefaultPackage onClick={() => onSelect(item)}>
