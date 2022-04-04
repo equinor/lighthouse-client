@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useHttpClient } from '../../../../../Core/Client/Hooks/useApiClient';
-import { useCancellationToken } from '../../../sHooks/cancellationToken/useCancellationToken';
+import { useCancellationToken } from '../../../hooks/cancellationToken/useCancellationToken';
 
 interface SelectSWCRProps {
     setOriginId: (originId: string | undefined) => void;

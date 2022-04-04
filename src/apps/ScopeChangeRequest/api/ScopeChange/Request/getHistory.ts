@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { throwOnError } from '../../../sFunctions/throwError';
+import { throwOnError } from '../../../functions/throwError';
 import { LogEntry } from '../../../sTypes/scopeChangeRequest';
 
 export async function getHistory(id: string): Promise<LogEntry[]> {

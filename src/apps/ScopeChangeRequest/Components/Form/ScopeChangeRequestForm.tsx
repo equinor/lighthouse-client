@@ -4,8 +4,8 @@ import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { Upload } from '../Attachments/Upload';
 import { SearchReferences } from '../SearchReferences/SearchReferences';
-import { usePreloadCaching } from '../../sHooks/react-Query/usePreloadCaching';
-import { useScopeChangeFormState } from '../../sHooks/form/useScopeChangeFormState';
+import { usePreloadCaching } from '../../hooks/react-Query/usePreloadCaching';
+import { useScopeChangeFormState } from '../../hooks/form/useScopeChangeFormState';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import {
     ActionBar,
@@ -18,7 +18,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { getScopeChangeById } from '../../api/ScopeChange/Request';
 import { openSidesheet } from '@equinor/sidesheet';
 import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-import { useRequestMutations } from '../../sHooks/mutations/useRequestMutations';
+import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
 

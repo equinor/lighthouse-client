@@ -1,5 +1,5 @@
 import { WorkflowStepContainer } from '../Step';
-import { useScopeChangeContext } from '../../../scontext/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../context/useScopeChangeAccessContext';
 
 export function Workflow(): JSX.Element {
     const { request } = useScopeChangeContext();

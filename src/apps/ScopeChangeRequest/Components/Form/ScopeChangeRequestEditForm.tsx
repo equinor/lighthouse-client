@@ -2,7 +2,7 @@ import { Button, Icon, Progress } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { useScopeChangeMutation } from '../../sHooks/react-Query/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../hooks/react-Query/useScopechangeMutation';
 import { ScopeChangeRequest } from '../../sTypes/scopeChangeRequest';
 import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { HotUpload } from '../Attachments/HotUpload';
@@ -10,7 +10,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { deleteAttachment } from '../../api/ScopeChange/Request/attachment';
 import { scopeChangeMutationKeys } from '../../sKeys/scopeChangeMutationKeys';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
-import { useScopeChangeFormState } from '../../sHooks/form/useScopeChangeFormState';
+import { useScopeChangeFormState } from '../../hooks/form/useScopeChangeFormState';
 import {
     ActionBar,
     AttachmentName,
@@ -22,8 +22,8 @@ import {
     Section,
 } from './ScopeChangeForm.styles';
 import styled from 'styled-components';
-import { useRequestMutations } from '../../sHooks/mutations/useRequestMutations';
-import { useUnpackRelatedObjects } from '../../sHooks/queries/useUnpackRelatedObjects';
+import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
+import { useUnpackRelatedObjects } from '../../hooks/queries/useUnpackRelatedObjects';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;

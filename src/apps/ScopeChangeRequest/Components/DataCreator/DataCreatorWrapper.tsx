@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { ScopeChangeErrorBanner } from '../ErrorBanner/ErrorBanner';
-import { useOctopusErrorHandler } from '../../sHooks/observers/useOctopusErrorHandler';
+import { useOctopusErrorHandler } from '../../hooks/observers/useOctopusErrorHandler';
 import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
 
 interface DataCreatorWrapperProps {

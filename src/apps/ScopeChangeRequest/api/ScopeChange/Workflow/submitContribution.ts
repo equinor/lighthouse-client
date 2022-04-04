@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { throwOnError } from '../../../sFunctions/throwError';
+import { throwOnError } from '../../../functions/throwError';
 
 interface SubmitContributionParams {
     requestId: string;

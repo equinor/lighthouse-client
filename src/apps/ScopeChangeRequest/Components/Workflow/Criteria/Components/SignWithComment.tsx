@@ -1,6 +1,6 @@
 import { Button, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { useScopeChangeContext } from '../../../../scontext/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
 import { useWorkflowSigning } from './useWorkflowSigning';
 
 interface SignWithCommentProps {

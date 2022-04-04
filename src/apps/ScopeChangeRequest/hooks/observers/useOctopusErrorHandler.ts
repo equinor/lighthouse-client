@@ -1,7 +1,7 @@
 import { Mutation } from 'react-query/types/core/mutation';
 import { Query } from 'react-query/types/core/query';
-import { ErrorMessageFormat } from '../../sFunctions/ErrorMessage/errorMessageFormat';
-import { sendErrorMessage } from '../../sFunctions/ErrorMessage/sendErrorMessage';
+import { ErrorMessageFormat } from '../../functions/ErrorMessage/errorMessageFormat';
+import { sendErrorMessage } from '../../functions/ErrorMessage/sendErrorMessage';
 import { useGlobalMutationListener } from './useGlobalMutationListener';
 import { useGlobalQueryListener } from './useGlobalQueryListener';
 

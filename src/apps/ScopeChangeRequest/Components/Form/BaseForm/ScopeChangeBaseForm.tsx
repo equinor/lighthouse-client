@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { scopeChangeQueries } from '../../../sKeys/queries';
 import { FormTextField } from '../../Inputs/FormTextField';
 import { Origin } from '../Origin';
-import { ScopeChangeFormModel } from '../../../sHooks/form/useScopeChangeFormState';
+import { ScopeChangeFormModel } from '../../../hooks/form/useScopeChangeFormState';
 
 interface ScopeChangeBaseFormProps {
     state: Partial<ScopeChangeFormModel>;

@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async';
 import { ProcoSysTypes } from '../../sTypes/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { StidTypes } from '../../sTypes/STID/STIDTypes';
-import { useCancellationToken } from '../../sHooks/cancellationToken/useCancellationToken';
+import { useCancellationToken } from '../../hooks/cancellationToken/useCancellationToken';
 import { AdvancedDocumentSearch } from '../AdvancedDocumentSearch';
 import {
     applyEdsComponents,
@@ -26,7 +26,7 @@ import {
     TitleBar,
     SelectedItemLabel,
 } from './searchReferences.styles';
-import { useReferencesSearch } from '../../sHooks/search/useReferencesSearch';
+import { useReferencesSearch } from '../../hooks/search/useReferencesSearch';
 import { CommPkgIcon } from '../DetailView/RelatedObjects/CommPkg/commPkgIcon';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 

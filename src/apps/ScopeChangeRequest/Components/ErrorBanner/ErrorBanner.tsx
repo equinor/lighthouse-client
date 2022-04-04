@@ -1,4 +1,4 @@
-import { useErrorMessageListener } from '../../sFunctions/ErrorMessage/useErrorMessageListener';
+import { useErrorMessageListener } from '../../functions/ErrorMessage/useErrorMessageListener';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 import { ErrorContainer, Inline, ErrorDetails } from './ErrorBanner.styles';
 

@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../Core/Client/Functions';
-import { throwOnError } from '../../sFunctions/throwError';
+import { throwOnError } from '../../functions/throwError';
 
 interface Phase {
     name: string;

@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
-import { useConditionalRender } from '../../../sHooks/utils/useConditionalRender';
+import { useConditionalRender } from '../../../hooks/utils/useConditionalRender';
 
 interface CommPkgProps {
     children: React.ReactChild;

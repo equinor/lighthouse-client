@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { OptionRequestResult } from '../api/ScopeChange/Access/optionsRequestChecker';
-import { ScopeChangeRequest } from '../sTypes/scopeChangeRequest';
+import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 export interface ScopeChangeContextState {
     request: ScopeChangeRequest;

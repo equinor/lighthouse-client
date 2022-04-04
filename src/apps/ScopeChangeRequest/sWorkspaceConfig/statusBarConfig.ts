@@ -1,5 +1,5 @@
 import { StatusItem } from '../../../packages/StatusBar';
-import { kFormatter } from '../sFunctions/kFormatter';
+import { kFormatter } from '../functions/kFormatter';
 import { ScopeChangeRequest } from '../sTypes/scopeChangeRequest';
 
 export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
