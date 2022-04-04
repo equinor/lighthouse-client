@@ -31,6 +31,7 @@ export function createTree<T>(
             count: 0,
             subGroupCount: 0,
             isExpanded: false,
+            depth: 0,
         };
 
         return rootGroup;
@@ -47,11 +48,13 @@ export function createTree<T>(
             status: status,
             groupDescriptionFunc: groupDescriptionFunc,
             preGroupFiltering: (data) => data,
+            depth: 0,
         }),
         items: [],
         count: 0,
         isExpanded: false,
         subGroupCount: 0,
+        depth: 0,
     };
 
     return rootGroup;

@@ -1,18 +1,27 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { SwcrHeaderView } from './CustomViews/SwcrGardenHeader';
-import { SwcrItemView } from './CustomViews/SwcrGardenItem';
-import { SwcrGroupView } from './CustomViews/SwcrGroupView';
+import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
+import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { SwcrPackage } from './models/SwcrPackage';
-import { fieldSettings } from './utilities/gardenSetup';
+import {
+    customDescription,
+    fieldSettings,
+    getHighlighColumn,
+    getItemWidth,
+} from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { SwcrGraph } from './CustomViews/Graph';
 import { columns } from './utilities/tableSetup';
+enum Tabs {
+    TABLE,
+    GARDEN,
+}
 export function setup(appApi: ClientApi): void {
     const swcr = appApi.createWorkSpace<SwcrPackage>({
         CustomSidesheet: SwcrSideSheet,
         objectIdentifier: 'swcrNo',
+        defaultTab: Tabs.GARDEN,
     });
 
     async function responseAsync(signal?: AbortSignal) {
@@ -58,17 +67,70 @@ export function setup(appApi: ClientApi): void {
         ],
     });
 
-    swcr.registerTableOptions({ objectIdentifierKey: 'swcrId' });
+    swcr.registerTableOptions({
+        objectIdentifierKey: 'swcrId',
+        columnOrder: [
+            'swcrNo',
+            'title',
+            'system',
+            'controlSystem',
+            'priority',
+            'supplier',
+            'action',
+            'contract',
+        ],
+        headers: [
+            {
+                key: 'swcrNo',
+                title: 'Swcr',
+            },
+            {
+                key: 'title',
+                title: 'Title',
+            },
+            {
+                key: 'priority',
+                title: 'Priority',
+            },
+            {
+                key: 'system',
+                title: 'System',
+            },
+            {
+                key: 'controlSystem',
+                title: 'Control System',
+            },
+            {
+                key: 'action',
+                title: 'Action',
+            },
+            {
+                key: 'supplier',
+                title: 'Supplier',
+            },
+        ],
+        hiddenColumns: [
+            'siteCode',
+            'projectIdentifier',
+            'projectDescription',
+            'description',
+            'modification',
+        ],
+    });
     swcr.registerGardenOptions({
         gardenKey: 'dueAtDate',
         itemKey: 'swcrNo',
-        type: 'normal',
+        type: 'virtual',
         fieldSettings,
         customViews: {
             customItemView: SwcrItemView,
-            customGroupView: SwcrGroupView,
+            // customGroupView: SwcrGroupView,
             customHeaderView: SwcrHeaderView,
         },
+        itemWidth: getItemWidth,
+        rowHeight: 25,
+        highlightColumn: getHighlighColumn,
+        customDescription: customDescription,
     });
 
     swcr.registerAnalyticsOptions({
