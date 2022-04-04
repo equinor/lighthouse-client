@@ -1,6 +1,6 @@
 import { httpClient } from '@equinor/portal-client';
 import { DataSource, IdResolverFunc } from '../../../Core/WorkSpace/src';
-import { ScopeChangeRequest } from '../sTypes/scopeChangeRequest';
+import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 async function responseAsync(signal?: AbortSignal): Promise<Response> {
     const { scopeChange } = httpClient();

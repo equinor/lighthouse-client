@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from 'react-query';
 import { patchScopeChange, postScopeChange, uploadAttachment } from '../../api/ScopeChange/Request';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { ScopeChangeFormModel } from '../form/useScopeChangeFormState';
-import { scopeChangeQueryKeys } from '../../sKeys/scopeChangeQueryKeys';
-import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../sTypes/scopeChangeRequest';
+import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
+import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../types/scopeChangeRequest';
 
 interface EditScopeChangeParams {
     references: TypedSelectOption[];

@@ -3,11 +3,11 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { ScopeChangeDiscipline as DisciplineInterface } from '../../../../types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
-import { useInfiniteCachedQuery } from '../../../../hooks/react-Query/useInfiniteCachedQuery';
+import { useInfiniteCachedQuery } from '../../../../hooks/React-Query/useInfiniteCachedQuery';
 import { useEffect, useState } from 'react';
 import { Discipline as PCSDiscipline } from '../../../../types/ProCoSys/discipline';
 import { getDisciplines } from '../../../../api/PCS/getDisciplines';
-import { proCoSysQueryKeys } from '../../../../sKeys/proCoSysQueryKeys';
+import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
 import { useFacility } from '../../../../../../Core/Client/Hooks';
 
 interface DisciplineProps {

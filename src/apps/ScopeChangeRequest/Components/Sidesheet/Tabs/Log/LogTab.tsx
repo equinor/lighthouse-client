@@ -1,8 +1,8 @@
 import { useQuery } from 'react-query';
 
 import { CacheTime } from '../../../../enum/cacheTimes';
-import { scopeChangeQueries } from '../../../../sKeys/queries';
-import { LogEntry } from '../../../../sTypes/scopeChangeRequest';
+import { scopeChangeQueries } from '../../../../keys/queries';
+import { LogEntry } from '../../../../types/scopeChangeRequest';
 import { HistoryItem } from '../../../DetailView/History/HistoryItem';
 import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
 

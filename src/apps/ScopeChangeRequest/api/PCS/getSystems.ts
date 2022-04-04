@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
-import { System } from '../../sTypes/ProCoSys/system';
+import { System } from '../../types/ProCoSys/system';
 
 export async function getSystems(plantId: string): Promise<System[]> {
     const { procosys } = httpClient();

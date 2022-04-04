@@ -7,8 +7,8 @@ import { Icon } from '@equinor/eds-core-react';
 import { getSystems } from '../../../../api/PCS/getSystems';
 import { useEffect, useState } from 'react';
 import { System as PCSSystem } from '../../../../types/ProCoSys/system';
-import { useInfiniteCachedQuery } from '../../../../hooks/react-Query/useInfiniteCachedQuery';
-import { proCoSysQueryKeys } from '../../../../sKeys/proCoSysQueryKeys';
+import { useInfiniteCachedQuery } from '../../../../hooks/React-Query/useInfiniteCachedQuery';
+import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
 
 interface SystemProps {
     system: SystemInterface;

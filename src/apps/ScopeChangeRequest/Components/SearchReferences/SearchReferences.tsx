@@ -3,9 +3,9 @@ import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { ProcoSysTypes } from '../../sTypes/ProCoSys/ProCoSysTypes';
+import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { StidTypes } from '../../sTypes/STID/STIDTypes';
+import { StidTypes } from '../../types/STID/STIDTypes';
 import { useCancellationToken } from '../../hooks/cancellationToken/useCancellationToken';
 import { AdvancedDocumentSearch } from '../AdvancedDocumentSearch';
 import {
@@ -26,7 +26,7 @@ import {
     TitleBar,
     SelectedItemLabel,
 } from './searchReferences.styles';
-import { useReferencesSearch } from '../../hooks/search/useReferencesSearch';
+import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { CommPkgIcon } from '../DetailView/RelatedObjects/CommPkg/commPkgIcon';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 

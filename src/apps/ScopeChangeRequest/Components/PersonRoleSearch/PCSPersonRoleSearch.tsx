@@ -10,9 +10,9 @@ import { TypedSelectOption } from '../../api/Search/searchType';
 import { getFunctionalRoles } from '../../api/PCS/getFunctionalRoles';
 import { sort } from '../../functions/sort';
 import { useCancellationToken } from '../../hooks/cancellationToken/useCancellationToken';
-import { usePcsSearch } from '../../hooks/search/usePcsSearch';
-import { useInfiniteCachedQuery } from '../../hooks/react-Query/useInfiniteCachedQuery';
-import { proCoSysQueryKeys } from '../../sKeys/proCoSysQueryKeys';
+import { usePcsSearch } from '../../hooks/Search/usePcsSearch';
+import { useInfiniteCachedQuery } from '../../hooks/React-Query/useInfiniteCachedQuery';
+import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { useFacility } from '../../../../Core/Client/Hooks';
 
 interface PCSLinkProps {

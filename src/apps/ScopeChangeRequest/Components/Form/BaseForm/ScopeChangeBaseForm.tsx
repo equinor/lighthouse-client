@@ -2,7 +2,7 @@ import { SingleSelect } from '@equinor/eds-core-react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
-import { scopeChangeQueries } from '../../../sKeys/queries';
+import { scopeChangeQueries } from '../../../keys/queries';
 import { FormTextField } from '../../Inputs/FormTextField';
 import { Origin } from '../Origin';
 import { ScopeChangeFormModel } from '../../../hooks/form/useScopeChangeFormState';

@@ -1,5 +1,5 @@
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { StidTypes } from '../../sTypes/STID/STIDTypes';
+import { StidTypes } from '../../types/STID/STIDTypes';
 import { searchTags } from '../../api/Search/STID/searchTags';
 import { searchDocuments } from '../../api/Search/STID/searchDocuments';
 import { useFacility } from '@equinor/portal-client';

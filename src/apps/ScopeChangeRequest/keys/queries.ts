@@ -12,7 +12,7 @@ import { getCategories } from '../api/ScopeChange/getCategories';
 import { getPhases } from '../api/ScopeChange/getPhases';
 import { getScopeChangeById } from '../api/ScopeChange/Request';
 import { getHistory } from '../api/ScopeChange/Request/getHistory';
-import { ScopeChangeRequest } from '../sTypes/scopeChangeRequest';
+import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 const scopeChangeBaseKey = (requestId: string): string[] => ['scopechange', requestId];
 const scopeChangeHistoryKey = (requestId: string): string[] => [

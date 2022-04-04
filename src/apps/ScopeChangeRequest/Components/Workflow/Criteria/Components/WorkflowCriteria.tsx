@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 
-import { Criteria, WorkflowStep } from '../../../../sTypes/scopeChangeRequest';
+import { Criteria, WorkflowStep } from '../../../../types/scopeChangeRequest';
 import { reassignCriteria, unsignCriteria } from '../../../../api/ScopeChange/Workflow';
 import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
 import { useConditionalRender } from '../../../../hooks/utils/useConditionalRender';
@@ -14,10 +14,10 @@ import { PCSPersonRoleSearch } from '../../../PersonRoleSearch/PCSPersonRoleSear
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
 import { useWorkflowCriteriaOptions } from '../../../../hooks/queries/useWorkflowCriteriaOptions';
 import { QueryObserver, useQueryClient } from 'react-query';
-import { scopeChangeMutationKeys } from '../../../../sKeys/scopeChangeMutationKeys';
-import { scopeChangeQueryKeys } from '../../../../sKeys/scopeChangeQueryKeys';
-import { useIsWorkflowLoading } from '../../../../hooks/react-Query/useIsWorkflowLoading';
-import { useScopeChangeMutation } from '../../../../hooks/react-Query/useScopechangeMutation';
+import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
+import { scopeChangeQueryKeys } from '../../../../keys/scopeChangeQueryKeys';
+import { useIsWorkflowLoading } from '../../../../hooks/React-Query/useIsWorkflowLoading';
+import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { SignWithComment } from './SignWithComment';
 import { useWorkflowSigning } from './useWorkflowSigning';
 

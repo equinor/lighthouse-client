@@ -1,7 +1,7 @@
 import { useQueryClient } from 'react-query';
 import { useDataContext } from '../../../../Core/WorkSpace/src/Context/DataProvider';
 import { useGlobalMutationListener } from './useGlobalMutationListener';
-import { scopeChangeQueryKeys } from '../../sKeys/scopeChangeQueryKeys';
+import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
 
 /**
  * Invalidates scope change query if any mutation takes place

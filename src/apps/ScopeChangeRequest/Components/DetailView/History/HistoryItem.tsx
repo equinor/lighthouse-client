@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { LogEntry } from '../../../sTypes/scopeChangeRequest';
+import { LogEntry } from '../../../types/scopeChangeRequest';
 import { dateToDateTimeFormat } from '../../Workflow/Utils/dateFormatting';
 
 interface HistoryItemProps {

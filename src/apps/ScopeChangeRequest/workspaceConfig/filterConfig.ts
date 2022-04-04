@@ -1,5 +1,5 @@
 import { FilterOptions } from '../../../packages/Filter/Types';
-import { ScopeChangeRequest } from '../sTypes/scopeChangeRequest';
+import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {

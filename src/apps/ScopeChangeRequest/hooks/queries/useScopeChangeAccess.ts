@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { OptionRequestResult } from '../../api/ScopeChange/Access/optionsRequestChecker';
 import { getRequestAccess } from '../../api/ScopeChange/Access/requestAccess';
-import { scopeChangeQueries } from '../../sKeys/queries';
+import { scopeChangeQueries } from '../../keys/queries';
 
 interface ScopeChangeAccess extends OptionRequestResult {
     canVoid: boolean;

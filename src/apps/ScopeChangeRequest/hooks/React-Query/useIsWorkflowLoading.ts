@@ -1,7 +1,7 @@
 import { useIsFetching, useIsMutating } from 'react-query';
 import { useScopeChangeContext } from '../../context/useScopeChangeAccessContext';
-import { scopeChangeMutationKeys } from '../../sKeys/scopeChangeMutationKeys';
-import { scopeChangeQueryKeys } from '../../sKeys/scopeChangeQueryKeys';
+import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
+import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
 
 export function useIsWorkflowLoading(): boolean {
     const { request } = useScopeChangeContext();

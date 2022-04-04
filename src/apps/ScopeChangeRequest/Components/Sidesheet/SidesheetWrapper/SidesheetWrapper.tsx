@@ -6,7 +6,7 @@ import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChan
 import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
 import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
 import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
-import { ScopeChangeRequest } from '../../../sTypes/scopeChangeRequest';
+import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
 import { ScopeChangeContext } from '../../../context/scopeChangeAccessContext';
 import { ScopeChangeErrorBanner } from '../../ErrorBanner/ErrorBanner';
 import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';

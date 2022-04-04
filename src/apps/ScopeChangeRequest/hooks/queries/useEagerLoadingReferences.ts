@@ -3,16 +3,16 @@ import { getAreaByCode } from '../../api/PCS/getAreaByCode';
 import { getCommPkgById } from '../../api/PCS/getCommPkgById';
 import { getTagById } from '../../api/PCS/getTagById';
 import { getDocumentById } from '../../api/STID/getDocumentById';
-import { proCoSysQueryKeys } from '../../sKeys/proCoSysQueryKeys';
-import { stidQueryKeys } from '../../sKeys/STIDQueryKeys';
+import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
+import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import {
     ScopeChangeArea,
     ScopeChangeCommissioningPackage,
     ScopeChangeDocument,
     ScopeChangeRequest,
     ScopeChangeTag,
-} from '../../sTypes/scopeChangeRequest';
-import { useEagerLoading } from '../react-Query/useEagerLoading';
+} from '../../types/scopeChangeRequest';
+import { useEagerLoading } from '../React-Query/useEagerLoading';
 
 export function useEagerLoadingReferences(request: ScopeChangeRequest): void {
     const { procosysPlantId } = useFacility();

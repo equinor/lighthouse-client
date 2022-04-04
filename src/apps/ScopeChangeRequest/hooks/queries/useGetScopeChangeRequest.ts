@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
-import { scopeChangeQueries } from '../../sKeys/queries';
-import { ScopeChangeRequest } from '../../sTypes/scopeChangeRequest';
+import { scopeChangeQueries } from '../../keys/queries';
+import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 
 export function useGetScopeChangeRequest(
     id: string,

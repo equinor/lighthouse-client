@@ -2,7 +2,7 @@ import { HttpClient } from '@equinor/http-client';
 import { isProduction } from '../../../../../Core/Client/Functions';
 import { TypedSelectOption } from '../searchType';
 import { PCSStructure } from './searchStructure';
-import { SearchTag } from '../../../sTypes/ProCoSys/Tag';
+import { SearchTag } from '../../../types/ProCoSys/Tag';
 
 export const searchTags = async (
     searchString: string,

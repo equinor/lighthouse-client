@@ -1,4 +1,4 @@
-import { ScopeChangeRequestFormModel } from '../../../sTypes/scopeChangeRequest';
+import { ScopeChangeRequestFormModel } from '../../../types/scopeChangeRequest';
 import { throwOnError } from '../../../functions/throwError';
 import { httpClient } from '../../../../../Core/Client/Functions';
 

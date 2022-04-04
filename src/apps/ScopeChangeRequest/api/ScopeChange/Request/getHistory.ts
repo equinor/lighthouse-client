@@ -1,6 +1,6 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { throwOnError } from '../../../functions/throwError';
-import { LogEntry } from '../../../sTypes/scopeChangeRequest';
+import { LogEntry } from '../../../types/scopeChangeRequest';
 
 export async function getHistory(id: string): Promise<LogEntry[]> {
     const { scopeChange } = httpClient();

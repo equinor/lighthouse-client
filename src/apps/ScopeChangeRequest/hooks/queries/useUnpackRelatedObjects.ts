@@ -7,10 +7,10 @@ import { getSystems } from '../../api/PCS/getSystems';
 import { getTagById } from '../../api/PCS/getTagById';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { getDocumentById } from '../../api/STID/getDocumentById';
-import { proCoSysQueryKeys } from '../../sKeys/proCoSysQueryKeys';
-import { stidQueryKeys } from '../../sKeys/STIDQueryKeys';
-import { ScopeChangeRequest } from '../../sTypes/scopeChangeRequest';
-import { useQueryCacheLookup } from '../react-Query/useQueryCacheLookup';
+import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
+import { stidQueryKeys } from '../../keys/STIDQueryKeys';
+import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
+import { useQueryCacheLookup } from '../React-Query/useQueryCacheLookup';
 
 interface UseUnpackRelatedObjectsParams {
     request: ScopeChangeRequest;

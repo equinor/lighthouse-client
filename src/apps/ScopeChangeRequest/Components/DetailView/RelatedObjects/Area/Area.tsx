@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import { ScopeChangeArea as AreaInterface } from '../../../../types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
 import { getAreaByCode } from '../../../../api/PCS/getAreaByCode';
-import { useInfiniteCachedQuery } from '../../../../hooks/react-Query/useInfiniteCachedQuery';
-import { proCoSysQueryKeys } from '../../../../sKeys/proCoSysQueryKeys';
+import { useInfiniteCachedQuery } from '../../../../hooks/React-Query/useInfiniteCachedQuery';
+import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
 import { useFacility } from '../../../../../../Core/Client/Hooks';
 
 interface AreaProps {

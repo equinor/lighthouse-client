@@ -4,9 +4,9 @@ import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { Wrapper } from '../WrapperStyles';
 import { ScopeChangeCommissioningPackage } from '../../../../types/scopeChangeRequest';
 import { getCommPkgById } from '../../../../api/PCS/getCommPkgById';
-import { proCoSysQueryKeys } from '../../../../sKeys/proCoSysQueryKeys';
+import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
 import { CommPkgIcon } from './commPkgIcon';
-import { useInfiniteCachedQuery } from '../../../../hooks/react-Query/useInfiniteCachedQuery';
+import { useInfiniteCachedQuery } from '../../../../hooks/React-Query/useInfiniteCachedQuery';
 
 interface CommPkgProps {
     commPkg: ScopeChangeCommissioningPackage;

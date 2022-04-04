@@ -5,8 +5,8 @@ import { ScopeChangeTag as TagInterface } from '../../../../types/scopeChangeReq
 import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { Wrapper } from '../WrapperStyles';
 import { getTagById } from '../../../../api/PCS/getTagById';
-import { useInfiniteCachedQuery } from '../../../../hooks/react-Query/useInfiniteCachedQuery';
-import { proCoSysQueryKeys } from '../../../../sKeys/proCoSysQueryKeys';
+import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
+import { useInfiniteCachedQuery } from '../../../../hooks/React-Query/useInfiniteCachedQuery';
 
 interface TagProps {
     tag: TagInterface;

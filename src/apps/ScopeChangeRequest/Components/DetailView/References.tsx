@@ -7,7 +7,7 @@ import {
     ScopeChangeTag,
     ScopeChangeSystem,
     ScopeChangeCommissioningPackage,
-} from '../../sTypes/scopeChangeRequest';
+} from '../../types/scopeChangeRequest';
 import { ChevronList } from './ChevronList/ChevronList';
 import { Tag as TagComp } from './RelatedObjects/Tags/Tag';
 import { Area as AreaComp } from './RelatedObjects/Area/Area';

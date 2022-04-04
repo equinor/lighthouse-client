@@ -4,7 +4,7 @@ import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { Upload } from '../Attachments/Upload';
 import { SearchReferences } from '../SearchReferences/SearchReferences';
-import { usePreloadCaching } from '../../hooks/react-Query/usePreloadCaching';
+import { usePreloadCaching } from '../../hooks/React-Query/usePreloadCaching';
 import { useScopeChangeFormState } from '../../hooks/form/useScopeChangeFormState';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import {

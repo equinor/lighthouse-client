@@ -1,5 +1,5 @@
 import { useQuery } from 'react-query';
-import { scopeChangeQueries } from '../../sKeys/queries';
+import { scopeChangeQueries } from '../../keys/queries';
 
 interface CriteriaOptions {
     canSign: boolean | undefined;

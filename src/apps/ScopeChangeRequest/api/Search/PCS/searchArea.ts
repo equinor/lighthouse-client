@@ -1,6 +1,6 @@
 import { TypedSelectOption } from '../searchType';
 import { PCSStructure } from './searchStructure';
-import { Area } from '../../../sTypes/ProCoSys/area';
+import { Area } from '../../../types/ProCoSys/area';
 import { HttpClient } from '../../../../../Core/httpClient/src';
 import { isProduction } from '../../../../../Core/Client/Functions';
 

@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { Tag } from '../../../sTypes/STID/tag';
+import { Tag } from '../../../types/STID/tag';
 import { TypedSelectOption } from '../searchType';
 
 export const searchTags = async (

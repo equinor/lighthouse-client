@@ -7,10 +7,10 @@ import { Button, Progress, TextField } from '@equinor/eds-core-react';
 import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
-import { useScopeChangeMutation } from '../../../../hooks/react-Query/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { TypedSelectOption } from '../../../../api/Search/searchType';
-import { WorkflowStep } from '../../../../sTypes/scopeChangeRequest';
-import { scopeChangeMutationKeys } from '../../../../sKeys/scopeChangeMutationKeys';
+import { WorkflowStep } from '../../../../types/scopeChangeRequest';
+import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
 
 interface AddContributorProps {
     step: WorkflowStep;

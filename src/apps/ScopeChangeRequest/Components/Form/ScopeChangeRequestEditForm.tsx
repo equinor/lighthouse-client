@@ -2,13 +2,13 @@ import { Button, Icon, Progress } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { useScopeChangeMutation } from '../../hooks/react-Query/useScopechangeMutation';
-import { ScopeChangeRequest } from '../../sTypes/scopeChangeRequest';
+import { useScopeChangeMutation } from '../../hooks/React-Query/useScopechangeMutation';
+import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { HotUpload } from '../Attachments/HotUpload';
 import { tokens } from '@equinor/eds-tokens';
 import { deleteAttachment } from '../../api/ScopeChange/Request/attachment';
-import { scopeChangeMutationKeys } from '../../sKeys/scopeChangeMutationKeys';
+import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import { useScopeChangeFormState } from '../../hooks/form/useScopeChangeFormState';
 import {

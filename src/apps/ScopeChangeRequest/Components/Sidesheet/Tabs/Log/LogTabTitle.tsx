@@ -1,7 +1,7 @@
 import { CircularProgress } from '@equinor/eds-core-react';
 import { useIsFetching } from 'react-query';
 import styled from 'styled-components';
-import { scopeChangeQueries } from '../../../../sKeys/queries';
+import { scopeChangeQueries } from '../../../../keys/queries';
 import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
 
 export function LogTabTitle(): JSX.Element {

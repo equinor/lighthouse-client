@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useRefresh } from '../../../../components/ParkView/hooks/useRefresh';
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { ScopeChangeBaseModel } from '../../sTypes/scopeChangeRequest';
+import { ScopeChangeBaseModel } from '../../types/scopeChangeRequest';
 
 export interface ScopeChangeFormState {
     isValid: boolean;

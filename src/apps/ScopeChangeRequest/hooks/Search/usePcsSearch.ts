@@ -1,7 +1,7 @@
 import { getFunctionalRoles } from '../../api/PCS/getFunctionalRoles';
 import { getSystems } from '../../api/PCS/getSystems';
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { ProcoSysTypes } from '../../sTypes/ProCoSys/ProCoSysTypes';
+import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { searchTags } from '../../api/Search/PCS/searchTags';
 import { httpClient } from '../../../../Core/Client/Functions';
 import { searchCommPkg } from '../../api/Search/PCS/searchCommPkg';
@@ -11,10 +11,10 @@ import { searchSWCR } from '../../api/Search/PCS/searchSWCR';
 import { searchAreas } from '../../api/Search/PCS/searchArea';
 import { searchPerson } from '../../api/Search/PCS/searchPerson';
 import { searchNCR } from '../../api/Search/PCS/searchNcr';
-import { useInfiniteCachedQuery } from '../react-Query/useInfiniteCachedQuery';
+import { useInfiniteCachedQuery } from '../React-Query/useInfiniteCachedQuery';
 import Fuse from 'fuse.js';
 import { getDisciplines } from '../../api/PCS/getDisciplines';
-import { proCoSysQueryKeys } from '../../sKeys/proCoSysQueryKeys';
+import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { useFacility } from '../../../../Core/Client/Hooks';
 
 interface PCSSearch {

@@ -2,15 +2,15 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { Button, Icon, Progress, Scrim, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { StidTypes } from '../../sTypes/STID/STIDTypes';
+import { StidTypes } from '../../types/STID/STIDTypes';
 import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { getDocumentsByTag } from '../../api/STID/getDocumentsByTag';
 import { Result } from './Results';
 import { SubResults } from './SubResult';
 import { AdvancedSearch, ModalHeader, Wrapper, Title } from './advancedSearch.styles';
 import { useCancellationToken } from '../../hooks/cancellationToken/useCancellationToken';
-import { ProcoSysTypes } from '../../sTypes/ProCoSys/ProCoSysTypes';
-import { useReferencesSearch } from '../../hooks/search/useReferencesSearch';
+import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
+import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];

@@ -1,4 +1,4 @@
-import { ScopeChangeRequest } from "../../../apps/ScopeChangeRequest/sTypes/scopeChangeRequest"
+import { ScopeChangeRequest } from "../../../apps/ScopeChangeRequest/types/scopeChangeRequest"
 import { searchAcrossFilterGroups } from "../functions/searchAcrossFilterGroups"
 import { FilterGroup, ValueFormatterFilter } from "../Hooks/useFilterApi"
 

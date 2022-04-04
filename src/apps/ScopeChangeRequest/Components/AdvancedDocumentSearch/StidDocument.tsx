@@ -4,8 +4,8 @@ import { Icon } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { getDocumentById } from '../../api/STID/getDocumentById';
 import { transformIsoDate } from '../Workflow/Utils/dateFormatting';
-import { useInfiniteCachedQuery } from '../../hooks/react-Query/useInfiniteCachedQuery';
-import { stidQueryKeys } from '../../sKeys/STIDQueryKeys';
+import { useInfiniteCachedQuery } from '../../hooks/React-Query/useInfiniteCachedQuery';
+import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 
 interface StidDocumentProps {
     docNo: string;

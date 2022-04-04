@@ -1,4 +1,4 @@
-import { ScopeChangeRequest } from "../../../apps/ScopeChangeRequest/sTypes/scopeChangeRequest"
+import { ScopeChangeRequest } from "../../../apps/ScopeChangeRequest/types/scopeChangeRequest"
 import { doesItemPassFilter } from "../functions/doesItemPass"
 import { FilterGroup, ValueFormatterFilter } from "../Hooks/useFilterApi"
 

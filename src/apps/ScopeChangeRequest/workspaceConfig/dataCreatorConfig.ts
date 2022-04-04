@@ -1,6 +1,6 @@
 import { httpClient } from '@equinor/portal-client';
 import { FactoryOptions } from '../../../Core/WorkSpace/src';
-import { checkOptionsRequest } from '../Api/ScopeChange/Access/optionsRequestChecker';
+import { checkOptionsRequest } from '../api/ScopeChange/Access/optionsRequestChecker';
 import { DataCreatorWrapper } from '../Components/DataCreator/DataCreatorWrapper';
 
 export const dataCreator: FactoryOptions = {

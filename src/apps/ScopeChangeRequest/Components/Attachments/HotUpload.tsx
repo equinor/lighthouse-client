@@ -3,10 +3,10 @@ import { useCallback, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import styled from 'styled-components';
 import { useScopeChangeContext } from '../../context/useScopeChangeAccessContext';
-import { useScopeChangeMutation } from '../../hooks/react-Query/useScopechangeMutation';
+import { useScopeChangeMutation } from '../../hooks/React-Query/useScopechangeMutation';
 import { uploadAttachment } from '../../api/ScopeChange/Request';
 import { Attachments } from './Attachments';
-import { scopeChangeMutationKeys } from '../../sKeys/scopeChangeMutationKeys';
+import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 
 const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const HotUpload = (): JSX.Element => {
