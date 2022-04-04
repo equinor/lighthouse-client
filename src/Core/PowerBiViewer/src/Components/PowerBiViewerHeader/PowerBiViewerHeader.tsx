@@ -4,6 +4,7 @@ import { Page } from '../../Types/State';
 import { HeaderButton } from '../HeaderButton/HeaderButton';
 import {
     Divider,
+    HeaderContent,
     HeaderTab,
     HeaderWrapper,
     LeftSection,
@@ -37,35 +38,37 @@ export const PowerBiViewerHeader = ({
 
     return (
         <HeaderWrapper>
-            <LeftSection>
-                <Title variant="h3">{title}</Title>
-                <Wrap>
-                    {Object.values(reports).map((report) => {
-                        return report.pages.map((page) => {
-                            return (
-                                <HeaderTab
-                                    active={
-                                        activePage &&
-                                        page.pageId === activePage.pageId &&
-                                        page.pageTitle === page.pageTitle
-                                    }
-                                    key={`pages-${report.reportURI}-${page.pageId}`}
-                                    onClick={() => handleSetActivePage(page)}
-                                >
-                                    <TabTitle>{page.pageTitle}</TabTitle>
-                                </HeaderTab>
-                            );
-                        });
-                    })}
-                </Wrap>
-            </LeftSection>
-            <RightSection>
-                <Line />
-                <Divider />
-                <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
-                    <Icon name={'filter_alt'} />
-                </HeaderButton>
-            </RightSection>
+            <Title variant="h3">{title}</Title>
+            <HeaderContent>
+                <LeftSection>
+                    <Wrap>
+                        {Object.values(reports).map((report) => {
+                            return report.pages.map((page) => {
+                                return (
+                                    <HeaderTab
+                                        active={
+                                            activePage &&
+                                            page.pageId === activePage.pageId &&
+                                            page.pageTitle === page.pageTitle
+                                        }
+                                        key={`pages-${report.reportURI}-${page.pageId}`}
+                                        onClick={() => handleSetActivePage(page)}
+                                    >
+                                        <TabTitle>{page.pageTitle}</TabTitle>
+                                    </HeaderTab>
+                                );
+                            });
+                        })}
+                    </Wrap>
+                </LeftSection>
+                <RightSection>
+                    <Line />
+                    <Divider />
+                    <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
+                        <Icon name={'filter_alt'} />
+                    </HeaderButton>
+                </RightSection>
+            </HeaderContent>
         </HeaderWrapper>
     );
 };

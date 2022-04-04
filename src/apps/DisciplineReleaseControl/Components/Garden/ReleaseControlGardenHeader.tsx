@@ -3,28 +3,22 @@ import styled from 'styled-components';
 import { CustomHeaderView } from '../../../../components/ParkView/Models/gardenOptions';
 import { Pipetest } from '../../Types/pipetest';
 export const Title = styled.p`
-    padding-bottom: 0.5rem;
-    font-weight: 400;
+    font-weight: 700;
+    font-size: 14px;
     color: ${tokens.colors.text.static_icons__default.rgba};
+    margin-left: 5px;
 `;
 
 export const Groupe = styled.div`
     padding: 0.1rem;
-    width: 200px;
+    width: 96%;
     display: flex;
     align-items: center;
     position: relative;
-    height: 32px;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 4px;
     cursor: pointer;
-
-    ::after {
-        content: ' ';
-        position: absolute;
-        bottom: 10px;
-        width: 100%;
-        height: 2px;
-        background-color: ${tokens.colors.ui.background__info.rgba};
-    }
 `;
 
 export const Count = styled.span`
@@ -32,7 +26,6 @@ export const Count = styled.span`
     font-weight: 300;
     font-size: 0.8rem;
     margin-left: 0.8em;
-    padding-bottom: 0.5rem;
 `;
 export const ReleaseControlGardenHeader = (props: CustomHeaderView<Pipetest>) => {
     const { columnIndex, garden } = props;

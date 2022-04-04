@@ -25,6 +25,7 @@ import { useFacility } from '@equinor/portal-client';
 import { Tabs } from '@equinor/eds-core-react';
 import { CheckListTable } from './CheckListTable';
 import { useInternalSidesheetFunction } from '../../../../packages/Sidesheet/Hooks/useInternalSidesheetFunction';
+import { BoxInsulationTable } from './BoxInsulationTable';
 
 export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
     // const { releaseControls } = useHttpClient();
@@ -42,7 +43,7 @@ export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
 
     useEffect(() => {
         s.setWidth(width);
-    }, [s, width]);
+    }, [width]);
 
     // const queryClient = useQueryClient();
 
@@ -166,15 +167,18 @@ export const ReleaseControlSidesheet = (item: Pipetest): JSX.Element => {
                         <h4>{item.description}</h4>
                         <h4>Status: {item.step}</h4>
                         <CheckListTable checkLists={item.checkLists} />
+                        <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
                     </Tabs.Panel>
                     <Tabs.Panel>
-                        <ThreeDModel>
-                            <Viewer
-                                echoPlantId={echoPlantId}
-                                padding={1}
-                                tags={['56L00420A', '56L00420B', '56L00440A', '56L00446A']}
-                            />
-                        </ThreeDModel>
+                        {activeTab === 1 && (
+                            <ThreeDModel>
+                                <Viewer
+                                    echoPlantId={echoPlantId}
+                                    padding={1}
+                                    tags={['56L00420A', '56L00420B', '56L00440A', '56L00446A']}
+                                />
+                            </ThreeDModel>
+                        )}
                     </Tabs.Panel>
                 </Tabs.Panels>
             </Tabs>
