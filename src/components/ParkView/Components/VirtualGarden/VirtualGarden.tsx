@@ -110,7 +110,6 @@ export const VirtualGarden = <T extends unknown>({
     const highlightedColumn = highlightColumn
         ? highlightColumn(gardenKey.toString(), customGroupByKeys)
         : undefined;
-    console.log(highlightedColumn);
     useLayoutEffect(() => {
         if (highlightedColumn) {
             const scrollIndex = sortedColumns.findIndex(
