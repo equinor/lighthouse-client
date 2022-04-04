@@ -5,19 +5,19 @@ import { useEffect, useState } from 'react';
 
 import { Criteria, WorkflowStep } from '../../../../sTypes/scopeChangeRequest';
 import { reassignCriteria, unsignCriteria } from '../../../../api/ScopeChange/Workflow';
-import { useScopeChangeContext } from '../../../../scontext/useScopeChangeAccessContext';
-import { useConditionalRender } from '../../../../sHooks/utils/useConditionalRender';
+import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { useConditionalRender } from '../../../../hooks/utils/useConditionalRender';
 import { CriteriaDetail } from './CriteriaDetail';
 import { CriteriaActions } from '../../Types/actions';
 import { AddContributor } from './AddContributor';
 import { PCSPersonRoleSearch } from '../../../PersonRoleSearch/PCSPersonRoleSearch';
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
-import { useWorkflowCriteriaOptions } from '../../../../sHooks/queries/useWorkflowCriteriaOptions';
+import { useWorkflowCriteriaOptions } from '../../../../hooks/queries/useWorkflowCriteriaOptions';
 import { QueryObserver, useQueryClient } from 'react-query';
 import { scopeChangeMutationKeys } from '../../../../sKeys/scopeChangeMutationKeys';
 import { scopeChangeQueryKeys } from '../../../../sKeys/scopeChangeQueryKeys';
-import { useIsWorkflowLoading } from '../../../../sHooks/react-Query/useIsWorkflowLoading';
-import { useScopeChangeMutation } from '../../../../sHooks/react-Query/useScopechangeMutation';
+import { useIsWorkflowLoading } from '../../../../hooks/react-Query/useIsWorkflowLoading';
+import { useScopeChangeMutation } from '../../../../hooks/react-Query/useScopechangeMutation';
 import { SignWithComment } from './SignWithComment';
 import { useWorkflowSigning } from './useWorkflowSigning';
 
