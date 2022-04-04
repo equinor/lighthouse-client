@@ -1,4 +1,4 @@
-import { Filter } from '@equinor/lighthouse-powerbi';
+import { Filter, PBIOptions } from '@equinor/lighthouse-powerbi';
 
 export interface CoreViewState {
     [key: string]: ViewState;
@@ -13,7 +13,7 @@ export interface ViewState {
 export interface FusionPowerBiOptions {
     reportURI: string;
     filter?: Filter[];
-    options?: { showFilter?: boolean; enablePageNavigation?: boolean; defaultPage?: string };
+    options?: PBIOptions;
     pages: Page[];
     loadPagesInDev?: boolean;
 }

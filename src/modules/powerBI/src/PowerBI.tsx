@@ -1,7 +1,7 @@
 import { Embed, Report } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useElementData } from '../../../packages/Utils/Hooks/useElementData';
 import { usePowerBI } from './api';
@@ -9,6 +9,7 @@ import { PowerBIFilter } from './Components';
 import { ReportErrorMessage } from './Components/ReportErrorMessage/ReportErrorMessage';
 import { useGetPages } from './Hooks/useGetPages';
 import './style.css';
+import { PBIOptions } from './Types';
 import { Filter } from './Types/filter';
 
 const Wrapper = styled.div`
@@ -36,27 +37,19 @@ const PBIWrapper = styled.div<{ height: number }>`
 interface PowerBiProps {
     reportUri: string;
     filterOptions?: Filter[];
-    options?: {
-        showFilter?: boolean;
-        enableNavigation?: boolean;
-        defaultPage?: string;
-    };
-    aspectRatio?: number;
-    isFilterActive?: boolean;
-    activePage?: string;
-    devLoad?: boolean;
+    options?: PBIOptions;
 }
+
 const TOP_BAR_FILTER_HEIGHT = 210;
 
-export const PowerBI = ({
-    reportUri,
-    filterOptions,
-    options,
-    isFilterActive = false,
-    aspectRatio = 0.41,
-    activePage,
-    devLoad,
-}: PowerBiProps): JSX.Element => {
+export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JSX.Element => {
+    // Default Options
+    const aspectRatio = useMemo(() => options?.aspectRatio || 0.41, [options?.aspectRatio]);
+    const isFilterActive = useMemo(
+        () => options?.isFilterActive || false,
+        [options?.isFilterActive]
+    );
+
     const [ref, { width }] = useElementData();
 
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
@@ -65,15 +58,15 @@ export const PowerBI = ({
     const [report, setReport] = useState<Report>();
 
     // Used for printing pages to console in development can be controlled by option parameters.
-    useGetPages(report, devLoad);
+    useGetPages(report, options?.pageLoad);
 
     useEffect(() => {
         const setActivePageByName = (name: string) => {
             report?.setPage(name);
         };
 
-        activePage && setActivePageByName(activePage);
-    }, [activePage, report]);
+        options?.activePage && setActivePageByName(options.activePage);
+    }, [options?.activePage, report]);
 
     const eventHandlersMap = new Map([
         [
@@ -149,7 +142,7 @@ export const PowerBI = ({
                                 embedConfig={config}
                                 eventHandlers={eventHandlersMap}
                                 getEmbeddedComponent={(embedObject: Embed) => {
-                                    if (devLoad) {
+                                    if (options?.pageLoad) {
                                         // eslint-disable-next-line no-console
                                         console.log(
                                             `Embedded object of type "${embedObject.embedtype}" received`
