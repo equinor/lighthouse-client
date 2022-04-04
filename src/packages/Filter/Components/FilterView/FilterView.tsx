@@ -18,7 +18,7 @@ import {
     Wrapper,
 } from './FilterView-style';
 
-const createTypeKeys = (filter: FilterGroup[]) => filter.map(({ name }) => name);
+const createTypeKeys = (filter: FilterGroup[]) => filter.map(({ name }) => name).sort();
 
 function SearchFilterKeys(keys: string[], filerValue: string): string[] {
     return keys.filter((key) => key.toLowerCase().includes(filerValue.toLowerCase()));
