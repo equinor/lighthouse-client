@@ -15,11 +15,13 @@ type HeaderContainerProps<T> = {
     garden: GardenGroups<T>;
     highlightColumn: string | undefined;
     customDescription?: (item: T | GardenItem<T>) => string;
+    groupByKey: string;
 };
 export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T>): JSX.Element => {
     const {
         columnVirtualizer,
         garden,
+        groupByKey,
         headerChild: HeaderChild,
         highlightColumn,
         customDescription,
@@ -56,11 +58,17 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
                         key={virtualColumn.index}
                     >
                         {HeaderChild ? (
-                            <HeaderChild garden={garden} columnIndex={virtualColumn.index} />
+                            <HeaderChild
+                                garden={garden}
+                                columnIndex={virtualColumn.index}
+                                groupByKey={groupByKey}
+                            />
                         ) : (
-                            garden[virtualColumn.index].value
+                            <>
+                                {garden[virtualColumn.index].value}
+                                <Count>({garden[virtualColumn.index].count})</Count>
+                            </>
                         )}
-                        <Count>({garden[virtualColumn.index].count})</Count>
                     </Header>
                 );
             })}

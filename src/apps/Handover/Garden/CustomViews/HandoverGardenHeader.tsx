@@ -1,46 +1,53 @@
-import { tokens } from '@equinor/eds-tokens';
+import { memo } from 'react';
 import styled from 'styled-components';
 import { CustomHeaderView } from '../../../../components/ParkView/Models/gardenOptions';
 import { HandoverPackage } from '../models';
-export const Title = styled.p`
-    padding-bottom: 0.5rem;
-    font-weight: 400;
-    color: ${tokens.colors.text.static_icons__default.rgba};
+import { getStatus, statusPriorityMap } from '../utility';
+const HeaderContent = styled.div`
+    font-weight: 600;
 `;
+const getSubtitleHeader = (items: HandoverPackage[], groupByKey: string | undefined) => {
+    const totalLength = items.length;
+    const statusPriorities = items.map((commpkg) => statusPriorityMap[getStatus(commpkg)]);
+    switch (groupByKey) {
+        case 'RFCC':
+            const rfcc = statusPriorities.filter(
+                (priority) => priority <= statusPriorityMap['RFCC Accepted']
+            ).length;
+            return `RFCC ${rfcc}/${totalLength}`;
 
-export const Groupe = styled.div`
-    padding: 0.1rem;
-    width: 180px;
-    display: flex;
-    align-items: center;
-    position: relative;
-    height: 32px;
-    cursor: pointer;
+        case 'RFOC':
+            const rfoc = statusPriorities.filter(
+                (priority) => priority <= statusPriorityMap['RFOC Accepted']
+            ).length;
+            return `RFOC ${rfoc}/${totalLength}`;
 
-    ::after {
-        content: ' ';
-        position: absolute;
-        bottom: 10px;
-        width: 100%;
-        height: 2px;
-        background-color: ${tokens.colors.ui.background__info.rgba};
+        case 'TAC':
+            const tac = items.filter((commpkg) => getStatus(commpkg) === 'TAC Accepted').length;
+            return `TAC ${tac}/${totalLength}`;
+
+        case 'DCC':
+            const dcc = items.filter((commpkg) => getStatus(commpkg) === 'DCC Accepted').length;
+            return `DCC ${dcc}/${totalLength}`;
+
+        case 'RFRC':
+            const rfrc = items.filter((commpkg) => getStatus(commpkg) === 'RFRC Accepted').length;
+            return `RFRC ${rfrc}/${totalLength}`;
+
+        default:
+            const os = items.filter((commpkg) => getStatus(commpkg) === 'OS').length;
+            return `OS ${os}/${totalLength}`;
     }
-`;
-
-export const Count = styled.span`
-    color: ${tokens.colors.text.static_icons__default.rgba};
-    font-weight: 300;
-    font-size: 0.8rem;
-    margin-left: 0.8em;
-    padding-bottom: 0.5rem;
-`;
-export const HandoverGardenHeader = (props: CustomHeaderView<HandoverPackage>) => {
+};
+const HandoverGardenHeader = (props: CustomHeaderView<HandoverPackage>) => {
     const { columnIndex, garden } = props;
+    const subHeader = getSubtitleHeader(garden[columnIndex].items, props?.groupByKey);
     return (
-        <Groupe>
-            {garden[columnIndex].status?.statusElement}
-            <Title>{garden[columnIndex].value}</Title>
-            <Count>({garden[columnIndex].count})</Count>
-        </Groupe>
+        <HeaderContent>
+            {garden[columnIndex].value}
+            <div>{subHeader}</div>
+        </HeaderContent>
     );
 };
+
+export default memo(HandoverGardenHeader);

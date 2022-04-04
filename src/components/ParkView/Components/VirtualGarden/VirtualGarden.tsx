@@ -137,6 +137,7 @@ export const VirtualGarden = <T extends unknown>({
                 headerChild={headerChild}
                 highlightColumn={highlightedColumn}
                 customDescription={customDescription}
+                groupByKey={gardenKey.toString()}
             />
             {columnVirtualizer.virtualItems.map((virtualColumn) => {
                 const currentColumn = sortedColumns[virtualColumn.index];

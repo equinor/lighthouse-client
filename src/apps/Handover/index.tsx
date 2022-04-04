@@ -1,5 +1,5 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { HandoverGardenHeader, HandoverGroupByView, HandoverSideSheet } from './Garden/CustomViews';
+import { HandoverGroupByView, HandoverSideSheet } from './Garden/CustomViews';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
 import {
     fieldSettings,
@@ -13,6 +13,7 @@ import {
 import { Status } from './Garden/components/commonStyles';
 import { statusBarData } from './Garden/components/statusItems';
 import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
+import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
 enum Tabs {
     TABLE,
     GARDEN,
@@ -141,7 +142,7 @@ export function setup(appApi: ClientApi): void {
             customViews: {
                 customGroupByView: HandoverGroupByView,
                 customItemView: HandoverGardenItem,
-                // customHeaderView: HandoverGardenHeader,
+                customHeaderView: HandoverGardenHeader,
             },
             rowHeight: 30,
             itemWidth: getItemWidth,
