@@ -3,6 +3,7 @@ import { CircularProgress, Search, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
+import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import Icon from '../../../../../components/Icon/Icon';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { StatusBar } from '../../../../../packages/StatusBar';
@@ -39,7 +40,7 @@ export const CompletionViewHeader = ({
     const { factory, setSelected } = useFactory(key);
 
     const {
-        filterState: { getFilteredData },
+        filterState: { getFilteredData, checkHasActiveFilters },
     } = useFilterApiContext();
     const data = getFilteredData();
     const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
@@ -102,7 +103,7 @@ export const CompletionViewHeader = ({
                     )}
                 </TabButton>
                 <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
-                    <Icon name={'filter_alt'} />
+                    {checkHasActiveFilters() ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                 </TabButton>
             </RightSection>
         </HeaderWrapper>
