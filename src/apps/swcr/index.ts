@@ -173,54 +173,54 @@ export function setup(appApi: ClientApi): void {
                             graphType: 'created-closed',
                         },
                     },
-                    chart2: {
-                        type: 'customVisual',
-                        options: {
-                            component: SwcrGraph,
-                            componentProps: {
-                                graphType: 'open',
-                            },
+                },
+                chart2: {
+                    type: 'customVisual',
+                    options: {
+                        component: SwcrGraph,
+                        componentProps: {
+                            graphType: 'open',
                         },
                     },
                 },
-                section2: {
-                    chart1: {
-                        type: 'customVisual',
-                        options: {
-                            component: SwcrGraph,
-                            componentProps: {
-                                graphType: 'acc',
-                            },
+            },
+            section2: {
+                chart1: {
+                    type: 'customVisual',
+                    options: {
+                        component: SwcrGraph,
+                        componentProps: {
+                            graphType: 'acc',
                         },
                     },
                 },
+            },
 
-                section3: {
-                    chart2: {
-                        type: 'table',
-                        options: {
-                            initialGroupBy: 'priority',
-                            groupBy: [
-                                {
-                                    key: 'controlSystem',
-                                    title: 'Control System',
-                                },
-                                {
-                                    key: 'priority',
-                                    title: 'Priority',
-                                },
-                                {
-                                    key: 'system',
-                                    title: 'System',
-                                },
-                                {
-                                    key: 'types',
-                                    title: 'HW/SW',
-                                },
-                            ],
+            section3: {
+                chart2: {
+                    type: 'table',
+                    options: {
+                        initialGroupBy: 'priority',
+                        groupBy: [
+                            {
+                                key: 'controlSystem',
+                                title: 'Control System',
+                            },
+                            {
+                                key: 'priority',
+                                title: 'Priority',
+                            },
+                            {
+                                key: 'system',
+                                title: 'System',
+                            },
+                            {
+                                key: 'types',
+                                title: 'HW/SW',
+                            },
+                        ],
 
-                            columns: columns,
-                        },
+                        columns: columns,
                     },
                 },
             },
