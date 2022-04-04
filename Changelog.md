@@ -12,11 +12,12 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [PowerBIViewer] - **BUG** - default page selection
 - [Portal] - Styles update
 ### Test
-- [Workorder] - chore: add size icon, flag, progress to wo item.
+- [Workorder] - chore: add size icon, flag, progress to wo item
 - [Garden] - Highlight selected garden item
 - [SWCR] - Virtual garden
 - [Data Factory] - Optional access check
 - [Handover] - General Updated, filter items, styling
+- [Piping and Heat trace] - released to test
 
 --- 
   
