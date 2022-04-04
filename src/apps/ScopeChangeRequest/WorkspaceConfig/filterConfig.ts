@@ -1,50 +1,47 @@
 import { FilterOptions } from '../../../packages/Filter/Types';
 import { ScopeChangeRequest } from '../Types/scopeChangeRequest';
 
-const scopeChangeExcludeFilterKeys: (keyof ScopeChangeRequest)[] = [
-    'id',
-    'currentWorkflowStep',
-    'workflowSteps',
-    'isVoided',
-    'state',
-    'originSource',
-    'originSourceId',
-];
-
-export const filterConfig: FilterOptions<ScopeChangeRequest> = {
-    excludeKeys: scopeChangeExcludeFilterKeys,
-    headerNames: {},
-    defaultActiveFilters: ['State', 'phase', 'category', 'Origin', 'Step', 'NextToSign'],
-    defaultUncheckedValues: [
-        {
-            type: 'State',
-            value: {
-                Voided: { checked: false, type: 'State', value: 'Voided' },
-                Draft: { checked: false, type: 'State', value: 'Draft' },
-            },
-        },
-    ],
-    valueFormatter: {
-        NextToSign: (item: ScopeChangeRequest): string => {
-            if (item.state !== 'Open') {
-                return '(Blank)';
-            }
-            return (
-                item.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
-                    ?.valueDescription ?? '(Blank)'
-            );
-        },
-        State: (item: ScopeChangeRequest): string => {
-            if (item.isVoided) {
-                return 'Voided';
-            }
-            return item.state;
-        },
-        Origin: (item: ScopeChangeRequest) => {
-            return item.originSource;
-        },
-        Step: (item: ScopeChangeRequest) => {
-            return item?.currentWorkflowStep?.name ?? '(Blank)';
-        },
+export const filterConfig: FilterOptions<ScopeChangeRequest> = [
+    {
+        name: 'Phase',
+        valueFormatter: ({ phase }) => phase,
+        defaultHidden: true,
     },
-};
+    {
+        name: 'Category',
+        valueFormatter: ({ changeCategory }) => changeCategory.name,
+    },
+    {
+        name: 'State',
+        valueFormatter: ({ isVoided, state }) => (isVoided ? 'Voided' : state),
+        defaultUncheckedValues: ['Voided', 'Draft'],
+    },
+    {
+        name: 'Next to sign',
+        valueFormatter: ({ currentWorkflowStep }) =>
+            currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)?.valueDescription ??
+            null,
+    },
+    {
+        name: 'Origin',
+        valueFormatter: ({ originSource }) => originSource,
+    },
+    {
+        name: 'Step',
+        valueFormatter: ({ currentWorkflowStep }) => currentWorkflowStep?.name ?? null,
+    },
+    {
+        name: 'Has comments',
+        valueFormatter: ({ hasComments }) => (hasComments ? 'Yes' : 'No'),
+        sort: (a) => a.sort((_, b) => (b === 'No' ? -1 : 1)),
+    },
+    {
+        name: 'Pending contributions',
+        valueFormatter: ({ hasPendingContributions }) => (hasPendingContributions ? 'Yes' : 'No'),
+        sort: (a) => a.sort((_, b) => (b === 'No' ? -1 : 1)),
+    },
+    {
+        name: 'Workflow status',
+        valueFormatter: ({ workflowStatus }) => workflowStatus,
+    },
+];
