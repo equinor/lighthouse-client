@@ -19,13 +19,14 @@ type ExpandColumn<T extends unknown = any> = {
     index: number;
     descriptionData: GardenItem<T>[] | null;
     type: ActionType.EXPAND_COLUMN;
+    customDescription?: (item: T | GardenItem<T>) => string;
 };
 
 type Action = ExpandColumn;
 const expandReducer = (state: State, action: Action): State => {
     switch (action.type) {
         case ActionType.EXPAND_COLUMN: {
-            let width = getDescriptionWidth(action.descriptionData);
+            let width = getDescriptionWidth(action.descriptionData, action.customDescription);
             //Edge case here: if all subgroups are collapsed, the width will be
             // 0 since no description data. But if you expand column first and collapse
             // all subgroups, the column wont be resized
