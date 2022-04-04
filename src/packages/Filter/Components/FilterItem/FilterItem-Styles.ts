@@ -9,6 +9,9 @@ export const AllCheckbox = styled(Checkbox)`
 export const FilterItemName = styled.span`
     cursor: pointer;
     font-size: 16px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 export const Count = styled.span`
