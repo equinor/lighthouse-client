@@ -59,6 +59,7 @@ const WorkOrderItem = ({
     onClick,
     columnExpanded,
     depth,
+    selectedItem,
     width: itemWidth = 300,
 }: CustomItemView<WorkOrder>) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -83,7 +84,7 @@ const WorkOrderItem = ({
     const maxWidth = useMemo(() => itemWidth * 0.98, [itemWidth]);
     return (
         <>
-            {isOpen && (
+            {/* {isOpen && (
                 <WorkOrderPopover
                     data={data}
                     anchorRef={anchorRef}
@@ -98,7 +99,7 @@ const WorkOrderItem = ({
                         mccrColor,
                     }}
                 />
-            )}
+            )} */}
             <Root>
                 <WorkOrderWrapper
                     backgroundColor={backgroundColor}
@@ -110,6 +111,7 @@ const WorkOrderItem = ({
                     onClick={onClick}
                     style={{ width: `${columnExpanded ? 100 : width}%`, maxWidth }}
                     progressBackground={progressBar}
+                    isSelected={selectedItem?.workOrderNumber === data.workOrderNumber}
                 >
                     <Sizes size={size} color={textColor} />
                     {data.holdBy && <FlagIcon color={textColor} />}

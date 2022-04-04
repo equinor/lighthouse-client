@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 export const Root = styled.div`
     height: 80%;
     width: 100%;
@@ -13,8 +14,9 @@ export type WorkOrderItemProps = {
     textColor: string;
     background: string;
     progressBackground: string;
+    isSelected: boolean;
 };
-
+//@ts-ignore
 export const WorkOrderWrapper = styled.div<WorkOrderItemProps>`
     display: grid;
     grid-template-columns: 15px 3fr auto;
@@ -31,6 +33,8 @@ export const WorkOrderWrapper = styled.div<WorkOrderItemProps>`
     font-size: 13px;
     padding-left: 20px;
     padding-right: 2px;
+    outline: ${(props) => (props.isSelected ? '2px dashed green' : '')};
+    outline-offset: ${(props) => (props.isSelected ? '2px' : '')};
 
     ::before {
         position: absolute;
