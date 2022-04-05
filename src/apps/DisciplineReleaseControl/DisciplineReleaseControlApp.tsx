@@ -8,6 +8,7 @@ import {
     getPipetestStatus,
     getShortformCompletionStatusName,
     getYearAndWeekFromString,
+    isPipetestProcessDoneInRightOrder,
     sortPipetestChecklist,
     sortPipetests,
 } from './Functions/statusHelpers';
@@ -20,6 +21,7 @@ import { DateTime } from 'luxon';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 // import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
+import { Monospace } from './Styles/Monospace';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -33,6 +35,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
             pipetest.step = getPipetestStatus(pipetest);
+            pipetest.pipetestProcessDoneInRightOrder = isPipetestProcessDoneInRightOrder(pipetest);
             pipetest.completionStatus = getPipetestCompletionStatus(pipetest);
             pipetest.shortformCompletionStatus = getShortformCompletionStatusName(
                 pipetest.completionStatus
@@ -40,7 +43,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             pipetest.overdue =
                 pipetest.step !== PipetestStep.Complete &&
-                    DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
+                DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                     ? 'Yes'
                     : 'No';
             return pipetest;
@@ -84,7 +87,7 @@ export function setup(appApi: ClientApi): void {
             },
             {
                 name: 'Completion status',
-                valueFormatter: ({ completionStatus }) => completionStatus,
+                valueFormatter: ({ shortformCompletionStatus }) => shortformCompletionStatus,
             },
         ]);
 
@@ -100,6 +103,8 @@ export function setup(appApi: ClientApi): void {
             'completionStatus',
             'insulationBoxes',
             'shortformCompletionStatus',
+            'circuits',
+            'pipetestProcessDoneInRightOrder',
         ],
         enableSelectRows: true,
         headers: [
@@ -112,6 +117,14 @@ export function setup(appApi: ClientApi): void {
         ],
         customCellView: [
             {
+                key: 'name',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        return <Monospace>{cell.value.content.name}</Monospace>;
+                    },
+                },
+            },
+            {
                 key: 'checkLists',
                 type: {
                     Cell: ({ cell }: any) => {
@@ -121,6 +134,9 @@ export function setup(appApi: ClientApi): void {
                                 statusDotFunc={checklistTagFunc}
                                 spanDirection={'horizontal'}
                                 dotSize={22}
+                                pipetestProcessDoneInRightOrder={
+                                    cell.value.content.pipetestProcessDoneInRightOrder
+                                }
                             />
                         );
                     },
@@ -130,22 +146,32 @@ export function setup(appApi: ClientApi): void {
         customColumns: [
             {
                 id: 'dueByWeek',
+                accessor: 'rfccPlanned',
                 Header: 'Due by week',
                 Aggregated: () => null,
                 width: 120,
                 aggregate: 'count',
                 Cell: (cell) => {
-                    return getYearAndWeekFromString(cell.row.values.rfccPlanned);
+                    return (
+                        <Monospace>
+                            {getYearAndWeekFromString(cell.row.values.rfccPlanned)}
+                        </Monospace>
+                    );
                 },
             },
             {
                 id: 'htList',
+                accessor: 'heatTraces',
                 Header: 'HT cables',
                 Aggregated: () => null,
                 width: 400,
                 aggregate: 'count',
                 Cell: (cell) => {
-                    return getHTList(cell.row.values.checkLists.content.checkLists);
+                    return (
+                        <Monospace>
+                            {getHTList(cell.row.values.checkLists.content.checkLists)}
+                        </Monospace>
+                    );
                 },
             },
         ],
