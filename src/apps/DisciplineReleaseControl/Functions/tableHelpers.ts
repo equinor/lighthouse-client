@@ -1,4 +1,9 @@
-import { CheckListStatus, CheckListStepTag, PipetestCompletionStatus } from '../Types/drcEnums';
+import {
+    CheckListStatus,
+    CheckListStepTag,
+    PipetestCompletionStatus,
+    PipetestStep,
+} from '../Types/drcEnums';
 import { CheckList, Pipetest } from '../Types/pipetest';
 import {
     getBoxInsulationStatus,
@@ -143,4 +148,49 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
     }
 
     return workflowSteps;
+}
+
+export function getStatusLetterFromStatus(step: string | undefined): string {
+    let letter = '#D3D3D3';
+
+    switch (step) {
+        case PipetestStep.PressureTest:
+            letter = 'T';
+            break;
+        case PipetestStep.ChemicalCleaning:
+            letter = 'C';
+            break;
+        case PipetestStep.HotOilFlushing:
+            letter = 'H';
+            break;
+        case PipetestStep.Bolttensioning:
+            letter = 'B';
+            break;
+        case PipetestStep.Painting:
+            letter = 'T';
+            break;
+        case PipetestStep.HtTest:
+            letter = '1';
+            break;
+        case PipetestStep.Insulation:
+            letter = 'Z';
+            break;
+        case PipetestStep.BoxInsulation:
+            letter = 'ZB';
+            break;
+        case PipetestStep.HtRetest:
+            letter = '2';
+            break;
+        case PipetestStep.Marking:
+            letter = 'M';
+            break;
+        case PipetestStep.Complete:
+            letter = '';
+            break;
+        case PipetestStep.Unknown:
+            letter = '?';
+            break;
+    }
+
+    return letter;
 }

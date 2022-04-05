@@ -32,7 +32,7 @@ const ReleaseControlGardenItem = ({
     return (
         <>
             <ReleaseControlItem
-                backgroundColor={getGardenItemColor(data)}
+                backgroundColor={getGardenItemColor(data.step)}
                 textColor={'#000'}
                 isGrouped={groupByKeys.length > 0}
                 onClick={onClick}
