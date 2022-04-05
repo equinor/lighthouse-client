@@ -15,6 +15,7 @@ import { RequestTabTitle, RequestTab } from '../Tabs/Request';
 import { WorkOrderTabTitle, WorkOrderTab } from '../Tabs/WorkOrders';
 import { useOctopusErrorHandler } from '../../../hooks/observers/useOctopusErrorHandler';
 import { SidesheetTabList } from './SidesheetWrapper.styles';
+import styled from 'styled-components';
 
 export function SidesheetWrapper(item: ScopeChangeRequest): JSX.Element {
     useScopeChangeMutationWatcher(item.id);
@@ -27,11 +28,11 @@ export function SidesheetWrapper(item: ScopeChangeRequest): JSX.Element {
     const { setWidth } = useInternalSidesheetFunction();
     useEffect(() => {
         //HACK: Increase width on mount
-        setWidth(1000);
+        setWidth(1100);
     }, []);
 
     return (
-        <>
+        <Wrapper>
             <ScopeChangeErrorBanner />
             <ScopeChangeContext.Provider
                 value={{
@@ -39,6 +40,9 @@ export function SidesheetWrapper(item: ScopeChangeRequest): JSX.Element {
                     requestAccess: requestAccess,
                 }}
             >
+                <Title>
+                    {item.sequenceNumber}, {item.title}
+                </Title>
                 <SidesheetBanner />
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <SidesheetTabList>
@@ -52,15 +56,35 @@ export function SidesheetWrapper(item: ScopeChangeRequest): JSX.Element {
                             <LogTabTitle />
                         </Tabs.Tab>
                     </SidesheetTabList>
-                    <Tabs.Panels>
+                    <TabList>
                         <Tabs.Panel>
                             <RequestTab />
                         </Tabs.Panel>
                         <Tabs.Panel>{activeTab === 1 && <WorkOrderTab />}</Tabs.Panel>
                         <Tabs.Panel>{activeTab === 2 && <LogTab />}</Tabs.Panel>
-                    </Tabs.Panels>
+                    </TabList>
                 </Tabs>
             </ScopeChangeContext.Provider>
-        </>
+        </Wrapper>
     );
 }
+
+const Title = styled.div`
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: 0px;
+    text-align: left;
+
+    padding-left: 7px;
+`;
+
+const TabList = styled(Tabs.Panels)`
+    padding: 24px 32px;
+`;
+
+const Wrapper = styled.div`
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 95%;
+`;
