@@ -1,4 +1,4 @@
-import { Button } from '@equinor/eds-core-react';
+import { Button, Checkbox } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 
 export const Title = styled.h4`
@@ -20,7 +20,6 @@ export const Wrapper = styled.div`
     max-height: 180px;
 
     label {
-        font-size: 1rem;
         padding: 0;
         white-space: nowrap;
         overflow: hidden;
@@ -57,4 +56,21 @@ export const FilterHeaderGroup = styled.div`
 export const SearchButton = styled(Button)`
     width: 36px;
     height: 36px;
+`;
+
+export const AllCheckbox = styled(Checkbox)`
+    grid-template-columns: auto 1fr auto;
+    display: grid;
+    max-width: 500px;
+    align-items: center;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    span {
+        font-size: 13px;
+        padding: 0px;
+
+        :first-child {
+            padding-right: 2px;
+        }
+    }
 `;
