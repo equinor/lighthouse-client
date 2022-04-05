@@ -426,16 +426,6 @@ export const apps: AppManifest[] = [
         tags: ['link', 'fusion'],
         appEnv: 'prod',
     },
-
-    // Queries and requests
-    {
-        title: 'ATS request',
-        shortName: 'ats',
-        color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
-        icon: '',
-        tags: [],
-    },
     // ProjectControl
     {
         title: 'Project change proposal',
@@ -519,25 +509,6 @@ export const apps: AppManifest[] = [
         tags: ['PowerBI'],
         appEnv: 'test',
     },
-
-    {
-        title: 'Overtime request',
-        shortName: 'overtime',
-        color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
-        icon: '',
-        tags: [],
-    },
-    // Reports
-    // {
-    //     title: 'temp-link',
-    //     shortName: 'temp-link2',
-    //     color: '#0364B8',
-    //     groupe: Apps.Reports,
-    //     icon: '',
-    //     tags: [],
-    // },
-
     // Collaboration
     {
         title: 'Meeting',
