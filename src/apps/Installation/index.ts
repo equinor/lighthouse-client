@@ -24,7 +24,10 @@ export function setup(appApi: ClientApi): void {
                 { pageTitle: 'Objects', pageId: 'ReportSection841454822b1bc9b95dc3' },
                 { pageTitle: 'Cable', pageId: 'ReportSection1d9a32816d55fefe1921' },
                 { pageTitle: 'Spools', pageId: 'ReportSectionb4b0b670d66fe872d75d' },
-                { pageTitle: 'ISO', pageId: 'ReportSection01bfbe9f4adb75281239' },
+                {
+                    pageTitle: 'Insulation for Installation',
+                    pageId: 'ReportSection01bfbe9f4adb75281239',
+                },
             ],
         });
 }
