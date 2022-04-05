@@ -4,6 +4,7 @@ import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
 import { WorkOrder } from './Garden/models';
 import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
 import { sortPackages } from './Garden/utility/sortPackages';
+import { tableConfig } from './utility/tableConfig';
 
 enum Tabs {
     TABLE,
@@ -55,9 +56,7 @@ export function setup(appApi: ClientApi): void {
                 valueFormatter: ({ materialStatus }) => materialStatus,
             },
         ])
-        .registerTableOptions({
-            objectIdentifierKey: 'mcPkgNo',
-        })
+        .registerTableOptions(tableConfig)
         .registerGardenOptions({
             gardenKey: 'fwp' as keyof WorkOrder,
             itemKey: 'workOrderNumber',
