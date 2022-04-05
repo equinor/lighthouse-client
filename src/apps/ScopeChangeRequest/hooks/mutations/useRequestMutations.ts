@@ -47,7 +47,6 @@ export function useRequestMutations(): RequestMutations {
             ...model,
             ...(extractReferences(references) as ScopeChangeRequestFormModel),
             changeCategoryId: model.changeCategory?.id ?? request.changeCategory.id,
-            originSourceId: request.originSourceId,
         });
     };
 
