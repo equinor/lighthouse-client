@@ -1,23 +1,33 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { SideSheetContainer } from '@equinor/GardenUtils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { WorkOrder } from '../../models';
 import { useMaterial, useMccr } from './hooks';
 import { DetailsTab, MccrTab } from './Tabs';
 import { MaterialTab } from './Tabs/MaterialTab';
 
-export const WorkorderSideSheet = (workorder: WorkOrder): JSX.Element => {
+interface WorkorderSideSheetProps {
+    item: WorkOrder;
+    actions: SidesheetApi;
+}
+
+export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): JSX.Element => {
     const [activeTab, setActiveTab] = useState<number>(0);
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
 
+    useEffect(() => {
+        actions.setTitle(<>{item.workOrderNumber}</>);
+    }, [item.workOrderId]);
+
     const {
         material,
         isFetching: materialIsFetching,
         error: materialError,
-    } = useMaterial(workorder.workOrderId);
-    const { mccr, isFetching: mccrIsFetching, error: mccrError } = useMccr(workorder.workOrderId);
+    } = useMaterial(item.workOrderId);
+    const { mccr, isFetching: mccrIsFetching, error: mccrError } = useMccr(item.workOrderId);
 
     return (
         <SideSheetContainer>
@@ -30,7 +40,7 @@ export const WorkorderSideSheet = (workorder: WorkOrder): JSX.Element => {
 
                 <Tabs.Panels>
                     <Tabs.Panel>
-                        <DetailsTab workOrder={workorder} />
+                        <DetailsTab workOrder={item} />
                     </Tabs.Panel>
                     <Tabs.Panel>
                         <MccrTab packages={mccr} isFetching={mccrIsFetching} error={mccrError} />

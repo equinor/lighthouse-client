@@ -223,7 +223,6 @@ export const WorkflowCriteria = ({
                         <IconMenu items={makeMoreActions()} onMenuOpen={closeAll} />
                     )}
                 </Inline>
-                <span style={{ width: '5px' }} />
             </WorkflowStepViewContainer>
 
             <ContributorSelector />

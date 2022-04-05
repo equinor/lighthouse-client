@@ -2,37 +2,66 @@ import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
 import { Resizable } from 're-resizable';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
+import { getApps } from '../../../apps/apps';
+import { IconMenu, MenuItem } from '../../../apps/ScopeChangeRequest/Components/MenuButton';
 import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
 import { useSideSheet } from '../context/sidesheetContext';
-import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
+import {
+    ToggleFunction,
+    useInternalSidesheetFunction,
+} from '../Hooks/useInternalSidesheetFunction';
+
+const DEFAULT_TAB_COLOUR = '#ff9900';
+
+export interface SidesheetApi {
+    closeSidesheet: () => void;
+    setIsMinimized: (isMinimized: boolean | ToggleFunction) => void;
+    setWidth: (width: number) => void;
+    setTitle: React.Dispatch<React.SetStateAction<JSX.Element | null | undefined>>;
+    setMenuItems: (menuItems: MenuItem[]) => void;
+}
 
 export const ResizableSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent, props, isPinned, minWidth, width, isMinimized } = useSideSheet();
-    const { closeSidesheet, togglePinned, setIsMinimized, setWidth } =
-        useInternalSidesheetFunction();
+    const { SidesheetComponent, props, minWidth, width, isMinimized, appName } = useSideSheet();
+    const { closeSidesheet, setIsMinimized, setWidth } = useInternalSidesheetFunction();
+    const appColor = getApps().find(({ shortName }) => shortName === appName)?.color;
 
     const handleMinimize = () => {
         setIsMinimized((prev) => !prev);
     };
 
-    useEffect(() => {
-        return () => {
-            isPinned && setWidth(0);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // Header stuff
+    const [title, setTitle] = useState<JSX.Element | null>();
+    const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+
+    const actions = {
+        closeSidesheet: closeSidesheet,
+        setIsMinimized: setIsMinimized,
+        setWidth: setWidth,
+        setTitle: setTitle,
+        setMenuItems: setMenuItems,
+    };
+
+    const sidesheetProps = { item: props, actions: actions };
+
+    if (!SidesheetComponent) return null;
 
     if (isMinimized) {
         return (
-            <Button variant="ghost_icon" onClick={handleMinimize}>
-                <Icon name="chevron_left" color={tokens.colors.interactive.primary__resting.hex} />
-            </Button>
+            //HACK: auto doesnt work?
+            <div style={{ width: '24px' }}>
+                <ColourTab appColor={appColor ?? DEFAULT_TAB_COLOUR} onClick={handleMinimize}>
+                    <Icon name="chevron_left" color={'white'} />
+                </ColourTab>
+                <RotatedText>{title}</RotatedText>
+                <div style={{ display: 'none' }}>
+                    <SidesheetComponent {...sidesheetProps} />
+                </div>
+            </div>
         );
     }
-
-    if (!SidesheetComponent) return null;
 
     return (
         <div style={{ height: '100%' }}>
@@ -48,26 +77,18 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                 }}
             >
                 <Header>
-                    <Button variant="ghost_icon" onClick={handleMinimize}>
-                        <Icon
-                            name="chevron_right"
-                            size={24}
-                            color={tokens.colors.interactive.primary__resting.hex}
-                        />
-                    </Button>
+                    <LeftHeader>
+                        <ColourTab
+                            appColor={appColor ?? DEFAULT_TAB_COLOUR}
+                            onClick={handleMinimize}
+                        >
+                            <Icon name="chevron_right" size={24} color={'white'} />
+                        </ColourTab>
+                        <span>{title}</span>
+                    </LeftHeader>
 
-                    <span>
-                        <Button variant="ghost_icon" onClick={togglePinned}>
-                            <Icon
-                                name={'thumb_pin'}
-                                size={24}
-                                color={
-                                    isPinned
-                                        ? tokens.colors.interactive.primary__resting.hex
-                                        : 'grey'
-                                }
-                            />
-                        </Button>
+                    <span style={{ display: 'flex', flexDirection: 'row' }}>
+                        {menuItems.length > 0 && <IconMenu items={menuItems} />}
                         <Button variant="ghost_icon" onClick={closeSidesheet}>
                             <Icon
                                 name="close"
@@ -80,7 +101,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
 
                 <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
                     <div style={{ height: '95%' }}>
-                        <SidesheetComponent {...props} />
+                        <SidesheetComponent {...sidesheetProps} />
                     </div>
                 </ErrorBoundary>
             </Resizable>
@@ -88,9 +109,34 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     );
 };
 
+const LeftHeader = styled.div`
+    display: flex;
+    gap: 0.5em;
+    flex-direction: row;
+    align-items: center;
+    font-size: 28px;
+`;
+
 const Header = styled.div`
     display: flex;
-    padding: 5px;
     justify-content: space-between;
-    height: 5%;
+    height: 76px;
+    align-items: center;
+`;
+
+const ColourTab = styled.div<{ appColor: string }>`
+    display: flex;
+    align-items: center;
+    background-color: ${({ appColor }) => appColor};
+    height: 76px;
+    width: 24px;
+`;
+
+const RotatedText = styled.span`
+    display: inline-block;
+    transform: rotate(90deg);
+    transform-origin: left;
+    margin-left: 10px;
+    white-space: nowrap;
+    font-size: 14px;
 `;
