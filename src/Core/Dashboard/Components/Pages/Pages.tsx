@@ -1,7 +1,7 @@
 import { AnalyticsView } from '@equinor/Diagrams';
 import { Progress } from '@equinor/eds-core-react';
-import { useFilteredData } from '@equinor/filter';
 import styled from 'styled-components';
+import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useDashboardDataContext } from '../../Context/DataProvider';
 
 import { DashboardInstance, PageConfig } from '../../Types/State';
@@ -22,7 +22,12 @@ interface PagesProps<T> extends DashboardInstance<T> {
 }
 
 export function Pages<T>({ pages, activePage }: PagesProps<T>): JSX.Element {
-    const { data, isLoading } = useFilteredData<T>();
+    const {
+        filterState: { getFilteredData },
+    } = useFilterApiContext();
+
+    const data = getFilteredData();
+
     const { isLoading: isLoadingData } = useDashboardDataContext();
     if (isLoadingData) {
         return (
@@ -49,8 +54,8 @@ export function Pages<T>({ pages, activePage }: PagesProps<T>): JSX.Element {
                         <Page key={`page-${key}`} style={{ paddingTop: 0 }}>
                             {activePage == page.pageId && (
                                 <AnalyticsView<T>
-                                    data={data}
-                                    isLoading={isLoading}
+                                    data={data as T[]}
+                                    // isLoading={isLoading}
                                     options={page}
                                 />
                             )}

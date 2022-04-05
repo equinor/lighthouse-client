@@ -5,12 +5,6 @@ import { WorkOrder } from './Garden/models';
 import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
 import { sortPackages } from './Garden/utility/sortPackages';
 
-const excludeKeys: (keyof WorkOrder)[] = [
-    'description',
-    'commpkgNumber',
-    'proCoSysSiteName',
-    'responsibleCode',
-];
 enum Tabs {
     TABLE,
     GARDEN,
@@ -43,7 +37,24 @@ export function setup(appApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerFilterOptions({ excludeKeys })
+        .registerFilterOptions([
+            {
+                name: 'Discipline',
+                valueFormatter: ({ disciplineCode }) => disciplineCode,
+            },
+            {
+                name: 'Milestone',
+                valueFormatter: ({ milestoneCode }) => milestoneCode,
+            },
+            {
+                name: 'Responsible',
+                valueFormatter: ({ responsibleCode }) => responsibleCode,
+            },
+            {
+                name: 'Material status',
+                valueFormatter: ({ materialStatus }) => materialStatus,
+            },
+        ])
         .registerTableOptions({
             objectIdentifierKey: 'mcPkgNo',
         })
