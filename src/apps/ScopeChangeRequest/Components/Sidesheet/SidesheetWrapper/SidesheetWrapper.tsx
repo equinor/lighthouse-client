@@ -1,4 +1,4 @@
-import { Icon, Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 
 import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
@@ -16,9 +16,8 @@ import { useOctopusErrorHandler } from '../../../hooks/observers/useOctopusError
 import { SidesheetTabList } from './SidesheetWrapper.styles';
 import styled from 'styled-components';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
-import { MenuItem } from '../../MenuButton';
-import { tokens } from '@equinor/eds-tokens';
 import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
+import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -34,30 +33,11 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     const requestAccess = useScopeChangeAccess(item.id);
     const [editMode, setEditMode] = useState<boolean>(false);
     const toggleEditMode = () => setEditMode((prev) => !prev);
-
-    const menuItems: MenuItem[] = [
-        {
-            icon: <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />,
-            label: 'Edit ',
-            isDisabled: requestAccess.canPatch,
-            onClick: toggleEditMode,
-        },
-    ];
+    useSidesheetEffects(actions, toggleEditMode, item.id);
 
     useEffect(() => {
         setEditMode(false);
-        actions.setTitle(
-            <>
-                {item.sequenceNumber}, {item.title}
-            </>
-        );
-        actions.setMenuItems(menuItems);
     }, [request?.id]);
-
-    /** Only run once */
-    useEffect(() => {
-        actions.setWidth(1100);
-    }, []);
 
     return (
         <Wrapper>
