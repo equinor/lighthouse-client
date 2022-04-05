@@ -14,7 +14,7 @@ const getPriorityMap = (groupBy: string) => {
  */
 export const sortPackages = (data: WorkOrder[], ...groupByKeys: (keyof WorkOrder)[]) => {
     //TODO Handle multiple groupByKeys?
-    const groupBy = groupByKeys[0] || 'fwp';
+    const groupBy = groupByKeys[0] || 'hwp';
     const status = getStatus(groupBy);
     const priorityMap = getPriorityMap(groupBy);
     const sortBy =
