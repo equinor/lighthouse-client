@@ -1,5 +1,5 @@
 import { Checkbox, Search } from '@equinor/eds-core-react';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { FilterItemComponent } from '../FilterItem/FilterItem';
 import Icon from '../Icon/Icon';
 import {
@@ -32,6 +32,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     const {
         operations: { markAllValuesActive },
         filterGroupState: { getInactiveGroupValues, getFilterItemCountsForGroup },
+        filterState: { getFilterState },
     } = useFilterApiContext();
 
     const [filterSearchValue, setFilterSearchValue] = useState('');
@@ -58,7 +59,10 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
         setSearchActive((isActive) => !isActive);
     }
 
-    const itemCounts = getFilterItemCountsForGroup(filterGroup.name);
+    const itemCounts = useMemo(
+        () => getFilterItemCountsForGroup(filterGroup.name),
+        [getFilterState()]
+    );
 
     return (
         <Wrapper>

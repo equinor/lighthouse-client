@@ -140,17 +140,13 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                         </FilterSelect>
                     )}
                     <FilterGroups>
-                        {visibleFilters.map((key: string, index) => {
-                            const filterGroup = getAllFilterGroups().find(
-                                ({ name }) => name === key
-                            );
-                            if (!filterGroup) return;
-                            return (
-                                <FilterGroupWrapper key={`col-${key}-${index}`}>
+                        {getAllFilterGroups()
+                            .filter(({ name }) => visibleFilters.includes(name))
+                            .map((filterGroup) => (
+                                <FilterGroupWrapper key={`col-${filterGroup.name}`}>
                                     <FilterGroupeComponent filterGroup={filterGroup} />
                                 </FilterGroupWrapper>
-                            );
-                        })}
+                            ))}
                     </FilterGroups>
                 </>
             )}
