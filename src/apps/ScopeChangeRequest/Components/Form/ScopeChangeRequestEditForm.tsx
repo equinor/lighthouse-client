@@ -46,10 +46,6 @@ export const ScopeChangeRequestEditForm = ({
         handleInput('references', references);
     useUnpackRelatedObjects({ getReferences, handleReferencesChanged, request });
 
-    useEffect(() => {
-        return () => close();
-    }, [request.id]);
-
     const { editScopeChangeMutation } = useRequestMutations();
 
     const { isLoading, mutate } = useScopeChangeMutation(
