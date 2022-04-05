@@ -10,6 +10,10 @@ export function SidesheetBanner(): JSX.Element {
             <BannerItem title={'Phase'} value={request.phase} />
             <BannerItem title={'Change category'} value={request.changeCategory.name} />
             <BannerItem
+                title="Change origin"
+                value={`${request.originSource} - ${request.originSourceId}`}
+            />
+            <BannerItem
                 title={'Guesstimate'}
                 value={request.guesstimateHours ? `${request.guesstimateHours} mhr` : ''}
             />
