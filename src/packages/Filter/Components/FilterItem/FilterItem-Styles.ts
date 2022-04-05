@@ -8,7 +8,7 @@ export const AllCheckbox = styled(Checkbox)`
 
 export const FilterItemName = styled.span`
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -16,14 +16,17 @@ export const FilterItemName = styled.span`
 
 export const Count = styled.span`
     font-size: 12px;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 `;
 
 export const FilterItemWrap = styled.div`
-    grid-template-columns: 1fr 24fr 1fr;
-    width: 100%;
+    grid-template-columns: auto 1fr auto;
     display: grid;
+    max-width: 500px;
     align-items: center;
-    height: 32px;
+    padding-top: 1px;
+    padding-bottom: 1px;
 
     > span {
         padding: 0px;
