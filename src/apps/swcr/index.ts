@@ -12,7 +12,7 @@ import {
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { SwcrGraph } from './CustomViews/Graph';
-import { columns } from './utilities/tableSetup';
+import { columns, tableConfig } from './utilities/tableSetup';
 enum Tabs {
     TABLE = 0,
     GARDEN = 1,
@@ -111,56 +111,7 @@ export function setup(appApi: ClientApi): void {
                 defaultHidden: true,
             },
         ])
-        .registerTableOptions({
-            objectIdentifierKey: 'swcrId',
-            columnOrder: [
-                'swcrNo',
-                'title',
-                'system',
-                'controlSystem',
-                'priority',
-                'supplier',
-                'action',
-                'contract',
-            ],
-            headers: [
-                {
-                    key: 'swcrNo',
-                    title: 'Swcr',
-                },
-                {
-                    key: 'title',
-                    title: 'Title',
-                },
-                {
-                    key: 'priority',
-                    title: 'Priority',
-                },
-                {
-                    key: 'system',
-                    title: 'System',
-                },
-                {
-                    key: 'controlSystem',
-                    title: 'Control System',
-                },
-                {
-                    key: 'action',
-                    title: 'Action',
-                },
-                {
-                    key: 'supplier',
-                    title: 'Supplier',
-                },
-            ],
-            hiddenColumns: [
-                'siteCode',
-                'projectIdentifier',
-                'projectDescription',
-                'description',
-                'modification',
-            ],
-        })
+        .registerTableOptions(tableConfig)
         .registerGardenOptions({
             gardenKey: 'dueAtDate',
             itemKey: 'swcrNo',
