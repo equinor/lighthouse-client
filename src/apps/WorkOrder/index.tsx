@@ -4,6 +4,7 @@ import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
 import { WorkOrder } from './Garden/models';
 import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
 import { sortPackages } from './Garden/utility/sortPackages';
+import { filterConfig } from './utility/filterConfig';
 
 enum Tabs {
     TABLE,
@@ -37,24 +38,7 @@ export function setup(appApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerFilterOptions([
-            {
-                name: 'Discipline',
-                valueFormatter: ({ disciplineCode }) => disciplineCode,
-            },
-            {
-                name: 'Milestone',
-                valueFormatter: ({ milestoneCode }) => milestoneCode,
-            },
-            {
-                name: 'Responsible',
-                valueFormatter: ({ responsibleCode }) => responsibleCode,
-            },
-            {
-                name: 'Material status',
-                valueFormatter: ({ materialStatus }) => materialStatus,
-            },
-        ])
+        .registerFilterOptions(filterConfig)
         .registerTableOptions({
             objectIdentifierKey: 'mcPkgNo',
         })
