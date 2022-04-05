@@ -15,6 +15,7 @@ import {
 } from './Garden/utility';
 import { Status } from './Garden/components/commonStyles';
 import { statusBarData } from './Garden/components/statusItems';
+import { filterConfig } from './utility/config/filterSetup';
 enum Tabs {
     TABLE,
     GARDEN,
@@ -34,48 +35,7 @@ export function setup(appApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerFilterOptions([
-            {
-                name: 'Comm pkg status',
-                valueFormatter: ({ commpkgStatus }) => commpkgStatus,
-            },
-            {
-                name: 'MC status',
-                valueFormatter: ({ mcStatus }) => mcStatus,
-            },
-            {
-                name: 'System',
-                valueFormatter: ({ system }) => system,
-            },
-            {
-                name: 'Comm pkg responsible',
-                valueFormatter: ({ responsible }) => responsible,
-            },
-            {
-                name: 'Comm pkg discipline',
-                valueFormatter: ({ mcDisciplineCodes }) => mcDisciplineCodes,
-            },
-            {
-                name: 'Comm pkg phase',
-                valueFormatter: ({ phase }) => phase,
-            },
-            {
-                name: 'Comm pkg priority 1',
-                valueFormatter: ({ priority1 }) => priority1,
-            },
-            {
-                name: 'Comm pkg priority 2',
-                valueFormatter: ({ priority2 }) => priority2,
-            },
-            {
-                name: 'Comm pkg priority 3',
-                valueFormatter: ({ priority3 }) => priority3,
-            },
-            {
-                name: 'Area',
-                valueFormatter: ({ area }) => area,
-            },
-        ])
+        .registerFilterOptions(filterConfig)
         .registerTableOptions({
             objectIdentifierKey: 'commpkgNo',
             hiddenColumns: hiddenColumns,
