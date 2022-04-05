@@ -1,6 +1,155 @@
 import { Column } from '@equinor/Table';
+import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { SwcrPackage } from '../models/SwcrPackage';
+import { getNextSignatureRoleKeys, getNextToSignKeys, getTypeKeys } from './packages';
+export const tableConfig: TableOptions<SwcrPackage> = {
+    objectIdentifierKey: 'swcrId',
+    columnOrder: [
+        'swcrNo',
+        'title',
+        'contract',
+        'system',
+        'status',
+        'nextToSign',
+        'nextSignRanking',
+        'supplier',
+        'types',
+        'priority',
+        'controlSystem',
+        'node',
+    ],
+    headers: [
+        {
+            key: 'swcrNo',
+            title: 'Swcr',
+            width: 60,
+        },
+        {
+            key: 'title',
+            title: 'Title',
+            width: 500,
+        },
+        {
+            key: 'contract',
+            title: 'Contract',
+            width: 100,
+        },
+        {
+            key: 'system',
+            title: 'System',
+            width: 80,
+        },
+        {
+            key: 'status',
+            title: 'Status',
+            width: 150,
+        },
+        {
+            key: 'nextToSign',
+            title: 'Next sign by',
+            width: 600,
+        },
+        {
+            key: 'nextSignRanking',
+            title: 'Next sign role',
+            width: 500,
+        },
+        {
+            key: 'supplier',
+            title: 'Supplier',
+            width: 150,
+        },
+        {
+            key: 'types',
+            title: 'Types',
+            width: 70,
+        },
+        {
+            key: 'priority',
+            title: 'Priority',
+            width: 150,
+        },
 
+        {
+            key: 'controlSystem',
+            title: 'Control System',
+            width: 150,
+        },
+        {
+            key: 'node',
+            title: 'Node',
+            width: 60,
+        },
+    ],
+    customCellView: [
+        {
+            key: 'title',
+            type: 'Description',
+        },
+        {
+            key: 'nextToSign',
+            type: {
+                Cell: (cell) => {
+                    const keys = getNextToSignKeys(cell.value.content, '');
+                    return (
+                        <div
+                            style={{
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                            }}
+                        >
+                            {keys}
+                        </div>
+                    );
+                },
+            },
+        },
+        {
+            key: 'types',
+            type: {
+                Cell: (cell) => {
+                    return getTypeKeys(cell.value.content, '');
+                },
+            },
+        },
+        {
+            key: 'nextSignRanking',
+            type: {
+                Cell: (cell) => {
+                    return getNextSignatureRoleKeys(cell.value.content, '');
+                },
+            },
+        },
+    ],
+    hiddenColumns: [
+        'siteCode',
+        'projectIdentifier',
+        'projectDescription',
+        'modification',
+        'action',
+        'referenceTypes',
+        'createdAtDate',
+        'updatedAtDate',
+        'dueAtDate',
+        'closedAtDate',
+        'closedAtDate',
+        'estimatedManhours',
+        'cntAttachments',
+        'cpkgNo',
+        'cpkgPhase',
+        'cpkgStartPlannedAtDate',
+        'cpkgStartForecastAtDate',
+        'cpkgFinishPlannedAtDate',
+        'cpkgFinishForecastAtDate',
+        'url',
+        'latestSignRanking',
+        'swcrId',
+        'rowKey',
+        'nextsToSign',
+        'description',
+    ],
+};
 export const columns: Column<SwcrPackage>[] = [
     {
         Header: 'SWCRs',
