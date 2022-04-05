@@ -7,7 +7,7 @@ export function setup(appApi: ClientApi): void {
             reportURI: 'pp-installation-activities',
             pages: [
                 { pageTitle: 'Activities', pageId: 'ReportSection', default: true },
-                { pageTitle: 'Progress Status', pageId: 'ReportSection1bfb8548a2e154dc3640' },
+                // { pageTitle: 'Progress Status', pageId: 'ReportSection1bfb8548a2e154dc3640' },
                 // { pageTitle: 'Plan', pageId: 'ReportSection5b84ed4e7bba01fc9a74' }, May come in the future!
             ],
         })
