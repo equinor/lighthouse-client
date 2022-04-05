@@ -1,5 +1,4 @@
 import { Button } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const Title = styled.h4`
@@ -12,14 +11,13 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0.5em;
-    width: fit-content;
+    padding-right: 0;
+    width: auto;
     max-width: 500px;
     text-overflow: ellipsis;
-    min-width: 200px;
     height: fit-content;
     word-wrap: break-word;
     max-height: 180px;
-    /* background-color: ${tokens.colors.ui.background__light.rgba}; */
 
     label {
         font-size: 1rem;
@@ -38,9 +36,13 @@ export const Wrapper = styled.div`
 `;
 
 export const FilterGroupWrapper = styled.div`
-    margin-top: 0.5rem;
     overflow-x: hidden;
     overflow-y: scroll;
+
+    ::-webkit-scrollbar {
+        height: 0.1rem;
+        width: 0.3rem;
+    }
 `;
 export const FilterItemWrapper = styled.div`
     padding-bottom: 1rem;
