@@ -24,7 +24,6 @@ import { Viewer } from '../../../../packages/ModelViewer/ModelViewer';
 import { useFacility } from '@equinor/portal-client';
 import { Tabs } from '@equinor/eds-core-react';
 import { CheckListTable } from './CheckListTable';
-import { useInternalSidesheetFunction } from '../../../../packages/Sidesheet/Hooks/useInternalSidesheetFunction';
 import { BoxInsulationTable } from './BoxInsulationTable';
 import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 

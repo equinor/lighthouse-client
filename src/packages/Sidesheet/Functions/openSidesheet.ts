@@ -1,10 +1,11 @@
 import React from 'react';
 import { DefaultDataView } from '../Components/DefaultDataView';
+import { SidesheetApi } from '../Components/ResizableSidesheet';
 import { getSidesheetContext } from '../context/sidesheetContext';
 import { dispatch, readState } from '../State/actions';
 
 export function openSidesheet<T>(
-    SidesheetContent?: React.FC<T>,
+    SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
     props?: T,
     appName?: string
 ): void {

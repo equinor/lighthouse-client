@@ -1,5 +1,3 @@
-import { Button, Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { HandoverPackage } from '../../models/handoverPackage';
 
@@ -19,7 +17,7 @@ const Title = styled.h2`
 `;
 
 export const SidesheetHeader = ({ handoverPackage }: SidesheetHeaderProps): JSX.Element => {
-    const { commpkgNo, description, url } = handoverPackage;
+    const { description } = handoverPackage;
 
     return (
         <>

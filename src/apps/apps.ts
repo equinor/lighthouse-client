@@ -314,7 +314,7 @@ export const apps: AppManifest[] = [
     {
         title: 'Piping and Heat trace',
         shortName: 'piping-and-ht',
-        color: '#0364B8',
+        color: '#0084C4',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
