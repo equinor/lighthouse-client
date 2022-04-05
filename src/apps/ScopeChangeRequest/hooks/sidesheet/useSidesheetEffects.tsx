@@ -1,6 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { unVoidRequest, voidRequest } from '../../api/ScopeChange/Request';
 import { MenuItem } from '../../Components/MenuButton';
@@ -25,28 +25,17 @@ export function useSidesheetEffects(
         unVoidRequest
     );
 
-    const voidItem: MenuItem = useMemo(
-        () =>
-            request?.isVoided
-                ? {
-                    label: 'Unvoid',
-                    onClick: () => unVoidRequestMutation({ requestId }),
-                    isDisabled: !canUnVoid,
-                }
-                : {
-                    label: 'Void',
-                    onClick: () => voidRequestMutation({ requestId }),
-                    isDisabled: !canVoid,
-                },
-        [
-            canUnVoid,
-            canVoid,
-            request?.isVoided,
-            requestId,
-            unVoidRequestMutation,
-            voidRequestMutation,
-        ]
-    );
+    const voidItem: MenuItem = request?.isVoided
+        ? {
+            label: 'Unvoid',
+            onClick: () => unVoidRequestMutation({ requestId }),
+            isDisabled: !canUnVoid,
+        }
+        : {
+            label: 'Void',
+            onClick: () => voidRequestMutation({ requestId }),
+            isDisabled: !canVoid,
+        };
 
     const menuItems: MenuItem[] = [
         {
@@ -59,12 +48,15 @@ export function useSidesheetEffects(
     ];
 
     useEffect(() => {
+        actions.setMenuItems(menuItems);
+    }, [canPatch, canVoid, canUnVoid]);
+
+    useEffect(() => {
         actions.setTitle(
             <>
                 {request?.sequenceNumber}, {request?.title}
             </>
         );
-        actions.setMenuItems(menuItems);
     }, [request]);
 
     /** Only run once */
