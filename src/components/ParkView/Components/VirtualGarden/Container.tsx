@@ -51,7 +51,8 @@ export const VirtualContainer = <T extends unknown>(): JSX.Element | null => {
 
     useEffect(() => {
         if (garden && amountOfColumns > 0) {
-            const width = (itemWidth && itemWidth(garden, gardenKey.toString())) || 300;
+            const width =
+                (itemWidth && itemWidth(garden, gardenKey.toString(), customGroupByKeys)) || 300;
             setWidths(new Array(amountOfColumns).fill(width));
         }
     }, [amountOfColumns, gardenKey, itemWidth]);
