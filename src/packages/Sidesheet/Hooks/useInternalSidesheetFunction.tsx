@@ -2,7 +2,7 @@ import { getSidesheetContext } from '../context/sidesheetContext';
 import { dispatch } from '../State/actions';
 import { SidesheetState } from '../State/sidesheetState';
 
-type ToggleFunction = (prev: boolean) => boolean;
+export type ToggleFunction = (prev: boolean) => boolean;
 interface InternalSidesheetFunctions {
     closeSidesheet(): void;
     togglePinned(): void;

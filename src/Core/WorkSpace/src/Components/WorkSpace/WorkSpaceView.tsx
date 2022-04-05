@@ -116,10 +116,10 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
                     <HeaderWrapper props={props} tabs={tabs} />
                     <DataViewWrapper>
                         <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
+                        <PopoutSidesheet />
                     </DataViewWrapper>
                 </Tabs>
             </WorkspaceFilterWrapper>
-            <PopoutSidesheet />
         </WorkspaceWrapper>
     );
 }

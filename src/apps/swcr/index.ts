@@ -12,7 +12,8 @@ import {
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { SwcrGraph } from './CustomViews/Graph';
-import { columns } from './utilities/tableSetup';
+import { columns, tableConfig } from './utilities/tableSetup';
+import { filterSetup } from './utilities/filterSetup';
 enum Tabs {
     TABLE = 0,
     GARDEN = 1,
@@ -25,142 +26,8 @@ export function setup(appApi: ClientApi): void {
             defaultTab: Tabs.GARDEN,
         })
         .registerDataSource({ responseAsync: responseAsync, responseParser: responseParser })
-        .registerFilterOptions([
-            {
-                name: 'Status',
-                valueFormatter: ({ status }) => status,
-            },
-            {
-                name: 'Project identifier',
-                valueFormatter: ({ projectIdentifier }) => projectIdentifier,
-            },
-            {
-                name: 'Contract',
-                valueFormatter: ({ contract }) => contract,
-            },
-            {
-                name: 'Supplier',
-                valueFormatter: ({ supplier }) => supplier,
-            },
-            {
-                name: 'System',
-                valueFormatter: ({ system }) => system,
-            },
-            {
-                name: 'Types',
-                valueFormatter: ({ types }) => (types.length > 0 ? types.split(',') : []),
-            },
-            {
-                name: 'Plant',
-                valueFormatter: ({ siteCode }) => siteCode,
-                defaultHidden: true,
-            },
-            {
-                name: 'Priority',
-                valueFormatter: ({ priority }) => priority,
-                defaultHidden: true,
-            },
-            {
-                name: 'Control system',
-                valueFormatter: ({ controlSystem }) => controlSystem,
-                defaultHidden: true,
-            },
-            {
-                name: 'Next signature by',
-                valueFormatter: ({ nextsToSign }) => nextsToSign,
-                defaultHidden: true,
-            },
-            {
-                name: 'Last signed ranking',
-                valueFormatter: ({ latestSignRanking }) => latestSignRanking,
-                defaultHidden: true,
-            },
-            {
-                name: 'Action',
-                valueFormatter: ({ action }) => action,
-                defaultHidden: true,
-            },
-            {
-                name: 'Node',
-                valueFormatter: ({ node }) => node,
-                defaultHidden: true,
-            },
-            {
-                name: 'Estimated manhours',
-                valueFormatter: ({ estimatedManhours }) => estimatedManhours,
-                defaultHidden: true,
-            },
-            {
-                name: 'COMMPK no',
-                valueFormatter: ({ cpkgNo }) => cpkgNo,
-                defaultHidden: true,
-            },
-            {
-                name: 'COMM phase',
-                valueFormatter: ({ cpkgPhase }) => cpkgPhase,
-                defaultHidden: true,
-            },
-            {
-                name: 'Other references',
-                valueFormatter: ({ referenceTypes }) => referenceTypes,
-                defaultHidden: true,
-            },
-            {
-                name: 'Due date',
-                valueFormatter: ({ dueAtDate }) => dueAtDate,
-                defaultHidden: true,
-            },
-        ])
-        .registerTableOptions({
-            objectIdentifierKey: 'swcrId',
-            columnOrder: [
-                'swcrNo',
-                'title',
-                'system',
-                'controlSystem',
-                'priority',
-                'supplier',
-                'action',
-                'contract',
-            ],
-            headers: [
-                {
-                    key: 'swcrNo',
-                    title: 'Swcr',
-                },
-                {
-                    key: 'title',
-                    title: 'Title',
-                },
-                {
-                    key: 'priority',
-                    title: 'Priority',
-                },
-                {
-                    key: 'system',
-                    title: 'System',
-                },
-                {
-                    key: 'controlSystem',
-                    title: 'Control System',
-                },
-                {
-                    key: 'action',
-                    title: 'Action',
-                },
-                {
-                    key: 'supplier',
-                    title: 'Supplier',
-                },
-            ],
-            hiddenColumns: [
-                'siteCode',
-                'projectIdentifier',
-                'projectDescription',
-                'description',
-                'modification',
-            ],
-        })
+        .registerFilterOptions(filterSetup)
+        .registerTableOptions(tableConfig)
         .registerGardenOptions({
             gardenKey: 'dueAtDate',
             itemKey: 'swcrNo',

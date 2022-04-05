@@ -6,7 +6,7 @@ import {
     PipetestCompletionStatusHoverColors,
 } from '../../../Styles/ReleaseControlColors';
 import { PipetestCompletionStatus } from '../../../Types/drcEnums';
-import { WorkflowDotPopover } from './WorkflowDotPopover';
+import { WorkflowPopover } from './WorkflowPopover';
 
 interface WorkflowDotProps {
     height?: number;
@@ -120,9 +120,9 @@ export const WorkflowDot = ({
         >
             {circleText}
             {isOpen && (
-                <WorkflowDotPopover>
+                <WorkflowPopover>
                     {popoverText}, {!active ? 'N/A' : getShortformCompletionStatusName(state)}
-                </WorkflowDotPopover>
+                </WorkflowPopover>
             )}
         </StepCircle>
     );

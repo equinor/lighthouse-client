@@ -58,10 +58,10 @@ export function getPipetestsWithHTCable(pipetests: Pipetest[]): Pipetest[] {
 //TODO - refactor into more functions (3)
 export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
     const allWorkflowSteps = [
-        CheckListStepTag.Bolttensioning,
         CheckListStepTag.PressureTest,
         CheckListStepTag.ChemicalCleaning,
         CheckListStepTag.HotOilFlushing,
+        CheckListStepTag.Bolttensioning,
         CheckListStepTag.Painting,
         CheckListStepTag.HtTest,
         CheckListStepTag.Insulation,
@@ -118,7 +118,7 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
                 isHeatTrace: false,
                 revision: '',
                 test: '',
-                workflowStepText: 'I',
+                workflowStepText: 'ZB',
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
             };
             workflowSteps.push(workflowStep);
