@@ -33,7 +33,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     const requestAccess = useScopeChangeAccess(item.id);
     const [editMode, setEditMode] = useState<boolean>(false);
     const toggleEditMode = () => setEditMode((prev) => !prev);
-    useSidesheetEffects(actions, requestAccess.canPatch, toggleEditMode, item.id);
+    useSidesheetEffects(actions, toggleEditMode, item.id);
 
     useEffect(() => {
         setEditMode(false);
