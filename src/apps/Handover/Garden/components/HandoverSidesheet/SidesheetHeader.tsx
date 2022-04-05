@@ -12,7 +12,7 @@ const Description = styled.div`
 `;
 
 const Title = styled.h2`
-    height: 56px;
+    height: 5px;
     display: flex;
     align-items: center;
     margin-top: 0px;
@@ -24,7 +24,7 @@ export const SidesheetHeader = ({ handoverPackage }: SidesheetHeaderProps): JSX.
     return (
         <>
             <Title>
-                {commpkgNo}
+                {/* {commpkgNo} */}
                 {/* <a href={url} target={'_blank'} rel="noreferrer">
                     <Button variant="ghost">
                         <Icon

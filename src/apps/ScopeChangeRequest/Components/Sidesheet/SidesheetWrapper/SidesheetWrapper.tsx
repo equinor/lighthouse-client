@@ -1,7 +1,6 @@
-import { Tabs } from '@equinor/eds-core-react';
-import { useEffect } from 'react';
+import { Icon, Tabs } from '@equinor/eds-core-react';
+import { useEffect, useState } from 'react';
 
-import { useInternalSidesheetFunction } from '../../../../../packages/Sidesheet/Hooks/useInternalSidesheetFunction';
 import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
 import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
 import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
@@ -16,19 +15,48 @@ import { WorkOrderTabTitle, WorkOrderTab } from '../Tabs/WorkOrders';
 import { useOctopusErrorHandler } from '../../../hooks/observers/useOctopusErrorHandler';
 import { SidesheetTabList } from './SidesheetWrapper.styles';
 import styled from 'styled-components';
+import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
+import { MenuItem } from '../../MenuButton';
+import { tokens } from '@equinor/eds-tokens';
+import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
 
-export function SidesheetWrapper(item: ScopeChangeRequest): JSX.Element {
+interface SidesheetWrapperProps {
+    item: ScopeChangeRequest;
+    actions: SidesheetApi;
+}
+
+export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.Element {
     useScopeChangeMutationWatcher(item.id);
     useOctopusErrorHandler();
     const { activeTab, handleChange } = useEdsTabs();
 
     const request = useGetScopeChangeRequest(item.id, item);
     const requestAccess = useScopeChangeAccess(item.id);
+    const [editMode, setEditMode] = useState<boolean>(false);
+    const toggleEditMode = () => setEditMode((prev) => !prev);
 
-    const { setWidth } = useInternalSidesheetFunction();
+    const menuItems: MenuItem[] = [
+        {
+            icon: <Icon name="edit" color={tokens.colors.interactive.primary__resting.hex} />,
+            label: 'Edit ',
+            isDisabled: requestAccess.canPatch,
+            onClick: toggleEditMode,
+        },
+    ];
+
     useEffect(() => {
-        //HACK: Increase width on mount
-        setWidth(1100);
+        setEditMode(false);
+        actions.setTitle(
+            <>
+                {item.sequenceNumber}, {item.title}
+            </>
+        );
+        actions.setMenuItems(menuItems);
+    }, [request?.id]);
+
+    /** Only run once */
+    useEffect(() => {
+        actions.setWidth(1100);
     }, []);
 
     return (
@@ -40,44 +68,37 @@ export function SidesheetWrapper(item: ScopeChangeRequest): JSX.Element {
                     requestAccess: requestAccess,
                 }}
             >
-                <Title>
-                    {item.sequenceNumber}, {item.title}
-                </Title>
-                <SidesheetBanner />
-                <Tabs activeTab={activeTab} onChange={handleChange}>
-                    <SidesheetTabList>
-                        <Tabs.Tab>
-                            <RequestTabTitle />
-                        </Tabs.Tab>
-                        <Tabs.Tab disabled>
-                            <WorkOrderTabTitle />
-                        </Tabs.Tab>
-                        <Tabs.Tab>
-                            <LogTabTitle />
-                        </Tabs.Tab>
-                    </SidesheetTabList>
-                    <TabList>
-                        <Tabs.Panel>
-                            <RequestTab />
-                        </Tabs.Panel>
-                        <Tabs.Panel>{activeTab === 1 && <WorkOrderTab />}</Tabs.Panel>
-                        <Tabs.Panel>{activeTab === 2 && <LogTab />}</Tabs.Panel>
-                    </TabList>
-                </Tabs>
+                {editMode ? (
+                    <ScopeChangeRequestEditForm request={item} close={toggleEditMode} />
+                ) : (
+                    <>
+                        <SidesheetBanner />
+                        <Tabs activeTab={activeTab} onChange={handleChange}>
+                            <SidesheetTabList>
+                                <Tabs.Tab>
+                                    <RequestTabTitle />
+                                </Tabs.Tab>
+                                <Tabs.Tab disabled>
+                                    <WorkOrderTabTitle />
+                                </Tabs.Tab>
+                                <Tabs.Tab>
+                                    <LogTabTitle />
+                                </Tabs.Tab>
+                            </SidesheetTabList>
+                            <TabList>
+                                <Tabs.Panel>
+                                    <RequestTab />
+                                </Tabs.Panel>
+                                <Tabs.Panel>{activeTab === 1 && <WorkOrderTab />}</Tabs.Panel>
+                                <Tabs.Panel>{activeTab === 2 && <LogTab />}</Tabs.Panel>
+                            </TabList>
+                        </Tabs>
+                    </>
+                )}
             </ScopeChangeContext.Provider>
         </Wrapper>
     );
 }
-
-const Title = styled.div`
-    font-size: 24px;
-    font-weight: 400;
-    line-height: 30px;
-    letter-spacing: 0px;
-    text-align: left;
-
-    padding-left: 7px;
-`;
 
 const TabList = styled(Tabs.Panels)`
     padding: 24px 32px;
