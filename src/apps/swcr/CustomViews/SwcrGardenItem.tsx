@@ -5,7 +5,7 @@ import { getSwcrStatusColor } from '../utilities/packages';
 import { CustomItemView } from '../../../components/ParkView/Models/gardenOptions';
 import { memo, useMemo } from 'react';
 
-type SwcrItemProps = { backgroundColor: string; textColor: string };
+type SwcrItemProps = { backgroundColor: string; textColor: string; isSelected: boolean };
 
 const SwcrItem = styled.div<SwcrItemProps>`
     background-color: ${(props) => props.backgroundColor};
@@ -16,6 +16,8 @@ const SwcrItem = styled.div<SwcrItemProps>`
     justify-content: center;
     border-radius: 5px;
     height: 100%;
+    outline: ${(props) => (props.isSelected ? '2px dashed green' : '')};
+    outline-offset: ${(props) => (props.isSelected ? '2px' : '')};
 `;
 
 const Root = styled.div`
@@ -34,6 +36,7 @@ function SwcrItemView({
     columnExpanded,
     width: itemWidth = 300,
     depth,
+    selectedItem,
 }: CustomItemView<SwcrPackage>): JSX.Element {
     const statusColor = getSwcrStatusColor(data.status);
     const textColor = ['Closed - Rejected', 'Closed'].includes(data.status)
@@ -48,6 +51,7 @@ function SwcrItemView({
                 backgroundColor={statusColor}
                 textColor={textColor}
                 onClick={onClick}
+                isSelected={selectedItem?.swcrNo === data.swcrNo}
             >
                 {data[itemKey]}
             </SwcrItem>
