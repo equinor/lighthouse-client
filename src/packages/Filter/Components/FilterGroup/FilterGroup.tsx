@@ -1,6 +1,5 @@
 import { Checkbox, Search } from '@equinor/eds-core-react';
-import React, { useMemo, useState } from 'react';
-import { FilterGroup, FilterItemCheck } from '../../Types/FilterItem';
+import React, { useState } from 'react';
 import { FilterItemComponent } from '../FilterItem/FilterItem';
 import Icon from '../Icon/Icon';
 import {
@@ -11,11 +10,13 @@ import {
     Title,
     Wrapper,
 } from './FilterGroup-Styles';
-import { camelCaseToHumanReadable } from '../Utils/camelCaseToHumanReadable';
+import { FilterGroup } from '../../Hooks/useFilterApi';
+import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
+import { FilterValueType } from '../../Types';
+import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
 
 interface FilterGroupeComponentProps {
     filterGroup: FilterGroup;
-    filterItemCheck: FilterItemCheck;
     hideTitle?: boolean;
 }
 
@@ -23,56 +24,41 @@ function searchByValue(items: string[], value: string) {
     return items.filter((item) => item.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
 }
 
-function allChecked(filterGroup: FilterGroup): boolean {
-    return checkedCount(filterGroup) === Object.keys(filterGroup.value).length;
-}
-
-function checkedCount(filterGroup: FilterGroup): number {
-    return Object.keys(filterGroup.value).filter((key) => filterGroup.value[key].checked).length;
-}
-
-function checkIsIndeterminate(filterGroup: FilterGroup) {
-    const maxCount = Object.keys(filterGroup.value).length;
-    const count = checkedCount(filterGroup);
-    return count > 0 && count < maxCount;
-}
+export const DEFAULT_NULL_VALUE = '(Blank)';
 
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     filterGroup,
-    filterItemCheck,
 }: FilterGroupeComponentProps) => {
+    const {
+        operations: { markAllValuesActive },
+        filterGroupState: { getInactiveGroupValues, getFilterItemCountsForGroup },
+    } = useFilterApiContext();
+
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [searchActive, setSearchActive] = useState(false);
-    const group = useMemo(
-        () => searchByValue(Object.keys(filterGroup.value), filterSearchValue),
-        [filterSearchValue, filterGroup.value]
+
+    const { filterOptions } = useWorkSpace();
+
+    const groupsMatchingSearch = searchByValue(
+        filterGroup.values.map((v) => (v !== null ? v.toString() : DEFAULT_NULL_VALUE)),
+        filterSearchValue
     );
 
     function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
         setFilterSearchValue(value);
     }
-    function handleOnKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
-        if (event.code === 'Enter') {
-            const filterItems = group.map((key) => filterGroup.value[key]);
-            filterItemCheck(filterItems, true);
-            setFilterSearchValue('');
-        }
-    }
 
-    function handleOnAllChange() {
-        filterItemCheck(
-            Object.keys(filterGroup.value).map((key) => filterGroup.value[key]),
-            true
-        );
-    }
+    /** //TODO: Handle items in view search */
+    const handleOnAllChange = () => markAllValuesActive(filterGroup.name);
 
-    const isAllChecked = allChecked(filterGroup);
-    const isIndeterminate = checkIsIndeterminate(filterGroup);
+    const isAllChecked = getInactiveGroupValues(filterGroup.name).length === 0;
 
     function handleSearchButtonClick() {
         setSearchActive((isActive) => !isActive);
     }
+
+    const itemCounts = getFilterItemCountsForGroup(filterGroup.name);
 
     return (
         <Wrapper>
@@ -84,10 +70,9 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                         id="search-normal"
                         placeholder="Search"
                         onChange={handleOnChange}
-                        onKeyPress={handleOnKeyPress}
                     />
                 ) : (
-                    <Title>{camelCaseToHumanReadable(filterGroup.type)}</Title>
+                    <Title>{filterGroup.name}</Title>
                 )}
                 <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
                     <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
@@ -99,25 +84,31 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                         title={'All'}
                         label={'All'}
                         checked={isAllChecked}
-                        indeterminate={isIndeterminate}
                         onChange={handleOnAllChange}
                     />
-                    {group.map((key) => {
-                        const item = filterGroup.value[key];
-                        return (
-                            <div key={item.value}>
-                                {
-                                    <FilterItemComponent
-                                        itemKey={item.value}
-                                        filterItem={item}
-                                        filterItemCheck={filterItemCheck}
-                                    />
-                                }
-                            </div>
-                        );
-                    })}
+
+                    {groupsMatchingSearch.map((value) => (
+                        <FilterItemComponent
+                            key={value}
+                            count={
+                                itemCounts.find(({ name }) => name === convertFromBlank(value))
+                                    ?.count ?? 0
+                            }
+                            CustomRender={
+                                filterOptions?.find(({ name }) => name === filterGroup.name)
+                                    ?.customValueRender
+                            }
+                            //HACK: Must recieve null and not blank
+                            filterItem={convertFromBlank(value)}
+                            groupName={filterGroup.name}
+                        />
+                    ))}
                 </FilterItemWrapper>
             </FilterGroupWrapper>
         </Wrapper>
     );
 };
+
+function convertFromBlank(name: FilterValueType) {
+    return name === DEFAULT_NULL_VALUE ? null : name;
+}
