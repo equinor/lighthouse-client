@@ -6,7 +6,6 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 44px;
-    padding: 32px 24px;
 `;
 
 export const Description = styled.div`
