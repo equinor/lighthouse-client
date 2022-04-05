@@ -1,5 +1,5 @@
 import { getYearAndWeekFromDate } from '@equinor/GardenUtils';
-import { getDateFromString, getFieldKeyBasedOnPlannedForecast } from '.';
+import { getFieldKeyBasedOnPlannedForecast } from '.';
 import {
     getGardenItems,
     isSubGroup,
