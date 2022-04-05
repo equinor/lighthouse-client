@@ -24,11 +24,17 @@ export function getChecklistSortValue(checkList: CheckList): number {
     let number: number = PipetestCheckListOrder.Unknown;
     if (!checkList.isHeatTrace) {
         switch (checkList.tagNo.substring(0, 2)) {
-            case CheckListStepTag.Bolttensioning:
-                number = PipetestCheckListOrder.Bolttensioning;
-                break;
             case CheckListStepTag.PressureTest:
                 number = PipetestCheckListOrder.PressureTest;
+                break;
+            case CheckListStepTag.ChemicalCleaning:
+                number = PipetestCheckListOrder.ChemicalCleaning;
+                break;
+            case CheckListStepTag.HotOilFlushing:
+                number = PipetestCheckListOrder.HotOilFlushing;
+                break;
+            case CheckListStepTag.Bolttensioning:
+                number = PipetestCheckListOrder.Bolttensioning;
                 break;
             case CheckListStepTag.Painting:
                 number = PipetestCheckListOrder.Painting;
@@ -52,78 +58,147 @@ export function getChecklistSortValue(checkList: CheckList): number {
 
 export function getPipetestStatus(pipetest: Pipetest): PipetestStep {
     const checkLists = pipetest.checkLists;
-    if (!isCheckListStepOk(checkLists, CheckListStepTag.Bolttensioning)) {
-        return isCheckListStepsInRightOrder(
-            checkLists,
-            PipetestStatusOrder.Bolttensioning,
-            pipetest.insulationBoxes
-        )
-            ? PipetestStep.Bolttensioning
-            : PipetestStep.Unknown;
-    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.PressureTest)) {
-        return isCheckListStepsInRightOrder(
-            checkLists,
-            PipetestStatusOrder.PressureTest,
-            pipetest.insulationBoxes
-        )
-            ? PipetestStep.PressureTest
-            : PipetestStep.Unknown;
+    if (!isCheckListStepOk(checkLists, CheckListStepTag.PressureTest)) {
+        return PipetestStep.PressureTest;
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.ChemicalCleaning)) {
+        return PipetestStep.ChemicalCleaning;
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.HotOilFlushing)) {
+        return PipetestStep.HotOilFlushing;
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Bolttensioning)) {
+        return PipetestStep.Bolttensioning;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Painting)) {
-        return isCheckListStepsInRightOrder(
-            checkLists,
-            PipetestStatusOrder.Painting,
-            pipetest.insulationBoxes
-        )
-            ? PipetestStep.Painting
-            : PipetestStep.Unknown;
+        return PipetestStep.Painting;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTest)) {
-        return isCheckListStepsInRightOrder(
-            checkLists,
-            PipetestStatusOrder.HtTest,
-            pipetest.insulationBoxes
-        )
-            ? PipetestStep.HtTest
-            : PipetestStep.Unknown;
+        return PipetestStep.HtTest;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Insulation)) {
-        return isCheckListStepsInRightOrder(
-            checkLists,
-            PipetestStatusOrder.Insulation,
-            pipetest.insulationBoxes
-        )
-            ? PipetestStep.Insulation
-            : PipetestStep.Unknown;
+        return PipetestStep.Insulation;
     } else if (
         pipetest.insulationBoxes.length !== 0 &&
         !isBoxInsulationOk(pipetest.insulationBoxes)
     ) {
-        return isCheckListStepsInRightOrder(
-            checkLists,
-            PipetestStatusOrder.BoxInsulation,
-            pipetest.insulationBoxes
-        )
-            ? PipetestStep.BoxInsulation
-            : PipetestStep.Unknown;
+        return PipetestStep.BoxInsulation;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtRetest)) {
-        return isCheckListStepsInRightOrder(
-            checkLists,
-            PipetestStatusOrder.HtRetest,
-            pipetest.insulationBoxes
-        )
-            ? PipetestStep.HtRetest
-            : PipetestStep.Unknown;
+        return PipetestStep.HtRetest;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Marking)) {
-        return isCheckListStepsInRightOrder(
-            checkLists,
-            PipetestStatusOrder.Marking,
-            pipetest.insulationBoxes
-        )
-            ? PipetestStep.Marking
-            : PipetestStep.Unknown;
+        return PipetestStep.Marking;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTemporary)) {
         return PipetestStep.Unknown;
     } else {
         return PipetestStep.Complete;
     }
+}
+
+export function isPipetestProcessDoneInRightOrder(pipetest: Pipetest): boolean {
+    const checkLists = pipetest.checkLists;
+    if (!isCheckListStepOk(checkLists, CheckListStepTag.PressureTest)) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.PressureTest,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.ChemicalCleaning)) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.ChemicalCleaning,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.HotOilFlushing)) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.HotOilFlushing,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Bolttensioning)) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.Bolttensioning,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Painting)) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.Painting,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
+    } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTest)) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.HtTest,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Insulation)) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.Insulation,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
+    } else if (
+        pipetest.insulationBoxes.length !== 0 &&
+        !isBoxInsulationOk(pipetest.insulationBoxes)
+    ) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.BoxInsulation,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
+    } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtRetest)) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.HtRetest,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
+    } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Marking)) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.Marking,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
+    } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTemporary)) {
+        return false;
+    } else {
+        return true;
+    }
+    return true;
 }
 
 export function isCheckListStepOk(checkLists: CheckList[], step: CheckListStepTag): boolean {
@@ -222,11 +297,18 @@ export function getPipetestStatusSortValue(pipetest: Pipetest): number {
         case PipetestStep.Unknown:
             number = PipetestStatusOrder.Unknown;
             break;
-        case PipetestStep.Bolttensioning:
-            number = PipetestStatusOrder.Bolttensioning;
-            break;
+
         case PipetestStep.PressureTest:
             number = PipetestStatusOrder.PressureTest;
+            break;
+        case PipetestStep.ChemicalCleaning:
+            number = PipetestStatusOrder.ChemicalCleaning;
+            break;
+        case PipetestStep.HotOilFlushing:
+            number = PipetestStatusOrder.HotOilFlushing;
+            break;
+        case PipetestStep.Bolttensioning:
+            number = PipetestStatusOrder.Bolttensioning;
             break;
         case PipetestStep.Painting:
             number = PipetestStatusOrder.Painting;
@@ -338,11 +420,17 @@ export function getChecklistStepName(step: CheckListStepTag): string {
     let stepName: string = PipetestStep.Unknown;
 
     switch (step) {
-        case CheckListStepTag.Bolttensioning:
-            stepName = PipetestStep.Bolttensioning;
-            break;
         case CheckListStepTag.PressureTest:
             stepName = PipetestStep.PressureTest;
+            break;
+        case CheckListStepTag.ChemicalCleaning:
+            stepName = PipetestStep.ChemicalCleaning;
+            break;
+        case CheckListStepTag.HotOilFlushing:
+            stepName = PipetestStep.HotOilFlushing;
+            break;
+        case CheckListStepTag.Bolttensioning:
+            stepName = PipetestStep.Bolttensioning;
             break;
         case CheckListStepTag.Painting:
             stepName = PipetestStep.Painting;
@@ -361,12 +449,6 @@ export function getChecklistStepName(step: CheckListStepTag): string {
             break;
         case CheckListStepTag.HtRetest:
             stepName = PipetestStep.HtRetest;
-            break;
-        case CheckListStepTag.ChemicalCleaning:
-            stepName = PipetestStep.ChemicalCleaning;
-            break;
-        case CheckListStepTag.HotOilFlushing:
-            stepName = PipetestStep.HotOilFlushing;
             break;
     }
     return stepName;
