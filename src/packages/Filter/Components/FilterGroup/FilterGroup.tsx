@@ -1,19 +1,20 @@
-import { Checkbox, Search } from '@equinor/eds-core-react';
+import { Search } from '@equinor/eds-core-react';
 import React, { useState } from 'react';
+import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
+import { FilterGroup } from '../../Hooks/useFilterApi';
+import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
+import { FilterValueType } from '../../Types';
 import { FilterItemComponent } from '../FilterItem/FilterItem';
 import Icon from '../Icon/Icon';
 import {
+    AllCheckbox,
     FilterGroupWrapper,
     FilterHeaderGroup,
     FilterItemWrapper,
     SearchButton,
     Title,
-    Wrapper,
-} from './FilterGroup-Styles';
-import { FilterGroup } from '../../Hooks/useFilterApi';
-import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
-import { FilterValueType } from '../../Types';
-import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
+    Wrapper
+} from './FilterGroupStyles';
 
 interface FilterGroupeComponentProps {
     filterGroup: FilterGroup;
@@ -80,7 +81,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
             </FilterHeaderGroup>
             <FilterGroupWrapper>
                 <FilterItemWrapper>
-                    <Checkbox
+                    <AllCheckbox
                         title={'All'}
                         label={'All'}
                         checked={isAllChecked}
