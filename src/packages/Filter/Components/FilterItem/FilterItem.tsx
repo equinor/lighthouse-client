@@ -1,9 +1,9 @@
 import { Checkbox } from '@equinor/eds-core-react';
-import { memo, useEffect, useMemo, useState } from 'react';
-import { useIsMounted } from '../../../../apps/DisciplineReleaseControl/Hooks/useIsMounted';
+import { memo, useEffect, useRef } from 'react';
+import { useRefresh } from '../../../../components/ParkView/hooks/useRefresh';
 import { FilterGroup } from '../../Hooks/useFilterApi';
 
-import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
+import { useFilterApiContext, useItemCountsContext } from '../../Hooks/useFilterApiContext';
 import { FilterValueType } from '../../Types/filter';
 import { DEFAULT_NULL_VALUE } from '../FilterGroup/utils';
 import { Count, FilterItemName, FilterItemWrap } from './FilterItem-Styles';
@@ -25,20 +25,27 @@ export const FilterItem = ({
     filterGroup,
     CustomRender = (value) => <>{sanitizeFilterItemName(value)}</>,
 }: FilterItemValueProps): JSX.Element => {
-    const [count, setCount] = useState<string | number>('.');
+    const { getCount, isCounted } = useItemCountsContext();
 
-    const isMounted = useIsMounted();
-    const id = setTimeout(
-        () => isMounted && setCount(getCountForFilterValue(filterGroup, filterItem)),
-        200
+    const count = useRef<number | string>(
+        isCounted(filterGroup.name, filterItem) ? getCount(filterGroup, filterItem) : '-'
     );
 
+    const refresh = useRefresh();
+
     useEffect(() => {
-        return () => clearInterval(id);
+        if (typeof count.current === 'string') {
+            const id = setTimeout(() => {
+                count.current = getCount(filterGroup, filterItem);
+                refresh();
+            }, 400);
+
+            return () => clearTimeout(id);
+        }
     }, []);
 
     const {
-        filterGroupState: { getCountForFilterValue, checkValueIsInActive, getGroupValues },
+        filterGroupState: { checkValueIsInActive, getGroupValues },
         operations: { changeFilterItem },
     } = useFilterApiContext();
     function uncheckAllButThisValue() {
@@ -72,9 +79,9 @@ export const FilterItem = ({
                 }
             />
             <FilterItemName onClick={uncheckAllButThisValue}>
-                {CustomRender(filterItem)}
+                <span>{CustomRender(filterItem)}</span>
             </FilterItemName>
-            {!isUnChecked && <Count>({count})</Count>}
+            {!isUnChecked && <Count>({count.current})</Count>}
         </FilterItemWrap>
     );
 };

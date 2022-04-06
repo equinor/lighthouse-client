@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
+import { ItemCountContext } from '../../Context/FilterContext';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
+import { useFilterItemCounts } from '../../Hooks/useFilterItemCounts';
 import { FilterGroupeComponent } from '../FilterGroup/FilterGroup';
 import { FilterTypes } from './FilterTypes';
 import { FilterGroups, FilterGroupWrapper, Wrapper } from './FilterView-style';
@@ -45,29 +47,35 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
         );
     }, [filterOptions]);
 
-    return (
-        <Wrapper isActive={isActive}>
-            {isActive && (
-                <>
-                    <FilterTypes
-                        visibleFilters={visibleFilters}
-                        handleAllClick={handleAllClick}
-                        handleOnChange={handleOnChange}
-                    />
+    const counter = useFilterItemCounts();
 
-                    <FilterGroups>
-                        {visibleFilters.map((key: string, index) => {
-                            const filterGroup = allFilterGroups.find(({ name }) => name === key);
-                            if (!filterGroup) return;
-                            return (
-                                <FilterGroupWrapper key={`col-${key}-${index}`}>
-                                    <FilterGroupeComponent filterGroup={filterGroup} />
-                                </FilterGroupWrapper>
-                            );
-                        })}
-                    </FilterGroups>
-                </>
-            )}
-        </Wrapper>
+    return (
+        <ItemCountContext.Provider value={counter}>
+            <Wrapper isActive={isActive}>
+                {isActive && (
+                    <>
+                        <FilterTypes
+                            visibleFilters={visibleFilters}
+                            handleAllClick={handleAllClick}
+                            handleOnChange={handleOnChange}
+                        />
+
+                        <FilterGroups>
+                            {visibleFilters.map((key: string, index) => {
+                                const filterGroup = allFilterGroups.find(
+                                    ({ name }) => name === key
+                                );
+                                if (!filterGroup) return;
+                                return (
+                                    <FilterGroupWrapper key={`col-${key}-${index}`}>
+                                        <FilterGroupeComponent filterGroup={filterGroup} />
+                                    </FilterGroupWrapper>
+                                );
+                            })}
+                        </FilterGroups>
+                    </>
+                )}
+            </Wrapper>
+        </ItemCountContext.Provider>
     );
 };
