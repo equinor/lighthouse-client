@@ -1,6 +1,7 @@
 import React from 'react';
 import { WorkflowDot } from './WorkflowDot';
 import styled from 'styled-components';
+import { WorkflowWarningTriangle } from './WorkflowWarningTriangle';
 
 interface WorkflowProps<T> {
     steps: T[];
@@ -9,12 +10,14 @@ interface WorkflowProps<T> {
     ) => 'Complete' | 'Inactive' | 'Outstanding' | 'PunchAError' | 'PunchBError';
     spanDirection?: 'vertical' | 'horizontal';
     dotSize?: number;
+    pipetestProcessDoneInRightOrder: boolean;
 }
 
 export function WorkflowCompact<T>({
     steps,
     statusDotFunc,
     dotSize,
+    pipetestProcessDoneInRightOrder,
 }: WorkflowProps<T>): JSX.Element {
     return (
         <>
@@ -35,6 +38,12 @@ export function WorkflowCompact<T>({
                         </div>
                     );
                 })}
+                {!pipetestProcessDoneInRightOrder && (
+                    <WorkflowWarningTriangle
+                        circleText={''}
+                        popoverText={'Some steps in this process has been done in the wrong order'}
+                    />
+                )}
             </WorkflowStepContainer>
         </>
     );
