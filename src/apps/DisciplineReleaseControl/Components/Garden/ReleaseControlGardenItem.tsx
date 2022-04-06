@@ -2,7 +2,7 @@ import {
     ReleaseControlItem,
     MidSection,
     Title,
-    Circles,
+    Icons,
     ReleaseControlExpanded,
     ReleaseControlExpandedTitle,
 } from './GardenItemStyles';
@@ -12,6 +12,7 @@ import { getGardenItemColor, getGardenItemCompletionColor } from './gardenFuncti
 import { StatusCircle } from './StatusCircle';
 import { useParkViewContext } from '../../../../components/ParkView/Context/ParkViewProvider';
 import { memo } from 'react';
+import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';
 
 export function ReleaseControlExpandedView({ data }: { data: Pipetest }): JSX.Element {
     return (
@@ -41,9 +42,12 @@ const ReleaseControlGardenItem = ({
                     <Title>{data[itemKey]}</Title>
                     {columnExpanded && <ReleaseControlExpandedView data={data} />}
                 </MidSection>
-                <Circles>
+                <Icons>
+                    {!data.pipetestProcessDoneInRightOrder && (
+                        <WorkflowWarningTriangle outline={true} />
+                    )}
                     <StatusCircle statusColor={getGardenItemCompletionColor(data)} />
-                </Circles>
+                </Icons>
             </ReleaseControlItem>
         </>
     );

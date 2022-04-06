@@ -1,11 +1,11 @@
 import { Checkbox, Search } from '@equinor/eds-core-react';
-import { useEffect, useMemo, useState } from 'react';
-import { useFilter } from '../../Hooks/useFilter';
-import { FilterGroup } from '../../Types/FilterItem';
+import { useEffect, useState } from 'react';
+import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
+import { FilterGroup } from '../../Hooks/useFilterApi';
+import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterGroupeComponent } from '../FilterGroup/FilterGroup';
-import { Title } from '../FilterGroup/FilterGroup-Styles';
+import { Title } from '../FilterGroup/FilterGroupStyles';
 import Icon from '../Icon/Icon';
-import { camelCaseToHumanReadable } from '../Utils/camelCaseToHumanReadable';
 import {
     AddButton,
     FilterGroups,
@@ -15,64 +15,47 @@ import {
     SearchButton,
     SearchFilterWrapper,
     SelectBar,
-    Wrapper,
+    Wrapper
 } from './FilterView-style';
 
-function createTypeKeys(filter: FilterGroup[]): string[] {
-    return filter.map((item) => item.type);
-}
+const createTypeKeys = (filter: FilterGroup[]) => filter.map(({ name }) => name).sort();
 
 function SearchFilterKeys(keys: string[], filerValue: string): string[] {
     return keys.filter((key) => key.toLowerCase().includes(filerValue.toLowerCase()));
 }
 
-function getActiveFilters(filter: FilterGroup[]): string[] {
-    const activeFilters: string[] = [];
-    filter.forEach((item) => {
-        const isActive = Object.values(item.value).some((filterItem) => !filterItem.checked);
-        if (isActive) {
-            activeFilters.push(item.type);
-        }
-    });
-    return activeFilters;
-}
 interface FilterViewProps {
     isActive: boolean;
 }
 
 export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
-    const { filter, filterItemCheck, activeFiltersTypes, setActiveFiltersTypes } = useFilter();
-    const filterKeys = useMemo(() => createTypeKeys(filter), [filter]);
-    const activeFilters = useMemo(() => getActiveFilters(filter), [filter]);
+    const {
+        filterState: { getAllFilterGroups },
+        filterGroupState: { getInactiveGroupValues },
+    } = useFilterApiContext();
+
+    const filterGroupNames = createTypeKeys(getAllFilterGroups());
     const [searchActive, setSearchActive] = useState(false);
-    // const [activeFilterData, setActiveFilterData] = useState<string[]>([]);
-    const [activeFilter, setActiveFilter] = useState<FilterGroup[]>([]);
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [isFilterSelectActive, setIsFilterSelectActive] = useState(false);
 
-    useEffect(() => {
-        if (activeFilters.length > activeFiltersTypes.length) {
-            setActiveFiltersTypes(activeFilters);
-        }
-    }, [activeFilters, activeFiltersTypes.length, setActiveFiltersTypes]);
+    const [visibleFilters, setVisibleFilters] = useState<string[]>(filterGroupNames);
 
-    // useEffect(() => {
-    //     if (activeFiltersTypes.length === 0) {
-    //         setActiveFiltersTypes(filterKeys);
-    //     }
-    // }, [activeFiltersTypes.length, filterKeys, setActiveFiltersTypes]);
+    const { filterOptions } = useWorkSpace();
 
     useEffect(() => {
-        setActiveFilter(filter.filter((i) => activeFiltersTypes.includes(i.type)));
-    }, [filter, activeFiltersTypes]);
+        if (!filterOptions) return;
+        setVisibleFilters(
+            filterOptions.filter(({ defaultHidden }) => !defaultHidden).map(({ name }) => name)
+        );
+    }, [filterOptions]);
 
     function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
-        setActiveFiltersTypes(
-            activeFiltersTypes.includes(value)
-                ? activeFiltersTypes.filter((k) => k !== value)
-                : [...activeFiltersTypes, value]
-        );
+
+        visibleFilters.includes(value)
+            ? setVisibleFilters((prev) => prev.filter((v) => v !== value))
+            : setVisibleFilters((prev) => [...prev, value]);
     }
 
     function handleOnSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -80,13 +63,17 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
         setFilterSearchValue(value);
     }
 
-    function handleToggleFilerSelect() {
-        setIsFilterSelectActive((state) => !state);
-    }
+    const handleToggleFilterSelect = () => setIsFilterSelectActive((state) => !state);
 
-    function handleSearchButtonClick() {
-        setSearchActive((isActive) => !isActive);
-    }
+    const handleSearchButtonClick = () => setSearchActive((isActive) => !isActive);
+
+    const isAllVisible = visibleFilters.length === getAllFilterGroups().length;
+
+    const handleAllClick = () => {
+        isAllVisible
+            ? setVisibleFilters([])
+            : setVisibleFilters(getAllFilterGroups().map(({ name }) => name));
+    };
 
     return (
         <Wrapper isActive={isActive}>
@@ -94,7 +81,7 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                 <>
                     {/* TODO move SelectBar to its own component when more buttons are added*/}
                     <SelectBar>
-                        <AddButton variant="ghost_icon" onClick={handleToggleFilerSelect}>
+                        <AddButton variant="ghost_icon" onClick={handleToggleFilterSelect}>
                             <Icon name={isFilterSelectActive ? 'close' : 'add'} />
                         </AddButton>
                     </SelectBar>
@@ -125,30 +112,45 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                             </FilterSelectHeaderGroup>
 
                             <SearchFilterWrapper>
-                                {SearchFilterKeys(filterKeys, filterSearchValue).map((key, i) => (
-                                    <div key={key + i}>
-                                        <Checkbox
-                                            title={key}
-                                            label={camelCaseToHumanReadable(key)}
-                                            value={key}
-                                            disabled={activeFilters.includes(key)}
-                                            checked={activeFiltersTypes.includes(key)}
-                                            onChange={handleOnChange}
-                                        />
-                                    </div>
-                                ))}
+                                <Checkbox
+                                    title="All"
+                                    label="All"
+                                    value="All"
+                                    onChange={handleAllClick}
+                                    checked={isAllVisible}
+                                />
+                                {SearchFilterKeys(filterGroupNames, filterSearchValue).map(
+                                    (key, i) => (
+                                        <div key={key + i}>
+                                            <Checkbox
+                                                title={key}
+                                                label={key}
+                                                value={key}
+                                                disabled={
+                                                    visibleFilters.includes(key) &&
+                                                    getInactiveGroupValues(key).length > 0
+                                                }
+                                                checked={visibleFilters.includes(key)}
+                                                onChange={handleOnChange}
+                                            />
+                                        </div>
+                                    )
+                                )}
                             </SearchFilterWrapper>
                         </FilterSelect>
                     )}
                     <FilterGroups>
-                        {activeFilter.map((filterGroup: FilterGroup, index) => (
-                            <FilterGroupWrapper key={`col-${filterGroup}-${index}`}>
-                                <FilterGroupeComponent
-                                    filterGroup={filterGroup}
-                                    filterItemCheck={filterItemCheck}
-                                />
-                            </FilterGroupWrapper>
-                        ))}
+                        {visibleFilters.map((key: string, index) => {
+                            const filterGroup = getAllFilterGroups().find(
+                                ({ name }) => name === key
+                            );
+                            if (!filterGroup) return;
+                            return (
+                                <FilterGroupWrapper key={`col-${key}-${index}`}>
+                                    <FilterGroupeComponent filterGroup={filterGroup} />
+                                </FilterGroupWrapper>
+                            );
+                        })}
                     </FilterGroups>
                 </>
             )}

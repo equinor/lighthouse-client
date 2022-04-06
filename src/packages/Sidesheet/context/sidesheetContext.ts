@@ -13,6 +13,7 @@ export const SidesheetCoreContext = createGlobalSidesheetState({
     defaultWidth: DEFAULT_WIDTH,
     isMinimized: false,
     width: DEFAULT_WIDTH,
+    appName: undefined,
 });
 
 export function getSidesheetContext(): Atom<SidesheetState<unknown>> {
