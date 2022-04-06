@@ -13,7 +13,7 @@ import { HeaderWrapper } from './HeaderFilterWrapper';
 import { WorkspaceFilterWrapper } from './WorkspaceFilterWrapper';
 import { DataViewWrapper, Tabs, WorkspaceWrapper } from './WorkSpaceViewStyles';
 
-export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
+export function WorkSpaceView(props: WorkspaceProps): JSX.Element | null {
     const {
         treeOptions,
         tableOptions,
@@ -109,6 +109,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     }, [location.hash.length, mountSidesheetFromUrl, onSelect]);
 
     if (!viewIsActive) return <NoDataView />;
+    if (!data || data.length === 0) return null;
     return (
         <WorkspaceWrapper>
             <WorkspaceFilterWrapper filterConfiguration={filterOptions}>
