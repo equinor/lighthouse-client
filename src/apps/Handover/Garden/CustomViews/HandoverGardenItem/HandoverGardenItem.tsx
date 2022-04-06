@@ -1,34 +1,21 @@
-import { useMemo, useRef, useState } from 'react';
+import { memo, useMemo, useRef, useState } from 'react';
 import { HandoverPackage } from '../../models/handoverPackage';
 import { getDotsColor, getStatus, getTextColor, createProgressGradient } from '../../utility';
 import { CustomItemView } from '../../../../../components/ParkView/Models/gardenOptions';
 import { useParkViewContext } from '../../../../../components/ParkView/Context/ParkViewProvider';
 import { HandoverItemPopover, ItemOptions } from '../../components/HandoverItemPopover';
-import { SizeIcons, FlagIcon, StatusCircle, WarningIcon } from '../../components/Icons';
-import {
-    HandoverExpanded,
-    HandoverExpandedTitle,
-    HandoverItem,
-    Circles,
-    Icons,
-    MidSection,
-    Title,
-} from './GardenItemStyles';
+import { FlagIcon, WarningIcon } from '../../components/Icons';
+import { Root, Sizes, ItemText, HandoverItemWrapper, StatusCircles } from './GardenItemStyles';
 import { itemSize } from './utils';
 
-export function HandoverExpandedView({ data }: { data: HandoverPackage }): JSX.Element {
-    return (
-        <HandoverExpanded>
-            <HandoverExpandedTitle>{data.description}</HandoverExpandedTitle>
-        </HandoverExpanded>
-    );
-}
-
-export function HandoverGardenItem({
+function HandoverGardenItem({
     data,
     itemKey,
     onClick,
     columnExpanded,
+    depth,
+    width: itemWidth = 300,
+    selectedItem,
 }: CustomItemView<HandoverPackage>): JSX.Element {
     const { customState } = useParkViewContext();
     const size = itemSize(data.volume, (customState?.['maxVolume'] as number) || 0);
@@ -47,6 +34,8 @@ export function HandoverGardenItem({
 
     const onOpen = () => setIsOpen(true);
     const onClose = () => setIsOpen(false);
+    const width = useMemo(() => (depth ? 100 - depth * 3 : 100), [depth]);
+    const maxWidth = useMemo(() => itemWidth * 0.98, [itemWidth]);
 
     const options: ItemOptions = {
         size,
@@ -60,30 +49,7 @@ export function HandoverGardenItem({
 
     return (
         <>
-            <HandoverItem
-                ref={anchorRef}
-                onMouseOver={onOpen}
-                onMouseLeave={onClose}
-                backgroundColor={backgroundColor}
-                textColor={textColor}
-                onClick={onClick}
-                isExpanded={columnExpanded}
-            >
-                <Icons>
-                    <SizeIcons size={size} status={status} />
-                    {data.hasUnsignedActions && <FlagIcon color={textColor} />}
-                </Icons>
-                <MidSection expanded={columnExpanded}>
-                    <Title>{data[itemKey]}</Title>
-                    {columnExpanded && <HandoverExpandedView data={data} />}
-                </MidSection>
-                <Circles>
-                    <StatusCircle statusColor={mcPackageColor} />
-                    <StatusCircle statusColor={commStatusColor} />
-                </Circles>
-                {showWarningIcon && <WarningIcon />}
-            </HandoverItem>
-            {isOpen && (
+            {/* {isOpen && (
                 <HandoverItemPopover
                     data={data}
                     itemOptions={options}
@@ -91,7 +57,29 @@ export function HandoverGardenItem({
                     setOpenState={setIsOpen}
                     isOpen={isOpen}
                 />
-            )}
+            )} */}
+            <Root>
+                <HandoverItemWrapper
+                    ref={anchorRef}
+                    onMouseOver={onOpen}
+                    onMouseLeave={onClose}
+                    backgroundColor={backgroundColor}
+                    textColor={textColor}
+                    onClick={onClick}
+                    style={{ width: `${columnExpanded ? 100 : width}%`, maxWidth }}
+                    isSelected={selectedItem?.commpkgNo === data.commpkgNo}
+                >
+                    <Sizes size={size} color={textColor} />
+                    {data.hasUnsignedActions && <FlagIcon color={textColor} />}
+                    <ItemText>{data[itemKey]}</ItemText>
+                    <StatusCircles mcColor={mcPackageColor} commColor={commStatusColor} />
+                    {showWarningIcon && <WarningIcon />}
+                </HandoverItemWrapper>
+
+                {columnExpanded && data.description}
+            </Root>
         </>
     );
 }
+
+export default memo(HandoverGardenItem);
