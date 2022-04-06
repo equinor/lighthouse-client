@@ -8,6 +8,7 @@ import {
     getPipetestStatus,
     getShortformCompletionStatusName,
     getYearAndWeekFromString,
+    isPipetestProcessDoneInRightOrder,
     sortPipetestChecklist,
     sortPipetests,
 } from './Functions/statusHelpers';
@@ -20,6 +21,7 @@ import { DateTime } from 'luxon';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 // import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
+import { Monospace } from './Styles/Monospace';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -33,6 +35,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
             pipetest.step = getPipetestStatus(pipetest);
+            pipetest.pipetestProcessDoneInRightOrder = isPipetestProcessDoneInRightOrder(pipetest);
             pipetest.completionStatus = getPipetestCompletionStatus(pipetest);
             pipetest.shortformCompletionStatus = getShortformCompletionStatusName(
                 pipetest.completionStatus
@@ -49,16 +52,6 @@ export function setup(appApi: ClientApi): void {
         return json;
     };
 
-    const releaseControlExcludeKeys: (keyof Pipetest)[] = [
-        'name',
-        'commPkPriority1',
-        'rfccPlanned',
-        'description',
-        'step',
-        'completionStatus',
-        'shortformCompletionStatus',
-    ];
-
     const request = appApi
         .createWorkSpace<Pipetest>({
             CustomSidesheet: ReleaseControlSidesheet,
@@ -69,42 +62,34 @@ export function setup(appApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        // .registerDataCreator({
-        //     title: 'Release control',
-        //     component: ReleaseControlProcessForm,
-        // })
-        .registerFilterOptions({
-            excludeKeys: releaseControlExcludeKeys,
-            headerNames: {},
-            defaultActiveFilters: [
-                'currentStep',
-                'System',
-                'Priority',
-                'dueDateTimePeriod',
-                'overdue',
-                'CompletionStatus',
-            ],
-            valueFormatter: {
-                currentStep: (item: Pipetest): string => {
-                    return item.step;
-                },
-                System: (item: Pipetest): string => {
-                    return item.name.substring(0, 2);
-                },
-                Priority: (item: Pipetest): string => {
-                    return item.commPkPriority1 !== '' ? item.commPkPriority1 : 'Unknown';
-                },
-                CompletionStatus: (item: Pipetest): string => {
-                    return item.shortformCompletionStatus;
-                },
+        .registerFilterOptions([
+            {
+                name: 'Current step',
+                valueFormatter: ({ step }) => step,
             },
-        });
+            {
+                name: 'System',
+                valueFormatter: ({ name }) => name.substring(0, 2),
+            },
 
-    // request.registerDataSource(async () => {
-    //     const { releaseControls } = httpClient();
-    //     const response = await releaseControls.fetch(`/api/release-control-processes`);
-    //     return JSON.parse(await response.text());
-    // });
+            {
+                name: 'Priority',
+                valueFormatter: ({ commPkPriority1 }) =>
+                    commPkPriority1 !== '' ? commPkPriority1 : 'Unknown',
+            },
+            {
+                name: 'Due date time period',
+                valueFormatter: ({ dueDateTimePeriod }) => dueDateTimePeriod,
+            },
+            {
+                name: 'Overdue',
+                valueFormatter: ({ overdue }) => overdue,
+            },
+            {
+                name: 'Completion status',
+                valueFormatter: ({ shortformCompletionStatus }) => shortformCompletionStatus,
+            },
+        ]);
 
     request.registerTableOptions({
         objectIdentifierKey: 'name',
@@ -118,6 +103,8 @@ export function setup(appApi: ClientApi): void {
             'completionStatus',
             'insulationBoxes',
             'shortformCompletionStatus',
+            'circuits',
+            'pipetestProcessDoneInRightOrder',
         ],
         enableSelectRows: true,
         headers: [
@@ -130,6 +117,14 @@ export function setup(appApi: ClientApi): void {
         ],
         customCellView: [
             {
+                key: 'name',
+                type: {
+                    Cell: ({ cell }: any) => {
+                        return <Monospace>{cell.value.content.name}</Monospace>;
+                    },
+                },
+            },
+            {
                 key: 'checkLists',
                 type: {
                     Cell: ({ cell }: any) => {
@@ -139,6 +134,9 @@ export function setup(appApi: ClientApi): void {
                                 statusDotFunc={checklistTagFunc}
                                 spanDirection={'horizontal'}
                                 dotSize={22}
+                                pipetestProcessDoneInRightOrder={
+                                    cell.value.content.pipetestProcessDoneInRightOrder
+                                }
                             />
                         );
                     },
@@ -148,22 +146,32 @@ export function setup(appApi: ClientApi): void {
         customColumns: [
             {
                 id: 'dueByWeek',
+                accessor: 'rfccPlanned',
                 Header: 'Due by week',
                 Aggregated: () => null,
                 width: 120,
                 aggregate: 'count',
                 Cell: (cell) => {
-                    return getYearAndWeekFromString(cell.row.values.rfccPlanned);
+                    return (
+                        <Monospace>
+                            {getYearAndWeekFromString(cell.row.values.rfccPlanned)}
+                        </Monospace>
+                    );
                 },
             },
             {
                 id: 'htList',
+                accessor: 'heatTraces',
                 Header: 'HT cables',
                 Aggregated: () => null,
                 width: 400,
                 aggregate: 'count',
                 Cell: (cell) => {
-                    return getHTList(cell.row.values.checkLists.content.checkLists);
+                    return (
+                        <Monospace>
+                            {getHTList(cell.row.values.checkLists.content.checkLists)}
+                        </Monospace>
+                    );
                 },
             },
         ],

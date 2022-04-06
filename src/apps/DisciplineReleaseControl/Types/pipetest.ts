@@ -4,10 +4,12 @@ export interface Pipetest {
     name: string;
     step: PipetestStep;
     completionStatus: PipetestCompletionStatus;
+    pipetestProcessDoneInRightOrder: boolean;
     shortformCompletionStatus: CheckListStatus;
     checkLists: CheckList[];
     heatTraces: HeatTrace[];
     insulationBoxes: InsulationBox[];
+    circuits: Circuit[];
     description: string;
     commPkPriority1: string;
     rfccPlanned: string;
@@ -37,6 +39,12 @@ export interface InsulationBox {
     objectStatus: string;
     object3dReference: string;
     procosysStatus: string;
+}
+
+export interface Circuit {
+    switchBoardTagNo: string;
+    circuitAndStarterTagNo: string;
+    checkLists: CheckList[];
 }
 
 export interface HeatTrace extends CheckList {}
