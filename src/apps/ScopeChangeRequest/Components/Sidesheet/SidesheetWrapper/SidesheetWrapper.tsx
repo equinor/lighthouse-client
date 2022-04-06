@@ -49,7 +49,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
                 }}
             >
                 {editMode ? (
-                    <ScopeChangeRequestEditForm request={item} close={toggleEditMode} />
+                    <ScopeChangeRequestEditForm request={request ?? item} close={toggleEditMode} />
                 ) : (
                     <>
                         <SidesheetBanner />
