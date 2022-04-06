@@ -27,6 +27,7 @@ const TopBar = styled.div`
 `;
 
 const PBIWrapper = styled.div<{ height: number }>`
+    padding-top: 1rem;
     overflow: scroll;
     position: absolute;
     top: ${(props) => props.height}px;
