@@ -2,7 +2,7 @@ import { DateTime } from 'luxon';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
 import { HandoverPackage, HandoverCustomGroupByKeys } from '../models';
 
-const getFieldKeyBasedOnPlannedForecast = (
+export const getFieldKeyBasedOnPlannedForecast = (
     groupBy: string,
     plannedForecast: string
 ): keyof HandoverPackage => {
@@ -42,8 +42,15 @@ const getKeyData = (item: HandoverPackage, groupBy: keyof HandoverPackage): stri
     return item[groupByPlanned] as string;
 };
 
+export const getYearAndWeekAndDayFromString = (dateString: string) => {
+    const date = new Date(dateString);
+    const dateTime = DateTime.fromJSDate(date);
+    if (!dateTime.isValid) return 'N/A';
+    return `${dateTime.weekYear}-${dateTime.month}-${dateTime.weekday}`;
+};
+
 export const getYearAndWeekFromDate = (date: Date): string => {
-    const dateTime = DateTime.local(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    const dateTime = DateTime.fromJSDate(date);
     return `${dateTime.weekYear}-${dateTime.weekNumber}`;
 };
 
@@ -56,7 +63,9 @@ export const getDateFromString = (dateString: string): string => dateString || '
 
 const getColumnDateKey = (handoverFieldKey, weeklyDaily, item): string => {
     const date = getKeyData(item, handoverFieldKey);
-    return weeklyDaily === 'Weekly' ? getYearAndWeekFromString(date) : getDateFromString(date);
+    return weeklyDaily === 'Weekly'
+        ? getYearAndWeekFromString(date)
+        : getYearAndWeekAndDayFromString(date);
 };
 
 export const getDateKey: GetKeyFunction<HandoverPackage> = (item, key, groupBy) => {

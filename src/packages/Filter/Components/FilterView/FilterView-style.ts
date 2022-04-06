@@ -28,16 +28,20 @@ export const Wrapper = styled.section`
 export const FilterSelect = styled.div`
     display: flex;
     flex-direction: column;
-    min-width: 300px;
-    padding: 0.5rem;
+    min-width: fit-content;
+    margin: 0rem 0.5rem 0rem 0.5rem;
+    padding-right: 0.5rem;
     overflow: hidden;
     border-right: 2px solid ${tokens.colors.ui.background__medium.rgba};
 
     label {
-        font-size: 1rem;
         padding: 0;
         span {
-            padding: 0.1rem;
+            font-size: 14px;
+            padding: 0;
+            :last-child {
+                padding-right: 0.5rem;
+            }
         }
         svg {
             height: 16px;
@@ -52,6 +56,10 @@ export const FilterGroups = styled.div`
     overflow-x: scroll;
     width: -webkit-fill-available;
     background-color: ${tokens.colors.ui.background__light.rgba};
+
+    ::-webkit-scrollbar {
+        height: 0.3rem;
+    }
 `;
 
 export const FilterGroupWrapper = styled.div``;
@@ -59,12 +67,15 @@ export const FilterGroupWrapper = styled.div``;
 export const SearchFilterWrapper = styled.div`
     overflow-x: scroll;
     height: -webkit-fill-available;
+
+    ::-webkit-scrollbar {
+        width: 0.3rem;
+    }
 `;
 
 export const SelectBar = styled.div`
     display: flex;
     flex-direction: row;
-    min-width: max-content;
     background-color: ${tokens.colors.ui.background__light.rgba};
     border-right: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
