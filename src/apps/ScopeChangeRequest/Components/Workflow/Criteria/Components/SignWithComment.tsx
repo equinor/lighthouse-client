@@ -5,6 +5,7 @@ import { useWorkflowSigning } from './useWorkflowSigning';
 
 interface SignWithCommentProps {
     action: 'Approved' | 'Rejected';
+    buttonText: string;
     stepId: string;
     criteriaId: string;
     closeRequest: boolean;
@@ -14,6 +15,7 @@ export const SignWithComment = ({
     action,
     criteriaId,
     stepId,
+    buttonText,
     closeRequest,
 }: SignWithCommentProps): JSX.Element => {
     const { request } = useScopeChangeContext();
@@ -37,7 +39,7 @@ export const SignWithComment = ({
                     signMutation({ action: action, closeRequest: closeRequest, comment: comment })
                 }
             >
-                {action === 'Approved' ? 'Sign' : 'Reject'}
+                {buttonText}
             </Button>
         </>
     );

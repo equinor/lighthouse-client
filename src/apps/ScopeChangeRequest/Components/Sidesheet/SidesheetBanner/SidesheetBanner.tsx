@@ -10,9 +10,15 @@ export function SidesheetBanner(): JSX.Element {
             <BannerItem title={'Phase'} value={request.phase} />
             <BannerItem title={'Change category'} value={request.changeCategory.name} />
             <BannerItem
-                title={'Guesstimate'}
-                value={request.guesstimateHours ? `${request.guesstimateHours} mhr` : ''}
+                title="Change origin"
+                value={
+                    request.originSource !== 'NotApplicable'
+                        ? `${request.originSource} - ${request.originSourceId}`
+                        : request.originSource
+                }
             />
+            <BannerItem title={'Status'} value={request.workflowStatus ?? ''} />
+            <BannerItem title={'State'} value={request.isVoided ? 'Voided' : request.state} />
         </Banner>
     );
 }
@@ -23,7 +29,7 @@ const Banner = styled.div`
     background-color: ${tokens.colors.ui.background__light.hex};
     display: flex;
     flex-direction: row;
-    gap: 13em;
+    gap: 5rem;
     padding: 0em 5em;
     align-items: center;
 `;
