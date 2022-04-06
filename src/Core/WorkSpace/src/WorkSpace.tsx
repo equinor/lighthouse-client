@@ -1,10 +1,11 @@
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
 import { ClientApi } from '@equinor/portal-client';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { ModelViewerContextProvider } from '../../../packages/ModelViewer/context/modelViewerContext';
 import ErrorFallback from '../../ErrorBoundary/Components/ErrorFallback';
 import { WorkSpaceView } from './Components/WorkSpace/WorkSpaceView';
 import { DataProvider } from './Context/DataProvider';
+import { PowerBIViewContextProvider } from './Context/PowerBiViewProvider';
 
 export type WorkspaceProps = Omit<
     ClientApi,
@@ -16,7 +17,9 @@ export const WorkSpace = (props: WorkspaceProps): JSX.Element => {
         <ErrorBoundary FallbackComponent={ErrorFallback} routeName={props.title}>
             <DataProvider>
                 <ModelViewerContextProvider>
-                    <WorkSpaceView {...props} />
+                    <PowerBIViewContextProvider>
+                        <WorkSpaceView {...props} />
+                    </PowerBIViewContextProvider>
                 </ModelViewerContextProvider>
             </DataProvider>
             <ReactQueryDevtools initialIsOpen={false} />

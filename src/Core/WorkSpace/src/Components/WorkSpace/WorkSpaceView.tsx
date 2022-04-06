@@ -20,7 +20,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         gardenOptions,
         timelineOptions,
         analyticsOptions,
-        powerBiOptions,
         filterOptions = [],
         workflowEditorOptions,
         onSelect,
@@ -41,7 +40,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         gardenOptions,
         timelineOptions,
         analyticsOptions,
-        powerBiOptions,
         workflowEditorOptions
     );
     const [activeTab, setActiveTab] = useState(Number(id) || defaultTab);

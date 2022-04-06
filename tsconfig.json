@@ -42,7 +42,8 @@
             "@equinor/GardenUtils": ["./src/packages/GardenUtils"],
             "@equinor/echo3dweb-viewer": ["./packages/echo3dViewer/src"],
             "@equinor/lighthouse-powerbi": ["./src/modules/powerBI"],
-            "@equinor/lighthouse-powerbi-viewer": ["./src/Core/PowerBiViewer"]
+            "@equinor/lighthouse-powerbi-viewer": ["./src/Core/PowerBiViewer"],
+            "@equinor/lighthouse-model-viewer": ["./src/packages/ModelViewer"]
         }
     },
     "compileOnSave": true,

@@ -1,18 +1,27 @@
 import { useFactory } from '@equinor/DataFactory';
-import { CircularProgress, Search, Tabs } from '@equinor/eds-core-react';
+import { CircularProgress, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import Icon from '../../../../../components/Icon/Icon';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { StatusBar } from '../../../../../packages/StatusBar';
-import { useSettings } from '../../../../Client/Hooks';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useDataContext } from '../../Context/DataProvider';
+import { useViewerContext } from '../../Context/PowerBiViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
 import { TabButton } from '../ToggleButton';
-import { Divider, HeaderWrapper, LeftSection, RightSection, Title, TitleBar } from './HeaderStyles';
+import {
+    ActionBar,
+    Divider,
+    HeaderWrapper,
+    LeftSection,
+    RightSection,
+    TabTitle,
+    Title,
+    TitleBar
+} from './HeaderStyles';
 
 const { Tab, List } = Tabs;
 
@@ -38,122 +47,140 @@ export const CompletionViewHeader = ({
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
+    const { hasPowerBi, toggleView, activeView, pages, setActivePage, activePage } =
+        useViewerContext();
 
     const {
         filterState: { getFilteredData, checkHasActiveFilters },
     } = useFilterApiContext();
+
     const data = getFilteredData();
     const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
 
-    const { clientEnv } = useSettings();
+    const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
 
     return (
         <HeaderWrapper>
-            <LeftSection>
-                <TitleBar>
-                    <Title variant="h3">{title}</Title>
-                    {clientEnv === 'dev' && <PerformanceObserver />}
-                </TitleBar>
-                {statusFunc && <StatusBar data={statusFunc(data)} />}
-            </LeftSection>
-            <RightSection>
-                {factory && (
-                    <>
-                        <TabButton
-                            onClick={setSelected}
-                            aria-selected={false}
-                            title={factory.title}
-                        >
-                            <Icon name={'add'} />
-                            {factory.title}
-                        </TabButton>
-                        <Divider />
-                    </>
-                )}
-                <List>
-                    {tabs.map((tab) => {
-                        const Icon = tab.icon;
-                        return (
-                            <Tab key={`tab-${tab.icon}`} title={tab.title}>
-                                <Icon />
-                            </Tab>
-                        );
-                    })}
-                </List>
-                <Divider />
-                {/* <SearchButton /> */}
-                <TabButton
-                    color={
-                        dataApi?.isStale
-                            ? tokens.colors.infographic.primary__energy_red_100.hex
-                            : 'grey'
-                    }
-                    aria-selected={false}
-                    title={
-                        dataApi?.isStale
-                            ? 'This data is over 1 hour old and might be outdated'
-                            : `Updated: ${timestamp}`
-                    }
-                    onClick={() => dataApi.refetch()}
-                >
-                    {dataApi?.isFetching ? (
-                        <CircularProgress size={24} />
+            <TitleBar>
+                <Title variant="h3">{title}</Title>
+                <PerformanceObserver />
+            </TitleBar>
+            <ActionBar>
+                <LeftSection>
+                    {!activeView ? (
+                        <>
+                            <StatusBar statusItems={statusItems} />
+                        </>
                     ) : (
-                        <ClickableIcon size={24} name="refresh" />
+                        <>
+                            {pages.map((page) => {
+                                return (
+                                    <TabButton
+                                        aria-selected={
+                                            (activePage?.pageId &&
+                                                page.pageId === activePage.pageId &&
+                                                page.pageTitle === page.pageTitle) ||
+                                            false
+                                        }
+                                        key={`pages-${page.pageId}`}
+                                        onClick={() => setActivePage(page)}
+                                    >
+                                        <TabTitle>{page.pageTitle}</TabTitle>
+                                    </TabButton>
+                                );
+                            })}
+                        </>
                     )}
-                </TabButton>
-                <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
-                    {checkHasActiveFilters() ? <FilterFilled /> : <Icon name={'filter_alt'} />}
-                </TabButton>
-            </RightSection>
+                </LeftSection>
+                <RightSection>
+                    {hasPowerBi && (
+                        <>
+                            <TabButton
+                                onClick={toggleView}
+                                aria-selected={false}
+                                title={'Power Bi'}
+                            >
+                                <Icon name={!activeView ? 'bar_chart' : 'table_chart'} />
+                            </TabButton>
+                            <Divider />
+                        </>
+                    )}
+                    {!activeView ? (
+                        <>
+                            {factory && (
+                                <>
+                                    <TabButton
+                                        onClick={setSelected}
+                                        aria-selected={false}
+                                        title={factory.title}
+                                    >
+                                        <Icon name={'add'} />
+                                        {factory.title}
+                                    </TabButton>
+                                    <Divider />
+                                </>
+                            )}
+
+                            <List>
+                                {tabs.map((tab) => {
+                                    const Icon = tab.icon;
+                                    return (
+                                        <Tab key={`tab-${tab.icon}`} title={tab.title}>
+                                            <Icon />
+                                        </Tab>
+                                    );
+                                })}
+                            </List>
+                            <Divider />
+                            {/* <SearchButton /> */}
+
+                            <TabButton
+                                color={
+                                    dataApi?.isStale
+                                        ? tokens.colors.infographic.primary__energy_red_100.hex
+                                        : 'grey'
+                                }
+                                aria-selected={false}
+                                title={
+                                    dataApi?.isStale
+                                        ? 'This data is over 1 hour old and might be outdated'
+                                        : `Updated: ${timestamp}`
+                                }
+                                onClick={() => dataApi.refetch()}
+                            >
+                                {dataApi?.isFetching ? (
+                                    <CircularProgress size={24} />
+                                ) : (
+                                    <ClickableIcon size={24} name="refresh" />
+                                )}
+                            </TabButton>
+                            <TabButton
+                                onClick={handleFilter}
+                                aria-selected={activeFilter}
+                                title="Filter"
+                            >
+                                {checkHasActiveFilters() ? (
+                                    <FilterFilled />
+                                ) : (
+                                    <Icon name={'filter_alt'} />
+                                )}
+                            </TabButton>
+                        </>
+                    ) : (
+                        <TabButton
+                            onClick={handleFilter}
+                            aria-selected={activeFilter}
+                            title="PowerBi Filter"
+                        >
+                            {checkHasActiveFilters() ? (
+                                <FilterFilled />
+                            ) : (
+                                <Icon name={'filter_alt'} />
+                            )}
+                        </TabButton>
+                    )}
+                </RightSection>
+            </ActionBar>
         </HeaderWrapper>
     );
 };
-
-/** Search button for searching data in workspace */
-function SearchButton() {
-    const {
-        search: { clearSearch, search },
-        filterState: { getAllFilterGroups },
-    } = useFilterApiContext();
-
-    const [isActive, setIsActive] = useState(false);
-    const handleChange = () =>
-        setIsActive((prev) => {
-            if (prev === false) {
-                clearSearch();
-            }
-            return !prev;
-        });
-
-    function handleSearch(e) {
-        const value = e.target.value;
-
-        value === ''
-            ? clearSearch()
-            : search(
-                getAllFilterGroups().map(({ name }) => name),
-                value,
-                'FilteredData'
-            );
-    }
-
-    function handleClear(e) {
-        e.isTrusted ? void 0 : clearSearch();
-    }
-
-    return (
-        <>
-            <TabButton aria-selected={false} onClick={handleChange}>
-                <Icon name="search" />
-            </TabButton>
-            {isActive && (
-                <Search
-                    onChange={handleClear}
-                    placeholder="Type to search..."
-                    onInput={handleSearch}
-                />
-            )}
-        </>
-    );
-}

@@ -1,7 +1,6 @@
 import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-
-import { Filter } from '@equinor/lighthouse-powerbi';
+import { Filter, PBIOptions } from '@equinor/lighthouse-powerbi';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
@@ -10,10 +9,11 @@ import {
     CustomView,
     CustomVirtualView,
     GardenOptions,
-    StatusView,
+    StatusView
 } from '../../../../components/ParkView/Models/gardenOptions';
 import { FilterOptions } from '../../../../packages/Filter/Types';
 import { StatusItem } from '../../../../packages/StatusBar';
+import { Page } from '../Context/PowerBiViewProvider';
 import { DataSource, DataViewerProps, ViewOptions } from './WorkSpaceTypes';
 
 export interface WorkSpaceState {
@@ -62,11 +62,6 @@ export interface TreeOptions<T> {
     onSelect?: (item: T) => void;
 }
 
-export interface PowerBiOptions {
-    reportId: string;
-    filterOptions?: Filter[];
-}
-
 export type StatusFunc<T> = (data: T[]) => StatusItem[];
 
 export interface WorkflowEditorOptions {
@@ -101,7 +96,14 @@ export interface WorkSpaceConfig<T> {
     workflowEditorOptions?: WorkflowEditorOptions;
 }
 
-export interface TimeLineOptions { }
+export interface PowerBiOptions {
+    reportURI: string;
+    filter?: Filter[];
+    options?: PBIOptions;
+    pages: Page[];
+}
+
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

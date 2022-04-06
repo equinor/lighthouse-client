@@ -7,7 +7,6 @@ import { Tree } from '../Icons/Tree';
 import { AnalyticsTab } from './AnalyticsTab';
 import { GardenTab } from './GardenTab';
 import { ListTab as TableTab } from './ListTab';
-import { PowerBiTab } from './PowerBiTab';
 import { TimelineTab } from './TimeLineTAb';
 import { TreeTab } from './TreeTab';
 import { VisualEditorTab } from './VisualEditorTab';
@@ -45,12 +44,6 @@ const tabsConfig: TabsConfigItem[] = [
         viewComponent: AnalyticsTab,
     },
     {
-        title: 'PowerBI',
-        //Todo add PowerBI icon
-        icon: Analytics,
-        viewComponent: PowerBiTab,
-    },
-    {
         title: 'Editor',
         //Todo add Editor icon
         icon: Gantt,
@@ -70,7 +63,6 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
         garden?: Config,
         timeline?: Config,
         analytics?: Config,
-        powerBI?: Config,
         editor?: Config
     ): ActiveTabs {
         const tabs = tabsConfig.filter((item) => {
@@ -79,7 +71,6 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
             if (garden && item.title === 'Garden') return true;
             if (timeline && item.title === 'Timeline') return true;
             if (analytics && item.title === 'Analytics') return true;
-            if (powerBI && item.title === 'PowerBI') return true;
             if (editor && item.title === 'Editor') return true;
             return false;
         });

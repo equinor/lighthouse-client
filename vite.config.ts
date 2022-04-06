@@ -44,6 +44,10 @@ export default defineConfig({
                 __dirname,
                 './src/Core/PowerBiViewer'
             ),
+            '@equinor/lighthouse-model-viewer': path.resolve(
+                __dirname,
+                './src/packages/ModelViewer'
+            ),
         },
     },
     build: {

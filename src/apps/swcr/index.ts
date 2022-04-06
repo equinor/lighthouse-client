@@ -1,19 +1,19 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import { SwcrGraph } from './CustomViews/Graph';
 import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
 import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { SwcrPackage } from './models/SwcrPackage';
+import { filterSetup } from './utilities/filterSetup';
 import {
     customDescription,
     fieldSettings,
     getHighlighColumn,
-    getItemWidth,
+    getItemWidth
 } from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
-import { SwcrGraph } from './CustomViews/Graph';
 import { columns, tableConfig } from './utilities/tableSetup';
-import { filterSetup } from './utilities/filterSetup';
 enum Tabs {
     TABLE = 0,
     GARDEN = 1,
@@ -104,7 +104,21 @@ export function setup(appApi: ClientApi): void {
                 },
             },
         })
-        .registerStatusItems(statusBarData);
+        .registerStatusItems(statusBarData)
+        .registerPowerBIOptions({
+            reportURI: 'pp-checklist-analytics',
+            pages: [
+                {
+                    pageTitle: 'Overview',
+                    pageId: 'ReportSection2e92f2b5eed237523256',
+                    default: true,
+                },
+                { pageTitle: 'Details', pageId: 'ReportSection47ea3f4574446a5a73c9' },
+                { pageTitle: 'Browser', pageId: 'ReportSection08bd3cdd956d8e1b1065' },
+                { pageTitle: 'History', pageId: 'ReportSection1d9ec2a98c07f646086b' },
+                { pageTitle: 'Countdown', pageId: 'ReportSection72f67800d1e526e323bb' },
+            ],
+        });
 }
 
 async function responseAsync(signal?: AbortSignal) {
