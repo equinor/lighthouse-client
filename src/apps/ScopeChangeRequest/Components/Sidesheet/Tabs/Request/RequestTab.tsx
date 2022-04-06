@@ -8,7 +8,14 @@ import {
     FormWrapper,
     InnerSection,
 } from '../../SidesheetWrapper/SidesheetWrapper.styles';
-import { Description, SectionHeading, Wrapper } from './RequestTab.styles';
+import {
+    SubSectionText,
+    SectionHeading,
+    Wrapper,
+    SubSectionTitle,
+    SectionWrapper,
+    SiblingWrapper,
+} from './RequestTab.styles';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -18,9 +25,27 @@ export function RequestTab(): JSX.Element {
             <FormWrapper>
                 <FlexColumn>
                     <InnerSection>
-                        <SectionHeading>Description</SectionHeading>
+                        <SectionHeading>Request</SectionHeading>
 
-                        <Description>{request.description}</Description>
+                        <SectionWrapper>
+                            <SubSectionTitle>Description</SubSectionTitle>
+                            <SubSectionText>{request.description}</SubSectionText>
+                        </SectionWrapper>
+
+                        <SiblingWrapper>
+                            <SectionWrapper>
+                                <SubSectionTitle>Guesstimate description</SubSectionTitle>
+                                <SubSectionText>{request.guesstimateDescription}</SubSectionText>
+                            </SectionWrapper>
+                            <SectionWrapper>
+                                <SubSectionTitle>Guesstimate</SubSectionTitle>
+                                <SubSectionText>
+                                    {request.guesstimateHours
+                                        ? `${request.guesstimateHours} mhr`
+                                        : ''}
+                                </SubSectionText>
+                            </SectionWrapper>
+                        </SiblingWrapper>
                     </InnerSection>
                 </FlexColumn>
                 <FlexColumn>

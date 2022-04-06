@@ -37,7 +37,7 @@ export const SignWithComment = ({
                     signMutation({ action: action, closeRequest: closeRequest, comment: comment })
                 }
             >
-                {action === 'Approved' ? 'Sign' : 'Reject'}
+                {action === 'Approved' ? 'Sign' : 'Send back'}
             </Button>
         </>
     );
