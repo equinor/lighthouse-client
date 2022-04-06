@@ -37,7 +37,7 @@ export function useWorkflowSigning({
                 requestId: requestId,
                 stepId: stepId,
                 verdict: 'Rejected',
-                comment: '',
+                comment: comment,
             });
             return;
         }

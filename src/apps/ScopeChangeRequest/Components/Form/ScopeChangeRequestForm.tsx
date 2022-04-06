@@ -45,7 +45,7 @@ export const ScopeChangeRequestForm = ({
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
-        openSidesheet(SidesheetWrapper, await getScopeChangeById(scopeChangeId));
+        openSidesheet(SidesheetWrapper, await getScopeChangeById(scopeChangeId), 'change');
         clearActiveFactory();
         queryClient.invalidateQueries();
     };

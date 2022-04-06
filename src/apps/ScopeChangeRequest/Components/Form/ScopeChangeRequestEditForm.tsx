@@ -1,5 +1,4 @@
 import { Button, Icon, Progress } from '@equinor/eds-core-react';
-import { useEffect } from 'react';
 
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { useScopeChangeMutation } from '../../hooks/React-Query/useScopechangeMutation';
@@ -46,10 +45,6 @@ export const ScopeChangeRequestEditForm = ({
         handleInput('references', references);
     useUnpackRelatedObjects({ getReferences, handleReferencesChanged, request });
 
-    useEffect(() => {
-        return () => close();
-    }, [request.id]);
-
     const { editScopeChangeMutation } = useRequestMutations();
 
     const { isLoading, mutate } = useScopeChangeMutation(
@@ -65,6 +60,14 @@ export const ScopeChangeRequestEditForm = ({
         ...request,
         attachments: [],
     });
+
+    const handleSave = (setAsOpen: boolean) =>
+        mutate({
+            model: state,
+            references: state.references ?? [],
+            request: request,
+            setAsOpen: setAsOpen,
+        });
 
     return (
         <Wrapper>
@@ -122,18 +125,15 @@ export const ScopeChangeRequestEditForm = ({
                         </Button>
                     ) : (
                         <>
-                            <Button
-                                disabled={!isValid}
-                                onClick={() =>
-                                    mutate({
-                                        model: state,
-                                        references: state.references ?? [],
-                                        request: request,
-                                    })
-                                }
-                            >
+                            <Button disabled={!isValid} onClick={() => handleSave(false)}>
                                 {isLoading ? <Progress.Dots color="primary" /> : 'Save'}
                             </Button>
+
+                            {request.state === 'Draft' && (
+                                <Button disabled={!isValid} onClick={() => handleSave(true)}>
+                                    Submit
+                                </Button>
+                            )}
                         </>
                     )}
                 </ButtonContainer>

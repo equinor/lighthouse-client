@@ -8,7 +8,7 @@ export const dataCreator: FactoryOptions = {
     component: DataCreatorWrapper,
     accessCheck: async (): Promise<boolean> => {
         const { scopeChange } = httpClient();
-        const check = () => scopeChange.fetch('/api/scope-change-requests', { method: 'OPTIONS' });
+        const check = () => scopeChange.fetch('api/scope-change-requests', { method: 'OPTIONS' });
         return await (
             await checkOptionsRequest(check)
         ).canPost;

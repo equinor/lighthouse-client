@@ -4,7 +4,7 @@ import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWor
 import { FilterGroup } from '../../Hooks/useFilterApi';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterGroupeComponent } from '../FilterGroup/FilterGroup';
-import { Title } from '../FilterGroup/FilterGroup-Styles';
+import { Title } from '../FilterGroup/FilterGroupStyles';
 import Icon from '../Icon/Icon';
 import {
     AddButton,
@@ -15,7 +15,7 @@ import {
     SearchButton,
     SearchFilterWrapper,
     SelectBar,
-    Wrapper,
+    Wrapper
 } from './FilterView-style';
 
 const createTypeKeys = (filter: FilterGroup[]) => filter.map(({ name }) => name).sort();

@@ -24,7 +24,7 @@ const ProgressBar = styled.div<ProgressSpanProps>`
     width: ${(props) => props.percent + '%'};
     z-index: -1;
     background-color: ${(props) =>
-        props.percent <= 33 ? 'red' : props.percent <= 66 ? 'orange' : 'green'};
+        props.percent <= 33 ? 'red' : props.percent <= 66 ? 'orange' : '#4BB748'};
 `;
 
 export const ProgressCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {

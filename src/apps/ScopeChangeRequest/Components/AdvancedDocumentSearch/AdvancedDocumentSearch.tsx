@@ -154,7 +154,7 @@ export const AdvancedDocumentSearch = ({
                         justifyContent: 'center',
                         alignItems: 'center',
                         textAlign: 'center',
-                        minHeight: '100vh',
+                        height: '100vh',
                         width: '100vw',
                     }}
                 >

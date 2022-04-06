@@ -6,16 +6,10 @@ import {
     HandoverSideSheet,
 } from './Garden/CustomViews';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
-import {
-    fieldSettings,
-    getDotsColor,
-    getMaxVolumeFromData,
-    hiddenColumns,
-    sortPackagesByStatus,
-} from './Garden/utility';
-import { Status } from './Garden/components/commonStyles';
+import { fieldSettings, getMaxVolumeFromData, sortPackagesByStatus } from './Garden/utility';
 import { statusBarData } from './Garden/components/statusItems';
 import { filterConfig } from './utility/config/filterSetup';
+import { tableConfig } from './Garden/utility/tableConfig';
 enum Tabs {
     TABLE,
     GARDEN,
@@ -36,64 +30,7 @@ export function setup(appApi: ClientApi): void {
             responseParser: responseParser,
         })
         .registerFilterOptions(filterConfig)
-        .registerTableOptions({
-            objectIdentifierKey: 'commpkgNo',
-            hiddenColumns: hiddenColumns,
-            customCellView: [
-                {
-                    key: 'commpkgStatus',
-                    type: {
-                        Cell: ({ cell }) => {
-                            const commStatus = cell.value.content.commpkgStatus;
-                            const commStatusColor = getDotsColor(commStatus);
-                            return <Status color={commStatusColor}>{commStatus}</Status>;
-                        },
-                    },
-                },
-                {
-                    key: 'mcStatus',
-                    type: {
-                        Cell: ({ cell }) => {
-                            const mcStatus = cell.value.content.mcStatus;
-                            const mcStatusColor = getDotsColor(mcStatus);
-                            return <Status color={mcStatusColor}>{mcStatus}</Status>;
-                        },
-                    },
-                },
-                {
-                    key: 'progress',
-                    type: 'Number',
-                },
-                {
-                    key: 'volume',
-                    type: 'Number',
-                },
-                {
-                    key: 'mcPkgsCount',
-                    type: 'Number',
-                },
-                {
-                    key: 'mcPkgsRFCCShippedCount',
-                    type: 'Number',
-                },
-                {
-                    key: 'mcPkgsRFCCSigned',
-                    type: 'Number',
-                },
-                {
-                    key: 'mcPkgsRFOCShipped',
-                    type: 'Number',
-                },
-                {
-                    key: 'mcPkgsRFOCSigned',
-                    type: 'Number',
-                },
-                {
-                    key: 'createdDate',
-                    type: 'Date',
-                },
-            ],
-        })
+        .registerTableOptions(tableConfig)
         .registerGardenOptions({
             gardenKey: 'RFCC' as keyof HandoverPackage, // HOW to handled this ????
             itemKey: 'commpkgNo',
