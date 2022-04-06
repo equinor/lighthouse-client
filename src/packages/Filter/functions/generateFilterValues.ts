@@ -23,14 +23,11 @@ export function generateFilterValues<T>(
 
             if (Array.isArray(value)) {
                 filterGroup.values = [
-                    ...filterGroup.values.filter((oldValue) => !value.includes(oldValue)),
-                    ...value,
+                    ...filterGroup.values,
+                    ...value.filter((val) => !filterGroup.values.includes(val)),
                 ];
             } else {
-                filterGroup.values = [
-                    ...filterGroup.values.filter((oldValue) => oldValue !== value),
-                    value,
-                ];
+                !filterGroup.values.includes(value) && filterGroup.values.push(value);
             }
         })
     );

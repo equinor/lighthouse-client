@@ -24,7 +24,7 @@ interface FilterGroupeComponentProps {
 
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     filterGroup,
-}: FilterGroupeComponentProps) => {
+}: FilterGroupeComponentProps): JSX.Element => {
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [searchActive, setSearchActive] = useState(false);
 
@@ -60,7 +60,15 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     );
 };
 
-export const VirtualContainer = ({ filterGroup, filterSearchValue }) => {
+interface VirtualContainerProps {
+    filterGroup: FilterGroup;
+    filterSearchValue: string;
+}
+
+export const VirtualContainer = ({
+    filterGroup,
+    filterSearchValue,
+}: VirtualContainerProps): JSX.Element => {
     const {
         operations: { markAllValuesActive },
         filterGroupState: { getInactiveGroupValues },
@@ -100,6 +108,7 @@ export const VirtualContainer = ({ filterGroup, filterSearchValue }) => {
                 {rowVirtualizer.virtualItems.map((virtualRow) => {
                     return (
                         <FilterItemValue
+                            key={groupsMatchingSearch[virtualRow.index]}
                             virtualRowSize={virtualRow.size}
                             virtualRowStart={virtualRow.start}
                             filterItem={convertFromBlank(groupsMatchingSearch[virtualRow.index])}
