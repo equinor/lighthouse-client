@@ -1,4 +1,5 @@
 import { Checkbox } from '@equinor/eds-core-react';
+import { memo } from 'react';
 
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterValueType } from '../../Types/filter';
@@ -13,35 +14,35 @@ interface FilterItemComponentProps {
 
 const sanitizeFilterItemName = (value: FilterValueType) => value?.toString() ?? DEFAULT_NULL_VALUE;
 
-export const FilterItemComponent = ({
+const FilterItemComponent = ({
     filterItem,
     groupName,
     count,
     CustomRender = () => <span>{sanitizeFilterItemName(filterItem)}</span>,
 }: FilterItemComponentProps): JSX.Element => {
-    const {
-        operations: { changeFilterItem },
-        filterGroupState: { checkValueIsInActive, getGroupValues },
-    } = useFilterApiContext();
+    // const {
+    //     operations: { changeFilterItem },
+    //     filterGroupState: { checkValueIsInActive, getGroupValues },
+    // } = useFilterApiContext();
 
-    const isUnChecked = checkValueIsInActive(groupName, filterItem);
+    // const isUnChecked = checkValueIsInActive(groupName, filterItem);
 
-    function uncheckAllButThisValue() {
-        getGroupValues(groupName).forEach((value) =>
-            changeFilterItem('MarkInactive', groupName, value, true)
-        );
-        changeFilterItem('MarkActive', groupName, filterItem);
-    }
+    // function uncheckAllButThisValue() {
+    //     getGroupValues(groupName).forEach((value) =>
+    //         changeFilterItem('MarkInactive', groupName, value, true)
+    //     );
+    //     changeFilterItem('MarkActive', groupName, filterItem);
+    // }
 
-    if (!isUnChecked && count === 0) {
-        return <></>;
-    }
+    // if (!isUnChecked && count === 0) {
+    //     return <></>;
+    // }
 
-    const Custom = CustomRender(filterItem);
+    // const Custom = CustomRender(filterItem);
 
     return (
         <FilterItemWrap>
-            <Checkbox
+            {/* <Checkbox
                 checked={!isUnChecked}
                 onChange={() =>
                     changeFilterItem(
@@ -52,7 +53,9 @@ export const FilterItemComponent = ({
                 }
             />
             <FilterItemName onClick={uncheckAllButThisValue}>{Custom}</FilterItemName>
-            {!isUnChecked && <Count>({count})</Count>}
+            {!isUnChecked && <Count>({count})</Count>} */}
+            he
         </FilterItemWrap>
     );
 };
+export default memo(FilterItemComponent);
