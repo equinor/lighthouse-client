@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { useRefresh } from '../../../components/ParkView/hooks/useRefresh';
-import { FilterGroup } from '../../../modules/powerBI/src/Components';
 import { doesItemPassCriteria, doesItemPassFilter } from '../functions/doesItemPass';
 import { generateFilterValues } from '../functions/generateFilterValues';
 import { searchAcrossFilterGroups } from '../functions/searchAcrossFilterGroups';
@@ -33,6 +32,7 @@ interface FilterGroupState {
     getInactiveGroupValues: GetGroupValuesFunc;
     checkValueIsInActive: (groupName: string, value: FilterValueType) => boolean;
     getFilterItemCountsForGroup: (groupName: string) => FilterItemCount[];
+    getCountForFilterValue: (filterGroup: FilterGroup, value: FilterValueType) => number;
 }
 
 export type GetGroupValuesFunc = (groupName: string) => FilterValueType[];
@@ -162,9 +162,6 @@ export function useFilterApi<T>({
         );
     }
 
-    /**
-     * @internal
-     */
     const getCountForFilterValue = (filterGroup: FilterGroup, filterItem: FilterValueType) => {
         const valueFormatter = getValueFormatters().find(
             ({ name }) => name === filterGroup.name
@@ -365,6 +362,7 @@ export function useFilterApi<T>({
             getInactiveGroupValues: getInactiveGroupValues,
             getGroupValues: getGroupValues,
             checkValueIsInActive: checkValueIsInActive,
+            getCountForFilterValue,
         },
         search: {
             clearSearch: clearSearch,

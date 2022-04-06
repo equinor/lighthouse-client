@@ -1,65 +1,41 @@
-import { Search } from '@equinor/eds-core-react';
-import React, { useState } from 'react';
+import { Checkbox, Search } from '@equinor/eds-core-react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useVirtual } from 'react-virtual';
 import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
 import { FilterGroup } from '../../Hooks/useFilterApi';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
-import { FilterValueType } from '../../Types';
-import { FilterItemComponent } from '../FilterItem/FilterItem';
+import { FilterItemValue } from '../FilterItem/FilterItem';
+import { FilterItemName, FilterItemWrap } from '../FilterItem/FilterItem-Styles';
 import Icon from '../Icon/Icon';
 import {
-    AllCheckbox,
-    FilterGroupWrapper,
     FilterHeaderGroup,
-    FilterItemWrapper,
     SearchButton,
     Title,
-    Wrapper
+    VirtualFilterContainer,
+    VirtualFilterItemWrapper,
+    Wrapper,
 } from './FilterGroupStyles';
+import { convertFromBlank, DEFAULT_NULL_VALUE, searchByValue } from './utils';
 
 interface FilterGroupeComponentProps {
     filterGroup: FilterGroup;
     hideTitle?: boolean;
 }
 
-function searchByValue(items: string[], value: string) {
-    return items.filter((item) => item.toLocaleLowerCase().includes(value.toLocaleLowerCase()));
-}
-
-export const DEFAULT_NULL_VALUE = '(Blank)';
-
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     filterGroup,
 }: FilterGroupeComponentProps) => {
-    const {
-        operations: { markAllValuesActive },
-        filterGroupState: { getInactiveGroupValues, getFilterItemCountsForGroup },
-    } = useFilterApiContext();
-
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [searchActive, setSearchActive] = useState(false);
-
-    const { filterOptions } = useWorkSpace();
-
-    const groupsMatchingSearch = searchByValue(
-        filterGroup.values.map((v) => (v !== null ? v.toString() : DEFAULT_NULL_VALUE)),
-        filterSearchValue
-    );
 
     function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
         setFilterSearchValue(value);
     }
 
-    /** //TODO: Handle items in view search */
-    const handleOnAllChange = () => markAllValuesActive(filterGroup.name);
-
-    const isAllChecked = getInactiveGroupValues(filterGroup.name).length === 0;
-
     function handleSearchButtonClick() {
         setSearchActive((isActive) => !isActive);
     }
-
-    const itemCounts = getFilterItemCountsForGroup(filterGroup.name);
 
     return (
         <Wrapper>
@@ -67,7 +43,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                 {searchActive ? (
                     <Search
                         autoFocus={searchActive}
-                        aria-label="in filer group"
+                        aria-label="in filter group"
                         id="search-normal"
                         placeholder="Search"
                         onChange={handleOnChange}
@@ -79,37 +55,63 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                     <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
                 </SearchButton>
             </FilterHeaderGroup>
-            <FilterGroupWrapper>
-                <FilterItemWrapper>
-                    <AllCheckbox
-                        title={'All'}
-                        label={'All'}
-                        checked={isAllChecked}
-                        onChange={handleOnAllChange}
-                    />
-
-                    {groupsMatchingSearch.map((value) => (
-                        <FilterItemComponent
-                            key={value}
-                            count={
-                                itemCounts.find(({ name }) => name === convertFromBlank(value))
-                                    ?.count ?? 0
-                            }
-                            CustomRender={
-                                filterOptions?.find(({ name }) => name === filterGroup.name)
-                                    ?.customValueRender
-                            }
-                            //HACK: Must recieve null and not blank
-                            filterItem={convertFromBlank(value)}
-                            groupName={filterGroup.name}
-                        />
-                    ))}
-                </FilterItemWrapper>
-            </FilterGroupWrapper>
+            <VirtualContainer filterGroup={filterGroup} filterSearchValue={filterSearchValue} />
         </Wrapper>
     );
 };
 
-function convertFromBlank(name: FilterValueType) {
-    return name === DEFAULT_NULL_VALUE ? null : name;
-}
+export const VirtualContainer = ({ filterGroup, filterSearchValue }) => {
+    const {
+        operations: { markAllValuesActive },
+        filterGroupState: { getInactiveGroupValues },
+    } = useFilterApiContext();
+    const { filterOptions } = useWorkSpace();
+
+    const isAllChecked = getInactiveGroupValues(filterGroup.name).length === 0;
+    const groupsMatchingSearch = useMemo(
+        () =>
+            searchByValue(
+                filterGroup.values.map((v) => (v !== null ? v.toString() : DEFAULT_NULL_VALUE)),
+                filterSearchValue
+            ),
+        [filterGroup.values, filterSearchValue]
+    );
+    const handleOnAllChange = () => markAllValuesActive(filterGroup.name);
+    const rowLength = useMemo(() => groupsMatchingSearch.length, [groupsMatchingSearch]);
+
+    const parentRef = useRef<HTMLDivElement | null>(null);
+
+    const rowVirtualizer = useVirtual({
+        parentRef,
+        size: rowLength,
+        estimateSize: useCallback(() => 20, []),
+    });
+    return (
+        <VirtualFilterContainer ref={parentRef}>
+            <FilterItemWrap>
+                <Checkbox onChange={handleOnAllChange} checked={isAllChecked} />
+                <FilterItemName>All</FilterItemName>
+            </FilterItemWrap>
+            <VirtualFilterItemWrapper
+                style={{
+                    height: `${rowVirtualizer.totalSize}px`,
+                }}
+            >
+                {rowVirtualizer.virtualItems.map((virtualRow) => {
+                    return (
+                        <FilterItemValue
+                            virtualRowSize={virtualRow.size}
+                            virtualRowStart={virtualRow.start}
+                            filterItem={convertFromBlank(groupsMatchingSearch[virtualRow.index])}
+                            filterGroup={filterGroup}
+                            CustomRender={
+                                filterOptions?.find(({ name }) => name === filterGroup.name)
+                                    ?.customValueRender
+                            }
+                        />
+                    );
+                })}
+            </VirtualFilterItemWrapper>
+        </VirtualFilterContainer>
+    );
+};
