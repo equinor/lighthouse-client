@@ -1,5 +1,4 @@
 import { Button, Icon, Progress } from '@equinor/eds-core-react';
-import { useEffect } from 'react';
 
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { useScopeChangeMutation } from '../../hooks/React-Query/useScopechangeMutation';

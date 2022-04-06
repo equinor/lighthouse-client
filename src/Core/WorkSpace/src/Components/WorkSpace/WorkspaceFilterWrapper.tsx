@@ -23,5 +23,9 @@ export function WorkspaceFilterWrapper({
         filterApi.operations.init();
     }, [shouldInitFilter]);
 
+    useEffect(() => {
+        filterApi.operations.filterAndRerender();
+    }, [data]);
+
     return <FilterApiContext.Provider value={filterApi}>{children}</FilterApiContext.Provider>;
 }
