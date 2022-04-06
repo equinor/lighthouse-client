@@ -8,29 +8,35 @@ export const AllCheckbox = styled(Checkbox)`
 
 export const FilterItemName = styled.span`
     cursor: pointer;
-    font-size: 16px;
+    font-size: 13px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 `;
 
 export const Count = styled.span`
-    font-size: 12px;
+    font-size: 10px;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 `;
 
 export const FilterItemWrap = styled.div`
-    grid-template-columns: 1fr 24fr 1fr;
-    width: 100%;
+    grid-template-columns: auto 1fr auto;
     display: grid;
+    max-width: 500px;
     align-items: center;
-    height: 32px;
-
+    padding-top: 2px;
+    padding-bottom: 2px;
     > span {
         padding: 0px;
 
         > svg {
             width: 18px;
             height: 18px;
+        }
+
+        :first-child {
+            padding-right: 2px;
         }
     }
     :hover {

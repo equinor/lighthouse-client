@@ -20,6 +20,7 @@ export const FlexColumn = styled.div`
     display: flex;
     flex-direction: column;
     gap: 44px;
+    max-width: 600px;
 `;
 
 export const FormWrapper = styled.form`

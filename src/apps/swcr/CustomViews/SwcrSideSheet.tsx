@@ -1,6 +1,7 @@
 import { Chip } from '@equinor/eds-core-react';
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import styled from 'styled-components';
+import { SidesheetApi } from '../../../packages/Sidesheet/Components/ResizableSidesheet';
 import useSignatures from '../hooks/useSignatures';
 import { SwcrPackage } from '../models/SwcrPackage';
 
@@ -71,14 +72,23 @@ const Header = styled.div`
     align-items: center;
 `;
 
-export function SwcrSideSheet(item: SwcrPackage): JSX.Element {
+interface SwcrSideSheetProps {
+    item: SwcrPackage;
+    actions: SidesheetApi;
+}
+
+export function SwcrSideSheet({ item, actions }: SwcrSideSheetProps): JSX.Element {
     const { signatures, signaturesFetching } = useSignatures(item.swcrId);
+
+    useEffect(() => {
+        actions.setTitle(<>{item.swcrNo}</>);
+    }, [item.swcrNo]);
 
     return (
         <div style={{ height: '100%' }}>
             <SideSheetContainer>
                 <Header>
-                    <h3>{item.swcrNo}</h3>
+                    {/* <h3>{item.swcrNo}</h3> */}
                     {/* <a target="_BLANK" href={item.url} rel="noreferrer">
                         <Button key="linkToProcosys" variant="ghost">
                             Open in ProCoSys

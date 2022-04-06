@@ -9,6 +9,7 @@ interface EditScopeChangeParams {
     references: TypedSelectOption[];
     request: ScopeChangeRequest;
     model: Partial<ScopeChangeFormModel>;
+    setAsOpen?: boolean;
 }
 
 interface CreateScopeChangeParams {
@@ -22,6 +23,7 @@ interface RequestMutations {
         references,
         request,
         model,
+        setAsOpen,
     }: EditScopeChangeParams) => Promise<void>;
     createScopeChangeMutation: ({
         draft,
@@ -41,14 +43,17 @@ export function useRequestMutations(): RequestMutations {
         references,
         request,
         model,
+        setAsOpen,
     }: EditScopeChangeParams) => {
-        await patchScopeChange({
-            ...request,
-            ...model,
-            ...(extractReferences(references) as ScopeChangeRequestFormModel),
-            changeCategoryId: model.changeCategory?.id ?? request.changeCategory.id,
-            originSourceId: request.originSourceId,
-        });
+        await patchScopeChange(
+            {
+                ...request,
+                ...model,
+                ...(extractReferences(references) as ScopeChangeRequestFormModel),
+                changeCategoryId: model.changeCategory?.id ?? request.changeCategory.id,
+            },
+            setAsOpen
+        );
     };
 
     const createScopeChangeMutation = async ({

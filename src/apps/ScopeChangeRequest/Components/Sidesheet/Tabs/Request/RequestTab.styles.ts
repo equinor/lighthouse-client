@@ -6,10 +6,9 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 44px;
-    padding: 32px 24px;
 `;
 
-export const Description = styled.div`
+export const SubSectionText = styled.div`
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -25,4 +24,19 @@ export const SectionHeading = styled.div`
     font-weight: 500;
     line-height: 24px;
     text-align: left;
+`;
+
+export const SubSectionTitle = styled.div`
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 16px;
+    letter-spacing: 0px;
+    text-align: left;
+`;
+
+export const SectionWrapper = styled.div``;
+
+export const SiblingWrapper = styled.div`
+    display: flex;
+    gap: 5em;
 `;

@@ -3,6 +3,7 @@ import { AnalyticsOptions } from '@equinor/Diagrams';
 
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { FilterOptions } from '../../../../packages/Filter/Types';
+import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import {
     PowerBiOptions,
     PrefetchQueriesOptions,
@@ -31,8 +32,8 @@ export interface ViewerOptions<T> {
     viewerId: string;
     defaultTab?: number;
     dataFactoryCreator(factory: Factory): void;
-    openSidesheet(SidesheetContent?: React.FC<any>, props?: any): void;
-    CustomSidesheet?: React.FC<T>;
+    openSidesheet(SidesheetContent?: React.FC<any>, props?: any, appName?: string): void;
+    CustomSidesheet?: React.FC<{ item: T; actions: SidesheetApi }>;
     CustomSidesheetList?: React.FC<T[]>;
 }
 

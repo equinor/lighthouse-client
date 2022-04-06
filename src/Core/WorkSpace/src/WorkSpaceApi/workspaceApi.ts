@@ -37,7 +37,8 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
         const url = new URL(window.location.href);
         url.hash = `${options.viewerId}/${item[options.objectIdentifier]}`;
         window.history.pushState({}, '', url);
-        options.openSidesheet(options.CustomSidesheet, item);
+
+        options.openSidesheet(options.CustomSidesheet, item, options.viewerId);
     };
 
     //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
