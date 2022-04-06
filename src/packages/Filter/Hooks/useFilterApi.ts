@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useRefresh } from '../../../components/ParkView/hooks/useRefresh';
-import { doesItemPassFilter } from '../functions/doesItemPass';
+import { doesItemPassCriteria, doesItemPassFilter } from '../functions/doesItemPass';
 import { generateFilterValues } from '../functions/generateFilterValues';
 import { searchAcrossFilterGroups } from '../functions/searchAcrossFilterGroups';
 import { FilterOptions, FilterValueType } from '../Types/filter';
@@ -32,6 +32,7 @@ interface FilterGroupState {
     getInactiveGroupValues: GetGroupValuesFunc;
     checkValueIsInActive: (groupName: string, value: FilterValueType) => boolean;
     getFilterItemCountsForGroup: (groupName: string) => FilterItemCount[];
+    getCountForFilterValue: (filterGroup: FilterGroup, value: FilterValueType) => number;
 }
 
 export type GetGroupValuesFunc = (groupName: string) => FilterValueType[];
@@ -161,22 +162,21 @@ export function useFilterApi<T>({
         );
     }
 
-    /**
-     * @internal
-     */
-    const getCountForFilterValue = (filterGroup: FilterGroup, filterValue: FilterValueType) =>
-        filteredData.current.filter((item) =>
-            doesItemPassFilter(
-                item,
-                [
-                    {
-                        name: filterGroup.name,
-                        values: filterGroup.values.filter((oldValue) => oldValue !== filterValue),
-                    },
-                ],
-                getValueFormatters()
+    const getCountForFilterValue = (filterGroup: FilterGroup, filterItem: FilterValueType) => {
+        const valueFormatter = getValueFormatters().find(
+            ({ name }) => name === filterGroup.name
+        )?.valueFormatter;
+        if (!valueFormatter) return -1;
+
+        return filteredData.current.reduce((count, val) => {
+            return doesItemPassCriteria(
+                filterGroup.values.filter((value) => value !== filterItem),
+                valueFormatter(val)
             )
-        ).length;
+                ? count + 1
+                : count;
+        }, 0);
+    };
 
     /**
      * @internal
@@ -362,6 +362,7 @@ export function useFilterApi<T>({
             getInactiveGroupValues: getInactiveGroupValues,
             getGroupValues: getGroupValues,
             checkValueIsInActive: checkValueIsInActive,
+            getCountForFilterValue,
         },
         search: {
             clearSearch: clearSearch,
