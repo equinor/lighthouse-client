@@ -1,6 +1,14 @@
+import { getYearAndWeekFromDate } from '@equinor/GardenUtils';
+import { getFieldKeyBasedOnPlannedForecast } from '.';
+import {
+    getGardenItems,
+    isSubGroup,
+} from '../../../../components/ParkView/Components/VirtualGarden/utils';
+import { GardenGroups } from '../../../../components/ParkView/Models/data';
 import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
+import { HandoverCustomGroupByKeys } from '../models';
 import { HandoverPackage } from '../models/handoverPackage';
-import { getDateKey, getProgressKey } from './getKeyFunctions';
+import { getDateKey, getProgressKey, getYearAndWeekAndDayFromString } from './getKeyFunctions';
 import { sortByNumber } from './sortFunctions';
 
 export type ExtendedGardenFields = 'RFCC' | 'TAC' | 'RFOC' | 'DCC' | 'RFRC';
@@ -60,3 +68,58 @@ export const removedFilterOptions: (keyof HandoverPackage)[] = [
     'mcPkgsRFOCSigned',
     'rowKey',
 ];
+
+export const getItemWidth = (
+    garden: GardenGroups<HandoverPackage>,
+    groupByKey: string,
+    customGroupByKeys: Record<string, unknown> | undefined
+) => {
+    const customKeys = customGroupByKeys as HandoverCustomGroupByKeys;
+    const columnName = getFieldKeyBasedOnPlannedForecast(groupByKey, customKeys?.plannedForecast);
+    const minWidth = 139;
+    let gardenItemList: HandoverPackage[] = [];
+    garden.forEach((column) => {
+        const gardenItems = getGardenItems(column);
+        gardenItems &&
+            gardenItems.forEach((gardenItem) => {
+                !isSubGroup(gardenItem) && gardenItemList.push(gardenItem.item);
+            });
+    });
+    const longestKey = Math.max.apply(
+        Math,
+        gardenItemList.map((item) => {
+            const titleLength = item[columnName] ? item[columnName]?.toString().length : 0;
+            return titleLength >= item.commpkgNo.length ? titleLength : item.commpkgNo.length;
+        })
+    );
+    return Math.max(longestKey * 8 + 80, minWidth);
+};
+
+export const getHighlightedColumn = (
+    groupByKey: string,
+    customGroupByKeys: Record<string, unknown> | undefined
+) => {
+    const customKeys = customGroupByKeys as HandoverCustomGroupByKeys;
+    const groupByOption = getFieldKeyBasedOnPlannedForecast(
+        groupByKey,
+        customKeys?.plannedForecast
+    );
+    switch (groupByOption) {
+        case 'plannedFinishDate':
+        case 'forecastFinishDate':
+        case 'plannedStartDate':
+        case 'forecastStartDate':
+        case 'plannedTacDate':
+        case 'forecastTacDate':
+        case 'demolitionPlannedStartDate':
+        case 'demolitionForecastStartDate':
+        case 'demolitionPlannedFinishDate':
+        case 'demolitionForecastFinishDate':
+            return customKeys?.weeklyDaily === 'Daily'
+                ? getYearAndWeekAndDayFromString(new Date().toString())
+                : getYearAndWeekFromDate(new Date());
+
+        default:
+            return undefined;
+    }
+};
