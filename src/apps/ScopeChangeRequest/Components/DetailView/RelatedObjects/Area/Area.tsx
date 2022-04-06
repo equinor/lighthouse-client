@@ -39,4 +39,7 @@ export const Area = ({ area }: AreaProps): JSX.Element => {
 const Link = styled.div`
     font-size: 16px;
     color: ${tokens.colors.interactive.primary__resting.hex};
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 `;
