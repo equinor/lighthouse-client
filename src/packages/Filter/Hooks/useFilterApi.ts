@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useRefresh } from '../../../components/ParkView/hooks/useRefresh';
+import { FilterGroup } from '../../../modules/powerBI/src/Components';
 import { doesItemPassFilter } from '../functions/doesItemPass';
 import { generateFilterValues } from '../functions/generateFilterValues';
 import { searchAcrossFilterGroups } from '../functions/searchAcrossFilterGroups';
@@ -156,7 +157,7 @@ export function useFilterApi<T>({
         return filterGroup.values.map(
             (value): FilterItemCount => ({
                 name: value,
-                count: getCountForFilterValue(filterGroup, value),
+                count: getCountForFilterValue(filterGroup.name, value),
             })
         );
     }
@@ -164,19 +165,16 @@ export function useFilterApi<T>({
     /**
      * @internal
      */
-    const getCountForFilterValue = (filterGroup: FilterGroup, filterValue: FilterValueType) =>
-        filteredData.current.filter((item) =>
-            doesItemPassFilter(
-                item,
-                [
-                    {
-                        name: filterGroup.name,
-                        values: filterGroup.values.filter((oldValue) => oldValue !== filterValue),
-                    },
-                ],
-                getValueFormatters()
-            )
-        ).length;
+    const getCountForFilterValue = (filterGroupName: string, filterItem: FilterValueType) => {
+        const valueFormatter = getValueFormatters().find(
+            ({ name }) => name === filterGroupName
+        )?.valueFormatter;
+        if (!valueFormatter) return -1;
+
+        return filteredData.current.reduce((count, val) => {
+            return valueFormatter(val) === filterItem ? count + 1 : count;
+        }, 0);
+    };
 
     /**
      * @internal
