@@ -15,7 +15,7 @@ import { HeaderWrapper } from './HeaderFilterWrapper';
 import { WorkspaceFilterWrapper } from './WorkspaceFilterWrapper';
 import { DataViewWrapper, Tabs, WorkspaceWrapper } from './WorkSpaceViewStyles';
 
-export function WorkSpaceView(props: WorkspaceProps): JSX.Element | null {
+export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const {
         treeOptions,
         tableOptions,
