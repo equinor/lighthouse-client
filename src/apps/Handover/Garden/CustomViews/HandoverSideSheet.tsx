@@ -1,8 +1,7 @@
-import styled from 'styled-components';
 import { Tabs } from '@equinor/eds-core-react';
 import { HandoverPackage } from '../models/handoverPackage';
 import useHandoverResource from '../hooks/useHandoverResource';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     DetailsTab,
     McPackagesTab,
@@ -15,17 +14,23 @@ import {
     UnsignedTaskTab,
     WorkOrderTab,
 } from '../components/HandoverSidesheet';
+import { SideSheetContainer } from '@equinor/GardenUtils';
+import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 
-const SideSheetContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    padding: 16px;
-    width: 100%;
-`;
+interface HandoverSideSheetProps {
+    item: HandoverPackage;
+    actions: SidesheetApi;
+}
 
-export function HandoverSideSheet(handoverPackage: HandoverPackage): JSX.Element {
+export function HandoverSideSheet({
+    actions,
+    item: handoverPackage,
+}: HandoverSideSheetProps): JSX.Element {
     const [activeTab, setActiveTab] = useState<number>(0);
+
+    useEffect(() => {
+        actions.setTitle(<>{handoverPackage.commpkgNo}</>);
+    }, [handoverPackage.id]);
 
     const handleChange = (index: number) => {
         setActiveTab(index);

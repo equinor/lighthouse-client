@@ -1,4 +1,9 @@
-import { CheckListStatus, CheckListStepTag, PipetestCompletionStatus } from '../Types/drcEnums';
+import {
+    CheckListStatus,
+    CheckListStepTag,
+    PipetestCompletionStatus,
+    PipetestStep,
+} from '../Types/drcEnums';
 import { CheckList, Pipetest } from '../Types/pipetest';
 import {
     getBoxInsulationStatus,
@@ -58,10 +63,10 @@ export function getPipetestsWithHTCable(pipetests: Pipetest[]): Pipetest[] {
 //TODO - refactor into more functions (3)
 export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
     const allWorkflowSteps = [
-        CheckListStepTag.Bolttensioning,
         CheckListStepTag.PressureTest,
         CheckListStepTag.ChemicalCleaning,
         CheckListStepTag.HotOilFlushing,
+        CheckListStepTag.Bolttensioning,
         CheckListStepTag.Painting,
         CheckListStepTag.HtTest,
         CheckListStepTag.Insulation,
@@ -118,7 +123,7 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
                 isHeatTrace: false,
                 revision: '',
                 test: '',
-                workflowStepText: 'I',
+                workflowStepText: 'ZB',
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
             };
             workflowSteps.push(workflowStep);
@@ -143,4 +148,49 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
     }
 
     return workflowSteps;
+}
+
+export function getStatusLetterFromStatus(step: string | undefined): string {
+    let letter = '';
+
+    switch (step) {
+        case PipetestStep.PressureTest:
+            letter = 'T';
+            break;
+        case PipetestStep.ChemicalCleaning:
+            letter = 'C';
+            break;
+        case PipetestStep.HotOilFlushing:
+            letter = 'H';
+            break;
+        case PipetestStep.Bolttensioning:
+            letter = 'B';
+            break;
+        case PipetestStep.Painting:
+            letter = 'T';
+            break;
+        case PipetestStep.HtTest:
+            letter = '1';
+            break;
+        case PipetestStep.Insulation:
+            letter = 'Z';
+            break;
+        case PipetestStep.BoxInsulation:
+            letter = 'ZB';
+            break;
+        case PipetestStep.HtRetest:
+            letter = '2';
+            break;
+        case PipetestStep.Marking:
+            letter = 'M';
+            break;
+        case PipetestStep.Complete:
+            letter = '';
+            break;
+        case PipetestStep.Unknown:
+            letter = '?';
+            break;
+    }
+
+    return letter;
 }

@@ -1,2 +1,1 @@
-export * from './FilterItem';
-export * from './PersistFilter';
+export * from './filter';
