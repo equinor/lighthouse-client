@@ -3,21 +3,21 @@ import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 
-import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
-import { reassignCriteria, unsignCriteria } from '../../../../Api/ScopeChange/Workflow/';
-import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
-import { useConditionalRender } from '../../../../Hooks/useConditionalRender';
+import { Criteria, WorkflowStep } from '../../../../types/scopeChangeRequest';
+import { reassignCriteria, unsignCriteria } from '../../../../api/ScopeChange/Workflow';
+import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { useConditionalRender } from '../../../../hooks/utils/useConditionalRender';
 import { CriteriaDetail } from './CriteriaDetail';
 import { CriteriaActions } from '../../Types/actions';
 import { AddContributor } from './AddContributor';
-import { PCSPersonRoleSearch } from '../../../SearchableDropdown/PCSPersonRoleSearch';
+import { PCSPersonRoleSearch } from '../../../PersonRoleSearch/PCSPersonRoleSearch';
 import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
-import { useWorkflowCriteriaOptions } from '../../../../Hooks/useWorkflowCriteriaOptions';
+import { useWorkflowCriteriaOptions } from '../../../../hooks/queries/useWorkflowCriteriaOptions';
 import { QueryObserver, useQueryClient } from 'react-query';
-import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
-import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
-import { useIsWorkflowLoading } from '../../../../Hooks/React-Query/useIsWorkflowLoading';
-import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
+import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
+import { scopeChangeQueryKeys } from '../../../../keys/scopeChangeQueryKeys';
+import { useIsWorkflowLoading } from '../../../../hooks/React-Query/useIsWorkflowLoading';
+import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { SignWithComment } from './SignWithComment';
 import { useWorkflowSigning } from './useWorkflowSigning';
 
@@ -41,6 +41,7 @@ export const WorkflowCriteria = ({
     });
 
     const [showSignWithComment, setShowSignWithComment] = useState(false);
+    const [showSendBackWithComment, setShowSendBackWithComment] = useState(false);
     const [showRejectWithComment, setShowRejectWithComment] = useState(false);
 
     const { workflowKeys } = scopeChangeMutationKeys(request.id);
@@ -76,8 +77,7 @@ export const WorkflowCriteria = ({
 
             actions.push({
                 label: 'Reject with comment',
-                onClick: () =>
-                    signMutation({ action: 'Rejected', closeRequest: true, comment: '' }),
+                onClick: () => setShowRejectWithComment(true),
                 icon: <Icon name="close_circle_outlined" color={iconGrey} />,
                 isDisabled: !canSign,
             });
@@ -85,7 +85,7 @@ export const WorkflowCriteria = ({
                 actions.push({
                     label: 'Send back with comment',
                     icon: <Icon name="undo" color={iconGrey} />,
-                    onClick: () => setShowRejectWithComment(true),
+                    onClick: () => setShowSendBackWithComment(true),
                     isDisabled: !canSign,
                 });
             }
@@ -174,6 +174,7 @@ export const WorkflowCriteria = ({
 
     const closeAll = () => {
         setShowSignWithComment(false);
+        setShowSendBackWithComment(false);
         setShowRejectWithComment(false);
         setShowReassign(false);
         setShowContributor(false);
@@ -226,8 +227,9 @@ export const WorkflowCriteria = ({
             </WorkflowStepViewContainer>
 
             <ContributorSelector />
-            {showRejectWithComment && (
+            {showSendBackWithComment && (
                 <SignWithComment
+                    buttonText="Send back"
                     action="Rejected"
                     closeRequest={false}
                     criteriaId={criteria.id}
@@ -236,10 +238,20 @@ export const WorkflowCriteria = ({
             )}
             {showSignWithComment && (
                 <SignWithComment
+                    buttonText="Sign"
                     action={'Approved'}
                     stepId={step.id}
                     criteriaId={criteria.id}
                     closeRequest={false}
+                />
+            )}
+            {showRejectWithComment && (
+                <SignWithComment
+                    buttonText="Reject"
+                    action="Rejected"
+                    stepId={step.id}
+                    criteriaId={criteria.id}
+                    closeRequest={true}
                 />
             )}
         </>
