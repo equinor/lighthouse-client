@@ -1,6 +1,6 @@
 import { Button, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
 import { useWorkflowSigning } from './useWorkflowSigning';
 
 interface SignWithCommentProps {
@@ -37,7 +37,7 @@ export const SignWithComment = ({
                     signMutation({ action: action, closeRequest: closeRequest, comment: comment })
                 }
             >
-                {action === 'Approved' ? 'Sign' : 'Reject'}
+                {action === 'Approved' ? 'Sign' : 'Send back'}
             </Button>
         </>
     );

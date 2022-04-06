@@ -1,7 +1,7 @@
 import { GroupBase, OptionsOrGroups, SingleValue } from 'react-select';
 import { SearchableSingleSelect } from '../Form/Origins/SearchableSingleSelect';
 import { TypedSelectOption } from '../../Api/Search/searchType';
-import { usePcsSearch } from '../../../ScopeChangeRequest/Hooks/Search/usePcsSearch';
+import { usePcsSearch } from '../../../ScopeChangeRequest/hooks/Search/usePcsSearch';
 
 interface PCSLinkProps {
     person: TypedSelectOption | null;

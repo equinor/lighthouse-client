@@ -1,10 +1,18 @@
-import { Column, useColumns, LinkCell, Table } from '@equinor/Table';
+import { Column, useColumns, LinkCell, Table, TableData } from '@equinor/Table';
+import { SidesheetApi } from '../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { WorkOrder } from '../Types';
 
-interface Props<T> {
+interface Data<T> {
     data: T[];
 }
-export function SidesheetContent<T>({ data }: Props<T>) {
+
+interface SidesheetContentProps {
+    item: Data<unknown>;
+    actions: SidesheetApi;
+}
+
+export function SidesheetContent<T>({ actions, item }: SidesheetContentProps) {
+    const data = item.data as TableData[];
     const columns = useColumns(data[0] as any);
     const customCol: Column<WorkOrder> = {
         id: 'procosyslink',

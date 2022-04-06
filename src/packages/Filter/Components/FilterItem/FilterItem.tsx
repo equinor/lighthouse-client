@@ -1,51 +1,58 @@
 import { Checkbox } from '@equinor/eds-core-react';
-import { useCount } from '../../Hooks/useCount';
-import { FilerItemCount, FilterItem, FilterItemCheck } from '../../Types/FilterItem';
-import { debounceFilterItemCheck } from '../Utils/debounceFilterItemCheck';
-import { Count, FilterItemGroupe, FilterItemLabel, FilterItemWrapper } from './FilterItem-Styles';
+
+import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
+import { FilterValueType } from '../../Types/filter';
+import { DEFAULT_NULL_VALUE } from '../FilterGroup/FilterGroup';
+import { Count, FilterItemName, FilterItemWrap } from './FilterItem-Styles';
 interface FilterItemComponentProps {
-    filterItem: FilterItem;
-    getCount?: FilerItemCount;
-    filterItemCheck: FilterItemCheck;
-    indeterminate?: boolean;
-    itemKey: string;
+    filterItem: FilterValueType;
+    groupName: string;
+    count: number;
+    CustomRender?: (value: FilterValueType) => JSX.Element;
 }
+
+const sanitizeFilterItemName = (value: FilterValueType) => value?.toString() ?? DEFAULT_NULL_VALUE;
 
 export const FilterItemComponent = ({
     filterItem,
-    filterItemCheck,
-    indeterminate,
-    itemKey,
+    groupName,
+    count,
+    CustomRender = () => <span>{sanitizeFilterItemName(filterItem)}</span>,
 }: FilterItemComponentProps): JSX.Element => {
-    const { count, isActive } = useCount(filterItem);
-    const debouncedFilterItemCheck = debounceFilterItemCheck(filterItemCheck, 0);
+    const {
+        operations: { changeFilterItem },
+        filterGroupState: { checkValueIsInActive, getGroupValues },
+    } = useFilterApiContext();
 
-    if (typeof filterItem.value === 'object') {
+    const isUnChecked = checkValueIsInActive(groupName, filterItem);
+
+    function uncheckAllButThisValue() {
+        getGroupValues(groupName).forEach((value) =>
+            changeFilterItem('MarkInactive', groupName, value, true)
+        );
+        changeFilterItem('MarkActive', groupName, filterItem);
+    }
+
+    if (!isUnChecked && count === 0) {
         return <></>;
     }
 
-    if (!isActive) return <></>;
+    const Custom = CustomRender(filterItem);
+
     return (
-        <FilterItemWrapper
-            onClick={() => {
-                debouncedFilterItemCheck(filterItem, true);
-            }}
-            key={itemKey}
-            aria-label={filterItem.value}
-            title={filterItem.value}
-        >
-            <FilterItemGroupe>
-                <Checkbox
-                    indeterminate={indeterminate}
-                    title={filterItem.value}
-                    checked={filterItem.checked}
-                    onChange={() => {
-                        debouncedFilterItemCheck(filterItem);
-                    }}
-                />
-                <FilterItemLabel>{filterItem.value.toString()}</FilterItemLabel>
-            </FilterItemGroupe>
-            <Count>({count})</Count>
-        </FilterItemWrapper>
+        <FilterItemWrap>
+            <Checkbox
+                checked={!isUnChecked}
+                onChange={() =>
+                    changeFilterItem(
+                        isUnChecked ? 'MarkActive' : 'MarkInactive',
+                        groupName,
+                        filterItem
+                    )
+                }
+            />
+            <FilterItemName onClick={uncheckAllButThisValue}>{Custom}</FilterItemName>
+            {!isUnChecked && <Count>({count})</Count>}
+        </FilterItemWrap>
     );
 };
