@@ -39,7 +39,7 @@ const GlobalStyle = createGlobalStyle`
     }
 
     ::-webkit-scrollbar {
-        height: 0.3rem;
+        height: 0.4rem;
         width: 0.5rem;
     }
 
@@ -65,6 +65,8 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
     const queryClient = new QueryClient({
         defaultOptions: {
             queries: {
+                // Default cachetime 2 minutes
+                cacheTime: 2000 * 60,
                 refetchOnWindowFocus: false,
                 retry: 3,
                 retryDelay: 1000,
