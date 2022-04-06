@@ -1,8 +1,8 @@
 import { useCallback, useMemo } from 'react';
 import styled from 'styled-components';
-import { SearchOrigin } from './Origins/SearchOrigin';
-import { SelectPunch } from './Origins/SelectPunch';
-import { SelectSWCR } from './Origins/SelectSWCR';
+import { SearchOrigin } from '../Inputs/Origins/SearchOrigin';
+import { SelectPunch } from '../Inputs/Origins/SelectPunch';
+import { SelectSWCR } from '../Inputs/Origins/SelectSWCR';
 import { MultiSelect } from '@equinor/eds-core-react';
 
 interface OriginSourceParams {

@@ -1,18 +1,19 @@
 import { ClientApi } from '@equinor/portal-client';
-import { ScopeChangeSidesheetWrapper } from './Components/Sidesheet/ScopeChangeSidesheetWrapper';
-import { ScopeChangeRequest } from './Types/scopeChangeRequest';
-import { dataCreator } from './WorkspaceConfig/dataCreatorConfig';
-import { dataSource, idResolver } from './WorkspaceConfig/dataOptions';
-import { filterConfig } from './WorkspaceConfig/filterConfig';
-import { gardenConfig } from './WorkspaceConfig/Garden/gardenConfig';
-import { prefetchQueriesOptions } from './WorkspaceConfig/prefetchQueryOptions';
-import { statusBarConfig } from './WorkspaceConfig/statusBarConfig';
-import { tableConfig } from './WorkspaceConfig/Table/tableConfig';
+import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
+
+import { ScopeChangeRequest } from './types/scopeChangeRequest';
+import { dataCreator } from './workspaceConfig/dataCreatorConfig';
+import { dataSource, idResolver } from './workspaceConfig/dataOptions';
+import { filterConfig } from './workspaceConfig/filterConfig';
+import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
+import { prefetchQueriesOptions } from './workspaceConfig/prefetchQueryOptions';
+import { statusBarConfig } from './workspaceConfig/statusBarConfig';
+import { tableConfig } from './workspaceConfig/sTable/tableConfig';
 
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<ScopeChangeRequest>({
-            CustomSidesheet: ScopeChangeSidesheetWrapper,
+            CustomSidesheet: SidesheetWrapper,
             objectIdentifier: 'id',
         })
         .registerDataSource(dataSource)
