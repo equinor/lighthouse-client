@@ -151,7 +151,7 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
 }
 
 export function getStatusLetterFromStatus(step: string | undefined): string {
-    let letter = '#D3D3D3';
+    let letter = '';
 
     switch (step) {
         case PipetestStep.PressureTest:
