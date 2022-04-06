@@ -41,6 +41,9 @@ const TagText = styled.div`
     display: flex;
     flex-direction: row;
     gap: 0.2em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 `;
 
 const Link = styled.a`

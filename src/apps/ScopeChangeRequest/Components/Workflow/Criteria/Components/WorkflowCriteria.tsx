@@ -41,6 +41,7 @@ export const WorkflowCriteria = ({
     });
 
     const [showSignWithComment, setShowSignWithComment] = useState(false);
+    const [showSendBackWithComment, setShowSendBackWithComment] = useState(false);
     const [showRejectWithComment, setShowRejectWithComment] = useState(false);
 
     const { workflowKeys } = scopeChangeMutationKeys(request.id);
@@ -76,8 +77,7 @@ export const WorkflowCriteria = ({
 
             actions.push({
                 label: 'Reject with comment',
-                onClick: () =>
-                    signMutation({ action: 'Rejected', closeRequest: true, comment: '' }),
+                onClick: () => setShowRejectWithComment(true),
                 icon: <Icon name="close_circle_outlined" color={iconGrey} />,
                 isDisabled: !canSign,
             });
@@ -85,7 +85,7 @@ export const WorkflowCriteria = ({
                 actions.push({
                     label: 'Send back with comment',
                     icon: <Icon name="undo" color={iconGrey} />,
-                    onClick: () => setShowRejectWithComment(true),
+                    onClick: () => setShowSendBackWithComment(true),
                     isDisabled: !canSign,
                 });
             }
@@ -174,6 +174,7 @@ export const WorkflowCriteria = ({
 
     const closeAll = () => {
         setShowSignWithComment(false);
+        setShowSendBackWithComment(false);
         setShowRejectWithComment(false);
         setShowReassign(false);
         setShowContributor(false);
@@ -226,8 +227,9 @@ export const WorkflowCriteria = ({
             </WorkflowStepViewContainer>
 
             <ContributorSelector />
-            {showRejectWithComment && (
+            {showSendBackWithComment && (
                 <SignWithComment
+                    buttonText="Send back"
                     action="Rejected"
                     closeRequest={false}
                     criteriaId={criteria.id}
@@ -236,10 +238,20 @@ export const WorkflowCriteria = ({
             )}
             {showSignWithComment && (
                 <SignWithComment
+                    buttonText="Sign"
                     action={'Approved'}
                     stepId={step.id}
                     criteriaId={criteria.id}
                     closeRequest={false}
+                />
+            )}
+            {showRejectWithComment && (
+                <SignWithComment
+                    buttonText="Reject"
+                    action="Rejected"
+                    stepId={step.id}
+                    criteriaId={criteria.id}
+                    closeRequest={true}
                 />
             )}
         </>

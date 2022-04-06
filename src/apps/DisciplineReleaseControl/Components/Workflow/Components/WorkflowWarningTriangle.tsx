@@ -72,10 +72,17 @@ export const WarningTriangleInner = styled.div`
 `;
 
 export const WarningTriangleNoOutline = styled.div`
-    margin-top: 2px;
     width: 0;
     height: 0;
     border-style: solid;
     border-color: transparent transparent #eb0000 transparent;
     border-width: 0 8px 16px 8px;
+    margin-right: 8px;
+    padding-top: 2px;
+`;
+
+export const CurrentStepContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 `;
