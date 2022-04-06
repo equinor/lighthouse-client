@@ -6,6 +6,21 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
 
+## 0.2.6
+
+### Prod
+- [ScopeChange] - Official release.
+- [Workspace] - Filter performance fix.
+- [Installation] - Renamed ISO to "Insulation for Installation"  
+- [WorkPreparation] added STR/HUPR page.
+- [Portal] - "Queries and requests" apps removed for now
+
+### Test
+- [SWCR] - Alpha Release for testing
+- [Handover] - Alpha Release for testing
+
+
+--- 
 ## 0.2.5
 
 ### Prod
@@ -17,9 +32,9 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Workorder] - chore: add size icon, flag, progress to wo item
 - [Garden] - Highlight selected garden item
 - [SWCR] - Virtual garden
-- [Data Factory] - Optional access check
+- [DataFactory] - Optional access check
 - [Handover] - General Updated, filter items, styling
-- [Piping and Heat trace] - released to test
+- [PipingAndHeatTrace] - released to test
 
 --- 
   
