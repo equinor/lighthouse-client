@@ -33,12 +33,12 @@ export const FilterWrapper = (props: Omit<FilterGroupeComponentProps, 'itemCount
         filterGroupState: { getFilterItemCountsForGroup },
     } = useFilterApiContext();
 
-    // const itemCounts = useMemo(
-    //     () => getFilterItemCountsForGroup(props.filterGroup.name),
-    //     [props.filterGroup.name]
-    // );
+    const itemCounts = useMemo(
+        () => getFilterItemCountsForGroup(props.filterGroup.name),
+        [props.filterGroup.name]
+    );
 
-    return <FilterGroupeComponent {...props} itemCounts={[]} />;
+    return <FilterGroupeComponent {...props} itemCounts={itemCounts} />;
 };
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     filterGroup,
