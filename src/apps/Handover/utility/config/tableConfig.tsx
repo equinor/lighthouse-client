@@ -1,7 +1,7 @@
 import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { Status } from '../components/commonStyles';
-import { HandoverPackage } from '../models';
-import { getDotsColor } from './handoverItemMapping';
+import { Status } from '../../Garden/components/commonStyles';
+import { HandoverPackage } from '../../Garden/models';
+import { getDotsColor } from '../../Garden/utility';
 export const hiddenColumns: (keyof HandoverPackage)[] = [
     'siteCode',
     'projectIdentifier',

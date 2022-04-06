@@ -9,7 +9,7 @@ import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
 import { fieldSettings, getMaxVolumeFromData, sortPackagesByStatus } from './Garden/utility';
 import { statusBarData } from './Garden/components/statusItems';
 import { filterConfig } from './utility/config/filterSetup';
-import { tableConfig } from './Garden/utility/tableConfig';
+import { tableConfig } from './utility/config/tableConfig';
 enum Tabs {
     TABLE,
     GARDEN,
