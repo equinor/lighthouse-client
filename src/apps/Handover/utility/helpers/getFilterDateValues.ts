@@ -1,13 +1,7 @@
-import { weekDiff } from './weekDiff';
-
-export const getFilterDateValues = (dateToCheck: Date, actualDate: string) => {
-    const daysDifference = weekDiff(dateToCheck).days;
-
-    return daysDifference <= 0 && actualDate === ''
-        ? 'Overdue'
-        : daysDifference <= 14 && daysDifference
+export const getFilterDateValues = (daysDiff: number) => {
+    return daysDiff <= 14 && daysDiff > 0
         ? 'Next 2 weeks'
-        : daysDifference <= 28
+        : daysDiff <= 28 && daysDiff > 14
         ? 'Next 4 weeks'
         : 'Other';
 };
