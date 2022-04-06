@@ -41,4 +41,7 @@ export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
 
 const Link = styled.div`
     font-size: 16px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 `;
