@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { OptionRequestResult } from '../../api/ScopeChange/Access/optionsRequestChecker';
-import { getRequestAccess } from '../../api/ScopeChange/Access/requestAccess';
 import { scopeChangeQueries } from '../../keys/queries';
 
 interface ScopeChangeAccess extends OptionRequestResult {
@@ -20,33 +19,33 @@ export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
         canUnVoid: false,
     });
 
-    const { canUnvoidQuery, canVoidQuery } = scopeChangeQueries.permissionQueries;
+    const { canUnvoidQuery, canVoidQuery, permissionsQuery } = scopeChangeQueries.permissionQueries;
 
     const { data: userCanVoid } = useQuery(canVoidQuery(requestId));
     const { data: userCanUnvoid } = useQuery(canUnvoidQuery(requestId));
 
+    const { data: requestAccess } = useQuery(permissionsQuery(requestId));
+
     useEffect(() => {
-        setAccess((prev) => {
-            return { ...prev, canVoid: userCanVoid ?? false };
+        setAccess({
+            canDelete: Boolean(requestAccess?.canDelete),
+            canGet: Boolean(requestAccess?.canGet),
+            canPatch: Boolean(requestAccess?.canPatch),
+            canPost: Boolean(requestAccess?.canPost),
+            canPut: Boolean(requestAccess?.canPut),
+            canUnVoid: Boolean(userCanUnvoid),
+            canVoid: Boolean(userCanVoid),
         });
-
-        setAccess((prev) => {
-            return { ...prev, canUnVoid: userCanUnvoid ?? false };
-        });
-
-        getRequestAccess(requestId).then((x) =>
-            setAccess((prev) => {
-                return {
-                    ...prev,
-                    canDelete: x.canDelete,
-                    canGet: x.canGet,
-                    canPatch: x.canPatch,
-                    canPost: x.canPost,
-                    canPut: x.canPut,
-                };
-            })
-        );
-    }, [requestId, userCanUnvoid, userCanVoid]);
+    }, [
+        requestAccess?.canDelete,
+        requestAccess?.canGet,
+        requestAccess?.canPatch,
+        requestAccess?.canPost,
+        requestAccess?.canPut,
+        requestId,
+        userCanUnvoid,
+        userCanVoid,
+    ]);
 
     return access;
 }

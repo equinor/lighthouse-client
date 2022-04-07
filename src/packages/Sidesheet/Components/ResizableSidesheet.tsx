@@ -88,7 +88,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                     </LeftHeader>
 
                     <span style={{ display: 'flex', flexDirection: 'row' }}>
-                        {menuItems.length > 0 && <IconMenu items={menuItems} />}
+                        {menuItems.length > 0 && <IconMenu placement="bottom" items={menuItems} />}
                         <Button variant="ghost_icon" onClick={closeSidesheet}>
                             <Icon
                                 name="close"

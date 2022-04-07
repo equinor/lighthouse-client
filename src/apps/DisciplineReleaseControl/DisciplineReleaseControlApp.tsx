@@ -14,18 +14,32 @@ import {
 } from './Functions/statusHelpers';
 import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
 import { Pipetest } from './Types/pipetest';
-import { checklistTagFunc, createChecklistSteps, getHTList } from './Functions/tableHelpers';
-import { getTimePeriod } from './Components/Garden/gardenFunctions';
+import {
+    checklistTagFunc,
+    createChecklistSteps,
+    getHTList,
+    getStatusLetterFromStatus,
+} from './Functions/tableHelpers';
+import { getGardenItemColor, getTimePeriod } from './Components/Garden/gardenFunctions';
 import { PipetestStep } from './Types/drcEnums';
 import { DateTime } from 'luxon';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 // import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { Monospace } from './Styles/Monospace';
+import {
+    CurrentStepContainer,
+    WorkflowWarningTriangle,
+} from './Components/Workflow/Components/WorkflowWarningTriangle';
+import {
+    StepFilterContainer,
+    WorkflowFilterDot,
+} from './Components/Workflow/Components/WorkflowFilterDot';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
         const { FAM } = httpClient();
+
         return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal: signal });
     };
 
@@ -43,7 +57,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             pipetest.overdue =
                 pipetest.step !== PipetestStep.Complete &&
-                DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
+                    DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                     ? 'Yes'
                     : 'No';
             return pipetest;
@@ -66,6 +80,17 @@ export function setup(appApi: ClientApi): void {
             {
                 name: 'Current step',
                 valueFormatter: ({ step }) => step,
+                customValueRender: (value) => {
+                    return (
+                        <StepFilterContainer>
+                            <WorkflowFilterDot
+                                color={getGardenItemColor(value?.toString())}
+                                circleText={getStatusLetterFromStatus(value?.toString())}
+                            />
+                            {value}
+                        </StepFilterContainer>
+                    );
+                },
             },
             {
                 name: 'System',
@@ -89,6 +114,21 @@ export function setup(appApi: ClientApi): void {
                 name: 'Completion status',
                 valueFormatter: ({ shortformCompletionStatus }) => shortformCompletionStatus,
             },
+            {
+                name: 'Switchboard',
+                valueFormatter: ({ circuits }) =>
+                    circuits
+                        .map(({ switchBoardTagNo }) => switchBoardTagNo)
+                        .filter((v, i, a) => a.indexOf(v) === i),
+            },
+
+            {
+                name: 'Circuit',
+                valueFormatter: ({ circuits }) =>
+                    circuits
+                        .map(({ circuitAndStarterTagNo }) => circuitAndStarterTagNo)
+                        .filter((v, i, a) => a.indexOf(v) === i),
+            },
         ]);
 
     request.registerTableOptions({
@@ -105,13 +145,13 @@ export function setup(appApi: ClientApi): void {
             'shortformCompletionStatus',
             'circuits',
             'pipetestProcessDoneInRightOrder',
+            'step',
         ],
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Pipetest', width: 100 },
             { key: 'description', title: 'Description', width: 600 },
             { key: 'commPkPriority1', title: 'Priority', width: 90 },
-            { key: 'step', title: 'Current step', width: 210 },
             { key: 'checkLists', title: 'Process', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
         ],
@@ -134,9 +174,6 @@ export function setup(appApi: ClientApi): void {
                                 statusDotFunc={checklistTagFunc}
                                 spanDirection={'horizontal'}
                                 dotSize={22}
-                                pipetestProcessDoneInRightOrder={
-                                    cell.value.content.pipetestProcessDoneInRightOrder
-                                }
                             />
                         );
                     },
@@ -144,6 +181,29 @@ export function setup(appApi: ClientApi): void {
             },
         ],
         customColumns: [
+            {
+                id: 'currentStep',
+                accessor: 'step',
+                Header: 'Current step',
+                Aggregated: () => null,
+                width: 210,
+                aggregate: 'count',
+                Cell: (cell) => {
+                    return (
+                        <CurrentStepContainer>
+                            {cell.row.values.step}
+                            {!cell.row.values.pipetestProcessDoneInRightOrder && (
+                                <WorkflowWarningTriangle
+                                    circleText={''}
+                                    popoverText={
+                                        'Some steps in this process has been done in the wrong order'
+                                    }
+                                />
+                            )}
+                        </CurrentStepContainer>
+                    );
+                },
+            },
             {
                 id: 'dueByWeek',
                 accessor: 'rfccPlanned',
@@ -186,7 +246,6 @@ export function setup(appApi: ClientApi): void {
             customItemView: ReleaseControlGardenItem,
             // customHeaderView: ReleaseControlGardenHeader,
         },
-        //Add highlightColumn when it is fixed
         highlightColumn: getHighlightedColumn,
         itemWidth: () => 150,
         rowHeight: 25,

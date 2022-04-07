@@ -1,6 +1,8 @@
+import { CircularProgress } from '@equinor/eds-core-react';
 import { openSidesheet, PopoutSidesheet } from '@equinor/sidesheet';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { WorkspaceProps } from '../..';
 import { useSideSheet } from '../../../../../packages/Sidesheet/context/sidesheetContext';
 import { useDataContext } from '../../Context/DataProvider';
@@ -107,6 +109,14 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     }, [location.hash.length, mountSidesheetFromUrl, onSelect]);
 
     if (!viewIsActive) return <NoDataView />;
+    if (!data || data.length === 0) {
+        return (
+            <Loading>
+                <CircularProgress size={48} />
+                <div>Loading {props.shortName}</div>
+            </Loading>
+        );
+    }
     return (
         <WorkspaceWrapper>
             <WorkspaceFilterWrapper filterConfiguration={filterOptions}>
@@ -121,3 +131,13 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         </WorkspaceWrapper>
     );
 }
+
+const Loading = styled.div`
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5em;
+`;
