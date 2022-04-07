@@ -1,6 +1,5 @@
 import { ClientApi } from '@equinor/portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
-// import { ReleaseControlProcessForm } from './Components/Form/ReleaseControlProcessForm';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import {
@@ -13,7 +12,7 @@ import {
     sortPipetests,
 } from './Functions/statusHelpers';
 import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
-import { Pipetest } from './Types/pipetest';
+import { CheckList, Circuit, Pipetest } from './Types/pipetest';
 import {
     checklistTagFunc,
     createChecklistSteps,
@@ -21,10 +20,9 @@ import {
     getStatusLetterFromStatus,
 } from './Functions/tableHelpers';
 import { getGardenItemColor, getTimePeriod } from './Components/Garden/gardenFunctions';
-import { PipetestStep } from './Types/drcEnums';
+import { CheckListStepTag, PipetestStep } from './Types/drcEnums';
 import { DateTime } from 'luxon';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
-// import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { Monospace } from './Styles/Monospace';
 import {
@@ -46,6 +44,13 @@ export function setup(appApi: ClientApi): void {
     const responseParser = async (response: Response) => {
         const json = JSON.parse(await response.text());
         json.map((pipetest: Pipetest) => {
+            pipetest.circuits.forEach((circuit: Circuit) => {
+                circuit.checkLists.forEach((checkList: CheckList) => {
+                    checkList.formularType = CheckListStepTag.HtCTest;
+                    checkList.isHeatTrace = true;
+                    pipetest.checkLists.push(checkList);
+                });
+            });
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
             pipetest.step = getPipetestStatus(pipetest);
@@ -224,7 +229,7 @@ export function setup(appApi: ClientApi): void {
                 accessor: 'heatTraces',
                 Header: 'HT cables',
                 Aggregated: () => null,
-                width: 400,
+                width: 1165,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return (
@@ -244,7 +249,6 @@ export function setup(appApi: ClientApi): void {
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
-            // customHeaderView: ReleaseControlGardenHeader,
         },
         highlightColumn: getHighlightedColumn,
         itemWidth: () => 150,
