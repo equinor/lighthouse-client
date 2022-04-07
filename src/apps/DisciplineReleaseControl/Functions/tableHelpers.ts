@@ -89,7 +89,7 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
         const formularType =
             allWorkflowSteps[i] === CheckListStepTag.HtTest
                 ? CheckListStepTag.HtTest
-                : allWorkflowSteps[i] === CheckListStepTag.HtTest
+                : allWorkflowSteps[i] === CheckListStepTag.HtRetest
                 ? CheckListStepTag.HtRetest
                 : CheckListStepTag.HtCTest;
         if (foundSteps.length !== 0 && !htTestStep) {
