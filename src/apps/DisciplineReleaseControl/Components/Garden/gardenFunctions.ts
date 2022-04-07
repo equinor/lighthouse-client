@@ -86,6 +86,9 @@ export const getGardenItemColor = (step: string | undefined): string => {
         case PipetestStep.HtRetest:
             color = '#ffc67a';
             break;
+        case PipetestStep.HtCTest:
+            color = '#DCAB6A';
+            break;
         case PipetestStep.Marking:
             color = '#e6faec';
             break;
