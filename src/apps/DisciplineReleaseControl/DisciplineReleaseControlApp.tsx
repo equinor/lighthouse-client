@@ -118,23 +118,6 @@ export function setup(appApi: ClientApi): void {
                 name: 'Completion status',
                 valueFormatter: ({ shortformCompletionStatus }) => shortformCompletionStatus,
             },
-            {
-                name: 'Switchboard',
-                valueFormatter: ({ circuits }) => {
-                    const switchboards: string[] = [];
-                    circuits.forEach((x) => switchboards.push(x.switchBoardTagNo));
-                    return switchboards;
-                },
-            },
-            //TODO virtualize filter(?) before using
-            // {
-            //     name: 'Circuit',
-            //     valueFormatter: ({ circuits }) => {
-            //         const circuitArray: string[] = [];
-            //         circuits.forEach((x) => circuitArray.push(x.circuitAndStarterTagNo));
-            //         return circuitArray;
-            //     },
-            // },
         ]);
 
     request.registerTableOptions({
