@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useRefresh } from '../../../components/ParkView/hooks/useRefresh';
-import { doesItemPassCriteria, doesItemPassFilter } from '../functions/doesItemPass';
+import { doesItemPassFilter, doesItemPassCriteria } from '../functions/doesItemPass';
 import { generateFilterValues } from '../functions/generateFilterValues';
 import { searchAcrossFilterGroups } from '../functions/searchAcrossFilterGroups';
 import { FilterOptions, FilterValueType } from '../Types/filter';
@@ -168,13 +168,10 @@ export function useFilterApi<T>({
         )?.valueFormatter;
         if (!valueFormatter) return -1;
 
+        const uncheckedValues = filterGroup.values.filter((value) => value !== filterItem);
+
         return filteredData.current.reduce((count, val) => {
-            return doesItemPassCriteria(
-                filterGroup.values.filter((value) => value !== filterItem),
-                valueFormatter(val)
-            )
-                ? count + 1
-                : count;
+            return doesItemPassCriteria(uncheckedValues, valueFormatter(val)) ? count + 1 : count;
         }, 0);
     };
 
