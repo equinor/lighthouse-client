@@ -6,6 +6,14 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
 
+## 0.3.0
+
+### Prod
+- [PipingAndHeatTrace] - Release.
+- [PowerBiFilter] - new styles and virtualization.
+- [Filter] - Count optimization
+
+--- 
 ## 0.2.6
 
 ### Prod

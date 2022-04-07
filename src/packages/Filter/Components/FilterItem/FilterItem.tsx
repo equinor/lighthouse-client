@@ -1,6 +1,6 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import { memo, useMemo } from 'react';
-import { FilterGroup } from '../../Hooks/useFilterApi';
+import { FilterGroup, ValueFormatterFunction } from '../../Hooks/useFilterApi';
 
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterValueType } from '../../Types/filter';
@@ -14,58 +14,61 @@ type FilterItemValueProps = {
     virtualRowSize: number;
     filterItem: FilterValueType;
     filterGroup: FilterGroup;
+    valueFormatter: ValueFormatterFunction<unknown>;
     CustomRender?: (value: FilterValueType) => JSX.Element;
 };
-export const FilterItemValue = memo(
-    ({
-        virtualRowStart,
-        virtualRowSize,
-        filterItem,
-        filterGroup,
-        CustomRender = (value) => <>{sanitizeFilterItemName(value)}</>,
-    }: FilterItemValueProps) => {
-        const {
-            filterGroupState: { getCountForFilterValue, checkValueIsInActive, getGroupValues },
-            operations: { changeFilterItem },
-        } = useFilterApiContext();
-        function uncheckAllButThisValue() {
-            getGroupValues(filterGroup.name).forEach((value) =>
-                changeFilterItem('MarkInactive', filterGroup.name, value, true)
-            );
 
-            changeFilterItem('MarkActive', filterGroup.name, filterItem);
-        }
-        const isUnChecked = checkValueIsInActive(filterGroup.name, filterItem);
-        const count = useMemo(
-            () => getCountForFilterValue(filterGroup, filterItem),
-            [getCountForFilterValue, filterGroup.name, filterItem]
+export const FilterItem = ({
+    virtualRowStart,
+    virtualRowSize,
+    filterItem,
+    filterGroup,
+    valueFormatter,
+    CustomRender = (value) => <>{sanitizeFilterItemName(value)}</>,
+}: FilterItemValueProps): JSX.Element => {
+    const {
+        filterGroupState: { getCountForFilterValue, checkValueIsInActive, getGroupValues },
+        operations: { changeFilterItem },
+    } = useFilterApiContext();
+    function uncheckAllButThisValue() {
+        getGroupValues(filterGroup.name).forEach((value) =>
+            changeFilterItem('MarkInactive', filterGroup.name, value, true)
         );
-        return (
-            <FilterItemWrap
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    transform: `translateY(${virtualRowStart}px)`,
-                    height: `${virtualRowSize}px`,
-                }}
-            >
-                <Checkbox
-                    checked={!isUnChecked}
-                    onChange={() =>
-                        changeFilterItem(
-                            isUnChecked ? 'MarkActive' : 'MarkInactive',
-                            filterGroup.name,
-                            filterItem
-                        )
-                    }
-                />
-                <FilterItemName onClick={uncheckAllButThisValue}>
-                    {CustomRender(filterItem)}
-                </FilterItemName>
-                {!isUnChecked && <Count>({count})</Count>}
-            </FilterItemWrap>
-        );
+
+        changeFilterItem('MarkActive', filterGroup.name, filterItem);
     }
-);
+    const isUnChecked = checkValueIsInActive(filterGroup.name, filterItem);
+    const count = useMemo(
+        () => getCountForFilterValue(filterGroup, filterItem, valueFormatter),
+        [getCountForFilterValue, filterGroup.name, filterItem]
+    );
+    return (
+        <FilterItemWrap
+            style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                transform: `translateY(${virtualRowStart}px)`,
+                height: `${virtualRowSize}px`,
+            }}
+        >
+            <Checkbox
+                checked={!isUnChecked}
+                onChange={() =>
+                    changeFilterItem(
+                        isUnChecked ? 'MarkActive' : 'MarkInactive',
+                        filterGroup.name,
+                        filterItem
+                    )
+                }
+            />
+            <FilterItemName onClick={uncheckAllButThisValue}>
+                {CustomRender(filterItem)}
+            </FilterItemName>
+            {!isUnChecked && <Count>({count})</Count>}
+        </FilterItemWrap>
+    );
+};
+
+export const FilterItemValue = memo(FilterItem);
