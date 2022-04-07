@@ -34,44 +34,42 @@ export const useFilterItemCounts = (): FilterItemCounts => {
 
     compareFilterStates();
 
+    function queueHandler(): void {
+        setTimeout(() => {
+            if (queue.current.length === 0) return;
+            timeOutHandler();
+        }, 1000);
+    }
+
+    function timeOutHandler() {
+        if (queue.current.length === 0) {
+            queueHandler();
+            return;
+        }
+        queue.current.length > 0 && console.log('Queue length', queue.current.length);
+        handleQueueItem(queue.current[0]);
+        queueHandler();
+    }
+
     /**@queue
      *
      *
      */
     const queue = useRef<QueueItem[]>([]);
-    const currId = useRef<NodeJS.Timeout | null>(null);
-
-    currId.current && clearTimeout(currId.current);
-
-    function timeOutHandler() {
-        if (currId.current) {
-            console.log('queue busy');
-            return;
-        }
-        console.log('Handling queue item');
-        if (queue.current.length > 0) {
-            currId.current = setTimeout(() => {
-                handleQueueItem(queue[0]);
-                currId.current = null;
-                timeOutHandler();
-            }, 200);
-        }
-    }
 
     const handleQueueItem = ({ callback, filterGroup, filterItem }: QueueItem) => {
         callback(getCountForSingleValue(filterGroup, filterItem));
         removeFromQueue(filterGroup.name, filterItem);
     };
 
-    const appendToQueue = (item: QueueItem) => {
-        queue.current.push(item);
-        timeOutHandler();
-    };
+    const appendToQueue = (item: QueueItem) => queue.current.push(item);
 
-    const removeFromQueue = (groupName: string, item: FilterValueType) =>
-    (queue.current = queue.current.filter(
-        ({ filterGroup, filterItem }) => filterGroup.name !== groupName && item !== filterItem
-    ));
+    const removeFromQueue = (groupName: string, item: FilterValueType) => {
+        console.log('removed item');
+        queue.current = queue.current.filter(
+            ({ filterGroup, filterItem }) => filterGroup.name !== groupName && item !== filterItem
+        );
+    };
 
     function addToQueue(
         filterGroup: FilterGroup,
@@ -81,7 +79,9 @@ export const useFilterItemCounts = (): FilterItemCounts => {
         if (!isCounted(filterGroup.name, filterValue)) {
             console.log('Queue item added');
             appendToQueue({ callback, filterGroup, filterItem: filterValue });
+            if (queue.current.length === 1) queueHandler();
         } else {
+            console.log('is counted');
             callback(getCountForSingleValue(filterGroup, filterValue));
         }
     }
