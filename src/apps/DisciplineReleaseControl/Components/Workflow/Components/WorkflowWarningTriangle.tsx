@@ -44,10 +44,9 @@ export const WorkflowWarningTriangle = ({
 
 export const WarningTriangleContainer = styled.div`
     margin-left: 5px;
-    margin-bottom: 2px;
     font-size: 11px;
     color: '#fff';
-    line-height: 18px;
+    line-height: 16px;
     text-align: center;
     cursor: pointer;
 `;
@@ -57,7 +56,7 @@ export const WarningTriangleOutline = styled.div`
     height: 0;
     border-style: solid;
     border-color: transparent transparent #fff transparent;
-    border-width: 0 8px 16px 8px;
+    border-width: 0 7px 14px 7px;
 `;
 
 export const WarningTriangleInner = styled.div`
@@ -65,9 +64,9 @@ export const WarningTriangleInner = styled.div`
     height: 0;
     border-style: solid;
     position: relative;
-    border-width: 0 6px 12px 6px;
+    border-width: 0 5px 10px 5px;
     border-color: transparent transparent #eb0000 transparent;
-    right: 6px;
+    right: 5px;
     top: 3px;
 `;
 
@@ -76,7 +75,7 @@ export const WarningTriangleNoOutline = styled.div`
     height: 0;
     border-style: solid;
     border-color: transparent transparent #eb0000 transparent;
-    border-width: 0 8px 16px 8px;
+    border-width: 0 7px 14px 7px;
     margin-right: 8px;
     padding-top: 2px;
 `;
