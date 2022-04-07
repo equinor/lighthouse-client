@@ -17,7 +17,7 @@ export function doesItemPassFilter<T>(
     });
 }
 
-function doesItemPassCriteria(
+export function doesItemPassCriteria(
     uncheckedValues: FilterValueType[],
     value: FilterValueType | FilterValueType[]
 ): boolean {

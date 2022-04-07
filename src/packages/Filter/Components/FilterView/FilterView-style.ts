@@ -29,7 +29,8 @@ export const FilterSelect = styled.div`
     display: flex;
     flex-direction: column;
     min-width: fit-content;
-    padding: 0.5rem;
+    margin: 0rem 0.5rem 0rem 0.5rem;
+    padding-right: 0.5rem;
     overflow: hidden;
     border-right: 2px solid ${tokens.colors.ui.background__medium.rgba};
 
