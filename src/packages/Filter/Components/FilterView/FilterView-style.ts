@@ -11,7 +11,9 @@ export const Wrapper = styled.section`
     border-bottom: ${({ isActive }: { isActive: boolean }) =>
         isActive ? `1.5px solid ${tokens.colors.ui.background__medium.rgba}` : 'none'};
     transition: height 0.35s ease;
-
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
     @keyframes fadeIn {
         from {
             opacity: 0;
