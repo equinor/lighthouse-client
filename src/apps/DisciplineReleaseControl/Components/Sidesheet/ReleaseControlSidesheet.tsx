@@ -44,7 +44,7 @@ export const ReleaseControlSidesheet = ({
         <Wrapper>
             <ReleaseControlErrorBanner message={errorMessage} />
             <ReleaseControlSidesheetBanner pipetest={item} />
-            <Tabs activeTab={activeTab} onChange={handleChange}>
+            {/* <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
                     <Tabs.Tab>Single line diagram </Tabs.Tab>
                     <Tabs.Tab>Details</Tabs.Tab>
@@ -72,7 +72,13 @@ export const ReleaseControlSidesheet = ({
                         )}
                     </Tabs.Panel>
                 </TabList>
-            </Tabs>
+            </Tabs> */}
+            <TabList>
+                <h4>{item.description}</h4>
+                <CheckListTable checkLists={item.checkLists} />
+                <br />
+                <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
+            </TabList>
         </Wrapper>
     );
 };

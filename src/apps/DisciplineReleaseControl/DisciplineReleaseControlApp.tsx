@@ -43,8 +43,8 @@ export function setup(appApi: ClientApi): void {
     const responseParser = async (response: Response) => {
         const json = JSON.parse(await response.text());
         json.map((pipetest: Pipetest) => {
-            pipetest.circuits.forEach((circuit: Circuit) => {
-                circuit.checkLists.forEach((checkList: CheckList) => {
+            pipetest.circuits?.forEach((circuit: Circuit) => {
+                circuit.checkLists?.forEach((checkList: CheckList) => {
                     checkList.formularType = CheckListStepTag.HtCTest;
                     checkList.isHeatTrace = true;
                     pipetest.checkLists.push(checkList);
