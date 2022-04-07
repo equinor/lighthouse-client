@@ -1,23 +1,23 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ScopeChangeSystem as SystemInterface } from '../../../../types/scopeChangeRequest';
+import { ScopeChangeSystem } from '../../../../types/scopeChangeRequest';
 import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { Wrapper } from '../WrapperStyles';
 import { Icon } from '@equinor/eds-core-react';
-import { getSystems } from '../../../../api/PCS/getSystems';
 import { useEffect, useState } from 'react';
 import { System as PCSSystem } from '../../../../types/ProCoSys/system';
-import { useInfiniteCachedQuery } from '../../../../hooks/React-Query/useInfiniteCachedQuery';
-import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
+import { ProCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { useQuery } from 'react-query';
 
 interface SystemProps {
-    system: SystemInterface;
+    system: ScopeChangeSystem;
 }
 
 export const System = ({ system }: SystemProps): JSX.Element => {
-    const { systems: systemsKey } = proCoSysQueryKeys();
     const { procosysPlantId } = useFacility();
-    const { data } = useInfiniteCachedQuery(systemsKey, () => getSystems(procosysPlantId));
+
+    const { getSystemsQuery } = ProCoSysQueries;
+    const { data } = useQuery<unknown, unknown, PCSSystem[]>(getSystemsQuery(procosysPlantId));
 
     const [foundSystem, setFoundSystem] = useState<PCSSystem | null>();
 
