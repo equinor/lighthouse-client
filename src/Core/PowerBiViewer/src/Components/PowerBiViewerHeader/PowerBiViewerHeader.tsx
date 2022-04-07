@@ -1,3 +1,4 @@
+import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import Icon from '../../../../../components/Icon/Icon';
 import { usePowerBiViewer } from '../../Api/powerBiViewerState';
 import { Page } from '../../Types/State';
@@ -24,6 +25,7 @@ interface PowerBiViewerHeaderProps {
     handleFilter: HandleFilter;
     handleSetActivePage(page: Page): void;
     activeFilter: boolean;
+    hasFilter: boolean;
 }
 
 export const PowerBiViewerHeader = ({
@@ -33,6 +35,7 @@ export const PowerBiViewerHeader = ({
     activeFilter,
     activePage,
     handleSetActivePage,
+    hasFilter,
 }: PowerBiViewerHeaderProps): JSX.Element => {
     const { reports } = usePowerBiViewer(shortName);
 
@@ -65,7 +68,7 @@ export const PowerBiViewerHeader = ({
                     <Line />
                     <Divider />
                     <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
-                        <Icon name={'filter_alt'} />
+                        {hasFilter ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                     </HeaderButton>
                 </RightSection>
             </HeaderContent>
