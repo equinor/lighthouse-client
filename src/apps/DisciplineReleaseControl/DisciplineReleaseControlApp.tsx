@@ -96,7 +96,32 @@ export function setup(appApi: ClientApi): void {
                         </StepFilterContainer>
                     );
                 },
+                sort: (values) => {
+                    values.sort((a, b) => {
+                        const map = new Map<string, number>();
+
+                        map.set('unknown', 0);
+                        map.set('pressuretest', 1);
+                        map.set('chemicalcleaning', 2);
+                        map.set('hotoilflushing', 3);
+                        map.set('bolttensioning', 4);
+                        map.set('painting', 5);
+                        map.set('a-test', 6);
+                        map.set('insulation', 7);
+                        map.set('boxInsulation', 8);
+                        map.set('b-test', 9);
+                        map.set('marking', 10);
+                        map.set('complete', 11);
+
+                        if (typeof a !== 'string') return 0;
+                        if (typeof b !== 'string') return 0;
+
+                        return (map.get(a.toLowerCase()) ?? -0) - (map.get(b.toLowerCase()) ?? -0);
+                    });
+                    return values;
+                },
             },
+
             {
                 name: 'System',
                 valueFormatter: ({ name }) => name.substring(0, 2),
