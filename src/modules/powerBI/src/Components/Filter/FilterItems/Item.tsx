@@ -1,5 +1,5 @@
 import { Checkbox } from '@equinor/eds-core-react';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import { PowerBiFilter, PowerBiFilterItem } from '../../../Types';
 import { CheckboxItem } from './Styles';
 
@@ -12,14 +12,28 @@ type ItemProps = {
         filter: PowerBiFilterItem,
         singleClick?: boolean
     ) => Promise<void>;
+    virtualItemStart: number;
+    virtualItemSize: number;
 };
-export const Item = ({ activeFilters, filter, group, handleOnChange }: ItemProps) => {
+const FilterItem = ({
+    activeFilters,
+    filter,
+    group,
+    handleOnChange,
+    virtualItemSize,
+    virtualItemStart,
+}: ItemProps) => {
     const isActive = useMemo(() => {
         return activeFilters.includes(filter.value) ? true : false;
     }, [activeFilters, filter.value]);
 
     return (
-        <CheckboxItem>
+        <CheckboxItem
+            style={{
+                transform: `translateY(${virtualItemStart}px)`,
+                height: `${virtualItemSize}px`,
+            }}
+        >
             <Checkbox
                 onChange={async () => {
                     await handleOnChange(group, filter);
@@ -36,3 +50,4 @@ export const Item = ({ activeFilters, filter, group, handleOnChange }: ItemProps
         </CheckboxItem>
     );
 };
+export const Item = memo(FilterItem);
