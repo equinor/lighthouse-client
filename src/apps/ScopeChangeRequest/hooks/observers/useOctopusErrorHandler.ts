@@ -93,7 +93,7 @@ function resolveErrorObject(error: object): Partial<ErrorMessageFormat> {
         const scopeChangeError = error as ScopeChangeErrorFormat;
         return {
             title: scopeChangeError.title,
-            description: scopeChangeError.detail,
+            description: Object.values(scopeChangeError.errors).toString(),
         };
     }
 
@@ -105,20 +105,13 @@ function resolveErrorObject(error: object): Partial<ErrorMessageFormat> {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function isScopeChangeError(error: object): boolean {
-    const scopeChangeKeys: (keyof ScopeChangeErrorFormat)[] = [
-        'detail',
-        'statusCode',
-        'title',
-        'validationErrors',
-    ];
-    return Object.keys(error).every((key) =>
-        scopeChangeKeys.includes(key as keyof ScopeChangeErrorFormat)
-    );
+    return 'status' in error && 'title' in error;
 }
 
 interface ScopeChangeErrorFormat {
     detail: string;
-    statusCode: number;
+    status: number;
     title: string;
     validationErrors: null;
+    errors: Record<string, string[]>;
 }
