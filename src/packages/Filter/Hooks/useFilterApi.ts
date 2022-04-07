@@ -168,13 +168,10 @@ export function useFilterApi<T>({
         )?.valueFormatter;
         if (!valueFormatter) return -1;
 
+        const uncheckedValues = filterGroup.values.filter((value) => value !== filterItem);
+
         return filteredData.current.reduce((count, val) => {
-            return doesItemPassCriteria(
-                filterGroup.values.filter((value) => value !== filterItem),
-                valueFormatter(val)
-            )
-                ? count + 1
-                : count;
+            return doesItemPassCriteria(uncheckedValues, valueFormatter(val)) ? count + 1 : count;
         }, 0);
     };
 
