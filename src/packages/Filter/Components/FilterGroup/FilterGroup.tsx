@@ -60,10 +60,19 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     );
 };
 
-export const VirtualContainer = ({ filterGroup, filterSearchValue }) => {
+interface VirtualContainerProps {
+    filterGroup: FilterGroup;
+    filterSearchValue: string;
+}
+
+export const VirtualContainer = ({
+    filterGroup,
+    filterSearchValue,
+}: VirtualContainerProps): JSX.Element | null => {
     const {
         operations: { markAllValuesActive },
         filterGroupState: { getInactiveGroupValues },
+        filterState: { getValueFormatters },
     } = useFilterApiContext();
     const { filterOptions } = useWorkSpace();
 
@@ -81,11 +90,16 @@ export const VirtualContainer = ({ filterGroup, filterSearchValue }) => {
 
     const parentRef = useRef<HTMLDivElement | null>(null);
 
+    const valueFormatter = getValueFormatters().find(
+        ({ name }) => name === filterGroup.name
+    )?.valueFormatter;
+
     const rowVirtualizer = useVirtual({
         parentRef,
         size: rowLength,
         estimateSize: useCallback(() => 20, []),
     });
+    if (!valueFormatter) return null;
     return (
         <VirtualFilterContainer ref={parentRef}>
             <FilterItemWrap>
@@ -100,6 +114,8 @@ export const VirtualContainer = ({ filterGroup, filterSearchValue }) => {
                 {rowVirtualizer.virtualItems.map((virtualRow) => {
                     return (
                         <FilterItemValue
+                            valueFormatter={valueFormatter}
+                            key={convertFromBlank(groupsMatchingSearch[virtualRow.index])}
                             virtualRowSize={virtualRow.size}
                             virtualRowStart={virtualRow.start}
                             filterItem={convertFromBlank(groupsMatchingSearch[virtualRow.index])}
