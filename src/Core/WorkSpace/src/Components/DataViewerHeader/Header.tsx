@@ -105,67 +105,67 @@ export const CompletionViewHeader = ({
                             <Divider />
                         </>
                     )}
-                    {!activeView ? (
+
+                    {factory && (
                         <>
-                            {factory && (
-                                <>
-                                    <TabButton
-                                        onClick={setSelected}
-                                        aria-selected={false}
-                                        title={factory.title}
-                                    >
-                                        <Icon name={'add'} />
-                                        {factory.title}
-                                    </TabButton>
-                                    <Divider />
-                                </>
-                            )}
-
-                            <List>
-                                {tabs.map((tab) => {
-                                    const Icon = tab.icon;
-                                    return (
-                                        <Tab key={`tab-${tab.icon}`} title={tab.title}>
-                                            <Icon />
-                                        </Tab>
-                                    );
-                                })}
-                            </List>
-                            <Divider />
-                            {/* <SearchButton /> */}
-
                             <TabButton
-                                color={
-                                    dataApi?.isStale
-                                        ? tokens.colors.infographic.primary__energy_red_100.hex
-                                        : 'grey'
-                                }
+                                onClick={setSelected}
                                 aria-selected={false}
-                                title={
-                                    dataApi?.isStale
-                                        ? 'This data is over 1 hour old and might be outdated'
-                                        : `Updated: ${timestamp}`
-                                }
-                                onClick={() => dataApi.refetch()}
+                                title={factory.title}
                             >
-                                {dataApi?.isFetching ? (
-                                    <CircularProgress size={24} />
-                                ) : (
-                                    <ClickableIcon size={24} name="refresh" />
-                                )}
+                                <Icon name={'add'} />
+                                {factory.title}
                             </TabButton>
-                            <TabButton
-                                onClick={handleFilter}
-                                aria-selected={activeFilter}
-                                title="Filter"
-                            >
-                                {checkHasActiveFilters() ? (
-                                    <FilterFilled />
-                                ) : (
-                                    <Icon name={'filter_alt'} />
-                                )}
-                            </TabButton>
+                            <Divider />
                         </>
+                    )}
+
+                    <List>
+                        {tabs.map((tab) => {
+                            const Icon = tab.icon;
+                            return (
+                                <Tab key={`tab-${tab.icon}`} title={tab.title}>
+                                    <Icon />
+                                </Tab>
+                            );
+                        })}
+                    </List>
+                    <Divider />
+                    {/* <SearchButton /> */}
+
+                    <TabButton
+                        color={
+                            dataApi?.isStale
+                                ? tokens.colors.infographic.primary__energy_red_100.hex
+                                : 'grey'
+                        }
+                        aria-selected={false}
+                        title={
+                            dataApi?.isStale
+                                ? 'This data is over 1 hour old and might be outdated'
+                                : `Updated: ${timestamp}`
+                        }
+                        onClick={() => dataApi.refetch()}
+                    >
+                        {dataApi?.isFetching ? (
+                            <CircularProgress size={24} />
+                        ) : (
+                            <ClickableIcon size={24} name="refresh" />
+                        )}
+                    </TabButton>
+
+                    {!activeView ? (
+                        <TabButton
+                            onClick={handleFilter}
+                            aria-selected={activeFilter}
+                            title="Filter"
+                        >
+                            {checkHasActiveFilters() ? (
+                                <FilterFilled />
+                            ) : (
+                                <Icon name={'filter_alt'} />
+                            )}
+                        </TabButton>
                     ) : (
                         <TabButton
                             onClick={handleFilter}

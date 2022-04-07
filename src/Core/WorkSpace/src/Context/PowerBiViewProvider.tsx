@@ -1,11 +1,13 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
 import { useDataContext } from './DataProvider';
 
-interface ViewState {
+interface PowerBIViewState {
     activeView: boolean;
     hasPowerBi: boolean;
     pages: Page[];
     activePage?: Page;
+    isFilterActive: boolean;
+    hasActiveFilters: boolean;
 }
 
 export interface Page {
@@ -14,11 +16,13 @@ export interface Page {
     default?: boolean;
 }
 
-interface ViewContext extends ViewState {
+interface ViewContext extends PowerBIViewState {
     toggleView(): void;
     registerPages(pages: Page[]): void;
-    setActivePage(pageId): void;
+    setActivePage(pages: Page): void;
     resetState(): void;
+    togglePowerBIFilter(): void;
+    setHasActiveFilters(isActive: boolean): void;
 }
 
 const Context = createContext({} as ViewContext);
@@ -26,6 +30,8 @@ const Context = createContext({} as ViewContext);
 const INIT_STATE = {
     activeView: false,
     hasPowerBi: false,
+    isFilterActive: false,
+    hasActiveFilters: false,
     pages: [],
     activePage: {} as Page,
 };
@@ -33,7 +39,7 @@ const INIT_STATE = {
 export const PowerBIViewContextProvider = ({
     children,
 }: PropsWithChildren<unknown>): JSX.Element => {
-    const [state, setState] = useState<ViewState>(INIT_STATE);
+    const [state, setState] = useState<PowerBIViewState>(INIT_STATE);
     const { powerBiOptions } = useDataContext();
 
     useEffect(() => {
@@ -63,13 +69,32 @@ export const PowerBIViewContextProvider = ({
             return { ...s, activePage: page };
         });
     }
+    function togglePowerBIFilter() {
+        setState((s) => {
+            return { ...s, isFilterActive: !s.isFilterActive };
+        });
+    }
+
+    function setHasActiveFilters(isActive: boolean) {
+        setState((s) => {
+            return { ...s, hasActiveFilters: isActive };
+        });
+    }
 
     function resetState() {
         setState(INIT_STATE);
     }
     return (
         <Context.Provider
-            value={{ ...state, toggleView, registerPages, setActivePage, resetState }}
+            value={{
+                ...state,
+                toggleView,
+                registerPages,
+                setActivePage,
+                resetState,
+                togglePowerBIFilter,
+                setHasActiveFilters,
+            }}
         >
             {children}
         </Context.Provider>
