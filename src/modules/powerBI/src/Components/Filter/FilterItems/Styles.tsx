@@ -10,11 +10,10 @@ export const FilterGroupContainer = styled.div`
 `;
 
 export const CheckboxWrap = styled.span`
-    display: flex;
     height: 100%;
-    flex-direction: column;
     overflow-x: hidden;
     overflow-y: scroll;
+    width: 100%;
     span {
         padding: 2px;
         font-size: 13px;
@@ -32,11 +31,24 @@ export const CheckboxWrap = styled.span`
 export const CheckboxItem = styled.div`
     display: flex;
     align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     > label {
         font-size: 13px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         cursor: pointer;
     }
     :hover {
         background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
     }
+`;
+
+export const VirtualFilterItemWrapper = styled.div`
+    width: auto;
+    min-width: 150px;
+    position: relative;
 `;
