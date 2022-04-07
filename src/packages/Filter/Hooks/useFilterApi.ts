@@ -75,6 +75,7 @@ export type ValueFormatterFunction<T> = (item: T) => FilterValueType | FilterVal
 export interface ValueFormatterFilter<T> {
     name: string;
     valueFormatter: ValueFormatterFunction<T>;
+    sort?: (values: FilterValueType[]) => FilterValueType[];
 }
 
 type SetFilterState = (newFilterState: FilterGroup[], preventReRender?: boolean) => void;
@@ -98,6 +99,7 @@ export function useFilterApi<T>({
 }: FilterProviderProps<T>): FilterApi<T> {
     const filteredData = useRef<T[]>(data ?? []);
     const filterState = useRef<FilterGroup[]>([]);
+
     /**
      * @internal
      */
@@ -123,9 +125,10 @@ export function useFilterApi<T>({
     function getValueFormatters(): ValueFormatterFilter<T>[] {
         return filterConfiguration
             .filter(({ name }) => getFilterState().map((group) => group.name === name))
-            .map(({ name, valueFormatter }) => ({
+            .map(({ name, valueFormatter, sort }) => ({
                 name: name,
                 valueFormatter: (item) => handleEmpty(valueFormatter(item)),
+                sort: sort,
             }));
     }
 
@@ -171,8 +174,6 @@ export function useFilterApi<T>({
         filterItem: FilterValueType,
         valueFormatterFunc?: ValueFormatterFunction<unknown>
     ) => {
-        valueFormatterFunc && console.log('Custom func provided');
-
         const valueFormatter =
             valueFormatterFunc ??
             getValueFormatters().find(({ name }) => name === filterGroup.name)?.valueFormatter;
