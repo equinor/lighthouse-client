@@ -39,6 +39,7 @@ import {
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
         const { FAM } = httpClient();
+
         return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal: signal });
     };
 
@@ -56,7 +57,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             pipetest.overdue =
                 pipetest.step !== PipetestStep.Complete &&
-                DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
+                    DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                     ? 'Yes'
                     : 'No';
             return pipetest;
@@ -112,6 +113,21 @@ export function setup(appApi: ClientApi): void {
             {
                 name: 'Completion status',
                 valueFormatter: ({ shortformCompletionStatus }) => shortformCompletionStatus,
+            },
+            {
+                name: 'Switchboard',
+                valueFormatter: ({ circuits }) =>
+                    circuits
+                        .map(({ switchBoardTagNo }) => switchBoardTagNo)
+                        .filter((v, i, a) => a.indexOf(v) === i),
+            },
+
+            {
+                name: 'Circuit',
+                valueFormatter: ({ circuits }) =>
+                    circuits
+                        .map(({ circuitAndStarterTagNo }) => circuitAndStarterTagNo)
+                        .filter((v, i, a) => a.indexOf(v) === i),
             },
         ]);
 
