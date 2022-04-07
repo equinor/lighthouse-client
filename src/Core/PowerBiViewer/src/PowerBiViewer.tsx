@@ -28,6 +28,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
 
     const [activePage, setActivePage] = useState<Page>();
     const [isFilterActive, setIsFilterActive] = useState(false);
+    const [hasFilter, setHasFilter] = useState(false);
     const [activeReport, setActiveReport] = useState<FusionPowerBiOptions>();
 
     useEffect(() => {
@@ -45,6 +46,10 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
         }
     };
 
+    function handleHasFilter(hasFilter: boolean) {
+        setHasFilter(hasFilter);
+    }
+
     function handleFilter() {
         setIsFilterActive((s) => !s);
     }
@@ -57,6 +62,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
                 handleSetActivePage={handleSetActivePage}
                 activeFilter={isFilterActive}
                 handleFilter={handleFilter}
+                hasFilter={hasFilter}
             />
             <ContentWrapper>
                 {activeReport && activePage && (
@@ -68,6 +74,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
                             isFilterActive,
                             activePage: activePage.pageId,
                             pageLoad: activeReport.loadPagesInDev,
+                            hasFilter: handleHasFilter,
                         }}
                     />
                 )}

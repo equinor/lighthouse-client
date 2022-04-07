@@ -135,6 +135,7 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
                             report={report}
                             isLoaded={isLoaded}
                             isFilterActive={isFilterActive}
+                            options={{ hasFilter: options?.hasFilter }}
                         />
                     </TopBar>
                     <PBIWrapper height={isFilterActive ? TOP_BAR_FILTER_HEIGHT : 0}>
