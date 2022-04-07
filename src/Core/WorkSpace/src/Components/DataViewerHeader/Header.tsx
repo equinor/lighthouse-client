@@ -15,6 +15,7 @@ import { TabButton } from '../ToggleButton';
 import {
     ActionBar,
     Divider,
+    FillSection,
     HeaderWrapper,
     LeftSection,
     RightSection,
@@ -47,8 +48,16 @@ export const CompletionViewHeader = ({
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
-    const { hasPowerBi, toggleView, activeView, pages, setActivePage, activePage } =
-        useViewerContext();
+    const {
+        hasPowerBi,
+        toggleView,
+        activeView,
+        pages,
+        setActivePage,
+        activePage,
+        hasActiveFilters,
+        togglePowerBIFilter,
+    } = useViewerContext();
 
     const {
         filterState: { getFilteredData, checkHasActiveFilters },
@@ -68,9 +77,9 @@ export const CompletionViewHeader = ({
             <ActionBar>
                 <LeftSection>
                     {!activeView ? (
-                        <>
+                        <FillSection>
                             <StatusBar statusItems={statusItems} />
-                        </>
+                        </FillSection>
                     ) : (
                         <>
                             {pages.map((page) => {
@@ -89,6 +98,7 @@ export const CompletionViewHeader = ({
                                     </TabButton>
                                 );
                             })}
+                            <FillSection />
                         </>
                     )}
                 </LeftSection>
@@ -168,15 +178,11 @@ export const CompletionViewHeader = ({
                         </TabButton>
                     ) : (
                         <TabButton
-                            onClick={handleFilter}
+                            onClick={togglePowerBIFilter}
                             aria-selected={activeFilter}
                             title="PowerBi Filter"
                         >
-                            {checkHasActiveFilters() ? (
-                                <FilterFilled />
-                            ) : (
-                                <Icon name={'filter_alt'} />
-                            )}
+                            {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                         </TabButton>
                     )}
                 </RightSection>

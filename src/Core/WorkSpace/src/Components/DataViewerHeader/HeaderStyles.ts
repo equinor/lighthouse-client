@@ -17,22 +17,29 @@ export const TitleBar = styled.div`
 
 export const ActionBar = styled.div`
     display: flex;
+    height: 48px;
     flex-direction: row;
-    align-items: center;
     justify-content: space-between;
+    align-items: flex-end;
     width: -webkit-fill-available;
 `;
 
 export const LeftSection = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: flex-end;
     width: -webkit-fill-available;
 `;
 
 export const RightSection = styled.div`
     display: flex;
+    align-items: flex-end;
     flex-direction: row;
+`;
+
+export const FillSection = styled.div`
+    flex: 1;
+    border-bottom: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
 
 export const Title = styled(Typography)`
@@ -53,7 +60,6 @@ export const Divider = styled.div`
 `;
 
 export const TabTitle = styled.span`
-    padding-left: 0.5rem;
     font-size: 16px;
 `;
 const { Tab } = Tabs;
