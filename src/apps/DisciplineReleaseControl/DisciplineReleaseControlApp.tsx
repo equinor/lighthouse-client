@@ -45,8 +45,8 @@ export function setup(appApi: ClientApi): void {
         json.map((pipetest: Pipetest) => {
             pipetest.circuits.forEach((circuit: Circuit) => {
                 circuit.checkLists.forEach((checkList: CheckList) => {
-                    checkList.formularType === CheckListStepTag.HtCTest;
-                    checkList.isHeatTrace === true;
+                    checkList.formularType = CheckListStepTag.HtCTest;
+                    checkList.isHeatTrace = true;
                     pipetest.checkLists.push(checkList);
                 });
             });
