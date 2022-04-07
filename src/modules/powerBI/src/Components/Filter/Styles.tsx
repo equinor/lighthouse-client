@@ -18,6 +18,9 @@ export const FilterGroupWrap = styled.div`
 `;
 
 export const FilterItemsWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: 100%;
     overflow-x: auto;
 `;
 
