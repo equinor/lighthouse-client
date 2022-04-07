@@ -12,8 +12,8 @@ export const ReleaseControlItem = styled(Item)<ReleaseControlItemProps>`
     display: flex;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: ${(props) => (props.isGrouped ? '85%' : '100%')};
-    margin-left: ${(props) => (props.isGrouped ? '22px' : null)};
+    width: ${(props) => (props.isGrouped ? '90%' : '100%')};
+    margin-left: ${(props) => (props.isGrouped ? '14px' : null)};
     min-width: 100px;
     box-sizing: border-box;
     white-space: nowrap;

@@ -51,6 +51,8 @@ export function getChecklistSortValue(checkList: CheckList): number {
             number = PipetestCheckListOrder.HtTest;
         } else if (checkList.formularType === CheckListStepTag.HtRetest) {
             number = PipetestCheckListOrder.HtRetest;
+        } else if (checkList.formularType === CheckListStepTag.HtCTest) {
+            number = PipetestCheckListOrder.HtCTest;
         }
     }
     return number;
@@ -79,6 +81,8 @@ export function getPipetestStatus(pipetest: Pipetest): PipetestStep {
         return PipetestStep.BoxInsulation;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtRetest)) {
         return PipetestStep.HtRetest;
+    } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtCTest)) {
+        return PipetestStep.HtCTest;
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Marking)) {
         return PipetestStep.Marking;
     } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtTemporary)) {
@@ -183,6 +187,16 @@ export function isPipetestProcessDoneInRightOrder(pipetest: Pipetest): boolean {
         ) {
             return false;
         }
+    } else if (!isCheckListTestOk(checkLists, CheckListStepTag.HtCTest)) {
+        if (
+            !isCheckListStepsInRightOrder(
+                checkLists,
+                PipetestStatusOrder.HtCTest,
+                pipetest.insulationBoxes
+            )
+        ) {
+            return false;
+        }
     } else if (!isCheckListStepOk(checkLists, CheckListStepTag.Marking)) {
         if (
             !isCheckListStepsInRightOrder(
@@ -221,8 +235,11 @@ export function isCheckListStepsInRightOrder(
     let rightOrder = true;
 
     checkLists = checkLists.filter((x) => getChecklistSortValue(x) > checkListStep);
-    //Filter out markings if B-test is current step (they can be done at the same time)
-    if (checkListStep === PipetestStatusOrder.HtRetest) {
+    //Filter out markings if B-test or C-test is current step (they can be done at the same time)
+    if (
+        checkListStep === PipetestStatusOrder.HtRetest ||
+        checkListStep === PipetestStatusOrder.HtCTest
+    ) {
         checkLists = checkLists.filter((x) => x.tagNo.substring(0, 2) !== CheckListStepTag.Marking);
     }
     const checkInsulationBoxes =
@@ -324,6 +341,9 @@ export function getPipetestStatusSortValue(pipetest: Pipetest): number {
             break;
         case PipetestStep.HtRetest:
             number = PipetestStatusOrder.HtRetest;
+            break;
+        case PipetestStep.HtCTest:
+            number = PipetestStatusOrder.HtCTest;
             break;
         case PipetestStep.Marking:
             number = PipetestStatusOrder.Marking;
@@ -449,6 +469,9 @@ export function getChecklistStepName(step: CheckListStepTag): string {
             break;
         case CheckListStepTag.HtRetest:
             stepName = PipetestStep.HtRetest;
+            break;
+        case CheckListStepTag.HtCTest:
+            stepName = PipetestStep.HtCTest;
             break;
     }
     return stepName;
