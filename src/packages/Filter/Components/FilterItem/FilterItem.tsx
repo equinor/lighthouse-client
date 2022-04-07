@@ -1,6 +1,6 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import { memo, useMemo } from 'react';
-import { FilterGroup } from '../../Hooks/useFilterApi';
+import { FilterGroup, ValueFormatterFunction } from '../../Hooks/useFilterApi';
 
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterValueType } from '../../Types/filter';
@@ -14,6 +14,7 @@ type FilterItemValueProps = {
     virtualRowSize: number;
     filterItem: FilterValueType;
     filterGroup: FilterGroup;
+    valueFormatter: ValueFormatterFunction<unknown>;
     CustomRender?: (value: FilterValueType) => JSX.Element;
 };
 
@@ -22,6 +23,7 @@ export const FilterItem = ({
     virtualRowSize,
     filterItem,
     filterGroup,
+    valueFormatter,
     CustomRender = (value) => <>{sanitizeFilterItemName(value)}</>,
 }: FilterItemValueProps): JSX.Element => {
     const {
@@ -37,7 +39,7 @@ export const FilterItem = ({
     }
     const isUnChecked = checkValueIsInActive(filterGroup.name, filterItem);
     const count = useMemo(
-        () => getCountForFilterValue(filterGroup, filterItem),
+        () => getCountForFilterValue(filterGroup, filterItem, valueFormatter),
         [getCountForFilterValue, filterGroup.name, filterItem]
     );
     return (

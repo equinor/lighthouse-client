@@ -32,7 +32,11 @@ interface FilterGroupState {
     getInactiveGroupValues: GetGroupValuesFunc;
     checkValueIsInActive: (groupName: string, value: FilterValueType) => boolean;
     getFilterItemCountsForGroup: (groupName: string) => FilterItemCount[];
-    getCountForFilterValue: (filterGroup: FilterGroup, value: FilterValueType) => number;
+    getCountForFilterValue: (
+        filterGroup: FilterGroup,
+        value: FilterValueType,
+        valueFormatter?: ValueFormatterFunction<unknown>
+    ) => number;
 }
 
 export type GetGroupValuesFunc = (groupName: string) => FilterValueType[];
@@ -42,6 +46,7 @@ interface FilterState<T> {
     getAllFilterGroups: () => FilterGroup[];
     getFilterState: () => FilterGroup[];
     getFilteredData: () => T[];
+    getValueFormatters: () => ValueFormatterFilter<T>[];
 }
 
 interface FilterSearch {
@@ -111,7 +116,6 @@ export function useFilterApi<T>({
         filterState.current.find(({ name }) => name === groupName)?.values ?? [];
 
     /**
-     * @internal
      * Get value formatters for the active filters
      * Wraps the vaLue formatters in empty handlers, makes the config cleaner
      * Returns an array of objects with name and valueformatter
@@ -162,10 +166,16 @@ export function useFilterApi<T>({
         );
     }
 
-    const getCountForFilterValue = (filterGroup: FilterGroup, filterItem: FilterValueType) => {
-        const valueFormatter = getValueFormatters().find(
-            ({ name }) => name === filterGroup.name
-        )?.valueFormatter;
+    const getCountForFilterValue = (
+        filterGroup: FilterGroup,
+        filterItem: FilterValueType,
+        valueFormatterFunc?: ValueFormatterFunction<unknown>
+    ) => {
+        valueFormatterFunc && console.log('Custom func provided');
+
+        const valueFormatter =
+            valueFormatterFunc ??
+            getValueFormatters().find(({ name }) => name === filterGroup.name)?.valueFormatter;
         if (!valueFormatter) return -1;
 
         const uncheckedValues = filterGroup.values.filter((value) => value !== filterItem);
@@ -343,6 +353,7 @@ export function useFilterApi<T>({
             getFilterState: getFilterState,
             getFilteredData: () => filteredData.current,
             getAllFilterGroups: () => allFilterValues.current,
+            getValueFormatters: getValueFormatters,
         },
         operations: {
             init: init,
