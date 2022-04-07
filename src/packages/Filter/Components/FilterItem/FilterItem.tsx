@@ -1,6 +1,5 @@
 import { Checkbox } from '@equinor/eds-core-react';
-import { memo, useEffect, useRef } from 'react';
-import { useRefresh } from '../../../../components/ParkView/hooks/useRefresh';
+import { memo, useEffect, useRef, useState } from 'react';
 import { FilterGroup } from '../../Hooks/useFilterApi';
 
 import { useFilterApiContext, useItemCountsContext } from '../../Hooks/useFilterApiContext';
@@ -25,23 +24,13 @@ export const FilterItem = ({
     filterGroup,
     CustomRender = (value) => <>{sanitizeFilterItemName(value)}</>,
 }: FilterItemValueProps): JSX.Element => {
-    const { getCount, isCounted } = useItemCountsContext();
-
-    const count = useRef<number | string>(
-        isCounted(filterGroup.name, filterItem) ? getCount(filterGroup, filterItem) : '-'
+    const { addToQueue, isCounted, getCount } = useItemCountsContext();
+    const count = useRef(
+        isCounted(filterGroup.name, filterItem) ? getCount(filterGroup, filterItem) : null
     );
 
-    const refresh = useRefresh();
-
     useEffect(() => {
-        if (typeof count.current === 'string') {
-            const id = setTimeout(() => {
-                count.current = getCount(filterGroup, filterItem);
-                refresh();
-            }, 400);
-
-            return () => clearTimeout(id);
-        }
+        addToQueue(filterGroup, filterItem, (newCount) => (count.current = newCount));
     }, []);
 
     const {

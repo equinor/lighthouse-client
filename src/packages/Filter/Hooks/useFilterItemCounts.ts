@@ -1,12 +1,24 @@
 import { useEffect, useRef } from 'react';
-import { useRefresh } from '../../../components/ParkView/hooks/useRefresh';
+import { FilterItem } from '../Components/FilterItem/FilterItem';
 import { FilterValueType } from '../Types';
 import { FilterGroup } from './useFilterApi';
 import { useFilterApiContext } from './useFilterApiContext';
 
+interface QueueItem {
+    filterGroup: FilterGroup;
+    filterItem: FilterValueType;
+    callback: (count: number) => void;
+}
+
 export interface FilterItemCounts {
     getCount: (filterGroup: FilterGroup, filterValue: FilterValueType) => number;
     isCounted: (filterGroupName: string, item: FilterValueType) => boolean;
+    addToQueue: (
+        FilterGroup: FilterGroup,
+        filterValue: FilterValueType,
+        callback: (count: number) => void
+    ) => void;
+    removeFromQueue: (groupName: string, filterValue: FilterValueType) => void;
 }
 
 export const useFilterItemCounts = (): FilterItemCounts => {
@@ -21,6 +33,58 @@ export const useFilterItemCounts = (): FilterItemCounts => {
     console.log(oldFilterState);
 
     compareFilterStates();
+
+    /**@queue
+     *
+     *
+     */
+    const queue = useRef<QueueItem[]>([]);
+    const currId = useRef<NodeJS.Timeout | null>(null);
+
+    currId.current && clearTimeout(currId.current);
+
+    function timeOutHandler() {
+        if (currId.current) {
+            console.log('queue busy');
+            return;
+        }
+        console.log('Handling queue item');
+        if (queue.current.length > 0) {
+            currId.current = setTimeout(() => {
+                handleQueueItem(queue[0]);
+                currId.current = null;
+                timeOutHandler();
+            }, 200);
+        }
+    }
+
+    const handleQueueItem = ({ callback, filterGroup, filterItem }: QueueItem) => {
+        callback(getCountForSingleValue(filterGroup, filterItem));
+        removeFromQueue(filterGroup.name, filterItem);
+    };
+
+    const appendToQueue = (item: QueueItem) => {
+        queue.current.push(item);
+        timeOutHandler();
+    };
+
+    const removeFromQueue = (groupName: string, item: FilterValueType) =>
+    (queue.current = queue.current.filter(
+        ({ filterGroup, filterItem }) => filterGroup.name !== groupName && item !== filterItem
+    ));
+
+    function addToQueue(
+        filterGroup: FilterGroup,
+        filterValue: FilterValueType,
+        callback: (count: number) => void
+    ) {
+        if (!isCounted(filterGroup.name, filterValue)) {
+            console.log('Queue item added');
+            appendToQueue({ callback, filterGroup, filterItem: filterValue });
+        } else {
+            callback(getCountForSingleValue(filterGroup, filterValue));
+        }
+    }
 
     /** Invalidate count cache if filter state changes, just make a damn observable */
     function compareFilterStates() {
@@ -63,5 +127,7 @@ export const useFilterItemCounts = (): FilterItemCounts => {
     return {
         getCount: getCountForSingleValue,
         isCounted: isCounted,
+        addToQueue,
+        removeFromQueue,
     };
 };
