@@ -31,6 +31,7 @@ import {
 } from './Components/Workflow/Components/WorkflowWarningTriangle';
 import {
     StepFilterContainer,
+    StepFilterText,
     WorkflowFilterDot,
 } from './Components/Workflow/Components/WorkflowFilterDot';
 
@@ -62,7 +63,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             pipetest.overdue =
                 pipetest.step !== PipetestStep.Complete &&
-                    DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
+                DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                     ? 'Yes'
                     : 'No';
             return pipetest;
@@ -92,7 +93,7 @@ export function setup(appApi: ClientApi): void {
                                 color={getGardenItemColor(value?.toString())}
                                 circleText={getStatusLetterFromStatus(value?.toString())}
                             />
-                            {value}
+                            <StepFilterText title={value?.toString()}>{value}</StepFilterText>
                         </StepFilterContainer>
                     );
                 },
