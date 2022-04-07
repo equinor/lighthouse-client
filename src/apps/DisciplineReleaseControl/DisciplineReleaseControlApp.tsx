@@ -21,7 +21,7 @@ import {
     getStatusLetterFromStatus,
 } from './Functions/tableHelpers';
 import { getGardenItemColor, getTimePeriod } from './Components/Garden/gardenFunctions';
-import { PipetestStatusOrder, PipetestStep } from './Types/drcEnums';
+import { PipetestStep } from './Types/drcEnums';
 import { DateTime } from 'luxon';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 // import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
@@ -39,9 +39,6 @@ import {
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
         const { FAM } = httpClient();
-        FAM.setBaseUrl('https://fam-synapse-api-dev.azurewebsites.net/');
-
-        FAM.setScopes(['api://cf9069c2-728f-4d16-9516-cf0031abd56e/access_as_user']);
 
         return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal: signal });
     };
