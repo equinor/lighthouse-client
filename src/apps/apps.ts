@@ -22,7 +22,7 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
@@ -323,7 +323,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: disciplineReleaseControlSetup,
         },
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Preservation',
