@@ -1,24 +1,34 @@
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
-import { ScopeChangeItemView } from './ScopeChangeGardenItem';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 
 export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
-    gardenKey: 'originSource',
+    gardenKey: 'state',
     itemKey: 'sequenceNumber',
     type: 'normal',
-    fieldSettings: {},
-    customViews: {
-        customItemView: ScopeChangeItemView,
+    fieldSettings: {
+        CurrentStep: {
+            getKey: (test) => test.currentWorkflowStep?.name ?? '(Blank)',
+            label: 'Current step',
+        },
+        Status: {
+            getKey: ({ workflowStatus }) => workflowStatus ?? '(Blank)',
+            label: 'Workflow status',
+        },
+        State: {
+            getKey: ({ state, isVoided }) => (isVoided ? 'Voided' : state),
+            label: 'State',
+        },
+        ChangeCategory: {
+            getKey: ({ changeCategory }) => changeCategory.name,
+            label: 'Change category',
+        },
     },
+    customViews: {},
     intercepters: {
         postGroupSorting: (data) =>
             data.map((group) => ({
                 ...group,
                 items: group.items.sort((a, b) => a.sequenceNumber - b.sequenceNumber),
             })),
-        preGroupFiltering: (data, key) =>
-            key === 'originSource'
-                ? data.filter(({ sequenceNumber }) => sequenceNumber > 200)
-                : data,
     },
 };
