@@ -1,4 +1,4 @@
-import { useViewerContext } from '../../Context/ViewProvider';
+import { useLocationContext } from '../../Context/LocationProvider';
 import { TabsConfigItem } from '../../Tabs/tabsConfig';
 import { Panel, Wrapper } from './WorkSpaceTabsStyles';
 
@@ -7,7 +7,8 @@ interface CompletionViewTabsProps {
 }
 
 export const WorkSpaceTabs = ({ tabs }: CompletionViewTabsProps): JSX.Element => {
-    const { activeTab } = useViewerContext();
+    const { activeTab } = useLocationContext();
+    console.log(activeTab, tabs);
     return (
         <Wrapper>
             {tabs.map((tab) => {

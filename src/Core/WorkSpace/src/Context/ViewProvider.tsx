@@ -9,7 +9,6 @@ import {
 import { useDataContext } from './DataProvider';
 
 interface ViewState {
-    activeTab: string;
     hasPowerBi: boolean;
     pages: Page[];
     activePage?: Page;
@@ -34,7 +33,6 @@ interface ViewContext extends ViewState {
 const Context = createContext({} as ViewContext);
 
 const INIT_STATE = {
-    activeTab: '',
     hasPowerBi: false,
     isFilterActive: false,
     hasActiveFilters: false,
