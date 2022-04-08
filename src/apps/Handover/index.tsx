@@ -1,16 +1,16 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import { statusBarData } from './Garden/components/statusItems';
 import { HandoverGroupByView, HandoverSideSheet } from './Garden/CustomViews';
+import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
+import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
 import {
     fieldSettings,
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus,
+    sortPackagesByStatus
 } from './Garden/utility';
-import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
-import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
-import { statusBarData } from './Garden/components/statusItems';
 import { tableConfig } from './Garden/utility/tableConfig';
 enum Tabs {
     TABLE,
@@ -25,7 +25,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<HandoverPackage>({
             CustomSidesheet: HandoverSideSheet,
             objectIdentifier: 'id',
-            defaultTab: Tabs.GARDEN,
+            defaultTab: 'Garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,

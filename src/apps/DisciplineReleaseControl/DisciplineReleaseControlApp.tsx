@@ -1,8 +1,22 @@
 import { ClientApi } from '@equinor/portal-client';
+import { DateTime } from 'luxon';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
+import { getGardenItemColor, getTimePeriod } from './Components/Garden/gardenFunctions';
+import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
+// import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
+import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 // import { ReleaseControlProcessForm } from './Components/Form/ReleaseControlProcessForm';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
+import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
+import {
+    StepFilterContainer,
+    WorkflowFilterDot
+} from './Components/Workflow/Components/WorkflowFilterDot';
+import {
+    CurrentStepContainer,
+    WorkflowWarningTriangle
+} from './Components/Workflow/Components/WorkflowWarningTriangle';
 import {
     getPipetestCompletionStatus,
     getPipetestStatus,
@@ -10,31 +24,17 @@ import {
     getYearAndWeekFromString,
     isPipetestProcessDoneInRightOrder,
     sortPipetestChecklist,
-    sortPipetests,
+    sortPipetests
 } from './Functions/statusHelpers';
-import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
-import { Pipetest } from './Types/pipetest';
 import {
     checklistTagFunc,
     createChecklistSteps,
     getHTList,
-    getStatusLetterFromStatus,
+    getStatusLetterFromStatus
 } from './Functions/tableHelpers';
-import { getGardenItemColor, getTimePeriod } from './Components/Garden/gardenFunctions';
-import { PipetestStep } from './Types/drcEnums';
-import { DateTime } from 'luxon';
-import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
-// import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
-import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { Monospace } from './Styles/Monospace';
-import {
-    CurrentStepContainer,
-    WorkflowWarningTriangle,
-} from './Components/Workflow/Components/WorkflowWarningTriangle';
-import {
-    StepFilterContainer,
-    WorkflowFilterDot,
-} from './Components/Workflow/Components/WorkflowFilterDot';
+import { PipetestStep } from './Types/drcEnums';
+import { Pipetest } from './Types/pipetest';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -57,7 +57,7 @@ export function setup(appApi: ClientApi): void {
             pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
             pipetest.overdue =
                 pipetest.step !== PipetestStep.Complete &&
-                    DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
+                DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                     ? 'Yes'
                     : 'No';
             return pipetest;
@@ -70,7 +70,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<Pipetest>({
             CustomSidesheet: ReleaseControlSidesheet,
             objectIdentifier: 'name',
-            defaultTab: 1,
+            defaultTab: 'Garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,

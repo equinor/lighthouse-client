@@ -4,6 +4,7 @@ import { Gantt } from '../Icons/Gantt';
 import { Garden } from '../Icons/Garden';
 import { Table } from '../Icons/Table';
 import { Tree } from '../Icons/Tree';
+import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
 import { AnalyticsTab } from './AnalyticsTab';
 import { GardenTab } from './GardenTab';
 import { ListTab as TableTab } from './ListTab';
@@ -13,6 +14,7 @@ import { VisualEditorTab } from './VisualEditorTab';
 
 export interface TabsConfigItem {
     title: string;
+    tabId: WorkspaceTab;
     icon: React.FC;
     viewComponent: React.FC;
 }
@@ -20,31 +22,37 @@ export interface TabsConfigItem {
 const tabsConfig: TabsConfigItem[] = [
     {
         title: 'Tree',
+        tabId: 'Tree',
         icon: Tree,
         viewComponent: TreeTab,
     },
     {
         title: 'Table',
+        tabId: 'Table',
         icon: Table,
         viewComponent: TableTab,
     },
     {
         title: 'Garden',
+        tabId: 'Garden',
         icon: Garden,
         viewComponent: GardenTab,
     },
     {
         title: 'Timeline',
+        tabId: 'Gantt',
         icon: Gantt,
         viewComponent: TimelineTab,
     },
     {
         title: 'Analytics',
+        tabId: 'Analytics',
         icon: Analytics,
         viewComponent: AnalyticsTab,
     },
     {
         title: 'Editor',
+        tabId: 'Editor',
         //Todo add Editor icon
         icon: Gantt,
         viewComponent: VisualEditorTab,

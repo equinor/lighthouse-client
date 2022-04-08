@@ -9,8 +9,10 @@ import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFil
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useDataContext } from '../../Context/DataProvider';
+import { useLocationContext } from '../../Context/LocationProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
+import { TabsConfigItem } from '../../Tabs/tabsConfig';
 import { TabButton } from '../ToggleButton';
 import {
     ActionBar,
@@ -24,18 +26,13 @@ import {
     TitleBar
 } from './HeaderStyles';
 
-const { Tab, List } = Tabs;
-
-interface TabItem {
-    icon: React.FC;
-    title: string;
-}
+const { List } = Tabs;
 
 type VoidFunction = () => void;
 
 interface CompletionViewHeaderProps {
     title: string;
-    tabs: TabItem[];
+    tabs: TabsConfigItem[];
     handleFilter: VoidFunction;
     activeFilter: boolean;
 }
@@ -48,16 +45,10 @@ export const CompletionViewHeader = ({
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
-    const {
-        hasPowerBi,
-        toggleView,
-        activeView,
-        pages,
-        setActivePage,
-        activePage,
-        hasActiveFilters,
-        togglePowerBIFilter,
-    } = useViewerContext();
+    const { hasPowerBi, pages, setActivePage, activePage, hasActiveFilters, togglePowerBIFilter } =
+        useViewerContext();
+
+    const { handleSetActiveTab, activeTab } = useLocationContext();
 
     const {
         filterState: { getFilteredData, checkHasActiveFilters },
@@ -76,7 +67,7 @@ export const CompletionViewHeader = ({
             </TitleBar>
             <ActionBar>
                 <LeftSection>
-                    {!activeView ? (
+                    {activeTab !== 'PowerBi' ? (
                         <FillSection>
                             <StatusBar statusItems={statusItems} />
                         </FillSection>
@@ -103,19 +94,6 @@ export const CompletionViewHeader = ({
                     )}
                 </LeftSection>
                 <RightSection>
-                    {hasPowerBi && (
-                        <>
-                            <TabButton
-                                onClick={toggleView}
-                                aria-selected={false}
-                                title={'Power Bi'}
-                            >
-                                <Icon name={!activeView ? 'bar_chart' : 'table_chart'} />
-                            </TabButton>
-                            <Divider />
-                        </>
-                    )}
-
                     {factory && (
                         <>
                             <TabButton
@@ -130,16 +108,34 @@ export const CompletionViewHeader = ({
                         </>
                     )}
 
-                    <List>
+                    {hasPowerBi && (
+                        <>
+                            <TabButton
+                                onClick={() => handleSetActiveTab('PowerBi')}
+                                aria-selected={activeTab === 'PowerBi'}
+                                title={'Power Bi'}
+                            >
+                                <Icon name={'bar_chart'} />
+                            </TabButton>
+                            <Divider />
+                        </>
+                    )}
+
+                    <>
                         {tabs.map((tab) => {
                             const Icon = tab.icon;
                             return (
-                                <Tab key={`tab-${tab.icon}`} title={tab.title}>
+                                <TabButton
+                                    onClick={() => handleSetActiveTab(tab.tabId)}
+                                    key={`tab-${tab.icon}`}
+                                    aria-selected={activeTab === tab.tabId}
+                                    title={tab.title}
+                                >
                                     <Icon />
-                                </Tab>
+                                </TabButton>
                             );
                         })}
-                    </List>
+                    </>
                     <Divider />
                     {/* <SearchButton /> */}
 
@@ -164,7 +160,7 @@ export const CompletionViewHeader = ({
                         )}
                     </TabButton>
 
-                    {!activeView ? (
+                    {activeTab !== 'PowerBi' ? (
                         <TabButton
                             onClick={handleFilter}
                             aria-selected={activeFilter}

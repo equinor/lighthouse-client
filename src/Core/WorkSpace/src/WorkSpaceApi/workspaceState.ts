@@ -74,9 +74,18 @@ export interface PrefetchQueriesOptions {
     options?: FetchQueryOptions<unknown, unknown, unknown, string[]> | undefined;
 }
 
+export type WorkspaceTab =
+    | 'Tree'
+    | 'Table'
+    | 'Garden'
+    | 'PowerBi'
+    | 'Analytics'
+    | 'Gantt'
+    | 'Editor';
+
 export interface WorkSpaceConfig<T> {
     name: string;
-    defaultTab: number;
+    defaultTab: WorkspaceTab;
     objectIdentifier: string;
     prefetchQueriesOptions?: PrefetchQueriesOptions[];
     onSelect?: (item: T) => void;

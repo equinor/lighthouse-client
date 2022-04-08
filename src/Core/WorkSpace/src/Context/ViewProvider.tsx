@@ -8,8 +8,8 @@ import {
 } from 'react';
 import { useDataContext } from './DataProvider';
 
-interface PowerBIViewState {
-    activeView: boolean;
+interface ViewState {
+    activeTab: string;
     hasPowerBi: boolean;
     pages: Page[];
     activePage?: Page;
@@ -23,8 +23,7 @@ export interface Page {
     default?: boolean;
 }
 
-interface ViewContext extends PowerBIViewState {
-    toggleView(): void;
+interface ViewContext extends ViewState {
     registerPages(pages: Page[]): void;
     setActivePage(pages: Page): void;
     resetState(): void;
@@ -35,7 +34,7 @@ interface ViewContext extends PowerBIViewState {
 const Context = createContext({} as ViewContext);
 
 const INIT_STATE = {
-    activeView: false,
+    activeTab: '',
     hasPowerBi: false,
     isFilterActive: false,
     hasActiveFilters: false,
@@ -43,10 +42,8 @@ const INIT_STATE = {
     activePage: {} as Page,
 };
 
-export const PowerBIViewContextProvider = ({
-    children,
-}: PropsWithChildren<unknown>): JSX.Element => {
-    const [state, setState] = useState<PowerBIViewState>(INIT_STATE);
+export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
+    const [state, setState] = useState<ViewState>(INIT_STATE);
     const { powerBiOptions } = useDataContext();
 
     useEffect(() => {
@@ -59,12 +56,6 @@ export const PowerBIViewContextProvider = ({
             }));
         }
     }, [powerBiOptions]);
-
-    const toggleView = useCallback(() => {
-        setState((s) => {
-            return { ...s, activeView: !s.activeView };
-        });
-    }, []);
 
     const registerPages = useCallback((pages: Page[]) => {
         setState((s) => {
@@ -98,7 +89,6 @@ export const PowerBIViewContextProvider = ({
         <Context.Provider
             value={{
                 ...state,
-                toggleView,
                 registerPages,
                 setActivePage,
                 resetState,

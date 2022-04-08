@@ -2,23 +2,26 @@ import { Button, CircularProgress, Dialog, Typography } from '@equinor/eds-core-
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { useDataContext } from '../../Context/DataProvider';
+import { useLocationContext } from '../../Context/LocationProvider';
 import { TabsConfigItem } from '../../Tabs/tabsConfig';
 import { WorkspaceErrorPage } from '../WorkSpace/WorkspaceErrorPage';
-import { Panel, Panels } from './WorkSpaceTabsStyles';
+import { Panel, Wrapper } from './WorkSpaceTabsStyles';
 
 interface CompletionViewTabsProps {
     tabs: TabsConfigItem[];
-    activeTab: number;
+
     title: string;
 }
 
-export const WorkSpaceTabs = ({ tabs, activeTab, title }: CompletionViewTabsProps): JSX.Element => {
+export const WorkSpaceTabs = ({ tabs, title }: CompletionViewTabsProps): JSX.Element => {
     const { dataApi } = useDataContext();
+    const { activeTab } = useLocationContext();
+
     const navigate = useNavigate();
 
     return (
-        <Panels>
-            {tabs.map((tab, index) => {
+        <Wrapper>
+            {tabs.map((tab) => {
                 const ViewComponent = tab.viewComponent;
                 return (
                     <Panel key={`panel-${tab.title}`}>
@@ -38,18 +41,18 @@ export const WorkSpaceTabs = ({ tabs, activeTab, title }: CompletionViewTabsProp
                                 />
                             </WorkspaceErrorPage>
                         ) : (!dataApi?.isFetching || dataApi.isFetching) &&
-                            dataApi?.data?.length === 0 ? (
+                          dataApi?.data?.length === 0 ? (
                             <Loading>
                                 <CircularProgress color="primary" value={0} size={48} />
                                 <h2>Loading {title.toLowerCase()}..</h2>
                             </Loading>
                         ) : (
-                            activeTab == index && <ViewComponent />
+                            activeTab == tab.tabId && <ViewComponent />
                         )}
                     </Panel>
                 );
             })}
-        </Panels>
+        </Wrapper>
     );
 };
 

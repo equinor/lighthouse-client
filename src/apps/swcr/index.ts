@@ -14,16 +14,13 @@ import {
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { columns, tableConfig } from './utilities/tableSetup';
-enum Tabs {
-    TABLE = 0,
-    GARDEN = 1,
-}
+
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<SwcrPackage>({
             CustomSidesheet: SwcrSideSheet,
             objectIdentifier: 'swcrNo',
-            defaultTab: Tabs.GARDEN,
+            defaultTab: 'Garden',
         })
         .registerDataSource({ responseAsync: responseAsync, responseParser: responseParser })
         .registerFilterOptions(filterSetup)
