@@ -9,7 +9,7 @@ import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFil
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useDataContext } from '../../Context/DataProvider';
-import { useViewerContext } from '../../Context/PowerBiViewProvider';
+import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
 import { TabButton } from '../ToggleButton';
 import {

@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import ErrorFallback from '../../ErrorBoundary/Components/ErrorFallback';
 import { WorkSpaceView } from './Components/WorkSpace/WorkSpaceView';
 import { DataProvider } from './Context/DataProvider';
-import { PowerBIViewContextProvider } from './Context/PowerBiViewProvider';
+import { PowerBIViewContextProvider } from './Context/ViewProvider';
 
 export type WorkspaceProps = Omit<
     ClientApi,

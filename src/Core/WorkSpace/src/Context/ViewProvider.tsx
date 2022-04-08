@@ -1,4 +1,11 @@
-import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
+import {
+    createContext,
+    PropsWithChildren,
+    useCallback,
+    useContext,
+    useEffect,
+    useState
+} from 'react';
 import { useDataContext } from './DataProvider';
 
 interface PowerBIViewState {
@@ -53,37 +60,40 @@ export const PowerBIViewContextProvider = ({
         }
     }, [powerBiOptions]);
 
-    function toggleView() {
+    const toggleView = useCallback(() => {
         setState((s) => {
             return { ...s, activeView: !s.activeView };
         });
-    }
+    }, []);
 
-    function registerPages(pages: Page[]) {
+    const registerPages = useCallback((pages: Page[]) => {
         setState((s) => {
             return { ...s, pages };
         });
-    }
-    function setActivePage(page: Page) {
+    }, []);
+
+    const setActivePage = useCallback((page: Page) => {
         setState((s) => {
             return { ...s, activePage: page };
         });
-    }
-    function togglePowerBIFilter() {
+    }, []);
+
+    const togglePowerBIFilter = useCallback(() => {
         setState((s) => {
             return { ...s, isFilterActive: !s.isFilterActive };
         });
-    }
+    }, []);
 
-    function setHasActiveFilters(isActive: boolean) {
+    const setHasActiveFilters = useCallback((isActive: boolean) => {
         setState((s) => {
             return { ...s, hasActiveFilters: isActive };
         });
-    }
+    }, []);
 
-    function resetState() {
+    const resetState = useCallback(() => {
         setState(INIT_STATE);
-    }
+    }, []);
+
     return (
         <Context.Provider
             value={{

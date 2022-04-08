@@ -13,7 +13,7 @@ import {
 } from '../../../../components/ParkView/Models/gardenOptions';
 import { FilterOptions } from '../../../../packages/Filter/Types';
 import { StatusItem } from '../../../../packages/StatusBar';
-import { Page } from '../Context/PowerBiViewProvider';
+import { Page } from '../Context/ViewProvider';
 import { DataSource, DataViewerProps, ViewOptions } from './WorkSpaceTypes';
 
 export interface WorkSpaceState {
