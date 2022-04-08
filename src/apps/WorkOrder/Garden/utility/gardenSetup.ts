@@ -1,7 +1,9 @@
-import { sortByNumber } from '@equinor/GardenUtils';
+import { getYearAndWeekFromDate, sortByNumber } from '@equinor/GardenUtils';
+import { getGardenItems } from '../../../../components/ParkView/Components/VirtualGarden/utils';
+import { GardenGroups } from '../../../../components/ParkView/Models/data';
 import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
 import { WorkOrder } from '../models';
-import { columnKeyAccessor } from './groupByUtils';
+import { columnKeyAccessor, getGroupBy } from './groupByUtils';
 export type ExtendedGardenFields = 'fwp' | 'hwp' | 'wp';
 export const fieldSettings: FieldSettings<WorkOrder, ExtendedGardenFields> = {
     wp: {
@@ -28,4 +30,39 @@ export const fieldSettings: FieldSettings<WorkOrder, ExtendedGardenFields> = {
     milestone: {
         label: 'Milestone',
     },
+};
+
+export const getHighlightedColumn = (groupByKey: string) => {
+    const groupBy = getGroupBy(groupByKey);
+
+    switch (groupBy) {
+        case 'plannedStartDate':
+        case 'plannedFinishDate':
+            return getYearAndWeekFromDate(new Date());
+        default:
+            return undefined;
+    }
+};
+
+export const getItemWidth = (garden: GardenGroups<WorkOrder>, groupByKey: string) => {
+    const columnName = groupByKey.replace('Code', '');
+    const checkHeaderLength = ['milestone', 'responsible', 'discipline'].includes(columnName);
+    let gardenItemList: WorkOrder[] = [];
+    garden.forEach((column) => {
+        const gardenItems = getGardenItems(column);
+        gardenItems && gardenItemList.push(...(gardenItems as WorkOrder[]));
+    });
+
+    const longestKey = Math.max.apply(
+        Math,
+        gardenItemList.map((item) => {
+            const titleLength =
+                checkHeaderLength && item?.[columnName] ? item[columnName].length : 0;
+            return titleLength >= item.workOrderNumber.length
+                ? titleLength
+                : item.workOrderNumber.length;
+        })
+    );
+
+    return Math.max(longestKey * 8 + 80, 102);
 };

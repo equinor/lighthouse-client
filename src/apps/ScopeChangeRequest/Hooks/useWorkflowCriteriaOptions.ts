@@ -1,6 +1,5 @@
 import { useQuery, UseQueryOptions } from 'react-query';
 import { canReassign, canUnsign, canSign } from '../Api/ScopeChange/Access';
-import { ServerError } from '../Types/ScopeChange/ServerError';
 import { CacheTime } from '../Enums/cacheTimes';
 import { scopeChangeQueryKeys } from '../Keys/scopeChangeQueryKeys';
 
@@ -13,8 +12,7 @@ interface CriteriaOptions {
 export function useWorkflowCriteriaOptions(
     requestId: string,
     criteriaId: string,
-    stepId: string,
-    errorPipe?: (value: ServerError) => void
+    stepId: string
 ): CriteriaOptions {
     const params = {
         criteriaId,
@@ -30,11 +28,6 @@ export function useWorkflowCriteriaOptions(
         retry: 3,
         staleTime: CacheTime.FiveMinutes,
         cacheTime: CacheTime.FiveMinutes,
-        onError: (e: string) => {
-            if (errorPipe) {
-                errorPipe({ detail: e, title: 'Query failed', validationErrors: {} });
-            }
-        },
     };
     const { workflowKeys } = scopeChangeQueryKeys(requestId);
     const { criteriaCanSignKey, criteriaCanReassignKey, criteriaCanUnsignKey } = workflowKeys;

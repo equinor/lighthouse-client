@@ -27,12 +27,15 @@ export function useScopeChangeMutation<
     const {
         dataApi: { queryKey: workspaceKey },
     } = useDataContext();
-    const { baseKey } = scopeChangeQueryKeys(requestId);
 
+    const { baseKey } = scopeChangeQueryKeys(requestId);
     function invalidate() {
-        queryClient.invalidateQueries(baseKey);
         queryClient.invalidateQueries(workspaceKey);
+        queryClient.invalidateQueries(baseKey);
     }
 
-    return useMutation(mutationKey, mutationFn, { ...options, onSettled: invalidate });
+    return useMutation(mutationKey, mutationFn, {
+        ...options,
+        onSettled: invalidate,
+    });
 }

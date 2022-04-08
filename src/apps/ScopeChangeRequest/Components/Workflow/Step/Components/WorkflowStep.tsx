@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { WorkflowStep } from '../../../../Types/scopeChangeRequest';
 import { canAddContributor } from '../../../../Api/ScopeChange/Access/Workflow/Step/canManageContributors';
-import { useQuery } from 'react-query';
 import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
 import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
 import { CacheTime } from '../../../../Enums/cacheTimes';
 import { scopeChangeQueryKeys } from '../../../../Keys/scopeChangeQueryKeys';
+import { useQuery } from 'react-query';
 
 interface WorkflowStepProps {
     step: WorkflowStep;
@@ -40,7 +40,8 @@ export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element 
                         />
                     );
                 })}
-            {step.contributors &&
+            {step.isCurrent &&
+                step.contributors &&
                 step.contributors.map((contributor) => {
                     return (
                         <Contributor

@@ -3,6 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
+
 import { IconMenu } from '../../apps/ScopeChangeRequest/Components/MenuButton';
 import { NotificationCardNew } from '../../Core/Notifications/Components/NotificationCard';
 import { useNotificationCenter } from '../../Core/Notifications/Hooks/useNotificationCenter';
@@ -31,13 +32,11 @@ export function NotificationsTab(): JSX.Element {
     const [isGroupedBySource, setIsGroupedBySource] = useState(true);
 
     const isActive = (key: string) => activeNotifications.includes(key);
-    const firstLetterUppercase = (value: string) => [value[0].toUpperCase(), ...value.slice(0 + 1)];
 
-    function sortAndFilterList(list: Notification[]) {
-        return list
+    const sortAndFilterList = (list: Notification[]) =>
+        list
             .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
             .filter(({ appName }) => activeNotifications.includes(appName));
-    }
 
     return (
         <>
@@ -54,7 +53,7 @@ export function NotificationsTab(): JSX.Element {
                             onClick={() => handleClick(x)}
                             key={x}
                         >
-                            {firstLetterUppercase(x)}
+                            {x}
                         </Chip>
                     ))}
                 </ActiveOrigins>
@@ -72,13 +71,13 @@ export function NotificationsTab(): JSX.Element {
 
                 {isGroupedBySource ? (
                     <Accordion>
-                        {activeNotifications.map((originName) => (
-                            <Accordion.Item key={originName}>
+                        {activeNotifications.map((applicationTitle) => (
+                            <Accordion.Item key={applicationTitle}>
                                 <Accordion.Header chevronPosition="right">
-                                    {originName}
+                                    {applicationTitle}
                                 </Accordion.Header>
                                 {sortAndFilterList(unreadNotificationCards)
-                                    .filter((notification) => originName === notification.appName)
+                                    .filter(({ appName }) => applicationTitle === appName)
                                     .map((notification) => (
                                         <Accordion.Panel key={notification.id}>
                                             <NotificationCardNew

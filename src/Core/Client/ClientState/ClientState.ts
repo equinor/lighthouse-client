@@ -8,8 +8,6 @@ import { GlobalClientState } from '../Types/GlobalClientState';
 /* Initial Global state used for setting panel states and logging sate to false */
 const INITIAL_STATE = {
     settings: {
-        appsPanelActive: false,
-        fullscreenMenuActive: false,
         logging: false,
         isProduction: false,
         clientEnv: 'dev',

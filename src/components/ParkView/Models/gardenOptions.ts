@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { MemoExoticComponent } from 'react';
 import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { DataSet, Data } from './data';
+import { DataSet, GardenGroups } from './data';
 import { FieldSettings } from './fieldSettings';
 
 export interface Options<T> {
@@ -27,8 +27,8 @@ export interface CustomGroupView<T> {
 }
 
 export interface CustomHeaderView<T> {
-    garden: Data<T>;
-    columnKey: string;
+    garden: GardenGroups<T>;
+    columnIndex: number;
 }
 
 export interface CustomView<T> {
@@ -37,18 +37,41 @@ export interface CustomView<T> {
     customHeaderView?: React.FC<CustomHeaderView<T>>;
     customGroupByView?: React.FC;
 }
+export interface CustomVirtualView<T> {
+    customItemView?: MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;
+    customGroupView?: React.FC<CustomGroupView<T>>;
+    customHeaderView?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
+    customGroupByView?: React.FC;
+}
 
 export interface GardenOptions<T> {
     gardenKey: keyof T;
     itemKey: keyof T;
+    /**  Use virtual if garden has more than 3000 DOM elements */
+    type: 'virtual' | 'normal';
     groupByKeys?: (keyof T)[];
     customGroupByKeys?: Record<string, unknown>;
     customStateFunction?: (data: T[]) => Record<string, unknown>;
     sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     fieldSettings?: FieldSettings<T, string>;
-    customViews?: CustomView<T>;
+    /** Wrap custom components with memo if type: "virtual". */
+    customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
-
+    itemWidth?: (garden: GardenGroups<T>, key: string) => number;
+    rowHeight?: number;
+    highlightColumn?: (groupBy: string) => string | undefined;
+    intercepters?: GardenDataIntercepters<T>;
     onSelect?: (item: T) => void;
+}
+
+export type PreGroupByFiltering<T = unknown> = (arr: T[], groupByKey: string) => T[];
+export type PostGroupBySorting<T = unknown> = (
+    data: GardenGroups<T>,
+    keys: (keyof T)[]
+) => GardenGroups<T>;
+
+export interface GardenDataIntercepters<T> {
+    preGroupFiltering?: PreGroupByFiltering<T>;
+    postGroupSorting?: PostGroupBySorting<T>;
 }

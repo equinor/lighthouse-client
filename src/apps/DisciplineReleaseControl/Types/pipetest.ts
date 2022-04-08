@@ -1,13 +1,19 @@
-import { PipetestStatus } from './drcEnums';
+import { PipetestCompletionStatus, PipetestStep } from './drcEnums';
 
 export interface Pipetest {
     name: string;
-    status: PipetestStatus;
+    step: PipetestStep;
+    completionStatus: PipetestCompletionStatus;
     checkLists: CheckList[];
-    // description: string;
-    // dueDate: string;
-    // lineAndSpools: string[][];
+    heatTraces: HeatTrace[];
+    insulationBoxes: InsulationBox[];
+    description: string;
+    commPkPriority1: string;
+    rfccPlanned: string;
+    overdue: string;
+    dueDateTimePeriod: string;
     tagTree: Record<string, unknown>;
+    // lineAndSpools: string[][];
 }
 
 export interface CheckList {
@@ -21,6 +27,17 @@ export interface CheckList {
     isHeatTrace: boolean;
     workflowStepText: string | undefined;
 }
+
+export interface InsulationBox {
+    objectNo: string;
+    objectName: string;
+    objectStatusName: string;
+    objectStatus: string;
+    object3dReference: string;
+    procosysStatus: string;
+}
+
+export interface HeatTrace extends CheckList {}
 
 export type CheckListType = {
     tagNo: string;

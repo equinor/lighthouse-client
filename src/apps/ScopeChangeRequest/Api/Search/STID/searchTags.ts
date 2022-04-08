@@ -4,12 +4,13 @@ import { TypedSelectOption } from '../searchType';
 
 export const searchTags = async (
     searchString: string,
+    facilityId: string,
     signal?: AbortSignal
 ): Promise<TypedSelectOption[]> => {
     const selectOptions: TypedSelectOption[] = [];
     const { STID } = httpClient();
 
-    const uri = 'JCA/tags';
+    const uri = `${facilityId}/tags`;
     const queryParameters = `tagNo=${encodeURI(searchString)}&skip=0&take=10&noContentAs200=true`;
     const url = `/${uri}?${queryParameters}`;
     await STID.fetch(url, { signal })
