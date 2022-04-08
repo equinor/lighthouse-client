@@ -1,5 +1,5 @@
 import { useFactory } from '@equinor/DataFactory';
-import { CircularProgress, Tabs } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useMemo } from 'react';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
@@ -25,8 +25,6 @@ import {
     Title,
     TitleBar
 } from './HeaderStyles';
-
-const { List } = Tabs;
 
 type VoidFunction = () => void;
 
