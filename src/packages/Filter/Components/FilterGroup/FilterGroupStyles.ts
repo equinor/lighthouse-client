@@ -10,14 +10,12 @@ export const Title = styled.h4`
 export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 0.5em;
-    padding-right: 0;
-    width: auto;
+    margin: 0rem 0.5rem 0rem 1rem;
+    width: fit-content;
     max-width: 500px;
     text-overflow: ellipsis;
-    height: fit-content;
     word-wrap: break-word;
-    max-height: 180px;
+    height: 180px;
 
     label {
         padding: 0;
@@ -33,7 +31,21 @@ export const Wrapper = styled.div`
         }
     }
 `;
+export const VirtualFilterContainer = styled.div`
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    ::-webkit-scrollbar {
+        height: 0.1rem;
+        width: 0.3rem;
+    }
+`;
 
+export const VirtualFilterItemWrapper = styled.div`
+    width: auto;
+    min-width: 150px;
+    position: relative;
+`;
 export const FilterGroupWrapper = styled.div`
     overflow-x: hidden;
     overflow-y: scroll;

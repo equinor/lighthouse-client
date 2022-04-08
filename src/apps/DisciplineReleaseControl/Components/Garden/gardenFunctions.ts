@@ -55,10 +55,10 @@ export const getTimePeriod = (item: Pipetest): string => {
     return 'Other';
 };
 
-export const getGardenItemColor = (item: Pipetest): string => {
+export const getGardenItemColor = (step: string | undefined): string => {
     let color = '#D3D3D3';
 
-    switch (item.step) {
+    switch (step) {
         case PipetestStep.PressureTest:
             color = '#a8c8de';
             break;
@@ -85,6 +85,9 @@ export const getGardenItemColor = (item: Pipetest): string => {
             break;
         case PipetestStep.HtRetest:
             color = '#ffc67a';
+            break;
+        case PipetestStep.HtCTest:
+            color = '#DCAB6A';
             break;
         case PipetestStep.Marking:
             color = '#e6faec';

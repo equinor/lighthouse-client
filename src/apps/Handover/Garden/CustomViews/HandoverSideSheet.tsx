@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { Tabs } from '@equinor/eds-core-react';
 import { HandoverPackage } from '../models/handoverPackage';
 import useHandoverResource from '../hooks/useHandoverResource';
@@ -15,15 +14,8 @@ import {
     UnsignedTaskTab,
     WorkOrderTab,
 } from '../components/HandoverSidesheet';
+import { SideSheetContainer } from '@equinor/GardenUtils';
 import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
-
-const SideSheetContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    padding: 16px;
-    width: 100%;
-`;
 
 interface HandoverSideSheetProps {
     item: HandoverPackage;

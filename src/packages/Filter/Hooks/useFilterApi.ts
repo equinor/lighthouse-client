@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useRefresh } from '../../../components/ParkView/hooks/useRefresh';
-import { doesItemPassFilter } from '../functions/doesItemPass';
+import { doesItemPassFilter, doesItemPassCriteria } from '../functions/doesItemPass';
 import { generateFilterValues } from '../functions/generateFilterValues';
 import { searchAcrossFilterGroups } from '../functions/searchAcrossFilterGroups';
 import { FilterOptions, FilterValueType } from '../Types/filter';
@@ -32,6 +32,11 @@ interface FilterGroupState {
     getInactiveGroupValues: GetGroupValuesFunc;
     checkValueIsInActive: (groupName: string, value: FilterValueType) => boolean;
     getFilterItemCountsForGroup: (groupName: string) => FilterItemCount[];
+    getCountForFilterValue: (
+        filterGroup: FilterGroup,
+        value: FilterValueType,
+        valueFormatter?: ValueFormatterFunction<unknown>
+    ) => number;
 }
 
 export type GetGroupValuesFunc = (groupName: string) => FilterValueType[];
@@ -41,6 +46,7 @@ interface FilterState<T> {
     getAllFilterGroups: () => FilterGroup[];
     getFilterState: () => FilterGroup[];
     getFilteredData: () => T[];
+    getValueFormatters: () => ValueFormatterFilter<T>[];
 }
 
 interface FilterSearch {
@@ -69,6 +75,7 @@ export type ValueFormatterFunction<T> = (item: T) => FilterValueType | FilterVal
 export interface ValueFormatterFilter<T> {
     name: string;
     valueFormatter: ValueFormatterFunction<T>;
+    sort?: (values: FilterValueType[]) => FilterValueType[];
 }
 
 type SetFilterState = (newFilterState: FilterGroup[], preventReRender?: boolean) => void;
@@ -92,6 +99,7 @@ export function useFilterApi<T>({
 }: FilterProviderProps<T>): FilterApi<T> {
     const filteredData = useRef<T[]>(data ?? []);
     const filterState = useRef<FilterGroup[]>([]);
+
     /**
      * @internal
      */
@@ -110,7 +118,6 @@ export function useFilterApi<T>({
         filterState.current.find(({ name }) => name === groupName)?.values ?? [];
 
     /**
-     * @internal
      * Get value formatters for the active filters
      * Wraps the vaLue formatters in empty handlers, makes the config cleaner
      * Returns an array of objects with name and valueformatter
@@ -118,9 +125,10 @@ export function useFilterApi<T>({
     function getValueFormatters(): ValueFormatterFilter<T>[] {
         return filterConfiguration
             .filter(({ name }) => getFilterState().map((group) => group.name === name))
-            .map(({ name, valueFormatter }) => ({
+            .map(({ name, valueFormatter, sort }) => ({
                 name: name,
                 valueFormatter: (item) => handleEmpty(valueFormatter(item)),
+                sort: sort,
             }));
     }
 
@@ -161,22 +169,22 @@ export function useFilterApi<T>({
         );
     }
 
-    /**
-     * @internal
-     */
-    const getCountForFilterValue = (filterGroup: FilterGroup, filterValue: FilterValueType) =>
-        filteredData.current.filter((item) =>
-            doesItemPassFilter(
-                item,
-                [
-                    {
-                        name: filterGroup.name,
-                        values: filterGroup.values.filter((oldValue) => oldValue !== filterValue),
-                    },
-                ],
-                getValueFormatters()
-            )
-        ).length;
+    const getCountForFilterValue = (
+        filterGroup: FilterGroup,
+        filterItem: FilterValueType,
+        valueFormatterFunc?: ValueFormatterFunction<unknown>
+    ) => {
+        const valueFormatter =
+            valueFormatterFunc ??
+            getValueFormatters().find(({ name }) => name === filterGroup.name)?.valueFormatter;
+        if (!valueFormatter) return -1;
+
+        const uncheckedValues = filterGroup.values.filter((value) => value !== filterItem);
+
+        return filteredData.current.reduce((count, val) => {
+            return doesItemPassCriteria(uncheckedValues, valueFormatter(val)) ? count + 1 : count;
+        }, 0);
+    };
 
     /**
      * @internal
@@ -346,6 +354,7 @@ export function useFilterApi<T>({
             getFilterState: getFilterState,
             getFilteredData: () => filteredData.current,
             getAllFilterGroups: () => allFilterValues.current,
+            getValueFormatters: getValueFormatters,
         },
         operations: {
             init: init,
@@ -362,6 +371,7 @@ export function useFilterApi<T>({
             getInactiveGroupValues: getInactiveGroupValues,
             getGroupValues: getGroupValues,
             checkValueIsInActive: checkValueIsInActive,
+            getCountForFilterValue,
         },
         search: {
             clearSearch: clearSearch,

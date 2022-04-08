@@ -40,6 +40,7 @@ export const VirtualGarden = <T extends unknown>({
         highlightColumn,
         rowHeight,
         customDescription,
+        customGroupByKeys,
     } = useParkViewContext<T>();
 
     const parentRef = useRef<HTMLDivElement | null>(null);
@@ -106,8 +107,11 @@ export const VirtualGarden = <T extends unknown>({
         },
         [refresh]
     );
-    const highlightedColumn = highlightColumn ? highlightColumn(gardenKey.toString()) : undefined;
-
+    const highlightedColumn = useMemo(
+        () =>
+            highlightColumn ? highlightColumn(gardenKey.toString(), customGroupByKeys) : undefined,
+        [highlightColumn, gardenKey, customGroupByKeys]
+    );
     useLayoutEffect(() => {
         if (highlightedColumn) {
             const scrollIndex = sortedColumns.findIndex(
@@ -134,6 +138,7 @@ export const VirtualGarden = <T extends unknown>({
                 headerChild={headerChild}
                 highlightColumn={highlightedColumn}
                 customDescription={customDescription}
+                groupByKey={gardenKey.toString()}
             />
             {columnVirtualizer.virtualItems.map((virtualColumn) => {
                 const currentColumn = sortedColumns[virtualColumn.index];

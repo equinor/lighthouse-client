@@ -6,4 +6,5 @@ export interface PBIOptions {
     pageLoad?: boolean;
     isFilterActive?: boolean;
     aspectRatio?: number;
+    hasFilter?: (hasFilter: boolean) => void;
 }

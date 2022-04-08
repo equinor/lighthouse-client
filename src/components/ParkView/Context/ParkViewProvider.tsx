@@ -83,7 +83,8 @@ export function useParkViewContext<T>() {
         sortData: parkViewContext.sortData as (data: T[], ...groupByKeys: (keyof T)[]) => T[],
         itemWidth: parkViewContext.itemWidth as (
             gardenGroups: GardenGroups<T>,
-            groupKey: string
+            groupKey: string,
+            customGroupByKeys?: Record<string, unknown>
         ) => number,
     };
 }
