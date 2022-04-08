@@ -63,7 +63,7 @@ export function NotificationsTab(): JSX.Element {
                     items={[
                         {
                             label: `${isGroupedBySource ? 'Ungroup' : 'Group by source'} `,
-                            icon: <Checkbox checked={isGroupedBySource} />,
+                            icon: <Checkbox checked={isGroupedBySource} readOnly />,
                             onClick: () => setIsGroupedBySource((prev) => !prev),
                         },
                     ]}
@@ -118,4 +118,5 @@ const NotificationsList = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
+    margin: 1em;
 `;
