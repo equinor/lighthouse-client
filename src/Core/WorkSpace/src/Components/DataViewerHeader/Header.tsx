@@ -1,9 +1,11 @@
 import { useFactory } from '@equinor/DataFactory';
-import { Tabs } from '@equinor/eds-core-react';
+import { CircularProgress, Search, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useFilteredData } from '@equinor/filter';
+import { useState } from 'react';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
+import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import Icon from '../../../../../components/Icon/Icon';
+import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { StatusBar } from '../../../../../packages/StatusBar';
 import { useSettings } from '../../../../Client/Hooks';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
@@ -36,7 +38,11 @@ export const CompletionViewHeader = ({
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
-    const { data } = useFilteredData();
+
+    const {
+        filterState: { getFilteredData, checkHasActiveFilters },
+    } = useFilterApiContext();
+    const data = getFilteredData();
     const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
 
     const { clientEnv } = useSettings();
@@ -75,6 +81,7 @@ export const CompletionViewHeader = ({
                     })}
                 </List>
                 <Divider />
+                {/* <SearchButton /> */}
                 <TabButton
                     color={
                         dataApi?.isStale
@@ -89,12 +96,64 @@ export const CompletionViewHeader = ({
                     }
                     onClick={() => dataApi.refetch()}
                 >
-                    <ClickableIcon size={32} name="refresh" />
+                    {dataApi?.isFetching ? (
+                        <CircularProgress size={24} />
+                    ) : (
+                        <ClickableIcon size={24} name="refresh" />
+                    )}
                 </TabButton>
                 <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
-                    <Icon name={'filter_alt'} />
+                    {checkHasActiveFilters() ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                 </TabButton>
             </RightSection>
         </HeaderWrapper>
     );
 };
+
+/** Search button for searching data in workspace */
+function SearchButton() {
+    const {
+        search: { clearSearch, search },
+        filterState: { getAllFilterGroups },
+    } = useFilterApiContext();
+
+    const [isActive, setIsActive] = useState(false);
+    const handleChange = () =>
+        setIsActive((prev) => {
+            if (prev === false) {
+                clearSearch();
+            }
+            return !prev;
+        });
+
+    function handleSearch(e) {
+        const value = e.target.value;
+
+        value === ''
+            ? clearSearch()
+            : search(
+                getAllFilterGroups().map(({ name }) => name),
+                value,
+                'FilteredData'
+            );
+    }
+
+    function handleClear(e) {
+        e.isTrusted ? void 0 : clearSearch();
+    }
+
+    return (
+        <>
+            <TabButton aria-selected={false} onClick={handleChange}>
+                <Icon name="search" />
+            </TabButton>
+            {isActive && (
+                <Search
+                    onChange={handleClear}
+                    placeholder="Type to search..."
+                    onInput={handleSearch}
+                />
+            )}
+        </>
+    );
+}

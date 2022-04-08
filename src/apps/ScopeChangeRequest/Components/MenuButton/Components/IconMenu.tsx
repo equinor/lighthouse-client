@@ -9,13 +9,15 @@ interface IconMenuProps {
     onMenuOpen?: () => void;
     isDisabled?: boolean;
     iconName?: string;
+    placement?: 'left' | 'bottom' | 'auto' | 'right' | 'top';
 }
 
 export const IconMenu = ({
     items,
     onMenuOpen,
-    isDisabled,
     iconName = 'more_vertical',
+    isDisabled,
+    placement = 'left',
 }: IconMenuProps): JSX.Element => {
     const anchorRef = useRef<HTMLButtonElement>(null);
     const [showMenu, setShowMenu] = useState(false);
@@ -55,7 +57,7 @@ export const IconMenu = ({
                 open={showMenu}
                 anchorEl={anchorRef.current}
                 onClose={closeMenu}
-                placement="left"
+                placement={placement}
             >
                 {items.map((x, i) => {
                     const Icon = () => x.icon ?? null;

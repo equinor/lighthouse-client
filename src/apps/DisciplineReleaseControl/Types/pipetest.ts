@@ -1,12 +1,15 @@
-import { PipetestCompletionStatus, PipetestStep } from './drcEnums';
+import { CheckListStatus, PipetestCompletionStatus, PipetestStep } from './drcEnums';
 
 export interface Pipetest {
     name: string;
     step: PipetestStep;
     completionStatus: PipetestCompletionStatus;
+    pipetestProcessDoneInRightOrder: boolean;
+    shortformCompletionStatus: CheckListStatus;
     checkLists: CheckList[];
     heatTraces: HeatTrace[];
     insulationBoxes: InsulationBox[];
+    circuits: Circuit[];
     description: string;
     commPkPriority1: string;
     rfccPlanned: string;
@@ -26,6 +29,7 @@ export interface CheckList {
     test: string;
     isHeatTrace: boolean;
     workflowStepText: string | undefined;
+    stepName: string;
 }
 
 export interface InsulationBox {
@@ -35,6 +39,12 @@ export interface InsulationBox {
     objectStatus: string;
     object3dReference: string;
     procosysStatus: string;
+}
+
+export interface Circuit {
+    switchBoardTagNo: string;
+    circuitAndStarterTagNo: string;
+    checkLists: CheckList[];
 }
 
 export interface HeatTrace extends CheckList {}
@@ -49,6 +59,15 @@ export type CheckListType = {
     test: string;
     isHeatTrace: boolean;
     workflowStepText: string | undefined;
+};
+
+export type InsulationBoxType = {
+    objectNo: string;
+    objectName: string;
+    objectStatusName: string;
+    objectStatus: string;
+    object3dReference: string;
+    procosysStatus: string;
 };
 
 export interface Tag {

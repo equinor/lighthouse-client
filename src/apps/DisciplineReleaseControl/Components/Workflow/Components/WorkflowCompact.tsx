@@ -7,7 +7,6 @@ interface WorkflowProps<T> {
     statusDotFunc: (
         item: T
     ) => 'Complete' | 'Inactive' | 'Outstanding' | 'PunchAError' | 'PunchBError';
-    stepName?: keyof T;
     spanDirection?: 'vertical' | 'horizontal';
     dotSize?: number;
 }
@@ -15,7 +14,6 @@ interface WorkflowProps<T> {
 export function WorkflowCompact<T>({
     steps,
     statusDotFunc,
-    stepName,
     dotSize,
 }: WorkflowProps<T>): JSX.Element {
     return (
@@ -29,11 +27,10 @@ export function WorkflowCompact<T>({
                                     height={dotSize}
                                     width={dotSize}
                                     state={statusDotFunc(x)}
-                                    text={(x as any).workflowStepText}
+                                    circleText={(x as any).workflowStepText}
+                                    popoverText={(x as any).stepName}
                                     active={statusDotFunc(x) !== 'Inactive'}
                                 />
-
-                                {stepName && x[stepName]}
                             </WorkflowStep>
                         </div>
                     );

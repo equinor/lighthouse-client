@@ -1,5 +1,4 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { FilterOptions } from '@equinor/filter';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
@@ -19,6 +18,7 @@ import { usePrefetchQueries } from '../Hooks/usePrefetchQueries';
 import * as queryCacheOperations from '../Functions/DataOperations';
 import { QueryCacheArgs } from '../Functions/DataOperations/queryCacheArgs';
 import { checkResponseCode } from '../Functions/checkResponseCode';
+import { FilterOptions } from '../../../../packages/Filter/Types';
 
 interface DataState {
     key: string;
@@ -132,7 +132,7 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
             }
             throw 'Unknown data format';
         },
-        { refetchOnWindowFocus: false, staleTime: ONE_HOUR, initialData: [] }
+        { refetchOnWindowFocus: false, staleTime: ONE_HOUR }
     );
 
     useEffect(() => {

@@ -1,6 +1,14 @@
+import { getYearAndWeekFromDate } from '@equinor/GardenUtils';
+import { getFieldKeyBasedOnPlannedForecast } from '.';
+import {
+    getGardenItems,
+    isSubGroup,
+} from '../../../../components/ParkView/Components/VirtualGarden/utils';
+import { GardenGroups } from '../../../../components/ParkView/Models/data';
 import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
+import { HandoverCustomGroupByKeys } from '../models';
 import { HandoverPackage } from '../models/handoverPackage';
-import { getDateKey, getProgressKey } from './getKeyFunctions';
+import { getDateKey, getProgressKey, getYearAndWeekAndDayFromString } from './getKeyFunctions';
 import { sortByNumber } from './sortFunctions';
 
 export type ExtendedGardenFields = 'RFCC' | 'TAC' | 'RFOC' | 'DCC' | 'RFRC';
@@ -20,64 +28,98 @@ export const fieldSettings: FieldSettings<HandoverPackage, ExtendedGardenFields>
     priority2: { label: 'Commissioning Priority 2' },
     priority3: { label: 'Commissioning Priority 3' },
 };
-export const hiddenColumns: (keyof HandoverPackage)[] = [
-    'siteCode',
-    'projectIdentifier',
+
+export const removedFilterOptions: (keyof HandoverPackage)[] = [
+    'createdDate',
+    'tacActualDate',
+    'plannedTacDate',
+    'rfocActualDate',
+    'actualStartDate',
+    'rfccShippedDate',
+    'rfocPlannedDate',
+    'rfocShippedDate',
+    'actualFinishDate',
+    'plannedStartDate',
+    'rfocForecastDate',
+    'forecastStartDate',
+    'forecastTacDate',
+    'plannedFinishDate',
+    'forecastFinishDate',
+    'demolitionActualStartDate',
+    'demolitionDCCAcceptedDate',
+    'demolitionRFRCShippedDate',
+    'demolitionActualFinishDate',
+    'demolitionActualStartDate',
+    'demolitionPlannedStartDate',
+    'demolitionPlannedFinishDate',
+    'demolitionForecastStartDate',
+    'demolitionForecastFinishDate',
     'projectDescription',
-    'progress',
-    'area',
     'priority1Description',
     'priority2Description',
     'priority3Description',
-    'actualStartDate',
-    'plannedFinishDate',
-    'actualFinishDate',
     'url',
     'id',
-    'hasUnsignedActions',
-    'forecastFinishDate',
     'volume',
-    'forecastTacDate',
     'mcPkgsCount',
     'mcPkgsRFCCShippedCount',
     'mcPkgsRFCCSigned',
     'mcPkgsRFOCShipped',
     'mcPkgsRFOCSigned',
-    'tacIsAccepted',
-    'tacIsShipped',
-    'tacIsRejected',
-    'plannedTacDate',
-    'mcDisciplineCodes',
-    'mcDisciplines',
-    'isSubsea',
-    'isDemolition',
-    'demolitionPlannedStartDate',
-    'demolitionForecastStartDate',
-    'demolitionActualStartDate',
-    'demolitionPlannedFinishDate',
-    'demolitionForecastFinishDate',
-    'demolitionActualFinishDate',
-    'createdDate',
-    'remark',
-    'rfocIsShipped',
-    'rfocIsAccepted',
-    'rfocIsRejected',
-    'rfccIsShipped',
-    'rfccIsAccepted',
-    'rfccIsRejected',
-    'subSystem',
-    'isReadyForStartup',
-    'isInOperation',
-    'hasMaintenanceProgram',
-    'hasYellowLineMarkup',
-    'hasBlueLineMarkup',
-    'yellowLineStatus',
-    'blueLineStatus',
-    'hasOperationAgreement',
-    'demolitionDCCAcceptedDate',
-    'demolitionRFRCShippedDate',
-    'tacActualDate',
-    'rfccShippedDate',
-    'rfocShippedDate',
     'rowKey',
 ];
+
+export const getItemWidth = (
+    garden: GardenGroups<HandoverPackage>,
+    groupByKey: string,
+    customGroupByKeys: Record<string, unknown> | undefined
+) => {
+    const customKeys = customGroupByKeys as HandoverCustomGroupByKeys;
+    const columnName = getFieldKeyBasedOnPlannedForecast(groupByKey, customKeys?.plannedForecast);
+    const minWidth = 139;
+    let gardenItemList: HandoverPackage[] = [];
+    garden.forEach((column) => {
+        const gardenItems = getGardenItems(column);
+        gardenItems &&
+            gardenItems.forEach((gardenItem) => {
+                !isSubGroup(gardenItem) && gardenItemList.push(gardenItem.item);
+            });
+    });
+    const longestKey = Math.max.apply(
+        Math,
+        gardenItemList.map((item) => {
+            const titleLength = item[columnName] ? item[columnName]?.toString().length : 0;
+            return titleLength >= item.commpkgNo.length ? titleLength : item.commpkgNo.length;
+        })
+    );
+    return Math.max(longestKey * 8 + 80, minWidth);
+};
+
+export const getHighlightedColumn = (
+    groupByKey: string,
+    customGroupByKeys: Record<string, unknown> | undefined
+) => {
+    const customKeys = customGroupByKeys as HandoverCustomGroupByKeys;
+    const groupByOption = getFieldKeyBasedOnPlannedForecast(
+        groupByKey,
+        customKeys?.plannedForecast
+    );
+    switch (groupByOption) {
+        case 'plannedFinishDate':
+        case 'forecastFinishDate':
+        case 'plannedStartDate':
+        case 'forecastStartDate':
+        case 'plannedTacDate':
+        case 'forecastTacDate':
+        case 'demolitionPlannedStartDate':
+        case 'demolitionForecastStartDate':
+        case 'demolitionPlannedFinishDate':
+        case 'demolitionForecastFinishDate':
+            return customKeys?.weeklyDaily === 'Daily'
+                ? getYearAndWeekAndDayFromString(new Date().toString())
+                : getYearAndWeekFromDate(new Date());
+
+        default:
+            return undefined;
+    }
+};

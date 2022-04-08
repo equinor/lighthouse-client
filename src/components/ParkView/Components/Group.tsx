@@ -17,7 +17,7 @@ interface GroupProps<T> {
 
 export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>): JSX.Element {
     const refresh = useRefresh();
-    const { customView } = useParkViewContext<T>();
+    const { customView, gardenKey, groupByKeys } = useParkViewContext<T>();
 
     const handleClick = () => {
         refresh();
@@ -39,6 +39,7 @@ export function Group<T>({ group, columnExpanded, fieldSettings }: GroupProps<T>
                     data={group}
                     onClick={handleClick}
                     columnExpanded={columnExpanded}
+                    groupByKeys={[gardenKey, ...groupByKeys]}
                 />
             ) : (
                 <Pack key={group.value + group.groupKey} onClick={handleClick}>

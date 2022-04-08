@@ -1,3 +1,10 @@
+import { getYearAndWeekFromDate } from '@equinor/GardenUtils';
+import { GardenItemWithDepth } from '../../../components/ParkView/Components/VirtualGarden/types/gardenItem';
+import {
+    columnDataIsWithDepth,
+    getGardenItems,
+} from '../../../components/ParkView/Components/VirtualGarden/utils';
+import { GardenGroups } from '../../../components/ParkView/Models/data';
 import { FieldSettings } from '../../../components/ParkView/Models/fieldSettings';
 import { SwcrPackage } from '../models/SwcrPackage';
 import {
@@ -72,4 +79,38 @@ export const fieldSettings: FieldSettings<SwcrPackage, ExtendedSwcrGardenFields>
     cpkgNo: { label: 'CommPK' },
     cpkgPhase: { label: 'Phase' },
     status: { key: 'status', label: 'Status', getColumnSort: sortBySwcrStatusPriority },
+};
+
+export const getHighlighColumn = (groupByKey: string) => {
+    return Boolean(groupByKey === 'createdAtDate' || groupByKey === 'dueAtDate')
+        ? getYearAndWeekFromDate(new Date())
+        : undefined;
+};
+export const customDescription = (item: SwcrPackage) => {
+    return `${item.title} ${
+        parseInt(item.estimatedManhours) > 0 ? `(${item.estimatedManhours}h)` : ''
+    }`;
+};
+
+export const getItemWidth = (garden: GardenGroups<SwcrPackage>, groupByKey: string) => {
+    const gardenItemList: GardenItemWithDepth<SwcrPackage>[] = [];
+    const columnName = groupByKey
+        .replace('nextSignatureBy', 'nextToSign')
+        .replace('nextSignatureRole', 'nextToSign');
+    garden.forEach((column) => {
+        const gardenItems = getGardenItems(column);
+        gardenItems && columnDataIsWithDepth(gardenItems) && gardenItemList.push(...gardenItems);
+    });
+    const longestKey = Math.max.apply(
+        Math,
+        gardenItemList.map((gardenItem) => {
+            const titleLength = gardenItem.item?.[columnName]
+                ? gardenItem.item[columnName].length
+                : 0;
+            return titleLength >= gardenItem.item.swcrNo.length
+                ? titleLength
+                : gardenItem.item.swcrNo.length;
+        })
+    );
+    return Math.max(longestKey * 8 + 85, 170);
 };
