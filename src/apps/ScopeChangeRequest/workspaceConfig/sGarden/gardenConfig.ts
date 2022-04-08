@@ -23,7 +23,6 @@ export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
             label: 'Change category',
         },
     },
-    customViews: {},
     intercepters: {
         postGroupSorting: (data) =>
             data.map((group) => ({
