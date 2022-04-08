@@ -1,18 +1,13 @@
 import { Atom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { FilterOptions } from '@equinor/filter';
 import { Filter, PBIOptions } from '@equinor/lighthouse-powerbi';
+import { StatusItem } from '@equinor/lighthouse-status-bar';
+import { CustomView, CustomVirtualView, GardenOptions, StatusView } from '@equinor/ParkView';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
 import { TableOptions as ReactTableOptions } from 'react-table';
-import {
-    CustomView,
-    CustomVirtualView,
-    GardenOptions,
-    StatusView
-} from '../../../../components/ParkView/Models/gardenOptions';
-import { FilterOptions } from '../../../../packages/Filter/Types';
-import { StatusItem } from '../../../../packages/StatusBar';
 import { Page } from '../Context/ViewProvider';
 import { DataSource, DataViewerProps, ViewOptions } from './WorkSpaceTypes';
 

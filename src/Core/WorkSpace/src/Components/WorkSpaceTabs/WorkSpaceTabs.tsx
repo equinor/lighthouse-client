@@ -1,5 +1,5 @@
 import { useLocationContext } from '../../Context/LocationProvider';
-import { TabsConfigItem } from '../../Tabs/tabsConfig';
+import { TabsConfigItem } from '../../Util/tabsConfig';
 import { Tab, TabsWrapper } from './WorkSpaceTabsStyles';
 
 interface CompletionViewTabsProps {

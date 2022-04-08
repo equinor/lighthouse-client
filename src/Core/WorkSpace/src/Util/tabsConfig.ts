@@ -4,14 +4,14 @@ import { Gantt } from '../Icons/Gantt';
 import { Garden } from '../Icons/Garden';
 import { Table } from '../Icons/Table';
 import { Tree } from '../Icons/Tree';
-import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
-import { AnalyticsTab } from './AnalyticsTab';
-import { GardenTab } from './GardenTab';
-import { ListTab as TableTab } from './ListTab';
-import { PowerBiTab } from './PowerBiTab';
-import { TimelineTab } from './TimeLineTAb';
-import { TreeTab } from './TreeTab';
-import { VisualEditorTab } from './VisualEditorTab';
+import { AnalyticsTab } from '../Tabs/AnalyticsTab';
+import { GardenTab } from '../Tabs/GardenTab';
+import { ListTab as TableTab } from '../Tabs/ListTab';
+import { PowerBiTab } from '../Tabs/PowerBiTab';
+import { TimelineTab } from '../Tabs/TimeLineTAb';
+import { TreeTab } from '../Tabs/TreeTab';
+import { VisualEditorTab } from '../Tabs/VisualEditorTab';
+import { WorkSpaceConfig, WorkspaceTab } from '../WorkSpaceApi/workspaceState';
 
 export interface TabsConfigItem {
     title: string;
@@ -72,23 +72,23 @@ interface ActiveTabs {
 }
 
 function getTabConfig(tabsConfig: TabsConfigItem[]) {
-    return function useConfiguredTabs<Config extends Record<string, unknown>>(
-        tree?: Config,
-        list?: Config,
-        garden?: Config,
-        timeline?: Config,
-        analytics?: Config,
-        editor?: Config,
-        powerBI?: Config
-    ): ActiveTabs {
+    return function useConfiguredTabs({
+        treeOptions,
+        tableOptions,
+        gardenOptions,
+        timelineOptions,
+        analyticsOptions,
+        workflowEditorOptions,
+        powerBiOptions,
+    }: WorkSpaceConfig<unknown>): ActiveTabs {
         const tabs = tabsConfig.filter((item) => {
-            if (tree && item.title === 'Tree') return true;
-            if (list && item.title === 'Table') return true;
-            if (garden && item.title === 'Garden') return true;
-            if (timeline && item.title === 'Timeline') return true;
-            if (analytics && item.title === 'Analytics') return true;
-            if (editor && item.title === 'Editor') return true;
-            if (powerBI && item.title === 'PowerBI') return true;
+            if (treeOptions && item.title === 'Tree') return true;
+            if (tableOptions && item.title === 'Table') return true;
+            if (gardenOptions && item.title === 'Garden') return true;
+            if (timelineOptions && item.title === 'Timeline') return true;
+            if (analyticsOptions && item.title === 'Analytics') return true;
+            if (workflowEditorOptions && item.title === 'Editor') return true;
+            if (powerBiOptions && item.title === 'PowerBI') return true;
             return false;
         });
         return {

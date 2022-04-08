@@ -3,39 +3,18 @@ import { PopoutSidesheet } from '@equinor/sidesheet';
 import { useNavigate } from 'react-router';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
-import { LocationProvider } from '../../Context/LocationProvider';
-import { useConfiguredTabs } from '../../Tabs/tabsConfig';
+import { useConfiguredTabs } from '../../Util/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { DumpsterFireDialog } from '../DataLoadFailed/DumpsterFireDialog';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { HeaderWrapper } from './HeaderFilterWrapper';
 import { WorkspaceErrorPage } from './WorkspaceErrorPage';
-import { WorkspaceFilterWrapper } from './WorkspaceFilterWrapper';
 import { DataViewWrapper, Loading, WorkspaceWrapper } from './WorkSpaceViewStyles';
 
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
-    const {
-        treeOptions,
-        tableOptions,
-        gardenOptions,
-        timelineOptions,
-        analyticsOptions,
-        filterOptions = [],
-        workflowEditorOptions,
-        powerBiOptions,
-    } = useWorkSpace();
-
-    const { tabs, viewIsActive } = useConfiguredTabs(
-        //Dont know why??
-        treeOptions as any,
-        tableOptions,
-        gardenOptions,
-        timelineOptions,
-        analyticsOptions,
-        workflowEditorOptions,
-        powerBiOptions
-    );
+    const workspace = useWorkSpace();
+    const { tabs, viewIsActive } = useConfiguredTabs(workspace);
     const { dataApi } = useDataContext();
 
     const navigate = useNavigate();
@@ -70,15 +49,11 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     return (
         <WorkspaceWrapper>
-            <LocationProvider>
-                <WorkspaceFilterWrapper filterConfiguration={filterOptions}>
-                    <HeaderWrapper props={props} tabs={tabs} />
-                    <DataViewWrapper>
-                        <WorkSpaceTabs tabs={tabs} />
-                        <PopoutSidesheet />
-                    </DataViewWrapper>
-                </WorkspaceFilterWrapper>
-            </LocationProvider>
+            <HeaderWrapper props={props} tabs={tabs} />
+            <DataViewWrapper>
+                <WorkSpaceTabs tabs={tabs} />
+                <PopoutSidesheet />
+            </DataViewWrapper>
         </WorkspaceWrapper>
     );
 }

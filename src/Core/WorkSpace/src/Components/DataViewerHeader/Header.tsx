@@ -1,18 +1,18 @@
 import { useFactory } from '@equinor/DataFactory';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { useFilterApiContext } from '@equinor/filter';
+import { Icon } from '@equinor/lighthouse-components';
+import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
 import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
-import Icon from '../../../../../components/Icon/Icon';
-import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
-import { StatusBar } from '../../../../../packages/StatusBar';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useDataContext } from '../../Context/DataProvider';
 import { useLocationContext } from '../../Context/LocationProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
-import { TabsConfigItem } from '../../Tabs/tabsConfig';
+import { TabsConfigItem } from '../../Util/tabsConfig';
 import { TabButton } from '../ToggleButton';
 import {
     ActionBar,

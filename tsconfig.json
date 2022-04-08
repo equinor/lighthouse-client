@@ -39,11 +39,13 @@
             "@equinor/hooks": ["./src/hooks"],
             "@equinor/Utils": ["./src/packages/Utils"],
             "@equinor/typeGuard": ["./src/packages/typeGuard"],
+            "@equinor/ParkView": ["./src/components/ParkView"],
             "@equinor/GardenUtils": ["./src/packages/GardenUtils"],
             "@equinor/echo3dweb-viewer": ["./packages/echo3dViewer/src"],
             "@equinor/lighthouse-powerbi": ["./src/modules/powerBI"],
             "@equinor/lighthouse-powerbi-viewer": ["./src/Core/PowerBiViewer"],
-            "@equinor/lighthouse-model-viewer": ["./src/packages/ModelViewer"]
+            "@equinor/lighthouse-model-viewer": ["./src/packages/ModelViewer"],
+            "@equinor/lighthouse-status-bar": ["./src/packages/StatusBar"]
         }
     },
     "compileOnSave": true,
