@@ -31,5 +31,10 @@ export const BoxInsulationTable = ({ insulationBoxes }: TableProps): JSX.Element
         },
     ];
 
-    return <Table options={{ columns: columns, data: insulationBoxes }}></Table>;
+    return (
+        <>
+            <h4>Box insulations:</h4>
+            <Table options={{ columns: columns, data: insulationBoxes }}></Table>
+        </>
+    );
 };

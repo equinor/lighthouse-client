@@ -1,13 +1,16 @@
-import { CircularProgress } from '@equinor/eds-core-react';
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { PopoutSidesheet } from '@equinor/sidesheet';
+import { useNavigate } from 'react-router';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
 import { LocationProvider } from '../../Context/LocationProvider';
 import { useConfiguredTabs } from '../../Tabs/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
+import { DumpsterFireDialog } from '../DataLoadFailed/DumpsterFireDialog';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { HeaderWrapper } from './HeaderFilterWrapper';
+import { WorkspaceErrorPage } from './WorkspaceErrorPage';
 import { WorkspaceFilterWrapper } from './WorkspaceFilterWrapper';
 import { DataViewWrapper, Loading, WorkspaceWrapper } from './WorkSpaceViewStyles';
 
@@ -33,25 +36,45 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         workflowEditorOptions,
         powerBiOptions
     );
-    const { data } = useDataContext();
+    const { dataApi } = useDataContext();
+
+    const navigate = useNavigate();
 
     if (!viewIsActive) return <NoDataView />;
 
-    if (!data || data.length === 0) {
+    if (dataApi.isError) {
+        return (
+            <WorkspaceErrorPage>
+                <DumpsterFireDialog
+                    buttons={[
+                        <Button key={1} onClick={() => navigate('/')}>
+                            Go to homepage
+                        </Button>,
+                    ]}
+                    text={
+                        typeof dataApi.error === 'string' ? dataApi.error : 'Something went wrong'
+                    }
+                />
+            </WorkspaceErrorPage>
+        );
+    }
+
+    if (dataApi.isLoading) {
         return (
             <Loading>
-                <CircularProgress size={48} />
-                <div>Loading {props.shortName}</div>
+                <CircularProgress color="primary" value={0} size={48} />
+                <h2>Loading {props.title.toLowerCase()}..</h2>
             </Loading>
         );
     }
+
     return (
         <WorkspaceWrapper>
             <LocationProvider>
                 <WorkspaceFilterWrapper filterConfiguration={filterOptions}>
                     <HeaderWrapper props={props} tabs={tabs} />
                     <DataViewWrapper>
-                        <WorkSpaceTabs title={props.title} tabs={tabs} />
+                        <WorkSpaceTabs tabs={tabs} />
                         <PopoutSidesheet />
                     </DataViewWrapper>
                 </WorkspaceFilterWrapper>

@@ -14,9 +14,8 @@ export const Wrapper = styled.div`
     width: fit-content;
     max-width: 500px;
     text-overflow: ellipsis;
-    height: fit-content;
     word-wrap: break-word;
-    max-height: 180px;
+    height: 180px;
 
     label {
         padding: 0;

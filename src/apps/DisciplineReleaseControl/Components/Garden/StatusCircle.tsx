@@ -7,8 +7,8 @@ type StatusIconProps = {
 };
 
 const Circle = styled.div<StatusIconProps>`
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     outline: 1px solid ${tokens.colors.text.static_icons__primary_white.rgba};
     background-color: ${(props) => props.statusColor};
     border-radius: 50%;

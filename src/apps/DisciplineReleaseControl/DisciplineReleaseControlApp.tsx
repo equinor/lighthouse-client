@@ -3,14 +3,13 @@ import { DateTime } from 'luxon';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { getGardenItemColor, getTimePeriod } from './Components/Garden/gardenFunctions';
 import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
-// import { ReleaseControlGardenHeader } from './Components/Garden/ReleaseControlGardenHeader';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
-// import { ReleaseControlProcessForm } from './Components/Form/ReleaseControlProcessForm';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import {
     StepFilterContainer,
+    StepFilterText,
     WorkflowFilterDot
 } from './Components/Workflow/Components/WorkflowFilterDot';
 import {
@@ -33,8 +32,8 @@ import {
     getStatusLetterFromStatus
 } from './Functions/tableHelpers';
 import { Monospace } from './Styles/Monospace';
-import { PipetestStep } from './Types/drcEnums';
-import { Pipetest } from './Types/pipetest';
+import { CheckListStepTag, PipetestStep } from './Types/drcEnums';
+import { CheckList, Circuit, Pipetest } from './Types/pipetest';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -46,6 +45,13 @@ export function setup(appApi: ClientApi): void {
     const responseParser = async (response: Response) => {
         const json = JSON.parse(await response.text());
         json.map((pipetest: Pipetest) => {
+            pipetest.circuits?.forEach((circuit: Circuit) => {
+                circuit.checkLists?.forEach((checkList: CheckList) => {
+                    checkList.formularType = CheckListStepTag.HtCTest;
+                    checkList.isHeatTrace = true;
+                    pipetest.checkLists.push(checkList);
+                });
+            });
             pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
             pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
             pipetest.step = getPipetestStatus(pipetest);
@@ -87,11 +93,36 @@ export function setup(appApi: ClientApi): void {
                                 color={getGardenItemColor(value?.toString())}
                                 circleText={getStatusLetterFromStatus(value?.toString())}
                             />
-                            {value}
+                            <StepFilterText title={value?.toString()}>{value}</StepFilterText>
                         </StepFilterContainer>
                     );
                 },
+                sort: (values) => {
+                    values.sort((a, b) => {
+                        const map = new Map<string, number>();
+
+                        map.set('unknown', 0);
+                        map.set('pressuretest', 1);
+                        map.set('chemicalcleaning', 2);
+                        map.set('hotoilflushing', 3);
+                        map.set('bolttensioning', 4);
+                        map.set('painting', 5);
+                        map.set('a-test', 6);
+                        map.set('insulation', 7);
+                        map.set('boxInsulation', 8);
+                        map.set('b-test', 9);
+                        map.set('marking', 10);
+                        map.set('complete', 11);
+
+                        if (typeof a !== 'string') return 0;
+                        if (typeof b !== 'string') return 0;
+
+                        return (map.get(a.toLowerCase()) ?? -0) - (map.get(b.toLowerCase()) ?? -0);
+                    });
+                    return values;
+                },
             },
+
             {
                 name: 'System',
                 valueFormatter: ({ name }) => name.substring(0, 2),
@@ -224,7 +255,7 @@ export function setup(appApi: ClientApi): void {
                 accessor: 'heatTraces',
                 Header: 'HT cables',
                 Aggregated: () => null,
-                width: 400,
+                width: 1165,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return (
@@ -244,7 +275,6 @@ export function setup(appApi: ClientApi): void {
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
-            // customHeaderView: ReleaseControlGardenHeader,
         },
         highlightColumn: getHighlightedColumn,
         itemWidth: () => 150,

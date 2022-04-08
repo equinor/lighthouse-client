@@ -11,7 +11,8 @@ import {
     getMaxVolumeFromData,
     sortPackagesByStatus
 } from './Garden/utility';
-import { tableConfig } from './Garden/utility/tableConfig';
+import { filterConfig } from './utility/config/filterSetup';
+import { tableConfig } from './utility/config/tableConfig';
 
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
@@ -28,48 +29,7 @@ export function setup(appApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerFilterOptions([
-            {
-                name: 'Comm pkg status',
-                valueFormatter: ({ commpkgStatus }) => commpkgStatus,
-            },
-            {
-                name: 'MC status',
-                valueFormatter: ({ mcStatus }) => mcStatus,
-            },
-            {
-                name: 'System',
-                valueFormatter: ({ system }) => system,
-            },
-            {
-                name: 'Comm pkg responsible',
-                valueFormatter: ({ responsible }) => responsible,
-            },
-            {
-                name: 'Comm pkg discipline',
-                valueFormatter: ({ mcDisciplineCodes }) => mcDisciplineCodes,
-            },
-            {
-                name: 'Comm pkg phase',
-                valueFormatter: ({ phase }) => phase,
-            },
-            {
-                name: 'Comm pkg priority 1',
-                valueFormatter: ({ priority1 }) => priority1,
-            },
-            {
-                name: 'Comm pkg priority 2',
-                valueFormatter: ({ priority2 }) => priority2,
-            },
-            {
-                name: 'Comm pkg priority 3',
-                valueFormatter: ({ priority3 }) => priority3,
-            },
-            {
-                name: 'Area',
-                valueFormatter: ({ area }) => area,
-            },
-        ])
+        .registerFilterOptions(filterConfig)
         .registerTableOptions(tableConfig)
         .registerGardenOptions({
             gardenKey: 'RFCC' as keyof HandoverPackage, // HOW to handled this ????
