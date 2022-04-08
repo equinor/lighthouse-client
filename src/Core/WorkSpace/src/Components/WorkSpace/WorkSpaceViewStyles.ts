@@ -1,13 +1,6 @@
 import styled from 'styled-components';
 
-// export const Tabs = styled(EdsTabs)`
-//     display: grid;
-//     grid-template-rows: auto auto 1fr;
-//     height: 100%;
-//     width: 100%;
-// `;
-
-export const DataViewWrapper = styled.section`
+export const DataViewWrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-content: flex-start;
