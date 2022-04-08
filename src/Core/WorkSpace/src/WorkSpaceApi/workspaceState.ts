@@ -75,13 +75,13 @@ export interface PrefetchQueriesOptions {
 }
 
 export type WorkspaceTab =
-    | 'Tree'
-    | 'Table'
-    | 'Garden'
-    | 'PowerBi'
-    | 'Analytics'
-    | 'Gantt'
-    | 'Editor';
+    | 'tree'
+    | 'table'
+    | 'garden'
+    | 'powerBi'
+    | 'analytics'
+    | 'gantt'
+    | 'editor';
 
 export interface WorkSpaceConfig<T> {
     name: string;

@@ -20,6 +20,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         analyticsOptions,
         filterOptions = [],
         workflowEditorOptions,
+        powerBiOptions,
     } = useWorkSpace();
 
     const { tabs, viewIsActive } = useConfiguredTabs(
@@ -29,7 +30,8 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         gardenOptions,
         timelineOptions,
         analyticsOptions,
-        workflowEditorOptions
+        workflowEditorOptions,
+        powerBiOptions
     );
     const { data } = useDataContext();
 

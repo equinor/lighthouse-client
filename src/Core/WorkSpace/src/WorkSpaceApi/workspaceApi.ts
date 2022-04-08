@@ -62,7 +62,7 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
                 onSelect: onSelect as (item: unknown) => void,
                 objectIdentifier: options.objectIdentifier as string,
                 name: options.viewerId,
-                defaultTab: options.defaultTab ?? 'Table',
+                defaultTab: options.defaultTab ?? 'table',
                 initialState: options.initialState,
             },
         };

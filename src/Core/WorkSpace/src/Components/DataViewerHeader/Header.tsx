@@ -67,7 +67,7 @@ export const CompletionViewHeader = ({
             </TitleBar>
             <ActionBar>
                 <LeftSection>
-                    {activeTab !== 'PowerBi' ? (
+                    {activeTab !== 'powerBi' ? (
                         <FillSection>
                             <StatusBar statusItems={statusItems} />
                         </FillSection>
@@ -111,8 +111,8 @@ export const CompletionViewHeader = ({
                     {hasPowerBi && (
                         <>
                             <TabButton
-                                onClick={() => handleSetActiveTab('PowerBi')}
-                                aria-selected={activeTab === 'PowerBi'}
+                                onClick={() => handleSetActiveTab('powerBi')}
+                                aria-selected={activeTab === 'powerBi'}
                                 title={'Power Bi'}
                             >
                                 <Icon name={'bar_chart'} />
@@ -123,6 +123,7 @@ export const CompletionViewHeader = ({
 
                     <>
                         {tabs.map((tab) => {
+                            if (tab.tabId === 'powerBi') return;
                             const Icon = tab.icon;
                             return (
                                 <TabButton
@@ -160,7 +161,7 @@ export const CompletionViewHeader = ({
                         )}
                     </TabButton>
 
-                    {activeTab !== 'PowerBi' ? (
+                    {activeTab !== 'powerBi' ? (
                         <TabButton
                             onClick={handleFilter}
                             aria-selected={activeFilter}

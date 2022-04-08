@@ -70,7 +70,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<Pipetest>({
             CustomSidesheet: ReleaseControlSidesheet,
             objectIdentifier: 'name',
-            defaultTab: 'Garden',
+            defaultTab: 'garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,

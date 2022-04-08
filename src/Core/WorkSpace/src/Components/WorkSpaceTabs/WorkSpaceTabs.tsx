@@ -22,6 +22,7 @@ export const WorkSpaceTabs = ({ tabs, title }: CompletionViewTabsProps): JSX.Ele
     return (
         <Wrapper>
             {tabs.map((tab) => {
+                if (activeTab !== tab.tabId) return null;
                 const ViewComponent = tab.viewComponent;
                 return (
                     <Panel key={`panel-${tab.title}`}>

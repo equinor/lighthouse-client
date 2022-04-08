@@ -12,10 +12,7 @@ import {
     sortPackagesByStatus
 } from './Garden/utility';
 import { tableConfig } from './Garden/utility/tableConfig';
-enum Tabs {
-    TABLE,
-    GARDEN,
-}
+
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
         weeklyDaily: 'Weekly',
@@ -25,7 +22,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<HandoverPackage>({
             CustomSidesheet: HandoverSideSheet,
             objectIdentifier: 'id',
-            defaultTab: 'Garden',
+            defaultTab: 'garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,

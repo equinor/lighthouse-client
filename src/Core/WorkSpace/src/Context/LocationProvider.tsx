@@ -29,7 +29,7 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
 
     const currentTabId = useMemo(() => id && `/${id}`, [id]);
 
-    const [activeTab, setActiveTab] = useState<WorkspaceTab>(defaultTab || 'Table');
+    const [activeTab, setActiveTab] = useState<WorkspaceTab>(defaultTab || 'table');
     const navigate = useNavigate();
     const location = useLocation();
 

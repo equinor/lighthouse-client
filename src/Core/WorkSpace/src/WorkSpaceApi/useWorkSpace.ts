@@ -16,7 +16,7 @@ export function useWorkSpace<T>(): WorkSpaceConfig<T> {
         return {
             name: `Unknown Workspace ${key}`,
             objectIdentifier: 'Unknown objectIdentifier',
-            defaultTab: 'Table',
+            defaultTab: 'table',
         };
     }
 }

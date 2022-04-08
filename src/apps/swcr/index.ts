@@ -20,7 +20,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<SwcrPackage>({
             CustomSidesheet: SwcrSideSheet,
             objectIdentifier: 'swcrNo',
-            defaultTab: 'Garden',
+            defaultTab: 'garden',
         })
         .registerDataSource({ responseAsync: responseAsync, responseParser: responseParser })
         .registerFilterOptions(filterSetup)
@@ -103,17 +103,11 @@ export function setup(appApi: ClientApi): void {
         })
         .registerStatusItems(statusBarData)
         .registerPowerBIOptions({
-            reportURI: 'pp-checklist-analytics',
+            reportURI: 'pp-installation-activities',
             pages: [
-                {
-                    pageTitle: 'Overview',
-                    pageId: 'ReportSection2e92f2b5eed237523256',
-                    default: true,
-                },
-                { pageTitle: 'Details', pageId: 'ReportSection47ea3f4574446a5a73c9' },
-                { pageTitle: 'Browser', pageId: 'ReportSection08bd3cdd956d8e1b1065' },
-                { pageTitle: 'History', pageId: 'ReportSection1d9ec2a98c07f646086b' },
-                { pageTitle: 'Countdown', pageId: 'ReportSection72f67800d1e526e323bb' },
+                { pageTitle: 'Activities', pageId: 'ReportSection', default: true },
+                { pageTitle: 'Progress Status', pageId: 'ReportSection1bfb8548a2e154dc3640' },
+                // { pageTitle: 'Plan', pageId: 'ReportSection5b84ed4e7bba01fc9a74' }, May come in the future!
             ],
         });
 }

@@ -8,6 +8,7 @@ import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
 import { AnalyticsTab } from './AnalyticsTab';
 import { GardenTab } from './GardenTab';
 import { ListTab as TableTab } from './ListTab';
+import { PowerBiTab } from './PowerBiTab';
 import { TimelineTab } from './TimeLineTAb';
 import { TreeTab } from './TreeTab';
 import { VisualEditorTab } from './VisualEditorTab';
@@ -22,40 +23,46 @@ export interface TabsConfigItem {
 const tabsConfig: TabsConfigItem[] = [
     {
         title: 'Tree',
-        tabId: 'Tree',
+        tabId: 'tree',
         icon: Tree,
         viewComponent: TreeTab,
     },
     {
         title: 'Table',
-        tabId: 'Table',
+        tabId: 'table',
         icon: Table,
         viewComponent: TableTab,
     },
     {
         title: 'Garden',
-        tabId: 'Garden',
+        tabId: 'garden',
         icon: Garden,
         viewComponent: GardenTab,
     },
     {
         title: 'Timeline',
-        tabId: 'Gantt',
+        tabId: 'gantt',
         icon: Gantt,
         viewComponent: TimelineTab,
     },
     {
         title: 'Analytics',
-        tabId: 'Analytics',
+        tabId: 'analytics',
         icon: Analytics,
         viewComponent: AnalyticsTab,
     },
     {
         title: 'Editor',
-        tabId: 'Editor',
+        tabId: 'editor',
         //Todo add Editor icon
         icon: Gantt,
         viewComponent: VisualEditorTab,
+    },
+    {
+        title: 'PowerBI',
+        tabId: 'powerBi',
+        icon: Analytics,
+        viewComponent: PowerBiTab,
     },
 ];
 
@@ -71,7 +78,8 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
         garden?: Config,
         timeline?: Config,
         analytics?: Config,
-        editor?: Config
+        editor?: Config,
+        powerBI?: Config
     ): ActiveTabs {
         const tabs = tabsConfig.filter((item) => {
             if (tree && item.title === 'Tree') return true;
@@ -80,6 +88,7 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
             if (timeline && item.title === 'Timeline') return true;
             if (analytics && item.title === 'Analytics') return true;
             if (editor && item.title === 'Editor') return true;
+            if (powerBI && item.title === 'PowerBI') return true;
             return false;
         });
         return {
