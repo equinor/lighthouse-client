@@ -61,7 +61,7 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
                                     ?.url,
                                 '_blank'
                             );
-                            mutateAsync({ notificationId: notification.id });
+                            // mutateAsync({ notificationId: notification.id });
                         }}
                     >
                         <ClickableIcon name="chevron_right" />

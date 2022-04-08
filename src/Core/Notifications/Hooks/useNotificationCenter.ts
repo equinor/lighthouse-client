@@ -6,7 +6,6 @@ import { getUnreadNotificationCardsAsync } from '../API/getUnreadNotifications';
 import { getReadNotificationCardsAsync } from '../API/getReadNotifications';
 import { Notification } from '../Types/Notification';
 import { useNotificationQueryKeys } from './useNotificationQueryKeys';
-import { NotificationList } from '../Types/NotificationList';
 import { HubConnectionState } from '@microsoft/signalr';
 
 interface NotificationCenter {
@@ -33,21 +32,7 @@ export function useNotificationCenter(
     );
     const { data: unreadNotifications, isFetching: isFetchingRead } = useQuery(
         unreadKey,
-        async () => {
-            const notifications = await getUnreadNotificationCardsAsync();
-
-            const intercepted: NotificationList = {
-                ...notifications,
-                value: [
-                    { appKey: 'fusion', title: 'Im a fusion notification' },
-                    { appKey: 'STID', title: 'New document' },
-                    { appKey: 'scope change', title: 'Request ready to sign' },
-                    { appKey: 'release control', title: 'Idk man' },
-                    ...notifications.value,
-                ],
-            };
-            return intercepted;
-        }
+        async () => await getUnreadNotificationCardsAsync()
     );
 
     const { hubConnection } = useSignalRHub(
@@ -84,7 +69,7 @@ export function useNotificationCenter(
         isFetchingUnRead,
         isEstablishingHubConnection: false,
         readNotificationCards: readNotifications?.value ?? [],
-        unreadNotificationCards: unreadNotifications?.value || [],
-        unreadNotificationsCount: unreadNotifications?.count || 0,
+        unreadNotificationCards: unreadNotifications || [],
+        unreadNotificationsCount: unreadNotifications?.length || 0,
     };
 }

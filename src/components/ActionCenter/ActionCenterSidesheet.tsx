@@ -15,7 +15,7 @@ export function ActionCenterSidesheet(): JSX.Element {
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <TabsList>
                         <Tabs.Tab>Notifications </Tabs.Tab>
-                        <Tabs.Tab>Assignments </Tabs.Tab>
+                        <Tabs.Tab disabled>Assignments </Tabs.Tab>
                     </TabsList>
                     <Tabs.Panels>
                         <Tabs.Panel>

@@ -1,6 +1,6 @@
 import { Accordion, Checkbox, Chip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { IconMenu } from '../../apps/ScopeChangeRequest/Components/MenuButton';
@@ -8,26 +8,24 @@ import { NotificationCardNew } from '../../Core/Notifications/Components/Notific
 import { useNotificationCenter } from '../../Core/Notifications/Hooks/useNotificationCenter';
 import { useNotificationQueryKeys } from '../../Core/Notifications/Hooks/useNotificationQueryKeys';
 import { Notification } from '../../Core/Notifications/Types/Notification';
-export function NotificationsTab() {
+
+export function NotificationsTab(): JSX.Element {
     const { unreadKey: unread } = useNotificationQueryKeys();
     const queryClient = useQueryClient();
     const onNotification = () => queryClient.invalidateQueries(unread);
-    const { readNotificationCards, unreadNotificationCards } =
-        useNotificationCenter(onNotification);
+    const { unreadNotificationCards } = useNotificationCenter(onNotification);
 
-    const origins = useMemo(
-        () =>
-            readNotificationCards
-                .concat(unreadNotificationCards)
-                .map((x) => x.appKey)
-                .filter((v, i, a) => v && a.indexOf(v) === i),
-        [readNotificationCards, unreadNotificationCards]
-    );
+    const origins = unreadNotificationCards
+        .map(({ appName }) => appName)
+        .filter((v, i, a) => a.indexOf(v) === i);
+
     const [activeNotifications, setActiveNotifications] = useState<string[]>(origins);
 
-    const handleClick = (appkey: string) =>
+    const handleClick = (sourceSystem: string) =>
         setActiveNotifications((prev) =>
-            prev.includes(appkey) ? prev.filter((x) => x !== appkey) : [...prev, appkey]
+            prev.includes(sourceSystem)
+                ? prev.filter((x) => x !== sourceSystem)
+                : [...prev, sourceSystem]
         );
 
     const [isGroupedBySource, setIsGroupedBySource] = useState(true);
@@ -38,7 +36,7 @@ export function NotificationsTab() {
     function sortAndFilterList(list: Notification[]) {
         return list
             .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
-            .filter((x) => activeNotifications.includes(x.appKey));
+            .filter(({ appName }) => activeNotifications.includes(appName));
     }
 
     return (
@@ -80,7 +78,7 @@ export function NotificationsTab() {
                                     {originName}
                                 </Accordion.Header>
                                 {sortAndFilterList(unreadNotificationCards)
-                                    .filter(({ appKey }) => originName === appKey)
+                                    .filter((notification) => originName === notification.appName)
                                     .map((notification) => (
                                         <Accordion.Panel key={notification.id}>
                                             <NotificationCardNew
@@ -95,10 +93,6 @@ export function NotificationsTab() {
                 ) : (
                     <NotificationsList>
                         {sortAndFilterList(unreadNotificationCards).map((x) => (
-                            <NotificationCardNew key={x.id} notification={x} />
-                        ))}
-
-                        {sortAndFilterList(readNotificationCards).map((x) => (
                             <NotificationCardNew key={x.id} notification={x} />
                         ))}
                     </NotificationsList>
