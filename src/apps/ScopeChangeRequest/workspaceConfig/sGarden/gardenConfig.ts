@@ -7,7 +7,7 @@ export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
     type: 'normal',
     fieldSettings: {
         CurrentStep: {
-            getKey: (test) => test.currentWorkflowStep?.name ?? '(Blank)',
+            getKey: ({ currentWorkflowStep }) => currentWorkflowStep?.name ?? '(Blank)',
             label: 'Current step',
         },
         Status: {
