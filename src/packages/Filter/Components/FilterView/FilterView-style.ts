@@ -6,13 +6,14 @@ export const Wrapper = styled.section`
     display: flex;
     flex-direction: row;
     height: ${({ isActive }: { isActive: boolean }) => (isActive ? `200px` : '0px')};
-    width: 100%;
-    overflow-x: scroll;
+
     background-color: ${tokens.colors.ui.background__light.rgba};
     border-bottom: ${({ isActive }: { isActive: boolean }) =>
         isActive ? `1.5px solid ${tokens.colors.ui.background__medium.rgba}` : 'none'};
     transition: height 0.35s ease;
-
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
     @keyframes fadeIn {
         from {
             opacity: 0;

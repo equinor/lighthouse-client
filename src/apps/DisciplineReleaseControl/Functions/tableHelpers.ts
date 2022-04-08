@@ -72,6 +72,7 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
         CheckListStepTag.Insulation,
         CheckListStepTag.BoxInsulation,
         CheckListStepTag.HtRetest,
+        CheckListStepTag.HtCTest,
         CheckListStepTag.Marking,
     ];
     const checkLists = pipetest.checkLists;
@@ -82,12 +83,15 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
         );
         const htTestStep =
             allWorkflowSteps[i] === CheckListStepTag.HtTest ||
-            allWorkflowSteps[i] === CheckListStepTag.HtRetest;
+            allWorkflowSteps[i] === CheckListStepTag.HtRetest ||
+            allWorkflowSteps[i] === CheckListStepTag.HtCTest;
         const boxInsulationStep = allWorkflowSteps[i] === CheckListStepTag.BoxInsulation;
         const formularType =
             allWorkflowSteps[i] === CheckListStepTag.HtTest
                 ? CheckListStepTag.HtTest
-                : CheckListStepTag.HtRetest;
+                : allWorkflowSteps[i] === CheckListStepTag.HtRetest
+                ? CheckListStepTag.HtRetest
+                : CheckListStepTag.HtCTest;
         if (foundSteps.length !== 0 && !htTestStep) {
             const workflowStep = foundSteps[0];
             workflowStep.status = getPipetestStatusForStep(foundSteps);
@@ -109,7 +113,12 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
                 isHeatTrace: true,
                 revision: '',
                 test: '',
-                workflowStepText: formularType === CheckListStepTag.HtTest ? '1' : '2',
+                workflowStepText:
+                    formularType === CheckListStepTag.HtTest
+                        ? '1'
+                        : formularType === CheckListStepTag.HtRetest
+                        ? '2'
+                        : '3',
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
             };
             workflowSteps.push(workflowStep);
@@ -137,11 +146,14 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
                 revision: '',
                 test: '',
                 isHeatTrace: false,
-                workflowStepText: htTestStep
-                    ? allWorkflowSteps[i] === CheckListStepTag.HtTest
+                workflowStepText:
+                    htTestStep && allWorkflowSteps[i] === CheckListStepTag.HtTest
                         ? '1'
-                        : '2'
-                    : allWorkflowSteps[i].substring(1, 2),
+                        : htTestStep && allWorkflowSteps[i] === CheckListStepTag.HtRetest
+                        ? '2'
+                        : htTestStep && allWorkflowSteps[i] === CheckListStepTag.HtCTest
+                        ? '3'
+                        : allWorkflowSteps[i].substring(1, 2),
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
             });
         }
@@ -180,6 +192,9 @@ export function getStatusLetterFromStatus(step: string | undefined): string {
             break;
         case PipetestStep.HtRetest:
             letter = '2';
+            break;
+        case PipetestStep.HtCTest:
+            letter = '3';
             break;
         case PipetestStep.Marking:
             letter = 'M';

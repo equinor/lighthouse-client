@@ -29,3 +29,9 @@ export const StepFilterContainer = styled.div`
     display: flex;
     flex-direction: row;
 `;
+
+export const StepFilterText = styled.div`
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+`;
