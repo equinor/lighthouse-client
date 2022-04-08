@@ -2,11 +2,11 @@ import { FilterOptions } from '../../../packages/Filter/Types';
 import { WorkOrder } from '../Garden/models';
 
 export const filterConfig: FilterOptions<WorkOrder> = [
-    {
-        name: 'Work order',
-        valueFormatter: ({ workOrderNumber }) => workOrderNumber,
-        defaultHidden: true,
-    },
+    // {
+    //     name: 'Work order',
+    //     valueFormatter: ({ workOrderNumber }) => workOrderNumber,
+    //     defaultHidden: true,
+    // },
 
     {
         name: 'Discipline',
@@ -24,14 +24,15 @@ export const filterConfig: FilterOptions<WorkOrder> = [
         name: 'Milestone',
         valueFormatter: ({ milestoneCode }) => milestoneCode,
     },
-    {
-        name: 'Planned start',
-        valueFormatter: ({ plannedStartDate }) => plannedStartDate,
-    },
-    {
-        name: 'Planned Finish',
-        valueFormatter: ({ plannedFinishDate }) => plannedFinishDate,
-    },
+    // {
+    //     name: 'Planned start',
+    //     valueFormatter: ({ plannedStartDate,   }) => plannedStartDate,
+
+    // },
+    // {
+    //     name: 'Planned Finish',
+    //     valueFormatter: ({ plannedFinishDate }) => plannedFinishDate,
+    // },
     {
         name: 'Material',
         valueFormatter: ({ materialStatus }) => materialStatus,
