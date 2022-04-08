@@ -11,7 +11,7 @@ import {
     TreeOptions,
     WorkflowEditorOptions,
     WorkSpaceConfig,
-    WorkSpaceState,
+    WorkSpaceState
 } from './workspaceState';
 import {
     DataSource,
@@ -21,7 +21,7 @@ import {
     Validator,
     ViewerOptions,
     ViewOptions,
-    WorkSpaceApi,
+    WorkSpaceApi
 } from './WorkSpaceTypes';
 
 /**
@@ -62,7 +62,7 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
                 onSelect: onSelect as (item: unknown) => void,
                 objectIdentifier: options.objectIdentifier as string,
                 name: options.viewerId,
-                defaultTab: options.defaultTab ?? 0,
+                defaultTab: options.defaultTab ?? 'Table',
                 initialState: options.initialState,
             },
         };
