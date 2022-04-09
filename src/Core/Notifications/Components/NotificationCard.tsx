@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import { Notification } from '../Types/Notification';
 import { readNotificationAsync } from '../API/readNotification';
-import { useNotificationQueryKeys } from '../Hooks/useNotificationQueryKeys';
 import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
 import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
 import {
@@ -14,18 +13,40 @@ import {
     TimeStamp,
     Wrapper,
 } from './NotificationCardStyles';
+import { notificationsBaseKey } from '../queries/notificationQueries';
+import { useNavigate } from 'react-router';
+import { getApps } from '../../../apps/apps';
 interface NotificationCardProps {
     notification: Notification;
+    onNavigate?: () => void;
 }
 
-export const NotificationCardNew = ({ notification }: NotificationCardProps): JSX.Element => {
+export const NotificationCardNew = ({
+    notification,
+    onNavigate,
+}: NotificationCardProps): JSX.Element => {
     const queryClient = useQueryClient();
-    const { baseKey } = useNotificationQueryKeys();
     const { read } = useNotificationMutationKeys();
 
-    const { mutateAsync } = useMutation(read, readNotificationAsync, {
+    const baseKey = notificationsBaseKey;
+
+    const { mutateAsync: markAsRead } = useMutation(read, readNotificationAsync, {
         onSuccess: () => queryClient.invalidateQueries(baseKey),
     });
+
+    const navigate = useNavigate();
+    const apps = new Map<string, string>();
+    apps.set('ScopeChangeControl', 'change');
+
+    function generateUrl(appName: string, identifier: string): string {
+        const actualName = apps.get(appName);
+        if (!actualName) throw 'App not found';
+        const app = getApps().find(({ shortName }) => shortName === actualName);
+        if (!app) throw 'Not found';
+        return `${app.groupe}/${app.shortName}#${app.shortName}/${identifier}`;
+    }
+
+    const isExternalApp = notification.actionType === 'URL';
 
     return (
         <>
@@ -56,15 +77,29 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
                 <RightSection>
                     <a
                         onClick={() => {
-                            window.open(
-                                notification.card?.actions?.find((x) => x.type === 'Action.OpenUrl')
-                                    ?.url,
-                                '_blank'
-                            );
-                            // mutateAsync({ notificationId: notification.id });
+                            isExternalApp
+                                ? window.open(
+                                    notification.card?.actions?.find(
+                                        ({ type }) => type === 'Action.OpenUrl'
+                                    )?.url,
+                                    '_blank'
+                                )
+                                : navigate(
+                                    generateUrl(
+                                        notification.sourceSystem.subSystem,
+                                        notification.sourceSystem.identifier
+                                    )
+                                );
+                            onNavigate && onNavigate();
+
+                            // markAsRead({notificationId: notification.id });
                         }}
                     >
-                        <ClickableIcon name="chevron_right" />
+                        {isExternalApp ? (
+                            <ClickableIcon name="external_link" />
+                        ) : (
+                            <ClickableIcon name="chevron_right" />
+                        )}
                     </a>
                 </RightSection>
             </Wrapper>

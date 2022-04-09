@@ -7,13 +7,19 @@ import styled from 'styled-components';
 import { IconMenu } from '../../apps/ScopeChangeRequest/Components/MenuButton';
 import { NotificationCardNew } from '../../Core/Notifications/Components/NotificationCard';
 import { useNotificationCenter } from '../../Core/Notifications/Hooks/useNotificationCenter';
-import { useNotificationQueryKeys } from '../../Core/Notifications/Hooks/useNotificationQueryKeys';
+import { notificationQueries } from '../../Core/Notifications/queries/notificationQueries';
 import { Notification } from '../../Core/Notifications/Types/Notification';
 
-export function NotificationsTab(): JSX.Element {
-    const { unreadKey: unread } = useNotificationQueryKeys();
+interface NotificationsTabProps {
+    onClickNotification?: () => void;
+}
+
+export function NotificationsTab({ onClickNotification }: NotificationsTabProps): JSX.Element {
+    const { getUnreadNotificationsQuery } = notificationQueries;
+
     const queryClient = useQueryClient();
-    const onNotification = () => queryClient.invalidateQueries(unread);
+    const onNotification = () =>
+        queryClient.invalidateQueries(getUnreadNotificationsQuery().queryKey);
     const { unreadNotificationCards } = useNotificationCenter(onNotification);
 
     const origins = unreadNotificationCards
@@ -38,36 +44,43 @@ export function NotificationsTab(): JSX.Element {
             .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
             .filter(({ appName }) => activeNotifications.includes(appName));
 
+    const getCountForAppName = (x: string) =>
+        unreadNotificationCards.reduce((acc, { appName }) => (appName === x ? acc + 1 : acc), 0);
+
     return (
         <>
             <Notifications>
-                <ActiveOrigins>
-                    {origins.map((x) => (
-                        <Chip
-                            style={{
-                                backgroundColor: `${isActive(x)
-                                        ? tokens.colors.interactive.primary__selected_hover.hex
-                                        : tokens.colors.ui.background__medium.hex
-                                    }`,
-                            }}
-                            onClick={() => handleClick(x)}
-                            key={x}
-                        >
-                            {x}
-                        </Chip>
-                    ))}
-                </ActiveOrigins>
+                <Header>
+                    <ActiveOrigins>
+                        {origins.map((applicationName) => (
+                            <Chip
+                                style={{
+                                    backgroundColor: `${isActive(applicationName)
+                                            ? tokens.colors.interactive.primary__selected_hover.hex
+                                            : tokens.colors.ui.background__medium.hex
+                                        }`,
+                                }}
+                                onClick={() => handleClick(applicationName)}
+                                key={applicationName}
+                            >
+                                <div>{`${getCountForAppName(
+                                    applicationName
+                                )} ${applicationName}`}</div>
+                            </Chip>
+                        ))}
+                    </ActiveOrigins>
 
-                <IconMenu
-                    iconName="filter_list"
-                    items={[
-                        {
-                            label: `${isGroupedBySource ? 'Ungroup' : 'Group by source'} `,
-                            icon: <Checkbox checked={isGroupedBySource} readOnly />,
-                            onClick: () => setIsGroupedBySource((prev) => !prev),
-                        },
-                    ]}
-                />
+                    <IconMenu
+                        iconName="filter_list"
+                        items={[
+                            {
+                                label: `${isGroupedBySource ? 'Ungroup' : 'Group by source'} `,
+                                icon: <Checkbox checked={isGroupedBySource} readOnly />,
+                                onClick: () => setIsGroupedBySource((prev) => !prev),
+                            },
+                        ]}
+                    />
+                </Header>
 
                 {isGroupedBySource ? (
                     <Accordion>
@@ -83,6 +96,7 @@ export function NotificationsTab(): JSX.Element {
                                             <NotificationCardNew
                                                 key={notification.id}
                                                 notification={notification}
+                                                onNavigate={onClickNotification}
                                             />
                                         </Accordion.Panel>
                                     ))}
@@ -92,7 +106,11 @@ export function NotificationsTab(): JSX.Element {
                 ) : (
                     <NotificationsList>
                         {sortAndFilterList(unreadNotificationCards).map((x) => (
-                            <NotificationCardNew key={x.id} notification={x} />
+                            <NotificationCardNew
+                                key={x.id}
+                                notification={x}
+                                onNavigate={onClickNotification}
+                            />
                         ))}
                     </NotificationsList>
                 )}
@@ -100,6 +118,12 @@ export function NotificationsTab(): JSX.Element {
         </>
     );
 }
+
+const Header = styled.div`
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+`;
 
 const Notifications = styled.div`
     display: flex;

@@ -106,7 +106,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
      * Store sidesheet state in url
      */
     useEffect(() => {
-        if (sidesheetProps || SidesheetComponent) return;
         if (location.hash.length > 0 && onSelect) {
             mountSidesheetFromUrl();
         }

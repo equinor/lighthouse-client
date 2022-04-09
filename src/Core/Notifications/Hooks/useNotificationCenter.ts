@@ -2,11 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSignalRHub } from './useSignalRHub';
 import { useHttpClient } from '@equinor/portal-client';
 import { useQuery, useQueryClient } from 'react-query';
-import { getUnreadNotificationCardsAsync } from '../API/getUnreadNotifications';
-import { getReadNotificationCardsAsync } from '../API/getReadNotifications';
 import { Notification } from '../Types/Notification';
-import { useNotificationQueryKeys } from './useNotificationQueryKeys';
 import { HubConnectionState } from '@microsoft/signalr';
+import { notificationQueries } from '../queries/notificationQueries';
+import { NotificationList } from '../Types/NotificationList';
 
 interface NotificationCenter {
     isFetchingRead: boolean;
@@ -24,16 +23,20 @@ export function useNotificationCenter(
 ): NotificationCenter {
     const { fusion } = useHttpClient();
     const queryClient = useQueryClient();
-    const { readKey, unreadKey } = useNotificationQueryKeys();
     const [state, setState] = useState<ConnectionState>('Disconnected');
 
-    const { data: readNotifications, isFetching: isFetchingUnRead } = useQuery(readKey, () =>
-        getReadNotificationCardsAsync()
-    );
-    const { data: unreadNotifications, isFetching: isFetchingRead } = useQuery(
-        unreadKey,
-        async () => await getUnreadNotificationCardsAsync()
-    );
+    const { getReadNotificationsQuery, getUnreadNotificationsQuery } = notificationQueries;
+
+    const { data: readNotifications, isFetching: isFetchingUnRead } = useQuery<
+        unknown,
+        unknown,
+        NotificationList
+    >(getReadNotificationsQuery());
+    const { data: unreadNotifications, isFetching: isFetchingRead } = useQuery<
+        unknown,
+        unknown,
+        Notification[]
+    >(getUnreadNotificationsQuery());
 
     const { hubConnection } = useSignalRHub(
         `${fusion.getBaseUrl()}/signalr/hubs/notifications/?negotiateVersion=1`,
@@ -43,9 +46,9 @@ export function useNotificationCenter(
     const onNotificationRecieved = useCallback(
         (notification: Notification) => {
             onNotification && onNotification(notification);
-            queryClient.invalidateQueries(unreadKey);
+            queryClient.invalidateQueries(getUnreadNotificationsQuery().queryKey);
         },
-        [onNotification, queryClient, unreadKey]
+        [getUnreadNotificationsQuery, onNotification, queryClient]
     );
 
     const onReconnecting = () => setState('Reconnecting');

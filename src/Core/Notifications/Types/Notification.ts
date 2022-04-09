@@ -12,6 +12,7 @@ export interface Notification {
     seen: string | null;
     sourceSystem: SourceSystem;
     appName: string;
+    actionType: 'URL' | 'Identifier';
 }
 
 interface SourceSystem {
