@@ -1,11 +1,24 @@
+import styled from 'styled-components';
 import { FilterOptions } from '../../../packages/Filter/Types';
-import { SwcrPackage } from '../models/SwcrPackage';
-import { getLatestSignedRankingKey, getNextSignatureRoleKeys, getNextToSignKeys } from './packages';
+import { StatusFilter } from '../CustomViews/StatusFilter';
+import { SwcrPackage, SwcrStatus } from '../models/SwcrPackage';
+import {
+    getLatestSignedRankingKey,
+    getNextSignatureRoleKeys,
+    getNextToSignKeys,
+    getSwcrStatusColor,
+} from './packages';
+import { sortBySwcrStatusPriority } from './sortFunctions';
 
 export const filterSetup: FilterOptions<SwcrPackage> = [
     {
         name: 'Status',
         valueFormatter: ({ status }) => status,
+        sort: (filterValues) =>
+            filterValues.sort((a, b) => sortBySwcrStatusPriority(a as string, b as string)),
+        customValueRender: (value) => {
+            return <StatusFilter status={value as SwcrStatus} />;
+        },
     },
     {
         name: 'Project identifier',
