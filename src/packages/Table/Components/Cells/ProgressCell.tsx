@@ -8,9 +8,8 @@ interface ProgressSpanProps {
 }
 
 const Progress = styled.div`
-    height: 23px;
+    height: 20px;
     border-radius: 5px;
-    border: 1px solid black;
     position: relative;
     text-align: center;
     line-height: 23px;
@@ -23,8 +22,8 @@ const ProgressBar = styled.div<ProgressSpanProps>`
     position: absolute;
     width: ${(props) => props.percent + '%'};
     z-index: -1;
-    background-color: ${(props) =>
-        props.percent <= 33 ? 'red' : props.percent <= 66 ? 'orange' : '#4BB748'};
+    background-color: #4bb748;
+    border-radius: 5px;
 `;
 
 export const ProgressCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
