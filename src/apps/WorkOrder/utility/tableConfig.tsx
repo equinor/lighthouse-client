@@ -35,6 +35,7 @@ const hiddenColumns: (keyof WorkOrder)[] = [
 ];
 export const tableConfig: TableOptions<WorkOrder> = {
     objectIdentifierKey: 'workOrderNumber',
+    itemSize: 32,
     hiddenColumns,
     columnOrder: [
         'workOrderNumber',
