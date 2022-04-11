@@ -1,5 +1,6 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
 import { WorkorderSideSheet } from './Garden/components';
+import WorkOrderHeader from './Garden/components/WorkOrderHeader/WorkOrderHeader';
 import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
 import { WorkOrder } from './Garden/models';
 import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
@@ -49,6 +50,7 @@ export function setup(appApi: ClientApi): void {
             type: 'virtual',
             customViews: {
                 customItemView: WorkOrderItem,
+                customHeaderView: WorkOrderHeader,
             },
             intercepters: {
                 postGroupSorting: (data, keys) => {
