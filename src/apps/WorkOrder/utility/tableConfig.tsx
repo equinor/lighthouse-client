@@ -138,11 +138,12 @@ export const tableConfig: TableOptions<WorkOrder> = {
         },
         {
             key: 'plannedStartDate',
-            type: 'Date',
+
+            type: 'YearAndWeek',
         },
         {
             key: 'plannedFinishDate',
-            type: 'Date',
+            type: 'YearAndWeek',
         },
         {
             key: 'estimatedHours',

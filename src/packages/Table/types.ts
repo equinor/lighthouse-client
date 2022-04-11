@@ -57,6 +57,7 @@ export type CellType<T, D extends TableData = TableData> =
     | 'Array'
     | 'RelativeDate'
     | 'Number'
+    | 'YearAndWeek'
     | CustomCellType<T, D>;
 
 export type CustomCell<T> = {
