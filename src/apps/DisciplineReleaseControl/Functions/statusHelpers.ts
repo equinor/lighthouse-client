@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { getTimePeriod } from '../Components/Garden/gardenFunctions';
 import { PipetestCompletionStatusColors } from '../Styles/ReleaseControlColors';
 import {
     CheckListStatus,
@@ -8,7 +9,37 @@ import {
     CheckListStepTag,
     PipetestCompletionStatus,
 } from '../Types/drcEnums';
-import { CheckList, InsulationBox, Pipetest } from '../Types/pipetest';
+import { CheckList, Circuit, InsulationBox, Pipetest } from '../Types/pipetest';
+
+export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
+    pipetests.map((pipetest: Pipetest) => {
+        pipetest.circuits?.forEach((circuit: Circuit) => {
+            circuit.checkLists?.forEach((checkList: CheckList) => {
+                checkList.formularType = CheckListStepTag.HtCTest;
+                checkList.isHeatTrace = true;
+                pipetest.checkLists.push(checkList);
+            });
+        });
+        pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
+        pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
+        pipetest.step = getPipetestStatus(pipetest);
+        pipetest.pipetestProcessDoneInRightOrder = isPipetestProcessDoneInRightOrder(pipetest);
+        pipetest.completionStatus = getPipetestCompletionStatus(pipetest);
+        pipetest.shortformCompletionStatus = getShortformCompletionStatusName(
+            pipetest.completionStatus
+        );
+        pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
+        pipetest.overdue =
+            pipetest.step !== PipetestStep.Complete &&
+            DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
+                ? 'Yes'
+                : 'No';
+        return pipetest;
+    });
+    sortPipetests(pipetests);
+
+    return pipetests;
+}
 
 export function sortPipetests(pipetests: Pipetest[]): Pipetest[] {
     pipetests.sort((a, b) => getPipetestStatusSortValue(a) - getPipetestStatusSortValue(b));

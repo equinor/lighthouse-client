@@ -2,26 +2,16 @@ import { ClientApi } from '@equinor/portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
-import {
-    getPipetestCompletionStatus,
-    getPipetestStatus,
-    getShortformCompletionStatusName,
-    getYearAndWeekFromString,
-    isPipetestProcessDoneInRightOrder,
-    sortPipetestChecklist,
-    sortPipetests,
-} from './Functions/statusHelpers';
+import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
 import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
-import { CheckList, Circuit, Pipetest } from './Types/pipetest';
+import { Pipetest } from './Types/pipetest';
 import {
     checklistTagFunc,
     createChecklistSteps,
     getHTList,
     getStatusLetterFromStatus,
 } from './Functions/tableHelpers';
-import { getGardenItemColor, getTimePeriod } from './Components/Garden/gardenFunctions';
-import { CheckListStepTag, PipetestStep } from './Types/drcEnums';
-import { DateTime } from 'luxon';
+import { getGardenItemColor } from './Components/Garden/gardenFunctions';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { Monospace } from './Styles/Monospace';
@@ -38,37 +28,12 @@ import {
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
         const { FAM } = httpClient();
-
         return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal: signal });
     };
 
     const responseParser = async (response: Response) => {
-        const json = JSON.parse(await response.text());
-        json.map((pipetest: Pipetest) => {
-            pipetest.circuits?.forEach((circuit: Circuit) => {
-                circuit.checkLists?.forEach((checkList: CheckList) => {
-                    checkList.formularType = CheckListStepTag.HtCTest;
-                    checkList.isHeatTrace = true;
-                    pipetest.checkLists.push(checkList);
-                });
-            });
-            pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
-            pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
-            pipetest.step = getPipetestStatus(pipetest);
-            pipetest.pipetestProcessDoneInRightOrder = isPipetestProcessDoneInRightOrder(pipetest);
-            pipetest.completionStatus = getPipetestCompletionStatus(pipetest);
-            pipetest.shortformCompletionStatus = getShortformCompletionStatusName(
-                pipetest.completionStatus
-            );
-            pipetest.dueDateTimePeriod = getTimePeriod(pipetest);
-            pipetest.overdue =
-                pipetest.step !== PipetestStep.Complete &&
-                DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
-                    ? 'Yes'
-                    : 'No';
-            return pipetest;
-        });
-        sortPipetests(json);
+        let json = JSON.parse(await response.text());
+        json = chewPipetestDataFromApi(json);
         return json;
     };
 

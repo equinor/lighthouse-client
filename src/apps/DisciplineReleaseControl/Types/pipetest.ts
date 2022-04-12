@@ -16,7 +16,6 @@ export interface Pipetest {
     overdue: string;
     dueDateTimePeriod: string;
     tagTree: Record<string, unknown>;
-    // lineAndSpools: string[][];
 }
 
 export interface CheckList {
