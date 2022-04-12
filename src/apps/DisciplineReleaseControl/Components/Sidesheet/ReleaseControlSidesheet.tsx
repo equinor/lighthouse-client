@@ -4,14 +4,18 @@ import { ServerError } from '../../Api/Types/ServerError';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ReleaseControlErrorBanner } from './ErrorBanner';
 import { Pipetest } from '../../Types/pipetest';
-import { Viewer } from '../../../../packages/ModelViewer/ModelViewer';
-import { useFacility } from '@equinor/portal-client';
+// import { Viewer } from '../../../../packages/ModelViewer/ModelViewer';
+// import { useFacility } from '@equinor/portal-client';
 import { Tabs } from '@equinor/eds-core-react';
 import { CheckListTable } from './CheckListTable';
 import { BoxInsulationTable } from './BoxInsulationTable';
 import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { SidesheetTabList } from './SidesheetTabs';
+import { ElectroView } from '../Electro/ElectroView';
+import { useQuery } from 'react-query';
+import { getPipetests } from '../Electro/getPipetests';
+import { chewPipetestDataFromApi } from '../../Functions/statusHelpers';
 
 interface ReleaseControlSidesheetProps {
     item: Pipetest;
@@ -24,8 +28,10 @@ export const ReleaseControlSidesheet = ({
 }: ReleaseControlSidesheetProps): JSX.Element => {
     const [errorMessage] = useState<ServerError | undefined>();
 
-    const { echoPlantId } = useFacility();
+    // const { echoPlantId } = useFacility();
     const [activeTab, setActiveTab] = useState<number>(0);
+    const [isChewed, setIsChewed] = useState<boolean>(false);
+
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
@@ -40,19 +46,29 @@ export const ReleaseControlSidesheet = ({
         actions.setTitle(<>Pipetest {item.name}</>);
     }, [item.name]);
 
+    let { data } = useQuery('pipetests', () => getPipetests(), {
+        staleTime: Infinity,
+        cacheTime: Infinity,
+    });
+
+    if (!isChewed) {
+        data = chewPipetestDataFromApi(data !== undefined ? data : []);
+        setIsChewed(true); //sets it to already chewed so we dont re-run every time component updates (resize sidesheet etc.)
+    }
+
     return (
         <Wrapper>
             <ReleaseControlErrorBanner message={errorMessage} />
             <ReleaseControlSidesheetBanner pipetest={item} />
-            {/* <Tabs activeTab={activeTab} onChange={handleChange}>
+            <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
                     <Tabs.Tab>Single line diagram </Tabs.Tab>
                     <Tabs.Tab>Details</Tabs.Tab>
-                    <Tabs.Tab>3D-visualisation</Tabs.Tab>
+                    {/* <Tabs.Tab>3D-visualisation</Tabs.Tab> */}
                 </SidesheetTabList>
                 <TabList>
                     <Tabs.Panel>
-                        <>Single line diagram</>
+                        <ElectroView pipetest={item} pipetests={data !== undefined ? data : []} />
                     </Tabs.Panel>
                     <Tabs.Panel>
                         <h4>{item.description}</h4>
@@ -60,7 +76,7 @@ export const ReleaseControlSidesheet = ({
                         <br />
                         <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
                     </Tabs.Panel>
-                    <Tabs.Panel>
+                    {/* <Tabs.Panel>
                         {activeTab === 2 && (
                             <ThreeDModel>
                                 <Viewer
@@ -70,22 +86,16 @@ export const ReleaseControlSidesheet = ({
                                 />
                             </ThreeDModel>
                         )}
-                    </Tabs.Panel>
+                    </Tabs.Panel> */}
                 </TabList>
-            </Tabs> */}
-            <TabList>
-                <h4>{item.description}</h4>
-                <CheckListTable checkLists={item.checkLists} />
-                <br />
-                <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
-            </TabList>
+            </Tabs>
         </Wrapper>
     );
 };
 
-const ThreeDModel = styled.div`
-    height: 100vh;
-`;
+// const ThreeDModel = styled.div`
+//     height: 100vh;
+// `;
 
 const TabList = styled(Tabs.Panels)`
     padding: 12px 16px;
