@@ -28,7 +28,7 @@ export const SwitchBoardContainer = styled.div`
     padding: 20px;
     max-width: 1500px;
     width: 100%;
-    border-left: 1px solid;
+    border-left: 1px solid #dcdcdc;
     margin-bottom: 50px;
 `;
 
