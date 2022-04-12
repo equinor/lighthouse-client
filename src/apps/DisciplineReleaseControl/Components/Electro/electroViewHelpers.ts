@@ -21,7 +21,9 @@ export function getCableChildren(
 ): EleNetworkCable[] {
     if (parent === undefined) return [];
     const circuits = getCircuitChildren(eleNetwork, parent);
-    return eleNetwork.cables.filter((child) => circuits.some((x) => x.tagNo === child.tagTo));
+    return eleNetwork.cables.filter((child) =>
+        circuits.some((x) => x.tagNo === child.tagTo && child.tagNo.substring(0, 2) !== 'HT')
+    );
 }
 
 export function getNodeStatus(checkLists: EleNetworkCheckList[], tagNo?: string): string {
