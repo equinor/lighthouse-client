@@ -1,11 +1,7 @@
+import { formatDateString, StringCell, Table } from '@equinor/GardenUtils';
 import { useMemo } from 'react';
 import { HandoverDetails, HandoverPackage } from '../../../../models';
-import { TabContent, Table } from './DetailsTabStyles';
-import { formatDateString } from './utils';
-
-const StringCell = ({ value }: { value: string }) => <>{value.trim() ? value.trim() : 'N/A'}</>;
-
-const DateCell = ({ date }: { date: string }) => <>{formatDateString(date)}</>;
+import { TabContent } from './DetailsTabStyles';
 
 type DetailsTabProps = {
     commpkg: HandoverPackage;
@@ -124,46 +120,54 @@ export const DetailsTab = ({
                     <tr>
                         <td>RFCC (C01)</td>
                         <td>
-                            <DateCell date={commpkg.plannedStartDate} />
+                            <StringCell value={formatDateString(commpkg.plannedStartDate)} />
                         </td>
                         <td>
-                            <DateCell date={commpkg.forecastStartDate} />
+                            <StringCell value={formatDateString(commpkg.forecastStartDate)} />
                         </td>
                     </tr>
                     <tr>
                         <td>TAC (C06)</td>
                         <td>
-                            <DateCell date={commpkg.plannedTacDate} />
+                            <StringCell value={formatDateString(commpkg.plannedTacDate)} />
                         </td>
                         <td>
-                            <DateCell date={commpkg.forecastTacDate} />
+                            <StringCell value={formatDateString(commpkg.forecastTacDate)} />
                         </td>
                     </tr>
                     <tr>
                         <td>RFOC (C07)</td>
                         <td>
-                            <DateCell date={commpkg.plannedFinishDate} />
+                            <StringCell value={formatDateString(commpkg.plannedFinishDate)} />
                         </td>
                         <td>
-                            <DateCell date={commpkg.forecastFinishDate} />
+                            <StringCell value={formatDateString(commpkg.forecastFinishDate)} />
                         </td>
                     </tr>
                     <tr>
                         <td>DCC (D01)</td>
                         <td>
-                            <DateCell date={commpkg.demolitionPlannedStartDate} />
+                            <StringCell
+                                value={formatDateString(commpkg.demolitionPlannedStartDate)}
+                            />
                         </td>
                         <td>
-                            <DateCell date={commpkg.demolitionForecastStartDate} />
+                            <StringCell
+                                value={formatDateString(commpkg.demolitionForecastStartDate)}
+                            />
                         </td>
                     </tr>
                     <tr>
                         <td>RFRC (D03)</td>
                         <td>
-                            <DateCell date={commpkg.demolitionPlannedFinishDate} />
+                            <StringCell
+                                value={formatDateString(commpkg.demolitionPlannedFinishDate)}
+                            />
                         </td>
                         <td>
-                            <DateCell date={commpkg.demolitionForecastFinishDate} />
+                            <StringCell
+                                value={formatDateString(commpkg.demolitionForecastFinishDate)}
+                            />
                         </td>
                     </tr>
                 </tbody>
