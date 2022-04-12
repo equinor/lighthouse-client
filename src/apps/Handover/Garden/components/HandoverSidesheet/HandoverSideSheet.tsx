@@ -1,6 +1,6 @@
-import { Tabs } from '@equinor/eds-core-react';
-import { HandoverPackage } from '../models/handoverPackage';
-import useHandoverResource from '../hooks/useHandoverResource';
+import { Button, Tabs } from '@equinor/eds-core-react';
+import { HandoverPackage } from '../../models/handoverPackage';
+import useHandoverResource from '../../hooks/useHandoverResource';
 import { useEffect, useState } from 'react';
 import {
     DetailsTab,
@@ -13,9 +13,17 @@ import {
     UnsignedActionTab,
     UnsignedTaskTab,
     WorkOrderTab,
-} from '../components/HandoverSidesheet';
+} from '.';
 import { SideSheetContainer } from '@equinor/GardenUtils';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
+import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
+import styled from 'styled-components';
+import { isProduction } from '@equinor/portal-client';
+const Header = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
 
 interface HandoverSideSheetProps {
     item: HandoverPackage;
@@ -27,10 +35,23 @@ export function HandoverSideSheet({
     item: handoverPackage,
 }: HandoverSideSheetProps): JSX.Element {
     const [activeTab, setActiveTab] = useState<number>(0);
+    const procosysUrl = isProduction()
+        ? handoverPackage.url
+        : handoverPackage.url.replace('procosys', 'procosystest');
 
     useEffect(() => {
-        actions.setTitle(<>{handoverPackage.commpkgNo}</>);
-    }, [handoverPackage.id]);
+        actions.setTitle(
+            <Header>
+                {handoverPackage.commpkgNo}
+
+                <a target="_BLANK" href={procosysUrl} rel="noreferrer">
+                    <Button key="linkToProcosys" variant="ghost">
+                        Open in ProCoSys
+                    </Button>
+                </a>
+            </Header>
+        );
+    }, [handoverPackage.id, procosysUrl]);
 
     const handleChange = (index: number) => {
         setActiveTab(index);

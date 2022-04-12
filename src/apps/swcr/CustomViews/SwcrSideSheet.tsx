@@ -1,6 +1,7 @@
-import { Chip } from '@equinor/eds-core-react';
+import { Button, Chip } from '@equinor/eds-core-react';
 import { Fragment, useEffect } from 'react';
 import styled from 'styled-components';
+import { isProduction } from '../../../Core/Client/Functions';
 import { SidesheetApi } from '../../../packages/Sidesheet/Components/ResizableSidesheet';
 import useSignatures from '../hooks/useSignatures';
 import { SwcrPackage } from '../models/SwcrPackage';
@@ -67,6 +68,7 @@ const Attachments = styled.div`
 `;
 
 const Header = styled.div`
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -79,22 +81,24 @@ interface SwcrSideSheetProps {
 
 export function SwcrSideSheet({ item, actions }: SwcrSideSheetProps): JSX.Element {
     const { signatures, signaturesFetching } = useSignatures(item.swcrId);
+    const procosysUrl = isProduction() ? item.url : item.url.replace('procosys', 'procosystest');
 
     useEffect(() => {
-        actions.setTitle(<>{item.swcrNo}</>);
+        actions.setTitle(
+            <Header>
+                {item.swcrNo}{' '}
+                <a target="_BLANK" href={procosysUrl} rel="noreferrer">
+                    <Button key="linkToProcosys" variant="ghost">
+                        Open in ProCoSys
+                    </Button>
+                </a>
+            </Header>
+        );
     }, [item.swcrNo]);
 
     return (
         <div style={{ height: '100%' }}>
             <SideSheetContainer>
-                <Header>
-                    {/* <h3>{item.swcrNo}</h3> */}
-                    {/* <a target="_BLANK" href={item.url} rel="noreferrer">
-                        <Button key="linkToProcosys" variant="ghost">
-                            Open in ProCoSys
-                        </Button>
-                    </a> */}
-                </Header>
                 <h3>{item.title}</h3>
                 <TagsAndAttachmentBlock>
                     <Tags>
