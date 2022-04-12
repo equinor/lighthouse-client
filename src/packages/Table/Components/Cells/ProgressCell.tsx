@@ -13,6 +13,7 @@ const Progress = styled.div`
     position: relative;
     text-align: center;
     line-height: 23px;
+    width: 90%;
 `;
 
 const ProgressBar = styled.div<ProgressSpanProps>`
@@ -22,7 +23,9 @@ const ProgressBar = styled.div<ProgressSpanProps>`
     position: absolute;
     width: ${(props) => props.percent + '%'};
     z-index: -1;
-    background-color: #4bb748;
+    background-color: hsla(118, 71%, 63%, 0.5);
+    border: 2px solid #4bb748;
+    border-right: ${(props) => (props.percent.toString() === '100' ? '2px solid #4bb748' : 'none')};
     border-radius: 5px;
 `;
 
