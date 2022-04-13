@@ -26,7 +26,11 @@ export const ElectroNode = ({
 
     const circuitChildren = getCircuitChildren(eleNetwork, node);
     const cableChildren = getCableChildren(eleNetwork, node);
-    const nodeStatus = getNodeStatus(eleNetwork.checkLists, node?.tagNo);
+
+    const nodeStatus = getNodeStatus(
+        eleNetwork.checkLists,
+        node !== undefined ? node?.tagNo : cableNode?.tagNo
+    );
 
     const cablesTo: string[] = [];
     cableChildren?.forEach((x) => {
