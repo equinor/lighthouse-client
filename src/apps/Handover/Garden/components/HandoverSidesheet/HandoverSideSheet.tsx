@@ -1,6 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { HandoverPackage } from '../models/handoverPackage';
-import useHandoverResource from '../hooks/useHandoverResource';
+import { HandoverPackage } from '../../models/handoverPackage';
+import useHandoverResource from '../../hooks/useHandoverResource';
 import { useEffect, useState } from 'react';
 import {
     DetailsTab,
@@ -13,9 +13,10 @@ import {
     UnsignedActionTab,
     UnsignedTaskTab,
     WorkOrderTab,
-} from '../components/HandoverSidesheet';
-import { SideSheetContainer } from '@equinor/GardenUtils';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
+} from '.';
+import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
+import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
+import { isProduction } from '@equinor/portal-client';
 
 interface HandoverSideSheetProps {
     item: HandoverPackage;
@@ -27,10 +28,15 @@ export function HandoverSideSheet({
     item: handoverPackage,
 }: HandoverSideSheetProps): JSX.Element {
     const [activeTab, setActiveTab] = useState<number>(0);
+    const procosysUrl = isProduction()
+        ? handoverPackage.url
+        : handoverPackage.url.replace('procosys', 'procosystest');
 
     useEffect(() => {
-        actions.setTitle(<>{handoverPackage.commpkgNo}</>);
-    }, [handoverPackage.id]);
+        actions.setTitle(
+            <SidesheetHeaderContent title={handoverPackage.commpkgNo} url={procosysUrl} />
+        );
+    }, [handoverPackage.commpkgNo, procosysUrl]);
 
     const handleChange = (index: number) => {
         setActiveTab(index);
