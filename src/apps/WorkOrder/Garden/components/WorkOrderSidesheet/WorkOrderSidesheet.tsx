@@ -1,19 +1,13 @@
-import { Button, Tabs } from '@equinor/eds-core-react';
-import { SideSheetContainer } from '@equinor/GardenUtils';
+import { Tabs } from '@equinor/eds-core-react';
+import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
 import { isProduction } from '@equinor/portal-client';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { WorkOrder } from '../../models';
 import { useMaterial, useMccr } from './hooks';
 import { DetailsTab, MccrTab } from './Tabs';
 import { MaterialTab } from './Tabs/MaterialTab';
-const Header = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
+
 interface WorkorderSideSheetProps {
     item: WorkOrder;
     actions: SidesheetApi;
@@ -27,17 +21,8 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
     const procosysUrl = isProduction() ? item.url : item.url.replace('procosys', 'procosystest');
 
     useEffect(() => {
-        actions.setTitle(
-            <Header>
-                {item.workOrderNumber}
-                <a target="_BLANK" href={procosysUrl} rel="noreferrer">
-                    <Button key="linkToProcosys" variant="ghost">
-                        Open in ProCoSys
-                    </Button>
-                </a>
-            </Header>
-        );
-    }, [item.workOrderId, procosysUrl]);
+        actions.setTitle(<SidesheetHeaderContent title={item.workOrderNumber} url={procosysUrl} />);
+    }, [item.workOrderNumber, procosysUrl]);
 
     const {
         material,

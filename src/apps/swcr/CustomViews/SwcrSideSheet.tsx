@@ -1,4 +1,5 @@
-import { Button, Chip } from '@equinor/eds-core-react';
+import { Chip } from '@equinor/eds-core-react';
+import { SidesheetHeaderContent } from '@equinor/GardenUtils';
 import { Fragment, useEffect } from 'react';
 import styled from 'styled-components';
 import { isProduction } from '../../../Core/Client/Functions';
@@ -67,13 +68,6 @@ const Attachments = styled.div`
     }
 `;
 
-const Header = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
-
 interface SwcrSideSheetProps {
     item: SwcrPackage;
     actions: SidesheetApi;
@@ -81,20 +75,12 @@ interface SwcrSideSheetProps {
 
 export function SwcrSideSheet({ item, actions }: SwcrSideSheetProps): JSX.Element {
     const { signatures, signaturesFetching } = useSignatures(item.swcrId);
-    const procosysUrl = isProduction() ? item.url : item.url.replace('procosys', 'procosystest');
 
+    const procosysUrl = isProduction() ? item.url : item.url.replace('procosys', 'procosystest');
+    const attachmentsUrls = item.url.replace('#', '#tab=attachments&');
     useEffect(() => {
-        actions.setTitle(
-            <Header>
-                {item.swcrNo}{' '}
-                <a target="_BLANK" href={procosysUrl} rel="noreferrer">
-                    <Button key="linkToProcosys" variant="ghost">
-                        Open in ProCoSys
-                    </Button>
-                </a>
-            </Header>
-        );
-    }, [item.swcrNo]);
+        actions.setTitle(<SidesheetHeaderContent title={item.swcrNo} url={procosysUrl} />);
+    }, [item.swcrNo, procosysUrl]);
 
     return (
         <div style={{ height: '100%' }}>
@@ -123,7 +109,11 @@ export function SwcrSideSheet({ item, actions }: SwcrSideSheetProps): JSX.Elemen
                             Attachments:
                             <a
                                 target="_BLANK"
-                                href={item.url.replace('#', '#tab=attachments&')}
+                                href={
+                                    isProduction()
+                                        ? attachmentsUrls
+                                        : attachmentsUrls.replace('procosys', 'procosystest')
+                                }
                                 rel="noreferrer"
                             >
                                 {item.cntAttachments}
