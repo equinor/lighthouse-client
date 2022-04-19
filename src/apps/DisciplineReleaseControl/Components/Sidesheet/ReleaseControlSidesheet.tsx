@@ -14,8 +14,8 @@ import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { SidesheetTabList } from './SidesheetTabs';
 import { ElectroView } from '../Electro/ElectroView';
 import { useQuery } from 'react-query';
-import { getPipetests } from '../Electro/getPipetests';
-import { chewPipetestDataFromApi } from '../../Functions/statusHelpers';
+import { useLocationKey } from '../../../../packages/Filter/Hooks/useLocationKey';
+import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
 
 interface ReleaseControlSidesheetProps {
     item: Pipetest;
@@ -30,7 +30,6 @@ export const ReleaseControlSidesheet = ({
 
     // const { echoPlantId } = useFacility();
     const [activeTab, setActiveTab] = useState<number>(0);
-    const [isChewed, setIsChewed] = useState<boolean>(false);
 
     const handleChange = (index: number) => {
         setActiveTab(index);
@@ -46,15 +45,13 @@ export const ReleaseControlSidesheet = ({
         actions.setTitle(<>Pipetest {item.name}</>);
     }, [item.name]);
 
-    let { data } = useQuery('pipetests', () => getPipetests(), {
+    const locationKey = useLocationKey();
+
+    //Fetches all pipetests date from location cache. If no cache it fetches and chews the data itself.
+    const { data } = useQuery(locationKey, () => fetchAndChewPipetestDataFromApi(), {
         staleTime: Infinity,
         cacheTime: Infinity,
     });
-
-    if (!isChewed) {
-        data = chewPipetestDataFromApi(data !== undefined ? data : []);
-        setIsChewed(true); //sets it to already chewed so we dont re-run every time component updates (resize sidesheet etc.)
-    }
 
     return (
         <Wrapper>
