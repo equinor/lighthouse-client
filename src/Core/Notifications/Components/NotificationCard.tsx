@@ -16,6 +16,11 @@ import {
 import { notificationsBaseKey } from '../queries/notificationQueries';
 import { useNavigate } from 'react-router';
 import { getApps } from '../../../apps/apps';
+import { AppManifest } from '../../Client/Types';
+import { CoreContext } from '../../WorkSpace/src/WorkSpaceApi/workspaceState';
+import { deref } from '@dbeining/react-atom';
+import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
+
 interface NotificationCardProps {
     notification: Notification;
     onNavigate?: () => void;
@@ -30,20 +35,36 @@ export const NotificationCardNew = ({
 
     const baseKey = notificationsBaseKey;
 
-    const { mutateAsync: markAsRead } = useMutation(read, readNotificationAsync, {
+    const { mutate: markAsRead } = useMutation(read, readNotificationAsync, {
         onSuccess: () => queryClient.invalidateQueries(baseKey),
     });
 
     const navigate = useNavigate();
     const apps = new Map<string, string>();
     apps.set('ScopeChangeControl', 'change');
+    const currentLocation = useLocationKey();
 
-    function generateUrl(appName: string, identifier: string): string {
+    async function handleNotificationClick(appName: string, identifier: string): Promise<void> {
         const actualName = apps.get(appName);
         if (!actualName) throw 'App not found';
         const app = getApps().find(({ shortName }) => shortName === actualName);
         if (!app) throw 'Not found';
-        return `${app.groupe}/${app.shortName}#${app.shortName}/${identifier}`;
+        if (currentLocation === actualName) {
+            //mount sidesheet
+            await openSidesheet(identifier, app);
+        } else {
+            //redirect
+            navigate(`${app.groupe}/${app.shortName}#${app.shortName}/${identifier}`);
+        }
+    }
+
+    async function openSidesheet(identifier: string, app: AppManifest) {
+        const { idResolver, onSelect } = deref(CoreContext)[app.shortName];
+
+        const item = idResolver && (await idResolver(identifier));
+        if (!item) return;
+
+        onSelect && onSelect(item);
     }
 
     const isExternalApp = notification.actionType === 'URL';
@@ -84,15 +105,14 @@ export const NotificationCardNew = ({
                                     )?.url,
                                     '_blank'
                                 )
-                                : navigate(
-                                    generateUrl(
-                                        notification.sourceSystem.subSystem,
-                                        notification.sourceSystem.identifier
-                                    )
+                                : handleNotificationClick(
+                                    notification.sourceSystem.subSystem,
+                                    notification.sourceSystem.identifier
                                 );
+
                             onNavigate && onNavigate();
 
-                            // markAsRead({notificationId: notification.id });
+                            markAsRead({ notificationId: notification.id });
                         }}
                     >
                         {isExternalApp ? (
