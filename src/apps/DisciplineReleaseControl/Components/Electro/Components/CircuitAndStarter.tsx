@@ -3,25 +3,32 @@ import styled from 'styled-components';
 import { StatusCircle } from '../../Garden/StatusCircle';
 import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
 import { ElectroViewNodeGroup, ElectroViewNodeText, ElectroViewNodeValueText } from '../styles';
+import { TestDot } from './TestDot';
 
 interface CircuitAndStarterProps {
     value?: string;
     status: string;
+    cTestStatus: string;
 }
-export const CircuitAndStarter = ({ value, status }: CircuitAndStarterProps): JSX.Element => {
+export const CircuitAndStarter = ({
+    value,
+    status,
+    cTestStatus,
+}: CircuitAndStarterProps): JSX.Element => {
     return (
         <ElectroViewNodeGroup>
             <ElectroViewNodeText>Circuit</ElectroViewNodeText>
             <CircuitAndStarterNode>
+                <TestDot value="C" status={cTestStatus} />
+                <ElectroViewNodeValueText>
+                    <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
+                </ElectroViewNodeValueText>
                 <Icon
                     size={16}
                     style={{ transform: 'rotate(90deg)' }}
                     color={'#000000'}
                     name="circuit"
                 />
-                <ElectroViewNodeValueText>
-                    <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
-                </ElectroViewNodeValueText>
                 <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
             </CircuitAndStarterNode>
         </ElectroViewNodeGroup>

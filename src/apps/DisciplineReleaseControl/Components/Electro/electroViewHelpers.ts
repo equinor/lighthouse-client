@@ -65,6 +65,27 @@ export const getElectroViewCompletionStatusColor = (completionStatus: string): s
             color = PipetestCompletionStatusColors.PA;
             break;
     }
-
     return color;
 };
+
+export function getElectroTestStatus(testType: string, checkLists: EleNetworkCheckList[]): string {
+    if (testType === undefined) return CheckListStatus.Outstanding;
+
+    checkLists = checkLists.filter((x) => x.formularType === testType);
+
+    if (checkLists?.length === 0) {
+        return CheckListStatus.Inactive;
+    } else if (checkLists.every((x) => x.status === CheckListStatus.OK)) {
+        return CheckListStatus.OK;
+    } else if (checkLists.find((x) => x.status === CheckListStatus.Outstanding)) {
+        {
+            return CheckListStatus.Outstanding;
+        }
+    } else if (checkLists.find((x) => x.status === CheckListStatus.PunchAError)) {
+        return CheckListStatus.PunchAError;
+    } else if (checkLists.find((x) => x.status === CheckListStatus.PunchBError)) {
+        return CheckListStatus.PunchBError;
+    } else {
+        return CheckListStatus.Outstanding;
+    }
+}

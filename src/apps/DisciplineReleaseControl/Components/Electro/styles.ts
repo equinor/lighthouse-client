@@ -12,7 +12,7 @@ export const ElectroViewContainer = styled.div`
     padding: 20px;
     max-width: 1500px;
     width: 100%;
-    max-height: 800px;
+    max-height: 600px;
     overflow-x: auto;
     overflow-y: auto;
 `;

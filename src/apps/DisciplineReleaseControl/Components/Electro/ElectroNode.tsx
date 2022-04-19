@@ -1,11 +1,17 @@
 import styled from 'styled-components';
+import { CheckListStepTag } from '../../Types/drcEnums';
 import { EleNetwork, EleNetworkCable, EleNetworkCircuit } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
 import { Cable } from './Components/Cable';
 import { CircuitAndStarter } from './Components/CircuitAndStarter';
 import { HeatTracingCable } from './Components/HeatTracingCable';
 import { JunctionBox } from './Components/JunctionBox';
-import { getCableChildren, getCircuitChildren, getNodeStatus } from './electroViewHelpers';
+import {
+    getCableChildren,
+    getCircuitChildren,
+    getElectroTestStatus,
+    getNodeStatus,
+} from './electroViewHelpers';
 
 interface ElectroNodeProps {
     eleNetwork: EleNetwork;
@@ -48,7 +54,14 @@ export const ElectroNode = ({
         switch (node?.eleSymbolCode) {
             case 'TAVLE':
                 return (
-                    <CircuitAndStarter value={eleNetwork.switchBoardTagNo} status={nodeStatus} />
+                    <CircuitAndStarter
+                        value={eleNetwork.switchBoardTagNo}
+                        status={nodeStatus}
+                        cTestStatus={getElectroTestStatus(
+                            CheckListStepTag.HtCTest,
+                            eleNetwork.checkLists
+                        )}
+                    />
                 );
 
             case 'K_BOX':
@@ -57,7 +70,7 @@ export const ElectroNode = ({
                 return (
                     <HeatTracingCable
                         value={node?.tagNo}
-                        status={nodeStatus}
+                        eleNetwork={eleNetwork}
                         pipetests={pipetests}
                         currentPipetest={currentPipetest}
                     />
