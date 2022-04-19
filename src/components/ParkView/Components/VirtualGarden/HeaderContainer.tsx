@@ -11,7 +11,7 @@ import { GardenItem } from './types/gardenItem';
 
 type HeaderContainerProps<T> = {
     columnVirtualizer: { virtualItems: VirtualItem[] };
-    headerChild: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element> | undefined;
+    headerChild?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
     garden: GardenGroups<T>;
     highlightColumn: string | undefined;
     customDescription?: (item: T | GardenItem<T>) => string;

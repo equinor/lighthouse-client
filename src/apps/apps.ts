@@ -29,7 +29,7 @@ import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeReque
 import { setup as SwcrSetup } from './swcr';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
-
+import { setup as McSetup } from './McGarden';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -274,6 +274,20 @@ export const apps: AppManifest[] = [
         tags: ['Job'],
         appEnv: 'test',
     },
+    {
+        title: 'Mechanical Construction',
+        shortName: 'MC',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        app: {
+            appType: 'Workspace',
+            setup: McSetup,
+        },
+        tags: ['Job'],
+        appEnv: 'dev',
+    },
+
     {
         // Ny Power Bi
         title: 'Work preparation',
