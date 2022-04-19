@@ -16,6 +16,7 @@ interface NotificationsTabProps {
 
 export function NotificationsTab({ onClickNotification }: NotificationsTabProps): JSX.Element {
     const { getUnreadNotificationsQuery } = notificationQueries;
+    const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
 
     const queryClient = useQueryClient();
     const onNotification = () =>
@@ -63,9 +64,9 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
                                 onClick={() => handleClick(applicationName)}
                                 key={applicationName}
                             >
-                                <div>{`${getCountForAppName(
+                                <div>{`${getCountForAppName(applicationName)} ${capitalize(
                                     applicationName
-                                )} ${applicationName}`}</div>
+                                )}`}</div>
                             </Chip>
                         ))}
                     </ActiveOrigins>
@@ -87,7 +88,7 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
                         {activeNotifications.map((applicationTitle) => (
                             <Accordion.Item key={applicationTitle}>
                                 <Accordion.Header chevronPosition="right">
-                                    {applicationTitle}
+                                    {capitalize(applicationTitle)}
                                 </Accordion.Header>
                                 {sortAndFilterList(unreadNotificationCards)
                                     .filter(({ appName }) => applicationTitle === appName)
