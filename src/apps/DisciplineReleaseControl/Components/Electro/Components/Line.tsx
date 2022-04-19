@@ -1,8 +1,9 @@
+import { deref } from '@dbeining/react-atom';
 import React from 'react';
 import styled from 'styled-components';
-import { openSidesheet } from '../../../../../packages/Sidesheet/Functions';
+import { CoreContext } from '../../../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
+import { useLocationKey } from '../../../../../packages/Filter/Hooks/useLocationKey';
 import { Pipetest } from '../../../Types/pipetest';
-import { ReleaseControlSidesheet } from '../../Sidesheet/ReleaseControlSidesheet';
 
 interface LineProps {
     value?: string;
@@ -10,11 +11,10 @@ interface LineProps {
     pipetest: Pipetest | undefined;
 }
 export const Line = ({ value, currentPipetest, pipetest }: LineProps): JSX.Element => {
+    const locationKey = useLocationKey();
+    const { onSelect } = deref(CoreContext)[locationKey];
     return (
-        <LineNode
-            currentPipetest={currentPipetest}
-            onClick={() => openSidesheet(ReleaseControlSidesheet, pipetest)}
-        >
+        <LineNode currentPipetest={currentPipetest} onClick={() => onSelect && onSelect(pipetest)}>
             {value}
         </LineNode>
     );
