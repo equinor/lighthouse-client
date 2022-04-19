@@ -40,6 +40,7 @@ export const NotificationCardNew = ({
     });
 
     const navigate = useNavigate();
+    //HACK: Doesnt scale
     const apps = new Map<string, string>();
     apps.set('ScopeChangeControl', 'change');
     const currentLocation = useLocationKey();
@@ -73,7 +74,6 @@ export const NotificationCardNew = ({
         <>
             <Wrapper>
                 <LeftSection>
-                    {/* TODO: resolve EDS colors */}
                     <svg
                         width={15}
                         height={15}
