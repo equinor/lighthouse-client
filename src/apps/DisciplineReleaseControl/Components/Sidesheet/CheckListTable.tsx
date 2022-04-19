@@ -36,5 +36,10 @@ export const CheckListTable = ({ checkLists }: TableProps): JSX.Element => {
         },
     ];
 
-    return <Table options={{ columns: columns, data: checkLists }}></Table>;
+    return (
+        <>
+            <h4>Pipetest checklists:</h4>
+            <Table options={{ columns: columns, data: checkLists }}></Table>
+        </>
+    );
 };

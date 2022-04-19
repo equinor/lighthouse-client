@@ -24,6 +24,7 @@ export function useFusionClient(
     options?: {
         showFilter?: boolean;
         enablePageNavigation?: boolean;
+        defaultPage?: string;
     }
 ): useFusionClientReturn {
     const { fusionPbi } = useHttpClient();
@@ -66,6 +67,7 @@ export function useFusionClient(
                     },
                 },
             },
+            pageName: options?.defaultPage,
             filters: filters ?? undefined,
         };
     }

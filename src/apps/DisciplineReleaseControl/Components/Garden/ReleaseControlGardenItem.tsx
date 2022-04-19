@@ -2,7 +2,7 @@ import {
     ReleaseControlItem,
     MidSection,
     Title,
-    Circles,
+    Icons,
     ReleaseControlExpanded,
     ReleaseControlExpandedTitle,
 } from './GardenItemStyles';
@@ -11,6 +11,8 @@ import { CustomItemView } from '../../../../components/ParkView/Models/gardenOpt
 import { getGardenItemColor, getGardenItemCompletionColor } from './gardenFunctions';
 import { StatusCircle } from './StatusCircle';
 import { useParkViewContext } from '../../../../components/ParkView/Context/ParkViewProvider';
+import { memo } from 'react';
+import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';
 
 export function ReleaseControlExpandedView({ data }: { data: Pipetest }): JSX.Element {
     return (
@@ -19,19 +21,18 @@ export function ReleaseControlExpandedView({ data }: { data: Pipetest }): JSX.El
         </ReleaseControlExpanded>
     );
 }
-
-export function ReleaseControlGardenItem({
+const ReleaseControlGardenItem = ({
     data,
     itemKey,
     onClick,
     columnExpanded,
-}: CustomItemView<Pipetest>): JSX.Element {
+}: CustomItemView<Pipetest>) => {
     const { groupByKeys } = useParkViewContext();
 
     return (
         <>
             <ReleaseControlItem
-                backgroundColor={getGardenItemColor(data)}
+                backgroundColor={getGardenItemColor(data.step)}
                 textColor={'#000'}
                 isGrouped={groupByKeys.length > 0}
                 onClick={onClick}
@@ -41,10 +42,17 @@ export function ReleaseControlGardenItem({
                     <Title>{data[itemKey]}</Title>
                     {columnExpanded && <ReleaseControlExpandedView data={data} />}
                 </MidSection>
-                <Circles>
-                    <StatusCircle statusColor={getGardenItemCompletionColor(data)} />
-                </Circles>
+                <Icons>
+                    {!data.pipetestProcessDoneInRightOrder && (
+                        <WorkflowWarningTriangle outline={true} />
+                    )}
+                    <StatusCircle
+                        statusColor={getGardenItemCompletionColor(data.completionStatus)}
+                    />
+                </Icons>
             </ReleaseControlItem>
         </>
     );
-}
+};
+
+export default memo(ReleaseControlGardenItem);

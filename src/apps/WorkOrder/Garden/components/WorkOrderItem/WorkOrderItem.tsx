@@ -1,11 +1,5 @@
-import {
-    SizeIcons,
-    StatusCircle,
-    FlagIcon,
-    ProcosysStatuses,
-    FollowUpStatuses,
-} from '@equinor/GardenUtils';
-import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import { FlagIcon, ProcosysStatuses, FollowUpStatuses } from '@equinor/GardenUtils';
+import { memo, useMemo, useRef, useState } from 'react';
 import { useParkViewContext } from '../../../../../components/ParkView/Context/ParkViewProvider';
 import { CustomItemView } from '../../../../../components/ParkView/Models/gardenOptions';
 import { WorkOrder } from '../../models';
@@ -18,14 +12,7 @@ import {
     getMatStatus,
 } from '../../utility';
 import { WorkOrderPopover } from '../Popover/WorkOrderPopover';
-import {
-    Circles,
-    WorkOrderWrapper,
-    Progress,
-    MidSection,
-    WorkorderExpanded,
-    WorkorderExpandedTitle,
-} from './styles';
+import { WorkOrderWrapper, Root, Sizes, StatusCircles, ItemText } from './styles';
 import { itemSize } from './utils';
 type PackageStatusReturn = {
     mccrColor: string;
@@ -51,11 +38,10 @@ const getWorkOrderStatuses = (
     const backgroundColor = colorMap[status];
     const textColor = getTextColorForStatus(status);
     const size = itemSize(data.estimatedHours);
-    const progressBar = `linear-gradient(90deg, black ${parseInt(
+    const progressBar = `linear-gradient(90deg, #706b6b ${parseInt(
         data.projectProgress,
         10
     )}%, transparent ${parseInt(data.projectProgress, 10)}%)`;
-
     return {
         mccrColor,
         matColor,
@@ -67,7 +53,15 @@ const getWorkOrderStatuses = (
         status,
     };
 };
-const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemView<WorkOrder>) => {
+const WorkOrderItem = ({
+    data,
+    itemKey,
+    onClick,
+    columnExpanded,
+    depth,
+    selectedItem,
+    width: itemWidth = 300,
+}: CustomItemView<WorkOrder>) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const anchorRef = useRef<HTMLDivElement>(null);
     const { groupByKeys, gardenKey } = useParkViewContext<WorkOrder>();
@@ -85,29 +79,11 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
         () => getWorkOrderStatuses(data, gardenKey, groupByKeys),
         [data, gardenKey, groupByKeys]
     );
+
+    const width = useMemo(() => (depth ? 100 - depth * 3 : 100), [depth]);
+    const maxWidth = useMemo(() => itemWidth * 0.98, [itemWidth]);
     return (
         <>
-            <WorkOrderWrapper
-                backgroundColor={backgroundColor}
-                textColor={textColor}
-                background={progressBar}
-                ref={anchorRef}
-                onMouseOver={() => setIsOpen(true)}
-                onMouseLeave={() => setIsOpen(false)}
-                onClick={onClick}
-            >
-                {/* <SizeIcons size={size} color={textColor} />*/}
-                {/* {data.holdBy && <FlagIcon color={textColor} />} */}
-                {data[itemKey]}
-                {'  '}
-                {columnExpanded && data.description}
-                <Circles>
-                    <StatusCircle statusColor={matColor} />
-                    <StatusCircle statusColor={mccrColor} />
-                </Circles>
-                {/* <Progress background={progressBar} /> */}
-            </WorkOrderWrapper>
-
             {/* {isOpen && (
                 <WorkOrderPopover
                     data={data}
@@ -124,6 +100,26 @@ const WorkOrderItem = ({ data, itemKey, onClick, columnExpanded }: CustomItemVie
                     }}
                 />
             )} */}
+            <Root>
+                <WorkOrderWrapper
+                    backgroundColor={backgroundColor}
+                    textColor={textColor}
+                    background={progressBar}
+                    ref={anchorRef}
+                    onMouseOver={() => setIsOpen(true)}
+                    onMouseLeave={() => setIsOpen(false)}
+                    onClick={onClick}
+                    style={{ width: `${columnExpanded ? 100 : width}%`, maxWidth }}
+                    progressBackground={progressBar}
+                    isSelected={selectedItem?.workOrderNumber === data.workOrderNumber}
+                >
+                    <Sizes size={size} color={textColor} />
+                    {data.holdBy && <FlagIcon color={textColor} />}
+                    <ItemText>{data[itemKey]}</ItemText>
+                    <StatusCircles matColor={matColor} mccrColor={mccrColor} />
+                </WorkOrderWrapper>
+                {columnExpanded && data.description}
+            </Root>
         </>
     );
 };

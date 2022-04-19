@@ -1,17 +1,17 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
 import { WorkorderSideSheet } from './Garden/components';
+import WorkOrderHeader from './Garden/components/WorkOrderHeader/WorkOrderHeader';
 import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
 import { WorkOrder } from './Garden/models';
 import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
 import { sortPackages } from './Garden/utility/sortPackages';
+import { filterConfig } from './utility/filterConfig';
+import { tableConfig } from './utility/tableConfig';
 
-const excludeKeys: (keyof WorkOrder)[] = [
-    'description',
-    'commpkgNumber',
-    'proCoSysSiteName',
-    'responsibleCode',
-];
-
+enum Tabs {
+    TABLE,
+    GARDEN,
+}
 export function setup(appApi: ClientApi): void {
     const contextId = isProduction()
         ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
@@ -34,15 +34,14 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<WorkOrder>({
             objectIdentifier: 'workOrderId',
             CustomSidesheet: WorkorderSideSheet,
+            defaultTab: Tabs.GARDEN,
         })
         .registerDataSource({
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerFilterOptions({ excludeKeys })
-        .registerTableOptions({
-            objectIdentifierKey: 'mcPkgNo',
-        })
+        .registerFilterOptions(filterConfig)
+        .registerTableOptions(tableConfig)
         .registerGardenOptions({
             gardenKey: 'fwp' as keyof WorkOrder,
             itemKey: 'workOrderNumber',
@@ -51,6 +50,7 @@ export function setup(appApi: ClientApi): void {
             type: 'virtual',
             customViews: {
                 customItemView: WorkOrderItem,
+                customHeaderView: WorkOrderHeader,
             },
             intercepters: {
                 postGroupSorting: (data, keys) => {
@@ -63,6 +63,7 @@ export function setup(appApi: ClientApi): void {
 
             highlightColumn: getHighlightedColumn,
             itemWidth: getItemWidth,
+            rowHeight: 30,
 
             // status: { statusItemFunc, shouldAggregate: true },
             //options: { groupDescriptionFunc },

@@ -1,13 +1,19 @@
-import { useMemo } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { PipetestCompletionStatusColors } from '../../../Styles/ReleaseControlColors';
+import { getShortformCompletionStatusName } from '../../../Functions/statusHelpers';
+import {
+    PipetestCompletionStatusColors,
+    PipetestCompletionStatusHoverColors,
+} from '../../../Styles/ReleaseControlColors';
 import { PipetestCompletionStatus } from '../../../Types/drcEnums';
+import { WorkflowPopover } from './WorkflowPopover';
 
 interface WorkflowDotProps {
     height?: number;
     width?: number;
     state: 'Outstanding' | 'Complete' | 'Inactive' | 'PunchAError' | 'PunchBError';
-    text: string;
+    circleText: string;
+    popoverText: string;
     active: boolean;
 }
 
@@ -16,67 +22,108 @@ interface dotStyling {
     stroke: string;
     active: boolean;
     status: string;
-    text: string;
+    circleText: string;
+    popoverText: string;
 }
 
-export const WorkflowDot = ({ state, text, active }: WorkflowDotProps): JSX.Element => {
+export const WorkflowDot = ({
+    state,
+    circleText,
+    popoverText,
+    active,
+}: WorkflowDotProps): JSX.Element => {
+    const anchorRef = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    const onOpen = () => setIsOpen(true);
+    const onClose = () => setIsOpen(false);
     const dotProps: dotStyling = useMemo(() => {
         switch (state) {
             case PipetestCompletionStatus.Outstanding:
                 return {
-                    color: PipetestCompletionStatusColors.OS,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.OS
+                        : PipetestCompletionStatusColors.OS,
                     stroke: PipetestCompletionStatusColors.OS,
-                    text: text,
+                    circleText: circleText,
                     active: active,
                     status: state,
+                    popoverText: popoverText,
                 };
 
             case PipetestCompletionStatus.Complete:
                 return {
-                    color: PipetestCompletionStatusColors.OK,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.OK
+                        : PipetestCompletionStatusColors.OK,
                     stroke: PipetestCompletionStatusColors.OK,
-                    text: text,
+                    circleText: circleText,
                     active: active,
                     status: state,
+                    popoverText: popoverText,
                 };
             case PipetestCompletionStatus.Inactive:
                 return {
-                    color: PipetestCompletionStatusColors.INACTIVE,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.INACTIVE
+                        : PipetestCompletionStatusColors.INACTIVE,
                     stroke: PipetestCompletionStatusColors.INACTIVE,
-                    text: text,
+                    circleText: circleText,
                     active: active,
                     status: state,
+                    popoverText: popoverText,
                 };
             case PipetestCompletionStatus.PunchAError:
                 return {
-                    color: PipetestCompletionStatusColors.PA,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.PA
+                        : PipetestCompletionStatusColors.PA,
                     stroke: PipetestCompletionStatusColors.PA,
-                    text: text,
+                    circleText: circleText,
                     active: active,
                     status: state,
+                    popoverText: popoverText,
                 };
             case PipetestCompletionStatus.PunchBError:
                 return {
-                    color: PipetestCompletionStatusColors.PB,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.PB
+                        : PipetestCompletionStatusColors.PB,
                     stroke: PipetestCompletionStatusColors.PB,
-                    text: text,
+                    circleText: circleText,
                     active: active,
                     status: state,
+                    popoverText: popoverText,
                 };
             default:
                 return {
-                    color: PipetestCompletionStatusColors.OS,
+                    color: isOpen
+                        ? PipetestCompletionStatusHoverColors.OS
+                        : PipetestCompletionStatusColors.OS,
                     stroke: PipetestCompletionStatusColors.OS,
-                    text: text,
+                    circleText: circleText,
                     active: active,
                     status: state,
+                    popoverText: popoverText,
                 };
         }
-    }, [active, state, text]);
+    }, [active, state, circleText, popoverText, isOpen]);
 
     return (
-        <StepCircle color={dotProps.color} active={dotProps.active} status={dotProps.status}>
-            {text}
+        <StepCircle
+            ref={anchorRef}
+            onMouseOver={onOpen}
+            onMouseLeave={onClose}
+            color={dotProps.color}
+            active={dotProps.active}
+            status={dotProps.status}
+        >
+            {circleText}
+            {isOpen && (
+                <WorkflowPopover>
+                    {popoverText}, {!active ? 'N/A' : getShortformCompletionStatusName(state)}
+                </WorkflowPopover>
+            )}
         </StepCircle>
     );
 };
@@ -103,4 +150,5 @@ export const StepCircle = styled.div<StepCircleProps>`
     text-align: center;
     background: ${(p) => p.color};
     outline: ${(p) => (!p.active ? '1px dashed #DCDCDC' : null)};
+    cursor: ${(p) => (!p.active ? 'not-allowed' : 'pointer')};
 `;

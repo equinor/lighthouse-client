@@ -18,17 +18,22 @@ export interface CustomItemView<T> {
     itemKey: string;
     onClick: () => void;
     columnExpanded: boolean;
+    selectedItem: T | null;
+    depth?: number;
+    width?: number;
 }
 
 export interface CustomGroupView<T> {
     data: DataSet<T>;
     onClick: () => void;
     columnExpanded: boolean;
+    groupByKeys: (keyof T)[];
 }
 
 export interface CustomHeaderView<T> {
     garden: GardenGroups<T>;
     columnIndex: number;
+    columnIsExpanded: boolean;
     groupByKey?: string;
 }
 
@@ -40,7 +45,7 @@ export interface CustomView<T> {
 }
 export interface CustomVirtualView<T> {
     customItemView?: MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;
-    customGroupView?: React.FC<CustomGroupView<T>>;
+    customGroupView?: MemoExoticComponent<(args: CustomGroupView<T>) => JSX.Element>;
     customHeaderView?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
     customGroupByView?: React.FC;
 }
@@ -59,14 +64,20 @@ export interface GardenOptions<T> {
     customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
-    itemWidth?: (garden: GardenGroups<T>, key: string) => number;
+    itemWidth?: (
+        garden: GardenGroups<T>,
+        key: string,
+        customGroupByKeys?: Record<string, unknown>
+    ) => number;
     rowHeight?: number;
     highlightColumn?: (
         groupBy: string,
-        customGroupByKeys: Record<string, unknown>
+        customGroupByKeys?: Record<string, unknown>
     ) => string | undefined;
     intercepters?: GardenDataIntercepters<T>;
     onSelect?: (item: T) => void;
+    /** Function that returns the string of text that is to be displayed when a column is expanded */
+    customDescription?: (item: T) => string;
 }
 
 export type PreGroupByFiltering<T = unknown> = (arr: T[], groupByKey: string) => T[];

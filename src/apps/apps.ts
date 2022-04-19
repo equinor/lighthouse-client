@@ -11,6 +11,7 @@ import { ReportIcon } from '../icons/Report icon';
 import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { PortalModelViewer } from './3DModel/src';
+import { setup as checklistSetup } from './Checklist';
 import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
 import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
@@ -21,8 +22,9 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
+import { setup as punchSetup } from './Punch';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
 import { setup as WorkOrderSetup } from './WorkOrder';
@@ -257,7 +259,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: handoverSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'test',
     },
     {
         title: 'Work order',
@@ -270,7 +272,7 @@ export const apps: AppManifest[] = [
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
-        appEnv: 'dev',
+        appEnv: 'test',
     },
     {
         title: 'Mechanical Construction',
@@ -327,7 +329,7 @@ export const apps: AppManifest[] = [
     {
         title: 'Piping and Heat trace',
         shortName: 'piping-and-ht',
-        color: '#0364B8',
+        color: '#0084C4',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
@@ -335,7 +337,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: disciplineReleaseControlSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'prod',
     },
     {
         title: 'Preservation',
@@ -356,10 +358,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        tags: [],
+        tags: ['PowerBI'],
         app: {
-            appType: 'Workspace',
+            appType: 'PowerBIViewer',
+            setup: checklistSetup,
         },
+        appEnv: 'prod',
     },
 
     {
@@ -390,10 +394,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        tags: [],
+        tags: ['PowerBI'],
         app: {
-            appType: 'Workspace',
+            appType: 'PowerBIViewer',
+            setup: punchSetup,
         },
+        appEnv: 'prod',
     },
     {
         title: 'SWCR',
@@ -406,7 +412,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: SwcrSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'test',
     },
     {
         title: 'Invitation for punch out ',
@@ -434,16 +440,6 @@ export const apps: AppManifest[] = [
         tags: ['link', 'fusion'],
         appEnv: 'prod',
     },
-
-    // Queries and requests
-    {
-        title: 'ATS request',
-        shortName: 'ats',
-        color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
-        icon: '',
-        tags: [],
-    },
     // ProjectControl
     {
         title: 'Project change proposal',
@@ -456,7 +452,7 @@ export const apps: AppManifest[] = [
     {
         title: 'Scope change request',
         shortName: 'change',
-        color: '#0364B8',
+        color: '#7B3A96',
         groupe: Apps.ProjectControl,
         icon: '',
         app: {
@@ -527,25 +523,6 @@ export const apps: AppManifest[] = [
         tags: ['PowerBI'],
         appEnv: 'test',
     },
-
-    {
-        title: 'Overtime request',
-        shortName: 'overtime',
-        color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
-        icon: '',
-        tags: [],
-    },
-    // Reports
-    // {
-    //     title: 'temp-link',
-    //     shortName: 'temp-link2',
-    //     color: '#0364B8',
-    //     groupe: Apps.Reports,
-    //     icon: '',
-    //     tags: [],
-    // },
-
     // Collaboration
     {
         title: 'Meeting',

@@ -4,25 +4,31 @@ import { DataSet, GardenGroups } from '../../Models/data';
 import { CustomHeaderView } from '../../Models/gardenOptions';
 import { ActionType } from './ExpandProvider';
 import { Header, HeaderRoot } from './styles';
-import { useExpandDispatch } from './hooks';
+import { useExpand, useExpandDispatch } from './hooks';
 import { getGardenItems } from './utils';
+import styled from 'styled-components';
+import { GardenItem } from './types/gardenItem';
 
 type HeaderContainerProps<T> = {
     columnVirtualizer: { virtualItems: VirtualItem[] };
     headerChild?: MemoExoticComponent<(args: CustomHeaderView<T>) => JSX.Element>;
     garden: GardenGroups<T>;
     highlightColumn: string | undefined;
+    customDescription?: (item: T | GardenItem<T>) => string;
     groupByKey: string;
 };
 export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T>): JSX.Element => {
     const {
         columnVirtualizer,
         garden,
+        groupByKey,
         headerChild: HeaderChild,
         highlightColumn,
-        groupByKey,
+        customDescription,
     } = props;
     const expandColumn = useExpandDispatch();
+    const expanded = useExpand();
+
     const handleHeaderClick = useCallback(
         (index: number, column: DataSet<T>) => {
             expandColumn({
@@ -30,6 +36,7 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
                 index,
                 key: column.value,
                 descriptionData: getGardenItems(column),
+                customDescription: customDescription,
             });
         },
         [expandColumn, getGardenItems]
@@ -55,10 +62,17 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
                             <HeaderChild
                                 garden={garden}
                                 columnIndex={virtualColumn.index}
+                                columnIsExpanded={
+                                    expanded.expandedColumns?.[garden[virtualColumn.index].value]
+                                        ?.isExpanded
+                                }
                                 groupByKey={groupByKey}
                             />
                         ) : (
-                            garden[virtualColumn.index].value
+                            <>
+                                {garden[virtualColumn.index].value}
+                                <Count>({garden[virtualColumn.index].count})</Count>
+                            </>
                         )}
                     </Header>
                 );
@@ -66,3 +80,10 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
         </HeaderRoot>
     );
 };
+
+export const Count = styled.span`
+    color: #000000;
+    font-weight: 300;
+    font-size: 0.8rem;
+    margin-left: 0.8em;
+`;

@@ -1,16 +1,20 @@
-import { FilterProvider } from '@equinor/filter';
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { openSidesheet, PopoutSidesheet } from '@equinor/sidesheet';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import { WorkspaceProps } from '../..';
 import { useSideSheet } from '../../../../../packages/Sidesheet/context/sidesheetContext';
 import { useDataContext } from '../../Context/DataProvider';
 import { useConfiguredTabs } from '../../Tabs/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
+import { DumpsterFireDialog } from '../DataLoadFailed/DumpsterFireDialog';
 import { Fallback } from '../FallbackSidesheet/Fallback';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
 import { HeaderWrapper } from './HeaderFilterWrapper';
+import { WorkspaceErrorPage } from './WorkspaceErrorPage';
+import { WorkspaceFilterWrapper } from './WorkspaceFilterWrapper';
 import { DataViewWrapper, Tabs, WorkspaceWrapper } from './WorkSpaceViewStyles';
 
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
@@ -21,7 +25,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         timelineOptions,
         analyticsOptions,
         powerBiOptions,
-        filterOptions,
+        filterOptions = [],
         workflowEditorOptions,
         onSelect,
         idResolver,
@@ -45,23 +49,6 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
         workflowEditorOptions
     );
     const [activeTab, setActiveTab] = useState(Number(id) || defaultTab);
-
-    // const filterLocationKey = useMemo(() => `filer-${props.shortName}`, [props.shortName]);
-    // const persistOptions: FilterPersistOptions = useMemo(
-    //     () => ({
-    //         getFilter() {
-    //             const filter = storage.getItem<FilterData>(filterLocationKey);
-    //             if (typeof filter === 'object') {
-    //                 return filter;
-    //             }
-    //             return;
-    //         },
-    //         setFilter(filterData: FilterData) {
-    //             return storage.setItem(filterLocationKey, filterData);
-    //         },
-    //     }),
-    //     [filterLocationKey]
-    // );
 
     const handleChange = (index: number) => {
         setActiveTab(index);
@@ -126,17 +113,54 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     }, [location.hash.length, mountSidesheetFromUrl, onSelect]);
 
     if (!viewIsActive) return <NoDataView />;
+
+    if (dataApi.isError) {
+        return (
+            <WorkspaceErrorPage>
+                <DumpsterFireDialog
+                    buttons={[
+                        <Button key={1} onClick={() => navigate('/')}>
+                            Go to homepage
+                        </Button>,
+                    ]}
+                    text={
+                        typeof dataApi.error === 'string' ? dataApi.error : 'Something went wrong'
+                    }
+                />
+            </WorkspaceErrorPage>
+        );
+    }
+
+    if (dataApi.isLoading) {
+        return (
+            <Loading>
+                <CircularProgress color="primary" value={0} size={48} />
+                <h2>Loading {props.title.toLowerCase()}..</h2>
+            </Loading>
+        );
+    }
+
     return (
-        <FilterProvider initialData={data} options={filterOptions}>
-            <WorkspaceWrapper>
+        <WorkspaceWrapper>
+            <WorkspaceFilterWrapper filterConfiguration={filterOptions}>
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <HeaderWrapper props={props} tabs={tabs} />
                     <DataViewWrapper>
                         <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
+                        <PopoutSidesheet />
                     </DataViewWrapper>
                 </Tabs>
-                <PopoutSidesheet />
-            </WorkspaceWrapper>
-        </FilterProvider>
+            </WorkspaceFilterWrapper>
+        </WorkspaceWrapper>
     );
 }
+
+const Loading = styled.div`
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5em;
+`;
