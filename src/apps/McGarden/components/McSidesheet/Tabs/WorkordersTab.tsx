@@ -1,17 +1,24 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { Column } from '@equinor/Table';
+import { isProduction } from '@equinor/portal-client';
+import { Column, DescriptionCell, ProgressCell } from '@equinor/Table';
 import { McWorkOrder } from '../types/mcWorkOrder';
 const columns: Column<McWorkOrder>[] = [
     {
         id: 'workorderNumber',
         Header: 'WO Number',
-        accessor: ({ url, workOrderNumber }) => ({ content: workOrderNumber, url: url }),
+        accessor: ({ url, workOrderNumber }) => ({
+            content: workOrderNumber,
+            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
+        }),
         Cell: CellWithLink,
+        width: 130,
     },
     {
         id: 'description',
         Header: 'Description',
-        accessor: (wo) => wo.description,
+        accessor: (wo) => ({ content: wo, currentKey: 'description' }),
+        Cell: DescriptionCell,
+        width: 300,
     },
     {
         id: 'status',
@@ -26,7 +33,8 @@ const columns: Column<McWorkOrder>[] = [
     {
         id: 'projectProgress',
         Header: 'Progress',
-        accessor: (wo) => wo.projectProgress,
+        accessor: (wo) => ({ content: wo, currentKey: 'projectProgress' }),
+        Cell: ProgressCell,
     },
 ];
 type WorkordersTabProps = {

@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import { CustomHeaderView } from '../../../../components/ParkView/Models/gardenOptions';
 import { McPackage } from '../../types';
+import { HeaderContainer } from './CustomHeaderView.styles';
 
 const McGardenHeader = ({ garden, columnIndex, groupByKey }: CustomHeaderView<McPackage>) => {
     const label =
@@ -26,12 +27,12 @@ const McGardenHeader = ({ garden, columnIndex, groupByKey }: CustomHeaderView<Mc
     }).length;
 
     return (
-        <div>
+        <HeaderContainer>
             {garden[columnIndex].value}
             <div>
                 {label}: {`${mcCount}/${garden[columnIndex].items.length}`}
             </div>
-        </div>
+        </HeaderContainer>
     );
 };
 export default memo(McGardenHeader);

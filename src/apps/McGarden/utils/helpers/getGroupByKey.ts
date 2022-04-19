@@ -18,7 +18,7 @@ const getFieldKeyBasedOnPlannedForecast = (
             return plannedForecast === 'Forecast' ? 'rfccForecastDate' : 'rfccPlannedDate';
 
         case 'rfcc':
-            return plannedForecast === 'Forecast' ? 'rfccActualDate' : 'rfccActualDate';
+            return plannedForecast === 'Forecast' ? 'rfccForecastDate' : 'rfccPlannedDate';
 
         case 'punchAccepted':
             return plannedForecast === 'Forecast'

@@ -3,7 +3,7 @@ import { CustomGroupByKeys } from '../../types';
 
 export const getHighlightedColumn = (
     groupByKey: string,
-    customGroupByKeys: Record<string, unknown>
+    customGroupByKeys?: Record<string, unknown>
 ) => {
     const { weeklyDaily } = customGroupByKeys as CustomGroupByKeys;
 

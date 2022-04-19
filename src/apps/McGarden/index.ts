@@ -1,13 +1,14 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
 import { McCustomGroupByView } from './components/McCustomGroupByView';
 import { CustomGroupByKeys, McPackage } from './types';
-import { fieldSettings } from './utils/config/gardenSetup';
+import { fieldSettings, gardenConfig } from './utils/config/gardenSetup';
 import McGardenItem from './components/CustomItemView/CustomItemView';
 import McGardenHeader from './components/CustomHeaderView/CustomHeaderView';
 import { getItemWidth } from './utils/helpers/getItemWidth';
 import { sortPackagesByStatus } from './utils/helpers/sortPackages';
 import { McSideSheet } from './components';
 import { getHighlightedColumn } from './utils/helpers/getHighlightedColumn';
+import { getAverageTagVolume } from './utils/helpers/getAverageTagVolume';
 
 export function setup(addApi: ClientApi): void {
     const contextId = isProduction()
@@ -24,13 +25,9 @@ export function setup(addApi: ClientApi): void {
 
     async function responseParser(response: Response) {
         const parsedResponse = JSON.parse(await response.text()) as McPackage[];
-        console.log(parsedResponse);
         return parsedResponse.sort(sortPackagesByStatus);
     }
-    const customGroupByKeys: CustomGroupByKeys = {
-        plannedForecast: 'Planned',
-        weeklyDaily: 'Weekly',
-    };
+
     addApi
         .createWorkSpace<McPackage>({
             objectIdentifier: 'mcPkgId',
@@ -40,33 +37,9 @@ export function setup(addApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerFilterOptions({
-            excludeKeys: [
-                'commPkgId',
-                'commPkgNumber',
-                'url',
-                'siteCode',
-                'priority',
-                'priority2',
-                'priority3',
-            ],
-        })
+
         .registerTableOptions({
             objectIdentifierKey: 'mcPkgId',
         })
-        .registerGardenOptions({
-            gardenKey: 'finalPunch' as keyof McPackage,
-            itemKey: 'mcPkgNumber',
-            type: 'virtual',
-            fieldSettings: fieldSettings,
-            customGroupByKeys,
-            customViews: {
-                customGroupByView: McCustomGroupByView,
-                customHeaderView: McGardenHeader,
-                customItemView: McGardenItem,
-            },
-            itemWidth: getItemWidth,
-            rowHeight: 30,
-            highlightColumn: getHighlightedColumn,
-        });
+        .registerGardenOptions(gardenConfig);
 }

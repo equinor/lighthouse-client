@@ -1,7 +1,9 @@
 import { sortByNumber } from '@equinor/GardenUtils';
 import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
-import { McPackage } from '../../types';
-import { getDateKey } from '../helpers/getGroupByKey';
+import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
+import { McCustomGroupByView, McGardenHeader, McGardenItem } from '../../components';
+import { CustomGroupByKeys, McPackage } from '../../types';
+import { getAverageTagVolume, getDateKey, getHighlightedColumn, getItemWidth } from '../helpers';
 export type ExtendedGardenFields = 'finalPunch' | 'punchAccepted' | 'rfcmc' | 'rfcc';
 export const fieldSettings: FieldSettings<McPackage, ExtendedGardenFields> = {
     finalPunch: {
@@ -57,4 +59,25 @@ export const fieldSettings: FieldSettings<McPackage, ExtendedGardenFields> = {
     priority3: {
         label: 'Commissioning Priority 3',
     },
+};
+const customGroupByKeys: CustomGroupByKeys = {
+    plannedForecast: 'Planned',
+    weeklyDaily: 'Weekly',
+};
+
+export const gardenConfig: GardenOptions<McPackage> = {
+    gardenKey: 'finalPunch' as keyof McPackage,
+    itemKey: 'mcPkgNumber',
+    type: 'virtual',
+    fieldSettings: fieldSettings,
+    customGroupByKeys,
+    customViews: {
+        customGroupByView: McCustomGroupByView,
+        customHeaderView: McGardenHeader,
+        customItemView: McGardenItem,
+    },
+    itemWidth: getItemWidth,
+    rowHeight: 30,
+    highlightColumn: getHighlightedColumn,
+    customStateFunction: (data) => ({ averageTagVolume: getAverageTagVolume(data) }),
 };

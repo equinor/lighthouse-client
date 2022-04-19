@@ -1,13 +1,23 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { SideSheetContainer } from '@equinor/GardenUtils';
-import { useState } from 'react';
+import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
+import { useEffect, useState } from 'react';
+import { isProduction } from '../../../../Core/Client/Functions';
+import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { McPackage } from '../../types';
 import { useNcr, usePunch, useWorkorders } from './hooks';
 import { NcrTab, PunchTab, WorkordersTab } from './Tabs';
 import { DetailsTab } from './Tabs/DetailsTab';
-
-export const McSideSheet = (mcPackage: McPackage): JSX.Element => {
+type McSidesheetProps = {
+    item: McPackage;
+    actions: SidesheetApi;
+};
+export const McSideSheet = ({ item: mcPackage, actions }: McSidesheetProps): JSX.Element => {
     const [activeTab, setActiveTab] = useState<number>(0);
+
+    const procosysUrl = isProduction()
+        ? mcPackage.url
+        : mcPackage.url.replace('procosys', 'procosystest');
+
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
@@ -25,6 +35,15 @@ export const McSideSheet = (mcPackage: McPackage): JSX.Element => {
     } = usePunch(mcPackage?.mcPkgId || null);
     const { ncr, isFetching: isFetchingNcr, error: ncrError } = useNcr(mcPackage?.mcPkgId || null);
 
+    useEffect(() => {
+        actions.setTitle(
+            <SidesheetHeaderContent
+                title={mcPackage.mcPkgNumber}
+                url={procosysUrl}
+                buttonContent="Open in ProCoSys"
+            />
+        );
+    }, [mcPackage.mcPkgId, procosysUrl]);
     return (
         <SideSheetContainer>
             <Tabs activeTab={activeTab} onChange={handleChange}>
