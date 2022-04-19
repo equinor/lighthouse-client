@@ -4,6 +4,7 @@ import { useSettings } from '../Hooks/useClientContext';
 import { Container, Header, MainColumn, SideColumn, SideItem, Wrapper } from './clientHomeStyles';
 import { PowerBIHome } from './PbiHome/PbiHome';
 import { YammerFeed } from './Sosial/yammer';
+import { Task } from './Task/Task';
 
 export const ClientHome = (): JSX.Element => {
     const { user, clientEnv } = useSettings();
@@ -15,8 +16,8 @@ export const ClientHome = (): JSX.Element => {
             <Container>
                 <SideColumn>
                     <SideItem height={400}>
-                        <AssignmentWrapper />
-                        {/* <Task /> */}
+                        {/* <AssignmentWrapper /> */}
+                        <Task />
                     </SideItem>
                     <SideItem height={575}>
                         <YammerFeed />
