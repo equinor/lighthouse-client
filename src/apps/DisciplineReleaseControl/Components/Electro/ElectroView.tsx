@@ -44,6 +44,7 @@ export const ElectroView = ({ pipetest, pipetests }: ElectroViewProps): JSX.Elem
     let switchboardArray;
 
     if (data !== undefined) {
+        data.sort((a, b) => a.switchBoardTagNo?.localeCompare(b?.switchBoardTagNo));
         for (let i = 0; i < data.length; i++) {
             data[i].switchBoardTagNo = circuitStarterTagNosArray[i];
         }
@@ -55,6 +56,12 @@ export const ElectroView = ({ pipetest, pipetests }: ElectroViewProps): JSX.Elem
                 return acc;
             }, {})
         );
+
+        data.map((x) => {
+            x.circuits.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
+            x.cables.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
+            return x;
+        });
     }
 
     return (
