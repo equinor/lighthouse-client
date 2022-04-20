@@ -5,7 +5,7 @@ import { useElementData } from '../../../../packages/Utils/Hooks/useElementData'
 import { useDataContext } from '../Context/DataProvider';
 
 const Wrapper = styled.section`
-    padding-left: 32px;
+    margin-left: 32px;
     padding-top: 32px;
 `;
 
@@ -42,7 +42,7 @@ export const ListTab = (): JSX.Element => {
                     groupByFn: defaultGroupByFn,
                     onSelect: tableOptions?.onSelect,
                 }}
-                height={awaitableHeight - 70}
+                height={awaitableHeight - 70 - 32}
                 itemSize={tableOptions?.itemSize}
             />
         </Wrapper>
