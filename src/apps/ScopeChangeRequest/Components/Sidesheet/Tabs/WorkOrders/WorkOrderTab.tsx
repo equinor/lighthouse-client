@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 
 export function WorkOrderTab(): JSX.Element {
+    const isNegative = (num: number) => Math.sign(num) === -1;
+
     return (
         <>
             <Table>
@@ -55,7 +57,6 @@ const HoursTableHeading = styled.div`
     grid-template-columns: 1fr 4fr 1fr;
     flex-direction: row;
     gap: 2em;
-
     align-items: center;
     margin-left: 5px;
 `;
@@ -85,7 +86,6 @@ const HoursTableData = styled.td`
     grid-template-columns: 1fr 4fr 1fr;
     flex-direction: row;
     gap: 2em;
-
     align-items: center;
     margin-left: 5px;
 `;
@@ -100,7 +100,6 @@ const TableHeader = styled.thead`
 `;
 
 const Header = styled.tr`
-    gap: 0px;
     background: #f7f7f7;
 `;
 
