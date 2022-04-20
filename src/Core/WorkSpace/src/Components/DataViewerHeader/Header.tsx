@@ -30,6 +30,8 @@ interface CompletionViewHeaderProps {
     activeFilter: boolean;
 }
 
+const PRIMARY_INTERACTIVE = tokens.colors.interactive.primary__resting.hex;
+
 export const CompletionViewHeader = ({
     title,
     tabs,
@@ -86,7 +88,7 @@ export const CompletionViewHeader = ({
                     color={
                         dataApi?.isStale
                             ? tokens.colors.infographic.primary__energy_red_100.hex
-                            : 'grey'
+                            : PRIMARY_INTERACTIVE
                     }
                     aria-selected={false}
                     title={
@@ -103,7 +105,11 @@ export const CompletionViewHeader = ({
                     )}
                 </TabButton>
                 <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
-                    {checkHasActiveFilters() ? <FilterFilled /> : <Icon name={'filter_alt'} />}
+                    {checkHasActiveFilters() ? (
+                        <FilterFilled />
+                    ) : (
+                        <Icon color={PRIMARY_INTERACTIVE} name={'filter_alt'} />
+                    )}
                 </TabButton>
             </RightSection>
         </HeaderWrapper>
