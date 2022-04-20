@@ -35,6 +35,16 @@ export const RelatedObjects = ({
 }: RelatedObjectsProps): JSX.Element => {
     return (
         <Wrapper>
+            {tags.length === 0 &&
+                commPkgs.length === 0 &&
+                systems.length === 0 &&
+                documents.length === 0 &&
+                disciplines.length === 0 &&
+                areas.length === 0 && (
+                    <div style={{ fontWeight: 400, fontSize: '14px' }}>
+                        No references has been linked yet.
+                    </div>
+                )}
             {tags && tags.length > 0 && (
                 <ChevronList title={`Tags (${tags?.length})`}>
                     <>
