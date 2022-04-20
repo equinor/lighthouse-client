@@ -6,7 +6,7 @@ import { useDataContext } from '../Context/DataProvider';
 
 const Wrapper = styled.section`
     /* overflow: scroll; */
-    padding-left: 23px;
+    padding-left: 32px;
     padding-top: 32px;
 `;
 
