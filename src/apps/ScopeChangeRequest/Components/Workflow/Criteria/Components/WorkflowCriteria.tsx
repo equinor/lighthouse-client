@@ -20,6 +20,7 @@ import { useIsWorkflowLoading } from '../../../../hooks/React-Query/useIsWorkflo
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { SignWithComment } from './SignWithComment';
 import { useWorkflowSigning } from './useWorkflowSigning';
+import { Atom, swap, useAtom } from '@dbeining/react-atom';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -40,9 +41,32 @@ export const WorkflowCriteria = ({
         requestId: request.id,
     });
 
-    const [showSignWithComment, setShowSignWithComment] = useState(false);
-    const [showSendBackWithComment, setShowSendBackWithComment] = useState(false);
-    const [showRejectWithComment, setShowRejectWithComment] = useState(false);
+    const setShowSendBackWithComment = () =>
+        swap(ActionWithCommentAtom, () => ({
+            action: 'Rejected' as const,
+            closeRequest: false,
+            buttonText: 'Send back',
+            criteriaId: criteria.id,
+            stepId: step.id,
+        }));
+
+    const setShowSignWithComment = () =>
+        swap(ActionWithCommentAtom, () => ({
+            action: 'Approved' as const,
+            closeRequest: false,
+            buttonText: 'Sign',
+            criteriaId: criteria.id,
+            stepId: step.id,
+        }));
+
+    const setShowRejectWithComment = () =>
+        swap(ActionWithCommentAtom, () => ({
+            action: 'Rejected' as const,
+            closeRequest: true,
+            buttonText: 'Reject',
+            criteriaId: criteria.id,
+            stepId: step.id,
+        }));
 
     const { workflowKeys } = scopeChangeMutationKeys(request.id);
     const workflowLoading = useIsWorkflowLoading();
@@ -71,13 +95,13 @@ export const WorkflowCriteria = ({
             actions.push({
                 label: 'Sign with comment',
                 icon: <Icon name="comment_add" color={iconGrey} />,
-                onClick: () => setShowSignWithComment(true),
+                onClick: setShowSignWithComment,
                 isDisabled: !canSign,
             });
 
             actions.push({
                 label: 'Reject with comment',
-                onClick: () => setShowRejectWithComment(true),
+                onClick: setShowRejectWithComment,
                 icon: <Icon name="close_circle_outlined" color={iconGrey} />,
                 isDisabled: !canSign,
             });
@@ -85,7 +109,7 @@ export const WorkflowCriteria = ({
                 actions.push({
                     label: 'Send back with comment',
                     icon: <Icon name="undo" color={iconGrey} />,
-                    onClick: () => setShowSendBackWithComment(true),
+                    onClick: setShowSendBackWithComment,
                     isDisabled: !canSign,
                 });
             }
@@ -173,9 +197,7 @@ export const WorkflowCriteria = ({
     );
 
     const closeAll = () => {
-        setShowSignWithComment(false);
-        setShowSendBackWithComment(false);
-        setShowRejectWithComment(false);
+        swap(ActionWithCommentAtom, () => null);
         setShowReassign(false);
         setShowContributor(false);
     };
@@ -200,6 +222,8 @@ export const WorkflowCriteria = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [baseKey, queryClient, setShowContributor, setShowReassign]);
+
+    const state = useAtom(ActionWithCommentAtom);
 
     return (
         <>
@@ -227,36 +251,28 @@ export const WorkflowCriteria = ({
             </WorkflowStepViewContainer>
 
             <ContributorSelector />
-            {showSendBackWithComment && (
+            {state && state.criteriaId === criteria.id && (
                 <SignWithComment
-                    buttonText="Send back"
-                    action="Rejected"
-                    closeRequest={false}
-                    criteriaId={criteria.id}
-                    stepId={step.id}
-                />
-            )}
-            {showSignWithComment && (
-                <SignWithComment
-                    buttonText="Sign"
-                    action={'Approved'}
-                    stepId={step.id}
-                    criteriaId={criteria.id}
-                    closeRequest={false}
-                />
-            )}
-            {showRejectWithComment && (
-                <SignWithComment
-                    buttonText="Reject"
-                    action="Rejected"
-                    stepId={step.id}
-                    criteriaId={criteria.id}
-                    closeRequest={true}
+                    action={state.action}
+                    buttonText={state.buttonText}
+                    closeRequest={state.closeRequest}
+                    criteriaId={state.criteriaId}
+                    stepId={state.stepId}
                 />
             )}
         </>
     );
 };
+
+interface SigningAction {
+    buttonText: string;
+    action: 'Approved' | 'Rejected';
+    closeRequest: boolean;
+    criteriaId: string;
+    stepId: string;
+}
+
+export const ActionWithCommentAtom = Atom.of<SigningAction | null>(null);
 
 const ReassignPadding = styled.div`
     padding: 0em 0.5em;
