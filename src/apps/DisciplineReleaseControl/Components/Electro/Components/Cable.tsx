@@ -7,11 +7,12 @@ import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
 interface CableProps {
     value?: string;
     status: string;
+    borderBottom?: boolean;
 }
-export const Cable = ({ value, status }: CableProps): JSX.Element => {
+export const Cable = ({ value, status, borderBottom }: CableProps): JSX.Element => {
     return (
         <ElectroViewNodeGroup>
-            <CableNode>
+            <CableNode borderBottom={borderBottom}>
                 <Icon size={16} color={'#000000'} name="cable" />
                 <ElectroViewNodeValueText>{value}</ElectroViewNodeValueText>
                 <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
@@ -20,7 +21,7 @@ export const Cable = ({ value, status }: CableProps): JSX.Element => {
     );
 };
 
-const CableNode = styled.div`
+const CableNode = styled.div<{ borderBottom?: boolean }>`
     display: flex;
     flex-direction: horizontal;
     flex: 1;
@@ -28,7 +29,7 @@ const CableNode = styled.div`
     max-height: 15px;
     padding: 6px;
     text-align: center;
-    margin-top: 16px;
+    margin-top: ${(p) => (p.borderBottom ? '16px' : null)};
     justify-content: center;
-    border-bottom: 1px solid;
+    border-bottom: ${(p) => (p.borderBottom ? '1px solid' : null)};
 `;

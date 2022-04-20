@@ -24,7 +24,7 @@ export const HeatTracingCable = ({
     const checkListsForHTCable = eleNetwork.checkLists.filter((x) => x.tagNo === value);
     return (
         <ElectroViewNodeGroup>
-            <HeatTracingTableNode htCount={pipetestsOnHTCable.length}>
+            <HeatTracingCableNode htCount={pipetestsOnHTCable.length}>
                 <Icon size={16} color={'#000000'} name="heat_trace" />
                 <ElectroViewNodeValueText>{value}</ElectroViewNodeValueText>
                 <ABTestDots>
@@ -40,7 +40,7 @@ export const HeatTracingCable = ({
                         )}
                     />
                 </ABTestDots>
-            </HeatTracingTableNode>
+            </HeatTracingCableNode>
             <Lines>
                 {pipetestsOnHTCable.map((x) => {
                     return (
@@ -57,16 +57,27 @@ export const HeatTracingCable = ({
     );
 };
 
-const HeatTracingTableNode = styled.div<{ htCount: number }>`
+const HeatTracingCableNode = styled.div<{ htCount: number }>`
     display: flex;
     flex-direction: horizontal;
     padding: 6px;
     text-align: center;
     margin-bottom: 2px;
     margin-top: 16px;
-    width: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '170px' : 60 + 90 * p.htCount + 'px')};
-
+    width: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '200px' : 60 + 90 * p.htCount + 'px')};
     border-bottom: 2px dashed;
+
+    &:after {
+        content: '';
+        background: #000000;
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+
+        position: relative;
+        top: 18px;
+        left: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '40px' : 90 * p.htCount - 100 + 'px')};
+    }
 `;
 
 const Lines = styled.div`

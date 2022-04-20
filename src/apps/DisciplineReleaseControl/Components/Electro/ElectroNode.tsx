@@ -19,6 +19,7 @@ interface ElectroNodeProps {
     cableNode?: EleNetworkCable;
     pipetests: Pipetest[];
     currentPipetest: Pipetest;
+    cableBorderBottom?: boolean;
 }
 
 export const ElectroNode = ({
@@ -27,11 +28,17 @@ export const ElectroNode = ({
     cableNode,
     pipetests,
     currentPipetest,
+    cableBorderBottom,
 }: ElectroNodeProps): JSX.Element => {
     if (node === undefined && cableNode === undefined) return <></>;
 
     const circuitChildren = getCircuitChildren(eleNetwork, node);
     const cableChildren = getCableChildren(eleNetwork, node);
+
+    const isCircuitNode = node?.eleSymbolCode === 'TAVLE';
+    const remainingCableChildren = cableChildren.slice(1);
+    const firstCable = cableChildren[0];
+    const circuitFirstCableTo = circuitChildren.find((x) => x.tagNo === firstCable?.tagTo);
 
     const nodeStatus = getNodeStatus(
         eleNetwork.checkLists,
@@ -47,9 +54,33 @@ export const ElectroNode = ({
         (circuit) => !cablesTo.some((x) => x === circuit.tagNo)
     );
 
-    function getNodeRender(node?: EleNetworkCircuit, cableNode?: EleNetworkCable) {
+    const remainingChildrenRender =
+        isCircuitNode &&
+        remainingCableChildren?.map((cable: EleNetworkCable) => {
+            return (
+                <ElectroNode
+                    key={cable?.tagNo}
+                    cableNode={cable}
+                    eleNetwork={eleNetwork}
+                    pipetests={pipetests}
+                    currentPipetest={currentPipetest}
+                />
+            );
+        });
+
+    function getNodeRender(
+        node?: EleNetworkCircuit,
+        cableNode?: EleNetworkCable,
+        cableBorderBottom?: boolean
+    ) {
         if (cableNode !== undefined) {
-            return <Cable value={cableNode?.tagNo} status={nodeStatus} />;
+            return (
+                <Cable
+                    value={cableNode?.tagNo}
+                    status={nodeStatus}
+                    borderBottom={cableBorderBottom}
+                />
+            );
         }
         switch (node?.eleSymbolCode) {
             case 'TAVLE':
@@ -83,12 +114,38 @@ export const ElectroNode = ({
     return (
         <>
             {cableNode !== undefined
-                ? getNodeRender(undefined, cableNode)
-                : getNodeRender(node, undefined)}
+                ? getNodeRender(undefined, cableNode, cableBorderBottom)
+                : getNodeRender(node, undefined, cableBorderBottom)}
 
             <ElectroViewVerticalRow key={cableNode !== undefined ? cableNode.tagNo : node?.tagNo}>
                 {/* Render cables together with their children */}
+
+                {cableChildren.length !== 0 && isCircuitNode && (
+                    <ElectroViewRow>
+                        <ElectroViewVerticalRow>
+                            <ElectroNode
+                                key={firstCable?.tagNo}
+                                cableNode={firstCable}
+                                eleNetwork={eleNetwork}
+                                pipetests={pipetests}
+                                currentPipetest={currentPipetest}
+                                cableBorderBottom={true}
+                            />
+                            {remainingChildrenRender}
+                        </ElectroViewVerticalRow>
+
+                        <ElectroNode
+                            key={circuitFirstCableTo?.tagNo}
+                            node={circuitFirstCableTo}
+                            eleNetwork={eleNetwork}
+                            pipetests={pipetests}
+                            currentPipetest={currentPipetest}
+                        />
+                    </ElectroViewRow>
+                )}
+
                 {cableChildren.length !== 0 &&
+                    !isCircuitNode &&
                     cableChildren.map((cable: EleNetworkCable) => {
                         const cableTo = circuitChildren.find((x) => x.tagNo === cable.tagTo);
                         return (
@@ -99,6 +156,7 @@ export const ElectroNode = ({
                                     eleNetwork={eleNetwork}
                                     pipetests={pipetests}
                                     currentPipetest={currentPipetest}
+                                    cableBorderBottom={true}
                                 />
                                 <ElectroNode
                                     key={cableTo?.tagNo}
@@ -110,6 +168,7 @@ export const ElectroNode = ({
                             </ElectroViewRow>
                         );
                     })}
+
                 {/* Render standalone children of the node - HT cable */}
                 {standaloneCircuitChildren.length !== 0 &&
                     standaloneCircuitChildren.map((circuit: EleNetworkCircuit) => {

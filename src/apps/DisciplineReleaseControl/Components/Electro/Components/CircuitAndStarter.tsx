@@ -45,4 +45,5 @@ const CircuitAndStarterNode = styled.div`
     text-align: center;
     margin-top: 4px;
     justify-content: center;
+    max-height: 40px;
 `;

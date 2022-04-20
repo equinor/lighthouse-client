@@ -65,7 +65,11 @@ export const ReleaseControlSidesheet = ({
                 </SidesheetTabList>
                 <TabList>
                     <Tabs.Panel>
-                        <ElectroView pipetest={item} pipetests={data !== undefined ? data : []} />
+                        <ElectroView
+                            pipetest={item}
+                            pipetests={data !== undefined ? data : []}
+                            width={width}
+                        />
                     </Tabs.Panel>
                     <Tabs.Panel>
                         <h4>{item.description}</h4>

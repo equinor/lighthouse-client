@@ -2,21 +2,25 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { EleNetwork } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
+import { StatusCircle } from '../Garden/StatusCircle';
 import { ElectroNode } from './ElectroNode';
+import { getElectroViewCompletionStatusColor, getNodeStatus } from './electroViewHelpers';
 import { getEleNetworks } from './getEleNetworks';
 import {
     ElectroViewContainer,
     ElectroViewNodeText,
     ElectroViewRow,
+    SwitchBoardBorderContainer,
     SwitchBoardContainer,
 } from './styles';
 
 interface ElectroViewProps {
     pipetest: Pipetest;
     pipetests: Pipetest[];
+    width: number;
 }
 
-export const ElectroView = ({ pipetest, pipetests }: ElectroViewProps): JSX.Element => {
+export const ElectroView = ({ pipetest, pipetests, width }: ElectroViewProps): JSX.Element => {
     //Find circuit starter tags from circuits on pipetest
     let circuitStarterTagNos = '';
     const circuitStarterTagNosArray: string[] = [];
@@ -44,11 +48,17 @@ export const ElectroView = ({ pipetest, pipetests }: ElectroViewProps): JSX.Elem
     let switchboardArray;
 
     if (data !== undefined) {
-        data.sort((a, b) => a.switchBoardTagNo?.localeCompare(b?.switchBoardTagNo));
         for (let i = 0; i < data.length; i++) {
             data[i].switchBoardTagNo = circuitStarterTagNosArray[i];
         }
 
+        //Alphabetical sorting
+        data.map((x) => {
+            x.circuits.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
+            x.cables.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
+            return x;
+        });
+        //Group by switchboard. One array of EleNetwork to one switchboard.
         switchboardArray = Object.values(
             data.reduce((acc, item) => {
                 const switchboardTagNo = item.switchBoardTagNo.split('-'); //split to find common switchboard tagNo
@@ -57,42 +67,58 @@ export const ElectroView = ({ pipetest, pipetests }: ElectroViewProps): JSX.Elem
             }, {})
         );
 
-        data.map((x) => {
-            x.circuits.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
-            x.cables.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
-            return x;
-        });
+        //Sort by switchboard array
+        switchboardArray.forEach((x) =>
+            x.sort((a, b) =>
+                a?.switchBoardTagNo.split('-')[1]?.localeCompare(b?.switchBoardTagNo.split('-')[1])
+            )
+        );
     }
-
     return (
         <>
             {pipetest && circuitStarterTagNos !== '' ? (
                 <>
                     {!data && <h3>Loading single line diagram...</h3>}
-                    <ElectroViewContainer>
-                        {switchboardArray?.map((switchboards: EleNetwork[]) => {
-                            const switchboardTagNo = switchboards[0].switchBoardTagNo.split('-');
+                    <ElectroViewContainer width={width}>
+                        {switchboardArray?.map((eleNetworksForSwitchboard: EleNetwork[]) => {
+                            const switchboardTagNo =
+                                eleNetworksForSwitchboard[0].switchBoardTagNo.split('-');
+                            const switchboardStatus = getNodeStatus(
+                                eleNetworksForSwitchboard[0].checkLists,
+                                switchboardTagNo[0]
+                            );
                             return (
-                                <SwitchBoardContainer key={switchboards[0].switchBoardTagNo}>
-                                    <ElectroViewNodeText>
-                                        Switch board {switchboardTagNo[0]}
-                                    </ElectroViewNodeText>
-                                    {switchboards?.map((eleNetwork: EleNetwork) => {
-                                        const startNode = eleNetwork.circuits.find(
-                                            (x) => x.parentEleNetId === null
-                                        );
-                                        return (
-                                            <ElectroViewRow key={eleNetwork.eleNetId}>
-                                                <ElectroNode
-                                                    key={startNode?.eleNetId}
-                                                    node={startNode}
-                                                    eleNetwork={eleNetwork}
-                                                    pipetests={pipetests}
-                                                    currentPipetest={pipetest}
-                                                />
-                                            </ElectroViewRow>
-                                        );
-                                    })}
+                                <SwitchBoardContainer
+                                    key={eleNetworksForSwitchboard[0].switchBoardTagNo}
+                                >
+                                    <SwitchBoardBorderContainer>
+                                        <ElectroViewNodeText style={{ marginLeft: '25px' }}>
+                                            {switchboardTagNo[0]}
+                                            <StatusCircle
+                                                statusColor={getElectroViewCompletionStatusColor(
+                                                    switchboardStatus
+                                                )}
+                                            />
+                                        </ElectroViewNodeText>
+                                        {eleNetworksForSwitchboard?.map(
+                                            (eleNetwork: EleNetwork) => {
+                                                const startNode = eleNetwork.circuits.find(
+                                                    (x) => x.parentEleNetId === null
+                                                );
+                                                return (
+                                                    <ElectroViewRow key={eleNetwork.eleNetId}>
+                                                        <ElectroNode
+                                                            key={startNode?.eleNetId}
+                                                            node={startNode}
+                                                            eleNetwork={eleNetwork}
+                                                            pipetests={pipetests}
+                                                            currentPipetest={pipetest}
+                                                        />
+                                                    </ElectroViewRow>
+                                                );
+                                            }
+                                        )}
+                                    </SwitchBoardBorderContainer>
                                 </SwitchBoardContainer>
                             );
                         })}
