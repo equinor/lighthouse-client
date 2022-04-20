@@ -28,7 +28,7 @@ const McGardenItem = ({
     const contentsColor = useMemo(() => getItemContentsColor(status), [status]);
     const mcDotColor = useMemo(() => statusColorMap[data.mcStatus], [data.mcStatus]);
     const commDotColor = useMemo(() => statusColorMap[data.commPkgStatus], [data.commPkgStatus]);
-    const width = useMemo(() => (depth ? 100 - depth * 3 : 100), [depth]);
+    const width = useMemo(() => (depth ? 100 - depth * 3 : 97), [depth]);
     const maxWidth = useMemo(() => itemWidth * 0.98, [itemWidth]);
     return (
         <Root>

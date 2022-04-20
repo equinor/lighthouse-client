@@ -1,6 +1,6 @@
-import { getYearAndWeekFromString } from '@equinor/GardenUtils';
+import { getYearAndWeekAndDayFromString, getYearAndWeekFromString } from '@equinor/GardenUtils';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
-import { getDateFromString } from '../../../Handover/Garden/utility';
+
 import { CustomGroupByKeys, McPackage } from '../../types';
 import { ExtendedGardenFields } from '../config/gardenSetup';
 
@@ -43,7 +43,9 @@ const getColumnDateKey = (
     item: McPackage
 ): string => {
     const date = getKeyData(item, mcFieldKey);
-    return weeklyDaily === 'Weekly' ? getYearAndWeekFromString(date) : getDateFromString(date);
+    return weeklyDaily === 'Weekly'
+        ? getYearAndWeekFromString(date)
+        : getYearAndWeekAndDayFromString(date);
 };
 export const getDateKey: GetKeyFunction<McPackage> = (item, key, groupBy) => {
     const { plannedForecast, weeklyDaily } = groupBy as CustomGroupByKeys;
