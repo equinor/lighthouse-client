@@ -1,11 +1,9 @@
 import { useFactory } from '@equinor/DataFactory';
-import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { Icon } from '@equinor/lighthouse-components';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
-import { ClickableIcon } from '../../../../../components/Icon/ClickableIcon';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useDataContext } from '../../Context/DataProvider';
@@ -34,6 +32,8 @@ interface CompletionViewHeaderProps {
     handleFilter: VoidFunction;
     activeFilter: boolean;
 }
+
+const PRIMARY_INTERACTIVE = tokens.colors.interactive.primary__resting.hex;
 
 export const CompletionViewHeader = ({
     title,
@@ -142,7 +142,7 @@ export const CompletionViewHeader = ({
                         color={
                             dataApi?.isStale
                                 ? tokens.colors.infographic.primary__energy_red_100.hex
-                                : 'grey'
+                                : PRIMARY_INTERACTIVE
                         }
                         aria-selected={false}
                         title={
@@ -151,13 +151,7 @@ export const CompletionViewHeader = ({
                                 : `Updated: ${timestamp}`
                         }
                         onClick={() => dataApi.refetch()}
-                    >
-                        {dataApi?.isFetching ? (
-                            <CircularProgress size={24} />
-                        ) : (
-                            <ClickableIcon size={24} name="refresh" />
-                        )}
-                    </TabButton>
+                    />
 
                     {activeTab !== 'powerBi' ? (
                         <TabButton

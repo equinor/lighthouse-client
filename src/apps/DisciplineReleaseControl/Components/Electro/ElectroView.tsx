@@ -1,59 +1,99 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Pipetest, Tag } from '../../Types/pipetest';
+import { useQuery } from 'react-query';
+import { EleNetwork } from '../../Types/eleNetwork';
+import { Pipetest } from '../../Types/pipetest';
 import { ElectroNode } from './ElectroNode';
+import { getEleNetworks } from './getEleNetworks';
+import {
+    ElectroViewContainer,
+    ElectroViewNodeText,
+    ElectroViewRow,
+    SwitchBoardContainer,
+} from './styles';
 
 interface ElectroViewProps {
     pipetest: Pipetest;
+    pipetests: Pipetest[];
 }
-export const ElectroView = ({ pipetest }: ElectroViewProps): JSX.Element => {
-    const tagTree = pipetest?.tagTree;
-    const startNodes = (tagTree[''] as Tag)?.children;
-    const startNodesArray: string[] = startNodes[0]?.split(', ');
+
+export const ElectroView = ({ pipetest, pipetests }: ElectroViewProps): JSX.Element => {
+    //Find circuit starter tags from circuits on pipetest
+    let circuitStarterTagNos = '';
+    const circuitStarterTagNosArray: string[] = [];
+    if (pipetest.circuits.length === 0) {
+        circuitStarterTagNos = '';
+    } else if (pipetest.circuits.length === 1) {
+        circuitStarterTagNos = pipetest.circuits[0].circuitAndStarterTagNo;
+        circuitStarterTagNosArray.push(pipetest.circuits[0].circuitAndStarterTagNo);
+    } else {
+        circuitStarterTagNos = pipetest.circuits[0].circuitAndStarterTagNo;
+        circuitStarterTagNosArray.push(pipetest.circuits[0].circuitAndStarterTagNo);
+        for (let i = 1; i < pipetest.circuits.length; i++) {
+            circuitStarterTagNos = circuitStarterTagNos.concat(
+                ',' + pipetest.circuits[i].circuitAndStarterTagNo
+            );
+            circuitStarterTagNosArray.push(pipetest.circuits[i].circuitAndStarterTagNo);
+        }
+    }
+
+    const { data } = useQuery([circuitStarterTagNos], () => getEleNetworks(circuitStarterTagNos), {
+        staleTime: Infinity,
+        cacheTime: Infinity,
+    });
+
+    let switchboardArray;
+
+    if (data !== undefined) {
+        for (let i = 0; i < data.length; i++) {
+            data[i].switchBoardTagNo = circuitStarterTagNosArray[i];
+        }
+
+        switchboardArray = Object.values(
+            data.reduce((acc, item) => {
+                const switchboardTagNo = item.switchBoardTagNo.split('-'); //split to find common switchboard tagNo
+                acc[switchboardTagNo[0]] = [...(acc[switchboardTagNo[0]] || []), item];
+                return acc;
+            }, {})
+        );
+    }
 
     return (
         <>
-            {pipetest && tagTree && !!Object.keys(tagTree).length && (
+            {pipetest && circuitStarterTagNos !== '' ? (
                 <>
+                    {!data && <h3>Loading single line diagram...</h3>}
                     <ElectroViewContainer>
-                        <h3>Electro view</h3>
-                        {startNodesArray.map((startNode) => {
+                        {switchboardArray?.map((switchboards: EleNetwork[]) => {
+                            const switchboardTagNo = switchboards[0].switchBoardTagNo.split('-');
                             return (
-                                <ElectroViewRow key={startNode}>
-                                    <ElectroNode
-                                        key={startNode}
-                                        tag={tagTree[startNode] as Tag}
-                                        tagTree={tagTree as Record<string, Tag>}
-                                        value={startNode}
-                                    />
-                                </ElectroViewRow>
+                                <SwitchBoardContainer key={switchboards[0].switchBoardTagNo}>
+                                    <ElectroViewNodeText>
+                                        Switch board {switchboardTagNo[0]}
+                                    </ElectroViewNodeText>
+                                    {switchboards?.map((eleNetwork: EleNetwork) => {
+                                        const startNode = eleNetwork.circuits.find(
+                                            (x) => x.parentEleNetId === null
+                                        );
+                                        return (
+                                            <ElectroViewRow key={eleNetwork.eleNetId}>
+                                                <ElectroNode
+                                                    key={startNode?.eleNetId}
+                                                    node={startNode}
+                                                    eleNetwork={eleNetwork}
+                                                    pipetests={pipetests}
+                                                    currentPipetest={pipetest}
+                                                />
+                                            </ElectroViewRow>
+                                        );
+                                    })}
+                                </SwitchBoardContainer>
                             );
                         })}
                     </ElectroViewContainer>
                 </>
+            ) : (
+                <h3>No single line diagram found for this pipetest</h3>
             )}
         </>
     );
 };
-
-const ElectroViewContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex: 0 0 100%;
-    align-items: center;
-    position: fixed;
-    flex-wrap: wrap;
-    overflow: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    padding: 20px;
-`;
-
-const ElectroViewRow = styled.div`
-    display: flex;
-    flex-direction: row;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    /* flex-basis: 100% gives us a new row per circuit */
-    flex-basis: 100%;
-`;

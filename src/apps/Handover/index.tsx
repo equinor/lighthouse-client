@@ -1,6 +1,7 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
 import { statusBarData } from './Garden/components/statusItems';
-import { HandoverGroupByView, HandoverSideSheet } from './Garden/CustomViews';
+import { HandoverGroupByView } from './Garden/CustomViews';
 import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
 import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
@@ -13,7 +14,6 @@ import {
 } from './Garden/utility';
 import { filterConfig } from './utility/config/filterSetup';
 import { tableConfig } from './utility/config/tableConfig';
-
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
         weeklyDaily: 'Weekly',
