@@ -6,6 +6,8 @@ import { useDataContext } from '../Context/DataProvider';
 
 const Wrapper = styled.section`
     /* overflow: scroll; */
+    padding-left: 32px;
+    padding-top: 32px;
 `;
 
 export const ListTab = (): JSX.Element => {
