@@ -7,11 +7,11 @@ export function WorkOrderTab(): JSX.Element {
                 <TableHeader>
                     <Header>
                         <ColumnHeader>
-                            <HoursTableData>
+                            <HoursTableHeading>
                                 <span>Actual</span>
                                 <span>Remaining</span>
                                 <span style={{ padding: '10px' }}>Estimate</span>
-                            </HoursTableData>
+                            </HoursTableHeading>
                         </ColumnHeader>
 
                         <ColumnHeader>ID</ColumnHeader>
@@ -49,6 +49,16 @@ export function WorkOrderTab(): JSX.Element {
         </>
     );
 }
+
+const HoursTableHeading = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    flex-direction: row;
+    gap: 2em;
+
+    align-items: center;
+    margin-left: 5px;
+`;
 
 const TableData = styled.td`
     font-size: 14px;
@@ -153,7 +163,7 @@ const data: WorkOrder[] = [
     {
         actual: 20,
         estimate: 100,
-        id: '1213244',
+        id: '12132',
         title: 'Work order title, idk how long',
         status: 'WO4',
         discipline: 'E',
@@ -163,7 +173,7 @@ const data: WorkOrder[] = [
     {
         actual: 50,
         estimate: 100,
-        id: '1213244',
+        id: '121344',
         title: 'Work order title, idk how long',
         status: 'WO3',
         discipline: 'L',
