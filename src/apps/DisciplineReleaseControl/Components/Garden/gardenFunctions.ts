@@ -55,15 +55,21 @@ export const getTimePeriod = (item: Pipetest): string => {
     return 'Other';
 };
 
-export const getGardenItemColor = (item: Pipetest): string => {
+export const getGardenItemColor = (step: string | undefined): string => {
     let color = '#D3D3D3';
 
-    switch (item.step) {
-        case PipetestStep.Bolttensioning:
-            color = '#6d889a';
-            break;
+    switch (step) {
         case PipetestStep.PressureTest:
             color = '#a8c8de';
+            break;
+        case PipetestStep.ChemicalCleaning:
+            color = '#A8C8DE';
+            break;
+        case PipetestStep.HotOilFlushing:
+            color = '#D9E9F2';
+            break;
+        case PipetestStep.Bolttensioning:
+            color = '#6d889a';
             break;
         case PipetestStep.Painting:
             color = '#dcdcdc';
@@ -80,6 +86,9 @@ export const getGardenItemColor = (item: Pipetest): string => {
         case PipetestStep.HtRetest:
             color = '#ffc67a';
             break;
+        case PipetestStep.HtCTest:
+            color = '#DCAB6A';
+            break;
         case PipetestStep.Marking:
             color = '#e6faec';
             break;
@@ -94,10 +103,10 @@ export const getGardenItemColor = (item: Pipetest): string => {
     return color;
 };
 
-export const getGardenItemCompletionColor = (item: Pipetest): string => {
+export const getGardenItemCompletionColor = (completionStatus: string): string => {
     let color = '#DCDCDC';
 
-    switch (item.completionStatus) {
+    switch (completionStatus) {
         case PipetestCompletionStatus.Outstanding:
             color = PipetestCompletionStatusColors.OS;
             break;

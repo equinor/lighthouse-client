@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 
-import { PCSPersonSearch } from '../../../SearchableDropdown/PCSPersonSearch';
-import { addContributor } from '../../../../Api/ScopeChange/Workflow/addContributor';
+import { PCSPersonSearch } from '../../../PersonRoleSearch/PCSPersonSearch';
+import { addContributor } from '../../../../api/ScopeChange/Workflow/addContributor';
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
-import { useScopeChangeContext } from '../../../Sidesheet/Context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
-import { useScopeChangeMutation } from '../../../../Hooks/React-Query/useScopechangeMutation';
-import { TypedSelectOption } from '../../../../Api/Search/searchType';
-import { WorkflowStep } from '../../../../Types/scopeChangeRequest';
-import { scopeChangeMutationKeys } from '../../../../Keys/scopeChangeMutationKeys';
+import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
+import { TypedSelectOption } from '../../../../api/Search/searchType';
+import { WorkflowStep } from '../../../../types/scopeChangeRequest';
+import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
 
 interface AddContributorProps {
     step: WorkflowStep;

@@ -2,7 +2,15 @@ import { HeaderContainer } from './HeaderContainer';
 import { Layout } from './Layout';
 import { useVirtual } from 'react-virtual';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
-import { Fragment, useCallback, useLayoutEffect, useMemo, useRef } from 'react';
+import {
+    Fragment,
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import { CustomVirtualView } from '../../Models/gardenOptions';
 import { defaultSortFunction } from '../../Utils/utilities';
 import { GardenGroups, DataSet } from '../../Models/data';
@@ -10,6 +18,7 @@ import { GardenItemContainer } from './GardenItemContainer';
 import { useRefresh } from '../../hooks/useRefresh';
 import { useExpand, useVirtualScrolling } from './hooks';
 import { getGardenItems, getRowCount } from './utils';
+import { useSideSheet } from '../../../../packages/Sidesheet/context/sidesheetContext';
 
 type VirtualGardenProps<T> = {
     garden: GardenGroups<T>;
@@ -20,8 +29,7 @@ export const VirtualGarden = <T extends unknown>({
     garden,
     width,
 }: VirtualGardenProps<T>): JSX.Element => {
-    const parentRef = useRef<HTMLDivElement | null>(null);
-
+    const [selectedItem, setSelectedItem] = useState<T | null>(null);
     const {
         gardenKey,
         fieldSettings,
@@ -31,10 +39,24 @@ export const VirtualGarden = <T extends unknown>({
         sortData,
         highlightColumn,
         rowHeight,
+        customDescription,
+        customGroupByKeys,
     } = useParkViewContext<T>();
+
+    const parentRef = useRef<HTMLDivElement | null>(null);
+
+    const { SidesheetComponent } = useSideSheet();
+    const refresh = useRefresh();
+
     const { isScrolling, scrollOffsetFn } = useVirtualScrolling(parentRef);
     const { widths: contextWidths } = useExpand();
-    const refresh = useRefresh();
+
+    const handleOnItemClick = useCallback(
+        (item: T) => {
+            setSelectedItem(item);
+        },
+        [setSelectedItem]
+    );
 
     const columnCount = useMemo(() => garden.length, [garden]);
     const rowCount = useMemo(() => getRowCount(garden), [garden]);
@@ -85,8 +107,11 @@ export const VirtualGarden = <T extends unknown>({
         },
         [refresh]
     );
-    const highlightedColumn = highlightColumn ? highlightColumn(gardenKey.toString()) : undefined;
-
+    const highlightedColumn = useMemo(
+        () =>
+            highlightColumn ? highlightColumn(gardenKey.toString(), customGroupByKeys) : undefined,
+        [highlightColumn, gardenKey, customGroupByKeys]
+    );
     useLayoutEffect(() => {
         if (highlightedColumn) {
             const scrollIndex = sortedColumns.findIndex(
@@ -96,6 +121,10 @@ export const VirtualGarden = <T extends unknown>({
         }
     }, [sortedColumns, columnVirtualizer.scrollToIndex, highlightedColumn]);
 
+    //HACK When the sidesheet closes, set the selected item to null..
+    useEffect(() => {
+        if (!SidesheetComponent) setSelectedItem(() => null);
+    }, [SidesheetComponent]);
     return (
         <Layout
             rowTotalSize={rowVirtualizer.totalSize}
@@ -108,6 +137,8 @@ export const VirtualGarden = <T extends unknown>({
                 garden={sortedColumns}
                 headerChild={headerChild}
                 highlightColumn={highlightedColumn}
+                customDescription={customDescription}
+                groupByKey={gardenKey.toString()}
             />
             {columnVirtualizer.virtualItems.map((virtualColumn) => {
                 const currentColumn = sortedColumns[virtualColumn.index];
@@ -129,6 +160,8 @@ export const VirtualGarden = <T extends unknown>({
                                 customView?.customGroupView as CustomVirtualView<T>['customGroupView']
                             }
                             groupByKeys={[gardenKey, ...groupByKeys]}
+                            selectedItem={selectedItem}
+                            handleOnClick={handleOnItemClick}
                         />
                     </Fragment>
                 );

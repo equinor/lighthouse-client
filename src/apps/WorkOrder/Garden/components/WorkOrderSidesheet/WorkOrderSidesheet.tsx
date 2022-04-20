@@ -1,23 +1,35 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { SideSheetContainer } from '@equinor/GardenUtils';
-import { useState } from 'react';
+import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
+import { isProduction } from '@equinor/portal-client';
+import { useEffect, useState } from 'react';
+import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { WorkOrder } from '../../models';
 import { useMaterial, useMccr } from './hooks';
 import { DetailsTab, MccrTab } from './Tabs';
 import { MaterialTab } from './Tabs/MaterialTab';
 
-export const WorkorderSideSheet = (workorder: WorkOrder): JSX.Element => {
+interface WorkorderSideSheetProps {
+    item: WorkOrder;
+    actions: SidesheetApi;
+}
+
+export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): JSX.Element => {
     const [activeTab, setActiveTab] = useState<number>(0);
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
+    const procosysUrl = isProduction() ? item.url : item.url.replace('procosys', 'procosystest');
+
+    useEffect(() => {
+        actions.setTitle(<SidesheetHeaderContent title={item.workOrderNumber} url={procosysUrl} />);
+    }, [item.workOrderNumber, procosysUrl]);
 
     const {
         material,
         isFetching: materialIsFetching,
         error: materialError,
-    } = useMaterial(workorder.workOrderId);
-    const { mccr, isFetching: mccrIsFetching, error: mccrError } = useMccr(workorder.workOrderId);
+    } = useMaterial(item.workOrderId);
+    const { mccr, isFetching: mccrIsFetching, error: mccrError } = useMccr(item.workOrderId);
 
     return (
         <SideSheetContainer>
@@ -30,7 +42,7 @@ export const WorkorderSideSheet = (workorder: WorkOrder): JSX.Element => {
 
                 <Tabs.Panels>
                     <Tabs.Panel>
-                        <DetailsTab workOrder={workorder} />
+                        <DetailsTab workOrder={item} />
                     </Tabs.Panel>
                     <Tabs.Panel>
                         <MccrTab packages={mccr} isFetching={mccrIsFetching} error={mccrError} />

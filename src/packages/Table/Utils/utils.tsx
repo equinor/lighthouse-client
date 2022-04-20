@@ -8,6 +8,7 @@ import {
     ArrayCell,
     RelativeDateCell,
     NumberCell,
+    YearWeekCell,
 } from '../Components/Cells';
 import {
     CellType,
@@ -92,6 +93,8 @@ export const findCustomCell = <T extends TableData>(
                 return RelativeDateCell;
             case 'Number':
                 return NumberCell;
+            case 'YearAndWeek':
+                return YearWeekCell;
             default:
                 return 'Incorrect cell type given';
         }

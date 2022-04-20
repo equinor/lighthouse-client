@@ -1,47 +1,85 @@
 import styled from 'styled-components';
-import { Item } from '../../../../../components/ParkView/Styles/item';
-
-export type HandoverItemProps = { backgroundColor: string; textColor: string; isExpanded: boolean };
-
-export const HandoverItem = styled(Item)<HandoverItemProps>`
+export const Root = styled.div`
+    height: 80%;
+    width: 100%;
     display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 5px;
+    position: relative;
+`;
+export type HandoverItemProps = { backgroundColor: string; textColor: string; isSelected: boolean };
+
+export const HandoverItemWrapper = styled.div<HandoverItemProps>`
+    display: grid;
+    grid-template-columns: 15px 3fr auto;
+    align-items: center;
+    box-sizing: border-box;
+    position: relative;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    width: ${(props) => (props.isExpanded ? '100%' : '180px')};
-    box-sizing: border-box;
+    cursor: pointer;
+    height: 100%;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 13px;
+    padding-left: 20px;
+    padding-right: 2px;
+    outline: ${(props) => (props.isSelected ? '2px dashed green' : '')};
+    outline-offset: ${(props) => (props.isSelected ? '2px' : '')};
+`;
+type SizesProps = {
+    size: 'small' | 'medium' | 'large';
+    color: string;
+};
+export const Sizes = styled.div<SizesProps>`
+    position: absolute;
+    top: 0px;
+    left: 4px;
+    width: 10px;
+    height: 2px;
+    border-radius: 2px;
+    box-shadow: ${(props) =>
+        props.size === 'large'
+            ? `0px 5px 0px 0px ${props.color}, 0px 11px 0px 0px ${props.color}, 0px 17px 0px 0px ${props.color}`
+            : props.size === 'medium'
+            ? `0px 11px 0px 0px ${props.color}, 0px 17px 0px 0px ${props.color}`
+            : ` 0px 17px 0px 0px ${props.color}`};
+`;
+
+export const ItemText = styled.div`
+    grid-column: 2/3;
     white-space: nowrap;
-    justify-content: space-between;
-    border: 1px solid #dcdcdc;
-    height: 28px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+`;
+
+type StatusCirclesProps = {
+    mcColor: string;
+    commColor: string;
+};
+export const StatusCircles = styled.div<StatusCirclesProps>`
+    display: flex;
+    grid-column: 3/4;
+    justify-content: end;
     align-items: center;
-`;
 
-export const MidSection = styled.div<{ expanded: boolean }>`
-    display: flex;
-    justify-content: ${(p) => (p.expanded ? 'flex-start' : 'center')};
-    flex: 1;
-    padding: ${(p) => (p.expanded ? '0px 8px' : '0px')};
-`;
-
-export const Icons = styled.div`
-    display: flex;
-    width: 28px;
-`;
-
-export const Title = styled.div``;
-
-export const HandoverExpanded = styled.div`
-    display: flex;
-    flex: 1;
-`;
-
-export const HandoverExpandedTitle = styled.div`
-    display: flex;
-    flex: 1;
-    padding: 0px 8px;
-`;
-
-export const Circles = styled.div`
-    display: flex;
-    padding-right: 0px 8px;
+    ::before {
+        width: 12px;
+        height: 12px;
+        border: 1px solid white;
+        background-color: ${(props) => props.mcColor};
+        border-radius: 50%;
+        margin: 0px 1px;
+        content: ' ';
+    }
+    ::after {
+        width: 12px;
+        height: 12px;
+        border: 1px solid white;
+        background-color: ${(props) => props.commColor};
+        border-radius: 50%;
+        margin: 0px 1px;
+        content: ' ';
+    }
 `;

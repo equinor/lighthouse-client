@@ -6,7 +6,6 @@ export const Wrapper = styled.div`
 `;
 
 export const ContentWrapper = styled.div`
-    padding-top: 1rem;
     background-color: ${tokens.colors.ui.background__light.rgba};
     height: inherit;
 `;

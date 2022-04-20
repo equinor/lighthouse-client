@@ -1,4 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
+import { AssignmentWrapper } from '../../../components/ActionCenter/AssignmentWrapper';
 import { useSettings } from '../Hooks/useClientContext';
 import { Container, Header, MainColumn, SideColumn, SideItem, Wrapper } from './clientHomeStyles';
 import { PowerBIHome } from './PbiHome/PbiHome';
@@ -13,6 +14,15 @@ export const ClientHome = (): JSX.Element => {
                 <Typography variant="h3">Welcome {user?.displayName}</Typography>
             </Header>
             <Container>
+                <SideColumn>
+                    <SideItem height={400}>
+                        {/* <AssignmentWrapper /> */}
+                        <Task />
+                    </SideItem>
+                    <SideItem height={575}>
+                        <YammerFeed />
+                    </SideItem>
+                </SideColumn>
                 <MainColumn>
                     {clientEnv !== 'prod' && (
                         <PowerBIHome reportUri={'cd49f2ce-0cb7-4807-a8ef-29f239fe0457'} />
@@ -89,14 +99,6 @@ export const ClientHome = (): JSX.Element => {
                     </KpiBar>
                     <Status /> */}
                 </MainColumn>
-                <SideColumn>
-                    <SideItem>
-                        <Task />
-                    </SideItem>
-                    <SideItem height={575}>
-                        <YammerFeed />
-                    </SideItem>
-                </SideColumn>
             </Container>
         </Wrapper>
     );
