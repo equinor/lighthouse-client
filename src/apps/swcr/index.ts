@@ -103,11 +103,15 @@ export function setup(appApi: ClientApi): void {
         })
         .registerStatusItems(statusBarData)
         .registerPowerBIOptions({
-            reportURI: 'pp-installation-activities',
+            reportURI: 'pp-swcr-analytics',
             pages: [
-                { pageTitle: 'Activities', pageId: 'ReportSection', default: true },
-                { pageTitle: 'Progress Status', pageId: 'ReportSection1bfb8548a2e154dc3640' },
-                // { pageTitle: 'Plan', pageId: 'ReportSection5b84ed4e7bba01fc9a74' }, May come in the future!
+                {
+                    pageTitle: 'Overview',
+                    pageId: 'ReportSectionb937310a77e18f67ff37',
+                    default: true,
+                },
+                { pageTitle: 'Browser', pageId: 'ReportSection272f7d54d84d16689496' },
+                { pageTitle: 'History', pageId: 'ReportSection0cb62244235c033e5151' },
             ],
         });
 }
