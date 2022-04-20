@@ -14,7 +14,7 @@ export const WorkSpace = (props: WorkspaceProps): JSX.Element => {
         <ErrorBoundary FallbackComponent={ErrorFallback} routeName={props.title}>
             <Routes>
                 <Route
-                    path={`/:id`}
+                    path={`/`}
                     element={
                         <WorkspaceProviders>
                             <WorkSpaceView {...props} />
@@ -22,7 +22,7 @@ export const WorkSpace = (props: WorkspaceProps): JSX.Element => {
                     }
                 />
                 <Route
-                    path={`/`}
+                    path={`/:id`}
                     element={
                         <WorkspaceProviders>
                             <WorkSpaceView {...props} />

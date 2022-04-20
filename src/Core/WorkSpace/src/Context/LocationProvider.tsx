@@ -81,9 +81,20 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
     }, [data, findItem, idResolver, location.hash, onSelect]);
 
     /**
+     * Add default tab to url if id is undefined
+     */
+    useEffect(() => {
+        if (!id) {
+            navigate(`${location.pathname}/${defaultTab}`, {
+                replace: true,
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]);
+
+    /**
      * Removes hash from url when closed
      */
-
     const { props: sidesheetProps, SidesheetComponent } = useSideSheet();
     useEffect(() => {
         if (location.hash.length > 0) return;

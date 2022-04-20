@@ -3,6 +3,7 @@ import { PopoutSidesheet } from '@equinor/sidesheet';
 import { useNavigate } from 'react-router';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
+import { WorkspaceFilterWrapper } from '../../Context/WorkspaceFilterWrapper';
 import { useConfiguredTabs } from '../../Util/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { DumpsterFireDialog } from '../DataLoadFailed/DumpsterFireDialog';
@@ -49,11 +50,13 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     return (
         <WorkspaceWrapper>
-            <HeaderWrapper props={props} tabs={tabs} />
-            <DataViewWrapper>
-                <WorkSpaceTabs tabs={tabs} />
-                <PopoutSidesheet />
-            </DataViewWrapper>
+            <WorkspaceFilterWrapper filterOptions={workspace.filterOptions || []}>
+                <HeaderWrapper props={props} tabs={tabs} />
+                <DataViewWrapper>
+                    <WorkSpaceTabs tabs={tabs} />
+                    <PopoutSidesheet />
+                </DataViewWrapper>
+            </WorkspaceFilterWrapper>
         </WorkspaceWrapper>
     );
 }

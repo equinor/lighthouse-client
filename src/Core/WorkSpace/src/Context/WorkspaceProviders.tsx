@@ -1,7 +1,6 @@
 import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
 import { PropsWithChildren } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { WorkspaceFilterWrapper } from '../Components/WorkSpace/WorkspaceFilterWrapper';
 import { DataProvider } from './DataProvider';
 import { LocationProvider } from './LocationProvider';
 import { ViewProvider } from './ViewProvider';
@@ -10,13 +9,11 @@ export const WorkspaceProviders = ({ children }: PropsWithChildren<unknown>): JS
     return (
         <>
             <DataProvider>
-                <ModelViewerContextProvider>
-                    <LocationProvider>
-                        <ViewProvider>
-                            <WorkspaceFilterWrapper>{children}</WorkspaceFilterWrapper>
-                        </ViewProvider>
-                    </LocationProvider>
-                </ModelViewerContextProvider>
+                <LocationProvider>
+                    <ModelViewerContextProvider>
+                        <ViewProvider>{children}</ViewProvider>
+                    </ModelViewerContextProvider>
+                </LocationProvider>
             </DataProvider>
             <ReactQueryDevtools initialIsOpen={false} />
         </>

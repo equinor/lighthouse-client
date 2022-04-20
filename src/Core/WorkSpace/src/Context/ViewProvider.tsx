@@ -52,6 +52,8 @@ export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
                 pages: powerBiOptions.pages,
                 activePage: powerBiOptions.pages.find((p) => p.default),
             }));
+        } else {
+            setState(INIT_STATE);
         }
     }, [powerBiOptions]);
 

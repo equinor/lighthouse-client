@@ -1,4 +1,3 @@
-import { useAtom } from '@dbeining/react-atom';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
@@ -10,8 +9,8 @@ import { checkResponseCode } from '../Functions/checkResponseCode';
 import * as queryCacheOperations from '../Functions/DataOperations';
 import { QueryCacheArgs } from '../Functions/DataOperations/queryCacheArgs';
 import { usePrefetchQueries } from '../Hooks/usePrefetchQueries';
+import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import {
-    getWorkSpaceContext,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
@@ -100,9 +99,9 @@ export function ClientReducer(state: DataState, action: Action): DataState {
 
 export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
-    const currentWorkspace = useAtom(getWorkSpaceContext());
+    const currentWorkspace = useWorkSpace();
 
-    const { dataSource, objectIdentifier, prefetchQueriesOptions } = currentWorkspace[key];
+    const { dataSource, objectIdentifier, prefetchQueriesOptions } = currentWorkspace;
 
     const queryClient = useQueryClient();
 
@@ -112,14 +111,13 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         key,
         subData: {},
         item: {},
-        ...resetConfig,
-        ...currentWorkspace[key],
+        ...currentWorkspace,
     };
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
     useEffect(() => {
-        dispatch(actions.setOptions(initialState));
+        dispatch(actions.setOptions({ ...resetConfig, ...initialState }));
         queryApi.remove();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [key]);
