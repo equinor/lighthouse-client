@@ -5,7 +5,6 @@ import { useElementData } from '../../../../packages/Utils/Hooks/useElementData'
 import { useDataContext } from '../Context/DataProvider';
 
 const Wrapper = styled.section`
-    /* overflow: scroll; */
     padding-left: 32px;
     padding-top: 32px;
 `;
