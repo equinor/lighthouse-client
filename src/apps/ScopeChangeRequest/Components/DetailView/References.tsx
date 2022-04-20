@@ -41,9 +41,7 @@ export const RelatedObjects = ({
                 documents.length === 0 &&
                 disciplines.length === 0 &&
                 areas.length === 0 && (
-                    <div style={{ fontWeight: 400, fontSize: '14px' }}>
-                        No references has been linked yet.
-                    </div>
+                    <NoReferences>No references has been linked yet.</NoReferences>
                 )}
             {tags && tags.length > 0 && (
                 <ChevronList title={`Tags (${tags?.length})`}>
@@ -105,6 +103,11 @@ export const RelatedObjects = ({
         </Wrapper>
     );
 };
+
+const NoReferences = styled.div`
+    font-size: 14px;
+    font-weight: 400;
+`;
 
 const Wrapper = styled.div`
     display: flex;
