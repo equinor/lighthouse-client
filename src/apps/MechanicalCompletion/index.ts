@@ -1,14 +1,10 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { McCustomGroupByView } from './components/McCustomGroupByView';
-import { CustomGroupByKeys, McPackage } from './types';
-import { fieldSettings, gardenConfig } from './utils/config/gardenSetup';
-import McGardenItem from './components/CustomItemView/CustomItemView';
-import McGardenHeader from './components/CustomHeaderView/CustomHeaderView';
-import { getItemWidth } from './utils/helpers/getItemWidth';
+import { McPackage } from './types';
+import { gardenConfig } from './utils/config/gardenSetup';
 import { sortPackagesByStatus } from './utils/helpers/sortPackages';
 import { McSideSheet } from './components';
-import { getHighlightedColumn } from './utils/helpers/getHighlightedColumn';
-import { getAverageTagVolume } from './utils/helpers/getAverageTagVolume';
+import { filterConfig } from './utils/config/filterConfig';
+import { tableConfig } from './utils/config/tableConfig';
 
 export function setup(addApi: ClientApi): void {
     const contextId = isProduction()
@@ -37,9 +33,8 @@ export function setup(addApi: ClientApi): void {
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
+        .registerFilterOptions(filterConfig)
 
-        .registerTableOptions({
-            objectIdentifierKey: 'mcPkgId',
-        })
+        .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig);
 }

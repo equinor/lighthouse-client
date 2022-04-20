@@ -1,6 +1,6 @@
 import { McStatus } from './mcStatus';
 export type McPackage = {
-    siteCode: string;
+    siteCodes: string;
     projectIdentifier: string;
     projectDescription: string;
     mcPkgId: string;
@@ -49,7 +49,7 @@ export type McPackage = {
     rfocIsAccepted: boolean;
     rfocIsRejected: boolean;
     rfccIsShipped: boolean;
-    rfccIsAccepded: boolean;
+    rfccIsAccepted: boolean;
     rfccIsRejected: boolean;
     searchableValues: string;
 };

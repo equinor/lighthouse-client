@@ -22,14 +22,14 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport
+    SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
-import { setup as McSetup } from './McGarden';
+import { setup as McSetup } from './MechanicalCompletion';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -275,7 +275,7 @@ export const apps: AppManifest[] = [
         appEnv: 'test',
     },
     {
-        title: 'Mechanical Construction',
+        title: 'Mechanical Completion',
         shortName: 'MC',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
