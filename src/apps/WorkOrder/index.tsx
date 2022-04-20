@@ -8,10 +8,6 @@ import { sortPackages } from './Garden/utility/sortPackages';
 import { filterConfig } from './utility/filterConfig';
 import { tableConfig } from './utility/tableConfig';
 
-enum Tabs {
-    TABLE,
-    GARDEN,
-}
 export function setup(appApi: ClientApi): void {
     const contextId = isProduction()
         ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
@@ -34,7 +30,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<WorkOrder>({
             objectIdentifier: 'workOrderId',
             CustomSidesheet: WorkorderSideSheet,
-            defaultTab: Tabs.GARDEN,
+            defaultTab: 'garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,
