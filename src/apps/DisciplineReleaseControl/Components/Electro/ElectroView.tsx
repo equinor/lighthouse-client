@@ -20,6 +20,7 @@ interface ElectroViewProps {
     width: number;
 }
 
+// If this component gets logic that causes it to need re-renders, it should be rewritten to use more useMemo()/hooks to avoid re-calculating static logic
 export const ElectroView = ({ pipetest, pipetests, width }: ElectroViewProps): JSX.Element => {
     //Find circuit starter tags from circuits on pipetest
     let circuitStarterTagNos = '';

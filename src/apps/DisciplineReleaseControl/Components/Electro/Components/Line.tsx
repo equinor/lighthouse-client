@@ -1,8 +1,6 @@
-import { deref } from '@dbeining/react-atom';
 import React from 'react';
 import styled from 'styled-components';
-import { CoreContext } from '../../../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { useLocationKey } from '../../../../../packages/Filter/Hooks/useLocationKey';
+import { useWorkSpace } from '@equinor/WorkSpace';
 import { Pipetest } from '../../../Types/pipetest';
 
 interface LineProps {
@@ -10,9 +8,9 @@ interface LineProps {
     currentPipetest: boolean;
     pipetest: Pipetest | undefined;
 }
+
 export const Line = ({ value, currentPipetest, pipetest }: LineProps): JSX.Element => {
-    const locationKey = useLocationKey();
-    const { onSelect } = deref(CoreContext)[locationKey];
+    const { onSelect } = useWorkSpace();
     return (
         <LineNode currentPipetest={currentPipetest} onClick={() => onSelect && onSelect(pipetest)}>
             {value}
