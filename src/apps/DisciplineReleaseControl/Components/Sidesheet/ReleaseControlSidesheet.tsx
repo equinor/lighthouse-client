@@ -63,7 +63,7 @@ export const ReleaseControlSidesheet = ({
                     <Tabs.Tab>Details</Tabs.Tab>
                     {/* <Tabs.Tab>3D-visualisation</Tabs.Tab> */}
                 </SidesheetTabList>
-                <TabList>
+                <Tabs.Panels>
                     <Tabs.Panel>
                         <ElectroView
                             pipetest={item}
@@ -72,10 +72,12 @@ export const ReleaseControlSidesheet = ({
                         />
                     </Tabs.Panel>
                     <Tabs.Panel>
-                        <h4>{item.description}</h4>
-                        <CheckListTable checkLists={item.checkLists} />
-                        <br />
-                        <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
+                        <TablesTab>
+                            <h4>{item.description}</h4>
+                            <CheckListTable checkLists={item.checkLists} />
+                            <br />
+                            <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
+                        </TablesTab>
                     </Tabs.Panel>
                     {/* <Tabs.Panel>
                         {activeTab === 2 && (
@@ -88,7 +90,7 @@ export const ReleaseControlSidesheet = ({
                             </ThreeDModel>
                         )}
                     </Tabs.Panel> */}
-                </TabList>
+                </Tabs.Panels>
             </Tabs>
         </Wrapper>
     );
@@ -98,6 +100,6 @@ export const ReleaseControlSidesheet = ({
 //     height: 100vh;
 // `;
 
-const TabList = styled(Tabs.Panels)`
-    padding: 12px 16px;
+const TablesTab = styled.div`
+    padding-left: 8px;
 `;

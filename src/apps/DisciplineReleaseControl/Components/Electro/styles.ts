@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const ElectroViewContainer = styled.div<{ width: number }>`
@@ -11,9 +12,10 @@ export const ElectroViewContainer = styled.div<{ width: number }>`
     white-space: nowrap;
     max-width: 100%;
     width: ${(p) => (p.width ? p.width : '800px')};
-    max-height: ${() => window.innerHeight - 425 + 'px'};
+    max-height: ${() => window.innerHeight - 378 + 'px'};
     overflow-x: auto;
     overflow-y: auto;
+    padding-left: 16px;
 `;
 
 export const SwitchBoardContainer = styled.div`
@@ -29,10 +31,10 @@ export const SwitchBoardContainer = styled.div`
 `;
 
 export const SwitchBoardBorderContainer = styled.div`
-    border: 1px solid #dcdcdc;
-    padding: 4px;
+    border: 1px solid ${tokens.colors.ui.background__medium.hex};
+    padding: 8px;
     width: 112px;
-    border: 1px solid #dcdcdc;
+    border: 1px solid ${tokens.colors.ui.background__medium.hex};
 `;
 
 export const ElectroViewRow = styled.div`

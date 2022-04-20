@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
 import { CheckListStatus } from '../../Types/drcEnums';
 import {
@@ -49,7 +50,7 @@ export function getNodeStatus(checkLists: EleNetworkCheckList[], tagNo?: string)
 }
 
 export const getElectroViewCompletionStatusColor = (completionStatus: string): string => {
-    let color = '#DCDCDC';
+    let color = tokens.colors.ui.background__medium.hex;
 
     switch (completionStatus) {
         case CheckListStatus.Outstanding:

@@ -1,4 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { StatusCircle } from '../../Garden/StatusCircle';
 import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
@@ -26,7 +27,7 @@ export const CircuitAndStarter = ({
                 <Icon
                     size={16}
                     style={{ transform: 'rotate(90deg)' }}
-                    color={'#000000'}
+                    color={tokens.colors.text.static_icons__default.hex}
                     name="circuit"
                 />
                 <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
@@ -39,7 +40,7 @@ const CircuitAndStarterNode = styled.div`
     display: flex;
     flex-direction: horizontal;
     flex: 1;
-    border: 1px solid #dcdcdc;
+    border: 1px solid ${tokens.colors.ui.background__medium.hex};
     border-radius: 10px;
     padding: 6px;
     text-align: center;

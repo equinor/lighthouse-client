@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import { Pipetest } from '../../../Types/pipetest';
+import { tokens } from '@equinor/eds-tokens';
 
 interface LineProps {
     value?: string;
@@ -24,8 +25,15 @@ const LineNode = styled.div<{ currentPipetest: boolean }>`
     border-radius: 10px;
     padding: 7px;
     text-align: center;
-    background: ${(p) => (p.currentPipetest ? '#007079' : '#f7f7f7')};
-    color: ${(p) => (p.currentPipetest ? '#f7f7f7' : '#000000')};
+    background: ${(p) =>
+        p.currentPipetest
+            ? tokens.colors.interactive.primary__resting.hex
+            : tokens.colors.ui.background__light.hex};
+    color: ${(p) =>
+        p.currentPipetest
+            ? tokens.colors.ui.background__light.hex
+            : tokens.colors.text.static_icons__default.hex};
     cursor: pointer;
     margin-left: 5px;
+    margin-top: 4px;
 `;

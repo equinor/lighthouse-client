@@ -1,4 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { CheckListStepTag } from '../../../Types/drcEnums';
 import { EleNetwork } from '../../../Types/eleNetwork';
@@ -25,7 +26,11 @@ export const HeatTracingCable = ({
     return (
         <ElectroViewNodeGroup>
             <HeatTracingCableNode htCount={pipetestsOnHTCable.length}>
-                <Icon size={16} color={'#000000'} name="heat_trace" />
+                <Icon
+                    size={16}
+                    color={tokens.colors.text.static_icons__default.hex}
+                    name="heat_trace"
+                />
                 <ElectroViewNodeValueText>{value}</ElectroViewNodeValueText>
                 <ABTestDots>
                     <TestDot
@@ -69,14 +74,14 @@ const HeatTracingCableNode = styled.div<{ htCount: number }>`
 
     &:after {
         content: '';
-        background: #000000;
+        background: ${tokens.colors.text.static_icons__default.hex};
         border-radius: 50%;
         width: 10px;
         height: 10px;
 
         position: relative;
         top: 18px;
-        left: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '40px' : 90 * p.htCount - 100 + 'px')};
+        left: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '47px' : 90 * p.htCount - 100 + 'px')};
     }
 `;
 

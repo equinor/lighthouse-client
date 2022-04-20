@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { PipetestCompletionStatusColors } from '../../../Styles/ReleaseControlColors';
 import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
@@ -22,8 +23,8 @@ export const TestDot = ({ value, status }: TestDotProps): JSX.Element => {
                 fill={
                     color === PipetestCompletionStatusColors.OK ||
                     color === PipetestCompletionStatusColors.PA
-                        ? '#ffffff'
-                        : '#3D3D3D'
+                        ? tokens.colors.text.static_icons__primary_white.hex
+                        : tokens.colors.text.static_icons__default.hex
                 }
             />
         </svg>
@@ -58,8 +59,8 @@ const TestDotCircle = styled.div<{ color: string }>`
     color: ${(p) =>
         p.color === PipetestCompletionStatusColors.OK ||
         p.color === PipetestCompletionStatusColors.PA
-            ? '#ffffff'
-            : '#000000'};
+            ? tokens.colors.text.static_icons__primary_white.hex
+            : tokens.colors.text.static_icons__default.hex};
 `;
 
 export const TestDotCircleText = styled.div`
