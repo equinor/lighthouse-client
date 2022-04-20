@@ -14,8 +14,8 @@ import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { SidesheetTabList } from './SidesheetTabs';
 import { ElectroView } from '../Electro/ElectroView';
 import { useQuery } from 'react-query';
-import { getPipetests } from '../Electro/getPipetests';
-import { chewPipetestDataFromApi } from '../../Functions/statusHelpers';
+import { useLocationKey } from '../../../../packages/Filter/Hooks/useLocationKey';
+import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
 
 interface ReleaseControlSidesheetProps {
     item: Pipetest;
@@ -30,7 +30,6 @@ export const ReleaseControlSidesheet = ({
 
     // const { echoPlantId } = useFacility();
     const [activeTab, setActiveTab] = useState<number>(0);
-    const [isChewed, setIsChewed] = useState<boolean>(false);
 
     const handleChange = (index: number) => {
         setActiveTab(index);
@@ -46,15 +45,13 @@ export const ReleaseControlSidesheet = ({
         actions.setTitle(<>Pipetest {item.name}</>);
     }, [item.name]);
 
-    let { data } = useQuery('pipetests', () => getPipetests(), {
+    const locationKey = useLocationKey();
+
+    //Fetches all pipetests date from location cache. If no cache it fetches and chews the data itself.
+    const { data } = useQuery(locationKey, () => fetchAndChewPipetestDataFromApi(), {
         staleTime: Infinity,
         cacheTime: Infinity,
     });
-
-    if (!isChewed) {
-        data = chewPipetestDataFromApi(data !== undefined ? data : []);
-        setIsChewed(true); //sets it to already chewed so we dont re-run every time component updates (resize sidesheet etc.)
-    }
 
     return (
         <Wrapper>
@@ -66,15 +63,21 @@ export const ReleaseControlSidesheet = ({
                     <Tabs.Tab>Details</Tabs.Tab>
                     {/* <Tabs.Tab>3D-visualisation</Tabs.Tab> */}
                 </SidesheetTabList>
-                <TabList>
+                <Tabs.Panels>
                     <Tabs.Panel>
-                        <ElectroView pipetest={item} pipetests={data !== undefined ? data : []} />
+                        <ElectroView
+                            pipetest={item}
+                            pipetests={data !== undefined ? data : []}
+                            width={width}
+                        />
                     </Tabs.Panel>
                     <Tabs.Panel>
-                        <h4>{item.description}</h4>
-                        <CheckListTable checkLists={item.checkLists} />
-                        <br />
-                        <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
+                        <TablesTab>
+                            <h4>{item.description}</h4>
+                            <CheckListTable checkLists={item.checkLists} />
+                            <br />
+                            <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
+                        </TablesTab>
                     </Tabs.Panel>
                     {/* <Tabs.Panel>
                         {activeTab === 2 && (
@@ -87,7 +90,7 @@ export const ReleaseControlSidesheet = ({
                             </ThreeDModel>
                         )}
                     </Tabs.Panel> */}
-                </TabList>
+                </Tabs.Panels>
             </Tabs>
         </Wrapper>
     );
@@ -97,6 +100,6 @@ export const ReleaseControlSidesheet = ({
 //     height: 100vh;
 // `;
 
-const TabList = styled(Tabs.Panels)`
-    padding: 12px 16px;
+const TablesTab = styled.div`
+    padding-left: 8px;
 `;
