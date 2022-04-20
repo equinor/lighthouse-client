@@ -105,7 +105,11 @@ export const CompletionViewHeader = ({
                     )}
                 </TabButton>
                 <TabButton onClick={handleFilter} aria-selected={activeFilter} title="Filter">
-                    {checkHasActiveFilters() ? <FilterFilled /> : <Icon name={'filter_alt'} />}
+                    {checkHasActiveFilters() ? (
+                        <FilterFilled />
+                    ) : (
+                        <Icon color={PRIMARY_INTERACTIVE} name={'filter_alt'} />
+                    )}
                 </TabButton>
             </RightSection>
         </HeaderWrapper>
