@@ -1,23 +1,19 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
+import { statusBarData } from './Garden/components/statusItems';
 import { HandoverGroupByView } from './Garden/CustomViews';
+import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
+import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
 import {
     fieldSettings,
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus,
+    sortPackagesByStatus
 } from './Garden/utility';
-import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
-import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
-import { statusBarData } from './Garden/components/statusItems';
 import { filterConfig } from './utility/config/filterSetup';
 import { tableConfig } from './utility/config/tableConfig';
-import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
-enum Tabs {
-    TABLE,
-    GARDEN,
-}
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
         weeklyDaily: 'Weekly',
@@ -27,7 +23,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<HandoverPackage>({
             CustomSidesheet: HandoverSideSheet,
             objectIdentifier: 'id',
-            defaultTab: Tabs.GARDEN,
+            defaultTab: 'garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,

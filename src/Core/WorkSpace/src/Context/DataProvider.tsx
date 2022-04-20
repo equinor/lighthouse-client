@@ -3,22 +3,21 @@ import { createContext, useContext, useEffect, useReducer } from 'react';
 import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
+import { FilterOptions } from '../../../../packages/Filter/Types';
 import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useWorkspaceKey';
+import { checkResponseCode } from '../Functions/checkResponseCode';
+import * as queryCacheOperations from '../Functions/DataOperations';
+import { QueryCacheArgs } from '../Functions/DataOperations/queryCacheArgs';
+import { usePrefetchQueries } from '../Hooks/usePrefetchQueries';
+import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import {
-    getWorkSpaceContext,
     PowerBiOptions,
     StatusFunc,
     TableOptions,
     TreeOptions,
-    WorkflowEditorOptions,
+    WorkflowEditorOptions
 } from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
-import { useAtom } from '@dbeining/react-atom';
-import { usePrefetchQueries } from '../Hooks/usePrefetchQueries';
-import * as queryCacheOperations from '../Functions/DataOperations';
-import { QueryCacheArgs } from '../Functions/DataOperations/queryCacheArgs';
-import { checkResponseCode } from '../Functions/checkResponseCode';
-import { FilterOptions } from '../../../../packages/Filter/Types';
 
 interface DataState {
     key: string;
@@ -65,6 +64,20 @@ export enum DataAction {
 
 const ONE_HOUR = 1000 * 60 * 60;
 
+const resetConfig = {
+    viewComponent: undefined,
+    viewOptions: undefined,
+    filterOptions: undefined,
+    tableOptions: undefined,
+    treeOptions: undefined,
+    timelineOptions: undefined,
+    gardenOptions: undefined,
+    analyticsOptions: undefined,
+    statusFunc: undefined,
+    powerBiOptions: undefined,
+    workflowEditorOptions: undefined,
+};
+
 export const actions = {
     setOptions: createCustomAction(DataAction.setOptions, (options) => ({ options })),
 };
@@ -86,9 +99,9 @@ export function ClientReducer(state: DataState, action: Action): DataState {
 
 export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
-    const currentWorkspace = useAtom(getWorkSpaceContext());
+    const currentWorkspace = useWorkSpace();
 
-    const { dataSource, objectIdentifier, prefetchQueriesOptions } = currentWorkspace[key];
+    const { dataSource, objectIdentifier, prefetchQueriesOptions } = currentWorkspace;
 
     const queryClient = useQueryClient();
 
@@ -98,13 +111,13 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         key,
         subData: {},
         item: {},
-        ...currentWorkspace[key],
+        ...currentWorkspace,
     };
 
     const [state, dispatch] = useReducer(ClientReducer, initialState);
 
     useEffect(() => {
-        dispatch(actions.setOptions(initialState));
+        dispatch(actions.setOptions({ ...resetConfig, ...initialState }));
         queryApi.remove();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [key]);

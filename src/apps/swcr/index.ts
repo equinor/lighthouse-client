@@ -1,29 +1,26 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import { SwcrGraph } from './CustomViews/Graph';
 import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
 import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
 import { SwcrPackage } from './models/SwcrPackage';
+import { filterSetup } from './utilities/filterSetup';
 import {
     customDescription,
     fieldSettings,
     getHighlighColumn,
-    getItemWidth,
+    getItemWidth
 } from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
-import { SwcrGraph } from './CustomViews/Graph';
 import { columns, tableConfig } from './utilities/tableSetup';
-import { filterSetup } from './utilities/filterSetup';
-enum Tabs {
-    TABLE = 0,
-    GARDEN = 1,
-}
+
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<SwcrPackage>({
             CustomSidesheet: SwcrSideSheet,
             objectIdentifier: 'swcrNo',
-            defaultTab: Tabs.GARDEN,
+            defaultTab: 'garden',
         })
         .registerDataSource({ responseAsync: responseAsync, responseParser: responseParser })
         .registerFilterOptions(filterSetup)
@@ -104,7 +101,19 @@ export function setup(appApi: ClientApi): void {
                 },
             },
         })
-        .registerStatusItems(statusBarData);
+        .registerStatusItems(statusBarData)
+        .registerPowerBIOptions({
+            reportURI: 'pp-swcr-analytics',
+            pages: [
+                {
+                    pageTitle: 'Overview',
+                    pageId: 'ReportSectionb937310a77e18f67ff37',
+                    default: true,
+                },
+                { pageTitle: 'Browser', pageId: 'ReportSection272f7d54d84d16689496' },
+                { pageTitle: 'History', pageId: 'ReportSection0cb62244235c033e5151' },
+            ],
+        });
 }
 
 async function responseAsync(signal?: AbortSignal) {
