@@ -1,26 +1,26 @@
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { Criteria, WorkflowStep } from '../../../../types/scopeChangeRequest';
-import { reassignCriteria, unsignCriteria } from '../../../../api/ScopeChange/Workflow';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
-import { useConditionalRender } from '../../../../hooks/utils/useConditionalRender';
-import { CriteriaDetail } from './CriteriaDetail';
-import { CriteriaActions } from '../../Types/actions';
-import { AddContributor } from './AddContributor';
-import { PCSPersonRoleSearch } from '../../../PersonRoleSearch/PCSPersonRoleSearch';
-import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
-import { useWorkflowCriteriaOptions } from '../../../../hooks/queries/useWorkflowCriteriaOptions';
+import { Criteria, WorkflowStep } from '../../../../../types/scopeChangeRequest';
+import { reassignCriteria, unsignCriteria } from '../../../../../api/ScopeChange/Workflow';
+import { useScopeChangeContext } from '../../../../../context/useScopeChangeAccessContext';
+import { useConditionalRender } from '../../../../../hooks/utils/useConditionalRender';
+import { CriteriaDetail } from '../CriteriaDetail';
+import { CriteriaActions } from '../../../Types/actions';
+import { AddContributor } from '../AddContributor';
+import { PCSPersonRoleSearch } from '../../../../PersonRoleSearch/PCSPersonRoleSearch';
+import { IconMenu, MenuItem, MenuButton } from '../../../../MenuButton';
+import { useWorkflowCriteriaOptions } from '../../../../../hooks/queries/useWorkflowCriteriaOptions';
 import { QueryObserver, useQueryClient } from 'react-query';
-import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
-import { scopeChangeQueryKeys } from '../../../../keys/scopeChangeQueryKeys';
-import { useIsWorkflowLoading } from '../../../../hooks/React-Query/useIsWorkflowLoading';
-import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
-import { SignWithComment } from './SignWithComment';
-import { useWorkflowSigning } from './useWorkflowSigning';
+import { scopeChangeMutationKeys } from '../../../../../keys/scopeChangeMutationKeys';
+import { scopeChangeQueryKeys } from '../../../../../keys/scopeChangeQueryKeys';
+import { useIsWorkflowLoading } from '../../../../../hooks/React-Query/useIsWorkflowLoading';
+import { useScopeChangeMutation } from '../../../../../hooks/React-Query/useScopechangeMutation';
+import { SignWithComment } from '../SignWithComment/SignWithComment';
+import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
 import { Atom, swap, useAtom } from '@dbeining/react-atom';
+import { Inline, ReassignPadding, WorkflowStepViewContainer } from './workflowCriteria.styles';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -42,7 +42,7 @@ export const WorkflowCriteria = ({
     });
 
     const setShowSendBackWithComment = () =>
-        swap(ActionWithCommentAtom, () => ({
+        swap(actionWithCommentAtom, () => ({
             action: 'Rejected' as const,
             closeRequest: false,
             buttonText: 'Send back',
@@ -51,7 +51,7 @@ export const WorkflowCriteria = ({
         }));
 
     const setShowSignWithComment = () =>
-        swap(ActionWithCommentAtom, () => ({
+        swap(actionWithCommentAtom, () => ({
             action: 'Approved' as const,
             closeRequest: false,
             buttonText: 'Sign',
@@ -60,7 +60,7 @@ export const WorkflowCriteria = ({
         }));
 
     const setShowRejectWithComment = () =>
-        swap(ActionWithCommentAtom, () => ({
+        swap(actionWithCommentAtom, () => ({
             action: 'Rejected' as const,
             closeRequest: true,
             buttonText: 'Reject',
@@ -197,7 +197,7 @@ export const WorkflowCriteria = ({
     );
 
     const closeAll = () => {
-        swap(ActionWithCommentAtom, () => null);
+        swap(actionWithCommentAtom, () => null);
         setShowReassign(false);
         setShowContributor(false);
     };
@@ -223,7 +223,7 @@ export const WorkflowCriteria = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [baseKey, queryClient, setShowContributor, setShowReassign]);
 
-    const state = useAtom(ActionWithCommentAtom);
+    const state = useAtom(actionWithCommentAtom);
 
     return (
         <>
@@ -272,26 +272,4 @@ interface SigningAction {
     stepId: string;
 }
 
-export const ActionWithCommentAtom = Atom.of<SigningAction | null>(null);
-
-const ReassignPadding = styled.div`
-    padding: 0em 0.5em;
-    width: 100%;
-`;
-
-const WorkflowStepViewContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    min-height: 48px;
-    align-items: center;
-    width: -webkit-fill-available;
-    &:hover {
-        background-color: ${tokens.colors.interactive.primary__selected_hover.hex};
-    }
-`;
-
-const Inline = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1em;
-`;
+export const actionWithCommentAtom = Atom.of<SigningAction | null>(null);

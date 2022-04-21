@@ -1,10 +1,10 @@
 import { swap } from '@dbeining/react-atom';
 import { Button, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import styled from 'styled-components';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
-import { useWorkflowSigning } from './useWorkflowSigning';
-import { ActionWithCommentAtom } from './WorkflowCriteria';
+import { useScopeChangeContext } from '../../../../../context/useScopeChangeAccessContext';
+import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
+import { actionWithCommentAtom as actionWithCommentAtom } from '../WorkflowCriteria/WorkflowCriteria';
+import { ButtonsContainer } from './signWithComment.styles';
 
 interface SignWithCommentProps {
     action: 'Approved' | 'Rejected';
@@ -30,7 +30,7 @@ export const SignWithComment = ({
     });
 
     const [comment, setComment] = useState('');
-    const close = () => swap(ActionWithCommentAtom, () => null);
+    const close = () => swap(actionWithCommentAtom, () => null);
 
     return (
         <>
@@ -59,10 +59,3 @@ export const SignWithComment = ({
         </>
     );
 };
-
-const ButtonsContainer = styled.div`
-    gap: 5px;
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-`;
