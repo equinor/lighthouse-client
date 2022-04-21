@@ -8,42 +8,38 @@ export function WorkOrderTab(): JSX.Element {
             <Table>
                 <TableHeader>
                     <Header>
-                        <ColumnHeader>
-                            <HoursTableHeading>
-                                <span>Actual</span>
-                                <span>Remaining</span>
-                                <span style={{ padding: '10px' }}>Estimate</span>
-                            </HoursTableHeading>
-                        </ColumnHeader>
-
                         <ColumnHeader>ID</ColumnHeader>
-                        <ColumnHeader>Title</ColumnHeader>
-                        <ColumnHeader>Status</ColumnHeader>
+                        <ColumnHeader style={{ minWidth: '190px' }}>Description</ColumnHeader>
                         <ColumnHeader>Discipline</ColumnHeader>
-                        <ColumnHeader>Plan. compl.</ColumnHeader>
-                        <ColumnHeader>Act. compl.</ColumnHeader>
+                        <ColumnHeader>Status</ColumnHeader>
+                        <ColumnHeader>Plan. finish</ColumnHeader>
+                        <ColumnHeader>Act. finish</ColumnHeader>
+                        <ColumnHeader>Progress</ColumnHeader>
+                        <ColumnHeader>Estimated</ColumnHeader>
+                        <ColumnHeader>Expended</ColumnHeader>
                     </Header>
                 </TableHeader>
 
                 <tbody>
                     {data.map((wo) => (
                         <TableRow key={wo.id}>
-                            <HoursTableData>
-                                <HoursText>{wo.actual}</HoursText>
-                                <ProgressBar
-                                    percentWidth={(wo.actual / wo.estimate) * 100}
-                                    number={wo.estimate - wo.actual}
-                                />
-                                <HoursText style={{ padding: '20px' }}>{wo.estimate}</HoursText>
-                            </HoursTableData>
                             <TableData>{wo.id}</TableData>
                             <TableData>{wo.title}</TableData>
-                            <TableData>{wo.status}</TableData>
                             <TableData>{wo.discipline}</TableData>
+                            <TableData>{wo.status}</TableData>
                             <TableData>
                                 {new Date(wo.plannedCompleted).toLocaleDateString()}
                             </TableData>
                             <TableData>{wo.actualCompleted}</TableData>
+                            <TableData>
+                                <ProgressBar percentWidth={(wo.actual / wo.estimate) * 100} />
+                            </TableData>
+                            <TableData>
+                                <EstimateBar percentWidth={20} number={'14'} />
+                            </TableData>
+                            <TableData>
+                                <EstimateBar percentWidth={55} number={'55'} />
+                            </TableData>
                         </TableRow>
                     ))}
                 </tbody>
@@ -52,42 +48,18 @@ export function WorkOrderTab(): JSX.Element {
     );
 }
 
-const HoursTableHeading = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
-    flex-direction: row;
-    gap: 2em;
-    align-items: center;
-    margin-left: 5px;
-`;
-
 const TableData = styled.td`
     font-size: 14px;
     font-weight: 500;
     line-height: 20px;
     letter-spacing: 0px;
     text-align: left;
-`;
-
-const HoursText = styled.div`
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: 0px;
-    text-align: right;
+    padding-left: 5px;
+    max-height: 32px;
 `;
 
 const TableRow = styled.tr`
     border-bottom: 2px #dcdcdc solid;
-`;
-
-const HoursTableData = styled.td`
-    display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
-    flex-direction: row;
-    gap: 2em;
-    align-items: center;
-    margin-left: 5px;
 `;
 
 const Table = styled.table`
@@ -112,40 +84,50 @@ const ColumnHeader = styled.th`
     text-align: left;
     height: 30px;
     width: 121px;
+    padding-left: 5px;
 `;
 
 interface ProgressBarProps {
     percentWidth: number;
-    number: number;
+    number?: string;
 }
 
-function ProgressBar({ percentWidth, number }: ProgressBarProps) {
+function ProgressBar({ percentWidth }: ProgressBarProps) {
     return (
-        <ProgressBarContainer style={{ borderBottom: '2px #DCDCDC solid' }}>
-            <div
-                style={{
-                    backgroundColor: '#D9F6E9',
-                    width: `${percentWidth}%`,
-                    height: '16px',
-                    borderBottom: '2px #40D38F solid',
-                }}
-            >
-                <div
-                    style={{
-                        position: 'absolute',
-                    }}
-                >
-                    {number}
-                </div>
-            </div>
+        <ProgressBarContainer>
+            <ActualProgress borderColor="#40D38F" width={percentWidth} color="#D9F6E9">
+                <Percent>{`${Math.round(percentWidth)}%`}</Percent>
+            </ActualProgress>
         </ProgressBarContainer>
     );
 }
 
+const Percent = styled.div`
+    padding-left: 0.5em;
+`;
+
+function EstimateBar({ percentWidth, number }: ProgressBarProps) {
+    return (
+        <ProgressBarContainer>
+            <ActualProgress borderColor="#0084C4" color="#CCE6F3" width={percentWidth}>
+                <Percent>{number}</Percent>
+            </ActualProgress>
+        </ProgressBarContainer>
+    );
+}
+
+const ActualProgress = styled.div<{ width: number; borderColor?: string; color?: string }>`
+    background-color: ${({ color }) => `${color ?? '#CCE6F3'}`};
+    width: ${({ width }) => `${width}%`};
+    height: 16px;
+    border-bottom: ${({ borderColor }) => `2px ${borderColor ?? '#0084C4'} solid`};
+`;
+
 const ProgressBarContainer = styled.div`
     height: 16px;
-    width: 200px;
+    width: 68px;
     background-color: #f5f5f5;
+    border-bottom: 2px #dcdcdc solid;
 `;
 
 const data: WorkOrder[] = [
@@ -153,7 +135,7 @@ const data: WorkOrder[] = [
         actual: 86,
         estimate: 120,
         id: '1213244',
-        title: 'Work order title, idk how long',
+        title: 'Work order title',
         status: 'WO4',
         discipline: 'L,E',
         plannedCompleted: new Date().toString(),
