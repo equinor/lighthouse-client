@@ -11,4 +11,5 @@ export const ChildrenWrapper = styled.div<{ sideSheetWidth?: number }>`
     height: 100%;
     width: 100%;
     transition: width 0.2s ease;
+    position: relative;
 `;
