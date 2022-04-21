@@ -4,7 +4,6 @@ import { Gantt } from '../Icons/Gantt';
 import { Garden } from '../Icons/Garden';
 import { Table } from '../Icons/Table';
 import { Tree } from '../Icons/Tree';
-import { AnalyticsTab } from '../Tabs/AnalyticsTab';
 import { GardenTab } from '../Tabs/GardenTab';
 import { ListTab as TableTab } from '../Tabs/ListTab';
 import { PowerBiTab } from '../Tabs/PowerBiTab';
@@ -46,21 +45,14 @@ const tabsConfig: TabsConfigItem[] = [
         viewComponent: TimelineTab,
     },
     {
-        title: 'Analytics',
-        tabId: 'analytics',
-        icon: Analytics,
-        viewComponent: AnalyticsTab,
-    },
-    {
         title: 'Editor',
         tabId: 'editor',
-        //Todo add Editor icon
         icon: Gantt,
         viewComponent: VisualEditorTab,
     },
     {
         title: 'PowerBI',
-        tabId: 'powerBi',
+        tabId: 'analytics',
         icon: Analytics,
         viewComponent: PowerBiTab,
     },
@@ -77,7 +69,6 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
         tableOptions,
         gardenOptions,
         timelineOptions,
-        analyticsOptions,
         workflowEditorOptions,
         powerBiOptions,
     }: WorkSpaceConfig<unknown>): ActiveTabs {
@@ -86,7 +77,6 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
             if (tableOptions && item.title === 'Table') return true;
             if (gardenOptions && item.title === 'Garden') return true;
             if (timelineOptions && item.title === 'Timeline') return true;
-            if (analyticsOptions && item.title === 'Analytics') return true;
             if (workflowEditorOptions && item.title === 'Editor') return true;
             if (powerBiOptions && item.title === 'PowerBI') return true;
             return false;
