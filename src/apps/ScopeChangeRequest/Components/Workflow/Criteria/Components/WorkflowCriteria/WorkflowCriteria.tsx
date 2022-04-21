@@ -1,25 +1,26 @@
-import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import { Criteria, WorkflowStep } from '../../../../types/scopeChangeRequest';
-import { reassignCriteria, unsignCriteria } from '../../../../api/ScopeChange/Workflow';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
-import { useConditionalRender } from '../../../../hooks/utils/useConditionalRender';
-import { CriteriaDetail } from './CriteriaDetail';
-import { CriteriaActions } from '../../Types/actions';
-import { AddContributor } from './AddContributor';
-import { PCSPersonRoleSearch } from '../../../PersonRoleSearch/PCSPersonRoleSearch';
-import { IconMenu, MenuItem, MenuButton } from '../../../MenuButton';
-import { useWorkflowCriteriaOptions } from '../../../../hooks/queries/useWorkflowCriteriaOptions';
+import { Criteria, WorkflowStep } from '../../../../../types/scopeChangeRequest';
+import { reassignCriteria, unsignCriteria } from '../../../../../api/ScopeChange/Workflow';
+import { useScopeChangeContext } from '../../../../../context/useScopeChangeAccessContext';
+import { useConditionalRender } from '../../../../../hooks/utils/useConditionalRender';
+import { CriteriaDetail } from '../CriteriaDetail';
+import { CriteriaActions } from '../../../Types/actions';
+import { AddContributor } from '../AddContributor';
+import { PCSPersonRoleSearch } from '../../../../PersonRoleSearch/PCSPersonRoleSearch';
+import { IconMenu, MenuItem, MenuButton } from '../../../../MenuButton';
+import { useWorkflowCriteriaOptions } from '../../../../../hooks/queries/useWorkflowCriteriaOptions';
 import { QueryObserver, useQueryClient } from 'react-query';
-import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
-import { scopeChangeQueryKeys } from '../../../../keys/scopeChangeQueryKeys';
-import { useIsWorkflowLoading } from '../../../../hooks/React-Query/useIsWorkflowLoading';
-import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
-import { SignWithComment } from './SignWithComment';
-import { useWorkflowSigning } from './useWorkflowSigning';
+import { scopeChangeMutationKeys } from '../../../../../keys/scopeChangeMutationKeys';
+import { scopeChangeQueryKeys } from '../../../../../keys/scopeChangeQueryKeys';
+import { useIsWorkflowLoading } from '../../../../../hooks/React-Query/useIsWorkflowLoading';
+import { useScopeChangeMutation } from '../../../../../hooks/React-Query/useScopechangeMutation';
+import { SignWithComment } from '../SignWithComment/SignWithComment';
+import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
+import { Atom, swap, useAtom } from '@dbeining/react-atom';
+import { Inline, ReassignPadding, WorkflowStepViewContainer } from './workflowCriteria.styles';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;
@@ -40,9 +41,32 @@ export const WorkflowCriteria = ({
         requestId: request.id,
     });
 
-    const [showSignWithComment, setShowSignWithComment] = useState(false);
-    const [showSendBackWithComment, setShowSendBackWithComment] = useState(false);
-    const [showRejectWithComment, setShowRejectWithComment] = useState(false);
+    const setShowSendBackWithComment = () =>
+        swap(actionWithCommentAtom, () => ({
+            action: 'Rejected' as const,
+            closeRequest: false,
+            buttonText: 'Send back',
+            criteriaId: criteria.id,
+            stepId: step.id,
+        }));
+
+    const setShowSignWithComment = () =>
+        swap(actionWithCommentAtom, () => ({
+            action: 'Approved' as const,
+            closeRequest: false,
+            buttonText: 'Sign',
+            criteriaId: criteria.id,
+            stepId: step.id,
+        }));
+
+    const setShowRejectWithComment = () =>
+        swap(actionWithCommentAtom, () => ({
+            action: 'Rejected' as const,
+            closeRequest: true,
+            buttonText: 'Reject',
+            criteriaId: criteria.id,
+            stepId: step.id,
+        }));
 
     const { workflowKeys } = scopeChangeMutationKeys(request.id);
     const workflowLoading = useIsWorkflowLoading();
@@ -71,13 +95,13 @@ export const WorkflowCriteria = ({
             actions.push({
                 label: 'Sign with comment',
                 icon: <Icon name="comment_add" color={iconGrey} />,
-                onClick: () => setShowSignWithComment(true),
+                onClick: setShowSignWithComment,
                 isDisabled: !canSign,
             });
 
             actions.push({
                 label: 'Reject with comment',
-                onClick: () => setShowRejectWithComment(true),
+                onClick: setShowRejectWithComment,
                 icon: <Icon name="close_circle_outlined" color={iconGrey} />,
                 isDisabled: !canSign,
             });
@@ -85,7 +109,7 @@ export const WorkflowCriteria = ({
                 actions.push({
                     label: 'Send back with comment',
                     icon: <Icon name="undo" color={iconGrey} />,
-                    onClick: () => setShowSendBackWithComment(true),
+                    onClick: setShowSendBackWithComment,
                     isDisabled: !canSign,
                 });
             }
@@ -173,9 +197,7 @@ export const WorkflowCriteria = ({
     );
 
     const closeAll = () => {
-        setShowSignWithComment(false);
-        setShowSendBackWithComment(false);
-        setShowRejectWithComment(false);
+        swap(actionWithCommentAtom, () => null);
         setShowReassign(false);
         setShowContributor(false);
     };
@@ -200,6 +222,8 @@ export const WorkflowCriteria = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [baseKey, queryClient, setShowContributor, setShowReassign]);
+
+    const state = useAtom(actionWithCommentAtom);
 
     return (
         <>
@@ -227,55 +251,25 @@ export const WorkflowCriteria = ({
             </WorkflowStepViewContainer>
 
             <ContributorSelector />
-            {showSendBackWithComment && (
+            {state && state.criteriaId === criteria.id && (
                 <SignWithComment
-                    buttonText="Send back"
-                    action="Rejected"
-                    closeRequest={false}
-                    criteriaId={criteria.id}
-                    stepId={step.id}
-                />
-            )}
-            {showSignWithComment && (
-                <SignWithComment
-                    buttonText="Sign"
-                    action={'Approved'}
-                    stepId={step.id}
-                    criteriaId={criteria.id}
-                    closeRequest={false}
-                />
-            )}
-            {showRejectWithComment && (
-                <SignWithComment
-                    buttonText="Reject"
-                    action="Rejected"
-                    stepId={step.id}
-                    criteriaId={criteria.id}
-                    closeRequest={true}
+                    action={state.action}
+                    buttonText={state.buttonText}
+                    closeRequest={state.closeRequest}
+                    criteriaId={state.criteriaId}
+                    stepId={state.stepId}
                 />
             )}
         </>
     );
 };
 
-const ReassignPadding = styled.div`
-    padding: 0em 0.5em;
-    width: 100%;
-`;
+interface SigningAction {
+    buttonText: string;
+    action: 'Approved' | 'Rejected';
+    closeRequest: boolean;
+    criteriaId: string;
+    stepId: string;
+}
 
-const WorkflowStepViewContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    min-height: 48px;
-    align-items: center;
-    width: -webkit-fill-available;
-    &:hover {
-        background-color: ${tokens.colors.interactive.primary__selected_hover.hex};
-    }
-`;
-
-const Inline = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1em;
-`;
+export const actionWithCommentAtom = Atom.of<SigningAction | null>(null);

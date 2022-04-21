@@ -1,9 +1,9 @@
 import { UseMutateFunction, useQueryClient } from 'react-query';
-import { spawnConfirmationDialog } from '../../../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { signCriteria } from '../../../../api/ScopeChange/Workflow';
-import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
-import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { signCriteria } from '../../api/ScopeChange/Workflow';
+import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
+import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
+import { useScopeChangeContext } from '../../context/useScopeChangeAccessContext';
 
 export interface OnSignStepAction {
     action: 'Approved' | 'Rejected';

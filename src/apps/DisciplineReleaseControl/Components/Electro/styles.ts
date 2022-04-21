@@ -1,6 +1,7 @@
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const ElectroViewContainer = styled.div`
+export const ElectroViewContainer = styled.div<{ width: number }>`
     display: flex;
     flex-direction: row;
     flex: 0 0 100%;
@@ -9,12 +10,12 @@ export const ElectroViewContainer = styled.div`
     flex-wrap: wrap;
     overflow: auto;
     white-space: nowrap;
-    padding: 20px;
-    max-width: 1500px;
-    width: 100%;
-    max-height: 800px;
+    max-width: 100%;
+    width: ${(p) => (p.width ? p.width : '800px')};
+    max-height: ${() => window.innerHeight - 378 + 'px'};
     overflow-x: auto;
     overflow-y: auto;
+    padding-left: 16px;
 `;
 
 export const SwitchBoardContainer = styled.div`
@@ -25,11 +26,15 @@ export const SwitchBoardContainer = styled.div`
     position: relative;
     flex-wrap: wrap;
     white-space: nowrap;
-    padding: 20px;
-    max-width: 1500px;
-    width: 100%;
-    border-left: 1px solid #dcdcdc;
+    max-width: 100%;
     margin-bottom: 50px;
+`;
+
+export const SwitchBoardBorderContainer = styled.div`
+    border: 1px solid ${tokens.colors.ui.background__medium.hex};
+    padding: 8px;
+    width: 112px;
+    border: 1px solid ${tokens.colors.ui.background__medium.hex};
 `;
 
 export const ElectroViewRow = styled.div`
@@ -47,14 +52,16 @@ export const ElectroViewNodeGroup = styled.div`
 `;
 
 export const ElectroViewNodeText = styled.div`
+    display: flex;
+    flex-direction: horizontal;
     font-size: 12px;
     font-weight: 500, Medium;
-    margin-left: 5px;
+    margin-left: 4px;
 `;
 
 export const ElectroViewNodeValueText = styled.div`
     font-size: 16px;
     font-weight: 400, regular;
-    margin-left: 4px;
+    margin-left: 5px;
     cursor: default;
 `;
