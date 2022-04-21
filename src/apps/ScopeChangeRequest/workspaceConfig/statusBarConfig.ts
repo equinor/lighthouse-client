@@ -1,47 +1,21 @@
-import { DateTime } from 'luxon';
 import { StatusItem } from '../../../packages/StatusBar';
 import { kFormatter } from '../functions/kFormatter';
 import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
-    const requestsMadeLastWeek = data.filter(
-        ({ createdAtUtc }) =>
-            DateTime.now()
-                .diff(DateTime.fromJSDate(new Date(createdAtUtc)))
-                .as('days') <= 7
-    );
-
-    const requestsApprovedLastSevenDays = filterApprovedRequests(data).filter(
-        ({ workflowSteps = [] }) =>
-            workflowSteps[workflowSteps.length - 1]?.criterias.every(
-                ({ signedAtUtc }) =>
-                    signedAtUtc &&
-                    DateTime.now()
-                        .diff(DateTime.fromJSDate(new Date(signedAtUtc)))
-                        .as('days') <= 7
-            )
-    );
-
     return [
         {
             title: 'Requests',
-            value: () => `${kFormatter(data.length)} (+${kFormatter(requestsMadeLastWeek.length)})`,
+            value: () => `${kFormatter(data.length)}`,
         },
         {
             title: 'Mhrs',
             value: () => {
-                const manhrsLastWeek = kFormatter(
-                    requestsMadeLastWeek.reduce(
-                        (count, { guesstimateHours }) => count + guesstimateHours,
-                        0
-                    )
-                );
-
                 const totalMhrs = kFormatter(
                     data.reduce((count, { guesstimateHours }) => count + guesstimateHours, 0)
                 );
 
-                return `${totalMhrs} (+${manhrsLastWeek})`;
+                return `${totalMhrs}`;
             },
         },
         {
@@ -51,11 +25,7 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
                     data.reduce((count, { state }) => (state === 'Open' ? count + 1 : count), 0)
                 );
 
-                const pendingRequestMadeLastWeek = kFormatter(
-                    requestsMadeLastWeek.filter(({ state }) => state === 'Open').length
-                );
-
-                return `${pendingRequests} (+${pendingRequestMadeLastWeek})`;
+                return `${pendingRequests}`;
             },
         },
         {
@@ -63,11 +33,7 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
             value: () => {
                 const pendingRequestsMhr = kFormatter(accPendingMhr(data));
 
-                const pendingRequestMhrMadeLastWeek = kFormatter(
-                    accPendingMhr(requestsMadeLastWeek)
-                );
-
-                return `${pendingRequestsMhr} (+${pendingRequestMhrMadeLastWeek})`;
+                return `${pendingRequestsMhr}`;
             },
         },
         {
@@ -75,9 +41,7 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
             value: () => {
                 const requestsApprovedCount = kFormatter(filterApprovedRequests(data).length);
 
-                return `${requestsApprovedCount} (+${kFormatter(
-                    requestsApprovedLastSevenDays.length
-                )})`;
+                return `${requestsApprovedCount}`;
             },
         },
 
@@ -91,14 +55,7 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
                     )
                 );
 
-                const approvedMhrsLastSevenDays = kFormatter(
-                    requestsApprovedLastSevenDays.reduce(
-                        (count, { guesstimateHours }) => count + guesstimateHours,
-                        0
-                    )
-                );
-
-                return `${approvedMhrs} (+${approvedMhrsLastSevenDays})`;
+                return `${approvedMhrs}`;
             },
         },
     ];
