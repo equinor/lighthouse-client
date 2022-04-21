@@ -529,6 +529,32 @@
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
+"@cutting/hooks@4.49.2":
+  version "4.49.2"
+  resolved "https://registry.yarnpkg.com/@cutting/hooks/-/hooks-4.49.2.tgz#edf67fe5cb531da838f2202c9880d5268d732cce"
+  integrity sha512-VbePAYpLfW9xLB75aQ7W+pkzqi3S2O2fyk3OJ4kpMk2BtjLlbzWMZdqj+hJ415KyfyUoWKJ03MkJAMjmARUqOg==
+  dependencies:
+    "@cutting/util" "4.50.2"
+    assert-ts "^0.3.4"
+
+"@cutting/use-get-parent-size@^1.19.2":
+  version "1.19.2"
+  resolved "https://registry.yarnpkg.com/@cutting/use-get-parent-size/-/use-get-parent-size-1.19.2.tgz#a14b54cbd9d067639a9efc46f493d8af4e1867c0"
+  integrity sha512-RQTv/rvo4rl8VLvuqDOZRK4hdTf3haNlsbYTDujBr4rjju+pymYMlRfrZ0LBNU7/vhirwJBc/dulGLquBpGmow==
+  dependencies:
+    "@cutting/hooks" "4.49.2"
+    "@cutting/util" "4.50.2"
+    assert-ts "^0.3.4"
+    resize-observer-polyfill "^1.5.1"
+    use-debounce "^7.0.1"
+
+"@cutting/util@4.50.2":
+  version "4.50.2"
+  resolved "https://registry.yarnpkg.com/@cutting/util/-/util-4.50.2.tgz#a55e96b74f72b061fda1c9998914a1ec0f81991a"
+  integrity sha512-keQjWYKjFsO1ysisWAmIGKd2xbZqV6yCCJTOKS/p1hzKWaxXaBsllJ9ayI2508KznLnwyCKfH5abv8YkJct9PQ==
+  dependencies:
+    assert-ts "^0.3.4"
+
 "@dbeining/react-atom@^4.1.21":
   version "4.1.21"
   resolved "https://registry.yarnpkg.com/@dbeining/react-atom/-/react-atom-4.1.21.tgz#94ae9033fc1ddaa309db1b9e52b24f0088ccf87c"
@@ -2135,6 +2161,11 @@ array.prototype.flatmap@^1.2.5:
     call-bind "^1.0.0"
     define-properties "^1.1.3"
     es-abstract "^1.19.0"
+
+assert-ts@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/assert-ts/-/assert-ts-0.3.4.tgz#a452d6c9fc88e543bffded343a32deb48573ddf2"
+  integrity sha512-CQtNOdOCzzZfE3TF9a1vFTcz4ZfJYM6iHoWYCkpFY3wdk6CkFvevuLwpOFVL/KMJ9vCNIbeidWH5uo/Y8sLVWg==
 
 assert@^2.0.0:
   version "2.0.0"
@@ -6572,6 +6603,11 @@ requires-port@^1.0.0:
   resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
   integrity sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=
 
+resize-observer-polyfill@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
+  integrity sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
+
 resolve-cwd@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/resolve-cwd/-/resolve-cwd-3.0.0.tgz#0f0075f1bb2544766cf73ba6a6e2adfebcb13f2d"
@@ -7554,6 +7590,11 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
+
+use-debounce@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/use-debounce/-/use-debounce-7.0.1.tgz#380e6191cc13ad29f8e2149a12b5c37cc2891190"
+  integrity sha512-fOrzIw2wstbAJuv8PC9Vg4XgwyTLEOdq4y/Z3IhVl8DAE4svRcgyEUvrEXu+BMNgMoc3YND6qLT61kkgEKXh7Q==
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
