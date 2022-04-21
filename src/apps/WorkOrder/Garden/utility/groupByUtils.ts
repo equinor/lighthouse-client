@@ -5,7 +5,7 @@ export const getGroupBy = (groupBy: string) => {
     switch (groupBy) {
         case 'wp':
         case 'hwp':
-            return 'plannedStartDate';
+            return 'plannedStartupDate';
         case 'fwp':
             return 'plannedFinishDate';
 
@@ -17,9 +17,9 @@ export const getGroupBy = (groupBy: string) => {
 export const columnKeyAccessor: GetKeyFunction<WorkOrder> = (item, key) => {
     const groupBy = getGroupBy(key);
     switch (groupBy) {
-        case 'plannedStartDate':
+        case 'plannedStartupDate':
         case 'plannedFinishDate':
-            return getYearAndWeekFromString(item[groupBy]);
+            return getYearAndWeekFromString(item[groupBy] || '');
         default:
             return item[groupBy];
     }

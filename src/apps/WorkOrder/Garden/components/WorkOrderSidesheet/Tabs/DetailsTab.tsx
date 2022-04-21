@@ -27,7 +27,7 @@ export const DetailsTab = ({ workOrder }: DetailsTabProps) => {
                         <td key={'2'}>
                             <StringCell
                                 value={`${formatDateString(
-                                    workOrder.plannedStartDate
+                                    workOrder.plannedStartupDate
                                 )} - ${formatDateString(workOrder.plannedFinishDate)}`}
                             />
                         </td>
@@ -97,7 +97,10 @@ export const DetailsTab = ({ workOrder }: DetailsTabProps) => {
                     <tr key={'materialstatus'}>
                         <td key={'20'}>Material status</td>
                         <td key={'21'}>
-                            {workOrder.materialStatus} {materialStatusMap[workOrder.materialStatus]}
+                            {workOrder.materialStatus}
+
+                            {workOrder.materialStatus !== null &&
+                                materialStatusMap[workOrder.materialStatus]}
                         </td>
                     </tr>
                     <tr key={'materialcomments'}>

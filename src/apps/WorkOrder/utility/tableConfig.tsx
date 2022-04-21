@@ -1,15 +1,12 @@
 import { tokens } from '@equinor/eds-tokens';
 import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { WorkOrder } from '../Garden/models';
-import { getMatStatus, getMatStatusColor, getMccrStatusColor } from '../Garden/utility';
+import { getMatStatusColor, getMccrStatusColor } from '../Garden/utility';
 const hiddenColumns: (keyof WorkOrder)[] = [
-    'siteCodes',
     'projectIdentifier',
     'discipline',
     'responsible',
     'milestoneCode',
-    'onshore',
-    'offshore',
     'w1ActualDate',
     'w2ActualDate',
     'w3ActualDate',
@@ -22,16 +19,10 @@ const hiddenColumns: (keyof WorkOrder)[] = [
     'w10ActualDate',
     'commpkgNumber',
     'workOrderId',
-    'proCoSysSiteName',
     'materialComments',
     'constructionComments',
-    'url',
-    'order',
-    'hourType',
     'holdByDescription',
     'projectDescription',
-    'date',
-    'rowKey',
 ];
 export const tableConfig: TableOptions<WorkOrder> = {
     objectIdentifierKey: 'workOrderNumber',
@@ -87,7 +78,7 @@ export const tableConfig: TableOptions<WorkOrder> = {
             width: 150,
         },
         {
-            key: 'plannedStartDate',
+            key: 'plannedStartupDate',
             title: 'Planned start',
             width: 150,
         },
@@ -138,7 +129,7 @@ export const tableConfig: TableOptions<WorkOrder> = {
             type: 'Description',
         },
         {
-            key: 'plannedStartDate',
+            key: 'plannedStartupDate',
 
             type: 'YearAndWeek',
         },
