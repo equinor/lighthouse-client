@@ -5,7 +5,7 @@ import { useViewerContext } from '../Context/ViewProvider';
 
 export const Wrapper = styled.div`
     position: absolute;
-    top: 110px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
