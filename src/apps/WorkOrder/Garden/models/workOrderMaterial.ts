@@ -11,5 +11,5 @@ export type WorkOrderMaterial = {
     stockLocation: string;
     stockLocationDescription: string;
     available: string;
-    url: string;
+    // url: string;
 };

@@ -1,4 +1,9 @@
-import { CellWithLink, TabTable } from '@equinor/GardenUtils';
+import {
+    CellWithLink,
+    PROCOSYS_PROD_JC_BASE_URL,
+    PROCOSYS_TEST_JC_BASE_URL,
+    TabTable,
+} from '@equinor/GardenUtils';
 import { isProduction } from '@equinor/portal-client';
 import { Column } from 'react-table';
 import { WorkOrderMccr } from '../../../models';
@@ -11,9 +16,11 @@ export type MccrTabProps = {
 const columns: Column<WorkOrderMccr>[] = [
     {
         id: 'tagNumber',
-        accessor: ({ tagNumber, tagUrl }) => ({
+        accessor: ({ tagNumber }) => ({
             content: tagNumber,
-            url: isProduction() ? tagUrl : tagUrl.replace('procosys', 'procosystest'),
+            url: isProduction()
+                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#Tag|${tagNumber}`
+                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#Tag|${tagNumber}`,
         }),
         Header: 'TagNo.',
         Cell: CellWithLink,
@@ -42,18 +49,22 @@ const columns: Column<WorkOrderMccr>[] = [
     },
     {
         id: 'mcpkgNumber',
-        accessor: ({ mcpkgNumber, mccrUrl }) => ({
+        accessor: ({ mcpkgNumber }) => ({
             content: mcpkgNumber,
-            url: isProduction() ? mccrUrl : mccrUrl.replace('procosys', 'procosystest'),
+            url: isProduction()
+                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${mcpkgNumber}`
+                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${mcpkgNumber}`,
         }),
         Header: 'McpkgNo.',
         Cell: CellWithLink,
     },
     {
         id: 'commpkgNumber',
-        accessor: ({ commpkgNumber, commpkgUrl }) => ({
+        accessor: ({ commpkgNumber }) => ({
             content: commpkgNumber,
-            url: isProduction() ? commpkgUrl : commpkgUrl.replace('procosys', 'procosystest'),
+            url: isProduction()
+                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#CommPkg|${commpkgNumber}`
+                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#CommPkg|${commpkgNumber}`,
         }),
         Header: 'CommpkgNo.',
         Cell: CellWithLink,
