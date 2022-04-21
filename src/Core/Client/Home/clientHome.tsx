@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import { AssignmentWrapper } from '../../../components/ActionCenter/AssignmentWrapper';
 import { useSettings } from '../Hooks/useClientContext';
 import { Container, Header, MainColumn, SideColumn, SideItem, Wrapper } from './clientHomeStyles';
 import { PowerBIHome } from './PbiHome/PbiHome';
@@ -7,7 +6,7 @@ import { YammerFeed } from './Sosial/yammer';
 import { Task } from './Task/Task';
 
 export const ClientHome = (): JSX.Element => {
-    const { user, clientEnv } = useSettings();
+    const { user } = useSettings();
     return (
         <Wrapper>
             <Header>
@@ -24,9 +23,8 @@ export const ClientHome = (): JSX.Element => {
                     </SideItem>
                 </SideColumn>
                 <MainColumn>
-                    {clientEnv !== 'prod' && (
-                        <PowerBIHome reportUri={'cd49f2ce-0cb7-4807-a8ef-29f239fe0457'} />
-                    )}
+                    <PowerBIHome reportUri={'jca-landing-page '} />
+
                     {/* <KpiBar>
                         <KpiGroup
                             title="Safety indicators"

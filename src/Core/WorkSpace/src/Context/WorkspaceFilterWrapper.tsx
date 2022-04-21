@@ -1,21 +1,19 @@
+import { FilterApiContext, FilterOptions, useFilterApi } from '@equinor/filter';
 import { useEffect } from 'react';
-import { FilterApiContext } from '../../../../../packages/Filter/Context/FilterContext';
-import { useFilterApi } from '../../../../../packages/Filter/Hooks/useFilterApi';
-import { FilterOptions } from '../../../../../packages/Filter/Types';
-import { useDataContext } from '../../Context/DataProvider';
+import { useDataContext } from './DataProvider';
 
 interface WorkspaceFilterWrapperProps {
-    filterConfiguration: FilterOptions<unknown>;
     children: React.ReactNode;
+    filterOptions: FilterOptions<unknown>;
 }
 
 /** Wrapper for workspace filter api */
 export function WorkspaceFilterWrapper({
     children,
-    filterConfiguration,
+    filterOptions,
 }: WorkspaceFilterWrapperProps): JSX.Element {
     const { data } = useDataContext();
-    const filterApi = useFilterApi({ data: data, filterConfiguration: filterConfiguration });
+    const filterApi = useFilterApi({ data: data, filterConfiguration: filterOptions || [] });
 
     const shouldInitFilter = data && data.length > 0;
     //HACK: architectural flaw

@@ -1,29 +1,29 @@
 import { ClientApi } from '@equinor/portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
-import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
-import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
-import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
+import { getGardenItemColor } from './Components/Garden/gardenFunctions';
 import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
-import { Pipetest } from './Types/pipetest';
+import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
+import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
+import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
+import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
+import {
+    StepFilterContainer,
+    StepFilterText,
+    WorkflowFilterDot
+} from './Components/Workflow/Components/WorkflowFilterDot';
+import {
+    CurrentStepContainer,
+    WorkflowWarningTriangle
+} from './Components/Workflow/Components/WorkflowWarningTriangle';
+import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
 import {
     checklistTagFunc,
     createChecklistSteps,
     getHTList,
-    getStatusLetterFromStatus,
+    getStatusLetterFromStatus
 } from './Functions/tableHelpers';
-import { getGardenItemColor } from './Components/Garden/gardenFunctions';
-import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
-import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { Monospace } from './Styles/Monospace';
-import {
-    CurrentStepContainer,
-    WorkflowWarningTriangle,
-} from './Components/Workflow/Components/WorkflowWarningTriangle';
-import {
-    StepFilterContainer,
-    StepFilterText,
-    WorkflowFilterDot,
-} from './Components/Workflow/Components/WorkflowFilterDot';
+import { Pipetest } from './Types/pipetest';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -41,7 +41,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<Pipetest>({
             CustomSidesheet: ReleaseControlSidesheet,
             objectIdentifier: 'name',
-            defaultTab: 1,
+            defaultTab: 'garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,
