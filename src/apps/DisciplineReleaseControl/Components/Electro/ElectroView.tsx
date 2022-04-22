@@ -8,6 +8,7 @@ import { getElectroViewCompletionStatusColor, getNodeStatus } from './electroVie
 import { getEleNetworks } from './getEleNetworks';
 import {
     ElectroViewContainer,
+    ElectroViewNodeGroupRow,
     ElectroViewNodeText,
     ElectroViewRow,
     SwitchBoardBorderContainer,
@@ -93,14 +94,16 @@ export const ElectroView = ({ pipetest, pipetests, width }: ElectroViewProps): J
                                     key={eleNetworksForSwitchboard[0].switchBoardTagNo}
                                 >
                                     <SwitchBoardBorderContainer>
-                                        <ElectroViewNodeText style={{ marginLeft: '25px' }}>
-                                            {switchboardTagNo[0]}
+                                        <ElectroViewNodeGroupRow>
+                                            <ElectroViewNodeText>
+                                                {switchboardTagNo[0]}
+                                            </ElectroViewNodeText>
                                             <StatusCircle
                                                 statusColor={getElectroViewCompletionStatusColor(
                                                     switchboardStatus
                                                 )}
                                             />
-                                        </ElectroViewNodeText>
+                                        </ElectroViewNodeGroupRow>
                                         {eleNetworksForSwitchboard?.map(
                                             (eleNetwork: EleNetwork) => {
                                                 const startNode = eleNetwork.circuits.find(

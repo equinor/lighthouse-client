@@ -48,6 +48,7 @@ const ReleaseControlGardenItem = ({
                     )}
                     <StatusCircle
                         statusColor={getGardenItemCompletionColor(data.completionStatus)}
+                        size={12}
                     />
                 </Icons>
             </ReleaseControlItem>
