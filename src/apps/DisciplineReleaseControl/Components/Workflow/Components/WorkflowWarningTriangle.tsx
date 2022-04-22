@@ -46,7 +46,7 @@ export const WarningTriangleContainer = styled.div`
     margin-left: 5px;
     font-size: 11px;
     color: '#fff';
-    line-height: 16px;
+    line-height: 14px;
     text-align: center;
     cursor: pointer;
 `;
@@ -56,7 +56,7 @@ export const WarningTriangleOutline = styled.div`
     height: 0;
     border-style: solid;
     border-color: transparent transparent #fff transparent;
-    border-width: 0 7px 14px 7px;
+    border-width: 0 6px 12px 6px;
 `;
 
 export const WarningTriangleInner = styled.div`
@@ -64,10 +64,10 @@ export const WarningTriangleInner = styled.div`
     height: 0;
     border-style: solid;
     position: relative;
-    border-width: 0 5px 10px 5px;
+    border-width: 0 4.5px 9px 4.5px;
     border-color: transparent transparent #eb0000 transparent;
-    right: 5px;
-    top: 3px;
+    right: 4.5px;
+    top: 2.5px;
 `;
 
 export const WarningTriangleNoOutline = styled.div`
@@ -75,9 +75,9 @@ export const WarningTriangleNoOutline = styled.div`
     height: 0;
     border-style: solid;
     border-color: transparent transparent #eb0000 transparent;
-    border-width: 0 7px 14px 7px;
+    border-width: 0 6px 12px 6px;
     margin-right: 8px;
-    padding-top: 2px;
+    padding-top: 4px;
 `;
 
 export const CurrentStepContainer = styled.div`
