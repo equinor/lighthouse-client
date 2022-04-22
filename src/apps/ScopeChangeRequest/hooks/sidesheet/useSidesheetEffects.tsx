@@ -73,6 +73,6 @@ export function useSidesheetEffects(
 
     /** Only run once */
     useEffect(() => {
-        actions.setWidth(1100);
+        actions.setWidth(1150);
     }, []);
 }

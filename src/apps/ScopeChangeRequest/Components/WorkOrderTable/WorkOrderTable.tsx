@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { DateTime } from 'luxon';
+import { WorkOrder } from '../../types/FAM/workOrder';
 import { EstimateBar } from '../WoProgressBars/EstimateBar';
 import { ExpendedProgressBar } from '../WoProgressBars/ExpendedProgressBar';
 import { ProgressBar } from '../WoProgressBars/ProgressBar';
@@ -12,13 +12,17 @@ import {
     TableRow,
 } from './workOrderTable.styles';
 
-export function WorkOrderTable(): JSX.Element {
-    const highestEstimate = Math.max(...data.map(({ estimate }) => estimate));
-    const highestExpended = Math.max(...data.map(({ actual }) => actual));
+interface WorkOrderTableProps {
+    workOrders: WorkOrder[];
+}
+
+export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element {
+    const highestEstimate = Math.max(...workOrders.map(({ estimatedHours }) => estimatedHours));
+    const highestExpended = Math.max(
+        ...workOrders.map(({ expendedHours }) => Number(expendedHours) ?? 0)
+    );
 
     const getPercentEstimate = (number: number) => (number / highestEstimate) * 100;
-
-    const totalProgress = data.reduce((acc, { progress }) => acc + progress, 0);
 
     return (
         <Table>
@@ -37,131 +41,56 @@ export function WorkOrderTable(): JSX.Element {
             </TableHeader>
 
             <tbody>
-                {data.map(
+                {workOrders.map(
                     ({
-                        actual,
-                        actualCompleted,
+                        expendedHours,
+                        actualCompletionDate,
                         discipline,
-                        estimate,
-                        id,
-                        plannedCompleted,
-                        progress,
-                        status,
-                        title,
+                        estimatedHours,
+                        workOrderNumber,
+                        plannedFinishDate,
+                        projectProgress,
+                        jobStatus,
+                        description,
                     }) => (
-                        <TableRow key={id}>
+                        <TableRow key={workOrderNumber}>
                             <TableData
                                 style={{
                                     cursor: 'pointer',
                                     color: `${tokens.colors.interactive.primary__resting.hex}`,
                                 }}
                             >
-                                {id}
+                                {workOrderNumber}
                             </TableData>
-                            <TableData>{title}</TableData>
+                            <TableData>{description}</TableData>
                             <TableData>{discipline}</TableData>
-                            <TableData>{status}</TableData>
-                            <TableData>{new Date(plannedCompleted).toLocaleDateString()}</TableData>
-                            <TableData>{actualCompleted}</TableData>
+                            <TableData>{jobStatus}</TableData>
                             <TableData>
-                                <ProgressBar percentWidth={progress} />
+                                {new Date(plannedFinishDate).toLocaleDateString('EN-GB')}
+                            </TableData>
+                            <TableData>
+                                {new Date(actualCompletionDate).toLocaleDateString('EN-GB')}
+                            </TableData>
+                            <TableData>
+                                <ProgressBar percentWidth={projectProgress} />
                             </TableData>
                             <TableData>
                                 <EstimateBar
-                                    percentWidth={getPercentEstimate(estimate)}
-                                    number={`${estimate}`}
+                                    percentWidth={getPercentEstimate(estimatedHours)}
+                                    number={`${estimatedHours}`}
                                 />
                             </TableData>
                             <TableData>
                                 <ExpendedProgressBar
-                                    actual={actual}
-                                    estimate={estimate}
+                                    actual={Number(expendedHours) ?? 0}
+                                    estimate={estimatedHours}
                                     highestExpended={highestExpended}
                                 />
                             </TableData>
                         </TableRow>
                     )
                 )}
-                {/* Summary row */}
-                <TableData />
-                <TableData />
-                <TableData />
-                <TableData />
-                <TableData>
-                    {/* Planned finish */}
-                    {/* Highest date */}
-                    <div>
-                        {new Date(
-                            data.reduce(
-                                (max, { plannedCompleted }) =>
-                                    DateTime.fromJSDate(new Date(plannedCompleted)) >
-                                        DateTime.fromJSDate(new Date(max))
-                                        ? plannedCompleted
-                                        : max,
-                                new Date().toString()
-                            )
-                        ).toLocaleDateString()}
-                    </div>
-                </TableData>
-                <TableData />
-                <TableData>
-                    <ProgressBar percentWidth={(totalProgress / (data.length * 100)) * 100} />
-                </TableData>
-                <TableData>
-                    <div>Coming soon</div>
-                </TableData>
-                <TableData>
-                    <div>Coming soon</div>
-                </TableData>
             </tbody>
         </Table>
     );
-}
-
-export const data: WorkOrder[] = [
-    {
-        actual: 132,
-        estimate: 120,
-        progress: 80,
-        id: '1213244',
-        title: 'Work order title',
-        status: 'WO4',
-        discipline: 'L,E',
-        plannedCompleted: new Date().toString(),
-        actualCompleted: null,
-    },
-    {
-        actual: 196,
-        estimate: 100,
-        progress: 37,
-        id: '12132',
-        title: 'Work order title, idk how long',
-        status: 'WO4',
-        discipline: 'E',
-        plannedCompleted: new Date('2022-05-05').toString(),
-        actualCompleted: null,
-    },
-    {
-        actual: 50,
-        progress: 50,
-        estimate: 100,
-        id: '121344',
-        title: 'Work order title, idk how long',
-        status: 'WO3',
-        discipline: 'L',
-        plannedCompleted: new Date().toString(),
-        actualCompleted: null,
-    },
-];
-
-export interface WorkOrder {
-    progress: number;
-    actual: number;
-    estimate: number;
-    id: string;
-    title: string;
-    status: string;
-    discipline: string;
-    plannedCompleted: string;
-    actualCompleted: string | null;
 }

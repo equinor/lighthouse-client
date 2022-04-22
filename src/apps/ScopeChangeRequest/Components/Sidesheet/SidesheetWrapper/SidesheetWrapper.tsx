@@ -18,6 +18,7 @@ import styled from 'styled-components';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
 import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
+import { isProduction } from '../../../../../Core/Client/Functions';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -58,7 +59,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
                                 <Tabs.Tab>
                                     <RequestTabTitle />
                                 </Tabs.Tab>
-                                <Tabs.Tab>
+                                <Tabs.Tab disabled={isProduction()}>
                                     <WorkOrderTabTitle />
                                 </Tabs.Tab>
                                 <Tabs.Tab>
@@ -82,6 +83,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
 
 const TabList = styled(Tabs.Panels)`
     padding: 24px 32px;
+    overflow-y: scroll;
 `;
 
 const Wrapper = styled.div`
