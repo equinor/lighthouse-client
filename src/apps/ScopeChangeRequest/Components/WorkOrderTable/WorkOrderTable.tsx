@@ -1,4 +1,3 @@
-import { tokens } from '@equinor/eds-tokens';
 import { WorkOrder } from '../../types/FAM/workOrder';
 import { EstimateBar } from '../WoProgressBars/EstimateBar';
 import { ExpendedProgressBar } from '../WoProgressBars/ExpendedProgressBar';
