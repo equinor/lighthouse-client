@@ -8,6 +8,7 @@ import {
     Header,
     Table,
     TableData,
+    TableDataLink,
     TableHeader,
     TableRow,
 } from './workOrderTable.styles';
@@ -54,14 +55,7 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
                         description,
                     }) => (
                         <TableRow key={workOrderNumber}>
-                            <TableData
-                                style={{
-                                    cursor: 'pointer',
-                                    color: `${tokens.colors.interactive.primary__resting.hex}`,
-                                }}
-                            >
-                                {workOrderNumber}
-                            </TableData>
+                            <TableDataLink>{workOrderNumber}</TableDataLink>
                             <TableData>{description}</TableData>
                             <TableData>{discipline}</TableData>
                             <TableData>{jobStatus}</TableData>
