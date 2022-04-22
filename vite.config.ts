@@ -18,6 +18,7 @@ export default defineConfig({
     resolve: {
         alias: {
             '@equinor/portal-client': path.resolve(__dirname, './src/Core/Client'),
+            '@equinor/lighthouse-components': path.resolve(__dirname, './src/packages/Components'),
             '@equinor/sidesheet': path.resolve(__dirname, './src/packages/Sidesheet'),
             '@equinor/worker': path.resolve(__dirname, './src/packages/WebWorkers'),
             '@equinor/filter': path.resolve(__dirname, './src/packages/Filter'),
@@ -36,8 +37,19 @@ export default defineConfig({
             '@equinor/hooks': path.resolve(__dirname, './src/hooks'),
             '@equinor/Utils': path.resolve(__dirname, './src/packages/Utils/'),
             '@equinor/Kpi': path.resolve(__dirname, './src/packages/KPI'),
+            '@equinor/ParkView': path.resolve(__dirname, './src/components/ParkView'),
             '@equinor/GardenUtils': path.resolve(__dirname, './src/packages/GardenUtils'),
             '@equinor/echo3dweb-viewer': path.resolve(__dirname, './packages/echo3dViewer/src'),
+            '@equinor/lighthouse-powerbi': path.resolve(__dirname, './src/modules/powerBI'),
+            '@equinor/lighthouse-powerbi-viewer': path.resolve(
+                __dirname,
+                './src/Core/PowerBiViewer'
+            ),
+            '@equinor/lighthouse-model-viewer': path.resolve(
+                __dirname,
+                './src/packages/ModelViewer'
+            ),
+            '@equinor/lighthouse-status-bar': path.resolve(__dirname, './src/packages/StatusBar'),
         },
     },
     build: {

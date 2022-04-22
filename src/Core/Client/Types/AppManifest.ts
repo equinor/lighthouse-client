@@ -11,7 +11,7 @@ export interface AppManifest {
     groupe: string | string[];
     tags: string[];
     icon?: string | React.FC;
-    uri?: string;
+    uri?: (isProduction: boolean) => string;
     appEnv?: AppEnvironment;
     app?: App;
 }

@@ -1,10 +1,9 @@
-import { AppGroupe, AppGroups, AppManifest, isProduction } from '@equinor/portal-client';
+import { AppGroupe, AppGroups, AppManifest } from '@equinor/portal-client';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { ConstructionManagementIcon } from '../icons/construction management icon';
 import { EngineeringManagementIcon } from '../icons/Engineering management icon';
 import { HomeIcon } from '../icons/Home icon';
-import { ProgressAndStatusIcon } from '../icons/Progress and status icon';
 import { ProjectInformationIcon } from '../icons/ProjectInformationIcon';
 import { QualityIcon } from '../icons/Quality icon';
 import { QueriesAndRequests } from '../icons/Queries and requests icon';
@@ -12,11 +11,10 @@ import { ReportIcon } from '../icons/Report icon';
 import { ProjectControlIcon } from '../icons/Scope and change icon';
 import { SSUIcon } from '../icons/SSUIcon';
 import { PortalModelViewer } from './3DModel/src';
-import { setup as commissioningSetup } from './Commissioning';
-import { setup as constructionSetup } from './Construction';
-import { setup as handoverSetup } from './Handover';
+import { setup as checklistSetup } from './Checklist';
 import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
-
+import { setup as handoverSetup } from './Handover';
+import { setup as installationSetup } from './Installation';
 import {
     BusinessCaseReport,
     LCIReport,
@@ -26,9 +24,11 @@ import {
     QueryReport,
     SafetyPerformanceReport
 } from './PowerBI';
+import { setup as punchSetup } from './Punch';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
 import { setup as WorkOrderSetup } from './WorkOrder';
+import { setup as workPreparationSetup } from './workPreparation';
 
 export function getApps(): AppManifest[] {
     return apps;
@@ -42,7 +42,6 @@ export enum Apps {
     AssetData = 'AssetData',
     Top = 'Top',
     Collaboration = 'Collaboration',
-    Progress = 'Progress',
     ConstructionAndCommissioning = 'ConstructionAndCommissioning',
     Engineering = 'Engineering',
     ProjectInformation = 'ProjectInformation',
@@ -68,11 +67,6 @@ export const appGroups: Record<Apps, AppGroupe> = {
         name: 'Collaboration',
         icon: CollaborationIcon,
         columnId: 4,
-    },
-    Progress: {
-        name: 'Progress',
-        icon: ProgressAndStatusIcon,
-        columnId: 1,
     },
     ConstructionAndCommissioning: {
         name: 'Construction and Commissioning',
@@ -155,9 +149,11 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectInformation,
         icon: '',
-        uri: `${isProduction()
-                ? 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
+        uri: (isProduction: boolean) =>
+            `${
+                isProduction
+                    ? 'https://fusion.equinor.com/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
+                    : 'https://pro-s-portal-ci.azurewebsites.net/apps/pro-org/3cf72ff9-c50f-4e94-ba79-31721ba42dec/chart'
             }`,
         appEnv: 'prod',
         tags: [],
@@ -191,63 +187,12 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.SSU,
         icon: '',
-        uri: `${isProduction()
+        uri: (isProduction: boolean) =>
+            isProduction
                 ? 'https://fusion.equinor.com/apps/bmt/65728fee-185d-4a0c-a91d-8e3f3781dad8'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/bmt/b6552a8f-9173-416f-9fc0-996387ff7e3a'
-            }`,
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/bmt/b6552a8f-9173-416f-9fc0-996387ff7e3a',
         appEnv: 'prod',
         tags: ['Fusion', 'Link'],
-    },
-    // Progress
-    {
-        title: 'Overview',
-        shortName: 'overview',
-        color: '#0364B8',
-        groupe: Apps.Progress,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'PageView',
-        },
-    },
-    {
-        title: 'Engineering',
-        shortName: 'engineering',
-        color: '#0364B8',
-        groupe: Apps.Progress,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'PageView',
-        },
-    },
-    {
-        title: 'Construction',
-        shortName: 'construction',
-        color: '#0364B8',
-        groupe: Apps.Progress,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'PageView',
-            setup: constructionSetup,
-        },
-
-        appEnv: 'prod',
-    },
-    {
-        title: 'Commissioning',
-        shortName: 'commissioning',
-        color: '#0364B8',
-        groupe: Apps.Progress,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'PageView',
-            setup: commissioningSetup,
-        },
-
-        appEnv: 'dev',
     },
     // Engineering
     {
@@ -296,36 +241,12 @@ export const apps: AppManifest[] = [
     },
     // Construction And Commissioning
     {
-        title: 'Work order',
-        shortName: 'work-order',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        app: {
-            appType: 'Workspace',
-            setup: WorkOrderSetup,
-        },
-        tags: ['Job'],
-        appEnv: 'dev',
-    },
-    {
-        title: 'Project explorer',
-        shortName: 'project-explorer',
+        title: 'Project Browser',
+        shortName: 'project-browser',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
-    },
-    {
-        title: 'Checklist',
-        shortName: 'checklist',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'Workspace',
-        },
     },
     {
         title: 'Handover',
@@ -338,12 +259,63 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: handoverSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'test',
+    },
+    {
+        title: 'Work order',
+        shortName: 'work-order',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        app: {
+            appType: 'Workspace',
+            setup: WorkOrderSetup,
+        },
+        tags: ['Job'],
+        appEnv: 'test',
+    },
+    {
+        // Ny Power Bi
+        title: 'Work preparation',
+        shortName: 'work-preparation',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: workPreparationSetup,
+        },
+        appEnv: 'prod',
+    },
+    {
+        title: 'Installation',
+        shortName: 'installation',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: installationSetup,
+        },
+        appEnv: 'prod',
+    },
+    {
+        title: 'Mechanical Completion',
+        shortName: 'mc',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: [],
+        app: {
+            appType: 'Workspace',
+        },
     },
     {
         title: 'Piping and Heat trace',
         shortName: 'piping-and-ht',
-        color: '#0364B8',
+        color: '#0084C4',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
         tags: [],
@@ -351,8 +323,35 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: disciplineReleaseControlSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'prod',
     },
+    {
+        title: 'Preservation',
+        shortName: 'preservation',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        uri: (isProduction: boolean) =>
+            `https://${
+                isProduction ? 'procosys' : 'procosystest'
+            }.equinor.com/JOHAN_CASTBERG/Preservation`,
+        tags: ['link', 'procosys'],
+        appEnv: 'prod',
+    },
+    {
+        title: 'Checklist',
+        shortName: 'checklist',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: ['PowerBI'],
+        app: {
+            appType: 'PowerBIViewer',
+            setup: checklistSetup,
+        },
+        appEnv: 'prod',
+    },
+
     {
         title: 'Loop',
         shortName: 'loop',
@@ -376,26 +375,17 @@ export const apps: AppManifest[] = [
         },
     },
     {
-        title: 'Preservation',
-        shortName: 'preservation',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        uri: `https://${isProduction() ? 'procosys' : 'procosystest'
-            }.equinor.com/JOHAN_CASTBERG/Preservation`,
-        tags: ['link', 'procosys'],
-        appEnv: 'prod',
-    },
-    {
         title: 'Punch',
         shortName: 'punch',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        tags: [],
+        tags: ['PowerBI'],
         app: {
-            appType: 'Workspace',
+            appType: 'PowerBIViewer',
+            setup: punchSetup,
         },
+        appEnv: 'prod',
     },
     {
         title: 'SWCR',
@@ -408,18 +398,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: SwcrSetup,
         },
-        appEnv: 'dev',
-    },
-    {
-        title: 'Commisisoning procedure',
-        shortName: 'commisisoning-procedure',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        uri: `https://${isProduction() ? 'fusion.equinor.com' : 'pro-s-portal-ci.azurewebsites.net'
-            }/apps/dcp`,
-        tags: ['link', 'fusion'],
-        appEnv: 'prod',
+        appEnv: 'test',
     },
     {
         title: 'Invitation for punch out ',
@@ -427,19 +406,25 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        uri: `https://${isProduction() ? 'procosys' : 'procosystest'
+        uri: (isProduction: boolean) =>
+            `https://${
+                isProduction ? 'procosys' : 'procosystest'
             }.equinor.com/JOHAN_CASTBERG/InvitationForPunchOut`,
         tags: ['link', 'procosys'],
         appEnv: 'prod',
     },
-    // Queries and requests
     {
-        title: 'ATS request',
-        shortName: 'ats',
+        title: 'Commisisoning procedure',
+        shortName: 'commisisoning-procedure',
         color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
+        groupe: Apps.ConstructionAndCommissioning,
         icon: '',
-        tags: [],
+        uri: (isProduction: boolean) =>
+            `https://${
+                isProduction ? 'fusion.equinor.com' : 'pro-s-portal-ci.azurewebsites.net'
+            }/apps/dcp`,
+        tags: ['link', 'fusion'],
+        appEnv: 'prod',
     },
     // ProjectControl
     {
@@ -453,7 +438,7 @@ export const apps: AppManifest[] = [
     {
         title: 'Scope change request',
         shortName: 'change',
-        color: '#0364B8',
+        color: '#7B3A96',
         groupe: Apps.ProjectControl,
         icon: '',
         app: {
@@ -461,7 +446,7 @@ export const apps: AppManifest[] = [
             setup: scopeChangeSetup,
         },
         tags: [],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Management of change',
@@ -469,10 +454,10 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
-        uri: `${isProduction()
+        uri: (isProduction: boolean) =>
+            isProduction
                 ? 'https://fusion.equinor.com/apps/management-of-change/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/management-of-change'
-            }`,
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/management-of-change',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -482,10 +467,10 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.ProjectControl,
         icon: '',
-        uri: `${isProduction()
+        uri: (isProduction: boolean) =>
+            isProduction
                 ? 'https://fusion.equinor.com/apps/project-control-and-analysis/3380fe7d-e5b7-441f-8ce9-a8c3133ee499'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/project-control-and-analysis/b9a3246a-ddb5-4086-b4ec-dd4b0e88b700'
-            }`,
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/project-control-and-analysis/b9a3246a-ddb5-4086-b4ec-dd4b0e88b700',
         tags: ['Link', 'Fusion'],
         appEnv: 'prod',
     },
@@ -524,25 +509,6 @@ export const apps: AppManifest[] = [
         tags: ['PowerBI'],
         appEnv: 'test',
     },
-
-    {
-        title: 'Overtime request',
-        shortName: 'overtime',
-        color: '#0364B8',
-        groupe: Apps.QueriesAndRequests,
-        icon: '',
-        tags: [],
-    },
-    // Reports
-    // {
-    //     title: 'temp-link',
-    //     shortName: 'temp-link2',
-    //     color: '#0364B8',
-    //     groupe: Apps.Reports,
-    //     icon: '',
-    //     tags: [],
-    // },
-
     // Collaboration
     {
         title: 'Meeting',
@@ -550,10 +516,10 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: 'tag',
-        uri: `${isProduction()
+        uri: (isProduction: boolean) =>
+            isProduction
                 ? 'https://fusion.equinor.com/apps/meetings'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/meetings'
-            } `,
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/meetings',
         tags: ['fuison', 'link', 'external'],
         appEnv: 'prod',
     },
@@ -563,10 +529,10 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: 'tag',
-        uri: `${isProduction()
+        uri: (isProduction: boolean) =>
+            isProduction
                 ? 'https://fusion.equinor.com/apps/reviews/255d8c0a-7893-4c21-ab42-62c652ea8129'
-                : 'https://pro-s-portal-ci.azurewebsites.net/apps/reviews'
-            }`,
+                : 'https://pro-s-portal-ci.azurewebsites.net/apps/reviews',
         tags: ['fuison', 'link', 'external'],
         appEnv: 'prod',
     },
@@ -589,9 +555,22 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.Collaboration,
         icon: '',
-        uri: `https://${isProduction() ? 'procosys' : 'procosystest'
+        uri: (isProduction: boolean) =>
+            `https://${
+                isProduction ? 'procosys' : 'procosystest'
             }.equinor.com/JOHAN_CASTBERG/Search?searchType=Query`,
         tags: ['link', 'procosys'],
+        appEnv: 'prod',
+    },
+    {
+        title: 'AKSO procedures',
+        shortName: 'akso',
+        color: '#0364B8',
+        groupe: Apps.Collaboration,
+        icon: 'tag',
+        uri: () =>
+            'https://akersolutions.sharepoint.com/sites/CastbergEquinor/Governing%20Documents/Forms/Procedures%20Work%20Instructions%20and%20guidelines.aspx',
+        tags: ['akso', 'link', 'external'],
         appEnv: 'prod',
     },
     // Asset Data
@@ -614,7 +593,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.AssetData,
         icon: '',
-        uri: `https://${isProduction() ? 'stid' : 'stidtest'
+        uri: (isProduction: boolean) =>
+            `https://${
+                isProduction ? 'stid' : 'stidtest'
             }.equinor.com/JCA/search?type=doc&revstatus=OF%2CUA%2CRE%2CPL%2COF-P`,
         tags: ['3D', 'Asset', 'Map', 'Doc'],
         appEnv: 'prod',
@@ -625,7 +606,9 @@ export const apps: AppManifest[] = [
         color: '#0364B8',
         groupe: Apps.AssetData,
         icon: 'tag',
-        uri: `https://${isProduction() ? 'stid' : 'stidtest'
+        uri: (isProduction: boolean) =>
+            `https://${
+                isProduction ? 'stid' : 'stidtest'
             }.equinor.com/JCA/search?type=tag&tagstatus=A%2CP%2CR%2CF`,
         tags: ['Tag', 'Data', 'Functional Location'],
         appEnv: 'prod',

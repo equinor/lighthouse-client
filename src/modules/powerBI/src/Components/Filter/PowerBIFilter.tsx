@@ -1,4 +1,4 @@
-import { Button, Icon } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/lighthouse-components';
 import { Report } from 'powerbi-client';
 import { useEffect, useState } from 'react';
 import { PowerBiFilter, PowerBiFilterItem } from '../../Types';
@@ -7,28 +7,38 @@ import {
     createAdvancedPbiFilter,
     getActiveFilterValues,
     getFilters,
-    removeVisibleFilters,
+    removeVisibleFilters
 } from '../../Utils';
 import { FilterGroup } from './FilterGroup';
 import { FilterItems } from './FilterItems';
-import { FilterGroupWrap, FilterWrapper, MenuItems, ResetFilter } from './Styles';
+import { FilterGroupWrap, FilterItemsWrapper, FilterWrapper, Item, MenuItems } from './Styles';
+
+interface PowerBIFilterOptions {
+    defaultFilterGroupVisible?: string[];
+    hasFilter?: (hasFilter: boolean) => void;
+}
 
 type PowerBIFilterProps = {
     report: Report | undefined;
     isLoaded: boolean;
     isFilterActive: boolean;
+    options?: PowerBIFilterOptions;
 };
 export const PowerBIFilter = ({
     isLoaded,
     report,
     isFilterActive,
+    options,
 }: PowerBIFilterProps): JSX.Element | null => {
     const [slicerFilters, setSlicerFilters] = useState<PowerBiFilter[] | null>(null);
     const [activeFilters, setActiveFilters] = useState<
         Record<string, (string | number | boolean)[]>
     >({});
-    const [filterGroupVisible, setFilterGroupVisible] = useState<string[]>();
-    const [isFilterSelectActive, setIsFilterSelectActive] = useState<boolean>(false);
+    const [filterGroupVisible, setFilterGroupVisible] = useState<string[]>(
+        options?.defaultFilterGroupVisible || ['Responsible']
+    );
+    const [isFilterSelectActive, setIsFilterSelectActive] = useState<boolean>(true);
+
     const handleChangeGroup = (filter: PowerBiFilter) => {
         if (filterGroupVisible?.find((a) => a === filter.type) !== undefined) {
             setFilterGroupVisible(filterGroupVisible.filter((a) => a !== filter.type));
@@ -117,6 +127,8 @@ export const PowerBIFilter = ({
             }
             const slicerFilter = createAdvancedPbiFilter(filter, newConditions);
 
+            options?.hasFilter && options.hasFilter(newConditions.length > 0);
+
             await group.slicer?.setSlicerState({
                 filters: newConditions.length > 0 ? [slicerFilter] : [],
             });
@@ -185,15 +197,20 @@ export const PowerBIFilter = ({
         <FilterWrapper isFilterActive={isFilterActive}>
             <FilterGroupWrap>
                 <MenuItems>
-                    <Button
+                    <Item
                         variant="ghost_icon"
+                        title="Add and remove filters"
                         onClick={() => setIsFilterSelectActive(!isFilterSelectActive)}
                     >
                         <Icon name={isFilterSelectActive ? 'close' : 'add'} />
-                    </Button>
-                    <ResetFilter onClick={async () => await resetFilter()}>
-                        Reset filters
-                    </ResetFilter>
+                    </Item>
+                    <Item
+                        variant="ghost_icon"
+                        title="Reset filter"
+                        onClick={async () => await resetFilter()}
+                    >
+                        <Icon name="setting_backup_restore" />
+                    </Item>
                 </MenuItems>
             </FilterGroupWrap>
             {isFilterSelectActive && (
@@ -205,17 +222,18 @@ export const PowerBIFilter = ({
                     />
                 </FilterGroupWrap>
             )}
-
-            {slicerFilters.map((group) => (
-                <FilterItems
-                    filterGroupVisible={filterGroupVisible}
-                    handleOnChange={handleOnChange}
-                    handleOnSelectAll={handleOnSelectAll}
-                    activeFilters={activeFilters}
-                    group={group}
-                    key={group.type}
-                />
-            ))}
+            <FilterItemsWrapper>
+                {slicerFilters.map((group) => (
+                    <FilterItems
+                        filterGroupVisible={filterGroupVisible}
+                        handleOnChange={handleOnChange}
+                        handleOnSelectAll={handleOnSelectAll}
+                        activeFilters={activeFilters}
+                        group={group}
+                        key={group.type}
+                    />
+                ))}
+            </FilterItemsWrapper>
         </FilterWrapper>
     );
 };

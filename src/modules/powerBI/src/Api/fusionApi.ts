@@ -1,10 +1,8 @@
-import { NetworkError } from '@equinor/http-client';
 import { useHttpClient } from '@equinor/portal-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
-import { useState } from 'react';
-import { Filter, PowerBiFilter } from '../models/filter';
+import { BuiltPowerBiFilter, Filter } from '../Types/filter';
 
-const filterBuilder = (filter: Filter): PowerBiFilter => {
+const filterBuilder = (filter: Filter): BuiltPowerBiFilter => {
     return {
         $schema: 'http://powerbi.com/product/schema#basic',
         target: {
@@ -18,8 +16,7 @@ const filterBuilder = (filter: Filter): PowerBiFilter => {
 };
 
 interface useFusionClientReturn {
-    getConfig: () => Promise<IReportEmbedConfiguration>;
-    error: NetworkError | undefined;
+    getConfig(): Promise<IReportEmbedConfiguration>;
 }
 export function useFusionClient(
     resource: string,
@@ -27,34 +24,34 @@ export function useFusionClient(
     options?: {
         showFilter?: boolean;
         enablePageNavigation?: boolean;
+        defaultPage?: string;
     }
 ): useFusionClientReturn {
     const { fusionPbi } = useHttpClient();
 
-    const [error] = useState<NetworkError>();
     const baseUri = `reports`;
 
-    const filters: PowerBiFilter[] = [];
+    const filters: BuiltPowerBiFilter[] = [];
     filterOptions?.forEach((filterOption) => {
         filters.push(filterBuilder(filterOption));
     });
 
     async function getEmbedInfo() {
-        try {
-            const embedUri = `${baseUri}/${resource}/config/embedinfo`;
-            const response = await fusionPbi.fetch(embedUri);
+        const embedUri = `${baseUri}/${resource}/config/embedinfo`;
+        const response = await fusionPbi.fetch(embedUri);
 
-            const data = await response.json();
-            window['embedInfo'] = data;
-            return data;
-        } catch (error) {
-            console.error(error);
-        }
+        const data = await response.json();
+        return data;
     }
 
     async function getConfig(): Promise<IReportEmbedConfiguration> {
         const { embedConfig } = await getEmbedInfo();
-        const token = await fusionPbi.fetch(`reports/${resource}/token`).then((x) => x.json());
+        const repose = await fusionPbi.fetch(`${baseUri}/${resource}/token`);
+        const token = await repose.json();
+        if (repose.status === 403 || repose.status === 401) {
+            throw token['error'];
+        }
+
         return {
             accessToken: token['token'],
             embedUrl: embedConfig.embedUrl,
@@ -70,12 +67,12 @@ export function useFusionClient(
                     },
                 },
             },
+            pageName: options?.defaultPage,
             filters: filters ?? undefined,
         };
     }
 
     return {
         getConfig,
-        error,
     };
 }

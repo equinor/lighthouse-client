@@ -1,7 +1,8 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { FilterOptions } from '@equinor/filter';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
+import { FilterOptions } from '../../../../packages/Filter/Types';
+import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import {
     PowerBiOptions,
     PrefetchQueriesOptions,
@@ -9,7 +10,9 @@ import {
     TableOptions,
     TreeOptions,
     WorkflowEditorOptions,
+    WorkspaceTab
 } from './workspaceState';
+
 
 export interface DataSource<T> {
     /** Function that returns the api call promise */
@@ -28,9 +31,10 @@ export interface ViewerOptions<T> {
     initialState: T[];
     objectIdentifier: keyof T;
     viewerId: string;
+    defaultTab?: WorkspaceTab;
     dataFactoryCreator(factory: Factory): void;
-    openSidesheet(SidesheetContent?: React.FC<any>, props?: any): void;
-    CustomSidesheet?: React.FC<T>;
+    openSidesheet(SidesheetContent?: React.FC<any>, props?: any, appName?: string): void;
+    CustomSidesheet?: React.FC<{ item: T; actions: SidesheetApi }>;
     CustomSidesheetList?: React.FC<T[]>;
 }
 

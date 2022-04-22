@@ -11,7 +11,7 @@ import {
     TreeOptions,
     WorkflowEditorOptions,
     WorkSpaceConfig,
-    WorkSpaceState,
+    WorkSpaceState
 } from './workspaceState';
 import {
     DataSource,
@@ -21,7 +21,7 @@ import {
     Validator,
     ViewerOptions,
     ViewOptions,
-    WorkSpaceApi,
+    WorkSpaceApi
 } from './WorkSpaceTypes';
 
 /**
@@ -37,7 +37,8 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
         const url = new URL(window.location.href);
         url.hash = `${options.viewerId}/${item[options.objectIdentifier]}`;
         window.history.pushState({}, '', url);
-        options.openSidesheet(options.CustomSidesheet, item);
+
+        options.openSidesheet(options.CustomSidesheet, item, options.viewerId);
     };
 
     //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
@@ -61,6 +62,7 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
                 onSelect: onSelect as (item: unknown) => void,
                 objectIdentifier: options.objectIdentifier as string,
                 name: options.viewerId,
+                defaultTab: options.defaultTab ?? 'table',
                 initialState: options.initialState,
             },
         };

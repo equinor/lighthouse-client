@@ -1,7 +1,8 @@
 import styled from 'styled-components';
-import { Criteria, WorkflowStep } from '../../../../Types/scopeChangeRequest';
+import { Criteria, WorkflowStep } from '../../../../types/scopeChangeRequest';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
+import { tokens } from '@equinor/eds-tokens';
 
 interface CriteriaDetailProps {
     criteria: Criteria;
@@ -60,4 +61,6 @@ const WorkflowText = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    font-size: 16px;
+    color: ${tokens.colors.text.static_icons__default.hex};
 `;

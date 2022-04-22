@@ -1,18 +1,23 @@
-import { PopupFilter, useFilteredData } from '@equinor/filter';
 import { defaultGroupByFn, Table, TableData, useColumns } from '@equinor/Table';
 import styled from 'styled-components';
+import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
 import { useDataContext } from '../Context/DataProvider';
 
 const Wrapper = styled.section`
-    /* overflow: scroll; */
+    margin: 16px;
+    overflow-y: auto;
 `;
 
 export const ListTab = (): JSX.Element => {
-    const { data } = useFilteredData<TableData>();
+    const {
+        filterState: { getFilteredData },
+    } = useFilterApiContext();
+
+    const data = getFilteredData() as TableData[];
     const { tableOptions } = useDataContext();
 
-    const [ref, { awaitableHeight }] = useElementData();
+    const [ref, { awaitableHeight,  }] = useElementData();
 
     const columns = useColumns(data[0], {
         customCellView: tableOptions?.customCellView,
@@ -37,8 +42,7 @@ export const ListTab = (): JSX.Element => {
                     groupByFn: defaultGroupByFn,
                     onSelect: tableOptions?.onSelect,
                 }}
-                FilterComponent={PopupFilter}
-                height={awaitableHeight - 70}
+                height={awaitableHeight - 58}
                 itemSize={tableOptions?.itemSize}
             />
         </Wrapper>

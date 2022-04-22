@@ -83,7 +83,11 @@ export function GardenView<T>(): JSX.Element | null {
                                     style={{ width: '100%' }}
                                     onClick={() => handleHeaderClick(column)}
                                 >
-                                    <Header garden={sortedColumns} columnIndex={index} />
+                                    <Header
+                                        garden={sortedColumns}
+                                        columnIndex={index}
+                                        columnIsExpanded={column.isExpanded}
+                                    />
                                 </div>
                             )}
 

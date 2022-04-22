@@ -1,20 +1,50 @@
-import React from 'react';
+import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+import { StatusCircle } from '../../Garden/StatusCircle';
+import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
+import { ElectroViewNodeGroup, ElectroViewNodeText, ElectroViewNodeValueText } from '../styles';
+import { TestDot } from './TestDot';
 
 interface CircuitAndStarterProps {
-    value: string;
+    value?: string;
+    status: string;
+    cTestStatus: string;
 }
-export const CircuitAndStarter = ({ value }: CircuitAndStarterProps): JSX.Element => {
-    return <CircuitAndStarterNode>{value}</CircuitAndStarterNode>;
+export const CircuitAndStarter = ({
+    value,
+    status,
+    cTestStatus,
+}: CircuitAndStarterProps): JSX.Element => {
+    return (
+        <ElectroViewNodeGroup>
+            <ElectroViewNodeText>Circuit</ElectroViewNodeText>
+            <CircuitAndStarterNode>
+                <TestDot value="C" status={cTestStatus} />
+                <ElectroViewNodeValueText>
+                    <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
+                </ElectroViewNodeValueText>
+                <Icon
+                    size={16}
+                    style={{ transform: 'rotate(90deg)' }}
+                    color={tokens.colors.text.static_icons__default.hex}
+                    name="circuit"
+                />
+                <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
+            </CircuitAndStarterNode>
+        </ElectroViewNodeGroup>
+    );
 };
 
 const CircuitAndStarterNode = styled.div`
-    flex: 0 0 100px;
-    height: 20px;
-    border-style: solid;
-    border-width: thin;
+    display: flex;
+    flex-direction: horizontal;
+    flex: 1;
+    border: 1px solid ${tokens.colors.ui.background__medium.hex};
     border-radius: 10px;
-    padding: 7px;
+    padding: 6px;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 4px;
+    justify-content: center;
+    max-height: 40px;
 `;
