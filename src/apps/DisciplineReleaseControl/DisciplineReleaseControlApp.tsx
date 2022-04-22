@@ -9,18 +9,18 @@ import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompac
 import {
     StepFilterContainer,
     StepFilterText,
-    WorkflowFilterDot
+    WorkflowFilterDot,
 } from './Components/Workflow/Components/WorkflowFilterDot';
 import {
     CurrentStepContainer,
-    WorkflowWarningTriangle
+    WorkflowWarningTriangle,
 } from './Components/Workflow/Components/WorkflowWarningTriangle';
 import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
 import {
     checklistTagFunc,
     createChecklistSteps,
     getHTList,
-    getStatusLetterFromStatus
+    getStatusLetterFromStatus,
 } from './Functions/tableHelpers';
 import { Monospace } from './Styles/Monospace';
 import { Pipetest } from './Types/pipetest';
@@ -142,6 +142,7 @@ export function setup(appApi: ClientApi): void {
             'circuits',
             'pipetestProcessDoneInRightOrder',
             'step',
+            'pipeInsulationBoxes',
         ],
         enableSelectRows: true,
         headers: [
