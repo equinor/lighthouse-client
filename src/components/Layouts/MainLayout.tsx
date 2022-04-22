@@ -10,7 +10,7 @@ export const MainLayout = ({ children, serviceMessageActive }: MainLayoutProps):
     return (
         <Wrapper serviceMessageActive={serviceMessageActive}>
             <Menu>
-                <ChildrenWrapper sideSheetWidth={undefined}>{children}</ChildrenWrapper>
+                <ChildrenWrapper>{children}</ChildrenWrapper>
             </Menu>
         </Wrapper>
     );
