@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 interface WorklflowLineProps {
     colored: boolean;
+    height: string;
 }
 
-export const WorkflowLine = ({ colored }: WorklflowLineProps): JSX.Element => {
+export const WorkflowLine = ({ colored, height }: WorklflowLineProps): JSX.Element => {
     if (colored) {
         return (
             <div>
@@ -13,6 +14,7 @@ export const WorkflowLine = ({ colored }: WorklflowLineProps): JSX.Element => {
                     style={{
                         borderColor: tokens.colors.interactive.primary__resting.rgba,
                         backgroundColor: tokens.colors.interactive.primary__resting.rgba,
+                        width: height,
                     }}
                 />
             </div>
@@ -23,7 +25,6 @@ export const WorkflowLine = ({ colored }: WorklflowLineProps): JSX.Element => {
 };
 
 const VerticalLine = styled.div`
-    width: 24px;
     border: 1px solid grey;
     transform: rotate(90deg);
     background-color: grey;
