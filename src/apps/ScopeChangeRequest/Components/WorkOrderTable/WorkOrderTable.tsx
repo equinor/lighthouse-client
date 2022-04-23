@@ -1,4 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
+import { useFacility } from '@equinor/portal-client';
+import { isProduction } from '../../../../Core/Client/Functions';
 import { WorkOrder } from '../../types/FAM/workOrder';
 import { EstimateBar } from '../WoProgressBars/EstimateBar';
 import { ExpendedProgressBar } from '../WoProgressBars/ExpendedProgressBar';
@@ -23,13 +25,14 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
     );
 
     const getPercentEstimate = (number: number) => (number / highestEstimate) * 100;
+    const { title } = useFacility();
 
     return (
         <Table>
             <TableHeader>
                 <Header>
-                    <ColumnHeader>ID</ColumnHeader>
-                    <ColumnHeader style={{ minWidth: '190px' }}>Description</ColumnHeader>
+                    <ColumnHeader>WO</ColumnHeader>
+                    <ColumnHeader style={{ minWidth: '190px' }}>Title</ColumnHeader>
                     <ColumnHeader>Discipline</ColumnHeader>
                     <ColumnHeader>Status</ColumnHeader>
                     <ColumnHeader>Plan. finish</ColumnHeader>
@@ -45,25 +48,38 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
                     ({
                         expendedHours,
                         actualCompletionDate,
-                        discipline,
+                        disciplineCode,
                         estimatedHours,
                         workOrderNumber,
                         plannedFinishDate,
                         projectProgress,
                         jobStatus,
                         description,
+                        workOrderId,
                     }) => (
                         <TableRow key={workOrderNumber}>
                             <TableData
                                 style={{
                                     cursor: 'pointer',
                                     color: `${tokens.colors.interactive.primary__resting.hex}`,
+                                    textDecoration: 'underline',
                                 }}
+                                onClick={() =>
+                                    window.open(
+                                        //TEMP:
+                                        `https://${isProduction() ? 'procosys' : 'procosys'
+                                        }.equinor.com/${title.replace(
+                                            ' ',
+                                            '_'
+                                        )}/WorkOrders/WorkOrder#id=${workOrderId}`,
+                                        '_blank'
+                                    )
+                                }
                             >
                                 {workOrderNumber}
                             </TableData>
                             <TableData>{description}</TableData>
-                            <TableData>{discipline}</TableData>
+                            <TableData>{disciplineCode}</TableData>
                             <TableData>{jobStatus}</TableData>
                             <TableData>
                                 {new Date(plannedFinishDate).toLocaleDateString('EN-GB')}
@@ -77,7 +93,7 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
                             <TableData>
                                 <EstimateBar
                                     percentWidth={getPercentEstimate(estimatedHours)}
-                                    number={`${estimatedHours}`}
+                                    number={estimatedHours}
                                 />
                             </TableData>
                             <TableData>

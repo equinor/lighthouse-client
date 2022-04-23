@@ -91,7 +91,9 @@ export const NotificationCardNew = ({
                     <DetailText>
                         <NotificationTitle>{notification.title}</NotificationTitle>
                         <TimeStamp>
-                            {DateTime.fromJSDate(new Date(notification.created)).toRelative()}
+                            {DateTime.fromJSDate(new Date(notification.created)).toRelative({
+                                locale: 'en-GB',
+                            })}
                         </TimeStamp>
                     </DetailText>
                 </LeftSection>
