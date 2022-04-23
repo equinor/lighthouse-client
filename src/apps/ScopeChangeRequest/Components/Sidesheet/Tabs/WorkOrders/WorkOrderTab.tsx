@@ -10,19 +10,13 @@ import { CompactWorkOrderList } from '../../../WorkOrderTable/CompactWorkOrder/C
 export function WorkOrderTab(): JSX.Element {
     const woNumbers = [200001, 200002, 200003, 200043, 200042, 200041];
 
-    const { data, error } = useQuery(['WO', ...woNumbers], () => getWorkOrderByIds(woNumbers));
+    const { data, error } = useQuery(['WO', ...woNumbers], () => getWorkOrderByIds(woNumbers), {
+        cacheTime: 5 * 1000 * 60,
+        staleTime: 5 * 1000 * 60,
+    });
 
     const ref = useRef<null | HTMLDivElement>(null);
     const { width } = useParentSize(ref);
-
-    if (!data) {
-        return (
-            <Loading>
-                <CircularProgress size={48} />
-                <div style={{ fontSize: '16px' }}> Loading work orders..</div>
-            </Loading>
-        );
-    }
 
     if (error) {
         return (
