@@ -18,7 +18,7 @@ export const ExpendedProgressBar = ({
         <ProgressBarContainer>
             {actual > estimate ? (
                 <DoubleProgress>
-                    <ActualProgress width={getPercentExpended(estimate)}> {actual} </ActualProgress>
+                    <ActualProgress width={getPercentExpended(estimate)}>{actual}</ActualProgress>
                     <ActualProgress
                         color={redBar.backgroundColor}
                         borderColor={redBar.borderColor}
@@ -26,7 +26,9 @@ export const ExpendedProgressBar = ({
                     />
                 </DoubleProgress>
             ) : (
-                <ActualProgress width={getPercentExpended(actual)}> {actual} </ActualProgress>
+                <>
+                    {highestExpended !== 0 && <ActualProgress width={getPercentExpended(actual)} />}
+                </>
             )}
         </ProgressBarContainer>
     );
