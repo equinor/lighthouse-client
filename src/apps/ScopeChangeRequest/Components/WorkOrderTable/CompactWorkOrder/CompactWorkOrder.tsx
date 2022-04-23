@@ -24,7 +24,7 @@ export const CompactWorkorder = ({
         workOrderNumber,
         workOrderId,
         description,
-        discipline,
+        disciplineCode,
         jobStatus,
         plannedFinishDate,
         actualCompletionDate,
@@ -57,7 +57,7 @@ export const CompactWorkorder = ({
             <Columns>
                 <Column>
                     <div>Disc.</div>
-                    <div>{discipline}</div>
+                    <div>{disciplineCode}</div>
                 </Column>
                 <Column>
                     <div>Status</div>
@@ -82,7 +82,7 @@ export const CompactWorkorder = ({
                     <div>Estimate</div>
                     <EstimateBar
                         percentWidth={getPercentEstimate(estimatedHours)}
-                        number={`${estimatedHours}`}
+                        number={estimatedHours}
                     />
                 </Column>
                 <Column>

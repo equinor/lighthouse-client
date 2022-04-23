@@ -40,7 +40,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                 const lastSigned = getLastSigned(request);
                 if (!lastSigned) return '-';
-                return <div>{lastSigned.toRelative()}</div>;
+                return <div>{lastSigned.toRelative({ locale: 'en-GB' })}</div>;
             },
             id: 'LastSigned',
             width: 180,
@@ -140,7 +140,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     return (
                         <>
                             {request.createdAtUtc
-                                ? DateTime.fromJSDate(new Date(request.createdAtUtc)).toRelative()
+                                ? DateTime.fromJSDate(new Date(request.createdAtUtc)).toRelative({
+                                    locale: 'en-GB',
+                                })
                                 : '-'}
                         </>
                     );
@@ -156,7 +158,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     return (
                         <>
                             {request.modifiedAtUtc
-                                ? DateTime.fromJSDate(new Date(request.modifiedAtUtc)).toRelative()
+                                ? DateTime.fromJSDate(new Date(request.modifiedAtUtc)).toRelative({
+                                    locale: 'en-GB',
+                                })
                                 : '-'}
                         </>
                     );
