@@ -10,6 +10,15 @@ export interface Notification {
     createdByApplication: Application;
     seenByUser: boolean;
     seen: string | null;
+    sourceSystem: SourceSystem;
+    appName: string;
+    actionType: 'URL' | 'Identifier';
+}
+
+interface SourceSystem {
+    identifier: string;
+    name: string;
+    subSystem: string;
 }
 
 export interface Application {

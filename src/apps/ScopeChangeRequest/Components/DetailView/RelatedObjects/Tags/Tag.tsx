@@ -1,24 +1,24 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ScopeChangeTag as TagInterface } from '../../../../types/scopeChangeRequest';
+import { ScopeChangeTag } from '../../../../types/scopeChangeRequest';
 import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { Wrapper } from '../WrapperStyles';
-import { getTagById } from '../../../../api/PCS/getTagById';
-import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
-import { useInfiniteCachedQuery } from '../../../../hooks/React-Query/useInfiniteCachedQuery';
+import { ProCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { useQuery } from 'react-query';
+import { Tag as TagInterface } from '../../../../types/ProCoSys/Tag';
 
 interface TagProps {
-    tag: TagInterface;
+    tag: ScopeChangeTag;
 }
 
 export const Tag = ({ tag }: TagProps): JSX.Element => {
-    const { tag: tagKeys } = proCoSysQueryKeys();
     const { procosysPlantId } = useFacility();
+    const { getTagByNoQuery } = ProCoSysQueries;
 
-    const { data } = useInfiniteCachedQuery(tagKeys(tag.procosysNumber), () =>
-        getTagById(procosysPlantId, tag.procosysId)
-    );
+    const { data } = useQuery<unknown, unknown, TagInterface>({
+        ...getTagByNoQuery(tag.procosysId, procosysPlantId),
+    });
 
     return (
         <Wrapper key={tag.id}>

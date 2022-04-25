@@ -3,26 +3,21 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { ScopeChangeArea as AreaInterface } from '../../../../types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
-import { getAreaByCode } from '../../../../api/PCS/getAreaByCode';
-import { useInfiniteCachedQuery } from '../../../../hooks/React-Query/useInfiniteCachedQuery';
-import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
 import { useFacility } from '../../../../../../Core/Client/Hooks';
+import { ProCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { useQuery } from 'react-query';
+import { Area as PCSArea } from '../../../../types/ProCoSys/area';
 
 interface AreaProps {
     area: AreaInterface;
 }
 
 export const Area = ({ area }: AreaProps): JSX.Element => {
-    const { area: areaKey } = proCoSysQueryKeys();
     const { procosysPlantId } = useFacility();
+    const { getAreaByCodeQuery } = ProCoSysQueries;
 
-    const { data } = useInfiniteCachedQuery(
-        areaKey(area.procosysCode),
-        () => getAreaByCode(procosysPlantId, area.procosysCode),
-        {
-            retry: false,
-            retryDelay: 5000,
-        }
+    const { data } = useQuery<unknown, unknown, PCSArea>(
+        getAreaByCodeQuery(area.procosysCode, procosysPlantId)
     );
 
     return (

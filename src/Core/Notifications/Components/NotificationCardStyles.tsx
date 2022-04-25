@@ -21,7 +21,7 @@ export const LeftSection = styled.div`
 
 export const Wrapper = styled.div`
     display: flex;
-    height: 35px;
+    height: 48px;
     width: 100%;
     align-items: center;
     justify-content: space-between;
