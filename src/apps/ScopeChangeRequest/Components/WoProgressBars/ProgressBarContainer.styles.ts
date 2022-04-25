@@ -6,6 +6,7 @@ export const ProgressBarContainer = styled.div`
     background-color: #f5f5f5;
     border-bottom: 2px #dcdcdc solid;
     width: -webkit-fill-available;
+    position: relative;
 `;
 
 export const ActualProgress = styled.div<{ width: number; borderColor?: string; color?: string }>`
@@ -13,8 +14,4 @@ export const ActualProgress = styled.div<{ width: number; borderColor?: string; 
     width: ${({ width }) => `${width}%`};
     height: 16px;
     border-bottom: ${({ borderColor }) => `2px ${borderColor ?? '#0084C4'} solid`};
-`;
-
-export const ProgressBarPercent = styled.div`
-    padding-left: 0.5em;
 `;
