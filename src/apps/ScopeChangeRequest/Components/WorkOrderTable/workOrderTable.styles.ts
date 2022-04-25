@@ -7,7 +7,10 @@ export const TableData = styled.td`
     letter-spacing: 0px;
     text-align: left;
     padding-left: 5px;
-    max-height: 32px;
+    height: 32px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 export const TableRow = styled.tr`

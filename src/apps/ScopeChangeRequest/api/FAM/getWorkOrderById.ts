@@ -22,7 +22,7 @@ export async function getWorkOrderByIds(ids: number[]): Promise<WorkOrder[]> {
         body: JSON.stringify(requestArgs),
     });
 
-    const workOrders = await res.json();
+    const workOrders: WorkOrder[] = await res.json();
 
     if (!Array.isArray(workOrders)) {
         throw 'Invalid response';
@@ -30,6 +30,8 @@ export async function getWorkOrderByIds(ids: number[]): Promise<WorkOrder[]> {
     if (workOrders.length !== ids.length) {
         throw 'Failed to load some work orders';
     }
+
+    workOrders.sort((a, b) => Number(a.workOrderNumber) - Number(b.workOrderNumber));
 
     return workOrders;
 }
