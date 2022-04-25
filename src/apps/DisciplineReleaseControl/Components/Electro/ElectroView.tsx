@@ -68,12 +68,17 @@ export const ElectroView = ({ pipetest, pipetests, width }: ElectroViewProps): J
                 return acc;
             }, {})
         );
-
-        //Sort by switchboard array
+        // Sort circuits
         switchboardArray.forEach((x) =>
             x.sort((a, b) =>
                 a?.switchBoardTagNo.split('-')[1]?.localeCompare(b?.switchBoardTagNo.split('-')[1])
             )
+        );
+        //Sort switchboards
+        switchboardArray.sort((a, b) =>
+            a[0]?.switchBoardTagNo
+                ?.split('-')[0]
+                ?.localeCompare(b[0]?.switchBoardTagNo?.split('-')[0])
         );
     }
     return (
