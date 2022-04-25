@@ -6,11 +6,10 @@ import { WorkflowCompact } from './WorkflowCompact';
 import { getLastSigned } from './getLastSigned';
 import { Criteria, ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { Fragment } from 'react';
-import styled from 'styled-components';
 import { DateTime } from 'luxon';
 import { Atom, deref, swap } from '@dbeining/react-atom';
 import { EstimateBar } from '../../Components/WoProgressBars/EstimateBar';
-import { ActualProgress } from '../../Components/WoProgressBars/ProgressBarContainer.styles';
+import { ExpendedProgressBar } from '../../Components/WoProgressBars/ExpendedProgressBar';
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',
@@ -176,15 +175,14 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
 
-                    if (deref(guesstimateHoursAtom) === -1) {
-                        console.log('Calculating max guesstimate hours');
+                    if (deref(guesstimateHoursMaxAtom) === -1) {
                         const maxCount = Math.max(
                             ...cell.column.filteredRows.map((val) => val.original.guesstimateHours)
                         );
-                        swap(guesstimateHoursAtom, () => maxCount);
+                        swap(guesstimateHoursMaxAtom, () => maxCount);
                     }
 
-                    const count = deref(guesstimateHoursAtom);
+                    const count = deref(guesstimateHoursMaxAtom);
 
                     return (
                         <EstimateBar
@@ -200,10 +198,22 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
+
+                    if (deref(actualHoursMaxAtom) === -1) {
+                        const maxCount = Math.max(
+                            ...cell.column.filteredRows.map((val) => val.original.actualChangeHours)
+                        );
+                        swap(actualHoursMaxAtom, () => maxCount);
+                    }
+
+                    const highestExpendedHours = deref(actualHoursMaxAtom);
+
                     return (
-                        <Container>
-                            {!request.actualChangeHours ? '-' : request.actualChangeHours}
-                        </Container>
+                        <ExpendedProgressBar
+                            actual={request.actualChangeHours}
+                            estimate={request.estimatedChangeHours}
+                            highestExpended={highestExpendedHours}
+                        />
                     );
                 },
             },
@@ -213,10 +223,25 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
+
+                    if (deref(estimateHoursMaxAtom) === -1) {
+                        const maxCount = Math.max(
+                            ...cell.column.filteredRows.map(
+                                (val) => val.original.estimatedChangeHours
+                            )
+                        );
+                        swap(estimateHoursMaxAtom, () => maxCount);
+                    }
+
+                    const highestEstimateHours = deref(estimateHoursMaxAtom);
+
                     return (
-                        <Container>
-                            {!request.estimatedChangeHours ? '-' : request.estimatedChangeHours}
-                        </Container>
+                        <EstimateBar
+                            percentWidth={
+                                (request.estimatedChangeHours / highestEstimateHours) * 100
+                            }
+                            number={request.estimatedChangeHours ?? 0}
+                        />
                     );
                 },
             },
@@ -317,9 +342,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     ],
 };
 
-const Container = styled.div`
-    text-align: end;
-    font-variant-numeric: tabular-nums;
-`;
-
-const guesstimateHoursAtom = Atom.of<number>(-1);
+const guesstimateHoursMaxAtom = Atom.of<number>(-1);
+const estimateHoursMaxAtom = Atom.of<number>(-1);
+const actualHoursMaxAtom = Atom.of<number>(-1);

@@ -10,7 +10,9 @@ export function EstimateBar({ percentWidth, number }: EstimateBarProps): JSX.Ele
     return (
         <ProgressBarContainer>
             <ActualProgress borderColor="#0084C4" color="#CCE6F3" width={percentWidth} />
-            <ProgressNumber>{number && Math.round(number)}</ProgressNumber>
+            <ProgressNumber>
+                {number && parseFloat(Math.round(number).toString()).toLocaleString('no')}
+            </ProgressNumber>
         </ProgressBarContainer>
     );
 }
