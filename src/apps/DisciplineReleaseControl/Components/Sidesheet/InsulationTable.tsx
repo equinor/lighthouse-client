@@ -17,6 +17,7 @@ export const InsulationTable = ({
         return (
             <h4>{pipeInsulation ? 'No pipe insulations found' : 'No insulation boxes found'}</h4>
         );
+    const rowHeight = 35;
 
     const columns: Column<InsulationBoxType>[] = [
         {
@@ -58,7 +59,7 @@ export const InsulationTable = ({
             <h4>{pipeInsulation ? 'Pipe insulations:' : 'Box insulations:'}</h4>
             <Table
                 options={{ columns: columns, data: insulations }}
-                height={35 + insulations?.length * 35}
+                height={rowHeight + insulations?.length * rowHeight}
             ></Table>
         </>
     );

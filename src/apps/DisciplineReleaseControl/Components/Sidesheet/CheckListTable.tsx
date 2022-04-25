@@ -8,6 +8,8 @@ type TableProps = {
 export const CheckListTable = ({ checkLists }: TableProps): JSX.Element => {
     if (!checkLists.length) return <h2>No checklists found</h2>;
 
+    const rowHeight = 35;
+
     const columns: Column<CheckListType>[] = [
         {
             id: 'tagNo',
@@ -41,7 +43,7 @@ export const CheckListTable = ({ checkLists }: TableProps): JSX.Element => {
             <h4>Pipetest checklists:</h4>
             <Table
                 options={{ columns: columns, data: checkLists }}
-                height={35 + checkLists?.length * 35}
+                height={rowHeight + checkLists?.length * rowHeight}
             ></Table>
         </>
     );
