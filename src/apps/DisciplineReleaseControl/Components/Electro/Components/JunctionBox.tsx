@@ -1,4 +1,3 @@
-import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { StatusCircle } from '../../../../../packages/GardenUtils/src';
@@ -13,11 +12,6 @@ export const JunctionBox = ({ value, status }: JunctionBoxProps): JSX.Element =>
     return (
         <ElectroViewNodeGroup>
             <JunctionBoxNode>
-                <Icon
-                    size={16}
-                    color={tokens.colors.text.static_icons__default.hex}
-                    name="junction_box"
-                />
                 <ElectroViewNodeValueText>
                     <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
                 </ElectroViewNodeValueText>
