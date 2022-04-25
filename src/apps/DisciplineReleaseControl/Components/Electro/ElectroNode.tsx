@@ -87,7 +87,6 @@ export const ElectroNode = ({
                 return (
                     <CircuitAndStarter
                         value={eleNetwork.switchBoardTagNo}
-                        status={nodeStatus}
                         cTestStatus={getElectroTestStatus(
                             CheckListStepTag.HtCTest,
                             eleNetwork.checkLists
