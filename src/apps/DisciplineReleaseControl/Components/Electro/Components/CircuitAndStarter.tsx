@@ -1,24 +1,16 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { StatusCircle } from '../../Garden/StatusCircle';
-import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
-import { ElectroViewNodeGroup, ElectroViewNodeText, ElectroViewNodeValueText } from '../styles';
+import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
 import { TestDot } from './TestDot';
 
 interface CircuitAndStarterProps {
     value?: string;
-    status: string;
     cTestStatus: string;
 }
-export const CircuitAndStarter = ({
-    value,
-    status,
-    cTestStatus,
-}: CircuitAndStarterProps): JSX.Element => {
+export const CircuitAndStarter = ({ value, cTestStatus }: CircuitAndStarterProps): JSX.Element => {
     return (
         <ElectroViewNodeGroup>
-            <ElectroViewNodeText>Circuit</ElectroViewNodeText>
             <CircuitAndStarterNode>
                 <TestDot value="C" status={cTestStatus} />
                 <ElectroViewNodeValueText>
@@ -30,7 +22,6 @@ export const CircuitAndStarter = ({
                     color={tokens.colors.text.static_icons__default.hex}
                     name="circuit"
                 />
-                <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
             </CircuitAndStarterNode>
         </ElectroViewNodeGroup>
     );
@@ -44,7 +35,9 @@ const CircuitAndStarterNode = styled.div`
     border-radius: 10px;
     padding: 6px;
     text-align: center;
-    margin-top: 4px;
+    margin-top: 16px;
     justify-content: center;
     max-height: 40px;
+    width: 84px;
+    background: ${tokens.colors.ui.background__default.hex};
 `;

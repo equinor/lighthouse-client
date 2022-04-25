@@ -1,13 +1,14 @@
 import React from 'react';
 import { useQuery } from 'react-query';
+import { StatusCircle } from '../../../../packages/GardenUtils/src';
 import { EleNetwork } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
-import { StatusCircle } from '../Garden/StatusCircle';
 import { ElectroNode } from './ElectroNode';
 import { getElectroViewCompletionStatusColor, getNodeStatus } from './electroViewHelpers';
 import { getEleNetworks } from './getEleNetworks';
 import {
     ElectroViewContainer,
+    ElectroViewNodeGroupRow,
     ElectroViewNodeText,
     ElectroViewRow,
     SwitchBoardBorderContainer,
@@ -67,12 +68,17 @@ export const ElectroView = ({ pipetest, pipetests, width }: ElectroViewProps): J
                 return acc;
             }, {})
         );
-
-        //Sort by switchboard array
+        // Sort circuits
         switchboardArray.forEach((x) =>
             x.sort((a, b) =>
                 a?.switchBoardTagNo.split('-')[1]?.localeCompare(b?.switchBoardTagNo.split('-')[1])
             )
+        );
+        //Sort switchboards
+        switchboardArray.sort((a, b) =>
+            a[0]?.switchBoardTagNo
+                ?.split('-')[0]
+                ?.localeCompare(b[0]?.switchBoardTagNo?.split('-')[0])
         );
     }
     return (
@@ -93,14 +99,16 @@ export const ElectroView = ({ pipetest, pipetests, width }: ElectroViewProps): J
                                     key={eleNetworksForSwitchboard[0].switchBoardTagNo}
                                 >
                                     <SwitchBoardBorderContainer>
-                                        <ElectroViewNodeText style={{ marginLeft: '25px' }}>
-                                            {switchboardTagNo[0]}
+                                        <ElectroViewNodeGroupRow>
+                                            <ElectroViewNodeText>
+                                                {switchboardTagNo[0]}
+                                            </ElectroViewNodeText>
                                             <StatusCircle
                                                 statusColor={getElectroViewCompletionStatusColor(
                                                     switchboardStatus
                                                 )}
                                             />
-                                        </ElectroViewNodeText>
+                                        </ElectroViewNodeGroupRow>
                                         {eleNetworksForSwitchboard?.map(
                                             (eleNetwork: EleNetwork) => {
                                                 const startNode = eleNetwork.circuits.find(
