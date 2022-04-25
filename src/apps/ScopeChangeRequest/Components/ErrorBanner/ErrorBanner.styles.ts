@@ -13,6 +13,8 @@ export const ErrorDetails = styled.div`
     flex-direction: column;
     gap: 0.5em;
     display: flex;
+    text-align: left;
+    width: 100%;
 `;
 
 export const ErrorContainer = styled.div`

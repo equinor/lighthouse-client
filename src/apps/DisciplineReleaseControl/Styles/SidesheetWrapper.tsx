@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-    overflow-y: scroll;
+    overflow-y: hidden;
     overflow-x: hidden;
-    height: 95%;
+    height: 100%;
 `;

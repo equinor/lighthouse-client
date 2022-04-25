@@ -1,24 +1,26 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { ScopeChangeDiscipline as DisciplineInterface } from '../../../../types/scopeChangeRequest';
+import { ScopeChangeDiscipline } from '../../../../types/scopeChangeRequest';
 import { Wrapper } from '../WrapperStyles';
-import { useInfiniteCachedQuery } from '../../../../hooks/React-Query/useInfiniteCachedQuery';
 import { useEffect, useState } from 'react';
 import { Discipline as PCSDiscipline } from '../../../../types/ProCoSys/discipline';
-import { getDisciplines } from '../../../../api/PCS/getDisciplines';
-import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
 import { useFacility } from '../../../../../../Core/Client/Hooks';
+import { ProCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { useQuery } from 'react-query';
 
 interface DisciplineProps {
-    discipline: DisciplineInterface;
+    discipline: ScopeChangeDiscipline;
 }
 
 export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
-    const { disciplines: disciplinesKey } = proCoSysQueryKeys();
     const { procosysPlantId } = useFacility();
 
-    const { data } = useInfiniteCachedQuery(disciplinesKey, () => getDisciplines(procosysPlantId));
+    const { getDisciplinesQuery } = ProCoSysQueries;
+
+    const { data } = useQuery<unknown, unknown, PCSDiscipline[]>(
+        getDisciplinesQuery(procosysPlantId)
+    );
 
     const [foundDiscipline, setFoundDiscipline] = useState<PCSDiscipline | null>();
 
