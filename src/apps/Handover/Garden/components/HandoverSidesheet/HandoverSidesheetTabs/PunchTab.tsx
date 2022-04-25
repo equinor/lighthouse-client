@@ -1,45 +1,52 @@
-import { Column, Table } from '@equinor/Table';
+import { CellWithLink, TabTable } from '@equinor/GardenUtils';
+import { isProduction } from '@equinor/portal-client';
+import { Column } from '@equinor/Table';
 import { HandoverPunch } from '../../../models';
-import { CellWithLink, NoResourceData } from '../HandoverSidesheetStatuses';
 
 type TabProps = {
     packages: HandoverPunch[];
     isFetching: boolean;
 };
 
+const columns: Column<HandoverPunch>[] = [
+    {
+        id: 'tagnumber',
+        Header: 'Tag',
+        accessor: ({ tagNumber, url }) => ({
+            content: tagNumber,
+            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
+        }),
+        Cell: CellWithLink,
+    },
+    {
+        id: 'Description',
+        Header: 'Description',
+        accessor: (pkg) => pkg.description,
+    },
+    {
+        id: 'toBeClearedBy',
+        Header: 'To be cleared by',
+        accessor: (pkg) => pkg.toBeClearedBy,
+    },
+    {
+        id: 'status',
+        Header: 'Status',
+        accessor: (pkg) => pkg.status,
+    },
+    {
+        id: 'sorting',
+        Header: 'Sorting',
+        accessor: (pkg) => pkg.sorting,
+    },
+];
 export const PunchTab = ({ packages, isFetching }: TabProps): JSX.Element => {
-    if (isFetching) return <NoResourceData>Fetching Punch Packages</NoResourceData>;
-
-    if (!packages.length) return <NoResourceData>No Punch Packages</NoResourceData>;
-
-    const columns: Column<HandoverPunch>[] = [
-        {
-            id: 'tagnumber',
-            Header: 'Tag',
-            accessor: ({ tagNumber, url }) => ({ content: tagNumber, url }),
-            Cell: CellWithLink,
-        },
-        {
-            id: 'Description',
-            Header: 'Description',
-            accessor: (pkg) => pkg.description,
-        },
-        {
-            id: 'toBeClearedBy',
-            Header: 'To be cleared by',
-            accessor: (pkg) => pkg.toBeClearedBy,
-        },
-        {
-            id: 'status',
-            Header: 'Status',
-            accessor: (pkg) => pkg.status,
-        },
-        {
-            id: 'sorting',
-            Header: 'Sorting',
-            accessor: (pkg) => pkg.sorting,
-        },
-    ];
-
-    return <Table options={{ columns: columns, data: packages }}></Table>;
+    return (
+        <TabTable
+            columns={columns}
+            packages={packages}
+            isFetching={isFetching}
+            resourceName="Punch Packages"
+            error={null}
+        />
+    );
 };

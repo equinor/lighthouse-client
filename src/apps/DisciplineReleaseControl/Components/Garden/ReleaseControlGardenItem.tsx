@@ -46,7 +46,9 @@ const ReleaseControlGardenItem = ({
                     {!data.pipetestProcessDoneInRightOrder && (
                         <WorkflowWarningTriangle outline={true} />
                     )}
-                    <StatusCircle statusColor={getGardenItemCompletionColor(data)} />
+                    <StatusCircle
+                        statusColor={getGardenItemCompletionColor(data.completionStatus)}
+                    />
                 </Icons>
             </ReleaseControlItem>
         </>

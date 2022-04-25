@@ -1,21 +1,19 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { HandoverGroupByView, HandoverSideSheet } from './Garden/CustomViews';
+import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
+import { statusBarData } from './Garden/components/statusItems';
+import { HandoverGroupByView } from './Garden/CustomViews';
+import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
+import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
 import {
     fieldSettings,
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus,
+    sortPackagesByStatus
 } from './Garden/utility';
-import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
-import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
-import { statusBarData } from './Garden/components/statusItems';
-import { tableConfig } from './Garden/utility/tableConfig';
-enum Tabs {
-    TABLE,
-    GARDEN,
-}
+import { filterConfig } from './utility/config/filterSetup';
+import { tableConfig } from './utility/config/tableConfig';
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
         weeklyDaily: 'Weekly',
@@ -25,54 +23,13 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<HandoverPackage>({
             CustomSidesheet: HandoverSideSheet,
             objectIdentifier: 'id',
-            defaultTab: Tabs.GARDEN,
+            defaultTab: 'garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,
             responseParser: responseParser,
         })
-        .registerFilterOptions([
-            {
-                name: 'Comm pkg status',
-                valueFormatter: ({ commpkgStatus }) => commpkgStatus,
-            },
-            {
-                name: 'MC status',
-                valueFormatter: ({ mcStatus }) => mcStatus,
-            },
-            {
-                name: 'System',
-                valueFormatter: ({ system }) => system,
-            },
-            {
-                name: 'Comm pkg responsible',
-                valueFormatter: ({ responsible }) => responsible,
-            },
-            {
-                name: 'Comm pkg discipline',
-                valueFormatter: ({ mcDisciplineCodes }) => mcDisciplineCodes,
-            },
-            {
-                name: 'Comm pkg phase',
-                valueFormatter: ({ phase }) => phase,
-            },
-            {
-                name: 'Comm pkg priority 1',
-                valueFormatter: ({ priority1 }) => priority1,
-            },
-            {
-                name: 'Comm pkg priority 2',
-                valueFormatter: ({ priority2 }) => priority2,
-            },
-            {
-                name: 'Comm pkg priority 3',
-                valueFormatter: ({ priority3 }) => priority3,
-            },
-            {
-                name: 'Area',
-                valueFormatter: ({ area }) => area,
-            },
-        ])
+        .registerFilterOptions(filterConfig)
         .registerTableOptions(tableConfig)
         .registerGardenOptions({
             gardenKey: 'RFCC' as keyof HandoverPackage, // HOW to handled this ????
@@ -90,7 +47,22 @@ export function setup(appApi: ClientApi): void {
             highlightColumn: getHighlightedColumn,
             customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
         })
-        .registerStatusItems(statusBarData);
+        .registerStatusItems(statusBarData)
+        .registerPowerBIOptions({
+            reportURI: 'pp-handover-analytics',
+            pages: [
+                {
+                    pageTitle: 'RFO Overview',
+                    pageId: 'ReportSectionb937310a77e18f67ff37',
+                    default: true,
+                },
+                { pageTitle: 'RFC overview', pageId: 'ReportSectionda03508103eaf565faf8' },
+                { pageTitle: 'Browser', pageId: 'ReportSection272f7d54d84d16689496' },
+            ],
+            options: {
+                pageLoad: true,
+            },
+        });
 }
 
 async function responseParser(response: Response) {

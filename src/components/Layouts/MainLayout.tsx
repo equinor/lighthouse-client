@@ -1,5 +1,3 @@
-import { useSideSheet } from '../../packages/Sidesheet/context/sidesheetContext';
-import { getWidth } from '../../packages/Sidesheet/Utils/getWidth';
 import { Menu } from '../Menu';
 import { ChildrenWrapper, Wrapper } from './MainLayoutStyles';
 
@@ -9,12 +7,10 @@ interface MainLayoutProps {
 }
 
 export const MainLayout = ({ children, serviceMessageActive }: MainLayoutProps): JSX.Element => {
-    const sideSheet = useSideSheet();
-
     return (
         <Wrapper serviceMessageActive={serviceMessageActive}>
             <Menu>
-                <ChildrenWrapper sideSheetWidth={getWidth(sideSheet)}>{children}</ChildrenWrapper>
+                <ChildrenWrapper>{children}</ChildrenWrapper>
             </Menu>
         </Wrapper>
     );

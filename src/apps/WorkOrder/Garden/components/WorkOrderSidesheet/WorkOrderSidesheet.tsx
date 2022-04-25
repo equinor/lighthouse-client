@@ -1,5 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { SideSheetContainer } from '@equinor/GardenUtils';
+import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
+import { isProduction } from '@equinor/portal-client';
 import { useEffect, useState } from 'react';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { WorkOrder } from '../../models';
@@ -17,10 +18,11 @@ export const WorkorderSideSheet = ({ item, actions }: WorkorderSideSheetProps): 
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
+    const procosysUrl = isProduction() ? item.url : item.url.replace('procosys', 'procosystest');
 
     useEffect(() => {
-        actions.setTitle(<>{item.workOrderNumber}</>);
-    }, [item.workOrderId]);
+        actions.setTitle(<SidesheetHeaderContent title={item.workOrderNumber} url={procosysUrl} />);
+    }, [item.workOrderNumber, procosysUrl]);
 
     const {
         material,
