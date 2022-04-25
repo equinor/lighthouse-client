@@ -14,13 +14,13 @@ export function ProgressBar({ percentWidth }: ProgressBarProps): JSX.Element {
                 width={percentWidth}
                 color="#D9F6E9"
             ></ActualProgress>
-            <ProgressNumber style={{ right: 5 }}>{`${Math.round(percentWidth)}%`}</ProgressNumber>
+            <ProgressNumber>{`${Math.round(percentWidth)}%`}</ProgressNumber>
         </ProgressBarContainer>
     );
 }
 
 const ProgressNumber = styled.div`
     position: absolute;
-    right: 5;
+    right: 5px;
     top: 0;
 `;

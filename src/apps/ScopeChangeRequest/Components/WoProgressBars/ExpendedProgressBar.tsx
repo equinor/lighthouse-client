@@ -30,7 +30,7 @@ export const ExpendedProgressBar = ({
                     {highestExpended !== 0 && <ActualProgress width={getPercentExpended(actual)} />}
                 </>
             )}
-            <ProgressNumber style={{ right: 5 }}>{Math.round(actual)}</ProgressNumber>
+            <ProgressNumber>{Math.round(actual)}</ProgressNumber>
         </ProgressBarContainer>
     );
 };
@@ -38,7 +38,7 @@ export const ExpendedProgressBar = ({
 const ProgressNumber = styled.div`
     position: absolute;
     top: 0;
-    right: 5;
+    right: 5px;
 `;
 
 const redBar = {

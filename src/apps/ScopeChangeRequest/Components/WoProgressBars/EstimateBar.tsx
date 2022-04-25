@@ -10,14 +10,13 @@ export function EstimateBar({ percentWidth, number }: EstimateBarProps): JSX.Ele
     return (
         <ProgressBarContainer>
             <ActualProgress borderColor="#0084C4" color="#CCE6F3" width={percentWidth} />
-            {/* Doesnt work with styled component? */}
-            <ProgressNumber style={{ right: 5 }}>{number && Math.round(number)}</ProgressNumber>
+            <ProgressNumber>{number && Math.round(number)}</ProgressNumber>
         </ProgressBarContainer>
     );
 }
 
 const ProgressNumber = styled.div`
     position: absolute;
-    right: 5;
+    right: 5px;
     top: 0;
 `;
