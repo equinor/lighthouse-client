@@ -8,6 +8,9 @@ import { Criteria, ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { Fragment } from 'react';
 import styled from 'styled-components';
 import { DateTime } from 'luxon';
+import { Atom, deref, swap } from '@dbeining/react-atom';
+import { EstimateBar } from '../../Components/WoProgressBars/EstimateBar';
+import { ActualProgress } from '../../Components/WoProgressBars/ProgressBarContainer.styles';
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',
@@ -167,16 +170,27 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 },
             },
         },
-
         {
             key: 'guesstimateHours',
             type: {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
+
+                    if (deref(guesstimateHoursAtom) === -1) {
+                        console.log('Calculating max guesstimate hours');
+                        const maxCount = Math.max(
+                            ...cell.column.filteredRows.map((val) => val.original.guesstimateHours)
+                        );
+                        swap(guesstimateHoursAtom, () => maxCount);
+                    }
+
+                    const count = deref(guesstimateHoursAtom);
+
                     return (
-                        <Container>
-                            {!request.guesstimateHours ? '-' : request.guesstimateHours}
-                        </Container>
+                        <EstimateBar
+                            percentWidth={(request.guesstimateHours / count) * 100}
+                            number={request.guesstimateHours ?? 0}
+                        />
                     );
                 },
             },
@@ -307,3 +321,5 @@ const Container = styled.div`
     text-align: end;
     font-variant-numeric: tabular-nums;
 `;
+
+const guesstimateHoursAtom = Atom.of<number>(-1);
