@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { unVoidRequest, voidRequest } from '../../api/ScopeChange/Request';
 import { MenuItem } from '../../Components/MenuButton';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
@@ -27,27 +27,27 @@ export function useSidesheetEffects(
 
     const voidItem: MenuItem = request?.isVoided
         ? {
-            label: 'Unvoid',
-            onClick: () => unVoidRequestMutation({ requestId }),
-            isDisabled: !canUnVoid,
-            icon: (
-                <Icon
-                    name="restore_from_trash"
-                    color={tokens.colors.interactive.primary__resting.hex}
-                />
-            ),
-        }
+              label: 'Unvoid',
+              onClick: () => unVoidRequestMutation({ requestId }),
+              isDisabled: !canUnVoid,
+              icon: (
+                  <Icon
+                      name="restore_from_trash"
+                      color={tokens.colors.interactive.primary__resting.hex}
+                  />
+              ),
+          }
         : {
-            label: 'Void',
-            onClick: () => voidRequestMutation({ requestId }),
-            isDisabled: !canVoid,
-            icon: (
-                <Icon
-                    name="delete_to_trash"
-                    color={tokens.colors.interactive.primary__resting.hex}
-                />
-            ),
-        };
+              label: 'Void',
+              onClick: () => voidRequestMutation({ requestId }),
+              isDisabled: !canVoid,
+              icon: (
+                  <Icon
+                      name="delete_to_trash"
+                      color={tokens.colors.interactive.primary__resting.hex}
+                  />
+              ),
+          };
 
     const menuItems: MenuItem[] = [
         {

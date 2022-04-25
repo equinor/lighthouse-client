@@ -1,4 +1,4 @@
-import { openSidesheet } from '@equinor/sidesheet';
+import { openSidesheet, useSideSheet } from '@equinor/sidesheet';
 import {
     createContext,
     PropsWithChildren,
@@ -9,11 +9,11 @@ import {
     useState
 } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useSideSheet } from '../../../../packages/Sidesheet/context/sidesheetContext';
 import { Fallback } from '../Components/FallbackSidesheet/Fallback';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
 import { useDataContext } from './DataProvider';
+
 
 interface LocationContext {
     activeTab: WorkspaceTab;

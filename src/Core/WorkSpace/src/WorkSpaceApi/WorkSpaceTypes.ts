@@ -1,8 +1,8 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
-import { FilterOptions } from '../../../../packages/Filter/Types';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
+import { FilterOptions } from '@equinor/filter';
+import { GardenOptions } from '@equinor/ParkView';
+import { SidesheetApi } from '@equinor/sidesheet';
 import {
     PowerBiOptions,
     PrefetchQueriesOptions,

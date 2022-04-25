@@ -1,5 +1,5 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
-import { PopoutSidesheet } from '@equinor/sidesheet';
+import { PopoutSidesheet, useSideSheet } from '@equinor/sidesheet';
 import { useNavigate } from 'react-router';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
@@ -16,9 +16,11 @@ import { DataViewWrapper, Loading, WorkspaceWrapper } from './WorkSpaceViewStyle
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const workspace = useWorkSpace();
     const { tabs, viewIsActive } = useConfiguredTabs(workspace);
+
     const { dataApi } = useDataContext();
 
     const navigate = useNavigate();
+    const { isActive } = useSideSheet();
 
     if (!viewIsActive) return <NoDataView />;
 
@@ -54,9 +56,9 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
                 <HeaderWrapper props={props} tabs={tabs} />
                 <DataViewWrapper>
                     <WorkSpaceTabs tabs={tabs} />
-                    <PopoutSidesheet />
                 </DataViewWrapper>
             </WorkspaceFilterWrapper>
+            <PopoutSidesheet />
         </WorkspaceWrapper>
     );
 }

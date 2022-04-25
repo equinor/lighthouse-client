@@ -1,21 +1,22 @@
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { ServerError } from '../../Api/Types/ServerError';
-import { Wrapper } from '../../Styles/SidesheetWrapper';
-import { ReleaseControlErrorBanner } from './ErrorBanner';
-import { Pipetest } from '../../Types/pipetest';
 // import { Viewer } from '../../../../packages/ModelViewer/ModelViewer';
 // import { useFacility } from '@equinor/portal-client';
 import { Tabs } from '@equinor/eds-core-react';
-import { CheckListTable } from './CheckListTable';
+import { SidesheetApi } from '@equinor/sidesheet';
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import styled from 'styled-components';
+import { useLocationKey } from '../../../../packages/Filter/Hooks/useLocationKey';
+import { ServerError } from '../../Api/Types/ServerError';
+import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
+import { Wrapper } from '../../Styles/SidesheetWrapper';
+import { Pipetest } from '../../Types/pipetest';
+import { ElectroView } from '../Electro/ElectroView';
 import { BoxInsulationTable } from './BoxInsulationTable';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
+import { CheckListTable } from './CheckListTable';
+import { ReleaseControlErrorBanner } from './ErrorBanner';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { SidesheetTabList } from './SidesheetTabs';
-import { ElectroView } from '../Electro/ElectroView';
-import { useQuery } from 'react-query';
-import { useLocationKey } from '../../../../packages/Filter/Hooks/useLocationKey';
-import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
+
 
 interface ReleaseControlSidesheetProps {
     item: Pipetest;

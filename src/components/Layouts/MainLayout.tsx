@@ -1,4 +1,4 @@
-import { useSideSheet } from '../../packages/Sidesheet/context/sidesheetContext';
+import { useSideSheet } from '@equinor/sidesheet';
 import { getWidth } from '../../packages/Sidesheet/Utils/getWidth';
 import { Menu } from '../Menu';
 import { ChildrenWrapper, Wrapper } from './MainLayoutStyles';
