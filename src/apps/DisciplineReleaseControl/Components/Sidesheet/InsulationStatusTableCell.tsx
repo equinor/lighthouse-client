@@ -1,8 +1,8 @@
 import { CellProps } from '@equinor/Table';
 import styled from 'styled-components';
+import { StatusCircle } from '../../../../packages/GardenUtils/src';
 import { InsulationBoxType } from '../../Types/pipetest';
 import { getElectroViewCompletionStatusColor } from '../Electro/electroViewHelpers';
-import { StatusCircle } from '../Garden/StatusCircle';
 
 export const InsulationStatusTableCell = ({
     value,

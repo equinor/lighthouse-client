@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { StatusCircle } from '../../Garden/StatusCircle';
+import { StatusCircle } from '../../../../../packages/GardenUtils/src';
 import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
 import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
 
