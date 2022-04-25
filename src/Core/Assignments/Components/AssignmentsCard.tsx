@@ -1,9 +1,5 @@
-import { deref } from '@dbeining/react-atom';
-import { AppManifest } from '@equinor/portal-client';
 import { DateTime } from 'luxon';
 import { useNavigate } from 'react-router';
-import { getApps } from '../../../apps/apps';
-import { CoreContext } from '../../WorkSpace/src/WorkSpaceApi/workspaceState';
 import { ClickableIcon } from '../../../packages/Components/Icon';
 import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
 import { Assignment } from '../Types/assignment';
@@ -15,6 +11,7 @@ import {
     RightSection,
     Wrapper,
 } from './assignmentCard.styles';
+import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
 
 interface AssignmentCardProps {
     assignment: Assignment;
@@ -26,33 +23,7 @@ export const AssignmentCard = ({ assignment }: AssignmentCardProps): JSX.Element
         new Date(assignment.dueDate).toLocaleDateString();
 
     const navigate = useNavigate();
-    //HACK: Doesnt scale
-    const apps = new Map<string, string>();
-    apps.set('ScopeChangeControl', 'change');
     const currentLocation = useLocationKey();
-
-    async function handleNotificationClick(appName: string, identifier: string): Promise<void> {
-        const actualName = apps.get(appName);
-        if (!actualName) throw 'App not found';
-        const app = getApps().find(({ shortName }) => shortName === actualName);
-        if (!app) throw 'Not found';
-        if (currentLocation === actualName) {
-            //mount sidesheet
-            await openSidesheet(identifier, app);
-        } else {
-            //HACK: table injected in url
-            navigate(`${app.groupe}/${app.shortName}/table#${app.shortName}/${identifier}`);
-        }
-    }
-
-    async function openSidesheet(identifier: string, app: AppManifest) {
-        const { idResolver, onSelect } = deref(CoreContext)[app.shortName];
-
-        const item = idResolver && (await idResolver(identifier));
-        if (!item) return;
-
-        onSelect && onSelect(item);
-    }
 
     return (
         <Wrapper>
@@ -86,9 +57,11 @@ export const AssignmentCard = ({ assignment }: AssignmentCardProps): JSX.Element
                 <ClickableIcon
                     name="chevron_right"
                     onClick={() =>
-                        handleNotificationClick(
+                        handleActionClick(
                             assignment.sourceSystem.subSystem,
-                            assignment.sourceSystem.identifier
+                            assignment.sourceSystem.identifier,
+                            navigate,
+                            currentLocation
                         )
                     }
                 />
