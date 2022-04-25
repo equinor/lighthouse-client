@@ -54,8 +54,8 @@ export const NotificationCardNew = ({
             //mount sidesheet
             await openSidesheet(identifier, app);
         } else {
-            //redirect
-            navigate(`${app.groupe}/${app.shortName}#${app.shortName}/${identifier}`);
+            //HACK: table injected in url
+            navigate(`${app.groupe}/${app.shortName}/table#${app.shortName}/${identifier}`);
         }
     }
 
