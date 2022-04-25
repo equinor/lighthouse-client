@@ -82,12 +82,11 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
 }
 
 const TabList = styled(Tabs.Panels)`
-    padding: 24px 32px;
-    overflow-y: scroll;
+    margin: 24px 32px;
 `;
 
 const Wrapper = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
-    height: 95%;
+    height: 90%;
 `;
