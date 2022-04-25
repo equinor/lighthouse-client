@@ -11,10 +11,8 @@ import {
     StepFilterText,
     WorkflowFilterDot,
 } from './Components/Workflow/Components/WorkflowFilterDot';
-import {
-    CurrentStepContainer,
-    WorkflowWarningTriangle,
-} from './Components/Workflow/Components/WorkflowWarningTriangle';
+import { WorkflowWarningTriangle } from './Components/Workflow/Components/WorkflowWarningTriangle';
+import { CurrentStepContainer } from './Components/Workflow/Styles/styles';
 import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
 import {
     checklistTagFunc,

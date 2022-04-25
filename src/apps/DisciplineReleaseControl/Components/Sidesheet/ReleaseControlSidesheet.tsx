@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { ServerError } from '../../Api/Types/ServerError';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ReleaseControlErrorBanner } from './ErrorBanner';
@@ -16,7 +15,7 @@ import { ElectroView } from '../Electro/ElectroView';
 import { useQuery } from 'react-query';
 import { useLocationKey } from '../../../../packages/Filter/Hooks/useLocationKey';
 import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
-import { tokens } from '@equinor/eds-tokens';
+import { TablesTab, WarningBanner, WarningBannerText } from './styles';
 
 interface ReleaseControlSidesheetProps {
     item: Pipetest;
@@ -129,28 +128,3 @@ export const ReleaseControlSidesheet = ({
         </Wrapper>
     );
 };
-
-// const ThreeDModel = styled.div`
-//     height: 100vh;
-// `;
-
-const TablesTab = styled.div`
-    padding-left: 8px;
-    overflow: auto;
-    overflow-y: auto;
-    max-height: ${() => window.innerHeight - 378 + 'px'};
-`;
-
-const WarningBanner = styled.div`
-    width: 100%;
-    height: 30px;
-    background: ${tokens.colors.interactive.danger__resting.hex};
-    color: ${tokens.colors.text.static_icons__primary_white.hex};
-    font-size: 14px;
-    font-weight: 400, regular;
-`;
-
-const WarningBannerText = styled.div`
-    padding-top: 8px;
-    padding-left: 8px;
-`;
