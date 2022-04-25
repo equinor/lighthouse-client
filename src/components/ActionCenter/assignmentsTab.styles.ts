@@ -19,3 +19,11 @@ export const Assignments = styled.div`
     gap: 1em;
     padding: 1em 0em;
 `;
+
+export const Transition = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;

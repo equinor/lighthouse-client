@@ -1,7 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useAssignments } from '../../Core/Assignments/Hooks/useAssignments';
 import { SidesheetActions } from '../../packages/Notifications sidesheet/NotificationsSidesheet';
 import { AssignmentsTab } from './AssignmentsTab';
 import { NotificationsTab } from './NotificationsTab';
@@ -14,9 +13,6 @@ export function ActionCenterSidesheet({
     actions: { setTitle, closeSidesheet },
 }: ActionCenterSidesheetProps): JSX.Element {
     const [activeTab, setActiveTab] = useState<number>(0);
-
-    //Preloads assignments
-    useAssignments();
 
     useEffect(() => {
         activeTab === 0 ? setTitle('Notifications') : setTitle('Assignments');
@@ -36,7 +32,9 @@ export function ActionCenterSidesheet({
                         <Tabs.Panel>
                             <NotificationsTab onClickNotification={closeSidesheet} />
                         </Tabs.Panel>
-                        <Tabs.Panel>{activeTab === 1 && <AssignmentsTab />}</Tabs.Panel>
+                        <Tabs.Panel>
+                            <AssignmentsTab />
+                        </Tabs.Panel>
                     </Tabs.Panels>
                 </Tabs>
             </Wrapper>

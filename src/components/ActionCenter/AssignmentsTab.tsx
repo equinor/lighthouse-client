@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 
 import { IconMenu } from '../../apps/ScopeChangeRequest/Components/MenuButton';
 import { AssignmentCard } from '../../Core/Assignments/Components/AssignmentsCard';
-import { ActiveOrigins, Assignments, Header } from './assignmentsTab.styles';
+import { ActiveOrigins, Assignments, Header, Transition } from './assignmentsTab.styles';
 import { useAssignments } from '../../Core/Assignments/Hooks/useAssignments';
 
 export function AssignmentsTab(): JSX.Element {
@@ -25,13 +25,13 @@ export function AssignmentsTab(): JSX.Element {
     const [isGroupedBySource, setIsGroupedBySource] = useState(true);
 
     const handleClick = (sourceSystem: string) =>
-        setActiveNotifications((prev) =>
+        setActiveAssignments((prev) =>
             prev.includes(sourceSystem)
                 ? prev.filter((x) => x !== sourceSystem)
                 : [...prev, sourceSystem]
         );
 
-    const isActive = (key: string) => activeNotifications.includes(key);
+    const isActive = (key: string) => activeAssignments.includes(key);
 
     const getCountForAppName = (x: string) =>
         assignments &&
@@ -40,14 +40,22 @@ export function AssignmentsTab(): JSX.Element {
             0
         );
 
-    const [activeNotifications, setActiveNotifications] = useState<string[]>(origins ?? []);
+    const [activeAssignments, setActiveAssignments] = useState<string[]>(origins ?? []);
 
     if (error) {
-        return <div>Failed to load assignments</div>;
+        return (
+            <Transition>
+                <div>Failed to load assignments</div>
+            </Transition>
+        );
     }
 
     if (isLoading) {
-        return <CircularProgress size={48} />;
+        return (
+            <Transition>
+                <CircularProgress size={48} />
+            </Transition>
+        );
     }
 
     return (
@@ -86,7 +94,7 @@ export function AssignmentsTab(): JSX.Element {
                 </Header>
                 {isGroupedBySource ? (
                     <Accordion>
-                        {activeNotifications.map((applicationTitle) => (
+                        {activeAssignments.map((applicationTitle) => (
                             <Accordion.Item key={applicationTitle}>
                                 <Accordion.Header chevronPosition="right">
                                     {capitalize(applicationTitle)}
@@ -108,9 +116,13 @@ export function AssignmentsTab(): JSX.Element {
                 ) : (
                     <>
                         {assignments &&
-                            assignments.map((assignment) => (
-                                <AssignmentCard key={assignment.id} assignment={assignment} />
-                            ))}
+                            assignments
+                                .filter(({ sourceSystem }) =>
+                                    activeAssignments.includes(sourceSystem.subSystem)
+                                )
+                                .map((assignment) => (
+                                    <AssignmentCard key={assignment.id} assignment={assignment} />
+                                ))}
                     </>
                 )}
             </Assignments>
