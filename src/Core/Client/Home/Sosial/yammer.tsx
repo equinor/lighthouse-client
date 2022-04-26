@@ -1,4 +1,3 @@
-import { Typography } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 
 export const Header = styled.div`
@@ -7,9 +6,6 @@ export const Header = styled.div`
 export const YammerFeed = (): JSX.Element => {
     return (
         <>
-            <Header>
-                <Typography variant="h5">Social</Typography>
-            </Header>
             <iframe
                 name="embed-feed"
                 title="Yammer"

@@ -7,13 +7,13 @@ import {
     applyEDSTheme,
 } from '../Inputs/SearchableDropdown/applyEds';
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { getFunctionalRoles } from '../../api/PCS/getFunctionalRoles';
 import { sort } from '../../functions/sort';
 import { useCancellationToken } from '../../hooks/cancellationToken/useCancellationToken';
 import { usePcsSearch } from '../../hooks/Search/usePcsSearch';
-import { useInfiniteCachedQuery } from '../../hooks/React-Query/useInfiniteCachedQuery';
-import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { useFacility } from '../../../../Core/Client/Hooks';
+import { ProCoSysQueries } from '../../keys/ProCoSysQueries';
+import { useQuery } from 'react-query';
+import { FunctionalRole } from '../../types/ProCoSys/functionalRole';
 
 interface PCSLinkProps {
     onSelect: (selected?: TypedSelectOption | null) => void;
@@ -23,11 +23,12 @@ interface PCSLinkProps {
 export const PCSPersonRoleSearch = ({ isDisabled, onSelect }: PCSLinkProps): JSX.Element => {
     const { abort, getSignal } = useCancellationToken();
     const { procosysPlantId } = useFacility();
-    const { functionalRoles: functionalRolesKey } = proCoSysQueryKeys();
     const { searchPCS } = usePcsSearch();
 
-    const { data, refetch } = useInfiniteCachedQuery(functionalRolesKey, () =>
-        getFunctionalRoles(procosysPlantId)
+    const { getFunctionalRolesQuery } = ProCoSysQueries;
+
+    const { data, refetch } = useQuery<unknown, unknown, FunctionalRole[]>(
+        getFunctionalRolesQuery(procosysPlantId)
     );
 
     const loadOptions = async (

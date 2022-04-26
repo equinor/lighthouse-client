@@ -33,6 +33,7 @@ export interface CustomGroupView<T> {
 export interface CustomHeaderView<T> {
     garden: GardenGroups<T>;
     columnIndex: number;
+    columnIsExpanded: boolean;
     groupByKey?: string;
 }
 
