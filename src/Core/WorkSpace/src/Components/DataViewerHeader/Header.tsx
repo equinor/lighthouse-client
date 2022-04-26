@@ -1,7 +1,8 @@
 import { useFactory } from '@equinor/DataFactory';
+import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
-import { Icon } from '@equinor/lighthouse-components';
+import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
@@ -21,7 +22,7 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar
+    TitleBar,
 } from './HeaderStyles';
 
 type VoidFunction = () => void;
@@ -143,7 +144,7 @@ export const CompletionViewHeader = ({
                         color={
                             dataApi?.isStale
                                 ? tokens.colors.infographic.primary__energy_red_100.hex
-                                : PRIMARY_INTERACTIVE
+                                : 'grey'
                         }
                         aria-selected={false}
                         title={
@@ -152,7 +153,13 @@ export const CompletionViewHeader = ({
                                 : `Updated: ${timestamp}`
                         }
                         onClick={() => dataApi.refetch()}
-                    />
+                    >
+                        {dataApi.isFetching ? (
+                            <CircularProgress size={24} />
+                        ) : (
+                            <ClickableIcon size={24} name="refresh" />
+                        )}
+                    </TabButton>
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton
