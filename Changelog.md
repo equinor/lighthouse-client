@@ -15,7 +15,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [ScopeChange] - Fix scrollbar tabs
 - [ScopeChange] - No attachments linked 
 - [Core] - Removal of unused packages and package bumps.
-- [PipingAndHeatTrace] - Insulation boxes tab.
+- [PipingAndHeatTrace] - Insulation boxes tab and Single line diagram
 - [Portal] - Notifications and assignments
 - [Workspace] - Support for PowerBi reports in workspace 
 - [Garden] - Grouping Enhancements 
