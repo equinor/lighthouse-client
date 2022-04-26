@@ -31,6 +31,8 @@ import { useWorkflowSigning } from '../../../hooks/mutations/useWorkflowSigning'
 import { swap, useAtom } from '@dbeining/react-atom';
 import { actionWithCommentAtom } from '../../Workflow/Criteria/Components/WorkflowCriteria/WorkflowCriteria';
 import { SignWithComment } from '../../Workflow/Criteria/Components/SignWithComment/SignWithComment';
+import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Workflow/Utils/dateFormatting';
+import { AddContributor } from '../../Workflow/Criteria/Components/AddContributor';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -118,7 +120,7 @@ function statusFunc(criteria: Criteria, isCurrentStep: boolean): CriteriaStatus 
     }
 }
 
-const WorkflowWithLines = () => {
+export const WorkflowWithLines = () => {
     const { request } = useScopeChangeContext();
     return (
         <>
@@ -224,6 +226,15 @@ const CriteriaRender = ({
             stepId: stepId,
         }));
 
+    const setShowContributorPicker = () =>
+        swap(actionWithCommentAtom, () => ({
+            action: 'AddContributor' as const,
+            buttonText: 'Add',
+            closeRequest: false,
+            criteriaId: criteria.id,
+            stepId: stepId,
+        }));
+
     const iconGrey = tokens.colors.text.static_icons__tertiary.hex;
 
     function makeSignOptions(): MenuItem[] {
@@ -288,6 +299,7 @@ const CriteriaRender = ({
             actions.push({
                 label: CriteriaActions.AddContributor,
                 icon: <Icon name="group_add" color={iconGrey} />,
+                onClick: () => setShowAddContributor(true),
                 // onClick: toggleContributorSelector,
                 isDisabled: !canAddContributor,
             });
@@ -296,6 +308,11 @@ const CriteriaRender = ({
     }
 
     const state = useAtom(actionWithCommentAtom);
+
+    const date = convertUtcToLocalDate(new Date(criteria.signedAtUtc || new Date()));
+    const formattedDate = dateToDateTimeFormat(date);
+
+    const [showAddContributor, setShowAddContributor] = useState(false);
 
     return (
         <WorkflowWrapper key={criteria.id}>
@@ -309,18 +326,31 @@ const CriteriaRender = ({
             <WorkflowRow rowNumber={1}>
                 <RowContent>
                     {state && state.criteriaId === criteria.id ? (
-                        <SignWithComment
-                            action={state.action}
-                            buttonText={state.buttonText}
-                            closeRequest={state.closeRequest}
-                            criteriaId={state.criteriaId}
-                            stepId={state.stepId}
-                        />
+                        <>
+                            {state.action === 'Approved' || state.action === 'Rejected' ? (
+                                <SignWithComment
+                                    action={state.action}
+                                    buttonText={state.buttonText}
+                                    closeRequest={state.closeRequest}
+                                    criteriaId={state.criteriaId}
+                                    stepId={state.stepId}
+                                />
+                            ) : (
+                                <p></p>
+                            )}
+                        </>
                     ) : (
                         <>
                             <span>
                                 <div>{name}</div>
-                                <ValueDescription>{criteria.valueDescription}</ValueDescription>
+                                {criteria.signedAtUtc ? (
+                                    <DetailText>
+                                        <div>{`${formattedDate} - ${criteria?.signedBy?.firstName} ${criteria?.signedBy?.lastName} `}</div>
+                                        {criteria.signedComment && <q>{criteria.signedComment}</q>}
+                                    </DetailText>
+                                ) : (
+                                    <DetailText>{criteria.valueDescription}</DetailText>
+                                )}
                             </span>
                             <CriteriaActionBar
                                 makeMoreActions={makeMoreActions}
@@ -330,6 +360,11 @@ const CriteriaRender = ({
                     )}
                 </RowContent>
             </WorkflowRow>
+            {showAddContributor && (
+                <WorkflowRow rowNumber={2}>
+                    <AddContributor close={() => void 0} stepId={stepId} />
+                </WorkflowRow>
+            )}
             {isLastCriteria && (
                 <>
                     {contributors.map((contributor, index) => (
@@ -342,6 +377,9 @@ const CriteriaRender = ({
         </WorkflowWrapper>
     );
 };
+const DetailText = styled.div`
+    font-size: 14px;
+`;
 
 interface CriteriaActionBarProps {
     makeSignOptions: () => MenuItem[];

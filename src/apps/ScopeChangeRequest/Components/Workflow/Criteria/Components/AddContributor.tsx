@@ -9,15 +9,14 @@ import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { TypedSelectOption } from '../../../../api/Search/searchType';
-import { WorkflowStep } from '../../../../types/scopeChangeRequest';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
 
 interface AddContributorProps {
-    step: WorkflowStep;
+    stepId: string;
     close: () => void;
 }
 
-export const AddContributor = ({ close, step }: AddContributorProps): JSX.Element => {
+export const AddContributor = ({ close, stepId }: AddContributorProps): JSX.Element => {
     const [contributor, setContributor] = useState<TypedSelectOption | null>(null);
     const [text, setText] = useState<string>('');
     const { request } = useScopeChangeContext();
@@ -34,7 +33,7 @@ export const AddContributor = ({ close, step }: AddContributorProps): JSX.Elemen
 
     const { mutate, isLoading } = useScopeChangeMutation(
         request.id,
-        workflowKeys.addContributorKey(step.id),
+        workflowKeys.addContributorKey(stepId),
         submit,
         {
             onSuccess: () => close(),

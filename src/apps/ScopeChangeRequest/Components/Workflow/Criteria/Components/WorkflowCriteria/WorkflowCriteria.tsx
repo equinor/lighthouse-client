@@ -266,7 +266,7 @@ export const WorkflowCriteria = ({
 
 interface SigningAction {
     buttonText: string;
-    action: 'Approved' | 'Rejected';
+    action: 'Approved' | 'Rejected' | 'AddContributor' | 'Reassign';
     closeRequest: boolean;
     criteriaId: string;
     stepId: string;
