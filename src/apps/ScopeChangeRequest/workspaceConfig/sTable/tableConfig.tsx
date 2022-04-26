@@ -93,12 +93,12 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     ],
     headers: [
         { key: 'sequenceNumber', title: 'Id', width: 60 },
-        { key: 'title', title: 'Title' },
+        { key: 'title', title: 'Title', width: 150 },
         { key: 'phase', title: 'Phase', width: 60 },
-        { key: 'workflowSteps', title: 'Workflow' },
-        { key: 'guesstimateHours', title: 'Guesstimate', width: 120 },
-        { key: 'estimatedChangeHours', title: 'Estimate hours', width: 120 },
-        { key: 'actualChangeHours', title: 'Actual', width: 80 },
+        { key: 'workflowSteps', title: 'Workflow', width: 110 },
+        { key: 'guesstimateHours', title: 'Guess mhrs', width: 120 },
+        { key: 'estimatedChangeHours', title: 'Est mhrs', width: 120 },
+        { key: 'actualChangeHours', title: 'Exp mhrs', width: 120 },
         { key: 'changeCategory', title: 'Change category' },
         { key: 'originSource', title: 'Change origin' },
         { key: 'createdAtUtc', title: 'Created at' },
@@ -109,7 +109,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'description', title: 'Description' },
         { key: 'state', title: 'State', width: 80 },
         { key: 'guesstimateDescription', title: 'Guesstimate description' },
-        { key: 'currentWorkflowStep', title: 'Next ' },
+        { key: 'currentWorkflowStep', title: 'Next', width: 220 },
         {
             key: 'hasComments',
             title: {
