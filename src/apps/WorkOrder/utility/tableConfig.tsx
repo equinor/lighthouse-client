@@ -35,6 +35,7 @@ const hiddenColumns: (keyof WorkOrder)[] = [
 ];
 export const tableConfig: TableOptions<WorkOrder> = {
     objectIdentifierKey: 'workOrderNumber',
+    itemSize: 32,
     hiddenColumns,
     columnOrder: [
         'workOrderNumber',
@@ -138,11 +139,12 @@ export const tableConfig: TableOptions<WorkOrder> = {
         },
         {
             key: 'plannedStartDate',
-            type: 'Date',
+
+            type: 'YearAndWeek',
         },
         {
             key: 'plannedFinishDate',
-            type: 'Date',
+            type: 'YearAndWeek',
         },
         {
             key: 'estimatedHours',

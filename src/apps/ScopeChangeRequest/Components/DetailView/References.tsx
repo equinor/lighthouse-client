@@ -35,6 +35,14 @@ export const RelatedObjects = ({
 }: RelatedObjectsProps): JSX.Element => {
     return (
         <Wrapper>
+            {tags.length === 0 &&
+                commPkgs.length === 0 &&
+                systems.length === 0 &&
+                documents.length === 0 &&
+                disciplines.length === 0 &&
+                areas.length === 0 && (
+                    <NoReferences>No references has been linked yet.</NoReferences>
+                )}
             {tags && tags.length > 0 && (
                 <ChevronList title={`Tags (${tags?.length})`}>
                     <>
@@ -95,6 +103,11 @@ export const RelatedObjects = ({
         </Wrapper>
     );
 };
+
+const NoReferences = styled.div`
+    font-size: 14px;
+    font-weight: 400;
+`;
 
 const Wrapper = styled.div`
     display: flex;

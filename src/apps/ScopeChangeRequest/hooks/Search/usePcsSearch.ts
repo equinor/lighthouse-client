@@ -1,5 +1,3 @@
-import { getFunctionalRoles } from '../../api/PCS/getFunctionalRoles';
-import { getSystems } from '../../api/PCS/getSystems';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { searchTags } from '../../api/Search/PCS/searchTags';
@@ -11,11 +9,13 @@ import { searchSWCR } from '../../api/Search/PCS/searchSWCR';
 import { searchAreas } from '../../api/Search/PCS/searchArea';
 import { searchPerson } from '../../api/Search/PCS/searchPerson';
 import { searchNCR } from '../../api/Search/PCS/searchNcr';
-import { useInfiniteCachedQuery } from '../React-Query/useInfiniteCachedQuery';
 import Fuse from 'fuse.js';
-import { getDisciplines } from '../../api/PCS/getDisciplines';
-import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { useFacility } from '../../../../Core/Client/Hooks';
+import { ProCoSysQueries } from '../../keys/ProCoSysQueries';
+import { useQuery } from 'react-query';
+import { FunctionalRole } from '../../types/ProCoSys/functionalRole';
+import { System } from '../../types/ProCoSys/system';
+import { Discipline } from '../../types/ProCoSys/discipline';
 
 interface PCSSearch {
     searchPCS: (
@@ -33,25 +33,21 @@ interface PCSSearch {
 export function usePcsSearch(): PCSSearch {
     const { procosysPlantId } = useFacility();
 
-    const {
-        disciplines: disciplinesKey,
-        functionalRoles: functionalRolesKey,
-        systems: systemsKey,
-    } = proCoSysQueryKeys();
+    const { getDisciplinesQuery, getFunctionalRolesQuery, getSystemsQuery } = ProCoSysQueries;
 
-    const { data: systems, refetch: refetchSystems } = useInfiniteCachedQuery(systemsKey, () =>
-        getSystems(procosysPlantId)
+    const { data: disciplines, refetch: refetchDisciplines } = useQuery<
+        unknown,
+        unknown,
+        Discipline[]
+    >(getDisciplinesQuery(procosysPlantId));
+    const { data: systems, refetch: refetchSystems } = useQuery<unknown, unknown, System[]>(
+        getSystemsQuery(procosysPlantId)
     );
-
-    const { data: functionalRoles, refetch: refetchFunctionalRoles } = useInfiniteCachedQuery(
-        functionalRolesKey,
-        () => getFunctionalRoles(procosysPlantId)
-    );
-
-    const { data: disciplines, refetch: refetchDisciplines } = useInfiniteCachedQuery(
-        disciplinesKey,
-        () => getDisciplines(procosysPlantId)
-    );
+    const { data: functionalRoles, refetch: refetchFunctionalRoles } = useQuery<
+        unknown,
+        unknown,
+        FunctionalRole[]
+    >(getFunctionalRolesQuery(procosysPlantId));
 
     const { procosys } = httpClient();
 

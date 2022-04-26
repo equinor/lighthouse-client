@@ -1,5 +1,10 @@
 import { useRef, useState } from 'react';
-import styled from 'styled-components';
+import {
+    WarningTriangleContainer,
+    WarningTriangleInner,
+    WarningTriangleNoOutline,
+    WarningTriangleOutline,
+} from '../Styles/styles';
 import { WorkflowPopover } from './WorkflowPopover';
 
 interface WorkflowDotProps {
@@ -41,47 +46,3 @@ export const WorkflowWarningTriangle = ({
         </WarningTriangleContainer>
     );
 };
-
-export const WarningTriangleContainer = styled.div`
-    margin-left: 5px;
-    font-size: 11px;
-    color: '#fff';
-    line-height: 16px;
-    text-align: center;
-    cursor: pointer;
-`;
-
-export const WarningTriangleOutline = styled.div`
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-color: transparent transparent #fff transparent;
-    border-width: 0 7px 14px 7px;
-`;
-
-export const WarningTriangleInner = styled.div`
-    width: 0;
-    height: 0;
-    border-style: solid;
-    position: relative;
-    border-width: 0 5px 10px 5px;
-    border-color: transparent transparent #eb0000 transparent;
-    right: 5px;
-    top: 3px;
-`;
-
-export const WarningTriangleNoOutline = styled.div`
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-color: transparent transparent #eb0000 transparent;
-    border-width: 0 7px 14px 7px;
-    margin-right: 8px;
-    padding-top: 2px;
-`;
-
-export const CurrentStepContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-`;

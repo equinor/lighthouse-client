@@ -6,8 +6,10 @@ import { WorkflowCompact } from './WorkflowCompact';
 import { getLastSigned } from './getLastSigned';
 import { Criteria, ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { Fragment } from 'react';
-import styled from 'styled-components';
 import { DateTime } from 'luxon';
+import { Atom, deref, swap } from '@dbeining/react-atom';
+import { EstimateBar } from '../../Components/WoProgressBars/EstimateBar';
+import { ExpendedProgressBar } from '../../Components/WoProgressBars/ExpendedProgressBar';
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',
@@ -40,7 +42,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                 const lastSigned = getLastSigned(request);
                 if (!lastSigned) return '-';
-                return <div>{lastSigned.toRelative()}</div>;
+                return <div>{lastSigned.toRelative({ locale: 'en-GB' })}</div>;
             },
             id: 'LastSigned',
             width: 180,
@@ -91,12 +93,12 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     ],
     headers: [
         { key: 'sequenceNumber', title: 'Id', width: 60 },
-        { key: 'title', title: 'Title' },
+        { key: 'title', title: 'Title', width: 150 },
         { key: 'phase', title: 'Phase', width: 60 },
-        { key: 'workflowSteps', title: 'Workflow' },
-        { key: 'guesstimateHours', title: 'Guesstimate', width: 120 },
-        { key: 'estimatedChangeHours', title: 'Estimate hours', width: 120 },
-        { key: 'actualChangeHours', title: 'Actual', width: 80 },
+        { key: 'workflowSteps', title: 'Workflow', width: 110 },
+        { key: 'guesstimateHours', title: 'Guess mhrs', width: 120 },
+        { key: 'estimatedChangeHours', title: 'Est mhrs', width: 120 },
+        { key: 'actualChangeHours', title: 'Exp mhrs', width: 120 },
         { key: 'changeCategory', title: 'Change category' },
         { key: 'originSource', title: 'Change origin' },
         { key: 'createdAtUtc', title: 'Created at' },
@@ -107,7 +109,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'description', title: 'Description' },
         { key: 'state', title: 'State', width: 80 },
         { key: 'guesstimateDescription', title: 'Guesstimate description' },
-        { key: 'currentWorkflowStep', title: 'Next ' },
+        { key: 'currentWorkflowStep', title: 'Next', width: 220 },
         {
             key: 'hasComments',
             title: {
@@ -140,7 +142,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     return (
                         <>
                             {request.createdAtUtc
-                                ? DateTime.fromJSDate(new Date(request.createdAtUtc)).toRelative()
+                                ? DateTime.fromJSDate(new Date(request.createdAtUtc)).toRelative({
+                                    locale: 'en-GB',
+                                })
                                 : '-'}
                         </>
                     );
@@ -156,23 +160,35 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     return (
                         <>
                             {request.modifiedAtUtc
-                                ? DateTime.fromJSDate(new Date(request.modifiedAtUtc)).toRelative()
+                                ? DateTime.fromJSDate(new Date(request.modifiedAtUtc)).toRelative({
+                                    locale: 'en-GB',
+                                })
                                 : '-'}
                         </>
                     );
                 },
             },
         },
-
         {
             key: 'guesstimateHours',
             type: {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
+
+                    if (deref(guesstimateHoursMaxAtom) === -1) {
+                        const maxCount = Math.max(
+                            ...cell.column.filteredRows.map((val) => val.original.guesstimateHours)
+                        );
+                        swap(guesstimateHoursMaxAtom, () => maxCount);
+                    }
+
+                    const count = deref(guesstimateHoursMaxAtom);
+
                     return (
-                        <Container>
-                            {!request.guesstimateHours ? '-' : request.guesstimateHours}
-                        </Container>
+                        <EstimateBar
+                            percentWidth={(request.guesstimateHours / count) * 100}
+                            number={request.guesstimateHours ?? 0}
+                        />
                     );
                 },
             },
@@ -182,10 +198,22 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
+
+                    if (deref(actualHoursMaxAtom) === -1) {
+                        const maxCount = Math.max(
+                            ...cell.column.filteredRows.map((val) => val.original.actualChangeHours)
+                        );
+                        swap(actualHoursMaxAtom, () => maxCount);
+                    }
+
+                    const highestExpendedHours = deref(actualHoursMaxAtom);
+
                     return (
-                        <Container>
-                            {!request.actualChangeHours ? '-' : request.actualChangeHours}
-                        </Container>
+                        <ExpendedProgressBar
+                            actual={request.actualChangeHours}
+                            estimate={request.estimatedChangeHours}
+                            highestExpended={highestExpendedHours}
+                        />
                     );
                 },
             },
@@ -195,10 +223,25 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
+
+                    if (deref(estimateHoursMaxAtom) === -1) {
+                        const maxCount = Math.max(
+                            ...cell.column.filteredRows.map(
+                                (val) => val.original.estimatedChangeHours
+                            )
+                        );
+                        swap(estimateHoursMaxAtom, () => maxCount);
+                    }
+
+                    const highestEstimateHours = deref(estimateHoursMaxAtom);
+
                     return (
-                        <Container>
-                            {!request.estimatedChangeHours ? '-' : request.estimatedChangeHours}
-                        </Container>
+                        <EstimateBar
+                            percentWidth={
+                                (request.estimatedChangeHours / highestEstimateHours) * 100
+                            }
+                            number={request.estimatedChangeHours ?? 0}
+                        />
                     );
                 },
             },
@@ -299,7 +342,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     ],
 };
 
-const Container = styled.div`
-    text-align: end;
-    font-variant-numeric: tabular-nums;
-`;
+const guesstimateHoursMaxAtom = Atom.of<number>(-1);
+const estimateHoursMaxAtom = Atom.of<number>(-1);
+const actualHoursMaxAtom = Atom.of<number>(-1);

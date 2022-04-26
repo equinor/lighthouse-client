@@ -1,10 +1,8 @@
 import { useIsFetching } from 'react-query';
-import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
+import { ProCoSysBaseKey } from '../../keys/ProCoSysQueries';
 
 export function useIsReferencesLoading(): boolean {
-    const { baseKey } = proCoSysQueryKeys();
-
-    const referencesFetching = useIsFetching(baseKey, { active: true });
+    const referencesFetching = useIsFetching(ProCoSysBaseKey, { active: true });
 
     return referencesFetching > 0;
 }

@@ -18,7 +18,6 @@ export const HandoverItemWrapper = styled.div<HandoverItemProps>`
     position: relative;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
-    min-width: 150px;
     cursor: pointer;
     height: 100%;
     border-radius: 5px;

@@ -77,7 +77,7 @@ interface ErrorFallbackSidesheetProps {
     routeName?: string;
 }
 
-function ErrorFallbackSidesheet({
+export function ErrorFallbackSidesheet({
     error,
     resetErrorBoundary,
     routeName,
