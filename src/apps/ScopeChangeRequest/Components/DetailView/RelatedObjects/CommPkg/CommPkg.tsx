@@ -3,21 +3,22 @@ import styled from 'styled-components';
 import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { Wrapper } from '../WrapperStyles';
 import { ScopeChangeCommissioningPackage } from '../../../../types/scopeChangeRequest';
-import { getCommPkgById } from '../../../../api/PCS/getCommPkgById';
-import { proCoSysQueryKeys } from '../../../../keys/proCoSysQueryKeys';
 import { CommPkgIcon } from './commPkgIcon';
-import { useInfiniteCachedQuery } from '../../../../hooks/React-Query/useInfiniteCachedQuery';
+import { ProCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { useQuery } from 'react-query';
+import { CommissioningPackage } from '../../../../types/ProCoSys/CommissioningPackage';
 
 interface CommPkgProps {
     commPkg: ScopeChangeCommissioningPackage;
 }
 
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
-    const { commPkg: commPkgKey } = proCoSysQueryKeys();
     const { procosysPlantId } = useFacility();
 
-    const { data } = useInfiniteCachedQuery(commPkgKey(commPkg.procosysNumber), () =>
-        getCommPkgById(procosysPlantId, commPkg.procosysId)
+    const { getCommPkgByCodeQuery } = ProCoSysQueries;
+
+    const { data } = useQuery<unknown, unknown, CommissioningPackage>(
+        getCommPkgByCodeQuery(commPkg.procosysId, procosysPlantId)
     );
 
     return (

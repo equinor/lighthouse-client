@@ -9,10 +9,10 @@ import {
 import { Pipetest } from '../../Types/pipetest';
 import { CustomItemView } from '../../../../components/ParkView/Models/gardenOptions';
 import { getGardenItemColor, getGardenItemCompletionColor } from './gardenFunctions';
-import { StatusCircle } from './StatusCircle';
 import { useParkViewContext } from '../../../../components/ParkView/Context/ParkViewProvider';
 import { memo } from 'react';
 import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';
+import { StatusCircle } from '../../../../packages/GardenUtils/src';
 
 export function ReleaseControlExpandedView({ data }: { data: Pipetest }): JSX.Element {
     return (
@@ -46,7 +46,10 @@ const ReleaseControlGardenItem = ({
                     {!data.pipetestProcessDoneInRightOrder && (
                         <WorkflowWarningTriangle outline={true} />
                     )}
-                    <StatusCircle statusColor={getGardenItemCompletionColor(data)} />
+                    <StatusCircle
+                        statusColor={getGardenItemCompletionColor(data.completionStatus)}
+                        size={12}
+                    />
                 </Icons>
             </ReleaseControlItem>
         </>

@@ -40,6 +40,7 @@ export function FilterSelector<T>(): JSX.Element | null {
                 ? allOptions
                       .filter(filterGroupKey)
                       .map((groupKey) => fieldSettings?.[groupKey]?.label || groupKey)
+                      .sort()
                 : [],
 
         [data, fieldSettings, filterGroupKey, allOptions]
@@ -76,7 +77,6 @@ export function FilterSelector<T>(): JSX.Element | null {
         },
         [fieldSettings, setGardenKey, setGroupKeys]
     );
-
     if (!data) return null;
 
     return (
@@ -94,7 +94,7 @@ export function FilterSelector<T>(): JSX.Element | null {
             />
             <Separator>then</Separator>
 
-            {groupByKeys.map((groupByKey, index) => {
+            {groupByKeys.sort().map((groupByKey, index) => {
                 return (
                     <Fragment key={index}>
                         <SingleSelect

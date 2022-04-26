@@ -16,6 +16,7 @@ import {
     SectionWrapper,
     SiblingWrapper,
 } from './RequestTab.styles';
+import styled from 'styled-components';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -71,7 +72,9 @@ export function RequestTab(): JSX.Element {
                     </InnerSection>
                     <InnerSection>
                         <SectionHeading>Attachments</SectionHeading>
-
+                        {request.attachments.length === 0 && (
+                            <NoAttachments>No attachments has been uploaded yet.</NoAttachments>
+                        )}
                         {requestAccess.canPatch && <HotUpload />}
                         <Attachments attachments={request.attachments} requestId={request.id} />
                     </InnerSection>
@@ -80,3 +83,8 @@ export function RequestTab(): JSX.Element {
         </Wrapper>
     );
 }
+
+const NoAttachments = styled.div`
+    font-size: 14px;
+    font-weight: 400;
+`;

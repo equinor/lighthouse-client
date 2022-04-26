@@ -5,7 +5,8 @@ import { useElementData } from '../../../../packages/Utils/Hooks/useElementData'
 import { useDataContext } from '../Context/DataProvider';
 
 const Wrapper = styled.section`
-    /* overflow: scroll; */
+    margin: 16px;
+    overflow-y: auto;
 `;
 
 export const ListTab = (): JSX.Element => {
@@ -16,7 +17,7 @@ export const ListTab = (): JSX.Element => {
     const data = getFilteredData() as TableData[];
     const { tableOptions } = useDataContext();
 
-    const [ref, { awaitableHeight }] = useElementData();
+    const [ref, { awaitableHeight,  }] = useElementData();
 
     const columns = useColumns(data[0], {
         customCellView: tableOptions?.customCellView,
@@ -41,7 +42,7 @@ export const ListTab = (): JSX.Element => {
                     groupByFn: defaultGroupByFn,
                     onSelect: tableOptions?.onSelect,
                 }}
-                height={awaitableHeight - 70}
+                height={awaitableHeight - 58}
                 itemSize={tableOptions?.itemSize}
             />
         </Wrapper>
