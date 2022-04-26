@@ -26,4 +26,5 @@ export interface ClientApi extends AppManifest {
     createWorkSpace<T>(options: WorkspaceOptions<T>): WorkSpaceApi<T>;
     createPageViewer(): PageViewerInstance;
     createPowerBiViewer(): PowerBIViewerInstance;
+    hasSidesheet?: boolean;
 }

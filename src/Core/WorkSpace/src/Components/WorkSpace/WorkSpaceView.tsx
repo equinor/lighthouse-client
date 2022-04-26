@@ -1,6 +1,7 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { PopoutSidesheet, useSideSheet } from '@equinor/sidesheet';
 import { useNavigate } from 'react-router';
+import styled from 'styled-components';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
 import { WorkspaceFilterWrapper } from '../../Context/WorkspaceFilterWrapper';
@@ -20,7 +21,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const { dataApi } = useDataContext();
 
     const navigate = useNavigate();
-    const { isActive } = useSideSheet();
+    const { activeWidth, minWidth, isMinimized } = useSideSheet();
 
     if (!viewIsActive) return <NoDataView />;
 
@@ -52,13 +53,29 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     return (
         <WorkspaceWrapper>
+            {!props.hasSidesheet && (
+                <Wrapper>
+                    <PopoutSidesheet />
+                </Wrapper>
+            )}
             <WorkspaceFilterWrapper filterOptions={workspace.filterOptions || []}>
-                <HeaderWrapper props={props} tabs={tabs} />
-                <DataViewWrapper>
+                <HeaderWrapper
+                    props={props}
+                    tabs={tabs}
+                    sideSheetWidth={isMinimized ? activeWidth : 0}
+                />
+                <DataViewWrapper sideSheetWidth={activeWidth}>
                     <WorkSpaceTabs tabs={tabs} />
                 </DataViewWrapper>
             </WorkspaceFilterWrapper>
-            <PopoutSidesheet />
         </WorkspaceWrapper>
     );
 }
+
+const Wrapper = styled.div`
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+`;

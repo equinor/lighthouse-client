@@ -1,7 +1,8 @@
 import { useFactory } from '@equinor/DataFactory';
+import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
-import { Icon } from '@equinor/lighthouse-components';
+import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
@@ -151,7 +152,13 @@ export const CompletionViewHeader = ({
                                 : `Updated: ${timestamp}`
                         }
                         onClick={() => dataApi.refetch()}
-                    />
+                    >
+                        {dataApi?.isFetching ? (
+                            <CircularProgress size={24} />
+                        ) : (
+                            <ClickableIcon size={24} name="refresh" />
+                        )}
+                    </TabButton>
 
                     {activeTab !== 'powerBi' ? (
                         <TabButton

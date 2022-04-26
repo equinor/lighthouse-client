@@ -14,7 +14,6 @@ import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
 import { useDataContext } from './DataProvider';
 
-
 interface LocationContext {
     activeTab: WorkspaceTab;
     handleSetActiveTab: (activeTab: WorkspaceTab) => void;
@@ -96,12 +95,12 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
      * Removes hash from url when closed
      */
     const { props: sidesheetProps, SidesheetComponent } = useSideSheet();
-    useEffect(() => {
-        if (location.hash.length > 0) return;
-        if (!sidesheetProps && !SidesheetComponent) {
-            navigate(location.pathname, { replace: true });
-        }
-    }, [sidesheetProps, SidesheetComponent, location.pathname]);
+    // useEffect(() => {
+    //     if (location.hash.length > 0) return;
+    //     if (!sidesheetProps && !SidesheetComponent) {
+    //         navigate(location.pathname, { replace: true });
+    //     }
+    // }, [sidesheetProps, SidesheetComponent, location.pathname]);
 
     /**
      * Store sidesheet state in url

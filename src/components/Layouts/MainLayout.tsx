@@ -1,7 +1,7 @@
-import { useSideSheet } from '@equinor/sidesheet';
+import { PopoutSidesheet, useSideSheet } from '@equinor/sidesheet';
 import { getWidth } from '../../packages/Sidesheet/Utils/getWidth';
 import { Menu } from '../Menu';
-import { ChildrenWrapper, Wrapper } from './MainLayoutStyles';
+import { ChildrenWrapper, SidesheetWrapper, Wrapper } from './MainLayoutStyles';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -15,6 +15,9 @@ export const MainLayout = ({ children, serviceMessageActive }: MainLayoutProps):
         <Wrapper serviceMessageActive={serviceMessageActive}>
             <Menu>
                 <ChildrenWrapper sideSheetWidth={getWidth(sideSheet)}>{children}</ChildrenWrapper>
+                <SidesheetWrapper>
+                    <PopoutSidesheet />
+                </SidesheetWrapper>
             </Menu>
         </Wrapper>
     );

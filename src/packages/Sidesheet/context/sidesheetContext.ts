@@ -3,7 +3,7 @@ import { createGlobalSidesheetState } from '../State/actions';
 import { SidesheetState } from '../State/sidesheetState';
 
 /**MIN_WIDTH side sheet width */
-const MIN_WIDTH = 48;
+const MIN_WIDTH = 26;
 
 /**DEFAULT_WIDTH side sheet width */
 const DEFAULT_WIDTH = 650;

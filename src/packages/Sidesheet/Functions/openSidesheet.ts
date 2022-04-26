@@ -4,7 +4,6 @@ import { getSidesheetContext } from '../context/sidesheetContext';
 import { dispatch, readState } from '../State/actions';
 import { SidesheetApi } from '../Types/SidesheetApi';
 
-
 export function openSidesheet<T>(
     SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
     props?: T,

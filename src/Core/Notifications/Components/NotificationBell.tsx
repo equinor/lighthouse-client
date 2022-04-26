@@ -1,10 +1,11 @@
-import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
-import { useNotificationCenter } from '../Hooks/useNotificationCenter';
-import { useQueryClient } from 'react-query';
-import { notificationQueries } from '../queries/notificationQueries';
+import { tokens } from '@equinor/eds-tokens';
+import { openSidesheet } from '@equinor/sidesheet';
 import { useState } from 'react';
-import { NotificationsSidesheet } from '../../../packages/Notifications sidesheet/NotificationsSidesheet';
+import { useQueryClient } from 'react-query';
+import { ActionCenterSidesheet } from '../../../components/ActionCenter/ActionCenterSidesheet';
+import { useNotificationCenter } from '../Hooks/useNotificationCenter';
+import { notificationQueries } from '../queries/notificationQueries';
 
 export function NotificationBell(): JSX.Element {
     const { getUnreadNotificationsQuery } = notificationQueries;
@@ -19,8 +20,8 @@ export function NotificationBell(): JSX.Element {
         notificationCenter.hubConnectionState === 'Connected'
             ? tokens.colors.interactive.primary__resting.hex
             : notificationCenter.hubConnectionState === 'Reconnecting'
-                ? tokens.colors.interactive.warning__resting.hex
-                : tokens.colors.infographic.primary__energy_red_100.hex;
+            ? tokens.colors.interactive.warning__resting.hex
+            : tokens.colors.infographic.primary__energy_red_100.hex;
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -34,9 +35,13 @@ export function NotificationBell(): JSX.Element {
                         ? 'notifications_active'
                         : 'notifications'
                 }
-                onClick={() => setIsOpen(true)}
+                onClick={() => {
+                    setIsOpen(true);
+                    openSidesheet(ActionCenterSidesheet);
+                    // ActionCenterSidesheet
+                }}
             />
-            {isOpen && <NotificationsSidesheet closeSidesheet={() => setIsOpen(false)} />}
+            {/* {isOpen && <NotificationsSidesheet closeSidesheet={() => setIsOpen(false)} />} */}
         </>
     );
 }
