@@ -67,7 +67,14 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         <div style={{ height: '100%' }}>
             <Resizable
                 size={{ width: width, height: '100%' }}
+                maxWidth={window.innerWidth}
                 onResizeStop={(e, direction, ref, d) => {
+                    /**Prevents dragging past the width of the screen */
+                    if (width + d.width > window.innerWidth) {
+                        setWidth(window.innerWidth);
+                        return;
+                    }
+
                     if (width + d.width < minWidth) {
                         //setWidth(defaultWidth);
                         setIsMinimized(true);
