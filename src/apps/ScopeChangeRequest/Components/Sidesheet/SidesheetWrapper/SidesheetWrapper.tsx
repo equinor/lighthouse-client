@@ -59,7 +59,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
                                 <Tabs.Tab>
                                     <RequestTabTitle />
                                 </Tabs.Tab>
-                                <Tabs.Tab disabled={isProduction()}>
+                                <Tabs.Tab disabled={true}>
                                     <WorkOrderTabTitle />
                                 </Tabs.Tab>
                                 <Tabs.Tab>
