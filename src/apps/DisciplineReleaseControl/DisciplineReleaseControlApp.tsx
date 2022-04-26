@@ -219,7 +219,7 @@ export function setup(appApi: ClientApi): void {
                 accessor: 'heatTraces',
                 Header: 'HT cables',
                 Aggregated: () => null,
-                width: 1165,
+                width: 1135,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return (
