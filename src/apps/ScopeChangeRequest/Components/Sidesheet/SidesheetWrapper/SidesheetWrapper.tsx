@@ -67,11 +67,11 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
                                 </Tabs.Tab>
                             </SidesheetTabList>
                             <TabList>
-                                <Tabs.Panel>
+                                <Tab>
                                     <RequestTab />
-                                </Tabs.Panel>
-                                <Tabs.Panel>{activeTab === 1 && <WorkOrderTab />}</Tabs.Panel>
-                                <Tabs.Panel>{activeTab === 2 && <LogTab />}</Tabs.Panel>
+                                </Tab>
+                                <Tab>{activeTab === 1 && <WorkOrderTab />}</Tab>
+                                <Tab>{activeTab === 2 && <LogTab />}</Tab>
                             </TabList>
                         </Tabs>
                     </>
@@ -80,6 +80,13 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
         </Wrapper>
     );
 }
+
+const Tab = styled(Tabs.Panel)`
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    padding-bottom: 50px;
+`;
 
 const TabList = styled(Tabs.Panels)`
     margin: 24px 32px;
