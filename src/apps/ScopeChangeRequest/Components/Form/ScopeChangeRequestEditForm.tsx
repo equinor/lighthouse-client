@@ -143,8 +143,11 @@ export const ScopeChangeRequestEditForm = ({
 };
 
 const Wrapper = styled.div`
-    height: 100%;
+    margin: 24px 32px;
+    height: 90%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    overflow-y: scroll;
+    overflow-x: hidden;
 `;
