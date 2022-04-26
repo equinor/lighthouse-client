@@ -163,6 +163,7 @@ function useErrorHandler(givenError?: unknown): (error: unknown) => void {
     return setError;
 }
 
+export * from './Components';
 export { ErrorBoundary, withErrorBoundary, useErrorHandler };
 export type {
     FallbackProps,
@@ -171,6 +172,7 @@ export type {
     ErrorBoundaryPropsWithFallback,
     ErrorBoundaryProps,
 };
+
 
 /*
 eslint

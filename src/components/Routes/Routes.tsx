@@ -46,18 +46,11 @@ export function ClientRoutes(): JSX.Element {
                 if (route.app?.appType === 'Workspace') {
                     const api = { ...route, authProvider, appConfig };
                     return (
-                        <Route key={route.shortName + route.groupe}>
-                            <Route
-                                key={route.shortName}
-                                path={`${route.groupe.toString()}/${route.shortName}`}
-                                element={<WorkSpace {...api} />}
-                            />
-                            <Route
-                                key={route.shortName + 'id'}
-                                path={`${route.groupe.toString()}/${route.shortName}/:id`}
-                                element={<WorkSpace {...api} />}
-                            />
-                        </Route>
+                        <Route
+                            key={route.shortName + route.groupe}
+                            path={`${route.groupe.toString()}/${route.shortName}/*`}
+                            element={<WorkSpace {...api} />}
+                        />
                     );
                 }
                 if (route.app?.appType === 'PageView') {

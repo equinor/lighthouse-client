@@ -8,12 +8,14 @@ interface IconMenuProps {
     items: MenuItem[];
     onMenuOpen?: () => void;
     isDisabled?: boolean;
+    iconName?: string;
     placement?: 'left' | 'bottom' | 'auto' | 'right' | 'top';
 }
 
 export const IconMenu = ({
     items,
     onMenuOpen,
+    iconName = 'more_vertical',
     isDisabled,
     placement = 'left',
 }: IconMenuProps): JSX.Element => {
@@ -40,7 +42,7 @@ export const IconMenu = ({
                 }}
             >
                 <Icon
-                    name="more_vertical"
+                    name={iconName}
                     color={
                         items.length === 0
                             ? tokens.colors.interactive.disabled__text.hex

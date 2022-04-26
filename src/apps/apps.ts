@@ -562,6 +562,17 @@ export const apps: AppManifest[] = [
         tags: ['link', 'procosys'],
         appEnv: 'prod',
     },
+    {
+        title: 'AKSO procedures',
+        shortName: 'akso',
+        color: '#0364B8',
+        groupe: Apps.Collaboration,
+        icon: 'tag',
+        uri: () =>
+            'https://akersolutions.sharepoint.com/sites/CastbergEquinor/Governing%20Documents/Forms/Procedures%20Work%20Instructions%20and%20guidelines.aspx',
+        tags: ['akso', 'link', 'external'],
+        appEnv: 'prod',
+    },
     // Asset Data
     {
         title: '3D Model',

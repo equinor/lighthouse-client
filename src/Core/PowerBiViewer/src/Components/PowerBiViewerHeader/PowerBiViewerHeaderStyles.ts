@@ -58,8 +58,7 @@ export const Wrap = styled.div`
     justify-content: space-between;
     align-items: flex-end;
 `;
-const { Tab } = Tabs;
 
-export const HeaderTab = styled(Tab)`
+export const HeaderTab = styled(Tabs.Tab)`
     overflow-x: visible;
 `;
