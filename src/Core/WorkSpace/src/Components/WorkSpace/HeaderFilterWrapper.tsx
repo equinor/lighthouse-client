@@ -1,8 +1,7 @@
-import { FilterView } from '@equinor/filter';
+import { FilterView, useFilterApiContext } from '@equinor/filter';
 import { useState } from 'react';
-import { WorkspaceProps } from '../..';
-import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
-import { TabsConfigItem } from '../../Tabs/tabsConfig';
+import { TabsConfigItem } from '../../Util/tabsConfig';
+import { WorkspaceProps } from '../../WorkSpace';
 import { CompletionViewHeader } from '../DataViewerHeader/Header';
 
 type HeaderWrapperProps = {

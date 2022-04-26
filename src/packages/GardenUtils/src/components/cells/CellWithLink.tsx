@@ -8,20 +8,16 @@ const Link = styled.a`
     align-items: center;
     gap: 4px;
 `;
-
+type CellLinkProps = {
+    content: string;
+    url: string;
+    linkTitle?: string;
+};
 export const CellWithLink = <T extends Record<string, unknown>>({
-    value,
-}: CellProps<T, { content: string; url: string }>): JSX.Element => {
-    const { content, url } = value;
-
+    value: { content, url, linkTitle = 'Open package in ProCoSys' },
+}: CellProps<T, CellLinkProps>): JSX.Element => {
     return (
-        <Link
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-            // href={url}
-            // target={'_blank'}
-            // rel="noreferrer"
-            // title="Open package in ProCoSys"
-        >
+        <Link href={url} target={'_blank'} rel="noreferrer" title={linkTitle}>
             {content}
             <Icon
                 size={24}

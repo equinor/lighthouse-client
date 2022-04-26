@@ -30,11 +30,23 @@ export function useSidesheetEffects(
             label: 'Unvoid',
             onClick: () => unVoidRequestMutation({ requestId }),
             isDisabled: !canUnVoid,
+            icon: (
+                <Icon
+                    name="restore_from_trash"
+                    color={tokens.colors.interactive.primary__resting.hex}
+                />
+            ),
         }
         : {
             label: 'Void',
             onClick: () => voidRequestMutation({ requestId }),
             isDisabled: !canVoid,
+            icon: (
+                <Icon
+                    name="delete_to_trash"
+                    color={tokens.colors.interactive.primary__resting.hex}
+                />
+            ),
         };
 
     const menuItems: MenuItem[] = [
@@ -61,6 +73,6 @@ export function useSidesheetEffects(
 
     /** Only run once */
     useEffect(() => {
-        actions.setWidth(1100);
+        actions.setWidth(1150);
     }, []);
 }
