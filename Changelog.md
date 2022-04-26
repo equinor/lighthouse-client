@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
+## 0.4.0
+
+### Prod
+
+- [ScopeChange] - Data-bars in table
+- [ScopeChange] - Work order table adjustments
+- [ScopeChange] - Fix save button disappear in draft
+- [ScopeChange] - Fix scrollbar tabs
+- [ScopeChange] - No attachments linked 
+- [Core] - Removal of unused packages and package bumps.
+- [PipingAndHeatTrace] - Insulation boxes tab.
+- [Portal] - Notifications and assignments
+- [Workspace] - Support for PowerBi reports in workspace 
+- [Garden] - Grouping Enhancements 
+
+### Test
+- [Handover] - Added analytic PowerBi report.
+- [WorkOrder] - remove min-width styling table
+- [Handover] - remove min-width styling table
+- [SWCR] - Updates
+- [SWCR] - PowerBi report added to workspace
+- [Handover] - PowerBi report added to workspace
+- 
+---
 
 ## 0.3.0
 
