@@ -29,7 +29,7 @@ export function WorkOrderTab(): JSX.Element {
     }
 
     return (
-        <div style={{ height: '80%' }}>
+        <Wrapper>
             <div style={{ fontSize: '16px', color: 'red' }}>
                 Real workorders but not connected to this request, for testing purposes
             </div>
@@ -40,9 +40,13 @@ export function WorkOrderTab(): JSX.Element {
                     <CompactWorkOrderList workOrders={data ?? []} />
                 )}
             </div>
-        </div>
+        </Wrapper>
     );
 }
+
+const Wrapper = styled.div`
+    height: 80%;
+`;
 
 const Loading = styled.div`
     width: 100%;
