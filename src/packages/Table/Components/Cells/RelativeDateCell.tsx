@@ -22,6 +22,6 @@ export const RelativeDateCell = <T extends TableData>(
     const dateString = content[currentKey] as string;
 
     const date = new Date(dateString);
-    const formattedDate = DateTime.fromJSDate(date).toRelative();
+    const formattedDate = DateTime.fromJSDate(date).toRelative({ locale: 'en-GB' });
     return <div {...attr}>{formattedDate}</div>;
 };
