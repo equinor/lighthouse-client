@@ -17,11 +17,11 @@ export function LogTab(): JSX.Element {
     });
 
     return (
-        <>
+        <div>
             {data &&
                 data.map((x) => {
                     return <HistoryItem key={x.id} item={x} />;
                 })}
-        </>
+        </div>
     );
 }

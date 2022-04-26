@@ -9,18 +9,16 @@ import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompac
 import {
     StepFilterContainer,
     StepFilterText,
-    WorkflowFilterDot
+    WorkflowFilterDot,
 } from './Components/Workflow/Components/WorkflowFilterDot';
-import {
-    CurrentStepContainer,
-    WorkflowWarningTriangle
-} from './Components/Workflow/Components/WorkflowWarningTriangle';
+import { WorkflowWarningTriangle } from './Components/Workflow/Components/WorkflowWarningTriangle';
+import { CurrentStepContainer } from './Components/Workflow/Styles/styles';
 import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
 import {
     checklistTagFunc,
     createChecklistSteps,
     getHTList,
-    getStatusLetterFromStatus
+    getStatusLetterFromStatus,
 } from './Functions/tableHelpers';
 import { Monospace } from './Styles/Monospace';
 import { Pipetest } from './Types/pipetest';
@@ -142,6 +140,7 @@ export function setup(appApi: ClientApi): void {
             'circuits',
             'pipetestProcessDoneInRightOrder',
             'step',
+            'pipeInsulationBoxes',
         ],
         enableSelectRows: true,
         headers: [
@@ -220,7 +219,7 @@ export function setup(appApi: ClientApi): void {
                 accessor: 'heatTraces',
                 Header: 'HT cables',
                 Aggregated: () => null,
-                width: 1165,
+                width: 1135,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return (

@@ -41,6 +41,32 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
             DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                 ? 'Yes'
                 : 'No';
+
+        //Find insulation checklists and add them to pipeInsulationBox array.
+        pipetest.pipeInsulationBoxes = [];
+        const insulationCheckLists = pipetest.checkLists.filter(
+            (checkList) => checkList.tagNo.substring(0, 2) === CheckListStepTag.Insulation
+        );
+        insulationCheckLists.forEach((checkList) => {
+            const pipeInsulationBox: InsulationBox = {
+                objectNo: checkList.tagNo,
+                objectName: checkList.responsible + ' / ' + checkList.formularGroup,
+                objectStatus: 'rev: ' + checkList.revision,
+                procosysStatus: checkList.status,
+                object3dReference: '',
+                objectStatusName: '',
+            };
+            pipetest.pipeInsulationBoxes?.push(pipeInsulationBox);
+        });
+
+        //Find 'PIPB-' insulation boxes and move them to pipeInsulationBox array
+        const pipbInsulations = pipetest.insulationBoxes?.filter(
+            (x) => x.objectNo.substring(0, 4) === 'PIPB'
+        );
+        pipbInsulations.forEach((x) => pipetest.pipeInsulationBoxes?.push(x));
+        pipetest.insulationBoxes = pipetest.insulationBoxes?.filter(
+            (x) => x.objectNo.substring(0, 4) !== 'PIPB'
+        );
         return pipetest;
     });
     sortPipetests(pipetests);

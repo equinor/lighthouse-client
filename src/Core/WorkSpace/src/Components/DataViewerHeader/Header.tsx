@@ -35,6 +35,7 @@ interface CompletionViewHeaderProps {
 }
 
 const PRIMARY_INTERACTIVE = tokens.colors.interactive.primary__resting.hex;
+const ANALYTICS = 'analytics';
 
 export const CompletionViewHeader = ({
     title,
@@ -66,7 +67,7 @@ export const CompletionViewHeader = ({
             </TitleBar>
             <ActionBar>
                 <LeftSection>
-                    {activeTab !== 'powerBi' ? (
+                    {activeTab !== ANALYTICS ? (
                         <FillSection>
                             <StatusBar statusItems={statusItems} />
                         </FillSection>
@@ -110,9 +111,9 @@ export const CompletionViewHeader = ({
                     {hasPowerBi && (
                         <>
                             <TabButton
-                                onClick={() => handleSetActiveTab('powerBi')}
-                                aria-selected={activeTab === 'powerBi'}
-                                title={'Power Bi'}
+                                onClick={() => handleSetActiveTab(ANALYTICS)}
+                                aria-selected={activeTab === ANALYTICS}
+                                title={'Power Bi analytics'}
                             >
                                 <Icon name={'bar_chart'} />
                             </TabButton>
@@ -122,7 +123,7 @@ export const CompletionViewHeader = ({
 
                     <>
                         {tabs.map((tab) => {
-                            if (tab.tabId === 'powerBi') return;
+                            if (tab.tabId === ANALYTICS) return;
                             const Icon = tab.icon;
                             return (
                                 <TabButton
@@ -160,7 +161,7 @@ export const CompletionViewHeader = ({
                         )}
                     </TabButton>
 
-                    {activeTab !== 'powerBi' ? (
+                    {activeTab !== ANALYTICS ? (
                         <TabButton
                             onClick={handleFilter}
                             aria-selected={activeFilter}

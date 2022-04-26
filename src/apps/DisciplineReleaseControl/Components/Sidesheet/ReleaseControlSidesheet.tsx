@@ -4,19 +4,18 @@ import { Tabs } from '@equinor/eds-core-react';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import styled from 'styled-components';
 import { useLocationKey } from '../../../../packages/Filter/Hooks/useLocationKey';
 import { ServerError } from '../../Api/Types/ServerError';
 import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { Pipetest } from '../../Types/pipetest';
 import { ElectroView } from '../Electro/ElectroView';
-import { BoxInsulationTable } from './BoxInsulationTable';
 import { CheckListTable } from './CheckListTable';
 import { ReleaseControlErrorBanner } from './ErrorBanner';
+import { InsulationTable } from './InsulationTable';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { SidesheetTabList } from './SidesheetTabs';
-
+import { TablesTab, WarningBanner, WarningBannerText } from './styles';
 
 interface ReleaseControlSidesheetProps {
     item: Pipetest;
@@ -54,6 +53,10 @@ export const ReleaseControlSidesheet = ({
         cacheTime: Infinity,
     });
 
+    const missingInsulationCheckListsCount = item.insulationBoxes.filter(
+        (x) => x.procosysStatus === null
+    )?.length;
+
     return (
         <Wrapper>
             <ReleaseControlErrorBanner message={errorMessage} />
@@ -62,6 +65,7 @@ export const ReleaseControlSidesheet = ({
                 <SidesheetTabList>
                     <Tabs.Tab>Single line diagram </Tabs.Tab>
                     <Tabs.Tab>Details</Tabs.Tab>
+                    <Tabs.Tab>Insulation</Tabs.Tab>
                     {/* <Tabs.Tab>3D-visualisation</Tabs.Tab> */}
                 </SidesheetTabList>
                 <Tabs.Panels>
@@ -76,12 +80,40 @@ export const ReleaseControlSidesheet = ({
                         <TablesTab>
                             <h4>{item.description}</h4>
                             <CheckListTable checkLists={item.checkLists} />
+                        </TablesTab>
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <TablesTab>
+                            {missingInsulationCheckListsCount !== 0 &&
+                                (missingInsulationCheckListsCount === 1 ? (
+                                    <WarningBanner>
+                                        <WarningBannerText>
+                                            ! Warning: {missingInsulationCheckListsCount} insulation
+                                            box missing checklists in ProCoSys.
+                                        </WarningBannerText>
+                                    </WarningBanner>
+                                ) : (
+                                    <WarningBanner>
+                                        <WarningBannerText>
+                                            ! Warning: {missingInsulationCheckListsCount} insulation
+                                            boxes missing checklists in ProCoSys.
+                                        </WarningBannerText>
+                                    </WarningBanner>
+                                ))}
+                            <InsulationTable
+                                insulations={item.pipeInsulationBoxes}
+                                pipeInsulation={true}
+                            />
                             <br />
-                            <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
+                            <InsulationTable
+                                insulations={item.insulationBoxes}
+                                pipeInsulation={false}
+                                pipetestName={item.name}
+                            />
                         </TablesTab>
                     </Tabs.Panel>
                     {/* <Tabs.Panel>
-                        {activeTab === 2 && (
+                        {activeTab === 3 && (
                             <ThreeDModel>
                                 <Viewer
                                     echoPlantId={echoPlantId}
@@ -96,11 +128,3 @@ export const ReleaseControlSidesheet = ({
         </Wrapper>
     );
 };
-
-// const ThreeDModel = styled.div`
-//     height: 100vh;
-// `;
-
-const TablesTab = styled.div`
-    padding-left: 8px;
-`;

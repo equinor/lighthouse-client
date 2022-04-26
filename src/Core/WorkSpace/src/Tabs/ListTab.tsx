@@ -17,7 +17,7 @@ export const ListTab = (): JSX.Element => {
     const data = getFilteredData() as TableData[];
     const { tableOptions } = useDataContext();
 
-    const [ref, { awaitableHeight }] = useElementData();
+    const [ref, { awaitableHeight,  }] = useElementData();
 
     const columns = useColumns(data[0], {
         customCellView: tableOptions?.customCellView,
