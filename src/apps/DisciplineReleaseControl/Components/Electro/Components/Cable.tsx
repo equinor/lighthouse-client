@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { StatusCircle } from '../../../../../packages/GardenUtils/src';
+import { StatusCircle } from '@equinor/GardenUtils';
 import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
 import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
 
