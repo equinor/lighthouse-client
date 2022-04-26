@@ -103,10 +103,10 @@ export const getGardenItemColor = (step: string | undefined): string => {
     return color;
 };
 
-export const getGardenItemCompletionColor = (item: Pipetest): string => {
+export const getGardenItemCompletionColor = (completionStatus: string): string => {
     let color = '#DCDCDC';
 
-    switch (item.completionStatus) {
+    switch (completionStatus) {
         case PipetestCompletionStatus.Outstanding:
             color = PipetestCompletionStatusColors.OS;
             break;

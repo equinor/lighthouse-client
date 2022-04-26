@@ -1,4 +1,5 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
+import { isProduction } from '@equinor/portal-client';
 import { Column } from 'react-table';
 import { WorkOrderMccr } from '../../../models';
 
@@ -10,7 +11,10 @@ export type MccrTabProps = {
 const columns: Column<WorkOrderMccr>[] = [
     {
         id: 'tagNumber',
-        accessor: ({ tagNumber, tagUrl }) => ({ content: tagNumber, url: tagUrl }),
+        accessor: ({ tagNumber, tagUrl }) => ({
+            content: tagNumber,
+            url: isProduction() ? tagUrl : tagUrl.replace('procosys', 'procosystest'),
+        }),
         Header: 'TagNo.',
         Cell: CellWithLink,
     },
@@ -38,13 +42,19 @@ const columns: Column<WorkOrderMccr>[] = [
     },
     {
         id: 'mcpkgNumber',
-        accessor: ({ mcpkgNumber, mccrUrl }) => ({ content: mcpkgNumber, url: mccrUrl }),
+        accessor: ({ mcpkgNumber, mccrUrl }) => ({
+            content: mcpkgNumber,
+            url: isProduction() ? mccrUrl : mccrUrl.replace('procosys', 'procosystest'),
+        }),
         Header: 'McpkgNo.',
         Cell: CellWithLink,
     },
     {
         id: 'commpkgNumber',
-        accessor: ({ commpkgNumber, commpkgUrl }) => ({ content: commpkgNumber, url: commpkgUrl }),
+        accessor: ({ commpkgNumber, commpkgUrl }) => ({
+            content: commpkgNumber,
+            url: isProduction() ? commpkgUrl : commpkgUrl.replace('procosys', 'procosystest'),
+        }),
         Header: 'CommpkgNo.',
         Cell: CellWithLink,
     },
