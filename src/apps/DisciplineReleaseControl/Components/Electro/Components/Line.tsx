@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import { Pipetest } from '../../../Types/pipetest';
