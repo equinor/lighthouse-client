@@ -23,7 +23,6 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
         ...workOrders.map(({ expendedHours }) => Number(expendedHours) ?? 0)
     );
 
-    const getPercentEstimate = (number: number) => (number / highestEstimate) * 100;
     const { title } = useFacility();
 
     return (
@@ -90,10 +89,7 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
                                 <ProgressBar percentWidth={projectProgress} />
                             </TableData>
                             <TableData>
-                                <EstimateBar
-                                    percentWidth={getPercentEstimate(estimatedHours)}
-                                    number={estimatedHours}
-                                />
+                                <EstimateBar current={estimatedHours} max={highestEstimate} />
                             </TableData>
                             <TableData>
                                 <ExpendedProgressBar

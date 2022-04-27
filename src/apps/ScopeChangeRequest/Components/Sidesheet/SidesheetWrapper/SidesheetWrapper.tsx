@@ -1,23 +1,27 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { isProduction } from '@equinor/portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { useEffect } from 'react';
 import { ScopeChangeContext } from '../../../context/scopeChangeAccessContext';
+
+import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
 import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
 import { useOctopusErrorHandler } from '../../../hooks/observers/useOctopusErrorHandler';
 import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
-import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
 import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
-import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
 import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
 import { ScopeChangeErrorBanner } from '../../ErrorBanner/ErrorBanner';
-import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
 import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';
 import { LogTab, LogTabTitle } from '../Tabs/Log';
 import { RequestTab, RequestTabTitle } from '../Tabs/Request';
 import { WorkOrderTab, WorkOrderTabTitle } from '../Tabs/WorkOrders';
 import { SidesheetTabList } from './SidesheetWrapper.styles';
+import styled from 'styled-components';
+import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
+import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
+import { swap, useAtom } from '@dbeining/react-atom';
+import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
+import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -31,13 +35,24 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
 
     const request = useGetScopeChangeRequest(item.id, item);
     const requestAccess = useScopeChangeAccess(item.id);
-    const [editMode, setEditMode] = useState<boolean>(false);
-    const toggleEditMode = () => setEditMode((prev) => !prev);
+
+    const toggleEditMode = () => swap(sideSheetEditModeAtom, (s) => !s);
+
     useSidesheetEffects(actions, toggleEditMode, item.id);
 
     useEffect(() => {
-        setEditMode(false);
+        swap(sideSheetEditModeAtom, () => false);
     }, [request?.id]);
+
+    useEffect(() => {
+        swap(scopeChangeAtom, () => ({
+            actions,
+            request: request ?? item,
+            requestAccess,
+        }));
+    }, [request, requestAccess, item]);
+
+    const editMode = useAtom(sideSheetEditModeAtom);
 
     return (
         <Wrapper>
