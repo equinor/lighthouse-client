@@ -34,7 +34,6 @@ interface CompletionViewHeaderProps {
     activeFilter: boolean;
 }
 
-const PRIMARY_INTERACTIVE = tokens.colors.interactive.primary__resting.hex;
 const ANALYTICS = 'analytics';
 
 export const CompletionViewHeader = ({
@@ -144,7 +143,7 @@ export const CompletionViewHeader = ({
                         color={
                             dataApi?.isStale
                                 ? tokens.colors.infographic.primary__energy_red_100.hex
-                                : PRIMARY_INTERACTIVE
+                                : 'grey'
                         }
                         aria-selected={false}
                         title={
@@ -154,7 +153,7 @@ export const CompletionViewHeader = ({
                         }
                         onClick={() => dataApi.refetch()}
                     >
-                        {dataApi?.isFetching ? (
+                        {dataApi.isFetching ? (
                             <CircularProgress size={24} />
                         ) : (
                             <ClickableIcon size={24} name="refresh" />
