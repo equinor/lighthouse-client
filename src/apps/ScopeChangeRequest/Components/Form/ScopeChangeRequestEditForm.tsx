@@ -23,6 +23,8 @@ import {
 import styled from 'styled-components';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { useUnpackRelatedObjects } from '../../hooks/queries/useUnpackRelatedObjects';
+import { swap } from '@dbeining/react-atom';
+import { sideSheetEditModeAtom } from '../../Atoms/editModeAtom';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -68,6 +70,8 @@ export const ScopeChangeRequestEditForm = ({
             request: request,
             setAsOpen: setAsOpen,
         });
+
+    const onClickCancel = () => swap(sideSheetEditModeAtom, () => false);
 
     return (
         <Wrapper>
@@ -125,6 +129,9 @@ export const ScopeChangeRequestEditForm = ({
                         </Button>
                     ) : (
                         <>
+                            <Button variant="outlined" onClick={onClickCancel}>
+                                Cancel
+                            </Button>
                             <Button disabled={!isValid} onClick={() => handleSave(false)}>
                                 {isLoading ? <Progress.Dots color="primary" /> : 'Save'}
                             </Button>
