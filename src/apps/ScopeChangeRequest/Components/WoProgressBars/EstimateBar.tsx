@@ -1,17 +1,20 @@
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import { ActualProgress, ProgressBarContainer } from './ProgressBarContainer.styles';
 
 interface EstimateBarProps {
-    percentWidth: number;
-    number?: number;
+    current: number;
+    max: number;
 }
 
-export function EstimateBar({ percentWidth, number }: EstimateBarProps): JSX.Element {
+export function EstimateBar({ current, max }: EstimateBarProps): JSX.Element {
+    const percentage = useMemo(() => (max === 0 ? 0 : (current / max) * 100), [current, max]);
+
     return (
         <ProgressBarContainer>
-            <ActualProgress borderColor="#0084C4" color="#CCE6F3" width={percentWidth} />
+            <ActualProgress borderColor="#0084C4" color="#CCE6F3" width={percentage} />
             <ProgressNumber>
-                {number && parseFloat(Math.round(number).toString()).toLocaleString('no')}
+                {parseFloat(Math.round(current).toString()).toLocaleString('no')}
             </ProgressNumber>
         </ProgressBarContainer>
     );

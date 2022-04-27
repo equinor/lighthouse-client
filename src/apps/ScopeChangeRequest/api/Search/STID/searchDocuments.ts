@@ -1,4 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
+import { transformIsoDate } from '../../../Components/Workflow/Utils/dateFormatting';
 import { throwOnError } from '../../../functions/throwError';
 import { Document } from '../../../types/STID/document';
 import { TypedSelectOption } from '../searchType';
@@ -28,6 +29,7 @@ export const searchDocuments = async (
             type: 'document',
             searchValue: x.docNo,
             object: x,
+            metadata: `Revision ${x.revNo} | Rev date ${x.revDate && transformIsoDate(x.revDate)}`,
         })
     );
 };

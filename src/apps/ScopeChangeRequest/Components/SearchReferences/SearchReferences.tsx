@@ -29,6 +29,7 @@ import {
 import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { CommPkgIcon } from '../DetailView/RelatedObjects/CommPkg/commPkgIcon';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
+import styled from 'styled-components';
 
 interface SearchReferencesProps {
     references: TypedSelectOption[];
@@ -167,9 +168,12 @@ export const SearchReferences = ({
                                 return (
                                     <ListItem key={selectedReference.value}>
                                         <TypeIcon />
-                                        <SelectedItemLabel>
-                                            {selectedReference.label}
-                                        </SelectedItemLabel>
+                                        <div>
+                                            <SelectedItemLabel>
+                                                {selectedReference.label}
+                                            </SelectedItemLabel>
+                                            <MetaData>{selectedReference.metadata}</MetaData>
+                                        </div>
                                         <ClickableIcon
                                             name="clear"
                                             onClick={() => {
@@ -186,6 +190,11 @@ export const SearchReferences = ({
         </Wrapper>
     );
 };
+
+const MetaData = styled.div`
+    font-size: 12px;
+    color: ${tokens.colors.text.static_icons__default.hex};
+`;
 
 function getIcon(x: TypedSelectOption): JSX.Element | null {
     switch (x.type) {

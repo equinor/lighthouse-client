@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
+## 0.4.1
+
+### PROD
+- [ScopeChange] Bugfixes
+- [Notifications] Fixed redirect not working
+- [Workspace] Bugfixes
+- [ScopeChange] Added powerBi analytics
+
 ## 0.4.0
 
 ### Prod
