@@ -9,4 +9,5 @@ export interface TypedSelectOption extends SelectOption {
     type: ProcoSysTypes | StidTypes;
     searchValue: string;
     object: unknown;
+    metadata?: string;
 }

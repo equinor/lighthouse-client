@@ -2,6 +2,8 @@ export interface SearchTag {
     TagNo: string;
     Id: string;
     Description: string;
+    McPkgsThroughScope__CommPkg__CommPkgNo: string | null;
+    Register__Id: string;
 }
 export interface Tag {
     Id: number;

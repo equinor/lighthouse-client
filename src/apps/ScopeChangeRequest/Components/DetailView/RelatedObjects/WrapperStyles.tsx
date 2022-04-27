@@ -4,7 +4,6 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
     display: flex;
     font-size: 16px;
-    height: 16px;
     justify-content: space-between;
     align-items: center;
     color: ${tokens.colors.interactive.primary__resting.hex};
