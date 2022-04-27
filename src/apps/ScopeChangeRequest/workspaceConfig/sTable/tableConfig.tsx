@@ -184,12 +184,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                     const count = deref(guesstimateHoursMaxAtom);
 
-                    return (
-                        <EstimateBar
-                            percentWidth={(request.guesstimateHours / count) * 100}
-                            number={request.guesstimateHours ?? 0}
-                        />
-                    );
+                    return <EstimateBar current={request.guesstimateHours} max={count} />;
                 },
             },
         },
@@ -237,10 +232,8 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                     return (
                         <EstimateBar
-                            percentWidth={
-                                (request.estimatedChangeHours / highestEstimateHours) * 100
-                            }
-                            number={request.estimatedChangeHours ?? 0}
+                            current={request.estimatedChangeHours}
+                            max={highestEstimateHours}
                         />
                     );
                 },
