@@ -92,6 +92,7 @@ export function useUnpackRelatedObjects({
                 ...tagSelectOption,
                 label: `${x.procosysNumber} ${tag.Description}`,
                 object: tag,
+                metadata: `Comm pkg: ${tag.CommPkgNo} Tag register: ${tag.RegisterCode}`,
             });
         });
 
