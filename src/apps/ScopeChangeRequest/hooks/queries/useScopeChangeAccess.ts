@@ -3,7 +3,7 @@ import { useQuery } from 'react-query';
 import { OptionRequestResult } from '../../api/ScopeChange/Access/optionsRequestChecker';
 import { scopeChangeQueries } from '../../keys/queries';
 
-interface ScopeChangeAccess extends OptionRequestResult {
+export interface ScopeChangeAccess extends OptionRequestResult {
     canVoid: boolean;
     canUnVoid: boolean;
 }
