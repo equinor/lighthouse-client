@@ -55,7 +55,7 @@ export const NotificationCardNew = ({
             await openSidesheet(identifier, app);
         } else {
             //redirect
-            navigate(`${app.groupe}/${app.shortName}/table#${app.shortName}/${identifier}`);
+            navigate(`${app.groupe}/${app.shortName}#${app.shortName}/${identifier}`);
         }
     }
 
