@@ -7,6 +7,7 @@ import { getSystems } from '../../api/PCS/getSystems';
 import { getTagById } from '../../api/PCS/getTagById';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { getDocumentById } from '../../api/STID/getDocumentById';
+import { transformIsoDate } from '../../Components/Workflow/Utils/dateFormatting';
 import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
@@ -115,6 +116,8 @@ export function useUnpackRelatedObjects({
                 ...documentSelectOption,
                 label: `${x.stidDocumentNumber} ${document.docTitle}`,
                 object: document,
+                metadata: `  Revision ${document.revNo} | Rev date ${document.revDate && transformIsoDate(document.revDate)
+                    }`,
             });
         });
 
