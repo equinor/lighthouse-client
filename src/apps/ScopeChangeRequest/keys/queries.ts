@@ -14,6 +14,10 @@ import { getScopeChangeById } from '../api/ScopeChange/Request';
 import { getHistory } from '../api/ScopeChange/Request/getHistory';
 import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
+interface QueryContext {
+    signal?: AbortSignal;
+}
+
 const scopeChangeBaseKey = (requestId: string): string[] => ['scopechange', requestId];
 const scopeChangeHistoryKey = (requestId: string): string[] => [
     ...scopeChangeBaseKey(requestId),
@@ -53,8 +57,9 @@ export const scopeChangeWorkflowQueries = {
         stepId: string,
         contributorId: string
     ): OptionsQuery => ({
-        queryFn: () => canContribute({ contributorId, requestId, stepId }),
-        queryKey: [...scopeChangeStepKey(requestId, stepId), 'canContribute'],
+        queryFn: ({ signal }: QueryContext) =>
+            canContribute({ contributorId, requestId, stepId, signal }),
+        queryKey: [...scopeChangeStepKey(requestId, stepId), 'canContribute', contributorId],
     }),
 };
 
@@ -93,7 +98,7 @@ export const scopeChangeQueries = {
 };
 
 interface OptionsQuery {
-    queryFn: () => Promise<boolean>;
+    queryFn: (args: QueryContext) => Promise<boolean>;
     queryKey: string[];
 }
 

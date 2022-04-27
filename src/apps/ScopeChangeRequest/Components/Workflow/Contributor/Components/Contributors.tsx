@@ -2,7 +2,7 @@ import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 import {
     Contributor as ContributorInterface,
@@ -38,24 +38,34 @@ export const Contributor = ({
 
     const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(request.id);
 
+    const queryClient = useQueryClient();
+
+    const { canContributeQuery } = scopeChangeQueries.workflowQueries;
+    const { data: userCanContribute } = useQuery(
+        canContributeQuery(request.id, step.id, contributor.id)
+    );
+
+    const cancelNewOptionsCall = async () => {
+        await queryClient.cancelQueries(
+            canContributeQuery(request.id, step.id, contributor.id).queryKey
+        );
+    };
+
     const { mutate: removeContributorAsync } = useScopeChangeMutation(
         request.id,
         workflowMutationKeys.deleteContributorKey(step.id),
-        removeContributor
-    );
-
-    const { canContributeQuery } = scopeChangeQueries.workflowQueries;
-    const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
-        canContributeQuery(request.id, step.id, contributor.id)
+        removeContributor,
+        {
+            onSuccess: () => {
+                cancelNewOptionsCall;
+            },
+        }
     );
 
     const { mutate } = useScopeChangeMutation(
         request.id,
         workflowMutationKeys.contributeKey(step.id, contributor.id),
-        submitContribution,
-        {
-            onSuccess: () => invalidateUserCanContribute(),
-        }
+        submitContribution
     );
 
     function makeContributorActions(): MenuItem[] {
