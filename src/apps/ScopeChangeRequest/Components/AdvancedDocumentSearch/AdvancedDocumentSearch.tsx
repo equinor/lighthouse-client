@@ -160,7 +160,7 @@ export const AdvancedDocumentSearch = ({
                 >
                     <Wrapper>
                         <ModalHeader>
-                            <Title>Add document</Title>
+                            <Title>Add references</Title>
                             <Button
                                 variant="ghost_icon"
                                 onClick={() => {
