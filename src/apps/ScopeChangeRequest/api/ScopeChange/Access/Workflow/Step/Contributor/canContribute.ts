@@ -2,20 +2,23 @@ import { httpClient } from '../../../../../../../../Core/Client/Functions/HttpCl
 import { checkOptionsRequest } from '../../../optionsRequestChecker';
 
 interface CanContributeParams {
-    requestId: string,
-    stepId: string,
-    contributorId: string
+    requestId: string;
+    stepId: string;
+    contributorId: string;
+    signal?: AbortSignal;
 }
 
 export async function canContribute({
     requestId,
     stepId,
-    contributorId }: CanContributeParams
-): Promise<boolean> {
+    contributorId,
+    signal,
+}: CanContributeParams): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
         method: 'OPTIONS',
+        signal: signal,
     };
 
     const check = () =>
