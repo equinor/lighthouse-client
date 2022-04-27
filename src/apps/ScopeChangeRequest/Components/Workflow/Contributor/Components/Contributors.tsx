@@ -71,7 +71,7 @@ export const Contributor = ({
     function makeContributorActions(): MenuItem[] {
         const actions: MenuItem[] = [];
 
-        if (userCanContribute) {
+        if (userCanContribute && contributor.contribution === null) {
             actions.push({
                 label: ContributorActions.Confirm,
                 icon: <Icon name="check_circle_outlined" color="grey" />,
@@ -96,20 +96,31 @@ export const Contributor = ({
     }
 
     function makeMoreActions(): MenuItem[] {
-        return canRemoveContributor
-            ? [
-                {
-                    label: 'Remove contributor',
-                    isDisabled: !canRemoveContributor,
-                    onClick: () =>
-                        removeContributorAsync({
-                            contributorId: contributor.id,
-                            requestId: request.id,
-                            stepId: step.id,
-                        }),
-                },
-            ]
-            : [];
+        const options: MenuItem[] = [];
+
+        if (canRemoveContributor) {
+            options.push({
+                label: 'Remove contributor',
+                isDisabled: !canRemoveContributor,
+                onClick: () =>
+                    removeContributorAsync({
+                        contributorId: contributor.id,
+                        requestId: request.id,
+                        stepId: step.id,
+                    }),
+            });
+        }
+
+        if (userCanContribute && contributor.contribution) {
+            options.push({
+                label: 'Update with comment',
+                icon: <Icon name="comment_add" color="grey" />,
+                onClick: () => setShowCommentField((prev) => !prev),
+                isDisabled: !userCanContribute,
+            });
+        }
+
+        return options;
     }
 
     function shouldRenderContributorActions() {
