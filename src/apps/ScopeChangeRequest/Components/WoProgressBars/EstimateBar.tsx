@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import styled from 'styled-components';
 import { ActualProgress, ProgressBarContainer } from './ProgressBarContainer.styles';
 
@@ -7,7 +8,7 @@ interface EstimateBarProps {
 }
 
 export function EstimateBar({ current, max }: EstimateBarProps): JSX.Element {
-    const percentage = max === 0 ? 0 : (current / max) * 100;
+    const percentage = useMemo(() => (max === 0 ? 0 : (current / max) * 100), [current, max]);
 
     return (
         <ProgressBarContainer>
