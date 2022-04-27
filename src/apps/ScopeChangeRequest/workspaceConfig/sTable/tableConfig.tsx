@@ -21,10 +21,8 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             Cell: ({ cell }: any) => {
                 return (
                     <>
-                        {cell.row.original.currentWorkflowStep ? (
+                        {cell.row.original.currentWorkflowStep && (
                             <>{cell.row.original.currentWorkflowStep.name}</>
-                        ) : (
-                            '-'
                         )}
                     </>
                 );
@@ -41,7 +39,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 const request = cell.row.original as ScopeChangeRequest;
 
                 const lastSigned = getLastSigned(request);
-                if (!lastSigned) return '-';
+                if (!lastSigned) return <></>;
                 return <div>{lastSigned.toRelative({ locale: 'en-GB' })}</div>;
             },
             id: 'LastSigned',
@@ -141,11 +139,10 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     const request: ScopeChangeRequest = cell.value.content;
                     return (
                         <>
-                            {request.createdAtUtc
-                                ? DateTime.fromJSDate(new Date(request.createdAtUtc)).toRelative({
+                            {request.createdAtUtc &&
+                                DateTime.fromJSDate(new Date(request.createdAtUtc)).toRelative({
                                     locale: 'en-GB',
-                                })
-                                : '-'}
+                                })}
                         </>
                     );
                 },
@@ -159,11 +156,10 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     const request: ScopeChangeRequest = cell.value.content;
                     return (
                         <>
-                            {request.modifiedAtUtc
-                                ? DateTime.fromJSDate(new Date(request.modifiedAtUtc)).toRelative({
+                            {request.modifiedAtUtc &&
+                                DateTime.fromJSDate(new Date(request.modifiedAtUtc)).toRelative({
                                     locale: 'en-GB',
-                                })
-                                : '-'}
+                                })}
                         </>
                     );
                 },
@@ -184,12 +180,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                     const count = deref(guesstimateHoursMaxAtom);
 
-                    return (
-                        <EstimateBar
-                            percentWidth={(request.guesstimateHours / count) * 100}
-                            number={request.guesstimateHours ?? 0}
-                        />
-                    );
+                    return <EstimateBar current={request.guesstimateHours} max={count} />;
                 },
             },
         },
@@ -237,10 +228,8 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                     return (
                         <EstimateBar
-                            percentWidth={
-                                (request.estimatedChangeHours / highestEstimateHours) * 100
-                            }
-                            number={request.estimatedChangeHours ?? 0}
+                            current={request.estimatedChangeHours}
+                            max={highestEstimateHours}
                         />
                     );
                 },
@@ -270,10 +259,13 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
-                    return request.hasPendingContributions ? (
-                        <Icon color={tokens.colors.text.static_icons__default.hex} name="group" />
-                    ) : (
-                        '-'
+                    return (
+                        request.hasPendingContributions && (
+                            <Icon
+                                color={tokens.colors.text.static_icons__default.hex}
+                                name="group"
+                            />
+                        )
                     );
                 },
             },
@@ -291,7 +283,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: {
                 Cell: ({ cell }: any) => {
                     if (!cell.value.content.hasComments) {
-                        return '-';
+                        return <></>;
                     }
 
                     return (
@@ -326,7 +318,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     const request: ScopeChangeRequest = cell.value.content;
 
                     if (!request.currentWorkflowStep) {
-                        return '-';
+                        return <></>;
                     }
 
                     return (

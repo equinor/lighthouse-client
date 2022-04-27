@@ -17,8 +17,6 @@ export const CompactWorkorder = ({
     highestEstimate,
     highestExpended,
 }: CompactWorkorderProps): JSX.Element => {
-    const getPercentEstimate = (number: number) => (number / highestEstimate) * 100;
-
     const { title } = useFacility();
     const {
         workOrderNumber,
@@ -80,10 +78,7 @@ export const CompactWorkorder = ({
                 </Column>
                 <Column>
                     <div>Estimate</div>
-                    <EstimateBar
-                        percentWidth={getPercentEstimate(estimatedHours)}
-                        number={estimatedHours}
-                    />
+                    <EstimateBar current={estimatedHours} max={highestEstimate} />
                 </Column>
                 <Column>
                     <div>Expended</div>
