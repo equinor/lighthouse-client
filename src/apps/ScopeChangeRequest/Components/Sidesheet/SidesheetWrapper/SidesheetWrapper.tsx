@@ -1,5 +1,5 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
 import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
@@ -19,6 +19,9 @@ import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/Resiz
 import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
 import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
 import { isProduction } from '../../../../../Core/Client/Functions';
+import { swap, useAtom } from '@dbeining/react-atom';
+import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
+import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -32,13 +35,24 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
 
     const request = useGetScopeChangeRequest(item.id, item);
     const requestAccess = useScopeChangeAccess(item.id);
-    const [editMode, setEditMode] = useState<boolean>(false);
-    const toggleEditMode = () => setEditMode((prev) => !prev);
+
+    const toggleEditMode = () => swap(sideSheetEditModeAtom, (s) => !s);
+
     useSidesheetEffects(actions, toggleEditMode, item.id);
 
     useEffect(() => {
-        setEditMode(false);
+        swap(sideSheetEditModeAtom, () => false);
     }, [request?.id]);
+
+    useEffect(() => {
+        swap(scopeChangeAtom, () => ({
+            actions,
+            request: request ?? item,
+            requestAccess,
+        }));
+    }, [request, requestAccess, item]);
+
+    const editMode = useAtom(sideSheetEditModeAtom);
 
     return (
         <Wrapper>
