@@ -91,7 +91,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     ],
     headers: [
         { key: 'sequenceNumber', title: 'Id', width: 60 },
-        { key: 'title', title: 'Title', width: 150 },
+        { key: 'title', title: 'Title', width: 250 },
         { key: 'phase', title: 'Phase', width: 60 },
         { key: 'workflowSteps', title: 'Workflow', width: 110 },
         { key: 'guesstimateHours', title: 'Guess mhrs', width: 120 },
@@ -273,7 +273,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         {
             key: 'workflowSteps',
             type: {
-                Cell: ({ cell }: any) => {
+                Cell: ({ cell }: any): JSX.Element => {
                     return <WorkflowCompact steps={cell.value.content.workflowSteps} />;
                 },
             },
