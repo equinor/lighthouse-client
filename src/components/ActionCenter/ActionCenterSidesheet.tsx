@@ -26,13 +26,15 @@ export function ActionCenterSidesheet({
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <TabsList>
                         <Tabs.Tab>Notifications </Tabs.Tab>
-                        <Tabs.Tab disabled>Assignments </Tabs.Tab>
+                        <Tabs.Tab>Assignments </Tabs.Tab>
                     </TabsList>
                     <Tabs.Panels>
                         <Tabs.Panel>
                             <NotificationsTab onClickNotification={closeSidesheet} />
                         </Tabs.Panel>
-                        <Tabs.Panel>{activeTab === 1 && <AssignmentsTab />}</Tabs.Panel>
+                        <Tabs.Panel>
+                            <AssignmentsTab />
+                        </Tabs.Panel>
                     </Tabs.Panels>
                 </Tabs>
             </Wrapper>
