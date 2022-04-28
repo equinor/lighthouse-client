@@ -1,6 +1,8 @@
 import { Tabs } from '@equinor/eds-core-react';
+import { isProduction } from '@equinor/portal-client';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
 import { SidesheetActions } from '../../packages/Notifications sidesheet/NotificationsSidesheet';
 import { AssignmentsTab } from './AssignmentsTab';
 import { NotificationsTab } from './NotificationsTab';
@@ -26,7 +28,7 @@ export function ActionCenterSidesheet({
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <TabsList>
                         <Tabs.Tab>Notifications </Tabs.Tab>
-                        <Tabs.Tab>Assignments </Tabs.Tab>
+                        <Tabs.Tab disabled={isProduction()}>Assignments </Tabs.Tab>
                     </TabsList>
                     <Tabs.Panels>
                         <Tabs.Panel>

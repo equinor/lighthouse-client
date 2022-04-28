@@ -9,6 +9,7 @@ import { NotificationCardNew } from '../../Core/Notifications/Components/Notific
 import { useNotificationCenter } from '../../Core/Notifications/Hooks/useNotificationCenter';
 import { notificationQueries } from '../../Core/Notifications/queries/notificationQueries';
 import { Notification } from '../../Core/Notifications/Types/Notification';
+import { getCountForAppName } from './Utils/getCountForNotificationCards';
 
 interface NotificationsTabProps {
     onClickNotification?: () => void;
@@ -46,12 +47,6 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
             .sort((a, b) => new Date(b.created).getTime() - new Date(a.created).getTime())
             .filter(({ appName }) => activeNotifications.includes(appName));
 
-    const getCountForAppName = (x: string) =>
-        [...readNotificationCards, ...unreadNotificationCards].reduce(
-            (acc, { appName }) => (appName === x ? acc + 1 : acc),
-            0
-        );
-
     return (
         <>
             <Notifications>
@@ -68,9 +63,10 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
                                 onClick={() => handleClick(applicationName)}
                                 key={applicationName + index}
                             >
-                                <div>{`${getCountForAppName(applicationName)} ${capitalize(
-                                    applicationName
-                                )}`}</div>
+                                <div>{`${getCountForAppName(applicationName, [
+                                    ...unreadNotificationCards,
+                                    ...readNotificationCards,
+                                ])} ${capitalize(applicationName)}`}</div>
                             </Chip>
                         ))}
                     </ActiveOrigins>
