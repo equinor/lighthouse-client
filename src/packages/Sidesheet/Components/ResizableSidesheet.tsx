@@ -10,7 +10,7 @@ import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/Error
 import { useSideSheet } from '../context/sidesheetContext';
 import {
     ToggleFunction,
-    useInternalSidesheetFunction,
+    useInternalSidesheetFunction
 } from '../Hooks/useInternalSidesheetFunction';
 
 const DEFAULT_TAB_COLOUR = '#ff9900';
@@ -115,7 +115,7 @@ const LeftHeader = styled.div`
     gap: 0.5em;
     flex-direction: row;
     align-items: center;
-    font-size: 28px;
+    font-size: 24px;
 `;
 
 const Header = styled.div`
