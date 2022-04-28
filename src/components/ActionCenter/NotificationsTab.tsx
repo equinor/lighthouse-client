@@ -1,6 +1,6 @@
 import { Accordion, Checkbox, Chip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
@@ -21,10 +21,11 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
     const queryClient = useQueryClient();
     const onNotification = () =>
         queryClient.invalidateQueries(getUnreadNotificationsQuery().queryKey);
-    const { unreadNotificationCards } = useNotificationCenter(onNotification);
+    const { unreadNotificationCards, readNotificationCards } =
+        useNotificationCenter(onNotification);
 
-    const origins = unreadNotificationCards
-        .map(({ appName }) => appName)
+    const origins = [...unreadNotificationCards, ...readNotificationCards]
+        .map(({ appName = 'Unknown' }) => appName)
         .filter((v, i, a) => a.indexOf(v) === i);
 
     const [activeNotifications, setActiveNotifications] = useState<string[]>(origins);
@@ -36,7 +37,7 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
                 : [...prev, sourceSystem]
         );
 
-    const [isGroupedBySource, setIsGroupedBySource] = useState(true);
+    const [isGroupedBySource, setIsGroupedBySource] = useState(false);
 
     const isActive = (key: string) => activeNotifications.includes(key);
 
@@ -46,7 +47,10 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
             .filter(({ appName }) => activeNotifications.includes(appName));
 
     const getCountForAppName = (x: string) =>
-        unreadNotificationCards.reduce((acc, { appName }) => (appName === x ? acc + 1 : acc), 0);
+        [...readNotificationCards, ...unreadNotificationCards].reduce(
+            (acc, { appName }) => (appName === x ? acc + 1 : acc),
+            0
+        );
 
     return (
         <>
@@ -90,23 +94,31 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
                                 <Accordion.Header chevronPosition="right">
                                     {capitalize(applicationTitle)}
                                 </Accordion.Header>
-                                {sortAndFilterList(unreadNotificationCards)
+                                {sortAndFilterList([
+                                    ...unreadNotificationCards,
+                                    ...readNotificationCards,
+                                ])
                                     .filter(({ appName }) => applicationTitle === appName)
                                     .map((notification) => (
-                                        <Accordion.Panel key={notification.id}>
-                                            <NotificationCardNew
-                                                key={notification.id}
-                                                notification={notification}
-                                                onNavigate={onClickNotification}
-                                            />
-                                        </Accordion.Panel>
+                                        <>
+                                            <Accordion.Panel key={notification.id}>
+                                                <NotificationCardNew
+                                                    key={notification.id}
+                                                    notification={notification}
+                                                    onNavigate={onClickNotification}
+                                                />
+                                            </Accordion.Panel>
+                                        </>
                                     ))}
                             </Accordion.Item>
                         ))}
                     </Accordion>
                 ) : (
                     <NotificationsList>
-                        {sortAndFilterList(unreadNotificationCards).map((x) => (
+                        {sortAndFilterList([
+                            ...unreadNotificationCards,
+                            ...readNotificationCards,
+                        ]).map((x) => (
                             <NotificationCardNew
                                 key={x.id}
                                 notification={x}
