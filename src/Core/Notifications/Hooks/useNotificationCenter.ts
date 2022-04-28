@@ -5,7 +5,6 @@ import { useQuery, useQueryClient } from 'react-query';
 import { Notification } from '../Types/Notification';
 import { HubConnectionState } from '@microsoft/signalr';
 import { notificationQueries } from '../queries/notificationQueries';
-import { NotificationList } from '../Types/NotificationList';
 
 interface NotificationCenter {
     isFetchingRead: boolean;
@@ -27,12 +26,12 @@ export function useNotificationCenter(
 
     const { getReadNotificationsQuery, getUnreadNotificationsQuery } = notificationQueries;
 
-    const { data: readNotifications, isFetching: isFetchingUnRead } = useQuery<
+    const { data: readNotifications, isFetching: isFetchingRead } = useQuery<
         unknown,
         unknown,
-        NotificationList
+        Notification[]
     >(getReadNotificationsQuery());
-    const { data: unreadNotifications, isFetching: isFetchingRead } = useQuery<
+    const { data: unreadNotifications, isFetching: isFetchingUnRead } = useQuery<
         unknown,
         unknown,
         Notification[]
@@ -71,7 +70,7 @@ export function useNotificationCenter(
         isFetchingRead,
         isFetchingUnRead,
         isEstablishingHubConnection: false,
-        readNotificationCards: readNotifications?.value ?? [],
+        readNotificationCards: readNotifications || [],
         unreadNotificationCards: unreadNotifications || [],
         unreadNotificationsCount: unreadNotifications?.length || 0,
     };
