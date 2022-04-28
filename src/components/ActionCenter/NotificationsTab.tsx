@@ -1,10 +1,9 @@
-import { Accordion, Checkbox, Chip } from '@equinor/eds-core-react';
+import { Chip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
-import { IconMenu } from '../../apps/ScopeChangeRequest/Components/MenuButton';
 import { NotificationCardNew } from '../../Core/Notifications/Components/NotificationCard';
 import { useNotificationCenter } from '../../Core/Notifications/Hooks/useNotificationCenter';
 import { notificationQueries } from '../../Core/Notifications/queries/notificationQueries';
@@ -38,8 +37,6 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
                 : [...prev, sourceSystem]
         );
 
-    const [isGroupedBySource, setIsGroupedBySource] = useState(false);
-
     const isActive = (key: string) => activeNotifications.includes(key);
 
     const sortAndFilterList = (list: Notification[]) =>
@@ -70,58 +67,19 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
                             </Chip>
                         ))}
                     </ActiveOrigins>
-
-                    <IconMenu
-                        iconName="filter_list"
-                        items={[
-                            {
-                                label: `${isGroupedBySource ? 'Ungroup' : 'Group by source'} `,
-                                icon: <Checkbox checked={isGroupedBySource} readOnly />,
-                                onClick: () => setIsGroupedBySource((prev) => !prev),
-                            },
-                        ]}
-                    />
                 </Header>
 
-                {isGroupedBySource ? (
-                    <Accordion>
-                        {activeNotifications.map((applicationTitle, index) => (
-                            <Accordion.Item key={applicationTitle + index}>
-                                <Accordion.Header chevronPosition="right">
-                                    {capitalize(applicationTitle)}
-                                </Accordion.Header>
-                                {sortAndFilterList([
-                                    ...unreadNotificationCards,
-                                    ...readNotificationCards,
-                                ])
-                                    .filter(({ appName }) => applicationTitle === appName)
-                                    .map((notification, index) => (
-                                        <>
-                                            <Accordion.Panel key={notification.id + index}>
-                                                <NotificationCardNew
-                                                    notification={notification}
-                                                    onNavigate={onClickNotification}
-                                                />
-                                            </Accordion.Panel>
-                                        </>
-                                    ))}
-                            </Accordion.Item>
-                        ))}
-                    </Accordion>
-                ) : (
-                    <NotificationsList>
-                        {sortAndFilterList([
-                            ...unreadNotificationCards,
-                            ...readNotificationCards,
-                        ]).map((x, index) => (
+                <NotificationsList>
+                    {sortAndFilterList([...unreadNotificationCards, ...readNotificationCards]).map(
+                        (x, index) => (
                             <NotificationCardNew
                                 key={x.id + index}
                                 notification={x}
                                 onNavigate={onClickNotification}
                             />
-                        ))}
-                    </NotificationsList>
-                )}
+                        )
+                    )}
+                </NotificationsList>
             </Notifications>
         </>
     );

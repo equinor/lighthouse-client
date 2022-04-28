@@ -1,4 +1,4 @@
-import { Chip, Checkbox, Accordion, CircularProgress } from '@equinor/eds-core-react';
+import { Chip, Checkbox, CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
 
@@ -7,6 +7,7 @@ import { AssignmentCard } from '../../Core/Assignments/Components/AssignmentsCar
 import { ActiveOrigins, Assignments, Header, Transition } from './assignmentsTab.styles';
 import { useAssignments } from '../../Core/Assignments/Hooks/useAssignments';
 import { getCountForAppName } from './Utils/getCount';
+import { GroupedAssignments } from './GroupedAssignments';
 
 export function AssignmentsTab(): JSX.Element {
     const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
@@ -88,26 +89,10 @@ export function AssignmentsTab(): JSX.Element {
                     />
                 </Header>
                 {isGroupedBySource ? (
-                    <Accordion>
-                        {activeAssignments.map((applicationTitle) => (
-                            <Accordion.Item key={applicationTitle}>
-                                <Accordion.Header chevronPosition="right">
-                                    {capitalize(applicationTitle)}
-                                </Accordion.Header>
-                                {assignments &&
-                                    assignments
-                                        .filter(
-                                            ({ sourceSystem }) =>
-                                                sourceSystem.subSystem === applicationTitle
-                                        )
-                                        .map((assignment) => (
-                                            <Accordion.Panel key={assignment.id}>
-                                                <AssignmentCard assignment={assignment} />
-                                            </Accordion.Panel>
-                                        ))}
-                            </Accordion.Item>
-                        ))}
-                    </Accordion>
+                    <GroupedAssignments
+                        assignments={assignments}
+                        activeAssignments={activeAssignments}
+                    />
                 ) : (
                     <>
                         {assignments &&
