@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Criteria, WorkflowStep } from '../../../../types/scopeChangeRequest';
+import { Criteria, CriteriaSignState, WorkflowStep } from '../../../../types/scopeChangeRequest';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { tokens } from '@equinor/eds-tokens';
@@ -9,15 +9,13 @@ interface CriteriaDetailProps {
     step: WorkflowStep;
 }
 
-export type CriteriaStatus = 'Approved' | 'Rejected' | 'Inactive' | 'Active';
+export type CriteriaStatus = CriteriaSignState | 'Inactive' | 'Active';
 
 function statusFunc(criteria: Criteria, step: WorkflowStep): CriteriaStatus {
     if (!criteria.signedState) {
         return step.isCurrent ? 'Active' : 'Inactive';
-    } else if (criteria.signedState === 'Approved') {
-        return 'Approved';
     } else {
-        return 'Rejected';
+        return criteria.signedState;
     }
 }
 
