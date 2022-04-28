@@ -24,7 +24,7 @@ export const searchDocuments = async (
 
     return (await res.json()).map(
         (x: Document): TypedSelectOption => ({
-            label: `DOC_${x.docNo} - ${x.docTitle}`,
+            label: `${x.docNo} - ${x.docTitle}`,
             value: x.docNo,
             type: 'document',
             searchValue: x.docNo,
