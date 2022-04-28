@@ -4,28 +4,28 @@ import { StatusCircle } from '@equinor/GardenUtils';
 import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
 import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
 
-interface JunctionBoxProps {
+interface SpaceHeaterProps {
     value?: string;
     status: string;
 }
-export const JunctionBox = ({ value, status }: JunctionBoxProps): JSX.Element => {
+export const SpaceHeater = ({ value, status }: SpaceHeaterProps): JSX.Element => {
     return (
         <ElectroViewNodeGroup>
-            <JunctionBoxNode>
+            <SpaceHeaterNode>
                 <ElectroViewNodeValueText>
-                    <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
+                    <div>{value}</div>
                 </ElectroViewNodeValueText>
                 <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
-            </JunctionBoxNode>
+            </SpaceHeaterNode>
         </ElectroViewNodeGroup>
     );
 };
 
-const JunctionBoxNode = styled.div`
+const SpaceHeaterNode = styled.div`
     display: flex;
     flex-direction: horizontal;
     flex: 1;
-    width: 90px;
+    width: 150px;
     border: 1px solid ${tokens.colors.ui.background__medium.hex};
     border-radius: 10px;
     padding: 6px;

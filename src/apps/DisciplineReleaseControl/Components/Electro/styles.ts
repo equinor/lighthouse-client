@@ -33,8 +33,8 @@ export const SwitchBoardContainer = styled.div`
 export const SwitchBoardBorderContainer = styled.div`
     border: 1px solid ${tokens.colors.ui.background__medium.hex};
     padding: 8px;
-    width: 112px;
-    border: 1px solid ${tokens.colors.ui.background__medium.hex};
+    width: 100px;
+    background: ${tokens.colors.ui.background__light.hex};
 `;
 
 export const ElectroViewRow = styled.div`
@@ -51,10 +51,15 @@ export const ElectroViewNodeGroup = styled.div`
     flex-direction: column;
 `;
 
+export const ElectroViewNodeGroupRow = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
 export const ElectroViewNodeText = styled.div`
     display: flex;
     flex-direction: horizontal;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 500, Medium;
     margin-left: 4px;
 `;

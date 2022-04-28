@@ -1,62 +1,54 @@
 import { StatusItem } from '../../../packages/StatusBar';
-import { kFormatter } from '../functions/kFormatter';
 import { ScopeChangeRequest } from '../types/scopeChangeRequest';
+
+export function numberFormat(number: number): string {
+    return parseFloat(Math.round(number).toString()).toLocaleString('no');
+}
 
 export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
     return [
         {
             title: 'Requests',
-            value: () => `${kFormatter(data.length)}`,
+            value: () => numberFormat(data.length),
         },
         {
             title: 'Mhrs',
             value: () => {
-                const totalMhrs = kFormatter(
-                    data.reduce((count, { guesstimateHours }) => count + guesstimateHours, 0)
+                const totalMhrs = data.reduce(
+                    (count, { guesstimateHours }) => count + guesstimateHours,
+                    0
                 );
-
-                return `${totalMhrs}`;
+                return numberFormat(totalMhrs);
             },
         },
         {
             title: 'Pending requests',
             value: () => {
-                const pendingRequests = kFormatter(
-                    data.reduce((count, { state }) => (state === 'Open' ? count + 1 : count), 0)
+                const pendingRequests = data.reduce(
+                    (count, { state }) => (state === 'Open' ? count + 1 : count),
+                    0
                 );
-
-                return `${pendingRequests}`;
+                return numberFormat(pendingRequests);
             },
         },
         {
             title: 'Pending mhrs',
-            value: () => {
-                const pendingRequestsMhr = kFormatter(accPendingMhr(data));
-
-                return `${pendingRequestsMhr}`;
-            },
+            value: () => numberFormat(accPendingMhr(data)),
         },
         {
             title: 'Approved requests',
-            value: () => {
-                const requestsApprovedCount = kFormatter(filterApprovedRequests(data).length);
-
-                return `${requestsApprovedCount}`;
-            },
+            value: () => numberFormat(filterApprovedRequests(data).length),
         },
 
         {
             title: 'Approved Mhrs',
-            value: () => {
-                const approvedMhrs = kFormatter(
+            value: () =>
+                numberFormat(
                     filterApprovedRequests(data).reduce(
                         (acc, { guesstimateHours }) => acc + guesstimateHours,
                         0
                     )
-                );
-
-                return `${approvedMhrs}`;
-            },
+                ),
         },
     ];
 }

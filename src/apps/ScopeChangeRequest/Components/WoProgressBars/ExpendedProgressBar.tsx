@@ -30,7 +30,9 @@ export const ExpendedProgressBar = ({
                     {highestExpended !== 0 && <ActualProgress width={getPercentExpended(actual)} />}
                 </>
             )}
-            <ProgressNumber>{Math.round(actual)}</ProgressNumber>
+            <ProgressNumber>
+                {parseFloat(Math.round(actual).toString()).toLocaleString('no')}
+            </ProgressNumber>
         </ProgressBarContainer>
     );
 };

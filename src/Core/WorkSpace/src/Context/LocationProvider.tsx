@@ -6,7 +6,7 @@ import {
     useContext,
     useEffect,
     useMemo,
-    useState
+    useState,
 } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSideSheet } from '../../../../packages/Sidesheet/context/sidesheetContext';
@@ -38,12 +38,15 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
 
     const handleSetActiveTab = useCallback(
         (activeTab: WorkspaceTab) => {
-            navigate(`${location.pathname.replace(currentTabId || '', '')}/${activeTab}`, {
-                replace: true,
-            });
+            navigate(
+                `${location.pathname.replace(currentTabId || '', '')}/${activeTab}${location.hash}`,
+                {
+                    replace: true,
+                }
+            );
             setActiveTab(activeTab);
         },
-        [currentTabId, location.pathname, navigate]
+        [currentTabId, location, navigate]
     );
 
     const findItem = useCallback(
@@ -85,7 +88,7 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
      */
     useEffect(() => {
         if (!id) {
-            navigate(`${location.pathname}/${defaultTab}`, {
+            navigate(`${location.pathname}/${defaultTab}${location.hash}`, {
                 replace: true,
             });
         }
@@ -111,7 +114,7 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         if (location.hash.length > 0 && onSelect) {
             mountSidesheetFromUrl();
         }
-    }, [location.hash.length, mountSidesheetFromUrl, onSelect]);
+    }, []);
 
     return (
         <Context.Provider

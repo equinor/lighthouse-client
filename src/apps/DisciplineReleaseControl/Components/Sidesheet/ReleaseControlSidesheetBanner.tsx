@@ -4,10 +4,8 @@ import { getYearAndWeekFromString } from '../../Functions/statusHelpers';
 import { checklistTagFunc, createChecklistSteps } from '../../Functions/tableHelpers';
 import { Pipetest } from '../../Types/pipetest';
 import { WorkflowCompact } from '../Workflow/Components/WorkflowCompact';
-import {
-    CurrentStepContainer,
-    WorkflowWarningTriangle,
-} from '../Workflow/Components/WorkflowWarningTriangle';
+import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';
+import { CurrentStepContainer } from '../Workflow/Styles/styles';
 
 interface ReleaseControlSidesheetBannerProps {
     pipetest: Pipetest;

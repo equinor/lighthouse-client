@@ -1,4 +1,3 @@
-import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { CheckListStepTag } from '../../../Types/drcEnums';
@@ -26,11 +25,6 @@ export const HeatTracingCable = ({
     return (
         <ElectroViewNodeGroup>
             <HeatTracingCableNode htCount={pipetestsOnHTCable.length}>
-                <Icon
-                    size={16}
-                    color={tokens.colors.text.static_icons__default.hex}
-                    name="heat_trace"
-                />
                 <ElectroViewNodeValueText>{value}</ElectroViewNodeValueText>
                 <ABTestDots>
                     <TestDot
@@ -81,7 +75,7 @@ const HeatTracingCableNode = styled.div<{ htCount: number }>`
 
         position: relative;
         top: 18px;
-        left: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '47px' : 90 * p.htCount - 100 + 'px')};
+        left: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '60px' : 90 * p.htCount - 78 + 'px')};
     }
 `;
 
