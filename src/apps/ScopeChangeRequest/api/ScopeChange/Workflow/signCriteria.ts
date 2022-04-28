@@ -1,17 +1,16 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { throwOnError } from '../../../functions/throwError';
+import { CriteriaSignState } from '../../../types/scopeChangeRequest';
 
 interface SignCriteriaMutation {
     requestId: string;
     stepId: string;
     criteriaId: string;
-    verdict: 'Approved' | 'Rejected';
-    closeRequest: boolean;
+    verdict: CriteriaSignState;
     comment?: string;
 }
 
 export async function signCriteria({
-    closeRequest,
     criteriaId,
     requestId,
     stepId,
@@ -25,7 +24,6 @@ export async function signCriteria({
         body: JSON.stringify({
             signedComment: comment,
             signedState: verdict,
-            closeRequest: closeRequest,
         }),
     };
 

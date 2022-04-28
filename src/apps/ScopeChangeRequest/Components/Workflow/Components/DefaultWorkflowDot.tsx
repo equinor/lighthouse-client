@@ -8,8 +8,8 @@ interface DefaultWorkflowDotProps {
 export function DefaultWorkflowDot({
     fill = 'none',
     stroke = '#6F6F6F',
-    height = 11,
-    width = 11,
+    height = 12,
+    width = 12,
 }: DefaultWorkflowDotProps): JSX.Element {
     return (
         <svg width={width} height={height} viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
