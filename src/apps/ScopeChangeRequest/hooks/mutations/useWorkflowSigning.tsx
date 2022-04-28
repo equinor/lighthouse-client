@@ -4,10 +4,10 @@ import { signCriteria } from '../../api/ScopeChange/Workflow';
 import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { useScopeChangeContext } from '../../context/useScopeChangeAccessContext';
+import { CriteriaSignState } from '../../types/scopeChangeRequest';
 
 export interface OnSignStepAction {
-    action: 'Approved' | 'Rejected';
-    closeRequest: boolean;
+    action: CriteriaSignState;
     comment: string | undefined;
 }
 
@@ -29,18 +29,18 @@ export function useWorkflowSigning({
     const { request } = useScopeChangeContext();
     const queryClient = useQueryClient();
 
-    async function onSignStep({ action, closeRequest, comment }: OnSignStepAction) {
-        if (closeRequest) {
+    async function onSignStep({ action, comment }: OnSignStepAction) {
+        if (action !== 'Approved') {
             await signCriteria({
-                closeRequest: true,
                 criteriaId: criteriaId,
                 requestId: requestId,
                 stepId: stepId,
-                verdict: 'Rejected',
+                verdict: action,
                 comment: comment,
             });
             return;
         }
+
         /** Need to determine if it is the last criteria to be signed on the step */
         const unsignedCriterias = request.workflowSteps
             .find((x) => x.id === stepId)
@@ -57,7 +57,6 @@ export function useWorkflowSigning({
                         criteriaId: criteriaId,
                         verdict: action,
                         comment: comment,
-                        closeRequest: false,
                     }).then(() => queryClient.invalidateQueries());
                 }
             );
@@ -68,7 +67,6 @@ export function useWorkflowSigning({
                 criteriaId: criteriaId,
                 verdict: action,
                 comment: comment,
-                closeRequest: false,
             });
         }
     }

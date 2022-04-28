@@ -3,15 +3,15 @@ import { Button, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { useScopeChangeContext } from '../../../../../context/useScopeChangeAccessContext';
 import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
+import { CriteriaSignState } from '../../../../../types/scopeChangeRequest';
 import { actionWithCommentAtom as actionWithCommentAtom } from '../WorkflowCriteria/WorkflowCriteria';
 import { ButtonsContainer } from './signWithComment.styles';
 
 interface SignWithCommentProps {
-    action: 'Approved' | 'Rejected';
+    action: CriteriaSignState;
     buttonText: string;
     stepId: string;
     criteriaId: string;
-    closeRequest: boolean;
 }
 
 export const SignWithComment = ({
@@ -19,7 +19,6 @@ export const SignWithComment = ({
     criteriaId,
     stepId,
     buttonText,
-    closeRequest,
 }: SignWithCommentProps): JSX.Element => {
     const { request } = useScopeChangeContext();
 
@@ -45,7 +44,6 @@ export const SignWithComment = ({
                     onClick={() =>
                         signMutation({
                             action: action,
-                            closeRequest: closeRequest,
                             comment: comment,
                         })
                     }
