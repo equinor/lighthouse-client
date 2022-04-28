@@ -1,5 +1,5 @@
 import { httpClient } from '../../../../Core/Client/Functions';
-import { generateExpressions, generateFamRequest } from '../../types/FAM/famQuery';
+import { generateExpressions, generateFamRequest } from '../../functions/FAM/generateFAMRequest';
 import { WorkOrder } from '../../types/FAM/workOrder';
 
 export async function getWorkOrderByIds(ids: number[]): Promise<WorkOrder[]> {
