@@ -1,17 +1,9 @@
-import { tokens } from '@equinor/eds-tokens';
-import { isProduction, useFacility } from '@equinor/portal-client';
+import { Column, Table } from '@equinor/Table';
+
 import { WorkOrder } from '../../types/FAM/workOrder';
 import { EstimateBar } from '../WoProgressBars/EstimateBar';
 import { ExpendedProgressBar } from '../WoProgressBars/ExpendedProgressBar';
 import { ProgressBar } from '../WoProgressBars/ProgressBar';
-import {
-    ColumnHeader,
-    Header,
-    Table,
-    TableData,
-    TableHeader,
-    TableRow,
-} from './workOrderTable.styles';
 
 interface WorkOrderTableProps {
     workOrders: WorkOrder[];
@@ -23,85 +15,61 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
         ...workOrders.map(({ expendedHours }) => Number(expendedHours) ?? 0)
     );
 
-    const { title } = useFacility();
+    function generateColumn(
+        headerName: string,
+        render: (wo: WorkOrder) => string | number | JSX.Element | Date | null | undefined,
+        width: number
+    ): Column<any> {
+        return {
+            Header: headerName,
+            accessor: headerName,
+            width: width,
+            Cell: ({ cell }: any) => {
+                return render(cell.row.original);
+            },
+        };
+    }
+
+    const someColumns: Column<any>[] = [
+        generateColumn('WO', ({ workOrderNumber }) => workOrderNumber, 90),
+        generateColumn('Title', ({ description }) => description, 310),
+        generateColumn('Discipline', ({ disciplineCode }) => disciplineCode, 80),
+        generateColumn('Status', ({ jobStatus }) => jobStatus, 80),
+        generateColumn(
+            'Plan. finish',
+            ({ plannedFinishDate }) => new Date(plannedFinishDate).toLocaleDateString('EN-GB'),
+            100
+        ),
+        generateColumn(
+            'Act. finish',
+            ({ actualCompletionDate }) =>
+                new Date(actualCompletionDate).toLocaleDateString('EN-GB'),
+            100
+        ),
+        generateColumn(
+            'Progress',
+            ({ projectProgress }) => <ProgressBar percentWidth={projectProgress} />,
+            100
+        ),
+        generateColumn(
+            'Estimated',
+            ({ estimatedHours }) => <EstimateBar current={estimatedHours} max={highestEstimate} />,
+            100
+        ),
+        generateColumn(
+            'Expended',
+            ({ expendedHours, estimatedHours }) => (
+                <ExpendedProgressBar
+                    actual={Number(expendedHours) ?? 0}
+                    estimate={estimatedHours}
+                    highestExpended={highestExpended}
+                />
+            ),
+            100
+        ),
+    ];
 
     return (
-        <Table>
-            <TableHeader>
-                <Header>
-                    <ColumnHeader>WO</ColumnHeader>
-                    <ColumnHeader style={{ minWidth: '190px' }}>Title</ColumnHeader>
-                    <ColumnHeader>Discipline</ColumnHeader>
-                    <ColumnHeader>Status</ColumnHeader>
-                    <ColumnHeader>Plan. finish</ColumnHeader>
-                    <ColumnHeader>Act. finish</ColumnHeader>
-                    <ColumnHeader>Progress</ColumnHeader>
-                    <ColumnHeader>Estimated</ColumnHeader>
-                    <ColumnHeader>Expended</ColumnHeader>
-                </Header>
-            </TableHeader>
-
-            <tbody>
-                {workOrders.map(
-                    ({
-                        expendedHours,
-                        actualCompletionDate,
-                        disciplineCode,
-                        estimatedHours,
-                        workOrderNumber,
-                        plannedFinishDate,
-                        projectProgress,
-                        jobStatus,
-                        description,
-                        workOrderId,
-                    }) => (
-                        <TableRow key={workOrderNumber}>
-                            <TableData
-                                style={{
-                                    cursor: 'pointer',
-                                    color: `${tokens.colors.interactive.primary__resting.hex}`,
-                                    textDecoration: 'underline',
-                                }}
-                                onClick={() =>
-                                    window.open(
-                                        //TEMP:
-                                        `https://${isProduction() ? 'procosys' : 'procosys'
-                                        }.equinor.com/${title.replace(
-                                            ' ',
-                                            '_'
-                                        )}/WorkOrders/WorkOrder#id=${workOrderId}`,
-                                        '_blank'
-                                    )
-                                }
-                            >
-                                {workOrderNumber}
-                            </TableData>
-                            <TableData>{description}</TableData>
-                            <TableData>{disciplineCode}</TableData>
-                            <TableData>{jobStatus}</TableData>
-                            <TableData>
-                                {new Date(plannedFinishDate).toLocaleDateString('EN-GB')}
-                            </TableData>
-                            <TableData>
-                                {new Date(actualCompletionDate).toLocaleDateString('EN-GB')}
-                            </TableData>
-                            <TableData>
-                                <ProgressBar percentWidth={projectProgress} />
-                            </TableData>
-                            <TableData>
-                                <EstimateBar current={estimatedHours} max={highestEstimate} />
-                            </TableData>
-                            <TableData>
-                                <ExpendedProgressBar
-                                    actual={Number(expendedHours) ?? 0}
-                                    estimate={estimatedHours}
-                                    highestExpended={highestExpended}
-                                />
-                            </TableData>
-                        </TableRow>
-                    )
-                )}
-            </tbody>
-        </Table>
+        <div>{workOrders && <Table options={{ data: workOrders, columns: someColumns }} />}</div>
     );
 }
