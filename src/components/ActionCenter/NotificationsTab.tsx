@@ -21,10 +21,11 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
     const queryClient = useQueryClient();
     const onNotification = () =>
         queryClient.invalidateQueries(getUnreadNotificationsQuery().queryKey);
-    const { unreadNotificationCards } = useNotificationCenter(onNotification);
+    const { unreadNotificationCards, readNotificationCards } =
+        useNotificationCenter(onNotification);
 
-    const origins = unreadNotificationCards
-        .map(({ appName }) => appName)
+    const origins = [...unreadNotificationCards, ...readNotificationCards]
+        .map(({ appName = 'Unknown' }) => appName)
         .filter((v, i, a) => a.indexOf(v) === i);
 
     const [activeNotifications, setActiveNotifications] = useState<string[]>(origins);
@@ -36,7 +37,7 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
                 : [...prev, sourceSystem]
         );
 
-    const [isGroupedBySource, setIsGroupedBySource] = useState(true);
+    const [isGroupedBySource, setIsGroupedBySource] = useState(false);
 
     const isActive = (key: string) => activeNotifications.includes(key);
 
@@ -46,14 +47,17 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
             .filter(({ appName }) => activeNotifications.includes(appName));
 
     const getCountForAppName = (x: string) =>
-        unreadNotificationCards.reduce((acc, { appName }) => (appName === x ? acc + 1 : acc), 0);
+        [...readNotificationCards, ...unreadNotificationCards].reduce(
+            (acc, { appName }) => (appName === x ? acc + 1 : acc),
+            0
+        );
 
     return (
         <>
             <Notifications>
                 <Header>
                     <ActiveOrigins>
-                        {origins.map((applicationName) => (
+                        {origins.map((applicationName, index) => (
                             <Chip
                                 style={{
                                     backgroundColor: `${isActive(applicationName)
@@ -62,7 +66,7 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
                                         }`,
                                 }}
                                 onClick={() => handleClick(applicationName)}
-                                key={applicationName}
+                                key={applicationName + index}
                             >
                                 <div>{`${getCountForAppName(applicationName)} ${capitalize(
                                     applicationName
@@ -85,30 +89,37 @@ export function NotificationsTab({ onClickNotification }: NotificationsTabProps)
 
                 {isGroupedBySource ? (
                     <Accordion>
-                        {activeNotifications.map((applicationTitle) => (
-                            <Accordion.Item key={applicationTitle}>
+                        {activeNotifications.map((applicationTitle, index) => (
+                            <Accordion.Item key={applicationTitle + index}>
                                 <Accordion.Header chevronPosition="right">
                                     {capitalize(applicationTitle)}
                                 </Accordion.Header>
-                                {sortAndFilterList(unreadNotificationCards)
+                                {sortAndFilterList([
+                                    ...unreadNotificationCards,
+                                    ...readNotificationCards,
+                                ])
                                     .filter(({ appName }) => applicationTitle === appName)
-                                    .map((notification) => (
-                                        <Accordion.Panel key={notification.id}>
-                                            <NotificationCardNew
-                                                key={notification.id}
-                                                notification={notification}
-                                                onNavigate={onClickNotification}
-                                            />
-                                        </Accordion.Panel>
+                                    .map((notification, index) => (
+                                        <>
+                                            <Accordion.Panel key={notification.id + index}>
+                                                <NotificationCardNew
+                                                    notification={notification}
+                                                    onNavigate={onClickNotification}
+                                                />
+                                            </Accordion.Panel>
+                                        </>
                                     ))}
                             </Accordion.Item>
                         ))}
                     </Accordion>
                 ) : (
                     <NotificationsList>
-                        {sortAndFilterList(unreadNotificationCards).map((x) => (
+                        {sortAndFilterList([
+                            ...unreadNotificationCards,
+                            ...readNotificationCards,
+                        ]).map((x, index) => (
                             <NotificationCardNew
-                                key={x.id}
+                                key={x.id + index}
                                 notification={x}
                                 onNavigate={onClickNotification}
                             />
