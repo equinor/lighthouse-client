@@ -1,4 +1,4 @@
-import { httpClient } from '../../../../Core/Client/Functions';
+import { httpClient } from '@equinor/portal-client';
 import { generateExpressions, generateFamRequest } from '../../functions/FAM/generateFAMRequest';
 import { WorkOrder } from '../../types/FAM/workOrder';
 
