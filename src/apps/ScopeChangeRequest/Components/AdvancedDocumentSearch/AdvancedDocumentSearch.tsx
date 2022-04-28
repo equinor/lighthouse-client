@@ -106,7 +106,7 @@ export const AdvancedDocumentSearch = ({
                 tagName: item.label,
                 documents: documents.map((x) => {
                     return {
-                        label: `DOC_${x.docNo}`,
+                        label: `${x.docNo}`,
                         searchValue: x.docNo,
                         object: x,
                         type: 'document',
