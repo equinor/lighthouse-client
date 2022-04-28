@@ -3,6 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { Fragment } from 'react';
 import styled from 'styled-components';
 import { DefaultWorkflowDot } from '../../Components/Workflow/Components/DefaultWorkflowDot';
+import { DisputedTableIcon } from '../../Components/WorkflowIcons/DisputedTableIcon';
 import { WorkflowStep } from '../../types/scopeChangeRequest';
 
 interface WorkflowProps {
@@ -57,6 +58,10 @@ function getStatusFromCriteria(signedState: string | null, isCurrent: boolean): 
                     color={tokens.colors.interactive.danger__resting.hex}
                 />
             );
+        }
+
+        case signedState === 'Disputed': {
+            return <DisputedTableIcon />;
         }
 
         case isCurrent: {
