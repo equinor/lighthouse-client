@@ -14,22 +14,17 @@ import {
     Wrapper,
 } from './NotificationCardStyles';
 import { notificationsBaseKey } from '../queries/notificationQueries';
-import { useNavigate } from 'react-router';
 import { getApps } from '../../../apps/apps';
 import { AppManifest } from '../../Client/Types';
 import { CoreContext } from '../../WorkSpace/src/WorkSpaceApi/workspaceState';
 import { deref } from '@dbeining/react-atom';
-import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
 
 interface NotificationCardProps {
     notification: Notification;
     onNavigate?: () => void;
 }
 
-export const NotificationCardNew = ({
-    notification,
-    onNavigate,
-}: NotificationCardProps): JSX.Element => {
+export const NotificationCardNew = ({ notification }: NotificationCardProps): JSX.Element => {
     const queryClient = useQueryClient();
     const { read } = useNotificationMutationKeys();
 
@@ -39,24 +34,18 @@ export const NotificationCardNew = ({
         onSuccess: () => queryClient.invalidateQueries(baseKey),
     });
 
-    const navigate = useNavigate();
     //HACK: Doesnt scale
     const apps = new Map<string, string>();
     apps.set('ScopeChangeControl', 'change');
-    const currentLocation = useLocationKey();
 
     async function handleNotificationClick(appName: string, identifier: string): Promise<void> {
         const actualName = apps.get(appName);
         if (!actualName) throw 'App not found';
         const app = getApps().find(({ shortName }) => shortName === actualName);
         if (!app) throw 'Not found';
-        if (currentLocation === actualName) {
-            //mount sidesheet
-            await openSidesheet(identifier, app);
-        } else {
-            //redirect
-            navigate(`${app.groupe}/${app.shortName}#${app.shortName}/${identifier}`);
-        }
+
+        //mount sidesheet
+        await openSidesheet(identifier, app);
     }
 
     async function openSidesheet(identifier: string, app: AppManifest) {
@@ -111,8 +100,6 @@ export const NotificationCardNew = ({
                                     notification.sourceSystem.subSystem,
                                     notification.sourceSystem.identifier
                                 );
-
-                            onNavigate && onNavigate();
 
                             markAsRead({ notificationId: notification.id });
                         }}
