@@ -5,7 +5,6 @@ import { useQuery, useQueryClient } from 'react-query';
 import { Notification } from '../Types/Notification';
 import { HubConnectionState } from '@microsoft/signalr';
 import { notificationQueries } from '../queries/notificationQueries';
-import { getReadNotificationCardsAsync } from '../API/getReadNotifications';
 
 interface NotificationCenter {
     isFetchingRead: boolean;

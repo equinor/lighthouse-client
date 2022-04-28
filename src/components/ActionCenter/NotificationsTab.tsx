@@ -1,6 +1,6 @@
 import { Accordion, Checkbox, Chip } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
 
