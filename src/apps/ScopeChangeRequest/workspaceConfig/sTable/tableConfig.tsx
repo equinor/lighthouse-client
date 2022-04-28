@@ -273,7 +273,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         {
             key: 'workflowSteps',
             type: {
-                Cell: ({ cell }: any) => {
+                Cell: ({ cell }: any): JSX.Element => {
                     return <WorkflowCompact steps={cell.value.content.workflowSteps} />;
                 },
             },
