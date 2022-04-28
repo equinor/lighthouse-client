@@ -1,8 +1,7 @@
-import { FilterView } from '@equinor/filter';
 import { Garden } from '../../../../components/ParkView/Components/Garden';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
+import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
-import { useViewerContext } from '../Context/ViewProvider';
 
 export const GardenTab = (): JSX.Element => {
     const {
@@ -11,11 +10,9 @@ export const GardenTab = (): JSX.Element => {
     const data = getFilteredData();
     const { gardenOptions } = useDataContext();
 
-    const { isFilterActive } = useViewerContext();
-
     return (
         <>
-            <FilterView isActive={isFilterActive} />
+            <WorkspaceFilter />
             <Garden data={data} gardenOptions={gardenOptions} />;
         </>
     );

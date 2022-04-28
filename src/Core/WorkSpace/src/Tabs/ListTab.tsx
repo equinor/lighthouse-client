@@ -1,10 +1,9 @@
-import { FilterView } from '@equinor/filter';
 import { defaultGroupByFn, Table, TableData, useColumns } from '@equinor/Table';
 import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
+import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
-import { useViewerContext } from '../Context/ViewProvider';
 
 const Wrapper = styled.section`
     margin: 16px;
@@ -16,7 +15,6 @@ export const ListTab = (): JSX.Element => {
         filterState: { getFilteredData },
     } = useFilterApiContext();
 
-    const { isFilterActive } = useViewerContext();
     const data = getFilteredData() as TableData[];
     const { tableOptions } = useDataContext();
 
@@ -32,7 +30,7 @@ export const ListTab = (): JSX.Element => {
 
     return (
         <>
-            <FilterView isActive={isFilterActive} />
+            <WorkspaceFilter />
             <Wrapper ref={ref}>
                 <Table<TableData>
                     options={{
