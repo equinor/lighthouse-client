@@ -6,6 +6,7 @@ import { IconMenu } from '../../apps/ScopeChangeRequest/Components/MenuButton';
 import { AssignmentCard } from '../../Core/Assignments/Components/AssignmentsCard';
 import { ActiveOrigins, Assignments, Header, Transition } from './assignmentsTab.styles';
 import { useAssignments } from '../../Core/Assignments/Hooks/useAssignments';
+import { getCountForAppName } from './Utils/getCount';
 
 export function AssignmentsTab(): JSX.Element {
     const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
@@ -32,13 +33,6 @@ export function AssignmentsTab(): JSX.Element {
         );
 
     const isActive = (key: string) => activeAssignments.includes(key);
-
-    const getCountForAppName = (x: string) =>
-        assignments &&
-        assignments.reduce(
-            (acc, { sourceSystem }) => (sourceSystem.subSystem === x ? acc + 1 : acc),
-            0
-        );
 
     const [activeAssignments, setActiveAssignments] = useState<string[]>(origins ?? []);
 
@@ -74,9 +68,10 @@ export function AssignmentsTab(): JSX.Element {
                                 onClick={() => handleClick(applicationName)}
                                 key={applicationName}
                             >
-                                <div>{`${getCountForAppName(applicationName)} ${capitalize(
-                                    applicationName
-                                )}`}</div>
+                                <div>{`${getCountForAppName(
+                                    applicationName,
+                                    assignments
+                                )} ${capitalize(applicationName)}`}</div>
                             </Chip>
                         ))}
                     </ActiveOrigins>
