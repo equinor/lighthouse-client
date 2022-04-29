@@ -3,6 +3,7 @@ import { generateExpressions, generateFamRequest } from '../../functions/FAM/gen
 import { WorkOrder } from '../../types/FAM/workOrder';
 
 export async function getWorkOrderByIds(ids: number[]): Promise<WorkOrder[]> {
+    if (ids.length === 0) return [];
     const { FAM } = httpClient();
 
     const columnNames: string[] = [
