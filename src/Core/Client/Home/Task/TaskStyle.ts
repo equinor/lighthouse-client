@@ -13,6 +13,6 @@ export const ContentWrapper = styled.div`
     margin: 1rem 0px;
     flex-direction: column;
 `;
-const Header = styled.div`
+export const Header = styled.div`
     margin-left: 1rem;
 `;
