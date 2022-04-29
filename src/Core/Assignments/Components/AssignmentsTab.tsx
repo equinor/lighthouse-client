@@ -61,12 +61,18 @@ export function AssignmentsTab(): JSX.Element {
     return (
         <>
             <Assignments>
-                <ErrorBanner>
-                    {proCoSysError !== undefined && <div>Failed to load ProCoSys assignments</div>}
-                </ErrorBanner>
-                <ErrorBanner>
-                    {fusionError !== undefined && <div>Failed to load portal assignments</div>}
-                </ErrorBanner>
+                {proCoSysError !== null && (
+                    <ErrorBanner>
+                        <div>Failed to load ProCoSys assignments</div>
+                    </ErrorBanner>
+                )}
+
+                {fusionError !== null && (
+                    <ErrorBanner>
+                        <div>Failed to load portal assignments</div>
+                    </ErrorBanner>
+                )}
+
                 <Header>
                     <ActiveOrigins>
                         {origins.map((applicationName) => (
