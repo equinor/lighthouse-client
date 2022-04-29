@@ -1,10 +1,10 @@
-import styled from 'styled-components';
 import { WorkOrderTable } from '../../../WorkOrderTable/WorkOrderTable';
 import { useParentSize } from '@cutting/use-get-parent-size';
 import { useRef } from 'react';
 import { getWorkOrderByIds } from '../../../../api/FAM/getWorkOrderById';
 import { useQuery } from 'react-query';
 import { CompactWorkOrderList } from '../../../WorkOrderTable/CompactWorkOrder/CompactWorkOrdersList';
+import { Loading, NoWorkOrders, Wrapper } from './workOrderTab.styles';
 
 export function WorkOrderTab(): JSX.Element {
     const woNumbers = [];
@@ -45,25 +45,3 @@ export function WorkOrderTab(): JSX.Element {
         </Wrapper>
     );
 }
-
-const NoWorkOrders = styled.div`
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: 0px;
-    text-align: left;
-`;
-
-const Wrapper = styled.div`
-    height: 80%;
-`;
-
-const Loading = styled.div`
-    width: 100%;
-    min-width: 750px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2em;
-`;
