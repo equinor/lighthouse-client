@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { SidesheetActions } from '../../packages/Notifications sidesheet/NotificationsSidesheet';
-import { AssignmentsTab } from './AssignmentsTab';
+import { AssignmentsTab } from '../../Core/Assignments/Components/AssignmentsTab';
 import { NotificationsTab } from './NotificationsTab';
 
 interface ActionCenterSidesheetProps {
@@ -28,7 +28,7 @@ export function ActionCenterSidesheet({
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <TabsList>
                         <Tabs.Tab>Notifications </Tabs.Tab>
-                        <Tabs.Tab disabled={isProduction()}>Assignments </Tabs.Tab>
+                        <Tabs.Tab>Assignments </Tabs.Tab>
                     </TabsList>
                     <Tabs.Panels>
                         <Tabs.Panel>

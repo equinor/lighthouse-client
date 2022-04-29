@@ -18,7 +18,6 @@ import styled from 'styled-components';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
 import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
-import { isProduction } from '../../../../../Core/Client/Functions';
 import { swap, useAtom } from '@dbeining/react-atom';
 import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
 import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
@@ -73,7 +72,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
                                 <Tabs.Tab>
                                     <RequestTabTitle />
                                 </Tabs.Tab>
-                                <Tabs.Tab disabled={isProduction()}>
+                                <Tabs.Tab disabled={true}>
                                     <WorkOrderTabTitle />
                                 </Tabs.Tab>
                                 <Tabs.Tab>
