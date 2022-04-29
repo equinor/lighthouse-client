@@ -25,6 +25,14 @@ export function WorkOrderTab(): JSX.Element {
         );
     }
 
+    if (woNumbers.length === 0) {
+        return (
+            <Loading>
+                <NoWorkOrders>There are no connected work orders</NoWorkOrders>
+            </Loading>
+        );
+    }
+
     return (
         <Wrapper>
             <div ref={ref}>
@@ -37,6 +45,14 @@ export function WorkOrderTab(): JSX.Element {
         </Wrapper>
     );
 }
+
+const NoWorkOrders = styled.div`
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0px;
+    text-align: left;
+`;
 
 const Wrapper = styled.div`
     height: 80%;
