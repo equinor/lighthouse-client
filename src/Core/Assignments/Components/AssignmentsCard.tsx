@@ -9,6 +9,7 @@ import {
     LeftSection,
     NotificationTitle,
     RightSection,
+    TimeStamp,
     Wrapper,
 } from './assignmentCard.styles';
 import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
@@ -38,15 +39,17 @@ export const AssignmentCard = ({ assignment }: AssignmentCardProps): JSX.Element
         >
             <LeftSection>
                 {/* TODO: resolve EDS colors */}
-                <svg
-                    width={15}
-                    height={15}
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                >
-                    <circle cx="6" cy="6" r="5.5" fill={'#B276B2'} />
-                </svg>
+                <div style={{ height: '12px', width: '12px' }}>
+                    <svg
+                        width={15}
+                        height={15}
+                        viewBox="0 0 12 12"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <circle cx="6" cy="6" r="5.5" fill={'#B276B2'} />
+                    </svg>
+                </div>
                 <DetailText>
                     <NotificationTitle>{assignment.title}</NotificationTitle>
                 </DetailText>
@@ -62,7 +65,7 @@ export const AssignmentCard = ({ assignment }: AssignmentCardProps): JSX.Element
                     </DueDate>
                 )} */}
             </RightSection>
-            <div>{DateTime.fromJSDate(new Date(assignment.created)).toRelative()}</div>
+            <TimeStamp>{DateTime.fromJSDate(new Date(assignment.created)).toRelative()}</TimeStamp>
         </Wrapper>
     );
 };

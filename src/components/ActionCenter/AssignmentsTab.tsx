@@ -8,6 +8,7 @@ import { ActiveOrigins, Assignments, Header, Transition } from './assignmentsTab
 import { useAssignments } from '../../Core/Assignments/Hooks/useAssignments';
 import { getCountForAppName } from './Utils/getCount';
 import { GroupedAssignments } from './GroupedAssignments';
+import styled from 'styled-components';
 
 export function AssignmentsTab(): JSX.Element {
     const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
@@ -98,7 +99,7 @@ export function AssignmentsTab(): JSX.Element {
                         activeAssignments={activeAssignments}
                     />
                 ) : (
-                    <>
+                    <Wrapper>
                         {assignments &&
                             assignments
                                 .filter(({ sourceSystem }) =>
@@ -107,9 +108,15 @@ export function AssignmentsTab(): JSX.Element {
                                 .map((assignment) => (
                                     <AssignmentCard key={assignment.id} assignment={assignment} />
                                 ))}
-                    </>
+                    </Wrapper>
                 )}
             </Assignments>
         </>
     );
 }
+
+const Wrapper = styled.div`
+    &:last-child {
+        border-bottom: 1px ${tokens.colors.interactive.disabled__border.hex} solid;
+    }
+`;
