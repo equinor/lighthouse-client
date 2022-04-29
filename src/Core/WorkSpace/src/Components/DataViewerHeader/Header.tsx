@@ -22,31 +22,28 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar,
+    TitleBar
 } from './HeaderStyles';
-
-type VoidFunction = () => void;
 
 interface CompletionViewHeaderProps {
     title: string;
     tabs: TabsConfigItem[];
-    handleFilter: VoidFunction;
-    activeFilter: boolean;
 }
 
-const PRIMARY_INTERACTIVE = tokens.colors.interactive.primary__resting.hex;
 const ANALYTICS = 'analytics';
 
-export const CompletionViewHeader = ({
-    title,
-    tabs,
-    handleFilter,
-    activeFilter,
-}: CompletionViewHeaderProps): JSX.Element => {
+export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
-    const { hasPowerBi, pages, setActivePage, activePage, hasActiveFilters, togglePowerBIFilter } =
-        useViewerContext();
+    const {
+        hasPowerBi,
+        pages,
+        setActivePage,
+        activePage,
+        isFilterActive,
+        hasActiveFilters,
+        toggleFilter,
+    } = useViewerContext();
 
     const { handleSetActiveTab, activeTab } = useLocationContext();
 
@@ -163,8 +160,8 @@ export const CompletionViewHeader = ({
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton
-                            onClick={handleFilter}
-                            aria-selected={activeFilter}
+                            onClick={toggleFilter}
+                            aria-selected={isFilterActive}
                             title="Filter"
                         >
                             {checkHasActiveFilters() ? (
@@ -175,8 +172,8 @@ export const CompletionViewHeader = ({
                         </TabButton>
                     ) : (
                         <TabButton
-                            onClick={togglePowerBIFilter}
-                            aria-selected={activeFilter}
+                            onClick={toggleFilter}
+                            aria-selected={isFilterActive}
                             title="PowerBi Filter"
                         >
                             {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
