@@ -15,7 +15,6 @@ export const ClientHome = (): JSX.Element => {
             <Container>
                 <SideColumn>
                     <SideItem height={400}>
-                        {/* <AssignmentWrapper /> */}
                         <Task />
                     </SideItem>
                     <SideItem height={575}>

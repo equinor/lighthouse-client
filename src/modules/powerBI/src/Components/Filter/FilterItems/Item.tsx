@@ -1,5 +1,5 @@
 import { Checkbox } from '@equinor/eds-core-react';
-import { useMemo, memo } from 'react';
+import { memo, useMemo } from 'react';
 import { PowerBiFilter, PowerBiFilterItem } from '../../../Types';
 import { CheckboxItem } from './Styles';
 

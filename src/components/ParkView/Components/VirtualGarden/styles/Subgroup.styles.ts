@@ -26,4 +26,5 @@ export const SubGroupText = styled.div`
     display: flex;
     margin-left: 4px;
     margin-top: 6px;
+    font-variant-numeric: tabular-nums;
 `;

@@ -7,9 +7,9 @@ import { WorkspaceFilterWrapper } from '../../Context/WorkspaceFilterWrapper';
 import { useConfiguredTabs } from '../../Util/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { DumpsterFireDialog } from '../DataLoadFailed/DumpsterFireDialog';
+import { CompletionViewHeader } from '../DataViewerHeader/Header';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
-import { HeaderWrapper } from './HeaderFilterWrapper';
 import { WorkspaceErrorPage } from './WorkspaceErrorPage';
 import { DataViewWrapper, Loading, WorkspaceWrapper } from './WorkSpaceViewStyles';
 
@@ -51,7 +51,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     return (
         <WorkspaceWrapper>
             <WorkspaceFilterWrapper filterOptions={workspace.filterOptions || []}>
-                <HeaderWrapper props={props} tabs={tabs} />
+                <CompletionViewHeader {...props} tabs={tabs} />
                 <DataViewWrapper>
                     <WorkSpaceTabs tabs={tabs} />
                     <PopoutSidesheet />
