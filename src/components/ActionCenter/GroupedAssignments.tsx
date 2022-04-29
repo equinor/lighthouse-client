@@ -1,6 +1,11 @@
 import { Accordion } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { useNavigate } from 'react-router';
+import styled from 'styled-components';
 import { AssignmentCard } from '../../Core/Assignments/Components/AssignmentsCard';
 import { Assignment } from '../../Core/Assignments/Types/assignment';
+import { useLocationKey } from '../../packages/Filter/Hooks/useLocationKey';
+import { handleActionClick } from './handleActionClick';
 
 interface GroupedAssignmentsProps {
     assignments: Assignment[];
@@ -12,26 +17,49 @@ export const GroupedAssignments = ({
     assignments,
 }: GroupedAssignmentsProps): JSX.Element => {
     const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
+    const navigate = useNavigate();
+    const currentLocation = useLocationKey();
 
     return (
         <Accordion>
             {activeAssignments.map((applicationTitle) => (
                 <Accordion.Item key={applicationTitle}>
-                    <Accordion.Header chevronPosition="right">
-                        {capitalize(applicationTitle)}
-                    </Accordion.Header>
+                    <Header chevronPosition="right">{capitalize(applicationTitle)}</Header>
                     {assignments &&
                         assignments
                             .filter(
                                 ({ sourceSystem }) => sourceSystem.subSystem === applicationTitle
                             )
                             .map((assignment) => (
-                                <Accordion.Panel key={assignment.id}>
+                                <Panel
+                                    onClick={() =>
+                                        handleActionClick(
+                                            assignment.sourceSystem.subSystem,
+                                            assignment.sourceSystem.identifier,
+                                            navigate,
+                                            currentLocation
+                                        )
+                                    }
+                                    key={assignment.id}
+                                >
                                     <AssignmentCard assignment={assignment} />
-                                </Accordion.Panel>
+                                </Panel>
                             ))}
                 </Accordion.Item>
             ))}
         </Accordion>
     );
 };
+
+const Panel = styled(Accordion.Panel)`
+    margin: 0;
+    padding: 0;
+    height: auto;
+    border: none;
+    min-height: auto;
+`;
+
+const Header = styled(Accordion.Header)`
+    border: none;
+    border-bottom: 1px ${tokens.colors.interactive.disabled__border.hex} solid;
+`;
