@@ -45,7 +45,7 @@ export function AssignmentsTab(): JSX.Element {
     if (proCoSysError && fusionError) {
         return (
             <Transition>
-                <div>Failed to load assignments</div>
+                <div>Failed to load tasks</div>
             </Transition>
         );
     }
@@ -63,13 +63,13 @@ export function AssignmentsTab(): JSX.Element {
             <Assignments>
                 {proCoSysError !== null && (
                     <ErrorBanner>
-                        <div>Failed to load ProCoSys assignments</div>
+                        <div>Failed to load ProCoSys tasks</div>
                     </ErrorBanner>
                 )}
 
                 {fusionError !== null && (
                     <ErrorBanner>
-                        <div>Failed to load portal assignments</div>
+                        <div>Failed to load portal tasks</div>
                     </ErrorBanner>
                 )}
 
