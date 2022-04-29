@@ -7,6 +7,7 @@ import { NotificationBell } from '../../Core/Notifications/Components/Notificati
 import Icon from '../Icon/Icon';
 import { useMenuContext } from '../Menu';
 import { DevBar } from './DevBar/DevBar';
+import { HelpIcon } from './Icons/Help';
 import Logo from './Logo/Logo';
 import { Action, ActionWrapper, Header, Icons, TopBarWrapper } from './TopBarStyle';
 
@@ -55,7 +56,7 @@ const ClientTopBar = (): JSX.Element => {
                             setIsAddMenuOpen(false);
                         }}
                     >
-                        <Icon name="format_list_bulleted" />
+                        <HelpIcon />
                     </Action>
                     <ActionWrapper ref={addMenuRef}>
                         <Action

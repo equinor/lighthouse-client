@@ -22,12 +22,14 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
 
         case 'Approved':
             return (
-                <Icon
-                    name="check_circle_outlined"
-                    height={'24'}
-                    width={'24'}
-                    color={tokens.colors.interactive.primary__resting.hex}
-                />
+                <FixedIconContainer>
+                    <Icon
+                        name="check_circle_outlined"
+                        height={'24'}
+                        width={'24'}
+                        color={tokens.colors.interactive.primary__resting.hex}
+                    />
+                </FixedIconContainer>
             );
 
         case 'Disputed': {
@@ -40,12 +42,14 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
 
         case 'Rejected': {
             return (
-                <Icon
-                    name="close_circle_outlined"
-                    height={'24'}
-                    width={'24'}
-                    color={tokens.colors.infographic.primary__energy_red_100.hex}
-                />
+                <FixedIconContainer>
+                    <Icon
+                        name="close_circle_outlined"
+                        height={'24'}
+                        width={'24'}
+                        color={tokens.colors.infographic.primary__energy_red_100.hex}
+                    />
+                </FixedIconContainer>
             );
         }
 
