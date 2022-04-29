@@ -51,8 +51,7 @@ export const ScopeChangeRequestForm = ({
     };
 
     const { mutate, isLoading } = useMutation(createScopeChangeMutation, {
-        retry: 2,
-        retryDelay: 2,
+        retry: 0,
         onSuccess: (id) => {
             id && redirect(id);
             if (!id) throw 'error';
