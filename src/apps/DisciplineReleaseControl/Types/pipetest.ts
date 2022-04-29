@@ -14,6 +14,7 @@ export interface Pipetest {
     description: string;
     commPkPriority1: string;
     rfccPlanned: string;
+    pipingRfcUniqueHT: string;
     overdue: string;
     dueDateTimePeriod: string;
     tagTree: Record<string, unknown>;
