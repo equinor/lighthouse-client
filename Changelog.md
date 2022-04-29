@@ -11,6 +11,9 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ### PROD
 - [Scopechange] bugfixes
 - [Assignments] release
+- [Workorder] release
+- [SWCR] release
+- [Handover] release
 
 
 ## 0.4.2
