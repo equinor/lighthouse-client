@@ -27,9 +27,6 @@ export function WorkOrderTab(): JSX.Element {
 
     return (
         <Wrapper>
-            <div style={{ fontSize: '16px', color: 'red' }}>
-                Real workorders but not connected to this request, for testing purposes
-            </div>
             <div ref={ref}>
                 {width > 960 ? (
                     <WorkOrderTable workOrders={data ?? []} />
