@@ -30,12 +30,13 @@ export const LeftSection = styled.div`
 
 export const Wrapper = styled.div`
     display: flex;
-    height: 48px;
+    height: 20px;
     width: 100%;
     align-items: center;
     justify-content: space-between;
     border-top: 1px #e7deea solid;
-    padding: 0 0.5em;
+    padding: 0 0em;
+    cursor: pointer;
 `;
 
 export const DetailText = styled.div`
