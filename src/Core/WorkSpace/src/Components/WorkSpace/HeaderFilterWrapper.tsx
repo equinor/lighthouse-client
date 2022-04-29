@@ -1,5 +1,6 @@
 import { FilterView, useFilterApiContext } from '@equinor/filter';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { WorkspaceProps } from '../../WorkSpace';
 import { CompletionViewHeader } from '../DataViewerHeader/Header';
@@ -7,8 +8,9 @@ import { CompletionViewHeader } from '../DataViewerHeader/Header';
 type HeaderWrapperProps = {
     props: WorkspaceProps;
     tabs: TabsConfigItem[];
+    sideSheetWidth: number;
 };
-export const HeaderWrapper = ({ tabs, props }: HeaderWrapperProps): JSX.Element => {
+export const HeaderWrapper = ({ tabs, props, sideSheetWidth }: HeaderWrapperProps): JSX.Element => {
     const [activeFilter, setActiveFilter] = useState<boolean>(false);
 
     const {
@@ -20,7 +22,7 @@ export const HeaderWrapper = ({ tabs, props }: HeaderWrapperProps): JSX.Element 
         setActiveFilter((state) => !state);
     }
     return (
-        <>
+        <Wrapper sideSheetWidth={sideSheetWidth}>
             <CompletionViewHeader
                 {...props}
                 tabs={tabs}
@@ -28,6 +30,10 @@ export const HeaderWrapper = ({ tabs, props }: HeaderWrapperProps): JSX.Element 
                 activeFilter={activeFilter}
             />
             <FilterView isActive={activeFilter} />
-        </>
+        </Wrapper>
     );
 };
+
+export const Wrapper = styled.div<{ sideSheetWidth: number }>`
+    width: calc(100% - ${({ sideSheetWidth }) => sideSheetWidth}px);
+`;

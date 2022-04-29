@@ -1,14 +1,14 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { isProduction } from '@equinor/portal-client';
+import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-import { SidesheetActions } from '../../packages/Notifications sidesheet/NotificationsSidesheet';
 import { AssignmentsTab } from './AssignmentsTab';
 import { NotificationsTab } from './NotificationsTab';
 
+
 interface ActionCenterSidesheetProps {
-    actions: SidesheetActions;
+    actions: SidesheetApi;
 }
 
 export function ActionCenterSidesheet({
@@ -17,7 +17,7 @@ export function ActionCenterSidesheet({
     const [activeTab, setActiveTab] = useState<number>(0);
 
     useEffect(() => {
-        activeTab === 0 ? setTitle('Notifications') : setTitle('Assignments');
+        activeTab === 0 ? setTitle(<>Notifications</>) : setTitle(<>Assignments</>);
     }, [activeTab]);
 
     const handleChange = (index: number) => setActiveTab(index);

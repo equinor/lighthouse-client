@@ -22,7 +22,7 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar,
+    TitleBar
 } from './HeaderStyles';
 
 type VoidFunction = () => void;
@@ -34,7 +34,6 @@ interface CompletionViewHeaderProps {
     activeFilter: boolean;
 }
 
-const PRIMARY_INTERACTIVE = tokens.colors.interactive.primary__resting.hex;
 const ANALYTICS = 'analytics';
 
 export const CompletionViewHeader = ({

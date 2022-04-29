@@ -1,27 +1,16 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import { ErrorBoundary, ErrorFallbackSidesheet } from '@equinor/ErrorBoundary';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { getApps } from '../../../apps/apps';
-import { IconMenu, MenuItem } from '../../../apps/ScopeChangeRequest/Components/MenuButton';
-import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
-import { useSideSheet } from '../context/sidesheetContext';
-import {
-    ToggleFunction,
-    useInternalSidesheetFunction
-} from '../Hooks/useInternalSidesheetFunction';
+import { IconMenu } from '../../../apps/ScopeChangeRequest/Components/MenuButton';
+import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
+import { useSideSheet } from '../Hooks/useSideSheet';
+import { MenuItem } from '../Types/SidesheetApi';
 
 const DEFAULT_TAB_COLOUR = '#ff9900';
-
-export interface SidesheetApi {
-    closeSidesheet: () => void;
-    setIsMinimized: (isMinimized: boolean | ToggleFunction) => void;
-    setWidth: (width: number) => void;
-    setTitle: React.Dispatch<React.SetStateAction<JSX.Element | null | undefined>>;
-    setMenuItems: (menuItems: MenuItem[]) => void;
-}
 
 export const ResizableSidesheet = (): JSX.Element | null => {
     const { SidesheetComponent, props, minWidth, width, isMinimized, appName } = useSideSheet();

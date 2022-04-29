@@ -1,32 +1,28 @@
 import { DateTime } from 'luxon';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { Notification } from '../Types/Notification';
+import { useNavigate } from 'react-router';
+import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
+import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
+import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
 import { readNotificationAsync } from '../API/readNotification';
 import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
-import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
+import { notificationsBaseKey } from '../queries/notificationQueries';
+import { Notification } from '../Types/Notification';
 import {
     DetailText,
     LeftSection,
     NotificationTitle,
     RightSection,
     TimeStamp,
-    Wrapper,
+    Wrapper
 } from './NotificationCardStyles';
-import { notificationsBaseKey } from '../queries/notificationQueries';
-import { useNavigate } from 'react-router';
-import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
-import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
 
 interface NotificationCardProps {
     notification: Notification;
     onNavigate?: () => void;
 }
 
-export const NotificationCardNew = ({
-    notification,
-    onNavigate,
-}: NotificationCardProps): JSX.Element => {
+export const NotificationCardNew = ({ notification }: NotificationCardProps): JSX.Element => {
     const queryClient = useQueryClient();
     const { read } = useNotificationMutationKeys();
 
@@ -73,19 +69,17 @@ export const NotificationCardNew = ({
                         onClick={() => {
                             isExternalApp
                                 ? window.open(
-                                    notification.card?.actions?.find(
-                                        ({ type }) => type === 'Action.OpenUrl'
-                                    )?.url,
-                                    '_blank'
-                                )
+                                      notification.card?.actions?.find(
+                                          ({ type }) => type === 'Action.OpenUrl'
+                                      )?.url,
+                                      '_blank'
+                                  )
                                 : handleActionClick(
-                                    notification.sourceSystem.subSystem,
-                                    notification.sourceSystem.identifier,
-                                    navigate,
-                                    currentLocation
-                                );
-
-                            onNavigate && onNavigate();
+                                      notification.sourceSystem.subSystem,
+                                      notification.sourceSystem.identifier,
+                                      navigate,
+                                      currentLocation
+                                  );
 
                             markAsRead({ notificationId: notification.id });
                         }}
