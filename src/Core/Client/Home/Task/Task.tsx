@@ -6,7 +6,7 @@ export const Task = (): JSX.Element => {
     return (
         <Wrapper>
             <Header>
-                <Typography variant="h5">Assignments</Typography>
+                <Typography variant="h5">Tasks</Typography>
             </Header>
 
             <AssignmentsTab />
