@@ -26,7 +26,16 @@ export const AssignmentCard = ({ assignment }: AssignmentCardProps): JSX.Element
     const currentLocation = useLocationKey();
 
     return (
-        <Wrapper>
+        <Wrapper
+            onClick={() =>
+                handleActionClick(
+                    assignment.sourceSystem.subSystem,
+                    assignment.sourceSystem.identifier,
+                    navigate,
+                    currentLocation
+                )
+            }
+        >
             <LeftSection>
                 {/* TODO: resolve EDS colors */}
                 <svg
@@ -43,7 +52,7 @@ export const AssignmentCard = ({ assignment }: AssignmentCardProps): JSX.Element
                 </DetailText>
             </LeftSection>
             <RightSection>
-                {assignment.dueDate && (
+                {/* {assignment.dueDate && (
                     <DueDate overdue={new Date() > new Date(assignment.dueDate)}>
                         {isToday
                             ? 'Due today'
@@ -51,21 +60,9 @@ export const AssignmentCard = ({ assignment }: AssignmentCardProps): JSX.Element
                                 unit: 'days',
                             })}`}
                     </DueDate>
-                )}
+                )} */}
             </RightSection>
-            <div>
-                <ClickableIcon
-                    name="chevron_right"
-                    onClick={() =>
-                        handleActionClick(
-                            assignment.sourceSystem.subSystem,
-                            assignment.sourceSystem.identifier,
-                            navigate,
-                            currentLocation
-                        )
-                    }
-                />
-            </div>
+            <div>{DateTime.fromJSDate(new Date(assignment.created)).toRelative()}</div>
         </Wrapper>
     );
 };

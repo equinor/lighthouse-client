@@ -1,6 +1,6 @@
 import { Chip, Checkbox, CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { IconMenu } from '../../apps/ScopeChangeRequest/Components/MenuButton';
 import { AssignmentCard } from '../../Core/Assignments/Components/AssignmentsCard';
@@ -24,7 +24,7 @@ export function AssignmentsTab(): JSX.Element {
         [assignments]
     );
 
-    const [isGroupedBySource, setIsGroupedBySource] = useState(true);
+    const [isGroupedBySource, setIsGroupedBySource] = useState(false);
 
     const handleClick = (sourceSystem: string) =>
         setActiveAssignments((prev) =>
@@ -36,6 +36,10 @@ export function AssignmentsTab(): JSX.Element {
     const isActive = (key: string) => activeAssignments.includes(key);
 
     const [activeAssignments, setActiveAssignments] = useState<string[]>(origins ?? []);
+
+    useEffect(() => {
+        setActiveAssignments(origins);
+    }, [assignments]);
 
     if (error) {
         return (
