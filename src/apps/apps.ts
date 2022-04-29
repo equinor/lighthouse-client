@@ -22,7 +22,7 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport
+    SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
@@ -259,7 +259,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: handoverSetup,
         },
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Work order',
@@ -272,7 +272,7 @@ export const apps: AppManifest[] = [
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         // Ny Power Bi
@@ -398,7 +398,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: SwcrSetup,
         },
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Invitation for punch out ',
