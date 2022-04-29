@@ -67,7 +67,10 @@ export const AssignmentCard = ({ assignment }: AssignmentCardProps): JSX.Element
                     </DueDate>
                 )} */}
             </RightSection>
-            <TimeStamp>{DateTime.fromJSDate(new Date(assignment.created)).toRelative()}</TimeStamp>
+            <TimeStamp>
+                {assignment.created &&
+                    DateTime.fromJSDate(new Date(assignment.created)).toRelative()}
+            </TimeStamp>
         </Wrapper>
     );
 };
