@@ -1,6 +1,6 @@
 import { Chip, Checkbox, CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { IconMenu } from '../../apps/ScopeChangeRequest/Components/MenuButton';
 import { AssignmentCard } from '../../Core/Assignments/Components/AssignmentsCard';
@@ -8,6 +8,7 @@ import { ActiveOrigins, Assignments, Header, Transition } from './assignmentsTab
 import { useAssignments } from '../../Core/Assignments/Hooks/useAssignments';
 import { getCountForAppName } from './Utils/getCount';
 import { GroupedAssignments } from './GroupedAssignments';
+import styled from 'styled-components';
 
 export function AssignmentsTab(): JSX.Element {
     const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
@@ -24,7 +25,7 @@ export function AssignmentsTab(): JSX.Element {
         [assignments]
     );
 
-    const [isGroupedBySource, setIsGroupedBySource] = useState(true);
+    const [isGroupedBySource, setIsGroupedBySource] = useState(false);
 
     const handleClick = (sourceSystem: string) =>
         setActiveAssignments((prev) =>
@@ -36,6 +37,10 @@ export function AssignmentsTab(): JSX.Element {
     const isActive = (key: string) => activeAssignments.includes(key);
 
     const [activeAssignments, setActiveAssignments] = useState<string[]>(origins ?? []);
+
+    useEffect(() => {
+        setActiveAssignments(origins);
+    }, [assignments]);
 
     if (error) {
         return (
@@ -94,7 +99,7 @@ export function AssignmentsTab(): JSX.Element {
                         activeAssignments={activeAssignments}
                     />
                 ) : (
-                    <>
+                    <Wrapper>
                         {assignments &&
                             assignments
                                 .filter(({ sourceSystem }) =>
@@ -103,9 +108,15 @@ export function AssignmentsTab(): JSX.Element {
                                 .map((assignment) => (
                                     <AssignmentCard key={assignment.id} assignment={assignment} />
                                 ))}
-                    </>
+                    </Wrapper>
                 )}
             </Assignments>
         </>
     );
 }
+
+const Wrapper = styled.div`
+    &:last-child {
+        border-bottom: 1px ${tokens.colors.interactive.disabled__border.hex} solid;
+    }
+`;
