@@ -6,6 +6,9 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
 ## 1.0.1
+
+
+### PROD
 - [Scopechange] bugfixes
 - [SWCR Garden] Fix scrolling when opening sidesheet
 - [Work order Garden] Fix scrolling when opening sidesheet
