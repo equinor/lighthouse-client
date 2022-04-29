@@ -111,12 +111,14 @@ export function useUnpackRelatedObjects({
                 referencesKeys.document(x.stidDocumentNumber),
                 () => getDocumentById(x.stidDocumentNumber, facilityId)
             );
-
             updateReferences({
                 ...documentSelectOption,
                 label: `${x.stidDocumentNumber} ${document.docTitle}`,
                 object: document,
-                metadata: `  Revision ${document.revNo} | Rev date ${document.revDate && transformIsoDate(document.revDate)
+                metadata: `Revision ${document.currentRevision.revNo} | Rev date ${document.currentRevision.revDate &&
+                    transformIsoDate(document.currentRevision.revDate)
+                    } | Reason for issue ${document.currentRevision.reasonForIssue &&
+                    document.currentRevision.reasonForIssue
                     }`,
             });
         });
