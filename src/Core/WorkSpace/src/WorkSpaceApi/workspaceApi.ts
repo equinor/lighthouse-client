@@ -11,7 +11,7 @@ import {
     TreeOptions,
     WorkflowEditorOptions,
     WorkSpaceConfig,
-    WorkSpaceState
+    WorkSpaceState,
 } from './workspaceState';
 import {
     DataSource,
@@ -21,7 +21,7 @@ import {
     Validator,
     ViewerOptions,
     ViewOptions,
-    WorkSpaceApi
+    WorkSpaceApi,
 } from './WorkSpaceTypes';
 
 /**
@@ -137,7 +137,12 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
 
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
             updateState({
-                gardenOptions: { ...gardenOptions, onSelect } as GardenOptions<unknown>,
+                gardenOptions: {
+                    //HACK if customGroupByKeys is undefined, it will break memoized variable in VGarden and cause rerender??
+                    customGroupByKeys: {},
+                    ...gardenOptions,
+                    onSelect,
+                } as GardenOptions<unknown>,
             });
 
             return workspaceAPI;
