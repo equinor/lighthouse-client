@@ -38,6 +38,17 @@ export const SignWithComment = ({
                 id="SignWithComment"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                onKeyDown={(e) => {
+                    const enter = e.keyCode === 13;
+                    if (enter) {
+                        e.preventDefault();
+                        // signMutation({
+                        //     action: action,
+                        //     comment: comment,
+                        // });
+                        return false;
+                    }
+                }}
             />
             <ButtonsContainer>
                 <Button
