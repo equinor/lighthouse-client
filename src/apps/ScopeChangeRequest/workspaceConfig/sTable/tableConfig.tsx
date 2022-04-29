@@ -323,9 +323,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                     return (
                         <>
-                            {request.currentWorkflowStep?.criterias.map((x: Criteria) => {
-                                return <Fragment key={x.id}>{x.valueDescription}</Fragment>;
-                            })}
+                            {request.currentWorkflowStep?.criterias.find(
+                                (x) => x.signedAtUtc === null
+                            )?.valueDescription ?? null}
                         </>
                     );
                 },
