@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
+
+## 0.4.3
+
+### PROD
+- [Scopechange] bugfixes
+- [Assignments] release
+- [Workorder] release
+- [SWCR] release
+- [Handover] release
+- [PipingAndHeatTrace] - Visual adjustments and Piping RFC (Unique HT) grouping
+
 ## 0.4.2
 
 ### PROD
