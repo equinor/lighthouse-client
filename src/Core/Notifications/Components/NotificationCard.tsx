@@ -1,23 +1,21 @@
 import { DateTime } from 'luxon';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { Notification } from '../Types/Notification';
+import { useNavigate } from 'react-router';
+import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
+import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
+import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
 import { readNotificationAsync } from '../API/readNotification';
 import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
-import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
+import { notificationsBaseKey } from '../queries/notificationQueries';
+import { Notification } from '../Types/Notification';
 import {
     DetailText,
     LeftSection,
     NotificationTitle,
     RightSection,
     TimeStamp,
-    Wrapper,
+    Wrapper
 } from './NotificationCardStyles';
-import { notificationsBaseKey } from '../queries/notificationQueries';
-import { getApps } from '../../../apps/apps';
-import { AppManifest } from '../../Client/Types';
-import { CoreContext } from '../../WorkSpace/src/WorkSpaceApi/workspaceState';
-import { deref } from '@dbeining/react-atom';
 
 interface NotificationCardProps {
     notification: Notification;
@@ -34,28 +32,8 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
         onSuccess: () => queryClient.invalidateQueries(baseKey),
     });
 
-    //HACK: Doesnt scale
-    const apps = new Map<string, string>();
-    apps.set('ScopeChangeControl', 'change');
-
-    async function handleNotificationClick(appName: string, identifier: string): Promise<void> {
-        const actualName = apps.get(appName);
-        if (!actualName) throw 'App not found';
-        const app = getApps().find(({ shortName }) => shortName === actualName);
-        if (!app) throw 'Not found';
-
-        //mount sidesheet
-        await openSidesheet(identifier, app);
-    }
-
-    async function openSidesheet(identifier: string, app: AppManifest) {
-        const { idResolver, onSelect } = deref(CoreContext)[app.shortName];
-
-        const item = idResolver && (await idResolver(identifier));
-        if (!item) return;
-
-        onSelect && onSelect(item);
-    }
+    const navigate = useNavigate();
+    const currentLocation = useLocationKey();
 
     const isExternalApp = notification.actionType === 'URL';
 
@@ -91,15 +69,17 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
                         onClick={() => {
                             isExternalApp
                                 ? window.open(
-                                    notification.card?.actions?.find(
-                                        ({ type }) => type === 'Action.OpenUrl'
-                                    )?.url,
-                                    '_blank'
-                                )
-                                : handleNotificationClick(
-                                    notification.sourceSystem.subSystem,
-                                    notification.sourceSystem.identifier
-                                );
+                                      notification.card?.actions?.find(
+                                          ({ type }) => type === 'Action.OpenUrl'
+                                      )?.url,
+                                      '_blank'
+                                  )
+                                : handleActionClick(
+                                      notification.sourceSystem.subSystem,
+                                      notification.sourceSystem.identifier,
+                                      navigate,
+                                      currentLocation
+                                  );
 
                             markAsRead({ notificationId: notification.id });
                         }}

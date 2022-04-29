@@ -74,10 +74,10 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                         >
                             <Icon name="chevron_right" size={24} color={'white'} />
                         </ColourTab>
-                        <span>{title}</span>
+                        <Title>{title}</Title>
                     </LeftHeader>
 
-                    <span style={{ display: 'flex', flexDirection: 'row' }}>
+                    <RightHeader>
                         {menuItems.length > 0 && <IconMenu placement="bottom" items={menuItems} />}
                         <Button variant="ghost_icon" onClick={closeSidesheet}>
                             <Icon
@@ -86,7 +86,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                                 color={tokens.colors.interactive.primary__resting.hex}
                             />
                         </Button>
-                    </span>
+                    </RightHeader>
                 </Header>
 
                 <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
@@ -104,7 +104,20 @@ const LeftHeader = styled.div`
     gap: 0.5em;
     flex-direction: row;
     align-items: center;
-    font-size: 28px;
+    width: 80%;
+`;
+
+const RightHeader = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+`;
+
+const Title = styled.div`
+    font-size: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const Header = styled.div`

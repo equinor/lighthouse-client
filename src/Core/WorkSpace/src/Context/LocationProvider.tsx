@@ -113,7 +113,7 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         if (location.hash.length > 0 && onSelect) {
             mountSidesheetFromUrl();
         }
-    }, [location.hash.length, mountSidesheetFromUrl, onSelect]);
+    }, []);
 
     return (
         <Context.Provider

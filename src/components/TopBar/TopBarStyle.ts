@@ -32,5 +32,8 @@ export const TopBarWrapper = styled(TopBar)`
         padding-left: 1.5rem;
     }
 `;
+export const Header = styled(TopBar.Header)`
+    gap: 0.75rem;
+`;
 
 export const ActionWrapper = styled.div``;

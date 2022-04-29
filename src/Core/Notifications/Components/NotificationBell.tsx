@@ -1,8 +1,8 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { openSidesheet } from '@equinor/sidesheet';
-import { useState } from 'react';
 import { useQueryClient } from 'react-query';
+import styled from 'styled-components';
 import { ActionCenterSidesheet } from '../../../components/ActionCenter/ActionCenterSidesheet';
 import { useNotificationCenter } from '../Hooks/useNotificationCenter';
 import { notificationQueries } from '../queries/notificationQueries';
@@ -23,25 +23,37 @@ export function NotificationBell(): JSX.Element {
             ? tokens.colors.interactive.warning__resting.hex
             : tokens.colors.infographic.primary__energy_red_100.hex;
 
-    const [isOpen, setIsOpen] = useState(false);
-
     return (
         <>
-            <Icon
+            <div
                 style={{ cursor: 'pointer' }}
-                color={connectionStatus()}
-                name={
-                    notificationCenter.unreadNotificationsCount > 0
-                        ? 'notifications_active'
-                        : 'notifications'
-                }
                 onClick={() => {
-                    setIsOpen(true);
                     openSidesheet(ActionCenterSidesheet);
                     // ActionCenterSidesheet
                 }}
-            />
-            {/* {isOpen && <NotificationsSidesheet closeSidesheet={() => setIsOpen(false)} />} */}
+            >
+                {notificationCenter.unreadNotificationsCount > 0 ? (
+                    <RedCircle>{notificationCenter.unreadNotificationsCount}</RedCircle>
+                ) : (
+                    <Icon
+                        style={{ cursor: 'pointer' }}
+                        color={connectionStatus()}
+                        name={'notifications'}
+                    />
+                )}
+            </div>
         </>
     );
 }
+
+const RedCircle = styled.div`
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    color: white;
+    font-size: 14px;
+    background: #f15854;
+`;

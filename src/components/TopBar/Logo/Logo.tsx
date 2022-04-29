@@ -12,8 +12,8 @@ const LogoTitle = styled.div`
     font-family: Equinor;
     font-size: 16px;
     line-height: 0px;
+    font-weight: 500;
     letter-spacing: 0.2px;
-    padding-left: 0.2rem;
     margin: 0;
 `;
 
@@ -26,7 +26,7 @@ const Logo = () => {
     return (
         <LogoWrapper onClick={() => handleClick()}>
             {/* <LogoIcon /> */}
-            <LogoTitle>Johan Castberg Portal</LogoTitle>
+            <LogoTitle>Johan Castberg</LogoTitle>
         </LogoWrapper>
     );
 };

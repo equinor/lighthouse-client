@@ -152,7 +152,7 @@ export interface Criteria {
     signedAtUtc: string | null;
     signedBy: Person;
     signedComment: string | null;
-    signedState: 'Approved' | 'Rejected' | null;
+    signedState: CriteriaSignState | null;
     valueDescription: string | null;
 }
 
@@ -178,3 +178,5 @@ export interface Contribution {
     comment: string;
     suggestion: string;
 }
+
+export type CriteriaSignState = 'Approved' | 'Rejected' | 'Disputed';
