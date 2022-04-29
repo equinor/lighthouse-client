@@ -59,13 +59,6 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
     const mountSidesheetFromUrl = useCallback(async () => {
         if (!onSelect) return;
         const id = location.hash.split('/')[1];
-        if (data) {
-            const item = findItem(id);
-            if (item !== undefined) {
-                onSelect(item);
-                return;
-            }
-        }
         if (idResolver) {
             try {
                 const item = await idResolver(id);
