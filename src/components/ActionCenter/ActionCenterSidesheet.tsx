@@ -17,7 +17,7 @@ export function ActionCenterSidesheet({
     const [activeTab, setActiveTab] = useState<number>(0);
 
     useEffect(() => {
-        activeTab === 0 ? setTitle('Notifications') : setTitle('Assignments');
+        activeTab === 0 ? setTitle('Notifications') : setTitle('Tasks');
     }, [activeTab]);
 
     const handleChange = (index: number) => setActiveTab(index);
@@ -28,7 +28,7 @@ export function ActionCenterSidesheet({
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <TabsList>
                         <Tabs.Tab>Notifications </Tabs.Tab>
-                        <Tabs.Tab>Assignments </Tabs.Tab>
+                        <Tabs.Tab>Tasks </Tabs.Tab>
                     </TabsList>
                     <Tabs.Panels>
                         <Tabs.Panel>
