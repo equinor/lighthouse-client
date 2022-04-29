@@ -11,7 +11,6 @@ export const DueDate = styled.div<{ overdue: boolean }>`
 
 export const NotificationTitle = styled.div`
     font-size: 14px;
-    /* word-wrap: break-word; */
 `;
 export const TimeStamp = styled.div`
     font-size: 10px;
@@ -32,8 +31,6 @@ export const LeftSection = styled.div`
 `;
 
 export const Wrapper = styled.div`
-    /* height: 31px; */
-    /* width: 200px; */
     display: grid;
     grid-template-columns: 1fr auto 80px;
     text-align: left;
