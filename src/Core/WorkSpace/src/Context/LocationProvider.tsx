@@ -69,7 +69,6 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         if (idResolver) {
             try {
                 const item = await idResolver(id);
-                console.log(item);
                 if (item !== undefined) {
                     onSelect(item);
                     return;
