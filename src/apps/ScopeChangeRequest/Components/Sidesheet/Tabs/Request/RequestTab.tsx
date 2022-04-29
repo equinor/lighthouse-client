@@ -73,7 +73,7 @@ export function RequestTab(): JSX.Element {
                     <InnerSection>
                         <SectionHeading>Attachments</SectionHeading>
                         {request.attachments.length === 0 && (
-                            <NoAttachments>No attachments has been uploaded yet.</NoAttachments>
+                            <NoAttachments>No attachments has been uploaded.</NoAttachments>
                         )}
                         {requestAccess.canPatch && <HotUpload />}
                         <Attachments attachments={request.attachments} requestId={request.id} />
