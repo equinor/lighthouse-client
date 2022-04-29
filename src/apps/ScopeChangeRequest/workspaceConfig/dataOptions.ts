@@ -19,7 +19,6 @@ export const idResolver: IdResolverFunc<ScopeChangeRequest> = {
 
 async function idResolverFunction(id: string): Promise<ScopeChangeRequest> {
     const { scopeChange } = httpClient();
-    debugger;
     const res = await scopeChange.fetch(`api/scope-change-requests/${id}`);
 
     if (!res.ok) {
