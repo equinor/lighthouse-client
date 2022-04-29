@@ -10,6 +10,7 @@ import { DateTime } from 'luxon';
 import { Atom, deref, swap } from '@dbeining/react-atom';
 import { EstimateBar } from '../../Components/WoProgressBars/EstimateBar';
 import { ExpendedProgressBar } from '../../Components/WoProgressBars/ExpendedProgressBar';
+import styled from 'styled-components';
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',
@@ -110,24 +111,13 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'currentWorkflowStep', title: 'Next', width: 220 },
         {
             key: 'hasComments',
-            title: {
-                Custom: () => (
-                    <Icon
-                        color={tokens.colors.text.static_icons__default.hex}
-                        name="comment_chat"
-                    />
-                ),
-            },
+            title: 'Comment',
             width: 80,
         },
         {
             key: 'hasPendingContributions',
             width: 70,
-            title: {
-                Custom: () => (
-                    <Icon color={tokens.colors.text.static_icons__default.hex} name="group" />
-                ),
-            },
+            title: 'Contr.',
         },
     ],
 
@@ -261,10 +251,12 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     const request: ScopeChangeRequest = cell.value.content;
                     return (
                         request.hasPendingContributions && (
-                            <Icon
-                                color={tokens.colors.text.static_icons__default.hex}
-                                name="group"
-                            />
+                            <CenterIcon>
+                                <Icon
+                                    color={tokens.colors.text.static_icons__default.hex}
+                                    name="group"
+                                />
+                            </CenterIcon>
                         )
                     );
                 },
@@ -287,10 +279,12 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     }
 
                     return (
-                        <Icon
-                            name={'comment_chat'}
-                            color={`${tokens.colors.text.static_icons__default.hex}`}
-                        />
+                        <CenterIcon>
+                            <Icon
+                                name={'comment_chat'}
+                                color={`${tokens.colors.text.static_icons__default.hex}`}
+                            />
+                        </CenterIcon>
                     );
                 },
             },
@@ -337,3 +331,11 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 const guesstimateHoursMaxAtom = Atom.of<number>(-1);
 const estimateHoursMaxAtom = Atom.of<number>(-1);
 const actualHoursMaxAtom = Atom.of<number>(-1);
+
+const CenterIcon = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+`;
