@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import { SidesheetActions } from '../../packages/Notifications sidesheet/NotificationsSidesheet';
-import { AssignmentsTab } from './AssignmentsTab';
+import { AssignmentsTab } from '../../Core/Assignments/Components/AssignmentsTab';
 import { NotificationsTab } from './NotificationsTab';
 
 interface ActionCenterSidesheetProps {
