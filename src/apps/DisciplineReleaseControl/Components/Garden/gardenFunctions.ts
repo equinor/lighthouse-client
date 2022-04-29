@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import { DateTime } from 'luxon';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
 import { getPipetestStatus, getPipetestStatusEnumByValue } from '../../Functions/statusHelpers';
@@ -60,7 +61,7 @@ export const getGardenItemColor = (step: string | undefined): string => {
 
     switch (step) {
         case PipetestStep.PressureTest:
-            color = '#a8c8de';
+            color = '#6D889A';
             break;
         case PipetestStep.ChemicalCleaning:
             color = '#A8C8DE';
@@ -69,34 +70,34 @@ export const getGardenItemColor = (step: string | undefined): string => {
             color = '#D9E9F2';
             break;
         case PipetestStep.Bolttensioning:
-            color = '#6d889a';
+            color = '#F7F7F7';
             break;
         case PipetestStep.Painting:
-            color = '#dcdcdc';
+            color = tokens.colors.ui.background__medium.hex;
             break;
         case PipetestStep.HtTest:
-            color = '#ffe7d6';
+            color = '#FFE7D6';
             break;
         case PipetestStep.Insulation:
-            color = '#73b1b5';
+            color = tokens.colors.infographic.primary__moss_green_55.hex;
             break;
         case PipetestStep.BoxInsulation:
-            color = '#A8CED1';
+            color = tokens.colors.infographic.primary__moss_green_34.hex;
             break;
         case PipetestStep.HtRetest:
-            color = '#ffc67a';
+            color = '#FFC67A';
             break;
         case PipetestStep.HtCTest:
             color = '#DCAB6A';
             break;
         case PipetestStep.Marking:
-            color = '#e6faec';
+            color = tokens.colors.interactive.table__cell__fill_activated.hex;
             break;
         case PipetestStep.Complete:
-            color = '#4bb748';
+            color = tokens.colors.interactive.success__resting.hex;
             break;
         case PipetestStep.Unknown:
-            color = '#ff92a8';
+            color = tokens.colors.infographic.substitute__pink_salmon.hex;
             break;
     }
 
@@ -123,3 +124,53 @@ export const getGardenItemCompletionColor = (completionStatus: string): string =
 
     return color;
 };
+
+export function getGardenContentColor(step: string): string {
+    let color;
+
+    switch (step) {
+        case PipetestStep.PressureTest:
+            color = tokens.colors.text.static_icons__primary_white.hex;
+            break;
+        case PipetestStep.ChemicalCleaning:
+            color = tokens.colors.text.static_icons__default.hex;
+            break;
+        case PipetestStep.HotOilFlushing:
+            color = tokens.colors.text.static_icons__default.hex;
+            break;
+        case PipetestStep.Bolttensioning:
+            color = tokens.colors.text.static_icons__default.hex;
+            break;
+        case PipetestStep.Painting:
+            color = tokens.colors.text.static_icons__default.hex;
+            break;
+        case PipetestStep.HtTest:
+            color = tokens.colors.text.static_icons__default.hex;
+            break;
+        case PipetestStep.Insulation:
+            color = tokens.colors.text.static_icons__primary_white.hex;
+            break;
+        case PipetestStep.BoxInsulation:
+            color = tokens.colors.text.static_icons__primary_white.hex;
+            break;
+        case PipetestStep.HtRetest:
+            color = tokens.colors.text.static_icons__default.hex;
+            break;
+        case PipetestStep.HtCTest:
+            color = tokens.colors.text.static_icons__default.hex;
+            break;
+        case PipetestStep.Marking:
+            color = tokens.colors.text.static_icons__default.hex;
+            break;
+        case PipetestStep.Complete:
+            color = tokens.colors.text.static_icons__default.hex;
+            break;
+        case PipetestStep.Unknown:
+            color = tokens.colors.text.static_icons__default.hex;
+            break;
+        default:
+            color = tokens.colors.text.static_icons__default.hex;
+    }
+
+    return color;
+}

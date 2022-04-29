@@ -7,10 +7,7 @@ import { useQuery } from 'react-query';
 import { CompactWorkOrderList } from '../../../WorkOrderTable/CompactWorkOrder/CompactWorkOrdersList';
 
 export function WorkOrderTab(): JSX.Element {
-    const woNumbers = [
-        200001, 200002, 200003, 200004, 200005, 200006, 200007, 200008, 200009, 200010, 200043,
-        200042, 200041,
-    ];
+    const woNumbers = [];
 
     const { data, error } = useQuery(['WO', ...woNumbers], () => getWorkOrderByIds(woNumbers), {
         cacheTime: 5 * 1000 * 60,

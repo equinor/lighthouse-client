@@ -23,7 +23,6 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
         pipetest.circuits?.forEach((circuit: Circuit) => {
             circuit.checkLists?.forEach((checkList: CheckList) => {
                 checkList.formularType = CheckListStepTag.HtCTest;
-                checkList.isHeatTrace = true;
                 pipetest.checkLists.push(checkList);
             });
         });
@@ -69,9 +68,83 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
         );
         return pipetest;
     });
+    pipetests = setPipingRfcUniqueHTDate(pipetests);
     sortPipetests(pipetests);
+    return pipetests;
+}
+
+export function setPipingRfcUniqueHTDate(pipetests: Pipetest[]): Pipetest[] {
+    const htGroupedByPipetest = heatTracesGroupedByPipetest(pipetests);
+    htGroupedByPipetest.map((ht) => {
+        ht.children.sort((a, b) =>
+            a.rfccPlanned.localeCompare(b.rfccPlanned, undefined, {
+                numeric: true,
+                sensitivity: 'base',
+            })
+        );
+        ht.earliestRfcDate = ht.children[0].rfccPlanned;
+        return ht;
+    });
+
+    pipetests.map((pipetest: Pipetest) => {
+        const htCablesOnPipetest = pipetest.heatTraces;
+        const htCableDates: string[] = [];
+        htCablesOnPipetest.forEach((ht) => {
+            const htCable = htGroupedByPipetest.find((z) => z.name === ht.tagNo);
+            if (htCable !== undefined && htCable.earliestRfcDate !== '') {
+                htCableDates.push(htCable.earliestRfcDate);
+            }
+        });
+        htCableDates.sort((a, b) =>
+            a.localeCompare(b, undefined, {
+                numeric: true,
+                sensitivity: 'base',
+            })
+        );
+
+        pipetest.pipingRfcUniqueHT = htCableDates[0];
+        return pipetest;
+    });
 
     return pipetests;
+}
+
+function getPipeTestByHeatTrace(groupName: string, pipetest: Pipetest[]) {
+    const pipetestChildren = pipetest.filter(
+        (pipetest, index, array) =>
+            pipetest.heatTraces.some((y) => y.tagNo === groupName) &&
+            array.indexOf(pipetest) === index
+    );
+    return {
+        name: groupName,
+        children: pipetestChildren,
+        count: pipetestChildren.length,
+        earliestRfcDate: '',
+    };
+}
+
+export function heatTracesGroupedByPipetest(pipetests: Pipetest[]) {
+    const heatTracesGroupedByPipetest = pipetests
+        .reduce(
+            (prev: CheckList[], curr) => [
+                ...prev,
+                ...curr.heatTraces.filter((ht) => !prev.includes(ht)),
+            ],
+            []
+        )
+        .map((groupName) => getPipeTestByHeatTrace(groupName.tagNo, pipetests));
+
+    /** Pipetest that has no heatTraces */
+    const pipetestChildren = pipetests.filter(({ heatTraces }) => heatTraces.length === 0);
+
+    heatTracesGroupedByPipetest.push({
+        name: 'No heatTraces',
+        children: pipetestChildren,
+        count: pipetestChildren.length,
+        earliestRfcDate: '',
+    });
+
+    return heatTracesGroupedByPipetest;
 }
 
 export function sortPipetests(pipetests: Pipetest[]): Pipetest[] {

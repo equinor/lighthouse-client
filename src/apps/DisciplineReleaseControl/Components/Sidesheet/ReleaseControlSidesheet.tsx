@@ -63,9 +63,9 @@ export const ReleaseControlSidesheet = ({
             <ReleaseControlSidesheetBanner pipetest={item} />
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
-                    <Tabs.Tab>Single line diagram </Tabs.Tab>
-                    <Tabs.Tab>Details</Tabs.Tab>
+                    <Tabs.Tab>Circuit diagram</Tabs.Tab>
                     <Tabs.Tab>Insulation</Tabs.Tab>
+                    <Tabs.Tab>Checklists</Tabs.Tab>
                     {/* <Tabs.Tab>3D-visualisation</Tabs.Tab> */}
                 </SidesheetTabList>
                 <Tabs.Panels>
@@ -76,12 +76,7 @@ export const ReleaseControlSidesheet = ({
                             width={width}
                         />
                     </Tabs.Panel>
-                    <Tabs.Panel>
-                        <TablesTab>
-                            <h4>{item.description}</h4>
-                            <CheckListTable checkLists={item.checkLists} />
-                        </TablesTab>
-                    </Tabs.Panel>
+
                     <Tabs.Panel>
                         <TablesTab>
                             {missingInsulationCheckListsCount !== 0 &&
@@ -110,6 +105,12 @@ export const ReleaseControlSidesheet = ({
                                 pipeInsulation={false}
                                 pipetestName={item.name}
                             />
+                        </TablesTab>
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <TablesTab>
+                            <h4>{item.description}</h4>
+                            <CheckListTable checkLists={item.checkLists} />
                         </TablesTab>
                     </Tabs.Panel>
                     {/* <Tabs.Panel>
