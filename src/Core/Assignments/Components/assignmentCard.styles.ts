@@ -34,7 +34,7 @@ export const Wrapper = styled.div`
     display: grid;
     grid-template-columns: 1fr auto 80px;
     text-align: left;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     border-top: 1px ${tokens.colors.interactive.disabled__border.hex} solid;
     padding: 0.45rem 0em;
