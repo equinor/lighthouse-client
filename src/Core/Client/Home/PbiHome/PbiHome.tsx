@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { tokens } from '@equinor/eds-tokens';
 import { NetworkError } from '@equinor/http-client';
-import { useHttpClient } from '@equinor/portal-client';
+import { isProduction, useHttpClient } from '@equinor/portal-client';
 import { Embed, IReportEmbedConfiguration, models, service } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
@@ -105,7 +105,9 @@ export function useFusionClient(
 
     async function getEmbedInfo() {
         try {
-            const embedUri = `https://pro-s-reports-ci.azurewebsites.net/reports/jca-landing-page/config/embedinfo`;
+            const embedUri = isProduction()
+                ? `https://pro-s-reports-fprd.azurewebsites.net/reports/jca-landing-page/config/embedinfo`
+                : `https://pro-s-reports-ci.azurewebsites.net/reports/jca-landing-page/config/embedinfo`;
             const response = await customHttpClient.fetch(embedUri);
 
             const data = await response.json();
@@ -118,7 +120,9 @@ export function useFusionClient(
 
     async function getPowerBiToken() {
         try {
-            const tokenUri = `https://pro-s-reports-ci.azurewebsites.net/reports/jca-landing-page/token`;
+            const tokenUri = isProduction()
+                ? `https://pro-s-reports-fprd.azurewebsites.net/reports/jca-landing-page/token`
+                : `https://pro-s-reports-ci.azurewebsites.net/reports/jca-landing-page/token`;
             const response = await customHttpClient.fetch(tokenUri);
             return await response.json();
         } catch (error: any) {
