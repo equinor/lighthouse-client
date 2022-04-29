@@ -8,4 +8,5 @@ export const WorkflowPopover = styled.div`
     padding: 5px 5px;
     border-radius: 4px;
     margin-top: 5px;
+    margin-left: 15px;
 `;
