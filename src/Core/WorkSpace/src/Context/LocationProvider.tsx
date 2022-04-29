@@ -61,16 +61,21 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         const id = location.hash.split('/')[1];
         if (data) {
             const item = findItem(id);
-            if (item) {
+            if (item !== undefined) {
                 onSelect(item);
                 return;
             }
         }
         if (idResolver) {
-            const item = await idResolver(id);
-            if (item) {
-                onSelect(item);
-                return;
+            try {
+                const item = await idResolver(id);
+                console.log(item);
+                if (item !== undefined) {
+                    onSelect(item);
+                    return;
+                }
+            } catch (e) {
+                openSidesheet(Fallback);
             }
         } else {
             await dataApi.refetch();
