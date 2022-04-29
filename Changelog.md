@@ -6,7 +6,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
 
-## 0.4.3
+## 1.0.0
 
 ### PROD
 - [Scopechange] bugfixes
