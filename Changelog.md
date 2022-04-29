@@ -14,7 +14,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Workorder] release
 - [SWCR] release
 - [Handover] release
-
+- [PipingAndHeatTrace] - Visual adjustments and Piping RFC (Unique HT) grouping
 
 ## 0.4.2
 
