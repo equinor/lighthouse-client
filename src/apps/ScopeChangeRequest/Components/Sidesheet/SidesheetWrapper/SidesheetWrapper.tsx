@@ -1,5 +1,5 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 
 import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
 import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
 import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
-import { swap, useAtom } from '@dbeining/react-atom';
+import { deref, swap, useAtom } from '@dbeining/react-atom';
 import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
 import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
 
@@ -32,6 +32,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     const { activeTab, handleChange } = useEdsTabs();
 
     const request = useGetScopeChangeRequest(item.id, item);
+
     const requestAccess = useScopeChangeAccess(item.id);
 
     const toggleEditMode = () => swap(sideSheetEditModeAtom, (s) => !s);
@@ -51,6 +52,10 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     }, [request, requestAccess, item]);
 
     const editMode = useAtom(sideSheetEditModeAtom);
+
+    if (Object.keys(deref(scopeChangeAtom).request).length < 2) {
+        return <></>;
+    }
 
     return (
         <Wrapper>
