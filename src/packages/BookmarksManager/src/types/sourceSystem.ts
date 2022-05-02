@@ -3,6 +3,6 @@ export type SourceSystem = {
     name: string;
     /** E.g "cst-portal-1212" */
     identifier: string;
-    /** E.g "scope-change" */
+    /** E.g "ConstructionAndCommissioning" */
     subSystem: string;
 };
