@@ -2,7 +2,7 @@ import { Tabs } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
 import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
-import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
+import { useEdsTabs } from '../../../../../hooks/edsTabs/useEdsTabs';
 import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
 import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
 import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
@@ -49,6 +49,10 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
             actions: actions,
         }));
     }, [item?.id]);
+
+    if (Object.keys(deref(scopeChangeAtom).request).length < 2) {
+        return <></>;
+    }
 
     return (
         <Wrapper>

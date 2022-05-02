@@ -5,8 +5,12 @@ All notable changes to this project will be documented in this file.
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
-## 1.0.1
+## 1.1.0
+- [APPS] - Release Fusion PBI reports
+- [Portal] - Persisting menu state
+- [ScopeChange] - Refactor
 
+## 1.0.1
 
 ### PROD
 - [Scopechange] bugfixes

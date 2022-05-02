@@ -10,10 +10,10 @@ type SelectorFunction<T, R> = (s: T) => R;
  * @param selector
  * @returns
  */
-export function useScopeChangeContext<R extends unknown>(
+export function useScopeChangeContext<R = ScopeChangeAtom>(
     selector?: SelectorFunction<ScopeChangeAtom, R>
 ): DeepImmutable<R> {
-    const select = selector ? selector : (s: ScopeChangeAtom) => s as R;
+    const select = selector ? selector : (s: ScopeChangeAtom) => s;
 
-    return useAtom(scopeChangeAtom, { select });
+    return useAtom(scopeChangeAtom, { select: select as (s: ScopeChangeAtom) => R });
 }
