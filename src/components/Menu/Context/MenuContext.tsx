@@ -27,12 +27,12 @@ const initialState: MenuState = {
 const MENU_KEY = 'menuState';
 
 export const MenuProvider = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
-    const [state, setState] = useState(
+    const [menuState, setMenuState] = useState(
         (storage.getItem<MenuState>(MENU_KEY) as MenuState) || initialState
     );
 
     function toggleMenu() {
-        setState((s) => {
+        setMenuState((s) => {
             const ns = { ...s, menuActive: !s.menuActive };
             storage.setItem(MENU_KEY, ns);
             return ns;
@@ -40,7 +40,7 @@ export const MenuProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
     }
 
     function setExpandMenuActive() {
-        setState((s) => {
+        setMenuState((s) => {
             const ns = { ...s, expandedMenuActive: true };
             storage.setItem(MENU_KEY, ns);
             return ns;
@@ -48,7 +48,7 @@ export const MenuProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
     }
 
     function setCompactMenuActive() {
-        setState((s) => {
+        setMenuState((s) => {
             const ns = { ...s, expandedMenuActive: false };
             storage.setItem(MENU_KEY, ns);
             return ns;
@@ -56,7 +56,7 @@ export const MenuProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
     }
 
     function setActiveGroupe(groupId = '') {
-        setState((s) => {
+        setMenuState((s) => {
             const ns = { ...s, activeGroupe: groupId };
             storage.setItem(MENU_KEY, ns);
             return ns;
@@ -64,7 +64,7 @@ export const MenuProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
     }
 
     function setFavoritesExpanded(isExpanded: boolean) {
-        setState((s) => {
+        setMenuState((s) => {
             const ns = { ...s, favoritesExpanded: isExpanded };
             storage.setItem(MENU_KEY, ns);
             return ns;
@@ -74,7 +74,7 @@ export const MenuProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
     return (
         <MenuContext.Provider
             value={{
-                ...state,
+                ...menuState,
                 toggleMenu,
                 setExpandMenuActive,
                 setCompactMenuActive,
