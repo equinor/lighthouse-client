@@ -1,6 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
+import { OriginLink } from '../../DetailView/OriginLink';
 
 export function SidesheetBanner(): JSX.Element {
     const { request } = useScopeChangeContext();
@@ -12,9 +13,11 @@ export function SidesheetBanner(): JSX.Element {
             <BannerItem
                 title="Change origin"
                 value={
-                    request.originSource !== 'NotApplicable'
-                        ? `${request.originSource} - ${request.originSourceId}`
-                        : request.originSource
+                    <OriginLink
+                        onlyUnderlineOnHover={true}
+                        type={request.originSource}
+                        id={request.originSourceId}
+                    />
                 }
             />
             <BannerItem title={'Status'} value={request.workflowStatus ?? ''} />
@@ -36,7 +39,7 @@ const Banner = styled.div`
 
 interface BannerItemProps {
     title: string;
-    value: string | number;
+    value: string | number | JSX.Element;
 }
 
 export function BannerItem({ title, value }: BannerItemProps): JSX.Element {
