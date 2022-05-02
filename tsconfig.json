@@ -45,7 +45,8 @@
             "@equinor/lighthouse-powerbi": ["./src/modules/powerBI"],
             "@equinor/lighthouse-powerbi-viewer": ["./src/Core/PowerBiViewer"],
             "@equinor/lighthouse-model-viewer": ["./src/packages/ModelViewer"],
-            "@equinor/lighthouse-status-bar": ["./src/packages/StatusBar"]
+            "@equinor/lighthouse-status-bar": ["./src/packages/StatusBar"],
+            "@equinor/BookmarksManager": ["./src/packages/BookmarksManager"]
         }
     },
     "compileOnSave": true,
