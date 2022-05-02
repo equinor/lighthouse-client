@@ -22,7 +22,7 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
@@ -132,7 +132,7 @@ export const apps: AppManifest[] = [
             component: BusinessCaseReport,
         },
 
-        appEnv: 'test',
+        appEnv: 'prod',
         tags: ['PowerBI'],
     },
     {
@@ -179,7 +179,7 @@ export const apps: AppManifest[] = [
         },
         tags: ['PowerBI'],
 
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Barrier Management Tool',
@@ -215,7 +215,7 @@ export const apps: AppManifest[] = [
         },
         tags: ['PowerBI'],
 
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'LCI portal',
@@ -237,7 +237,7 @@ export const apps: AppManifest[] = [
         },
         tags: ['PowerBI'],
 
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // Construction And Commissioning
     {
@@ -494,7 +494,7 @@ export const apps: AppManifest[] = [
             component: NonConformityReport,
         },
         tags: ['PowerBI'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Quality deviation',
@@ -507,7 +507,7 @@ export const apps: AppManifest[] = [
             component: QualityDeviationReport,
         },
         tags: ['PowerBI'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // Collaboration
     {
@@ -547,7 +547,7 @@ export const apps: AppManifest[] = [
             component: QueryReport,
         },
         tags: ['PowerBI'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Queries',
@@ -560,7 +560,7 @@ export const apps: AppManifest[] = [
                 isProduction ? 'procosys' : 'procosystest'
             }.equinor.com/JOHAN_CASTBERG/Search?searchType=Query`,
         tags: ['link', 'procosys'],
-        appEnv: 'prod',
+        appEnv: 'test',
     },
     {
         title: 'AKSO procedures',
