@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 import { Criteria, CriteriaSignState, WorkflowStep } from '../../../../../types/scopeChangeRequest';
 import { reassignCriteria, unsignCriteria } from '../../../../../api/ScopeChange/Workflow';
-import { useScopeChangeContext } from '../../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
 import { useConditionalRender } from '../../../../../hooks/utils/useConditionalRender';
 import { CriteriaDetail } from '../CriteriaDetail';
 import { CriteriaActions } from '../../../Types/actions';
@@ -33,12 +33,12 @@ export const WorkflowCriteria = ({
     criteria,
     canAddContributor,
 }: WorkflowCriteriasProps): JSX.Element => {
-    const { request } = useScopeChangeContext();
+    const requestId = useScopeChangeContext(({ request }) => request.id);
 
     const signMutation = useWorkflowSigning({
         criteriaId: criteria.id,
         stepId: step.id,
-        requestId: request.id,
+        requestId: requestId,
     });
 
     const setShowSendBackWithComment = () =>
@@ -65,13 +65,13 @@ export const WorkflowCriteria = ({
             stepId: step.id,
         }));
 
-    const { workflowKeys } = scopeChangeMutationKeys(request.id);
+    const { workflowKeys } = scopeChangeMutationKeys(requestId);
     const workflowLoading = useIsWorkflowLoading();
 
     const { criteriaUnsignKey, criteriaReassignKey } = workflowKeys;
 
     const { canReassign, canSign, canUnsign } = useWorkflowCriteriaOptions(
-        request.id,
+        requestId,
         criteria.id,
         step.id
     );
@@ -129,7 +129,7 @@ export const WorkflowCriteria = ({
                 onClick: () =>
                     unSignMutation({
                         criteriaId: criteria.id,
-                        requestId: request.id,
+                        requestId: requestId,
                         stepId: step.id,
                     }),
                 isDisabled: !canUnsign,
@@ -156,7 +156,7 @@ export const WorkflowCriteria = ({
             onSelect={(value) => {
                 if (!value) return;
                 reassignMutation({
-                    requestId: request.id,
+                    requestId: requestId,
                     stepId: step.id,
                     criteriaId: criteria.id,
                     reassign: {
@@ -181,13 +181,13 @@ export const WorkflowCriteria = ({
     );
 
     const { mutate: reassignMutation } = useScopeChangeMutation(
-        request.id,
+        requestId,
         criteriaReassignKey(step.id, criteria.id),
         reassignCriteria
     );
 
     const { mutate: unSignMutation } = useScopeChangeMutation(
-        request.id,
+        requestId,
         criteriaUnsignKey(step.id, criteria.id),
         unsignCriteria
     );
@@ -199,7 +199,7 @@ export const WorkflowCriteria = ({
     };
 
     /** Close all dialogs/inputs when an action happens */
-    const { baseKey } = scopeChangeQueryKeys(request.id);
+    const { baseKey } = scopeChangeQueryKeys(requestId);
     const queryClient = useQueryClient();
     useEffect(() => {
         // Create an observer to watch the query and update its result into state

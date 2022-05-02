@@ -6,7 +6,6 @@ import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
 import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
 import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
 import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
-import { ScopeChangeContext } from '../../../context/scopeChangeAccessContext';
 import { ScopeChangeErrorBanner } from '../../ErrorBanner/ErrorBanner';
 import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';
 import { LogTabTitle, LogTab } from '../Tabs/Log';
@@ -56,40 +55,33 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     return (
         <Wrapper>
             <ScopeChangeErrorBanner />
-            <ScopeChangeContext.Provider
-                value={{
-                    request: request ?? item,
-                    requestAccess: requestAccess,
-                }}
-            >
-                {editMode ? (
-                    <ScopeChangeRequestEditForm request={request ?? item} close={toggleEditMode} />
-                ) : (
-                    <>
-                        <SidesheetBanner />
-                        <Tabs activeTab={activeTab} onChange={handleChange}>
-                            <SidesheetTabList>
-                                <Tabs.Tab>
-                                    <RequestTabTitle />
-                                </Tabs.Tab>
-                                <Tabs.Tab>
-                                    <WorkOrderTabTitle />
-                                </Tabs.Tab>
-                                <Tabs.Tab>
-                                    <LogTabTitle />
-                                </Tabs.Tab>
-                            </SidesheetTabList>
-                            <TabList>
-                                <Tab>
-                                    <RequestTab />
-                                </Tab>
-                                <Tab>{activeTab === 1 && <WorkOrderTab />}</Tab>
-                                <Tab>{activeTab === 2 && <LogTab />}</Tab>
-                            </TabList>
-                        </Tabs>
-                    </>
-                )}
-            </ScopeChangeContext.Provider>
+            {editMode ? (
+                <ScopeChangeRequestEditForm request={request ?? item} close={toggleEditMode} />
+            ) : (
+                <>
+                    <SidesheetBanner />
+                    <Tabs activeTab={activeTab} onChange={handleChange}>
+                        <SidesheetTabList>
+                            <Tabs.Tab>
+                                <RequestTabTitle />
+                            </Tabs.Tab>
+                            <Tabs.Tab>
+                                <WorkOrderTabTitle />
+                            </Tabs.Tab>
+                            <Tabs.Tab>
+                                <LogTabTitle />
+                            </Tabs.Tab>
+                        </SidesheetTabList>
+                        <TabList>
+                            <Tab>
+                                <RequestTab />
+                            </Tab>
+                            <Tab>{activeTab === 1 && <WorkOrderTab />}</Tab>
+                            <Tab>{activeTab === 2 && <LogTab />}</Tab>
+                        </TabList>
+                    </Tabs>
+                </>
+            )}
         </Wrapper>
     );
 }
