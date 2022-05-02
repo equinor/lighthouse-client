@@ -1,11 +1,7 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { BookmarkRequest } from '../types';
 import { applyBookmark, saveBookmark } from '../utils';
-type ApplyBookmarkReturn<T> = {
-    payload: T;
-    appKey: string;
-    groupName: string;
-};
+
 type UseBookmarkReturn<TPayload, TBookmark> = {
     handleSaveBookmarks: (
         capturedBookmark: TPayload,
@@ -13,11 +9,7 @@ type UseBookmarkReturn<TPayload, TBookmark> = {
         appKey: string
     ) => Promise<void>;
 
-    handleApplyBookmark: (
-        bookmarkId: string,
-        appKey: string,
-        groupName: string
-    ) => Promise<ApplyBookmarkReturn<TBookmark>>;
+    handleApplyBookmark: (bookmarkId: string) => Promise<TBookmark>;
 };
 /**
  * Hook that handles API calls to bookmark service. Use together with your own functions to handle capturing and applying bookmarks.
@@ -56,11 +48,7 @@ export const useBookmarks = <
         mutate(bookmarkRequest);
     };
 
-    const handleApplyBookmark = async (
-        bookmarkId: string,
-        appKey: string,
-        groupName: string
-    ): Promise<TBookmark> => {
+    const handleApplyBookmark = async (bookmarkId: string): Promise<TBookmark> => {
         const bookmark = await bookmarkApplyAsync(bookmarkId);
         //TODO typing
         return bookmark.payload as TBookmark;
