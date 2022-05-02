@@ -13,6 +13,7 @@ import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopech
 import { scopeChangeQueries } from '../../../../keys/queries';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
 import { actionWithCommentAtom } from '../../Atoms/signingAtom';
+import { CriteriaSignState } from '../../../../types/scopeChangeRequest';
 
 interface CriteriaActionBarProps {
     criteriaId: string;
@@ -44,6 +45,13 @@ export const CriteriaActionBar = ({
         stepId
     );
 
+    const generateAtom = (action: CriteriaSignState | 'Reassign', buttonText: string) => ({
+        criteriaId: criteriaId,
+        stepId: stepId,
+        action: action,
+        buttonText: buttonText,
+    });
+
     const signMutation = useWorkflowSigning({
         criteriaId: criteriaId,
         stepId: stepId,
@@ -51,36 +59,16 @@ export const CriteriaActionBar = ({
     });
 
     const setShowSendBackWithComment = () =>
-        swap(actionWithCommentAtom, () => ({
-            action: 'Disputed' as const,
-            buttonText: 'Send back',
-            criteriaId: criteriaId,
-            stepId: stepId,
-        }));
+        swap(actionWithCommentAtom, () => generateAtom('Disputed', 'Send back'));
 
     const setShowSignWithComment = () =>
-        swap(actionWithCommentAtom, () => ({
-            action: 'Approved' as const,
-            buttonText: 'Sign',
-            criteriaId: criteriaId,
-            stepId: stepId,
-        }));
+        swap(actionWithCommentAtom, () => generateAtom('Approved', 'Sign'));
 
     const setShowRejectWithComment = () =>
-        swap(actionWithCommentAtom, () => ({
-            action: 'Rejected' as const,
-            buttonText: 'Reject',
-            criteriaId: criteriaId,
-            stepId: stepId,
-        }));
+        swap(actionWithCommentAtom, () => generateAtom('Rejected', 'Reject'));
 
     const setShowReassignBar = () =>
-        swap(actionWithCommentAtom, () => ({
-            action: 'Reassign' as const,
-            buttonText: 'Test',
-            criteriaId: criteriaId,
-            stepId: stepId,
-        }));
+        swap(actionWithCommentAtom, () => generateAtom('Reassign', 'Confirm'));
 
     function makeSignOptions(): MenuItem[] {
         const actions: MenuItem[] = [];

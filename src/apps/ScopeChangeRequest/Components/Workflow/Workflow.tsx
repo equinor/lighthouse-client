@@ -3,7 +3,7 @@ import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext
 import { CriteriaRender } from './Criteria/Components/Criteria';
 import { getCriteriaStatus } from './Utils/getCriteriaStatus';
 
-export const WorkflowWithLines = (): JSX.Element => {
+export const Workflow = (): JSX.Element => {
     const { request } = useScopeChangeContext();
 
     return (

@@ -17,7 +17,7 @@ import {
 } from './RequestTab.styles';
 import styled from 'styled-components';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
-import { WorkflowWithLines } from '../../../Workflow/Workflow';
+import { Workflow } from '../../../Workflow/Workflow';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -54,7 +54,7 @@ export function RequestTab(): JSX.Element {
                     <InnerSection>
                         <SectionHeading>Workflow</SectionHeading>
 
-                        <WorkflowWithLines />
+                        <Workflow />
                     </InnerSection>
                 </FlexColumn>
 
