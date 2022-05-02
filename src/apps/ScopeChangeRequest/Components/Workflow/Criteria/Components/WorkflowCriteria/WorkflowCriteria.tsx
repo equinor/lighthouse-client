@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 import { Criteria, CriteriaSignState, WorkflowStep } from '../../../../../types/scopeChangeRequest';
 import { reassignCriteria, unsignCriteria } from '../../../../../api/ScopeChange/Workflow';
-import { useScopeChangeContext } from '../../../../../Hooks/context/useScopeChangeContext';
+import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
 import { useConditionalRender } from '../../../../../hooks/utils/useConditionalRender';
 import { CriteriaDetail } from '../CriteriaDetail';
 import { CriteriaActions } from '../../../Types/actions';

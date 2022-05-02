@@ -4,7 +4,7 @@ import { CacheTime } from '../../../../enum/cacheTimes';
 import { scopeChangeQueries } from '../../../../keys/queries';
 import { LogEntry } from '../../../../types/scopeChangeRequest';
 import { HistoryItem } from '../../../DetailView/History/HistoryItem';
-import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeContext';
+import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 
 export function LogTab(): JSX.Element {
     const requestId = useScopeChangeContext((s) => s.request.id);

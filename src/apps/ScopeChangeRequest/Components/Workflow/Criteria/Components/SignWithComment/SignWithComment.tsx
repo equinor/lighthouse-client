@@ -1,7 +1,7 @@
 import { swap } from '@dbeining/react-atom';
 import { Button, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { useScopeChangeContext } from '../../../../../Hooks/context/useScopeChangeContext';
+import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
 import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
 import { CriteriaSignState } from '../../../../../types/scopeChangeRequest';
 import { actionWithCommentAtom as actionWithCommentAtom } from '../WorkflowCriteria/WorkflowCriteria';

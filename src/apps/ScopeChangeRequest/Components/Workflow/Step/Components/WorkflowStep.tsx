@@ -4,6 +4,7 @@ import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
 import { useQuery } from 'react-query';
 import { scopeChangeQueries } from '../../../../keys/queries';
+import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 
 interface WorkflowStepProps {
     step: WorkflowStep;

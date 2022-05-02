@@ -2,7 +2,7 @@ import { Banner } from '@equinor/eds-core-react';
 import { useCallback, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import styled from 'styled-components';
-import { useScopeChangeContext } from '../../Hooks/context/useScopeChangeContext';
+import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../../hooks/React-Query/useScopechangeMutation';
 import { uploadAttachment } from '../../api/ScopeChange/Request';
 import { Attachments } from './Attachments';
