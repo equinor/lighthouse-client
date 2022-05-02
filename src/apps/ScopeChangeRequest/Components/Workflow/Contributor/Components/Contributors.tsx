@@ -1,6 +1,4 @@
-import { Button, Icon, TextField } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
+import { Button, Divider, Icon, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 
@@ -15,10 +13,18 @@ import { submitContribution } from '../../../../api/ScopeChange/Workflow';
 import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { useIsWorkflowLoading } from '../../../../hooks/React-Query/useIsWorkflowLoading';
-import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
 import { removeContributor } from '../../../../api/ScopeChange/Workflow/removeContributor';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
 import { scopeChangeQueries } from '../../../../keys/queries';
+import { getContributorStatus } from '../Utils/getContributorStatus';
+import {
+    ButtonContainer,
+    ContributorContainer,
+    ContributorInnerContainer,
+    Inline,
+    Spacer,
+    WorkflowText,
+} from './contributor.styles';
 
 interface ContributorsProps {
     step: WorkflowStep;
@@ -143,7 +149,7 @@ export const Contributor = ({
             <ContributorContainer key={contributor.id}>
                 <ContributorInnerContainer>
                     <Inline>
-                        <WorkflowIcon status={contributorStatus(contributor, step.isCurrent)} />
+                        <WorkflowIcon status={getContributorStatus(contributor, step.isCurrent)} />
                         <Spacer />
                         <WorkflowText>
                             <div>{contributor.instructionsToContributor}</div>
@@ -201,63 +207,3 @@ export const Contributor = ({
         </>
     );
 };
-
-const ContributorContainer = styled.div`
-    padding: 0px 32px;
-    width: -webkit-fill-available;
-    margin-bottom: 0.5rem;
-`;
-
-const WorkflowText = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 16px;
-    color: ${tokens.colors.text.static_icons__default.hex};
-`;
-
-const Spacer = styled.div`
-    height: 9px;
-    width: 0.5rem;
-`;
-
-const ContributorInnerContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 2px;
-    width: -webkit-fill-available;
-    &:hover {
-        background-color: ${tokens.colors.interactive.primary__selected_hover.hex};
-    }
-`;
-
-const Inline = styled.span`
-    display: flex;
-    align-items: center;
-`;
-
-function contributorStatus(
-    contributor: ContributorInterface,
-    currentStep: boolean
-): CriteriaStatus {
-    if (contributor.contribution) {
-        return 'Approved';
-    }
-
-    if (currentStep) {
-        return 'Active';
-    } else {
-        return 'Inactive';
-    }
-}
-
-const ButtonContainer = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    margin: 0.2rem;
-`;
-
-const Divider = styled.div`
-    width: 0.5rem;
-`;

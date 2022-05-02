@@ -2,7 +2,7 @@ import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { DisputedWorkflowIcon } from '../../WorkflowIcons/DisputedWorkflowIcon';
-import { CriteriaStatus } from '../Criteria/Components/CriteriaDetail';
+import { CriteriaStatus } from '../Criteria/Components/WorkflowCriteria/CriteriaDetail/CriteriaDetail';
 
 interface WorkflowIconProps {
     status: CriteriaStatus;
