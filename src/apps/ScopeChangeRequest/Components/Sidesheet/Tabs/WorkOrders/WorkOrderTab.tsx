@@ -7,7 +7,7 @@ import { CompactWorkOrderList } from '../../../WorkOrderTable/CompactWorkOrder/C
 import { Loading, NoWorkOrders, Wrapper } from './workOrderTab.styles';
 
 export function WorkOrderTab(): JSX.Element {
-    const woNumbers = [];
+    const woNumbers = [200004];
 
     const { data, error } = useQuery(['WO', ...woNumbers], () => getWorkOrderByIds(woNumbers), {
         cacheTime: 5 * 1000 * 60,
