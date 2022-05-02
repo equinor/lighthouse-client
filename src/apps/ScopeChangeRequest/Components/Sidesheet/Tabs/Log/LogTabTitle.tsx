@@ -5,7 +5,7 @@ import { scopeChangeQueries } from '../../../../keys/queries';
 import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeAccessContext';
 
 export function LogTabTitle(): JSX.Element {
-    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
+    const requestId = useScopeChangeContext((s) => s.request.id);
     const isLoading =
         useIsFetching(scopeChangeQueries.historyQuery(requestId).queryKey, { active: true }) > 0;
 

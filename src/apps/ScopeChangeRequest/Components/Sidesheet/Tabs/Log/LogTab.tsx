@@ -7,7 +7,7 @@ import { HistoryItem } from '../../../DetailView/History/HistoryItem';
 import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeAccessContext';
 
 export function LogTab(): JSX.Element {
-    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
+    const requestId = useScopeChangeContext((s) => s.request.id);
 
     const { historyQuery } = scopeChangeQueries;
 

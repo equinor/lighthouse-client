@@ -10,7 +10,7 @@ interface WorkflowStepProps {
     step: WorkflowStep;
 }
 export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element {
-    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
+    const requestId = useScopeChangeContext((s) => s.request.id);
 
     const { canAddContributorQuery } = scopeChangeQueries.workflowQueries;
 

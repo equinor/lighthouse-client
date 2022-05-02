@@ -12,7 +12,7 @@ const MAX_SIZE_IN_BYTES = 100 * 1000 ** 2;
 export const HotUpload = (): JSX.Element => {
     const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
 
-    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
+    const requestId = useScopeChangeContext((s) => s.request.id);
 
     const { uploadAttachmentKey } = scopeChangeMutationKeys(requestId);
 

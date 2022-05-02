@@ -1,9 +1,7 @@
 import { DeepImmutable, useAtom } from '@dbeining/react-atom';
-import { ScopeChangeAtom, scopeChangeAtom } from '../../Atoms/scopeChangeAtom';
+import { scopeChangeAtom, ScopeChangeAtom } from '../../Atoms/scopeChangeAtom';
 
-interface Selector<T, R> {
-    select?: (s: T) => R;
-}
+type SelectorFunction<T, R> = (s: T) => R;
 
 /**
  * Returns the scope change context with the possibility of using selectors
@@ -13,9 +11,9 @@ interface Selector<T, R> {
  * @returns
  */
 export function useScopeChangeContext<R extends unknown>(
-    selector?: Selector<ScopeChangeAtom, R>
+    selector?: SelectorFunction<ScopeChangeAtom, R>
 ): DeepImmutable<R> {
-    const select = selector?.select ? selector.select : (s: ScopeChangeAtom) => s as R;
+    const select = selector ? selector : (s: ScopeChangeAtom) => s as R;
 
     return useAtom(scopeChangeAtom, { select });
 }

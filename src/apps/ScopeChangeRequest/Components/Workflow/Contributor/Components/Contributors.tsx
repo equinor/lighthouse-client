@@ -33,7 +33,7 @@ export const Contributor = ({
 }: ContributorsProps): JSX.Element => {
     const [comment, setComment] = useState('');
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
-    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
+    const requestId = useScopeChangeContext(({ request }) => request.id);
     const workflowLoading = useIsWorkflowLoading();
 
     const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(requestId);

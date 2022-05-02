@@ -2,7 +2,7 @@ import { WorkflowStepContainer } from '../Step';
 import { useScopeChangeContext } from '../../../Hooks/context/useScopeChangeAccessContext';
 
 export function Workflow(): JSX.Element {
-    const workflowSteps = useScopeChangeContext({ select: (s) => s.request.workflowSteps });
+    const workflowSteps = useScopeChangeContext(({ request }) => request.workflowSteps);
 
     return (
         <div>

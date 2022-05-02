@@ -20,7 +20,7 @@ export const SignWithComment = ({
     stepId,
     buttonText,
 }: SignWithCommentProps): JSX.Element => {
-    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
+    const requestId = useScopeChangeContext(({ request }) => request.id);
 
     const signMutation = useWorkflowSigning({
         criteriaId: criteriaId,

@@ -4,7 +4,7 @@ import { useIsScopeChangeMutatingOrFetching } from '../../../../hooks/observers/
 import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeAccessContext';
 
 export function RequestTabTitle(): JSX.Element {
-    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
+    const requestId = useScopeChangeContext((s) => s.request.id);
     const isLoading = useIsScopeChangeMutatingOrFetching(requestId);
 
     return (

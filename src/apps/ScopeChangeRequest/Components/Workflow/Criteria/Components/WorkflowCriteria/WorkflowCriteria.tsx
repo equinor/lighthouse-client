@@ -33,7 +33,7 @@ export const WorkflowCriteria = ({
     criteria,
     canAddContributor,
 }: WorkflowCriteriasProps): JSX.Element => {
-    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
+    const requestId = useScopeChangeContext(({ request }) => request.id);
 
     const signMutation = useWorkflowSigning({
         criteriaId: criteria.id,
