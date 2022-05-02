@@ -26,12 +26,10 @@ export function useWorkflowSigning({
         workflowKeys: { criteriaSignKey },
     } = scopeChangeMutationKeys(requestId);
 
-    const { pendingContributions, workflowSteps } = useScopeChangeContext({
-        select: (s) => ({
-            pendingContributions: s.request.hasPendingContributions,
-            workflowSteps: s.request.workflowSteps,
-        }),
-    });
+    const { pendingContributions, workflowSteps } = useScopeChangeContext((s) => ({
+        pendingContributions: s.request.hasPendingContributions,
+        workflowSteps: s.request.workflowSteps,
+    }));
     const queryClient = useQueryClient();
 
     async function onSignStep({ action, comment }: OnSignStepAction) {
