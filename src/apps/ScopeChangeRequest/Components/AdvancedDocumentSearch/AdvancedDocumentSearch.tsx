@@ -8,7 +8,7 @@ import { getDocumentsByTag } from '../../api/STID/getDocumentsByTag';
 import { Result } from './Results';
 import { SubResults } from './SubResult';
 import { AdvancedSearch, ModalHeader, Wrapper, Title } from './advancedSearch.styles';
-import { useCancellationToken } from '../../hooks/cancellationToken/useCancellationToken';
+import { useCancellationToken } from '../../../../hooks/cancellationToken/useCancellationToken';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 
