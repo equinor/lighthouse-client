@@ -46,7 +46,7 @@ export const searchTags = async (
                     searchValue: x.TagNo,
                     object: x,
                     metadata: `Comm pkg: ${x.McPkgsThroughScope__CommPkg__CommPkgNo ?? 'none'
-                        } Tag register: ${x.Register__Id} `,
+                        } | Tag register: ${x.Register__Id} `,
                 });
             });
         });
