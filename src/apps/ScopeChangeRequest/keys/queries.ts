@@ -86,15 +86,15 @@ export const scopeChangeQueries = {
     workflowQueries: scopeChangeWorkflowQueries,
     permissionQueries: {
         canVoidQuery: (id: string): OptionsQuery => ({
-            queryFn: ({ signal }) => canVoid(id, signal),
+            queryFn: ({ signal }: QueryContext) => canVoid(id, signal),
             queryKey: [...permissionsKey(id), 'canVoid'],
         }),
         canUnvoidQuery: (id: string): OptionsQuery => ({
-            queryFn: ({ signal }) => canUnVoid(id, signal),
+            queryFn: ({ signal }: QueryContext) => canUnVoid(id, signal),
             queryKey: [...permissionsKey(id), 'canUnvoid'],
         }),
         permissionsQuery: (id: string) => ({
-            queryFn: ({ signal }) => getRequestAccess(id, signal),
+            queryFn: ({ signal }: QueryContext) => getRequestAccess(id, signal),
             queryKey: [...permissionsKey(id), 'requestAccess'],
         }),
     },
