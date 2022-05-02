@@ -4,15 +4,15 @@ import { CacheTime } from '../../../../enum/cacheTimes';
 import { scopeChangeQueries } from '../../../../keys/queries';
 import { LogEntry } from '../../../../types/scopeChangeRequest';
 import { HistoryItem } from '../../../DetailView/History/HistoryItem';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeAccessContext';
 
 export function LogTab(): JSX.Element {
-    const { request } = useScopeChangeContext();
+    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
 
     const { historyQuery } = scopeChangeQueries;
 
     const { data } = useQuery<LogEntry[]>({
-        ...historyQuery(request.id),
+        ...historyQuery(requestId),
         staleTime: CacheTime.FiveMinutes,
     });
 

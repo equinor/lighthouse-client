@@ -12,7 +12,7 @@ import { MenuButton, MenuItem, IconMenu } from '../../../MenuButton/';
 import { ContributorActions } from '../../Types/actions';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { submitContribution } from '../../../../api/ScopeChange/Workflow';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeAccessContext';
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { useIsWorkflowLoading } from '../../../../hooks/React-Query/useIsWorkflowLoading';
 import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
@@ -33,26 +33,26 @@ export const Contributor = ({
 }: ContributorsProps): JSX.Element => {
     const [comment, setComment] = useState('');
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
-    const { request } = useScopeChangeContext();
+    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
     const workflowLoading = useIsWorkflowLoading();
 
-    const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(request.id);
+    const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(requestId);
 
     const queryClient = useQueryClient();
 
     const { canContributeQuery } = scopeChangeQueries.workflowQueries;
     const { data: userCanContribute } = useQuery(
-        canContributeQuery(request.id, step.id, contributor.id)
+        canContributeQuery(requestId, step.id, contributor.id)
     );
 
     const cancelNewOptionsCall = async () => {
         await queryClient.cancelQueries(
-            canContributeQuery(request.id, step.id, contributor.id).queryKey
+            canContributeQuery(requestId, step.id, contributor.id).queryKey
         );
     };
 
     const { mutate: removeContributorAsync } = useScopeChangeMutation(
-        request.id,
+        requestId,
         workflowMutationKeys.deleteContributorKey(step.id),
         removeContributor,
         {
@@ -63,7 +63,7 @@ export const Contributor = ({
     );
 
     const { mutate } = useScopeChangeMutation(
-        request.id,
+        requestId,
         workflowMutationKeys.contributeKey(step.id, contributor.id),
         submitContribution
     );
@@ -78,7 +78,7 @@ export const Contributor = ({
                 onClick: async () =>
                     mutate({
                         contributorId: contributor.id,
-                        requestId: request.id,
+                        requestId: requestId,
                         stepId: step.id,
                         suggestion: 'SuggestApproval',
                         comment: undefined,
@@ -105,7 +105,7 @@ export const Contributor = ({
                 onClick: () =>
                     removeContributorAsync({
                         contributorId: contributor.id,
-                        requestId: request.id,
+                        requestId: requestId,
                         stepId: step.id,
                     }),
             });
@@ -131,7 +131,7 @@ export const Contributor = ({
         setShowCommentField(false);
         mutate({
             contributorId: contributor.id,
-            requestId: request.id,
+            requestId: requestId,
             stepId: step.id,
             suggestion: comment.length > 0 ? 'Comment' : 'SuggestApproval',
             comment: comment,

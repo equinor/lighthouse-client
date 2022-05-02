@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { WorkflowStep } from '../../../../types/scopeChangeRequest';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeAccessContext';
 import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
 import { useQuery } from 'react-query';
@@ -10,12 +10,12 @@ interface WorkflowStepProps {
     step: WorkflowStep;
 }
 export function WorkflowStepContainer({ step }: WorkflowStepProps): JSX.Element {
-    const { request } = useScopeChangeContext();
+    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
 
     const { canAddContributorQuery } = scopeChangeQueries.workflowQueries;
 
     const { data: isAllowedToAddContributor } = useQuery(
-        canAddContributorQuery(request.id, step.id)
+        canAddContributorQuery(requestId, step.id)
     );
 
     return (

@@ -3,7 +3,7 @@ import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Fun
 import { signCriteria } from '../../api/ScopeChange/Workflow';
 import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
-import { useScopeChangeContext } from '../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../context/useScopeChangeAccessContext';
 import { CriteriaSignState } from '../../types/scopeChangeRequest';
 
 export interface OnSignStepAction {
@@ -26,7 +26,12 @@ export function useWorkflowSigning({
         workflowKeys: { criteriaSignKey },
     } = scopeChangeMutationKeys(requestId);
 
-    const { request } = useScopeChangeContext();
+    const { pendingContributions, workflowSteps } = useScopeChangeContext({
+        select: (s) => ({
+            pendingContributions: s.request.hasPendingContributions,
+            workflowSteps: s.request.workflowSteps,
+        }),
+    });
     const queryClient = useQueryClient();
 
     async function onSignStep({ action, comment }: OnSignStepAction) {
@@ -42,17 +47,17 @@ export function useWorkflowSigning({
         }
 
         /** Need to determine if it is the last criteria to be signed on the step */
-        const unsignedCriterias = request.workflowSteps
+        const unsignedCriterias = workflowSteps
             .find((x) => x.id === stepId)
             ?.criterias.filter((x) => x.signedAtUtc === null);
 
-        if (request.hasPendingContributions && unsignedCriterias?.length === 1) {
+        if (pendingContributions && unsignedCriterias?.length === 1) {
             spawnConfirmationDialog(
                 'Not all contributors have responded yet, are you sure you want to continue?',
                 'Warning',
                 async () => {
                     await signCriteria({
-                        requestId: request.id,
+                        requestId: requestId,
                         stepId: stepId,
                         criteriaId: criteriaId,
                         verdict: action,
@@ -62,7 +67,7 @@ export function useWorkflowSigning({
             );
         } else {
             await signCriteria({
-                requestId: request.id,
+                requestId: requestId,
                 stepId: stepId,
                 criteriaId: criteriaId,
                 verdict: action,

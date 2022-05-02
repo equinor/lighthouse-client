@@ -1,7 +1,7 @@
 import { swap } from '@dbeining/react-atom';
 import { Button, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { useScopeChangeContext } from '../../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../../Hooks/context/useScopeChangeAccessContext';
 import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
 import { CriteriaSignState } from '../../../../../types/scopeChangeRequest';
 import { actionWithCommentAtom as actionWithCommentAtom } from '../WorkflowCriteria/WorkflowCriteria';
@@ -20,11 +20,11 @@ export const SignWithComment = ({
     stepId,
     buttonText,
 }: SignWithCommentProps): JSX.Element => {
-    const { request } = useScopeChangeContext();
+    const requestId = useScopeChangeContext({ select: (s) => s.request.id });
 
     const signMutation = useWorkflowSigning({
         criteriaId: criteriaId,
-        requestId: request.id,
+        requestId: requestId,
         stepId: stepId,
     });
 
