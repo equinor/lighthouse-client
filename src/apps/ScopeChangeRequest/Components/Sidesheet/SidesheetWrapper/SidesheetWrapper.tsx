@@ -2,7 +2,7 @@ import { Tabs } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
 import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
-import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
+import { useEdsTabs } from '../../../../../hooks/edsTabs/useEdsTabs';
 import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
 import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
 import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
