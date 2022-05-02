@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { StidTypes } from '../../types/STID/STIDTypes';
-import { useCancellationToken } from '../../hooks/cancellationToken/useCancellationToken';
+import { useCancellationToken } from '../../../../hooks/cancellationToken/useCancellationToken';
 import { AdvancedDocumentSearch } from '../AdvancedDocumentSearch';
 import {
     applyEdsComponents,
