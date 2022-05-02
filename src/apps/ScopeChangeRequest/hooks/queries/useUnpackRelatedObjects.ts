@@ -11,7 +11,7 @@ import { transformIsoDate } from '../../Components/Workflow/Utils/dateFormatting
 import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
-import { useQueryCacheLookup } from '../React-Query/useQueryCacheLookup';
+import { useQueryCacheLookup } from '../../../../hooks/QueryCache/useQueryCacheLookup';
 
 interface UseUnpackRelatedObjectsParams {
     request: ScopeChangeRequest;

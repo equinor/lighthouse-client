@@ -8,12 +8,14 @@ interface canUnsignParams {
 }
 
 export async function canUnsign(
-    { requestId, stepId, criteriaId }: canUnsignParams
+    { requestId, stepId, criteriaId }: canUnsignParams,
+    signal?: AbortSignal
 ): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
         method: 'OPTIONS',
+        signal: signal,
     };
 
     const check = () =>
