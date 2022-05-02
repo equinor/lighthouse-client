@@ -1,5 +1,5 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
 import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
