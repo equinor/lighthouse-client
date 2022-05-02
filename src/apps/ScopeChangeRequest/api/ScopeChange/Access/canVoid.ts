@@ -1,11 +1,12 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { checkOptionsRequest } from './optionsRequestChecker';
 
-export async function canVoid(requestId: string): Promise<boolean> {
+export async function canVoid(requestId: string, signal?: AbortSignal): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
         method: 'OPTIONS',
+        signal,
     };
 
     const check = () =>
@@ -14,11 +15,12 @@ export async function canVoid(requestId: string): Promise<boolean> {
     return (await checkOptionsRequest(check)).canPatch;
 }
 
-export async function canUnVoid(requestId: string): Promise<boolean> {
+export async function canUnVoid(requestId: string, signal?: AbortSignal): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
         method: 'OPTIONS',
+        signal,
     };
 
     const check = () =>
