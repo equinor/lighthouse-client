@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { WorkflowStep } from '../../../../types/scopeChangeRequest';
-import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeContext';
 import { WorkflowCriteria } from '../../Criteria';
 import { Contributor } from '../../Contributor';
 import { useQuery } from 'react-query';
