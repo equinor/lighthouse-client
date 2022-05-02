@@ -4,7 +4,7 @@ import { checkOptionsRequest } from '../api/ScopeChange/Access/optionsRequestChe
 import { DataCreatorWrapper } from '../Components/DataCreator/DataCreatorWrapper';
 
 export const dataCreator: FactoryOptions = {
-    title: 'Scope change',
+    title: 'Scope change request',
     component: DataCreatorWrapper,
     accessCheck: async (): Promise<boolean> => {
         const { scopeChange } = httpClient();
