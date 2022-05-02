@@ -1,8 +1,7 @@
 import { HotUpload } from '../../../Attachments/HotUpload';
 import { Attachments } from '../../../DetailView/Attachments';
 import { RelatedObjects } from '../../../DetailView/References';
-import { Workflow } from '../../../Workflow/Components/Workflow';
-import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
+
 import {
     FlexColumn,
     FormWrapper,
@@ -17,6 +16,8 @@ import {
     SiblingWrapper,
 } from './RequestTab.styles';
 import styled from 'styled-components';
+import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
+import { WorkflowWithLines } from '../../../Workflow/Workflow';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -53,7 +54,7 @@ export function RequestTab(): JSX.Element {
                     <InnerSection>
                         <SectionHeading>Workflow</SectionHeading>
 
-                        <Workflow />
+                        <WorkflowWithLines />
                     </InnerSection>
                 </FlexColumn>
 

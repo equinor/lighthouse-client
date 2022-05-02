@@ -19,14 +19,11 @@ interface AddContributorProps {
 export const AddContributor = ({ close, stepId }: AddContributorProps): JSX.Element => {
     const [contributor, setContributor] = useState<TypedSelectOption | null>(null);
     const [text, setText] = useState<string>('');
-    const { currentWorkflowStep, id } = useScopeChangeContext((s) => ({
-        id: s.request.id,
-        currentWorkflowStep: s.request.currentWorkflowStep,
-    }));
+    const id = useScopeChangeContext((s) => s.request.id);
     const { workflowKeys } = scopeChangeMutationKeys(id);
 
     const submit = async () => {
-        await addContributor(contributor?.value ?? '', id, currentWorkflowStep?.id ?? '', text);
+        await addContributor(contributor?.value ?? '', id, stepId, text);
     };
 
     const { mutate, isLoading } = useScopeChangeMutation(
