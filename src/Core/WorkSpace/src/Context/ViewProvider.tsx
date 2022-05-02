@@ -26,7 +26,7 @@ interface ViewContext extends ViewState {
     registerPages(pages: Page[]): void;
     setActivePage(pages: Page): void;
     resetState(): void;
-    togglePowerBIFilter(): void;
+    toggleFilter(): void;
     setHasActiveFilters(isActive: boolean): void;
 }
 
@@ -69,7 +69,7 @@ export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
         });
     }, []);
 
-    const togglePowerBIFilter = useCallback(() => {
+    const toggleFilter = useCallback(() => {
         setState((s) => {
             return { ...s, isFilterActive: !s.isFilterActive };
         });
@@ -92,7 +92,7 @@ export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
                 registerPages,
                 setActivePage,
                 resetState,
-                togglePowerBIFilter,
+                toggleFilter,
                 setHasActiveFilters,
             }}
         >

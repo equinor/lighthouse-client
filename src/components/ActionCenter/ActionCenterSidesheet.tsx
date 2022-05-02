@@ -1,8 +1,10 @@
 import { Tabs } from '@equinor/eds-core-react';
+import { isProduction } from '@equinor/portal-client';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
 import { SidesheetActions } from '../../packages/Notifications sidesheet/NotificationsSidesheet';
-import { AssignmentsTab } from './AssignmentsTab';
+import { AssignmentsTab } from '../../Core/Assignments/Components/AssignmentsTab';
 import { NotificationsTab } from './NotificationsTab';
 
 interface ActionCenterSidesheetProps {
@@ -15,7 +17,7 @@ export function ActionCenterSidesheet({
     const [activeTab, setActiveTab] = useState<number>(0);
 
     useEffect(() => {
-        activeTab === 0 ? setTitle('Notifications') : setTitle('Assignments');
+        activeTab === 0 ? setTitle('Notifications') : setTitle('Tasks');
     }, [activeTab]);
 
     const handleChange = (index: number) => setActiveTab(index);
@@ -26,13 +28,15 @@ export function ActionCenterSidesheet({
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <TabsList>
                         <Tabs.Tab>Notifications </Tabs.Tab>
-                        <Tabs.Tab disabled>Assignments </Tabs.Tab>
+                        <Tabs.Tab>Tasks </Tabs.Tab>
                     </TabsList>
                     <Tabs.Panels>
                         <Tabs.Panel>
                             <NotificationsTab onClickNotification={closeSidesheet} />
                         </Tabs.Panel>
-                        <Tabs.Panel>{activeTab === 1 && <AssignmentsTab />}</Tabs.Panel>
+                        <Tabs.Panel>
+                            <AssignmentsTab />
+                        </Tabs.Panel>
                     </Tabs.Panels>
                 </Tabs>
             </Wrapper>

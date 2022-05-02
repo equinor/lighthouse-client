@@ -1,5 +1,4 @@
 import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { SwcrGraph } from './CustomViews/Graph';
 import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
 import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
@@ -13,7 +12,7 @@ import {
 } from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
-import { columns, tableConfig } from './utilities/tableSetup';
+import { tableConfig } from './utilities/tableSetup';
 
 export function setup(appApi: ClientApi): void {
     appApi
@@ -39,68 +38,6 @@ export function setup(appApi: ClientApi): void {
             highlightColumn: getHighlighColumn,
             customDescription: customDescription,
         })
-        .registerAnalyticsOptions({
-            section1: {
-                chart1: {
-                    type: 'customVisual',
-                    options: {
-                        component: SwcrGraph,
-                        componentProps: {
-                            graphType: 'created-closed',
-                        },
-                    },
-                },
-                chart2: {
-                    type: 'customVisual',
-                    options: {
-                        component: SwcrGraph,
-                        componentProps: {
-                            graphType: 'open',
-                        },
-                    },
-                },
-            },
-            section2: {
-                chart1: {
-                    type: 'customVisual',
-                    options: {
-                        component: SwcrGraph,
-                        componentProps: {
-                            graphType: 'acc',
-                        },
-                    },
-                },
-            },
-
-            section3: {
-                chart2: {
-                    type: 'table',
-                    options: {
-                        initialGroupBy: 'priority',
-                        groupBy: [
-                            {
-                                key: 'controlSystem',
-                                title: 'Control System',
-                            },
-                            {
-                                key: 'priority',
-                                title: 'Priority',
-                            },
-                            {
-                                key: 'system',
-                                title: 'System',
-                            },
-                            {
-                                key: 'types',
-                                title: 'HW/SW',
-                            },
-                        ],
-
-                        columns: columns,
-                    },
-                },
-            },
-        })
         .registerStatusItems(statusBarData)
         .registerPowerBIOptions({
             reportURI: 'pp-swcr-analytics',
@@ -110,7 +47,6 @@ export function setup(appApi: ClientApi): void {
                     pageId: 'ReportSectionb937310a77e18f67ff37',
                     default: true,
                 },
-                { pageTitle: 'Browser', pageId: 'ReportSection272f7d54d84d16689496' },
                 { pageTitle: 'History', pageId: 'ReportSection0cb62244235c033e5151' },
             ],
         });

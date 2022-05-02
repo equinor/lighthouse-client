@@ -47,7 +47,22 @@ export function setup(appApi: ClientApi): void {
             highlightColumn: getHighlightedColumn,
             customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
         })
-        .registerStatusItems(statusBarData);
+        .registerStatusItems(statusBarData)
+        .registerPowerBIOptions({
+            reportURI: 'pp-handover-analytics',
+            pages: [
+                {
+                    pageTitle: 'RFO Overview',
+                    pageId: 'ReportSectionb937310a77e18f67ff37',
+                    default: true,
+                },
+                { pageTitle: 'RFC overview', pageId: 'ReportSectionda03508103eaf565faf8' },
+                { pageTitle: 'Browser', pageId: 'ReportSection272f7d54d84d16689496' },
+            ],
+            options: {
+                pageLoad: true,
+            },
+        });
 }
 
 async function responseParser(response: Response) {

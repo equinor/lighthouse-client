@@ -1,4 +1,5 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
+import { transformIsoDate } from '../../../Components/Workflow/Utils/dateFormatting';
 import { throwOnError } from '../../../functions/throwError';
 import { Document } from '../../../types/STID/document';
 import { TypedSelectOption } from '../searchType';
@@ -23,11 +24,13 @@ export const searchDocuments = async (
 
     return (await res.json()).map(
         (x: Document): TypedSelectOption => ({
-            label: `DOC_${x.docNo} - ${x.docTitle}`,
+            label: `${x.docNo} - ${x.docTitle}`,
             value: x.docNo,
             type: 'document',
             searchValue: x.docNo,
             object: x,
+            metadata: `Revision ${x.revNo} | Rev date ${x.revDate && transformIsoDate(x.revDate)
+                } | Reason for issue ${x.reasonForIssue}`,
         })
     );
 };

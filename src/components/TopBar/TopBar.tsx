@@ -2,13 +2,14 @@ import { AddMenu } from '@equinor/DataFactory';
 import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/portal-client';
-import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
 import { useRef, useState } from 'react';
+import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
 import Icon from '../Icon/Icon';
 import { useMenuContext } from '../Menu';
 import { DevBar } from './DevBar/DevBar';
+import { HelpIcon } from './Icons/Help';
 import Logo from './Logo/Logo';
-import { Action, ActionWrapper, Icons, TopBarWrapper } from './TopBarStyle';
+import { Action, ActionWrapper, Header, Icons, TopBarWrapper } from './TopBarStyle';
 
 const ClientTopBar = (): JSX.Element => {
     // state for open and close add menu and add menu ref for positioning.
@@ -23,7 +24,7 @@ const ClientTopBar = (): JSX.Element => {
 
     return (
         <TopBarWrapper>
-            <TopBar.Header>
+            <Header>
                 <div
                     onClick={() => {
                         toggleMenu();
@@ -33,7 +34,7 @@ const ClientTopBar = (): JSX.Element => {
                     <Icon color={tokens.colors.interactive.primary__resting.hex} name="apps" />
                 </div>
                 <Logo />
-            </TopBar.Header>
+            </Header>
             <TopBar.CustomContent>
                 <DevBar env={clientEnv} />
             </TopBar.CustomContent>
@@ -55,7 +56,7 @@ const ClientTopBar = (): JSX.Element => {
                             setIsAddMenuOpen(false);
                         }}
                     >
-                        <Icon name="format_list_bulleted" />
+                        <HelpIcon />
                     </Action>
                     <ActionWrapper ref={addMenuRef}>
                         <Action

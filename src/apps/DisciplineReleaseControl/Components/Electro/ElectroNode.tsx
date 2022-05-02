@@ -6,6 +6,7 @@ import { Cable } from './Components/Cable';
 import { CircuitAndStarter } from './Components/CircuitAndStarter';
 import { HeatTracingCable } from './Components/HeatTracingCable';
 import { JunctionBox } from './Components/JunctionBox';
+import { SpaceHeater } from './Components/SpaceHeater';
 import {
     getCableChildren,
     getCircuitChildren,
@@ -87,7 +88,6 @@ export const ElectroNode = ({
                 return (
                     <CircuitAndStarter
                         value={eleNetwork.switchBoardTagNo}
-                        status={nodeStatus}
                         cTestStatus={getElectroTestStatus(
                             CheckListStepTag.HtCTest,
                             eleNetwork.checkLists
@@ -106,6 +106,8 @@ export const ElectroNode = ({
                         currentPipetest={currentPipetest}
                     />
                 );
+            case 'VARME':
+                return <SpaceHeater value={node?.tagNo} status={nodeStatus} />;
             default:
                 return null;
         }

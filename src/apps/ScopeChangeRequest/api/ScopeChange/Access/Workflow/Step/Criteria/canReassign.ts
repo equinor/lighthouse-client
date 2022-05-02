@@ -7,12 +7,15 @@ interface CanReassignParams {
     criteriaId: string;
 }
 
-export async function canReassign({ criteriaId, requestId, stepId }: CanReassignParams
+export async function canReassign(
+    { criteriaId, requestId, stepId }: CanReassignParams,
+    signal?: AbortSignal
 ): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
         method: 'OPTIONS',
+        signal: signal,
     };
 
     const check = () =>

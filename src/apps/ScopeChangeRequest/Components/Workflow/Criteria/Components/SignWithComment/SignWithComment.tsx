@@ -1,17 +1,17 @@
 import { swap } from '@dbeining/react-atom';
 import { Button, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { useScopeChangeContext } from '../../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
 import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
+import { CriteriaSignState } from '../../../../../types/scopeChangeRequest';
 import { actionWithCommentAtom as actionWithCommentAtom } from '../WorkflowCriteria/WorkflowCriteria';
 import { ButtonsContainer } from './signWithComment.styles';
 
 interface SignWithCommentProps {
-    action: 'Approved' | 'Rejected';
+    action: CriteriaSignState;
     buttonText: string;
     stepId: string;
     criteriaId: string;
-    closeRequest: boolean;
 }
 
 export const SignWithComment = ({
@@ -19,13 +19,12 @@ export const SignWithComment = ({
     criteriaId,
     stepId,
     buttonText,
-    closeRequest,
 }: SignWithCommentProps): JSX.Element => {
-    const { request } = useScopeChangeContext();
+    const requestId = useScopeChangeContext(({ request }) => request.id);
 
     const signMutation = useWorkflowSigning({
         criteriaId: criteriaId,
-        requestId: request.id,
+        requestId: requestId,
         stepId: stepId,
     });
 
@@ -39,13 +38,23 @@ export const SignWithComment = ({
                 id="SignWithComment"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                onKeyDown={(e) => {
+                    const enter = e.keyCode === 13;
+                    if (enter) {
+                        e.preventDefault();
+                        // signMutation({
+                        //     action: action,
+                        //     comment: comment,
+                        // });
+                        return false;
+                    }
+                }}
             />
             <ButtonsContainer>
                 <Button
                     onClick={() =>
                         signMutation({
                             action: action,
-                            closeRequest: closeRequest,
                             comment: comment,
                         })
                     }

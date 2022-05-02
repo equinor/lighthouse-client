@@ -3,11 +3,11 @@ import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Fun
 import { signCriteria } from '../../api/ScopeChange/Workflow';
 import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
-import { useScopeChangeContext } from '../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../context/useScopeChangeContext';
+import { CriteriaSignState } from '../../types/scopeChangeRequest';
 
 export interface OnSignStepAction {
-    action: 'Approved' | 'Rejected';
-    closeRequest: boolean;
+    action: CriteriaSignState;
     comment: string | undefined;
 }
 
@@ -26,49 +26,50 @@ export function useWorkflowSigning({
         workflowKeys: { criteriaSignKey },
     } = scopeChangeMutationKeys(requestId);
 
-    const { request } = useScopeChangeContext();
+    const { pendingContributions, workflowSteps } = useScopeChangeContext((s) => ({
+        pendingContributions: s.request.hasPendingContributions,
+        workflowSteps: s.request.workflowSteps,
+    }));
     const queryClient = useQueryClient();
 
-    async function onSignStep({ action, closeRequest, comment }: OnSignStepAction) {
-        if (closeRequest) {
+    async function onSignStep({ action, comment }: OnSignStepAction) {
+        if (action !== 'Approved') {
             await signCriteria({
-                closeRequest: true,
                 criteriaId: criteriaId,
                 requestId: requestId,
                 stepId: stepId,
-                verdict: 'Rejected',
+                verdict: action,
                 comment: comment,
             });
             return;
         }
+
         /** Need to determine if it is the last criteria to be signed on the step */
-        const unsignedCriterias = request.workflowSteps
+        const unsignedCriterias = workflowSteps
             .find((x) => x.id === stepId)
             ?.criterias.filter((x) => x.signedAtUtc === null);
 
-        if (request.hasPendingContributions && unsignedCriterias?.length === 1) {
+        if (pendingContributions && unsignedCriterias?.length === 1) {
             spawnConfirmationDialog(
                 'Not all contributors have responded yet, are you sure you want to continue?',
                 'Warning',
                 async () => {
                     await signCriteria({
-                        requestId: request.id,
+                        requestId: requestId,
                         stepId: stepId,
                         criteriaId: criteriaId,
                         verdict: action,
                         comment: comment,
-                        closeRequest: false,
                     }).then(() => queryClient.invalidateQueries());
                 }
             );
         } else {
             await signCriteria({
-                requestId: request.id,
+                requestId: requestId,
                 stepId: stepId,
                 criteriaId: criteriaId,
                 verdict: action,
                 comment: comment,
-                closeRequest: false,
             });
         }
     }

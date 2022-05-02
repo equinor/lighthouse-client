@@ -2,11 +2,10 @@ import { Button, Icon, Tabs } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 
 import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
-import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
+import { useEdsTabs } from '../../../../../hooks/edsTabs/useEdsTabs';
 import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
 import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
 import { Contributor, Criteria, ScopeChangeRequest } from '../../../types/scopeChangeRequest';
-import { ScopeChangeContext } from '../../../context/scopeChangeAccessContext';
 import { ScopeChangeErrorBanner } from '../../ErrorBanner/ErrorBanner';
 import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';
 import { LogTabTitle, LogTab } from '../Tabs/Log';
@@ -18,21 +17,22 @@ import styled from 'styled-components';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
 import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
-import { isProduction } from '../../../../../Core/Client/Functions';
-import { useScopeChangeContext } from '../../../context/useScopeChangeAccessContext';
-import { IconMenu, MenuButton, MenuItem } from '../../MenuButton';
-import { WorkflowIcon } from '../../Workflow/Components/WorkflowIcon';
-import { CriteriaStatus } from '../../Workflow/Criteria/Components/CriteriaDetail';
+import { deref, swap, useAtom } from '@dbeining/react-atom';
+import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
+import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
 import { tokens } from '@equinor/eds-tokens';
-import { useWorkflowCriteriaOptions } from '../../../hooks/queries/useWorkflowCriteriaOptions';
 import { canAddContributor } from '../../../api/ScopeChange/Access';
-import { CriteriaActions } from '../../Workflow/Types/actions';
+import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
 import { useWorkflowSigning } from '../../../hooks/mutations/useWorkflowSigning';
-import { swap, useAtom } from '@dbeining/react-atom';
-import { actionWithCommentAtom } from '../../Workflow/Criteria/Components/WorkflowCriteria/WorkflowCriteria';
-import { SignWithComment } from '../../Workflow/Criteria/Components/SignWithComment/SignWithComment';
-import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Workflow/Utils/dateFormatting';
+import { useWorkflowCriteriaOptions } from '../../../hooks/queries/useWorkflowCriteriaOptions';
+import { MenuItem, MenuButton, IconMenu } from '../../MenuButton';
+import { WorkflowIcon } from '../../Workflow/Components/WorkflowIcon';
+import { actionWithCommentAtom } from '../../Workflow/Criteria';
 import { AddContributor } from '../../Workflow/Criteria/Components/AddContributor';
+import { CriteriaStatus } from '../../Workflow/Criteria/Components/CriteriaDetail';
+import { SignWithComment } from '../../Workflow/Criteria/Components/SignWithComment/SignWithComment';
+import { CriteriaActions } from '../../Workflow/Types/actions';
+import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Workflow/Utils/dateFormatting';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -45,69 +45,80 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     const { activeTab, handleChange } = useEdsTabs(3);
 
     const request = useGetScopeChangeRequest(item.id, item);
+
     const requestAccess = useScopeChangeAccess(item.id);
-    const [editMode, setEditMode] = useState<boolean>(false);
-    const toggleEditMode = () => setEditMode((prev) => !prev);
+
+    const toggleEditMode = () => swap(sideSheetEditModeAtom, (s) => !s);
+
     useSidesheetEffects(actions, toggleEditMode, item.id);
 
     useEffect(() => {
-        setEditMode(false);
+        swap(sideSheetEditModeAtom, () => false);
     }, [request?.id]);
+
+    useEffect(() => {
+        swap(scopeChangeAtom, () => ({
+            actions,
+            request: request ?? item,
+            requestAccess,
+        }));
+    }, [request, requestAccess, item]);
+
+    const editMode = useAtom(sideSheetEditModeAtom);
+
+    if (Object.keys(deref(scopeChangeAtom).request).length < 2) {
+        return <></>;
+    }
 
     return (
         <Wrapper>
             <ScopeChangeErrorBanner />
-            <ScopeChangeContext.Provider
-                value={{
-                    request: request ?? item,
-                    requestAccess: requestAccess,
-                }}
-            >
-                {editMode ? (
-                    <ScopeChangeRequestEditForm request={request ?? item} close={toggleEditMode} />
-                ) : (
-                    <>
-                        <SidesheetBanner />
-                        <Tabs activeTab={activeTab} onChange={handleChange}>
-                            <SidesheetTabList>
-                                <Tabs.Tab>
-                                    <RequestTabTitle />
-                                </Tabs.Tab>
-                                <Tabs.Tab disabled={isProduction()}>
-                                    <WorkOrderTabTitle />
-                                </Tabs.Tab>
-                                <Tabs.Tab>
-                                    <LogTabTitle />
-                                </Tabs.Tab>
-                                <Tabs.Tab>Some workflow stuff</Tabs.Tab>
-                            </SidesheetTabList>
-                            <TabList>
-                                <Tabs.Panel>
-                                    <RequestTab />
-                                </Tabs.Panel>
-                                <Tabs.Panel>{activeTab === 1 && <WorkOrderTab />}</Tabs.Panel>
-                                <Tabs.Panel>{activeTab === 2 && <LogTab />}</Tabs.Panel>
-                                <Tabs.Panel>
-                                    <WorkflowWithLines />
-                                </Tabs.Panel>
-                            </TabList>
-                        </Tabs>
-                    </>
-                )}
-            </ScopeChangeContext.Provider>
+            {editMode ? (
+                <ScopeChangeRequestEditForm request={request ?? item} close={toggleEditMode} />
+            ) : (
+                <>
+                    <SidesheetBanner />
+                    <Tabs activeTab={activeTab} onChange={handleChange}>
+                        <SidesheetTabList>
+                            <Tabs.Tab>
+                                <RequestTabTitle />
+                            </Tabs.Tab>
+                            <Tabs.Tab>
+                                <WorkOrderTabTitle />
+                            </Tabs.Tab>
+                            <Tabs.Tab>
+                                <LogTabTitle />
+                            </Tabs.Tab>
+                        </SidesheetTabList>
+                        <TabList>
+                            <Tab>
+                                <RequestTab />
+                            </Tab>
+                            <Tab>{activeTab === 1 && <WorkOrderTab />}</Tab>
+                            <Tab>{activeTab === 2 && <LogTab />}</Tab>
+                        </TabList>
+                    </Tabs>
+                </>
+            )}
         </Wrapper>
     );
 }
 
-const TabList = styled(Tabs.Panels)`
-    padding: 24px 32px;
+const Tab = styled(Tabs.Panel)`
     overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    padding-bottom: 50px;
+`;
+
+const TabList = styled(Tabs.Panels)`
+    margin: 24px 32px;
 `;
 
 const Wrapper = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
-    height: 95%;
+    height: 90%;
 `;
 
 function statusFunc(criteria: Criteria, isCurrentStep: boolean): CriteriaStatus {

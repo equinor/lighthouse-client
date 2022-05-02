@@ -14,6 +14,10 @@ import { getScopeChangeById } from '../api/ScopeChange/Request';
 import { getHistory } from '../api/ScopeChange/Request/getHistory';
 import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
+export interface QueryContext {
+    signal?: AbortSignal;
+}
+
 const scopeChangeBaseKey = (requestId: string): string[] => ['scopechange', requestId];
 const scopeChangeHistoryKey = (requestId: string): string[] => [
     ...scopeChangeBaseKey(requestId),
@@ -33,19 +37,21 @@ const permissionsKey = (requestId: string) => [...scopeChangeBaseKey(requestId),
 
 export const scopeChangeWorkflowQueries = {
     canSignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs): OptionsQuery => ({
-        queryFn: () => canSign({ criteriaId, requestId, stepId }),
+        queryFn: ({ signal }: QueryContext) => canSign({ criteriaId, requestId, stepId }, signal),
         queryKey: [...criteriaKey(requestId, stepId, criteriaId), 'canSign'],
     }),
     canUnsignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs): OptionsQuery => ({
-        queryFn: () => canUnsign({ requestId, stepId, criteriaId }),
+        queryFn: ({ signal }: QueryContext) => canUnsign({ requestId, stepId, criteriaId }, signal),
         queryKey: [...criteriaKey(requestId, stepId, criteriaId), 'canUnsign'],
     }),
     canAddContributorQuery: (requestId: string, stepId: string): OptionsQuery => ({
-        queryFn: () => canAddContributor({ requestId: requestId, stepId: stepId }),
+        queryFn: ({ signal }: QueryContext) =>
+            canAddContributor({ requestId: requestId, stepId: stepId }, signal),
         queryKey: [...scopeChangeStepKey(requestId, stepId), 'canAddContributor'],
     }),
     canReassignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs): OptionsQuery => ({
-        queryFn: () => canReassign({ criteriaId, requestId, stepId }),
+        queryFn: ({ signal }: QueryContext) =>
+            canReassign({ criteriaId, requestId, stepId }, signal),
         queryKey: [...criteriaKey(requestId, stepId, criteriaId), 'canReassign'],
     }),
     canContributeQuery: (
@@ -53,8 +59,9 @@ export const scopeChangeWorkflowQueries = {
         stepId: string,
         contributorId: string
     ): OptionsQuery => ({
-        queryFn: () => canContribute({ contributorId, requestId, stepId }),
-        queryKey: [...scopeChangeStepKey(requestId, stepId), 'canContribute'],
+        queryFn: ({ signal }: QueryContext) =>
+            canContribute({ contributorId, requestId, stepId, signal }),
+        queryKey: [...scopeChangeStepKey(requestId, stepId), 'canContribute', contributorId],
     }),
 };
 
@@ -68,32 +75,33 @@ export const scopeChangeQueries = {
         queryKey: ['phases'],
     },
     baseQuery: (id: string) => ({
-        queryFn: (): Promise<ScopeChangeRequest> => getScopeChangeById(id),
+        queryFn: ({ signal }: QueryContext): Promise<ScopeChangeRequest> =>
+            getScopeChangeById(id, signal),
         queryKey: scopeChangeBaseKey(id),
     }),
     historyQuery: (id: string) => ({
-        queryFn: () => getHistory(id),
+        queryFn: ({ signal }: QueryContext) => getHistory(id, signal),
         queryKey: scopeChangeHistoryKey(id),
     }),
     workflowQueries: scopeChangeWorkflowQueries,
     permissionQueries: {
         canVoidQuery: (id: string): OptionsQuery => ({
-            queryFn: () => canVoid(id),
+            queryFn: ({ signal }: QueryContext) => canVoid(id, signal),
             queryKey: [...permissionsKey(id), 'canVoid'],
         }),
         canUnvoidQuery: (id: string): OptionsQuery => ({
-            queryFn: () => canUnVoid(id),
+            queryFn: ({ signal }: QueryContext) => canUnVoid(id, signal),
             queryKey: [...permissionsKey(id), 'canUnvoid'],
         }),
         permissionsQuery: (id: string) => ({
-            queryFn: () => getRequestAccess(id),
+            queryFn: ({ signal }: QueryContext) => getRequestAccess(id, signal),
             queryKey: [...permissionsKey(id), 'requestAccess'],
         }),
     },
 };
 
 interface OptionsQuery {
-    queryFn: () => Promise<boolean>;
+    queryFn: (args: QueryContext) => Promise<boolean>;
     queryKey: string[];
 }
 

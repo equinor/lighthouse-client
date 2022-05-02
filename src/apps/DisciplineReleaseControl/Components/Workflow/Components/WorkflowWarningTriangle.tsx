@@ -1,87 +1,38 @@
 import { useRef, useState } from 'react';
-import styled from 'styled-components';
+import { WarningTriangleContainer } from '../Styles/styles';
 import { WorkflowPopover } from './WorkflowPopover';
 
 interface WorkflowDotProps {
-    circleText?: string;
     popoverText?: string;
-    outline?: boolean;
+    color: string;
 }
 
-export const WorkflowWarningTriangle = ({
-    circleText,
-    popoverText,
-    outline,
-}: WorkflowDotProps): JSX.Element => {
+export const WorkflowWarningTriangle = ({ popoverText, color }: WorkflowDotProps): JSX.Element => {
     const anchorRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const onOpen = () => setIsOpen(true);
     const onClose = () => setIsOpen(false);
 
-    return outline ? (
-        <WarningTriangleContainer>
-            <WarningTriangleOutline>
-                <WarningTriangleInner ref={anchorRef} onMouseOver={onOpen} onMouseLeave={onClose}>
-                    {circleText}
-                    {isOpen && popoverText !== undefined && (
-                        <WorkflowPopover>{popoverText}</WorkflowPopover>
-                    )}
-                </WarningTriangleInner>
-            </WarningTriangleOutline>
-        </WarningTriangleContainer>
-    ) : (
-        <WarningTriangleContainer>
-            <WarningTriangleNoOutline ref={anchorRef} onMouseOver={onOpen} onMouseLeave={onClose}>
-                {circleText}
-                {isOpen && popoverText !== undefined && (
-                    <WorkflowPopover>{popoverText}</WorkflowPopover>
-                )}
-            </WarningTriangleNoOutline>
+    return (
+        <WarningTriangleContainer ref={anchorRef} onMouseOver={onOpen} onMouseLeave={onClose}>
+            <svg
+                width="16"
+                height="14"
+                viewBox="0 0 16 14"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M8 0L0 14H16L8 0ZM8 2.01556L1.72318 13H14.2768L8 2.01556Z"
+                    fill={color}
+                />
+            </svg>
+            {isOpen && popoverText !== undefined && (
+                <WorkflowPopover>{popoverText}</WorkflowPopover>
+            )}
         </WarningTriangleContainer>
     );
 };
-
-export const WarningTriangleContainer = styled.div`
-    margin-left: 5px;
-    font-size: 11px;
-    color: '#fff';
-    line-height: 16px;
-    text-align: center;
-    cursor: pointer;
-`;
-
-export const WarningTriangleOutline = styled.div`
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-color: transparent transparent #fff transparent;
-    border-width: 0 7px 14px 7px;
-`;
-
-export const WarningTriangleInner = styled.div`
-    width: 0;
-    height: 0;
-    border-style: solid;
-    position: relative;
-    border-width: 0 5px 10px 5px;
-    border-color: transparent transparent #eb0000 transparent;
-    right: 5px;
-    top: 3px;
-`;
-
-export const WarningTriangleNoOutline = styled.div`
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-color: transparent transparent #eb0000 transparent;
-    border-width: 0 7px 14px 7px;
-    margin-right: 8px;
-    padding-top: 2px;
-`;
-
-export const CurrentStepContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-`;

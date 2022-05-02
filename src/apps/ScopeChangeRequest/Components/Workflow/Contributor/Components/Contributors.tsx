@@ -2,7 +2,7 @@ import { Button, Icon, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useQuery, useQueryClient } from 'react-query';
 
 import {
     Contributor as ContributorInterface,
@@ -12,7 +12,7 @@ import { MenuButton, MenuItem, IconMenu } from '../../../MenuButton/';
 import { ContributorActions } from '../../Types/actions';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { submitContribution } from '../../../../api/ScopeChange/Workflow';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { useIsWorkflowLoading } from '../../../../hooks/React-Query/useIsWorkflowLoading';
 import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
@@ -33,42 +33,52 @@ export const Contributor = ({
 }: ContributorsProps): JSX.Element => {
     const [comment, setComment] = useState('');
     const [showCommentField, setShowCommentField] = useState<boolean>(false);
-    const { request } = useScopeChangeContext();
+    const requestId = useScopeChangeContext(({ request }) => request.id);
     const workflowLoading = useIsWorkflowLoading();
 
-    const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(request.id);
+    const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(requestId);
 
-    const { mutate: removeContributorAsync } = useScopeChangeMutation(
-        request.id,
-        workflowMutationKeys.deleteContributorKey(step.id),
-        removeContributor
-    );
+    const queryClient = useQueryClient();
 
     const { canContributeQuery } = scopeChangeQueries.workflowQueries;
-    const { data: userCanContribute, remove: invalidateUserCanContribute } = useQuery(
-        canContributeQuery(request.id, step.id, contributor.id)
+    const { data: userCanContribute } = useQuery(
+        canContributeQuery(requestId, step.id, contributor.id)
+    );
+
+    const cancelNewOptionsCall = async () => {
+        await queryClient.cancelQueries(
+            canContributeQuery(requestId, step.id, contributor.id).queryKey
+        );
+    };
+
+    const { mutate: removeContributorAsync } = useScopeChangeMutation(
+        requestId,
+        workflowMutationKeys.deleteContributorKey(step.id),
+        removeContributor,
+        {
+            onSuccess: () => {
+                cancelNewOptionsCall;
+            },
+        }
     );
 
     const { mutate } = useScopeChangeMutation(
-        request.id,
+        requestId,
         workflowMutationKeys.contributeKey(step.id, contributor.id),
-        submitContribution,
-        {
-            onSuccess: () => invalidateUserCanContribute(),
-        }
+        submitContribution
     );
 
     function makeContributorActions(): MenuItem[] {
         const actions: MenuItem[] = [];
 
-        if (userCanContribute) {
+        if (userCanContribute && contributor.contribution === null) {
             actions.push({
                 label: ContributorActions.Confirm,
                 icon: <Icon name="check_circle_outlined" color="grey" />,
                 onClick: async () =>
                     mutate({
                         contributorId: contributor.id,
-                        requestId: request.id,
+                        requestId: requestId,
                         stepId: step.id,
                         suggestion: 'SuggestApproval',
                         comment: undefined,
@@ -86,20 +96,31 @@ export const Contributor = ({
     }
 
     function makeMoreActions(): MenuItem[] {
-        return canRemoveContributor
-            ? [
-                {
-                    label: 'Remove contributor',
-                    isDisabled: !canRemoveContributor,
-                    onClick: () =>
-                        removeContributorAsync({
-                            contributorId: contributor.id,
-                            requestId: request.id,
-                            stepId: step.id,
-                        }),
-                },
-            ]
-            : [];
+        const options: MenuItem[] = [];
+
+        if (canRemoveContributor) {
+            options.push({
+                label: 'Remove contributor',
+                isDisabled: !canRemoveContributor,
+                onClick: () =>
+                    removeContributorAsync({
+                        contributorId: contributor.id,
+                        requestId: requestId,
+                        stepId: step.id,
+                    }),
+            });
+        }
+
+        if (userCanContribute && contributor.contribution) {
+            options.push({
+                label: 'Update with comment',
+                icon: <Icon name="comment_add" color="grey" />,
+                onClick: () => setShowCommentField((prev) => !prev),
+                isDisabled: !userCanContribute,
+            });
+        }
+
+        return options;
     }
 
     function shouldRenderContributorActions() {
@@ -110,7 +131,7 @@ export const Contributor = ({
         setShowCommentField(false);
         mutate({
             contributorId: contributor.id,
-            requestId: request.id,
+            requestId: requestId,
             stepId: step.id,
             suggestion: comment.length > 0 ? 'Comment' : 'SuggestApproval',
             comment: comment,

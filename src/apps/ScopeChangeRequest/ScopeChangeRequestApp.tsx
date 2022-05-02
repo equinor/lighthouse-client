@@ -24,4 +24,18 @@ export function setup(appApi: ClientApi): void {
         .registerFilterOptions(filterConfig)
         .registerIdResolver(idResolver)
         .registerPrefetchQueries(prefetchQueriesOptions);
+    // .registerPowerBIOptions({
+    //     pages: [
+    //         {
+    //             pageId: 'ReportSectionb822b2eb4fc97aef255b',
+    //             pageTitle: 'Overview',
+    //             default: true,
+    //         },
+    //         {
+    //             pageId: 'ReportSection40a8a70e6f82243888ca',
+    //             pageTitle: 'History',
+    //         },
+    //     ],
+    //     reportURI: 'pp-scope-change-analytics',
+    // });
 }
