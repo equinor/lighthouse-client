@@ -17,7 +17,7 @@ import styled from 'styled-components';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
 import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
-import { swap, useAtom } from '@dbeining/react-atom';
+import { deref, swap, useAtom } from '@dbeining/react-atom';
 import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
 import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
 
@@ -29,48 +29,49 @@ interface SidesheetWrapperProps {
 export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.Element {
     useScopeChangeMutationWatcher(item.id);
     useOctopusErrorHandler();
+    useGetScopeChangeRequest(item.id, item);
+    useScopeChangeAccess(item.id);
+    useSidesheetEffects(actions, toggleEditMode, item.id);
+
     const { activeTab, handleChange } = useEdsTabs();
 
-    const request = useGetScopeChangeRequest(item.id, item);
-    const requestAccess = useScopeChangeAccess(item.id);
+    const editMode = useAtom(sideSheetEditModeAtom);
 
-    const toggleEditMode = () => swap(sideSheetEditModeAtom, (s) => !s);
-
-    useSidesheetEffects(actions, toggleEditMode, item.id);
+    function toggleEditMode() {
+        swap(sideSheetEditModeAtom, (s) => !s);
+    }
 
     useEffect(() => {
         swap(sideSheetEditModeAtom, () => false);
-    }, [request?.id]);
-
-    useEffect(() => {
-        swap(scopeChangeAtom, () => ({
-            actions,
-            request: request ?? item,
-            requestAccess,
+        swap(scopeChangeAtom, (old) => ({
+            ...old,
+            request: item,
+            actions: actions,
         }));
-    }, [request, requestAccess, item]);
-
-    const editMode = useAtom(sideSheetEditModeAtom);
+    }, [item?.id]);
 
     return (
         <Wrapper>
             <ScopeChangeErrorBanner />
             {editMode ? (
-                <ScopeChangeRequestEditForm request={request ?? item} close={toggleEditMode} />
+                <ScopeChangeRequestEditForm
+                    request={deref(scopeChangeAtom).request}
+                    close={toggleEditMode}
+                />
             ) : (
                 <>
                     <SidesheetBanner />
                     <Tabs activeTab={activeTab} onChange={handleChange}>
                         <SidesheetTabList>
-                            <Tabs.Tab>
+                            <HeaderTab>
                                 <RequestTabTitle />
-                            </Tabs.Tab>
-                            <Tabs.Tab>
+                            </HeaderTab>
+                            <HeaderTab>
                                 <WorkOrderTabTitle />
-                            </Tabs.Tab>
-                            <Tabs.Tab>
+                            </HeaderTab>
+                            <HeaderTab>
                                 <LogTabTitle />
-                            </Tabs.Tab>
+                            </HeaderTab>
                         </SidesheetTabList>
                         <TabList>
                             <Tab>
@@ -85,6 +86,8 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
         </Wrapper>
     );
 }
+
+const HeaderTab = styled(Tabs.Tab)``;
 
 const Tab = styled(Tabs.Panel)`
     overflow-y: scroll;
