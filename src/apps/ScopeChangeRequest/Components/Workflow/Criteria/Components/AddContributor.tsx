@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { PCSPersonSearch } from '../../../PersonRoleSearch/PCSPersonSearch';
 import { addContributor } from '../../../../api/ScopeChange/Workflow/addContributor';
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
-import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeContext';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';

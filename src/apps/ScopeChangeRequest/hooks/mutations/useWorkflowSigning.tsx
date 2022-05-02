@@ -3,7 +3,7 @@ import { spawnConfirmationDialog } from '../../../../Core/ConfirmationDialog/Fun
 import { signCriteria } from '../../api/ScopeChange/Workflow';
 import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
-import { useScopeChangeContext } from '../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../context/useScopeChangeContext';
 import { CriteriaSignState } from '../../types/scopeChangeRequest';
 
 export interface OnSignStepAction {

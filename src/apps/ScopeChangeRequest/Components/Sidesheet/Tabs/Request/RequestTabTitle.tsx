@@ -1,7 +1,7 @@
 import { CircularProgress } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 import { useIsScopeChangeMutatingOrFetching } from '../../../../hooks/observers/useIsScopeChangeMutatingOrFetching';
-import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeContext';
 
 export function RequestTabTitle(): JSX.Element {
     const requestId = useScopeChangeContext((s) => s.request.id);

@@ -1,5 +1,5 @@
 import { useIsFetching, useIsMutating } from 'react-query';
-import { useScopeChangeContext } from '../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../context/useScopeChangeContext';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
 

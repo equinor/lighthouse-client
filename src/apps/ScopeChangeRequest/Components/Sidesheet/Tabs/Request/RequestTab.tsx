@@ -2,7 +2,7 @@ import { HotUpload } from '../../../Attachments/HotUpload';
 import { Attachments } from '../../../DetailView/Attachments';
 import { RelatedObjects } from '../../../DetailView/References';
 import { Workflow } from '../../../Workflow/Components/Workflow';
-import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeContext';
 import {
     FlexColumn,
     FormWrapper,

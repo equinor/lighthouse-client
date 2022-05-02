@@ -2,7 +2,7 @@ import { CircularProgress } from '@equinor/eds-core-react';
 import { useIsFetching } from 'react-query';
 import styled from 'styled-components';
 import { scopeChangeQueries } from '../../../../keys/queries';
-import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../Hooks/context/useScopeChangeContext';
 
 export function LogTabTitle(): JSX.Element {
     const requestId = useScopeChangeContext((s) => s.request.id);
