@@ -2,23 +2,27 @@ import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
-import { Criteria, CriteriaSignState, WorkflowStep } from '../../../../../types/scopeChangeRequest';
-import { reassignCriteria, unsignCriteria } from '../../../../../api/ScopeChange/Workflow';
-import { useScopeChangeContext } from '../../../../../context/useScopeChangeAccessContext';
-import { useConditionalRender } from '../../../../../hooks/utils/useConditionalRender';
-import { CriteriaDetail } from '../CriteriaDetail';
-import { CriteriaActions } from '../../../Types/actions';
-import { AddContributor } from '../AddContributor';
-import { PCSPersonRoleSearch } from '../../../../PersonRoleSearch/PCSPersonRoleSearch';
-import { IconMenu, MenuItem, MenuButton } from '../../../../MenuButton';
-import { useWorkflowCriteriaOptions } from '../../../../../hooks/queries/useWorkflowCriteriaOptions';
+import {
+    Criteria,
+    CriteriaSignState,
+    WorkflowStep,
+} from '../../../../../../types/scopeChangeRequest';
+import { reassignCriteria, unsignCriteria } from '../../../../../../api/ScopeChange/Workflow';
+import { useScopeChangeContext } from '../../../../../../context/useScopeChangeAccessContext';
+import { useConditionalRender } from '../../../../../../hooks/utils/useConditionalRender';
+import { CriteriaDetail } from '../CriteriaDetail/CriteriaDetail';
+import { CriteriaActions } from '../../../../Types/actions';
+import { AddContributor } from '../AddContributor/AddContributor';
+import { PCSPersonRoleSearch } from '../../../../../PersonRoleSearch/PCSPersonRoleSearch';
+import { IconMenu, MenuItem, MenuButton } from '../../../../../MenuButton';
+import { useWorkflowCriteriaOptions } from '../../../../../../hooks/queries/useWorkflowCriteriaOptions';
 import { QueryObserver, useQueryClient } from 'react-query';
-import { scopeChangeMutationKeys } from '../../../../../keys/scopeChangeMutationKeys';
-import { scopeChangeQueryKeys } from '../../../../../keys/scopeChangeQueryKeys';
-import { useIsWorkflowLoading } from '../../../../../hooks/React-Query/useIsWorkflowLoading';
-import { useScopeChangeMutation } from '../../../../../hooks/React-Query/useScopechangeMutation';
-import { SignWithComment } from '../SignWithComment/SignWithComment';
-import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
+import { scopeChangeMutationKeys } from '../../../../../../keys/scopeChangeMutationKeys';
+import { scopeChangeQueryKeys } from '../../../../../../keys/scopeChangeQueryKeys';
+import { useIsWorkflowLoading } from '../../../../../../hooks/React-Query/useIsWorkflowLoading';
+import { useScopeChangeMutation } from '../../../../../../hooks/React-Query/useScopechangeMutation';
+import { SignWithComment } from '../../SignWithComment/SignWithComment';
+import { useWorkflowSigning } from '../../../../../../hooks/mutations/useWorkflowSigning';
 import { Atom, swap, useAtom } from '@dbeining/react-atom';
 import { Inline, ReassignPadding, WorkflowStepViewContainer } from './workflowCriteria.styles';
 

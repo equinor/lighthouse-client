@@ -1,16 +1,15 @@
 import { useState } from 'react';
-import styled from 'styled-components';
 
-import { PCSPersonSearch } from '../../../PersonRoleSearch/PCSPersonSearch';
-import { addContributor } from '../../../../api/ScopeChange/Workflow/addContributor';
-import { Button, Progress, TextField } from '@equinor/eds-core-react';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
-import { tokens } from '@equinor/eds-tokens';
-import { WorkflowIcon } from '../../Components/WorkflowIcon';
-import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
-import { TypedSelectOption } from '../../../../api/Search/searchType';
-import { WorkflowStep } from '../../../../types/scopeChangeRequest';
-import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
+import { PCSPersonSearch } from '../../../../../PersonRoleSearch/PCSPersonSearch';
+import { addContributor } from '../../../../../../api/ScopeChange/Workflow/addContributor';
+import { Button, Divider, Progress, TextField } from '@equinor/eds-core-react';
+import { useScopeChangeContext } from '../../../../../../context/useScopeChangeAccessContext';
+import { WorkflowIcon } from '../../../../Components/WorkflowIcon';
+import { useScopeChangeMutation } from '../../../../../../hooks/React-Query/useScopechangeMutation';
+import { TypedSelectOption } from '../../../../../../api/Search/searchType';
+import { WorkflowStep } from '../../../../../../types/scopeChangeRequest';
+import { scopeChangeMutationKeys } from '../../../../../../keys/scopeChangeMutationKeys';
+import { ButtonContainer, Container, Section, Title } from './addContributor.styles';
 
 interface AddContributorProps {
     step: WorkflowStep;
@@ -77,35 +76,3 @@ export const AddContributor = ({ close, step }: AddContributorProps): JSX.Elemen
         </>
     );
 };
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    margin: 0em 2em;
-`;
-
-const Title = styled.div`
-    font-size: 14px;
-    color: ${tokens.colors.text.static_icons__tertiary.hex};
-`;
-
-const Divider = styled.div`
-    width: 0.5rem;
-`;
-
-const ButtonContainer = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: row;
-`;
-
-const Section = styled.div`
-    display: flex;
-    gap: 0.6em;
-    flex-direction: column;
-    margin: 0.2rem;
-    width: 100%;
-`;

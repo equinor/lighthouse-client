@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useScopeChangeContext } from '../../../../../context/useScopeChangeAccessContext';
 import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
 import { CriteriaSignState } from '../../../../../types/scopeChangeRequest';
-import { actionWithCommentAtom as actionWithCommentAtom } from '../WorkflowCriteria/WorkflowCriteria';
+import { actionWithCommentAtom as actionWithCommentAtom } from '../WorkflowCriteria/WorkflowCriteria/WorkflowCriteria';
 import { ButtonsContainer } from './signWithComment.styles';
 
 interface SignWithCommentProps {
