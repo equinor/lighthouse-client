@@ -40,7 +40,6 @@ export const PowerBiTab = (): JSX.Element | null => {
                         isFilterActive,
                         defaultPage: activePage?.pageId,
                         activePageDisplayName: activePage?.pageTitle,
-
                         persistPayload: handleSaveBookmarks,
                         applyBookmark: handleApplyingBookmark,
                     }}
