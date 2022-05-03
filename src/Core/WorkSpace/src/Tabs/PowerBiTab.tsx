@@ -1,4 +1,5 @@
-import { PowerBI } from '@equinor/lighthouse-powerbi';
+import { useBookmarks } from '@equinor/BookmarksManager';
+import { PowerBI, PowerBIBookmarkPayload } from '@equinor/lighthouse-powerbi';
 import styled from 'styled-components';
 import { useDataContext } from '../Context/DataProvider';
 import { useViewerContext } from '../Context/ViewProvider';
@@ -14,6 +15,16 @@ export const Wrapper = styled.div`
 export const PowerBiTab = (): JSX.Element | null => {
     const { powerBiOptions } = useDataContext();
     const { activePage, isFilterActive } = useViewerContext();
+    const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<
+        PowerBIBookmarkPayload,
+        PowerBIBookmarkPayload
+    >();
+
+    const handleApplyingBookmark = async (bookmarkId: string) => {
+        const bookmark = await handleApplyBookmark(bookmarkId);
+
+        return bookmark;
+    };
 
     if (powerBiOptions) {
         return (
@@ -26,6 +37,8 @@ export const PowerBiTab = (): JSX.Element | null => {
                         activePage: activePage?.pageId,
                         isFilterActive,
                         defaultPage: activePage?.pageId,
+                        persistPayload: handleSaveBookmarks,
+                        applyBookmark: handleApplyingBookmark,
                     }}
                 />
             </Wrapper>

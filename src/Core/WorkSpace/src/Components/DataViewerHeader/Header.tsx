@@ -5,7 +5,9 @@ import { Icon } from '@equinor/lighthouse-components';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
+import { BookmarkDropdown } from '../../../../../packages/BookmarksManager/src';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
+import { useBookmarkContext } from '../../Context/BookmarkContext';
 import { useDataContext } from '../../Context/DataProvider';
 import { useLocationContext } from '../../Context/LocationProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
@@ -21,13 +23,14 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar
+    TitleBar,
 } from './HeaderStyles';
 
 type VoidFunction = () => void;
 
 interface CompletionViewHeaderProps {
     title: string;
+    groupe: string | string[];
     tabs: TabsConfigItem[];
     handleFilter: VoidFunction;
     activeFilter: boolean;
@@ -40,6 +43,7 @@ export const CompletionViewHeader = ({
     tabs,
     handleFilter,
     activeFilter,
+    groupe,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
@@ -56,7 +60,7 @@ export const CompletionViewHeader = ({
     const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
 
     const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
-
+    const bookmarks = useBookmarkContext();
     return (
         <HeaderWrapper>
             <TitleBar>
@@ -152,6 +156,9 @@ export const CompletionViewHeader = ({
                         }
                         onClick={() => dataApi.refetch()}
                     />
+                    {bookmarks.activeTab === 'powerBi' && (
+                        <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                    )}
 
                     {activeTab !== 'powerBi' ? (
                         <TabButton
