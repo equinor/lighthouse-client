@@ -1,8 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction, useFacility } from '@equinor/portal-client';
 import { Column, Table } from '@equinor/Table';
 import styled from 'styled-components';
-import { useFacility } from '../../../../Core/Client/Hooks';
 
 import { WorkOrder } from '../../types/FAM/workOrder';
 import { EstimateBar } from '../WoProgressBars/EstimateBar';
