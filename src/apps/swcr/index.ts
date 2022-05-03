@@ -1,4 +1,7 @@
-import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import {
+    ClientApi, getFusionContextId,
+    httpClient
+} from '@equinor/portal-client';
 import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
 import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
@@ -53,14 +56,9 @@ export function setup(appApi: ClientApi): void {
 }
 
 async function responseAsync(signal?: AbortSignal) {
-    const { fusion } = httpClient();
-    fusion.setBaseUrl(
-        `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/api/contexts/`
-    );
-    const contextId = isProduction()
-        ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
-        : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-    return await fusion.fetch(`${contextId}/swcr`, { signal: signal });
+    const { fusionDataproxy } = httpClient();
+    const contextId = getFusionContextId();
+    return await fusionDataproxy.fetch(`/api/contexts/${contextId}/swcr`, { signal: signal });
 }
 
 async function responseParser(res: Response) {

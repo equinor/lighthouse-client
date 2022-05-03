@@ -1,4 +1,4 @@
-import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import { ClientApi, getFusionContextId, httpClient } from '@equinor/portal-client';
 import { WorkorderSideSheet } from './Garden/components';
 import WorkOrderHeader from './Garden/components/WorkOrderHeader/WorkOrderHeader';
 import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
@@ -9,13 +9,9 @@ import { filterConfig } from './utility/filterConfig';
 import { tableConfig } from './utility/tableConfig';
 
 export function setup(appApi: ClientApi): void {
-    const contextId = isProduction()
-        ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
-        : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-
     async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
         const { fusionDataproxy } = httpClient();
-
+        const contextId = getFusionContextId();
         return await fusionDataproxy.fetch(`api/contexts/${contextId}/work-orders`, {
             signal: signal,
         });
