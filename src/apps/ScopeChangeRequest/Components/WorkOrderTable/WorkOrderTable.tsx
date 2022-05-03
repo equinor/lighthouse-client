@@ -40,11 +40,9 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
                 <Link
                     hideUnderline
                     onClick={() => {
-                        console.log(workOrderId);
                         window.open(
-                            //TEMP:
-                            `https://${isProduction() ? 'procosys' : 'procosys'
-                            }.equinor.com/${title.replace(
+                            //TODO:
+                            `https://procosys.equinor.com/${title.replace(
                                 ' ',
                                 '_'
                             )}/WorkOrders/WorkOrder#id=${workOrderId}`,
