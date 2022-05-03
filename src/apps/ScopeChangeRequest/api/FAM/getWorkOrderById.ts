@@ -17,6 +17,7 @@ export async function getWorkOrderByIds(ids: number[]): Promise<WorkOrder[]> {
         'ExpendedHours',
         'JobStatus',
         'ActualCompletionDate',
+        'WorkOrderId',
     ];
 
     const expressions = generateExpressions(
