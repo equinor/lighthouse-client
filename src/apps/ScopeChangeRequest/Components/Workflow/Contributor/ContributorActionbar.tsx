@@ -42,7 +42,7 @@ export const ContributorActionBar = ({
         removeContributor,
         {
             onSuccess: () => {
-                cancelNewOptionsCall;
+                cancelNewOptionsCall();
             },
         }
     );
