@@ -20,10 +20,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
     const [activeReport, setActiveReport] = useState<FusionPowerBiOptions>();
 
     const { reports } = usePowerBiViewer(props.shortName);
-    const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<
-        PowerBIBookmarkPayload,
-        PowerBIBookmarkPayload
-    >();
+    const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<PowerBIBookmarkPayload>();
 
     const handleSetActivePage = (page: Page, options?: PBIOptions) => {
         setActivePage(page);

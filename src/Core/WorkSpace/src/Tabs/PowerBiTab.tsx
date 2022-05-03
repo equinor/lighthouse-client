@@ -15,10 +15,7 @@ export const Wrapper = styled.div`
 export const PowerBiTab = (): JSX.Element | null => {
     const { powerBiOptions } = useDataContext();
     const { activePage, isFilterActive, setActivePage } = useViewerContext();
-    const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<
-        PowerBIBookmarkPayload,
-        PowerBIBookmarkPayload
-    >();
+    const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<PowerBIBookmarkPayload>();
 
     const handleApplyingBookmark = async (bookmarkId: string) => {
         const bookmark = await handleApplyBookmark(bookmarkId);
