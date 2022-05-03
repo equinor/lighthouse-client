@@ -1,9 +1,8 @@
 import { ApplyEventArgs, SaveEventArgs, useBookmarkEvents } from '@equinor/BookmarksManager';
-import { Embed, Page, Report } from 'powerbi-client';
+import { Embed, Report } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
 import { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
 import { useElementData } from '../../../packages/Utils/Hooks/useElementData';
 import { PBIWrapper, TopBar, Wrapper } from '../PowerBI.styles';
 import { PowerBIFilter } from './Components';
@@ -31,13 +30,11 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     );
 
     const [ref, { width }] = useElementData();
-    const [bookmarkError, setBookmarkError] = useState<unknown>();
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
 
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const [report, setReport] = useState<Report>();
 
-    const activePage = useGetActivePage(report);
     const captureAndPersistBookmark = async ({ title, appKey, subSystem }: SaveEventArgs) => {
         if (!report) {
             return;
@@ -148,12 +145,6 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
 
     return (
         <>
-            <DevPbi
-                activeReportPage={activePage}
-                pageId={options?.activePage}
-                pageDisplayName={options?.activePageDisplayName}
-                bookmarkError={bookmarkError}
-            />
             {error ? (
                 <ReportErrorMessage
                     reportId={reportUri}
@@ -193,58 +184,4 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
             )}
         </>
     );
-};
-
-type WrapProps = {
-    backgroundColor: string;
-};
-const Wrap = styled.div<WrapProps>`
-    position: absolute;
-    right: 49%;
-    top: 0;
-    background: ${(props) => props.backgroundColor};
-    color: black;
-    display: flex;
-    flex-direction: column;
-    gap: 1em;
-    width: fit-content;
-    z-index: 2;
-`;
-export const DevPbi = ({ pageId, pageDisplayName, activeReportPage, bookmarkError }) => {
-    const [isOpen, setIsOpen] = useState<boolean>(true);
-    const isReportAndPageNavDifferentPage = pageDisplayName !== activeReportPage?.displayName;
-    return (
-        <Wrap backgroundColor={isReportAndPageNavDifferentPage ? 'salmon' : 'lightgray'}>
-            <div onClick={() => setIsOpen(!isOpen)}>X</div>
-            {isOpen && (
-                <>
-                    <div>PageId: {pageId}</div>
-                    <div>Page Display name: {pageDisplayName}</div>
-                    <div>Report PageId: {activeReportPage && activeReportPage.name}</div>
-                    <div>
-                        Report page display name: {activeReportPage && activeReportPage.displayName}
-                    </div>
-                    <div>
-                        BM error : {bookmarkError && JSON.stringify(bookmarkError as unknown)}
-                    </div>
-                </>
-            )}
-        </Wrap>
-    );
-};
-
-const useGetActivePage = (report: Report | undefined) => {
-    const [activePage, setActivePage] = useState<Page>();
-    useEffect(() => {
-        if (report) {
-            (() => {
-                report.on('rendered', async () => {
-                    const a = await report.getActivePage();
-                    setActivePage(a);
-                });
-            })();
-        }
-    }, [report]);
-
-    return activePage;
 };
