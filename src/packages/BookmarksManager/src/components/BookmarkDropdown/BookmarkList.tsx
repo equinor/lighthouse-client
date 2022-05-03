@@ -20,9 +20,9 @@ const BookmarkEntry = styled.div`
 export const BookmarkList = ({ appKey }: Props) => {
     const { bookmarks, isFetching, error } = useGetBookmarks(appKey);
 
-    // if (isFetching) return <div>Fetching bookmarks</div>;
+    if (isFetching) return <div>Fetching bookmarks</div>;
     if (!bookmarks || bookmarks.length === 0) return <div>No bookmarks</div>;
-    // if (error) return <div>Error retrieving bookmarks</div>;
+    if (error) return <div>Error retrieving bookmarks</div>;
 
     const { applyBookmark, deleteBookmark } = bookmarkEvents;
 
@@ -34,15 +34,16 @@ export const BookmarkList = ({ appKey }: Props) => {
                     return (
                         <BookmarkEntry
                             key={bookmark.id}
-                            onClick={() =>
+                            onClick={(e) => {
                                 applyBookmark({
                                     id: bookmark.id,
                                     appKey: bookmark.appKey,
                                     subSystem: bookmark.sourceSystem.subSystem,
-                                })
-                            }
+                                });
+                                e.stopPropagation();
+                            }}
                         >
-                            {bookmark.name} ({bookmark.sourceSystem.subSystem})
+                            {bookmark.name}
                         </BookmarkEntry>
 
                         // <div

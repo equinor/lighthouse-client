@@ -30,7 +30,7 @@ export const BookmarkDropdown = ({
                 open={isPopoverOpen}
                 anchorEl={anchorRef.current}
                 placement="bottom-end"
-                // onClose={() => setIsPopoverOpen(false)}
+                onClose={() => setIsPopoverOpen(false)}
             >
                 <Popover.Title>My Bookmarks</Popover.Title>
                 <Popover.Content>

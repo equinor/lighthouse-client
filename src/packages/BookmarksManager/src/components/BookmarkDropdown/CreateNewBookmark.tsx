@@ -1,6 +1,11 @@
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useState } from 'react';
 import { bookmarkEvents } from '../../utils';
+import {
+    CreateNewBookmarkWrapper,
+    CreatingNewBookmarkWrapper,
+    TitleInput,
+} from './BookmarkDropdown.styles';
 type Props = {
     appKey: string;
     subSystem: string;
@@ -11,29 +16,28 @@ export const CreateNewBookmark = ({ appKey, subSystem }: Props) => {
     const { saveBookmark } = bookmarkEvents;
     if (!isCreatingNew) {
         return (
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <CreateNewBookmarkWrapper>
                 <div>Create new bookmark</div>
-                <ClickableIcon name="chevron_right" onClick={() => setIsCreatingNew(true)} />
-            </div>
+                <ClickableIcon
+                    name="chevron_right"
+                    onClick={(e) => {
+                        setIsCreatingNew(true);
+                        e.stopPropagation();
+                    }}
+                />
+            </CreateNewBookmarkWrapper>
         );
     } else {
         return (
-            <div
-                style={{
-                    display: 'flex',
-                    alignContent: 'center',
-                    justifyContent: 'center',
-                }}
-            >
-                <input
+            <CreatingNewBookmarkWrapper>
+                <TitleInput
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Bookmark title"
-                    style={{ width: '150px' }}
                 />
                 <div>
                     <ClickableIcon
                         name="save"
-                        onClick={() => {
+                        onClick={(e) => {
                             saveBookmark({
                                 title,
                                 appKey,
@@ -41,17 +45,20 @@ export const CreateNewBookmark = ({ appKey, subSystem }: Props) => {
                             });
                             setIsCreatingNew(false);
                             setTitle('');
+                            e.stopPropagation();
                         }}
                     />
                     <ClickableIcon
                         name="close"
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.preventDefault();
                             setIsCreatingNew(false);
                             setTitle('');
+                            e.stopPropagation();
                         }}
                     />
                 </div>
-            </div>
+            </CreatingNewBookmarkWrapper>
         );
     }
 };
