@@ -70,15 +70,7 @@ export const PowerBiViewerHeader = ({
                 <RightSection>
                     <Line />
                     <Divider />
-                    <div
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            borderBottom: 'solid 2px gray',
-                        }}
-                    >
-                        <BookmarkDropdown appKey={shortName} subSystem={groupName.toString()} />
-                    </div>
+                    <BookmarkDropdown appKey={shortName} subSystem={groupName.toString()} />
                     <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
                         {hasFilter ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                     </HeaderButton>
