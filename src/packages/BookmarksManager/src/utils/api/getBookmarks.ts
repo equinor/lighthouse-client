@@ -6,8 +6,6 @@ export const getBookmarks = async (appKey: string) => {
     const filterAppKey = `$filter=appKey%20eq%20jc-${appKey}`;
     const filterSourceSystem = '$filter=sourcesystem.SubSystem%20eq%20ConstructionAndCommissioning';
     //TODO get current app manifest
-    const bookmarks = await fusion.get(
-        `persons/me/bookmarks?api-version=1.0&${filterSourceSystem}`
-    );
+    const bookmarks = await fusion.get(`persons/me/bookmarks?api-version=1.0&${filterAppKey}`);
     return await bookmarks.json();
 };
