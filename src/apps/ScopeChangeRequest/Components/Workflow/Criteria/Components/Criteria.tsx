@@ -107,6 +107,7 @@ const VerticalLine = styled.div`
     border-left: 1px solid ${tokens.colors.interactive.primary__resting.hex};
     height: 100%;
     width: 1px;
+    margin-top: 5px;
 `;
 
 const DetailText = styled.div`
@@ -116,7 +117,7 @@ const DetailText = styled.div`
 const WorklowIconAndLine = styled.div`
     grid-column: col / span 1;
     /* No clue why this works */
-    grid-row: row / s;
+    grid-row: 1 / span 100;
     display: flex;
     flex-direction: column;
     align-items: center;
