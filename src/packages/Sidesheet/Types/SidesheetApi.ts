@@ -14,3 +14,5 @@ export interface MenuItem {
     icon?: JSX.Element;
     isDisabled?: boolean;
 }
+
+export type CustomSidesheet<T> = React.FC<{ item: T; actions: SidesheetApi }>;

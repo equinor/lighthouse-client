@@ -2,6 +2,7 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import { PowerBIViewerInstance } from '@equinor/lighthouse-powerbi-viewer';
 import { PageViewerInstance } from '@equinor/PageViewer';
 import { WorkSpaceApi } from '@equinor/WorkSpace';
+import { CustomSidesheet } from '@equinor/sidesheet';
 import { WorkspaceOptions } from '../Service/ClientBuilder';
 import { AppConfig } from './AppConfig';
 import { AppManifest } from './AppManifest';
@@ -18,6 +19,7 @@ export interface App {
     appType?: AppType;
     setup?: (api: ClientApi) => void;
     component?: React.FC<CustomClientApi>;
+    SidesheetComponent?: CustomSidesheet<unknown>;
 }
 
 export interface ClientApi extends AppManifest {
