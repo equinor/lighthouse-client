@@ -1,3 +1,4 @@
+import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useGetBookmarks } from '../../hooks';
 import { useDeleteBookmark } from '../../hooks/useDeleteBookmark';
 import { bookmarkEvents } from '../../utils';
@@ -36,7 +37,12 @@ export const BookmarkList = ({ appKey }: BookmarkListProps) => {
                             >
                                 {bookmark.name}
                             </BookmarkEntry>
-                            <div onClick={() => deleteBookmark(bookmark.id)}>X</div>
+                            <div title="Delete bookmark">
+                                <ClickableIcon
+                                    name="delete_to_trash"
+                                    onClick={() => deleteBookmark(bookmark.id)}
+                                />
+                            </div>
                         </BookmarkWrapper>
                     );
                 })}
