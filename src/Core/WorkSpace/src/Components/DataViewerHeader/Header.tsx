@@ -8,7 +8,6 @@ import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { BookmarkDropdown } from '../../../../../packages/BookmarksManager/src';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
-import { useBookmarkContext } from '../../Context/BookmarkContext';
 import { useDataContext } from '../../Context/DataProvider';
 import { useLocationContext } from '../../Context/LocationProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
@@ -62,7 +61,6 @@ export const CompletionViewHeader = ({
     const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
 
     const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
-    const bookmarks = useBookmarkContext();
     return (
         <HeaderWrapper>
             <TitleBar>
