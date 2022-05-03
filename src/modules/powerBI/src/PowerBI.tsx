@@ -1,49 +1,28 @@
-import { Embed, Report } from 'powerbi-client';
+import { ApplyEventArgs, SaveEventArgs, useBookmarkEvents } from '@equinor/BookmarksManager';
+import { Embed, Page, Report } from 'powerbi-client';
 import { PowerBIEmbed } from 'powerbi-client-react';
 import 'powerbi-report-authoring';
 import { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useElementData } from '../../../packages/Utils/Hooks/useElementData';
-import { usePowerBI } from './api';
+import { PBIWrapper, TopBar, Wrapper } from '../PowerBI.styles';
 import { PowerBIFilter } from './Components';
 import { ReportErrorMessage } from './Components/ReportErrorMessage/ReportErrorMessage';
+import { usePowerBI } from './Hooks';
 import { useGetPages } from './Hooks/useGetPages';
 import './style.css';
-import { PBIOptions } from './Types';
+import { PBIOptions, PowerBIBookmarkPayload } from './Types';
 import { Filter } from './Types/filter';
 
-const Wrapper = styled.div`
-    overflow: hidden;
-    position: relative;
-    width: 100%;
-    height: 100%;
-`;
-
-const TopBar = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: fit-content;
-`;
-
-const PBIWrapper = styled.div<{ height: number }>`
-    padding-top: 1rem;
-    overflow: scroll;
-    position: absolute;
-    top: ${(props) => props.height}px;
-    left: 0;
-    right: 0;
-    bottom: 0;
-`;
+const TOP_BAR_FILTER_HEIGHT = 210;
 interface PowerBiProps {
     reportUri: string;
     filterOptions?: Filter[];
     options?: PBIOptions;
 }
 
-const TOP_BAR_FILTER_HEIGHT = 210;
-
-export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JSX.Element => {
+export const PowerBI = (props: PowerBiProps): JSX.Element => {
+    const { reportUri, filterOptions, options } = props;
     // Default Options
     const aspectRatio = useMemo(() => options?.aspectRatio || 0.41, [options?.aspectRatio]);
     const isFilterActive = useMemo(
@@ -52,15 +31,51 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
     );
 
     const [ref, { width }] = useElementData();
-
+    const [bookmarkError, setBookmarkError] = useState<unknown>();
     const { config, error } = usePowerBI(reportUri, filterOptions, options);
 
     const [isLoaded, setIsLoaded] = useState<boolean>(false);
     const [report, setReport] = useState<Report>();
 
+    const activePage = useGetActivePage(report);
+    const captureAndPersistBookmark = async ({ title, appKey }: SaveEventArgs) => {
+        if (!report) {
+            return;
+        }
+
+        try {
+            const bookmark = await report.bookmarksManager.capture();
+            const activePage = await report.getActivePage();
+
+            const bookmarkPayload: PowerBIBookmarkPayload = {
+                bookmarkState: bookmark.state || '',
+                name: activePage.name,
+                displayName: activePage.displayName,
+                mainPage: options?.activePage,
+                mainPageDisplayName: options?.activePageDisplayName,
+            };
+            options?.persistPayload && options.persistPayload(bookmarkPayload, title, appKey);
+        } catch (err) {
+            console.error(err);
+            return;
+        }
+    };
+
+    const applyBookmark = async ({ id: bookmarkId, appKey, subSystem }: ApplyEventArgs) => {
+        if (report && options?.applyBookmark) {
+            const bookmark = await options?.applyBookmark(bookmarkId, appKey, subSystem);
+            if (bookmark) {
+                report.bookmarksManager.applyState(bookmark.bookmarkState);
+            }
+        }
+    };
+
+    // Registering custom events for saving and applying bookmarks. Functions that are passed as arguments will
+    // run once the events are fired.
+    useBookmarkEvents(captureAndPersistBookmark, applyBookmark);
+
     // Used for printing pages to console in development can be controlled by option parameters.
     useGetPages(report, options?.pageLoad);
-
     useEffect(() => {
         const setActivePageByName = (name: string) => {
             report?.setPage(name);
@@ -74,6 +89,16 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             'loaded',
             function () {
                 setIsLoaded(true);
+            },
+        ],
+        [
+            'bookmarkApplied',
+            function (evt) {
+                /**
+                 * Will cause useEffect to trigger in PowerBIFilter to
+                 * update the list of new active filters
+                 */
+                setIsLoaded(false);
             },
         ],
         [
@@ -122,6 +147,12 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
 
     return (
         <>
+            <DevPbi
+                activeReportPage={activePage}
+                pageId={options?.activePage}
+                pageDisplayName={options?.activePageDisplayName}
+                bookmarkError={bookmarkError}
+            />
             {error ? (
                 <ReportErrorMessage
                     reportId={reportUri}
@@ -161,4 +192,58 @@ export const PowerBI = ({ reportUri, filterOptions, options }: PowerBiProps): JS
             )}
         </>
     );
+};
+
+type WrapProps = {
+    backgroundColor: string;
+};
+const Wrap = styled.div<WrapProps>`
+    position: absolute;
+    right: 49%;
+    top: 0;
+    background: ${(props) => props.backgroundColor};
+    color: black;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: fit-content;
+    z-index: 2;
+`;
+export const DevPbi = ({ pageId, pageDisplayName, activeReportPage, bookmarkError }) => {
+    const [isOpen, setIsOpen] = useState<boolean>(true);
+    const isReportAndPageNavDifferentPage = pageDisplayName !== activeReportPage?.displayName;
+    return (
+        <Wrap backgroundColor={isReportAndPageNavDifferentPage ? 'salmon' : 'lightgray'}>
+            <div onClick={() => setIsOpen(!isOpen)}>X</div>
+            {isOpen && (
+                <>
+                    <div>PageId: {pageId}</div>
+                    <div>Page Display name: {pageDisplayName}</div>
+                    <div>Report PageId: {activeReportPage && activeReportPage.name}</div>
+                    <div>
+                        Report page display name: {activeReportPage && activeReportPage.displayName}
+                    </div>
+                    <div>
+                        BM error : {bookmarkError && JSON.stringify(bookmarkError as unknown)}
+                    </div>
+                </>
+            )}
+        </Wrap>
+    );
+};
+
+const useGetActivePage = (report: Report | undefined) => {
+    const [activePage, setActivePage] = useState<Page>();
+    useEffect(() => {
+        if (report) {
+            (() => {
+                report.on('rendered', async () => {
+                    const a = await report.getActivePage();
+                    setActivePage(a);
+                });
+            })();
+        }
+    }, [report]);
+
+    return activePage;
 };

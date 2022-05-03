@@ -1,51 +1,38 @@
-import { PowerBI } from '@equinor/lighthouse-powerbi';
+import { useBookmarks } from '@equinor/BookmarksManager';
+import { PBIOptions, PowerBI, PowerBIBookmarkPayload } from '@equinor/lighthouse-powerbi';
 import { useEffect, useState } from 'react';
 import { usePowerBiViewer } from './Api/powerBiViewerState';
 import { PowerBiViewerHeader } from './Components/PowerBiViewerHeader/PowerBiViewerHeader';
 import { ContentWrapper, Wrapper } from './PowerBiViewerStyles';
 import { FusionPowerBiOptions, Page, ViewState } from './Types/State';
-import { getDefault } from './Utils/getDefault';
+import { getDefault, getReportByPage, isDifferentPage, isDifferentReport } from './Utils';
 
 type PowerBiViewerProps = Omit<ViewState, 'reports'>;
 
 /**
  * The Power bi viewer is the main power-bi application in the lighthouse portal,
  * utilizing the @equinor/lighthouse-powerbi
- *
- * @param {Page} selectedPage
- * @param {FusionPowerBiOptions[]} reports
- * @return {*}  {(FusionPowerBiOptions | undefined)}
  */
-function getReportByPage(
-    selectedPage: Page,
-    reports: FusionPowerBiOptions[]
-): FusionPowerBiOptions | undefined {
-    return reports.find((r) => r.pages.includes(selectedPage));
-}
-
 export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
-    const { reports } = usePowerBiViewer(props.shortName);
-
     const [activePage, setActivePage] = useState<Page>();
     const [isFilterActive, setIsFilterActive] = useState(false);
     const [hasFilter, setHasFilter] = useState(false);
     const [activeReport, setActiveReport] = useState<FusionPowerBiOptions>();
 
-    useEffect(() => {
-        const { report, page } = getDefault(reports);
-        setActivePage(page);
-        setActiveReport(report);
-    }, [reports]);
+    const { reports } = usePowerBiViewer(props.shortName);
+    const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<
+        PowerBIBookmarkPayload,
+        PowerBIBookmarkPayload
+    >();
 
-    const handleSetActivePage = (page: Page) => {
+    const handleSetActivePage = (page: Page, options?: PBIOptions) => {
         setActivePage(page);
         const newReport = getReportByPage(page, reports);
         if (newReport && newReport.reportURI !== activeReport?.reportURI) {
-            newReport.options = { ...newReport.options, defaultPage: page.pageId };
+            newReport.options = { ...newReport.options, defaultPage: page.pageId, ...options };
             setActiveReport(newReport);
         }
     };
-
     function handleHasFilter(hasFilter: boolean) {
         setHasFilter(hasFilter);
     }
@@ -54,10 +41,59 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
         setIsFilterActive((s) => !s);
     }
 
+    const handleApplyingBookmark = async (
+        bookmarkId: string,
+        appKey: string,
+        groupName: string
+    ) => {
+        const bookmark = await handleApplyBookmark(bookmarkId);
+
+        if (isDifferentPage(activePage, bookmark)) {
+            const report = getReportByPage(
+                {
+                    pageId: bookmark?.mainPage,
+                    pageTitle: bookmark?.mainPageDisplayName,
+                },
+                reports
+            );
+            if (isDifferentReport(activeReport, report)) {
+                handleSetActivePage(
+                    {
+                        pageId: bookmark?.mainPage || '',
+                        pageTitle: bookmark?.mainPageDisplayName || '',
+                        default: true,
+                    },
+                    {
+                        bookmark: { state: bookmark.bookmarkState },
+                        defaultPage: bookmark.name,
+                    }
+                );
+                return;
+            } else {
+                handleSetActivePage({
+                    pageId: bookmark?.mainPage || '',
+                    pageTitle: bookmark?.mainPageDisplayName || '',
+                    default: true,
+                });
+                return bookmark;
+            }
+        } else {
+            // if same report & same page
+            return bookmark;
+        }
+    };
+
+    useEffect(() => {
+        const { report, page } = getDefault(reports);
+        setActivePage(page);
+        setActiveReport(report);
+    }, [reports]);
+
     return (
         <Wrapper>
             <PowerBiViewerHeader
                 {...props}
+                groupName={props.groupe}
                 activePage={activePage}
                 handleSetActivePage={handleSetActivePage}
                 activeFilter={isFilterActive}
@@ -73,7 +109,11 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
                             ...activeReport.options,
                             isFilterActive,
                             activePage: activePage.pageId,
+                            activePageDisplayName: activePage.pageTitle,
+                            pageLoad: activeReport.loadPagesInDev,
                             hasFilter: handleHasFilter,
+                            persistPayload: handleSaveBookmarks,
+                            applyBookmark: handleApplyingBookmark,
                         }}
                     />
                 )}
