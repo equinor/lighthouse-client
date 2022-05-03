@@ -10,8 +10,4 @@ export const bookmarkEvents = {
         const ev = new EventHub();
         ev.publish(CustomEventActions.SAVE, args);
     },
-    deleteBookmark: (id: string) => {
-        const ev = new EventHub();
-        ev.publish(CustomEventActions.DELETE, id);
-    },
 };

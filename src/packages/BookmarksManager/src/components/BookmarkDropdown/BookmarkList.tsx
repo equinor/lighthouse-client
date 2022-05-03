@@ -1,30 +1,21 @@
-import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
 import { useGetBookmarks } from '../../hooks';
+import { useDeleteBookmark } from '../../hooks/useDeleteBookmark';
 import { bookmarkEvents } from '../../utils';
+import { BookmarkEntry, BookmarkListWrapper, BookmarkWrapper } from './BookmarkDropdown.styles';
 
-type Props = {
+type BookmarkListProps = {
     appKey: string;
 };
-const BookmarkListWrapper = styled.div`
-    max-height: 250px;
-    overflow-y: auto;
-`;
 
-const BookmarkEntry = styled.div`
-    cursor: pointer;
-    :hover {
-        background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
-    }
-`;
-export const BookmarkList = ({ appKey }: Props) => {
+export const BookmarkList = ({ appKey }: BookmarkListProps) => {
     const { bookmarks, isFetching, error } = useGetBookmarks(appKey);
+    const deleteBookmark = useDeleteBookmark();
 
     if (isFetching) return <div>Fetching bookmarks</div>;
     if (!bookmarks || bookmarks.length === 0) return <div>No bookmarks</div>;
     if (error) return <div>Error retrieving bookmarks</div>;
 
-    const { applyBookmark, deleteBookmark } = bookmarkEvents;
+    const { applyBookmark } = bookmarkEvents;
 
     return (
         <BookmarkListWrapper>
@@ -32,37 +23,21 @@ export const BookmarkList = ({ appKey }: Props) => {
                 .sort((a, b) => a.name.localeCompare(b.name))
                 .map((bookmark) => {
                     return (
-                        <BookmarkEntry
-                            key={bookmark.id}
-                            onClick={(e) => {
-                                applyBookmark({
-                                    id: bookmark.id,
-                                    appKey: bookmark.appKey,
-                                    subSystem: bookmark.sourceSystem.subSystem,
-                                });
-                                e.stopPropagation();
-                            }}
-                        >
-                            {bookmark.name}
-                        </BookmarkEntry>
-
-                        // <div
-                        //     key={bookmark.id}
-                        //     style={{
-                        //         display: 'flex',
-                        //         flexDirection: 'row',
-                        //         justifyContent: 'space-between',
-                        //     }}
-                        // >
-                        //     <BookmarkEntry
-                        //         key={bookmark.id}
-                        //         onClick={() => applyBookmark(bookmark.id)}
-                        //     >
-                        //         {bookmark.name}
-                        //     </BookmarkEntry>
-
-                        //     <div onClick={() => deleteBookmark(bookmark.id)}>X</div>
-                        // </div>
+                        <BookmarkWrapper key={bookmark.id}>
+                            <BookmarkEntry
+                                onClick={(e) => {
+                                    applyBookmark({
+                                        id: bookmark.id,
+                                        appKey: bookmark.appKey,
+                                        subSystem: bookmark.sourceSystem.subSystem,
+                                    });
+                                    e.stopPropagation();
+                                }}
+                            >
+                                {bookmark.name}
+                            </BookmarkEntry>
+                            <div onClick={() => deleteBookmark(bookmark.id)}>X</div>
+                        </BookmarkWrapper>
                     );
                 })}
         </BookmarkListWrapper>

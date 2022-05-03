@@ -6,11 +6,11 @@ import {
     CreatingNewBookmarkWrapper,
     TitleInput,
 } from './BookmarkDropdown.styles';
-type Props = {
+type CreateNewBookmarkProps = {
     appKey: string;
     subSystem: string;
 };
-export const CreateNewBookmark = ({ appKey, subSystem }: Props) => {
+export const CreateNewBookmark = ({ appKey, subSystem }: CreateNewBookmarkProps) => {
     const [isCreatingNew, setIsCreatingNew] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
     const { saveBookmark } = bookmarkEvents;
@@ -51,7 +51,6 @@ export const CreateNewBookmark = ({ appKey, subSystem }: Props) => {
                     <ClickableIcon
                         name="close"
                         onClick={(e) => {
-                            e.preventDefault();
                             setIsCreatingNew(false);
                             setTitle('');
                             e.stopPropagation();

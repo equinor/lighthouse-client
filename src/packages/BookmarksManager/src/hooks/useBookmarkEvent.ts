@@ -9,8 +9,7 @@ import { ApplyEventArgs, SaveEventArgs } from '../types';
  */
 export const useBookmarkEvents = (
     saveFn: (args: SaveEventArgs) => void,
-    applyFn: (args: ApplyEventArgs) => void,
-    deleteFn?: (bookmarkId: string) => void
+    applyFn: (args: ApplyEventArgs) => void
 ) => {
     const ev = new EventHub();
 
@@ -28,12 +27,4 @@ export const useBookmarkEvents = (
             evt();
         };
     }, [applyFn]);
-
-    useEffect(() => {
-        const evt = ev.registerListener(CustomEventActions.DELETE, deleteBookmark);
-
-        return () => {
-            evt();
-        };
-    }, [deleteFn]);
 };
