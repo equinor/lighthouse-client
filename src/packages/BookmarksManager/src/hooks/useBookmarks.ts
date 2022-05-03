@@ -36,12 +36,7 @@ export const useBookmarks = <TPayload extends unknown = unknown>(): UseBookmarkR
     const { mutateAsync: bookmarkApplyAsync } = useMutation(applyBookmark);
 
     return {
-        handleSaveBookmarks: async (
-            capturedBookmark,
-            bookmarkTitle,
-            appKey = 'installation',
-            subSystem = 'ConstructionAndCommissioning'
-        ) => {
+        handleSaveBookmarks: async (capturedBookmark, bookmarkTitle, appKey, subSystem) => {
             const bookmarkRequest: BookmarkRequest = {
                 name: bookmarkTitle,
                 isShared: false,

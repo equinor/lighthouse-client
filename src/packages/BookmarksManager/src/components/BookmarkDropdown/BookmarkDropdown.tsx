@@ -10,15 +10,11 @@ import { HeaderButton } from './HeaderButton';
  */
 
 type BookmarkDropdownProps = {
-    appKey?: string;
-    subSystem?: string;
+    appKey: string;
+    subSystem: string;
     style?: JSX.IntrinsicElements['div']['style'];
 };
-export const BookmarkDropdown = ({
-    appKey = 'installation',
-    subSystem = 'ConstructionAndCommissioning',
-    style,
-}: BookmarkDropdownProps) => {
+export const BookmarkDropdown = ({ appKey, subSystem, style }: BookmarkDropdownProps) => {
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
     const anchorRef = useRef<HTMLDivElement>(null);
