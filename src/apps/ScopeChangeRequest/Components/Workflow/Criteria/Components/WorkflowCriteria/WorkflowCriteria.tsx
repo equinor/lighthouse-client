@@ -10,7 +10,6 @@ import { CriteriaDetail } from '../CriteriaDetail';
 import { CriteriaActions } from '../../../Types/actions';
 import { AddContributor } from '../AddContributor';
 import { PCSPersonRoleSearch } from '../../../../PersonRoleSearch/PCSPersonRoleSearch';
-import { IconMenu, MenuItem, MenuButton } from '../../../../MenuButton';
 import { useWorkflowCriteriaOptions } from '../../../../../hooks/queries/useWorkflowCriteriaOptions';
 import { QueryObserver, useQueryClient } from 'react-query';
 import { scopeChangeMutationKeys } from '../../../../../keys/scopeChangeMutationKeys';
@@ -21,6 +20,7 @@ import { SignWithComment } from '../SignWithComment/SignWithComment';
 import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
 import { Atom, swap, useAtom } from '@dbeining/react-atom';
 import { Inline, ReassignPadding, WorkflowStepViewContainer } from './workflowCriteria.styles';
+import { IconMenu, MenuButton, MenuItem } from '@equinor/overlay-menu';
 
 interface WorkflowCriteriasProps {
     step: WorkflowStep;

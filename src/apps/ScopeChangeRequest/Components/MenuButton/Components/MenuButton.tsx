@@ -1,7 +1,7 @@
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
+import { MenuItem } from '@equinor/overlay-menu';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { MenuItem } from '../Types/menuItem';
 
 interface MenuButtonProps {
     items: MenuItem[];
