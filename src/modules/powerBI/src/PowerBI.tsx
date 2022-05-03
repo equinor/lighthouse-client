@@ -38,7 +38,7 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
     const [report, setReport] = useState<Report>();
 
     const activePage = useGetActivePage(report);
-    const captureAndPersistBookmark = async ({ title, appKey }: SaveEventArgs) => {
+    const captureAndPersistBookmark = async ({ title, appKey, subSystem }: SaveEventArgs) => {
         if (!report) {
             return;
         }
@@ -54,7 +54,8 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
                 mainPage: options?.activePage,
                 mainPageDisplayName: options?.activePageDisplayName,
             };
-            options?.persistPayload && options.persistPayload(bookmarkPayload, title, appKey);
+            options?.persistPayload &&
+                options.persistPayload(bookmarkPayload, title, appKey, subSystem);
         } catch (err) {
             console.error(err);
             return;

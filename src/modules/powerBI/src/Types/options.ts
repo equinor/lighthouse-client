@@ -26,7 +26,8 @@ export interface PBIOptions extends IReportEmbedConfiguration {
     persistPayload?: (
         capturedPayload: PowerBIBookmarkPayload,
         bookmarkTitle: string,
-        appKey: string
+        appKey: string,
+        subSystem: string
     ) => void;
     applyBookmark?: (
         bookmarkId: string,
