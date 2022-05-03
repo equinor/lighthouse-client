@@ -17,7 +17,7 @@ export interface Pipetest {
     pipingRfcUniqueHT: string;
     overdue: string;
     dueDateTimePeriod: string;
-    tagTree: Record<string, unknown>;
+    location: string;
 }
 
 export interface CheckList {
@@ -70,8 +70,3 @@ export type InsulationBoxType = {
     object3dReference: string;
     procosysStatus: string;
 };
-
-export interface Tag {
-    register: string;
-    children: string[];
-}
