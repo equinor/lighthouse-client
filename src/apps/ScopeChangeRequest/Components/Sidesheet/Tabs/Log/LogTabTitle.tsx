@@ -2,12 +2,12 @@ import { CircularProgress } from '@equinor/eds-core-react';
 import { useIsFetching } from 'react-query';
 import styled from 'styled-components';
 import { scopeChangeQueries } from '../../../../keys/queries';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 
 export function LogTabTitle(): JSX.Element {
-    const { request } = useScopeChangeContext();
+    const requestId = useScopeChangeContext((s) => s.request.id);
     const isLoading =
-        useIsFetching(scopeChangeQueries.historyQuery(request.id).queryKey, { active: true }) > 0;
+        useIsFetching(scopeChangeQueries.historyQuery(requestId).queryKey, { active: true }) > 0;
 
     return (
         <TabTitle>

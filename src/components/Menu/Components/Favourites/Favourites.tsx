@@ -3,6 +3,7 @@ import { useClientContext } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import Icon from '../../../Icon/Icon';
 import { useFavoritesContext } from '../../Context/FavoritesContext';
+import { useMenuContext } from '../../Context/MenuContext';
 import { MenuItem } from '../MenuItem/MenuItem';
 import { FavoriteHeader, FavoritePanel, HeaderIconWrapper } from './FavouritesStyles';
 
@@ -18,9 +19,17 @@ export const Favorites = (): JSX.Element => {
         [apps, favorites]
     );
 
+    const { favoritesExpanded, setFavoritesExpanded } = useMenuContext();
+
     return (
         <Accordion chevronPosition="right">
-            <Item>
+            <Item
+                isExpanded={favoritesExpanded}
+                onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                    e.preventDefault();
+                    setFavoritesExpanded(!favoritesExpanded);
+                }}
+            >
                 <FavoriteHeader>
                     <HeaderIconWrapper>
                         <Icon name="star_filled" />

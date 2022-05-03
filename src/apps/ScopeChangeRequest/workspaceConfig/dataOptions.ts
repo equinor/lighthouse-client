@@ -19,5 +19,10 @@ export const idResolver: IdResolverFunc<ScopeChangeRequest> = {
 
 async function idResolverFunction(id: string): Promise<ScopeChangeRequest> {
     const { scopeChange } = httpClient();
-    return await (await scopeChange.fetch(`api/scope-change-requests/${id}`)).json();
+    const res = await scopeChange.fetch(`api/scope-change-requests/${id}`);
+
+    if (!res.ok) {
+        throw 'Not found';
+    }
+    return await res.json();
 }

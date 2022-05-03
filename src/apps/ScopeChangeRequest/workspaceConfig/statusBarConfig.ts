@@ -1,105 +1,54 @@
-import { DateTime } from 'luxon';
 import { StatusItem } from '../../../packages/StatusBar';
-import { kFormatter } from '../functions/kFormatter';
 import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
+export function numberFormat(number: number): string {
+    return parseFloat(Math.round(number).toString()).toLocaleString('no');
+}
+
 export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
-    const requestsMadeLastWeek = data.filter(
-        ({ createdAtUtc }) =>
-            DateTime.now()
-                .diff(DateTime.fromJSDate(new Date(createdAtUtc)))
-                .as('days') <= 7
-    );
-
-    const requestsApprovedLastSevenDays = filterApprovedRequests(data).filter(
-        ({ workflowSteps = [] }) =>
-            workflowSteps[workflowSteps.length - 1]?.criterias.every(
-                ({ signedAtUtc }) =>
-                    signedAtUtc &&
-                    DateTime.now()
-                        .diff(DateTime.fromJSDate(new Date(signedAtUtc)))
-                        .as('days') <= 7
-            )
-    );
-
     return [
         {
             title: 'Requests',
-            value: () => `${kFormatter(data.length)} (+${kFormatter(requestsMadeLastWeek.length)})`,
+            value: () => numberFormat(data.length),
         },
         {
             title: 'Mhrs',
             value: () => {
-                const manhrsLastWeek = kFormatter(
-                    requestsMadeLastWeek.reduce(
-                        (count, { guesstimateHours }) => count + guesstimateHours,
-                        0
-                    )
+                const totalMhrs = data.reduce(
+                    (count, { guesstimateHours }) => count + guesstimateHours,
+                    0
                 );
-
-                const totalMhrs = kFormatter(
-                    data.reduce((count, { guesstimateHours }) => count + guesstimateHours, 0)
-                );
-
-                return `${totalMhrs} (+${manhrsLastWeek})`;
+                return numberFormat(totalMhrs);
             },
         },
         {
             title: 'Pending requests',
             value: () => {
-                const pendingRequests = kFormatter(
-                    data.reduce((count, { state }) => (state === 'Open' ? count + 1 : count), 0)
+                const pendingRequests = data.reduce(
+                    (count, { state }) => (state === 'Open' ? count + 1 : count),
+                    0
                 );
-
-                const pendingRequestMadeLastWeek = kFormatter(
-                    requestsMadeLastWeek.filter(({ state }) => state === 'Open').length
-                );
-
-                return `${pendingRequests} (+${pendingRequestMadeLastWeek})`;
+                return numberFormat(pendingRequests);
             },
         },
         {
             title: 'Pending mhrs',
-            value: () => {
-                const pendingRequestsMhr = kFormatter(accPendingMhr(data));
-
-                const pendingRequestMhrMadeLastWeek = kFormatter(
-                    accPendingMhr(requestsMadeLastWeek)
-                );
-
-                return `${pendingRequestsMhr} (+${pendingRequestMhrMadeLastWeek})`;
-            },
+            value: () => numberFormat(accPendingMhr(data)),
         },
         {
             title: 'Approved requests',
-            value: () => {
-                const requestsApprovedCount = kFormatter(filterApprovedRequests(data).length);
-
-                return `${requestsApprovedCount} (+${kFormatter(
-                    requestsApprovedLastSevenDays.length
-                )})`;
-            },
+            value: () => numberFormat(filterApprovedRequests(data).length),
         },
 
         {
             title: 'Approved Mhrs',
-            value: () => {
-                const approvedMhrs = kFormatter(
+            value: () =>
+                numberFormat(
                     filterApprovedRequests(data).reduce(
                         (acc, { guesstimateHours }) => acc + guesstimateHours,
                         0
                     )
-                );
-
-                const approvedMhrsLastSevenDays = kFormatter(
-                    requestsApprovedLastSevenDays.reduce(
-                        (count, { guesstimateHours }) => count + guesstimateHours,
-                        0
-                    )
-                );
-
-                return `${approvedMhrs} (+${approvedMhrsLastSevenDays})`;
-            },
+                ),
         },
     ];
 }

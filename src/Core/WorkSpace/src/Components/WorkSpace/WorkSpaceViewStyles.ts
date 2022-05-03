@@ -7,13 +7,18 @@ export const DataViewWrapper = styled.div`
     justify-content: space-between;
     grid-row: 3/4;
     width: 100%;
+    height: 100%;
     overflow: hidden;
 `;
 
 export const WorkspaceWrapper = styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
 `;
 
 export const Loading = styled.div`

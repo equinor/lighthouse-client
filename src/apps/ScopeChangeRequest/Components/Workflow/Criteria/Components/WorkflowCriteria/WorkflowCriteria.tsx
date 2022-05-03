@@ -2,9 +2,9 @@ import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
-import { Criteria, WorkflowStep } from '../../../../../types/scopeChangeRequest';
+import { Criteria, CriteriaSignState, WorkflowStep } from '../../../../../types/scopeChangeRequest';
 import { reassignCriteria, unsignCriteria } from '../../../../../api/ScopeChange/Workflow';
-import { useScopeChangeContext } from '../../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
 import { useConditionalRender } from '../../../../../hooks/utils/useConditionalRender';
 import { CriteriaDetail } from '../CriteriaDetail';
 import { CriteriaActions } from '../../../Types/actions';
@@ -33,18 +33,17 @@ export const WorkflowCriteria = ({
     criteria,
     canAddContributor,
 }: WorkflowCriteriasProps): JSX.Element => {
-    const { request } = useScopeChangeContext();
+    const requestId = useScopeChangeContext(({ request }) => request.id);
 
     const signMutation = useWorkflowSigning({
         criteriaId: criteria.id,
         stepId: step.id,
-        requestId: request.id,
+        requestId: requestId,
     });
 
     const setShowSendBackWithComment = () =>
         swap(actionWithCommentAtom, () => ({
-            action: 'Rejected' as const,
-            closeRequest: false,
+            action: 'Disputed' as const,
             buttonText: 'Send back',
             criteriaId: criteria.id,
             stepId: step.id,
@@ -53,7 +52,6 @@ export const WorkflowCriteria = ({
     const setShowSignWithComment = () =>
         swap(actionWithCommentAtom, () => ({
             action: 'Approved' as const,
-            closeRequest: false,
             buttonText: 'Sign',
             criteriaId: criteria.id,
             stepId: step.id,
@@ -62,19 +60,18 @@ export const WorkflowCriteria = ({
     const setShowRejectWithComment = () =>
         swap(actionWithCommentAtom, () => ({
             action: 'Rejected' as const,
-            closeRequest: true,
             buttonText: 'Reject',
             criteriaId: criteria.id,
             stepId: step.id,
         }));
 
-    const { workflowKeys } = scopeChangeMutationKeys(request.id);
+    const { workflowKeys } = scopeChangeMutationKeys(requestId);
     const workflowLoading = useIsWorkflowLoading();
 
     const { criteriaUnsignKey, criteriaReassignKey } = workflowKeys;
 
     const { canReassign, canSign, canUnsign } = useWorkflowCriteriaOptions(
-        request.id,
+        requestId,
         criteria.id,
         step.id
     );
@@ -88,8 +85,7 @@ export const WorkflowCriteria = ({
             actions.push({
                 label: CriteriaActions.Sign,
                 icon: <Icon name="check_circle_outlined" color={iconGrey} />,
-                onClick: () =>
-                    signMutation({ action: 'Approved', closeRequest: false, comment: '' }),
+                onClick: () => signMutation({ action: 'Approved', comment: '' }),
                 isDisabled: !canSign,
             });
             actions.push({
@@ -133,7 +129,7 @@ export const WorkflowCriteria = ({
                 onClick: () =>
                     unSignMutation({
                         criteriaId: criteria.id,
-                        requestId: request.id,
+                        requestId: requestId,
                         stepId: step.id,
                     }),
                 isDisabled: !canUnsign,
@@ -160,7 +156,7 @@ export const WorkflowCriteria = ({
             onSelect={(value) => {
                 if (!value) return;
                 reassignMutation({
-                    requestId: request.id,
+                    requestId: requestId,
                     stepId: step.id,
                     criteriaId: criteria.id,
                     reassign: {
@@ -185,13 +181,13 @@ export const WorkflowCriteria = ({
     );
 
     const { mutate: reassignMutation } = useScopeChangeMutation(
-        request.id,
+        requestId,
         criteriaReassignKey(step.id, criteria.id),
         reassignCriteria
     );
 
     const { mutate: unSignMutation } = useScopeChangeMutation(
-        request.id,
+        requestId,
         criteriaUnsignKey(step.id, criteria.id),
         unsignCriteria
     );
@@ -203,7 +199,7 @@ export const WorkflowCriteria = ({
     };
 
     /** Close all dialogs/inputs when an action happens */
-    const { baseKey } = scopeChangeQueryKeys(request.id);
+    const { baseKey } = scopeChangeQueryKeys(requestId);
     const queryClient = useQueryClient();
     useEffect(() => {
         // Create an observer to watch the query and update its result into state
@@ -255,7 +251,6 @@ export const WorkflowCriteria = ({
                 <SignWithComment
                     action={state.action}
                     buttonText={state.buttonText}
-                    closeRequest={state.closeRequest}
                     criteriaId={state.criteriaId}
                     stepId={state.stepId}
                 />
@@ -266,8 +261,7 @@ export const WorkflowCriteria = ({
 
 interface SigningAction {
     buttonText: string;
-    action: 'Approved' | 'Rejected';
-    closeRequest: boolean;
+    action: CriteriaSignState;
     criteriaId: string;
     stepId: string;
 }

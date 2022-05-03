@@ -4,10 +4,8 @@ import { getYearAndWeekFromString } from '../../Functions/statusHelpers';
 import { checklistTagFunc, createChecklistSteps } from '../../Functions/tableHelpers';
 import { Pipetest } from '../../Types/pipetest';
 import { WorkflowCompact } from '../Workflow/Components/WorkflowCompact';
-import {
-    CurrentStepContainer,
-    WorkflowWarningTriangle,
-} from '../Workflow/Components/WorkflowWarningTriangle';
+import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';
+import { CurrentStepContainer } from '../Workflow/Styles/styles';
 
 interface ReleaseControlSidesheetBannerProps {
     pipetest: Pipetest;
@@ -24,18 +22,20 @@ export function ReleaseControlSidesheetBanner(
                     <CurrentStepContainer>
                         {props.pipetest.step}
                         {!props.pipetest.pipetestProcessDoneInRightOrder && (
-                            <WorkflowWarningTriangle
-                                circleText={''}
-                                popoverText={
-                                    'Some steps in this process has been done in the wrong order'
-                                }
-                            />
+                            <BannerWarningTriangle>
+                                <WorkflowWarningTriangle
+                                    popoverText={
+                                        'Some steps in this process has been done in the wrong order'
+                                    }
+                                    color={tokens.colors.text.static_icons__default.hex}
+                                />
+                            </BannerWarningTriangle>
                         )}
                     </CurrentStepContainer>
                 }
             />
             <BannerItem
-                title={'Workflow'}
+                title={'Checklist status'}
                 value={
                     <WorkflowCompact
                         steps={createChecklistSteps(props.pipetest)}
@@ -45,9 +45,8 @@ export function ReleaseControlSidesheetBanner(
                     />
                 }
             />
-            <BannerItem title={'Status'} value={props.pipetest.shortformCompletionStatus} />
             <BannerItem
-                title={'Due by week'}
+                title={'Piping RFC'}
                 value={getYearAndWeekFromString(props.pipetest.rfccPlanned)}
             />
         </Banner>
@@ -92,4 +91,9 @@ const BannerItemValue = styled.div`
     font-weight: 400;
     color: ${tokens.colors.text.static_icons__default.hex};
     min-height: 24px;
+`;
+
+const BannerWarningTriangle = styled.div`
+    margin-top: 3px;
+    margin-left: 3px;
 `;

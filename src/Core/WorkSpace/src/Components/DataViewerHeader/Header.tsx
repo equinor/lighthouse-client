@@ -1,7 +1,8 @@
 import { useFactory } from '@equinor/DataFactory';
+import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
-import { Icon } from '@equinor/lighthouse-components';
+import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
@@ -26,29 +27,30 @@ import {
     TitleBar,
 } from './HeaderStyles';
 
-type VoidFunction = () => void;
-
 interface CompletionViewHeaderProps {
     title: string;
     groupe: string | string[];
     tabs: TabsConfigItem[];
-    handleFilter: VoidFunction;
-    activeFilter: boolean;
 }
 
-const PRIMARY_INTERACTIVE = tokens.colors.interactive.primary__resting.hex;
+const ANALYTICS = 'analytics';
 
 export const CompletionViewHeader = ({
     title,
     tabs,
-    handleFilter,
-    activeFilter,
     groupe,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
-    const { hasPowerBi, pages, setActivePage, activePage, hasActiveFilters, togglePowerBIFilter } =
-        useViewerContext();
+    const {
+        hasPowerBi,
+        pages,
+        setActivePage,
+        activePage,
+        isFilterActive,
+        hasActiveFilters,
+        toggleFilter,
+    } = useViewerContext();
 
     const { handleSetActiveTab, activeTab } = useLocationContext();
 
@@ -69,7 +71,7 @@ export const CompletionViewHeader = ({
             </TitleBar>
             <ActionBar>
                 <LeftSection>
-                    {activeTab !== 'powerBi' ? (
+                    {activeTab !== ANALYTICS ? (
                         <FillSection>
                             <StatusBar statusItems={statusItems} />
                         </FillSection>
@@ -113,9 +115,9 @@ export const CompletionViewHeader = ({
                     {hasPowerBi && (
                         <>
                             <TabButton
-                                onClick={() => handleSetActiveTab('powerBi')}
-                                aria-selected={activeTab === 'powerBi'}
-                                title={'Power Bi'}
+                                onClick={() => handleSetActiveTab(ANALYTICS)}
+                                aria-selected={activeTab === ANALYTICS}
+                                title={'Power Bi analytics'}
                             >
                                 <Icon name={'bar_chart'} />
                             </TabButton>
@@ -125,7 +127,7 @@ export const CompletionViewHeader = ({
 
                     <>
                         {tabs.map((tab) => {
-                            if (tab.tabId === 'powerBi') return;
+                            if (tab.tabId === ANALYTICS) return;
                             const Icon = tab.icon;
                             return (
                                 <TabButton
@@ -146,7 +148,7 @@ export const CompletionViewHeader = ({
                         color={
                             dataApi?.isStale
                                 ? tokens.colors.infographic.primary__energy_red_100.hex
-                                : PRIMARY_INTERACTIVE
+                                : 'grey'
                         }
                         aria-selected={false}
                         title={
@@ -155,15 +157,18 @@ export const CompletionViewHeader = ({
                                 : `Updated: ${timestamp}`
                         }
                         onClick={() => dataApi.refetch()}
-                    />
-                    {bookmarks.activeTab === 'powerBi' && (
-                        <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
-                    )}
+                    >
+                        {dataApi.isFetching ? (
+                            <CircularProgress size={24} />
+                        ) : (
+                            <ClickableIcon size={24} name="refresh" />
+                        )}
+                    </TabButton>
 
-                    {activeTab !== 'powerBi' ? (
+                    {activeTab !== ANALYTICS ? (
                         <TabButton
-                            onClick={handleFilter}
-                            aria-selected={activeFilter}
+                            onClick={toggleFilter}
+                            aria-selected={isFilterActive}
                             title="Filter"
                         >
                             {checkHasActiveFilters() ? (
@@ -173,13 +178,17 @@ export const CompletionViewHeader = ({
                             )}
                         </TabButton>
                     ) : (
-                        <TabButton
-                            onClick={togglePowerBIFilter}
-                            aria-selected={activeFilter}
-                            title="PowerBi Filter"
-                        >
-                            {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
-                        </TabButton>
+                        <>
+                            <TabButton
+                                onClick={toggleFilter}
+                                aria-selected={isFilterActive}
+                                title="PowerBi Filter"
+                            >
+                                {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
+                            </TabButton>
+
+                            <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                        </>
                     )}
                 </RightSection>
             </ActionBar>

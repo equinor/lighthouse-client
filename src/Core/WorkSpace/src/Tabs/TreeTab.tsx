@@ -1,6 +1,6 @@
 import { Tree } from '../../../../components/ParkView/Components/Tree';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
-
+import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
 
 export const TreeTab = (): JSX.Element => {
@@ -10,5 +10,10 @@ export const TreeTab = (): JSX.Element => {
     } = useFilterApiContext();
     const data = getFilteredData();
 
-    return <Tree data={data} treeOptions={treeOptions} />;
+    return (
+        <>
+            <WorkspaceFilter />
+            <Tree data={data} treeOptions={treeOptions} />;
+        </>
+    );
 };

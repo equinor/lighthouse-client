@@ -58,9 +58,13 @@ export const Attachments = ({ attachments, requestId }: AttachmentProps): JSX.El
                                     onClickDownloadAttachment(requestId, x.id, x.fileName);
                                 }}
                             >
-                                <span>{x.fileName}</span>
+                                <AttachmentsName style={{ fontSize: '16px' }}>
+                                    {x.fileName}
+                                </AttachmentsName>
                             </Link>
-                            <span>{Math.round(x.fileSize / 1000 ** 2)} MB</span>
+                            <AttachmentsSize>
+                                {Math.round(x.fileSize / 1000 ** 2)} MB
+                            </AttachmentsSize>
                         </Wrapper>
                     );
                 })}
@@ -68,11 +72,21 @@ export const Attachments = ({ attachments, requestId }: AttachmentProps): JSX.El
     );
 };
 
+const AttachmentsSize = styled.div`
+    font-size: 16px;
+    line-height: 20px;
+    color: ${tokens.colors.text.static_icons__tertiary.hex};
+    text-decoration: underline;
+`;
+
+const AttachmentsName = styled.div`
+    font-size: 16px;
+`;
+
 export const Wrapper = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 610px;
 `;
 
 export const Link = styled.a`

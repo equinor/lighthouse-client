@@ -1,12 +1,11 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
-import { useEdsTabs } from '../../../hooks/edsTabs/useEdsTabs';
+import { useEdsTabs } from '../../../../../hooks/edsTabs/useEdsTabs';
 import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
 import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
 import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
-import { ScopeChangeContext } from '../../../context/scopeChangeAccessContext';
 import { ScopeChangeErrorBanner } from '../../ErrorBanner/ErrorBanner';
 import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';
 import { LogTabTitle, LogTab } from '../Tabs/Log';
@@ -18,6 +17,9 @@ import styled from 'styled-components';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
 import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
+import { deref, swap, useAtom } from '@dbeining/react-atom';
+import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
+import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -27,65 +29,83 @@ interface SidesheetWrapperProps {
 export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.Element {
     useScopeChangeMutationWatcher(item.id);
     useOctopusErrorHandler();
-    const { activeTab, handleChange } = useEdsTabs();
-
-    const request = useGetScopeChangeRequest(item.id, item);
-    const requestAccess = useScopeChangeAccess(item.id);
-    const [editMode, setEditMode] = useState<boolean>(false);
-    const toggleEditMode = () => setEditMode((prev) => !prev);
+    useGetScopeChangeRequest(item.id, item);
+    useScopeChangeAccess(item.id);
     useSidesheetEffects(actions, toggleEditMode, item.id);
 
+    const { activeTab, handleChange } = useEdsTabs();
+
+    const editMode = useAtom(sideSheetEditModeAtom);
+
+    function toggleEditMode() {
+        swap(sideSheetEditModeAtom, (s) => !s);
+    }
+
     useEffect(() => {
-        setEditMode(false);
-    }, [request?.id]);
+        swap(sideSheetEditModeAtom, () => false);
+        swap(scopeChangeAtom, (old) => ({
+            ...old,
+            request: item,
+            actions: actions,
+        }));
+    }, [item?.id]);
+
+    if (Object.keys(deref(scopeChangeAtom).request).length < 2) {
+        return <></>;
+    }
 
     return (
         <Wrapper>
             <ScopeChangeErrorBanner />
-            <ScopeChangeContext.Provider
-                value={{
-                    request: request ?? item,
-                    requestAccess: requestAccess,
-                }}
-            >
-                {editMode ? (
-                    <ScopeChangeRequestEditForm request={request ?? item} close={toggleEditMode} />
-                ) : (
-                    <>
-                        <SidesheetBanner />
-                        <Tabs activeTab={activeTab} onChange={handleChange}>
-                            <SidesheetTabList>
-                                <Tabs.Tab>
-                                    <RequestTabTitle />
-                                </Tabs.Tab>
-                                <Tabs.Tab disabled>
-                                    <WorkOrderTabTitle />
-                                </Tabs.Tab>
-                                <Tabs.Tab>
-                                    <LogTabTitle />
-                                </Tabs.Tab>
-                            </SidesheetTabList>
-                            <TabList>
-                                <Tabs.Panel>
-                                    <RequestTab />
-                                </Tabs.Panel>
-                                <Tabs.Panel>{activeTab === 1 && <WorkOrderTab />}</Tabs.Panel>
-                                <Tabs.Panel>{activeTab === 2 && <LogTab />}</Tabs.Panel>
-                            </TabList>
-                        </Tabs>
-                    </>
-                )}
-            </ScopeChangeContext.Provider>
+            {editMode ? (
+                <ScopeChangeRequestEditForm
+                    request={deref(scopeChangeAtom).request}
+                    close={toggleEditMode}
+                />
+            ) : (
+                <>
+                    <SidesheetBanner />
+                    <Tabs activeTab={activeTab} onChange={handleChange}>
+                        <SidesheetTabList>
+                            <HeaderTab>
+                                <RequestTabTitle />
+                            </HeaderTab>
+                            <HeaderTab>
+                                <WorkOrderTabTitle />
+                            </HeaderTab>
+                            <HeaderTab>
+                                <LogTabTitle />
+                            </HeaderTab>
+                        </SidesheetTabList>
+                        <TabList>
+                            <Tab>
+                                <RequestTab />
+                            </Tab>
+                            <Tab>{activeTab === 1 && <WorkOrderTab />}</Tab>
+                            <Tab>{activeTab === 2 && <LogTab />}</Tab>
+                        </TabList>
+                    </Tabs>
+                </>
+            )}
         </Wrapper>
     );
 }
 
+const HeaderTab = styled(Tabs.Tab)``;
+
+const Tab = styled(Tabs.Panel)`
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+    padding-bottom: 50px;
+`;
+
 const TabList = styled(Tabs.Panels)`
-    padding: 24px 32px;
+    margin: 24px 32px;
 `;
 
 const Wrapper = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
-    height: 95%;
+    height: 90%;
 `;

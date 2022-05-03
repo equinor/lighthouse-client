@@ -9,10 +9,12 @@ export interface Pipetest {
     checkLists: CheckList[];
     heatTraces: HeatTrace[];
     insulationBoxes: InsulationBox[];
+    pipeInsulationBoxes: InsulationBox[];
     circuits: Circuit[];
     description: string;
     commPkPriority1: string;
     rfccPlanned: string;
+    pipingRfcUniqueHT: string;
     overdue: string;
     dueDateTimePeriod: string;
     tagTree: Record<string, unknown>;

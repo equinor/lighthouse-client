@@ -1,7 +1,5 @@
-import { Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { StatusCircle } from '../../Garden/StatusCircle';
+import { StatusCircle } from '@equinor/GardenUtils';
 import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
 import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
 
@@ -14,7 +12,6 @@ export const Cable = ({ value, status, borderBottom }: CableProps): JSX.Element 
     return (
         <ElectroViewNodeGroup>
             <CableNode borderBottom={borderBottom}>
-                <Icon size={16} color={tokens.colors.text.static_icons__default.hex} name="cable" />
                 <ElectroViewNodeValueText>{value}</ElectroViewNodeValueText>
                 <StatusCircle statusColor={getElectroViewCompletionStatusColor(status)} />
             </CableNode>
@@ -26,7 +23,7 @@ const CableNode = styled.div<{ borderBottom?: boolean }>`
     display: flex;
     flex-direction: horizontal;
     flex: 1;
-    width: 150px;
+    width: 110px;
     max-height: 15px;
     padding: 6px;
     text-align: center;

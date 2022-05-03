@@ -21,7 +21,7 @@ interface SystemBannerMap {
 const systemBannerMap: SystemBannerMap = {
     info: {
         iconColor: tokens.colors.infographic.substitute__blue_ocean.rgba,
-        icon: 'warning_outlined',
+        icon: 'info_circle',
         buttonColor: 'primary',
         background: tokens.colors.ui.background__info.rgba,
     },
@@ -33,7 +33,7 @@ const systemBannerMap: SystemBannerMap = {
     },
     default: {
         iconColor: tokens.colors.infographic.substitute__blue_ocean.rgba,
-        icon: 'warning_outlined',
+        icon: 'info_circle',
         buttonColor: 'secondary',
         background: tokens.colors.ui.background__default.rgba,
     },

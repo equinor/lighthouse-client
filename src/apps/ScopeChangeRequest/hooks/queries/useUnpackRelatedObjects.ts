@@ -7,10 +7,11 @@ import { getSystems } from '../../api/PCS/getSystems';
 import { getTagById } from '../../api/PCS/getTagById';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { getDocumentById } from '../../api/STID/getDocumentById';
+import { transformIsoDate } from '../../Components/Workflow/Utils/dateFormatting';
 import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
-import { useQueryCacheLookup } from '../React-Query/useQueryCacheLookup';
+import { useQueryCacheLookup } from '../../../../hooks/QueryCache/useQueryCacheLookup';
 
 interface UseUnpackRelatedObjectsParams {
     request: ScopeChangeRequest;
@@ -92,6 +93,7 @@ export function useUnpackRelatedObjects({
                 ...tagSelectOption,
                 label: `${x.procosysNumber} ${tag.Description}`,
                 object: tag,
+                metadata: `Comm pkg: ${tag.CommPkgNo} | Tag register: ${tag.RegisterCode}`,
             });
         });
 
@@ -109,11 +111,15 @@ export function useUnpackRelatedObjects({
                 referencesKeys.document(x.stidDocumentNumber),
                 () => getDocumentById(x.stidDocumentNumber, facilityId)
             );
-
             updateReferences({
                 ...documentSelectOption,
                 label: `${x.stidDocumentNumber} ${document.docTitle}`,
                 object: document,
+                metadata: `Revision ${document.currentRevision.revNo} | Rev date ${document.currentRevision.revDate &&
+                    transformIsoDate(document.currentRevision.revDate)
+                    } | Reason for issue ${document.currentRevision.reasonForIssue &&
+                    document.currentRevision.reasonForIssue
+                    }`,
             });
         });
 

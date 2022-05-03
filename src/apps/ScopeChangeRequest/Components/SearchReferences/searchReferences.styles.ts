@@ -41,7 +41,6 @@ export const ListItem = styled.div`
     gap: 1em;
     text-overflow: ellipsis;
     color: ${tokens.colors.interactive.primary__resting.hex};
-    height: 52px;
 `;
 
 export const SelectedItemLabel = styled.div`

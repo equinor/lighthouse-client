@@ -1,6 +1,6 @@
 import { SingleSelect } from '@equinor/eds-core-react';
 import { Fragment, useCallback, useMemo } from 'react';
-import { SelectRowWrapper, Separator } from '../Styles/groupingSelector';
+import { SelectOneWrapper, SelectRowWrapper, Separator } from '../Styles/groupingSelector';
 import { useParkViewContext } from '../Context/ParkViewProvider';
 import { FieldSettings } from '../Models/fieldSettings';
 
@@ -85,44 +85,55 @@ export function FilterSelector<T>(): JSX.Element | null {
 
             <Separator> Group by </Separator>
 
-            <SingleSelect
-                key={gardenKey.toString()}
-                items={groupingOptions}
-                label={''}
-                selectedOption={getFieldSettingsLabelFromKey(gardenKey.toString(), fieldSettings)}
-                handleSelectedItemChange={(changes) => handleGardenKeyChange(changes.selectedItem)}
-            />
+            <SelectOneWrapper>
+                <SingleSelect
+                    key={gardenKey.toString()}
+                    items={groupingOptions}
+                    label={''}
+                    selectedOption={getFieldSettingsLabelFromKey(
+                        gardenKey.toString(),
+                        fieldSettings
+                    )}
+                    handleSelectedItemChange={(changes) =>
+                        handleGardenKeyChange(changes.selectedItem)
+                    }
+                />
+            </SelectOneWrapper>
             <Separator>then</Separator>
 
             {groupByKeys.sort().map((groupByKey, index) => {
                 return (
                     <Fragment key={index}>
-                        <SingleSelect
-                            key={groupByKey.toString()}
-                            items={groupingOptions || []}
-                            label={''}
-                            selectedOption={getFieldSettingsLabelFromKey(
-                                groupByKey.toString(),
-                                fieldSettings
-                            )}
-                            handleSelectedItemChange={(changes) => {
-                                handleExistingSelectionChange(changes.selectedItem, index);
-                            }}
-                        />
+                        <SelectOneWrapper>
+                            <SingleSelect
+                                key={groupByKey.toString()}
+                                items={groupingOptions || []}
+                                label={''}
+                                selectedOption={getFieldSettingsLabelFromKey(
+                                    groupByKey.toString(),
+                                    fieldSettings
+                                )}
+                                handleSelectedItemChange={(changes) => {
+                                    handleExistingSelectionChange(changes.selectedItem, index);
+                                }}
+                            />
+                        </SelectOneWrapper>
                         <Separator>then</Separator>
                     </Fragment>
                 );
             })}
             {groupingOptions && groupingOptions.length > 0 && (
-                <SingleSelect
-                    key={'EmptyGroupBySelector'}
-                    items={groupingOptions}
-                    label={''}
-                    selectedOption=""
-                    handleSelectedItemChange={(changes) => {
-                        addItemToGroupKeys(changes.selectedItem);
-                    }}
-                />
+                <SelectOneWrapper>
+                    <SingleSelect
+                        key={'EmptyGroupBySelector'}
+                        items={groupingOptions}
+                        label={''}
+                        selectedOption=""
+                        handleSelectedItemChange={(changes) => {
+                            addItemToGroupKeys(changes.selectedItem);
+                        }}
+                    />
+                </SelectOneWrapper>
             )}
         </SelectRowWrapper>
     );
