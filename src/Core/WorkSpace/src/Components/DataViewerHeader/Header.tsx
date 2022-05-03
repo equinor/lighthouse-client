@@ -28,11 +28,16 @@ import {
 interface CompletionViewHeaderProps {
     title: string;
     tabs: TabsConfigItem[];
+    sideSheetWidth: number;
 }
 
 const ANALYTICS = 'analytics';
 
-export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps): JSX.Element => {
+export const CompletionViewHeader = ({
+    title,
+    tabs,
+    sideSheetWidth,
+}: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
     const {
@@ -57,7 +62,7 @@ export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps)
     const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
 
     return (
-        <HeaderWrapper>
+        <HeaderWrapper sideSheetWidth={sideSheetWidth}>
             <TitleBar>
                 <Title variant="h3">{title}</Title>
                 <PerformanceObserver />
