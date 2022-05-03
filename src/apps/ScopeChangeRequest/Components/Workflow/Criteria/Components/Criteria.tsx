@@ -1,7 +1,6 @@
-import { useAtom } from '@dbeining/react-atom';
-import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
-import styled from 'styled-components';
+import { useAtom } from '@dbeining/react-atom';
+
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { AddContributor } from './AddContributor';
 import { CriteriaStatus } from './CriteriaDetail';
@@ -13,6 +12,7 @@ import { ContributorRender } from '../../Contributor/Contributor';
 import { RowContent, WorkflowRow, WorkflowWrapper } from '../../workflowLayout.styles';
 import { CriteriaActionBar } from './CriteriaActionBar';
 import { CriteriaActionOverlay } from './CriteriaActionOverlay';
+import { DetailText, VerticalLine, WorklowIconAndLine } from './criteria.styles';
 
 interface CriteriaRenderProps {
     name: string;
@@ -102,24 +102,3 @@ export const CriteriaRender = ({
         </WorkflowWrapper>
     );
 };
-
-const VerticalLine = styled.div`
-    border-left: 1px solid ${tokens.colors.interactive.primary__resting.hex};
-    height: 100%;
-    width: 1px;
-    margin-top: 5px;
-`;
-
-const DetailText = styled.div`
-    font-size: 14px;
-`;
-
-const WorklowIconAndLine = styled.div`
-    grid-column: col / span 1;
-    /* No clue why this works */
-    grid-row: 1 / span 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-`;
