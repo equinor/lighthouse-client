@@ -1,5 +1,6 @@
 import { httpClient, isProduction } from '../Functions';
 import { setSelectedFacility, setSelectedFusionContext } from '../Functions/Context';
+import { Facility, FusionContext } from '../Types/ClientContext';
 
 export async function setupContext(): Promise<void> {
     const { fusion } = httpClient();
@@ -14,8 +15,17 @@ export async function setupContext(): Promise<void> {
         : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
 
     const response = await fusion.get(`contexts/${fusionContextId}`);
-    const fusionContext = await response.json();
+    updateContext(await response.json());
+}
 
+function updateContext(fusionContext: FusionContext) {
     setSelectedFusionContext(fusionContext);
-    setSelectedFacility({ fusionContextId });
+    const facility: Partial<Facility> = {
+        facilityId: fusionContext.externalId,
+        fusionContextId: fusionContext.id,
+        title: fusionContext.title,
+        sapPlantId: fusionContext.value?.sapPlant,
+        procosysPlantId: fusionContext.value?.schema,
+    };
+    setSelectedFacility(facility);
 }
