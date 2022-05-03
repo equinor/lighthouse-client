@@ -4,7 +4,7 @@ export interface SidesheetApi {
     closeSidesheet: () => void;
     setIsMinimized: (isMinimized: boolean | ToggleFunction) => void;
     setWidth: (width: number) => void;
-    setTitle: React.Dispatch<React.SetStateAction<JSX.Element | null | undefined>>;
+    setTitle: React.Dispatch<React.SetStateAction<string | null | undefined>>;
     setMenuItems: (menuItems: MenuItem[]) => void;
 }
 
