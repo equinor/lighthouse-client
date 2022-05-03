@@ -6,7 +6,9 @@ import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
+import { BookmarkDropdown } from '../../../../../packages/BookmarksManager/src';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
+import { useBookmarkContext } from '../../Context/BookmarkContext';
 import { useDataContext } from '../../Context/DataProvider';
 import { useLocationContext } from '../../Context/LocationProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
@@ -22,17 +24,22 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar
+    TitleBar,
 } from './HeaderStyles';
 
 interface CompletionViewHeaderProps {
     title: string;
+    groupe: string | string[];
     tabs: TabsConfigItem[];
 }
 
 const ANALYTICS = 'analytics';
 
-export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps): JSX.Element => {
+export const CompletionViewHeader = ({
+    title,
+    tabs,
+    groupe,
+}: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
     const {
@@ -55,7 +62,7 @@ export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps)
     const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
 
     const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
-
+    const bookmarks = useBookmarkContext();
     return (
         <HeaderWrapper>
             <TitleBar>
@@ -171,13 +178,17 @@ export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps)
                             )}
                         </TabButton>
                     ) : (
-                        <TabButton
-                            onClick={toggleFilter}
-                            aria-selected={isFilterActive}
-                            title="PowerBi Filter"
-                        >
-                            {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
-                        </TabButton>
+                        <>
+                            <TabButton
+                                onClick={toggleFilter}
+                                aria-selected={isFilterActive}
+                                title="PowerBi Filter"
+                            >
+                                {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
+                            </TabButton>
+
+                            <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                        </>
                     )}
                 </RightSection>
             </ActionBar>
