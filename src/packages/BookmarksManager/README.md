@@ -26,7 +26,7 @@ const applyingABookmark = async (bookmarkId: string, appKey: string, groupName: 
 	return bookmark
 }
 
-useBookmarkEvents(handleSaveBookmarks, applyingABookmark)
+useBookmarkEvents({saveFn: handleSaveBookmarks, applyFn: applyingABookmark})
 return (
 	<BookmarkDropdown appKey="example1" subSystem="examples">
 )

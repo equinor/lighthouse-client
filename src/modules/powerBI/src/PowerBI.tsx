@@ -70,7 +70,7 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
 
     // Registering custom events for saving and applying bookmarks. Functions that are passed as arguments will
     // run once the events are fired.
-    useBookmarkEvents(captureAndPersistBookmark, applyBookmark);
+    useBookmarkEvents({ saveFn: captureAndPersistBookmark, applyFn: applyBookmark });
 
     // Used for printing pages to console in development can be controlled by option parameters.
     useGetPages(report, options?.pageLoad);
