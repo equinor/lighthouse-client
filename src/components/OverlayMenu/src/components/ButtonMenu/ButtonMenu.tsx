@@ -1,24 +1,21 @@
-import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import { MenuItem } from '@equinor/overlay-menu';
+import { Button, Icon, Menu } from '@equinor/eds-core-react';
 import { useRef, useState } from 'react';
-import styled from 'styled-components';
+import { MenuItem } from '../../types/menuItem';
+import { MenuText, Wrapper } from './buttonMenu.styles';
 
-interface IconMenuProps {
+interface MenuButtonProps {
     items: MenuItem[];
+    buttonText: string;
     onMenuOpen?: () => void;
     isDisabled?: boolean;
-    iconName?: string;
-    placement?: 'left' | 'bottom' | 'auto' | 'right' | 'top';
 }
 
-export const IconMenu = ({
+export const MenuButton = ({
     items,
+    buttonText,
     onMenuOpen,
-    iconName = 'more_vertical',
     isDisabled,
-    placement = 'left',
-}: IconMenuProps): JSX.Element => {
+}: MenuButtonProps): JSX.Element => {
     const anchorRef = useRef<HTMLButtonElement>(null);
     const [showMenu, setShowMenu] = useState(false);
 
@@ -29,27 +26,20 @@ export const IconMenu = ({
     return (
         <Wrapper>
             <Button
-                variant="ghost_icon"
                 ref={anchorRef}
                 id="anchor-complex"
                 aria-controls="menu-complex"
                 aria-haspopup="true"
-                disabled={items.length === 0 || isDisabled}
                 aria-expanded={showMenu}
+                disabled={isDisabled}
                 onClick={() => {
                     setShowMenu(true);
                     onMenuOpen && onMenuOpen();
                 }}
             >
-                <Icon
-                    name={iconName}
-                    color={
-                        items.length === 0
-                            ? tokens.colors.interactive.disabled__text.hex
-                            : tokens.colors.interactive.primary__resting.hex
-                    }
-                />
+                {buttonText} <Icon name="chevron_down" />
             </Button>
+
             {showMenu && (
                 <Menu
                     id="menu-complex"
@@ -57,10 +47,10 @@ export const IconMenu = ({
                     open={showMenu}
                     anchorEl={anchorRef.current}
                     onClose={closeMenu}
-                    placement={placement}
+                    placement="bottom"
                 >
                     {items.map((x, i) => {
-                        const Icon = () => x.icon ?? null;
+                        const Icon = () => x.icon ?? <span></span>;
                         return (
                             <Menu.Item
                                 disabled={x.isDisabled}
@@ -77,14 +67,3 @@ export const IconMenu = ({
         </Wrapper>
     );
 };
-
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    width: auto;
-`;
-
-const MenuText = styled(Typography)`
-    font-size: 16px;
-`;

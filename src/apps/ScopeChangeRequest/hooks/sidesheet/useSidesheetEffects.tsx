@@ -1,11 +1,11 @@
 import { deref, useAtom } from '@dbeining/react-atom';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { MenuItem } from '@equinor/overlay-menu';
 import { useEffect } from 'react';
 import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { unVoidRequest, voidRequest } from '../../api/ScopeChange/Request';
 import { sideSheetEditModeAtom } from '../../Atoms/editModeAtom';
-import { MenuItem } from '../../Components/MenuButton';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { useScopeChangeContext } from '../context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
