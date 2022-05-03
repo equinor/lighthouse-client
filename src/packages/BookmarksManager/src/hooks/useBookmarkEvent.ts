@@ -1,6 +1,6 @@
 import { EventHub } from '@equinor/Utils';
 import { useEffect } from 'react';
-import { CustomEventActions, deleteBookmark } from '..';
+import { CustomEventActions } from '..';
 import { ApplyEventArgs, SaveEventArgs } from '../types';
 /**
  * Hook for registering events on Event Hub.
