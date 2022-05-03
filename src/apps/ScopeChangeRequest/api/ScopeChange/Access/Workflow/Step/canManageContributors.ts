@@ -6,14 +6,15 @@ interface CanAddContributorParams {
     stepId: string;
 }
 
-export async function canAddContributor({
-    requestId,
-    stepId,
-}: CanAddContributorParams): Promise<boolean> {
+export async function canAddContributor(
+    { requestId, stepId }: CanAddContributorParams,
+    signal?: AbortSignal
+): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
         method: 'OPTIONS',
+        signal: signal,
     };
 
     const check = () =>

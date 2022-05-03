@@ -1,16 +1,13 @@
-import styled from 'styled-components';
 import { WorkOrderTable } from '../../../WorkOrderTable/WorkOrderTable';
 import { useParentSize } from '@cutting/use-get-parent-size';
 import { useRef } from 'react';
 import { getWorkOrderByIds } from '../../../../api/FAM/getWorkOrderById';
 import { useQuery } from 'react-query';
 import { CompactWorkOrderList } from '../../../WorkOrderTable/CompactWorkOrder/CompactWorkOrdersList';
+import { Loading, NoWorkOrders, Wrapper } from './workOrderTab.styles';
 
 export function WorkOrderTab(): JSX.Element {
-    const woNumbers = [
-        200001, 200002, 200003, 200004, 200005, 200006, 200007, 200008, 200009, 200010, 200043,
-        200042, 200041,
-    ];
+    const woNumbers = [];
 
     const { data, error } = useQuery(['WO', ...woNumbers], () => getWorkOrderByIds(woNumbers), {
         cacheTime: 5 * 1000 * 60,
@@ -28,11 +25,16 @@ export function WorkOrderTab(): JSX.Element {
         );
     }
 
+    if (woNumbers.length === 0) {
+        return (
+            <Loading>
+                <NoWorkOrders>There are no connected work orders</NoWorkOrders>
+            </Loading>
+        );
+    }
+
     return (
         <Wrapper>
-            <div style={{ fontSize: '16px', color: 'red' }}>
-                Real workorders but not connected to this request, for testing purposes
-            </div>
             <div ref={ref}>
                 {width > 960 ? (
                     <WorkOrderTable workOrders={data ?? []} />
@@ -43,17 +45,3 @@ export function WorkOrderTab(): JSX.Element {
         </Wrapper>
     );
 }
-
-const Wrapper = styled.div`
-    height: 80%;
-`;
-
-const Loading = styled.div`
-    width: 100%;
-    min-width: 750px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2em;
-`;

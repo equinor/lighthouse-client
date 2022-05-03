@@ -18,6 +18,7 @@ export interface Assignment {
     category: string;
     url: string;
     assignedTo: AssignedTo;
+    type: 'Internal' | 'External';
 }
 
 interface AssignedTo {

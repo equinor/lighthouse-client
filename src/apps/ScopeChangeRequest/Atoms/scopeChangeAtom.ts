@@ -9,4 +9,16 @@ export interface ScopeChangeAtom {
     actions: SidesheetApi;
 }
 
-export const scopeChangeAtom = Atom.of<ScopeChangeAtom | null>(null);
+export const scopeChangeAtom = Atom.of<ScopeChangeAtom>({
+    requestAccess: {
+        canDelete: false,
+        canGet: false,
+        canPatch: false,
+        canPost: false,
+        canPut: false,
+        canUnVoid: false,
+        canVoid: false,
+    },
+    actions: {} as SidesheetApi,
+    request: {} as ScopeChangeRequest,
+});

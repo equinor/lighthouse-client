@@ -40,28 +40,30 @@ export const MenuButton = ({
                 {buttonText} <Icon name="chevron_down" />
             </Button>
 
-            <Menu
-                id="menu-complex"
-                aria-labelledby="anchor-complex"
-                open={showMenu}
-                anchorEl={anchorRef.current}
-                onClose={closeMenu}
-                placement="bottom"
-            >
-                {items.map((x, i) => {
-                    const Icon = () => x.icon ?? <span></span>;
-                    return (
-                        <Menu.Item
-                            disabled={x.isDisabled}
-                            onClick={() => x.onClick && x.onClick()}
-                            key={x.label + i}
-                        >
-                            <Icon />
-                            <MenuText>{x.label}</MenuText>
-                        </Menu.Item>
-                    );
-                })}
-            </Menu>
+            {showMenu && (
+                <Menu
+                    id="menu-complex"
+                    aria-labelledby="anchor-complex"
+                    open={showMenu}
+                    anchorEl={(() => anchorRef.current)()}
+                    onClose={closeMenu}
+                    placement="bottom"
+                >
+                    {items.map((x, i) => {
+                        const Icon = () => x.icon ?? <span></span>;
+                        return (
+                            <Menu.Item
+                                disabled={x.isDisabled}
+                                onClick={() => x.onClick && x.onClick()}
+                                key={x.label + i}
+                            >
+                                <Icon />
+                                <MenuText>{x.label}</MenuText>
+                            </Menu.Item>
+                        );
+                    })}
+                </Menu>
+            )}
         </Wrapper>
     );
 };

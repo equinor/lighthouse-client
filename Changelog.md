@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
+## 1.1.0
+- [APPS] - Release Fusion PBI reports
+- [Portal] - Persisting menu state
+- [ScopeChange] - Refactor
+
+## 1.0.1
+
+### PROD
+- [Scopechange] bugfixes
+- [SWCR Garden] Fix scrolling when opening sidesheet
+- [Work order Garden] Fix scrolling when opening sidesheet
+
+## 1.0.0
+
+### PROD
+- [Scopechange] bugfixes
+- [Assignments] release
+- [Workorder] release
+- [SWCR] release
+- [Handover] release
+- [PipingAndHeatTrace] - Visual adjustments and Piping RFC (Unique HT) grouping
+
 ## 0.4.2
 
 ### PROD

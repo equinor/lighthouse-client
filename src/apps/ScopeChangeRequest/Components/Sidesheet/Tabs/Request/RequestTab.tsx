@@ -2,7 +2,7 @@ import { HotUpload } from '../../../Attachments/HotUpload';
 import { Attachments } from '../../../DetailView/Attachments';
 import { RelatedObjects } from '../../../DetailView/References';
 import { Workflow } from '../../../Workflow/Components/Workflow';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import {
     FlexColumn,
     FormWrapper,
@@ -73,7 +73,7 @@ export function RequestTab(): JSX.Element {
                     <InnerSection>
                         <SectionHeading>Attachments</SectionHeading>
                         {request.attachments.length === 0 && (
-                            <NoAttachments>No attachments has been uploaded yet.</NoAttachments>
+                            <NoAttachments>No attachments has been uploaded.</NoAttachments>
                         )}
                         {requestAccess.canPatch && <HotUpload />}
                         <Attachments attachments={request.attachments} requestId={request.id} />

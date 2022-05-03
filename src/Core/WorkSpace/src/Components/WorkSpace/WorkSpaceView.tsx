@@ -21,7 +21,7 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const { dataApi } = useDataContext();
 
     const navigate = useNavigate();
-    const { activeWidth, minWidth, isMinimized } = useSideSheet();
+    const { activeWidth, isMinimized } = useSideSheet();
 
     if (!viewIsActive) return <NoDataView />;
 

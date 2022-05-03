@@ -7,8 +7,7 @@ import { unVoidRequest, voidRequest } from '../../api/ScopeChange/Request';
 import { sideSheetEditModeAtom } from '../../Atoms/editModeAtom';
 import { MenuItem } from '../../Components/MenuButton';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
-import { useGetScopeChangeRequest } from '../queries/useGetScopeChangeRequest';
-import { useScopeChangeAccess } from '../queries/useScopeChangeAccess';
+import { useScopeChangeContext } from '../context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
 
 export function useSidesheetEffects(
@@ -16,8 +15,8 @@ export function useSidesheetEffects(
     toggleEditMode: () => void,
     requestId: string
 ): void {
-    const request = useGetScopeChangeRequest(requestId);
-    const { canPatch, canVoid, canUnVoid } = useScopeChangeAccess(requestId);
+    const { canPatch, canVoid, canUnVoid, title, isVoided, id, sequenceNumber } =
+        useScopeChangeContext((s) => ({ ...s.requestAccess, ...s.request }));
 
     const editMode = useAtom(sideSheetEditModeAtom);
 
@@ -42,7 +41,7 @@ export function useSidesheetEffects(
         }
 
         menuItems.push(
-            request?.isVoided
+            isVoided
                 ? {
                     label: 'Unvoid',
                     onClick: () => unVoidRequestMutation({ requestId }),
@@ -76,10 +75,10 @@ export function useSidesheetEffects(
     useEffect(() => {
         actions.setTitle(
             <>
-                {request?.sequenceNumber}, {request?.title}
+                {sequenceNumber}, {title}
             </>
         );
-    }, [request?.id]);
+    }, [id]);
 
     /** Only run once */
     useEffect(() => {

@@ -22,7 +22,7 @@ export const Container = styled.div`
 `;
 
 export const MainColumn = styled.div`
-    width: 70%;
+    width: 100%;
     margin: 8px 1.5rem;
     height: fit-content;
     display: flex;
@@ -30,7 +30,7 @@ export const MainColumn = styled.div`
 `;
 
 export const SideColumn = styled.div`
-    width: 30%;
+    width: 550px;
     height: fit-content;
     display: flex;
     flex-direction: column;

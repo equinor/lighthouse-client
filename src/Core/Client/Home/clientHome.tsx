@@ -1,13 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import { useSettings } from '../Hooks/useClientContext';
-import {
-    Container,
-    Content,
-    Header,
-    MainColumn,
-    SideColumn,
-    SideItem
-} from './clientHomeStyles';
+import { Container, Content, Header, MainColumn, SideColumn, SideItem } from './clientHomeStyles';
 import { PowerBIHome } from './PbiHome/PbiHome';
 import { YammerFeed } from './Sosial/yammer';
 import { Task } from './Task/Task';
@@ -23,7 +16,6 @@ export const ClientHome = (): JSX.Element => {
                 <Container>
                     <SideColumn>
                         <SideItem height={400}>
-                            {/* <AssignmentWrapper /> */}
                             <Task />
                         </SideItem>
                         <SideItem height={575}>
