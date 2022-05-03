@@ -14,6 +14,17 @@ export function getClientContext(): Readonly<ClientContext> {
 }
 
 /**
+ * Read an immutable fusionContextId
+ * @return {*}  {string}
+ */
+export function getFusionContextId(): Readonly<string> {
+    return (
+        readGlobalClientState((state) => state.context).fusionContext?.id ||
+        readGlobalClientState((state) => state.context).fusionContextId
+    );
+}
+
+/**
  * Read an immutable state of the AppConfig
  * @return {*}  {AppConfig}
  */
