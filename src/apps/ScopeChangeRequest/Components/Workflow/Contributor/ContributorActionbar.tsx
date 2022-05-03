@@ -9,22 +9,27 @@ import { useScopeChangeMutation } from '../../../hooks/React-Query/useScopechang
 import { scopeChangeQueries } from '../../../keys/queries';
 import { scopeChangeMutationKeys } from '../../../keys/scopeChangeMutationKeys';
 import { Contributor } from '../../../types/scopeChangeRequest';
+import { submitContribution } from '../../../api/ScopeChange/Workflow';
 
 interface ContributorActionBarProps {
     stepId: string;
     contributor: Contributor;
     setShowCommentField: () => void;
-    handleContribute: () => void;
 }
 
 export const ContributorActionBar = ({
     stepId,
     contributor,
     setShowCommentField,
-    handleContribute,
 }: ContributorActionBarProps): JSX.Element => {
     const requestId = useScopeChangeContext((s) => s.request.id);
     const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(requestId);
+
+    const { mutate } = useScopeChangeMutation(
+        requestId,
+        workflowMutationKeys.contributeKey(stepId, contributor.id),
+        submitContribution
+    );
 
     const { canAddContributorQuery } = scopeChangeQueries.workflowQueries;
     const { data: canRemoveContributor } = useQuery(canAddContributorQuery(requestId, stepId));
@@ -59,7 +64,15 @@ export const ContributorActionBar = ({
             actions.push({
                 label: ContributorActions.Confirm,
                 icon: <Icon name="check_circle_outlined" color="grey" />,
-                onClick: handleContribute,
+                onClick: () => {
+                    mutate({
+                        contributorId: contributor.id,
+                        requestId: requestId,
+                        stepId: stepId,
+                        suggestion: 'SuggestApproval',
+                        comment: '',
+                    });
+                },
                 isDisabled: !userCanContribute,
             });
             actions.push({

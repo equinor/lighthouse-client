@@ -17,29 +17,11 @@ interface ContributorRenderProps {
 }
 
 export const ContributorRender = ({ contributor, stepId }: ContributorRenderProps): JSX.Element => {
-    const { isCurrentStep, requestId } = useScopeChangeContext(({ request }) => ({
-        requestId: request.id,
+    const { isCurrentStep } = useScopeChangeContext(({ request }) => ({
         isCurrentStep: stepId === request.currentWorkflowStep?.id,
     }));
-    const [comment, setComment] = useState('');
-    const [showCommentField, setShowCommentField] = useState<boolean>(false);
-    const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(requestId);
-    const { mutate } = useScopeChangeMutation(
-        requestId,
-        workflowMutationKeys.contributeKey(stepId, contributor.id),
-        submitContribution
-    );
 
-    function handleSignClick() {
-        setShowCommentField(false);
-        mutate({
-            contributorId: contributor.id,
-            requestId: requestId,
-            stepId: stepId,
-            suggestion: comment.length > 0 ? 'Comment' : 'SuggestApproval',
-            comment: comment,
-        });
-    }
+    const [showCommentField, setShowCommentField] = useState<boolean>(false);
 
     const hideCommentField = () => setShowCommentField(false);
     const renderCommentField = () => setShowCommentField(true);
@@ -61,32 +43,73 @@ export const ContributorRender = ({ contributor, stepId }: ContributorRenderProp
                     <ContributorActionBar
                         stepId={stepId}
                         contributor={contributor}
-                        handleContribute={handleSignClick}
                         setShowCommentField={renderCommentField}
                     />
                 </RowContent>
                 {showCommentField && (
-                    <CommentFieldWrapper>
-                        <>
-                            Comment
-                            <TextField
-                                id="comment"
-                                value={comment}
-                                onChange={(e) => setComment(e.target.value)}
-                            />
-                        </>
-                        <ButtonContainer>
-                            <Button disabled={!comment} onClick={handleSignClick}>
-                                Confirm
-                            </Button>
-                            <Divider />
-                            <Button onClick={hideCommentField} variant="outlined">
-                                Cancel
-                            </Button>
-                        </ButtonContainer>
-                    </CommentFieldWrapper>
+                    <ContributorConfirmComment
+                        closeCommentField={hideCommentField}
+                        contributorId={contributor.id}
+                        stepId={stepId}
+                    />
                 )}
             </WorkflowRow>
         </WorkflowWrapper>
+    );
+};
+
+interface ContributorConfirmCommentProps {
+    stepId: string;
+    contributorId: string;
+    closeCommentField: () => void;
+}
+
+export const ContributorConfirmComment = ({
+    contributorId,
+    stepId,
+    closeCommentField,
+}: ContributorConfirmCommentProps): JSX.Element => {
+    const requestId = useScopeChangeContext((a) => a.request.id);
+
+    const [comment, setComment] = useState('');
+
+    const { workflowKeys: workflowMutationKeys } = scopeChangeMutationKeys(requestId);
+    const { mutate } = useScopeChangeMutation(
+        requestId,
+        workflowMutationKeys.contributeKey(stepId, contributorId),
+        submitContribution
+    );
+
+    function handleSignClick() {
+        closeCommentField();
+        mutate({
+            contributorId: contributorId,
+            requestId: requestId,
+            stepId: stepId,
+            suggestion: comment.length > 0 ? 'Comment' : 'SuggestApproval',
+            comment: comment,
+        });
+    }
+
+    return (
+        <CommentFieldWrapper>
+            <>
+                Comment
+                <TextField
+                    id="comment"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                />
+            </>
+            <ButtonContainer>
+                <Button disabled={!comment} onClick={handleSignClick}>
+                    Confirm
+                </Button>
+                <Divider />
+                <Button onClick={closeCommentField} variant="outlined">
+                    Cancel
+                </Button>
+            </ButtonContainer>
+        </CommentFieldWrapper>
     );
 };
