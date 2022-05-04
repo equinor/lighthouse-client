@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
 import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
 import { CriteriaSignState } from '../../../../../types/scopeChangeRequest';
-import { actionWithCommentAtom as actionWithCommentAtom } from '../WorkflowCriteria/WorkflowCriteria';
+import { actionWithCommentAtom } from '../../../Atoms/signingAtom';
 import { ButtonsContainer } from './signWithComment.styles';
 
 interface SignWithCommentProps {
@@ -52,12 +52,13 @@ export const SignWithComment = ({
             />
             <ButtonsContainer>
                 <Button
-                    onClick={() =>
+                    onClick={() => {
                         signMutation({
                             action: action,
                             comment: comment,
-                        })
-                    }
+                        });
+                        close();
+                    }}
                 >
                     {buttonText}
                 </Button>

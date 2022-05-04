@@ -1,11 +1,12 @@
-import { Connective, Expression, FamRequest, Operator } from '../../types/FAM/famQuery';
+import { Connective, Expression, FamRequest, Operator, Pagination } from '../../types/FAM/famQuery';
 
 export function generateFamRequest(
     columnNames: string[],
     connective: Connective,
-    expressions: Expression[]
+    expressions: Expression[],
+    pagination?: Pagination
 ): FamRequest {
-    return {
+    const req: FamRequest = {
         select: {
             columnNames: columnNames,
         },
@@ -14,6 +15,13 @@ export function generateFamRequest(
             expressions: expressions,
         },
     };
+
+    if (pagination) {
+        req.orderBy = { columnNames: columnNames };
+        req.pagination = pagination;
+    }
+
+    return req;
 }
 
 export function generateExpressions(
