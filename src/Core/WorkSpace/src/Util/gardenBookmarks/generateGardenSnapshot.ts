@@ -1,4 +1,4 @@
-import { GardenApi } from '../../../../../components/ParkView/Components/VirtualGarden/Container';
+import { GardenApi } from '../../../../../components/ParkView/Models/gardenApi';
 import { GardenState } from './gardenStateSnapshotAtom';
 
 export function generateGardenSnapshot(api: GardenApi): GardenState {

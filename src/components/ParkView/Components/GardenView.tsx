@@ -9,7 +9,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { defaultSortFunction } from '../Utils/utilities';
 import { PostGroupBySorting, PreGroupByFiltering } from '../Models/gardenOptions';
 import { DataSet } from '../Models/data';
-import { GardenApi, useGardenApi } from './VirtualGarden/Container';
+import { useGardenApi } from './VirtualGarden/Container';
+import { GardenApi } from '../Models/gardenApi';
 
 interface VirtualContainerProps {
     onGardenReady?: (api: GardenApi) => void;

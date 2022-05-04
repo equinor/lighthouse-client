@@ -2,29 +2,13 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { DataSet } from '../../Models/data';
+import { GardenApi } from '../../Models/gardenApi';
 import { PostGroupBySorting, PreGroupByFiltering } from '../../Models/gardenOptions';
 import { createGarden } from '../../Services/createGarden';
 import { FilterSelector } from '../GroupingSelector';
 import { ExpandProvider } from './ExpandProvider';
 import { Container } from './styles';
 import { VirtualGarden } from './VirtualGarden';
-
-interface GardenStates {
-    getCurrentGroupByKeys: () => string[];
-    getCustomGroupByKeys: () => Record<string, unknown>;
-    getCustomState: () => Record<string, unknown>;
-    getGardenKey: () => string;
-}
-interface GardenMutations {
-    setGroupKeys: (groupKeys: string[]) => void;
-    setCustomGroupKeys: (groupKeys: Record<string, unknown>) => void;
-    setGardenKey: (groupeKey?: string | undefined) => void;
-    setCustomState: (customState: Record<string, unknown>) => void;
-}
-export interface GardenApi {
-    mutations: GardenMutations;
-    states: GardenStates;
-}
 
 interface VirtualContainerProps {
     onGardenReady?: (api: GardenApi) => void;

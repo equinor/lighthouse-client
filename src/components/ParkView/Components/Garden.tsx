@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { ParkViewProvider } from '../Context/ParkViewProvider';
+import { GardenApi } from '../Models/gardenApi';
 import { GardenOptions } from '../Models/gardenOptions';
 import { GardenView } from './GardenView';
 import { NoGardenOptions } from './NoGardenOptions';
-import { GardenApi, VirtualContainer } from './VirtualGarden/Container';
+import { VirtualContainer } from './VirtualGarden/Container';
 
 interface GardenProps<T> {
     data: T[];
