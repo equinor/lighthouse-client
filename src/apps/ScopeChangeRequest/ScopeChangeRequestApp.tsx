@@ -23,7 +23,39 @@ export function setup(appApi: ClientApi): void {
         .registerStatusItems(statusBarConfig)
         .registerFilterOptions(filterConfig)
         .registerIdResolver(idResolver)
-        .registerPrefetchQueries(prefetchQueriesOptions);
+        .registerPrefetchQueries(prefetchQueriesOptions)
+        .registerPresets([
+            {
+                name: 'Electro',
+                type: 'garden',
+                filter: {
+                    filterGroups: [
+                        {
+                            name: 'State',
+                            values: ['Open'],
+                        },
+                    ],
+                },
+                garden: {
+                    gardenKey: 'CurrentStep',
+                },
+            },
+            {
+                name: 'Default',
+                type: 'garden',
+                filter: {
+                    filterGroups: [
+                        {
+                            name: 'State',
+                            values: ['Open'],
+                        },
+                    ],
+                },
+                garden: {
+                    gardenKey: 'CurrentStep',
+                },
+            },
+        ]);
     // .registerPowerBIOptions({
     //     pages: [
     //         {

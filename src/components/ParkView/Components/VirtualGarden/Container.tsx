@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
+
 import { useParkViewContext } from '../../Context/ParkViewProvider';
+import { DataSet } from '../../Models/data';
 import { PostGroupBySorting, PreGroupByFiltering } from '../../Models/gardenOptions';
 import { createGarden } from '../../Services/createGarden';
 import { FilterSelector } from '../GroupingSelector';
@@ -7,7 +9,29 @@ import { ExpandProvider } from './ExpandProvider';
 import { Container } from './styles';
 import { VirtualGarden } from './VirtualGarden';
 
-export const VirtualContainer = <T extends unknown>(): JSX.Element | null => {
+interface GardenStates {
+    getCurrentGroupByKeys: () => string[];
+    getCustomGroupByKeys: () => Record<string, unknown>;
+    getCustomState: () => Record<string, unknown>;
+}
+interface GardenMutations {
+    setGroupKeys: (groupKeys: string[]) => void;
+    setCustomGroupKeys: (groupKeys: Record<string, unknown>) => void;
+    setGardenKey: (groupeKey?: string | undefined) => void;
+    setCustomState: (customState: Record<string, unknown>) => void;
+}
+export interface GardenApi {
+    mutations: GardenMutations;
+    states: GardenStates;
+}
+
+interface VirtualContainerProps {
+    onGardenReady?: (api: GardenApi) => void;
+}
+
+export const VirtualContainer = <T extends unknown>({
+    onGardenReady,
+}: VirtualContainerProps): JSX.Element | null => {
     const [widths, setWidths] = useState<number[]>([]);
 
     const {
@@ -22,8 +46,12 @@ export const VirtualContainer = <T extends unknown>(): JSX.Element | null => {
         intercepters,
     } = useParkViewContext<T>();
 
-    const garden = useMemo(
-        () =>
+    const [garden, setGarden] = useState<DataSet<T>[]>([]);
+
+    const { createGardenApi } = useGardenApi();
+
+    useEffect(() => {
+        setGarden(
             createGarden({
                 dataSet: data,
                 groupingKeys: groupByKeys,
@@ -35,17 +63,20 @@ export const VirtualContainer = <T extends unknown>(): JSX.Element | null => {
                 customGroupByKeys: customGroupByKeys,
                 postGroupBySorting: intercepters?.postGroupSorting as PostGroupBySorting<T>,
                 preGroupFiltering: intercepters?.preGroupFiltering as PreGroupByFiltering<T>,
-            }),
-        [
-            data,
-            gardenKey,
-            groupByKeys,
-            status,
-            options?.groupDescriptionFunc,
-            fieldSettings,
-            customGroupByKeys,
-        ]
-    );
+            })
+        );
+
+        onGardenReady && onGardenReady(createGardenApi());
+    }, [
+        /** Should maybe be empty */
+        data,
+        gardenKey,
+        groupByKeys,
+        status,
+        options?.groupDescriptionFunc,
+        fieldSettings,
+        customGroupByKeys,
+    ]);
 
     const amountOfColumns = useMemo(() => garden.length, [garden]);
 
@@ -78,3 +109,38 @@ export const VirtualContainer = <T extends unknown>(): JSX.Element | null => {
         </Container>
     );
 };
+
+interface GardenApiConstructor {
+    createGardenApi: () => GardenApi;
+}
+
+export function useGardenApi(): GardenApiConstructor {
+    const {
+        groupByKeys,
+        customGroupByKeys,
+        setGroupKeys,
+        setCustomGroupKeys,
+        setGardenKey,
+        setCustomState,
+        customState,
+    } = useParkViewContext();
+
+    function createGardenApi(): GardenApi {
+        return {
+            mutations: {
+                setCustomGroupKeys: setCustomGroupKeys,
+                setCustomState: setCustomState,
+                setGardenKey: setGardenKey,
+                setGroupKeys: setGroupKeys,
+            },
+            states: {
+                getCurrentGroupByKeys: () => groupByKeys as string[],
+                getCustomGroupByKeys: () => customGroupByKeys,
+                getCustomState: () => customState,
+            },
+        };
+    }
+    return {
+        createGardenApi: createGardenApi,
+    };
+}
