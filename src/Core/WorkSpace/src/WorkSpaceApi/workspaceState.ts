@@ -9,7 +9,7 @@ import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
 import { TableOptions as ReactTableOptions } from 'react-table';
 import { Page } from '../Context/ViewProvider';
-import { DataSource, DataViewerProps, ViewOptions } from './WorkSpaceTypes';
+import { DataSource, DataViewerProps, PresetOption, ViewOptions } from './WorkSpaceTypes';
 
 export interface WorkSpaceState {
     [key: string]: WorkSpaceConfig<unknown>;
@@ -91,6 +91,7 @@ export interface WorkSpaceConfig<T> {
     statusFunc?: StatusFunc<T>;
     powerBiOptions?: PowerBiOptions;
     workflowEditorOptions?: WorkflowEditorOptions;
+    presetOptions?: PresetOption[];
 }
 
 export interface PowerBiOptions {
@@ -100,7 +101,7 @@ export interface PowerBiOptions {
     pages: Page[];
 }
 
-export interface TimeLineOptions {}
+export interface TimeLineOptions { }
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);
