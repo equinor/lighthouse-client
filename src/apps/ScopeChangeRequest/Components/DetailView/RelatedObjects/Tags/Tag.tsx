@@ -35,7 +35,7 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
                     - <div>{data?.Description}</div>
                 </TagText>
                 <MetaData>
-                    Comm pkg: {data?.CommPkgNo ?? 'none'} Tag register {data?.RegisterCode}
+                    Comm pkg: {data?.CommPkgNo ?? 'none'} | Tag register {data?.RegisterCode}
                 </MetaData>
             </TextWrapper>
         </Wrapper>
@@ -43,7 +43,7 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
 };
 
 const MetaData = styled.div`
-    font-size: 12px;
+    font-size: 10px;
     color: ${tokens.colors.text.static_icons__default.hex};
 `;
 

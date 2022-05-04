@@ -1,11 +1,19 @@
 import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
 
-import styled from 'styled-components';
 import { getDocumentById } from '../../api/STID/getDocumentById';
 import { transformIsoDate } from '../Workflow/Utils/dateFormatting';
 import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { useInfiniteCachedQuery } from '@equinor/hooks';
+import {
+    Wrapper,
+    IconWrapper,
+    Inline,
+    LineBreaks,
+    Details,
+    MetaData,
+    Link,
+} from './stidDocument.styles';
 
 interface StidDocumentProps {
     docNo: string;
@@ -50,45 +58,3 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
         </Wrapper>
     );
 };
-
-const IconWrapper = styled.div`
-    width: 24px;
-    height: 24px;
-`;
-
-const LineBreaks = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
-const Details = styled.div`
-    max-width: 500px;
-    font-size: 16px;
-    text-overflow: ellipsis;
-`;
-
-const MetaData = styled.div`
-    font-size: 10px;
-`;
-
-const Inline = styled.span`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-
-const Wrapper = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 650px;
-    padding: 0.2em 0em;
-    gap: 0.5em;
-`;
-
-const Link = styled.span`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-`;
