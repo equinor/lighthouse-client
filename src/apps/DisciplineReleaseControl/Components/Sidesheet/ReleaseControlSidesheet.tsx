@@ -16,6 +16,7 @@ import { useQuery } from 'react-query';
 import { useLocationKey } from '../../../../packages/Filter/Hooks/useLocationKey';
 import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
 import { TablesTab, WarningBanner, WarningBannerText } from './styles';
+import { WorkOrderTab } from './WorkOrderTab';
 
 interface ReleaseControlSidesheetProps {
     item: Pipetest;
@@ -64,6 +65,7 @@ export const ReleaseControlSidesheet = ({
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
                     <Tabs.Tab>Circuit diagram</Tabs.Tab>
+                    <Tabs.Tab>Work orders</Tabs.Tab>
                     <Tabs.Tab>Insulation</Tabs.Tab>
                     <Tabs.Tab>Checklists</Tabs.Tab>
                     {/* <Tabs.Tab>3D-visualisation</Tabs.Tab> */}
@@ -75,6 +77,9 @@ export const ReleaseControlSidesheet = ({
                             pipetests={data !== undefined ? data : []}
                             width={width}
                         />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <WorkOrderTab id={item.name} />
                     </Tabs.Panel>
 
                     <Tabs.Panel>
@@ -114,7 +119,7 @@ export const ReleaseControlSidesheet = ({
                         </TablesTab>
                     </Tabs.Panel>
                     {/* <Tabs.Panel>
-                        {activeTab === 3 && (
+                        {activeTab === 4 && (
                             <ThreeDModel>
                                 <Viewer
                                     echoPlantId={echoPlantId}

@@ -1,8 +1,8 @@
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { MenuItem } from '@equinor/overlay-menu';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { MenuItem } from '../Types/menuItem';
 
 interface IconMenuProps {
     items: MenuItem[];
@@ -50,29 +50,30 @@ export const IconMenu = ({
                     }
                 />
             </Button>
-
-            <Menu
-                id="menu-complex"
-                aria-labelledby="anchor-complex"
-                open={showMenu}
-                anchorEl={anchorRef.current}
-                onClose={closeMenu}
-                placement={placement}
-            >
-                {items.map((x, i) => {
-                    const Icon = () => x.icon ?? null;
-                    return (
-                        <Menu.Item
-                            disabled={x.isDisabled}
-                            onClick={() => x.onClick && x.onClick()}
-                            key={x.label + i}
-                        >
-                            <Icon />
-                            <MenuText>{x.label}</MenuText>
-                        </Menu.Item>
-                    );
-                })}
-            </Menu>
+            {showMenu && (
+                <Menu
+                    id="menu-complex"
+                    aria-labelledby="anchor-complex"
+                    open={showMenu}
+                    anchorEl={anchorRef.current}
+                    onClose={closeMenu}
+                    placement={placement}
+                >
+                    {items.map((x, i) => {
+                        const Icon = () => x.icon ?? null;
+                        return (
+                            <Menu.Item
+                                disabled={x.isDisabled}
+                                onClick={() => x.onClick && x.onClick()}
+                                key={x.label + i}
+                            >
+                                <Icon />
+                                <MenuText>{x.label}</MenuText>
+                            </Menu.Item>
+                        );
+                    })}
+                </Menu>
+            )}
         </Wrapper>
     );
 };
