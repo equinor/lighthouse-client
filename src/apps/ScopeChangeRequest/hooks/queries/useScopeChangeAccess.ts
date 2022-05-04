@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { swap } from '@dbeining/react-atom';
 import { useQuery } from 'react-query';
 import { OptionRequestResult } from '../../api/ScopeChange/Access/optionsRequestChecker';
+import { scopeChangeAtom } from '../../Atoms/scopeChangeAtom';
 import { scopeChangeQueries } from '../../keys/queries';
 
 export interface ScopeChangeAccess extends OptionRequestResult {
@@ -8,44 +9,35 @@ export interface ScopeChangeAccess extends OptionRequestResult {
     canUnVoid: boolean;
 }
 
-export function useScopeChangeAccess(requestId: string): ScopeChangeAccess {
-    const [access, setAccess] = useState<ScopeChangeAccess>({
-        canDelete: false,
-        canGet: false,
-        canPatch: false,
-        canPost: false,
-        canPut: false,
-        canVoid: false,
-        canUnVoid: false,
-    });
-
+export function useScopeChangeAccess(requestId: string): void {
     const { canUnvoidQuery, canVoidQuery, permissionsQuery } = scopeChangeQueries.permissionQueries;
 
-    const { data: userCanVoid } = useQuery(canVoidQuery(requestId));
-    const { data: userCanUnvoid } = useQuery(canUnvoidQuery(requestId));
+    useQuery({
+        ...canVoidQuery(requestId),
+        onSuccess: (canVoid) => {
+            swap(scopeChangeAtom, (old) => ({
+                ...old,
+                requestAccess: { ...old.requestAccess, canVoid: canVoid },
+            }));
+        },
+    });
+    useQuery({
+        ...canUnvoidQuery(requestId),
+        onSuccess: (canUnVoid) => {
+            swap(scopeChangeAtom, (old) => ({
+                ...old,
+                requestAccess: { ...old.requestAccess, canUnVoid: canUnVoid },
+            }));
+        },
+    });
 
-    const { data: requestAccess } = useQuery(permissionsQuery(requestId));
-
-    useEffect(() => {
-        setAccess({
-            canDelete: Boolean(requestAccess?.canDelete),
-            canGet: Boolean(requestAccess?.canGet),
-            canPatch: Boolean(requestAccess?.canPatch),
-            canPost: Boolean(requestAccess?.canPost),
-            canPut: Boolean(requestAccess?.canPut),
-            canUnVoid: Boolean(userCanUnvoid),
-            canVoid: Boolean(userCanVoid),
-        });
-    }, [
-        requestAccess?.canDelete,
-        requestAccess?.canGet,
-        requestAccess?.canPatch,
-        requestAccess?.canPost,
-        requestAccess?.canPut,
-        requestId,
-        userCanUnvoid,
-        userCanVoid,
-    ]);
-
-    return access;
+    useQuery({
+        ...permissionsQuery(requestId),
+        onSuccess: (data) => {
+            swap(scopeChangeAtom, (old) => ({
+                ...old,
+                requestAccess: { ...old.requestAccess, ...data },
+            }));
+        },
+    });
 }

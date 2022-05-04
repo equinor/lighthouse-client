@@ -4,8 +4,7 @@ import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/worksp
 import { OriginLink } from '../../Components/DetailView/OriginLink';
 import { WorkflowCompact } from './WorkflowCompact';
 import { getLastSigned } from './getLastSigned';
-import { Criteria, ScopeChangeRequest } from '../../types/scopeChangeRequest';
-import { Fragment } from 'react';
+import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { DateTime } from 'luxon';
 import { Atom, deref, swap } from '@dbeining/react-atom';
 import { EstimateBar } from '../../Components/WoProgressBars/EstimateBar';

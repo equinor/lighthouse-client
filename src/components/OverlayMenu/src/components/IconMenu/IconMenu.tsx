@@ -1,8 +1,8 @@
-import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
+import { Button, Icon, Menu } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { MenuItem } from '@equinor/overlay-menu';
 import { useRef, useState } from 'react';
-import styled from 'styled-components';
+import { MenuItem } from '../../types/menuItem';
+import { MenuText, Wrapper } from './iconMenu.styles';
 
 interface IconMenuProps {
     items: MenuItem[];
@@ -50,6 +50,7 @@ export const IconMenu = ({
                     }
                 />
             </Button>
+
             {showMenu && (
                 <Menu
                     id="menu-complex"
@@ -77,14 +78,3 @@ export const IconMenu = ({
         </Wrapper>
     );
 };
-
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    width: auto;
-`;
-
-const MenuText = styled(Typography)`
-    font-size: 16px;
-`;

@@ -14,7 +14,7 @@ import { Area as AreaComp } from './RelatedObjects/Area/Area';
 import { Discipline as DisciplineComp } from './RelatedObjects/Discipline/Discipline';
 import { CommPkg } from './RelatedObjects/CommPkg/CommPkg';
 import { System as SystemComp } from './RelatedObjects/Systems/System';
-import { StidDocument as StidVisual } from '../AdvancedDocumentSearch';
+import { StidDocument } from '../StidDocument/StidDocument';
 
 interface RelatedObjectsProps {
     systems: ScopeChangeSystem[];
@@ -73,7 +73,7 @@ export const RelatedObjects = ({
                 <ChevronList title={`Documents (${documents.length})`}>
                     <>
                         {documents.map((x) => (
-                            <StidVisual key={x.stidDocumentNumber} docNo={x.stidDocumentNumber} />
+                            <StidDocument key={x.stidDocumentNumber} docNo={x.stidDocumentNumber} />
                         ))}
                     </>
                 </ChevronList>
