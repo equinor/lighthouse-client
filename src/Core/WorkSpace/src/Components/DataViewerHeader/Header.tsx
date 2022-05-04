@@ -12,6 +12,7 @@ import { useLocationContext } from '../../Context/LocationProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
 import { TabsConfigItem } from '../../Util/tabsConfig';
+import { Presets } from '../Presets/Presets';
 import { TabButton } from '../ToggleButton';
 import {
     ActionBar,
@@ -22,7 +23,7 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar
+    TitleBar,
 } from './HeaderStyles';
 
 interface CompletionViewHeaderProps {
@@ -91,6 +92,7 @@ export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps)
                     )}
                 </LeftSection>
                 <RightSection>
+                    <Presets />
                     {factory && (
                         <>
                             <TabButton
