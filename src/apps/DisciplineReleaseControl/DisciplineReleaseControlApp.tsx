@@ -91,11 +91,14 @@ export function setup(appApi: ClientApi): void {
                 name: 'System',
                 valueFormatter: ({ name }) => name.substring(0, 2),
             },
-
             {
                 name: 'Priority',
                 valueFormatter: ({ commPkPriority1 }) =>
                     commPkPriority1 !== '' ? commPkPriority1 : 'Unknown',
+            },
+            {
+                name: 'Location',
+                valueFormatter: ({ location }) => location,
             },
             {
                 name: 'Due date time period',
@@ -153,6 +156,7 @@ export function setup(appApi: ClientApi): void {
             { key: 'commPkPriority1', title: 'Priority', width: 90 },
             { key: 'checkLists', title: 'Checklist status', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
+            { key: 'location', title: 'Location', width: 200 },
         ],
         customCellView: [
             {
@@ -223,7 +227,7 @@ export function setup(appApi: ClientApi): void {
                 accessor: 'heatTraces',
                 Header: 'HT cables',
                 Aggregated: () => null,
-                width: 1135,
+                width: 935,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return (
