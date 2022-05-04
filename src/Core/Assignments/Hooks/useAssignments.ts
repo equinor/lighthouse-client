@@ -24,7 +24,10 @@ export function useAssignments(): Assignments {
     } = useQuery<unknown, unknown, Assignment[]>(getProCoSysAssignments());
 
     const assignments = useMemo(
-        () => [...(data ?? []), ...(procosysTasks ?? [])],
+        () =>
+            [...(data ?? []), ...(procosysTasks ?? [])]
+                .filter(({ state }) => state === 'Active')
+                .sort((a, b) => (a.created < b.created ? 1 : a.created > b.created ? -1 : 0)),
         [procosysTasks, data]
     );
 

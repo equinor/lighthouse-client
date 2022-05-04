@@ -1,5 +1,5 @@
 export type Connective = 'And' | 'Or';
-export type Operator = 'Equals';
+export type Operator = 'Equals' | 'Like';
 
 export interface Select {
     columnNames: string[];
@@ -20,4 +20,11 @@ export interface Filter {
 export interface FamRequest {
     select: Select;
     filter: Filter;
+    orderBy?: Select;
+    pagination?: Pagination;
+}
+
+export interface Pagination {
+    skip: number;
+    take: number;
 }

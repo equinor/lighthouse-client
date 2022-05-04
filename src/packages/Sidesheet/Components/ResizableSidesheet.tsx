@@ -1,16 +1,17 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { getApps } from '../../../apps/apps';
-import { IconMenu, MenuItem } from '../../../apps/ScopeChangeRequest/Components/MenuButton';
+
 import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
 import { useSideSheet } from '../context/sidesheetContext';
 import {
     ToggleFunction,
-    useInternalSidesheetFunction
+    useInternalSidesheetFunction,
 } from '../Hooks/useInternalSidesheetFunction';
 
 const DEFAULT_TAB_COLOUR = '#ff9900';
