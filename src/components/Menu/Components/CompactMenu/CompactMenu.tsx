@@ -1,6 +1,7 @@
 import { Button, Divider } from '@equinor/eds-core-react';
 import { useClientContext } from '@equinor/portal-client';
 import { useMemo } from 'react';
+import { useLocation } from 'react-router';
 import Icon from '../../../Icon/Icon';
 import { useMenuContext } from '../../Context/MenuContext';
 import { groupeByKey } from '../../Utils/utils';
@@ -22,7 +23,7 @@ export const CompactMenu = (): JSX.Element => {
     const { registry } = useClientContext();
 
     const { apps, appGroups } = registry;
-
+    const location = useLocation();
     const { setExpandMenuActive, setActiveGroupe, activeGroupe } = useMenuContext();
 
     const GroupedMenu = useMemo(() => groupeByKey(apps, 'groupe'), [apps]);
@@ -43,6 +44,7 @@ export const CompactMenu = (): JSX.Element => {
                                 <GroupItem
                                     key={`item-${key}`}
                                     appGroup={appGroups[key]}
+                                    active={location.pathname.includes(`${key}`)}
                                     onClick={() => {
                                         setActiveGroupe(key);
                                     }}
