@@ -14,7 +14,11 @@ type BookmarkDropdownProps = {
     subSystem: string;
     style?: JSX.IntrinsicElements['div']['style'];
 };
-export const BookmarkDropdown = ({ appKey, subSystem, style }: BookmarkDropdownProps) => {
+export const BookmarkDropdown = ({
+    appKey,
+    subSystem,
+    style,
+}: BookmarkDropdownProps): JSX.Element => {
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
     const anchorRef = useRef<HTMLDivElement>(null);

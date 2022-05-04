@@ -4,22 +4,24 @@ import { bookmarkEvents } from '../../utils';
 import {
     CreateNewBookmarkWrapper,
     CreatingNewBookmarkWrapper,
+    CreatingNewIcons,
     TitleInput,
 } from './BookmarkDropdown.styles';
+
 type CreateNewBookmarkProps = {
     appKey: string;
     subSystem: string;
 };
-export const CreateNewBookmark = ({ appKey, subSystem }: CreateNewBookmarkProps) => {
+export const CreateNewBookmark = ({ appKey, subSystem }: CreateNewBookmarkProps): JSX.Element => {
     const [isCreatingNew, setIsCreatingNew] = useState<boolean>(false);
     const [title, setTitle] = useState<string>('');
     const { saveBookmark } = bookmarkEvents;
     if (!isCreatingNew) {
         return (
             <CreateNewBookmarkWrapper>
-                <div>Create new bookmark</div>
+                <div>New saved bookmark</div>
                 <ClickableIcon
-                    name="chevron_right"
+                    name="add"
                     onClick={(e) => {
                         setIsCreatingNew(true);
                         e.stopPropagation();
@@ -30,11 +32,13 @@ export const CreateNewBookmark = ({ appKey, subSystem }: CreateNewBookmarkProps)
     } else {
         return (
             <CreatingNewBookmarkWrapper>
-                <TitleInput
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Bookmark title"
-                />
                 <div>
+                    <TitleInput
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="Bookmark title"
+                    />
+                </div>
+                <CreatingNewIcons>
                     <ClickableIcon
                         name="save"
                         onClick={(e) => {
@@ -56,7 +60,7 @@ export const CreateNewBookmark = ({ appKey, subSystem }: CreateNewBookmarkProps)
                             e.stopPropagation();
                         }}
                     />
-                </div>
+                </CreatingNewIcons>
             </CreatingNewBookmarkWrapper>
         );
     }

@@ -8,7 +8,7 @@ type BookmarkListProps = {
     appKey: string;
 };
 
-export const BookmarkList = ({ appKey }: BookmarkListProps) => {
+export const BookmarkList = ({ appKey }: BookmarkListProps): JSX.Element => {
     const { bookmarks, isFetching, error } = useGetBookmarks(appKey);
     const deleteBookmark = useDeleteBookmark();
 
@@ -34,6 +34,7 @@ export const BookmarkList = ({ appKey }: BookmarkListProps) => {
                                     });
                                     e.stopPropagation();
                                 }}
+                                title={bookmark.name}
                             >
                                 {bookmark.name}
                             </BookmarkEntry>
