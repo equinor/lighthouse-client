@@ -2,7 +2,7 @@ import { swap } from '@dbeining/react-atom';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from 'react-query';
-import styled from 'styled-components';
+
 import { unsignCriteria } from '../../../../api/ScopeChange/Workflow';
 import { IconMenu, MenuButton, MenuItem } from '../../../MenuButton';
 import { CriteriaActions } from '../../Types/actions';
@@ -14,6 +14,7 @@ import { scopeChangeQueries } from '../../../../keys/queries';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
 import { actionWithCommentAtom } from '../../Atoms/signingAtom';
 import { CriteriaSignState } from '../../../../types/scopeChangeRequest';
+import { ButtonContainer } from '../../Contributor/contributor.styles';
 
 interface CriteriaActionBarProps {
     criteriaId: string;
@@ -155,8 +156,3 @@ export const CriteriaActionBar = ({
         </ButtonContainer>
     );
 };
-
-const ButtonContainer = styled.span`
-    display: flex;
-    align-items: center;
-`;

@@ -4,6 +4,7 @@ import { SignWithComment } from './SignWithComment/SignWithComment';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { actionWithCommentAtom } from '../../Atoms/signingAtom';
 import { ReassignBar } from '../../ReassignBar/ReassignBar';
+import styled from 'styled-components';
 
 export const CriteriaActionOverlay = (): JSX.Element | null => {
     const state = useAtom(actionWithCommentAtom);
@@ -14,17 +15,8 @@ export const CriteriaActionOverlay = (): JSX.Element | null => {
     }
     return (
         <>
-            {state.action === 'Approved' ||
-                state.action === 'Rejected' ||
-                state.action === 'Disputed' ? (
-                <SignWithComment
-                    action={state.action}
-                    buttonText={state.buttonText}
-                    criteriaId={state.criteriaId}
-                    stepId={state.stepId}
-                />
-            ) : (
-                <div style={{ display: 'flex', gap: '2em', width: '100%' }}>
+            {state.action === 'Reassign' ? (
+                <ButtonContainer>
                     <ReassignBar
                         criteriaId={state.criteriaId}
                         requestId={requestId}
@@ -36,8 +28,21 @@ export const CriteriaActionOverlay = (): JSX.Element | null => {
                     >
                         Cancel
                     </Button>
-                </div>
+                </ButtonContainer>
+            ) : (
+                <SignWithComment
+                    action={state.action}
+                    buttonText={state.buttonText}
+                    criteriaId={state.criteriaId}
+                    stepId={state.stepId}
+                />
             )}
         </>
     );
 };
+
+const ButtonContainer = styled.div`
+    display: flex;
+    gap: 2em;
+    width: 100%;
+`;

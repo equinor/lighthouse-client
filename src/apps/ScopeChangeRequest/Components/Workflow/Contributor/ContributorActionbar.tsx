@@ -1,6 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
 import { useQuery, useQueryClient } from 'react-query';
-import styled from 'styled-components';
+
 import { removeContributor } from '../../../api/ScopeChange/Workflow/removeContributor';
 import { MenuItem, MenuButton, IconMenu } from '../../MenuButton';
 import { ContributorActions } from '../Types/actions';
@@ -10,6 +10,7 @@ import { scopeChangeQueries } from '../../../keys/queries';
 import { scopeChangeMutationKeys } from '../../../keys/scopeChangeMutationKeys';
 import { Contributor } from '../../../types/scopeChangeRequest';
 import { submitContribution } from '../../../api/ScopeChange/Workflow';
+import { ButtonContainer } from './contributor.styles';
 
 interface ContributorActionBarProps {
     stepId: string;
@@ -41,6 +42,13 @@ export const ContributorActionBar = ({
     const { data: userCanContribute } = useQuery(
         canContributeQuery(requestId, stepId, contributor.id)
     );
+
+    const cancelNewOptionsCall = async () => {
+        await queryClient.cancelQueries(
+            canContributeQuery(requestId, stepId, contributor.id).queryKey
+        );
+    };
+
     const { mutate: removeContributorAsync } = useScopeChangeMutation(
         requestId,
         workflowMutationKeys.deleteContributorKey(stepId),
@@ -51,11 +59,6 @@ export const ContributorActionBar = ({
             },
         }
     );
-    const cancelNewOptionsCall = async () => {
-        await queryClient.cancelQueries(
-            canContributeQuery(requestId, stepId, contributor.id).queryKey
-        );
-    };
 
     function makeContributorActions(): MenuItem[] {
         const actions: MenuItem[] = [];
@@ -122,7 +125,3 @@ export const ContributorActionBar = ({
         </ButtonContainer>
     );
 };
-const ButtonContainer = styled.span`
-    display: flex;
-    align-items: center;
-`;

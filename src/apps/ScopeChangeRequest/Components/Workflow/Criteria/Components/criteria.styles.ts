@@ -14,7 +14,6 @@ export const DetailText = styled.div`
 
 export const WorklowIconAndLine = styled.div`
     grid-column: col / span 1;
-    /* No clue why this works */
     grid-row: 1 / span 100;
     display: flex;
     flex-direction: column;
