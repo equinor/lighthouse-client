@@ -4,7 +4,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useQuery } from 'react-query';
 
 import { unsignCriteria } from '../../../../api/ScopeChange/Workflow';
-import { IconMenu, MenuButton, MenuItem } from '../../../MenuButton';
+import { IconMenu, MenuButton, MenuItem } from '@equinor/overlay-menu';
 import { CriteriaActions } from '../../Types/actions';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { useWorkflowSigning } from '../../../../hooks/mutations/useWorkflowSigning';
