@@ -12,7 +12,7 @@ export const FavoriteHeader = styled(Header)`
     > svg {
         padding: 1rem;
     }
-    font-size: 13px;
+    font-size: 14px;
     border: none;
     display: flex;
     justify-content: center;

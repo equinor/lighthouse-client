@@ -31,7 +31,7 @@ const ClientTopBar = (): JSX.Element => {
                     }}
                     style={{ cursor: 'pointer' }}
                 >
-                    <Icon color={tokens.colors.interactive.primary__resting.hex} name="apps" />
+                    <Icon color={tokens.colors.interactive.primary__resting.hex} name="menu" />
                 </div>
                 <Logo />
             </Header>
