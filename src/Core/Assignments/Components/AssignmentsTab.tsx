@@ -2,13 +2,13 @@ import { Chip, Checkbox, CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect, useMemo, useState } from 'react';
 
-import { IconMenu } from '../../../apps/ScopeChangeRequest/Components/MenuButton';
 import { AssignmentCard } from './AssignmentsCard';
 import { ActiveOrigins, Assignments, Header, Transition } from './assignmentsTab.styles';
 import { useAssignments } from '../Hooks/useAssignments';
 import { getCountForAppName } from '../../../components/ActionCenter/Utils/getCount';
 import { GroupedAssignments } from '../../../components/ActionCenter/GroupedAssignments';
 import styled from 'styled-components';
+import { IconMenu } from '@equinor/overlay-menu';
 
 export function AssignmentsTab(): JSX.Element {
     const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
