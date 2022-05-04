@@ -2,7 +2,6 @@ import { Icon } from '@equinor/eds-core-react';
 import { useQuery, useQueryClient } from 'react-query';
 
 import { removeContributor } from '../../../api/ScopeChange/Workflow/removeContributor';
-import { MenuItem, MenuButton, IconMenu } from '../../MenuButton';
 import { ContributorActions } from '../Types/actions';
 import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../../../hooks/React-Query/useScopechangeMutation';
@@ -11,6 +10,7 @@ import { scopeChangeMutationKeys } from '../../../keys/scopeChangeMutationKeys';
 import { Contributor } from '../../../types/scopeChangeRequest';
 import { submitContribution } from '../../../api/ScopeChange/Workflow';
 import { ButtonContainer } from './contributor.styles';
+import { IconMenu, MenuButton, MenuItem } from '@equinor/overlay-menu';
 
 interface ContributorActionBarProps {
     stepId: string;
