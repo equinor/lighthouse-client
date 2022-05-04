@@ -35,10 +35,15 @@ export const CriteriaRender = ({
     order,
     stepId,
 }: CriteriaRenderProps): JSX.Element => {
-    const { workflowStepsLength } = useScopeChangeContext(({ request: { id, workflowSteps } }) => ({
-        requestId: id,
-        workflowStepsLength: workflowSteps.length,
-    }));
+    const { workflowStepsLength, isPast } = useScopeChangeContext(
+        ({ request: { id, workflowSteps, currentWorkflowStep } }) => ({
+            requestId: id,
+            workflowStepsLength: workflowSteps.length,
+            isPast:
+                (currentWorkflowStep?.order ?? 0) >
+                (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),
+        })
+    );
 
     const state = useAtom(actionWithCommentAtom);
 
@@ -52,7 +57,7 @@ export const CriteriaRender = ({
             <WorklowIconAndLine>
                 <WorkflowIcon status={stepStatus} number={order + 1} />
 
-                {stepIndex !== workflowStepsLength - 1 && <VerticalLine />}
+                {stepIndex !== workflowStepsLength - 1 && <VerticalLine active={isPast} />}
             </WorklowIconAndLine>
             <WorkflowRow>
                 <RowContent>

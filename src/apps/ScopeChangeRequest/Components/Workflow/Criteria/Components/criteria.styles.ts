@@ -1,8 +1,13 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const VerticalLine = styled.div`
-    border-left: 1px solid ${tokens.colors.interactive.primary__resting.hex};
+interface VerticalLineProps {
+    active: boolean;
+}
+
+export const VerticalLine = styled.div<VerticalLineProps>`
+    border-left: 1px solid
+        ${({ active }) => (active ? tokens.colors.interactive.primary__resting.hex : '#DCDCDC')};
     height: 100%;
     width: 1px;
     margin-top: 5px;
