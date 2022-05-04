@@ -53,7 +53,7 @@ export const AssignmentCard = ({ assignment }: AssignmentCardProps): JSX.Element
                     </svg>
                 </div>
                 <DetailText>
-                    <NotificationTitle>{assignment.title}</NotificationTitle>
+                    <NotificationTitle>{assignment.state}</NotificationTitle>
                 </DetailText>
             </LeftSection>
             <RightSection>
