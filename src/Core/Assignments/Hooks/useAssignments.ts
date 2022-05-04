@@ -25,9 +25,9 @@ export function useAssignments(): Assignments {
 
     const assignments = useMemo(
         () =>
-            [...(data ?? []), ...(procosysTasks ?? [])].sort((a, b) =>
-                a.created < b.created ? 1 : a.created > b.created ? -1 : 0
-            ),
+            [...(data ?? []), ...(procosysTasks ?? [])]
+                .filter(({ state }) => state === 'Active')
+                .sort((a, b) => (a.created < b.created ? 1 : a.created > b.created ? -1 : 0)),
         [procosysTasks, data]
     );
 
