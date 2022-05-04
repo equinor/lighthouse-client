@@ -13,6 +13,7 @@ interface GardenStates {
     getCurrentGroupByKeys: () => string[];
     getCustomGroupByKeys: () => Record<string, unknown>;
     getCustomState: () => Record<string, unknown>;
+    getGardenKey: () => string;
 }
 interface GardenMutations {
     setGroupKeys: (groupKeys: string[]) => void;
@@ -123,6 +124,7 @@ export function useGardenApi(): GardenApiConstructor {
         setGardenKey,
         setCustomState,
         customState,
+        gardenKey,
     } = useParkViewContext();
 
     function createGardenApi(): GardenApi {
@@ -137,6 +139,7 @@ export function useGardenApi(): GardenApiConstructor {
                 getCurrentGroupByKeys: () => groupByKeys as string[],
                 getCustomGroupByKeys: () => customGroupByKeys,
                 getCustomState: () => customState,
+                getGardenKey: () => gardenKey,
             },
         };
     }

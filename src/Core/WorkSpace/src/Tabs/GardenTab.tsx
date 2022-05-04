@@ -1,12 +1,13 @@
-import { Atom, deref, swap } from '@dbeining/react-atom';
+import { swap } from '@dbeining/react-atom';
 import { Garden } from '../../../../components/ParkView/Components/Garden';
 import { GardenApi } from '../../../../components/ParkView/Components/VirtualGarden/Container';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
-import { useWorkSpaceKey } from '../Components/DefaultView/Hooks/useWorkspaceKey';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
-import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
-import { CoreContext } from '../WorkSpaceApi/workspaceState';
+import { gardenApiAtom } from '../Util/gardenBookmarks/gardenApiAtom';
+import { gardenStateSnapshotAtom } from '../Util/gardenBookmarks/gardenStateSnapshotAtom';
+import { generateGardenSnapshot } from '../Util/gardenBookmarks/generateGardenSnapshot';
+import { interceptGardenOptions } from '../Util/gardenBookmarks/interceptGardenOptions';
 
 export const GardenTab = (): JSX.Element => {
     const {
@@ -14,18 +15,25 @@ export const GardenTab = (): JSX.Element => {
     } = useFilterApiContext();
     const data = getFilteredData();
 
-    const { name } = useWorkSpace();
+    const { gardenOptions } = useDataContext();
+
+    if (!gardenOptions) return <></>;
 
     return (
         <>
             <WorkspaceFilter />
             <Garden
                 data={data}
-                gardenOptions={deref(CoreContext)[name].gardenOptions}
-                onGardenReady={(api) => swap(gardenApiAtom, () => api)}
+                gardenOptions={interceptGardenOptions(gardenOptions)}
+                onGardenReady={(api) => {
+                    swap(gardenApiAtom, () => api);
+                }}
+                onGardenUnmount={saveGardenSnapshot}
             />
         </>
     );
 };
 
-export const gardenApiAtom = Atom.of<GardenApi | null>(null);
+function saveGardenSnapshot(api: GardenApi) {
+    swap(gardenStateSnapshotAtom, () => generateGardenSnapshot(api));
+}

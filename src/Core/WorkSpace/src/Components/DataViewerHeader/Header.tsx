@@ -1,6 +1,5 @@
-import { deref } from '@dbeining/react-atom';
 import { useFactory } from '@equinor/DataFactory';
-import { Chip, CircularProgress } from '@equinor/eds-core-react';
+import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
@@ -12,9 +11,8 @@ import { useDataContext } from '../../Context/DataProvider';
 import { useLocationContext } from '../../Context/LocationProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
-import { gardenApiAtom } from '../../Tabs/GardenTab';
 import { TabsConfigItem } from '../../Util/tabsConfig';
-import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
+import { Presets } from '../Presets/Presets';
 import { TabButton } from '../ToggleButton';
 import {
     ActionBar,
@@ -188,48 +186,3 @@ export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps)
         </HeaderWrapper>
     );
 };
-
-export function Presets(): JSX.Element {
-    const { presetOptions } = useWorkSpace();
-
-    const { activeTab } = useLocationContext();
-    const {
-        operations: { setFilterState },
-    } = useFilterApiContext();
-
-    function handleClick(presetName: string) {
-        const preset = presetOptions?.find(({ name }) => name === presetName);
-        if (!preset) return;
-
-        setFilterState(preset.filter.filterGroups);
-
-        switch (preset.type) {
-            case 'garden': {
-                const gardenApi = deref(gardenApiAtom);
-                gardenApi?.mutations.setGardenKey(preset.garden.gardenKey);
-
-                break;
-            }
-
-            case 'table': {
-                break;
-            }
-        }
-    }
-
-    return (
-        <>
-            {presetOptions
-                ?.filter(({ type }) => type === activeTab)
-                .map((x) => (
-                    <TabButton
-                        aria-selected={false}
-                        onClick={() => handleClick(x.name)}
-                        key={x.name}
-                    >
-                        <Chip>{x.name}</Chip>
-                    </TabButton>
-                ))}
-        </>
-    );
-}
