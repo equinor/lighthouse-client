@@ -8,7 +8,6 @@ import {
     Contributor as ContributorInterface,
     WorkflowStep,
 } from '../../../../types/scopeChangeRequest';
-import { MenuButton, MenuItem, IconMenu } from '../../../MenuButton/';
 import { ContributorActions } from '../../Types/actions';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { submitContribution } from '../../../../api/ScopeChange/Workflow';
@@ -19,6 +18,7 @@ import { CriteriaStatus } from '../../Criteria/Components/CriteriaDetail';
 import { removeContributor } from '../../../../api/ScopeChange/Workflow/removeContributor';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
 import { scopeChangeQueries } from '../../../../keys/queries';
+import { IconMenu, MenuButton, MenuItem } from '@equinor/overlay-menu';
 
 interface ContributorsProps {
     step: WorkflowStep;

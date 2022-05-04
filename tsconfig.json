@@ -110,6 +110,9 @@
             ],
             "@equinor/lighthouse-hooks": [
                 "./src/hooks"
+            ],
+            "@equinor/overlay-menu": [
+                "./src/components/OverlayMenu"
             ]
         }
     },
