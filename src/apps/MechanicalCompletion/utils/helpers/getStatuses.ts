@@ -11,7 +11,7 @@ export const getCommissioningStatus = (mcPackage: McPackage): CommissioningStatu
         return 'TAC Accepted';
     } else if (mcPackage.tacIsShipped) {
         return 'TAC Shipped';
-    } else if (mcPackage.rfccIsAccepded) {
+    } else if (mcPackage.rfccIsAccepted) {
         return 'RFCC Accepted';
     } else if (mcPackage.rfccIsRejected) {
         return 'RFCC Rejected';
