@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { getApps } from '../../../apps/apps';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
 import { useSideSheet } from '../Hooks/useSideSheet';
+import { SidesheetApi } from '../Types/SidesheetApi';
 
 const DEFAULT_TAB_COLOUR = '#ff9900';
 
@@ -21,14 +22,18 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     };
 
     // Header stuff
-    const [title, setTitle] = useState<JSX.Element | null>();
+    const [title, setTitle] = useState<JSX.Element | string | null>();
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
 
-    const actions = {
+    const handleSetTitle = (value: JSX.Element | string | null | undefined) => {
+        setTitle(value);
+    };
+
+    const actions: SidesheetApi = {
         closeSidesheet: closeSidesheet,
         setIsMinimized: setIsMinimized,
         setWidth: setWidth,
-        setTitle: setTitle,
+        setTitle: handleSetTitle,
         setMenuItems: setMenuItems,
     };
 
