@@ -49,3 +49,9 @@ export const AdvancedSearch = styled.div`
     font-size: 14px;
     cursor: pointer;
 `;
+
+export const SearchField = styled.div`
+    display: flex;
+    align-items: flex-end;
+    gap: 1em;
+`;
