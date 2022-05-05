@@ -1,9 +1,9 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
-import { FilterGroup } from '../../../../packages/Filter/Hooks/useFilterApi';
-import { FilterOptions } from '../../../../packages/Filter/Types';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
+import { FilterOptions, FilterGroup } from '@equinor/filter';
+import { GardenOptions } from '@equinor/ParkView';
+import { SidesheetApi } from '@equinor/sidesheet';
+
 import {
     PowerBiOptions,
     PrefetchQueriesOptions,

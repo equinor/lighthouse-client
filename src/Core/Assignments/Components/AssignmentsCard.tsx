@@ -1,6 +1,4 @@
 import { DateTime } from 'luxon';
-import { useNavigate } from 'react-router';
-import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
 import { handleActionClick } from '../Functions/handleActionClick';
 import { Assignment } from '../Types/assignment';
 import {
@@ -21,18 +19,13 @@ export const AssignmentCard = ({ assignment }: AssignmentCardProps): JSX.Element
     //     new Date().toLocaleDateString() === assignment.dueDate &&
     //     new Date(assignment.dueDate).toLocaleDateString();
 
-    const navigate = useNavigate();
-    const currentLocation = useLocationKey();
-
     const handleClick = () => {
         if (assignment.type === 'External') {
             window.open(assignment.url, '_blank');
         } else {
             handleActionClick(
                 assignment.sourceSystem.subSystem,
-                assignment.sourceSystem.identifier,
-                navigate,
-                currentLocation
+                assignment.sourceSystem.identifier
             );
         }
     };
