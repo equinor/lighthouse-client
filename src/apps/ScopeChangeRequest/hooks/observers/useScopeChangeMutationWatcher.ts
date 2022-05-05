@@ -1,7 +1,7 @@
+import { useSideSheet } from '@equinor/sidesheet';
 import { useQueryClient } from 'react-query';
-import { useDataContext } from '../../../../Core/WorkSpace/src/Context/DataProvider';
-import { useGlobalMutationListener } from './useGlobalMutationListener';
 import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
+import { useGlobalMutationListener } from './useGlobalMutationListener';
 
 /**
  * Invalidates scope change query if any mutation takes place
@@ -13,16 +13,14 @@ export function useScopeChangeMutationWatcher(requestId: string): void {
 
     //TODO: investigate
     //Maybe subscribe and unsub when requestId changes
-    const {
-        dataApi: { queryKey: workspaceKey },
-    } = useDataContext();
+    const { appName } = useSideSheet();
 
     useGlobalMutationListener({
         onMutationSettled: (mutationEvent) => {
             baseKey ? queryClient.invalidateQueries(baseKey) : queryClient.invalidateQueries();
             /** Only invalidate list if the mutation was a success */
             if (mutationEvent.state.status === 'success') {
-                queryClient.invalidateQueries(workspaceKey);
+                queryClient.invalidateQueries(appName);
             }
         },
     });

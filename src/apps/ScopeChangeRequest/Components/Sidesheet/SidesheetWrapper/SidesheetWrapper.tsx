@@ -1,28 +1,27 @@
-import { Tabs } from '@equinor/eds-core-react';
-import { useEffect } from 'react';
-
-import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
-import { useEdsTabs } from '../../../../../hooks/edsTabs/useEdsTabs';
-import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
-import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
-import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
-import { ScopeChangeErrorBanner } from '../../ErrorBanner/ErrorBanner';
-import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';
-import { LogTabTitle, LogTab } from '../Tabs/Log';
-import { RequestTabTitle, RequestTab } from '../Tabs/Request';
-import { WorkOrderTabTitle, WorkOrderTab } from '../Tabs/WorkOrders';
-import { useOctopusErrorHandler } from '../../../hooks/observers/useOctopusErrorHandler';
-import { SidesheetTabList } from './SidesheetWrapper.styles';
-import styled from 'styled-components';
-import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
-import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
-import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
 import { deref, useAtom } from '@dbeining/react-atom';
+import { Tabs } from '@equinor/eds-core-react';
+import { useEdsTabs } from '@equinor/hooks';
+import { useEffect } from 'react';
+import styled from 'styled-components';
 import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
 import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
-import { resetEditMode } from './Utils/resetEditMode';
+import { useOctopusErrorHandler } from '../../../hooks/observers/useOctopusErrorHandler';
+import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
+import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
+import { useScopeChangeAccess } from '../../../hooks/queries/useScopeChangeAccess';
+import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
+import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
+import { ScopeChangeErrorBanner } from '../../ErrorBanner/ErrorBanner';
+import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
+import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';
+import { LogTab, LogTabTitle } from '../Tabs/Log';
+import { RequestTab, RequestTabTitle } from '../Tabs/Request';
+import { WorkOrderTab, WorkOrderTabTitle } from '../Tabs/WorkOrders';
+import { SidesheetTabList } from './SidesheetWrapper.styles';
 import { updateContext } from './Utils/updateContext';
 import { toggleEditMode } from './Utils/toggleEditMode';
+import { resetEditMode } from './Utils/resetEditMode';
+import { SidesheetApi } from '../../../../../packages/Sidesheet/Types/SidesheetApi';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;

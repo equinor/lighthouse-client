@@ -1,7 +1,4 @@
-import { HeaderContainer } from './HeaderContainer';
-import { Layout } from './Layout';
-import { useVirtual } from 'react-virtual';
-import { useParkViewContext } from '../../Context/ParkViewProvider';
+import { useSideSheet } from '@equinor/sidesheet';
 import {
     Fragment,
     useCallback,
@@ -9,16 +6,19 @@ import {
     useLayoutEffect,
     useMemo,
     useRef,
-    useState,
+    useState
 } from 'react';
+import { useVirtual } from 'react-virtual';
+import { useParkViewContext } from '../../Context/ParkViewProvider';
+import { useRefresh } from '../../hooks/useRefresh';
+import { DataSet, GardenGroups } from '../../Models/data';
 import { CustomVirtualView } from '../../Models/gardenOptions';
 import { defaultSortFunction } from '../../Utils/utilities';
-import { GardenGroups, DataSet } from '../../Models/data';
 import { GardenItemContainer } from './GardenItemContainer';
-import { useRefresh } from '../../hooks/useRefresh';
+import { HeaderContainer } from './HeaderContainer';
 import { useExpand, useVirtualScrolling } from './hooks';
+import { Layout } from './Layout';
 import { getGardenItems, getRowCount } from './utils';
-import { useSideSheet } from '../../../../packages/Sidesheet/context/sidesheetContext';
 
 type VirtualGardenProps<T> = {
     garden: GardenGroups<T>;
