@@ -76,7 +76,7 @@ export const SearchFilterWrapper = styled.div`
 
 export const SelectBar = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     background-color: ${tokens.colors.ui.background__light.rgba};
     border-right: 2px solid ${tokens.colors.ui.background__medium.rgba};
 `;
