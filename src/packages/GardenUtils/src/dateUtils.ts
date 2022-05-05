@@ -14,3 +14,10 @@ export const formatDateString = (dateString: string): string => {
     const dateParts = new Intl.DateTimeFormat(undefined).formatToParts(date);
     return `${dateParts[0].value}/${dateParts[2].value}/${dateParts[4].value}`;
 };
+
+export const getYearAndWeekAndDayFromString = (dateString: string) => {
+    const date = new Date(dateString);
+    const dateTime = DateTime.fromJSDate(date);
+    if (!dateTime.isValid) return 'N/A';
+    return `${dateTime.weekYear}-${dateTime.month}-${dateTime.weekday}`;
+};
