@@ -1,4 +1,5 @@
-import { swap } from '@dbeining/react-atom';
+import { deref, swap } from '@dbeining/react-atom';
+import { useEffect } from 'react';
 import { Garden } from '../../../../components/ParkView/Components/Garden';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
@@ -17,8 +18,16 @@ export const GardenTab = (): JSX.Element => {
 
     const { gardenOptions } = useDataContext();
 
-    if (!gardenOptions) return <></>;
+    useEffect(
+        () => () => {
+            const api = deref(gardenApiAtom);
+            if (!api) return;
+            saveGardenSnapshot(api);
+        },
+        []
+    );
 
+    if (!gardenOptions) return <></>;
     return (
         <>
             <WorkspaceFilter />
@@ -28,7 +37,6 @@ export const GardenTab = (): JSX.Element => {
                 onGardenReady={(api) => {
                     swap(gardenApiAtom, () => api);
                 }}
-                onGardenUnmount={saveGardenSnapshot}
             />
         </>
     );
