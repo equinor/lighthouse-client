@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { getPipetests } from '../Components/Electro/getPipetests';
 import { getTimePeriod } from '../Components/Garden/gardenFunctions';
 import { PipetestCompletionStatusColors } from '../Styles/ReleaseControlColors';
 import {
@@ -11,12 +12,17 @@ import {
 } from '../Types/drcEnums';
 import { CheckList, Circuit, InsulationBox, Pipetest } from '../Types/pipetest';
 
+export async function fetchAndChewPipetestDataFromApi(): Promise<Pipetest[]> {
+    let data = await getPipetests();
+    data = chewPipetestDataFromApi(data);
+    return data;
+}
+
 export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
     pipetests.map((pipetest: Pipetest) => {
         pipetest.circuits?.forEach((circuit: Circuit) => {
             circuit.checkLists?.forEach((checkList: CheckList) => {
                 checkList.formularType = CheckListStepTag.HtCTest;
-                checkList.isHeatTrace = true;
                 pipetest.checkLists.push(checkList);
             });
         });
@@ -34,11 +40,111 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
             DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                 ? 'Yes'
                 : 'No';
+
+        //Find insulation checklists and add them to pipeInsulationBox array.
+        pipetest.pipeInsulationBoxes = [];
+        const insulationCheckLists = pipetest.checkLists.filter(
+            (checkList) => checkList.tagNo.substring(0, 2) === CheckListStepTag.Insulation
+        );
+        insulationCheckLists.forEach((checkList) => {
+            const pipeInsulationBox: InsulationBox = {
+                objectNo: checkList.tagNo,
+                objectName: checkList.responsible + ' / ' + checkList.formularGroup,
+                objectStatus: 'rev: ' + checkList.revision,
+                procosysStatus: checkList.status,
+                object3dReference: '',
+                objectStatusName: '',
+            };
+            pipetest.pipeInsulationBoxes?.push(pipeInsulationBox);
+        });
+
+        //Find 'PIPB-' insulation boxes and move them to pipeInsulationBox array
+        const pipbInsulations = pipetest.insulationBoxes?.filter(
+            (x) => x.objectNo.substring(0, 4) === 'PIPB'
+        );
+        pipbInsulations.forEach((x) => pipetest.pipeInsulationBoxes?.push(x));
+        pipetest.insulationBoxes = pipetest.insulationBoxes?.filter(
+            (x) => x.objectNo.substring(0, 4) !== 'PIPB'
+        );
         return pipetest;
     });
+    pipetests = setPipingRfcUniqueHTDate(pipetests);
     sortPipetests(pipetests);
+    return pipetests;
+}
+
+export function setPipingRfcUniqueHTDate(pipetests: Pipetest[]): Pipetest[] {
+    const htGroupedByPipetest = heatTracesGroupedByPipetest(pipetests);
+    htGroupedByPipetest.map((ht) => {
+        ht.children.sort((a, b) =>
+            a.rfccPlanned.localeCompare(b.rfccPlanned, undefined, {
+                numeric: true,
+                sensitivity: 'base',
+            })
+        );
+        ht.earliestRfcDate = ht.children[0].rfccPlanned;
+        return ht;
+    });
+
+    pipetests.map((pipetest: Pipetest) => {
+        const htCablesOnPipetest = pipetest.heatTraces;
+        const htCableDates: string[] = [];
+        htCablesOnPipetest.forEach((ht) => {
+            const htCable = htGroupedByPipetest.find((z) => z.name === ht.tagNo);
+            if (htCable !== undefined && htCable.earliestRfcDate !== '') {
+                htCableDates.push(htCable.earliestRfcDate);
+            }
+        });
+        htCableDates.sort((a, b) =>
+            a.localeCompare(b, undefined, {
+                numeric: true,
+                sensitivity: 'base',
+            })
+        );
+
+        pipetest.pipingRfcUniqueHT = htCableDates[0];
+        return pipetest;
+    });
 
     return pipetests;
+}
+
+function getPipeTestByHeatTrace(groupName: string, pipetest: Pipetest[]) {
+    const pipetestChildren = pipetest.filter(
+        (pipetest, index, array) =>
+            pipetest.heatTraces.some((y) => y.tagNo === groupName) &&
+            array.indexOf(pipetest) === index
+    );
+    return {
+        name: groupName,
+        children: pipetestChildren,
+        count: pipetestChildren.length,
+        earliestRfcDate: '',
+    };
+}
+
+export function heatTracesGroupedByPipetest(pipetests: Pipetest[]) {
+    const heatTracesGroupedByPipetest = pipetests
+        .reduce(
+            (prev: CheckList[], curr) => [
+                ...prev,
+                ...curr.heatTraces.filter((ht) => !prev.includes(ht)),
+            ],
+            []
+        )
+        .map((groupName) => getPipeTestByHeatTrace(groupName.tagNo, pipetests));
+
+    /** Pipetest that has no heatTraces */
+    const pipetestChildren = pipetests.filter(({ heatTraces }) => heatTraces.length === 0);
+
+    heatTracesGroupedByPipetest.push({
+        name: 'No heatTraces',
+        children: pipetestChildren,
+        count: pipetestChildren.length,
+        earliestRfcDate: '',
+    });
+
+    return heatTracesGroupedByPipetest;
 }
 
 export function sortPipetests(pipetests: Pipetest[]): Pipetest[] {

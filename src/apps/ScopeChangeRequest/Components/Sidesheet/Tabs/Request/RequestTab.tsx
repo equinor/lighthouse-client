@@ -1,8 +1,7 @@
 import { HotUpload } from '../../../Attachments/HotUpload';
 import { Attachments } from '../../../DetailView/Attachments';
 import { RelatedObjects } from '../../../DetailView/References';
-import { Workflow } from '../../../Workflow/Components/Workflow';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
+
 import {
     FlexColumn,
     FormWrapper,
@@ -16,6 +15,9 @@ import {
     SectionWrapper,
     SiblingWrapper,
 } from './RequestTab.styles';
+import styled from 'styled-components';
+import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
+import { Workflow } from '../../../Workflow/Workflow';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -71,7 +73,9 @@ export function RequestTab(): JSX.Element {
                     </InnerSection>
                     <InnerSection>
                         <SectionHeading>Attachments</SectionHeading>
-
+                        {request.attachments.length === 0 && (
+                            <NoAttachments>No attachments has been uploaded.</NoAttachments>
+                        )}
                         {requestAccess.canPatch && <HotUpload />}
                         <Attachments attachments={request.attachments} requestId={request.id} />
                     </InnerSection>
@@ -80,3 +84,8 @@ export function RequestTab(): JSX.Element {
         </Wrapper>
     );
 }
+
+const NoAttachments = styled.div`
+    font-size: 14px;
+    font-weight: 400;
+`;

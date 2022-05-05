@@ -1,23 +1,21 @@
-import { TabsConfigItem } from '../../Tabs/tabsConfig';
-import { Panel, Panels } from './WorkSpaceTabsStyles';
+import { useLocationContext } from '../../Context/LocationProvider';
+import { TabsConfigItem } from '../../Util/tabsConfig';
+import { Tab, TabsWrapper } from './WorkSpaceTabsStyles';
 
 interface CompletionViewTabsProps {
     tabs: TabsConfigItem[];
-    activeTab: number;
-    title: string;
 }
 
-export const WorkSpaceTabs = ({ tabs, activeTab }: CompletionViewTabsProps): JSX.Element => {
+export const WorkSpaceTabs = ({ tabs }: CompletionViewTabsProps): JSX.Element => {
+    const { activeTab } = useLocationContext();
+
     return (
-        <Panels>
-            {tabs.map((tab, index) => {
-                const ViewComponent = tab.viewComponent;
-                return (
-                    <Panel key={`panel-${tab.title}`}>
-                        {activeTab == index && <ViewComponent />}
-                    </Panel>
-                );
+        <TabsWrapper>
+            {tabs.map((tab) => {
+                return activeTab === tab.tabId ? (
+                    <Tab key={`panel-${tab.title}`}>{<tab.viewComponent />}</Tab>
+                ) : null;
             })}
-        </Panels>
+        </TabsWrapper>
     );
 };

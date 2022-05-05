@@ -4,37 +4,31 @@ import styled from 'styled-components';
 import { PCSPersonSearch } from '../../../PersonRoleSearch/PCSPersonSearch';
 import { addContributor } from '../../../../api/ScopeChange/Workflow/addContributor';
 import { Button, Progress, TextField } from '@equinor/eds-core-react';
-import { useScopeChangeContext } from '../../../../context/useScopeChangeAccessContext';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { TypedSelectOption } from '../../../../api/Search/searchType';
-import { WorkflowStep } from '../../../../types/scopeChangeRequest';
 import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
+import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 
 interface AddContributorProps {
-    step: WorkflowStep;
+    stepId: string;
     close: () => void;
 }
 
-export const AddContributor = ({ close, step }: AddContributorProps): JSX.Element => {
+export const AddContributor = ({ close, stepId }: AddContributorProps): JSX.Element => {
     const [contributor, setContributor] = useState<TypedSelectOption | null>(null);
     const [text, setText] = useState<string>('');
-    const { request } = useScopeChangeContext();
-    const { workflowKeys } = scopeChangeMutationKeys(request.id);
+    const id = useScopeChangeContext((s) => s.request.id);
+    const { workflowKeys } = scopeChangeMutationKeys(id);
 
     const submit = async () => {
-        await addContributor(
-            contributor?.value ?? '',
-            request.id,
-            request.currentWorkflowStep?.id ?? '',
-            text
-        );
+        await addContributor(contributor?.value ?? '', id, stepId, text);
     };
 
     const { mutate, isLoading } = useScopeChangeMutation(
-        request.id,
-        workflowKeys.addContributorKey(step.id),
+        id,
+        workflowKeys.addContributorKey(stepId),
         submit,
         {
             onSuccess: () => close(),

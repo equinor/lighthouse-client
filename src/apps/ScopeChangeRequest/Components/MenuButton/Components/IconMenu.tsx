@@ -1,19 +1,21 @@
 import { Button, Icon, Menu, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { MenuItem } from '@equinor/overlay-menu';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { MenuItem } from '../Types/menuItem';
 
 interface IconMenuProps {
     items: MenuItem[];
     onMenuOpen?: () => void;
     isDisabled?: boolean;
+    iconName?: string;
     placement?: 'left' | 'bottom' | 'auto' | 'right' | 'top';
 }
 
 export const IconMenu = ({
     items,
     onMenuOpen,
+    iconName = 'more_vertical',
     isDisabled,
     placement = 'left',
 }: IconMenuProps): JSX.Element => {
@@ -40,7 +42,7 @@ export const IconMenu = ({
                 }}
             >
                 <Icon
-                    name="more_vertical"
+                    name={iconName}
                     color={
                         items.length === 0
                             ? tokens.colors.interactive.disabled__text.hex
@@ -48,29 +50,30 @@ export const IconMenu = ({
                     }
                 />
             </Button>
-
-            <Menu
-                id="menu-complex"
-                aria-labelledby="anchor-complex"
-                open={showMenu}
-                anchorEl={anchorRef.current}
-                onClose={closeMenu}
-                placement={placement}
-            >
-                {items.map((x, i) => {
-                    const Icon = () => x.icon ?? null;
-                    return (
-                        <Menu.Item
-                            disabled={x.isDisabled}
-                            onClick={() => x.onClick && x.onClick()}
-                            key={x.label + i}
-                        >
-                            <Icon />
-                            <MenuText>{x.label}</MenuText>
-                        </Menu.Item>
-                    );
-                })}
-            </Menu>
+            {showMenu && (
+                <Menu
+                    id="menu-complex"
+                    aria-labelledby="anchor-complex"
+                    open={showMenu}
+                    anchorEl={anchorRef.current}
+                    onClose={closeMenu}
+                    placement={placement}
+                >
+                    {items.map((x, i) => {
+                        const Icon = () => x.icon ?? null;
+                        return (
+                            <Menu.Item
+                                disabled={x.isDisabled}
+                                onClick={() => x.onClick && x.onClick()}
+                                key={x.label + i}
+                            >
+                                <Icon />
+                                <MenuText>{x.label}</MenuText>
+                            </Menu.Item>
+                        );
+                    })}
+                </Menu>
+            )}
         </Wrapper>
     );
 };

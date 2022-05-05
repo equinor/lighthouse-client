@@ -1,11 +1,12 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { getApps } from '../../../apps/apps';
-import { IconMenu, MenuItem } from '../../../apps/ScopeChangeRequest/Components/MenuButton';
+
 import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
 import { useSideSheet } from '../context/sidesheetContext';
 import {
@@ -67,6 +68,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         <div style={{ height: '100%' }}>
             <Resizable
                 size={{ width: width, height: '100%' }}
+                maxWidth={'100vw'}
                 onResizeStop={(e, direction, ref, d) => {
                     if (width + d.width < minWidth) {
                         //setWidth(defaultWidth);
@@ -84,10 +86,10 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                         >
                             <Icon name="chevron_right" size={24} color={'white'} />
                         </ColourTab>
-                        <span>{title}</span>
+                        <Title>{title}</Title>
                     </LeftHeader>
 
-                    <span style={{ display: 'flex', flexDirection: 'row' }}>
+                    <RightHeader>
                         {menuItems.length > 0 && <IconMenu placement="bottom" items={menuItems} />}
                         <Button variant="ghost_icon" onClick={closeSidesheet}>
                             <Icon
@@ -96,7 +98,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
                                 color={tokens.colors.interactive.primary__resting.hex}
                             />
                         </Button>
-                    </span>
+                    </RightHeader>
                 </Header>
 
                 <ErrorBoundary FallbackComponent={ErrorFallbackSidesheet} routeName={'Sidesheet'}>
@@ -114,7 +116,20 @@ const LeftHeader = styled.div`
     gap: 0.5em;
     flex-direction: row;
     align-items: center;
-    font-size: 28px;
+    width: 80%;
+`;
+
+const RightHeader = styled.div`
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+`;
+
+const Title = styled.div`
+    font-size: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const Header = styled.div`

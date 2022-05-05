@@ -8,6 +8,7 @@ import { useExpand, useExpandDispatch } from './hooks';
 import { getGardenItems } from './utils';
 import styled from 'styled-components';
 import { GardenItem } from './types/gardenItem';
+import { tokens } from '@equinor/eds-tokens';
 
 type HeaderContainerProps<T> = {
     columnVirtualizer: { virtualItems: VirtualItem[] };
@@ -82,7 +83,7 @@ export const HeaderContainer = <T extends unknown>(props: HeaderContainerProps<T
 };
 
 export const Count = styled.span`
-    color: #000000;
+    color: ${tokens.colors.text.static_icons__default.hex};
     font-weight: 300;
     font-size: 0.8rem;
     margin-left: 0.8em;

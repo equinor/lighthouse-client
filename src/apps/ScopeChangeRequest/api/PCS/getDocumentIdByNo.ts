@@ -10,5 +10,11 @@ export async function getDocumentIdByNo(documentId: string): Promise<number> {
     if (!res.ok) {
         throw 'Failed to get document';
     }
-    return await res.json()['Id'];
+
+    const id: DocumentId = await res.json();
+    return id.Id;
+}
+
+interface DocumentId {
+    Id: number;
 }

@@ -94,9 +94,8 @@ export function useFusionClient(
         enablePageNavigation?: boolean;
     }
 ): useFusionClientReturn {
-    const { customHttpClient } = useHttpClient('5a842df8-3238-415d-b168-9f16a6a6031b/.default');
+    const { fusionPbi } = useHttpClient();
     const [error, setError] = useState<NetworkError>();
-    // const baseUri = 'https://app-ppo-proxy-dev.azurewebsites.net/fusion/reports';
 
     const filters: PowerBiFilter[] = [];
     filterOptions?.forEach((filterOption) => {
@@ -105,8 +104,8 @@ export function useFusionClient(
 
     async function getEmbedInfo() {
         try {
-            const embedUri = `https://pro-s-reports-ci.azurewebsites.net/reports/jca-landing-page/config/embedinfo`;
-            const response = await customHttpClient.fetch(embedUri);
+            const embedUri = `/reports/jca-landing-page/config/embedinfo`;
+            const response = await fusionPbi.fetch(embedUri);
 
             const data = await response.json();
             window['embedInfo'] = data;
@@ -118,8 +117,8 @@ export function useFusionClient(
 
     async function getPowerBiToken() {
         try {
-            const tokenUri = `https://pro-s-reports-ci.azurewebsites.net/reports/jca-landing-page/token`;
-            const response = await customHttpClient.fetch(tokenUri);
+            const tokenUri = `reports/jca-landing-page/token`;
+            const response = await fusionPbi.fetch(tokenUri);
             return await response.json();
         } catch (error: any) {
             const networkError = error as NetworkError;

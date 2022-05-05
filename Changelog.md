@@ -4,7 +4,72 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
+## 1.1.1
+- [ScopeChange] Bugfixes
+- [Assignments] Filter closed assignments
 
+## 1.1.0
+- [APPS] - Release Fusion PBI reports
+- [Portal] - Persisting menu state
+- [ScopeChange] - Refactor
+
+## 1.0.1
+
+### PROD
+- [Scopechange] bugfixes
+- [SWCR Garden] Fix scrolling when opening sidesheet
+- [Work order Garden] Fix scrolling when opening sidesheet
+
+## 1.0.0
+
+### PROD
+- [Scopechange] bugfixes
+- [Assignments] release
+- [Workorder] release
+- [SWCR] release
+- [Handover] release
+- [PipingAndHeatTrace] - Visual adjustments and Piping RFC (Unique HT) grouping
+
+## 0.4.2
+
+### PROD
+- [ScopeChange] Bugfixes
+- [Notifications] Remove group by
+- [Assignments] Release
+
+
+## 0.4.1
+
+### PROD
+- [ScopeChange] Bugfixes
+- [Notifications] Fixed redirect not working
+- [Workspace] Bugfixes
+- [ScopeChange] Added powerBi analytics
+
+## 0.4.0
+
+### Prod
+
+- [ScopeChange] - Data-bars in table
+- [ScopeChange] - Work order table adjustments
+- [ScopeChange] - Fix save button disappear in draft
+- [ScopeChange] - Fix scrollbar tabs
+- [ScopeChange] - No attachments linked 
+- [Core] - Removal of unused packages and package bumps.
+- [PipingAndHeatTrace] - Insulation boxes tab and Single line diagram
+- [Portal] - Notifications and assignments
+- [Workspace] - Support for PowerBi reports in workspace 
+- [Garden] - Grouping Enhancements 
+
+### Test
+- [Handover] - Added analytic PowerBi report.
+- [WorkOrder] - remove min-width styling table
+- [Handover] - remove min-width styling table
+- [SWCR] - Updates
+- [SWCR] - PowerBi report added to workspace
+- [Handover] - PowerBi report added to workspace
+- 
+---
 
 ## 0.3.0
 

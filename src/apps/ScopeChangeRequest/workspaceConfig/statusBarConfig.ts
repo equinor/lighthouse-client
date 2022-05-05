@@ -1,55 +1,78 @@
 import { StatusItem } from '../../../packages/StatusBar';
-import { kFormatter } from '../functions/kFormatter';
 import { ScopeChangeRequest } from '../types/scopeChangeRequest';
+
+export function numberFormat(number: number): string {
+    return parseFloat(Math.round(number).toString()).toLocaleString('no');
+}
 
 export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
     return [
         {
             title: 'Requests',
-            value: () => {
-                return data.length.toString();
-            },
+            value: () => numberFormat(data.length),
         },
         {
             title: 'Mhrs',
             value: () => {
-                let total = 0;
-                data.filter((x) => x.guesstimateHours).forEach(
-                    (x) => (total += x.guesstimateHours)
+                const totalMhrs = data.reduce(
+                    (count, { guesstimateHours }) => count + guesstimateHours,
+                    0
                 );
-                return kFormatter(total).toString();
+                return numberFormat(totalMhrs);
             },
         },
         {
             title: 'Pending requests',
-            value: () => data.filter((x) => x.state === 'Open').length.toString(),
-        },
-        {
-            title: 'Pending mhrs',
             value: () => {
-                let total = 0;
-                data.filter((x) => x.state === 'Open').forEach(
-                    (x) => (total += x.guesstimateHours)
+                const pendingRequests = data.reduce(
+                    (count, { state }) => (state === 'Open' ? count + 1 : count),
+                    0
                 );
-
-                return kFormatter(total).toString();
+                return numberFormat(pendingRequests);
             },
         },
         {
+            title: 'Pending mhrs',
+            value: () => numberFormat(accPendingMhr(data)),
+        },
+        {
             title: 'Approved requests',
-            value: () => data.filter((x) => x.state === 'Closed').length.toString(),
+            value: () => numberFormat(filterApprovedRequests(data).length),
         },
 
         {
             title: 'Approved Mhrs',
-            value: () => {
-                let total = 0;
-                data.filter((x) => x.state === 'Closed').forEach(
-                    (x) => (total += x.guesstimateHours)
-                );
-
-                return kFormatter(total).toString();
-            },
+            value: () =>
+                numberFormat(
+                    filterApprovedRequests(data).reduce(
+                        (acc, { guesstimateHours }) => acc + guesstimateHours,
+                        0
+                    )
+                ),
         },
     ];
 }
+
+/**
+ * Accumulates pending mhrs
+ * @param requests
+ * @returns
+ */
+const accPendingMhr = (requests: ScopeChangeRequest[]) =>
+    requests
+        .filter(({ state }) => state === 'Open')
+        .reduce((count, { guesstimateHours }) => count + guesstimateHours, 0);
+
+/**
+ * Returns all approved requests
+ * @param requests
+ * @returns
+ */
+const filterApprovedRequests = (requests: ScopeChangeRequest[]) =>
+    requests
+        .filter(({ workflowSteps }) => workflowSteps !== null)
+        .filter(({ workflowSteps }) =>
+            workflowSteps[workflowSteps.length - 1].criterias.every(
+                ({ signedState }) => signedState === 'Approved'
+            )
+        );

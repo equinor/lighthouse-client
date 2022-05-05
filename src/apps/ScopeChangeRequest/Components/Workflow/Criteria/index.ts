@@ -1,1 +1,1 @@
-export * from './Components/WorkflowCriteria'
+export * from './Components/Criteria';

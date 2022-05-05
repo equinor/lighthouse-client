@@ -23,19 +23,34 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
     return (
         <Wrapper key={tag.id}>
             <Icon color={tokens.colors.interactive.primary__resting.hex} name="tag" />
-            <TagText>
-                <Link
-                    href={`https://${isProduction() ? 'procosys' : 'procosystest'
-                        }.equinor.com/JOHAN_CASTBERG/Completion#Tag|${tag.procosysId}`}
-                    target="_blank"
-                >
-                    {tag.procosysNumber}
-                </Link>
-                - <div>{data?.Description}</div>
-            </TagText>
+            <TextWrapper>
+                <TagText>
+                    <Link
+                        href={`https://${isProduction() ? 'procosys' : 'procosystest'
+                            }.equinor.com/JOHAN_CASTBERG/Completion#Tag|${tag.procosysId}`}
+                        target="_blank"
+                    >
+                        {tag.procosysNumber}
+                    </Link>
+                    - <div>{data?.Description}</div>
+                </TagText>
+                <MetaData>
+                    Comm pkg: {data?.CommPkgNo ?? 'none'} | Tag register {data?.RegisterCode}
+                </MetaData>
+            </TextWrapper>
         </Wrapper>
     );
 };
+
+const MetaData = styled.div`
+    font-size: 10px;
+    color: ${tokens.colors.text.static_icons__default.hex};
+`;
+
+const TextWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 
 const TagText = styled.div`
     display: flex;

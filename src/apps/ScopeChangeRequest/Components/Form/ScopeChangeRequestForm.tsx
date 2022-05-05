@@ -5,7 +5,10 @@ import { TypedSelectOption } from '../../api/Search/searchType';
 import { Upload } from '../Attachments/Upload';
 import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { usePreloadCaching } from '../../hooks/React-Query/usePreloadCaching';
-import { useScopeChangeFormState } from '../../hooks/form/useScopeChangeFormState';
+import {
+    ScopeChangeFormModel,
+    useScopeChangeFormState,
+} from '../../hooks/form/useScopeChangeFormState';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import {
     ActionBar,
@@ -29,18 +32,24 @@ interface ScopeChangeRequestFormProps {
 
 export const ScopeChangeRequestForm = ({
     closeScrim,
+    setHasUnsavedChanges,
 }: ScopeChangeRequestFormProps): JSX.Element => {
     const { handleInput, isValid, state } = useScopeChangeFormState();
     const { createScopeChangeMutation } = useRequestMutations();
     const queryClient = useQueryClient();
 
+    const handleChange = (key: keyof ScopeChangeFormModel, value: unknown) => {
+        setHasUnsavedChanges(true);
+        handleInput(key, value);
+    };
+
     usePreloadCaching();
 
     const handleReferencesChanged = (references: TypedSelectOption[]) =>
-        handleInput('references', references);
+        handleChange('references', references);
 
     const handleAttachmentsChanged = (attachments: File[]) =>
-        handleInput('attachments', attachments);
+        handleChange('attachments', attachments);
 
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
@@ -51,8 +60,7 @@ export const ScopeChangeRequestForm = ({
     };
 
     const { mutate, isLoading } = useMutation(createScopeChangeMutation, {
-        retry: 2,
-        retryDelay: 2,
+        retry: 0,
         onSuccess: (id) => {
             id && redirect(id);
             if (!id) throw 'error';
@@ -73,7 +81,7 @@ export const ScopeChangeRequestForm = ({
                 <FormWrapper>
                     <FlexColumn>
                         Request
-                        <ScopeChangeBaseForm handleInput={handleInput} state={state} />
+                        <ScopeChangeBaseForm handleInput={handleChange} state={state} />
                     </FlexColumn>
 
                     <FlexColumn>

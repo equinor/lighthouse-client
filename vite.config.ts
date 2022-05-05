@@ -37,13 +37,21 @@ export default defineConfig({
             '@equinor/hooks': path.resolve(__dirname, './src/hooks'),
             '@equinor/Utils': path.resolve(__dirname, './src/packages/Utils/'),
             '@equinor/Kpi': path.resolve(__dirname, './src/packages/KPI'),
+            '@equinor/ParkView': path.resolve(__dirname, './src/components/ParkView'),
             '@equinor/GardenUtils': path.resolve(__dirname, './src/packages/GardenUtils'),
             '@equinor/echo3dweb-viewer': path.resolve(__dirname, './packages/echo3dViewer/src'),
             '@equinor/lighthouse-powerbi': path.resolve(__dirname, './src/modules/powerBI'),
+            '@equinor/overlay-menu': path.resolve(__dirname, './src/components/OverlayMenu'),
             '@equinor/lighthouse-powerbi-viewer': path.resolve(
                 __dirname,
                 './src/Core/PowerBiViewer'
             ),
+            '@equinor/lighthouse-model-viewer': path.resolve(
+                __dirname,
+                './src/packages/ModelViewer'
+            ),
+            '@equinor/lighthouse-status-bar': path.resolve(__dirname, './src/packages/StatusBar'),
+            '@equinor/lighthouse-hooks': path.resolve(__dirname, './src/hooks'),
         },
     },
     build: {

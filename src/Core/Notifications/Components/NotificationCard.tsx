@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import { Notification } from '../Types/Notification';
 import { readNotificationAsync } from '../API/readNotification';
-import { useNotificationQueryKeys } from '../Hooks/useNotificationQueryKeys';
 import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
 import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
 import {
@@ -14,19 +13,33 @@ import {
     TimeStamp,
     Wrapper,
 } from './NotificationCardStyles';
-import { Button } from '@equinor/eds-core-react';
+import { notificationsBaseKey } from '../queries/notificationQueries';
+import { useNavigate } from 'react-router';
+import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
+import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
+
 interface NotificationCardProps {
     notification: Notification;
+    onNavigate?: () => void;
 }
 
-export const NotificationCardNew = ({ notification }: NotificationCardProps): JSX.Element => {
+export const NotificationCardNew = ({
+    notification,
+    onNavigate,
+}: NotificationCardProps): JSX.Element => {
     const queryClient = useQueryClient();
-    const { baseKey } = useNotificationQueryKeys();
     const { read } = useNotificationMutationKeys();
 
-    const { mutateAsync } = useMutation(read, readNotificationAsync, {
+    const baseKey = notificationsBaseKey;
+
+    const { mutate: markAsRead } = useMutation(read, readNotificationAsync, {
         onSuccess: () => queryClient.invalidateQueries(baseKey),
     });
+
+    const navigate = useNavigate();
+    const currentLocation = useLocationKey();
+
+    const isExternalApp = notification.actionType === 'URL';
 
     return (
         <>
@@ -39,40 +52,49 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                     >
-                        <circle cx="6" cy="6" r="5.5" fill={'#E7DEEA'} />
+                        <circle
+                            cx="6"
+                            cy="6"
+                            r="5.5"
+                            fill={notification.seenByUser ? '#E7DEEA' : '#B276B2'}
+                        />
                     </svg>
                     <DetailText>
-                        <NotificationTitle
-                            style={{ color: `${notification.seenByUser ? 'grey' : 'red'}` }}
-                        >
-                            {notification.title}
-                        </NotificationTitle>
+                        <NotificationTitle>{notification.title}</NotificationTitle>
                         <TimeStamp>
-                            {DateTime.fromJSDate(new Date(notification.created)).toRelative()}
+                            {DateTime.fromJSDate(new Date(notification.created)).toRelative({
+                                locale: 'en-GB',
+                            })}
                         </TimeStamp>
                     </DetailText>
                 </LeftSection>
                 <RightSection>
-                    {!notification.seenByUser && (
-                        <Button
-                            variant="outlined"
-                            onClick={() => mutateAsync({ notificationId: notification.id })}
-                        >
-                            Mark as read
-                        </Button>
-                    )}
-
                     <a
                         onClick={() => {
-                            window.open(
-                                notification.card?.actions?.find((x) => x.type === 'Action.OpenUrl')
-                                    ?.url,
-                                '_blank'
-                            );
-                            mutateAsync({ notificationId: notification.id });
+                            isExternalApp
+                                ? window.open(
+                                    notification.card?.actions?.find(
+                                        ({ type }) => type === 'Action.OpenUrl'
+                                    )?.url,
+                                    '_blank'
+                                )
+                                : handleActionClick(
+                                    notification.sourceSystem.subSystem,
+                                    notification.sourceSystem.identifier,
+                                    navigate,
+                                    currentLocation
+                                );
+
+                            onNavigate && onNavigate();
+
+                            markAsRead({ notificationId: notification.id });
                         }}
                     >
-                        <ClickableIcon name="chevron_right" />
+                        {isExternalApp ? (
+                            <ClickableIcon name="external_link" />
+                        ) : (
+                            <ClickableIcon name="chevron_right" />
+                        )}
                     </a>
                 </RightSection>
             </Wrapper>

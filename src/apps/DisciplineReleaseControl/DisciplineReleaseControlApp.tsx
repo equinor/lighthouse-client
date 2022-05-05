@@ -1,29 +1,28 @@
+import { tokens } from '@equinor/eds-tokens';
 import { ClientApi } from '@equinor/portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
-import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
-import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
-import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
+import { getGardenItemColor } from './Components/Garden/gardenFunctions';
 import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
-import { Pipetest } from './Types/pipetest';
+import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
+import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
+import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
+import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
+import {
+    StepFilterContainer,
+    StepFilterText,
+    WorkflowFilterDot,
+} from './Components/Workflow/Components/WorkflowFilterDot';
+import { CurrentStepContainer } from './Components/Workflow/Styles/styles';
+import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
 import {
     checklistTagFunc,
     createChecklistSteps,
     getHTList,
     getStatusLetterFromStatus,
 } from './Functions/tableHelpers';
-import { getGardenItemColor } from './Components/Garden/gardenFunctions';
-import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
-import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { Monospace } from './Styles/Monospace';
-import {
-    CurrentStepContainer,
-    WorkflowWarningTriangle,
-} from './Components/Workflow/Components/WorkflowWarningTriangle';
-import {
-    StepFilterContainer,
-    StepFilterText,
-    WorkflowFilterDot,
-} from './Components/Workflow/Components/WorkflowFilterDot';
+import { Pipetest } from './Types/pipetest';
+import { WorkflowWarningTriangle } from './Components/Workflow/Components/WorkflowWarningTriangle';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -41,7 +40,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<Pipetest>({
             CustomSidesheet: ReleaseControlSidesheet,
             objectIdentifier: 'name',
-            defaultTab: 1,
+            defaultTab: 'garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,
@@ -92,11 +91,14 @@ export function setup(appApi: ClientApi): void {
                 name: 'System',
                 valueFormatter: ({ name }) => name.substring(0, 2),
             },
-
             {
                 name: 'Priority',
                 valueFormatter: ({ commPkPriority1 }) =>
                     commPkPriority1 !== '' ? commPkPriority1 : 'Unknown',
+            },
+            {
+                name: 'Location',
+                valueFormatter: ({ location }) => location,
             },
             {
                 name: 'Due date time period',
@@ -122,7 +124,9 @@ export function setup(appApi: ClientApi): void {
                 name: 'Circuit',
                 valueFormatter: ({ circuits }) =>
                     circuits
-                        .map(({ circuitAndStarterTagNo }) => circuitAndStarterTagNo)
+                        .map(({ circuitAndStarterTagNo }) =>
+                            circuitAndStarterTagNo !== '' ? circuitAndStarterTagNo : null
+                        )
                         .filter((v, i, a) => a.indexOf(v) === i),
             },
         ]);
@@ -142,14 +146,17 @@ export function setup(appApi: ClientApi): void {
             'circuits',
             'pipetestProcessDoneInRightOrder',
             'step',
+            'pipeInsulationBoxes',
+            'pipingRfcUniqueHT',
         ],
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Pipetest', width: 100 },
             { key: 'description', title: 'Description', width: 600 },
             { key: 'commPkPriority1', title: 'Priority', width: 90 },
-            { key: 'checkLists', title: 'Process', width: 260 },
+            { key: 'checkLists', title: 'Checklist status', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
+            { key: 'location', title: 'Location', width: 200 },
         ],
         customCellView: [
             {
@@ -190,10 +197,10 @@ export function setup(appApi: ClientApi): void {
                             {cell.row.values.step}
                             {!cell.row.values.pipetestProcessDoneInRightOrder && (
                                 <WorkflowWarningTriangle
-                                    circleText={''}
                                     popoverText={
                                         'Some steps in this process has been done in the wrong order'
                                     }
+                                    color={tokens.colors.text.static_icons__default.hex}
                                 />
                             )}
                         </CurrentStepContainer>
@@ -203,7 +210,7 @@ export function setup(appApi: ClientApi): void {
             {
                 id: 'dueByWeek',
                 accessor: 'rfccPlanned',
-                Header: 'Due by week',
+                Header: 'Piping RFC',
                 Aggregated: () => null,
                 width: 120,
                 aggregate: 'count',
@@ -220,7 +227,7 @@ export function setup(appApi: ClientApi): void {
                 accessor: 'heatTraces',
                 Header: 'HT cables',
                 Aggregated: () => null,
-                width: 1165,
+                width: 935,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return (
