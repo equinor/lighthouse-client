@@ -12,7 +12,18 @@ const hiddenColumns: (keyof McPackage)[] = [
     'createdDate',
     'siteCodes',
     'updatedDate',
-    'searchableValues',
+    'projectIdentifier',
+    'projectDescription',
+    'commPkgNumber',
+    'mcPkgId',
+    'disciplineDescription',
+    'priorityDescription',
+    'priority2Description',
+    'priority3Description',
+    'date',
+    'order',
+    'rowKey',
+    'isVoided',
 ];
 
 export const tableConfig: TableOptions<McPackage> = {

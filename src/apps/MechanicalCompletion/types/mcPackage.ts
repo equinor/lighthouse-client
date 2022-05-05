@@ -1,13 +1,14 @@
 import { McStatus } from './mcStatus';
+
 export type McPackage = {
-    siteCodes: string;
+    siteCodes: string[];
     projectIdentifier: string;
     projectDescription: string;
     mcPkgId: string;
     mcPkgNumber: string;
     commPkgId: string;
     commPkgNumber: string;
-    commPkgStatus: McStatus;
+    commPkgStatus: string;
     description: string;
     remark: string;
     system: string;
@@ -34,7 +35,6 @@ export type McPackage = {
     rfccPlannedDate: string;
     rfccForecastDate: string;
     rfccActualDate: string;
-    rfccShippedDate: string;
     tacPlannedDate: string;
     tacForecastDate: string;
     rfocPlannedDate: string;
@@ -51,5 +51,8 @@ export type McPackage = {
     rfccIsShipped: boolean;
     rfccIsAccepted: boolean;
     rfccIsRejected: boolean;
-    searchableValues: string;
+    rfccShippedDate: string;
+    rowKey: string;
+    order: number;
+    date: string;
 };
