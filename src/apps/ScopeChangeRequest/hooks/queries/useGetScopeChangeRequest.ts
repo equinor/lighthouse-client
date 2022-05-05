@@ -6,7 +6,7 @@ import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 
 export function useGetScopeChangeRequest(id: string, initialData?: ScopeChangeRequest): void {
     const { baseQuery } = scopeChangeQueries;
-    useQuery<ScopeChangeRequest>({
+    useQuery({
         ...baseQuery(id),
         initialData: initialData,
         onSuccess: (s) => {

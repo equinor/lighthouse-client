@@ -21,7 +21,7 @@ import { SidesheetTabList } from './SidesheetWrapper.styles';
 import { updateContext } from './Utils/updateContext';
 import { toggleEditMode } from './Utils/toggleEditMode';
 import { resetEditMode } from './Utils/resetEditMode';
-import { SidesheetApi } from '../../../../../packages/Sidesheet/Types/SidesheetApi';
+import { SidesheetApi } from '@equinor/sidesheet';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;

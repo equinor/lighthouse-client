@@ -9,12 +9,13 @@ import {
     canVoid,
     getRequestAccess,
 } from '../api/ScopeChange/Access';
-import { getCategories } from '../api/ScopeChange/getCategories';
+import { OptionRequestResult } from '../api/ScopeChange/Access/optionsRequestChecker';
+import { Category, getCategories } from '../api/ScopeChange/getCategories';
 import { getPhases } from '../api/ScopeChange/getPhases';
 import { getScopeChangeById } from '../api/ScopeChange/Request';
 import { getHistory } from '../api/ScopeChange/Request/getHistory';
 import { CacheTime } from '../enum/cacheTimes';
-import { ScopeChangeRequest } from '../types/scopeChangeRequest';
+import { LogEntry, ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 export interface QueryContext {
     signal?: AbortSignal;
@@ -63,40 +64,42 @@ export const scopeChangeWorkflowQueries: WorkflowQueries = {
     }),
 };
 
-export const categoryQuery: UseQueryOptions<unknown, unknown, unknown, QueryKey> = {
-    queryFn: getCategories,
-    queryKey: ['categories'],
-    staleTime: CacheTime.TenHours,
-    cacheTime: CacheTime.TenHours,
-};
-
-type QueryFunction = UseQueryOptions<unknown, unknown, unknown, QueryKey>;
+type QueryFunction<Return> = UseQueryOptions<unknown, unknown, Return, QueryKey>;
 
 interface PermissionQueries {
-    canVoidQuery: (id: string) => QueryFunction;
-    canUnvoidQuery: (id: string) => QueryFunction;
-    permissionsQuery: (id: string) => QueryFunction;
+    canVoidQuery: (id: string) => QueryFunction<boolean>;
+    canUnvoidQuery: (id: string) => QueryFunction<boolean>;
+    permissionsQuery: (id: string) => QueryFunction<OptionRequestResult>;
 }
 
 interface WorkflowQueries {
-    canSignQuery: (args: CriteriaArgs) => QueryFunction;
-    canUnsignQuery: (args: CriteriaArgs) => QueryFunction;
-    canAddContributorQuery: (requestId: string, stepId: string) => QueryFunction;
-    canReassignQuery: (args: CriteriaArgs) => QueryFunction;
-    canContributeQuery: (requestId: string, stepId: string, contributorId: string) => QueryFunction;
+    canSignQuery: (args: CriteriaArgs) => QueryFunction<boolean>;
+    canUnsignQuery: (args: CriteriaArgs) => QueryFunction<boolean>;
+    canAddContributorQuery: (requestId: string, stepId: string) => QueryFunction<boolean>;
+    canReassignQuery: (args: CriteriaArgs) => QueryFunction<boolean>;
+    canContributeQuery: (
+        requestId: string,
+        stepId: string,
+        contributorId: string
+    ) => QueryFunction<boolean>;
 }
 
 interface ScopeChangeQueries {
-    categoryQuery: QueryFunction;
-    phaseQuery: QueryFunction;
-    baseQuery: (id: string) => QueryFunction;
-    historyQuery: (id: string) => QueryFunction;
+    categoryQuery: QueryFunction<Category[]>;
+    phaseQuery: QueryFunction<string[]>;
+    baseQuery: (id: string) => QueryFunction<ScopeChangeRequest>;
+    historyQuery: (id: string) => QueryFunction<LogEntry[]>;
     permissionQueries: PermissionQueries;
     workflowQueries: WorkflowQueries;
 }
 
 export const scopeChangeQueries: ScopeChangeQueries = {
-    categoryQuery: categoryQuery,
+    categoryQuery: {
+        queryFn: getCategories,
+        queryKey: ['categories'],
+        staleTime: CacheTime.TenHours,
+        cacheTime: CacheTime.TenHours,
+    },
     phaseQuery: {
         queryFn: getPhases,
         queryKey: ['phases'],

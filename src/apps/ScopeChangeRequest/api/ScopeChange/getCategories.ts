@@ -2,7 +2,7 @@ import { httpClient } from '@equinor/portal-client';
 import { throwOnError } from '../../functions/throwError';
 import { QueryContext } from '../../keys/queries';
 
-interface Category {
+export interface Category {
     id: string;
     name: string;
 }

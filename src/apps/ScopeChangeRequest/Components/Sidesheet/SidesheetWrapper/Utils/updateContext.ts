@@ -1,6 +1,6 @@
 import { swap } from '@dbeining/react-atom';
+import { SidesheetApi } from '@equinor/sidesheet';
 
-import { SidesheetApi } from '../../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { scopeChangeAtom } from '../../../../Atoms/scopeChangeAtom';
 import { ScopeChangeRequest } from '../../../../types/scopeChangeRequest';
 
