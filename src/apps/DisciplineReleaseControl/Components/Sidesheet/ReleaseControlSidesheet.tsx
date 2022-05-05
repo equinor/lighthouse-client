@@ -43,7 +43,7 @@ export const ReleaseControlSidesheet = ({
     }, [width]);
 
     useEffect(() => {
-        actions.setTitle(<>Pipetest {item.name}</>);
+        actions.setTitle(`Pipetest ${item.name}`);
     }, [item.name]);
 
     const locationKey = useLocationKey();
