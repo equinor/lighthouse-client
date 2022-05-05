@@ -3,7 +3,7 @@ import { getBookmarks } from '..';
 import { BookmarkResponse } from '../types';
 
 export const useGetBookmarks = (appKey: string) => {
-    const { data, isFetching, error } = useQuery<BookmarkResponse[]>('bookmarks', () =>
+    const { data, isFetching, error } = useQuery<BookmarkResponse[]>(['bookmarks', appKey], () =>
         getBookmarks(appKey)
     );
 
