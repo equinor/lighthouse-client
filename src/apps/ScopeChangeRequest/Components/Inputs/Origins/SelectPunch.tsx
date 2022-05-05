@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { httpClient } from '../../../../../Core/Client/Functions';
+import { validatePunch } from '../../../api/PCS/validatePunch';
 
 interface SelectPunchProps {
     setOriginId: (originId: string | undefined) => void;
@@ -29,16 +29,29 @@ export const SelectPunch = ({ setOriginId, originId }: SelectPunchProps): JSX.El
                     }
                 }}
             />
-            <IconWrapper>{plNumber && <CheckPunchIcon plNumber={plNumber} />}</IconWrapper>
+            <IconWrapper>
+                {plNumber && <CheckPunchIcon plNumber={plNumber} setOriginId={setOriginId} />}
+            </IconWrapper>
         </Inline>
     );
 };
 
 interface CheckPunchIconProps {
     plNumber: string;
+    setOriginId: (originId: string | undefined) => void;
 }
-export function CheckPunchIcon({ plNumber }: CheckPunchIconProps): JSX.Element {
-    const { data } = useQuery(['punch', plNumber], ({ signal }) => validatePunch(plNumber, signal));
+export function CheckPunchIcon({ plNumber, setOriginId }: CheckPunchIconProps): JSX.Element {
+    const { data } = useQuery(
+        ['punch', plNumber],
+        ({ signal }) => validatePunch(plNumber, signal),
+        {
+            onSuccess: (isValid) => {
+                if (isValid) {
+                    setOriginId(plNumber);
+                }
+            },
+        }
+    );
 
     if (data === undefined) {
         return <CircularProgress value={0} size={24} />;
@@ -56,23 +69,6 @@ export function CheckPunchIcon({ plNumber }: CheckPunchIconProps): JSX.Element {
             )}
         </>
     );
-}
-
-async function validatePunch(plNumber: string, signal?: AbortSignal) {
-    const { procosys } = httpClient();
-
-    const res = await procosys.fetch(
-        `api/PunchListItem?plantId=PCS%24JOHAN_CASTBERG&punchItemId=${plNumber}&api-version=4.1`,
-        { signal }
-    );
-
-    if (res.status === 404) {
-        return false;
-    }
-    if (!res.ok) {
-        throw 'Failed to validate punch';
-    }
-    return true;
 }
 
 const IconWrapper = styled.div`
