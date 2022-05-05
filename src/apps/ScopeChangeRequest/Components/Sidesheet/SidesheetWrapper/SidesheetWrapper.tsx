@@ -17,9 +17,12 @@ import styled from 'styled-components';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
 import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffects';
-import { deref, swap, useAtom } from '@dbeining/react-atom';
+import { deref, useAtom } from '@dbeining/react-atom';
 import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
 import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
+import { resetEditMode } from './Utils/resetEditMode';
+import { updateContext } from './Utils/updateContext';
+import { toggleEditMode } from './Utils/toggleEditMode';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -37,17 +40,9 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
 
     const editMode = useAtom(sideSheetEditModeAtom);
 
-    function toggleEditMode() {
-        swap(sideSheetEditModeAtom, (s) => !s);
-    }
-
     useEffect(() => {
-        swap(sideSheetEditModeAtom, () => false);
-        swap(scopeChangeAtom, (old) => ({
-            ...old,
-            request: item,
-            actions: actions,
-        }));
+        resetEditMode();
+        updateContext(item, actions);
     }, [item?.id]);
 
     if (Object.keys(deref(scopeChangeAtom).request).length < 2) {
@@ -60,7 +55,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
             {editMode ? (
                 <ScopeChangeRequestEditForm
                     request={deref(scopeChangeAtom).request}
-                    close={toggleEditMode}
+                    close={resetEditMode}
                 />
             ) : (
                 <>
