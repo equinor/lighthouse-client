@@ -43,15 +43,6 @@ export const Origin = ({ originId, originSource }: OriginProps): JSX.Element => 
                     />
                 );
 
-            case 'DCN':
-                return (
-                    <SearchOrigin
-                        setOriginId={setOriginId}
-                        originId={originId?.originId}
-                        type={'DCN'}
-                    />
-                );
-
             case 'DCR': {
                 return (
                     <FormTextField
