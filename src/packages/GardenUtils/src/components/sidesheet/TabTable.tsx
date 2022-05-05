@@ -6,7 +6,7 @@ export const NoResourceData = styled.div`
     font-size: 30px;
 `;
 type TabTableProps<T extends Record<string | number, unknown>> = {
-    packages: T[];
+    packages: T[] | undefined;
     columns: Column<T>[];
     isFetching: boolean;
     error: Error | null;
@@ -17,8 +17,9 @@ type TabTableProps<T extends Record<string | number, unknown>> = {
  */
 export const TabTable = <T extends Record<string | number, unknown>>(props: TabTableProps<T>) => {
     const { packages, columns, error, isFetching, resourceName } = props;
-
     if (isFetching) return <NoResourceData>{`Fetching ${resourceName}`}</NoResourceData>;
-    if (error) return <NoResourceData>{`No ${resourceName}`}</NoResourceData>;
+    if (error || packages === undefined || packages.length === 0) {
+        return <NoResourceData>{`No ${resourceName}`}</NoResourceData>;
+    }
     return <Table options={{ columns, data: packages }} />;
 };

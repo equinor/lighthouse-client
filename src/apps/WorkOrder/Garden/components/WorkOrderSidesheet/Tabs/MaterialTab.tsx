@@ -4,7 +4,7 @@ import { WorkOrderMaterial } from '../../../models';
 import { AvailableItemCell } from './Cells/AvailableItemCell';
 
 export type MaterialPackagesTabProps = {
-    packages: WorkOrderMaterial[];
+    packages: WorkOrderMaterial[] | undefined;
     isFetching: boolean;
     error: Error | null;
 };

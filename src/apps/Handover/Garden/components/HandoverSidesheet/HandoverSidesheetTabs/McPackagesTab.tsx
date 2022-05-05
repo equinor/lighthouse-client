@@ -51,7 +51,7 @@ const columns: Column<HandoverMcpkg>[] = [
 ];
 
 type McPackagesTabProps = {
-    packages: HandoverMcpkg[];
+    packages: HandoverMcpkg[] | undefined;
     isFetching: boolean;
 };
 
