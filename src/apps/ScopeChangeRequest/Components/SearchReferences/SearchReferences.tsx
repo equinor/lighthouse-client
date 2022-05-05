@@ -112,7 +112,6 @@ export const SearchReferences = ({
                     >
                         <SelectContainer>
                             <SingleSelect
-                                meta="(Required)"
                                 label="Reference type"
                                 items={referenceTypes}
                                 value={referenceType}
