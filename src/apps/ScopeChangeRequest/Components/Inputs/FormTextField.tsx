@@ -1,5 +1,6 @@
 import { TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
+import styled from 'styled-components';
 
 interface FormTextFieldProps {
     initialValue?: string;
@@ -30,6 +31,7 @@ export const FormTextField = ({
         <TextField
             id={Math.random().toString()}
             value={text}
+            rows={5}
             label={label}
             multiline={multiline}
             placeholder={placeholder}
