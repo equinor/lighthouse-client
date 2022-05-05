@@ -29,7 +29,6 @@ export function NotificationBell(): JSX.Element {
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
                     openSidesheet(ActionCenterSidesheet);
-                    // ActionCenterSidesheet
                 }}
             >
                 {notificationCenter.unreadNotificationsCount > 0 ? (
