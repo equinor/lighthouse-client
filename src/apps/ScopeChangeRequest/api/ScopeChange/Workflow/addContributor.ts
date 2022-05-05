@@ -6,12 +6,19 @@ interface ContributorBody {
     oid: string;
 }
 
-export const addContributor = async (
-    azureOid: string,
-    requestId: string,
-    stepId: string,
-    contributorTitle: string
-): Promise<void> => {
+interface AddContributorParams {
+    azureOid: string;
+    requestId: string;
+    stepId: string;
+    contributorTitle: string;
+}
+
+export const addContributor = async ({
+    azureOid,
+    contributorTitle,
+    requestId,
+    stepId,
+}: AddContributorParams): Promise<void> => {
     const { scopeChange } = httpClient();
 
     const payload: ContributorBody = {
