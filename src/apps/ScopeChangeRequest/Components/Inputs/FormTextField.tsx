@@ -1,6 +1,5 @@
 import { TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import styled from 'styled-components';
 
 interface FormTextFieldProps {
     initialValue?: string;
