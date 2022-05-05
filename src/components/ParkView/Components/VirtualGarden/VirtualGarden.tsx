@@ -77,7 +77,7 @@ export const VirtualGarden = <T extends unknown>({
         size: rowCount,
         parentRef,
         estimateSize: useCallback(() => rowHeight || 40, [rowHeight]),
-        paddingStart: 45,
+        paddingStart: 40,
         // overscan: 2,
     });
     const columnVirtualizer = useVirtual({
