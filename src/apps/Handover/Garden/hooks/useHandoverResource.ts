@@ -24,9 +24,10 @@ const useHandoverResource = <T extends keyof HandoverResourceTypeMap>(
     const { fusionDataproxy } = useHttpClient();
 
     const getData = useCallback(
-        async (id: string) => {
+        async (id: string, signal?: AbortSignal) => {
             const result = await fusionDataproxy.fetch(
-                `api/contexts/${contextId}/handover/${id}/${packageType}`
+                `api/contexts/${contextId}/handover/${id}/${packageType}`,
+                { signal }
             );
 
             return JSON.parse(await result.text()) as HandoverResourceTypeMap[T][];
