@@ -7,7 +7,7 @@ import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { getDocumentsByTag } from '../../api/STID/getDocumentsByTag';
 import { Result } from './Results';
 import { SubResults } from './SubResult';
-import { AdvancedSearch, ModalHeader, Wrapper, Title } from './advancedSearch.styles';
+import { AdvancedSearch, ModalHeader, Wrapper, Title, SearchField } from './advancedSearch.styles';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { useCancellationToken } from '@equinor/hooks';
@@ -176,7 +176,7 @@ export const AdvancedDocumentSearch = ({
                         </ModalHeader>
                         <br />
 
-                        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1em' }}>
+                        <SearchField>
                             <SingleSelect
                                 label="Reference type"
                                 items={referenceTypes}
@@ -220,7 +220,7 @@ export const AdvancedDocumentSearch = ({
                                     }
                                 }}
                             />
-                        </div>
+                        </SearchField>
 
                         {subResults ? (
                             <SubResults
