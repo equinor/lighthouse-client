@@ -2,7 +2,11 @@ import { tokens } from '@equinor/eds-tokens';
 import { ClientApi } from '@equinor/portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { getGardenItemColor } from './Components/Garden/gardenFunctions';
-import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
+import {
+    drcGardenKeys,
+    fieldSettings,
+    getHighlightedColumn,
+} from './Components/Garden/gardenSetup';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
@@ -237,7 +241,7 @@ export function setup(appApi: ClientApi): void {
     });
 
     request.registerGardenOptions({
-        gardenKey: 'dueAtDate' as any,
+        gardenKey: drcGardenKeys.defaultGardenKey,
         itemKey: 'name',
         type: 'virtual',
         fieldSettings: fieldSettings,
@@ -248,6 +252,39 @@ export function setup(appApi: ClientApi): void {
         itemWidth: () => 150,
         rowHeight: 25,
     });
+
+    request.registerPresets([
+        {
+            name: 'Electro',
+            type: 'garden',
+            filter: {
+                filterGroups: [
+                    {
+                        name: 'Switchboard',
+                        values: [null, ''],
+                    },
+                    {
+                        name: 'Circuit',
+                        values: [null, ''],
+                    },
+                ],
+            },
+            garden: {
+                gardenKey: drcGardenKeys.electroGardenKey,
+                groupByKeys: ['heatTraces'],
+            },
+        },
+        {
+            name: 'Default',
+            type: 'garden',
+            filter: {
+                filterGroups: [],
+            },
+            garden: {
+                gardenKey: drcGardenKeys.defaultGardenKey,
+            },
+        },
+    ]);
 
     request.registerStatusItems(statusBarConfig);
 }
