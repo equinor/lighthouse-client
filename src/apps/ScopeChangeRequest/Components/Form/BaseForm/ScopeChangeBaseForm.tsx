@@ -56,7 +56,7 @@ export const ScopeChangeBaseForm = ({
                     }
                 />
                 <SingleSelect
-                    items={['NCR', 'DCN', 'Punch', 'Query', /**'SWCR',**/ 'NotApplicable']}
+                    items={['NCR', 'DCN', 'Punch', 'Query', /**'SWCR',**/ 'NotApplicable', 'DCR']}
                     label={'Change origin'}
                     meta="(Required)"
                     initialSelectedItem={state.originSource}

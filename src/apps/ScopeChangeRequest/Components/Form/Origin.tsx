@@ -4,6 +4,7 @@ import { SearchOrigin } from '../Inputs/Origins/SearchOrigin';
 import { SelectPunch } from '../Inputs/Origins/SelectPunch';
 import { SelectSWCR } from '../Inputs/Origins/SelectSWCR';
 import { MultiSelect } from '@equinor/eds-core-react';
+import { FormTextField } from '../Inputs/FormTextField';
 
 interface OriginSourceParams {
     originSource: string | undefined;
@@ -50,6 +51,16 @@ export const Origin = ({ originId, originSource }: OriginProps): JSX.Element => 
                         type={'DCN'}
                     />
                 );
+
+            case 'DCR': {
+                return (
+                    <FormTextField
+                        initialValue={originId?.originId}
+                        onChange={(e) => setOriginId(e)}
+                        placeholder="Enter DCR number"
+                    />
+                );
+            }
 
             case 'Query':
                 return (
