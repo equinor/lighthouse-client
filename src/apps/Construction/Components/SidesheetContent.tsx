@@ -1,5 +1,5 @@
-import { Column, useColumns, LinkCell, Table, TableData } from '@equinor/Table';
-import { SidesheetApi } from '../../../packages/Sidesheet/Components/ResizableSidesheet';
+import { SidesheetApi } from '@equinor/sidesheet';
+import { Column, LinkCell, Table, TableData, useColumns } from '@equinor/Table';
 import { WorkOrder } from '../Types';
 
 interface Data<T> {

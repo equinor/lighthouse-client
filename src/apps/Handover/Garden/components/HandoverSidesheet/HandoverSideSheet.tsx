@@ -1,6 +1,7 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { HandoverPackage } from '../../models/handoverPackage';
-import useHandoverResource from '../../hooks/useHandoverResource';
+import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
+import { isProduction } from '@equinor/portal-client';
+import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import {
     DetailsTab,
@@ -12,11 +13,10 @@ import {
     SwcrTab,
     UnsignedActionTab,
     UnsignedTaskTab,
-    WorkOrderTab,
+    WorkOrderTab
 } from '.';
-import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
-import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
-import { isProduction } from '@equinor/portal-client';
+import useHandoverResource from '../../hooks/useHandoverResource';
+import { HandoverPackage } from '../../models/handoverPackage';
 
 interface HandoverSideSheetProps {
     item: HandoverPackage;
