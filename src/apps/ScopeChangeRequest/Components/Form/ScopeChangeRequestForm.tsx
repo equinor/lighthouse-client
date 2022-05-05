@@ -112,8 +112,7 @@ export const ScopeChangeRequestForm = ({
                             </Button>
                             <Button
                                 disabled={!isValid}
-                                // onClick={() => onMutate(true)}
-                                onClick={() => console.log(state)}
+                                onClick={() => onMutate(true)}
                                 variant="outlined"
                             >
                                 Save
