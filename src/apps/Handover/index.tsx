@@ -1,4 +1,4 @@
-import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import { ClientApi, getFusionContextId, httpClient } from '@equinor/portal-client';
 import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
 import { statusBarData } from './Garden/components/statusItems';
 import { HandoverGroupByView } from './Garden/CustomViews';
@@ -73,12 +73,7 @@ async function responseParser(response: Response) {
 }
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
-    const { fusion } = httpClient();
-    fusion.setBaseUrl(
-        `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/api/contexts/`
-    );
-    const contextId = isProduction()
-        ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
-        : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-    return await fusion.fetch(`${contextId}/handover/`, { signal: signal });
+    const { fusionDataproxy } = httpClient();
+    const contextId = getFusionContextId();
+    return await fusionDataproxy.fetch(`/api/contexts/${contextId}/handover/`, { signal: signal });
 }

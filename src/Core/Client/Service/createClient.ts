@@ -2,7 +2,7 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import {
     registerAppConfig,
     registerClientRegistry,
-    registerInternalState,
+    registerInternalState
 } from '../Functions/RegisterActions';
 import { setClientEnv } from '../Functions/Settings';
 import { AppConfigResult } from '../Types/AppConfig';
@@ -13,6 +13,7 @@ import { fetchConfig } from './appConfig';
 import { appsProvider } from './appsProvider';
 import { setupApps } from './setupApps';
 import { setupAuthProvider } from './setupAuthProvider';
+import { setupContext } from './setupContext';
 import { setupUserData } from './setupUserData';
 
 interface ClientOptions {
@@ -37,6 +38,8 @@ export async function createClient(clientOptions: ClientOptions): Promise<Client
             authProvider
         )
     );
+
+    await setupContext();
 
     if (!appConfig.isProduction) {
         window['setEnv'] = function setEnv(env: string) {
