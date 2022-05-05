@@ -1,7 +1,6 @@
-import { deref, swap, useAtom } from '@dbeining/react-atom';
+import { deref, useAtom } from '@dbeining/react-atom';
 import { Tabs } from '@equinor/eds-core-react';
 import { useEdsTabs } from '@equinor/hooks';
-import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
@@ -19,7 +18,10 @@ import { LogTab, LogTabTitle } from '../Tabs/Log';
 import { RequestTab, RequestTabTitle } from '../Tabs/Request';
 import { WorkOrderTab, WorkOrderTabTitle } from '../Tabs/WorkOrders';
 import { SidesheetTabList } from './SidesheetWrapper.styles';
-
+import { updateContext } from './Utils/updateContext';
+import { toggleEditMode } from './Utils/toggleEditMode';
+import { resetEditMode } from './Utils/resetEditMode';
+import { SidesheetApi } from '@equinor/sidesheet';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -37,17 +39,9 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
 
     const editMode = useAtom(sideSheetEditModeAtom);
 
-    function toggleEditMode() {
-        swap(sideSheetEditModeAtom, (s) => !s);
-    }
-
     useEffect(() => {
-        swap(sideSheetEditModeAtom, () => false);
-        swap(scopeChangeAtom, (old) => ({
-            ...old,
-            request: item,
-            actions: actions,
-        }));
+        resetEditMode();
+        updateContext(item, actions);
     }, [item?.id]);
 
     if (Object.keys(deref(scopeChangeAtom).request).length < 2) {
@@ -60,7 +54,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
             {editMode ? (
                 <ScopeChangeRequestEditForm
                     request={deref(scopeChangeAtom).request}
-                    close={toggleEditMode}
+                    close={resetEditMode}
                 />
             ) : (
                 <>
