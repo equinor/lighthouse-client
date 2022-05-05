@@ -1,9 +1,7 @@
 import { DateTime } from 'luxon';
 import { useMutation, useQueryClient } from 'react-query';
-import { useNavigate } from 'react-router';
 import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
 import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
-import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
 import { readNotificationAsync } from '../API/readNotification';
 import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
 import { notificationsBaseKey } from '../queries/notificationQueries';
@@ -14,7 +12,7 @@ import {
     NotificationTitle,
     RightSection,
     TimeStamp,
-    Wrapper
+    Wrapper,
 } from './NotificationCardStyles';
 
 interface NotificationCardProps {
@@ -31,9 +29,6 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
     const { mutate: markAsRead } = useMutation(read, readNotificationAsync, {
         onSuccess: () => queryClient.invalidateQueries(baseKey),
     });
-
-    const navigate = useNavigate();
-    const currentLocation = useLocationKey();
 
     const isExternalApp = notification.actionType === 'URL';
 
@@ -69,17 +64,15 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
                         onClick={() => {
                             isExternalApp
                                 ? window.open(
-                                      notification.card?.actions?.find(
-                                          ({ type }) => type === 'Action.OpenUrl'
-                                      )?.url,
-                                      '_blank'
-                                  )
+                                    notification.card?.actions?.find(
+                                        ({ type }) => type === 'Action.OpenUrl'
+                                    )?.url,
+                                    '_blank'
+                                )
                                 : handleActionClick(
-                                      notification.sourceSystem.subSystem,
-                                      notification.sourceSystem.identifier,
-                                      navigate,
-                                      currentLocation
-                                  );
+                                    notification.sourceSystem.subSystem,
+                                    notification.sourceSystem.identifier
+                                );
 
                             markAsRead({ notificationId: notification.id });
                         }}
