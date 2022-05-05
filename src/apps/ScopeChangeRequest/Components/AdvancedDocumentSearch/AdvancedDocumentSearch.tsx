@@ -178,7 +178,6 @@ export const AdvancedDocumentSearch = ({
 
                         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1em' }}>
                             <SingleSelect
-                                meta="(Required)"
                                 label="Reference type"
                                 items={referenceTypes}
                                 handleSelectedItemChange={(change) => {
