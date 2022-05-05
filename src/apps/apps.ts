@@ -276,7 +276,7 @@ export const apps: AppManifest[] = [
     },
     {
         title: 'Mechanical Completion',
-        shortName: 'MC',
+        shortName: 'mc',
         color: '#0364B8',
         groupe: Apps.ConstructionAndCommissioning,
         icon: '',
@@ -314,17 +314,6 @@ export const apps: AppManifest[] = [
             setup: installationSetup,
         },
         appEnv: 'prod',
-    },
-    {
-        title: 'Mechanical Completion',
-        shortName: 'mc',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'Workspace',
-        },
     },
     {
         title: 'Piping and Heat trace',
