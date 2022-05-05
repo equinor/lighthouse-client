@@ -38,7 +38,7 @@ const columns: Column<McWorkOrder>[] = [
     },
 ];
 type WorkordersTabProps = {
-    packages: McWorkOrder[];
+    packages: McWorkOrder[] | undefined;
     error: Error | null;
     isFetching: boolean;
 };
