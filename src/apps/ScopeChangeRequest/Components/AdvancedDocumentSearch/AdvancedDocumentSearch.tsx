@@ -60,7 +60,6 @@ export const AdvancedDocumentSearch = ({
 
     const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
         'document',
-        'discipline',
         'area',
         'commpkg',
         'tag',
