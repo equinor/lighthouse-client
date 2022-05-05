@@ -1,11 +1,11 @@
 import { deref, useAtom } from '@dbeining/react-atom';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { MenuItem } from '@equinor/overlay-menu';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import { unVoidRequest, voidRequest } from '../../api/ScopeChange/Request';
 import { sideSheetEditModeAtom } from '../../Atoms/editModeAtom';
-import { MenuItem } from '../../Components/MenuButton';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { useScopeChangeContext } from '../context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../React-Query/useScopechangeMutation';
@@ -43,27 +43,27 @@ export function useSidesheetEffects(
         menuItems.push(
             isVoided
                 ? {
-                    label: 'Unvoid',
-                    onClick: () => unVoidRequestMutation({ requestId }),
-                    isDisabled: !canUnVoid,
-                    icon: (
-                        <Icon
-                            name="restore_from_trash"
-                            color={tokens.colors.interactive.primary__resting.hex}
-                        />
-                    ),
-                }
+                      label: 'Unvoid',
+                      onClick: () => unVoidRequestMutation({ requestId }),
+                      isDisabled: !canUnVoid,
+                      icon: (
+                          <Icon
+                              name="restore_from_trash"
+                              color={tokens.colors.interactive.primary__resting.hex}
+                          />
+                      ),
+                  }
                 : {
-                    label: 'Void',
-                    onClick: () => voidRequestMutation({ requestId }),
-                    isDisabled: !canVoid,
-                    icon: (
-                        <Icon
-                            name="delete_to_trash"
-                            color={tokens.colors.interactive.primary__resting.hex}
-                        />
-                    ),
-                }
+                      label: 'Void',
+                      onClick: () => voidRequestMutation({ requestId }),
+                      isDisabled: !canVoid,
+                      icon: (
+                          <Icon
+                              name="delete_to_trash"
+                              color={tokens.colors.interactive.primary__resting.hex}
+                          />
+                      ),
+                  }
         );
         return menuItems;
     };
@@ -73,11 +73,7 @@ export function useSidesheetEffects(
     }, [editMode, canVoid, canUnVoid, canPatch]);
 
     useEffect(() => {
-        actions.setTitle(
-            <>
-                {sequenceNumber}, {title}
-            </>
-        );
+        actions.setTitle(`${sequenceNumber} ${title}`);
     }, [id]);
 
     /** Only run once */

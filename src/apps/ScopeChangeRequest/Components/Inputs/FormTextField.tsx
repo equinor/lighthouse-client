@@ -30,6 +30,7 @@ export const FormTextField = ({
         <TextField
             id={Math.random().toString()}
             value={text}
+            rows={5}
             label={label}
             multiline={multiline}
             placeholder={placeholder}

@@ -2,7 +2,7 @@ export interface Assignment {
     externalId: string;
     body: AssignmentBody;
     taskMode: string;
-    state: string;
+    state: 'Active' | 'Closed';
     priority: string;
     dueDate: string | null;
     sourceSystem: SourceSystem;

@@ -57,7 +57,7 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
             return (
                 <FixedIconContainer>
                     <GreyCircle>
-                        <span>{number}</span>
+                        <Number>{number}</Number>
                     </GreyCircle>
                 </FixedIconContainer>
             );
@@ -71,6 +71,10 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
             );
     }
 }
+
+const Number = styled.div`
+    margin-top: 2px;
+`;
 
 const GreenCircle = styled.div`
     justify-content: center;
@@ -94,6 +98,7 @@ const GreyCircle = styled.div`
     height: 16px;
     font-size: 14px;
     border: 2px solid #6f6f6f;
+    overflow: hidden;
 `;
 
 const FixedIconContainer = styled.div`

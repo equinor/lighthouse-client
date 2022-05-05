@@ -1,14 +1,13 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary, ErrorFallbackSidesheet } from '@equinor/ErrorBoundary';
+import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { getApps } from '../../../apps/apps';
-import { IconMenu } from '../../../apps/ScopeChangeRequest/Components/MenuButton';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
 import { useSideSheet } from '../Hooks/useSideSheet';
-import { MenuItem } from '../Types/SidesheetApi';
 
 const DEFAULT_TAB_COLOUR = '#ff9900';
 
