@@ -1,5 +1,5 @@
+import { CustomHeaderView } from '@equinor/ParkView';
 import { memo } from 'react';
-import { CustomHeaderView } from '../../../../components/ParkView/Models/gardenOptions';
 import { McPackage } from '../../types';
 import { HeaderContainer } from './CustomHeaderView.styles';
 

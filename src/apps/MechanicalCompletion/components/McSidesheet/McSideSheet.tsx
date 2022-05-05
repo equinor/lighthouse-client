@@ -1,7 +1,7 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
+import { isProduction } from '@equinor/portal-client';
 import { useEffect, useState } from 'react';
-import { isProduction } from '../../../../Core/Client/Functions';
 import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { McPackage } from '../../types';
 import { useNcr, usePunch, useWorkorders } from './hooks';

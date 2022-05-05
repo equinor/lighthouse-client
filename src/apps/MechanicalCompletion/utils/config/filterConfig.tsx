@@ -1,4 +1,4 @@
-import { FilterOptions } from '../../../../packages/Filter/Types';
+import { FilterOptions } from '@equinor/filter';
 import { McPackage } from '../../types';
 
 export const filterConfig: FilterOptions<McPackage> = [

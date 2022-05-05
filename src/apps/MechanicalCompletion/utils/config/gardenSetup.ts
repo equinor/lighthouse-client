@@ -1,6 +1,5 @@
 import { sortByNumber } from '@equinor/GardenUtils';
-import { FieldSettings } from '../../../../components/ParkView/Models/fieldSettings';
-import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
+import { FieldSettings, GardenOptions } from '@equinor/ParkView';
 import { McCustomGroupByView, McGardenHeader, McGardenItem } from '../../components';
 import { CustomGroupByKeys, McPackage } from '../../types';
 import { getAverageTagVolume, getDateKey, getHighlightedColumn, getItemWidth } from '../helpers';

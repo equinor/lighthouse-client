@@ -1,5 +1,5 @@
 import { getYearAndWeekAndDayFromString, getYearAndWeekFromString } from '@equinor/GardenUtils';
-import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
+import { GetKeyFunction } from '@equinor/ParkView';
 
 import { CustomGroupByKeys, McPackage } from '../../types';
 import { ExtendedGardenFields } from '../config/gardenSetup';

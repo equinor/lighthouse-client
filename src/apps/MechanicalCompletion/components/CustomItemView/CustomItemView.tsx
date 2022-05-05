@@ -1,7 +1,6 @@
 import { statusColorMap } from '@equinor/GardenUtils';
+import { CustomItemView, useParkViewContext } from '@equinor/ParkView';
 import { memo, useMemo } from 'react';
-import { useParkViewContext } from '../../../../components/ParkView/Context/ParkViewProvider';
-import { CustomItemView } from '../../../../components/ParkView/Models/gardenOptions';
 import { McPackage } from '../../types';
 import { commStatusColors } from '../../utils/config/theme';
 import { getItemContentsColor } from '../../utils/helpers/getItemContentsColor';

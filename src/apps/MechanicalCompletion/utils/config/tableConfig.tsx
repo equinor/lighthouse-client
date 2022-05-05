@@ -1,4 +1,4 @@
-import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
+import { TableOptions } from '@equinor/WorkSpace';
 import { McPackage } from '../../types';
 
 const hiddenColumns: (keyof McPackage)[] = [

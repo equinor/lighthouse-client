@@ -1,8 +1,4 @@
-import {
-    getGardenItems,
-    isSubGroup,
-} from '../../../../components/ParkView/Components/VirtualGarden/utils';
-import { GardenGroups } from '../../../../components/ParkView/Models/data';
+import { GardenGroups, getGardenItems, isSubGroup } from '@equinor/ParkView';
 import { McPackage } from '../../types';
 
 export const getItemWidth = (garden: GardenGroups<McPackage>, groupByKey: string) => {
