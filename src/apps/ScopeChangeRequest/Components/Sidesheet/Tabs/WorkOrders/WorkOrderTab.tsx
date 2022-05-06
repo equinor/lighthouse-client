@@ -5,9 +5,13 @@ import { getWorkOrderByIds } from '../../../../api/FAM/getWorkOrderById';
 import { useQuery } from 'react-query';
 import { CompactWorkOrderList } from '../../../WorkOrderTable/CompactWorkOrder/CompactWorkOrdersList';
 import { Loading, NoWorkOrders, Wrapper } from './workOrderTab.styles';
+import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 
 export function WorkOrderTab(): JSX.Element {
-    const woNumbers = [];
+    const woNumbers =
+        useScopeChangeContext((s) =>
+            s.request.workOrders?.map(({ jobNumber }) => Number(jobNumber))
+        ) ?? [];
 
     const { data, error } = useQuery(['WO', ...woNumbers], () => getWorkOrderByIds(woNumbers), {
         cacheTime: 5 * 1000 * 60,
