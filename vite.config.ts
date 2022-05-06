@@ -51,6 +51,7 @@ export default defineConfig({
                 './src/packages/ModelViewer'
             ),
             '@equinor/lighthouse-status-bar': path.resolve(__dirname, './src/packages/StatusBar'),
+            '@equinor/BookmarksManager': path.resolve(__dirname, './src/packages/BookmarksManager'),
             '@equinor/lighthouse-hooks': path.resolve(__dirname, './src/hooks'),
         },
     },
