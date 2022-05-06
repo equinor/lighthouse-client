@@ -14,6 +14,7 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
     const {
         filterState: { getAllFilterGroups },
         filterGroupState: { getInactiveGroupValues },
+        operations: { markAllValuesActive },
     } = useFilterApiContext();
 
     const allFilterGroups = getAllFilterGroups();
@@ -25,6 +26,8 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
 
     function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
+        /** Resets the filter group */
+        markAllValuesActive(value);
 
         visibleFilters.includes(value)
             ? setVisibleFilters((prev) => prev.filter((v) => v !== value))
