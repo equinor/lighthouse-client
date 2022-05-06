@@ -2,7 +2,6 @@ import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { PopoutSidesheet } from '@equinor/sidesheet';
 import { useNavigate } from 'react-router';
 import { WorkspaceProps } from '../..';
-import { BookmarkContextWrapper } from '../../Context/BookmarkContext';
 import { useDataContext } from '../../Context/DataProvider';
 import { WorkspaceFilterWrapper } from '../../Context/WorkspaceFilterWrapper';
 import { useConfiguredTabs } from '../../Util/tabsConfig';
@@ -52,13 +51,11 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     return (
         <WorkspaceWrapper>
             <WorkspaceFilterWrapper filterOptions={workspace.filterOptions || []}>
-                <BookmarkContextWrapper>
-                    <CompletionViewHeader {...props} tabs={tabs} />
-                    <DataViewWrapper>
-                        <WorkSpaceTabs tabs={tabs} />
-                        <PopoutSidesheet />
-                    </DataViewWrapper>
-                </BookmarkContextWrapper>
+                <CompletionViewHeader {...props} tabs={tabs} />
+                <DataViewWrapper>
+                    <WorkSpaceTabs tabs={tabs} />
+                    <PopoutSidesheet />
+                </DataViewWrapper>
             </WorkspaceFilterWrapper>
         </WorkspaceWrapper>
     );
