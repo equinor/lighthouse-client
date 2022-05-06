@@ -51,7 +51,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     hiddenColumns: [
         'id',
         'description',
-        'guesstimateDescription',
         'createdBy',
         'modifiedBy',
         'originSourceId',
@@ -106,7 +105,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'modifiedBy', title: 'Modified by' },
         { key: 'description', title: 'Description' },
         { key: 'state', title: 'State', width: 80 },
-        { key: 'guesstimateDescription', title: 'Guesstimate description' },
         { key: 'currentWorkflowStep', title: 'Next', width: 220 },
         {
             key: 'hasComments',

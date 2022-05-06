@@ -3,10 +3,15 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     commissioningPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
-    disciplineCodes: string[];
     documentNumbers: string[];
+    guesstimates: DisciplineGuesstimate[];
     setAsOpen?: boolean;
     //workflow
+}
+
+export interface DisciplineGuesstimate {
+    procosysCode: string;
+    guesstimateHours: number | null;
 }
 
 export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCR';
@@ -32,7 +37,6 @@ export interface ScopeChangeBaseModel {
     originSource: OriginType;
     actualChangeHours: number;
     guesstimateHours: number;
-    guesstimateDescription: string;
 }
 
 export interface LogEntry {

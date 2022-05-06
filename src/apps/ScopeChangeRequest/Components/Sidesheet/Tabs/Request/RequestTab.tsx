@@ -36,10 +36,6 @@ export function RequestTab(): JSX.Element {
 
                         <SiblingWrapper>
                             <SectionWrapper>
-                                <SubSectionTitle>Guesstimate description</SubSectionTitle>
-                                <SubSectionText>{request.guesstimateDescription}</SubSectionText>
-                            </SectionWrapper>
-                            <SectionWrapper>
                                 <SubSectionTitle>Guesstimate</SubSectionTitle>
                                 <SubSectionText>
                                     {request.guesstimateHours
