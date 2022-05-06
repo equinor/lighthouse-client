@@ -1,3 +1,4 @@
+import { BookmarkDropdown } from '@equinor/BookmarksManager';
 import { useFactory } from '@equinor/DataFactory';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -7,7 +8,6 @@ import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { isProduction } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
-import { BookmarkDropdown } from '../../../../../packages/BookmarksManager/src';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useDataContext } from '../../Context/DataProvider';
 import { useLocationContext } from '../../Context/LocationProvider';
