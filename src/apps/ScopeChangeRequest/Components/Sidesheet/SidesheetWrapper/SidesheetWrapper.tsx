@@ -1,4 +1,4 @@
-import { deref, useAtom } from '@dbeining/react-atom';
+import { useAtom } from '@dbeining/react-atom';
 import { Tabs } from '@equinor/eds-core-react';
 import { useEdsTabs } from '@equinor/hooks';
 import { useEffect } from 'react';
@@ -8,7 +8,6 @@ import {
     sideSheetEditModeAtom,
     toggleEditMode,
 } from '../../../Atoms/editModeAtom';
-import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
 import { useOctopusErrorHandler } from '../../../hooks/observers/useOctopusErrorHandler';
 import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
 import { useGetScopeChangeRequest } from '../../../hooks/queries/useGetScopeChangeRequest';
