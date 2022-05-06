@@ -1,5 +1,6 @@
 import { useHttpClient } from '@equinor/portal-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
+import { PBIOptions } from '..';
 import { BuiltPowerBiFilter, Filter } from '../Types/filter';
 
 const filterBuilder = (filter: Filter): BuiltPowerBiFilter => {
@@ -21,11 +22,7 @@ interface useFusionClientReturn {
 export function useFusionClient(
     resource: string,
     filterOptions?: Filter[],
-    options?: {
-        showFilter?: boolean;
-        enablePageNavigation?: boolean;
-        defaultPage?: string;
-    }
+    options?: Pick<PBIOptions, 'showFilter' | 'enablePageNavigation' | 'defaultPage' | 'bookmark'>
 ): useFusionClientReturn {
     const { fusionPbi } = useHttpClient();
 
@@ -67,6 +64,7 @@ export function useFusionClient(
                     },
                 },
             },
+            bookmark: options?.bookmark,
             pageName: options?.defaultPage,
             filters: filters ?? undefined,
         };
