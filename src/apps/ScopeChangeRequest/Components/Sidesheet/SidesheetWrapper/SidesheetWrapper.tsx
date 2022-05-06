@@ -25,6 +25,7 @@ import { SidesheetTabList } from './SidesheetWrapper.styles';
 import { updateContext } from './Utils/updateContext';
 
 import { SidesheetApi } from '@equinor/sidesheet';
+import { getScopeChangeSnapshot } from '../../../hooks/context/useScopeChangeContext';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -47,7 +48,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
         updateContext(item, actions);
     }, [item?.id]);
 
-    if (Object.keys(deref(scopeChangeAtom).request).length < 2) {
+    if (Object.keys(getScopeChangeSnapshot().request).length < 2) {
         return <></>;
     }
 
@@ -56,7 +57,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
             <ScopeChangeErrorBanner />
             {editMode ? (
                 <ScopeChangeRequestEditForm
-                    request={deref(scopeChangeAtom).request}
+                    request={getScopeChangeSnapshot().request}
                     close={disableEditMode}
                 />
             ) : (
