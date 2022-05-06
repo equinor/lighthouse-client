@@ -3,7 +3,6 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     commissioningPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
-    disciplineCodes: string[];
     documentNumbers: string[];
     guesstimates: DisciplineGuesstimate[];
     setAsOpen?: boolean;

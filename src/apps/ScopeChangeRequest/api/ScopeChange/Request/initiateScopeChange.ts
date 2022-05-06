@@ -17,7 +17,6 @@ export async function initiateScopeChange({ request }: InitiateScopeChangeParams
         estimatedChangeHours: request.estimatedChangeHours,
         changeCategoryId: request.changeCategory.id,
         description: request.description,
-        guesstimateDescription: request.guesstimateDescription,
         guesstimateHours: request.guesstimateHours,
         id: request.id,
         originSource: request.originSource,
@@ -30,7 +29,7 @@ export async function initiateScopeChange({ request }: InitiateScopeChangeParams
         tagNumbers: request.tags.map((x) => x.procosysNumber) || [],
         documentNumbers: request.documents.map((x) => x.stidDocumentNumber) || [],
         areaCodes: [],
-        disciplineCodes: [],
+        guesstimates: [],
     };
 
     const payload = {
