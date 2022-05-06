@@ -1,3 +1,1 @@
-export * from './useWorkorders';
-export * from './useNcr';
-export * from './usePunch';
+export * from './useMcResource';

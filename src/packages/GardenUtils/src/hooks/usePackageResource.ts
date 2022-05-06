@@ -1,43 +1,19 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
-export type FetchPackageResource<T> = (packageId: string) => Promise<T[]>;
+export type FetchPackageResource<T> = (packageId: string, signal?: AbortSignal) => Promise<T[]>;
 
-export const usePackageResource = <T>(packageId: string | null, fetch: FetchPackageResource<T>) => {
-    const [data, setData] = useState<T[]>([]);
-    const [isFetching, setIsFetching] = useState<boolean>(false);
-    const [error, setError] = useState<Error | null>(null);
-
-    const reset = useCallback(() => {
-        setData([]);
-        setIsFetching(false);
-        setError(null);
-    }, []);
-    const preformFetch = useCallback(async () => {
-        if (!packageId) {
-            reset();
-            return;
-        }
-
-        try {
-            setIsFetching(true);
-            setError(null);
-            const response = await fetch(packageId);
-            setData(response);
-        } catch (e) {
-            if (e instanceof Error) setError(e);
-        } finally {
-            setIsFetching(false);
-        }
-    }, [packageId, fetch]);
-
-    useEffect(() => {
-        preformFetch();
-    }, [preformFetch]);
+export const usePackageResource = <T>(
+    resourceName: string,
+    packageId: string,
+    fetch: FetchPackageResource<T>
+) => {
+    const { data, error, isLoading } = useQuery([resourceName, packageId], ({ signal }) =>
+        fetch(packageId, signal)
+    );
 
     return {
         data,
-        isFetching,
-        error,
-        reset,
+        isFetching: isLoading,
+        error: error instanceof Error ? error : null,
     };
 };
