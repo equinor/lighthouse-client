@@ -3,7 +3,11 @@ import { Tabs } from '@equinor/eds-core-react';
 import { useEdsTabs } from '@equinor/hooks';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { sideSheetEditModeAtom } from '../../../Atoms/editModeAtom';
+import {
+    disableEditMode,
+    sideSheetEditModeAtom,
+    toggleEditMode,
+} from '../../../Atoms/editModeAtom';
 import { scopeChangeAtom } from '../../../Atoms/scopeChangeAtom';
 import { useOctopusErrorHandler } from '../../../hooks/observers/useOctopusErrorHandler';
 import { useScopeChangeMutationWatcher } from '../../../hooks/observers/useScopeChangeMutationWatcher';
@@ -19,8 +23,7 @@ import { RequestTab, RequestTabTitle } from '../Tabs/Request';
 import { WorkOrderTab, WorkOrderTabTitle } from '../Tabs/WorkOrders';
 import { SidesheetTabList } from './SidesheetWrapper.styles';
 import { updateContext } from './Utils/updateContext';
-import { toggleEditMode } from './Utils/toggleEditMode';
-import { resetEditMode } from './Utils/resetEditMode';
+
 import { SidesheetApi } from '@equinor/sidesheet';
 
 interface SidesheetWrapperProps {
@@ -40,7 +43,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     const editMode = useAtom(sideSheetEditModeAtom);
 
     useEffect(() => {
-        resetEditMode();
+        disableEditMode();
         updateContext(item, actions);
     }, [item?.id]);
 
@@ -54,7 +57,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
             {editMode ? (
                 <ScopeChangeRequestEditForm
                     request={deref(scopeChangeAtom).request}
-                    close={resetEditMode}
+                    close={disableEditMode}
                 />
             ) : (
                 <>
