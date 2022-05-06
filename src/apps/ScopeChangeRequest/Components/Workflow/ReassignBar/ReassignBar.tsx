@@ -1,9 +1,8 @@
-import { swap } from '@dbeining/react-atom';
 import { reassignCriteria } from '../../../api/ScopeChange/Workflow';
 import { PCSPersonRoleSearch } from '../../PersonRoleSearch/PCSPersonRoleSearch';
 import { useScopeChangeMutation } from '../../../hooks/React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../../keys/scopeChangeMutationKeys';
-import { actionWithCommentAtom } from '../Atoms/signingAtom';
+import { resetSigningAtom } from '../Atoms/signingAtom';
 
 interface ReassignBarProps {
     requestId: string;
@@ -36,7 +35,7 @@ export const ReassignBar = ({ criteriaId, requestId, stepId }: ReassignBarProps)
                         value: value.value,
                     },
                 });
-                swap(actionWithCommentAtom, () => null);
+                resetSigningAtom();
             }}
         />
     );
