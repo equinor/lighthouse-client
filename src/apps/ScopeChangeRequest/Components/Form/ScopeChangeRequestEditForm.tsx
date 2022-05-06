@@ -25,6 +25,7 @@ import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { useUnpackRelatedObjects } from '../../hooks/queries/useUnpackRelatedObjects';
 import { swap } from '@dbeining/react-atom';
 import { sideSheetEditModeAtom } from '../../Atoms/editModeAtom';
+import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -82,6 +83,11 @@ export const ScopeChangeRequestEditForm = ({
                         handleInput={handleInput}
                         state={state}
                         shouldDisableCategory
+                    />
+                    Disciplines and guesstimates
+                    <GuesstimateDiscipline
+                        state={state.guesstimates ?? []}
+                        updateFormValue={(guess) => handleInput('guesstimates', guess)}
                     />
                 </FlexColumn>
 
