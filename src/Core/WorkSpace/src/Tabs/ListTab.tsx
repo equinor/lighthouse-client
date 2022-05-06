@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
+import { useWorkspaceBookmarks } from '../Context/BookmarkContext';
 import { useDataContext } from '../Context/DataProvider';
 
 const Wrapper = styled.section`
@@ -17,6 +18,7 @@ export const ListTab = (): JSX.Element => {
 
     const data = getFilteredData() as TableData[];
     const { tableOptions } = useDataContext();
+    useWorkspaceBookmarks();
 
     const [ref, { awaitableHeight }] = useElementData();
 

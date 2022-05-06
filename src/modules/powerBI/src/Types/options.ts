@@ -1,3 +1,4 @@
+import { ApplyEventArgs, SaveArgs } from '@equinor/BookmarksManager';
 import { IReportEmbedConfiguration } from 'powerbi-client';
 
 export type PowerBIBookmarkPayload = {
@@ -23,15 +24,6 @@ export interface PBIOptions extends IReportEmbedConfiguration {
     isFilterActive?: boolean;
     aspectRatio?: number;
     hasFilter?: (hasFilter: boolean) => void;
-    persistPayload?: (
-        capturedPayload: PowerBIBookmarkPayload,
-        bookmarkTitle: string,
-        appKey: string,
-        subSystem: string
-    ) => void;
-    applyBookmark?: (
-        bookmarkId: string,
-        appKey: string,
-        groupName: string
-    ) => Promise<PowerBIBookmarkPayload | undefined>;
+    persistPayload?: (saveArgs: SaveArgs<PowerBIBookmarkPayload>) => void;
+    applyBookmark?: (applyArgs: ApplyEventArgs) => Promise<PowerBIBookmarkPayload | undefined>;
 }
