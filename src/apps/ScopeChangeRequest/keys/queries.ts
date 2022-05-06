@@ -113,6 +113,7 @@ export const scopeChangeQueries: ScopeChangeQueries = {
     historyQuery: (id: string) => ({
         queryFn: ({ signal }) => getHistory(id, signal),
         queryKey: scopeChangeHistoryKey(id),
+        staleTime: CacheTime.FiveMinutes,
     }),
     workflowQueries: scopeChangeWorkflowQueries,
     permissionQueries: {
