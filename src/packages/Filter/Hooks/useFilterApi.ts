@@ -28,8 +28,11 @@ export interface FilterApi<T> {
 }
 
 interface FilterGroupState {
+    /**Gets all the distinct values for this filter group */
     getGroupValues: GetGroupValuesFunc;
+    /** Gets all the active filter values in this group */
     getInactiveGroupValues: GetGroupValuesFunc;
+    /** Check if a value from a group is inactive */
     checkValueIsInActive: (groupName: string, value: FilterValueType) => boolean;
     getFilterItemCountsForGroup: (groupName: string) => FilterItemCount[];
     getCountForFilterValue: (
