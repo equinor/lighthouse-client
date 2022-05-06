@@ -4,6 +4,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
+import { isProduction } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { BookmarkDropdown } from '../../../../../packages/BookmarksManager/src';
@@ -185,7 +186,9 @@ export const CompletionViewHeader = ({
                                 {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                             </TabButton>
 
-                            <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                            {!isProduction() && (
+                                <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                            )}
                         </>
                     )}
                 </RightSection>

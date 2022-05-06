@@ -16,6 +16,7 @@ import {
     Title,
     Wrap,
 } from './PowerBiViewerHeaderStyles';
+import { isProduction } from '@equinor/portal-client';
 
 type HandleFilter = () => void;
 
@@ -73,7 +74,9 @@ export const PowerBiViewerHeader = ({
                     <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
                         {hasFilter ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                     </HeaderButton>
-                    <BookmarkDropdown appKey={shortName} subSystem={groupName.toString()} />
+                    {!isProduction() && (
+                        <BookmarkDropdown appKey={shortName} subSystem={groupName.toString()} />
+                    )}
                 </RightSection>
             </HeaderContent>
         </HeaderWrapper>
