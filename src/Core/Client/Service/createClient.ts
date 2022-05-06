@@ -2,7 +2,7 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import {
     registerAppConfig,
     registerClientRegistry,
-    registerInternalState
+    registerInternalState,
 } from '../Functions/RegisterActions';
 import { setClientEnv } from '../Functions/Settings';
 import { AppConfigResult } from '../Types/AppConfig';
@@ -31,6 +31,7 @@ export async function createClient(clientOptions: ClientOptions): Promise<Client
     const appConfig = registerAppConfig(await fetchConfig());
     const { authProvider } = registerInternalState(setupAuthProvider(appConfig.settings));
     setupUserData(authProvider);
+
     const registry = registerClientRegistry(
         setupApps(
             appsProvider(clientOptions.getApps, clientOptions.getAppGroups, false),
