@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { forwardRef, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
 const Button = styled.button`
@@ -40,15 +40,13 @@ const Button = styled.button`
     }
 `;
 //TODO Extract this component to a package or core components (its implemented two different places)
-export const HeaderButton = forwardRef(
-    ({
-        children,
-        ...rest
-    }: PropsWithChildren<React.HTMLAttributes<HTMLButtonElement>>): JSX.Element => {
-        return (
-            <Button aria-selected {...rest}>
-                {children}
-            </Button>
-        );
-    }
-);
+export const HeaderButton = ({
+    children,
+    ...rest
+}: PropsWithChildren<React.HTMLAttributes<HTMLButtonElement>>): JSX.Element => {
+    return (
+        <Button aria-selected {...rest}>
+            {children}
+        </Button>
+    );
+};
