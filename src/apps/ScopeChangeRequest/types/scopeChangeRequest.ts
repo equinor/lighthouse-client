@@ -34,7 +34,7 @@ export interface ScopeChangeBaseModel {
     actualChangeHours: number;
     guesstimateHours: number;
     guesstimateDescription: string;
-    isWarrantyCase: boolean;
+    potentialWarrantyCase: boolean;
 }
 
 export interface LogEntry {

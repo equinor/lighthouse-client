@@ -87,7 +87,8 @@ export const ScopeChangeBaseForm = ({
             />
 
             <IsWarrantyCaseCheckbox
-                handleInput={(newVal) => handleInput('isWarrantyCase', newVal)}
+                initialValue={state.potentialWarrantyCase}
+                handleInput={(newVal) => handleInput('potentialWarrantyCase', newVal)}
             />
 
             <Guesstimate>
