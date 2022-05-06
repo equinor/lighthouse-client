@@ -6,6 +6,7 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     disciplineCodes: string[];
     documentNumbers: string[];
     setAsOpen?: boolean;
+
     //workflow
 }
 
@@ -33,6 +34,7 @@ export interface ScopeChangeBaseModel {
     actualChangeHours: number;
     guesstimateHours: number;
     guesstimateDescription: string;
+    isWarrantyCase: boolean;
 }
 
 export interface LogEntry {
