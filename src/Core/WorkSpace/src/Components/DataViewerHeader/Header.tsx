@@ -167,6 +167,9 @@ export const CompletionViewHeader = ({
                             <ClickableIcon size={24} name="refresh" />
                         )}
                     </TabButton>
+                    {!isProduction() && (
+                        <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                    )}
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton
@@ -189,10 +192,6 @@ export const CompletionViewHeader = ({
                             >
                                 {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                             </TabButton>
-
-                            {!isProduction() && (
-                                <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
-                            )}
                         </>
                     )}
                 </RightSection>

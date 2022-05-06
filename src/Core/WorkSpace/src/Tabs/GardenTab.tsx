@@ -4,6 +4,7 @@ import { Garden } from '../../../../components/ParkView/Components/Garden';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
+import { useWorkspaceBookmarks } from '../Context/BookmarkContext';
 import { useDataContext } from '../Context/DataProvider';
 import { gardenApiAtom } from '../Util/gardenBookmarks/gardenApiAtom';
 import { gardenStateSnapshotAtom } from '../Util/gardenBookmarks/gardenStateSnapshotAtom';
@@ -15,7 +16,7 @@ export const GardenTab = (): JSX.Element => {
         filterState: { getFilteredData },
     } = useFilterApiContext();
     const data = getFilteredData();
-
+    useWorkspaceBookmarks();
     const { gardenOptions } = useDataContext();
 
     useEffect(
