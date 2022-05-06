@@ -4,7 +4,6 @@ import { searchTags } from '../../api/Search/PCS/searchTags';
 import { httpClient } from '../../../../Core/Client/Functions';
 import { searchCommPkg } from '../../api/Search/PCS/searchCommPkg';
 import { searchQueryOrigin } from '../../api/Search/PCS/searchQuery';
-import { searchDCN } from '../../api/Search/PCS/searchDCN';
 import { searchSWCR } from '../../api/Search/PCS/searchSWCR';
 import { searchAreas } from '../../api/Search/PCS/searchArea';
 import { searchPerson } from '../../api/Search/PCS/searchPerson';
@@ -57,9 +56,6 @@ export function usePcsSearch(): PCSSearch {
         signal?: AbortSignal
     ): Promise<TypedSelectOption[]> {
         switch (type) {
-            case 'DCN': {
-                return await searchDCN(searchValue, procosysPlantId, procosys, signal);
-            }
             case 'NCR': {
                 return await searchNCR(searchValue, procosysPlantId, procosys, signal);
             }

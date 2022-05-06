@@ -2,7 +2,11 @@ import { tokens } from '@equinor/eds-tokens';
 import { ClientApi } from '@equinor/portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { getGardenItemColor } from './Components/Garden/gardenFunctions';
-import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
+import {
+    drcGardenKeys,
+    fieldSettings,
+    getHighlightedColumn,
+} from './Components/Garden/gardenSetup';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
@@ -91,11 +95,14 @@ export function setup(appApi: ClientApi): void {
                 name: 'System',
                 valueFormatter: ({ name }) => name.substring(0, 2),
             },
-
             {
                 name: 'Priority',
                 valueFormatter: ({ commPkPriority1 }) =>
                     commPkPriority1 !== '' ? commPkPriority1 : 'Unknown',
+            },
+            {
+                name: 'Location',
+                valueFormatter: ({ location }) => location,
             },
             {
                 name: 'Due date time period',
@@ -153,6 +160,7 @@ export function setup(appApi: ClientApi): void {
             { key: 'commPkPriority1', title: 'Priority', width: 90 },
             { key: 'checkLists', title: 'Checklist status', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
+            { key: 'location', title: 'Location', width: 200 },
         ],
         customCellView: [
             {
@@ -223,7 +231,7 @@ export function setup(appApi: ClientApi): void {
                 accessor: 'heatTraces',
                 Header: 'HT cables',
                 Aggregated: () => null,
-                width: 1135,
+                width: 935,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return (
@@ -237,7 +245,7 @@ export function setup(appApi: ClientApi): void {
     });
 
     request.registerGardenOptions({
-        gardenKey: 'dueAtDate' as any,
+        gardenKey: drcGardenKeys.defaultGardenKey,
         itemKey: 'name',
         type: 'virtual',
         fieldSettings: fieldSettings,
@@ -248,6 +256,39 @@ export function setup(appApi: ClientApi): void {
         itemWidth: () => 150,
         rowHeight: 25,
     });
+
+    request.registerPresets([
+        {
+            name: 'Electro',
+            type: 'garden',
+            filter: {
+                filterGroups: [
+                    {
+                        name: 'Switchboard',
+                        values: [null, ''],
+                    },
+                    {
+                        name: 'Circuit',
+                        values: [null, ''],
+                    },
+                ],
+            },
+            garden: {
+                gardenKey: drcGardenKeys.electroGardenKey,
+                groupByKeys: ['heatTraces'],
+            },
+        },
+        {
+            name: 'Default',
+            type: 'garden',
+            filter: {
+                filterGroups: [],
+            },
+            garden: {
+                gardenKey: drcGardenKeys.defaultGardenKey,
+            },
+        },
+    ]);
 
     request.registerStatusItems(statusBarConfig);
 }

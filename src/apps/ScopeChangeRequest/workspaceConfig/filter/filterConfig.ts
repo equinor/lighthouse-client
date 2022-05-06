@@ -1,5 +1,10 @@
-import { FilterOptions } from '../../../packages/Filter/Types';
-import { ScopeChangeRequest } from '../types/scopeChangeRequest';
+import { FilterOptions } from '../../../../packages/Filter/Types';
+import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
+import {
+    calculateGuesstimateHoursGap,
+    guesstimate,
+    GuesstimateRanges,
+} from './guesstimate/guesstimate';
 
 export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {
@@ -43,5 +48,18 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     {
         name: 'Workflow status',
         valueFormatter: ({ workflowStatus }) => workflowStatus,
+    },
+    {
+        name: 'Guesstimate',
+        valueFormatter: ({ guesstimateHours }) => calculateGuesstimateHoursGap(guesstimateHours),
+        sort: (a) =>
+            a.sort((a, b) => {
+                if (typeof a !== 'string' || typeof b !== 'string') return 0;
+
+                const aN = guesstimate.get(a as GuesstimateRanges);
+                const bN = guesstimate.get(b as GuesstimateRanges);
+                if (!aN || !bN) return 0;
+                return aN - bN;
+            }),
     },
 ];

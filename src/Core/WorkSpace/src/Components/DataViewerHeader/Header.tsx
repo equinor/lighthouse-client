@@ -14,6 +14,7 @@ import { useLocationContext } from '../../Context/LocationProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
 import { TabsConfigItem } from '../../Util/tabsConfig';
+import { Presets } from '../Presets/Presets';
 import { TabButton } from '../ToggleButton';
 import {
     ActionBar,
@@ -31,6 +32,7 @@ interface CompletionViewHeaderProps {
     title: string;
     groupe: string | string[];
     tabs: TabsConfigItem[];
+    sideSheetWidth: number;
 }
 
 const ANALYTICS = 'analytics';
@@ -39,6 +41,7 @@ export const CompletionViewHeader = ({
     title,
     tabs,
     groupe,
+    sideSheetWidth,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
@@ -63,7 +66,7 @@ export const CompletionViewHeader = ({
 
     const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
     return (
-        <HeaderWrapper>
+        <HeaderWrapper sideSheetWidth={sideSheetWidth}>
             <TitleBar>
                 <Title variant="h3">{title}</Title>
                 <PerformanceObserver />
@@ -97,6 +100,7 @@ export const CompletionViewHeader = ({
                     )}
                 </LeftSection>
                 <RightSection>
+                    <Presets />
                     {factory && (
                         <>
                             <TabButton

@@ -1,7 +1,4 @@
-import { HeaderContainer } from './HeaderContainer';
-import { Layout } from './Layout';
-import { useVirtual } from 'react-virtual';
-import { useParkViewContext } from '../../Context/ParkViewProvider';
+import { useSideSheet } from '@equinor/sidesheet';
 import {
     Fragment,
     useCallback,
@@ -9,16 +6,19 @@ import {
     useLayoutEffect,
     useMemo,
     useRef,
-    useState,
+    useState
 } from 'react';
+import { useVirtual } from 'react-virtual';
+import { useParkViewContext } from '../../Context/ParkViewProvider';
+import { useRefresh } from '../../hooks/useRefresh';
+import { DataSet, GardenGroups } from '../../Models/data';
 import { CustomVirtualView } from '../../Models/gardenOptions';
 import { defaultSortFunction } from '../../Utils/utilities';
-import { GardenGroups, DataSet } from '../../Models/data';
 import { GardenItemContainer } from './GardenItemContainer';
-import { useRefresh } from '../../hooks/useRefresh';
+import { HeaderContainer } from './HeaderContainer';
 import { useExpand, useVirtualScrolling } from './hooks';
+import { Layout } from './Layout';
 import { getGardenItems, getRowCount } from './utils';
-import { useSideSheet } from '../../../../packages/Sidesheet/context/sidesheetContext';
 
 type VirtualGardenProps<T> = {
     garden: GardenGroups<T>;
@@ -30,21 +30,20 @@ export const VirtualGarden = <T extends unknown>({
     width,
 }: VirtualGardenProps<T>): JSX.Element => {
     const [selectedItem, setSelectedItem] = useState<T | null>(null);
+    const parentRef = useRef<HTMLDivElement | null>(null);
+
     const {
         gardenKey,
         fieldSettings,
-        groupByKeys,
         customView,
         itemKey,
         sortData,
         highlightColumn,
         rowHeight,
         customDescription,
+        groupByKeys,
         customGroupByKeys,
     } = useParkViewContext<T>();
-
-    const parentRef = useRef<HTMLDivElement | null>(null);
-
     const { SidesheetComponent } = useSideSheet();
     const refresh = useRefresh();
 
@@ -95,9 +94,10 @@ export const VirtualGarden = <T extends unknown>({
         useObserver: useCallback(() => ({ height: 0, width: window.innerWidth }), []),
         overscan: 3,
     });
-
-    const { customHeaderView: headerChild, customItemView: packageChild } =
-        customView as CustomVirtualView<T>;
+    const headerChild =
+        (customView?.customHeaderView as CustomVirtualView<T>['customHeaderView']) ?? undefined;
+    const packageChild =
+        (customView?.customItemView as CustomVirtualView<T>['customItemView']) ?? undefined;
 
     const handleExpand = useCallback(
         <T extends unknown>(subGroup: DataSet<T>): void => {

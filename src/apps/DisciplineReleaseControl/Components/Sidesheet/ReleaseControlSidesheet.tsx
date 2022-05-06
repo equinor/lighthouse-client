@@ -1,21 +1,22 @@
-import { useEffect, useState } from 'react';
-import { ServerError } from '../../Api/Types/ServerError';
-import { Wrapper } from '../../Styles/SidesheetWrapper';
-import { ReleaseControlErrorBanner } from './ErrorBanner';
-import { Pipetest } from '../../Types/pipetest';
 // import { Viewer } from '../../../../packages/ModelViewer/ModelViewer';
 // import { useFacility } from '@equinor/portal-client';
 import { Tabs } from '@equinor/eds-core-react';
-import { CheckListTable } from './CheckListTable';
-import { InsulationTable } from './InsulationTable';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
-import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
-import { SidesheetTabList } from './SidesheetTabs';
-import { ElectroView } from '../Electro/ElectroView';
+import { SidesheetApi } from '@equinor/sidesheet';
+import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useLocationKey } from '../../../../packages/Filter/Hooks/useLocationKey';
+import { ServerError } from '../../Api/Types/ServerError';
 import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
+import { Wrapper } from '../../Styles/SidesheetWrapper';
+import { Pipetest } from '../../Types/pipetest';
+import { ElectroView } from '../Electro/ElectroView';
+import { CheckListTable } from './CheckListTable';
+import { ReleaseControlErrorBanner } from './ErrorBanner';
+import { InsulationTable } from './InsulationTable';
+import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
+import { SidesheetTabList } from './SidesheetTabs';
 import { TablesTab, WarningBanner, WarningBannerText } from './styles';
+import { WorkOrderTab } from './WorkOrderTab';
 
 interface ReleaseControlSidesheetProps {
     item: Pipetest;
@@ -42,7 +43,7 @@ export const ReleaseControlSidesheet = ({
     }, [width]);
 
     useEffect(() => {
-        actions.setTitle(<>Pipetest {item.name}</>);
+        actions.setTitle(`Pipetest ${item.name}`);
     }, [item.name]);
 
     const locationKey = useLocationKey();
@@ -64,6 +65,7 @@ export const ReleaseControlSidesheet = ({
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
                     <Tabs.Tab>Circuit diagram</Tabs.Tab>
+                    <Tabs.Tab>Work orders</Tabs.Tab>
                     <Tabs.Tab>Insulation</Tabs.Tab>
                     <Tabs.Tab>Checklists</Tabs.Tab>
                     {/* <Tabs.Tab>3D-visualisation</Tabs.Tab> */}
@@ -75,6 +77,9 @@ export const ReleaseControlSidesheet = ({
                             pipetests={data !== undefined ? data : []}
                             width={width}
                         />
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <WorkOrderTab id={item.name} />
                     </Tabs.Panel>
 
                     <Tabs.Panel>
@@ -114,7 +119,7 @@ export const ReleaseControlSidesheet = ({
                         </TablesTab>
                     </Tabs.Panel>
                     {/* <Tabs.Panel>
-                        {activeTab === 3 && (
+                        {activeTab === 4 && (
                             <ThreeDModel>
                                 <Viewer
                                     echoPlantId={echoPlantId}
