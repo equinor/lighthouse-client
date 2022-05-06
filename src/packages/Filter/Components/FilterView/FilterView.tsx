@@ -13,6 +13,7 @@ interface FilterViewProps {
 export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
     const {
         filterState: { getAllFilterGroups },
+        filterGroupState: { getInactiveGroupValues },
     } = useFilterApiContext();
 
     const allFilterGroups = getAllFilterGroups();
@@ -56,15 +57,17 @@ export const FilterView = ({ isActive }: FilterViewProps): JSX.Element => {
                     />
 
                     <FilterGroups>
-                        {visibleFilters.map((key: string, index) => {
-                            const filterGroup = allFilterGroups.find(({ name }) => name === key);
-                            if (!filterGroup) return;
-                            return (
-                                <FilterGroupWrapper key={`col-${key}-${index}`}>
+                        {getAllFilterGroups()
+                            .filter(
+                                (group) =>
+                                    getInactiveGroupValues(group.name).length > 0 ||
+                                    visibleFilters.includes(group.name)
+                            )
+                            .map((filterGroup, index) => (
+                                <FilterGroupWrapper key={`col-${filterGroup.name}-${index}`}>
                                     <FilterGroupeComponent filterGroup={filterGroup} />
                                 </FilterGroupWrapper>
-                            );
-                        })}
+                            ))}
                     </FilterGroups>
                 </>
             )}
