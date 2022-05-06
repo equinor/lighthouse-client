@@ -6,6 +6,7 @@ import { scopeChangeQueries } from '../../../keys/queries';
 import { FormTextField } from '../../Inputs/FormTextField';
 import { Origin } from '../Origin';
 import { ScopeChangeFormModel } from '../../../hooks/form/useScopeChangeFormState';
+import { IsWarrantyCaseCheckbox } from '../IsWarrantyCheckbox/IsWarrantyCheckbox';
 
 interface ScopeChangeBaseFormProps {
     state: Partial<ScopeChangeFormModel>;
@@ -83,6 +84,10 @@ export const ScopeChangeBaseForm = ({
                 required
                 initialValue={state.description}
                 onChange={(value) => handleInput('description', value)}
+            />
+
+            <IsWarrantyCaseCheckbox
+                handleInput={(newVal) => handleInput('isWarrantyCase', newVal)}
             />
 
             <Guesstimate>
