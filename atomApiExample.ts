@@ -67,6 +67,7 @@ export const workspaceApi: WorkspaceApi<WorkspaceConfiguration> = {
 
 /**
  * Init will automatically be called when workspaceApi is referenced for the first time.
+ * Perfect for making immutable api's with a just-in-time initialization
  * @returns
  */
 function initializeWorkspaceSettings(): WorkspaceConfiguration {
