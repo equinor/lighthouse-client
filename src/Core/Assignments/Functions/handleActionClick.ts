@@ -1,9 +1,9 @@
 import { deref } from '@dbeining/react-atom';
 import { AppManifest } from '@equinor/portal-client';
 import { getApps } from '../../../apps/apps';
+import { SuspenseSidesheet } from '../../../packages/Sidesheet/Components/SuspenseSidesheet';
 import { openSidesheet } from '../../../packages/Sidesheet/Functions';
 import { CoreContext } from '../../WorkSpace/src/WorkSpaceApi/workspaceState';
-import { SuspenseSidesheet } from '../../WorkSpace/src/Components/SuspenseSidesheet/SuspenseSidesheet';
 
 const apps = new Map<string, string>();
 apps.set('ScopeChangeControl', 'change');

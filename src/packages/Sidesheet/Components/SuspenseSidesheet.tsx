@@ -1,8 +1,8 @@
 import { CircularProgress } from '@equinor/eds-core-react';
-import { SidesheetApi } from '@equinor/sidesheet';
+import { useIsMounted } from '@equinor/lighthouse-utils';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useIsMounted } from '../../../../../apps/DisciplineReleaseControl/Hooks/useIsMounted';
+import { SidesheetApi } from '../Types/SidesheetApi';
 
 interface SuspenseSidesheetProps {
     item: () => Promise<void>;
@@ -19,6 +19,7 @@ export function SuspenseSidesheet({
     useEffect(() => {
         async function getData() {
             try {
+                setIsError(false);
                 await loadData();
             } catch (e) {
                 if (isMounted) {
@@ -29,7 +30,7 @@ export function SuspenseSidesheet({
         }
         actions.setTitle('Loading sidesheet...');
         getData();
-    }, []);
+    }, [loadData]);
 
     return <Loading>{isError ? <h1>Failed to load sidesheet</h1> : <CircularProgress />}</Loading>;
 }

@@ -19,6 +19,7 @@ import { setupUserData } from './setupUserData';
 interface ClientOptions {
     getApps(): AppManifest[];
     getAppGroups(): AppGroups;
+    setupWidgets(): void;
 }
 
 export interface Client {
@@ -31,6 +32,7 @@ export async function createClient(clientOptions: ClientOptions): Promise<Client
     const appConfig = registerAppConfig(await fetchConfig());
     const { authProvider } = registerInternalState(setupAuthProvider(appConfig.settings));
     setupUserData(authProvider);
+    clientOptions.setupWidgets();
     const registry = registerClientRegistry(
         setupApps(
             appsProvider(clientOptions.getApps, clientOptions.getAppGroups, false),

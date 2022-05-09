@@ -4,11 +4,15 @@ import { createClient } from '@equinor/portal-client';
 import { render } from 'react-dom';
 import Client from './AppClient';
 import { getAppGroups, getApps } from './apps/apps';
+import { setupWidgets } from './apps/widgets';
+import { Functions } from './Core/Functions/Api/functions';
 
 EdsIcon.add({ ...icons });
 
-createClient({ getApps, getAppGroups }).then((client) => {
+createClient({ getApps, getAppGroups, setupWidgets }).then((client) => {
     if (client.authProvider && !(window !== window.parent && !window.opener)) {
         render(<Client {...client} />, document.getElementById('root'));
     }
 });
+
+window['Functions'] = Functions;
