@@ -4,7 +4,7 @@ import { Column } from '@equinor/Table';
 import { HandoverNCR } from '../../../models';
 
 type TabProps = {
-    packages: HandoverNCR[];
+    packages: HandoverNCR[] | undefined;
     isFetching: boolean;
 };
 

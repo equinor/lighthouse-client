@@ -1,21 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { AuthenticationProvider } from './authService';
 
 export function useAuthenticate(
     authProvider: AuthenticationProvider,
     logRequest?: (...args: unknown[]) => void
 ): boolean {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const isAuth = authProvider.isAuthenticated();
 
     useEffect(() => {
-        if (authProvider && !authProvider.isAuthenticated()) {
-            authProvider.handleLogin(logRequest).then(() => {
-                setIsAuthenticated(authProvider.isAuthenticated());
-            });
-        } else {
-            setIsAuthenticated(false);
+        if (authProvider && !isAuth) {
+            authProvider.handleLogin(logRequest);
         }
-    }, [authProvider, logRequest]);
+    }, [isAuth, authProvider, logRequest]);
 
-    return isAuthenticated;
+    return authProvider.isAuthenticated();
 }

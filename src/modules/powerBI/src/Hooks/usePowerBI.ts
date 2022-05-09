@@ -1,10 +1,10 @@
 import { IReportEmbedConfiguration, models } from 'powerbi-client';
 import 'powerbi-report-authoring';
 import { useEffect, useState } from 'react';
-import { useFusionClient } from './Api/fusionApi';
-import { ContextErrorType } from './Hooks/useErrorMessage';
-import { PBIOptions } from './Types';
-import { Filter } from './Types/filter';
+import { useFusionClient } from '../Api/fusionApi';
+import { ContextErrorType } from '../Hooks/useErrorMessage';
+import { PBIOptions } from '../Types';
+import { Filter } from '../Types/filter';
 
 interface PowerBIResult {
     config: IReportEmbedConfiguration;
@@ -31,6 +31,7 @@ export function usePowerBI(
         accessToken: undefined,
         // permissions: models.Permissions.All,
         settings: undefined,
+        bookmark: undefined,
     });
 
     useEffect(() => {

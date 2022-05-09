@@ -1,6 +1,7 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
-import { PopoutSidesheet } from '@equinor/sidesheet';
+import { PopoutSidesheet, useSideSheet } from '@equinor/sidesheet';
 import { useNavigate } from 'react-router';
+import styled from 'styled-components';
 import { WorkspaceProps } from '../..';
 import { useDataContext } from '../../Context/DataProvider';
 import { WorkspaceFilterWrapper } from '../../Context/WorkspaceFilterWrapper';
@@ -16,9 +17,11 @@ import { DataViewWrapper, Loading, WorkspaceWrapper } from './WorkSpaceViewStyle
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
     const workspace = useWorkSpace();
     const { tabs, viewIsActive } = useConfiguredTabs(workspace);
+
     const { dataApi } = useDataContext();
 
     const navigate = useNavigate();
+    const { activeWidth, isMinimized } = useSideSheet();
 
     if (!viewIsActive) return <NoDataView />;
 
@@ -50,13 +53,29 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     return (
         <WorkspaceWrapper>
-            <WorkspaceFilterWrapper filterOptions={workspace.filterOptions || []}>
-                <CompletionViewHeader {...props} tabs={tabs} />
-                <DataViewWrapper>
-                    <WorkSpaceTabs tabs={tabs} />
+            {!props.hasSidesheet && (
+                <Wrapper>
                     <PopoutSidesheet />
+                </Wrapper>
+            )}
+            <WorkspaceFilterWrapper filterOptions={workspace.filterOptions || []}>
+                <CompletionViewHeader
+                    {...props}
+                    tabs={tabs}
+                    sideSheetWidth={isMinimized ? activeWidth : 0}
+                />
+                <DataViewWrapper sideSheetWidth={activeWidth}>
+                    <WorkSpaceTabs tabs={tabs} />
                 </DataViewWrapper>
             </WorkspaceFilterWrapper>
         </WorkspaceWrapper>
     );
 }
+
+const Wrapper = styled.div`
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+`;

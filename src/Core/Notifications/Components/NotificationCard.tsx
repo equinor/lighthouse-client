@@ -1,10 +1,11 @@
 import { DateTime } from 'luxon';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { Notification } from '../Types/Notification';
+import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
+import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
 import { readNotificationAsync } from '../API/readNotification';
 import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
-import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
+import { notificationsBaseKey } from '../queries/notificationQueries';
+import { Notification } from '../Types/Notification';
 import {
     DetailText,
     LeftSection,
@@ -13,20 +14,13 @@ import {
     TimeStamp,
     Wrapper,
 } from './NotificationCardStyles';
-import { notificationsBaseKey } from '../queries/notificationQueries';
-import { useNavigate } from 'react-router';
-import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
-import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
 
 interface NotificationCardProps {
     notification: Notification;
     onNavigate?: () => void;
 }
 
-export const NotificationCardNew = ({
-    notification,
-    onNavigate,
-}: NotificationCardProps): JSX.Element => {
+export const NotificationCardNew = ({ notification }: NotificationCardProps): JSX.Element => {
     const queryClient = useQueryClient();
     const { read } = useNotificationMutationKeys();
 
@@ -35,9 +29,6 @@ export const NotificationCardNew = ({
     const { mutate: markAsRead } = useMutation(read, readNotificationAsync, {
         onSuccess: () => queryClient.invalidateQueries(baseKey),
     });
-
-    const navigate = useNavigate();
-    const currentLocation = useLocationKey();
 
     const isExternalApp = notification.actionType === 'URL';
 
@@ -80,12 +71,8 @@ export const NotificationCardNew = ({
                                 )
                                 : handleActionClick(
                                     notification.sourceSystem.subSystem,
-                                    notification.sourceSystem.identifier,
-                                    navigate,
-                                    currentLocation
+                                    notification.sourceSystem.identifier
                                 );
-
-                            onNavigate && onNavigate();
 
                             markAsRead({ notificationId: notification.id });
                         }}

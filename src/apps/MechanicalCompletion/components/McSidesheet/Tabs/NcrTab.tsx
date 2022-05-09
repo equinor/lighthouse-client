@@ -4,7 +4,7 @@ import { Column } from '@equinor/Table';
 import { McNcr } from '../types';
 
 export type NcrTabProps = {
-    packages: McNcr[];
+    packages: McNcr[] | undefined;
     isFetching: boolean;
     error: Error | null;
 };

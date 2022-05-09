@@ -4,7 +4,7 @@ import { Column, DescriptionCell } from '@equinor/Table';
 import { McPunchItem } from '../types';
 
 export type PunchTabProps = {
-    packages: McPunchItem[];
+    packages: McPunchItem[] | undefined;
     isFetching: boolean;
     error: Error | null;
 };

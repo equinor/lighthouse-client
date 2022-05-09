@@ -83,6 +83,12 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     areas: ScopeChangeArea[];
     hasComments: boolean;
     sequenceNumber: number;
+    workOrders: ScopeChangeWorkOrder[];
+}
+
+export interface ScopeChangeWorkOrder {
+    id: string;
+    jobNumber: string;
 }
 
 export interface ScopeChangeDiscipline {

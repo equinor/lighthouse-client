@@ -4,8 +4,8 @@ import { Column } from '@equinor/Table';
 import { HandoverPunch } from '../../../models';
 
 type TabProps = {
-    packages: HandoverPunch[];
     isFetching: boolean;
+    packages: HandoverPunch[] | undefined;
 };
 
 const columns: Column<HandoverPunch>[] = [
