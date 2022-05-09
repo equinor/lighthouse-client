@@ -19,27 +19,22 @@ import {
 } from './ScopeChangeForm.styles';
 import { useMutation, useQueryClient } from 'react-query';
 import { getScopeChangeById } from '../../api/ScopeChange/Request';
-import { openSidesheet } from '@equinor/sidesheet';
-import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
+import { SidesheetApi } from '@equinor/sidesheet';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
-import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
 
 interface ScopeChangeRequestFormProps {
-    closeScrim: () => void;
-    setHasUnsavedChanges: (value: boolean) => void;
+    actions: SidesheetApi;
 }
 
 export const ScopeChangeRequestForm = ({
-    closeScrim,
-    setHasUnsavedChanges,
+    actions: { swapComponent },
 }: ScopeChangeRequestFormProps): JSX.Element => {
     const { handleInput, isValid, state } = useScopeChangeFormState();
     const { createScopeChangeMutation } = useRequestMutations();
     const queryClient = useQueryClient();
 
     const handleChange = (key: keyof ScopeChangeFormModel, value: unknown) => {
-        setHasUnsavedChanges(true);
         handleInput(key, value);
     };
 
@@ -54,8 +49,7 @@ export const ScopeChangeRequestForm = ({
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
-        openSidesheet(SidesheetWrapper, await getScopeChangeById(scopeChangeId), 'change');
-        clearActiveFactory();
+        swapComponent(SidesheetWrapper, await getScopeChangeById(scopeChangeId));
         queryClient.invalidateQueries();
     };
 
@@ -73,11 +67,6 @@ export const ScopeChangeRequestForm = ({
     return (
         <>
             <div>
-                <TitleHeader>
-                    <SidesheetTitle>Create scope change request</SidesheetTitle>
-                    <ClickableIcon name="close" onClick={closeScrim} />
-                </TitleHeader>
-
                 <FormWrapper>
                     <FlexColumn>
                         Request
@@ -134,12 +123,4 @@ export const Title = styled.div`
     font-size: 18px;
     color: black;
     font-weight: bold;
-`;
-
-const TitleHeader = styled.div`
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1em 0em;
 `;
