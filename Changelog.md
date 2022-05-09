@@ -13,6 +13,10 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Scopechange] Filter on guesstimate
 - [Scopechange] Bugfixes
 - [Portal] Sidesheet now has higher width
+- [Bookmarks Manager] Package for persisting filter and other states
+- [PBI Viewer] Use Bookmarks Manager
+- [Workspace] Use Bookmarks Manager for PBI reports
+- [MC Garden] Release of MC Garden
 
 
 ## 1.1.1
