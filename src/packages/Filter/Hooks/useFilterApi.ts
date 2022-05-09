@@ -28,8 +28,11 @@ export interface FilterApi<T> {
 }
 
 interface FilterGroupState {
+    /**Gets all the distinct values for this filter group */
     getGroupValues: GetGroupValuesFunc;
+    /** Gets all the active filter values in this group */
     getInactiveGroupValues: GetGroupValuesFunc;
+    /** Check if a value from a group is inactive */
     checkValueIsInActive: (groupName: string, value: FilterValueType) => boolean;
     getFilterItemCountsForGroup: (groupName: string) => FilterItemCount[];
     getCountForFilterValue: (
@@ -269,6 +272,8 @@ export function useFilterApi<T>({
      * Add or remove all values in a filter group
      */
     function markAllValuesActive(groupName: string, preventReRender?: boolean) {
+        const group = filterState.current.find(({ name }) => name === groupName);
+        if (!group) return;
         handleShouldReRender();
         setFilterState(filterState.current.filter(({ name }) => name !== groupName));
         filter(preventReRender);
