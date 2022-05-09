@@ -5,7 +5,6 @@ import { render } from 'react-dom';
 import Client from './AppClient';
 import { getAppGroups, getApps } from './apps/apps';
 import { setupWidgets } from './apps/widgets';
-import { Functions } from './Core/Functions/Api/functions';
 
 EdsIcon.add({ ...icons });
 
@@ -14,5 +13,3 @@ createClient({ getApps, getAppGroups, setupWidgets }).then((client) => {
         render(<Client {...client} />, document.getElementById('root'));
     }
 });
-
-window['Functions'] = Functions;
