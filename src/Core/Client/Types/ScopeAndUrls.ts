@@ -13,6 +13,8 @@ export interface Scope {
     fusionTasks: string;
     fusionPbi: string;
     fusionDataproxy: string;
+    fusionBookmarks: string;
+    fusionContext: string;
 }
 export interface Urls {
     appConfig: string;
@@ -29,4 +31,6 @@ export interface Urls {
     fusionTasks: string;
     fusionPbi: string;
     fusionDataproxy: string;
+    fusionBookmarks: string;
+    fusionContext: string;
 }

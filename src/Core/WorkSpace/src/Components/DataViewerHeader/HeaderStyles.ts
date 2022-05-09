@@ -2,10 +2,11 @@ import { Tabs, Typography } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const HeaderWrapper = styled.div`
+export const HeaderWrapper = styled.div<{ sideSheetWidth: number }>`
     height: fit-content;
     display: flex;
     flex-direction: column;
+    width: calc(100% - ${({ sideSheetWidth }) => sideSheetWidth}px);
 `;
 
 export const TitleBar = styled.div`

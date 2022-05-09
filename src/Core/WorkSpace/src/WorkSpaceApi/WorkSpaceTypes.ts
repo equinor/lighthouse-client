@@ -1,8 +1,9 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
-import { FilterOptions } from '../../../../packages/Filter/Types';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
+import { FilterOptions, FilterGroup } from '@equinor/filter';
+import { GardenOptions } from '@equinor/ParkView';
+import { SidesheetApi } from '@equinor/sidesheet';
+
 import {
     PowerBiOptions,
     PrefetchQueriesOptions,
@@ -10,9 +11,8 @@ import {
     TableOptions,
     TreeOptions,
     WorkflowEditorOptions,
-    WorkspaceTab
+    WorkspaceTab,
 } from './workspaceState';
-
 
 export interface DataSource<T> {
     /** Function that returns the api call promise */
@@ -73,4 +73,31 @@ export interface WorkSpaceApi<T> {
     registerStatusItems: (options: StatusFunc<T>) => WorkSpaceApi<T>;
     registerPowerBIOptions: (options: PowerBiOptions) => WorkSpaceApi<T>;
     registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => WorkSpaceApi<T>;
+    registerPresets: (options: PresetOption[]) => WorkSpaceApi<T>;
+}
+
+export type PresetOption = GardenPresetOption | TablePresetOption;
+interface GardenPresetOption {
+    name: string;
+    type: Extract<WorkspaceTab, 'garden'>;
+    filter: FilterPreset;
+    garden: GardenPreset;
+}
+
+interface TablePresetOption {
+    name: string;
+    type: Extract<WorkspaceTab, 'table'>;
+    filter: FilterPreset;
+    table: TablePreset;
+}
+
+interface TablePreset { }
+interface GardenPreset {
+    gardenKey: string;
+    groupByKeys?: string[];
+    customGroupByKeys?: Record<string, unknown>;
+}
+
+interface FilterPreset {
+    filterGroups: FilterGroup[];
 }
