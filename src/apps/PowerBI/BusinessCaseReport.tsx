@@ -1,7 +1,7 @@
 import { Filter, PowerBI } from '@equinor/lighthouse-powerbi';
 import { useFusionContext } from '@equinor/portal-client';
 
-export function BusinessCaseReport() {
+export function BusinessCaseReport(): JSX.Element {
     const reportUri = 'pmt-non-confidential';
     const currentContext = useFusionContext();
     const filterOptions: Filter[] = [
@@ -22,6 +22,8 @@ export function BusinessCaseReport() {
             operator: 'In',
         },
     ];
-
+    if (!currentContext) {
+        return <div> No context selected.</div>;
+    }
     return <PowerBI reportUri={reportUri} filterOptions={filterOptions} />;
 }
