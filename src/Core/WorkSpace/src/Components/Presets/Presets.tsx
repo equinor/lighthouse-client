@@ -1,6 +1,7 @@
 import { deref } from '@dbeining/react-atom';
 import { Chip } from '@equinor/eds-core-react';
 import { useWorkSpace } from '@equinor/WorkSpace';
+import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useLocationContext } from '../../Context/LocationProvider';
 import { gardenApiAtom } from '../../Util/gardenBookmarks/gardenApiAtom';
@@ -46,9 +47,13 @@ export function Presets(): JSX.Element {
                         onClick={() => handleClick(x.name)}
                         key={x.name}
                     >
-                        <Chip>{x.name}</Chip>
+                        <PresetChip>{x.name}</PresetChip>
                     </TabButton>
                 ))}
         </>
     );
 }
+
+const PresetChip = styled(Chip)`
+    z-index: auto;
+`;
