@@ -272,6 +272,8 @@ export function useFilterApi<T>({
      * Add or remove all values in a filter group
      */
     function markAllValuesActive(groupName: string, preventReRender?: boolean) {
+        const group = filterState.current.find(({ name }) => name === groupName);
+        if (!group) return;
         handleShouldReRender();
         setFilterState(filterState.current.filter(({ name }) => name !== groupName));
         filter(preventReRender);
