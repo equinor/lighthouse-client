@@ -44,7 +44,7 @@ export function ClientRoutes(): JSX.Element {
             })}
             {apps.map((route) => {
                 if (route.app?.appType === 'Workspace') {
-                    const api = { ...route, authProvider, appConfig };
+                    const api = { ...route, authProvider, appConfig, hasSidesheet: true };
                     return (
                         <Route
                             key={route.shortName + route.groupe}

@@ -33,7 +33,7 @@ const columns: Column<HandoverWorkOrder>[] = [
 ];
 
 type TabProps = {
-    packages: HandoverWorkOrder[];
+    packages: HandoverWorkOrder[] | undefined;
     isFetching: boolean;
 };
 

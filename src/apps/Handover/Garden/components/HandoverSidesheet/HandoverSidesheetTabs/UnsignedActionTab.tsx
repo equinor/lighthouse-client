@@ -21,7 +21,7 @@ const columns: Column<HandoverUnsignedAction>[] = [
 ];
 
 type TabProps = {
-    packages: HandoverUnsignedAction[];
+    packages: HandoverUnsignedAction[] | undefined;
     isFetching: boolean;
 };
 

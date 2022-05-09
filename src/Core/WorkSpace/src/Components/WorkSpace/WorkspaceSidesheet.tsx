@@ -1,8 +1,6 @@
+import { openSidesheet, PopoutSidesheet, useSideSheet } from '@equinor/sidesheet';
 import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { PopoutSidesheet } from '../../../../../packages/Sidesheet/Components/PopoutSidesheet';
-import { useSideSheet } from '../../../../../packages/Sidesheet/context/sidesheetContext';
-import { openSidesheet } from '../../../../../packages/Sidesheet/Functions';
 import { useDataContext } from '../../Context/DataProvider';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { Fallback } from '../FallbackSidesheet/Fallback';

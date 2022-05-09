@@ -1,8 +1,9 @@
+import { Icon } from '@equinor/eds-core-react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
-import Icon from '../../../../../components/Icon/Icon';
 import { usePowerBiViewer } from '../../Api/powerBiViewerState';
 import { Page } from '../../Types/State';
 import { HeaderButton } from '../HeaderButton/HeaderButton';
+import { BookmarkDropdown } from '@equinor/BookmarksManager';
 import {
     Divider,
     HeaderContent,
@@ -13,14 +14,16 @@ import {
     RightSection,
     TabTitle,
     Title,
-    Wrap
+    Wrap,
 } from './PowerBiViewerHeaderStyles';
+import { isProduction } from '@equinor/portal-client';
 
 type HandleFilter = () => void;
 
 interface PowerBiViewerHeaderProps {
     title: string;
     shortName: string;
+    groupName: string | string[];
     activePage?: Page;
     handleFilter: HandleFilter;
     handleSetActivePage(page: Page): void;
@@ -31,6 +34,7 @@ interface PowerBiViewerHeaderProps {
 export const PowerBiViewerHeader = ({
     title,
     shortName,
+    groupName,
     handleFilter,
     activeFilter,
     activePage,
@@ -70,6 +74,9 @@ export const PowerBiViewerHeader = ({
                     <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
                         {hasFilter ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                     </HeaderButton>
+                    {!isProduction() && (
+                        <BookmarkDropdown appKey={shortName} subSystem={groupName.toString()} />
+                    )}
                 </RightSection>
             </HeaderContent>
         </HeaderWrapper>

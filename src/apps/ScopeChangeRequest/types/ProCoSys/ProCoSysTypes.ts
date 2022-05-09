@@ -8,4 +8,4 @@ export type ProcoSysTypes =
     | 'discipline'
     | 'functionalRole';
 
-export type PCSOrigins = 'Query' | 'DCN' | 'NCR' | 'SWCR';
+export type PCSOrigins = 'Query' | 'NCR' | 'SWCR';

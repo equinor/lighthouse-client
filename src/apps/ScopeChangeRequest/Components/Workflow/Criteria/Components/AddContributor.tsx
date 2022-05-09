@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 import { PCSPersonSearch } from '../../../PersonRoleSearch/PCSPersonSearch';
 import { addContributor } from '../../../../api/ScopeChange/Workflow/addContributor';
-import { Button, Progress, TextField } from '@equinor/eds-core-react';
+import { Button, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { useScopeChangeMutation } from '../../../../hooks/React-Query/useScopechangeMutation';
 import { TypedSelectOption } from '../../../../api/Search/searchType';
-import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
+import { scopeChangeMutationKeys } from '../../../../keys/scopeChangeMutationKeys';
 
 interface AddContributorProps {
     stepId: string;
@@ -22,18 +22,22 @@ export const AddContributor = ({ close, stepId }: AddContributorProps): JSX.Elem
     const id = useScopeChangeContext((s) => s.request.id);
     const { workflowKeys } = scopeChangeMutationKeys(id);
 
-    const submit = async () => {
-        await addContributor(contributor?.value ?? '', id, stepId, text);
-    };
-
-    const { mutate, isLoading } = useScopeChangeMutation(
+    const { mutate } = useScopeChangeMutation(
         id,
         workflowKeys.addContributorKey(stepId),
-        submit,
+        addContributor,
         {
             onSuccess: () => close(),
         }
     );
+
+    const handleSubmit = () =>
+        mutate({
+            azureOid: contributor?.value ?? '',
+            requestId: id,
+            stepId: stepId,
+            contributorTitle: text,
+        });
 
     return (
         <>
@@ -54,20 +58,16 @@ export const AddContributor = ({ close, stepId }: AddContributorProps): JSX.Elem
                         />
                     </Section>
                     <ButtonContainer>
-                        <Button
-                            disabled={text.length === 0 || !contributor}
-                            onClick={() => mutate()}
-                        >
+                        <Button disabled={text.length === 0 || !contributor} onClick={handleSubmit}>
                             Assign
                         </Button>
                         <Divider />
-                        <Button variant="outlined" onClick={() => close()}>
+                        <Button variant="outlined" onClick={close}>
                             Cancel
                         </Button>
                     </ButtonContainer>
                 </div>
             </Container>
-            {isLoading && <Progress.Dots color="primary" />}
         </>
     );
 };

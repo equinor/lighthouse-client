@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 
-export const DataViewWrapper = styled.div`
+export const DataViewWrapper = styled.div<{ sideSheetWidth: number }>`
     display: flex;
     flex-direction: row;
     align-content: flex-start;
     justify-content: space-between;
     grid-row: 3/4;
-    width: 100%;
+    width: calc(100% - ${({ sideSheetWidth }) => sideSheetWidth}px);
     height: 100%;
     overflow: hidden;
 `;

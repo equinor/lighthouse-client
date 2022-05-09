@@ -1,9 +1,11 @@
+import { BookmarkDropdown } from '@equinor/BookmarksManager';
 import { useFactory } from '@equinor/DataFactory';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
+import { isProduction } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
@@ -12,6 +14,7 @@ import { useLocationContext } from '../../Context/LocationProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
 import { TabsConfigItem } from '../../Util/tabsConfig';
+import { Presets } from '../Presets/Presets';
 import { TabButton } from '../ToggleButton';
 import {
     ActionBar,
@@ -22,17 +25,24 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar
+    TitleBar,
 } from './HeaderStyles';
 
 interface CompletionViewHeaderProps {
     title: string;
+    groupe: string | string[];
     tabs: TabsConfigItem[];
+    sideSheetWidth: number;
 }
 
 const ANALYTICS = 'analytics';
 
-export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps): JSX.Element => {
+export const CompletionViewHeader = ({
+    title,
+    tabs,
+    groupe,
+    sideSheetWidth,
+}: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
     const { factory, setSelected } = useFactory(key);
     const {
@@ -55,9 +65,8 @@ export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps)
     const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
 
     const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
-
     return (
-        <HeaderWrapper>
+        <HeaderWrapper sideSheetWidth={sideSheetWidth}>
             <TitleBar>
                 <Title variant="h3">{title}</Title>
                 <PerformanceObserver />
@@ -91,6 +100,7 @@ export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps)
                     )}
                 </LeftSection>
                 <RightSection>
+                    <Presets />
                     {factory && (
                         <>
                             <TabButton
@@ -171,13 +181,19 @@ export const CompletionViewHeader = ({ title, tabs }: CompletionViewHeaderProps)
                             )}
                         </TabButton>
                     ) : (
-                        <TabButton
-                            onClick={toggleFilter}
-                            aria-selected={isFilterActive}
-                            title="PowerBi Filter"
-                        >
-                            {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
-                        </TabButton>
+                        <>
+                            <TabButton
+                                onClick={toggleFilter}
+                                aria-selected={isFilterActive}
+                                title="PowerBi Filter"
+                            >
+                                {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
+                            </TabButton>
+
+                            {!isProduction() && (
+                                <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                            )}
+                        </>
                     )}
                 </RightSection>
             </ActionBar>

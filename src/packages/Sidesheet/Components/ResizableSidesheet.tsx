@@ -1,28 +1,16 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { ErrorBoundary } from '@equinor/ErrorBoundary';
+import { ErrorBoundary, ErrorFallbackSidesheet } from '@equinor/ErrorBoundary';
 import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { getApps } from '../../../apps/apps';
-
-import ErrorFallbackSidesheet from '../../../Core/ErrorBoundary/Components/ErrorFallbackSidesheet';
-import { useSideSheet } from '../context/sidesheetContext';
-import {
-    ToggleFunction,
-    useInternalSidesheetFunction,
-} from '../Hooks/useInternalSidesheetFunction';
+import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
+import { useSideSheet } from '../Hooks/useSideSheet';
+import { SidesheetApi } from '../Types/SidesheetApi';
 
 const DEFAULT_TAB_COLOUR = '#ff9900';
-
-export interface SidesheetApi {
-    closeSidesheet: () => void;
-    setIsMinimized: (isMinimized: boolean | ToggleFunction) => void;
-    setWidth: (width: number) => void;
-    setTitle: React.Dispatch<React.SetStateAction<JSX.Element | null | undefined>>;
-    setMenuItems: (menuItems: MenuItem[]) => void;
-}
 
 export const ResizableSidesheet = (): JSX.Element | null => {
     const { SidesheetComponent, props, minWidth, width, isMinimized, appName } = useSideSheet();
@@ -34,14 +22,18 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     };
 
     // Header stuff
-    const [title, setTitle] = useState<JSX.Element | null>();
+    const [title, setTitle] = useState<JSX.Element | string | null>();
     const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
 
-    const actions = {
+    const handleSetTitle = (value: JSX.Element | string | null | undefined) => {
+        setTitle(value);
+    };
+
+    const actions: SidesheetApi = {
         closeSidesheet: closeSidesheet,
         setIsMinimized: setIsMinimized,
         setWidth: setWidth,
-        setTitle: setTitle,
+        setTitle: handleSetTitle,
         setMenuItems: setMenuItems,
     };
 

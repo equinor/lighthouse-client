@@ -91,7 +91,7 @@ export const CriteriaRender = ({
                     <AddContributor close={() => setShowAddContributor(false)} stepId={stepId} />
                 </WorkflowRow>
             )}
-            {isLastCriteria && (
+            {isLastCriteria && !isPast && (
                 <>
                     {contributors.map((contributor) => (
                         <WorkflowRow key={contributor.id}>
