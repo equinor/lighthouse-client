@@ -8,6 +8,7 @@ export async function setupContext(): Promise<void> {
     const fusionContextId = isProduction()
         ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
         : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
+    console.info('Setting up portal with context id:', fusionContextId);
 
     const response = await fusionContext.get(`contexts/${fusionContextId}`);
     if (!response.ok) {
