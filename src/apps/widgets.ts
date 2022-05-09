@@ -1,9 +1,9 @@
-import { addFunction } from '../Core/Providers/functionController';
-import { addWidgets } from '../Core/Widgets/WidgetsProvider';
+import { Functions } from '../Core/Functions/Api/functionsApi';
+import { Widget } from '../Core/Widgets/Api/widgetApi';
 import { changeFunction, changeSideSheetWidget } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { swcrSideSheetWidget } from './swcr';
 
 export const setupWidgets = (): void => {
-    addFunction(changeFunction);
-    addWidgets([swcrSideSheetWidget, changeSideSheetWidget]);
+    Functions.addFunction(changeFunction);
+    Widget.addWidgets([swcrSideSheetWidget, changeSideSheetWidget]);
 };

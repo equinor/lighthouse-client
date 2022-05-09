@@ -5,6 +5,7 @@ import { SuspenseSidesheet } from '../../../packages/Sidesheet/Components/Suspen
 import { openSidesheet } from '../../../packages/Sidesheet/Functions';
 import { CoreContext } from '../../WorkSpace/src/WorkSpaceApi/workspaceState';
 
+//Todo refactor file.
 const apps = new Map<string, string>();
 apps.set('ScopeChangeControl', 'change');
 

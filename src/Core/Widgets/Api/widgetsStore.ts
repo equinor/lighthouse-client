@@ -1,5 +1,4 @@
 import { WidgetComponent, WidgetManifest } from '../Types/widget';
-import { DemoSidesheetWidget } from './defaultWidget';
 
 export const widgetManifestStore: WidgetManifest[] = [
     {

@@ -8,7 +8,7 @@ import {
     customDescription,
     fieldSettings,
     getHighlighColumn,
-    getItemWidth
+    getItemWidth,
 } from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
@@ -66,7 +66,7 @@ async function responseParser(res: Response) {
 export const swcrSideSheetWidget = {
     widget: SwcrSideSheet,
     manifest: {
-        widgetId: 'swcrSidesheet',
+        widgetId: 'swcr',
         widgetType: 'sidesheet',
     },
 };

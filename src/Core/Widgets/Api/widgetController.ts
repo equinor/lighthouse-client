@@ -1,7 +1,6 @@
-import { WidgetComponent, WidgetManifest } from '../Widgets/Types/widget';
-import { DefaultWidget } from '../Widgets/WidgetsProvider/defaultWidget';
-import { widgetManifestStore } from '../Widgets/WidgetsProvider/widgetsStore';
-import { widgetSore } from './widgetsStore';
+import { DefaultWidget } from '../Components/defaultWidget';
+import { Widget, WidgetComponent, WidgetManifest } from '../Types/widget';
+import { widgetManifestStore, widgetSore } from './widgetsStore';
 
 export function getWidgetManifests(): WidgetManifest[] {
     return widgetManifestStore;
@@ -21,6 +20,10 @@ export function getWidgetById(widgetId: string): WidgetComponent {
     const Widget = widgetSore[widgetId];
     if (Widget) return Widget;
     return DefaultWidget;
+}
+
+export function addWidgets(widgets: Widget[]): void {
+    widgets.forEach((widget) => addWidget(widget.manifest.widgetId, widget.widget));
 }
 
 export function addWidget(widgetId: string, widget: WidgetComponent): void {
