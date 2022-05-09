@@ -12,6 +12,8 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Workspace] Filter improvements
 - [Scopechange] Filter on guesstimate
 - [Scopechange] Bugfixes
+- [Portal] Sidesheet now has higher width
+
 
 ## 1.1.1
 - [ScopeChange] Bugfixes
