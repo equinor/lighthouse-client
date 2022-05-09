@@ -16,7 +16,6 @@ export interface FusionPowerBiOptions {
     filter?: Filter[];
     options?: PBIOptions;
     pages: Page[];
-    loadPagesInDev?: boolean;
 }
 
 export interface Page {

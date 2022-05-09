@@ -12,6 +12,7 @@ export interface ClientBuilderConfig extends AppManifest {
     authProvider: AuthenticationProvider;
     openSidesheet: (SidesheetContent?: React.FC<any> | undefined, props?: any) => void;
     createDataFactory: (factory: Factory) => void;
+    isProduction: boolean;
 }
 
 export type WorkspaceOptions<T> = Omit<
