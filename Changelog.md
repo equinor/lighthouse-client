@@ -7,10 +7,10 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 ## 1.1.3
 - [Client] Hotfix auth issue
-- [Installation] Context in report
+- [Installation] new report in devlopment
 - [LCI Hanging Garden]  Context in report
 - [Business Case] Contexts report
-
+- [Safety Performance] Contexts report
 
 ## 1.1.2
 - [Scopechange] DCN changed to DCR
