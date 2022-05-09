@@ -2,7 +2,7 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import {
     registerAppConfig,
     registerClientRegistry,
-    registerInternalState
+    registerInternalState,
 } from '../Functions/RegisterActions';
 import { setClientEnv } from '../Functions/Settings';
 import { AppConfigSettings } from '../Types/AppConfig';
@@ -43,11 +43,7 @@ export async function createClient(clientOptions: ClientOptions): Promise<Authen
             throw 'Failed to setup apps';
         }
 
-        try {
-            await setupContext();
-        } catch (e) {
-            throw 'Failed to set fusion context';
-        }
+        await setupContext();
 
         if (!appConfig.isProduction) {
             window['setEnv'] = function setEnv(env: string) {
