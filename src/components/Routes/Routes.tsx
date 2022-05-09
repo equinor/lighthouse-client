@@ -15,6 +15,7 @@ export function ClientRoutes(): JSX.Element {
         appConfig,
         registry: { apps, appGroups },
         internal: { authProvider },
+        settings: { isProduction },
     } = useClientContext();
 
     const currentRoute = useLocationKey();
@@ -44,7 +45,13 @@ export function ClientRoutes(): JSX.Element {
             })}
             {apps.map((route) => {
                 if (route.app?.appType === 'Workspace') {
-                    const api = { ...route, authProvider, appConfig, hasSidesheet: true };
+                    const api = {
+                        ...route,
+                        authProvider,
+                        appConfig,
+                        hasSidesheet: true,
+                        isProduction,
+                    };
                     return (
                         <Route
                             key={route.shortName + route.groupe}
