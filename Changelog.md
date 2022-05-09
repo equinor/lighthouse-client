@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
+
+
+
+## 1.1.2
+- [Scopechange] DCN changed to DCR
+- [Workspace] Filter improvements
+- [Scopechange] Filter on guesstimate
+- [Scopechange] Bugfixes
+- [Portal] Sidesheet now has higher width
+
+
 ## 1.1.1
 - [ScopeChange] Bugfixes
 - [Assignments] Filter closed assignments
