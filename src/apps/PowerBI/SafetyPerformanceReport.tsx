@@ -3,7 +3,7 @@ import { useFusionContext } from '@equinor/portal-client';
 import { useMemo } from 'react';
 
 export const SafetyPerformanceReport = (): JSX.Element => {
-    const reportUri = 'ssu-sp';
+    const reportUri = 'ssusp';
     const currentContext = useFusionContext();
     const filterOptions = useMemo(
         (): Filter[] => [
