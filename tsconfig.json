@@ -81,7 +81,7 @@
             "@equinor/hooks": [
                 "./src/hooks"
             ],
-            "@equinor/Utils": [
+            "@equinor/lighthouse-utils": [
                 "./src/packages/Utils"
             ],
             "@equinor/typeGuard": [

@@ -35,7 +35,7 @@ export default defineConfig({
             '@equinor/authentication': path.resolve(__dirname, './src/packages/authentication'),
             '@equinor/http-client': path.resolve(__dirname, './src/Core/httpClient/'),
             '@equinor/hooks': path.resolve(__dirname, './src/hooks'),
-            '@equinor/Utils': path.resolve(__dirname, './src/packages/Utils/'),
+            '@equinor/lighthouse-utils': path.resolve(__dirname, './src/packages/Utils/'),
             '@equinor/Kpi': path.resolve(__dirname, './src/packages/KPI'),
             '@equinor/ParkView': path.resolve(__dirname, './src/components/ParkView'),
             '@equinor/GardenUtils': path.resolve(__dirname, './src/packages/GardenUtils'),
