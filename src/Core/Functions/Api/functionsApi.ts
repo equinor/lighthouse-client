@@ -1,4 +1,5 @@
 import { CustomFunction, FunctionManifest } from '../Types/function';
+import { addFunction, getFunction, getFunctions } from './functionController';
 
 interface FunctionsAPI {
     getFunction(functionId: string): CustomFunction;

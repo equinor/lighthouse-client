@@ -1,5 +1,5 @@
 import { DefaultWidget } from '../Components/defaultWidget';
-import { Widget, WidgetComponent, WidgetManifest } from '../Types/widget';
+import { WidgetComponent, WidgetConfig, WidgetManifest } from '../Types/widget';
 import { widgetManifestStore, widgetSore } from './widgetsStore';
 
 export function getWidgetManifests(): WidgetManifest[] {
@@ -22,7 +22,7 @@ export function getWidgetById(widgetId: string): WidgetComponent {
     return DefaultWidget;
 }
 
-export function addWidgets(widgets: Widget[]): void {
+export function addWidgets(widgets: WidgetConfig[]): void {
     widgets.forEach((widget) => addWidget(widget.manifest.widgetId, widget.widget));
 }
 

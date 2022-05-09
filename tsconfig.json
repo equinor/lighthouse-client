@@ -27,6 +27,12 @@
             "@equinor/Kpi": [
                 "./src/packages/KPI"
             ],
+            "@equinor/lighthouse-widgets": [
+                "./src/Core/Widgets"
+            ],
+            "@equinor/lighthouse-functions": [
+                "./src/Core/Functions"
+            ],
             "@equinor/portal-client": [
                 "./src/Core/Client"
             ],

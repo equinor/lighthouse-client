@@ -32,6 +32,12 @@ export function SuspenseSidesheet({
         getData();
     }, [loadData]);
 
+    useEffect(() => {
+        return () => {
+            actions.setTitle('');
+        };
+    }, []);
+
     return <Loading>{isError ? <h1>Failed to load sidesheet</h1> : <CircularProgress />}</Loading>;
 }
 

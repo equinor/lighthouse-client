@@ -19,6 +19,8 @@ export default defineConfig({
         alias: {
             '@equinor/portal-client': path.resolve(__dirname, './src/Core/Client'),
             '@equinor/lighthouse-components': path.resolve(__dirname, './src/packages/Components'),
+            '@equinor/lighthouse-widgets': path.resolve(__dirname, './src/Core/Widgets'),
+            '@equinor/lighthouse-functions': path.resolve(__dirname, './src/Core/Functions'),
             '@equinor/sidesheet': path.resolve(__dirname, './src/packages/Sidesheet'),
             '@equinor/worker': path.resolve(__dirname, './src/packages/WebWorkers'),
             '@equinor/filter': path.resolve(__dirname, './src/packages/Filter'),

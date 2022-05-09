@@ -9,9 +9,9 @@ export interface WidgetManifest {
 
 export type WidgetComponent = React.FC<any>;
 
-export interface Widget {
+export interface WidgetConfig {
     widget: WidgetComponent;
     manifest: WidgetManifest;
 }
 
-export type Widgets = Widget[];
+export type Widgets = WidgetConfig[];

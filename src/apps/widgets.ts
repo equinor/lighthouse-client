@@ -1,5 +1,5 @@
-import { Functions } from '../Core/Functions/Api/functionsApi';
-import { Widget } from '../Core/Widgets/Api/widgetApi';
+import { Functions } from '@equinor/lighthouse-functions';
+import { Widget } from '@equinor/lighthouse-widgets';
 import { changeFunction, changeSideSheetWidget } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { swcrSideSheetWidget } from './swcr';
 

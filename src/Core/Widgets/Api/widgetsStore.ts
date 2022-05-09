@@ -1,3 +1,4 @@
+import { DefaultWidget } from '../Components/defaultWidget';
 import { WidgetComponent, WidgetManifest } from '../Types/widget';
 
 export const widgetManifestStore: WidgetManifest[] = [
@@ -10,5 +11,5 @@ export const widgetManifestStore: WidgetManifest[] = [
 ];
 
 export const widgetSore: Record<string, WidgetComponent> = {
-    demo: DemoSidesheetWidget,
+    demo: DefaultWidget,
 };
