@@ -10,6 +10,9 @@ export async function fetchConfig(): Promise<AppConfigResult> {
     setEnv(isProduction, config.CLIENT_ENV);
 
     const response = await fetch(getEnvironmentUri(config.ENV_CONFIG_URI, config.CLIENT_ENV));
+    if (!response.ok) {
+        throw 'Failed to get environment configuration';
+    }
     return { ...(await response.json()), isProduction, env: config.CLIENT_ENV };
 }
 
