@@ -1,8 +1,8 @@
-import { swap, useAtom } from '@dbeining/react-atom';
+import { useAtom } from '@dbeining/react-atom';
 import { Button } from '@equinor/eds-core-react';
 import { SignWithComment } from './SignWithComment/SignWithComment';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
-import { actionWithCommentAtom } from '../../Atoms/signingAtom';
+import { actionWithCommentAtom, resetSigningAtom } from '../../Atoms/signingAtom';
 import { ReassignBar } from '../../ReassignBar/ReassignBar';
 import styled from 'styled-components';
 
@@ -22,10 +22,7 @@ export const CriteriaActionOverlay = (): JSX.Element | null => {
                         requestId={requestId}
                         stepId={state.stepId}
                     />
-                    <Button
-                        variant="outlined"
-                        onClick={() => swap(actionWithCommentAtom, () => null)}
-                    >
+                    <Button variant="outlined" onClick={resetSigningAtom}>
                         Cancel
                     </Button>
                 </ButtonContainer>

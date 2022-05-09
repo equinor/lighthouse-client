@@ -2,8 +2,8 @@ import { deref, useAtom } from '@dbeining/react-atom';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { MenuItem } from '@equinor/overlay-menu';
+import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { unVoidRequest, voidRequest } from '../../api/ScopeChange/Request';
 import { sideSheetEditModeAtom } from '../../Atoms/editModeAtom';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
@@ -73,11 +73,7 @@ export function useSidesheetEffects(
     }, [editMode, canVoid, canUnVoid, canPatch]);
 
     useEffect(() => {
-        actions.setTitle(
-            <>
-                {sequenceNumber}, {title}
-            </>
-        );
+        actions.setTitle(`${sequenceNumber} ${title}`);
     }, [id]);
 
     /** Only run once */

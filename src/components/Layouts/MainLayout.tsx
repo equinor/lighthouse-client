@@ -1,5 +1,6 @@
+import { PopoutSidesheet } from '@equinor/sidesheet';
 import { Menu } from '../Menu';
-import { ChildrenWrapper, Wrapper } from './MainLayoutStyles';
+import { ChildrenWrapper, SidesheetWrapper, Wrapper } from './MainLayoutStyles';
 
 interface MainLayoutProps {
     children: React.ReactNode;
@@ -11,6 +12,9 @@ export const MainLayout = ({ children, serviceMessageActive }: MainLayoutProps):
         <Wrapper serviceMessageActive={serviceMessageActive}>
             <Menu>
                 <ChildrenWrapper>{children}</ChildrenWrapper>
+                <SidesheetWrapper>
+                    <PopoutSidesheet />
+                </SidesheetWrapper>
             </Menu>
         </Wrapper>
     );

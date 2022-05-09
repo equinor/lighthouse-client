@@ -111,6 +111,9 @@
             "@equinor/lighthouse-hooks": [
                 "./src/hooks"
             ],
+            "@equinor/BookmarksManager": [
+                "./src/packages/BookmarksManager"
+            ],
             "@equinor/overlay-menu": [
                 "./src/components/OverlayMenu"
             ]

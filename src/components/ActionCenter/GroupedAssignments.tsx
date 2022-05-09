@@ -1,10 +1,8 @@
 import { Accordion } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { AssignmentCard } from '../../Core/Assignments/Components/AssignmentsCard';
 import { Assignment } from '../../Core/Assignments/Types/assignment';
-import { useLocationKey } from '../../packages/Filter/Hooks/useLocationKey';
 import { handleActionClick } from './handleActionClick';
 
 interface GroupedAssignmentsProps {
@@ -17,8 +15,6 @@ export const GroupedAssignments = ({
     assignments,
 }: GroupedAssignmentsProps): JSX.Element => {
     const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
-    const navigate = useNavigate();
-    const currentLocation = useLocationKey();
 
     return (
         <Accordion>
@@ -35,9 +31,7 @@ export const GroupedAssignments = ({
                                     onClick={() =>
                                         handleActionClick(
                                             assignment.sourceSystem.subSystem,
-                                            assignment.sourceSystem.identifier,
-                                            navigate,
-                                            currentLocation
+                                            assignment.sourceSystem.identifier
                                         )
                                     }
                                     key={assignment.id}
