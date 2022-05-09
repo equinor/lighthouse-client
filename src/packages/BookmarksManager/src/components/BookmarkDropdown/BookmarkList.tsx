@@ -1,7 +1,7 @@
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useGetBookmarks } from '../../hooks';
 import { useDeleteBookmark } from '../../hooks/useDeleteBookmark';
-import { bookmarkEvents } from '../../utils';
+import { bookmarkEvents, isBookmarkResponse } from '../../utils';
 import { BookmarkEntry, BookmarkListWrapper, BookmarkWrapper } from './BookmarkDropdown.styles';
 
 type BookmarkListProps = {
@@ -9,15 +9,18 @@ type BookmarkListProps = {
 };
 
 export const BookmarkList = ({ appKey }: BookmarkListProps): JSX.Element => {
-    const { bookmarks, error, isLoading } = useGetBookmarks(appKey);
+    const { bookmarks, isLoading } = useGetBookmarks(appKey);
     const deleteBookmark = useDeleteBookmark();
 
     if (isLoading) return <div>Fetching bookmarks</div>;
-    if (!bookmarks || bookmarks.length === 0) return <div>No bookmarks</div>;
-    if (error) return <div>Error retrieving bookmarks</div>;
+
+    if (!bookmarks) return <div>No bookmarks</div>;
+
+    if (!isBookmarkResponse(bookmarks)) {
+        return <div>Error retrieving bookmarks</div>;
+    }
 
     const { applyBookmark } = bookmarkEvents;
-
     return (
         <BookmarkListWrapper>
             {bookmarks
