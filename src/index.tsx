@@ -23,9 +23,9 @@ const mount = (Comp: JSX.Element) => {
 mount(<ClientLoading />);
 
 createClient({ getApps, getAppGroups })
-    .then((client) => {
-        if (client.authProvider && !(window !== window.parent && !window.opener)) {
-            mount(<Client {...client} />);
+    .then((authProvider) => {
+        if (authProvider && !(window !== window.parent && !window.opener)) {
+            mount(<Client authProvider={authProvider} />);
         }
     })
     .catch((e) => mount(<ClientFailed error={e} />));
