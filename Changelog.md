@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
 
+## 1.1.4
+- [Portal] Hotfix
+
+
 ## 1.1.3
 - [Client] Hotfix auth issue
 - [Installation] new report in devlopment
