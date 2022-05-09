@@ -17,6 +17,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [PBI Viewer] Use Bookmarks Manager
 - [Workspace] Use Bookmarks Manager for PBI reports
 - [MC Garden] Release of MC Garden
+- [GardenUtils] Refactor and use react-query
 
 
 ## 1.1.1
