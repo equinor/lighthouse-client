@@ -1,8 +1,6 @@
 import { useQuery } from 'react-query';
 
-import { CacheTime } from '../../../../enum/cacheTimes';
 import { scopeChangeQueries } from '../../../../keys/queries';
-import { LogEntry } from '../../../../types/scopeChangeRequest';
 import { HistoryItem } from '../../../DetailView/History/HistoryItem';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 
@@ -11,10 +9,7 @@ export function LogTab(): JSX.Element {
 
     const { historyQuery } = scopeChangeQueries;
 
-    const { data } = useQuery<LogEntry[]>({
-        ...historyQuery(requestId),
-        staleTime: CacheTime.FiveMinutes,
-    });
+    const { data } = useQuery(historyQuery(requestId));
 
     return (
         <div>

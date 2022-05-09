@@ -7,6 +7,7 @@ export interface CoreViewState {
 export interface ViewState {
     title: string;
     shortName: string;
+    groupe: string | string[];
     reports: FusionPowerBiOptions[];
 }
 
@@ -15,7 +16,6 @@ export interface FusionPowerBiOptions {
     filter?: Filter[];
     options?: PBIOptions;
     pages: Page[];
-    loadPagesInDev?: boolean;
 }
 
 export interface Page {

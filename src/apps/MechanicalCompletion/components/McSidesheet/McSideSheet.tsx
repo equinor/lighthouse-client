@@ -4,7 +4,7 @@ import { isProduction } from '@equinor/portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { McPackage } from '../../types';
-import { useNcr, usePunch, useWorkorders } from './hooks';
+import { useMcResource } from './hooks';
 import { NcrTab, PunchTab, WorkordersTab } from './Tabs';
 import { DetailsTab } from './Tabs/DetailsTab';
 type McSidesheetProps = {
@@ -23,17 +23,21 @@ export const McSideSheet = ({ item: mcPackage, actions }: McSidesheetProps): JSX
     };
 
     const {
-        workOrders,
+        data: workOrders,
         isFetching: isFetchingWorkOrders,
         error: workOrderError,
-    } = useWorkorders(mcPackage?.mcPkgId || null);
+    } = useMcResource(mcPackage.mcPkgId, 'work-orders');
 
     const {
-        punchItems,
+        data: punchItems,
         isFetching: isFetchingPunchItems,
         error: punchError,
-    } = usePunch(mcPackage?.mcPkgId || null);
-    const { ncr, isFetching: isFetchingNcr, error: ncrError } = useNcr(mcPackage?.mcPkgId || null);
+    } = useMcResource(mcPackage.mcPkgId, 'punch');
+    const {
+        data: ncr,
+        isFetching: isFetchingNcr,
+        error: ncrError,
+    } = useMcResource(mcPackage.mcPkgId, 'ncr');
 
     useEffect(() => {
         actions.setTitle(
@@ -50,12 +54,12 @@ export const McSideSheet = ({ item: mcPackage, actions }: McSidesheetProps): JSX
                 <Tabs.List>
                     <Tabs.Tab>Details</Tabs.Tab>
                     <Tabs.Tab
-                        title={!isFetchingWorkOrders ? workOrders.length.toString() : undefined}
+                        title={!isFetchingWorkOrders ? workOrders?.length.toString() : undefined}
                     >
-                        Workorders {!isFetchingWorkOrders && `(${workOrders.length})`}
+                        Workorders {!isFetchingWorkOrders && `(${workOrders?.length})`}
                     </Tabs.Tab>
-                    <Tabs.Tab>Punch {!isFetchingPunchItems && `(${punchItems.length})`}</Tabs.Tab>
-                    <Tabs.Tab>NCR {!isFetchingNcr && `(${ncr.length})`}</Tabs.Tab>
+                    <Tabs.Tab>Punch {!isFetchingPunchItems && `(${punchItems?.length})`}</Tabs.Tab>
+                    <Tabs.Tab>NCR {!isFetchingNcr && `(${ncr?.length})`}</Tabs.Tab>
                 </Tabs.List>
                 <Tabs.Panels>
                     <Tabs.Panel>
