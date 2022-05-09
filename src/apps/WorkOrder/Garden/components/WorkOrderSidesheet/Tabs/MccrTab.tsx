@@ -4,7 +4,7 @@ import { Column } from 'react-table';
 import { WorkOrderMccr } from '../../../models';
 
 export type MccrTabProps = {
-    packages: WorkOrderMccr[];
+    packages: WorkOrderMccr[] | undefined;
     isFetching: boolean;
     error: Error | null;
 };

@@ -1,12 +1,12 @@
+import { useSideSheet } from '@equinor/sidesheet';
 import {
-    useMutation,
     MutationFunction,
+    MutationKey,
+    useMutation,
     UseMutationOptions,
     UseMutationResult,
-    useQueryClient,
-    MutationKey,
+    useQueryClient
 } from 'react-query';
-import { useDataContext } from '../../../../Core/WorkSpace/src/Context/DataProvider';
 import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
 
 export function useScopeChangeMutation<
@@ -24,13 +24,11 @@ export function useScopeChangeMutation<
     >
 ): UseMutationResult<TData, TError, TVariables, TContext> {
     const queryClient = useQueryClient();
-    const {
-        dataApi: { queryKey: workspaceKey },
-    } = useDataContext();
+    const { appName } = useSideSheet();
 
     const { baseKey } = scopeChangeQueryKeys(requestId);
     function invalidate() {
-        queryClient.invalidateQueries(workspaceKey);
+        queryClient.invalidateQueries(appName);
         queryClient.invalidateQueries(baseKey);
     }
 

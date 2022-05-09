@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const Wrapper = styled.section`
+export const Content = styled.section`
     padding: 2rem;
     overflow: scroll;
     height: -webkit-fill-available;

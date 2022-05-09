@@ -31,7 +31,7 @@ const columns: Column<HandoverQuery>[] = [
 ];
 
 type TabProps = {
-    packages: HandoverQuery[];
+    packages: HandoverQuery[] | undefined;
     isFetching: boolean;
 };
 

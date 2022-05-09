@@ -1,4 +1,4 @@
-import { DeepImmutable, useAtom } from '@dbeining/react-atom';
+import { DeepImmutable, deref, useAtom } from '@dbeining/react-atom';
 import { scopeChangeAtom, ScopeChangeAtom } from '../../Atoms/scopeChangeAtom';
 
 type SelectorFunction<T, R> = (s: T) => R;
@@ -16,4 +16,8 @@ export function useScopeChangeContext<R = ScopeChangeAtom>(
     const select = selector ? selector : (s: ScopeChangeAtom) => s;
 
     return useAtom(scopeChangeAtom, { select: select as (s: ScopeChangeAtom) => R });
+}
+
+export function getScopeChangeSnapshot(): ScopeChangeAtom {
+    return deref(scopeChangeAtom);
 }

@@ -4,7 +4,7 @@ import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/Sidesh
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
 import { dataCreator } from './workspaceConfig/dataCreatorConfig';
 import { dataSource, idResolver } from './workspaceConfig/dataOptions';
-import { filterConfig } from './workspaceConfig/filterConfig';
+import { filterConfig } from './workspaceConfig/filter/filterConfig';
 import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
 import { prefetchQueriesOptions } from './workspaceConfig/prefetchQueryOptions';
 import { statusBarConfig } from './workspaceConfig/statusBarConfig';

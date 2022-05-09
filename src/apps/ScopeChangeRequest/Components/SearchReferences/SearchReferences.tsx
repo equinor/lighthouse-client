@@ -46,7 +46,6 @@ export const SearchReferences = ({
 
     const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
         'document',
-        'discipline',
         'area',
         'commpkg',
         'tag',
@@ -112,7 +111,6 @@ export const SearchReferences = ({
                     >
                         <SelectContainer>
                             <SingleSelect
-                                meta="(Required)"
                                 label="Reference type"
                                 items={referenceTypes}
                                 value={referenceType}

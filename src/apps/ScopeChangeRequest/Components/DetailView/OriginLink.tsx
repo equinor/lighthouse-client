@@ -26,15 +26,12 @@ export const OriginLink = ({
 
     const Component = useMemo(() => {
         switch (type) {
-            case 'DCN': {
+            case 'DCR': {
                 if (!id) return <div>Error query without id</div>;
                 return (
-                    <Link
-                        hideUnderline={onlyUnderlineOnHover}
-                        onClick={() => onClickRedirectOrigin(id)}
-                    >
-                        {id}
-                    </Link>
+                    <div>
+                        {type} - {id}
+                    </div>
                 );
             }
             case 'NCR': {

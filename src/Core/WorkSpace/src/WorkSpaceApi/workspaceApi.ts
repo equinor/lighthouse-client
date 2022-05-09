@@ -118,6 +118,11 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
             return workspaceAPI;
         },
 
+        registerPresets(options) {
+            updateState({ presetOptions: options });
+            return workspaceAPI;
+        },
+
         /**
          * View option Registration
          *

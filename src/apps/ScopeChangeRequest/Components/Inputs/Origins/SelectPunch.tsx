@@ -1,8 +1,9 @@
 import { CircularProgress, Icon, Input } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { useHttpClient } from '../../../../../Core/Client/Hooks/useApiClient';
+import { validatePunch } from '../../../api/PCS/validatePunch';
 
 interface SelectPunchProps {
     setOriginId: (originId: string | undefined) => void;
@@ -10,32 +11,7 @@ interface SelectPunchProps {
 }
 
 export const SelectPunch = ({ setOriginId, originId }: SelectPunchProps): JSX.Element => {
-    const [isValidPunch, setIsValidPunch] = useState<boolean>(false);
-    const [isChecking, setIsChecking] = useState<boolean>();
-    const [hasChecked, setHasChecked] = useState<boolean>();
-
-    const { procosys } = useHttpClient();
-
-    async function validatePunch(plNumber) {
-        setIsChecking(true);
-
-        try {
-            const res = await procosys.fetch(
-                `api/PunchListItem?plantId=PCS%24JOHAN_CASTBERG&punchItemId=${plNumber}&api-version=4.1`
-            );
-
-            if (!res.ok) {
-                throw new Error('Invalid punch');
-            }
-            setIsValidPunch(true);
-            setOriginId(plNumber);
-        } catch (e) {
-            setIsValidPunch(false);
-        }
-
-        setHasChecked(true);
-        setIsChecking(false);
-    }
+    const [plNumber, setPlNumber] = useState<string | null>(null);
 
     return (
         <Inline>
@@ -45,28 +21,55 @@ export const SelectPunch = ({ setOriginId, originId }: SelectPunchProps): JSX.El
                 defaultValue={originId}
                 onChange={async (e) => {
                     setOriginId(undefined);
-                    setIsChecking(false);
-                    setHasChecked(false);
+
                     if (e.target.value.length === 7) {
-                        await validatePunch(e.target.value);
+                        setPlNumber(e.target.value);
+                    } else {
+                        setPlNumber(null);
                     }
                 }}
             />
             <IconWrapper>
-                {isChecking && <CircularProgress value={0} size={24} />}
-                {hasChecked && isValidPunch && (
-                    <Icon name="check" color={tokens.colors.interactive.primary__resting.hex} />
-                )}
-                {hasChecked && !isValidPunch && (
-                    <Icon
-                        name="close_circle_outlined"
-                        color={tokens.colors.infographic.primary__energy_red_100.hex}
-                    />
-                )}
+                {plNumber && <CheckPunchIcon plNumber={plNumber} setOriginId={setOriginId} />}
             </IconWrapper>
         </Inline>
     );
 };
+
+interface CheckPunchIconProps {
+    plNumber: string;
+    setOriginId: (originId: string | undefined) => void;
+}
+export function CheckPunchIcon({ plNumber, setOriginId }: CheckPunchIconProps): JSX.Element {
+    const { data } = useQuery(
+        ['punch', plNumber],
+        ({ signal }) => validatePunch(plNumber, signal),
+        {
+            onSuccess: (isValid) => {
+                if (isValid) {
+                    setOriginId(plNumber);
+                }
+            },
+        }
+    );
+
+    if (data === undefined) {
+        return <CircularProgress value={0} size={24} />;
+    }
+
+    return (
+        <>
+            {data ? (
+                <Icon name="check" color={tokens.colors.interactive.primary__resting.hex} />
+            ) : (
+                <Icon
+                    name="close_circle_outlined"
+                    color={tokens.colors.infographic.primary__energy_red_100.hex}
+                />
+            )}
+        </>
+    );
+}
 
 const IconWrapper = styled.div`
     width: 32px;

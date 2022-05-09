@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react';
 import { useSettings } from '../Hooks/useClientContext';
-import { Container, Header, MainColumn, SideColumn, SideItem, Wrapper } from './clientHomeStyles';
+import { Container, Content, Header, MainColumn, SideColumn, SideItem } from './clientHomeStyles';
 import { PowerBIHome } from './PbiHome/PbiHome';
 import { YammerFeed } from './Sosial/yammer';
 import { Task } from './Task/Task';
@@ -8,22 +8,24 @@ import { Task } from './Task/Task';
 export const ClientHome = (): JSX.Element => {
     const { user } = useSettings();
     return (
-        <Wrapper>
-            <Header>
-                <Typography variant="h3">Welcome {user?.displayName}</Typography>
-            </Header>
-            <Container>
-                <SideColumn>
-                    <SideItem height={400}>
-                        <Task />
-                    </SideItem>
-                    <SideItem height={575}>
-                        <YammerFeed />
-                    </SideItem>
-                </SideColumn>
-                <MainColumn>
-                    <PowerBIHome reportUri={'jca-landing-page '} />
-                    {/* <KpiBar>
+        <>
+            <Content>
+                <Header>
+                    <Typography variant="h3">Welcome {user?.displayName}</Typography>
+                </Header>
+                <Container>
+                    <SideColumn>
+                        <SideItem height={400}>
+                            <Task />
+                        </SideItem>
+                        <SideItem height={575}>
+                            <YammerFeed />
+                        </SideItem>
+                    </SideColumn>
+                    <MainColumn>
+                        <PowerBIHome reportUri={'jca-landing-page '} />
+
+                        {/* <KpiBar>
                         <KpiGroup
                             title="Safety indicators"
                             linkText="Open SSU dashboard"
@@ -94,8 +96,9 @@ export const ClientHome = (): JSX.Element => {
                         />
                     </KpiBar>
                     <Status /> */}
-                </MainColumn>
-            </Container>
-        </Wrapper>
+                    </MainColumn>
+                </Container>
+            </Content>
+        </>
     );
 };

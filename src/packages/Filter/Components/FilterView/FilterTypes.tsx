@@ -19,8 +19,9 @@ type Props = {
 };
 export const FilterTypes = ({ visibleFilters, handleAllClick, handleOnChange }: Props) => {
     const {
-        filterState: { getAllFilterGroups },
+        filterState: { getAllFilterGroups, checkHasActiveFilters },
         filterGroupState: { getInactiveGroupValues },
+        operations: { clearActiveFilters },
     } = useFilterApiContext();
     const [isFilterSelectActive, setIsFilterSelectActive] = useState(false);
     const filterGroupNames = createTypeKeys(getAllFilterGroups());
@@ -43,6 +44,11 @@ export const FilterTypes = ({ visibleFilters, handleAllClick, handleOnChange }: 
                 <AddButton variant="ghost_icon" onClick={handleToggleFilterSelect}>
                     <Icon name={isFilterSelectActive ? 'close' : 'add'} />
                 </AddButton>
+                {checkHasActiveFilters() && (
+                    <AddButton variant="ghost_icon" onClick={() => clearActiveFilters()}>
+                        <Icon name="setting_backup_restore" />
+                    </AddButton>
+                )}
             </SelectBar>
 
             {isFilterSelectActive && (
@@ -78,10 +84,6 @@ export const FilterTypes = ({ visibleFilters, handleAllClick, handleOnChange }: 
                                     title={key}
                                     label={key}
                                     value={key}
-                                    disabled={
-                                        visibleFilters.includes(key) &&
-                                        getInactiveGroupValues(key).length > 0
-                                    }
                                     checked={visibleFilters.includes(key)}
                                     onChange={handleOnChange}
                                 />

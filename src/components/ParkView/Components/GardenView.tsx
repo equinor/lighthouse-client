@@ -5,12 +5,18 @@ import { useParkViewContext } from '../Context/ParkViewProvider';
 import { FilterSelector } from './GroupingSelector';
 import { GroupHeader } from './GroupHeader';
 import { useRefresh } from '../hooks/useRefresh';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { defaultSortFunction } from '../Utils/utilities';
 import { PostGroupBySorting, PreGroupByFiltering } from '../Models/gardenOptions';
 import { DataSet } from '../Models/data';
+import { GardenApi } from '../Models/gardenApi';
+import { useGardenApi } from '../hooks/useGardenApi';
 
-export function GardenView<T>(): JSX.Element | null {
+interface VirtualContainerProps {
+    onGardenReady?: (api: GardenApi) => void;
+}
+
+export function GardenView<T>({ onGardenReady }: VirtualContainerProps): JSX.Element | null {
     const refresh = useRefresh();
     const {
         data,
@@ -24,32 +30,38 @@ export function GardenView<T>(): JSX.Element | null {
         intercepters,
     } = useParkViewContext<T>();
 
-    const garden = useMemo(
-        () =>
-            data &&
+    const [garden, setGarden] = useState<DataSet<T>[]>([]);
+
+    const { createGardenApi } = useGardenApi();
+
+    useEffect(() => {
+        setGarden(
             createGarden({
                 dataSet: data,
-                gardenKey: gardenKey,
                 groupingKeys: groupByKeys,
+                isExpanded: true,
+                gardenKey: gardenKey,
                 status: status,
                 groupDescriptionFunc: options?.groupDescriptionFunc,
                 fieldSettings: fieldSettings,
                 customGroupByKeys: customGroupByKeys,
                 postGroupBySorting: intercepters?.postGroupSorting as PostGroupBySorting<T>,
                 preGroupFiltering: intercepters?.preGroupFiltering as PreGroupByFiltering<T>,
-            }),
-        [
-            data,
-            gardenKey,
-            groupByKeys,
-            status,
-            options?.groupDescriptionFunc,
-            fieldSettings,
-            customGroupByKeys,
-            intercepters?.postGroupSorting,
-            intercepters?.preGroupFiltering,
-        ]
-    );
+            })
+        );
+
+        onGardenReady && onGardenReady(createGardenApi());
+    }, [
+        /** Should maybe be empty */
+        data,
+        gardenKey,
+        groupByKeys,
+        status,
+        options?.groupDescriptionFunc,
+        fieldSettings,
+        customGroupByKeys,
+    ]);
+
     const Header = customView?.customHeaderView || GroupHeader;
     const sortedColumns = useMemo(
         () =>
