@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
-import { useWorkspaceBookmarks } from '../Context/BookmarkContext';
 import { useDataContext } from '../Context/DataProvider';
+import { useWorkspaceBookmarks } from '../Util/bookmarks/hooks';
 
 const Wrapper = styled.section`
     margin: 16px;
