@@ -71,12 +71,12 @@ export const PowerBiViewerHeader = ({
                 <RightSection>
                     <Line />
                     <Divider />
-                    <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
-                        {hasFilter ? <FilterFilled /> : <Icon name={'filter_alt'} />}
-                    </HeaderButton>
                     {!isProduction() && (
                         <BookmarkDropdown appKey={shortName} subSystem={groupName.toString()} />
                     )}
+                    <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
+                        {hasFilter ? <FilterFilled /> : <Icon name={'filter_alt'} />}
+                    </HeaderButton>
                 </RightSection>
             </HeaderContent>
         </HeaderWrapper>
