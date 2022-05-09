@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
+
+
+
+## 1.1.2
+- [Scopechange] DCN changed to DCR
+- [Workspace] Filter improvements
+- [Scopechange] Filter on guesstimate
+- [Scopechange] Bugfixes
+- [Portal] Sidesheet now has higher width
+- [Bookmarks Manager] Package for persisting filter and other states
+- [PBI Viewer] Use Bookmarks Manager
+- [Workspace] Use Bookmarks Manager for PBI reports
+- [MC Garden] Release of MC Garden
+
+
 ## 1.1.1
 - [ScopeChange] Bugfixes
 - [Assignments] Filter closed assignments
