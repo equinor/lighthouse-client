@@ -43,27 +43,27 @@ export function useSidesheetEffects(
         menuItems.push(
             isVoided
                 ? {
-                      label: 'Unvoid',
-                      onClick: () => unVoidRequestMutation({ requestId }),
-                      isDisabled: !canUnVoid,
-                      icon: (
-                          <Icon
-                              name="restore_from_trash"
-                              color={tokens.colors.interactive.primary__resting.hex}
-                          />
-                      ),
-                  }
+                    label: 'Unvoid',
+                    onClick: () => unVoidRequestMutation({ requestId }),
+                    isDisabled: !canUnVoid,
+                    icon: (
+                        <Icon
+                            name="restore_from_trash"
+                            color={tokens.colors.interactive.primary__resting.hex}
+                        />
+                    ),
+                }
                 : {
-                      label: 'Void',
-                      onClick: () => voidRequestMutation({ requestId }),
-                      isDisabled: !canVoid,
-                      icon: (
-                          <Icon
-                              name="delete_to_trash"
-                              color={tokens.colors.interactive.primary__resting.hex}
-                          />
-                      ),
-                  }
+                    label: 'Void',
+                    onClick: () => voidRequestMutation({ requestId }),
+                    isDisabled: !canVoid,
+                    icon: (
+                        <Icon
+                            name="delete_to_trash"
+                            color={tokens.colors.interactive.primary__resting.hex}
+                        />
+                    ),
+                }
         );
         return menuItems;
     };

@@ -10,6 +10,10 @@ export async function setupContext(): Promise<void> {
         : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
 
     const response = await fusionContext.get(`contexts/${fusionContextId}`);
+    if (!response.ok) {
+        //TODO: Catch and render error?
+        throw 'Failed to get fusion context';
+    }
     updateContext(await response.json());
 }
 

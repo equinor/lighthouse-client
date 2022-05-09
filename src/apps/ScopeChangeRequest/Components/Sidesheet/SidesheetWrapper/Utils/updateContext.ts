@@ -4,10 +4,10 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { scopeChangeAtom } from '../../../../Atoms/scopeChangeAtom';
 import { ScopeChangeRequest } from '../../../../types/scopeChangeRequest';
 
-export function updateContext(item: ScopeChangeRequest, api: SidesheetApi): void {
+export function updateContext(item?: ScopeChangeRequest, api?: SidesheetApi): void {
     swap(scopeChangeAtom, (old) => ({
         ...old,
-        request: item,
-        actions: api,
+        request: item ?? old.request,
+        actions: api ?? old.actions,
     }));
 }

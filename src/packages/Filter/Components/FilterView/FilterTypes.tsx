@@ -84,10 +84,6 @@ export const FilterTypes = ({ visibleFilters, handleAllClick, handleOnChange }: 
                                     title={key}
                                     label={key}
                                     value={key}
-                                    disabled={
-                                        visibleFilters.includes(key) &&
-                                        getInactiveGroupValues(key).length > 0
-                                    }
                                     checked={visibleFilters.includes(key)}
                                     onChange={handleOnChange}
                                 />
