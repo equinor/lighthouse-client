@@ -84,23 +84,6 @@ export const ScopeChangeBaseForm = ({
                 initialValue={state.description}
                 onChange={(value) => handleInput('description', value)}
             />
-
-            <Guesstimate>
-                <FormTextField
-                    label="Guess direct Mhrs"
-                    type={'number'}
-                    onChange={(value) => handleInput('guesstimateHours', Number(value))}
-                    placeholder="Make your best guess.."
-                    initialValue={state.guesstimateHours?.toString()}
-                />
-
-                <FormTextField
-                    label="Guesstimate description"
-                    placeholder="Please add description"
-                    onChange={(e) => handleInput('guesstimateDescription', e)}
-                    initialValue={state.guesstimateDescription}
-                />
-            </Guesstimate>
         </BaseFormContainer>
     );
 };
@@ -108,12 +91,6 @@ export const ScopeChangeBaseForm = ({
 const BaseFormContainer = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 1em;
-`;
-
-const Guesstimate = styled.div`
-    display: grid;
-    grid-template-columns: 1fr 2fr;
     gap: 1em;
 `;
 
