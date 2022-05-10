@@ -19,7 +19,9 @@ type Context<T> = {
     saveBookmark: SaveBookmark<T>;
 };
 
-const BookmarkContext = createContext({} as Context<unknown>);
+const BookmarkContext = createContext(
+    {} as Context<PowerBIBookmarkPayload | WorkspaceBookmarkPayload>
+);
 
 type BookmarkContextWrapperProps = {};
 

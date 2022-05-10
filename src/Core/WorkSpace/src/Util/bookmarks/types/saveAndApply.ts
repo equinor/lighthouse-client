@@ -9,9 +9,9 @@ export type SaveBookmark<T> = T extends PowerBIBookmarkPayload
     ? SavePBIWorkspaceBookmark
     : T extends WorkspaceBookmarkPayload
     ? SaveWorkspaceBookmark
-    : unknown;
+    : never;
 export type ApplyBookmark<T> = T extends PowerBIBookmarkPayload
     ? PowerBIBookmarkPayload | undefined
     : T extends WorkspaceBookmarkPayload
     ? void
-    : unknown;
+    : never;
