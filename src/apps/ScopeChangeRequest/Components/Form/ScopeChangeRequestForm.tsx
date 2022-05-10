@@ -24,6 +24,7 @@ import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clear
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
+import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
 
 interface ScopeChangeRequestFormProps {
     closeScrim: () => void;
@@ -82,6 +83,13 @@ export const ScopeChangeRequestForm = ({
                     <FlexColumn>
                         Request
                         <ScopeChangeBaseForm handleInput={handleChange} state={state} />
+                        Disciplines and guesstimates
+                        <GuesstimateDiscipline
+                            state={state.disciplineGuesstimates ?? []}
+                            updateFormValue={(guess) =>
+                                handleInput('disciplineGuesstimates', guess)
+                            }
+                        />
                     </FlexColumn>
 
                     <FlexColumn>
