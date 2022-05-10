@@ -1,5 +1,5 @@
 import { deref } from '@dbeining/react-atom';
-import { GardenOptions } from '../../../../../components/ParkView/Models/gardenOptions';
+import { GardenOptions } from '@equinor/ParkView';
 import { gardenStateSnapshotAtom } from './gardenStateSnapshotAtom';
 
 export function interceptGardenOptions(
