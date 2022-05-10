@@ -24,6 +24,7 @@ import styled from 'styled-components';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { useUnpackRelatedObjects } from '../../hooks/queries/useUnpackRelatedObjects';
 import { disableEditMode } from '../../Atoms/editModeAtom';
+import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -60,6 +61,10 @@ export const ScopeChangeRequestEditForm = ({
     const { handleInput, isValid, state } = useScopeChangeFormState({
         ...request,
         attachments: [],
+        disciplineGuesstimates: request.disciplineGuesstimates.map((x) => ({
+            disciplineCode: x.discipline.procosysCode,
+            guesstimateHours: x.guesstimate,
+        })),
     });
 
     const handleSave = (setAsOpen: boolean) =>
@@ -82,8 +87,8 @@ export const ScopeChangeRequestEditForm = ({
                     />
                     Disciplines and guesstimates
                     <GuesstimateDiscipline
-                        state={state.guesstimates ?? []}
-                        updateFormValue={(guess) => handleInput('guesstimates', guess)}
+                        state={state.disciplineGuesstimates ?? []}
+                        updateFormValue={(guess) => handleInput('disciplineGuesstimates', guess)}
                     />
                 </FlexColumn>
 

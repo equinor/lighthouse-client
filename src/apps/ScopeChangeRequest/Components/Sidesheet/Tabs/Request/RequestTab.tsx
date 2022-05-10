@@ -13,11 +13,11 @@ import {
     Wrapper,
     SubSectionTitle,
     SectionWrapper,
-    SiblingWrapper,
 } from './RequestTab.styles';
 import styled from 'styled-components';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { Workflow } from '../../../Workflow/Workflow';
+import { GuesstimateDisciplineDetails } from '../../GuesstimateDisciplineDetails/GuesstimateDisciplineDetails';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -34,16 +34,27 @@ export function RequestTab(): JSX.Element {
                             <SubSectionText>{request.description}</SubSectionText>
                         </SectionWrapper>
 
-                        <SiblingWrapper>
-                            <SectionWrapper>
-                                <SubSectionTitle>Guesstimate</SubSectionTitle>
-                                <SubSectionText>
-                                    {request.guesstimateHours
-                                        ? `${request.guesstimateHours} mhr`
-                                        : ''}
-                                </SubSectionText>
-                            </SectionWrapper>
-                        </SiblingWrapper>
+                        <SectionHeading>Disciplines and guesstimates</SectionHeading>
+                        <SectionWrapper>
+                            <SubSectionText>
+                                <GuesstimatesList>
+                                    <GuesstimateRow>
+                                        <SubSectionTitle>Discipline</SubSectionTitle>
+                                        <SubSectionTitle>Guesstimate Mhrs</SubSectionTitle>
+                                    </GuesstimateRow>
+                                    {request.disciplineGuesstimates.map(
+                                        ({ discipline, guesstimate, id }) => (
+                                            <GuesstimateDisciplineDetails
+                                                discipline={discipline}
+                                                guesstimate={guesstimate}
+                                                id={id}
+                                                key={id}
+                                            />
+                                        )
+                                    )}
+                                </GuesstimatesList>
+                            </SubSectionText>
+                        </SectionWrapper>
                     </InnerSection>
                 </FlexColumn>
                 <FlexColumn>
@@ -84,4 +95,20 @@ export function RequestTab(): JSX.Element {
 const NoAttachments = styled.div`
     font-size: 14px;
     font-weight: 400;
+`;
+
+const GuesstimatesList = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+`;
+
+const GuesstimateRow = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0.4px;
+    text-align: left;
 `;

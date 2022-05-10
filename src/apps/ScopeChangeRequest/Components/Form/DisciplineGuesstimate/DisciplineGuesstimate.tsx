@@ -24,7 +24,7 @@ export const GuesstimateDiscipline = ({
     updateFormValue,
 }: GuesstimateDisciplineProps): JSX.Element => {
     const [guesstimates, setGuesstimates] = useState<DisciplineGuesstimate[]>(
-        state.length > 0 ? state : [{ guesstimateHours: NaN, procosysCode: '' }]
+        state.length > 0 ? state : [{ guesstimateHours: NaN, disciplineCode: '' }]
     );
 
     const { procosysPlantId } = useFacility();
@@ -34,7 +34,7 @@ export const GuesstimateDiscipline = ({
     );
 
     const appendGuesstimate = () =>
-        setGuesstimates((old) => [...old, { procosysCode: '', guesstimateHours: null }]);
+        setGuesstimates((old) => [...old, { disciplineCode: '', guesstimateHours: null }]);
     const handleRemove = (index: number) =>
         setGuesstimates((old) => old.filter((_, i) => i !== index));
     const handleChange = (index: number, guess: DisciplineGuesstimate) =>
@@ -42,9 +42,9 @@ export const GuesstimateDiscipline = ({
 
     useEffect(() => {
         updateFormValue(
-            guesstimates.map(({ guesstimateHours, procosysCode }) => ({
+            guesstimates.map(({ guesstimateHours, disciplineCode }) => ({
                 guesstimateHours,
-                procosysCode: extractDisciplineCodeFromlabel(procosysCode),
+                disciplineCode: extractDisciplineCodeFromlabel(disciplineCode),
             }))
         );
     }, [guesstimates]);
@@ -55,7 +55,9 @@ export const GuesstimateDiscipline = ({
                 ?.filter(
                     ({ Code }) =>
                         !guesstimates
-                            .map(({ procosysCode }) => extractDisciplineCodeFromlabel(procosysCode))
+                            .map(({ disciplineCode }) =>
+                                extractDisciplineCodeFromlabel(disciplineCode)
+                            )
                             .includes(Code)
                 )
                 .map(constructDisciplineLabel) ?? []
@@ -65,13 +67,13 @@ export const GuesstimateDiscipline = ({
     return (
         <>
             <GuesstimateList>
-                {guesstimates?.map(({ guesstimateHours, procosysCode }, index) => (
+                {guesstimates?.map(({ guesstimateHours, disciplineCode }, index) => (
                     <GuesstimateGuesser
                         handleClear={() => handleRemove(index)}
                         key={index}
                         handleChange={(guess) => handleChange(index, guess)}
                         guesstimate={guesstimateHours}
-                        disciplineName={procosysCode}
+                        disciplineName={disciplineCode}
                         selectOptions={generateSelectOptions()}
                     />
                 ))}
@@ -122,7 +124,7 @@ export const GuesstimateGuesser = ({
                     selectedItem &&
                     handleChange({
                         guesstimateHours: guesstimate ?? NaN,
-                        procosysCode: selectedItem,
+                        disciplineCode: selectedItem,
                     })
                 }
             />
@@ -134,7 +136,7 @@ export const GuesstimateGuesser = ({
                 onChange={(e) =>
                     handleChange({
                         guesstimateHours: e.target.valueAsNumber,
-                        procosysCode: disciplineName ?? '',
+                        disciplineCode: disciplineName ?? '',
                     })
                 }
             />

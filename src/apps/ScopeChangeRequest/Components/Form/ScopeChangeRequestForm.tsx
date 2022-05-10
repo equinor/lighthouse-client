@@ -85,8 +85,10 @@ export const ScopeChangeRequestForm = ({
                         <ScopeChangeBaseForm handleInput={handleChange} state={state} />
                         Disciplines and guesstimates
                         <GuesstimateDiscipline
-                            state={state.guesstimates ?? []}
-                            updateFormValue={(guess) => handleInput('guesstimates', guess)}
+                            state={state.disciplineGuesstimates ?? []}
+                            updateFormValue={(guess) =>
+                                handleInput('disciplineGuesstimates', guess)
+                            }
                         />
                     </FlexColumn>
 
