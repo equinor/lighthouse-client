@@ -12,7 +12,7 @@ interface WorkOrderTableProps {
 export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element {
     const someColumns: Column<any>[] = [
         generateColumn('WO', ({ workOrderNo }) => workOrderNo, 170),
-        generateColumn('Title', ({ description }) => description, 310),
+        generateColumn('Title', ({ title }) => title, 310),
         generateColumn('Discipline', ({ discipline }) => discipline, 80),
         generateColumn('Status', ({ jobStatus }) => jobStatus, 80),
         generateColumn(
