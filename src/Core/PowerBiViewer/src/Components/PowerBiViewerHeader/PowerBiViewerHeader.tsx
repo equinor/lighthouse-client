@@ -23,7 +23,7 @@ type HandleFilter = () => void;
 interface PowerBiViewerHeaderProps {
     title: string;
     shortName: string;
-    groupName: string | string[];
+    groupName: string;
     activePage?: Page;
     handleFilter: HandleFilter;
     handleSetActivePage(page: Page): void;
@@ -75,7 +75,7 @@ export const PowerBiViewerHeader = ({
                         {hasFilter ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                     </HeaderButton>
                     {!isProduction() && (
-                        <BookmarkDropdown appKey={shortName} subSystem={groupName.toString()} />
+                        <BookmarkDropdown appKey={shortName} subSystem={groupName} />
                     )}
                 </RightSection>
             </HeaderContent>

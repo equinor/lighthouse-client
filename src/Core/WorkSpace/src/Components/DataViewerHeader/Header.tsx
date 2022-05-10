@@ -30,7 +30,7 @@ import {
 
 interface CompletionViewHeaderProps {
     title: string;
-    groupe: string | string[];
+    groupe: string;
     tabs: TabsConfigItem[];
     sideSheetWidth: number;
 }
@@ -191,7 +191,7 @@ export const CompletionViewHeader = ({
                             </TabButton>
 
                             {!isProduction() && (
-                                <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                                <BookmarkDropdown appKey={title} subSystem={groupe} />
                             )}
                         </>
                     )}
