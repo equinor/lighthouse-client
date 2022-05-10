@@ -67,6 +67,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                                     columnExpanded={item.isExpanded}
                                     data={item}
                                     onClick={() => handleExpand(item)}
+                                    onSelect={onSelect}
                                     groupByKeys={groupByKeys}
                                 />
                             ) : (
