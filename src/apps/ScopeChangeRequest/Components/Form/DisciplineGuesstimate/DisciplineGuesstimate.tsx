@@ -1,12 +1,19 @@
 import { Button, SingleSelect, TextField } from '@equinor/eds-core-react';
+import { useFacility } from '@equinor/portal-client';
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { useFacility } from '../../../../../Core/Client/Hooks';
+
 import { ClickableIcon } from '../../../../../packages/Components/Icon';
 import { ProCoSysQueries } from '../../../keys/ProCoSysQueries';
 import { Discipline } from '../../../types/ProCoSys/discipline';
 import { DisciplineGuesstimate } from '../../../types/scopeChangeRequest';
+import { ButtonContainer } from '../ScopeChangeForm.styles';
+import { GuesstimateList } from './disciplineGuesstimate.styles';
+import {
+    extractDisciplineCodeFromlabel,
+    generateSelectOptions,
+} from './Utils/generateSelectOptions';
 
 const Guesstimate = styled.div`
     display: grid;
@@ -49,21 +56,6 @@ export const GuesstimateDiscipline = ({
         );
     }, [guesstimates]);
 
-    function generateSelectOptions() {
-        return (
-            disciplines
-                ?.filter(
-                    ({ Code }) =>
-                        !guesstimates
-                            .map(({ disciplineCode }) =>
-                                extractDisciplineCodeFromlabel(disciplineCode)
-                            )
-                            .includes(Code)
-                )
-                .map(constructDisciplineLabel) ?? []
-        );
-    }
-
     return (
         <>
             <GuesstimateList>
@@ -74,7 +66,7 @@ export const GuesstimateDiscipline = ({
                         handleChange={(guess) => handleChange(index, guess)}
                         guesstimate={guesstimateHours}
                         disciplineName={disciplineCode}
-                        selectOptions={generateSelectOptions()}
+                        selectOptions={generateSelectOptions(disciplines ?? [], guesstimates)}
                     />
                 ))}
                 <ButtonContainer>
@@ -86,18 +78,6 @@ export const GuesstimateDiscipline = ({
         </>
     );
 };
-
-const ButtonContainer = styled.div`
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-`;
-
-const GuesstimateList = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-`;
 
 interface GuesstimateGuesserProps {
     disciplineName?: string;
@@ -145,7 +125,3 @@ export const GuesstimateGuesser = ({
         </Guesstimate>
     );
 };
-
-const constructDisciplineLabel = ({ Code, Description }: Discipline) => `${Code} - ${Description}`;
-
-const extractDisciplineCodeFromlabel = (label: string) => label.replace(' ', '').split('-')[0];
