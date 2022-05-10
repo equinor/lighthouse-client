@@ -6,6 +6,6 @@ export * from './Context/FilterContext';
 // Hooks
 export * from './Hooks/useFilterApi';
 export * from './Hooks/useFilterApiContext';
+export * from './Hooks/useLocationKey';
 // Types
 export * from './Types';
-

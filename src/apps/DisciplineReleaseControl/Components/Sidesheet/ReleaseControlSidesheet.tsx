@@ -1,16 +1,11 @@
-// import { Viewer } from '../../../../packages/ModelViewer/ModelViewer';
-// import { useFacility } from '@equinor/portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
-import { useLocationKey } from '../../../../packages/Filter/Hooks/useLocationKey';
 import { ServerError } from '../../Api/Types/ServerError';
 import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { ElectroView } from '../Electro/ElectroView';
 import { HTSidesheet, Pipetest } from '../../Types/pipetest';
-// import { Viewer } from '../../../../packages/ModelViewer/ModelViewer';
-// import { useFacility } from '@equinor/portal-client';
 import { Tabs } from '@equinor/eds-core-react';
 import { CheckListTable } from './CheckListTable';
 import { ReleaseControlErrorBanner } from './ErrorBanner';
@@ -20,6 +15,7 @@ import { SidesheetTabList } from './SidesheetTabs';
 import { TablesTab, WarningBanner, WarningBannerText } from './styles';
 import { WorkOrderTab } from './WorkOrderTab';
 import { ReleaseControlHTSidesheet } from './ReleaseControlHTSidesheet';
+import { useLocationKey } from '@equinor/filter';
 
 interface GatewaySidesheetProps {
     item: Pipetest | HTSidesheet;

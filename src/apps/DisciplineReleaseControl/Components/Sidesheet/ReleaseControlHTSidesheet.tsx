@@ -8,10 +8,10 @@ import { CheckListTable } from './CheckListTable';
 import { SidesheetTabList } from './SidesheetTabs';
 import { ElectroView } from '../Electro/ElectroView';
 import { useQuery } from 'react-query';
-import { useLocationKey } from '../../../../packages/Filter/Hooks/useLocationKey';
 import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
 import { TablesTab } from './styles';
 import { SidesheetApi } from '@equinor/sidesheet';
+import { useLocationKey } from '@equinor/filter';
 
 interface ReleaseControlHTSidesheetProps {
     item: HTSidesheet;
