@@ -10,9 +10,3 @@ export type BookmarkResponse = {
     name: string;
     sourceSystem: SourceSystem;
 };
-export type BookmarkErrorResponse = {
-    code?: string;
-    exceptionMessage?: string;
-    exceptionType?: string;
-    message?: string;
-};
