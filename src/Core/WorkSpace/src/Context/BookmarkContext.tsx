@@ -70,7 +70,9 @@ export const BookmarkContextWrapper = ({
         if (gardenApi && bookmark.activeTab === 'garden') {
             gardenApi.mutations.setGroupKeys(bookmark.garden?.groupByKeys || []);
             gardenApi.mutations.setCustomGroupKeys(bookmark.garden?.customGroupByKeys || {});
-            gardenApi.mutations.setGardenKey(bookmark.garden?.gardenKey);
+            gardenApi.mutations.setGardenKey(
+                bookmark.garden?.gardenKey || gardenApi.states.getGardenKey()
+            );
         }
         setFilterState(bookmark.filter);
     };
