@@ -68,7 +68,7 @@ export const ReleaseControlHTSidesheet = ({
                     <Tabs.Panel>
                         <TablesTab>
                             <CheckListTable
-                                checkLists={item.items[0].checkLists.filter(
+                                checkLists={item.items[0]?.checkLists?.filter(
                                     (x) => x.tagNo === item.value
                                 )}
                             />
