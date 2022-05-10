@@ -3,6 +3,7 @@ import { PopoutSidesheet, useSideSheet } from '@equinor/sidesheet';
 import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { WorkspaceProps } from '../..';
+import { BookmarkContextWrapper } from '../../Context/BookmarkContext';
 import { useDataContext } from '../../Context/DataProvider';
 import { WorkspaceFilterWrapper } from '../../Context/WorkspaceFilterWrapper';
 import { useConfiguredTabs } from '../../Util/tabsConfig';
@@ -59,14 +60,16 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
                 </Wrapper>
             )}
             <WorkspaceFilterWrapper filterOptions={workspace.filterOptions || []}>
-                <CompletionViewHeader
-                    {...props}
-                    tabs={tabs}
-                    sideSheetWidth={isMinimized ? activeWidth : 0}
-                />
-                <DataViewWrapper sideSheetWidth={activeWidth}>
-                    <WorkSpaceTabs tabs={tabs} />
-                </DataViewWrapper>
+                <BookmarkContextWrapper>
+                    <CompletionViewHeader
+                        {...props}
+                        tabs={tabs}
+                        sideSheetWidth={isMinimized ? activeWidth : 0}
+                    />
+                    <DataViewWrapper sideSheetWidth={activeWidth}>
+                        <WorkSpaceTabs tabs={tabs} />
+                    </DataViewWrapper>
+                </BookmarkContextWrapper>
             </WorkspaceFilterWrapper>
         </WorkspaceWrapper>
     );

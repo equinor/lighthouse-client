@@ -52,7 +52,12 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
                 mainPageDisplayName: options?.activePageDisplayName,
             };
             options?.persistPayload &&
-                options.persistPayload(bookmarkPayload, title, appKey, subSystem);
+                options.persistPayload({
+                    capturedBookmark: bookmarkPayload,
+                    bookmarkTitle: title,
+                    appKey,
+                    subSystem,
+                });
         } catch (err) {
             console.error(err);
             return;
@@ -61,7 +66,7 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
 
     const applyBookmark = async ({ id: bookmarkId, appKey, subSystem }: ApplyEventArgs) => {
         if (report && options?.applyBookmark) {
-            const bookmark = await options?.applyBookmark(bookmarkId, appKey, subSystem);
+            const bookmark = await options?.applyBookmark({ id: bookmarkId, appKey, subSystem });
             if (bookmark) {
                 report.bookmarksManager.applyState(bookmark.bookmarkState);
             }
