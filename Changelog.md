@@ -10,6 +10,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 -  [PowerBIViewer] Move bookmarks icon
 -  [Mechanical Completion] Table and filter config
 -  [Mechanical Completion] Change from dev to test env
+-  [Garden] Fix issue with scrollbar when opening filter panel
 ## 1.1.3
 - [Client] Hotfix auth issue
 - [Installation] new report in devlopment
