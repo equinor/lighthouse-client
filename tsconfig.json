@@ -27,6 +27,9 @@
             "@equinor/Kpi": [
                 "./src/packages/KPI"
             ],
+            "@equinor/atom": [
+                "./src/Core/Atom"
+            ],
             "@equinor/portal-client": [
                 "./src/Core/Client"
             ],
