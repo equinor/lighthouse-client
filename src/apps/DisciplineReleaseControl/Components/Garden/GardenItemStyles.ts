@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { Item } from '../../../../components/ParkView/Styles/item';
 
@@ -49,4 +50,51 @@ export const ReleaseControlExpandedTitle = styled.div`
     display: flex;
     flex: 1;
     padding: 0px 8px;
+`;
+
+export const SubGroupWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    align-items: center;
+    margin-bottom: 4px;
+    border: 1px solid ${tokens.colors.text.static_icons__tertiary.rgba};
+    border-radius: 5px;
+    color: ${tokens.colors.text.static_icons__default.rgba};
+    width: 98%;
+    height: 85%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`;
+
+export const SubGroupText = styled.div`
+    display: flex;
+    margin-left: 4px;
+    font-variant-numeric: tabular-nums;
+`;
+
+export const HTSubGroupText = styled.div`
+    display: flex;
+    margin-left: 4px;
+    margin-top: 2px;
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    text-decoration: underline;
+
+    :hover {
+        opacity: 0.5;
+    }
+`;
+
+export const HTGardenSubGroup = styled.div`
+    display: flex;
+`;
+
+export const Chevron = styled.div`
+    cursor: pointer;
+
+    :hover {
+        opacity: 0.5;
+    }
 `;

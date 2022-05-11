@@ -1,8 +1,8 @@
-import { Banner, Icon, Button } from '@equinor/eds-core-react';
+import { Banner, Button, Icon } from '@equinor/eds-core-react';
+import { useIsMounted } from '@equinor/lighthouse-utils';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ServerError } from '../../Api/Types/ServerError';
-import { useIsMounted } from '../../Hooks/useIsMounted';
 
 export interface ErrorFormat {
     message: ServerError | undefined;

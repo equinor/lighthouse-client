@@ -1,4 +1,4 @@
-import { storage } from '@equinor/Utils';
+import { storage } from '@equinor/lighthouse-utils';
 import { createContext, PropsWithChildren, useContext, useState } from 'react';
 
 export interface MenuState {

@@ -1,8 +1,7 @@
 import { deref } from '@dbeining/react-atom';
 import { AppManifest } from '@equinor/portal-client';
-import { openSidesheet } from '@equinor/sidesheet';
+import { openSidesheet, SuspenseSidesheet } from '@equinor/sidesheet';
 import { getApps } from '../../apps/apps';
-import { SuspenseSidesheet } from '../../Core/WorkSpace/src/Components/SuspenseSidesheet/SuspenseSidesheet';
 import { CoreContext } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 
 const apps = new Map<string, string>();

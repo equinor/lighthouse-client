@@ -1,4 +1,4 @@
-import { useCancellation } from '@equinor/Utils';
+import { useCancellation } from '@equinor/lighthouse-utils';
 import { createContext, useCallback, useContext, useEffect, useReducer } from 'react';
 import { getType } from 'typesafe-actions';
 import { useDashboard } from '../Hooks/useDashboard';

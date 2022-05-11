@@ -1,5 +1,5 @@
+import { storage } from '@equinor/lighthouse-utils';
 import { httpClient } from '@equinor/portal-client';
-import { storage } from '@equinor/Utils';
 import { useEffect, useMemo, useState } from 'react';
 import { ServiceMessage } from '../Types/serviceMessage';
 
