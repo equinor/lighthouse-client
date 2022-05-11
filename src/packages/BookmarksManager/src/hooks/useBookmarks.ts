@@ -6,20 +6,22 @@ type Payload<T> = {
     id: string;
     payload: T;
 };
+type SaveArgs<T> = {
+    /** The object that you want to save */
+    capturedBookmark: T;
+
+    bookmarkTitle: string;
+
+    /** The current app this bookmark is for (e.g. 'scope-change') */
+    appKey: string;
+
+    /** The current subsystem this bookmark is for (e.g. 'ConstructionAndCommissioning') */
+    subSystem: string;
+};
+
 type UseBookmarkReturn<TPayload> = {
     /** Function that will create a bookmark object and make a POST request to the bookmark API */
-    handleSaveBookmarks: (
-        /** The object that you want to save */
-        capturedBookmark: TPayload,
-
-        bookmarkTitle: string,
-
-        /** The current app this bookmark is for (e.g. 'scope-change') */
-        appKey: string,
-
-        /** The current subsystem this bookmark is for (e.g. 'ConstructionAndCommissioning') */
-        subSystem: string
-    ) => Promise<void>;
+    handleSaveBookmarks: (saveArgs: SaveArgs<TPayload>) => Promise<void>;
 
     /** Function that accepts one bookmarks id and returns the specific bookmark payload after a GET request */
     handleApplyBookmark: (bookmarkId: string) => Promise<TPayload>;
@@ -36,7 +38,7 @@ export const useBookmarks = <TPayload extends unknown = unknown>(): UseBookmarkR
     const { mutateAsync: bookmarkApplyAsync } = useMutation(applyBookmark);
 
     return {
-        handleSaveBookmarks: async (capturedBookmark, bookmarkTitle, appKey, subSystem) => {
+        handleSaveBookmarks: async ({ capturedBookmark, bookmarkTitle, appKey, subSystem }) => {
             const bookmarkRequest: BookmarkRequest = {
                 name: bookmarkTitle,
                 isShared: false,

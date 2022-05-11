@@ -51,7 +51,13 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
     },
     {
         name: 'Guesstimate',
-        valueFormatter: ({ guesstimateHours }) => calculateGuesstimateHoursGap(guesstimateHours),
+        valueFormatter: ({ disciplineGuesstimates }) =>
+            disciplineGuesstimates.length > 0
+                ? calculateGuesstimateHoursGap(
+                    disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0)
+                )
+                : null,
+
         sort: (a) =>
             a.sort((a, b) => {
                 if (typeof a !== 'string' || typeof b !== 'string') return 0;
