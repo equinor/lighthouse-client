@@ -17,6 +17,7 @@ import { useParkViewContext } from '@equinor/ParkView';
 import { memo } from 'react';
 import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';
 import { StatusCircle } from '@equinor/GardenUtils';
+import { WarningTriangleContainer } from '../Workflow/Styles/styles';
 
 export function ReleaseControlExpandedView({ data }: { data: Pipetest }): JSX.Element {
     return (
@@ -48,8 +49,10 @@ const ReleaseControlGardenItem = ({
                     {columnExpanded && <ReleaseControlExpandedView data={data} />}
                 </MidSection>
                 <Icons>
-                    {!data.pipetestProcessDoneInRightOrder && (
+                    {!data.pipetestProcessDoneInRightOrder ? (
                         <WorkflowWarningTriangle color={contentColor} />
+                    ) : (
+                        <WarningTriangleContainer />
                     )}
                     <StatusCircle
                         statusColor={getGardenItemCompletionColor(data.completionStatus)}

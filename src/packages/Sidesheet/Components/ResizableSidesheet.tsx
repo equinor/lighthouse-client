@@ -5,9 +5,10 @@ import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';
 import styled from 'styled-components';
+import { openSidesheet } from '../Functions';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
 import { useSideSheet } from '../Hooks/useSideSheet';
-import { SidesheetApi } from '../Types/SidesheetApi';
+import { CustomSidesheet, SidesheetApi } from '../Types/SidesheetApi';
 
 export const ResizableSidesheet = (): JSX.Element | null => {
     const { SidesheetComponent, props, minWidth, width, isMinimized, color } = useSideSheet();
@@ -25,12 +26,17 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         setTitle(value);
     };
 
+    function swapComponent<T>(SidesheetContent?: CustomSidesheet<T>, props?: T) {
+        openSidesheet(SidesheetContent, props, '', { color });
+    }
+
     const actions: SidesheetApi = {
         closeSidesheet: closeSidesheet,
         setIsMinimized: setIsMinimized,
         setWidth: setWidth,
         setTitle: handleSetTitle,
         setMenuItems: setMenuItems,
+        swapComponent: swapComponent,
     };
 
     const sidesheetProps = { item: props, actions: actions };

@@ -51,7 +51,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     hiddenColumns: [
         'id',
         'description',
-        'guesstimateDescription',
         'createdBy',
         'modifiedBy',
         'originSourceId',
@@ -94,7 +93,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'title', title: 'Title', width: 250 },
         { key: 'phase', title: 'Phase', width: 60 },
         { key: 'workflowSteps', title: 'Workflow', width: 110 },
-        { key: 'guesstimateHours', title: 'Guess mhrs', width: 120 },
+        { key: 'disciplineGuesstimates', title: 'Guess mhrs', width: 120 },
         { key: 'estimatedChangeHours', title: 'Est mhrs', width: 120 },
         { key: 'actualChangeHours', title: 'Exp mhrs', width: 120 },
         { key: 'changeCategory', title: 'Change category' },
@@ -106,7 +105,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'modifiedBy', title: 'Modified by' },
         { key: 'description', title: 'Description' },
         { key: 'state', title: 'State', width: 80 },
-        { key: 'guesstimateDescription', title: 'Guesstimate description' },
         { key: 'currentWorkflowStep', title: 'Next', width: 220 },
         {
             key: 'hasComments',
@@ -155,21 +153,34 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             },
         },
         {
-            key: 'guesstimateHours',
+            key: 'disciplineGuesstimates',
             type: {
                 Cell: ({ cell }: any) => {
                     const request: ScopeChangeRequest = cell.value.content;
 
                     if (deref(guesstimateHoursMaxAtom) === -1) {
                         const maxCount = Math.max(
-                            ...cell.column.filteredRows.map((val) => val.original.guesstimateHours)
+                            ...cell.column.filteredRows.map((val) =>
+                                val.original.disciplineGuesstimates.reduce(
+                                    (count, curr) => curr.guesstimate + count,
+                                    0
+                                )
+                            )
                         );
                         swap(guesstimateHoursMaxAtom, () => maxCount);
                     }
 
                     const count = deref(guesstimateHoursMaxAtom);
 
-                    return <EstimateBar current={request.guesstimateHours} max={count} />;
+                    return (
+                        <EstimateBar
+                            current={request.disciplineGuesstimates.reduce(
+                                (count, curr) => curr.guesstimate + count,
+                                0
+                            )}
+                            max={count}
+                        />
+                    );
                 },
             },
         },
