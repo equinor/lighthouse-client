@@ -7,7 +7,6 @@ interface AddMenuProps {
     isOpen: boolean;
     factoryId?: string[];
     anchorEl?: HTMLElement | null | undefined;
-    scope?: Record<string, unknown>;
     handleClose?: () => void;
     onMouseEnter?: () => void;
 }
@@ -16,7 +15,6 @@ export function AddMenu({
     factoryId,
     anchorEl,
     isOpen,
-    scope,
     handleClose,
     onMouseEnter,
 }: AddMenuProps): JSX.Element | null {
@@ -36,13 +34,11 @@ export function AddMenu({
             onMouseLeave={handleClose}
             onMouseEnter={onMouseEnter}
         >
-            {factories.map((factory) =>
-                activeApps.includes(factory.factoryId) ? (
-                    <AddMenuButton key={factory.factoryId} factory={factory} scope={scope} />
-                ) : (
-                    <></>
-                )
-            )}
+            {factories
+                .filter(({ factoryId }) => activeApps.includes(factoryId))
+                .map((factory) => (
+                    <AddMenuButton key={factory.factoryId} factory={factory} />
+                ))}
         </Menu>
     );
 }
