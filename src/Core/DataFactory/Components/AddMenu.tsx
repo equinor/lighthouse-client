@@ -21,11 +21,10 @@ export function AddMenu({
     const { factories } = useFactories(factoryId);
     const { apps } = useRegistry();
 
+    if (!isOpen) return null;
     const activeApps = apps
         .filter((manifest) => isAppActive(manifest))
         .map(({ shortName }) => shortName);
-
-    if (!isOpen) return null;
     return (
         <Menu
             anchorEl={anchorEl}
