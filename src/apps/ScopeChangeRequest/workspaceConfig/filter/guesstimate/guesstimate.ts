@@ -8,10 +8,7 @@ export const guesstimate = new Map<GuesstimateRanges, number>([
     ['>5000', 5],
 ]);
 
-export function calculateGuesstimateHoursGap(
-    guesstimateHours: number | null
-): GuesstimateRanges | null {
-    if (!guesstimateHours) return null;
+export function calculateGuesstimateHoursGap(guesstimateHours: number): GuesstimateRanges {
     switch (true) {
         case guesstimateHours <= 100:
             return '0-100';
