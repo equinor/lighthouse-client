@@ -1,21 +1,21 @@
-import { WidgetComponent as IWidget, WidgetManifest, Widgets } from '../Types/widget';
+import { WidgetComponent as IWidget, WidgetManifest } from '../Types/widget';
+import { getWidgetById } from './widgetComponentController';
 import {
-    addWidgets,
-    getWidgetById,
-    getWidgetManifestById,
+    getWidgetManifest,
+    getWidgetManifestByType,
     getWidgetManifests
-} from './widgetController';
+} from './widgetManifestController';
 
-interface IWidgetApi {
-    getWidget(widgetId: string): IWidget;
-    getWidgetManifest(manifestId: string): WidgetManifest;
-    getWidgetManifests(): WidgetManifest[];
-    addWidgets(widgets: Widgets): void;
+interface WidgetApi {
+    getWidget(widgetId: string): Promise<IWidget>;
+    getWidgetManifest(manifestId: string): Promise<WidgetManifest>;
+    getWidgetManifests(): Promise<WidgetManifest[]>;
+    getWidgetManifestByType(widgetType: string): Promise<WidgetManifest[]>;
 }
 
-export const Widget: IWidgetApi = {
-    getWidget: (widgetId: string): IWidget => getWidgetById(widgetId),
-    getWidgetManifest: (manifestId: string): WidgetManifest => getWidgetManifestById(manifestId),
+export const Widget: WidgetApi = {
+    getWidget: getWidgetById,
+    getWidgetManifest,
+    getWidgetManifestByType,
     getWidgetManifests,
-    addWidgets,
 };

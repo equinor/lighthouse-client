@@ -1,4 +1,4 @@
-import { FunctionManifest } from '../Functions/Types/function';
+import { FunctionManifest } from '../Types/function';
 
 export const functionSore: FunctionManifest[] = [
     {

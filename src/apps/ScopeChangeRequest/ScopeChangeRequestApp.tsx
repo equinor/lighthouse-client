@@ -1,3 +1,5 @@
+import { ResolverFunction } from '@equinor/lighthouse-functions';
+import { SidesheetComponentManifest, SidesheetWidgetManifest } from '@equinor/lighthouse-widgets';
 import { ClientApi } from '@equinor/portal-client';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
@@ -39,18 +41,22 @@ export function setup(appApi: ClientApi): void {
     // });
 }
 
-export const changeSideSheetWidget = {
-    widget: SidesheetWrapper,
-    manifest: {
-        widgetId: 'change',
-        widgetType: 'sidesheet',
-        props: {
-            resolverId: 'changeResolver',
-        },
+export const changeSideSheetWidgetManifest: SidesheetWidgetManifest = {
+    widgetId: 'change',
+    widgetType: 'sidesheet',
+    color: '#7B3A96',
+    props: {
+        resolverId: 'changeResolver',
     },
 };
 
-export const changeFunction = {
+export const changeSideSheetWidgetComponent: SidesheetComponentManifest = {
+    widgetId: 'change',
+    widgetType: 'sidesheet',
+    widget: SidesheetWrapper,
+};
+
+export const changeFunction: ResolverFunction = {
     functionId: 'changeResolver',
     function: idResolver.idResolver,
     type: 'idResolver',

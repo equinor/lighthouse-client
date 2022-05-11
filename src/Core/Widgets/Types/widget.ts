@@ -7,11 +7,25 @@ export interface WidgetManifest {
     props?: Record<string, any>;
 }
 
-export type WidgetComponent = React.FC<any>;
-
-export interface WidgetConfig {
-    widget: WidgetComponent;
-    manifest: WidgetManifest;
+export interface SidesheetWidgetManifest extends WidgetManifest {
+    widgetType: 'sidesheet';
+    props: {
+        resolverId: string;
+    };
+}
+export interface CreatorWidgetManifest<T> extends WidgetManifest {
+    widgetType: 'creator';
+    props: T;
 }
 
-export type Widgets = WidgetConfig[];
+export type WidgetComponent = React.FC<any>;
+
+export interface ComponentManifest {
+    widget: WidgetComponent;
+    widgetType: string;
+    widgetId: string;
+}
+
+export interface SidesheetComponentManifest extends ComponentManifest {
+    widgetType: 'sidesheet';
+}

@@ -18,7 +18,6 @@ import { setupUserData } from './setupUserData';
 interface ClientOptions {
     getApps(): AppManifest[];
     getAppGroups(): AppGroups;
-    setupWidgets(): void;
 }
 
 export interface Client {
@@ -29,7 +28,6 @@ export async function createClient(clientOptions: ClientOptions): Promise<Authen
     const config = await fetchConfig();
     const appConfig = registerAppConfig(config);
     const authProvider = await handleLogin(appConfig.settings);
-    clientOptions.setupWidgets();
     if (authProvider.isAuthenticated()) {
         try {
             registerClientRegistry(

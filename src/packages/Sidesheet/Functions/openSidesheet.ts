@@ -1,57 +1,59 @@
 import { Functions } from '@equinor/lighthouse-functions';
-import { Widget } from '@equinor/lighthouse-widgets';
+import { Widget, WidgetManifest } from '@equinor/lighthouse-widgets';
 import React from 'react';
+import { getApps } from '../../../apps/apps';
 import { DefaultDataView } from '../Components/DefaultDataView';
 import { SuspenseSidesheet } from '../Components/SuspenseSidesheet';
-import { getSidesheetContext } from '../context/sidesheetContext';
+import { DEFAULT_TAB_COLOR, getSidesheetContext } from '../context/sidesheetContext';
 import { dispatch } from '../State/actions';
 import { SidesheetApi } from '../Types/SidesheetApi';
 
 export function openSidesheet<T>(
     SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
     props?: T,
-    appName?: string
+    appName?: string,
+    manifest?: Partial<WidgetManifest>
 ): void {
     if (!SidesheetContent && !props) return;
 
-    dispatch(getSidesheetContext(), (state) => {
-        return {
-            ...state,
-            isMinimized: false,
-            SidesheetComponent: (SidesheetContent as React.FC<unknown>) || DefaultDataView,
-            props,
-            appName: appName,
-        };
-    });
-}
+    // Temporary Hack for not braking old code.
+    let color =
+        getApps().find(({ shortName }) => shortName === appName)?.color ||
+        (DEFAULT_TAB_COLOR as string);
 
-export async function openDetail<T>(sideSheetId: string, id?: string, props?: T): Promise<void> {
-    async function mountAsync() {
-        const SidesheetContent = Widget.getWidget(sideSheetId);
-
-        const manifest = Widget.getWidgetManifest(sideSheetId);
-        // debugger;
-        const resolver = Functions.getFunction(manifest.props?.resolverId);
-        if (typeof resolver === 'function') props = await resolver(id);
-        registerSidesheet(SidesheetContent, props);
+    if (manifest) {
+        color = manifest.color || DEFAULT_TAB_COLOR;
     }
-    registerSidesheet(SuspenseSidesheet, mountAsync);
-}
-
-window['openSidesheet'] = openDetail;
-
-export function registerSidesheet<T>(
-    SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
-    props?: T
-): void {
-    if (!SidesheetContent && !props) return;
-
     dispatch(getSidesheetContext(), (state) => {
         return {
             ...state,
             isMinimized: false,
             SidesheetComponent: (SidesheetContent as React.FC<unknown>) || DefaultDataView,
             props,
+            color,
         };
     });
+}
+
+export async function openSidesheetById<T>(
+    sideSheetId: string,
+    id?: string,
+    props?: T
+): Promise<void> {
+    async function mountAsync() {
+        const SidesheetContent = await Widget.getWidget(sideSheetId);
+        const manifest = await Widget.getWidgetManifest(sideSheetId);
+
+        if (!id) {
+            openSidesheet(SidesheetContent, {}, '', manifest);
+        }
+
+        const resolver = await Functions.getFunction(manifest.props?.resolverId);
+
+        if (typeof resolver === 'function') props = await resolver(id);
+
+        openSidesheet(SidesheetContent, props, undefined, manifest);
+    }
+
+    openSidesheet(SuspenseSidesheet, mountAsync, id);
 }

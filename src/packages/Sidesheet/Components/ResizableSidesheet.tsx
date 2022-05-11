@@ -5,17 +5,13 @@ import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';
 import styled from 'styled-components';
-import { getApps } from '../../../apps/apps';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
 import { useSideSheet } from '../Hooks/useSideSheet';
 import { SidesheetApi } from '../Types/SidesheetApi';
 
-const DEFAULT_TAB_COLOUR = '#ff9900';
-
 export const ResizableSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent, props, minWidth, width, isMinimized, appName } = useSideSheet();
+    const { SidesheetComponent, props, minWidth, width, isMinimized, color } = useSideSheet();
     const { closeSidesheet, setIsMinimized, setWidth } = useInternalSidesheetFunction();
-    const appColor = getApps().find(({ shortName }) => shortName === appName)?.color;
 
     const handleMinimize = () => {
         setIsMinimized((prev) => !prev);
@@ -45,7 +41,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         return (
             //HACK: auto doesnt work?
             <div style={{ width: '24px' }}>
-                <ColourTab appColor={appColor ?? DEFAULT_TAB_COLOUR} onClick={handleMinimize}>
+                <ColourTab appColor={color} onClick={handleMinimize}>
                     <Icon name="chevron_left" color={'white'} />
                 </ColourTab>
                 <RotatedText>{title}</RotatedText>
@@ -72,10 +68,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
             >
                 <Header>
                     <LeftHeader>
-                        <ColourTab
-                            appColor={appColor ?? DEFAULT_TAB_COLOUR}
-                            onClick={handleMinimize}
-                        >
+                        <ColourTab appColor={color} onClick={handleMinimize}>
                             <Icon name="chevron_right" size={24} color={'white'} />
                         </ColourTab>
                         <Title>{title}</Title>
