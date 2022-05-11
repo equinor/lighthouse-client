@@ -66,7 +66,7 @@ export const ScopeChangeRequestForm = ({
     const onMutate = (draft: boolean) =>
         mutate({
             draft: draft,
-            model: { ...state, disciplineGuesstimates: [] },
+            model: state,
             references: state.references ?? [],
         });
 
@@ -74,6 +74,7 @@ export const ScopeChangeRequestForm = ({
         <>
             <div>
                 <CreateBannerInputs handleInput={handleInput} state={state} />
+                <br />
                 <FormWrapper>
                     <FlexColumn>
                         Request

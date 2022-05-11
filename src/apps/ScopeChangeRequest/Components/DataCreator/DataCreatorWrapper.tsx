@@ -13,8 +13,8 @@ interface DataCreatorWrapperProps {
 
 export const ScopeChangeDataCreator = ({ closeScrim }: DataCreatorWrapperProps): JSX.Element => {
     useEffect(() => {
-        openSidesheet(ScopeChangeCreateForm, undefined, 'change');
         closeScrim();
+        openSidesheet(ScopeChangeCreateForm, undefined, 'change');
     }, []);
 
     return <></>;
