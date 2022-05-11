@@ -20,20 +20,20 @@ export function SidesheetBanner(): JSX.Element {
                     />
                 }
             />
-            <BannerItem title={'Status'} value={request.workflowStatus ?? ''} />
+            <BannerItem title={'Scope'} value={request?.scope?.name} />
             <BannerItem title={'State'} value={request.isVoided ? 'Voided' : request.state} />
         </Banner>
     );
 }
 
-const Banner = styled.div`
+export const Banner = styled.div<{ padding?: string }>`
     height: 76px;
     width: 100%;
     background-color: ${tokens.colors.ui.background__light.hex};
     display: flex;
     flex-direction: row;
     gap: 5rem;
-    padding: 0em 5em;
+    padding: ${(p) => `${p.padding}`};
     align-items: center;
 `;
 
