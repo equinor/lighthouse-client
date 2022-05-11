@@ -8,8 +8,6 @@ import { GeneratedForm, useForm } from '@equinor/Form';
 import { useHttpClient } from '@equinor/portal-client';
 // import { openSidesheet } from '@equinor/sidesheet';
 
-import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-
 import { ReleaseControlErrorBanner } from '../Sidesheet/ErrorBanner';
 import { DisciplineReleaseControl } from '../../Types/disciplineReleaseControl';
 import { releaseControlProcessSchema } from './ReleaseControlProcessSchema';
@@ -96,7 +94,6 @@ export const ReleaseControlProcessForm = ({
         //     ReleaseControlSidesheet,
         //     await getReleaseControlById(releaseControlId, releaseControls)
         // );
-        clearActiveFactory();
     };
 
     useEffect(() => {
@@ -128,13 +125,11 @@ export const ReleaseControlProcessForm = ({
     }, [formData.fields.originSource?.value]);
 
     const isValidForm = useMemo(() => {
-        return (
-            formData.isValidForm() 
-            // &&
-            // (formData.fields.originSource?.value === 'NotApplicable' ||
-            //     formData.fields.originSourceId?.value) &&
-            // relatedObjects.length > 0
-        );
+        return formData.isValidForm();
+        // &&
+        // (formData.fields.originSource?.value === 'NotApplicable' ||
+        //     formData.fields.originSourceId?.value) &&
+        // relatedObjects.length > 0
     }, [formData, relatedObjects]);
 
     if (isRedirecting) {

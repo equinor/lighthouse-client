@@ -1,10 +1,11 @@
+import { PBIOptions } from '@equinor/lighthouse-powerbi';
 import {
     createContext,
     PropsWithChildren,
     useCallback,
     useContext,
     useEffect,
-    useState
+    useState,
 } from 'react';
 import { useDataContext } from './DataProvider';
 
@@ -24,7 +25,7 @@ export interface Page {
 
 interface ViewContext extends ViewState {
     registerPages(pages: Page[]): void;
-    setActivePage(pages: Page): void;
+    setActivePage(pages: Page, options?: PBIOptions): void;
     resetState(): void;
     toggleFilter(): void;
     setHasActiveFilters(isActive: boolean): void;

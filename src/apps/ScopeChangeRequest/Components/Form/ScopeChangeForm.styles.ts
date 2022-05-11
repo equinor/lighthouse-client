@@ -22,6 +22,9 @@ export const FlexColumn = styled.div`
     font-size: 18px;
     line-height: 24px;
     height: 100%;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
 `;
 
 export const Section = styled.div`
