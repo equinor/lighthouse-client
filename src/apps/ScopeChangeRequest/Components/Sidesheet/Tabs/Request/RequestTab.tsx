@@ -18,6 +18,7 @@ import {
 import styled from 'styled-components';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { Workflow } from '../../../Workflow/Workflow';
+import { WarrantyCaseDetailCheckbox } from '../../../WarrantyCaseDetailCheckbox/WarrantyCaseDetailCheckbox';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -33,7 +34,7 @@ export function RequestTab(): JSX.Element {
                             <SubSectionTitle>Description</SubSectionTitle>
                             <SubSectionText>{request.description}</SubSectionText>
                         </SectionWrapper>
-
+                        <WarrantyCaseDetailCheckbox />
                         <SiblingWrapper>
                             <SectionWrapper>
                                 <SubSectionTitle>Guesstimate description</SubSectionTitle>
