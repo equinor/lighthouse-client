@@ -85,13 +85,24 @@ export const ScopeChangeBaseForm = ({
                 initialValue={state.description}
                 onChange={(value) => handleInput('description', value)}
             />
-            <IsWarrantyCaseCheckbox
-                initialValue={state.potentialWarrantyCase}
-                handleInput={(newVal) => handleInput('potentialWarrantyCase', newVal)}
-            />
+            <CheckboxWrapper>
+                <IsWarrantyCaseCheckbox
+                    initialValue={state.potentialWarrantyCase}
+                    handleInput={(newVal) => handleInput('potentialWarrantyCase', newVal)}
+                />
+            </CheckboxWrapper>
         </BaseFormContainer>
     );
 };
+
+const CheckboxWrapper = styled.div`
+    margin-left: -14px;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+`;
 
 const BaseFormContainer = styled.div`
     display: flex;
