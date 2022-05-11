@@ -20,6 +20,7 @@ export async function initiateScopeChange({ request }: InitiateScopeChangeParams
         guesstimateDescription: request.guesstimateDescription,
         guesstimateHours: request.guesstimateHours,
         id: request.id,
+        scopeId: request.scope.id,
         originSource: request.originSource,
         originSourceId: request.originSourceId,
         phase: request.phase,
