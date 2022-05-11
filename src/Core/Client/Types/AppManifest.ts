@@ -8,7 +8,7 @@ export interface AppManifest {
     title: string;
     shortName: string;
     color: HEXColor;
-    groupe: string | string[];
+    groupe: string;
     tags: string[];
     icon?: string | React.FC;
     uri?: (isProduction: boolean) => string;
