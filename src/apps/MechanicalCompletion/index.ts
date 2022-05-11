@@ -27,6 +27,7 @@ export function setup(addApi: ClientApi): void {
     addApi
         .createWorkSpace<McPackage>({
             objectIdentifier: 'mcPkgId',
+            defaultTab: 'garden',
             CustomSidesheet: McSideSheet,
         })
         .registerDataSource({
