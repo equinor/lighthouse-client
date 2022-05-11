@@ -44,7 +44,7 @@ export const CompletionViewHeader = ({
     sideSheetWidth,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
-    const { factory, setSelected } = useFactory(key);
+    const { factory } = useFactory(key);
     const {
         hasPowerBi,
         pages,
@@ -104,7 +104,7 @@ export const CompletionViewHeader = ({
                     {factory && (
                         <>
                             <TabButton
-                                onClick={setSelected}
+                                onClick={factory.onClick}
                                 aria-selected={false}
                                 title={factory.title}
                             >
