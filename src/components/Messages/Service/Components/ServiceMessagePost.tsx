@@ -1,7 +1,7 @@
 import { Button, Scrim } from '@equinor/eds-core-react';
 import { GeneratedForm, useForm } from '@equinor/Form';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { storage } from '@equinor/lighthouse-utils';
-import { httpClient } from '@equinor/portal-client';
 import { useEffect, useMemo, useState } from 'react';
 import { linkForm } from '../Forms/link';
 import { messageForm } from '../Forms/message';

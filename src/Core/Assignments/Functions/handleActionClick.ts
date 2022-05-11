@@ -1,5 +1,5 @@
 import { deref } from '@dbeining/react-atom';
-import { AppManifest } from '@equinor/portal-client';
+import { AppManifest } from '@equinor/lighthouse-portal-client';
 import { openSidesheet, SuspenseSidesheet } from '@equinor/sidesheet';
 import { getApps } from '../../../apps/apps';
 import { CoreContext } from '../../WorkSpace/src/WorkSpaceApi/workspaceState';

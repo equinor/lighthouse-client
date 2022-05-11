@@ -1,5 +1,5 @@
 import { Accordion } from '@equinor/eds-core-react';
-import { useClientContext } from '@equinor/portal-client';
+import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { useMemo } from 'react';
 import Icon from '../../../Icon/Icon';
 import { useFavoritesContext } from '../../Context/FavoritesContext';

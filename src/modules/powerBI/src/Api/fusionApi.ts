@@ -1,4 +1,4 @@
-import { useHttpClient } from '@equinor/portal-client';
+import { useHttpClient } from '@equinor/lighthouse-portal-client';
 import { IReportEmbedConfiguration } from 'powerbi-client';
 import { PBIOptions } from '..';
 import { BuiltPowerBiFilter, Filter } from '../Types/filter';

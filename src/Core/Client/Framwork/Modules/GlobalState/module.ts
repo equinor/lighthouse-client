@@ -17,7 +17,7 @@ export const module: GlobalStateModule = {
 
 export default module;
 
-declare module '@equinor/portal-client' {
+declare module '@equinor/lighthouse-portal-client' {
     interface Modules {
         globalState: GlobalStateModule;
     }

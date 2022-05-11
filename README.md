@@ -2,8 +2,25 @@
 
 Table of content
 
-- [Castberg ProjectPortal](#Castberg-ProjectPortal)
-  
+- [Castberg ProjectPortal](#castberg-projectportal)
+  - [About](#about)
+  - [Software - Required](#software---required)
+    - [Required Software](#required-software)
+    - [Optional Software](#optional-software)
+- [How to run](#how-to-run)
+- [Development](#development)
+- [Docker & Docker Compose](#docker--docker-compose)
+  - [Manual](#manual)
+- [Libraries](#libraries)
+    - [Microsoft Authentication Library (MSAL)](#microsoft-authentication-library-msal)
+    - [React](#react)
+- [Testing](#testing)
+    - [JEST](#jest)
+    - [TS-JEST](#ts-jest)
+- [(Build) Tools for the job](#build-tools-for-the-job)
+    - [Styled Components](#styled-components)
+    - [TypeScript](#typescript)
+    - [Vitejs](#vitejs)
 
 ## About
 

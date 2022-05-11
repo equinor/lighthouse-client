@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { BookmarkError, BookmarkErrorResponse } from '../../types';
 type ErrorResponse = {
     error: BookmarkErrorResponse;

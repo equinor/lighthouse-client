@@ -1,4 +1,4 @@
-import { CustomClientApi } from '@equinor/portal-client';
+import { CustomClientApi } from '@equinor/lighthouse-portal-client';
 import styled from 'styled-components';
 import { ModelViewer } from '../../../packages/ModelViewer/ModelViewer';
 
