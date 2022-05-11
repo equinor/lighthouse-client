@@ -7,7 +7,7 @@ export function SidesheetBanner(): JSX.Element {
     const { request } = useScopeChangeContext();
 
     return (
-        <Banner>
+        <Banner padding={'0em 1.7em'}>
             <BannerItem title={'Phase'} value={request.phase} />
             <BannerItem title={'Change category'} value={request.changeCategory.name} />
             <BannerItem
@@ -33,7 +33,7 @@ export const Banner = styled.div<{ padding?: string }>`
     display: flex;
     flex-direction: row;
     gap: 5rem;
-    padding: ${(p) => `${p.padding}`};
+    padding: ${({ padding = 0 }) => `${padding}`};
     align-items: center;
 `;
 

@@ -80,13 +80,6 @@ export const ScopeChangeRequestForm = ({
                     <FlexColumn>
                         Request
                         <ScopeChangeBaseForm handleInput={handleChange} state={state} />
-                        Disciplines and guesstimates
-                        <GuesstimateDiscipline
-                            state={state.disciplineGuesstimates ?? []}
-                            updateFormValue={(guess) =>
-                                handleInput('disciplineGuesstimates', guess)
-                            }
-                        />
                     </FlexColumn>
 
                     <FlexColumn>
@@ -100,6 +93,15 @@ export const ScopeChangeRequestForm = ({
                         <Upload
                             attachments={state.attachments ?? []}
                             handleAttachmentsChanged={handleAttachmentsChanged}
+                        />
+                    </FlexColumn>
+                    <FlexColumn>
+                        Disciplines and guesstimates
+                        <GuesstimateDiscipline
+                            state={state.disciplineGuesstimates ?? []}
+                            updateFormValue={(guess) =>
+                                handleInput('disciplineGuesstimates', guess)
+                            }
                         />
                     </FlexColumn>
                 </FormWrapper>
