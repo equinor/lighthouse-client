@@ -5,7 +5,6 @@ type ErrorResponse = {
 };
 export const getBookmarks = async (appKey: string, signal?: AbortSignal) => {
     const { fusionBookmarks } = httpClient();
-    // const filterAppKey = `$filter=appKey%20eq%20'jc-${appKey}'`;
     const filterAppKey = encodeURI(`$filter=appKey eq 'jc-${appKey}'`);
     const filterSourceSystem = '$filter=sourcesystem.SubSystem%20eq%20ConstructionAndCommissioning';
     const response = await fusionBookmarks.get(
@@ -15,13 +14,7 @@ export const getBookmarks = async (appKey: string, signal?: AbortSignal) => {
 
     if (!response.ok) {
         const { error } = (await response.json()) as ErrorResponse;
-        throw new BookmarkError({
-            code: error?.code,
-            exceptionMessage: error?.exceptionMessage,
-            exceptionType: error?.exceptionType,
-            message: error?.message,
-            name: error?.name,
-        });
+        throw new BookmarkError(error?.message);
     }
 
     return await response.json();

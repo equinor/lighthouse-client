@@ -14,7 +14,12 @@ export const BookmarkList = ({ appKey }: BookmarkListProps): JSX.Element => {
 
     if (isLoading) return <div>Fetching bookmarks</div>;
 
-    if (error) return <div>Error retrieving bookmarks: {error?.code}</div>;
+    if (error)
+        return (
+            <div>
+                Error retrieving bookmarks <p>({error?.message})</p>
+            </div>
+        );
 
     if (!bookmarks) return <div>No bookmarks</div>;
 

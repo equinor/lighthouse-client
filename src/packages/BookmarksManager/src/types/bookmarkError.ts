@@ -6,15 +6,7 @@ export type BookmarkErrorResponse = Error & {
 };
 
 export class BookmarkError extends Error {
-    code?: string;
-    private exceptionMessage?: string;
-    private exceptionType?: string;
-
-    constructor(bookmarkError: BookmarkErrorResponse) {
-        super();
-        this.code = bookmarkError?.code;
-        this.exceptionMessage = bookmarkError?.exceptionMessage;
-        this.exceptionType = bookmarkError?.exceptionType;
-        this.message = bookmarkError?.message || 'Unknown error';
+    constructor(message = 'An error occured retrieving bookmarks') {
+        super(message);
     }
 }
