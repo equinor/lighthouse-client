@@ -27,7 +27,7 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
             'Act. finish',
             ({ actualCompletionDate }) =>
                 actualCompletionDate === null
-                    ? 'No date'
+                    ? ''
                     : new Date(actualCompletionDate).toLocaleDateString('EN-GB'),
             100
         ),
