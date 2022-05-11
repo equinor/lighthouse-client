@@ -1,6 +1,7 @@
 import { FilterOptions } from '@equinor/filter';
 import { HandoverStatusFilter, McStatusFilter } from '../../components';
 import { CommissioningStatus, McPackage, McStatus } from '../../types';
+import { mcStatusPriority } from '../helpers';
 import { getCommissioningStatus } from '../helpers/getStatuses';
 import { commissioningStatusOrder } from './commStatusOrder';
 
@@ -21,6 +22,10 @@ export const filterConfig: FilterOptions<McPackage> = [
         name: 'MC status',
         valueFormatter: (mc) => mc.mcStatus,
         customValueRender: (mcStatus) => <McStatusFilter status={mcStatus as McStatus} />,
+        sort: (filterValues) =>
+            filterValues.sort(
+                (a, b) => mcStatusPriority[a as McStatus] - mcStatusPriority[b as McStatus]
+            ),
     },
 
     {
