@@ -1,5 +1,5 @@
+import { useFusionContext } from '@equinor/lighthouse-portal-client';
 import { Filter, PowerBI } from '@equinor/lighthouse-powerbi';
-import { useFusionContext } from '@equinor/portal-client';
 import { useMemo } from 'react';
 
 const getContextTypeTarget = (contextType?: string) =>

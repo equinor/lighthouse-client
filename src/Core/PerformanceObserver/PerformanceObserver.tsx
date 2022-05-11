@@ -1,6 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useSettings } from '@equinor/portal-client';
+import { useSettings } from '@equinor/lighthouse-portal-client';
 import { usePerformanceObserver } from './usePerformanceObserver';
 
 export function PerformanceObserver(): JSX.Element {

@@ -1,5 +1,5 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column, DescriptionCell, ProgressCell } from '@equinor/Table';
 import { McWorkOrder } from '../types/mcWorkOrder';
 const columns: Column<McWorkOrder>[] = [

@@ -1,6 +1,6 @@
 import { ResolverFunction } from '@equinor/lighthouse-functions';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { SidesheetComponentManifest, SidesheetWidgetManifest } from '@equinor/lighthouse-widgets';
-import { ClientApi } from '@equinor/portal-client';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
 import { dataCreator } from './workspaceConfig/dataCreatorConfig';

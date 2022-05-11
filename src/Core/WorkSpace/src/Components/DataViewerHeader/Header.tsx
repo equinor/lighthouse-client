@@ -4,8 +4,8 @@ import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
-import { isProduction } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
@@ -25,7 +25,7 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar,
+    TitleBar
 } from './HeaderStyles';
 
 interface CompletionViewHeaderProps {

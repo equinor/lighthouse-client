@@ -1,6 +1,6 @@
 import { useAuthenticate } from '@equinor/authentication';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
-import { Client as ClientProps, ClientContextProvider } from '@equinor/portal-client';
+import { Client as ClientProps, ClientContextProvider } from '@equinor/lighthouse-portal-client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { MainLayout } from './components/Layouts/MainLayout';

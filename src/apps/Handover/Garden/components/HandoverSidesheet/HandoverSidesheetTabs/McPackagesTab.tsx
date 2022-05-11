@@ -1,16 +1,16 @@
+import { CellWithLink, TabTable } from '@equinor/GardenUtils';
+import { isProduction } from '@equinor/lighthouse-portal-client';
+import { Column } from '@equinor/Table';
 import { FC } from 'react';
 import { HandoverMcpkg } from '../../../models/handoverResources';
-import { Column } from '@equinor/Table';
 import {
     comparePackage,
     getRFCCStatus,
     getRFOCStatus,
     McStatusCell,
     RfccStatusCell,
-    RfocStatusCell,
+    RfocStatusCell
 } from '../HandoverSidesheetStatuses';
-import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
 
 const columns: Column<HandoverMcpkg>[] = [
     {

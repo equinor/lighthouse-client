@@ -1,4 +1,4 @@
-import { httpClient, isProduction } from '@equinor/portal-client';
+import { httpClient, isProduction } from '@equinor/lighthouse-portal-client';
 import { useCallback, useEffect, useState } from 'react';
 import SwcrSignature from '../models/SwcrSignature';
 
