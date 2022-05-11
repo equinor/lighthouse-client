@@ -20,12 +20,11 @@ export function AddMenu({
 }: AddMenuProps): JSX.Element | null {
     const { factories } = useFactories(factoryId);
     const { apps } = useRegistry();
-    const activeApps = apps.reduce((acc, manifest) => {
-        if (isAppActive(manifest)) {
-            acc.push(manifest.shortName);
-        }
-        return acc;
-    }, [] as string[]);
+
+    const activeApps = apps
+        .filter((manifest) => isAppActive(manifest))
+        .map(({ shortName }) => shortName);
+
     if (!isOpen) return null;
     return (
         <Menu
