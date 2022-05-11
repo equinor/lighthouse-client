@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button, CircularProgress } from '@equinor/eds-core-react';
+import { Button, CircularProgress, SingleSelect } from '@equinor/eds-core-react';
 
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { Upload } from '../Attachments/Upload';
@@ -17,11 +17,13 @@ import {
     FormWrapper,
     Section,
 } from './ScopeChangeForm.styles';
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { getScopeChangeById } from '../../api/ScopeChange/Request';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
+import { Banner, BannerItem } from '../Sidesheet/SidesheetBanner/SidesheetBanner';
+import { scopeChangeQueries } from '../../keys/queries';
 
 interface ScopeChangeRequestFormProps {
     actions: SidesheetApi;
@@ -62,11 +64,16 @@ export const ScopeChangeRequestForm = ({
     });
 
     const onMutate = (draft: boolean) =>
-        mutate({ draft: draft, model: state, references: state.references ?? [] });
+        mutate({
+            draft: draft,
+            model: { ...state, disciplineGuesstimates: [] },
+            references: state.references ?? [],
+        });
 
     return (
         <>
             <div>
+                <CreateBannerInputs handleInput={handleInput} state={state} />
                 <FormWrapper>
                     <FlexColumn>
                         Request
@@ -124,3 +131,82 @@ export const Title = styled.div`
     color: black;
     font-weight: bold;
 `;
+
+interface CreateBannerInputsProps {
+    state: Partial<ScopeChangeFormModel>;
+    handleInput: (key: keyof ScopeChangeFormModel, value: unknown) => void;
+}
+
+export const CreateBannerInputs = ({
+    state,
+    handleInput,
+}: CreateBannerInputsProps): JSX.Element => {
+    const { phaseQuery, categoryQuery, scopeQuery } = scopeChangeQueries;
+    const { data: phases } = useQuery(phaseQuery);
+    const { data: categories } = useQuery(categoryQuery);
+    const { data: scopes } = useQuery(scopeQuery);
+
+    return (
+        <div>
+            <Banner>
+                <BannerItem
+                    title=""
+                    value={
+                        <SingleSelect
+                            items={phases ?? []}
+                            label={'Phase'}
+                            meta="(Required)"
+                            initialSelectedItem={state.phase}
+                            placeholder="Select phase"
+                            handleSelectedItemChange={(change) =>
+                                handleInput('phase', change.selectedItem)
+                            }
+                        />
+                    }
+                />
+
+                <BannerItem
+                    title=""
+                    value={
+                        <SingleSelect
+                            items={categories?.map(({ name }) => name) ?? []}
+                            label={'Change category'}
+                            meta="(Required)"
+                            initialSelectedItem={state.changeCategory?.name}
+                            placeholder="Select category"
+                            disabled={false}
+                            handleSelectedItemChange={(change) =>
+                                handleInput(
+                                    'changeCategory',
+                                    categories?.find(({ name }) => name === change.selectedItem)
+                                )
+                            }
+                        />
+                    }
+                />
+
+                <BannerItem
+                    title=""
+                    value={
+                        <SingleSelect
+                            items={scopes?.map(({ name }) => name) ?? []}
+                            label={'Scope'}
+                            meta="(Required)"
+                            initialSelectedItem={state.scopeId}
+                            placeholder="Select scope"
+                            disabled={false}
+                            handleSelectedItemChange={(change) =>
+                                handleInput(
+                                    'scopeId',
+                                    scopes?.find(({ name }) => name === change.selectedItem)?.id
+                                )
+                            }
+                        />
+                    }
+                />
+
+                <BannerItem title="State" value={<div>Draft</div>} />
+            </Banner>
+        </div>
+    );
+};

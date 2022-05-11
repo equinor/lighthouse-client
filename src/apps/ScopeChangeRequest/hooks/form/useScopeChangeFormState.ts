@@ -12,6 +12,7 @@ export interface ScopeChangeFormState {
 export interface ScopeChangeFormModel extends Omit<ScopeChangeBaseModel, 'changeCategoryId'> {
     attachments: File[];
     references: TypedSelectOption[];
+    scopeId: string;
 }
 
 const RE_RERENDER_KEYS: (keyof ScopeChangeFormModel)[] = [
@@ -26,6 +27,7 @@ const MANDATORY_PROPERTIES: (keyof ScopeChangeFormModel)[] = [
     'description',
     'phase',
     'changeCategory',
+    'scopeId',
 ];
 
 export function useScopeChangeFormState(

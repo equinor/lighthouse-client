@@ -11,7 +11,7 @@ interface DataCreatorWrapperProps {
     setHasUnsavedChanges: (value: boolean) => void;
 }
 
-export const DataCreatorWrapper = ({ closeScrim }: DataCreatorWrapperProps): JSX.Element => {
+export const ScopeChangeDataCreator = ({ closeScrim }: DataCreatorWrapperProps): JSX.Element => {
     useEffect(() => {
         openSidesheet(ScopeChangeCreateForm, undefined, 'change');
         closeScrim();
