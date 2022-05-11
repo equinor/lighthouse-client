@@ -17,6 +17,7 @@ import {
 import styled from 'styled-components';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { Workflow } from '../../../Workflow/Workflow';
+import { WarrantyCaseDetailCheckbox } from '../../../WarrantyCaseDetailCheckbox/WarrantyCaseDetailCheckbox';
 import { GuesstimateDisciplineDetails } from '../../GuesstimateDisciplineDetails/GuesstimateDisciplineDetails';
 import { OriginLink } from '../../../DetailView/OriginLink';
 
@@ -34,7 +35,7 @@ export function RequestTab(): JSX.Element {
                             <SubSectionTitle>Description</SubSectionTitle>
                             <SubSectionText>{request.description}</SubSectionText>
                         </SectionWrapper>
-
+                        <WarrantyCaseDetailCheckbox />
                         <SectionHeading>Change origin</SectionHeading>
                         <SectionWrapper>
                             <SubSectionTitle>Origin</SubSectionTitle>
