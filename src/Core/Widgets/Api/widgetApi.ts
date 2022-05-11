@@ -13,7 +13,7 @@ interface WidgetApi {
     getWidgetManifestByType(widgetType: string): Promise<WidgetManifest[]>;
 }
 
-export const Widget: WidgetApi = {
+export const widget: WidgetApi = {
     getWidget: getWidgetById,
     getWidgetManifest,
     getWidgetManifestByType,

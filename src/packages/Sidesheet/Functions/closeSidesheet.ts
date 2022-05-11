@@ -7,7 +7,6 @@ export function closeSidesheet(): void {
             ...state,
             SidesheetComponent: undefined,
             props: undefined,
-            isPinned: undefined,
         };
     });
 }

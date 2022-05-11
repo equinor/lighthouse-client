@@ -1,5 +1,5 @@
-import { Functions } from '@equinor/lighthouse-functions';
-import { Widget, WidgetManifest } from '@equinor/lighthouse-widgets';
+import Functions from '@equinor/lighthouse-functions';
+import Widget, { WidgetManifest } from '@equinor/lighthouse-widgets';
 import React from 'react';
 import { getApps } from '../../../apps/apps';
 import { DefaultDataView } from '../Components/DefaultDataView';

@@ -7,7 +7,7 @@ interface FunctionsAPI {
     addFunction(manifest: FunctionManifest): void;
 }
 
-export const Functions: FunctionsAPI = {
+export const functions: FunctionsAPI = {
     getFunction,
     getFunctions,
     addFunction,
