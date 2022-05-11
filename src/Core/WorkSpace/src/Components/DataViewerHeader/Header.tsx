@@ -30,7 +30,7 @@ import {
 
 interface CompletionViewHeaderProps {
     title: string;
-    groupe: string | string[];
+    groupe: string;
     tabs: TabsConfigItem[];
     sideSheetWidth: number;
 }
@@ -192,6 +192,10 @@ export const CompletionViewHeader = ({
                             >
                                 {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                             </TabButton>
+
+                            {!isProduction() && (
+                                <BookmarkDropdown appKey={title} subSystem={groupe} />
+                            )}
                         </>
                     )}
                 </RightSection>

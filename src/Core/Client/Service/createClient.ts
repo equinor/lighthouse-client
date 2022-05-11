@@ -2,7 +2,7 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import {
     registerAppConfig,
     registerClientRegistry,
-    registerInternalState,
+    registerInternalState
 } from '../Functions/RegisterActions';
 import { setClientEnv } from '../Functions/Settings';
 import { AppConfigSettings } from '../Types/AppConfig';
@@ -25,7 +25,8 @@ export interface Client {
 }
 
 export async function createClient(clientOptions: ClientOptions): Promise<AuthenticationProvider> {
-    const appConfig = registerAppConfig(await fetchConfig());
+    const config = await fetchConfig();
+    const appConfig = registerAppConfig(config);
     const authProvider = await handleLogin(appConfig.settings);
 
     if (authProvider.isAuthenticated()) {
@@ -34,7 +35,8 @@ export async function createClient(clientOptions: ClientOptions): Promise<Authen
                 setupApps(
                     appsProvider(clientOptions.getApps, clientOptions.getAppGroups, false),
                     appConfig,
-                    authProvider
+                    authProvider,
+                    config.isProduction
                 )
             );
         } catch (e) {

@@ -103,7 +103,6 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
                             isFilterActive,
                             activePage: activePage.pageId,
                             activePageDisplayName: activePage.pageTitle,
-                            pageLoad: activeReport.loadPagesInDev,
                             hasFilter: handleHasFilter,
                             persistPayload: handleSaveBookmarks,
                             applyBookmark: handleApplyingBookmark,
