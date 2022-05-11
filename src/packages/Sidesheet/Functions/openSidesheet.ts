@@ -31,6 +31,7 @@ export function openSidesheet<T>(
             SidesheetComponent: (SidesheetContent as React.FC<unknown>) || DefaultDataView,
             props,
             color,
+            appName,
         };
     });
 }

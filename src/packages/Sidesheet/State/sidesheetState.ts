@@ -7,5 +7,6 @@ export interface SidesheetState<T> {
     minWidth: number;
     defaultWidth: number;
     width: number;
+    appName?: string;
     color: string;
 }
