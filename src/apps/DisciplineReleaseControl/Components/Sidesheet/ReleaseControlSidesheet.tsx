@@ -99,23 +99,23 @@ export const ReleaseControlSidesheet = ({
                     </Tabs.Panel>
 
                     <Tabs.Panel>
+                        {missingInsulationCheckListsCount !== 0 &&
+                            (missingInsulationCheckListsCount === 1 ? (
+                                <WarningBanner>
+                                    <WarningBannerText>
+                                        ! Warning: {missingInsulationCheckListsCount} insulation box
+                                        missing checklists in ProCoSys.
+                                    </WarningBannerText>
+                                </WarningBanner>
+                            ) : (
+                                <WarningBanner>
+                                    <WarningBannerText>
+                                        ! Warning: {missingInsulationCheckListsCount} insulation
+                                        boxes missing checklists in ProCoSys.
+                                    </WarningBannerText>
+                                </WarningBanner>
+                            ))}
                         <TablesTab>
-                            {missingInsulationCheckListsCount !== 0 &&
-                                (missingInsulationCheckListsCount === 1 ? (
-                                    <WarningBanner>
-                                        <WarningBannerText>
-                                            ! Warning: {missingInsulationCheckListsCount} insulation
-                                            box missing checklists in ProCoSys.
-                                        </WarningBannerText>
-                                    </WarningBanner>
-                                ) : (
-                                    <WarningBanner>
-                                        <WarningBannerText>
-                                            ! Warning: {missingInsulationCheckListsCount} insulation
-                                            boxes missing checklists in ProCoSys.
-                                        </WarningBannerText>
-                                    </WarningBanner>
-                                ))}
                             <InsulationTable
                                 insulations={item.pipeInsulationBoxes}
                                 pipeInsulation={true}

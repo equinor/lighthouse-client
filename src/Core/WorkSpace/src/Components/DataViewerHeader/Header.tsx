@@ -167,6 +167,9 @@ export const CompletionViewHeader = ({
                             <ClickableIcon size={24} name="refresh" />
                         )}
                     </TabButton>
+                    {!isProduction() && (
+                        <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                    )}
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton

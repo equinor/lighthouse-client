@@ -1,8 +1,6 @@
 import { SingleSelect } from '@equinor/eds-core-react';
-import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
-import { scopeChangeQueries } from '../../../keys/queries';
 import { FormTextField } from '../../Inputs/FormTextField';
 import { Origin } from '../Origin';
 import { ScopeChangeFormModel } from '../../../hooks/form/useScopeChangeFormState';
@@ -17,12 +15,7 @@ interface ScopeChangeBaseFormProps {
 export const ScopeChangeBaseForm = ({
     handleInput,
     state,
-    shouldDisableCategory,
 }: ScopeChangeBaseFormProps): JSX.Element => {
-    const { phaseQuery, categoryQuery } = scopeChangeQueries;
-    const { data: phases } = useQuery(phaseQuery);
-    const { data: categories } = useQuery(categoryQuery);
-
     return (
         <BaseFormContainer>
             <FormTextField
@@ -33,29 +26,7 @@ export const ScopeChangeBaseForm = ({
                 onChange={(change) => handleInput('title', change)}
             />
 
-            <SingleSelect
-                items={phases ?? []}
-                label={'Phase'}
-                meta="(Required)"
-                initialSelectedItem={state.phase}
-                placeholder="Select phase"
-                handleSelectedItemChange={(change) => handleInput('phase', change.selectedItem)}
-            />
             <Section>
-                <SingleSelect
-                    items={categories?.map(({ name }) => name) ?? []}
-                    label={'Change category'}
-                    meta="(Required)"
-                    initialSelectedItem={state.changeCategory?.name}
-                    placeholder="Select category"
-                    disabled={shouldDisableCategory}
-                    handleSelectedItemChange={(change) =>
-                        handleInput(
-                            'changeCategory',
-                            categories?.find(({ name }) => name === change.selectedItem)
-                        )
-                    }
-                />
                 <SingleSelect
                     items={['NCR', 'Punch', 'Query', /**'SWCR',**/ 'NotApplicable', 'DCR']}
                     label={'Change origin'}
