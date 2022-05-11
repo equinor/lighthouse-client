@@ -1,9 +1,9 @@
 import { deref } from '@dbeining/react-atom';
 import { AppManifest } from '@equinor/portal-client';
+import { openSidesheet, SuspenseSidesheet } from '@equinor/sidesheet';
 import { getApps } from '../../../apps/apps';
-import { SuspenseSidesheet } from '../../../packages/Sidesheet/Components/SuspenseSidesheet';
-import { openSidesheet } from '../../../packages/Sidesheet/Functions';
 import { CoreContext } from '../../WorkSpace/src/WorkSpaceApi/workspaceState';
+
 
 //Todo refactor file.
 const apps = new Map<string, string>();
