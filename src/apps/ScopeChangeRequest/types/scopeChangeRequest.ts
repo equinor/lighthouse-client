@@ -42,6 +42,7 @@ export interface ScopeChangeBaseModel {
     hasPendingContributions: boolean;
     originSource: OriginType;
     actualChangeHours: number;
+    potentialWarrantyCase: boolean;
 }
 
 export interface ScopeChangeDisciplineGuesstimates {
