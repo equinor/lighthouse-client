@@ -13,12 +13,14 @@ interface InitiateScopeChangeParams {
 export async function initiateScopeChange({ request }: InitiateScopeChangeParams): Promise<void> {
     const scopeChange: ScopeChangeRequestFormModel = {
         ...request,
-        actualChangeHours: request.actualChangeHours,
-        estimatedChangeHours: request.estimatedChangeHours,
         changeCategoryId: request.changeCategory.id,
         description: request.description,
-        guesstimateDescription: request.guesstimateDescription,
-        guesstimateHours: request.guesstimateHours,
+        disciplineGuesstimates: request.disciplineGuesstimates.map(
+            ({ discipline: { procosysCode }, guesstimate }) => ({
+                disciplineCode: procosysCode,
+                guesstimateHours: guesstimate,
+            })
+        ),
         id: request.id,
         scopeId: request.scope.id,
         originSource: request.originSource,
@@ -26,12 +28,12 @@ export async function initiateScopeChange({ request }: InitiateScopeChangeParams
         phase: request.phase,
         title: request.title,
         commissioningPackageNumbers:
-            request.commissioningPackages.map((x) => x.procosysNumber) || [],
-        systemIds: request.systems.map((x) => x.procosysId) || [],
-        tagNumbers: request.tags.map((x) => x.procosysNumber) || [],
-        documentNumbers: request.documents.map((x) => x.stidDocumentNumber) || [],
+            request.commissioningPackages.map(({ procosysNumber }) => procosysNumber) || [],
+        systemIds: request.systems.map(({ procosysId }) => procosysId) || [],
+        tagNumbers: request.tags.map(({ procosysNumber }) => procosysNumber) || [],
+        documentNumbers:
+            request.documents.map(({ stidDocumentNumber }) => stidDocumentNumber) || [],
         areaCodes: [],
-        disciplineCodes: [],
     };
 
     const payload = {

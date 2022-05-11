@@ -24,6 +24,7 @@ import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { Banner, BannerItem } from '../Sidesheet/SidesheetBanner/SidesheetBanner';
 import { scopeChangeQueries } from '../../keys/queries';
+import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
 
 interface ScopeChangeRequestFormProps {
     actions: SidesheetApi;
@@ -79,6 +80,13 @@ export const ScopeChangeRequestForm = ({
                     <FlexColumn>
                         Request
                         <ScopeChangeBaseForm handleInput={handleChange} state={state} />
+                        Disciplines and guesstimates
+                        <GuesstimateDiscipline
+                            state={state.disciplineGuesstimates ?? []}
+                            updateFormValue={(guess) =>
+                                handleInput('disciplineGuesstimates', guess)
+                            }
+                        />
                     </FlexColumn>
 
                     <FlexColumn>
