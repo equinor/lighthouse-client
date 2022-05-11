@@ -21,7 +21,7 @@ export const BookmarkList = ({ appKey }: BookmarkListProps): JSX.Element => {
             </div>
         );
 
-    if (!bookmarks) return <div>No bookmarks</div>;
+    if (!bookmarks || bookmarks?.length === 0) return <div>No bookmarks</div>;
 
     const { applyBookmark } = bookmarkEvents;
 
