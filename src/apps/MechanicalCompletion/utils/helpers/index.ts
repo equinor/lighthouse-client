@@ -3,3 +3,4 @@ export * from './getHighlightedColumn';
 export * from './getGroupByKey';
 export * from './getTagSize';
 export * from './getItemWidth';
+export * from './mcStatusPriority';

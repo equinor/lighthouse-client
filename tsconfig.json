@@ -33,6 +33,9 @@
             "@equinor/lighthouse-functions": [
                 "./src/Core/Functions"
             ],
+            "@equinor/atom": [
+                "./src/Core/Atom"
+            ],
             "@equinor/portal-client": [
                 "./src/Core/Client"
             ],

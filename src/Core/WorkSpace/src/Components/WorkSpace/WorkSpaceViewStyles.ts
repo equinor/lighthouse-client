@@ -5,7 +5,6 @@ export const DataViewWrapper = styled.div<{ sideSheetWidth: number }>`
     flex-direction: row;
     align-content: flex-start;
     justify-content: space-between;
-    grid-row: 3/4;
     width: calc(100% - ${({ sideSheetWidth }) => sideSheetWidth}px);
     height: 100%;
     overflow: hidden;
@@ -18,7 +17,7 @@ export const WorkspaceWrapper = styled.div`
     right: 0;
     bottom: 0;
     display: grid;
-    grid-template-rows: auto auto 1fr;
+    grid-template-rows: auto 1fr;
 `;
 
 export const Loading = styled.div`
