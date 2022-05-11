@@ -6,7 +6,7 @@ interface AddButtonProps {
     scope?: Record<string, unknown>;
 }
 
-export function AddButton({ factory, scope }: AddButtonProps): JSX.Element {
-    const onClick = useSelectFactory(factory?.factoryId, scope);
+export function AddButton({ factory }: AddButtonProps): JSX.Element {
+    const onClick = useSelectFactory(factory?.factoryId ?? '');
     return <button onClick={onClick}>+</button>;
 }

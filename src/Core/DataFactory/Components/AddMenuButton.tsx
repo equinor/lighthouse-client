@@ -7,7 +7,8 @@ interface AddButtonProps {
     scope?: Record<string, unknown>;
 }
 
-export function AddMenuButton({ factory, scope }: AddButtonProps): JSX.Element {
-    const onClick = useSelectFactory(factory?.factoryId, scope);
+export function AddMenuButton({ factory }: AddButtonProps): JSX.Element {
+    const onClick = useSelectFactory(factory?.factoryId ?? '');
+    if (!factory) return <></>;
     return <MenuItem onClick={onClick}>{factory?.title}</MenuItem>;
 }
