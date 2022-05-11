@@ -67,7 +67,12 @@ export const ScopeChangeRequestForm = ({
     const onMutate = (draft: boolean) =>
         mutate({
             draft: draft,
-            model: state,
+            model: {
+                ...state,
+                disciplineGuesstimates: state?.disciplineGuesstimates?.filter(
+                    ({ disciplineCode }) => disciplineCode !== ''
+                ),
+            },
             references: state.references ?? [],
         });
 
