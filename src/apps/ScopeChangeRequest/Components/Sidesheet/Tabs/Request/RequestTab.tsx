@@ -43,6 +43,7 @@ export function RequestTab(): JSX.Element {
                                 <OriginLink
                                     type={request.originSource}
                                     id={request.originSourceId}
+                                    onlyUnderlineOnHover
                                 />
                             </SubSectionText>
                         </SectionWrapper>
@@ -50,22 +51,24 @@ export function RequestTab(): JSX.Element {
                         <SectionHeading>Disciplines and guesstimates</SectionHeading>
                         <SectionWrapper>
                             <SubSectionText>
-                                <GuesstimatesList>
-                                    <GuesstimateRow>
-                                        <SubSectionTitle>Discipline</SubSectionTitle>
-                                        <SubSectionTitle>Guesstimate Mhrs</SubSectionTitle>
-                                    </GuesstimateRow>
-                                    {request.disciplineGuesstimates.map(
-                                        ({ discipline, guesstimate, id }) => (
-                                            <GuesstimateDisciplineDetails
-                                                discipline={discipline}
-                                                guesstimate={guesstimate}
-                                                id={id}
-                                                key={id}
-                                            />
-                                        )
-                                    )}
-                                </GuesstimatesList>
+                                {request.disciplineGuesstimates.length > 0 && (
+                                    <GuesstimatesList>
+                                        <GuesstimateRow>
+                                            <SubSectionTitle>Discipline</SubSectionTitle>
+                                            <SubSectionTitle>Guesstimate Mhrs</SubSectionTitle>
+                                        </GuesstimateRow>
+                                        {request.disciplineGuesstimates.map(
+                                            ({ discipline, guesstimate, id }) => (
+                                                <GuesstimateDisciplineDetails
+                                                    discipline={discipline}
+                                                    guesstimate={guesstimate}
+                                                    id={id}
+                                                    key={id}
+                                                />
+                                            )
+                                        )}
+                                    </GuesstimatesList>
+                                )}
                             </SubSectionText>
                         </SectionWrapper>
                     </InnerSection>
