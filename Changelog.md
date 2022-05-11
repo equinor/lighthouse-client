@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
-
+## 1.1.4
+- [Workspace] Use bookmarks manager for garden, table & pbi
+-  [App Manifest] Change groupe type from array string to string
+-  [PowerBIViewer] Move bookmarks icon
+-  [Mechanical Completion] Table and filter config
+-  [Mechanical Completion] Change from dev to test env
 ## 1.1.3
 - [Client] Hotfix auth issue
 - [Installation] new report in devlopment
