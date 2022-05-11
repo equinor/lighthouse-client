@@ -1,9 +1,11 @@
+import { BookmarkDropdown } from '@equinor/BookmarksManager';
 import { useFactory } from '@equinor/DataFactory';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
+import { isProduction } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
@@ -28,6 +30,7 @@ import {
 
 interface CompletionViewHeaderProps {
     title: string;
+    groupe: string;
     tabs: TabsConfigItem[];
     sideSheetWidth: number;
 }
@@ -37,6 +40,7 @@ const ANALYTICS = 'analytics';
 export const CompletionViewHeader = ({
     title,
     tabs,
+    groupe,
     sideSheetWidth,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
@@ -61,7 +65,6 @@ export const CompletionViewHeader = ({
     const timestamp = useIntervalTimestamp(dataApi?.dataUpdatedAt);
 
     const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
-
     return (
         <HeaderWrapper sideSheetWidth={sideSheetWidth}>
             <TitleBar>
@@ -178,13 +181,19 @@ export const CompletionViewHeader = ({
                             )}
                         </TabButton>
                     ) : (
-                        <TabButton
-                            onClick={toggleFilter}
-                            aria-selected={isFilterActive}
-                            title="PowerBi Filter"
-                        >
-                            {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
-                        </TabButton>
+                        <>
+                            <TabButton
+                                onClick={toggleFilter}
+                                aria-selected={isFilterActive}
+                                title="PowerBi Filter"
+                            >
+                                {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
+                            </TabButton>
+
+                            {!isProduction() && (
+                                <BookmarkDropdown appKey={title} subSystem={groupe} />
+                            )}
+                        </>
                     )}
                 </RightSection>
             </ActionBar>

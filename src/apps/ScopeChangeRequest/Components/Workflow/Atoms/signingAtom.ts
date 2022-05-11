@@ -1,4 +1,4 @@
-import { Atom } from '@dbeining/react-atom';
+import { Atom, swap } from '@dbeining/react-atom';
 import { CriteriaSignState } from '../../../types/scopeChangeRequest';
 
 export interface SigningAction {
@@ -9,3 +9,7 @@ export interface SigningAction {
 }
 
 export const actionWithCommentAtom = Atom.of<SigningAction | null>(null);
+
+export function resetSigningAtom(): void {
+    swap(actionWithCommentAtom, () => null);
+}

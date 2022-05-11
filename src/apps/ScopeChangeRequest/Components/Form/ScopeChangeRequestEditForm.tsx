@@ -23,8 +23,8 @@ import {
 import styled from 'styled-components';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { useUnpackRelatedObjects } from '../../hooks/queries/useUnpackRelatedObjects';
-import { swap } from '@dbeining/react-atom';
-import { sideSheetEditModeAtom } from '../../Atoms/editModeAtom';
+import { disableEditMode } from '../../Atoms/editModeAtom';
+import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -61,6 +61,10 @@ export const ScopeChangeRequestEditForm = ({
     const { handleInput, isValid, state } = useScopeChangeFormState({
         ...request,
         attachments: [],
+        disciplineGuesstimates: request.disciplineGuesstimates.map((x) => ({
+            disciplineCode: x.discipline.procosysCode,
+            guesstimateHours: x.guesstimate,
+        })),
     });
 
     const handleSave = (setAsOpen: boolean) =>
@@ -71,8 +75,6 @@ export const ScopeChangeRequestEditForm = ({
             setAsOpen: setAsOpen,
         });
 
-    const onClickCancel = () => swap(sideSheetEditModeAtom, () => false);
-
     return (
         <Wrapper>
             <FormWrapper>
@@ -82,6 +84,11 @@ export const ScopeChangeRequestEditForm = ({
                         handleInput={handleInput}
                         state={state}
                         shouldDisableCategory
+                    />
+                    Disciplines and guesstimates
+                    <GuesstimateDiscipline
+                        state={state.disciplineGuesstimates ?? []}
+                        updateFormValue={(guess) => handleInput('disciplineGuesstimates', guess)}
                     />
                 </FlexColumn>
 
@@ -129,7 +136,7 @@ export const ScopeChangeRequestEditForm = ({
                         </Button>
                     ) : (
                         <>
-                            <Button variant="outlined" onClick={onClickCancel}>
+                            <Button variant="outlined" onClick={disableEditMode}>
                                 Cancel
                             </Button>
                             <Button disabled={!isValid} onClick={() => handleSave(false)}>

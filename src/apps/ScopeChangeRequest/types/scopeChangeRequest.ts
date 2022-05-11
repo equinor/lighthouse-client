@@ -3,11 +3,15 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     commissioningPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
-    disciplineCodes: string[];
     documentNumbers: string[];
     setAsOpen?: boolean;
-
+    disciplineGuesstimates: DisciplineGuesstimate[];
     //workflow
+}
+
+export interface DisciplineGuesstimate {
+    disciplineCode: string;
+    guesstimateHours: number | null;
 }
 
 export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCR';
@@ -32,9 +36,18 @@ export interface ScopeChangeBaseModel {
     hasPendingContributions: boolean;
     originSource: OriginType;
     actualChangeHours: number;
-    guesstimateHours: number;
-    guesstimateDescription: string;
     potentialWarrantyCase: boolean;
+}
+
+export interface ScopeChangeDisciplineGuesstimates {
+    id: string;
+    guesstimate: number;
+    discipline: ScopeChangeDiscipline;
+}
+export interface ScopeChangeDiscipline {
+    id: string;
+    procosysCode: string;
+    procosysId: number;
 }
 
 export interface LogEntry {
@@ -81,12 +94,13 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     areas: ScopeChangeArea[];
     hasComments: boolean;
     sequenceNumber: number;
+    workOrders: ScopeChangeWorkOrder[];
+    disciplineGuesstimates: ScopeChangeDisciplineGuesstimates[];
 }
 
-export interface ScopeChangeDiscipline {
+export interface ScopeChangeWorkOrder {
     id: string;
-    procosysCode: string;
-    procosysId: number;
+    jobNumber: string;
 }
 
 export interface ScopeChangeArea {

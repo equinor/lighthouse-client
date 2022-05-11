@@ -1,10 +1,9 @@
-import { swap } from '@dbeining/react-atom';
 import { Button, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
 import { useWorkflowSigning } from '../../../../../hooks/mutations/useWorkflowSigning';
 import { CriteriaSignState } from '../../../../../types/scopeChangeRequest';
-import { actionWithCommentAtom } from '../../../Atoms/signingAtom';
+import { resetSigningAtom } from '../../../Atoms/signingAtom';
 import { ButtonsContainer } from './signWithComment.styles';
 
 interface SignWithCommentProps {
@@ -29,7 +28,6 @@ export const SignWithComment = ({
     });
 
     const [comment, setComment] = useState('');
-    const close = () => swap(actionWithCommentAtom, () => null);
 
     return (
         <>
@@ -57,12 +55,12 @@ export const SignWithComment = ({
                             action: action,
                             comment: comment,
                         });
-                        close();
+                        resetSigningAtom();
                     }}
                 >
                     {buttonText}
                 </Button>
-                <Button variant="outlined" onClick={close}>
+                <Button variant="outlined" onClick={resetSigningAtom}>
                     Cancel
                 </Button>
             </ButtonsContainer>
