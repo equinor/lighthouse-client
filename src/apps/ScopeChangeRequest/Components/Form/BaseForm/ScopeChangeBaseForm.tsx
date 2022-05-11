@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { FormTextField } from '../../Inputs/FormTextField';
 import { Origin } from '../Origin';
 import { ScopeChangeFormModel } from '../../../hooks/form/useScopeChangeFormState';
+import { IsWarrantyCaseCheckbox } from '../IsWarrantyCheckbox/IsWarrantyCheckbox';
 
 interface ScopeChangeBaseFormProps {
     state: Partial<ScopeChangeFormModel>;
@@ -55,9 +56,24 @@ export const ScopeChangeBaseForm = ({
                 initialValue={state.description}
                 onChange={(value) => handleInput('description', value)}
             />
+            <CheckboxWrapper>
+                <IsWarrantyCaseCheckbox
+                    initialValue={state.potentialWarrantyCase}
+                    handleInput={(newVal) => handleInput('potentialWarrantyCase', newVal)}
+                />
+            </CheckboxWrapper>
         </BaseFormContainer>
     );
 };
+
+const CheckboxWrapper = styled.div`
+    margin-left: -14px;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+`;
 
 const BaseFormContainer = styled.div`
     display: flex;

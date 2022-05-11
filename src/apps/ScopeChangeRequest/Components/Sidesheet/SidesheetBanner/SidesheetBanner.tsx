@@ -1,7 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
-import { OriginLink } from '../../DetailView/OriginLink';
 
 export function SidesheetBanner(): JSX.Element {
     const { request } = useScopeChangeContext();
@@ -10,16 +9,6 @@ export function SidesheetBanner(): JSX.Element {
         <Banner padding={'0em 1.7em'}>
             <BannerItem title={'Phase'} value={request.phase} />
             <BannerItem title={'Change category'} value={request.changeCategory.name} />
-            <BannerItem
-                title="Change origin"
-                value={
-                    <OriginLink
-                        onlyUnderlineOnHover={true}
-                        type={request.originSource}
-                        id={request.originSourceId}
-                    />
-                }
-            />
             <BannerItem title={'Scope'} value={request?.scope?.name} />
             <BannerItem title={'State'} value={request.isVoided ? 'Voided' : request.state} />
         </Banner>

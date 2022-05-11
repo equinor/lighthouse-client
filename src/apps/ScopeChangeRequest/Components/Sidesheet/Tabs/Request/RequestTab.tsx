@@ -17,6 +17,7 @@ import {
 import styled from 'styled-components';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { Workflow } from '../../../Workflow/Workflow';
+import { WarrantyCaseDetailCheckbox } from '../../../WarrantyCaseDetailCheckbox/WarrantyCaseDetailCheckbox';
 import { GuesstimateDisciplineDetails } from '../../GuesstimateDisciplineDetails/GuesstimateDisciplineDetails';
 import { OriginLink } from '../../../DetailView/OriginLink';
 
@@ -34,7 +35,7 @@ export function RequestTab(): JSX.Element {
                             <SubSectionTitle>Description</SubSectionTitle>
                             <SubSectionText>{request.description}</SubSectionText>
                         </SectionWrapper>
-
+                        <WarrantyCaseDetailCheckbox />
                         <SectionHeading>Change origin</SectionHeading>
                         <SectionWrapper>
                             <SubSectionTitle>Origin</SubSectionTitle>
@@ -42,6 +43,7 @@ export function RequestTab(): JSX.Element {
                                 <OriginLink
                                     type={request.originSource}
                                     id={request.originSourceId}
+                                    onlyUnderlineOnHover
                                 />
                             </SubSectionText>
                         </SectionWrapper>
@@ -49,22 +51,24 @@ export function RequestTab(): JSX.Element {
                         <SectionHeading>Disciplines and guesstimates</SectionHeading>
                         <SectionWrapper>
                             <SubSectionText>
-                                <GuesstimatesList>
-                                    <GuesstimateRow>
-                                        <SubSectionTitle>Discipline</SubSectionTitle>
-                                        <SubSectionTitle>Guesstimate Mhrs</SubSectionTitle>
-                                    </GuesstimateRow>
-                                    {request.disciplineGuesstimates.map(
-                                        ({ discipline, guesstimate, id }) => (
-                                            <GuesstimateDisciplineDetails
-                                                discipline={discipline}
-                                                guesstimate={guesstimate}
-                                                id={id}
-                                                key={id}
-                                            />
-                                        )
-                                    )}
-                                </GuesstimatesList>
+                                {request.disciplineGuesstimates.length > 0 && (
+                                    <GuesstimatesList>
+                                        <GuesstimateRow>
+                                            <SubSectionTitle>Discipline</SubSectionTitle>
+                                            <SubSectionTitle>Guesstimate Mhrs</SubSectionTitle>
+                                        </GuesstimateRow>
+                                        {request.disciplineGuesstimates.map(
+                                            ({ discipline, guesstimate, id }) => (
+                                                <GuesstimateDisciplineDetails
+                                                    discipline={discipline}
+                                                    guesstimate={guesstimate}
+                                                    id={id}
+                                                    key={id}
+                                                />
+                                            )
+                                        )}
+                                    </GuesstimatesList>
+                                )}
                             </SubSectionText>
                         </SectionWrapper>
                     </InnerSection>
