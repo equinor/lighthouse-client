@@ -50,6 +50,11 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
         valueFormatter: ({ workflowStatus }) => workflowStatus,
     },
     {
+        name: 'Disciplines',
+        valueFormatter: ({ disciplineGuesstimates }) =>
+            disciplineGuesstimates.map(({ discipline }) => discipline.procosysCode),
+    },
+    {
         name: 'Guesstimate',
         valueFormatter: ({ disciplineGuesstimates }) =>
             disciplineGuesstimates.length > 0
