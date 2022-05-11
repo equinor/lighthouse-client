@@ -1,6 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { Fragment } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { DefaultWorkflowDot } from '../../Components/Workflow/Components/DefaultWorkflowDot';
 import { DisputedTableIcon } from '../../Components/WorkflowIcons/DisputedTableIcon';
@@ -12,12 +12,14 @@ interface WorkflowProps {
 interface CriteriaWithParent {
     signedState: string | null;
     isCurrent: boolean;
+    stepName: string;
 }
 
 export function WorkflowCompact({ steps }: WorkflowProps): JSX.Element {
-    const compacted = steps?.reduce((acc, { criterias, isCurrent }) => {
+    const compacted = steps?.reduce((acc, { name, criterias, isCurrent }) => {
         criterias.forEach(({ signedState }) =>
             acc.push({
+                stepName: name,
                 isCurrent: isCurrent,
                 signedState: signedState,
             })
@@ -28,13 +30,48 @@ export function WorkflowCompact({ steps }: WorkflowProps): JSX.Element {
     return (
         <>
             <WorkflowStepContainer>
-                {compacted.map(({ isCurrent, signedState }, i) => (
-                    <Fragment key={i}>{getStatusFromCriteria(signedState, isCurrent)}</Fragment>
+                {compacted.map(({ isCurrent, signedState, stepName }, i) => (
+                    <CompactWorkflowDot
+                        signedState={signedState}
+                        isCurrent={isCurrent}
+                        stepName={stepName}
+                        key={i}
+                    />
                 ))}
             </WorkflowStepContainer>
         </>
     );
 }
+
+interface CompactWorkflowDotProps {
+    signedState: string | null;
+    isCurrent: boolean;
+    stepName: string;
+}
+const CompactWorkflowDot = ({ isCurrent, signedState, stepName }: CompactWorkflowDotProps) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const setOpen = () => setIsOpen(true);
+    const setClose = () => setIsOpen(false);
+    const anchorRef = useRef<HTMLDivElement>(null);
+
+    return (
+        <div ref={anchorRef} onMouseLeave={setClose} onMouseOver={setOpen}>
+            {getStatusFromCriteria(signedState, isCurrent)}
+            {isOpen && <WorkflowPopover>{stepName}</WorkflowPopover>}
+        </div>
+    );
+};
+
+const WorkflowPopover = styled.div`
+    position: absolute;
+    z-index: 1;
+    color: #fff;
+    background-color: #121212;
+    padding: 5px 5px;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-left: 15px;
+`;
 
 function getStatusFromCriteria(signedState: string | null, isCurrent: boolean): JSX.Element {
     switch (true) {

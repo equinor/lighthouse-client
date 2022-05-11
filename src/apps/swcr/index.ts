@@ -1,7 +1,4 @@
-import {
-    ClientApi, getFusionContextId,
-    httpClient
-} from '@equinor/portal-client';
+import { ClientApi, getFusionContextId, httpClient } from '@equinor/portal-client';
 import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
 import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
@@ -11,7 +8,7 @@ import {
     customDescription,
     fieldSettings,
     getHighlighColumn,
-    getItemWidth
+    getItemWidth,
 } from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
@@ -65,3 +62,11 @@ async function responseParser(res: Response) {
     const swcrPackages = JSON.parse(await res.text()) as SwcrPackage[];
     return swcrPackages.sort(sortPackagesByStatusAndNumber);
 }
+
+export const swcrSideSheetWidget = {
+    widget: SwcrSideSheet,
+    manifest: {
+        widgetId: 'swcr',
+        widgetType: 'sidesheet',
+    },
+};

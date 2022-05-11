@@ -22,7 +22,7 @@ export function createPowerBiViewer({
         return {
             ...state,
             [viewerId]: {
-                groupe: [],
+                groupe: state[viewerId]?.groupe,
                 title,
                 shortName: viewerId,
                 reports: [],

@@ -30,7 +30,7 @@ import {
 
 interface CompletionViewHeaderProps {
     title: string;
-    groupe: string | string[];
+    groupe: string;
     tabs: TabsConfigItem[];
     sideSheetWidth: number;
 }
@@ -44,7 +44,7 @@ export const CompletionViewHeader = ({
     sideSheetWidth,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
-    const { factory, setSelected } = useFactory(key);
+    const { factory } = useFactory(key);
     const {
         hasPowerBi,
         pages,
@@ -104,7 +104,7 @@ export const CompletionViewHeader = ({
                     {factory && (
                         <>
                             <TabButton
-                                onClick={setSelected}
+                                onClick={factory.onClick}
                                 aria-selected={false}
                                 title={factory.title}
                             >
@@ -167,6 +167,9 @@ export const CompletionViewHeader = ({
                             <ClickableIcon size={24} name="refresh" />
                         )}
                     </TabButton>
+                    {!isProduction() && (
+                        <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                    )}
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton
@@ -191,7 +194,7 @@ export const CompletionViewHeader = ({
                             </TabButton>
 
                             {!isProduction() && (
-                                <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
+                                <BookmarkDropdown appKey={title} subSystem={groupe} />
                             )}
                         </>
                     )}
