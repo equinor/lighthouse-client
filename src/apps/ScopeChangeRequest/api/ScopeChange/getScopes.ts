@@ -1,4 +1,5 @@
-import { httpClient } from '../../../../Core/Client/Functions';
+import { httpClient } from '@equinor/portal-client';
+
 import { throwOnError } from '../../functions/throwError';
 import { QueryContext } from '../../keys/queries';
 

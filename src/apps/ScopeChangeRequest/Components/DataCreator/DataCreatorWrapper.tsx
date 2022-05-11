@@ -1,10 +1,10 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import { SidesheetApi, openSidesheet } from '@equinor/sidesheet';
+
 import { ScopeChangeErrorBanner } from '../ErrorBanner/ErrorBanner';
 import { useOctopusErrorHandler } from '../../hooks/observers/useOctopusErrorHandler';
 import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
-import { openSidesheet } from '../../../../packages/Sidesheet/Functions';
-import { SidesheetApi } from '@equinor/sidesheet';
-import { useEffect } from 'react';
 
 interface DataCreatorWrapperProps {
     closeScrim: () => void;
