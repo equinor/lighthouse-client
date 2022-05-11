@@ -1,30 +1,16 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { SidesheetApi, openSidesheet } from '@equinor/sidesheet';
+import { SidesheetApi } from '@equinor/sidesheet';
 
 import { ScopeChangeErrorBanner } from '../ErrorBanner/ErrorBanner';
 import { useOctopusErrorHandler } from '../../hooks/observers/useOctopusErrorHandler';
 import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
 
-interface DataCreatorWrapperProps {
-    closeScrim: () => void;
-    setHasUnsavedChanges: (value: boolean) => void;
-}
-
-export const ScopeChangeDataCreator = ({ closeScrim }: DataCreatorWrapperProps): JSX.Element => {
-    useEffect(() => {
-        closeScrim();
-        openSidesheet(ScopeChangeCreateForm, undefined, 'change');
-    }, []);
-
-    return <></>;
-};
-
 interface ScopeChangeCreateFormProps {
     actions: SidesheetApi;
 }
 
-const ScopeChangeCreateForm = ({ actions }: ScopeChangeCreateFormProps) => {
+export const ScopeChangeCreateForm = ({ actions }: ScopeChangeCreateFormProps): JSX.Element => {
     useOctopusErrorHandler();
 
     useEffect(() => {

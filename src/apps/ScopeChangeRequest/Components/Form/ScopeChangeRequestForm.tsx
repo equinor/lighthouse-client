@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Button, CircularProgress, SingleSelect } from '@equinor/eds-core-react';
 
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { Upload } from '../Attachments/Upload';
@@ -19,12 +18,13 @@ import {
 } from './ScopeChangeForm.styles';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { getScopeChangeById } from '../../api/ScopeChange/Request';
-import { SidesheetApi } from '@equinor/sidesheet';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { Banner, BannerItem } from '../Sidesheet/SidesheetBanner/SidesheetBanner';
 import { scopeChangeQueries } from '../../keys/queries';
 import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
+import { SidesheetApi } from '@equinor/sidesheet';
+import { Button, CircularProgress, SingleSelect } from '@equinor/eds-core-react';
 
 interface ScopeChangeRequestFormProps {
     actions: SidesheetApi;
