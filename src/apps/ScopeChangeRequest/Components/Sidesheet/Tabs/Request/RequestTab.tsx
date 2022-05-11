@@ -18,6 +18,7 @@ import styled from 'styled-components';
 import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeContext';
 import { Workflow } from '../../../Workflow/Workflow';
 import { GuesstimateDisciplineDetails } from '../../GuesstimateDisciplineDetails/GuesstimateDisciplineDetails';
+import { OriginLink } from '../../../DetailView/OriginLink';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -32,6 +33,17 @@ export function RequestTab(): JSX.Element {
                         <SectionWrapper>
                             <SubSectionTitle>Description</SubSectionTitle>
                             <SubSectionText>{request.description}</SubSectionText>
+                        </SectionWrapper>
+
+                        <SectionHeading>Change origin</SectionHeading>
+                        <SectionWrapper>
+                            <SubSectionTitle>Origin</SubSectionTitle>
+                            <SubSectionText>
+                                <OriginLink
+                                    type={request.originSource}
+                                    id={request.originSourceId}
+                                />
+                            </SubSectionText>
                         </SectionWrapper>
 
                         <SectionHeading>Disciplines and guesstimates</SectionHeading>
@@ -68,21 +80,24 @@ export function RequestTab(): JSX.Element {
                 <FlexColumn>
                     <InnerSection>
                         <SectionHeading>References</SectionHeading>
-
-                        <RelatedObjects
-                            systems={request.systems}
-                            commPkgs={request.commissioningPackages}
-                            documents={request.documents}
-                            areas={request.areas}
-                            disciplines={request.disciplines}
-                            tags={request.tags}
-                        />
+                        <SectionWrapper>
+                            <RelatedObjects
+                                systems={request.systems}
+                                commPkgs={request.commissioningPackages}
+                                documents={request.documents}
+                                areas={request.areas}
+                                disciplines={request.disciplines}
+                                tags={request.tags}
+                            />
+                        </SectionWrapper>
                     </InnerSection>
                     <InnerSection>
                         <SectionHeading>Attachments</SectionHeading>
-                        {request.attachments.length === 0 && (
-                            <NoAttachments>No attachments has been uploaded.</NoAttachments>
-                        )}
+                        <SectionWrapper>
+                            {request.attachments.length === 0 && (
+                                <NoAttachments>No attachments has been uploaded.</NoAttachments>
+                            )}
+                        </SectionWrapper>
                         {requestAccess.canPatch && <HotUpload />}
                         <Attachments attachments={request.attachments} requestId={request.id} />
                     </InnerSection>
