@@ -24,5 +24,5 @@ export function useFactories(factoryIds?: string[]): Factories {
         setFactories(factories);
     }, [factoryIds, state]);
 
-    return { factories, activeFactory: state.isActiveFactory, scope: state.factoryScope };
+    return { factories, scope: state.factoryScope };
 }

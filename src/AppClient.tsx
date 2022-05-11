@@ -11,7 +11,6 @@ import { ServiceMessagePost } from './components/Messages/Service/Components/Ser
 import { ClientRoutes } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
-import { FactoryComponent } from './Core/DataFactory';
 import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
 
 const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Element => {
@@ -49,7 +48,6 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
                             </MainLayout>
                         </BrowserRouter>
                     </MenuProvider>
-                    <FactoryComponent />
                 </ClientContextProvider>
             </QueryClientProvider>
         </ErrorBoundary>

@@ -20,7 +20,6 @@ import {
 import { useMutation, useQueryClient } from 'react-query';
 import { getScopeChangeById } from '../../api/ScopeChange/Request';
 import { openSidesheet } from '@equinor/sidesheet';
-import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
@@ -55,7 +54,6 @@ export const ScopeChangeRequestForm = ({
         if (!scopeChangeId) return;
 
         openSidesheet(SidesheetWrapper, await getScopeChangeById(scopeChangeId), 'change');
-        clearActiveFactory();
         queryClient.invalidateQueries();
     };
 
