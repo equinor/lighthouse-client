@@ -1,4 +1,4 @@
-import { ClientApi, getFusionContextId, httpClient } from '@equinor/portal-client';
+import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
 import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
 import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
@@ -8,7 +8,7 @@ import {
     customDescription,
     fieldSettings,
     getHighlighColumn,
-    getItemWidth,
+    getItemWidth
 } from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';

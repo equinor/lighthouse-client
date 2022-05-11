@@ -1,5 +1,5 @@
 import { Menu } from '@equinor/eds-core-react';
-import { isAppActive, useRegistry } from '@equinor/portal-client';
+import { isAppActive, useRegistry } from '@equinor/lighthouse-portal-client';
 import { useFactories } from '../Hooks/useFactories';
 import { AddMenuButton } from './AddMenuButton';
 

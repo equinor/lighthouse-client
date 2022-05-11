@@ -1,9 +1,10 @@
+import { BookmarkDropdown } from '@equinor/BookmarksManager';
 import { Icon } from '@equinor/eds-core-react';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { usePowerBiViewer } from '../../Api/powerBiViewerState';
 import { Page } from '../../Types/State';
 import { HeaderButton } from '../HeaderButton/HeaderButton';
-import { BookmarkDropdown } from '@equinor/BookmarksManager';
 import {
     Divider,
     HeaderContent,
@@ -14,9 +15,8 @@ import {
     RightSection,
     TabTitle,
     Title,
-    Wrap,
+    Wrap
 } from './PowerBiViewerHeaderStyles';
-import { isProduction } from '@equinor/portal-client';
 
 type HandleFilter = () => void;
 

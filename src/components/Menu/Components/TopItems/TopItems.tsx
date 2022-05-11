@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { AppManifest } from '@equinor/portal-client';
+import { AppManifest } from '@equinor/lighthouse-portal-client';
 import { Apps } from '../../../../apps/apps';
 import Icon from '../../../Icon/Icon';
 import { IconContainer, IconWrapper, LinkWrapper, Title, Wrapper } from './TopItemsStyles';

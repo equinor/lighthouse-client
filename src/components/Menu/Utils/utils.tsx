@@ -1,4 +1,4 @@
-import { AppManifest } from '@equinor/portal-client';
+import { AppManifest } from '@equinor/lighthouse-portal-client';
 
 export function filterByValue<T, K extends keyof T>(
     list: Record<string, T[]>,

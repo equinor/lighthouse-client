@@ -36,7 +36,7 @@
             "@equinor/atom": [
                 "./src/Core/Atom"
             ],
-            "@equinor/portal-client": [
+            "@equinor/lighthouse-portal-client": [
                 "./src/Core/Client"
             ],
             "@equinor/lighthouse-components": [

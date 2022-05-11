@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 
 export const deleteBookmark = async (bookmarkId: string): Promise<void> => {
     const { fusionBookmarks } = httpClient();
