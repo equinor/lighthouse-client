@@ -9,12 +9,14 @@ type BookmarkListProps = {
 };
 
 export const BookmarkList = ({ appKey }: BookmarkListProps): JSX.Element => {
-    const { bookmarks, error, isLoading } = useGetBookmarks(appKey);
+    const { bookmarks, isLoading, error } = useGetBookmarks(appKey);
     const deleteBookmark = useDeleteBookmark();
 
     if (isLoading) return <div>Fetching bookmarks</div>;
-    if (!bookmarks || bookmarks.length === 0) return <div>No bookmarks</div>;
-    if (error) return <div>Error retrieving bookmarks</div>;
+
+    if (error) return <div>Error retrieving bookmarks: {error?.code}</div>;
+
+    if (!bookmarks) return <div>No bookmarks</div>;
 
     const { applyBookmark } = bookmarkEvents;
 
