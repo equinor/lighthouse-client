@@ -1,6 +1,6 @@
 import { useAuthenticate } from '@equinor/authentication';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
-import { Client as ClientProps, ClientContextProvider } from '@equinor/portal-client';
+import { Client as ClientProps, ClientContextProvider } from '@equinor/lighthouse-portal-client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { MainLayout } from './components/Layouts/MainLayout';
@@ -11,7 +11,6 @@ import { ServiceMessagePost } from './components/Messages/Service/Components/Ser
 import { ClientRoutes } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
-import { FactoryComponent } from './Core/DataFactory';
 import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
 
 const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Element => {
@@ -49,7 +48,6 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
                             </MainLayout>
                         </BrowserRouter>
                     </MenuProvider>
-                    <FactoryComponent />
                 </ClientContextProvider>
             </QueryClientProvider>
         </ErrorBoundary>

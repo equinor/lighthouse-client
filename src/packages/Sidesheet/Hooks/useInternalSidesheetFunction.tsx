@@ -15,7 +15,6 @@ export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
         dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {
             return {
                 ...currentState,
-                isPinned: currentState.isPinned ? undefined : true,
             };
         });
     }
@@ -47,7 +46,6 @@ export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
                 ...currentState,
                 SidesheetComponent: undefined,
                 props: undefined,
-                isPinned: undefined,
                 width: currentState.defaultWidth,
             };
         });

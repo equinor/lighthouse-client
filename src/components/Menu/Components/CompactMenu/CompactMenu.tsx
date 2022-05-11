@@ -1,5 +1,5 @@
 import { Button, Divider } from '@equinor/eds-core-react';
-import { useClientContext } from '@equinor/portal-client';
+import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { useMemo } from 'react';
 import { useLocation } from 'react-router';
 import Icon from '../../../Icon/Icon';

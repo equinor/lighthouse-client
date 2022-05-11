@@ -1,4 +1,4 @@
-import { EventHub } from '@equinor/Utils';
+import { EventHub } from '@equinor/lighthouse-utils';
 import { useEffect } from 'react';
 import { CustomEventActions } from '..';
 import { ApplyEventArgs, SaveEventArgs } from '../types';

@@ -70,3 +70,8 @@ export type InsulationBoxType = {
     object3dReference: string;
     procosysStatus: string;
 };
+
+export interface HTSidesheet {
+    value: string;
+    items: Pipetest[];
+}

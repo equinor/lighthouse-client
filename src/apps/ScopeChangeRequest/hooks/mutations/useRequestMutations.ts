@@ -95,7 +95,6 @@ function extractReferences(references: TypedSelectOption[]): Partial<ScopeChange
     const systems = filterElementsByType(references, 'system');
     const commPkgs = filterElementsByType(references, 'commpkg');
     const areas = filterElementsByType(references, 'area');
-    const disciplines = filterElementsByType(references, 'discipline');
     const documents = filterElementsByType(references, 'document');
 
     return {
@@ -104,6 +103,5 @@ function extractReferences(references: TypedSelectOption[]): Partial<ScopeChange
         commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
         documentNumbers: documents?.map((x) => x.value) || [],
         areaCodes: areas?.map((x) => x.value) || [],
-        disciplineCodes: disciplines?.map((x) => x.value) || [],
     };
 }

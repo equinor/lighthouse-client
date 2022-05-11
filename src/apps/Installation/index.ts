@@ -1,4 +1,4 @@
-import { ClientApi } from '@equinor/portal-client';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 
 export function setup(appApi: ClientApi): void {
     if (appApi.isProduction) {

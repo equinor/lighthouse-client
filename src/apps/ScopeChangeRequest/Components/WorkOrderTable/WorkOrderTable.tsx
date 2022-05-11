@@ -1,13 +1,13 @@
 import { tokens } from '@equinor/eds-tokens';
-import { useFacility } from '@equinor/portal-client';
+import { useFacility } from '@equinor/lighthouse-portal-client';
 import { Table } from '@equinor/Table';
 import styled from 'styled-components';
-
 import { WorkOrder } from '../../types/FAM/workOrder';
 import { EstimateBar } from '../WoProgressBars/EstimateBar';
 import { ExpendedProgressBar } from '../WoProgressBars/ExpendedProgressBar';
 import { ProgressBar } from '../WoProgressBars/ProgressBar';
 import { generateColumn } from './Utils/generateColumn';
+
 
 interface WorkOrderTableProps {
     workOrders: WorkOrder[];
