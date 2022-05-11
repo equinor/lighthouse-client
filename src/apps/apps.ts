@@ -286,7 +286,7 @@ export const apps: AppManifest[] = [
             setup: McSetup,
         },
         tags: ['Job'],
-        appEnv: 'dev',
+        appEnv: 'test',
     },
 
     {
