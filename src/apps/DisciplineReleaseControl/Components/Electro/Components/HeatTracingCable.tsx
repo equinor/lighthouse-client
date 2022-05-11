@@ -1,10 +1,11 @@
 import { tokens } from '@equinor/eds-tokens';
+import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
 import { CheckListStepTag } from '../../../Types/drcEnums';
 import { EleNetwork } from '../../../Types/eleNetwork';
 import { Pipetest } from '../../../Types/pipetest';
-import { getElectroTestStatus } from '../electroViewHelpers';
-import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
+import { getElectroTestStatus, getHTSidesheetObjectForHtCable } from '../electroViewHelpers';
+import { ElectroViewHTHighlight, ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
 import { Line } from './Line';
 import { TestDot } from './TestDot';
 
@@ -13,19 +14,43 @@ interface HeatTracingCableProps {
     pipetests: Pipetest[];
     currentPipetest: Pipetest;
     eleNetwork: EleNetwork;
+    htCable?: string;
 }
 export const HeatTracingCable = ({
     value,
     pipetests,
     currentPipetest,
     eleNetwork,
+    htCable,
 }: HeatTracingCableProps): JSX.Element => {
+    const { onSelect } = useWorkSpace();
     const pipetestsOnHTCable = pipetests.filter((x) => x.checkLists.some((y) => y.tagNo === value));
     const checkListsForHTCable = eleNetwork.checkLists.filter((x) => x.tagNo === value);
     return (
         <ElectroViewNodeGroup>
             <HeatTracingCableNode htCount={pipetestsOnHTCable.length}>
-                <ElectroViewNodeValueText>{value}</ElectroViewNodeValueText>
+                {htCable === value ? (
+                    <ElectroViewHTHighlight
+                        onClick={() =>
+                            value &&
+                            onSelect &&
+                            onSelect(getHTSidesheetObjectForHtCable(value, pipetests))
+                        }
+                    >
+                        {value}
+                    </ElectroViewHTHighlight>
+                ) : (
+                    <ElectroViewNodeValueText
+                        onClick={() =>
+                            value &&
+                            onSelect &&
+                            onSelect(getHTSidesheetObjectForHtCable(value, pipetests))
+                        }
+                        clickable={true}
+                    >
+                        {value}
+                    </ElectroViewNodeValueText>
+                )}
                 <ABTestDots>
                     <TestDot
                         value="A"
@@ -48,6 +73,7 @@ export const HeatTracingCable = ({
                             value={x.name}
                             currentPipetest={x.name === currentPipetest.name}
                             pipetest={pipetests.find((pipetest) => pipetest.name === x.name)}
+                            htCable={htCable}
                         />
                     );
                 })}
@@ -75,7 +101,7 @@ const HeatTracingCableNode = styled.div<{ htCount: number }>`
 
         position: relative;
         top: 18px;
-        left: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '60px' : 90 * p.htCount - 78 + 'px')};
+        left: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '62px' : 90 * p.htCount - 76 + 'px')};
     }
 `;
 

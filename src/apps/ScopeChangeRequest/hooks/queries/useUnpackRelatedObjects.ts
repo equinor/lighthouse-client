@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useFacility } from '../../../../Core/Client/Hooks';
 import { getAreaByCode } from '../../api/PCS/getAreaByCode';
 import { getCommPkgById } from '../../api/PCS/getCommPkgById';
-import { getDisciplines } from '../../api/PCS/getDisciplines';
 import { getSystems } from '../../api/PCS/getSystems';
 import { getTagById } from '../../api/PCS/getTagById';
 import { TypedSelectOption } from '../../api/Search/searchType';
@@ -141,29 +140,6 @@ export function useUnpackRelatedObjects({
                 ...areaSelectOption,
                 label: `${x.procosysCode} ${area.Description}`,
                 object: area,
-            });
-        });
-
-        const disciplines = await addToQueryCache(referencesKeys.disciplines, () =>
-            getDisciplines(plantId)
-        );
-        request.disciplines.forEach((x) => {
-            const disciplineSelectOption: TypedSelectOption = {
-                label: `${x.procosysCode}`,
-                value: x.procosysCode,
-                object: x,
-                searchValue: x.procosysCode,
-                type: 'discipline',
-            };
-
-            appendRelatedObjects(disciplineSelectOption);
-
-            const match = disciplines.find((discipline) => discipline.Code === x.procosysCode);
-
-            updateReferences({
-                ...disciplineSelectOption,
-                label: `${x.procosysCode} ${match?.Description}`,
-                object: match,
             });
         });
 

@@ -18,5 +18,10 @@ export const DescriptionCell = <T extends TableData>(props: CellProps<T, CellRen
         () => (cellAttributeFn ? cellAttributeFn(content) : undefined),
         [cellAttributeFn]
     );
-    return <Description {...attr}>{content[currentKey] as string}</Description>;
+
+    return (
+        <Description {...attr} title={content?.[currentKey] as string}>
+            {content?.[currentKey] as string}
+        </Description>
+    );
 };

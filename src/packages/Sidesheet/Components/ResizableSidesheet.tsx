@@ -6,9 +6,10 @@ import { Resizable } from 're-resizable';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { getApps } from '../../../apps/apps';
+import { openSidesheet } from '../Functions';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
 import { useSideSheet } from '../Hooks/useSideSheet';
-import { SidesheetApi } from '../Types/SidesheetApi';
+import { CustomSidesheet, SidesheetApi } from '../Types/SidesheetApi';
 
 const DEFAULT_TAB_COLOUR = '#ff9900';
 
@@ -29,12 +30,17 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         setTitle(value);
     };
 
+    function swapComponent<T>(SidesheetContent?: CustomSidesheet<T>, props?: T) {
+        openSidesheet(SidesheetContent, props, appName);
+    }
+
     const actions: SidesheetApi = {
         closeSidesheet: closeSidesheet,
         setIsMinimized: setIsMinimized,
         setWidth: setWidth,
         setTitle: handleSetTitle,
         setMenuItems: setMenuItems,
+        swapComponent: swapComponent,
     };
 
     const sidesheetProps = { item: props, actions: actions };

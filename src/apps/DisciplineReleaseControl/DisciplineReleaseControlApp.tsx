@@ -8,7 +8,7 @@ import {
     getHighlightedColumn,
 } from './Components/Garden/gardenSetup';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
-import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
+import { GatewaySidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import {
@@ -27,6 +27,7 @@ import {
 import { Monospace } from './Styles/Monospace';
 import { Pipetest } from './Types/pipetest';
 import { WorkflowWarningTriangle } from './Components/Workflow/Components/WorkflowWarningTriangle';
+import ReleaseControlGardenGroupView from './Components/Garden/ReleaseControlGardenGroupView';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -42,7 +43,7 @@ export function setup(appApi: ClientApi): void {
 
     const request = appApi
         .createWorkSpace<Pipetest>({
-            CustomSidesheet: ReleaseControlSidesheet,
+            CustomSidesheet: GatewaySidesheet,
             objectIdentifier: 'name',
             defaultTab: 'garden',
         })
@@ -251,6 +252,7 @@ export function setup(appApi: ClientApi): void {
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
+            customGroupView: ReleaseControlGardenGroupView,
         },
         highlightColumn: getHighlightedColumn,
         itemWidth: () => 150,
