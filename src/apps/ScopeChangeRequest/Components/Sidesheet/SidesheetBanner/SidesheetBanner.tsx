@@ -7,7 +7,7 @@ export function SidesheetBanner(): JSX.Element {
     const { request } = useScopeChangeContext();
 
     return (
-        <Banner>
+        <Banner padding={'0em 1.7em'}>
             <BannerItem title={'Phase'} value={request.phase} />
             <BannerItem title={'Change category'} value={request.changeCategory.name} />
             <BannerItem
@@ -20,20 +20,20 @@ export function SidesheetBanner(): JSX.Element {
                     />
                 }
             />
-            <BannerItem title={'Status'} value={request.workflowStatus ?? ''} />
+            <BannerItem title={'Scope'} value={request?.scope?.name} />
             <BannerItem title={'State'} value={request.isVoided ? 'Voided' : request.state} />
         </Banner>
     );
 }
 
-const Banner = styled.div`
+export const Banner = styled.div<{ padding?: string }>`
     height: 76px;
     width: 100%;
     background-color: ${tokens.colors.ui.background__light.hex};
     display: flex;
     flex-direction: row;
     gap: 5rem;
-    padding: 0em 5em;
+    padding: ${({ padding = 0 }) => `${padding}`};
     align-items: center;
 `;
 

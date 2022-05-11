@@ -5,6 +5,7 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     areaCodes: string[];
     documentNumbers: string[];
     setAsOpen?: boolean;
+    scopeId: string;
     disciplineGuesstimates: DisciplineGuesstimate[];
     //workflow
 }
@@ -20,6 +21,11 @@ export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
 export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
 export interface ChangeCategory {
+    id: string;
+    name: string;
+}
+
+export interface Scope {
     id: string;
     name: string;
 }
@@ -94,6 +100,7 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     hasComments: boolean;
     sequenceNumber: number;
     workOrders: ScopeChangeWorkOrder[];
+    scope: Scope;
     disciplineGuesstimates: ScopeChangeDisciplineGuesstimates[];
 }
 

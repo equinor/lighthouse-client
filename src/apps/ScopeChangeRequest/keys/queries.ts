@@ -12,10 +12,11 @@ import {
 import { OptionRequestResult } from '../api/ScopeChange/Access/optionsRequestChecker';
 import { Category, getCategories } from '../api/ScopeChange/getCategories';
 import { getPhases } from '../api/ScopeChange/getPhases';
+import { getScopes } from '../api/ScopeChange/getScopes';
 import { getScopeChangeById } from '../api/ScopeChange/Request';
 import { getHistory } from '../api/ScopeChange/Request/getHistory';
 import { CacheTime } from '../enum/cacheTimes';
-import { LogEntry, ScopeChangeRequest } from '../types/scopeChangeRequest';
+import { LogEntry, Scope, ScopeChangeRequest } from '../types/scopeChangeRequest';
 
 export interface QueryContext {
     signal?: AbortSignal;
@@ -87,6 +88,7 @@ interface WorkflowQueries {
 interface ScopeChangeQueries {
     categoryQuery: QueryFunction<Category[]>;
     phaseQuery: QueryFunction<string[]>;
+    scopeQuery: QueryFunction<Scope[]>;
     baseQuery: (id: string) => QueryFunction<ScopeChangeRequest>;
     historyQuery: (id: string) => QueryFunction<LogEntry[]>;
     permissionQueries: PermissionQueries;
@@ -103,6 +105,12 @@ export const scopeChangeQueries: ScopeChangeQueries = {
     phaseQuery: {
         queryFn: getPhases,
         queryKey: ['phases'],
+        staleTime: CacheTime.TenHours,
+        cacheTime: CacheTime.TenHours,
+    },
+    scopeQuery: {
+        queryFn: getScopes,
+        queryKey: ['Scopes'],
         staleTime: CacheTime.TenHours,
         cacheTime: CacheTime.TenHours,
     },

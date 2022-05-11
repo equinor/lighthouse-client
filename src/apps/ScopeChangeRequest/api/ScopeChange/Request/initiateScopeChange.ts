@@ -22,6 +22,7 @@ export async function initiateScopeChange({ request }: InitiateScopeChangeParams
             })
         ),
         id: request.id,
+        scopeId: request.scope.id,
         originSource: request.originSource,
         originSourceId: request.originSourceId,
         phase: request.phase,
