@@ -1,5 +1,5 @@
 import { Button, Icon, Search } from '@equinor/eds-core-react';
-import { useClientContext } from '@equinor/portal-client';
+import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { useMemo, useState } from 'react';
 import { useMenuContext } from '../../Context/MenuContext';
 import { filterByValue, groupeByKey } from '../../Utils/utils';

@@ -33,13 +33,7 @@ function getAppGroups(apps: AppManifest[], initialGroups: AppGroups): AppGroups 
     const appGroups: AppGroups = {};
 
     apps.forEach((app) => {
-        if (Array.isArray(app.groupe)) {
-            app.groupe.forEach((groupName: string) => {
-                appGroups[groupName] = initialGroups[groupName];
-            });
-        } else {
-            appGroups[app.groupe] = initialGroups[app.groupe];
-        }
+        appGroups[app.groupe] = initialGroups[app.groupe];
     });
     return appGroups;
 }

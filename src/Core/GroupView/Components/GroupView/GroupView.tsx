@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
-import { AppGroupe, AppGroups, AppManifest } from '@equinor/portal-client';
+import { AppGroupe, AppGroups, AppManifest } from '@equinor/lighthouse-portal-client';
 import ErrorFallback from '../../../ErrorBoundary/Components/ErrorFallback';
 import { Header } from '../Header/Header';
 import { Link, Links, Main, Section, SubTitle, Wrapper } from './GroupViewStyles';

@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { WorkOrder } from '../Types/workOrder';
 
 export async function getWorkOrdersById(id: string): Promise<WorkOrder[]> {

@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 
 export type BookmarkResponse<TPayload extends unknown = unknown> = {
     id: string;

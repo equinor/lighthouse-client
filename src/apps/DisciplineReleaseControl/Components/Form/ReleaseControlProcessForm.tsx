@@ -1,29 +1,26 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useMutation } from 'react-query';
-import styled from 'styled-components';
-
 import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { GeneratedForm, useForm } from '@equinor/Form';
-import { useHttpClient } from '@equinor/portal-client';
-// import { openSidesheet } from '@equinor/sidesheet';
-
-import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
-
-import { ReleaseControlErrorBanner } from '../Sidesheet/ErrorBanner';
-import { DisciplineReleaseControl } from '../../Types/disciplineReleaseControl';
-import { releaseControlProcessSchema } from './ReleaseControlProcessSchema';
-import { ServerError } from '../../Api/Types/ServerError';
-import { postReleaseControl } from '../../Api/Request/postReleaseControl';
+import { useHttpClient } from '@equinor/lighthouse-portal-client';
+import { useEffect, useMemo, useState } from 'react';
+import { useMutation } from 'react-query';
+import styled from 'styled-components';
 import { uploadAttachment } from '../../Api/Request';
+import { postReleaseControl } from '../../Api/Request/postReleaseControl';
+import { ProcoSysTypes } from '../../Api/Search/PCS';
+import { TypedSelectOption } from '../../Api/Search/searchType';
+import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { ServerError } from '../../Api/Types/ServerError';
+import { DisciplineReleaseControl } from '../../Types/disciplineReleaseControl';
+import { Upload } from '../Attachments/Upload';
+import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
+// import { openSidesheet } from '@equinor/sidesheet';
+import { ReleaseControlErrorBanner } from '../Sidesheet/ErrorBanner';
 // import { ReleaseControlSidesheet } from '../Sidesheet/ReleaseControlSidesheet';
 // import { getReleaseControlById } from '../../Api/Request/getReleaseControl';
 import { Origin } from './Origin';
-import { TypedSelectOption } from '../../Api/Search/searchType';
-import { Upload } from '../Attachments/Upload';
-import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
-import { ProcoSysTypes } from '../../Api/Search/PCS';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
+import { releaseControlProcessSchema } from './ReleaseControlProcessSchema';
+
 
 interface ReleaseControlProcessFormProps {
     closeScrim: (force?: boolean) => void;
@@ -96,7 +93,6 @@ export const ReleaseControlProcessForm = ({
         //     ReleaseControlSidesheet,
         //     await getReleaseControlById(releaseControlId, releaseControls)
         // );
-        clearActiveFactory();
     };
 
     useEffect(() => {
@@ -128,13 +124,11 @@ export const ReleaseControlProcessForm = ({
     }, [formData.fields.originSource?.value]);
 
     const isValidForm = useMemo(() => {
-        return (
-            formData.isValidForm() 
-            // &&
-            // (formData.fields.originSource?.value === 'NotApplicable' ||
-            //     formData.fields.originSourceId?.value) &&
-            // relatedObjects.length > 0
-        );
+        return formData.isValidForm();
+        // &&
+        // (formData.fields.originSource?.value === 'NotApplicable' ||
+        //     formData.fields.originSourceId?.value) &&
+        // relatedObjects.length > 0
     }, [formData, relatedObjects]);
 
     if (isRedirecting) {

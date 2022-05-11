@@ -12,7 +12,7 @@ export const module: ConfigModule = {
 
 export default module;
 
-declare module '@equinor/portal-client' {
+declare module '@equinor/lighthouse-portal-client' {
     interface Modules {
         initClintConfig: ConfigModule;
     }
