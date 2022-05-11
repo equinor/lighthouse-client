@@ -1,4 +1,4 @@
-import { useBookmarks } from '@equinor/BookmarksManager';
+import { ApplyEventArgs, useBookmarks } from '@equinor/BookmarksManager';
 import { PBIOptions, PowerBI, PowerBIBookmarkPayload } from '@equinor/lighthouse-powerbi';
 import { useEffect, useState } from 'react';
 import { usePowerBiViewer } from './Api/powerBiViewerState';
@@ -38,11 +38,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
         setIsFilterActive((s) => !s);
     }
 
-    const handleApplyingBookmark = async (
-        bookmarkId: string,
-        appKey: string,
-        groupName: string
-    ) => {
+    const handleApplyingBookmark = async ({ id: bookmarkId }: ApplyEventArgs) => {
         const bookmark = await handleApplyBookmark(bookmarkId);
 
         if (isDifferentPage(activePage, bookmark)) {

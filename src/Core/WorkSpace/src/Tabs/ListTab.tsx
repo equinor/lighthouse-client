@@ -4,6 +4,7 @@ import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilter
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
+import { useWorkspaceBookmarks } from '../Util/bookmarks/hooks';
 
 const Wrapper = styled.section`
     margin: 16px;
@@ -17,6 +18,7 @@ export const ListTab = (): JSX.Element => {
 
     const data = getFilteredData() as TableData[];
     const { tableOptions } = useDataContext();
+    useWorkspaceBookmarks();
 
     const [ref, { awaitableHeight }] = useElementData();
 

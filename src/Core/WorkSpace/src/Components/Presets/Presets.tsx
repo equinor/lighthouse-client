@@ -1,10 +1,10 @@
 import { deref } from '@dbeining/react-atom';
 import { Chip } from '@equinor/eds-core-react';
+import { useFilterApiContext } from '@equinor/filter';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
-import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useLocationContext } from '../../Context/LocationProvider';
-import { gardenApiAtom } from '../../Util/gardenBookmarks/gardenApiAtom';
+import { gardenApiAtom } from '../../Util/bookmarks/gardenBookmarks/gardenApiAtom';
 import { TabButton } from '../ToggleButton';
 
 export function Presets(): JSX.Element {
