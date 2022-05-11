@@ -49,14 +49,14 @@ interface CompactWorkflowDotProps {
     stepName: string;
 }
 const CompactWorkflowDot = ({ isCurrent, signedState, stepName }: CompactWorkflowDotProps) => {
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     const setOpen = () => setIsOpen(true);
     const setClose = () => setIsOpen(false);
     const anchorRef = useRef<HTMLDivElement>(null);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     return (
         <div ref={anchorRef} onMouseLeave={setClose} onMouseOver={setOpen}>
-            {getStatusFromCriteria(signedState, isCurrent)}{' '}
+            {getStatusFromCriteria(signedState, isCurrent)}
             {isOpen && <WorkflowPopover>{stepName}</WorkflowPopover>}
         </div>
     );
@@ -64,7 +64,7 @@ const CompactWorkflowDot = ({ isCurrent, signedState, stepName }: CompactWorkflo
 
 const WorkflowPopover = styled.div`
     position: absolute;
-    z-index: 100;
+    z-index: 1;
     color: #fff;
     background-color: #121212;
     padding: 5px 5px;
