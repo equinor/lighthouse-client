@@ -1,9 +1,10 @@
 import { Button, Icon, Progress } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
+import { useEffect } from 'react';
 
 import { useScopeChangeMutation } from '../../hooks/React-Query/useScopechangeMutation';
 import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { HotUpload } from '../Attachments/HotUpload';
-import { tokens } from '@equinor/eds-tokens';
 import { deleteAttachment } from '../../api/ScopeChange/Request/attachment';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
@@ -24,7 +25,6 @@ import { disableEditMode } from '../../Atoms/editModeAtom';
 import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext';
-import { useEffect } from 'react';
 import { FormBanner } from './FormBanner/FormBanner';
 
 export const ScopeChangeRequestEditForm = (): JSX.Element => {
@@ -145,7 +145,9 @@ const SubmitActionBar = (): JSX.Element => {
             <ButtonContainer>
                 <>
                     {isLoading ? (
-                        <Progress.Dots />
+                        <Button variant="ghost_icon" disabled>
+                            <Progress.Dots />
+                        </Button>
                     ) : (
                         <>
                             <Button variant="outlined" onClick={disableEditMode}>

@@ -89,8 +89,10 @@ const SubmitButtonBar = () => {
         <ActionBar>
             <ButtonContainer>
                 <>
-                    {isLoading ? (
-                        <Progress.Dots />
+                    {!isLoading ? (
+                        <Button variant="ghost_icon" disabled>
+                            <Progress.Dots color="primary" />
+                        </Button>
                     ) : (
                         <>
                             <Button disabled={!isValid} onClick={() => onMutate(false)}>
