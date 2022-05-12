@@ -79,4 +79,5 @@ export const ElectroViewHTHighlight = styled.div`
     padding: 1px;
     background-color: ${tokens.colors.interactive.primary__resting.hex};
     color: ${tokens.colors.text.static_icons__primary_white.hex};
+    font-variant-numeric: tabular-nums;
 `;

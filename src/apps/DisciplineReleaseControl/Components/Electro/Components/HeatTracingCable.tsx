@@ -90,7 +90,7 @@ const HeatTracingCableNode = styled.div<{ htCount: number }>`
     margin-bottom: 2px;
     margin-top: 16px;
     width: ${(p) => (p.htCount === 0 || p.htCount === 1 ? '200px' : 60 + 90 * p.htCount + 'px')};
-    border-bottom: 2px dashed;
+    border-bottom: 2px dashed ${tokens.colors.text.static_icons__default.hex};
 
     &:after {
         content: '';
