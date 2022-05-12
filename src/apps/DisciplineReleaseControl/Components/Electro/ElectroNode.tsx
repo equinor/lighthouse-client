@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { CheckListStepTag } from '../../Types/drcEnums';
 import { EleNetwork, EleNetworkCable, EleNetworkCircuit } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
-import { Cable } from './Components/Cable';
+import { Cable, CableNode } from './Components/Cable';
 import { CircuitAndStarter } from './Components/CircuitAndStarter';
 import { HeatTracingCable } from './Components/HeatTracingCable';
 import { JunctionBox } from './Components/JunctionBox';
@@ -13,6 +13,7 @@ import {
     getElectroTestStatus,
     getNodeStatus,
 } from './electroViewHelpers';
+import { ElectroViewNodeGroupRow } from './styles';
 
 interface ElectroNodeProps {
     eleNetwork: EleNetwork;
@@ -172,10 +173,10 @@ export const ElectroNode = ({
                         );
                     })}
 
-                {/* Render standalone children of the node - HT cable */}
+                {/* Render standalone children of the node - HT cable ++ */}
                 {standaloneCircuitChildren.length !== 0 &&
                     standaloneCircuitChildren.map((circuit: EleNetworkCircuit) => {
-                        return (
+                        return circuit.eleSymbolCode === 'HT_KAB' ? (
                             <ElectroNode
                                 key={circuit?.tagNo}
                                 node={circuit}
@@ -184,6 +185,19 @@ export const ElectroNode = ({
                                 currentPipetest={currentPipetest}
                                 htCable={htCable}
                             />
+                        ) : (
+                            <ElectroViewNodeGroupRow>
+                                {/* Ghost cable node to position junction box with no cable correctly */}
+                                <CableNode />
+                                <ElectroNode
+                                    key={circuit?.tagNo}
+                                    node={circuit}
+                                    eleNetwork={eleNetwork}
+                                    pipetests={pipetests}
+                                    currentPipetest={currentPipetest}
+                                    htCable={htCable}
+                                />
+                            </ElectroViewNodeGroupRow>
                         );
                     })}
             </ElectroViewVerticalRow>
