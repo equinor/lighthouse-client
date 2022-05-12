@@ -11,21 +11,24 @@ import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { useQueryCacheLookup } from '../../../../hooks/QueryCache/useQueryCacheLookup';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 
 interface UseUnpackRelatedObjectsParams {
     request: ScopeChangeRequest;
-    getReferences: () => TypedSelectOption[];
-    handleReferencesChanged: (references: TypedSelectOption[]) => void;
 }
 
-export function useUnpackRelatedObjects({
-    getReferences,
-    handleReferencesChanged,
-    request,
-}: UseUnpackRelatedObjectsParams): void {
+export function useUnpackRelatedObjects({ request }: UseUnpackRelatedObjectsParams): void {
     const { addToQueryCache } = useQueryCacheLookup();
     const referencesKeys = { ...proCoSysQueryKeys(), ...stidQueryKeys() };
     const { procosysPlantId: plantId, facilityId } = useFacility();
+
+    const { updateAtom, readAtomValue } = scopeChangeFormAtomApi;
+
+    const handleReferencesChanged = (newVals: TypedSelectOption[]) => {
+        updateAtom({ references: newVals });
+    };
+
+    const getReferences = () => readAtomValue().references ?? [];
 
     useEffect(() => {
         unpackRelatedObjects(request, getReferences, handleReferencesChanged);

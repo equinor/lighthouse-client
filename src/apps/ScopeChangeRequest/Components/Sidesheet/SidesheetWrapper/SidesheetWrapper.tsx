@@ -55,10 +55,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
         <Wrapper>
             <ScopeChangeErrorBanner />
             {editMode ? (
-                <ScopeChangeRequestEditForm
-                    request={getScopeChangeSnapshot().request}
-                    close={disableEditMode}
-                />
+                <ScopeChangeRequestEditForm />
             ) : (
                 <>
                     <SidesheetBanner />

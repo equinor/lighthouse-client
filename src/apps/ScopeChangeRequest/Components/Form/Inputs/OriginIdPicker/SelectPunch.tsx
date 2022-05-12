@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-import { validatePunch } from '../../../api/PCS/validatePunch';
+import { validatePunch } from '../../../../api/PCS/validatePunch';
 
 interface SelectPunchProps {
     setOriginId: (originId: string | undefined) => void;

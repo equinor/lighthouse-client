@@ -30,16 +30,16 @@ import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { CommPkgIcon } from '../DetailView/RelatedObjects/CommPkg/commPkgIcon';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 import styled from 'styled-components';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 
-interface SearchReferencesProps {
-    references: TypedSelectOption[];
-    handleReferencesChanged: (references: TypedSelectOption[]) => void;
-}
+export const SearchReferences = (): JSX.Element => {
+    const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
 
-export const SearchReferences = ({
-    handleReferencesChanged,
-    references,
-}: SearchReferencesProps): JSX.Element => {
+    const handleReferencesChanged = (newList: TypedSelectOption[]) =>
+        updateAtom({ references: newList });
+
+    const references = useAtomState(({ references }) => references ?? []);
+
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const { abort, getSignal } = useCancellationToken();
     const { search: searchReferences, error } = useReferencesSearch();
