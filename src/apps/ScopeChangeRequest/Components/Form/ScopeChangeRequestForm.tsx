@@ -26,7 +26,6 @@ export const ScopeChangeRequestForm = (): JSX.Element => {
     return (
         <>
             <div>
-                <br />
                 <FormWrapper>
                     <FlexColumn>
                         Request

@@ -1,21 +1,16 @@
-import { Button, Icon, Progress } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
+import { Button, Progress } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
 import { useScopeChangeMutation } from '../../hooks/React-Query/useScopechangeMutation';
 import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { HotUpload } from '../Attachments/HotUpload';
-import { deleteAttachment } from '../../api/ScopeChange/Request/attachment';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import {
     ActionBar,
-    AttachmentName,
-    AttachmentsList,
     ButtonContainer,
     FlexColumn,
     FormWrapper,
-    Inline,
     Section,
 } from './ScopeChangeForm.styles';
 import styled from 'styled-components';
@@ -26,16 +21,10 @@ import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuessti
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext';
 import { FormBanner } from './FormBanner/FormBanner';
+import { RequestAttachmentsList } from '../Attachments/RequestAttachmentsList/RequestAttachmentsList';
 
 export const ScopeChangeRequestEditForm = (): JSX.Element => {
     const request = useScopeChangeContext(({ request }) => request);
-
-    const { deleteAttachmentKey } = scopeChangeMutationKeys(request.id);
-    const { mutate: removeAttachment } = useScopeChangeMutation(
-        request.id,
-        deleteAttachmentKey,
-        deleteAttachment
-    );
 
     useEffect(() => {
         const { updateAtom } = scopeChangeFormAtomApi;
@@ -73,31 +62,7 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
                         </Section>
                         Attachments
                         <HotUpload />
-                        {request.attachments.map((attachment, i) => {
-                            return (
-                                <AttachmentsList key={i}>
-                                    <AttachmentName>{attachment.fileName}</AttachmentName>
-                                    <Inline>
-                                        <div>
-                                            {attachment.fileSize &&
-                                                (attachment?.fileSize / 1000 ** 2).toFixed(2)}
-                                            MB
-                                        </div>
-                                        <Icon
-                                            style={{ margin: '0em 0.5em' }}
-                                            color={tokens.colors.interactive.primary__resting.rgba}
-                                            onClick={() =>
-                                                removeAttachment({
-                                                    requestId: request.id,
-                                                    attachmentId: attachment.id,
-                                                })
-                                            }
-                                            name="clear"
-                                        />
-                                    </Inline>
-                                </AttachmentsList>
-                            );
-                        })}
+                        <RequestAttachmentsList />
                     </FlexColumn>
                 </FormWrapper>
                 <SubmitActionBar />
@@ -146,7 +111,7 @@ const SubmitActionBar = (): JSX.Element => {
                 <>
                     {isLoading ? (
                         <Button variant="ghost_icon" disabled>
-                            <Progress.Dots />
+                            <Progress.Dots color="primary" />
                         </Button>
                     ) : (
                         <>

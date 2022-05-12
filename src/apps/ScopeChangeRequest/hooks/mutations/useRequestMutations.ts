@@ -44,7 +44,7 @@ export function useRequestMutations(): RequestMutations {
 
         if (scID) {
             const { baseKey } = scopeChangeQueryKeys(scID);
-            model?.newAttachments?.forEach(async (attachment) => {
+            model?.newAttachments?.forEach((attachment) => {
                 uploadAttachmentMutation({ file: attachment, requestId: scID });
             });
 
