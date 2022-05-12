@@ -2,7 +2,7 @@ import { NodeAppearance } from '@cognite/reveal';
 import { RendererConfiguration, setupEcho3dWeb } from '@equinor/echo3dweb-viewer';
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useAppConfig, useAuthProvider, useFacility } from '@equinor/portal-client';
+import { useAppConfig, useAuthProvider, useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useRef } from 'react';
 import Icon from '../../components/Icon/Icon';
 import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';

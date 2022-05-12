@@ -15,7 +15,9 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
             title: 'Mhrs',
             value: () => {
                 const totalMhrs = data.reduce(
-                    (count, { guesstimateHours }) => count + guesstimateHours,
+                    (count, { disciplineGuesstimates }) =>
+                        count +
+                        disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0),
                     0
                 );
                 return numberFormat(totalMhrs);
@@ -45,7 +47,12 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
             value: () =>
                 numberFormat(
                     filterApprovedRequests(data).reduce(
-                        (acc, { guesstimateHours }) => acc + guesstimateHours,
+                        (acc, { disciplineGuesstimates }) =>
+                            acc +
+                            disciplineGuesstimates.reduce(
+                                (count, curr) => curr.guesstimate + count,
+                                0
+                            ),
                         0
                     )
                 ),
@@ -61,7 +68,11 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
 const accPendingMhr = (requests: ScopeChangeRequest[]) =>
     requests
         .filter(({ state }) => state === 'Open')
-        .reduce((count, { guesstimateHours }) => count + guesstimateHours, 0);
+        .reduce(
+            (count, { disciplineGuesstimates }) =>
+                count + disciplineGuesstimates.reduce((count, curr) => curr.guesstimate + count, 0),
+            0
+        );
 
 /**
  * Returns all approved requests

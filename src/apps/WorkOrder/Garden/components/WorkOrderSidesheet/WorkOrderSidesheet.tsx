@@ -1,6 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { WorkOrder } from '../../models';

@@ -1,4 +1,4 @@
-import { storage } from '@equinor/Utils';
+import { storage } from '@equinor/lighthouse-utils';
 
 const APP_FAVORITES = 'appFavoritesIds';
 

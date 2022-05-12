@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { BookmarkRequest } from '../../types';
 
 export const saveBookmark = async (bookmarkRequest: BookmarkRequest) => {

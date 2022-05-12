@@ -1,5 +1,5 @@
 import { ErrorBoundary } from '@equinor/ErrorBoundary';
-import { AppManifest, useClientContext } from '@equinor/portal-client';
+import { AppManifest, useClientContext } from '@equinor/lighthouse-portal-client';
 import ErrorFallback from '../../Core/ErrorBoundary/Components/ErrorFallback';
 import { ModelViewerContextProvider } from '../../packages/ModelViewer/context/modelViewerContext';
 import { DefaultRouteComponent } from './DefaultRouteComponent';

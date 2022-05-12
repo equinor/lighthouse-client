@@ -1,4 +1,4 @@
-import { ClientApi, getFusionContextId, httpClient } from '@equinor/portal-client';
+import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
 import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
 import { statusBarData } from './Garden/components/statusItems';
 import { HandoverGroupByView } from './Garden/CustomViews';

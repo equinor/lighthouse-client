@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { DataSource, IdResolverFunc } from '../../../Core/WorkSpace/src';
 import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 

@@ -6,6 +6,7 @@ export interface SidesheetApi {
     setWidth: (width: number) => void;
     setTitle: (items: string | JSX.Element | null | undefined) => void;
     setMenuItems: (menuItems: MenuItem[]) => void;
+    swapComponent: <T>(component?: CustomSidesheet<T>, props?: T) => void;
 }
 
 export interface MenuItem {
