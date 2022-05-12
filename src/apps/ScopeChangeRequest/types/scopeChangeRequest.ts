@@ -1,13 +1,27 @@
-export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
+import { TypedSelectOption } from '../api/Search/searchType';
+
+export interface ScopeChangeCreateEditModel {
+    id?: string;
+    title: string;
+    description: string;
+    setAsOpen?: boolean;
+    scopeId: string;
+    scope: Scope;
+    disciplineGuesstimates: DisciplineGuesstimate[];
+    phase: string;
+    changeCategoryId: string;
+    changeCategory: ChangeCategory;
+    potentialWarrantyCase: boolean;
+    originSourceId?: string;
+    originSource: OriginType;
+
+    newAttachments?: File[];
+    references?: TypedSelectOption[];
     tagNumbers: string[];
     commissioningPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
     documentNumbers: string[];
-    setAsOpen?: boolean;
-    scopeId: string;
-    disciplineGuesstimates: DisciplineGuesstimate[];
-    //workflow
 }
 
 export interface DisciplineGuesstimate {

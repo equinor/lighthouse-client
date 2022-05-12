@@ -1,19 +1,19 @@
 import { Button, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { useFacility } from '@equinor/lighthouse-portal-client';
-import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { ClickableIcon } from '../../../../../packages/Components/Icon';
+import { scopeChangeFormAtomApi } from '../../../Atoms/FormAtomApi/formAtomApi';
 import { ProCoSysQueries } from '../../../keys/ProCoSysQueries';
 import { Discipline } from '../../../types/ProCoSys/discipline';
 import { DisciplineGuesstimate } from '../../../types/scopeChangeRequest';
 import { ButtonContainer } from '../ScopeChangeForm.styles';
 import { GuesstimateList } from './disciplineGuesstimate.styles';
 import {
+    constructDisciplineLabel,
     extractDisciplineCodeFromlabel,
-    generateSelectOptions
+    generateSelectOptions,
 } from './Utils/generateSelectOptions';
-
 
 const Guesstimate = styled.div`
     display: grid;
@@ -21,40 +21,33 @@ const Guesstimate = styled.div`
     align-items: center;
     gap: 1em;
 `;
-interface GuesstimateDisciplineProps {
-    state: DisciplineGuesstimate[];
-    updateFormValue: (guesses: DisciplineGuesstimate[]) => void;
-}
 
-export const GuesstimateDiscipline = ({
-    state,
-    updateFormValue,
-}: GuesstimateDisciplineProps): JSX.Element => {
-    const [guesstimates, setGuesstimates] = useState<DisciplineGuesstimate[]>(
-        state.length > 0 ? state : [{ guesstimateHours: NaN, disciplineCode: '' }]
-    );
-
-    const { procosysPlantId } = useFacility();
-    const { getDisciplinesQuery } = ProCoSysQueries;
-    const { data: disciplines } = useQuery<unknown, unknown, Discipline[]>(
-        getDisciplinesQuery(procosysPlantId)
+export const GuesstimateDiscipline = (): JSX.Element => {
+    const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
+    const guesstimates = useAtomState(
+        ({ disciplineGuesstimates }) =>
+            disciplineGuesstimates ?? [{ disciplineCode: '', guesstimateHours: 0 }]
     );
 
     const appendGuesstimate = () =>
-        setGuesstimates((old) => [...old, { disciplineCode: '', guesstimateHours: null }]);
-    const handleRemove = (index: number) =>
-        setGuesstimates((old) => old.filter((_, i) => i !== index));
-    const handleChange = (index: number, guess: DisciplineGuesstimate) =>
-        setGuesstimates((old) => [...old.slice(0, index), guess, ...old.slice(index + 1)]);
+        updateAtom({
+            disciplineGuesstimates: [
+                ...guesstimates,
+                { disciplineCode: '', guesstimateHours: null },
+            ],
+        });
 
-    useEffect(() => {
-        updateFormValue(
-            guesstimates.map(({ guesstimateHours, disciplineCode }) => ({
-                guesstimateHours,
-                disciplineCode: extractDisciplineCodeFromlabel(disciplineCode),
-            }))
-        );
-    }, [guesstimates]);
+    const handleRemove = (index: number) =>
+        updateAtom({ disciplineGuesstimates: guesstimates.filter((_, i) => i !== index) });
+
+    const handleChange = (index: number, guess: DisciplineGuesstimate) =>
+        updateAtom({
+            disciplineGuesstimates: [
+                ...guesstimates.slice(0, index),
+                guess,
+                ...guesstimates.slice(index + 1),
+            ],
+        });
 
     return (
         <>
@@ -66,7 +59,7 @@ export const GuesstimateDiscipline = ({
                         handleChange={(guess) => handleChange(index, guess)}
                         guesstimate={guesstimateHours}
                         disciplineName={disciplineCode}
-                        selectOptions={generateSelectOptions(disciplines ?? [], guesstimates)}
+                        allGuesstimates={guesstimates}
                     />
                 ))}
                 <ButtonContainer>
@@ -84,7 +77,8 @@ interface GuesstimateGuesserProps {
     guesstimate?: number | null;
     handleChange: (guess: DisciplineGuesstimate) => void;
     handleClear: () => void;
-    selectOptions: string[];
+
+    allGuesstimates: DisciplineGuesstimate[];
 }
 
 export const GuesstimateGuesser = ({
@@ -92,19 +86,27 @@ export const GuesstimateGuesser = ({
     disciplineName,
     handleChange,
     handleClear,
-    selectOptions,
+    allGuesstimates,
 }: GuesstimateGuesserProps): JSX.Element => {
+    const { procosysPlantId } = useFacility();
+    const { getDisciplinesQuery } = ProCoSysQueries;
+    const { data: disciplines } = useQuery<unknown, unknown, Discipline[]>(
+        getDisciplinesQuery(procosysPlantId)
+    );
+
+    const discipline = disciplines?.find(({ Code }) => Code === disciplineName);
+
     return (
         <Guesstimate>
             <SingleSelect
-                items={selectOptions}
-                value={disciplineName}
+                items={generateSelectOptions(disciplines ?? [], allGuesstimates)}
+                value={discipline && constructDisciplineLabel(discipline)}
                 label={'Disciplines'}
                 handleSelectedItemChange={({ selectedItem }) =>
                     selectedItem &&
                     handleChange({
                         guesstimateHours: guesstimate ?? NaN,
-                        disciplineCode: selectedItem,
+                        disciplineCode: extractDisciplineCodeFromlabel(selectedItem),
                     })
                 }
             />

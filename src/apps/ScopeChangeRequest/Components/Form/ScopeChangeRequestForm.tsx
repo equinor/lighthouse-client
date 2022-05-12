@@ -1,13 +1,8 @@
 import styled from 'styled-components';
 
-import { TypedSelectOption } from '../../api/Search/searchType';
 import { Upload } from '../Attachments/Upload';
 import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { usePreloadCaching } from '../../hooks/React-Query/usePreloadCaching';
-import {
-    ScopeChangeFormModel,
-    useScopeChangeFormState,
-} from '../../hooks/form/useScopeChangeFormState';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import {
     ActionBar,
@@ -16,39 +11,55 @@ import {
     FormWrapper,
     Section,
 } from './ScopeChangeForm.styles';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { getScopeChangeById } from '../../api/ScopeChange/Request';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
-import { Banner, BannerItem } from '../Sidesheet/SidesheetBanner/SidesheetBanner';
-import { scopeChangeQueries } from '../../keys/queries';
 import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
-import { SidesheetApi } from '@equinor/sidesheet';
-import { Button, CircularProgress, SingleSelect } from '@equinor/eds-core-react';
+import { Button, Progress } from '@equinor/eds-core-react';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
+import { scopeChangeCreateContext } from '../DataCreator/DataCreatorWrapper';
 
-interface ScopeChangeRequestFormProps {
-    actions: SidesheetApi;
-}
-
-export const ScopeChangeRequestForm = ({
-    actions: { swapComponent },
-}: ScopeChangeRequestFormProps): JSX.Element => {
-    const { handleInput, isValid, state } = useScopeChangeFormState();
-    const { createScopeChangeMutation } = useRequestMutations();
-    const queryClient = useQueryClient();
-
-    const handleChange = (key: keyof ScopeChangeFormModel, value: unknown) => {
-        handleInput(key, value);
-    };
-
+export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
 
-    const handleReferencesChanged = (references: TypedSelectOption[]) =>
-        handleChange('references', references);
+    return (
+        <>
+            <div>
+                <FormWrapper>
+                    <FlexColumn>
+                        Request
+                        <ScopeChangeBaseForm />
+                    </FlexColumn>
+                    <FlexColumn>
+                        <Section>
+                            <SearchReferences />
+                        </Section>
+                        Attachments
+                        <Upload />
+                    </FlexColumn>
+                    <FlexColumn>
+                        Disciplines and guesstimates
+                        <GuesstimateDiscipline />
+                    </FlexColumn>
+                </FormWrapper>
+                <SubmitButtonBar />
+            </div>
+        </>
+    );
+};
 
-    const handleAttachmentsChanged = (attachments: File[]) =>
-        handleChange('attachments', attachments);
+const SubmitButtonBar = () => {
+    const swapComponent = scopeChangeCreateContext.useAtomState(
+        ({ swapComponent }) => swapComponent
+    );
 
+    const { useIsValid } = scopeChangeFormAtomApi;
+
+    const isValid = useIsValid();
+
+    const { createScopeChangeMutation } = useRequestMutations();
+    const queryClient = useQueryClient();
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
@@ -64,58 +75,22 @@ export const ScopeChangeRequestForm = ({
         },
     });
 
-    const onMutate = (draft: boolean) =>
+    const onMutate = (draft: boolean) => {
+        const { prepareRequest } = scopeChangeFormAtomApi;
+
         mutate({
             draft: draft,
-            model: {
-                ...state,
-                disciplineGuesstimates: state?.disciplineGuesstimates?.filter(
-                    ({ disciplineCode }) => disciplineCode !== ''
-                ),
-            },
-            references: state.references ?? [],
+            model: prepareRequest(),
         });
+    };
 
     return (
-        <>
-            <div>
-                <CreateBannerInputs handleInput={handleInput} state={state} />
-                <br />
-                <FormWrapper>
-                    <FlexColumn>
-                        Request
-                        <ScopeChangeBaseForm handleInput={handleChange} state={state} />
-                    </FlexColumn>
-
-                    <FlexColumn>
-                        <Section>
-                            <SearchReferences
-                                handleReferencesChanged={handleReferencesChanged}
-                                references={state.references ?? []}
-                            />
-                        </Section>
-                        Attachments
-                        <Upload
-                            attachments={state.attachments ?? []}
-                            handleAttachmentsChanged={handleAttachmentsChanged}
-                        />
-                    </FlexColumn>
-                    <FlexColumn>
-                        Disciplines and guesstimates
-                        <GuesstimateDiscipline
-                            state={state.disciplineGuesstimates ?? []}
-                            updateFormValue={(guess) =>
-                                handleInput('disciplineGuesstimates', guess)
-                            }
-                        />
-                    </FlexColumn>
-                </FormWrapper>
-            </div>
-            <ActionBar>
-                <ButtonContainer>
+        <ActionBar>
+            <ButtonContainer>
+                <>
                     {isLoading ? (
-                        <Button variant="ghost_icon">
-                            <CircularProgress size={32} color="primary" />
+                        <Button variant="ghost_icon" disabled>
+                            <Progress.Dots color="primary" />
                         </Button>
                     ) : (
                         <>
@@ -131,9 +106,9 @@ export const ScopeChangeRequestForm = ({
                             </Button>
                         </>
                     )}
-                </ButtonContainer>
-            </ActionBar>
-        </>
+                </>
+            </ButtonContainer>
+        </ActionBar>
     );
 };
 
@@ -147,82 +122,3 @@ export const Title = styled.div`
     color: black;
     font-weight: bold;
 `;
-
-interface CreateBannerInputsProps {
-    state: Partial<ScopeChangeFormModel>;
-    handleInput: (key: keyof ScopeChangeFormModel, value: unknown) => void;
-}
-
-export const CreateBannerInputs = ({
-    state,
-    handleInput,
-}: CreateBannerInputsProps): JSX.Element => {
-    const { phaseQuery, categoryQuery, scopeQuery } = scopeChangeQueries;
-    const { data: phases } = useQuery(phaseQuery);
-    const { data: categories } = useQuery(categoryQuery);
-    const { data: scopes } = useQuery(scopeQuery);
-
-    return (
-        <div>
-            <Banner>
-                <BannerItem
-                    title=""
-                    value={
-                        <SingleSelect
-                            items={phases ?? []}
-                            label={'Phase'}
-                            meta="(Required)"
-                            initialSelectedItem={state.phase}
-                            placeholder="Select phase"
-                            handleSelectedItemChange={(change) =>
-                                handleInput('phase', change.selectedItem)
-                            }
-                        />
-                    }
-                />
-
-                <BannerItem
-                    title=""
-                    value={
-                        <SingleSelect
-                            items={categories?.map(({ name }) => name) ?? []}
-                            label={'Change category'}
-                            meta="(Required)"
-                            initialSelectedItem={state.changeCategory?.name}
-                            placeholder="Select category"
-                            disabled={false}
-                            handleSelectedItemChange={(change) =>
-                                handleInput(
-                                    'changeCategory',
-                                    categories?.find(({ name }) => name === change.selectedItem)
-                                )
-                            }
-                        />
-                    }
-                />
-
-                <BannerItem
-                    title=""
-                    value={
-                        <SingleSelect
-                            items={scopes?.map(({ name }) => name) ?? []}
-                            label={'Scope'}
-                            meta="(Required)"
-                            initialSelectedItem={state.scopeId}
-                            placeholder="Select scope"
-                            disabled={false}
-                            handleSelectedItemChange={(change) =>
-                                handleInput(
-                                    'scopeId',
-                                    scopes?.find(({ name }) => name === change.selectedItem)?.id
-                                )
-                            }
-                        />
-                    }
-                />
-
-                <BannerItem title="State" value={<div>Draft</div>} />
-            </Banner>
-        </div>
-    );
-};
