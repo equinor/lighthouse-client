@@ -82,7 +82,7 @@ const CableWrapper = styled.div`
     width: 150px;
 `;
 
-const CableNode = styled.div`
+export const CableNode = styled.div`
     display: flex;
     flex-direction: horizontal;
     width: 150px;
