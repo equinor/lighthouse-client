@@ -1,4 +1,4 @@
-import { EventHub } from '@equinor/Utils';
+import { EventHub } from '@equinor/lighthouse-utils';
 import { CustomEventActions } from '.';
 import { ApplyEventArgs, SaveEventArgs } from '../types';
 export const bookmarkEvents = {

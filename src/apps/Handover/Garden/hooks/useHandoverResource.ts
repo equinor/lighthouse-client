@@ -1,5 +1,5 @@
 import { usePackageResource } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { useCallback } from 'react';
 import { useHttpClient } from '../../../../Core/Client/Hooks';
 import { HandoverResourceTypeMap } from '../models/handoverResources';

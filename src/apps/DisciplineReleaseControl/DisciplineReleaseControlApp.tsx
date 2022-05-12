@@ -1,32 +1,33 @@
 import { tokens } from '@equinor/eds-tokens';
-import { ClientApi } from '@equinor/portal-client';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { getGardenItemColor } from './Components/Garden/gardenFunctions';
 import {
     drcGardenKeys,
     fieldSettings,
-    getHighlightedColumn,
+    getHighlightedColumn
 } from './Components/Garden/gardenSetup';
+import ReleaseControlGardenGroupView from './Components/Garden/ReleaseControlGardenGroupView';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
-import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
+import { GatewaySidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import {
     StepFilterContainer,
     StepFilterText,
-    WorkflowFilterDot,
+    WorkflowFilterDot
 } from './Components/Workflow/Components/WorkflowFilterDot';
+import { WorkflowWarningTriangle } from './Components/Workflow/Components/WorkflowWarningTriangle';
 import { CurrentStepContainer } from './Components/Workflow/Styles/styles';
 import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
 import {
     checklistTagFunc,
     createChecklistSteps,
     getHTList,
-    getStatusLetterFromStatus,
+    getStatusLetterFromStatus
 } from './Functions/tableHelpers';
 import { Monospace } from './Styles/Monospace';
 import { Pipetest } from './Types/pipetest';
-import { WorkflowWarningTriangle } from './Components/Workflow/Components/WorkflowWarningTriangle';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -42,7 +43,7 @@ export function setup(appApi: ClientApi): void {
 
     const request = appApi
         .createWorkSpace<Pipetest>({
-            CustomSidesheet: ReleaseControlSidesheet,
+            CustomSidesheet: GatewaySidesheet,
             objectIdentifier: 'name',
             defaultTab: 'garden',
         })
@@ -251,6 +252,7 @@ export function setup(appApi: ClientApi): void {
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
+            customGroupView: ReleaseControlGardenGroupView,
         },
         highlightColumn: getHighlightedColumn,
         itemWidth: () => 150,

@@ -1,12 +1,21 @@
-import { httpClient } from '@equinor/portal-client';
-
+import { httpClient } from '@equinor/lighthouse-portal-client';
+import { BookmarkError, BookmarkErrorResponse } from '../../types';
+type ErrorResponse = {
+    error: BookmarkErrorResponse;
+};
 export const getBookmarks = async (appKey: string, signal?: AbortSignal) => {
     const { fusionBookmarks } = httpClient();
-    const filterAppKey = `$filter=appKey%20eq%20jc-${appKey}`;
+    const filterAppKey = encodeURI(`$filter=appKey eq 'jc-${appKey}'`);
     const filterSourceSystem = '$filter=sourcesystem.SubSystem%20eq%20ConstructionAndCommissioning';
-    const bookmarks = await fusionBookmarks.get(
+    const response = await fusionBookmarks.get(
         `persons/me/bookmarks?api-version=1.0&${filterAppKey}`,
         { signal }
     );
-    return await bookmarks.json();
+
+    if (!response.ok) {
+        const { error } = (await response.json()) as ErrorResponse;
+        throw new BookmarkError(error?.message);
+    }
+
+    return await response.json();
 };

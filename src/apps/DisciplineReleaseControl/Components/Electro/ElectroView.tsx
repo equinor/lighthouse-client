@@ -19,10 +19,16 @@ interface ElectroViewProps {
     pipetest: Pipetest;
     pipetests: Pipetest[];
     width: number;
+    htCable?: string; //HT cable tagNo if htCable should be the focus of the diagram (HT sidesheet)
 }
 
 // If this component gets logic that causes it to need re-renders, it should be rewritten to use more useMemo()/hooks to avoid re-calculating static logic
-export const ElectroView = ({ pipetest, pipetests, width }: ElectroViewProps): JSX.Element => {
+export const ElectroView = ({
+    pipetest,
+    pipetests,
+    width,
+    htCable,
+}: ElectroViewProps): JSX.Element => {
     //Find circuit starter tags from circuits on pipetest
     let circuitStarterTagNos = '';
     const circuitStarterTagNosArray: string[] = [];
@@ -42,12 +48,16 @@ export const ElectroView = ({ pipetest, pipetests, width }: ElectroViewProps): J
         }
     }
 
-    const { data } = useQuery([circuitStarterTagNos], () => getEleNetworks(circuitStarterTagNos), {
+    let { data } = useQuery([circuitStarterTagNos], () => getEleNetworks(circuitStarterTagNos), {
         staleTime: Infinity,
         cacheTime: Infinity,
     });
 
     let switchboardArray;
+
+    if (htCable && data) {
+        data = data.filter((x) => x.circuits.some((x) => x.tagNo === htCable));
+    }
 
     if (data !== undefined) {
         for (let i = 0; i < data.length; i++) {
@@ -122,6 +132,7 @@ export const ElectroView = ({ pipetest, pipetests, width }: ElectroViewProps): J
                                                             eleNetwork={eleNetwork}
                                                             pipetests={pipetests}
                                                             currentPipetest={pipetest}
+                                                            htCable={htCable}
                                                         />
                                                     </ElectroViewRow>
                                                 );

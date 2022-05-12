@@ -4,8 +4,8 @@ import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
-import { isProduction } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
@@ -30,7 +30,7 @@ import {
 
 interface CompletionViewHeaderProps {
     title: string;
-    groupe: string | string[];
+    groupe: string;
     tabs: TabsConfigItem[];
     sideSheetWidth: number;
 }
@@ -44,7 +44,7 @@ export const CompletionViewHeader = ({
     sideSheetWidth,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
-    const { factory, setSelected } = useFactory(key);
+    const { factory } = useFactory(key);
     const {
         hasPowerBi,
         pages,
@@ -104,7 +104,7 @@ export const CompletionViewHeader = ({
                     {factory && (
                         <>
                             <TabButton
-                                onClick={setSelected}
+                                onClick={factory.onClick}
                                 aria-selected={false}
                                 title={factory.title}
                             >
@@ -167,6 +167,7 @@ export const CompletionViewHeader = ({
                             <ClickableIcon size={24} name="refresh" />
                         )}
                     </TabButton>
+                    {!isProduction() && <BookmarkDropdown appKey={title} subSystem={groupe} />}
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton
@@ -189,10 +190,6 @@ export const CompletionViewHeader = ({
                             >
                                 {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                             </TabButton>
-
-                            {!isProduction() && (
-                                <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
-                            )}
                         </>
                     )}
                 </RightSection>

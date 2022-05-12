@@ -1,14 +1,15 @@
-import { ClientApi } from '@equinor/portal-client';
+import { ResolverFunction } from '@equinor/lighthouse-functions';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
+import { SidesheetComponentManifest, SidesheetWidgetManifest } from '@equinor/lighthouse-widgets';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
-
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
 import { dataCreator } from './workspaceConfig/dataCreatorConfig';
 import { dataSource, idResolver } from './workspaceConfig/dataOptions';
 import { filterConfig } from './workspaceConfig/filter/filterConfig';
-import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
 import { prefetchQueriesOptions } from './workspaceConfig/prefetchQueryOptions';
-import { statusBarConfig } from './workspaceConfig/statusBarConfig';
+import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
 import { tableConfig } from './workspaceConfig/sTable/tableConfig';
+import { statusBarConfig } from './workspaceConfig/statusBarConfig';
 
 export function setup(appApi: ClientApi): void {
     appApi
@@ -39,3 +40,24 @@ export function setup(appApi: ClientApi): void {
     //     reportURI: 'pp-scope-change-analytics',
     // });
 }
+
+export const changeSideSheetWidgetManifest: SidesheetWidgetManifest = {
+    widgetId: 'change',
+    widgetType: 'sidesheet',
+    color: '#7B3A96',
+    props: {
+        resolverId: 'changeResolver',
+    },
+};
+
+export const changeSideSheetWidgetComponent: SidesheetComponentManifest = {
+    widgetId: 'change',
+    widgetType: 'sidesheet',
+    widget: SidesheetWrapper,
+};
+
+export const changeFunction: ResolverFunction = {
+    functionId: 'changeResolver',
+    function: idResolver.idResolver,
+    type: 'idResolver',
+};

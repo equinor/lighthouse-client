@@ -1,4 +1,4 @@
-import { useCurrentUser, useHttpClient } from '@equinor/portal-client';
+import { useCurrentUser, useHttpClient } from '@equinor/lighthouse-portal-client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 export type ContextErrorType = 'NotAuthorizedReport' | 'NotAuthorized' | 'MissingContextRelation';

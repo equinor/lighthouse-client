@@ -7,6 +7,7 @@ import {
     EleNetworkCheckList,
     EleNetworkCircuit,
 } from '../../Types/eleNetwork';
+import { HTSidesheet, Pipetest } from '../../Types/pipetest';
 
 export function getCircuitChildren(
     eleNetwork: EleNetwork,
@@ -89,4 +90,15 @@ export function getElectroTestStatus(testType: string, checkLists: EleNetworkChe
     } else {
         return CheckListStatus.Outstanding;
     }
+}
+
+export function getHTSidesheetObjectForHtCable(
+    htCable: string,
+    pipetests: Pipetest[]
+): HTSidesheet {
+    const htSidesheet: HTSidesheet = { value: htCable, items: [] };
+
+    htSidesheet.items = pipetests.filter((x) => x.checkLists.some((y) => y.tagNo === htCable));
+
+    return htSidesheet;
 }

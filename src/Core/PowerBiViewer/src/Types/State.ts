@@ -7,7 +7,7 @@ export interface CoreViewState {
 export interface ViewState {
     title: string;
     shortName: string;
-    groupe: string | string[];
+    groupe: string;
     reports: FusionPowerBiOptions[];
 }
 
