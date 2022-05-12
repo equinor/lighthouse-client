@@ -3,6 +3,7 @@ import { CheckListStatus, PipetestCompletionStatus, PipetestStep } from './drcEn
 export interface Pipetest {
     name: string;
     step: PipetestStep;
+    steps: PipetestStep[];
     completionStatus: PipetestCompletionStatus;
     pipetestProcessDoneInRightOrder: boolean;
     shortformCompletionStatus: CheckListStatus;
