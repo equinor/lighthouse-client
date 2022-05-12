@@ -7,6 +7,7 @@ import { useOctopusErrorHandler } from '../../hooks/observers/useOctopusErrorHan
 import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
 import { createAtom } from '../../../../Core/Atom/functions/createAtom';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
+import { FormBanner } from '../Form/FormBanner/FormBanner';
 
 interface ScopeChangeCreateFormProps {
     actions: SidesheetApi;
@@ -25,6 +26,7 @@ export const ScopeChangeCreateForm = ({ actions }: ScopeChangeCreateFormProps): 
     return (
         <>
             <ScopeChangeErrorBanner />
+            <FormBanner />
             <Wrapper>
                 <ScopeChangeRequestForm />
             </Wrapper>

@@ -19,7 +19,6 @@ import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuessti
 import { Button, Progress } from '@equinor/eds-core-react';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { scopeChangeCreateContext } from '../DataCreator/DataCreatorWrapper';
-import { FormBanner } from './FormBanner/FormBanner';
 
 export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
@@ -27,7 +26,6 @@ export const ScopeChangeRequestForm = (): JSX.Element => {
     return (
         <>
             <div>
-                <FormBanner />
                 <br />
                 <FormWrapper>
                     <FlexColumn>
