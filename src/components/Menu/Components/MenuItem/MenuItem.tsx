@@ -1,4 +1,4 @@
-import { isAppActive, isProduction } from '@equinor/portal-client';
+import { isAppActive, isProduction } from '@equinor/lighthouse-portal-client';
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppManifest } from '../../../../Core/Client/Types';

@@ -1,5 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
-import { ClientApi } from '@equinor/portal-client';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { getGardenItemColor } from './Components/Garden/gardenFunctions';
 import {
@@ -7,6 +7,7 @@ import {
     fieldSettings,
     getHighlightedColumn,
 } from './Components/Garden/gardenSetup';
+import ReleaseControlGardenGroupView from './Components/Garden/ReleaseControlGardenGroupView';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { GatewaySidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
@@ -16,6 +17,7 @@ import {
     StepFilterText,
     WorkflowFilterDot,
 } from './Components/Workflow/Components/WorkflowFilterDot';
+import { WorkflowWarningTriangle } from './Components/Workflow/Components/WorkflowWarningTriangle';
 import { CurrentStepContainer } from './Components/Workflow/Styles/styles';
 import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
 import {
@@ -25,9 +27,8 @@ import {
     getStatusLetterFromStatus,
 } from './Functions/tableHelpers';
 import { Monospace } from './Styles/Monospace';
+import { PipetestStep } from './Types/drcEnums';
 import { Pipetest } from './Types/pipetest';
-import { WorkflowWarningTriangle } from './Components/Workflow/Components/WorkflowWarningTriangle';
-import ReleaseControlGardenGroupView from './Components/Garden/ReleaseControlGardenGroupView';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -70,23 +71,64 @@ export function setup(appApi: ClientApi): void {
                     values.sort((a, b) => {
                         const map = new Map<string, number>();
 
-                        map.set('unknown', 0);
-                        map.set('pressuretest', 1);
-                        map.set('chemicalcleaning', 2);
-                        map.set('hotoilflushing', 3);
-                        map.set('bolttensioning', 4);
-                        map.set('painting', 5);
-                        map.set('a-test', 6);
-                        map.set('insulation', 7);
-                        map.set('boxInsulation', 8);
-                        map.set('b-test', 9);
-                        map.set('marking', 10);
-                        map.set('complete', 11);
+                        map.set(PipetestStep.Unknown, 0);
+                        map.set(PipetestStep.PressureTest, 1);
+                        map.set(PipetestStep.ChemicalCleaning, 2);
+                        map.set(PipetestStep.HotOilFlushing, 3);
+                        map.set(PipetestStep.Bolttensioning, 4);
+                        map.set(PipetestStep.Painting, 5);
+                        map.set(PipetestStep.HtTest, 6);
+                        map.set(PipetestStep.Insulation, 7);
+                        map.set(PipetestStep.BoxInsulation, 8);
+                        map.set(PipetestStep.HtRetest, 9);
+                        map.set(PipetestStep.HtCTest, 10);
+                        map.set(PipetestStep.Marking, 11);
+                        map.set(PipetestStep.Complete, 12);
 
                         if (typeof a !== 'string') return 0;
                         if (typeof b !== 'string') return 0;
 
-                        return (map.get(a.toLowerCase()) ?? -0) - (map.get(b.toLowerCase()) ?? -0);
+                        return (map.get(a) ?? -0) - (map.get(b) ?? -0);
+                    });
+                    return values;
+                },
+            },
+
+            {
+                name: 'Step name',
+                valueFormatter: ({ steps }) => steps.filter((v, i, a) => a.indexOf(v) === i),
+                customValueRender: (value) => {
+                    return (
+                        <StepFilterContainer>
+                            <WorkflowFilterDot
+                                color={getGardenItemColor(value?.toString())}
+                                circleText={getStatusLetterFromStatus(value?.toString())}
+                            />
+                            <StepFilterText title={value?.toString()}>{value}</StepFilterText>
+                        </StepFilterContainer>
+                    );
+                },
+                sort: (values) => {
+                    values.sort((a, b) => {
+                        const map = new Map<string, number>();
+
+                        map.set(PipetestStep.Unknown, 0);
+                        map.set(PipetestStep.PressureTest, 1);
+                        map.set(PipetestStep.ChemicalCleaning, 2);
+                        map.set(PipetestStep.HotOilFlushing, 3);
+                        map.set(PipetestStep.Bolttensioning, 4);
+                        map.set(PipetestStep.Painting, 5);
+                        map.set(PipetestStep.HtTest, 6);
+                        map.set(PipetestStep.Insulation, 7);
+                        map.set(PipetestStep.BoxInsulation, 8);
+                        map.set(PipetestStep.HtRetest, 9);
+                        map.set(PipetestStep.HtCTest, 10);
+                        map.set(PipetestStep.Marking, 11);
+
+                        if (typeof a !== 'string') return 0;
+                        if (typeof b !== 'string') return 0;
+
+                        return (map.get(a) ?? -0) - (map.get(b) ?? -0);
                     });
                     return values;
                 },
@@ -151,6 +193,7 @@ export function setup(appApi: ClientApi): void {
             'circuits',
             'pipetestProcessDoneInRightOrder',
             'step',
+            'steps',
             'pipeInsulationBoxes',
             'pipingRfcUniqueHT',
         ],

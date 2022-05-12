@@ -27,10 +27,16 @@
             "@equinor/Kpi": [
                 "./src/packages/KPI"
             ],
+            "@equinor/lighthouse-widgets": [
+                "./src/Core/Widgets"
+            ],
+            "@equinor/lighthouse-functions": [
+                "./src/Core/Functions"
+            ],
             "@equinor/atom": [
                 "./src/Core/Atom"
             ],
-            "@equinor/portal-client": [
+            "@equinor/lighthouse-portal-client": [
                 "./src/Core/Client"
             ],
             "@equinor/lighthouse-components": [
@@ -84,7 +90,7 @@
             "@equinor/hooks": [
                 "./src/hooks"
             ],
-            "@equinor/Utils": [
+            "@equinor/lighthouse-utils": [
                 "./src/packages/Utils"
             ],
             "@equinor/typeGuard": [

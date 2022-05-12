@@ -1,8 +1,7 @@
 import { Button, SingleSelect, TextField } from '@equinor/eds-core-react';
-import { useFacility } from '@equinor/portal-client';
+import { useFacility } from '@equinor/lighthouse-portal-client';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
-
 import { ClickableIcon } from '../../../../../packages/Components/Icon';
 import { scopeChangeFormAtomApi } from '../../../Atoms/FormAtomApi/formAtomApi';
 import { ProCoSysQueries } from '../../../keys/ProCoSysQueries';

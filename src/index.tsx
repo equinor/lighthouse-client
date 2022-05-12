@@ -1,6 +1,6 @@
 import { Icon as EdsIcon } from '@equinor/eds-core-react';
 import * as icons from '@equinor/eds-icons';
-import { createClient } from '@equinor/portal-client';
+import { createClient } from '@equinor/lighthouse-portal-client';
 import { render } from 'react-dom';
 import Client from './AppClient';
 import { getAppGroups, getApps } from './apps/apps';

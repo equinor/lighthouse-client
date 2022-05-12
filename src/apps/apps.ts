@@ -1,4 +1,4 @@
-import { AppGroupe, AppGroups, AppManifest } from '@equinor/portal-client';
+import { AppGroupe, AppGroups, AppManifest } from '@equinor/lighthouse-portal-client';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { ConstructionManagementIcon } from '../icons/construction management icon';
@@ -15,6 +15,7 @@ import { setup as checklistSetup } from './Checklist';
 import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
 import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
+import { setup as McSetup } from './MechanicalCompletion';
 import {
     BusinessCaseReport,
     LCIReport,
@@ -22,7 +23,7 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
 import { SidesheetWrapper } from './ScopeChangeRequest/Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
@@ -30,7 +31,6 @@ import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeReque
 import { setup as SwcrSetup } from './swcr';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
-import { setup as McSetup } from './MechanicalCompletion';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -286,7 +286,7 @@ export const apps: AppManifest[] = [
             setup: McSetup,
         },
         tags: ['Job'],
-        appEnv: 'dev',
+        appEnv: 'test',
     },
 
     {

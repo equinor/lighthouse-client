@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { Notification } from '../Types/Notification';
 import { NotificationList } from '../Types/NotificationList';
 

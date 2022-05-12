@@ -29,6 +29,7 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
         pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
         pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
         pipetest.step = getPipetestStatus(pipetest);
+        pipetest.steps = getPipetestSteps(pipetest);
         pipetest.pipetestProcessDoneInRightOrder = isPipetestProcessDoneInRightOrder(pipetest);
         pipetest.completionStatus = getPipetestCompletionStatus(pipetest);
         pipetest.shortformCompletionStatus = getShortformCompletionStatusName(
@@ -227,6 +228,56 @@ export function getPipetestStatus(pipetest: Pipetest): PipetestStep {
     } else {
         return PipetestStep.Complete;
     }
+}
+
+export function getPipetestSteps(pipetest: Pipetest): PipetestStep[] {
+    const pipetestSteps: PipetestStep[] = [];
+
+    if (
+        pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.PressureTest)
+    ) {
+        pipetestSteps.push(PipetestStep.PressureTest);
+    }
+    if (
+        pipetest.checkLists.some(
+            (x) => x.tagNo.substring(0, 2) === CheckListStepTag.ChemicalCleaning
+        )
+    ) {
+        pipetestSteps.push(PipetestStep.ChemicalCleaning);
+    }
+    if (
+        pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.HotOilFlushing)
+    ) {
+        pipetestSteps.push(PipetestStep.HotOilFlushing);
+    }
+    if (
+        pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Bolttensioning)
+    ) {
+        pipetestSteps.push(PipetestStep.Bolttensioning);
+    }
+    if (pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Painting)) {
+        pipetestSteps.push(PipetestStep.Painting);
+    }
+    if (pipetest.checkLists.some((x) => x.formularType === CheckListStepTag.HtTest)) {
+        pipetestSteps.push(PipetestStep.HtTest);
+    }
+    if (pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Insulation)) {
+        pipetestSteps.push(PipetestStep.Insulation);
+    }
+    if (pipetest.insulationBoxes.length !== 0) {
+        pipetestSteps.push(PipetestStep.BoxInsulation);
+    }
+    if (pipetest.checkLists.some((x) => x.formularType === CheckListStepTag.HtRetest)) {
+        pipetestSteps.push(PipetestStep.HtRetest);
+    }
+    if (pipetest.checkLists.some((x) => x.formularType === CheckListStepTag.HtCTest)) {
+        pipetestSteps.push(PipetestStep.HtCTest);
+    }
+    if (pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Marking)) {
+        pipetestSteps.push(PipetestStep.Marking);
+    }
+
+    return pipetestSteps;
 }
 
 export function isPipetestProcessDoneInRightOrder(pipetest: Pipetest): boolean {

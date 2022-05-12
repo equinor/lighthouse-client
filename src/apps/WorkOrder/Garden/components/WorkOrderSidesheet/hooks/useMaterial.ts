@@ -1,5 +1,5 @@
 import { usePackageResource } from '@equinor/GardenUtils';
-import { isProduction, useHttpClient } from '@equinor/portal-client';
+import { isProduction, useHttpClient } from '@equinor/lighthouse-portal-client';
 import { useCallback } from 'react';
 import { WorkOrderMaterial } from '../../../models';
 

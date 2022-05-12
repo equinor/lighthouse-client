@@ -77,13 +77,7 @@ export const ElectroNode = ({
         cableBorderBottom?: boolean
     ) {
         if (cableNode !== undefined) {
-            return (
-                <Cable
-                    value={cableNode?.tagNo}
-                    status={nodeStatus}
-                    borderBottom={cableBorderBottom}
-                />
-            );
+            return <Cable cable={cableNode} status={nodeStatus} borderBottom={cableBorderBottom} />;
         }
         switch (node?.eleSymbolCode) {
             case 'TAVLE':
