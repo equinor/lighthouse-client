@@ -2,13 +2,7 @@ import { FieldSettings } from '../../../../components/ParkView/Models/fieldSetti
 import { getYearAndWeekFromDate, getYearAndWeekFromString } from '../../Functions/statusHelpers';
 
 import { Pipetest } from '../../Types/pipetest';
-import {
-    getStatusKey,
-    getSystemKey,
-    groupBySystem,
-    sortByNumber,
-    sortByPipetestStatus,
-} from './gardenFunctions';
+import { getSystemKey, groupBySystem, sortByNumber, sortByPipetestStatus } from './gardenFunctions';
 
 export type ExtendedGardenFields = 'system' | 'dueAtDate' | 'priority';
 
@@ -18,7 +12,11 @@ export const drcGardenKeys = {
 };
 
 export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
-    step: { label: 'Current step', getKey: getStatusKey, getColumnSort: sortByPipetestStatus },
+    step: {
+        label: 'Current step',
+        getKey: (item) => item.step,
+        getColumnSort: sortByPipetestStatus,
+    },
     system: { label: 'System', getKey: getSystemKey, getColumnSort: groupBySystem },
     heatTraces: {
         label: 'HT cable',

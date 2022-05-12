@@ -71,17 +71,58 @@ export function setup(appApi: ClientApi): void {
                         const map = new Map<string, number>();
 
                         map.set('unknown', 0);
-                        map.set('pressuretest', 1);
-                        map.set('chemicalcleaning', 2);
-                        map.set('hotoilflushing', 3);
-                        map.set('bolttensioning', 4);
+                        map.set('pressure test', 1);
+                        map.set('chemical cleaning', 2);
+                        map.set('hot oil flushing', 3);
+                        map.set('bolt tensioning', 4);
                         map.set('painting', 5);
                         map.set('a-test', 6);
                         map.set('insulation', 7);
-                        map.set('boxInsulation', 8);
+                        map.set('box insulation', 8);
                         map.set('b-test', 9);
-                        map.set('marking', 10);
-                        map.set('complete', 11);
+                        map.set('c-test', 10);
+                        map.set('marking', 11);
+                        map.set('complete', 12);
+
+                        if (typeof a !== 'string') return 0;
+                        if (typeof b !== 'string') return 0;
+
+                        return (map.get(a.toLowerCase()) ?? -0) - (map.get(b.toLowerCase()) ?? -0);
+                    });
+                    return values;
+                },
+            },
+
+            {
+                name: 'Step name',
+                valueFormatter: ({ steps }) => steps.filter((v, i, a) => a.indexOf(v) === i),
+                customValueRender: (value) => {
+                    return (
+                        <StepFilterContainer>
+                            <WorkflowFilterDot
+                                color={getGardenItemColor(value?.toString())}
+                                circleText={getStatusLetterFromStatus(value?.toString())}
+                            />
+                            <StepFilterText title={value?.toString()}>{value}</StepFilterText>
+                        </StepFilterContainer>
+                    );
+                },
+                sort: (values) => {
+                    values.sort((a, b) => {
+                        const map = new Map<string, number>();
+
+                        map.set('unknown', 0);
+                        map.set('pressure test', 1);
+                        map.set('chemical cleaning', 2);
+                        map.set('hot oil flushing', 3);
+                        map.set('bolt tensioning', 4);
+                        map.set('painting', 5);
+                        map.set('a-test', 6);
+                        map.set('insulation', 7);
+                        map.set('box insulation', 8);
+                        map.set('b-test', 9);
+                        map.set('c-test', 10);
+                        map.set('marking', 11);
 
                         if (typeof a !== 'string') return 0;
                         if (typeof b !== 'string') return 0;

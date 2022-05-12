@@ -1,15 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
 import { DateTime } from 'luxon';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
-import { getPipetestStatus, getPipetestStatusEnumByValue } from '../../Functions/statusHelpers';
+import { getPipetestStatusEnumByValue } from '../../Functions/statusHelpers';
 import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
 import { PipetestStep, PipetestStatusOrder, PipetestCompletionStatus } from '../../Types/drcEnums';
 import { Pipetest } from '../../Types/pipetest';
-
-export const getStatusKey: GetKeyFunction<Pipetest> = (item) => {
-    const pipetestStatusFieldKey = getPipetestStatus(item);
-    return pipetestStatusFieldKey.toString();
-};
 
 export const sortByPipetestStatus = (a: string, b: string): number => {
     return PipetestStatusOrder[getPipetestStatusEnumByValue(a)]
