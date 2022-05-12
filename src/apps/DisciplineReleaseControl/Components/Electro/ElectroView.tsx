@@ -95,7 +95,7 @@ export const ElectroView = ({
         <>
             {pipetest && circuitStarterTagNos !== '' ? (
                 <>
-                    {!data && <h3>Loading single line diagram...</h3>}
+                    {!data && <h3 style={{ marginLeft: '8px' }}>Loading circuit diagram...</h3>}
                     <ElectroViewContainer width={width}>
                         {switchboardArray?.map((eleNetworksForSwitchboard: EleNetwork[]) => {
                             const switchboardTagNo =
@@ -145,7 +145,7 @@ export const ElectroView = ({
                     </ElectroViewContainer>
                 </>
             ) : (
-                <h3>No single line diagram found for this pipetest</h3>
+                <h3 style={{ marginLeft: '8px' }}>No circuit diagram found for this pipetest</h3>
             )}
         </>
     );

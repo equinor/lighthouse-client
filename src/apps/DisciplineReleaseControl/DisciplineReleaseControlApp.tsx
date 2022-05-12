@@ -193,6 +193,7 @@ export function setup(appApi: ClientApi): void {
             'circuits',
             'pipetestProcessDoneInRightOrder',
             'step',
+            'steps',
             'pipeInsulationBoxes',
             'pipingRfcUniqueHT',
         ],
