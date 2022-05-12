@@ -25,6 +25,7 @@ import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { useUnpackRelatedObjects } from '../../hooks/queries/useUnpackRelatedObjects';
 import { disableEditMode } from '../../Atoms/editModeAtom';
 import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
+import { CreateBannerInputs } from './CreateBannerInputs/CreateBannerInputs';
 
 interface ScopeChangeRequestEditFormProps {
     request: ScopeChangeRequest;
@@ -60,11 +61,15 @@ export const ScopeChangeRequestEditForm = ({
 
     const { handleInput, isValid, state } = useScopeChangeFormState({
         ...request,
+        scopeId: request?.scope?.id,
+        scope: request.scope,
         attachments: [],
-        disciplineGuesstimates: request.disciplineGuesstimates.map((x) => ({
-            disciplineCode: x.discipline.procosysCode,
-            guesstimateHours: x.guesstimate,
-        })),
+        disciplineGuesstimates: request.disciplineGuesstimates.map(
+            ({ discipline: { procosysCode }, guesstimate }) => ({
+                disciplineCode: procosysCode,
+                guesstimateHours: guesstimate,
+            })
+        ),
     });
 
     const handleSave = (setAsOpen: boolean) =>
@@ -77,6 +82,7 @@ export const ScopeChangeRequestEditForm = ({
 
     return (
         <Wrapper>
+            <CreateBannerInputs handleInput={handleInput} state={state} />
             <FormWrapper>
                 <FlexColumn>
                     Request
