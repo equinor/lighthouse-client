@@ -1,9 +1,9 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
-import { ScopeChangeRequestFormModel } from '../../../types/scopeChangeRequest';
 import { throwOnError } from '../../../functions/throwError';
+import { ScopeChangeCreateEditModel } from '../../../types/scopeChangeRequest';
 
 export async function patchScopeChange(
-    request: ScopeChangeRequestFormModel,
+    request: ScopeChangeCreateEditModel,
     setAsOpen?: boolean
 ): Promise<string> {
     const { scopeChange } = httpClient();

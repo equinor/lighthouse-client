@@ -1,19 +1,16 @@
 import { Button, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { useFacility } from '@equinor/portal-client';
-import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 
 import { ClickableIcon } from '../../../../../packages/Components/Icon';
+import { scopeChangeFormAtomApi } from '../../../Atoms/FormAtomApi/formAtomApi';
 import { ProCoSysQueries } from '../../../keys/ProCoSysQueries';
 import { Discipline } from '../../../types/ProCoSys/discipline';
 import { DisciplineGuesstimate } from '../../../types/scopeChangeRequest';
 import { ButtonContainer } from '../ScopeChangeForm.styles';
 import { GuesstimateList } from './disciplineGuesstimate.styles';
-import {
-    extractDisciplineCodeFromlabel,
-    generateSelectOptions,
-} from './Utils/generateSelectOptions';
+import { generateSelectOptions } from './Utils/generateSelectOptions';
 
 const Guesstimate = styled.div`
     display: grid;
@@ -21,17 +18,12 @@ const Guesstimate = styled.div`
     align-items: center;
     gap: 1em;
 `;
-interface GuesstimateDisciplineProps {
-    state: DisciplineGuesstimate[];
-    updateFormValue: (guesses: DisciplineGuesstimate[]) => void;
-}
 
-export const GuesstimateDiscipline = ({
-    state,
-    updateFormValue,
-}: GuesstimateDisciplineProps): JSX.Element => {
-    const [guesstimates, setGuesstimates] = useState<DisciplineGuesstimate[]>(
-        state.length > 0 ? state : [{ guesstimateHours: NaN, disciplineCode: '' }]
+export const GuesstimateDiscipline = (): JSX.Element => {
+    const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
+    const guesstimates = useAtomState(
+        ({ disciplineGuesstimates }) =>
+            disciplineGuesstimates ?? [{ disciplineCode: '', guesstimateHours: 0 }]
     );
 
     const { procosysPlantId } = useFacility();
@@ -41,20 +33,24 @@ export const GuesstimateDiscipline = ({
     );
 
     const appendGuesstimate = () =>
-        setGuesstimates((old) => [...old, { disciplineCode: '', guesstimateHours: null }]);
-    const handleRemove = (index: number) =>
-        setGuesstimates((old) => old.filter((_, i) => i !== index));
-    const handleChange = (index: number, guess: DisciplineGuesstimate) =>
-        setGuesstimates((old) => [...old.slice(0, index), guess, ...old.slice(index + 1)]);
+        updateAtom({
+            disciplineGuesstimates: [
+                ...guesstimates,
+                { disciplineCode: '', guesstimateHours: null },
+            ],
+        });
 
-    useEffect(() => {
-        updateFormValue(
-            guesstimates.map(({ guesstimateHours, disciplineCode }) => ({
-                guesstimateHours,
-                disciplineCode: extractDisciplineCodeFromlabel(disciplineCode),
-            }))
-        );
-    }, [guesstimates]);
+    const handleRemove = (index: number) =>
+        updateAtom({ disciplineGuesstimates: guesstimates.filter((_, i) => i !== index) });
+
+    const handleChange = (index: number, guess: DisciplineGuesstimate) =>
+        updateAtom({
+            disciplineGuesstimates: [
+                ...guesstimates.slice(0, index),
+                guess,
+                ...guesstimates.slice(index + 1),
+            ],
+        });
 
     return (
         <>

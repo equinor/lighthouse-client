@@ -3,18 +3,23 @@ import { tokens } from '@equinor/eds-tokens';
 import { useCallback, useState } from 'react';
 import { FileRejection } from 'react-dropzone';
 import styled from 'styled-components';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { Attachments } from './Attachments';
 
-interface UploadProps {
-    attachments: File[];
-    handleAttachmentsChanged: (attachments: File[]) => void;
-}
-
 const maxSizeInBytes = 100 * 1000 ** 2;
-export const Upload = ({ attachments, handleAttachmentsChanged }: UploadProps): JSX.Element => {
+export const Upload = (): JSX.Element => {
+    const { useAtomState } = scopeChangeFormAtomApi;
+
+    const attachments = useAtomState(({ newAttachments }) => newAttachments ?? []);
+
+    const handleAttachmentsChanged = useCallback(
+        (attachments: File[]) => scopeChangeFormAtomApi.updateAtom({ newAttachments: attachments }),
+        []
+    );
+
     const [rejectedFiles, setRejectedFiles] = useState<FileRejection[]>([]);
-    const addFile = useCallback(
-        async (file: File) => handleAttachmentsChanged([...attachments, file]),
+    const addFiles = useCallback(
+        async (files: File[]) => handleAttachmentsChanged([...attachments, ...files]),
         [attachments, handleAttachmentsChanged]
     );
 
@@ -26,9 +31,9 @@ export const Upload = ({ attachments, handleAttachmentsChanged }: UploadProps): 
     const onDrop = useCallback(
         async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
             setRejectedFiles(fileRejections);
-            acceptedFiles && acceptedFiles.forEach((file) => addFile(file));
+            addFiles(acceptedFiles);
         },
-        [addFile]
+        [addFiles]
     );
 
     return (

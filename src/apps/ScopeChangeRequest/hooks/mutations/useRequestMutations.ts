@@ -1,34 +1,23 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { patchScopeChange, postScopeChange, uploadAttachment } from '../../api/ScopeChange/Request';
-import { TypedSelectOption } from '../../api/Search/searchType';
-import { ScopeChangeFormModel } from '../form/useScopeChangeFormState';
 import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
-import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../types/scopeChangeRequest';
+import { ScopeChangeCreateEditModel } from '../../types/scopeChangeRequest';
 
 interface EditScopeChangeParams {
-    references: TypedSelectOption[];
-    request: ScopeChangeRequest;
-    model: Partial<ScopeChangeFormModel>;
+    model: ScopeChangeCreateEditModel;
     setAsOpen?: boolean;
 }
 
 interface CreateScopeChangeParams {
     draft: boolean;
-    references: TypedSelectOption[];
-    model: Partial<ScopeChangeFormModel>;
+    model: ScopeChangeCreateEditModel;
 }
 
 interface RequestMutations {
-    editScopeChangeMutation: ({
-        references,
-        request,
-        model,
-        setAsOpen,
-    }: EditScopeChangeParams) => Promise<void>;
+    editScopeChangeMutation: ({ model, setAsOpen }: EditScopeChangeParams) => Promise<void>;
     createScopeChangeMutation: ({
         draft,
         model,
-        references,
     }: CreateScopeChangeParams) => Promise<string | undefined>;
 }
 
@@ -39,40 +28,23 @@ export function useRequestMutations(): RequestMutations {
     });
     const queryClient = useQueryClient();
 
-    const editScopeChangeMutation = async ({
-        references,
-        request,
-        model,
-        setAsOpen,
-    }: EditScopeChangeParams) => {
-        await patchScopeChange(
-            {
-                ...request,
-                ...model,
-                ...(extractReferences(references) as ScopeChangeRequestFormModel),
-                changeCategoryId: model.changeCategory?.id ?? request.changeCategory.id,
-            },
-            setAsOpen
-        );
+    const editScopeChangeMutation = async ({ model, setAsOpen }: EditScopeChangeParams) => {
+        await patchScopeChange(model, setAsOpen);
     };
 
-    const createScopeChangeMutation = async ({
-        draft,
-        model,
-        references,
-    }: CreateScopeChangeParams) => {
-        const validatedModel = model as ScopeChangeRequestFormModel;
+    const createScopeChangeMutation = async ({ draft, model }: CreateScopeChangeParams) => {
+        const validatedModel = model as ScopeChangeCreateEditModel;
         const scID = await postScopeChange(
             {
                 ...validatedModel,
                 changeCategoryId: model.changeCategory?.id ?? '',
-                ...extractReferences(references),
             },
             draft
         );
+
         if (scID) {
             const { baseKey } = scopeChangeQueryKeys(scID);
-            model?.attachments?.forEach(async (attachment) => {
+            model?.newAttachments?.forEach(async (attachment) => {
                 uploadAttachmentMutation({ file: attachment, requestId: scID });
             });
 
@@ -83,25 +55,5 @@ export function useRequestMutations(): RequestMutations {
     return {
         createScopeChangeMutation,
         editScopeChangeMutation,
-    };
-}
-
-function filterElementsByType(items: TypedSelectOption[], itemType: string) {
-    return items.filter(({ type }) => type === itemType);
-}
-
-function extractReferences(references: TypedSelectOption[]): Partial<ScopeChangeRequestFormModel> {
-    const tags = filterElementsByType(references, 'tag');
-    const systems = filterElementsByType(references, 'system');
-    const commPkgs = filterElementsByType(references, 'commpkg');
-    const areas = filterElementsByType(references, 'area');
-    const documents = filterElementsByType(references, 'document');
-
-    return {
-        tagNumbers: tags?.map((x) => x.value) || [],
-        systemIds: systems?.map((x) => Number(x.value)) || [],
-        commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
-        documentNumbers: documents?.map((x) => x.value) || [],
-        areaCodes: areas?.map((x) => x.value) || [],
     };
 }
