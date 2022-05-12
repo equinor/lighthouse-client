@@ -1,9 +1,8 @@
-import { Banner } from '@equinor/eds-core-react';
 import { useQuery } from 'react-query';
 import { ScopeChangeFormModel } from '../../../hooks/form/useScopeChangeFormState';
 import { scopeChangeQueries } from '../../../keys/queries';
 import { Scope } from '../../../types/scopeChangeRequest';
-import { BannerItem } from '../../Sidesheet/SidesheetBanner/SidesheetBanner';
+import { BannerItem, Banner } from '../../Sidesheet/SidesheetBanner/SidesheetBanner';
 import { AsyncSingleSelect } from '../AsyncSingleSelect';
 
 interface CreateBannerInputsProps {
@@ -36,64 +35,62 @@ export const CreateBannerInputs = ({
     }
 
     return (
-        <div>
-            <Banner>
-                <BannerItem
-                    title=""
-                    value={
-                        <AsyncSingleSelect
-                            items={phases ?? []}
-                            label={'Phase'}
-                            meta="(Required)"
-                            initialSelectedItem={state.phase}
-                            placeholder="Select phase"
-                            handleSelectedItemChange={({ selectedItem }) =>
-                                handlePhaseChanged(selectedItem)
-                            }
-                            isLoading={isPhasesLoading}
-                        />
-                    }
-                />
+        <Banner>
+            <BannerItem
+                title=""
+                value={
+                    <AsyncSingleSelect
+                        items={phases ?? []}
+                        label={'Phase'}
+                        meta="(Required)"
+                        initialSelectedItem={state.phase}
+                        placeholder="Select phase"
+                        handleSelectedItemChange={({ selectedItem }) =>
+                            handlePhaseChanged(selectedItem)
+                        }
+                        isLoading={isPhasesLoading}
+                    />
+                }
+            />
 
-                <BannerItem
-                    title=""
-                    value={
-                        <AsyncSingleSelect
-                            items={categories?.map(({ name }) => name) ?? []}
-                            label={'Change category'}
-                            meta="(Required)"
-                            initialSelectedItem={state.changeCategory?.name}
-                            placeholder="Select category"
-                            disabled={false}
-                            handleSelectedItemChange={({ selectedItem }) =>
-                                handleCategoryChanged(selectedItem)
-                            }
-                            isLoading={isCategoriesLoading}
-                        />
-                    }
-                />
+            <BannerItem
+                title=""
+                value={
+                    <AsyncSingleSelect
+                        items={categories?.map(({ name }) => name) ?? []}
+                        label={'Change category'}
+                        meta="(Required)"
+                        initialSelectedItem={state.changeCategory?.name}
+                        placeholder="Select category"
+                        disabled={false}
+                        handleSelectedItemChange={({ selectedItem }) =>
+                            handleCategoryChanged(selectedItem)
+                        }
+                        isLoading={isCategoriesLoading}
+                    />
+                }
+            />
 
-                <BannerItem
-                    title=""
-                    value={
-                        <AsyncSingleSelect
-                            items={scopes?.map(({ name }) => name) ?? []}
-                            label={'Scope'}
-                            meta="(Required)"
-                            initialSelectedItem={state?.scope?.name}
-                            placeholder="Select scope"
-                            disabled={false}
-                            handleSelectedItemChange={({ selectedItem }) =>
-                                handleScopeChanged(selectedItem)
-                            }
-                            isLoading={isScopesLoading}
-                        />
-                    }
-                />
+            <BannerItem
+                title=""
+                value={
+                    <AsyncSingleSelect
+                        items={scopes?.map(({ name }) => name) ?? []}
+                        label={'Scope'}
+                        meta="(Required)"
+                        initialSelectedItem={state?.scope?.name}
+                        placeholder="Select scope"
+                        disabled={false}
+                        handleSelectedItemChange={({ selectedItem }) =>
+                            handleScopeChanged(selectedItem)
+                        }
+                        isLoading={isScopesLoading}
+                    />
+                }
+            />
 
-                <BannerItem title="State" value={<div>Draft</div>} />
-            </Banner>
-        </div>
+            <BannerItem title="State" value={<div>Draft</div>} />
+        </Banner>
     );
 };
 
