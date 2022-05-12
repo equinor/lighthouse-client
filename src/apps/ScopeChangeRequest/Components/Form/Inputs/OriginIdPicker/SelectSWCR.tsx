@@ -1,7 +1,7 @@
 import { CircularProgress, Icon, Input } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useCancellationToken } from '@equinor/hooks';
-import { useHttpClient } from '@equinor/portal-client';
+import { useHttpClient } from '@equinor/lighthouse-portal-client';
 import { useState } from 'react';
 import styled from 'styled-components';
 
