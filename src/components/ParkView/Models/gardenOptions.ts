@@ -26,6 +26,7 @@ export interface CustomItemView<T> {
 export interface CustomGroupView<T> {
     data: DataSet<T>;
     onClick: () => void;
+    onSelect?: (item: T) => void;
     columnExpanded: boolean;
     groupByKeys: (keyof T)[];
 }

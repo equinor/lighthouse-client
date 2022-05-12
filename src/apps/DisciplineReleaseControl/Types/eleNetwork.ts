@@ -18,6 +18,13 @@ export interface EleNetworkCable {
     tagNo: string;
     tagFrom: string;
     tagTo: string;
+    estimatedCableLength: string;
+    installedCableLength: string;
+    pulledDate: string;
+    releasedDate: string;
+    terminatedFromDate: string;
+    terminatedToDate: string;
+    testedDate: string;
 }
 
 export interface EleNetworkCheckList {

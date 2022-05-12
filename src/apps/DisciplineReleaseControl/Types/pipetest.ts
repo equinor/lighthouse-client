@@ -3,6 +3,7 @@ import { CheckListStatus, PipetestCompletionStatus, PipetestStep } from './drcEn
 export interface Pipetest {
     name: string;
     step: PipetestStep;
+    steps: PipetestStep[];
     completionStatus: PipetestCompletionStatus;
     pipetestProcessDoneInRightOrder: boolean;
     shortformCompletionStatus: CheckListStatus;
@@ -70,3 +71,8 @@ export type InsulationBoxType = {
     object3dReference: string;
     procosysStatus: string;
 };
+
+export interface HTSidesheet {
+    value: string;
+    items: Pipetest[];
+}

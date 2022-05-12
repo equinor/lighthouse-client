@@ -28,7 +28,6 @@ export async function createClient(clientOptions: ClientOptions): Promise<Authen
     const config = await fetchConfig();
     const appConfig = registerAppConfig(config);
     const authProvider = await handleLogin(appConfig.settings);
-
     if (authProvider.isAuthenticated()) {
         try {
             registerClientRegistry(

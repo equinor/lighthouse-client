@@ -1,16 +1,14 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { baseClient } from '@equinor/http-client';
-import { ClientApi } from '@equinor/portal-client';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 import {
     cols,
     ConstructionVisual,
     CriticalWoTable,
     SidesheetContent,
-    themeColors,
+    themeColors
 } from './Components';
 import { WorkOrder } from './Types';
-import { formatNumber, weekDiff } from './Utils';
 
 const analyticsOptions: AnalyticsOptions<WorkOrder> = {
     section1: {

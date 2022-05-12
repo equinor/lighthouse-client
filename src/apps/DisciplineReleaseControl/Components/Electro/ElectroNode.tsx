@@ -21,6 +21,7 @@ interface ElectroNodeProps {
     pipetests: Pipetest[];
     currentPipetest: Pipetest;
     cableBorderBottom?: boolean;
+    htCable?: string;
 }
 
 export const ElectroNode = ({
@@ -30,6 +31,7 @@ export const ElectroNode = ({
     pipetests,
     currentPipetest,
     cableBorderBottom,
+    htCable,
 }: ElectroNodeProps): JSX.Element => {
     if (node === undefined && cableNode === undefined) return <></>;
 
@@ -75,13 +77,7 @@ export const ElectroNode = ({
         cableBorderBottom?: boolean
     ) {
         if (cableNode !== undefined) {
-            return (
-                <Cable
-                    value={cableNode?.tagNo}
-                    status={nodeStatus}
-                    borderBottom={cableBorderBottom}
-                />
-            );
+            return <Cable cable={cableNode} status={nodeStatus} borderBottom={cableBorderBottom} />;
         }
         switch (node?.eleSymbolCode) {
             case 'TAVLE':
@@ -104,6 +100,7 @@ export const ElectroNode = ({
                         eleNetwork={eleNetwork}
                         pipetests={pipetests}
                         currentPipetest={currentPipetest}
+                        htCable={htCable}
                     />
                 );
             case 'VARME':
@@ -132,6 +129,7 @@ export const ElectroNode = ({
                                 pipetests={pipetests}
                                 currentPipetest={currentPipetest}
                                 cableBorderBottom={true}
+                                htCable={htCable}
                             />
                             {remainingChildrenRender}
                         </ElectroViewVerticalRow>
@@ -142,6 +140,7 @@ export const ElectroNode = ({
                             eleNetwork={eleNetwork}
                             pipetests={pipetests}
                             currentPipetest={currentPipetest}
+                            htCable={htCable}
                         />
                     </ElectroViewRow>
                 )}
@@ -159,6 +158,7 @@ export const ElectroNode = ({
                                     pipetests={pipetests}
                                     currentPipetest={currentPipetest}
                                     cableBorderBottom={true}
+                                    htCable={htCable}
                                 />
                                 <ElectroNode
                                     key={cableTo?.tagNo}
@@ -166,6 +166,7 @@ export const ElectroNode = ({
                                     eleNetwork={eleNetwork}
                                     pipetests={pipetests}
                                     currentPipetest={currentPipetest}
+                                    htCable={htCable}
                                 />
                             </ElectroViewRow>
                         );
@@ -181,6 +182,7 @@ export const ElectroNode = ({
                                 eleNetwork={eleNetwork}
                                 pipetests={pipetests}
                                 currentPipetest={currentPipetest}
+                                htCable={htCable}
                             />
                         );
                     })}

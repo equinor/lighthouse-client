@@ -1,4 +1,4 @@
-import { AppGroupe } from '@equinor/portal-client';
+import { AppGroupe } from '@equinor/lighthouse-portal-client';
 import { Item } from '../Sheard/Styles';
 
 interface GroupItemProps {
