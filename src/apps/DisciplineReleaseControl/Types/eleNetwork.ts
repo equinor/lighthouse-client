@@ -34,3 +34,10 @@ export interface EleNetworkCheckList {
     formularGroup: string;
     status: string;
 }
+
+export enum CircuitTypes {
+    Circuit = 'TAVLE',
+    JunctionBox = 'K_BOX',
+    HTCable = 'HT_KAB',
+    SpaceHeater = 'VARME',
+}
