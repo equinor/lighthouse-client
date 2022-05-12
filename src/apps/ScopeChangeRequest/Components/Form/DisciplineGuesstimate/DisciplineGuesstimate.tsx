@@ -10,7 +10,11 @@ import { Discipline } from '../../../types/ProCoSys/discipline';
 import { DisciplineGuesstimate } from '../../../types/scopeChangeRequest';
 import { ButtonContainer } from '../ScopeChangeForm.styles';
 import { GuesstimateList } from './disciplineGuesstimate.styles';
-import { generateSelectOptions } from './Utils/generateSelectOptions';
+import {
+    constructDisciplineLabel,
+    extractDisciplineCodeFromlabel,
+    generateSelectOptions,
+} from './Utils/generateSelectOptions';
 
 const Guesstimate = styled.div`
     display: grid;
@@ -24,12 +28,6 @@ export const GuesstimateDiscipline = (): JSX.Element => {
     const guesstimates = useAtomState(
         ({ disciplineGuesstimates }) =>
             disciplineGuesstimates ?? [{ disciplineCode: '', guesstimateHours: 0 }]
-    );
-
-    const { procosysPlantId } = useFacility();
-    const { getDisciplinesQuery } = ProCoSysQueries;
-    const { data: disciplines } = useQuery<unknown, unknown, Discipline[]>(
-        getDisciplinesQuery(procosysPlantId)
     );
 
     const appendGuesstimate = () =>
@@ -62,7 +60,7 @@ export const GuesstimateDiscipline = (): JSX.Element => {
                         handleChange={(guess) => handleChange(index, guess)}
                         guesstimate={guesstimateHours}
                         disciplineName={disciplineCode}
-                        selectOptions={generateSelectOptions(disciplines ?? [], guesstimates)}
+                        allGuesstimates={guesstimates}
                     />
                 ))}
                 <ButtonContainer>
@@ -80,7 +78,8 @@ interface GuesstimateGuesserProps {
     guesstimate?: number | null;
     handleChange: (guess: DisciplineGuesstimate) => void;
     handleClear: () => void;
-    selectOptions: string[];
+
+    allGuesstimates: DisciplineGuesstimate[];
 }
 
 export const GuesstimateGuesser = ({
@@ -88,19 +87,27 @@ export const GuesstimateGuesser = ({
     disciplineName,
     handleChange,
     handleClear,
-    selectOptions,
+    allGuesstimates,
 }: GuesstimateGuesserProps): JSX.Element => {
+    const { procosysPlantId } = useFacility();
+    const { getDisciplinesQuery } = ProCoSysQueries;
+    const { data: disciplines } = useQuery<unknown, unknown, Discipline[]>(
+        getDisciplinesQuery(procosysPlantId)
+    );
+
+    const discipline = disciplines?.find(({ Code }) => Code === disciplineName);
+
     return (
         <Guesstimate>
             <SingleSelect
-                items={selectOptions}
-                value={disciplineName}
+                items={generateSelectOptions(disciplines ?? [], allGuesstimates)}
+                value={discipline && constructDisciplineLabel(discipline)}
                 label={'Disciplines'}
                 handleSelectedItemChange={({ selectedItem }) =>
                     selectedItem &&
                     handleChange({
                         guesstimateHours: guesstimate ?? NaN,
-                        disciplineCode: selectedItem,
+                        disciplineCode: extractDisciplineCodeFromlabel(selectedItem),
                     })
                 }
             />

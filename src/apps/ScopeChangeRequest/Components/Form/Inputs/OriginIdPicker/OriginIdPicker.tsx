@@ -7,19 +7,17 @@ import { MultiSelect, TextField } from '@equinor/eds-core-react';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 
 export const OriginIdPicker = (): JSX.Element => {
-    const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
+    const { useAtomState } = scopeChangeFormAtomApi;
 
     const { originSource, originSourceId } = useAtomState(({ originSource, originSourceId }) => ({
         originSource: originSource,
         originSourceId: originSourceId,
     }));
 
-    const handleOriginIdChange = useCallback(
-        (inputOriginId: string | undefined) => {
-            updateAtom({ originSourceId: inputOriginId });
-        },
-        [updateAtom]
-    );
+    const handleOriginIdChange = useCallback((inputOriginId: string | undefined) => {
+        const { updateAtom } = scopeChangeFormAtomApi;
+        updateAtom({ originSourceId: inputOriginId });
+    }, []);
 
     const setOriginId = useCallback(
         (inputOriginId: string | undefined) => {
@@ -48,7 +46,9 @@ export const OriginIdPicker = (): JSX.Element => {
                     <TextField
                         id="DCR"
                         value={originSourceId}
-                        onInput={(e) => updateAtom({ originSourceId: e.target.value })}
+                        onInput={(e) =>
+                            scopeChangeFormAtomApi.updateAtom({ originSourceId: e.target.value })
+                        }
                     />
                 );
             }
@@ -72,7 +72,7 @@ export const OriginIdPicker = (): JSX.Element => {
                     <MultiSelect disabled={true} items={[]} meta="(Required)" label={'Origin ID'} />
                 );
         }
-    }, [originSource, originSourceId, setOriginId, updateAtom]);
+    }, [originSource, originSourceId, setOriginId]);
 
     return <Wrapper>{SelectedComponent}</Wrapper>;
 };

@@ -89,7 +89,7 @@ const SubmitButtonBar = () => {
         <ActionBar>
             <ButtonContainer>
                 <>
-                    {!isLoading ? (
+                    {isLoading ? (
                         <Button variant="ghost_icon" disabled>
                             <Progress.Dots color="primary" />
                         </Button>
