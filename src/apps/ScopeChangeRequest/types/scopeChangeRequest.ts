@@ -6,6 +6,7 @@ export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
     documentNumbers: string[];
     setAsOpen?: boolean;
     scopeId: string;
+    scope: Scope;
     disciplineGuesstimates: DisciplineGuesstimate[];
     //workflow
 }

@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 import { useRefresh } from '../../../../components/ParkView/hooks/useRefresh';
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { DisciplineGuesstimate, ScopeChangeBaseModel } from '../../types/scopeChangeRequest';
+import { DisciplineGuesstimate, Scope, ScopeChangeBaseModel } from '../../types/scopeChangeRequest';
 
 export interface ScopeChangeFormState {
     isValid: boolean;
@@ -14,6 +14,7 @@ export interface ScopeChangeFormModel extends Omit<ScopeChangeBaseModel, 'change
     disciplineGuesstimates: DisciplineGuesstimate[];
     references: TypedSelectOption[];
     scopeId: string;
+    scope: Scope;
 }
 
 const RE_RERENDER_KEYS: (keyof ScopeChangeFormModel)[] = [
