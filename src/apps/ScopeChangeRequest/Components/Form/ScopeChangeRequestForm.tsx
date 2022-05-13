@@ -16,36 +16,37 @@ import { getScopeChangeById } from '../../api/ScopeChange/Request';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
-import { Button, Progress } from '@equinor/eds-core-react';
+import { Button, Progress, TextField } from '@equinor/eds-core-react';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { scopeChangeCreateContext } from '../DataCreator/DataCreatorWrapper';
+import { StyledCheckbox } from './StyledCheckbox/StyledCheckbox';
 
 export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
 
     return (
-        <>
-            <div>
-                <FormWrapper>
-                    <FlexColumn>
-                        Request
-                        <ScopeChangeBaseForm />
-                    </FlexColumn>
-                    <FlexColumn>
-                        <Section>
-                            <SearchReferences />
-                        </Section>
-                        Attachments
-                        <Upload />
-                    </FlexColumn>
-                    <FlexColumn>
-                        Disciplines and guesstimates
-                        <GuesstimateDiscipline />
-                    </FlexColumn>
-                </FormWrapper>
-                <SubmitButtonBar />
-            </div>
-        </>
+        <div>
+            <FormWrapper>
+                <FlexColumn>
+                    Request
+                    <ScopeChangeBaseForm />
+                </FlexColumn>
+                <FlexColumn>
+                    <Section>
+                        <SearchReferences />
+                    </Section>
+                    Attachments
+                    <Upload />
+                </FlexColumn>
+                <FlexColumn>
+                    Disciplines and guesstimates
+                    <GuesstimateDiscipline />
+                    Materials
+                    <MaterialsInput />
+                </FlexColumn>
+            </FormWrapper>
+            <SubmitButtonBar />
+        </div>
     );
 };
 
@@ -122,3 +123,61 @@ export const Title = styled.div`
     color: black;
     font-weight: bold;
 `;
+
+const MaterialsInput = (): JSX.Element => {
+    const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
+
+    const materials = useAtomState((s) => s.materials);
+
+    const updateIdentifiedInStorage = () => {
+        updateAtom({
+            materials: {
+                ...materials,
+                isIdentified: !materials?.isIdentified,
+            },
+        });
+    };
+
+    const updateToBeBought = () => {
+        updateAtom({
+            materials: {
+                ...materials,
+                isToBeBoughtByContractor: !materials?.isToBeBoughtByContractor,
+            },
+        });
+    };
+
+    const updateMaterialDescription = (value: string | undefined) => {
+        updateAtom({
+            materials: {
+                ...materials,
+                materialNote: value,
+            },
+        });
+    };
+
+    return (
+        <div>
+            <StyledCheckbox
+                onChange={updateIdentifiedInStorage}
+                value={materials?.isIdentified}
+                label="Materials identified in storage"
+            />
+
+            <StyledCheckbox
+                onChange={updateToBeBought}
+                value={materials?.isToBeBoughtByContractor}
+                label={'Materials to be bought by contractor'}
+            />
+
+            <TextField
+                id={(Math.random() * 16).toString()}
+                multiline
+                rows={3}
+                onInput={(e) => updateMaterialDescription(e.target.value)}
+                label="Material note"
+                placeholder="Please add description"
+            />
+        </div>
+    );
+};
