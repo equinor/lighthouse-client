@@ -6,7 +6,7 @@ export interface ScopeChangeCreateEditModel {
     description: string;
     setAsOpen?: boolean;
     scopeId: string;
-    scope: Scope;
+    scope: Scope | null;
     disciplineGuesstimates: DisciplineGuesstimate[];
     phase: string;
     changeCategoryId: string;

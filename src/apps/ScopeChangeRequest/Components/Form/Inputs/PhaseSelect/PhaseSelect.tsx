@@ -14,9 +14,9 @@ export const PhaseSelect = (): JSX.Element => {
     return (
         <SingleSelect
             items={phases ?? []}
-            label={'Change category'}
+            label={'Phase'}
             meta="(Required)"
-            placeholder="Select category"
+            placeholder="Select phase"
             value={phase}
             disabled={false}
             handleSelectedItemChange={(e) =>
