@@ -85,8 +85,6 @@ function prepareRequest(): ScopeChangeCreateEditModel {
 
     const newReq = { ...readAtomValue(), ...unPackReferences() };
     newReq.scopeId = newReq?.scope?.id;
-    newReq.references = undefined;
-    newReq['documents'] = undefined;
     newReq.changeCategoryId = newReq?.changeCategory?.id;
     newReq.disciplineGuesstimates =
         newReq.disciplineGuesstimates?.filter(({ disciplineCode }) => disciplineCode !== '') ?? [];
