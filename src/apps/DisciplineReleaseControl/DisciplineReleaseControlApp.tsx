@@ -97,6 +97,7 @@ export function setup(appApi: ClientApi): void {
             {
                 name: 'Step name',
                 valueFormatter: ({ steps }) => steps.filter((v, i, a) => a.indexOf(v) === i),
+                defaultHidden: true,
                 customValueRender: (value) => {
                     return (
                         <StepFilterContainer>
@@ -154,10 +155,12 @@ export function setup(appApi: ClientApi): void {
             {
                 name: 'Overdue',
                 valueFormatter: ({ overdue }) => overdue,
+                defaultHidden: true,
             },
             {
                 name: 'Completion status',
                 valueFormatter: ({ shortformCompletionStatus }) => shortformCompletionStatus,
+                defaultHidden: true,
             },
             {
                 name: 'Switchboard',
