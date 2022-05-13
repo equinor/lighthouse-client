@@ -28,33 +28,30 @@ export function useUnpackRelatedObjects({ request }: UseUnpackRelatedObjectsPara
         updateAtom({ references: newVals });
     };
 
-    const getReferences = () => readAtomValue().references ?? [];
-
     useEffect(() => {
-        unpackRelatedObjects(request, getReferences, handleReferencesChanged);
+        unpackRelatedObjects(request, handleReferencesChanged);
     }, [request]);
 
     function updateReferences(x: TypedSelectOption) {
-        const index = getReferences().findIndex(({ value }) => value === x.value);
+        const references = readAtomValue().references ?? [];
+
+        const index = references.findIndex(({ value }) => value === x.value);
         if (index === -1) {
-            handleReferencesChanged([...getReferences(), x]);
+            handleReferencesChanged([...references, x]);
             return;
         }
 
-        handleReferencesChanged([
-            ...getReferences().slice(0, index),
-            x,
-            ...getReferences().slice(index + 1),
-        ]);
+        handleReferencesChanged([...references.slice(0, index), x, ...references.slice(index + 1)]);
     }
 
     async function unpackRelatedObjects(
         request: ScopeChangeRequest,
-        getReferences: () => TypedSelectOption[],
         handleReferencesChanged: (references: TypedSelectOption[]) => void
     ) {
+        const { readAtomValue } = scopeChangeFormAtomApi;
+
         const appendRelatedObjects = (x: TypedSelectOption) =>
-            handleReferencesChanged([...getReferences(), x]);
+            handleReferencesChanged([...(readAtomValue().references ?? []), x]);
 
         request.commissioningPackages.forEach(async (x) => {
             const commPkgSelectOption: TypedSelectOption = {

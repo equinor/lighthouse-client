@@ -20,9 +20,13 @@ export const ScopeSelect = (): JSX.Element => {
             value={scope?.name}
             placeholder="Select scope"
             disabled={false}
-            handleSelectedItemChange={(change) =>
-                updateAtom({ scope: scopes?.find(({ name }) => name === change.selectedItem) })
-            }
+            handleSelectedItemChange={(change) => {
+                !change.selectedItem
+                    ? updateAtom({ scope: null })
+                    : updateAtom({
+                        scope: scopes?.find(({ name }) => name === change.selectedItem),
+                    });
+            }}
         />
     );
 };
