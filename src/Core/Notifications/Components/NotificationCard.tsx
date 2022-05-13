@@ -1,10 +1,11 @@
 import { DateTime } from 'luxon';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { Notification } from '../Types/Notification';
+import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
+import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
 import { readNotificationAsync } from '../API/readNotification';
 import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
-import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
+import { notificationsBaseKey } from '../queries/notificationQueries';
+import { Notification } from '../Types/Notification';
 import {
     DetailText,
     LeftSection,
@@ -13,23 +14,13 @@ import {
     TimeStamp,
     Wrapper,
 } from './NotificationCardStyles';
-import { notificationsBaseKey } from '../queries/notificationQueries';
-import { useNavigate } from 'react-router';
-import { getApps } from '../../../apps/apps';
-import { AppManifest } from '../../Client/Types';
-import { CoreContext } from '../../WorkSpace/src/WorkSpaceApi/workspaceState';
-import { deref } from '@dbeining/react-atom';
-import { useLocationKey } from '../../../packages/Filter/Hooks/useLocationKey';
 
 interface NotificationCardProps {
     notification: Notification;
     onNavigate?: () => void;
 }
 
-export const NotificationCardNew = ({
-    notification,
-    onNavigate,
-}: NotificationCardProps): JSX.Element => {
+export const NotificationCardNew = ({ notification }: NotificationCardProps): JSX.Element => {
     const queryClient = useQueryClient();
     const { read } = useNotificationMutationKeys();
 
@@ -38,35 +29,6 @@ export const NotificationCardNew = ({
     const { mutate: markAsRead } = useMutation(read, readNotificationAsync, {
         onSuccess: () => queryClient.invalidateQueries(baseKey),
     });
-
-    const navigate = useNavigate();
-    //HACK: Doesnt scale
-    const apps = new Map<string, string>();
-    apps.set('ScopeChangeControl', 'change');
-    const currentLocation = useLocationKey();
-
-    async function handleNotificationClick(appName: string, identifier: string): Promise<void> {
-        const actualName = apps.get(appName);
-        if (!actualName) throw 'App not found';
-        const app = getApps().find(({ shortName }) => shortName === actualName);
-        if (!app) throw 'Not found';
-        if (currentLocation === actualName) {
-            //mount sidesheet
-            await openSidesheet(identifier, app);
-        } else {
-            //redirect
-            navigate(`${app.groupe}/${app.shortName}#${app.shortName}/${identifier}`);
-        }
-    }
-
-    async function openSidesheet(identifier: string, app: AppManifest) {
-        const { idResolver, onSelect } = deref(CoreContext)[app.shortName];
-
-        const item = idResolver && (await idResolver(identifier));
-        if (!item) return;
-
-        onSelect && onSelect(item);
-    }
 
     const isExternalApp = notification.actionType === 'URL';
 
@@ -91,7 +53,9 @@ export const NotificationCardNew = ({
                     <DetailText>
                         <NotificationTitle>{notification.title}</NotificationTitle>
                         <TimeStamp>
-                            {DateTime.fromJSDate(new Date(notification.created)).toRelative()}
+                            {DateTime.fromJSDate(new Date(notification.created)).toRelative({
+                                locale: 'en-GB',
+                            })}
                         </TimeStamp>
                     </DetailText>
                 </LeftSection>
@@ -105,12 +69,10 @@ export const NotificationCardNew = ({
                                     )?.url,
                                     '_blank'
                                 )
-                                : handleNotificationClick(
+                                : handleActionClick(
                                     notification.sourceSystem.subSystem,
                                     notification.sourceSystem.identifier
                                 );
-
-                            onNavigate && onNavigate();
 
                             markAsRead({ notificationId: notification.id });
                         }}

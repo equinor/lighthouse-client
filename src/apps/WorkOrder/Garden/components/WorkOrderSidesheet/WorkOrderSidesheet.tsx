@@ -5,9 +5,9 @@ import {
     PROCOSYS_PROD_JC_BASE_URL,
     PROCOSYS_TEST_JC_BASE_URL,
 } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
+import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
-import { SidesheetApi } from '../../../../../packages/Sidesheet/Components/ResizableSidesheet';
 import { WorkOrder } from '../../models';
 import { useMaterial, useMccr } from './hooks';
 import { DetailsTab, MccrTab } from './Tabs';

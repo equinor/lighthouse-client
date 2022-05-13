@@ -80,7 +80,11 @@ interface ErrorFallbackProps {
     routeName?: string;
 }
 
-function ErrorFallback({ error, resetErrorBoundary, routeName }: ErrorFallbackProps): JSX.Element {
+export function ErrorFallback({
+    error,
+    resetErrorBoundary,
+    routeName,
+}: ErrorFallbackProps): JSX.Element {
     return (
         <Page>
             <Wrapper>

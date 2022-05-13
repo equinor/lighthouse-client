@@ -7,11 +7,15 @@ interface CanSignParams {
     criteriaId: string;
 }
 
-export async function canSign({ criteriaId, requestId, stepId }: CanSignParams): Promise<boolean> {
+export async function canSign(
+    { criteriaId, requestId, stepId }: CanSignParams,
+    signal?: AbortSignal
+): Promise<boolean> {
     const { scopeChange } = httpClient();
 
     const requestOptions = {
         method: 'OPTIONS',
+        signal: signal,
     };
 
     const check = () =>

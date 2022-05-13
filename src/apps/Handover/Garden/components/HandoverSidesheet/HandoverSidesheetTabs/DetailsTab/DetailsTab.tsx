@@ -5,7 +5,7 @@ import { TabContent } from './DetailsTabStyles';
 
 type DetailsTabProps = {
     commpkg: HandoverPackage;
-    nextToSign: HandoverDetails[];
+    nextToSign: HandoverDetails[] | undefined;
     dataIsFetching: boolean;
 };
 
@@ -17,7 +17,7 @@ export const DetailsTab = ({
     const NextToSign = useMemo(() => {
         if (dataIsFetching) return <>Loading...</>;
 
-        return nextToSign.length ? <>{nextToSign[0].nextToSign}</> : '';
+        return nextToSign?.length ? <>{nextToSign[0].nextToSign}</> : '';
     }, [nextToSign, dataIsFetching]);
 
     return (

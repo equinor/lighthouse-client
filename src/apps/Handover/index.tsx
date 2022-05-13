@@ -1,23 +1,19 @@
-import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
+import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
+import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
+import { statusBarData } from './Garden/components/statusItems';
 import { HandoverGroupByView } from './Garden/CustomViews';
+import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
+import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
 import { HandoverCustomGroupByKeys, HandoverPackage } from './Garden/models';
 import {
     fieldSettings,
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus,
+    sortPackagesByStatus
 } from './Garden/utility';
-import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
-import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
-import { statusBarData } from './Garden/components/statusItems';
 import { filterConfig } from './utility/config/filterSetup';
 import { tableConfig } from './utility/config/tableConfig';
-import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
-enum Tabs {
-    TABLE,
-    GARDEN,
-}
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
         weeklyDaily: 'Weekly',
@@ -27,7 +23,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<HandoverPackage>({
             CustomSidesheet: HandoverSideSheet,
             objectIdentifier: 'id',
-            defaultTab: Tabs.GARDEN,
+            defaultTab: 'garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,
@@ -51,7 +47,22 @@ export function setup(appApi: ClientApi): void {
             highlightColumn: getHighlightedColumn,
             customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
         })
-        .registerStatusItems(statusBarData);
+        .registerStatusItems(statusBarData)
+        .registerPowerBIOptions({
+            reportURI: 'pp-handover-analytics',
+            pages: [
+                {
+                    pageTitle: 'RFO Overview',
+                    pageId: 'ReportSectionb937310a77e18f67ff37',
+                    default: true,
+                },
+                { pageTitle: 'RFC overview', pageId: 'ReportSectionda03508103eaf565faf8' },
+                { pageTitle: 'Browser', pageId: 'ReportSection272f7d54d84d16689496' },
+            ],
+            options: {
+                pageLoad: true,
+            },
+        });
 }
 
 async function responseParser(response: Response) {
@@ -62,12 +73,7 @@ async function responseParser(response: Response) {
 }
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
-    const { fusion } = httpClient();
-    fusion.setBaseUrl(
-        `https://pro-s-dataproxy-${isProduction() ? 'fprd' : 'ci'}.azurewebsites.net/api/contexts/`
-    );
-    const contextId = isProduction()
-        ? '65728fee-185d-4a0c-a91d-8e3f3781dad8'
-        : '71db33bb-cb1b-42cf-b5bf-969c77e40931';
-    return await fusion.fetch(`${contextId}/handover/`, { signal: signal });
+    const { fusionDataproxy } = httpClient();
+    const contextId = getFusionContextId();
+    return await fusionDataproxy.fetch(`/api/contexts/${contextId}/handover/`, { signal: signal });
 }

@@ -1,5 +1,5 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column } from '@equinor/Table';
 import { HandoverSWCR } from '../../../models';
 
@@ -31,7 +31,7 @@ const columns: Column<HandoverSWCR>[] = [
 ];
 
 type TabProps = {
-    packages: HandoverSWCR[];
+    packages: HandoverSWCR[] | undefined;
     isFetching: boolean;
 };
 

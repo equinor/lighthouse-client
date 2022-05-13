@@ -62,7 +62,7 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
                 onSelect: onSelect as (item: unknown) => void,
                 objectIdentifier: options.objectIdentifier as string,
                 name: options.viewerId,
-                defaultTab: options.defaultTab ?? 0,
+                defaultTab: options.defaultTab ?? 'table',
                 initialState: options.initialState,
             },
         };
@@ -118,6 +118,11 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
             return workspaceAPI;
         },
 
+        registerPresets(options) {
+            updateState({ presetOptions: options });
+            return workspaceAPI;
+        },
+
         /**
          * View option Registration
          *
@@ -137,7 +142,12 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
 
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
             updateState({
-                gardenOptions: { ...gardenOptions, onSelect } as GardenOptions<unknown>,
+                gardenOptions: {
+                    //HACK if customGroupByKeys is undefined, it will break memoized variable in VGarden and cause rerender??
+                    customGroupByKeys: {},
+                    ...gardenOptions,
+                    onSelect,
+                } as GardenOptions<unknown>,
             });
 
             return workspaceAPI;

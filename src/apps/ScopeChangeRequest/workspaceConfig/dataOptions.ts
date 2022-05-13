@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { DataSource, IdResolverFunc } from '../../../Core/WorkSpace/src';
 import { ScopeChangeRequest } from '../types/scopeChangeRequest';
 
@@ -19,5 +19,10 @@ export const idResolver: IdResolverFunc<ScopeChangeRequest> = {
 
 async function idResolverFunction(id: string): Promise<ScopeChangeRequest> {
     const { scopeChange } = httpClient();
-    return await (await scopeChange.fetch(`api/scope-change-requests/${id}`)).json();
+    const res = await scopeChange.fetch(`api/scope-change-requests/${id}`);
+
+    if (!res.ok) {
+        throw 'Not found';
+    }
+    return await res.json();
 }

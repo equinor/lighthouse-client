@@ -1,36 +1,45 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
+import { SidesheetApi } from '@equinor/sidesheet';
+
 import { ScopeChangeErrorBanner } from '../ErrorBanner/ErrorBanner';
 import { useOctopusErrorHandler } from '../../hooks/observers/useOctopusErrorHandler';
 import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
+import { createAtom } from '../../../../Core/Atom/functions/createAtom';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
+import { FormBanner } from '../Form/FormBanner/FormBanner';
 
-interface DataCreatorWrapperProps {
-    closeScrim: () => void;
-    setHasUnsavedChanges: (value: boolean) => void;
+interface ScopeChangeCreateFormProps {
+    actions: SidesheetApi;
 }
 
-export const DataCreatorWrapper = ({
-    closeScrim,
-    setHasUnsavedChanges,
-}: DataCreatorWrapperProps): JSX.Element => {
+export const ScopeChangeCreateForm = ({ actions }: ScopeChangeCreateFormProps): JSX.Element => {
     useOctopusErrorHandler();
+
+    useEffect(() => {
+        scopeChangeCreateContext.updateAtom(actions);
+        scopeChangeFormAtomApi.clearState();
+        actions.setTitle('Create new scope change request');
+        actions.setWidth(1150);
+    }, []);
 
     return (
         <>
             <ScopeChangeErrorBanner />
+            <FormBanner />
             <Wrapper>
-                <ScopeChangeRequestForm
-                    closeScrim={closeScrim}
-                    setHasUnsavedChanges={setHasUnsavedChanges}
-                />
+                <ScopeChangeRequestForm />
             </Wrapper>
         </>
     );
 };
 
 const Wrapper = styled.div`
-    width: 1100px;
+    padding: 20px 20px;
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: calc(100% - 50px);
     justify-content: space-between;
 `;
+
+export const scopeChangeCreateContext = createAtom<SidesheetApi>({} as SidesheetApi);

@@ -93,7 +93,7 @@ function resolveErrorObject(error: object): Partial<ErrorMessageFormat> {
         const scopeChangeError = error as ScopeChangeErrorFormat;
         return {
             title: scopeChangeError.title,
-            description: Object.values(scopeChangeError.errors).toString(),
+            description: scopeChangeError.detail,
         };
     }
 
@@ -105,13 +105,13 @@ function resolveErrorObject(error: object): Partial<ErrorMessageFormat> {
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 function isScopeChangeError(error: object): boolean {
-    return 'status' in error && 'title' in error;
+    return 'statusCode' in error && 'title' in error;
 }
 
 interface ScopeChangeErrorFormat {
     detail: string;
-    status: number;
+    statusCode: number;
     title: string;
-    validationErrors: null;
+    validationErrors: Record<string, string[]>;
     errors: Record<string, string[]>;
 }

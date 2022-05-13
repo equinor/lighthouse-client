@@ -1,26 +1,33 @@
-import { PowerBI } from '@equinor/lighthouse-powerbi';
+import { useFusionContext } from '@equinor/lighthouse-portal-client';
+import { Filter, PowerBI } from '@equinor/lighthouse-powerbi';
+import { useMemo } from 'react';
 
-export function BusinessCaseReport() {
+export function BusinessCaseReport(): JSX.Element {
     const reportUri = 'pmt-non-confidential';
-
-    // const filterOptions: Filter[] = [
-    //     {
-    //         values: ['Johan Castberg'],
-    //         target: {
-    //             table: 'Dim_MasterProject',
-    //             column: 'Project',
-    //         },
-    //         operator: 'In',
-    //     },
-    //     {
-    //         values: ['JCA'],
-    //         target: {
-    //             column: 'FACILITY',
-    //             table: 'Commpkg',
-    //         },
-    //         operator: 'In',
-    //     },
-    // ];
-
-    return <PowerBI reportUri={reportUri} />;
+    const currentContext = useFusionContext();
+    const filterOptions: Filter[] = useMemo(
+        () => [
+            {
+                values: [currentContext?.title || ''],
+                target: {
+                    table: 'Dim_MasterProject',
+                    column: 'Project',
+                },
+                operator: 'In',
+            },
+            {
+                values: [currentContext?.externalId || ''],
+                target: {
+                    column: 'FACILITY',
+                    table: 'Commpkg',
+                },
+                operator: 'In',
+            },
+        ],
+        [currentContext?.id]
+    );
+    if (!currentContext) {
+        return <div> No context selected.</div>;
+    }
+    return <PowerBI reportUri={reportUri} filterOptions={filterOptions} />;
 }

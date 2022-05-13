@@ -1,15 +1,29 @@
 import { useAtom } from '@dbeining/react-atom';
 import { tokens } from '@equinor/eds-tokens';
+import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { getSidesheetContext } from '../context/sidesheetContext';
 import { ResizableSidesheet } from './ResizableSidesheet';
 
 export const PopoutSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent } = useAtom(getSidesheetContext());
+    const { SidesheetComponent, props } = useAtom(getSidesheetContext());
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    /**
+     * Removes hash from url when closed
+     */
+    useEffect(() => {
+        if (location.hash.length > 0) return;
+        if (!props) {
+            navigate(location.pathname, { replace: true });
+        }
+    }, [props, location.pathname, location.hash.length, navigate]);
 
     // if sidesheet
     if (!SidesheetComponent) {
-        return null;
+        return <div></div>;
     }
 
     return (

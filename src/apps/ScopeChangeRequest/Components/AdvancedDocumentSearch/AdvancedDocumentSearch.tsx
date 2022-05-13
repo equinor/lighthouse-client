@@ -7,10 +7,10 @@ import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
 import { getDocumentsByTag } from '../../api/STID/getDocumentsByTag';
 import { Result } from './Results';
 import { SubResults } from './SubResult';
-import { AdvancedSearch, ModalHeader, Wrapper, Title } from './advancedSearch.styles';
-import { useCancellationToken } from '../../hooks/cancellationToken/useCancellationToken';
+import { AdvancedSearch, ModalHeader, Wrapper, Title, SearchField } from './advancedSearch.styles';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
+import { useCancellationToken } from '@equinor/hooks';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -60,7 +60,6 @@ export const AdvancedDocumentSearch = ({
 
     const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
         'document',
-        'discipline',
         'area',
         'commpkg',
         'tag',
@@ -106,7 +105,7 @@ export const AdvancedDocumentSearch = ({
                 tagName: item.label,
                 documents: documents.map((x) => {
                     return {
-                        label: `DOC_${x.docNo}`,
+                        label: `${x.docNo}`,
                         searchValue: x.docNo,
                         object: x,
                         type: 'document',
@@ -160,7 +159,7 @@ export const AdvancedDocumentSearch = ({
                 >
                     <Wrapper>
                         <ModalHeader>
-                            <Title>Add document</Title>
+                            <Title>Add references</Title>
                             <Button
                                 variant="ghost_icon"
                                 onClick={() => {
@@ -176,9 +175,8 @@ export const AdvancedDocumentSearch = ({
                         </ModalHeader>
                         <br />
 
-                        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '1em' }}>
+                        <SearchField>
                             <SingleSelect
-                                meta="(Required)"
                                 label="Reference type"
                                 items={referenceTypes}
                                 handleSelectedItemChange={(change) => {
@@ -221,7 +219,7 @@ export const AdvancedDocumentSearch = ({
                                     }
                                 }}
                             />
-                        </div>
+                        </SearchField>
 
                         {subResults ? (
                             <SubResults

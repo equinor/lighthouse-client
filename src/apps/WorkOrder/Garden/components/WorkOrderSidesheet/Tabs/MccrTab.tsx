@@ -4,12 +4,12 @@ import {
     PROCOSYS_TEST_JC_BASE_URL,
     TabTable,
 } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column } from 'react-table';
 import { WorkOrderMccr } from '../../../models';
 
 export type MccrTabProps = {
-    packages: WorkOrderMccr[];
+    packages: WorkOrderMccr[] | undefined;
     isFetching: boolean;
     error: Error | null;
 };

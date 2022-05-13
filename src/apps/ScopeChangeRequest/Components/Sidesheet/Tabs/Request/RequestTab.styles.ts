@@ -34,7 +34,9 @@ export const SubSectionTitle = styled.div`
     text-align: left;
 `;
 
-export const SectionWrapper = styled.div``;
+export const SectionWrapper = styled.div`
+    margin-left: 5px;
+`;
 
 export const SiblingWrapper = styled.div`
     display: flex;

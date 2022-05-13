@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
 import { CheckListStatus } from '../../Types/drcEnums';
 import {
@@ -6,6 +7,7 @@ import {
     EleNetworkCheckList,
     EleNetworkCircuit,
 } from '../../Types/eleNetwork';
+import { HTSidesheet, Pipetest } from '../../Types/pipetest';
 
 export function getCircuitChildren(
     eleNetwork: EleNetwork,
@@ -49,7 +51,7 @@ export function getNodeStatus(checkLists: EleNetworkCheckList[], tagNo?: string)
 }
 
 export const getElectroViewCompletionStatusColor = (completionStatus: string): string => {
-    let color = '#DCDCDC';
+    let color = tokens.colors.ui.background__medium.hex;
 
     switch (completionStatus) {
         case CheckListStatus.Outstanding:
@@ -65,6 +67,38 @@ export const getElectroViewCompletionStatusColor = (completionStatus: string): s
             color = PipetestCompletionStatusColors.PA;
             break;
     }
-
     return color;
 };
+
+export function getElectroTestStatus(testType: string, checkLists: EleNetworkCheckList[]): string {
+    if (testType === undefined) return CheckListStatus.Outstanding;
+
+    checkLists = checkLists.filter((x) => x.formularType === testType);
+
+    if (checkLists?.length === 0) {
+        return CheckListStatus.Inactive;
+    } else if (checkLists.every((x) => x.status === CheckListStatus.OK)) {
+        return CheckListStatus.OK;
+    } else if (checkLists.find((x) => x.status === CheckListStatus.Outstanding)) {
+        {
+            return CheckListStatus.Outstanding;
+        }
+    } else if (checkLists.find((x) => x.status === CheckListStatus.PunchAError)) {
+        return CheckListStatus.PunchAError;
+    } else if (checkLists.find((x) => x.status === CheckListStatus.PunchBError)) {
+        return CheckListStatus.PunchBError;
+    } else {
+        return CheckListStatus.Outstanding;
+    }
+}
+
+export function getHTSidesheetObjectForHtCable(
+    htCable: string,
+    pipetests: Pipetest[]
+): HTSidesheet {
+    const htSidesheet: HTSidesheet = { value: htCable, items: [] };
+
+    htSidesheet.items = pipetests.filter((x) => x.checkLists.some((y) => y.tagNo === htCable));
+
+    return htSidesheet;
+}

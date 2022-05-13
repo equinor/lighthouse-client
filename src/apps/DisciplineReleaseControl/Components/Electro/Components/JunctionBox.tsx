@@ -1,8 +1,8 @@
-import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { StatusCircle } from '../../Garden/StatusCircle';
+import { StatusCircle } from '@equinor/GardenUtils';
 import { getElectroViewCompletionStatusColor } from '../electroViewHelpers';
-import { ElectroViewNodeGroup, ElectroViewNodeText, ElectroViewNodeValueText } from '../styles';
+import { ElectroViewNodeGroup, ElectroViewNodeValueText } from '../styles';
 
 interface JunctionBoxProps {
     value?: string;
@@ -11,9 +11,7 @@ interface JunctionBoxProps {
 export const JunctionBox = ({ value, status }: JunctionBoxProps): JSX.Element => {
     return (
         <ElectroViewNodeGroup>
-            <ElectroViewNodeText>Junction box</ElectroViewNodeText>
             <JunctionBoxNode>
-                <Icon size={16} color={'#000000'} name="junction_box" />
                 <ElectroViewNodeValueText>
                     <div title={value}>{value?.slice(value.length - 3, value.length)}</div>
                 </ElectroViewNodeValueText>
@@ -28,12 +26,12 @@ const JunctionBoxNode = styled.div`
     flex-direction: horizontal;
     flex: 1;
     width: 90px;
-    border: 1px solid #dcdcdc;
+    border: 1px solid ${tokens.colors.ui.background__medium.hex};
     border-radius: 10px;
     padding: 6px;
     text-align: center;
     min-height: 60px;
     box-sizing: border-box;
-    margin-top: 4px;
+    margin-top: 16px;
     justify-content: center;
 `;

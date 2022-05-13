@@ -14,7 +14,7 @@ import { Area as AreaComp } from './RelatedObjects/Area/Area';
 import { Discipline as DisciplineComp } from './RelatedObjects/Discipline/Discipline';
 import { CommPkg } from './RelatedObjects/CommPkg/CommPkg';
 import { System as SystemComp } from './RelatedObjects/Systems/System';
-import { StidDocument as StidVisual } from '../AdvancedDocumentSearch';
+import { StidDocument } from '../StidDocument/StidDocument';
 
 interface RelatedObjectsProps {
     systems: ScopeChangeSystem[];
@@ -35,6 +35,12 @@ export const RelatedObjects = ({
 }: RelatedObjectsProps): JSX.Element => {
     return (
         <Wrapper>
+            {tags.length === 0 &&
+                commPkgs.length === 0 &&
+                systems.length === 0 &&
+                documents.length === 0 &&
+                disciplines.length === 0 &&
+                areas.length === 0 && <NoReferences>No references has been linked.</NoReferences>}
             {tags && tags.length > 0 && (
                 <ChevronList title={`Tags (${tags?.length})`}>
                     <>
@@ -67,7 +73,7 @@ export const RelatedObjects = ({
                 <ChevronList title={`Documents (${documents.length})`}>
                     <>
                         {documents.map((x) => (
-                            <StidVisual key={x.stidDocumentNumber} docNo={x.stidDocumentNumber} />
+                            <StidDocument key={x.stidDocumentNumber} docNo={x.stidDocumentNumber} />
                         ))}
                     </>
                 </ChevronList>
@@ -95,6 +101,11 @@ export const RelatedObjects = ({
         </Wrapper>
     );
 };
+
+const NoReferences = styled.div`
+    font-size: 14px;
+    font-weight: 400;
+`;
 
 const Wrapper = styled.div`
     display: flex;

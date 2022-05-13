@@ -32,7 +32,7 @@ orchestrate creation of the client
 Basic usage of the `httpClient` function. providing scoped http clients.
 
 ```TS
-import {httpClient} from "@equinor/portal-client"
+import {httpClient} from "@equinor/lighthouse-portal-client"
 
 export async function getTags() {
     const { STID } = httpClient();
@@ -44,7 +44,7 @@ export async function getTags() {
 Usage with custom scope and baseUrl.
 
 ```TS
-import {httpClient} from "@equinor/portal-client"
+import {httpClient} from "@equinor/lighthouse-portal-client"
 
 export async function getTags() {
     const { customClient } = httpClient({scope: "api://12345-scope-1234", baseUrl:"https://someBaseUrl.ai"});
@@ -58,7 +58,7 @@ Should only be done under development and not shipped to production.
 
 
 ```TS
-import {httpClient} from "@equinor/portal-client"
+import {httpClient} from "@equinor/lighthouse-portal-client"
 
 export async function getScopes() {
     const { scopeChange } = httpClient();

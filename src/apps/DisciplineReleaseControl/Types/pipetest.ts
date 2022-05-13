@@ -3,19 +3,22 @@ import { CheckListStatus, PipetestCompletionStatus, PipetestStep } from './drcEn
 export interface Pipetest {
     name: string;
     step: PipetestStep;
+    steps: PipetestStep[];
     completionStatus: PipetestCompletionStatus;
     pipetestProcessDoneInRightOrder: boolean;
     shortformCompletionStatus: CheckListStatus;
     checkLists: CheckList[];
     heatTraces: HeatTrace[];
     insulationBoxes: InsulationBox[];
+    pipeInsulationBoxes: InsulationBox[];
     circuits: Circuit[];
     description: string;
     commPkPriority1: string;
     rfccPlanned: string;
+    pipingRfcUniqueHT: string;
     overdue: string;
     dueDateTimePeriod: string;
-    tagTree: Record<string, unknown>;
+    location: string;
 }
 
 export interface CheckList {
@@ -69,7 +72,7 @@ export type InsulationBoxType = {
     procosysStatus: string;
 };
 
-export interface Tag {
-    register: string;
-    children: string[];
+export interface HTSidesheet {
+    value: string;
+    items: Pipetest[];
 }

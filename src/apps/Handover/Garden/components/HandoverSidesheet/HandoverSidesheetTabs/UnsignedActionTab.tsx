@@ -1,5 +1,5 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column } from '@equinor/Table';
 import { HandoverUnsignedAction } from '../../../models';
 
@@ -21,7 +21,7 @@ const columns: Column<HandoverUnsignedAction>[] = [
 ];
 
 type TabProps = {
-    packages: HandoverUnsignedAction[];
+    packages: HandoverUnsignedAction[] | undefined;
     isFetching: boolean;
 };
 

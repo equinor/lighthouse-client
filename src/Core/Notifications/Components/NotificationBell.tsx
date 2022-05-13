@@ -1,10 +1,11 @@
-import { tokens } from '@equinor/eds-tokens';
 import { Icon } from '@equinor/eds-core-react';
-import { useNotificationCenter } from '../Hooks/useNotificationCenter';
+import { tokens } from '@equinor/eds-tokens';
+import { openSidesheet } from '@equinor/sidesheet';
 import { useQueryClient } from 'react-query';
+import styled from 'styled-components';
+import { ActionCenterSidesheet } from '../../../components/ActionCenter/ActionCenterSidesheet';
+import { useNotificationCenter } from '../Hooks/useNotificationCenter';
 import { notificationQueries } from '../queries/notificationQueries';
-import { useState } from 'react';
-import { NotificationsSidesheet } from '../../../packages/Notifications sidesheet/NotificationsSidesheet';
 
 export function NotificationBell(): JSX.Element {
     const { getUnreadNotificationsQuery } = notificationQueries;
@@ -19,24 +20,39 @@ export function NotificationBell(): JSX.Element {
         notificationCenter.hubConnectionState === 'Connected'
             ? tokens.colors.interactive.primary__resting.hex
             : notificationCenter.hubConnectionState === 'Reconnecting'
-                ? tokens.colors.interactive.warning__resting.hex
-                : tokens.colors.infographic.primary__energy_red_100.hex;
-
-    const [isOpen, setIsOpen] = useState(false);
+            ? tokens.colors.interactive.warning__resting.hex
+            : tokens.colors.infographic.primary__energy_red_100.hex;
 
     return (
         <>
-            <Icon
+            <div
                 style={{ cursor: 'pointer' }}
-                color={connectionStatus()}
-                name={
-                    notificationCenter.unreadNotificationsCount > 0
-                        ? 'notifications_active'
-                        : 'notifications'
-                }
-                onClick={() => setIsOpen(true)}
-            />
-            {isOpen && <NotificationsSidesheet closeSidesheet={() => setIsOpen(false)} />}
+                onClick={() => {
+                    openSidesheet(ActionCenterSidesheet);
+                }}
+            >
+                {notificationCenter.unreadNotificationsCount > 0 ? (
+                    <RedCircle>{notificationCenter.unreadNotificationsCount}</RedCircle>
+                ) : (
+                    <Icon
+                        style={{ cursor: 'pointer' }}
+                        color={connectionStatus()}
+                        name={'notifications'}
+                    />
+                )}
+            </div>
         </>
     );
 }
+
+const RedCircle = styled.div`
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    color: white;
+    font-size: 14px;
+    background: #f15854;
+`;

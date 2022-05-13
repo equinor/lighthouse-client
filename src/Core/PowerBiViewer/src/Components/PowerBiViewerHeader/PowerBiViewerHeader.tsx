@@ -1,5 +1,7 @@
+import { BookmarkDropdown } from '@equinor/BookmarksManager';
+import { Icon } from '@equinor/eds-core-react';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
-import Icon from '../../../../../components/Icon/Icon';
 import { usePowerBiViewer } from '../../Api/powerBiViewerState';
 import { Page } from '../../Types/State';
 import { HeaderButton } from '../HeaderButton/HeaderButton';
@@ -21,6 +23,7 @@ type HandleFilter = () => void;
 interface PowerBiViewerHeaderProps {
     title: string;
     shortName: string;
+    groupName: string;
     activePage?: Page;
     handleFilter: HandleFilter;
     handleSetActivePage(page: Page): void;
@@ -31,6 +34,7 @@ interface PowerBiViewerHeaderProps {
 export const PowerBiViewerHeader = ({
     title,
     shortName,
+    groupName,
     handleFilter,
     activeFilter,
     activePage,
@@ -67,6 +71,9 @@ export const PowerBiViewerHeader = ({
                 <RightSection>
                     <Line />
                     <Divider />
+                    {!isProduction() && (
+                        <BookmarkDropdown appKey={shortName} subSystem={groupName} />
+                    )}
                     <HeaderButton onClick={handleFilter} aria-selected={activeFilter}>
                         {hasFilter ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                     </HeaderButton>

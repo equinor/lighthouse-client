@@ -1,10 +1,10 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column } from '@equinor/Table';
 import { HandoverNCR } from '../../../models';
 
 type TabProps = {
-    packages: HandoverNCR[];
+    packages: HandoverNCR[] | undefined;
     isFetching: boolean;
 };
 

@@ -7,8 +7,16 @@ export const Wrapper = styled.div<{ serviceMessageActive: boolean }>`
     display: flex;
     width: 100vw;
 `;
-export const ChildrenWrapper = styled.div<{ sideSheetWidth?: number }>`
+export const ChildrenWrapper = styled.div`
     height: 100%;
     width: 100%;
     transition: width 0.2s ease;
+    position: relative;
+`;
+export const SidesheetWrapper = styled.div`
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
 `;

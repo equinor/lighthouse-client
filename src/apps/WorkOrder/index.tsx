@@ -1,4 +1,4 @@
-import { ClientApi, httpClient } from '@equinor/portal-client';
+import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
 import { WorkorderSideSheet } from './Garden/components';
 import WorkOrderHeader from './Garden/components/WorkOrderHeader/WorkOrderHeader';
 import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';
@@ -8,10 +8,6 @@ import { sortPackages } from './Garden/utility/sortPackages';
 import { filterConfig } from './utility/filterConfig';
 import { tableConfig } from './utility/tableConfig';
 
-enum Tabs {
-    TABLE,
-    GARDEN,
-}
 export function setup(appApi: ClientApi): void {
     async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
         const { FAM } = httpClient();
@@ -27,7 +23,7 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<WorkOrder>({
             objectIdentifier: 'workOrderId',
             CustomSidesheet: WorkorderSideSheet,
-            defaultTab: Tabs.GARDEN,
+            defaultTab: 'garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,

@@ -14,9 +14,6 @@ export const ActionBar = styled.div`
     height: 64px;
     width: 100%;
     border: 1px solid ${tokens.colors.interactive.disabled__border.hex};
-    position: sticky;
-    bottom: 0;
-    right: 0;
     background-color: white;
 `;
 
@@ -25,6 +22,9 @@ export const FlexColumn = styled.div`
     font-size: 18px;
     line-height: 24px;
     height: 100%;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
 `;
 
 export const Section = styled.div`

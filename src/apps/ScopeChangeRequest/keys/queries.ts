@@ -1,3 +1,4 @@
+import { QueryKey, UseQueryOptions } from 'react-query';
 import {
     canAddContributor,
     canContribute,
@@ -8,11 +9,18 @@ import {
     canVoid,
     getRequestAccess,
 } from '../api/ScopeChange/Access';
-import { getCategories } from '../api/ScopeChange/getCategories';
+import { OptionRequestResult } from '../api/ScopeChange/Access/optionsRequestChecker';
+import { Category, getCategories } from '../api/ScopeChange/getCategories';
 import { getPhases } from '../api/ScopeChange/getPhases';
+import { getScopes } from '../api/ScopeChange/getScopes';
 import { getScopeChangeById } from '../api/ScopeChange/Request';
 import { getHistory } from '../api/ScopeChange/Request/getHistory';
-import { ScopeChangeRequest } from '../types/scopeChangeRequest';
+import { CacheTime } from '../enum/cacheTimes';
+import { LogEntry, Scope, ScopeChangeRequest } from '../types/scopeChangeRequest';
+
+export interface QueryContext {
+    signal?: AbortSignal;
+}
 
 const scopeChangeBaseKey = (requestId: string): string[] => ['scopechange', requestId];
 const scopeChangeHistoryKey = (requestId: string): string[] => [
@@ -31,70 +39,105 @@ const criteriaKey = (requestId: string, stepId: string, criteraiId: string) => [
 ];
 const permissionsKey = (requestId: string) => [...scopeChangeBaseKey(requestId), 'permissions'];
 
-export const scopeChangeWorkflowQueries = {
-    canSignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs): OptionsQuery => ({
-        queryFn: () => canSign({ criteriaId, requestId, stepId }),
+export const scopeChangeWorkflowQueries: WorkflowQueries = {
+    canSignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs) => ({
+        queryFn: ({ signal }: QueryContext) => canSign({ criteriaId, requestId, stepId }, signal),
         queryKey: [...criteriaKey(requestId, stepId, criteriaId), 'canSign'],
     }),
-    canUnsignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs): OptionsQuery => ({
-        queryFn: () => canUnsign({ requestId, stepId, criteriaId }),
+    canUnsignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs) => ({
+        queryFn: ({ signal }: QueryContext) => canUnsign({ requestId, stepId, criteriaId }, signal),
         queryKey: [...criteriaKey(requestId, stepId, criteriaId), 'canUnsign'],
     }),
-    canAddContributorQuery: (requestId: string, stepId: string): OptionsQuery => ({
-        queryFn: () => canAddContributor({ requestId: requestId, stepId: stepId }),
+    canAddContributorQuery: (requestId: string, stepId: string) => ({
+        queryFn: ({ signal }: QueryContext) =>
+            canAddContributor({ requestId: requestId, stepId: stepId }, signal),
         queryKey: [...scopeChangeStepKey(requestId, stepId), 'canAddContributor'],
     }),
-    canReassignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs): OptionsQuery => ({
-        queryFn: () => canReassign({ criteriaId, requestId, stepId }),
+    canReassignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs) => ({
+        queryFn: ({ signal }: QueryContext) =>
+            canReassign({ criteriaId, requestId, stepId }, signal),
         queryKey: [...criteriaKey(requestId, stepId, criteriaId), 'canReassign'],
     }),
+    canContributeQuery: (requestId: string, stepId: string, contributorId: string) => ({
+        queryFn: ({ signal }: QueryContext) =>
+            canContribute({ contributorId, requestId, stepId, signal }),
+        queryKey: [...scopeChangeStepKey(requestId, stepId), 'canContribute', contributorId],
+    }),
+};
+
+type QueryFunction<Return> = UseQueryOptions<unknown, unknown, Return, QueryKey>;
+
+interface PermissionQueries {
+    canVoidQuery: (id: string) => QueryFunction<boolean>;
+    canUnvoidQuery: (id: string) => QueryFunction<boolean>;
+    permissionsQuery: (id: string) => QueryFunction<OptionRequestResult>;
+}
+
+interface WorkflowQueries {
+    canSignQuery: (args: CriteriaArgs) => QueryFunction<boolean>;
+    canUnsignQuery: (args: CriteriaArgs) => QueryFunction<boolean>;
+    canAddContributorQuery: (requestId: string, stepId: string) => QueryFunction<boolean>;
+    canReassignQuery: (args: CriteriaArgs) => QueryFunction<boolean>;
     canContributeQuery: (
         requestId: string,
         stepId: string,
         contributorId: string
-    ): OptionsQuery => ({
-        queryFn: () => canContribute({ contributorId, requestId, stepId }),
-        queryKey: [...scopeChangeStepKey(requestId, stepId), 'canContribute'],
-    }),
-};
+    ) => QueryFunction<boolean>;
+}
 
-export const scopeChangeQueries = {
+interface ScopeChangeQueries {
+    categoryQuery: QueryFunction<Category[]>;
+    phaseQuery: QueryFunction<string[]>;
+    scopeQuery: QueryFunction<Scope[]>;
+    baseQuery: (id: string) => QueryFunction<ScopeChangeRequest>;
+    historyQuery: (id: string) => QueryFunction<LogEntry[]>;
+    permissionQueries: PermissionQueries;
+    workflowQueries: WorkflowQueries;
+}
+
+export const scopeChangeQueries: ScopeChangeQueries = {
     categoryQuery: {
         queryFn: getCategories,
         queryKey: ['categories'],
+        staleTime: CacheTime.TenHours,
+        cacheTime: CacheTime.TenHours,
     },
     phaseQuery: {
         queryFn: getPhases,
         queryKey: ['phases'],
+        staleTime: CacheTime.TenHours,
+        cacheTime: CacheTime.TenHours,
+    },
+    scopeQuery: {
+        queryFn: getScopes,
+        queryKey: ['Scopes'],
+        staleTime: CacheTime.TenHours,
+        cacheTime: CacheTime.TenHours,
     },
     baseQuery: (id: string) => ({
-        queryFn: (): Promise<ScopeChangeRequest> => getScopeChangeById(id),
+        queryFn: ({ signal }): Promise<ScopeChangeRequest> => getScopeChangeById(id, signal),
         queryKey: scopeChangeBaseKey(id),
     }),
     historyQuery: (id: string) => ({
-        queryFn: () => getHistory(id),
+        queryFn: ({ signal }) => getHistory(id, signal),
         queryKey: scopeChangeHistoryKey(id),
+        staleTime: CacheTime.FiveMinutes,
     }),
     workflowQueries: scopeChangeWorkflowQueries,
     permissionQueries: {
-        canVoidQuery: (id: string): OptionsQuery => ({
-            queryFn: () => canVoid(id),
+        canVoidQuery: (id: string) => ({
+            queryFn: ({ signal }) => canVoid(id, signal),
             queryKey: [...permissionsKey(id), 'canVoid'],
         }),
-        canUnvoidQuery: (id: string): OptionsQuery => ({
-            queryFn: () => canUnVoid(id),
+        canUnvoidQuery: (id: string) => ({
+            queryFn: ({ signal }) => canUnVoid(id, signal),
             queryKey: [...permissionsKey(id), 'canUnvoid'],
         }),
         permissionsQuery: (id: string) => ({
-            queryFn: () => getRequestAccess(id),
+            queryFn: ({ signal }) => getRequestAccess(id, signal),
             queryKey: [...permissionsKey(id), 'requestAccess'],
         }),
     },
 };
-
-interface OptionsQuery {
-    queryFn: () => Promise<boolean>;
-    queryKey: string[];
-}
 
 type CriteriaArgs = [string, string, string];

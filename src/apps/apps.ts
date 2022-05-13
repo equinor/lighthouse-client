@@ -1,4 +1,4 @@
-import { AppGroupe, AppGroups, AppManifest } from '@equinor/portal-client';
+import { AppGroupe, AppGroups, AppManifest } from '@equinor/lighthouse-portal-client';
 import { AssetDataIcon } from '../icons/Asset data icon';
 import { CollaborationIcon } from '../icons/Collaboration icon';
 import { ConstructionManagementIcon } from '../icons/construction management icon';
@@ -15,6 +15,7 @@ import { setup as checklistSetup } from './Checklist';
 import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseControl/DisciplineReleaseControlApp';
 import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
+import { setup as McSetup } from './MechanicalCompletion';
 import {
     BusinessCaseReport,
     LCIReport,
@@ -25,11 +26,11 @@ import {
     SafetyPerformanceReport
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
+import { SidesheetWrapper } from './ScopeChangeRequest/Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
-
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -132,7 +133,7 @@ export const apps: AppManifest[] = [
             component: BusinessCaseReport,
         },
 
-        appEnv: 'test',
+        appEnv: 'prod',
         tags: ['PowerBI'],
     },
     {
@@ -179,7 +180,7 @@ export const apps: AppManifest[] = [
         },
         tags: ['PowerBI'],
 
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Barrier Management Tool',
@@ -215,7 +216,7 @@ export const apps: AppManifest[] = [
         },
         tags: ['PowerBI'],
 
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'LCI portal',
@@ -237,7 +238,7 @@ export const apps: AppManifest[] = [
         },
         tags: ['PowerBI'],
 
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // Construction And Commissioning
     {
@@ -259,7 +260,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: handoverSetup,
         },
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Work order',
@@ -272,8 +273,22 @@ export const apps: AppManifest[] = [
             setup: WorkOrderSetup,
         },
         tags: ['Job'],
+        appEnv: 'prod',
+    },
+    {
+        title: 'Mechanical Completion',
+        shortName: 'mc',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        app: {
+            appType: 'Workspace',
+            setup: McSetup,
+        },
+        tags: ['Job'],
         appEnv: 'test',
     },
+
     {
         // Ny Power Bi
         title: 'Work preparation',
@@ -300,17 +315,6 @@ export const apps: AppManifest[] = [
             setup: installationSetup,
         },
         appEnv: 'prod',
-    },
-    {
-        title: 'Mechanical Completion',
-        shortName: 'mc',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'Workspace',
-        },
     },
     {
         title: 'Piping and Heat trace',
@@ -398,7 +402,7 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: SwcrSetup,
         },
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Invitation for punch out ',
@@ -444,6 +448,7 @@ export const apps: AppManifest[] = [
         app: {
             appType: 'Workspace',
             setup: scopeChangeSetup,
+            SidesheetComponent: SidesheetWrapper as any,
         },
         tags: [],
         appEnv: 'prod',
@@ -494,7 +499,7 @@ export const apps: AppManifest[] = [
             component: NonConformityReport,
         },
         tags: ['PowerBI'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Quality deviation',
@@ -507,7 +512,7 @@ export const apps: AppManifest[] = [
             component: QualityDeviationReport,
         },
         tags: ['PowerBI'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     // Collaboration
     {
@@ -547,7 +552,7 @@ export const apps: AppManifest[] = [
             component: QueryReport,
         },
         tags: ['PowerBI'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
     {
         title: 'Queries',
@@ -560,6 +565,17 @@ export const apps: AppManifest[] = [
                 isProduction ? 'procosys' : 'procosystest'
             }.equinor.com/JOHAN_CASTBERG/Search?searchType=Query`,
         tags: ['link', 'procosys'],
+        appEnv: 'test',
+    },
+    {
+        title: 'AKSO procedures',
+        shortName: 'akso',
+        color: '#0364B8',
+        groupe: Apps.Collaboration,
+        icon: 'tag',
+        uri: () =>
+            'https://akersolutions.sharepoint.com/sites/CastbergEquinor/Governing%20Documents/Forms/Procedures%20Work%20Instructions%20and%20guidelines.aspx',
+        tags: ['akso', 'link', 'external'],
         appEnv: 'prod',
     },
     // Asset Data
@@ -567,7 +583,7 @@ export const apps: AppManifest[] = [
         title: '3D Model',
         shortName: '3dm',
         color: '#0364B8',
-        groupe: [Apps.AssetData],
+        groupe: Apps.AssetData,
         icon: '',
         tags: ['3D', 'Asset', 'Map'],
         app: {

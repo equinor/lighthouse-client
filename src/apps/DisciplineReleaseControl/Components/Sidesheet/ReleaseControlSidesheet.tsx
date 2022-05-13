@@ -1,21 +1,38 @@
+import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import { useQuery } from 'react-query';
 import { ServerError } from '../../Api/Types/ServerError';
+import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
-import { ReleaseControlErrorBanner } from './ErrorBanner';
-import { Pipetest } from '../../Types/pipetest';
-// import { Viewer } from '../../../../packages/ModelViewer/ModelViewer';
-// import { useFacility } from '@equinor/portal-client';
+import { ElectroView } from '../Electro/ElectroView';
+import { HTSidesheet, Pipetest } from '../../Types/pipetest';
 import { Tabs } from '@equinor/eds-core-react';
 import { CheckListTable } from './CheckListTable';
-import { BoxInsulationTable } from './BoxInsulationTable';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Components/ResizableSidesheet';
+import { ReleaseControlErrorBanner } from './ErrorBanner';
+import { InsulationTable } from './InsulationTable';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { SidesheetTabList } from './SidesheetTabs';
-import { ElectroView } from '../Electro/ElectroView';
-import { useQuery } from 'react-query';
-import { getPipetests } from '../Electro/getPipetests';
-import { chewPipetestDataFromApi } from '../../Functions/statusHelpers';
+import { TablesTab, WarningBanner, WarningBannerText } from './styles';
+import { WorkOrderTab } from './WorkOrderTab';
+import { ReleaseControlHTSidesheet } from './ReleaseControlHTSidesheet';
+import { useLocationKey } from '@equinor/filter';
+
+interface GatewaySidesheetProps {
+    item: Pipetest | HTSidesheet;
+    actions: SidesheetApi;
+}
+
+export const GatewaySidesheet = (props: GatewaySidesheetProps) => {
+    return (
+        <>
+            {'items' in props.item ? (
+                <ReleaseControlHTSidesheet item={props.item} actions={props.actions} />
+            ) : (
+                <ReleaseControlSidesheet item={props.item} actions={props.actions} />
+            )}
+        </>
+    );
+};
 
 interface ReleaseControlSidesheetProps {
     item: Pipetest;
@@ -30,7 +47,6 @@ export const ReleaseControlSidesheet = ({
 
     // const { echoPlantId } = useFacility();
     const [activeTab, setActiveTab] = useState<number>(0);
-    const [isChewed, setIsChewed] = useState<boolean>(false);
 
     const handleChange = (index: number) => {
         setActiveTab(index);
@@ -43,18 +59,20 @@ export const ReleaseControlSidesheet = ({
     }, [width]);
 
     useEffect(() => {
-        actions.setTitle(<>Pipetest {item.name}</>);
+        actions.setTitle(`Pipetest ${item.name}`);
     }, [item.name]);
 
-    let { data } = useQuery('pipetests', () => getPipetests(), {
+    const locationKey = useLocationKey();
+
+    //Fetches all pipetests data from location cache. If no cache it fetches and chews the data itself.
+    const { data } = useQuery(locationKey, () => fetchAndChewPipetestDataFromApi(), {
         staleTime: Infinity,
         cacheTime: Infinity,
     });
 
-    if (!isChewed) {
-        data = chewPipetestDataFromApi(data !== undefined ? data : []);
-        setIsChewed(true); //sets it to already chewed so we dont re-run every time component updates (resize sidesheet etc.)
-    }
+    const missingInsulationCheckListsCount = item.insulationBoxes.filter(
+        (x) => x.procosysStatus === null
+    )?.length;
 
     return (
         <Wrapper>
@@ -62,22 +80,62 @@ export const ReleaseControlSidesheet = ({
             <ReleaseControlSidesheetBanner pipetest={item} />
             <Tabs activeTab={activeTab} onChange={handleChange}>
                 <SidesheetTabList>
-                    <Tabs.Tab>Single line diagram </Tabs.Tab>
-                    <Tabs.Tab>Details</Tabs.Tab>
+                    <Tabs.Tab>Circuit diagram</Tabs.Tab>
+                    <Tabs.Tab>Work orders</Tabs.Tab>
+                    <Tabs.Tab>Insulation</Tabs.Tab>
+                    <Tabs.Tab>Checklists</Tabs.Tab>
                     {/* <Tabs.Tab>3D-visualisation</Tabs.Tab> */}
                 </SidesheetTabList>
-                <TabList>
+                <Tabs.Panels>
                     <Tabs.Panel>
-                        <ElectroView pipetest={item} pipetests={data !== undefined ? data : []} />
+                        <ElectroView
+                            pipetest={item}
+                            pipetests={data !== undefined ? data : []}
+                            width={width}
+                        />
                     </Tabs.Panel>
                     <Tabs.Panel>
-                        <h4>{item.description}</h4>
-                        <CheckListTable checkLists={item.checkLists} />
-                        <br />
-                        <BoxInsulationTable insulationBoxes={item.insulationBoxes} />
+                        <WorkOrderTab id={item.name} />
+                    </Tabs.Panel>
+
+                    <Tabs.Panel>
+                        {missingInsulationCheckListsCount !== 0 &&
+                            (missingInsulationCheckListsCount === 1 ? (
+                                <WarningBanner>
+                                    <WarningBannerText>
+                                        ! Warning: {missingInsulationCheckListsCount} insulation box
+                                        missing checklists in ProCoSys.
+                                    </WarningBannerText>
+                                </WarningBanner>
+                            ) : (
+                                <WarningBanner>
+                                    <WarningBannerText>
+                                        ! Warning: {missingInsulationCheckListsCount} insulation
+                                        boxes missing checklists in ProCoSys.
+                                    </WarningBannerText>
+                                </WarningBanner>
+                            ))}
+                        <TablesTab>
+                            <InsulationTable
+                                insulations={item.pipeInsulationBoxes}
+                                pipeInsulation={true}
+                            />
+                            <br />
+                            <InsulationTable
+                                insulations={item.insulationBoxes}
+                                pipeInsulation={false}
+                                pipetestName={item.name}
+                            />
+                        </TablesTab>
+                    </Tabs.Panel>
+                    <Tabs.Panel>
+                        <TablesTab>
+                            <h4>{item.description}</h4>
+                            <CheckListTable checkLists={item.checkLists} />
+                        </TablesTab>
                     </Tabs.Panel>
                     {/* <Tabs.Panel>
-                        {activeTab === 2 && (
+                        {activeTab === 4 && (
                             <ThreeDModel>
                                 <Viewer
                                     echoPlantId={echoPlantId}
@@ -87,16 +145,8 @@ export const ReleaseControlSidesheet = ({
                             </ThreeDModel>
                         )}
                     </Tabs.Panel> */}
-                </TabList>
+                </Tabs.Panels>
             </Tabs>
         </Wrapper>
     );
 };
-
-// const ThreeDModel = styled.div`
-//     height: 100vh;
-// `;
-
-const TabList = styled(Tabs.Panels)`
-    padding: 12px 16px;
-`;

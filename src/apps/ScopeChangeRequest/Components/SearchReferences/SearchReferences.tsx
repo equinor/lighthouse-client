@@ -6,7 +6,7 @@ import AsyncSelect from 'react-select/async';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { StidTypes } from '../../types/STID/STIDTypes';
-import { useCancellationToken } from '../../hooks/cancellationToken/useCancellationToken';
+import { useCancellationToken } from '../../../../hooks/cancellationToken/useCancellationToken';
 import { AdvancedDocumentSearch } from '../AdvancedDocumentSearch';
 import {
     applyEdsComponents,
@@ -29,23 +29,23 @@ import {
 import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { CommPkgIcon } from '../DetailView/RelatedObjects/CommPkg/commPkgIcon';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
+import styled from 'styled-components';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 
-interface SearchReferencesProps {
-    references: TypedSelectOption[];
-    handleReferencesChanged: (references: TypedSelectOption[]) => void;
-}
+export const SearchReferences = (): JSX.Element => {
+    const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
 
-export const SearchReferences = ({
-    handleReferencesChanged,
-    references,
-}: SearchReferencesProps): JSX.Element => {
+    const handleReferencesChanged = (newList: TypedSelectOption[]) =>
+        updateAtom({ references: newList });
+
+    const references = useAtomState(({ references }) => references ?? []);
+
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const { abort, getSignal } = useCancellationToken();
     const { search: searchReferences, error } = useReferencesSearch();
 
     const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
         'document',
-        'discipline',
         'area',
         'commpkg',
         'tag',
@@ -111,7 +111,6 @@ export const SearchReferences = ({
                     >
                         <SelectContainer>
                             <SingleSelect
-                                meta="(Required)"
                                 label="Reference type"
                                 items={referenceTypes}
                                 value={referenceType}
@@ -167,9 +166,12 @@ export const SearchReferences = ({
                                 return (
                                     <ListItem key={selectedReference.value}>
                                         <TypeIcon />
-                                        <SelectedItemLabel>
-                                            {selectedReference.label}
-                                        </SelectedItemLabel>
+                                        <div>
+                                            <SelectedItemLabel>
+                                                {selectedReference.label}
+                                            </SelectedItemLabel>
+                                            <MetaData>{selectedReference.metadata}</MetaData>
+                                        </div>
                                         <ClickableIcon
                                             name="clear"
                                             onClick={() => {
@@ -186,6 +188,11 @@ export const SearchReferences = ({
         </Wrapper>
     );
 };
+
+const MetaData = styled.div`
+    font-size: 12px;
+    color: ${tokens.colors.text.static_icons__default.hex};
+`;
 
 function getIcon(x: TypedSelectOption): JSX.Element | null {
     switch (x.type) {

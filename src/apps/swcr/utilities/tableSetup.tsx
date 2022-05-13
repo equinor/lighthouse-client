@@ -171,7 +171,7 @@ export const columns: Column<SwcrPackage>[] = [
             const count = row.subRows.reduce((acc, curr) => {
                 acc =
                     curr.original.status !== 'Closed' &&
-                    curr.original.status !== 'Closed - Rejected'
+                        curr.original.status !== 'Closed - Rejected'
                         ? acc + 1
                         : acc;
                 return acc;
@@ -194,7 +194,7 @@ export const columns: Column<SwcrPackage>[] = [
             const count = row.subRows.reduce((acc, curr) => {
                 acc =
                     curr.original.status === 'Closed' ||
-                    curr.original.status === 'Closed - Rejected'
+                        curr.original.status === 'Closed - Rejected'
                         ? acc + 1
                         : acc;
                 return acc;
@@ -230,7 +230,6 @@ export const columns: Column<SwcrPackage>[] = [
             return `${count.toFixed(2)}%`;
         },
         Footer: (cell) => {
-            console.log('footer', cell);
             const subRows = cell.rows.flatMap((row) => row.subRows);
             const closed = subRows.reduce((acc, curr) => {
                 if (

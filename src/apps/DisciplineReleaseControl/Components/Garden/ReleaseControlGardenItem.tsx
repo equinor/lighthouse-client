@@ -7,12 +7,17 @@ import {
     ReleaseControlExpandedTitle,
 } from './GardenItemStyles';
 import { Pipetest } from '../../Types/pipetest';
-import { CustomItemView } from '../../../../components/ParkView/Models/gardenOptions';
-import { getGardenItemColor, getGardenItemCompletionColor } from './gardenFunctions';
-import { StatusCircle } from './StatusCircle';
-import { useParkViewContext } from '../../../../components/ParkView/Context/ParkViewProvider';
+import { CustomItemView } from '@equinor/ParkView';
+import {
+    getGardenContentColor,
+    getGardenItemColor,
+    getGardenItemCompletionColor,
+} from './gardenFunctions';
+import { useParkViewContext } from '@equinor/ParkView';
 import { memo } from 'react';
 import { WorkflowWarningTriangle } from '../Workflow/Components/WorkflowWarningTriangle';
+import { StatusCircle } from '@equinor/GardenUtils';
+import { WarningTriangleContainer } from '../Workflow/Styles/styles';
 
 export function ReleaseControlExpandedView({ data }: { data: Pipetest }): JSX.Element {
     return (
@@ -28,12 +33,13 @@ const ReleaseControlGardenItem = ({
     columnExpanded,
 }: CustomItemView<Pipetest>) => {
     const { groupByKeys } = useParkViewContext();
+    const contentColor = getGardenContentColor(data.step);
 
     return (
         <>
             <ReleaseControlItem
                 backgroundColor={getGardenItemColor(data.step)}
-                textColor={'#000'}
+                textColor={contentColor}
                 isGrouped={groupByKeys.length > 0}
                 onClick={onClick}
                 isExpanded={columnExpanded}
@@ -43,8 +49,10 @@ const ReleaseControlGardenItem = ({
                     {columnExpanded && <ReleaseControlExpandedView data={data} />}
                 </MidSection>
                 <Icons>
-                    {!data.pipetestProcessDoneInRightOrder && (
-                        <WorkflowWarningTriangle outline={true} />
+                    {!data.pipetestProcessDoneInRightOrder ? (
+                        <WorkflowWarningTriangle color={contentColor} />
+                    ) : (
+                        <WarningTriangleContainer />
                     )}
                     <StatusCircle
                         statusColor={getGardenItemCompletionColor(data.completionStatus)}

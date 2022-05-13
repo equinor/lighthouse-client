@@ -1,49 +1,90 @@
-import { Button, Icon, Progress } from '@equinor/eds-core-react';
+import { Button, Progress } from '@equinor/eds-core-react';
+import { useEffect } from 'react';
 
-import { TypedSelectOption } from '../../api/Search/searchType';
 import { useScopeChangeMutation } from '../../hooks/React-Query/useScopechangeMutation';
-import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { HotUpload } from '../Attachments/HotUpload';
-import { tokens } from '@equinor/eds-tokens';
-import { deleteAttachment } from '../../api/ScopeChange/Request/attachment';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
-import { useScopeChangeFormState } from '../../hooks/form/useScopeChangeFormState';
 import {
     ActionBar,
-    AttachmentName,
-    AttachmentsList,
     ButtonContainer,
     FlexColumn,
     FormWrapper,
-    Inline,
     Section,
 } from './ScopeChangeForm.styles';
 import styled from 'styled-components';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { useUnpackRelatedObjects } from '../../hooks/queries/useUnpackRelatedObjects';
+import { disableEditMode } from '../../Atoms/editModeAtom';
+import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
+import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext';
+import { FormBanner } from './FormBanner/FormBanner';
+import { RequestAttachmentsList } from '../Attachments/RequestAttachmentsList/RequestAttachmentsList';
 
-interface ScopeChangeRequestEditFormProps {
-    request: ScopeChangeRequest;
-    close: () => void;
-}
+export const ScopeChangeRequestEditForm = (): JSX.Element => {
+    const request = useScopeChangeContext(({ request }) => request);
 
-export const ScopeChangeRequestEditForm = ({
-    request,
-    close,
-}: ScopeChangeRequestEditFormProps): JSX.Element => {
-    const { patchKey, deleteAttachmentKey } = scopeChangeMutationKeys(request.id);
-    const { mutate: removeAttachment } = useScopeChangeMutation(
-        request.id,
-        deleteAttachmentKey,
-        deleteAttachment
+    useEffect(() => {
+        const { clearState, updateAtom } = scopeChangeFormAtomApi;
+        updateAtom({
+            ...request,
+            disciplineGuesstimates: request.disciplineGuesstimates.map(
+                ({ discipline: { procosysCode }, guesstimate }) => ({
+                    disciplineCode: procosysCode,
+                    guesstimateHours: guesstimate,
+                })
+            ),
+        });
+        return () => {
+            clearState();
+        };
+    }, []);
+
+    useUnpackRelatedObjects({ request });
+
+    return (
+        <>
+            <FormBanner />
+            <Wrapper>
+                <FormWrapper>
+                    <FlexColumn>
+                        Request
+                        <ScopeChangeBaseForm />
+                        Disciplines and guesstimates
+                        <GuesstimateDiscipline />
+                    </FlexColumn>
+
+                    <FlexColumn>
+                        <Section>
+                            <SearchReferences />
+                        </Section>
+                        Attachments
+                        <HotUpload />
+                        <RequestAttachmentsList />
+                    </FlexColumn>
+                </FormWrapper>
+                <SubmitActionBar />
+            </Wrapper>
+        </>
     );
+};
 
-    const getReferences = () => state.references ?? [];
-    const handleReferencesChanged = (references: TypedSelectOption[]) =>
-        handleInput('references', references);
-    useUnpackRelatedObjects({ getReferences, handleReferencesChanged, request });
+const Wrapper = styled.div`
+    margin: 24px 32px;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    overflow-x: hidden;
+`;
+
+const SubmitActionBar = (): JSX.Element => {
+    const request = useScopeChangeContext(({ request }) => request);
+    const { patchKey } = scopeChangeMutationKeys(request.id);
+
+    const isValid = scopeChangeFormAtomApi.useIsValid();
 
     const { editScopeChangeMutation } = useRequestMutations();
 
@@ -52,83 +93,34 @@ export const ScopeChangeRequestEditForm = ({
         patchKey,
         editScopeChangeMutation,
         {
-            onSuccess: close,
+            onSuccess: disableEditMode,
         }
     );
 
-    const { handleInput, isValid, state } = useScopeChangeFormState({
-        ...request,
-        attachments: [],
-    });
-
-    const handleSave = (setAsOpen: boolean) =>
+    const handleSave = (setAsOpen: boolean) => {
+        const { prepareRequest } = scopeChangeFormAtomApi;
         mutate({
-            model: state,
-            references: state.references ?? [],
-            request: request,
+            model: prepareRequest(),
             setAsOpen: setAsOpen,
         });
+    };
 
     return (
-        <Wrapper>
-            <FormWrapper>
-                <FlexColumn>
-                    Request
-                    <ScopeChangeBaseForm
-                        handleInput={handleInput}
-                        state={state}
-                        shouldDisableCategory
-                    />
-                </FlexColumn>
-
-                <FlexColumn>
-                    <Section>
-                        <SearchReferences
-                            handleReferencesChanged={handleReferencesChanged}
-                            references={state.references ?? []}
-                        />
-                    </Section>
-                    Attachments
-                    <HotUpload />
-                    {request.attachments.map((attachment, i) => {
-                        return (
-                            <AttachmentsList key={i}>
-                                <AttachmentName>{attachment.fileName}</AttachmentName>
-                                <Inline>
-                                    <div>
-                                        {attachment.fileSize &&
-                                            (attachment?.fileSize / 1000 ** 2).toFixed(2)}
-                                        MB
-                                    </div>
-                                    <Icon
-                                        style={{ margin: '0em 0.5em' }}
-                                        color={tokens.colors.interactive.primary__resting.rgba}
-                                        onClick={() =>
-                                            removeAttachment({
-                                                requestId: request.id,
-                                                attachmentId: attachment.id,
-                                            })
-                                        }
-                                        name="clear"
-                                    />
-                                </Inline>
-                            </AttachmentsList>
-                        );
-                    })}
-                </FlexColumn>
-            </FormWrapper>
-            <ActionBar>
-                <ButtonContainer>
+        <ActionBar>
+            <ButtonContainer>
+                <>
                     {isLoading ? (
-                        <Button disabled={true}>
+                        <Button variant="ghost_icon" disabled>
                             <Progress.Dots color="primary" />
                         </Button>
                     ) : (
                         <>
-                            <Button disabled={!isValid} onClick={() => handleSave(false)}>
-                                {isLoading ? <Progress.Dots color="primary" /> : 'Save'}
+                            <Button variant="outlined" onClick={disableEditMode}>
+                                Cancel
                             </Button>
-
+                            <Button disabled={!isValid} onClick={() => handleSave(false)}>
+                                Save
+                            </Button>
                             {request.state === 'Draft' && (
                                 <Button disabled={!isValid} onClick={() => handleSave(true)}>
                                     Submit
@@ -136,15 +128,8 @@ export const ScopeChangeRequestEditForm = ({
                             )}
                         </>
                     )}
-                </ButtonContainer>
-            </ActionBar>
-        </Wrapper>
+                </>
+            </ButtonContainer>
+        </ActionBar>
     );
 };
-
-const Wrapper = styled.div`
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-`;

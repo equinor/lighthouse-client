@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const Wrapper = styled.section`
+export const Content = styled.section`
     padding: 2rem;
     overflow: scroll;
     height: -webkit-fill-available;
@@ -22,15 +22,15 @@ export const Container = styled.div`
 `;
 
 export const MainColumn = styled.div`
-    width: 70%;
-    margin-right: 1rem;
+    width: 100%;
+    margin: 8px 1.5rem;
     height: fit-content;
     display: flex;
     flex-direction: column;
 `;
-export const SideColumn = styled.div`
-    width: 30%;
 
+export const SideColumn = styled.div`
+    width: 550px;
     height: fit-content;
     display: flex;
     flex-direction: column;

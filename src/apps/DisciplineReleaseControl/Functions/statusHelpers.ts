@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon';
+import { getPipetests } from '../Components/Electro/getPipetests';
 import { getTimePeriod } from '../Components/Garden/gardenFunctions';
 import { PipetestCompletionStatusColors } from '../Styles/ReleaseControlColors';
 import {
@@ -11,18 +12,24 @@ import {
 } from '../Types/drcEnums';
 import { CheckList, Circuit, InsulationBox, Pipetest } from '../Types/pipetest';
 
+export async function fetchAndChewPipetestDataFromApi(): Promise<Pipetest[]> {
+    let data = await getPipetests();
+    data = chewPipetestDataFromApi(data);
+    return data;
+}
+
 export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
     pipetests.map((pipetest: Pipetest) => {
         pipetest.circuits?.forEach((circuit: Circuit) => {
             circuit.checkLists?.forEach((checkList: CheckList) => {
                 checkList.formularType = CheckListStepTag.HtCTest;
-                checkList.isHeatTrace = true;
                 pipetest.checkLists.push(checkList);
             });
         });
         pipetest.checkLists = sortPipetestChecklist(pipetest.checkLists);
         pipetest.heatTraces = pipetest.checkLists.filter(({ isHeatTrace }) => isHeatTrace);
         pipetest.step = getPipetestStatus(pipetest);
+        pipetest.steps = getPipetestSteps(pipetest);
         pipetest.pipetestProcessDoneInRightOrder = isPipetestProcessDoneInRightOrder(pipetest);
         pipetest.completionStatus = getPipetestCompletionStatus(pipetest);
         pipetest.shortformCompletionStatus = getShortformCompletionStatusName(
@@ -34,11 +41,111 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
             DateTime.now() > DateTime.fromISO(pipetest.rfccPlanned)
                 ? 'Yes'
                 : 'No';
+
+        //Find insulation checklists and add them to pipeInsulationBox array.
+        pipetest.pipeInsulationBoxes = [];
+        const insulationCheckLists = pipetest.checkLists.filter(
+            (checkList) => checkList.tagNo.substring(0, 2) === CheckListStepTag.Insulation
+        );
+        insulationCheckLists.forEach((checkList) => {
+            const pipeInsulationBox: InsulationBox = {
+                objectNo: checkList.tagNo,
+                objectName: checkList.responsible + ' / ' + checkList.formularGroup,
+                objectStatus: 'rev: ' + checkList.revision,
+                procosysStatus: checkList.status,
+                object3dReference: '',
+                objectStatusName: '',
+            };
+            pipetest.pipeInsulationBoxes?.push(pipeInsulationBox);
+        });
+
+        //Find 'PIPB-' insulation boxes and move them to pipeInsulationBox array
+        const pipbInsulations = pipetest.insulationBoxes?.filter(
+            (x) => x.objectNo.substring(0, 4) === 'PIPB'
+        );
+        pipbInsulations.forEach((x) => pipetest.pipeInsulationBoxes?.push(x));
+        pipetest.insulationBoxes = pipetest.insulationBoxes?.filter(
+            (x) => x.objectNo.substring(0, 4) !== 'PIPB'
+        );
         return pipetest;
     });
+    pipetests = setPipingRfcUniqueHTDate(pipetests);
     sortPipetests(pipetests);
+    return pipetests;
+}
+
+export function setPipingRfcUniqueHTDate(pipetests: Pipetest[]): Pipetest[] {
+    const htGroupedByPipetest = heatTracesGroupedByPipetest(pipetests);
+    htGroupedByPipetest.map((ht) => {
+        ht.children.sort((a, b) =>
+            a.rfccPlanned.localeCompare(b.rfccPlanned, undefined, {
+                numeric: true,
+                sensitivity: 'base',
+            })
+        );
+        ht.earliestRfcDate = ht.children[0].rfccPlanned;
+        return ht;
+    });
+
+    pipetests.map((pipetest: Pipetest) => {
+        const htCablesOnPipetest = pipetest.heatTraces;
+        const htCableDates: string[] = [];
+        htCablesOnPipetest.forEach((ht) => {
+            const htCable = htGroupedByPipetest.find((z) => z.name === ht.tagNo);
+            if (htCable !== undefined && htCable.earliestRfcDate !== '') {
+                htCableDates.push(htCable.earliestRfcDate);
+            }
+        });
+        htCableDates.sort((a, b) =>
+            a.localeCompare(b, undefined, {
+                numeric: true,
+                sensitivity: 'base',
+            })
+        );
+
+        pipetest.pipingRfcUniqueHT = htCableDates[0];
+        return pipetest;
+    });
 
     return pipetests;
+}
+
+function getPipeTestByHeatTrace(groupName: string, pipetest: Pipetest[]) {
+    const pipetestChildren = pipetest.filter(
+        (pipetest, index, array) =>
+            pipetest.heatTraces.some((y) => y.tagNo === groupName) &&
+            array.indexOf(pipetest) === index
+    );
+    return {
+        name: groupName,
+        children: pipetestChildren,
+        count: pipetestChildren.length,
+        earliestRfcDate: '',
+    };
+}
+
+export function heatTracesGroupedByPipetest(pipetests: Pipetest[]) {
+    const heatTracesGroupedByPipetest = pipetests
+        .reduce(
+            (prev: CheckList[], curr) => [
+                ...prev,
+                ...curr.heatTraces.filter((ht) => !prev.includes(ht)),
+            ],
+            []
+        )
+        .map((groupName) => getPipeTestByHeatTrace(groupName.tagNo, pipetests));
+
+    /** Pipetest that has no heatTraces */
+    const pipetestChildren = pipetests.filter(({ heatTraces }) => heatTraces.length === 0);
+
+    heatTracesGroupedByPipetest.push({
+        name: 'No heatTraces',
+        children: pipetestChildren,
+        count: pipetestChildren.length,
+        earliestRfcDate: '',
+    });
+
+    return heatTracesGroupedByPipetest;
 }
 
 export function sortPipetests(pipetests: Pipetest[]): Pipetest[] {
@@ -121,6 +228,56 @@ export function getPipetestStatus(pipetest: Pipetest): PipetestStep {
     } else {
         return PipetestStep.Complete;
     }
+}
+
+export function getPipetestSteps(pipetest: Pipetest): PipetestStep[] {
+    const pipetestSteps: PipetestStep[] = [];
+
+    if (
+        pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.PressureTest)
+    ) {
+        pipetestSteps.push(PipetestStep.PressureTest);
+    }
+    if (
+        pipetest.checkLists.some(
+            (x) => x.tagNo.substring(0, 2) === CheckListStepTag.ChemicalCleaning
+        )
+    ) {
+        pipetestSteps.push(PipetestStep.ChemicalCleaning);
+    }
+    if (
+        pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.HotOilFlushing)
+    ) {
+        pipetestSteps.push(PipetestStep.HotOilFlushing);
+    }
+    if (
+        pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Bolttensioning)
+    ) {
+        pipetestSteps.push(PipetestStep.Bolttensioning);
+    }
+    if (pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Painting)) {
+        pipetestSteps.push(PipetestStep.Painting);
+    }
+    if (pipetest.checkLists.some((x) => x.formularType === CheckListStepTag.HtTest)) {
+        pipetestSteps.push(PipetestStep.HtTest);
+    }
+    if (pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Insulation)) {
+        pipetestSteps.push(PipetestStep.Insulation);
+    }
+    if (pipetest.insulationBoxes.length !== 0) {
+        pipetestSteps.push(PipetestStep.BoxInsulation);
+    }
+    if (pipetest.checkLists.some((x) => x.formularType === CheckListStepTag.HtRetest)) {
+        pipetestSteps.push(PipetestStep.HtRetest);
+    }
+    if (pipetest.checkLists.some((x) => x.formularType === CheckListStepTag.HtCTest)) {
+        pipetestSteps.push(PipetestStep.HtCTest);
+    }
+    if (pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Marking)) {
+        pipetestSteps.push(PipetestStep.Marking);
+    }
+
+    return pipetestSteps;
 }
 
 export function isPipetestProcessDoneInRightOrder(pipetest: Pipetest): boolean {

@@ -2,17 +2,17 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import {
     registerAppConfig,
     registerClientRegistry,
-    registerInternalState,
+    registerInternalState
 } from '../Functions/RegisterActions';
 import { setClientEnv } from '../Functions/Settings';
-import { AppConfigResult } from '../Types/AppConfig';
+import { AppConfigSettings } from '../Types/AppConfig';
 import { AppGroups } from '../Types/AppGroupe';
 import { AppManifest } from '../Types/AppManifest';
-import { ClientRegistry } from '../Types/ClientRegistry';
 import { fetchConfig } from './appConfig';
 import { appsProvider } from './appsProvider';
 import { setupApps } from './setupApps';
 import { setupAuthProvider } from './setupAuthProvider';
+import { setupContext } from './setupContext';
 import { setupUserData } from './setupUserData';
 
 interface ClientOptions {
@@ -22,27 +22,53 @@ interface ClientOptions {
 
 export interface Client {
     authProvider: AuthenticationProvider;
-    registry: ClientRegistry;
-    appConfig: AppConfigResult;
 }
 
-export async function createClient(clientOptions: ClientOptions): Promise<Client> {
-    const appConfig = registerAppConfig(await fetchConfig());
-    const { authProvider } = registerInternalState(setupAuthProvider(appConfig.settings));
-    setupUserData(authProvider);
-    const registry = registerClientRegistry(
-        setupApps(
-            appsProvider(clientOptions.getApps, clientOptions.getAppGroups, false),
-            appConfig,
-            authProvider
-        )
-    );
+export async function createClient(clientOptions: ClientOptions): Promise<AuthenticationProvider> {
+    const config = await fetchConfig();
+    const appConfig = registerAppConfig(config);
+    const authProvider = await handleLogin(appConfig.settings);
+    if (authProvider.isAuthenticated()) {
+        try {
+            registerClientRegistry(
+                setupApps(
+                    appsProvider(clientOptions.getApps, clientOptions.getAppGroups, false),
+                    appConfig,
+                    authProvider,
+                    config.isProduction
+                )
+            );
+        } catch (e) {
+            throw 'Failed to setup apps';
+        }
 
-    if (!appConfig.isProduction) {
-        window['setEnv'] = function setEnv(env: string) {
-            setClientEnv(env);
-        };
+        try {
+            await setupContext();
+        } catch (e) {
+            throw 'Failed to set fusion context';
+        }
+
+        if (!appConfig.isProduction) {
+            window['setEnv'] = function setEnv(env: string) {
+                setClientEnv(env);
+            };
+        }
+
+        setupUserData(authProvider);
     }
 
-    return { authProvider, registry, appConfig };
+    return authProvider;
+}
+
+async function handleLogin(settings: AppConfigSettings): Promise<AuthenticationProvider> {
+    const { authProvider } = registerInternalState(setupAuthProvider(settings));
+    if (!authProvider.isAuthenticated()) {
+        try {
+            await authProvider.handleLogin();
+        } catch (e) {
+            throw 'Failed to log in';
+        }
+    }
+
+    return authProvider;
 }

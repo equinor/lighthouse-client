@@ -18,7 +18,7 @@ type PackageContainerProps<T> = {
     sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     itemKey: keyof T;
     fieldSettings?: FieldSettings<T>;
-    packageChild: React.MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element> | undefined;
+    packageChild?: React.MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;
     customSubGroup?: React.MemoExoticComponent<(args: CustomGroupView<T>) => JSX.Element>;
     handleExpand: any;
     items: GardenItem<T>[] | null;
@@ -67,6 +67,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                                     columnExpanded={item.isExpanded}
                                     data={item}
                                     onClick={() => handleExpand(item)}
+                                    onSelect={onSelect}
                                     groupByKeys={groupByKeys}
                                 />
                             ) : (

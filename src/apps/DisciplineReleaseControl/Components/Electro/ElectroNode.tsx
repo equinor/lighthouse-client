@@ -1,11 +1,24 @@
 import styled from 'styled-components';
-import { EleNetwork, EleNetworkCable, EleNetworkCircuit } from '../../Types/eleNetwork';
+import { CheckListStepTag } from '../../Types/drcEnums';
+import {
+    CircuitTypes,
+    EleNetwork,
+    EleNetworkCable,
+    EleNetworkCircuit,
+} from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
-import { Cable } from './Components/Cable';
+import { Cable, CableNode } from './Components/Cable';
 import { CircuitAndStarter } from './Components/CircuitAndStarter';
 import { HeatTracingCable } from './Components/HeatTracingCable';
 import { JunctionBox } from './Components/JunctionBox';
-import { getCableChildren, getCircuitChildren, getNodeStatus } from './electroViewHelpers';
+import { SpaceHeater } from './Components/SpaceHeater';
+import {
+    getCableChildren,
+    getCircuitChildren,
+    getElectroTestStatus,
+    getNodeStatus,
+} from './electroViewHelpers';
+import { ElectroViewNodeGroupRow } from './styles';
 
 interface ElectroNodeProps {
     eleNetwork: EleNetwork;
@@ -13,6 +26,8 @@ interface ElectroNodeProps {
     cableNode?: EleNetworkCable;
     pipetests: Pipetest[];
     currentPipetest: Pipetest;
+    cableBorderBottom?: boolean;
+    htCable?: string;
 }
 
 export const ElectroNode = ({
@@ -21,11 +36,18 @@ export const ElectroNode = ({
     cableNode,
     pipetests,
     currentPipetest,
+    cableBorderBottom,
+    htCable,
 }: ElectroNodeProps): JSX.Element => {
     if (node === undefined && cableNode === undefined) return <></>;
 
     const circuitChildren = getCircuitChildren(eleNetwork, node);
     const cableChildren = getCableChildren(eleNetwork, node);
+
+    const isCircuitNode = node?.eleSymbolCode === CircuitTypes.Circuit;
+    const remainingCableChildren = cableChildren.slice(1);
+    const firstCable = cableChildren[0];
+    const circuitFirstCableTo = circuitChildren.find((x) => x.tagNo === firstCable?.tagTo);
 
     const nodeStatus = getNodeStatus(
         eleNetwork.checkLists,
@@ -41,27 +63,54 @@ export const ElectroNode = ({
         (circuit) => !cablesTo.some((x) => x === circuit.tagNo)
     );
 
-    function getNodeRender(node?: EleNetworkCircuit, cableNode?: EleNetworkCable) {
+    const remainingChildrenRender =
+        isCircuitNode &&
+        remainingCableChildren?.map((cable: EleNetworkCable) => {
+            return (
+                <ElectroNode
+                    key={cable?.tagNo}
+                    cableNode={cable}
+                    eleNetwork={eleNetwork}
+                    pipetests={pipetests}
+                    currentPipetest={currentPipetest}
+                />
+            );
+        });
+
+    function getNodeRender(
+        node?: EleNetworkCircuit,
+        cableNode?: EleNetworkCable,
+        cableBorderBottom?: boolean
+    ) {
         if (cableNode !== undefined) {
-            return <Cable value={cableNode?.tagNo} status={nodeStatus} />;
+            return <Cable cable={cableNode} status={nodeStatus} borderBottom={cableBorderBottom} />;
         }
         switch (node?.eleSymbolCode) {
-            case 'TAVLE':
+            case CircuitTypes.Circuit:
                 return (
-                    <CircuitAndStarter value={eleNetwork.switchBoardTagNo} status={nodeStatus} />
+                    <CircuitAndStarter
+                        value={eleNetwork.switchBoardTagNo}
+                        cTestStatus={getElectroTestStatus(
+                            CheckListStepTag.HtCTest,
+                            eleNetwork.checkLists
+                        )}
+                    />
                 );
 
-            case 'K_BOX':
+            case CircuitTypes.JunctionBox:
                 return <JunctionBox value={node?.tagNo} status={nodeStatus} />;
-            case 'HT_KAB':
+            case CircuitTypes.HTCable:
                 return (
                     <HeatTracingCable
                         value={node?.tagNo}
-                        status={nodeStatus}
+                        eleNetwork={eleNetwork}
                         pipetests={pipetests}
                         currentPipetest={currentPipetest}
+                        htCable={htCable}
                     />
                 );
+            case CircuitTypes.SpaceHeater:
+                return <SpaceHeater value={node?.tagNo} status={nodeStatus} />;
             default:
                 return null;
         }
@@ -70,12 +119,40 @@ export const ElectroNode = ({
     return (
         <>
             {cableNode !== undefined
-                ? getNodeRender(undefined, cableNode)
-                : getNodeRender(node, undefined)}
+                ? getNodeRender(undefined, cableNode, cableBorderBottom)
+                : getNodeRender(node, undefined, cableBorderBottom)}
 
             <ElectroViewVerticalRow key={cableNode !== undefined ? cableNode.tagNo : node?.tagNo}>
                 {/* Render cables together with their children */}
+
+                {cableChildren.length !== 0 && isCircuitNode && (
+                    <ElectroViewRow>
+                        <ElectroViewVerticalRow>
+                            <ElectroNode
+                                key={firstCable?.tagNo}
+                                cableNode={firstCable}
+                                eleNetwork={eleNetwork}
+                                pipetests={pipetests}
+                                currentPipetest={currentPipetest}
+                                cableBorderBottom={true}
+                                htCable={htCable}
+                            />
+                            {remainingChildrenRender}
+                        </ElectroViewVerticalRow>
+
+                        <ElectroNode
+                            key={circuitFirstCableTo?.tagNo}
+                            node={circuitFirstCableTo}
+                            eleNetwork={eleNetwork}
+                            pipetests={pipetests}
+                            currentPipetest={currentPipetest}
+                            htCable={htCable}
+                        />
+                    </ElectroViewRow>
+                )}
+
                 {cableChildren.length !== 0 &&
+                    !isCircuitNode &&
                     cableChildren.map((cable: EleNetworkCable) => {
                         const cableTo = circuitChildren.find((x) => x.tagNo === cable.tagTo);
                         return (
@@ -86,6 +163,8 @@ export const ElectroNode = ({
                                     eleNetwork={eleNetwork}
                                     pipetests={pipetests}
                                     currentPipetest={currentPipetest}
+                                    cableBorderBottom={true}
+                                    htCable={htCable}
                                 />
                                 <ElectroNode
                                     key={cableTo?.tagNo}
@@ -93,21 +172,37 @@ export const ElectroNode = ({
                                     eleNetwork={eleNetwork}
                                     pipetests={pipetests}
                                     currentPipetest={currentPipetest}
+                                    htCable={htCable}
                                 />
                             </ElectroViewRow>
                         );
                     })}
-                {/* Render standalone children of the node - HT cable */}
+
+                {/* Render standalone children of the node - HT cable ++ */}
                 {standaloneCircuitChildren.length !== 0 &&
                     standaloneCircuitChildren.map((circuit: EleNetworkCircuit) => {
-                        return (
+                        return circuit.eleSymbolCode === CircuitTypes.HTCable ? (
                             <ElectroNode
                                 key={circuit?.tagNo}
                                 node={circuit}
                                 eleNetwork={eleNetwork}
                                 pipetests={pipetests}
                                 currentPipetest={currentPipetest}
+                                htCable={htCable}
                             />
+                        ) : (
+                            <ElectroViewNodeGroupRow>
+                                {/* Ghost cable node to position junction box with no cable correctly */}
+                                <CableNode />
+                                <ElectroNode
+                                    key={circuit?.tagNo}
+                                    node={circuit}
+                                    eleNetwork={eleNetwork}
+                                    pipetests={pipetests}
+                                    currentPipetest={currentPipetest}
+                                    htCable={htCable}
+                                />
+                            </ElectroViewNodeGroupRow>
                         );
                     })}
             </ElectroViewVerticalRow>

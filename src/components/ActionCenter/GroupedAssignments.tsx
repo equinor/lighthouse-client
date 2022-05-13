@@ -1,43 +1,59 @@
-import { Checkbox } from '@equinor/eds-core-react';
+import { Accordion } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-import { IconMenu } from '../../apps/ScopeChangeRequest/Components/MenuButton';
-import { AssignmentGroups } from './AssignmentGroup';
-import { Assignment } from './AssignmentsTab';
+import { AssignmentCard } from '../../Core/Assignments/Components/AssignmentsCard';
+import { Assignment } from '../../Core/Assignments/Types/assignment';
+import { handleActionClick } from './handleActionClick';
 
 interface GroupedAssignmentsProps {
-    origins: string[];
     assignments: Assignment[];
-    ungroup: () => void;
+    activeAssignments: string[];
 }
 
-export function GroupedAssignments({
+export const GroupedAssignments = ({
+    activeAssignments,
     assignments,
-    origins,
-    ungroup,
-}: GroupedAssignmentsProps): JSX.Element {
+}: GroupedAssignmentsProps): JSX.Element => {
+    const capitalize = (name: string) => name.charAt(0).toUpperCase() + name.slice(1);
+
     return (
-        <>
-            <Header>
-                <IconMenu
-                    iconName="filter_list"
-                    items={[
-                        {
-                            label: `Ungroup`,
-                            icon: <Checkbox checked={true} />,
-                            onClick: ungroup,
-                        },
-                    ]}
-                />
-            </Header>
-
-            <AssignmentGroups origins={origins} assignments={assignments} />
-        </>
+        <Accordion>
+            {activeAssignments.map((applicationTitle) => (
+                <Accordion.Item key={applicationTitle}>
+                    <Header chevronPosition="right">{capitalize(applicationTitle)}</Header>
+                    {assignments &&
+                        assignments
+                            .filter(
+                                ({ sourceSystem }) => sourceSystem.subSystem === applicationTitle
+                            )
+                            .map((assignment) => (
+                                <Panel
+                                    onClick={() =>
+                                        handleActionClick(
+                                            assignment.sourceSystem.subSystem,
+                                            assignment.sourceSystem.identifier
+                                        )
+                                    }
+                                    key={assignment.id}
+                                >
+                                    <AssignmentCard assignment={assignment} />
+                                </Panel>
+                            ))}
+                </Accordion.Item>
+            ))}
+        </Accordion>
     );
-}
+};
 
-const Header = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    width: 100%;
+const Panel = styled(Accordion.Panel)`
+    margin: 0;
+    padding: 0;
+    height: auto;
+    border: none;
+    min-height: auto;
+`;
+
+const Header = styled(Accordion.Header)`
+    border: none;
+    border-bottom: 1px ${tokens.colors.interactive.disabled__border.hex} solid;
 `;

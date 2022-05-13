@@ -1,29 +1,34 @@
-import { ClientApi } from '@equinor/portal-client';
+import { tokens } from '@equinor/eds-tokens';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
-import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
+import { getGardenItemColor } from './Components/Garden/gardenFunctions';
+import {
+    drcGardenKeys,
+    fieldSettings,
+    getHighlightedColumn,
+} from './Components/Garden/gardenSetup';
+import ReleaseControlGardenGroupView from './Components/Garden/ReleaseControlGardenGroupView';
+import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
+import { GatewaySidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
+import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
+import {
+    StepFilterContainer,
+    StepFilterText,
+    WorkflowFilterDot,
+} from './Components/Workflow/Components/WorkflowFilterDot';
+import { WorkflowWarningTriangle } from './Components/Workflow/Components/WorkflowWarningTriangle';
+import { CurrentStepContainer } from './Components/Workflow/Styles/styles';
 import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
-import { fieldSettings, getHighlightedColumn } from './Components/Garden/gardenSetup';
-import { Pipetest } from './Types/pipetest';
 import {
     checklistTagFunc,
     createChecklistSteps,
     getHTList,
     getStatusLetterFromStatus,
 } from './Functions/tableHelpers';
-import { getGardenItemColor } from './Components/Garden/gardenFunctions';
-import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
-import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { Monospace } from './Styles/Monospace';
-import {
-    CurrentStepContainer,
-    WorkflowWarningTriangle,
-} from './Components/Workflow/Components/WorkflowWarningTriangle';
-import {
-    StepFilterContainer,
-    StepFilterText,
-    WorkflowFilterDot,
-} from './Components/Workflow/Components/WorkflowFilterDot';
+import { PipetestStep } from './Types/drcEnums';
+import { Pipetest } from './Types/pipetest';
 
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -39,9 +44,9 @@ export function setup(appApi: ClientApi): void {
 
     const request = appApi
         .createWorkSpace<Pipetest>({
-            CustomSidesheet: ReleaseControlSidesheet,
+            CustomSidesheet: GatewaySidesheet,
             objectIdentifier: 'name',
-            defaultTab: 1,
+            defaultTab: 'garden',
         })
         .registerDataSource({
             responseAsync: responseAsync,
@@ -66,23 +71,64 @@ export function setup(appApi: ClientApi): void {
                     values.sort((a, b) => {
                         const map = new Map<string, number>();
 
-                        map.set('unknown', 0);
-                        map.set('pressuretest', 1);
-                        map.set('chemicalcleaning', 2);
-                        map.set('hotoilflushing', 3);
-                        map.set('bolttensioning', 4);
-                        map.set('painting', 5);
-                        map.set('a-test', 6);
-                        map.set('insulation', 7);
-                        map.set('boxInsulation', 8);
-                        map.set('b-test', 9);
-                        map.set('marking', 10);
-                        map.set('complete', 11);
+                        map.set(PipetestStep.Unknown, 0);
+                        map.set(PipetestStep.PressureTest, 1);
+                        map.set(PipetestStep.ChemicalCleaning, 2);
+                        map.set(PipetestStep.HotOilFlushing, 3);
+                        map.set(PipetestStep.Bolttensioning, 4);
+                        map.set(PipetestStep.Painting, 5);
+                        map.set(PipetestStep.HtTest, 6);
+                        map.set(PipetestStep.Insulation, 7);
+                        map.set(PipetestStep.BoxInsulation, 8);
+                        map.set(PipetestStep.HtRetest, 9);
+                        map.set(PipetestStep.HtCTest, 10);
+                        map.set(PipetestStep.Marking, 11);
+                        map.set(PipetestStep.Complete, 12);
 
                         if (typeof a !== 'string') return 0;
                         if (typeof b !== 'string') return 0;
 
-                        return (map.get(a.toLowerCase()) ?? -0) - (map.get(b.toLowerCase()) ?? -0);
+                        return (map.get(a) ?? -0) - (map.get(b) ?? -0);
+                    });
+                    return values;
+                },
+            },
+
+            {
+                name: 'Step name',
+                valueFormatter: ({ steps }) => steps.filter((v, i, a) => a.indexOf(v) === i),
+                customValueRender: (value) => {
+                    return (
+                        <StepFilterContainer>
+                            <WorkflowFilterDot
+                                color={getGardenItemColor(value?.toString())}
+                                circleText={getStatusLetterFromStatus(value?.toString())}
+                            />
+                            <StepFilterText title={value?.toString()}>{value}</StepFilterText>
+                        </StepFilterContainer>
+                    );
+                },
+                sort: (values) => {
+                    values.sort((a, b) => {
+                        const map = new Map<string, number>();
+
+                        map.set(PipetestStep.Unknown, 0);
+                        map.set(PipetestStep.PressureTest, 1);
+                        map.set(PipetestStep.ChemicalCleaning, 2);
+                        map.set(PipetestStep.HotOilFlushing, 3);
+                        map.set(PipetestStep.Bolttensioning, 4);
+                        map.set(PipetestStep.Painting, 5);
+                        map.set(PipetestStep.HtTest, 6);
+                        map.set(PipetestStep.Insulation, 7);
+                        map.set(PipetestStep.BoxInsulation, 8);
+                        map.set(PipetestStep.HtRetest, 9);
+                        map.set(PipetestStep.HtCTest, 10);
+                        map.set(PipetestStep.Marking, 11);
+
+                        if (typeof a !== 'string') return 0;
+                        if (typeof b !== 'string') return 0;
+
+                        return (map.get(a) ?? -0) - (map.get(b) ?? -0);
                     });
                     return values;
                 },
@@ -92,11 +138,14 @@ export function setup(appApi: ClientApi): void {
                 name: 'System',
                 valueFormatter: ({ name }) => name.substring(0, 2),
             },
-
             {
                 name: 'Priority',
                 valueFormatter: ({ commPkPriority1 }) =>
                     commPkPriority1 !== '' ? commPkPriority1 : 'Unknown',
+            },
+            {
+                name: 'Location',
+                valueFormatter: ({ location }) => location,
             },
             {
                 name: 'Due date time period',
@@ -122,7 +171,9 @@ export function setup(appApi: ClientApi): void {
                 name: 'Circuit',
                 valueFormatter: ({ circuits }) =>
                     circuits
-                        .map(({ circuitAndStarterTagNo }) => circuitAndStarterTagNo)
+                        .map(({ circuitAndStarterTagNo }) =>
+                            circuitAndStarterTagNo !== '' ? circuitAndStarterTagNo : null
+                        )
                         .filter((v, i, a) => a.indexOf(v) === i),
             },
         ]);
@@ -142,14 +193,18 @@ export function setup(appApi: ClientApi): void {
             'circuits',
             'pipetestProcessDoneInRightOrder',
             'step',
+            'steps',
+            'pipeInsulationBoxes',
+            'pipingRfcUniqueHT',
         ],
         enableSelectRows: true,
         headers: [
             { key: 'name', title: 'Pipetest', width: 100 },
             { key: 'description', title: 'Description', width: 600 },
             { key: 'commPkPriority1', title: 'Priority', width: 90 },
-            { key: 'checkLists', title: 'Process', width: 260 },
+            { key: 'checkLists', title: 'Checklist status', width: 260 },
             { key: 'commPkPriority1', title: 'Priority', width: 200 },
+            { key: 'location', title: 'Location', width: 200 },
         ],
         customCellView: [
             {
@@ -190,10 +245,10 @@ export function setup(appApi: ClientApi): void {
                             {cell.row.values.step}
                             {!cell.row.values.pipetestProcessDoneInRightOrder && (
                                 <WorkflowWarningTriangle
-                                    circleText={''}
                                     popoverText={
                                         'Some steps in this process has been done in the wrong order'
                                     }
+                                    color={tokens.colors.text.static_icons__default.hex}
                                 />
                             )}
                         </CurrentStepContainer>
@@ -203,7 +258,7 @@ export function setup(appApi: ClientApi): void {
             {
                 id: 'dueByWeek',
                 accessor: 'rfccPlanned',
-                Header: 'Due by week',
+                Header: 'Piping RFC',
                 Aggregated: () => null,
                 width: 120,
                 aggregate: 'count',
@@ -220,7 +275,7 @@ export function setup(appApi: ClientApi): void {
                 accessor: 'heatTraces',
                 Header: 'HT cables',
                 Aggregated: () => null,
-                width: 1165,
+                width: 935,
                 aggregate: 'count',
                 Cell: (cell) => {
                     return (
@@ -234,17 +289,51 @@ export function setup(appApi: ClientApi): void {
     });
 
     request.registerGardenOptions({
-        gardenKey: 'dueAtDate' as any,
+        gardenKey: drcGardenKeys.defaultGardenKey,
         itemKey: 'name',
         type: 'virtual',
         fieldSettings: fieldSettings,
         customViews: {
             customItemView: ReleaseControlGardenItem,
+            customGroupView: ReleaseControlGardenGroupView,
         },
         highlightColumn: getHighlightedColumn,
         itemWidth: () => 150,
         rowHeight: 25,
     });
+
+    request.registerPresets([
+        {
+            name: 'Electro',
+            type: 'garden',
+            filter: {
+                filterGroups: [
+                    {
+                        name: 'Switchboard',
+                        values: [null, ''],
+                    },
+                    {
+                        name: 'Circuit',
+                        values: [null, ''],
+                    },
+                ],
+            },
+            garden: {
+                gardenKey: drcGardenKeys.electroGardenKey,
+                groupByKeys: ['heatTraces'],
+            },
+        },
+        {
+            name: 'Default',
+            type: 'garden',
+            filter: {
+                filterGroups: [],
+            },
+            garden: {
+                gardenKey: drcGardenKeys.defaultGardenKey,
+            },
+        },
+    ]);
 
     request.registerStatusItems(statusBarConfig);
 }

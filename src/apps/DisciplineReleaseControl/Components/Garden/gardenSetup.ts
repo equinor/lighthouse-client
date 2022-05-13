@@ -2,35 +2,37 @@ import { FieldSettings } from '../../../../components/ParkView/Models/fieldSetti
 import { getYearAndWeekFromDate, getYearAndWeekFromString } from '../../Functions/statusHelpers';
 
 import { Pipetest } from '../../Types/pipetest';
-import {
-    getStatusKey,
-    getSystemKey,
-    groupBySystem,
-    sortByNumber,
-    sortByPipetestStatus,
-} from './gardenFunctions';
+import { getSystemKey, groupBySystem, sortByNumber, sortByPipetestStatus } from './gardenFunctions';
 
 export type ExtendedGardenFields = 'system' | 'dueAtDate' | 'priority';
 
+export const drcGardenKeys = {
+    defaultGardenKey: 'dueAtDate' as keyof Pipetest,
+    electroGardenKey: 'pipingRfcUniqueHT' as keyof Pipetest,
+};
+
 export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
-    step: { label: 'Current step', getKey: getStatusKey, getColumnSort: sortByPipetestStatus },
+    step: {
+        label: 'Current step',
+        getKey: (item) => item.step,
+        getColumnSort: sortByPipetestStatus,
+    },
     system: { label: 'System', getKey: getSystemKey, getColumnSort: groupBySystem },
-    //TODO: Is this needed? (it's very slow)...
-    // checkLists: {
-    //     label: 'Checklists',
-    //     key: 'tagNo',
-    // },
     heatTraces: {
         label: 'HT cable',
         key: 'tagNo',
     },
     dueAtDate: {
-        label: 'Due date',
+        label: 'Piping RFC',
         getKey: (item) => getYearAndWeekFromString(item.rfccPlanned),
         getColumnSort: sortByNumber,
     },
     priority: { label: 'Priority', getKey: (item) => item.commPkPriority1 },
     dueDateTimePeriod: { label: 'Time period', getKey: (item) => item.dueDateTimePeriod },
+    pipingRfcUniqueHT: {
+        label: 'Piping RFC (Unique HT)',
+        getKey: (item) => getYearAndWeekFromString(item.pipingRfcUniqueHT),
+    },
 };
 
 export const getHighlightedColumn = (groupByKey: string) => {

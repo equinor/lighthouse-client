@@ -1,6 +1,8 @@
 {
     "compilerOptions": {
-        "lib": ["esnext"],
+        "lib": [
+            "esnext"
+        ],
         "strict": true,
         "jsx": "react-jsx",
         "target": "es6",
@@ -15,41 +17,128 @@
         "isolatedModules": true,
         "noEmit": true,
         "noImplicitAny": false,
-        "types": ["node", "vite/client", "jest"],
+        "types": [
+            "node",
+            "vite/client",
+            "jest"
+        ],
         "sourceMap": true,
         "paths": {
-            "@equinor/Kpi": ["./src/packages/KPI"],
-            "@equinor/portal-client": ["./src/Core/Client"],
-            "@equinor/lighthouse-components":["./src/packages/Components"],
-            "@equinor/sidesheet": ["./src/packages/Sidesheet"],
-            "@equinor/GroupView": ["./src/Core/GroupView"],
-            "@equinor/WorkSpace": ["./src/Core/WorkSpace"],
-            "@equinor/PageViewer": ["./src/Core/PageViewer"],
-            "@equinor/Form": ["./src/packages/Form"],
-            "@equinor/VisualEditor": ["./src/packages/VisualEditor"],
-            "@equinor/worker": ["./src/packages/WebWorkers"],
-            "@equinor/filter": ["./src/packages/Filter"],
-            "@equinor/DataFactory": ["./src/Core/DataFactory"],
-            "@equinor/ErrorBoundary": ["./src/Core/ErrorBoundary"],
-            "@equinor/StatusBar": ["./src/packages/2StatusBar"],
-            "@equinor/Diagrams": ["./src/packages/Diagrams"],
-            "@equinor/Table": ["./src/packages/Table"],
-            "@equinor/authentication": ["./src/packages/authentication"],
-            "@equinor/http-client": ["./src/Core/httpClient"],
-            "@equinor/hooks": ["./src/hooks"],
-            "@equinor/Utils": ["./src/packages/Utils"],
-            "@equinor/typeGuard": ["./src/packages/typeGuard"],
-            "@equinor/GardenUtils": ["./src/packages/GardenUtils"],
-            "@equinor/echo3dweb-viewer": ["./packages/echo3dViewer/src"],
-            "@equinor/lighthouse-powerbi": ["./src/modules/powerBI"],
-            "@equinor/lighthouse-powerbi-viewer": ["./src/Core/PowerBiViewer"]
+            "@equinor/Kpi": [
+                "./src/packages/KPI"
+            ],
+            "@equinor/lighthouse-widgets": [
+                "./src/Core/Widgets"
+            ],
+            "@equinor/lighthouse-functions": [
+                "./src/Core/Functions"
+            ],
+            "@equinor/atom": [
+                "./src/Core/Atom"
+            ],
+            "@equinor/lighthouse-portal-client": [
+                "./src/Core/Client"
+            ],
+            "@equinor/lighthouse-components": [
+                "./src/packages/Components"
+            ],
+            "@equinor/sidesheet": [
+                "./src/packages/Sidesheet"
+            ],
+            "@equinor/GroupView": [
+                "./src/Core/GroupView"
+            ],
+            "@equinor/WorkSpace": [
+                "./src/Core/WorkSpace"
+            ],
+            "@equinor/PageViewer": [
+                "./src/Core/PageViewer"
+            ],
+            "@equinor/Form": [
+                "./src/packages/Form"
+            ],
+            "@equinor/VisualEditor": [
+                "./src/packages/VisualEditor"
+            ],
+            "@equinor/worker": [
+                "./src/packages/WebWorkers"
+            ],
+            "@equinor/filter": [
+                "./src/packages/Filter"
+            ],
+            "@equinor/DataFactory": [
+                "./src/Core/DataFactory"
+            ],
+            "@equinor/ErrorBoundary": [
+                "./src/Core/ErrorBoundary"
+            ],
+            "@equinor/StatusBar": [
+                "./src/packages/2StatusBar"
+            ],
+            "@equinor/Diagrams": [
+                "./src/packages/Diagrams"
+            ],
+            "@equinor/Table": [
+                "./src/packages/Table"
+            ],
+            "@equinor/authentication": [
+                "./src/packages/authentication"
+            ],
+            "@equinor/http-client": [
+                "./src/Core/httpClient"
+            ],
+            "@equinor/hooks": [
+                "./src/hooks"
+            ],
+            "@equinor/lighthouse-utils": [
+                "./src/packages/Utils"
+            ],
+            "@equinor/typeGuard": [
+                "./src/packages/typeGuard"
+            ],
+            "@equinor/ParkView": [
+                "./src/components/ParkView"
+            ],
+            "@equinor/GardenUtils": [
+                "./src/packages/GardenUtils"
+            ],
+            "@equinor/echo3dweb-viewer": [
+                "./packages/echo3dViewer/src"
+            ],
+            "@equinor/lighthouse-powerbi": [
+                "./src/modules/powerBI"
+            ],
+            "@equinor/lighthouse-powerbi-viewer": [
+                "./src/Core/PowerBiViewer"
+            ],
+            "@equinor/lighthouse-model-viewer": [
+                "./src/packages/ModelViewer"
+            ],
+            "@equinor/lighthouse-status-bar": [
+                "./src/packages/StatusBar"
+            ],
+            "@equinor/lighthouse-hooks": [
+                "./src/hooks"
+            ],
+            "@equinor/BookmarksManager": [
+                "./src/packages/BookmarksManager"
+            ],
+            "@equinor/overlay-menu": [
+                "./src/components/OverlayMenu"
+            ]
         }
     },
     "compileOnSave": true,
-    "exclude": ["node_modules"],
-    "include": ["./src"],
+    "exclude": [
+        "node_modules"
+    ],
+    "include": [
+        "./src"
+    ],
     "typedocOptions": {
-        "entryPoints": ["src/index.ts"],
+        "entryPoints": [
+            "src/index.ts"
+        ],
         "out": "docs"
     }
 }

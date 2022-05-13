@@ -1,6 +1,6 @@
 import { GroupView } from '@equinor/GroupView';
+import { ClientHome, useClientContext } from '@equinor/lighthouse-portal-client';
 import { PowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
-import { ClientHome, useClientContext } from '@equinor/portal-client';
 import { closeSidesheet } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
@@ -15,6 +15,7 @@ export function ClientRoutes(): JSX.Element {
         appConfig,
         registry: { apps, appGroups },
         internal: { authProvider },
+        settings: { isProduction },
     } = useClientContext();
 
     const currentRoute = useLocationKey();
@@ -29,9 +30,6 @@ export function ClientRoutes(): JSX.Element {
             {Object.keys(appGroups).map((key) => {
                 const group = appGroups[key];
                 const links = apps.filter((app) => {
-                    if (Array.isArray(app.groupe)) {
-                        return app.groupe.includes(key as Apps);
-                    }
                     return app.groupe === (key as Apps);
                 });
                 return (
@@ -44,20 +42,19 @@ export function ClientRoutes(): JSX.Element {
             })}
             {apps.map((route) => {
                 if (route.app?.appType === 'Workspace') {
-                    const api = { ...route, authProvider, appConfig };
+                    const api = {
+                        ...route,
+                        authProvider,
+                        appConfig,
+                        hasSidesheet: true,
+                        isProduction,
+                    };
                     return (
-                        <Route key={route.shortName + route.groupe}>
-                            <Route
-                                key={route.shortName}
-                                path={`${route.groupe.toString()}/${route.shortName}`}
-                                element={<WorkSpace {...api} />}
-                            />
-                            <Route
-                                key={route.shortName + 'id'}
-                                path={`${route.groupe.toString()}/${route.shortName}/:id`}
-                                element={<WorkSpace {...api} />}
-                            />
-                        </Route>
+                        <Route
+                            key={route.shortName + route.groupe}
+                            path={`${route.groupe}/${route.shortName}/*`}
+                            element={<WorkSpace {...api} />}
+                        />
                     );
                 }
                 if (route.app?.appType === 'PageView') {
@@ -65,12 +62,12 @@ export function ClientRoutes(): JSX.Element {
                         <Route key={route.shortName + route.groupe}>
                             <Route
                                 key={route.shortName}
-                                path={`${route.groupe.toString()}/${route.shortName}`}
+                                path={`${route.groupe}/${route.shortName}`}
                                 element={<PageView />}
                             />
                             <Route
                                 key={route.shortName + 'id'}
-                                path={`${route.groupe.toString()}/${route.shortName}/:id`}
+                                path={`${route.groupe}/${route.shortName}/:id`}
                                 element={<PageView />}
                             />
                         </Route>
@@ -81,7 +78,7 @@ export function ClientRoutes(): JSX.Element {
                         <Route key={route.shortName + route.groupe}>
                             <Route
                                 key={route.shortName}
-                                path={`${route.groupe.toString()}/${route.shortName}`}
+                                path={`${route.groupe}/${route.shortName}`}
                                 element={<PowerBiViewer {...route} />}
                             />
                         </Route>
@@ -90,7 +87,7 @@ export function ClientRoutes(): JSX.Element {
                 return (
                     <Route
                         key={route.shortName}
-                        path={`${route.groupe.toString()}/${route.shortName}`}
+                        path={`${route.groupe}/${route.shortName}`}
                         element={<ComponentWrapper {...route} />}
                     />
                 );

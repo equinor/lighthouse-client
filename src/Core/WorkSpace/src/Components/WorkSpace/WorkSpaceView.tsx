@@ -1,57 +1,28 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
-import { useMemo, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { PopoutSidesheet, useSideSheet } from '@equinor/sidesheet';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { WorkspaceProps } from '../..';
+import { BookmarkContextWrapper } from '../../Context/BookmarkContext';
 import { useDataContext } from '../../Context/DataProvider';
-import { useConfiguredTabs } from '../../Tabs/tabsConfig';
+import { WorkspaceFilterWrapper } from '../../Context/WorkspaceFilterWrapper';
+import { useConfiguredTabs } from '../../Util/tabsConfig';
 import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { DumpsterFireDialog } from '../DataLoadFailed/DumpsterFireDialog';
+import { CompletionViewHeader } from '../DataViewerHeader/Header';
 import { NoDataView } from '../NoDataViewer/NoData';
 import { WorkSpaceTabs } from '../WorkSpaceTabs/WorkSpaceTabs';
-import { HeaderWrapper } from './HeaderFilterWrapper';
 import { WorkspaceErrorPage } from './WorkspaceErrorPage';
-import { WorkspaceFilterWrapper } from './WorkspaceFilterWrapper';
-import { WorkspaceSidesheet } from './WorkspaceSidesheet';
-import { DataViewWrapper, Tabs, WorkspaceWrapper } from './WorkSpaceViewStyles';
+import { DataViewWrapper, Loading, WorkspaceWrapper } from './WorkSpaceViewStyles';
 
 export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
-    const {
-        treeOptions,
-        tableOptions,
-        gardenOptions,
-        timelineOptions,
-        analyticsOptions,
-        powerBiOptions,
-        filterOptions = [],
-        workflowEditorOptions,
-        defaultTab,
-    } = useWorkSpace();
+    const workspace = useWorkSpace();
+    const { tabs, viewIsActive } = useConfiguredTabs(workspace);
 
     const { dataApi } = useDataContext();
-    const { id } = useParams();
-    const currentId = useMemo(() => id && `/${id}`, [id]);
+
     const navigate = useNavigate();
-    const location = useLocation();
-
-    const { tabs, viewIsActive } = useConfiguredTabs(
-        //Dont know why??
-        treeOptions as any,
-        tableOptions,
-        gardenOptions,
-        timelineOptions,
-        analyticsOptions,
-        powerBiOptions,
-        workflowEditorOptions
-    );
-
-    const [activeTab, setActiveTab] = useState(Number(id) || defaultTab);
-
-    const handleChange = (index: number) => {
-        setActiveTab(index);
-
-        navigate(`${location.pathname.replace(currentId || '', '')}/${index}`, { replace: true });
-    };
+    const { activeWidth, isMinimized } = useSideSheet();
 
     if (!viewIsActive) return <NoDataView />;
 
@@ -83,25 +54,31 @@ export function WorkSpaceView(props: WorkspaceProps): JSX.Element {
 
     return (
         <WorkspaceWrapper>
-            <WorkspaceFilterWrapper filterConfiguration={filterOptions}>
-                <Tabs activeTab={activeTab} onChange={handleChange}>
-                    <HeaderWrapper props={props} tabs={tabs} />
-                    <DataViewWrapper>
-                        <WorkSpaceTabs title={props.title} tabs={tabs} activeTab={activeTab} />
-                        <WorkspaceSidesheet />
+            {!props.hasSidesheet && (
+                <Wrapper>
+                    <PopoutSidesheet />
+                </Wrapper>
+            )}
+            <WorkspaceFilterWrapper filterOptions={workspace.filterOptions || []}>
+                <BookmarkContextWrapper>
+                    <CompletionViewHeader
+                        {...props}
+                        tabs={tabs}
+                        sideSheetWidth={isMinimized ? activeWidth : 0}
+                    />
+                    <DataViewWrapper sideSheetWidth={activeWidth}>
+                        <WorkSpaceTabs tabs={tabs} />
                     </DataViewWrapper>
-                </Tabs>
+                </BookmarkContextWrapper>
             </WorkspaceFilterWrapper>
         </WorkspaceWrapper>
     );
 }
 
-const Loading = styled.div`
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 0.5em;
+const Wrapper = styled.div`
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
 `;
