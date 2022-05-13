@@ -304,7 +304,7 @@ export function setup(appApi: ClientApi): void {
 
     request.registerPresets([
         {
-            name: 'Electro',
+            name: 'HT cables',
             type: 'garden',
             filter: {
                 filterGroups: [
@@ -324,7 +324,7 @@ export function setup(appApi: ClientApi): void {
             },
         },
         {
-            name: 'Default',
+            name: 'Pipetest',
             type: 'garden',
             filter: {
                 filterGroups: [],
