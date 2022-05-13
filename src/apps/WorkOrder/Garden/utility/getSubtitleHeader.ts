@@ -52,14 +52,14 @@ export const getSubtitleHeader = (
                         currentWeekAndYearAsInt <=
                     0
             )
-            .map((wo) => Number(wo?.remainingHours));
+            .map((wo) => Number(wo.remainingHours));
     } else {
-        hours = items.filter(shouldCountHours).map((wo) => Number(wo?.remainingHours)) || [0];
+        hours = items.filter(shouldCountHours).map((wo) => Number(wo.remainingHours)) || [0];
     }
 
     if (headerValueIsToday === 0 && columnIsExpanded) {
         const weekHours = (
-            items.filter(shouldCountHours).map((wo) => Number(wo?.remainingHours) || 0) || [0]
+            items.filter(shouldCountHours).map((wo) => Number(wo.remainingHours) || 0) || [0]
         ).reduce((acc, curr) => (acc += curr), 0);
 
         const totalRemainingHours = hours.reduce((acc, curr) => (acc += curr), 0);

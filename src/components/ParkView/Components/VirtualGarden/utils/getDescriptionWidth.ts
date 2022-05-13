@@ -7,7 +7,10 @@ type PackageWithDescription<T extends unknown> = T & {
 function packageHasDescription<T extends unknown>(
     packageObj: T
 ): packageObj is PackageWithDescription<T> {
-    if ((packageObj as PackageWithDescription<T>)?.description !== undefined) {
+    if (
+        (packageObj as PackageWithDescription<T>)?.description !== undefined &&
+        (packageObj as PackageWithDescription<T>).description !== null
+    ) {
         return true;
     } else {
         return false;
