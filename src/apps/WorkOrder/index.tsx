@@ -1,4 +1,4 @@
-import { ClientApi, getFusionContextId, httpClient } from '@equinor/portal-client';
+import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
 import { WorkorderSideSheet } from './Garden/components';
 import WorkOrderHeader from './Garden/components/WorkOrderHeader/WorkOrderHeader';
 import WorkOrderItem from './Garden/components/WorkOrderItem/WorkOrderItem';

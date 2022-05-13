@@ -1,14 +1,8 @@
 import styled from 'styled-components';
-import { Button, CircularProgress } from '@equinor/eds-core-react';
 
-import { TypedSelectOption } from '../../api/Search/searchType';
 import { Upload } from '../Attachments/Upload';
 import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { usePreloadCaching } from '../../hooks/React-Query/usePreloadCaching';
-import {
-    ScopeChangeFormModel,
-    useScopeChangeFormState,
-} from '../../hooks/form/useScopeChangeFormState';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import {
     ActionBar,
@@ -19,43 +13,57 @@ import {
 } from './ScopeChangeForm.styles';
 import { useMutation, useQueryClient } from 'react-query';
 import { getScopeChangeById } from '../../api/ScopeChange/Request';
-import { openSidesheet } from '@equinor/sidesheet';
-import { clearActiveFactory } from '../../../../Core/DataFactory/Functions/clearActiveFactory';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
-import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
+import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
+import { Button, Progress } from '@equinor/eds-core-react';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
+import { scopeChangeCreateContext } from '../DataCreator/DataCreatorWrapper';
 
-interface ScopeChangeRequestFormProps {
-    closeScrim: () => void;
-    setHasUnsavedChanges: (value: boolean) => void;
-}
-
-export const ScopeChangeRequestForm = ({
-    closeScrim,
-    setHasUnsavedChanges,
-}: ScopeChangeRequestFormProps): JSX.Element => {
-    const { handleInput, isValid, state } = useScopeChangeFormState();
-    const { createScopeChangeMutation } = useRequestMutations();
-    const queryClient = useQueryClient();
-
-    const handleChange = (key: keyof ScopeChangeFormModel, value: unknown) => {
-        setHasUnsavedChanges(true);
-        handleInput(key, value);
-    };
-
+export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
 
-    const handleReferencesChanged = (references: TypedSelectOption[]) =>
-        handleChange('references', references);
+    return (
+        <>
+            <div>
+                <FormWrapper>
+                    <FlexColumn>
+                        Request
+                        <ScopeChangeBaseForm />
+                    </FlexColumn>
+                    <FlexColumn>
+                        <Section>
+                            <SearchReferences />
+                        </Section>
+                        Attachments
+                        <Upload />
+                    </FlexColumn>
+                    <FlexColumn>
+                        Disciplines and guesstimates
+                        <GuesstimateDiscipline />
+                    </FlexColumn>
+                </FormWrapper>
+                <SubmitButtonBar />
+            </div>
+        </>
+    );
+};
 
-    const handleAttachmentsChanged = (attachments: File[]) =>
-        handleChange('attachments', attachments);
+const SubmitButtonBar = () => {
+    const swapComponent = scopeChangeCreateContext.useAtomState(
+        ({ swapComponent }) => swapComponent
+    );
 
+    const { useIsValid } = scopeChangeFormAtomApi;
+
+    const isValid = useIsValid();
+
+    const { createScopeChangeMutation } = useRequestMutations();
+    const queryClient = useQueryClient();
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
-        openSidesheet(SidesheetWrapper, await getScopeChangeById(scopeChangeId), 'change');
-        clearActiveFactory();
+        swapComponent(SidesheetWrapper, await getScopeChangeById(scopeChangeId));
         queryClient.invalidateQueries();
     };
 
@@ -67,43 +75,22 @@ export const ScopeChangeRequestForm = ({
         },
     });
 
-    const onMutate = (draft: boolean) =>
-        mutate({ draft: draft, model: state, references: state.references ?? [] });
+    const onMutate = (draft: boolean) => {
+        const { prepareRequest } = scopeChangeFormAtomApi;
+
+        mutate({
+            draft: draft,
+            model: prepareRequest(),
+        });
+    };
 
     return (
-        <>
-            <div>
-                <TitleHeader>
-                    <SidesheetTitle>Create scope change request</SidesheetTitle>
-                    <ClickableIcon name="close" onClick={closeScrim} />
-                </TitleHeader>
-
-                <FormWrapper>
-                    <FlexColumn>
-                        Request
-                        <ScopeChangeBaseForm handleInput={handleChange} state={state} />
-                    </FlexColumn>
-
-                    <FlexColumn>
-                        <Section>
-                            <SearchReferences
-                                handleReferencesChanged={handleReferencesChanged}
-                                references={state.references ?? []}
-                            />
-                        </Section>
-                        Attachments
-                        <Upload
-                            attachments={state.attachments ?? []}
-                            handleAttachmentsChanged={handleAttachmentsChanged}
-                        />
-                    </FlexColumn>
-                </FormWrapper>
-            </div>
-            <ActionBar>
-                <ButtonContainer>
+        <ActionBar>
+            <ButtonContainer>
+                <>
                     {isLoading ? (
-                        <Button variant="ghost_icon">
-                            <CircularProgress size={32} color="primary" />
+                        <Button variant="ghost_icon" disabled>
+                            <Progress.Dots color="primary" />
                         </Button>
                     ) : (
                         <>
@@ -119,9 +106,9 @@ export const ScopeChangeRequestForm = ({
                             </Button>
                         </>
                     )}
-                </ButtonContainer>
-            </ActionBar>
-        </>
+                </>
+            </ButtonContainer>
+        </ActionBar>
     );
 };
 
@@ -134,12 +121,4 @@ export const Title = styled.div`
     font-size: 18px;
     color: black;
     font-weight: bold;
-`;
-
-const TitleHeader = styled.div`
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1em 0em;
 `;

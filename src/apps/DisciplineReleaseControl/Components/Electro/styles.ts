@@ -64,9 +64,20 @@ export const ElectroViewNodeText = styled.div`
     margin-left: 4px;
 `;
 
-export const ElectroViewNodeValueText = styled.div`
+export const ElectroViewNodeValueText = styled.div<{ clickable?: boolean }>`
     font-size: 16px;
     font-weight: 400, regular;
     margin-left: 5px;
-    cursor: default;
+    cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
+`;
+
+export const ElectroViewHTHighlight = styled.div`
+    font-size: 16px;
+    font-weight: 400, regular;
+    margin-left: 5px;
+    cursor: pointer;
+    padding: 1px;
+    background-color: ${tokens.colors.interactive.primary__resting.hex};
+    color: ${tokens.colors.text.static_icons__primary_white.hex};
+    font-variant-numeric: tabular-nums;
 `;

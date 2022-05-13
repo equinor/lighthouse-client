@@ -1,12 +1,32 @@
-export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
+import { TypedSelectOption } from '../api/Search/searchType';
+
+export interface ScopeChangeCreateEditModel {
+    id?: string;
+    title: string;
+    description: string;
+    setAsOpen?: boolean;
+    scopeId: string;
+    scope: Scope | null;
+    disciplineGuesstimates: DisciplineGuesstimate[];
+    phase: string;
+    changeCategoryId: string;
+    changeCategory: ChangeCategory;
+    potentialWarrantyCase: boolean;
+    originSourceId?: string;
+    originSource: OriginType;
+
+    newAttachments?: File[];
+    references?: TypedSelectOption[];
     tagNumbers: string[];
     commissioningPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
-    disciplineCodes: string[];
     documentNumbers: string[];
-    setAsOpen?: boolean;
-    //workflow
+}
+
+export interface DisciplineGuesstimate {
+    disciplineCode: string;
+    guesstimateHours: number | null;
 }
 
 export type OriginType = 'NCR' | 'Punch' | 'SWCR' | 'Query' | 'NotApplicable' | 'DCR';
@@ -15,6 +35,11 @@ export type ScopeChangeRequestState = 'Draft' | 'Open' | 'Closed';
 export type WorkflowStatus = 'Completed' | 'Active' | 'Inactive' | 'Failed';
 
 export interface ChangeCategory {
+    id: string;
+    name: string;
+}
+
+export interface Scope {
     id: string;
     name: string;
 }
@@ -31,8 +56,18 @@ export interface ScopeChangeBaseModel {
     hasPendingContributions: boolean;
     originSource: OriginType;
     actualChangeHours: number;
-    guesstimateHours: number;
-    guesstimateDescription: string;
+    potentialWarrantyCase: boolean;
+}
+
+export interface ScopeChangeDisciplineGuesstimates {
+    id: string;
+    guesstimate: number;
+    discipline: ScopeChangeDiscipline;
+}
+export interface ScopeChangeDiscipline {
+    id: string;
+    procosysCode: string;
+    procosysId: number;
 }
 
 export interface LogEntry {
@@ -80,17 +115,13 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     hasComments: boolean;
     sequenceNumber: number;
     workOrders: ScopeChangeWorkOrder[];
+    scope: Scope;
+    disciplineGuesstimates: ScopeChangeDisciplineGuesstimates[];
 }
 
 export interface ScopeChangeWorkOrder {
     id: string;
     jobNumber: string;
-}
-
-export interface ScopeChangeDiscipline {
-    id: string;
-    procosysCode: string;
-    procosysId: number;
 }
 
 export interface ScopeChangeArea {

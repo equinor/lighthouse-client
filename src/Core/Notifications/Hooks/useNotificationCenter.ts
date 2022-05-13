@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useSignalRHub } from './useSignalRHub';
-import { useHttpClient } from '@equinor/portal-client';
-import { useQuery, useQueryClient } from 'react-query';
-import { Notification } from '../Types/Notification';
+import { useHttpClient } from '@equinor/lighthouse-portal-client';
 import { HubConnectionState } from '@microsoft/signalr';
+import { useCallback, useEffect, useState } from 'react';
+import { useQuery, useQueryClient } from 'react-query';
 import { notificationQueries } from '../queries/notificationQueries';
+import { Notification } from '../Types/Notification';
+import { useSignalRHub } from './useSignalRHub';
 
 interface NotificationCenter {
     isFetchingRead: boolean;

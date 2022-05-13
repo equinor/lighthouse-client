@@ -1,10 +1,10 @@
-import { ClientApi, httpClient, isProduction } from '@equinor/portal-client';
-import { McPackage } from './types';
-import { gardenConfig } from './utils/config/gardenSetup';
-import { sortPackagesByStatus } from './utils/helpers/sortPackages';
+import { ClientApi, httpClient, isProduction } from '@equinor/lighthouse-portal-client';
 import { McSideSheet } from './components';
+import { McPackage } from './types';
 import { filterConfig } from './utils/config/filterConfig';
+import { gardenConfig } from './utils/config/gardenSetup';
 import { tableConfig } from './utils/config/tableConfig';
+import { sortPackagesByStatus } from './utils/helpers/sortPackages';
 
 export function setup(addApi: ClientApi): void {
     const contextId = isProduction()
@@ -27,6 +27,7 @@ export function setup(addApi: ClientApi): void {
     addApi
         .createWorkSpace<McPackage>({
             objectIdentifier: 'mcPkgId',
+            defaultTab: 'garden',
             CustomSidesheet: McSideSheet,
         })
         .registerDataSource({

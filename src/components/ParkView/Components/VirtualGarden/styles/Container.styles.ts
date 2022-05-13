@@ -5,6 +5,7 @@ export const Container = styled.div`
     grid-template-rows: auto 1fr;
     height: 100%;
     gap: 1em;
+    overflow: hidden;
 `;
 
 export const LayoutRoot = styled.div`

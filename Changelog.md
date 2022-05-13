@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ****
+## 1.2.0
+-  [Workspace] Use bookmarks manager for garden, table & pbi
+-  [App Manifest] Change groupe type from array string to string
+-  [PowerBIViewer] Move bookmarks icon
+-  [Mechanical Completion] Table and filter config
+-  [Mechanical Completion] Change from dev to test env
+-  [Garden] Fix issue with scrollbar when opening filter panel
+-  [Scopechange] Guesstimate discipline guesses
+-  [Scopechange] Bugfixes
+-  [Scopechange] Create form now in sidesheet
+-  [PipingAndHeatTrace]  HT sidesheet and garden custom group view for HT
+-  [PipingAndHeatTrace] Workorder tab in sidesheet fixes
+-  [PipingAndHeatTrace] Step name filter
+-  [PipingAndHeatTrace] Disconnected cables
+-  [PipingAndHeatTrace] Ghost cable to display junction box with no cable
 
 ## 1.1.3
 - [Client] Hotfix auth issue

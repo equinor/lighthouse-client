@@ -1,9 +1,9 @@
-import { ScopeChangeRequestFormModel } from '../../../types/scopeChangeRequest';
+import { ScopeChangeCreateEditModel } from '../../../types/scopeChangeRequest';
 import { throwOnError } from '../../../functions/throwError';
 import { httpClient } from '../../../../../Core/Client/Functions';
 
 export async function postScopeChange(
-    scopeChange: ScopeChangeRequestFormModel,
+    scopeChange: ScopeChangeCreateEditModel,
     draft: boolean
 ): Promise<string> {
     const { scopeChange: client } = httpClient();

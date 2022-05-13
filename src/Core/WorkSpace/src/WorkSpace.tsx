@@ -1,5 +1,5 @@
 import { ErrorBoundary, ErrorFallback } from '@equinor/ErrorBoundary';
-import { ClientApi } from '@equinor/portal-client';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { Route, Routes } from 'react-router-dom';
 import { WorkSpaceView } from './Components/WorkSpace/WorkSpaceView';
 import { WorkspaceProviders } from './Context/WorkspaceProviders';

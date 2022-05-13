@@ -1,10 +1,11 @@
 import { deref } from '@dbeining/react-atom';
-import { AppManifest } from '@equinor/portal-client';
+import { AppManifest } from '@equinor/lighthouse-portal-client';
+import { openSidesheet, SuspenseSidesheet } from '@equinor/sidesheet';
 import { getApps } from '../../../apps/apps';
-import { openSidesheet } from '../../../packages/Sidesheet/Functions';
 import { CoreContext } from '../../WorkSpace/src/WorkSpaceApi/workspaceState';
-import { SuspenseSidesheet } from '../../WorkSpace/src/Components/SuspenseSidesheet/SuspenseSidesheet';
 
+
+//Todo refactor file.
 const apps = new Map<string, string>();
 apps.set('ScopeChangeControl', 'change');
 

@@ -5,9 +5,8 @@ export function getWidth({
     isMinimized,
     SidesheetComponent,
     minWidth,
-    isPinned,
 }: SidesheetState<any>): number {
-    const isActive = SidesheetComponent !== undefined || isPinned;
+    const isActive = SidesheetComponent !== undefined;
     const currentWidth = isMinimized ? minWidth : width;
     return isActive ? currentWidth : isMinimized ? currentWidth : 0;
 }
