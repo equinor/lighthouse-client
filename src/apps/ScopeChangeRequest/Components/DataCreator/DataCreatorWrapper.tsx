@@ -18,7 +18,7 @@ export const ScopeChangeCreateForm = ({ actions }: ScopeChangeCreateFormProps): 
 
     useEffect(() => {
         scopeChangeCreateContext.updateAtom(actions);
-        scopeChangeFormAtomApi.updateAtom(null);
+        scopeChangeFormAtomApi.clearState();
         actions.setTitle('Create new scope change request');
         actions.setWidth(1150);
     }, []);
