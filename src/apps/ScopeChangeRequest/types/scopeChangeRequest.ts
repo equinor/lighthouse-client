@@ -22,6 +22,13 @@ export interface ScopeChangeCreateEditModel {
     systemIds: number[];
     areaCodes: string[];
     documentNumbers: string[];
+    materials: Materials;
+}
+
+export interface Materials {
+    isIdentified?: boolean;
+    isToBeBoughtByContractor?: boolean;
+    materialNote?: string;
 }
 
 export interface DisciplineGuesstimate {
@@ -57,6 +64,7 @@ export interface ScopeChangeBaseModel {
     originSource: OriginType;
     actualChangeHours: number;
     potentialWarrantyCase: boolean;
+    materials: Materials;
 }
 
 export interface ScopeChangeDisciplineGuesstimates {

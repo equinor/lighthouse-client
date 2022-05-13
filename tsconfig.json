@@ -123,6 +123,9 @@
             "@equinor/BookmarksManager": [
                 "./src/packages/BookmarksManager"
             ],
+            "@equinor/JSX-Switch": [
+                "./src/components/JSXSwitch"
+            ],
             "@equinor/overlay-menu": [
                 "./src/components/OverlayMenu"
             ]
