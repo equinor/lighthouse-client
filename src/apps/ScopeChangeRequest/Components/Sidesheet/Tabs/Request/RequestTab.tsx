@@ -34,8 +34,8 @@ export function RequestTab(): JSX.Element {
                         <SectionWrapper>
                             <SubSectionTitle>Description</SubSectionTitle>
                             <SubSectionText>{request.description}</SubSectionText>
+                            <WarrantyCaseDetailCheckbox />
                         </SectionWrapper>
-                        <WarrantyCaseDetailCheckbox />
                         <SectionHeading>Change origin</SectionHeading>
                         <SectionWrapper>
                             <SubSectionTitle>Origin</SubSectionTitle>
