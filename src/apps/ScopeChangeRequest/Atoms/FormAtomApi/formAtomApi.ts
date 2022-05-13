@@ -20,12 +20,36 @@ interface FormAtomApi extends DefaultAtomAPI<ScopeChangeFormModel> {
     unPackReferences: () => ScopeChangeReferences;
     useIsValid: () => boolean;
     prepareRequest: () => ScopeChangeCreateEditModel;
+    clearState: () => void;
 }
 
 export const scopeChangeFormAtomApi = createAtom<ScopeChangeFormModel, FormAtomApi>({}, (api) => ({
     unPackReferences: () => unPackReferences(api),
     useIsValid: () => useIsValid(api),
     prepareRequest: () => prepareRequest(),
+    clearState: () =>
+        api.updateAtom({
+            areaCodes: [],
+            changeCategory: { id: '', name: '' },
+            changeCategoryId: undefined,
+            commissioningPackageNumbers: [],
+            description: undefined,
+            disciplineGuesstimates: [],
+            documentNumbers: [],
+            id: undefined,
+            newAttachments: [],
+            originSource: undefined,
+            originSourceId: undefined,
+            phase: undefined,
+            potentialWarrantyCase: false,
+            references: [],
+            scope: undefined,
+            scopeId: undefined,
+            setAsOpen: false,
+            systemIds: [],
+            tagNumbers: [],
+            title: undefined,
+        }),
 }));
 
 function useIsValid(api: DefaultAtomAPI<ScopeChangeFormModel>): boolean {
