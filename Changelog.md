@@ -19,7 +19,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 -  [PipingAndHeatTrace] Step name filter
 -  [PipingAndHeatTrace] Disconnected cables
 -  [PipingAndHeatTrace] Ghost cable to display junction box with no cable
--  
+
 ## 1.1.3
 - [Client] Hotfix auth issue
 - [Installation] new report in devlopment
