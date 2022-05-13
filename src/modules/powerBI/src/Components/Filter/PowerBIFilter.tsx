@@ -7,7 +7,7 @@ import {
     createAdvancedPbiFilter,
     getActiveFilterValues,
     getFilters,
-    removeVisibleFilters
+    removeVisibleFilters,
 } from '../../Utils';
 import { FilterGroup } from './FilterGroup';
 import { FilterItems } from './FilterItems';

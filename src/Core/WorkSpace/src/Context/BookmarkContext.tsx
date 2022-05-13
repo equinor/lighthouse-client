@@ -43,7 +43,6 @@ export const BookmarkContextWrapper = ({
         bookmark: PowerBIBookmarkPayload
     ): PowerBIBookmarkPayload | void => {
         if (activeTab !== 'analytics') {
-            handleSetActiveTab('analytics');
             setActivePage(
                 {
                     pageId: bookmark?.mainPage || bookmark.name,
@@ -54,6 +53,7 @@ export const BookmarkContextWrapper = ({
                     defaultPage: bookmark?.mainPage || bookmark.name,
                 }
             );
+            handleSetActiveTab('analytics');
             return;
         } else {
             setActivePage({
@@ -80,10 +80,10 @@ export const BookmarkContextWrapper = ({
     };
     const applyBookmark = async ({ id }: ApplyEventArgs) => {
         const bookmark = await handleApplyBookmark(id);
-        if (!isWorkspaceBookmark(bookmark)) {
-            handlePowerBiApply(bookmark);
-        } else {
+        if (isWorkspaceBookmark(bookmark)) {
             handleWorkspaceApply(bookmark);
+        } else {
+            return handlePowerBiApply(bookmark);
         }
     };
 

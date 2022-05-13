@@ -15,6 +15,7 @@ interface ViewState {
     activePage?: Page;
     isFilterActive: boolean;
     hasActiveFilters: boolean;
+    pbiOptions?: PBIOptions;
 }
 
 export interface Page {
@@ -64,9 +65,9 @@ export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
         });
     }, []);
 
-    const setActivePage = useCallback((page: Page) => {
+    const setActivePage = useCallback((page: Page, options?: PBIOptions) => {
         setState((s) => {
-            return { ...s, activePage: page };
+            return { ...s, activePage: page, options };
         });
     }, []);
 
