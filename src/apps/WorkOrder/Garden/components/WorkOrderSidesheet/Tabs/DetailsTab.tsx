@@ -27,7 +27,7 @@ export const DetailsTab = ({ workOrder }: DetailsTabProps) => {
                         <td key={'2'}>
                             <StringCell
                                 value={`${formatDateString(
-                                    workOrder.plannedStartDate
+                                    workOrder.plannedStartupDate
                                 )} - ${formatDateString(workOrder.plannedFinishDate)}`}
                             />
                         </td>
@@ -67,25 +67,43 @@ export const DetailsTab = ({ workOrder }: DetailsTabProps) => {
                     <tr key={'projectprogress'}>
                         <td key={'11'}>Project progress</td>
                         <td key={'12'}>
-                            <StringCell value={`${workOrder.projectProgress}%`} />
+                            <StringCell
+                                value={
+                                    workOrder.projectProgress
+                                        ? `${workOrder.projectProgress}%`
+                                        : null
+                                }
+                            />
                         </td>
                     </tr>
                     <tr key={'estimatedmanhours'}>
                         <td key={'13'}>Estimated manhours</td>
                         <td key={'14'}>
-                            <StringCell value={`${workOrder.estimatedHours}h`} />
+                            <StringCell
+                                value={
+                                    workOrder.estimatedHours ? `${workOrder.estimatedHours}h` : null
+                                }
+                            />
                         </td>
                     </tr>
                     <tr key={'remainingmanhours'}>
                         <td key={'15'}>Remaining manhours</td>
                         <td key={'16'}>
-                            <StringCell value={` ${workOrder.remainingHours}h`} />
+                            <StringCell
+                                value={
+                                    workOrder.remainingHours ? `${workOrder.remainingHours}h` : null
+                                }
+                            />
                         </td>
                     </tr>
                     <tr key={'expandedmanhours'}>
                         <td key={'17'}>Expended manhours</td>
                         <td key={'26'}>
-                            <StringCell value={`${workOrder.expendedHours}h`} />
+                            <StringCell
+                                value={
+                                    workOrder.expendedHours ? `${workOrder.expendedHours}h` : null
+                                }
+                            />
                         </td>
                     </tr>
                     <tr key={'hold'}>
@@ -97,7 +115,9 @@ export const DetailsTab = ({ workOrder }: DetailsTabProps) => {
                     <tr key={'materialstatus'}>
                         <td key={'20'}>Material status</td>
                         <td key={'21'}>
-                            {workOrder.materialStatus} {materialStatusMap[workOrder.materialStatus]}
+                            {workOrder.materialStatus}{' '}
+                            {workOrder.materialStatus !== null &&
+                                materialStatusMap[workOrder.materialStatus]}
                         </td>
                     </tr>
                     <tr key={'materialcomments'}>
