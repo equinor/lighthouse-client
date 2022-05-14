@@ -3,6 +3,7 @@ import { Tabs } from '@equinor/eds-core-react';
 import { useEdsTabs } from '@equinor/hooks';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+
 import {
     disableEditMode,
     sideSheetEditModeAtom,
