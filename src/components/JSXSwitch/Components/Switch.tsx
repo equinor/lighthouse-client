@@ -1,14 +1,16 @@
 import React from 'react';
 
 interface SwitchProps {
-    value: string | number | symbol | undefined | null | boolean;
     children: React.ReactNode;
+    condition?: string | number | boolean | undefined | null | symbol;
     defaultCase?: React.ReactChild;
 }
 
-export function Switch({ value, children, defaultCase = <></> }: SwitchProps): JSX.Element {
+export function Switch({ children, condition, defaultCase = <></> }: SwitchProps): JSX.Element {
     const child = React.Children.toArray(children).find(
-        (child) => React.isValidElement(child) && child.props === value
+        (child) =>
+            React.isValidElement(child) &&
+            (condition ? condition === child.props.when : child.props.when)
     );
 
     return <>{child || defaultCase}</>;

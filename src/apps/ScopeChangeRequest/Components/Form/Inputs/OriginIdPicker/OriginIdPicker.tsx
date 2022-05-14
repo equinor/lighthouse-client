@@ -34,12 +34,11 @@ export const OriginIdPicker = (): JSX.Element => {
     return (
         <Wrapper>
             <Switch
-                value={originSource}
                 defaultCase={
                     <MultiSelect disabled={true} items={[]} meta="(Required)" label={'Origin ID'} />
                 }
             >
-                <Case value="DCR">
+                <Case when={originSource === 'DCR'}>
                     <TextField
                         id="DCR"
                         value={originSourceId}
@@ -48,24 +47,24 @@ export const OriginIdPicker = (): JSX.Element => {
                         }
                     />
                 </Case>
-                <Case value="NCR">
+                <Case when={originSource === 'NCR'}>
                     <SearchOrigin
                         setOriginId={setOriginId}
                         originId={originSourceId}
                         type={'NCR'}
                     />
                 </Case>
-                <Case value="Query">
+                <Case when={originSource === 'Query'}>
                     <SearchOrigin
                         setOriginId={setOriginId}
                         originId={originSourceId}
                         type={'Query'}
                     />
                 </Case>
-                <Case value="Punch">
+                <Case when={originSource === 'Punch'}>
                     <SelectPunch setOriginId={setOriginId} originId={originSourceId} />
                 </Case>
-                <Case value="SWCR">
+                <Case when={originSource === 'SWCR'}>
                     <SelectSWCR setOriginId={setOriginId} originId={originSourceId} />
                 </Case>
             </Switch>
