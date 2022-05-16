@@ -51,8 +51,8 @@ export function setup(appApi: ClientApi): void {
             defaultTab: 'garden',
         })
         .registerDataCreator({
-            title: 'Create',
-            accessCheck: () => Promise.resolve(false),
+            title: 'Create release control workflow',
+            accessCheck: () => Promise.resolve(true),
             onClick: () => {
                 openSidesheet(DisciplineReleaseControlFactoryComponent, undefined, 'piping-and-ht');
             },
