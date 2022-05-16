@@ -1,6 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
+import { openSidesheet } from '../../packages/Sidesheet/Functions';
+import { DisciplineReleaseControlFactoryComponent } from './Components/Factory/FactoryComponent';
 import { getGardenItemColor } from './Components/Garden/gardenFunctions';
 import {
     drcGardenKeys,
@@ -47,6 +49,13 @@ export function setup(appApi: ClientApi): void {
             CustomSidesheet: GatewaySidesheet,
             objectIdentifier: 'name',
             defaultTab: 'garden',
+        })
+        .registerDataCreator({
+            title: 'Create',
+            accessCheck: () => Promise.resolve(true),
+            onClick: () => {
+                openSidesheet(DisciplineReleaseControlFactoryComponent, undefined, 'piping-and-ht');
+            },
         })
         .registerDataSource({
             responseAsync: responseAsync,
