@@ -1,219 +1,186 @@
-import { Button, CircularProgress, Icon } from '@equinor/eds-core-react';
+import { Button, Icon, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { GeneratedForm, useForm } from '@equinor/Form';
-import { useHttpClient } from '@equinor/lighthouse-portal-client';
-import { useEffect, useMemo, useState } from 'react';
-import { useMutation } from 'react-query';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { uploadAttachment } from '../../Api/Request';
-import { postReleaseControl } from '../../Api/Request/postReleaseControl';
-import { ProcoSysTypes } from '../../Api/Search/PCS';
-import { TypedSelectOption } from '../../Api/Search/searchType';
-import { StidTypes } from '../../Api/Search/STID/searchStid';
-import { ServerError } from '../../Api/Types/ServerError';
-import { DisciplineReleaseControl } from '../../Types/disciplineReleaseControl';
-import { Upload } from '../Attachments/Upload';
-import { RelatedObjectsSearch } from '../SearchableDropdown/RelatedObjectsSearch/RelatedObjectsSearch';
-// import { openSidesheet } from '@equinor/sidesheet';
-import { ReleaseControlErrorBanner } from '../Sidesheet/ErrorBanner';
-// import { ReleaseControlSidesheet } from '../Sidesheet/ReleaseControlSidesheet';
-// import { getReleaseControlById } from '../../Api/Request/getReleaseControl';
-import { Origin } from './Origin';
-import { releaseControlProcessSchema } from './ReleaseControlProcessSchema';
+import { ClickableIcon } from '../../../../packages/Components/Icon';
 
+import { TypedSelectOption } from '../../../ScopeChangeRequest/api/Search/searchType';
+import { SearchReferences } from '../../../ScopeChangeRequest/Components/SearchReferences/SearchReferences';
+import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
+import { FlexColumn, FormWrapper } from './releaseControlProcessForm.styles';
 
-interface ReleaseControlProcessFormProps {
-    closeScrim: (force?: boolean) => void;
-    setHasUnsavedChanges: (value: boolean) => void;
-}
+const { useAtomState, updateAtom } = DRCFormAtomApi;
 
-interface CreateReleaseControlParams {
-    draft: boolean;
-}
+const updateTitle = (e) => {
+    updateAtom({ title: e.target.value });
+};
 
-export const ReleaseControlProcessForm = ({
-    closeScrim,
-    setHasUnsavedChanges,
-}: ReleaseControlProcessFormProps): JSX.Element => {
-    const formData = useForm<DisciplineReleaseControl>(releaseControlProcessSchema, {
-        phase: 'IC',
-    });
+const updateDescription = (e) => {
+    updateAtom({ description: e.target.value });
+};
 
-    const [attachments, setAttachments] = useState<File[]>([]);
-    const [relatedObjects, setRelatedObjects] = useState<TypedSelectOption[]>([]);
-    const [errorMessage, setErrorMessage] = useState<ServerError | undefined>();
+const updateReferences = (newVals: TypedSelectOption[]) => {
+    updateAtom({ references: newVals });
+};
 
-    const [isRedirecting, setIsRedirecting] = useState<boolean>(false);
+const updatePlannedStartDate = (e) => {
+    updateAtom({ plannedStartDate: e.target.value });
+};
 
-    const { releaseControls } = useHttpClient();
-
-    const createReleaseControlMutation = async ({ draft }: CreateReleaseControlParams) => {
-        const tags = filterElementsByType(relatedObjects, 'tag');
-        const systems = filterElementsByType(relatedObjects, 'system');
-        const commPkgs = filterElementsByType(relatedObjects, 'commpkg');
-        const areas = filterElementsByType(relatedObjects, 'area');
-        const disciplines = filterElementsByType(relatedObjects, 'discipline');
-        const documents = filterElementsByType(relatedObjects, 'document');
-
-        const scID = await postReleaseControl(
-            {
-                ...formData.data,
-                tagNumbers: tags?.map((x) => x.value) || [],
-                systemIds: systems?.map((x) => Number(x.value)) || [],
-                commissioningPackageNumbers: commPkgs?.map((x) => x.value) || [],
-                documentNumbers: documents.map((x) => x.value) || [],
-                areaCodes: areas.map((x) => x.value) || [],
-                disciplineCodes: disciplines.map((x) => x.value) || [],
-            },
-            draft,
-            releaseControls
-        );
-        if (scID) {
-            attachments.forEach(async (attachment) => {
-                await mutateAsync({ file: attachment, processId: scID });
-            });
-            setIsRedirecting(true);
-
-            redirect(scID);
-        }
-    };
-
-    const { mutateAsync } = useMutation(uploadAttachment, { retry: 2, retryDelay: 2 });
-
-    const { mutate, isLoading } = useMutation(createReleaseControlMutation, {
-        retry: 2,
-        retryDelay: 2,
-        onError: (e: ServerError) => setErrorMessage(e),
-    });
-
-    const redirect = async (releaseControlId: string) => {
-        if (!releaseControlId) return;
-
-        // openSidesheet(
-        //     ReleaseControlSidesheet,
-        //     await getReleaseControlById(releaseControlId, releaseControls)
-        // );
-    };
-
-    useEffect(() => {
-        setHasUnsavedChanges(formData.getChangedData() !== undefined || relatedObjects.length > 0);
-    }, [formData, setHasUnsavedChanges, relatedObjects]);
-
-    const SubmitButton = () => {
-        return (
-            <Button disabled={!isValidForm || isLoading} onClick={() => mutate({ draft: false })}>
-                Initiate process
-            </Button>
-        );
-    };
-
-    const SaveButton = () => {
-        return (
-            <Button
-                disabled={!isValidForm || isLoading}
-                variant={'outlined'}
-                onClick={() => mutate({ draft: true })}
-            >
-                {isLoading ? <CircularProgress value={0} size={16} /> : <div>Save as draft</div>}
-            </Button>
-        );
-    };
-
-    useEffect(() => {
-        formData.fields.originSourceId?.setValue(undefined);
-    }, [formData.fields.originSource?.value]);
-
-    const isValidForm = useMemo(() => {
-        return formData.isValidForm();
-        // &&
-        // (formData.fields.originSource?.value === 'NotApplicable' ||
-        //     formData.fields.originSourceId?.value) &&
-        // relatedObjects.length > 0
-    }, [formData, relatedObjects]);
-
-    if (isRedirecting) {
-        return (
-            <LoadingPage>
-                <CircularProgress value={0} size={48} />
-            </LoadingPage>
-        );
-    }
+export const ReleaseControlProcessForm = (): JSX.Element => {
+    const {
+        description,
+        title,
+        references = [],
+        plannedStartDate,
+    } = useAtomState(({ title, description, references, plannedStartDate }) => ({
+        title,
+        description,
+        references,
+        plannedStartDate,
+    }));
 
     return (
         <>
-            <ReleaseControlErrorBanner message={errorMessage} />
-            <TitleHeader>
-                <span style={{ fontSize: '28px' }}>Create new Discipline Release Control</span>
-                <Icon
-                    onClick={() => closeScrim()}
-                    name="close"
-                    color={tokens.colors.interactive.primary__resting.hex}
-                />
-            </TitleHeader>
+            <div>
+                <FormWrapper>
+                    <FlexColumn>
+                        General info
+                        <TextField
+                            id={(Math.random() * 16).toString()}
+                            placeholder="This is a new flow"
+                            label="Title /ID"
+                            onChange={updateTitle}
+                            value={title}
+                            meta={'(Required)'}
+                        />
+                        <TextField
+                            id={(Math.random() * 16).toString()}
+                            label="Scope description"
+                            multiline
+                            rows={3}
+                            placeholder="Why is this job needed, what is the size of the scope?"
+                            value={description}
+                            onChange={updateDescription}
+                            meta={'(Required)'}
+                        />
+                        <TextField
+                            type={'date'}
+                            id="Planned start date"
+                            meta={'(Required)'}
+                            label="Planned start date"
+                            onChange={updatePlannedStartDate}
+                            value={plannedStartDate}
+                        />
+                    </FlexColumn>
+                    <FlexColumn>
+                        Workflow
+                        <div style={{ fontWeight: 400, fontSize: '16px' }}>
+                            Select a workflow to start with or create a complete custom flow.
+                        </div>
+                        <div>Insert custom select bar here...</div>
+                        <WorkflowCustomEditor />
+                    </FlexColumn>
 
-            <GeneratedForm
-                formData={formData}
-                editMode={false}
-                buttons={[SubmitButton, SaveButton]}
-                customFields={[
-                    {
-                        Component: Origin,
-                        order: 3,
-                        title: '',
-                        props: {
-                            originId: formData.fields.originSourceId,
-                            originSource: formData.fields.originSource,
-                        },
-                    },
-
-                    {
-                        Component: RelatedObjectsSearch,
-                        order: 6,
-                        title: '',
-                        props: {
-                            relatedObjects: relatedObjects,
-                            setRelatedObjects: setRelatedObjects,
-                        },
-                    },
-                ]}
-            >
-                <Section>
-                    <Title>Attachments</Title>
-                    <Upload attachments={attachments} setAttachments={setAttachments} />
-                </Section>
-            </GeneratedForm>
+                    <FlexColumn>
+                        <SearchReferences onChange={updateReferences} references={references} />
+                    </FlexColumn>
+                </FormWrapper>
+                <SubmitButtonBar />
+            </div>
         </>
     );
 };
 
-export const Section = styled.div`
+const WorkflowCustomEditor = (): JSX.Element => {
+    const [lines, setLines] = useState([]);
+
+    return (
+        <WorkflowWrapper>
+            <WorkflowLine />
+            <WorkflowLine />
+            <WorkflowLine />
+            <WorkflowLine />
+            <WorkflowLine />
+        </WorkflowWrapper>
+    );
+};
+
+const WorkflowWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 1em;
+    gap: 0.5em;
 `;
 
-export const Title = styled.div`
-    line-height: 24px;
-    font-size: 18px;
-    color: black;
-    font-weight: bold;
-`;
+const stepNames = [
+    'Demount Insulation',
+    'Electric isolation',
+    'Demount HT',
+    'Demount valve',
+    'Mount valve',
+    'Bolt tensioning',
+];
 
-const TitleHeader = styled.div`
+const responsibles = ['Iso', 'Electrical', 'Mechanical'];
+
+const WorkflowLine = (): JSX.Element => {
+    return (
+        <Line>
+            <Icon
+                name="reorder"
+                color={tokens.colors.interactive.primary__resting.hex}
+                style={{ cursor: 'grab' }}
+            />
+            <SingleSelect items={stepNames} label="Step" />
+            <SingleSelect items={responsibles} label="Responsible" />
+            <ClickableIcon name="more_vertical" />
+            <ClickableIcon name="close" />
+        </Line>
+    );
+};
+
+const Line = styled.div`
     display: flex;
-    width: 100%;
-    justify-content: space-between;
+    flex-direction: row;
+    gap: 0.5em;
     align-items: center;
 `;
 
-const LoadingPage = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 650px;
-`;
-
-function filterElementsByType(items: TypedSelectOption[], type: ProcoSysTypes | StidTypes) {
-    return items.filter((x) => x.type === type);
+interface WorkflowStep {
+    name: string;
 }
+
+export const SubmitButtonBar = (): JSX.Element => {
+    const { useIsValid, readAtomValue } = DRCFormAtomApi;
+
+    const isValid = useIsValid();
+
+    return (
+        <ActionBar>
+            <ButtonContainer>
+                <Button disabled={!isValid} onClick={() => console.log(readAtomValue())}>
+                    Submit
+                </Button>
+                <Button disabled={!isValid} variant="outlined">
+                    Save
+                </Button>
+            </ButtonContainer>
+        </ActionBar>
+    );
+};
+
+export const ButtonContainer = styled.div`
+    flex-direction: row;
+    gap: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1em;
+`;
+
+export const ActionBar = styled.div`
+    height: 64px;
+    width: 100%;
+    border: 1px solid ${tokens.colors.interactive.disabled__border.hex};
+    background-color: white;
+`;
