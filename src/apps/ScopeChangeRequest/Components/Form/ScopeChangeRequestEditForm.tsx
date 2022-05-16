@@ -22,6 +22,7 @@ import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext';
 import { FormBanner } from './FormBanner/FormBanner';
 import { RequestAttachmentsList } from '../Attachments/RequestAttachmentsList/RequestAttachmentsList';
+import { MaterialsInput } from './Inputs/MaterialsInput/MaterialsInput';
 
 export const ScopeChangeRequestEditForm = (): JSX.Element => {
     const request = useScopeChangeContext(({ request }) => request);
@@ -54,6 +55,8 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
                         <ScopeChangeBaseForm />
                         Disciplines and guesstimates
                         <GuesstimateDiscipline />
+                        Materials
+                        <MaterialsInput />
                     </FlexColumn>
 
                     <FlexColumn>
