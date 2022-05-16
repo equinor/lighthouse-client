@@ -55,6 +55,7 @@ export interface TreeOptions<T> {
     options?: Options<T>;
     status?: StatusView<T>;
     onSelect?: (item: T) => void;
+    onGroupeSelect?: (item: T) => void;
 }
 
 export type StatusFunc<T> = (data: T[]) => StatusItem[];
@@ -77,6 +78,7 @@ export interface WorkSpaceConfig<T> {
     objectIdentifier: string;
     prefetchQueriesOptions?: PrefetchQueriesOptions[];
     onSelect?: (item: T) => void;
+    onGroupeSelect?: (item: T) => void;
     idResolver?: (id: string) => Promise<T | undefined>;
     dataSource?: DataSource<T>;
     validator?: (data: unknown[]) => T[];
@@ -101,7 +103,7 @@ export interface PowerBiOptions {
     pages: Page[];
 }
 
-export interface TimeLineOptions { }
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

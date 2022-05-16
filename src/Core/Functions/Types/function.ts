@@ -5,7 +5,9 @@ export interface FunctionManifest {
 }
 
 export type CustomFunction = (prop: any) => any;
+export type CustomResolverFunction<T> = (id: string) => T | undefined | Promise<T | undefined>;
 
-export interface ResolverFunction extends FunctionManifest {
+export interface ResolverFunction<T> extends FunctionManifest {
     type: 'idResolver';
+    function: CustomResolverFunction<T>;
 }

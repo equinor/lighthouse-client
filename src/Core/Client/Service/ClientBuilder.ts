@@ -2,7 +2,7 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import { Factory } from '@equinor/DataFactory';
 import { createPowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
 import { createPageViewer, PageViewerOptions as PageOptions } from '@equinor/PageViewer';
-import { createWorkSpace, ViewerOptions } from '@equinor/WorkSpace';
+import { createWorkSpace, WorkspaceOptions } from '@equinor/WorkSpace';
 import { AppConfigResult } from '../../Client/Types/AppConfig';
 import { ClientApi } from '../Types/App';
 import { AppManifest } from '../Types/AppManifest';
@@ -15,8 +15,8 @@ export interface ClientBuilderConfig extends AppManifest {
     isProduction: boolean;
 }
 
-export type WorkspaceOptions<T> = Omit<
-    ViewerOptions<T>,
+export type WorkspaceViewerOptions<T> = Omit<
+    WorkspaceOptions<T>,
     'viewerId' | 'initialState' | 'dataFactoryCreator' | 'openSidesheet'
 >;
 
@@ -27,7 +27,7 @@ export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
 
     return {
         ...config,
-        createWorkSpace<T>(options: WorkspaceOptions<T>) {
+        createWorkSpace<T>(options: WorkspaceViewerOptions<T>) {
             return createWorkSpace({
                 ...options,
                 initialState: [],

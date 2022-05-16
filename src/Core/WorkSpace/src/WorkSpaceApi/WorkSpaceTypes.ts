@@ -1,9 +1,8 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { FilterOptions, FilterGroup } from '@equinor/filter';
+import { FilterGroup, FilterOptions } from '@equinor/filter';
 import { GardenOptions } from '@equinor/ParkView';
 import { SidesheetApi } from '@equinor/sidesheet';
-
 import {
     PowerBiOptions,
     PrefetchQueriesOptions,
@@ -11,7 +10,7 @@ import {
     TableOptions,
     TreeOptions,
     WorkflowEditorOptions,
-    WorkspaceTab,
+    WorkspaceTab
 } from './workspaceState';
 
 export interface DataSource<T> {
@@ -27,7 +26,7 @@ export interface IdResolverFunc<T> {
     idResolver: (id: string) => Promise<T | undefined>;
 }
 
-export interface ViewerOptions<T> {
+export interface WorkspaceOptions<T> {
     initialState: T[];
     objectIdentifier: keyof T;
     viewerId: string;
@@ -35,6 +34,7 @@ export interface ViewerOptions<T> {
     dataFactoryCreator(factory: Factory): void;
     openSidesheet(SidesheetContent?: React.FC<any>, props?: any, appName?: string): void;
     CustomSidesheet?: React.FC<{ item: T; actions: SidesheetApi }>;
+    CustomGroupeSidesheet?: React.FC<{ item: any; actions: SidesheetApi }>;
     CustomSidesheetList?: React.FC<T[]>;
 }
 
@@ -91,7 +91,7 @@ interface TablePresetOption {
     table: TablePreset;
 }
 
-interface TablePreset { }
+interface TablePreset {}
 interface GardenPreset {
     gardenKey: string;
     groupByKeys?: string[];

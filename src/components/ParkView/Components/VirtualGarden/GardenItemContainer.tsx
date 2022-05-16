@@ -5,9 +5,9 @@ import { GardenGroups } from '../../Models/data';
 import { FieldSettings } from '../../Models/fieldSettings';
 import { CustomGroupView, CustomItemView } from '../../Models/gardenOptions';
 import { Count } from '../../Styles/common';
-import { SubGroup, PackageRoot, DefaultPackage, SubGroupText } from './styles';
-import { GardenItem } from './types/gardenItem';
 import { useExpand } from './hooks';
+import { DefaultPackage, PackageRoot, SubGroup, SubGroupText } from './styles';
+import { GardenItem } from './types/gardenItem';
 import { isSubGroup } from './utils';
 
 type VirtualHookReturn = Pick<ReturnType<typeof useVirtual>, 'virtualItems' | 'scrollToIndex'>;
@@ -42,7 +42,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
         handleOnClick,
     } = props;
     const expand = useExpand();
-    const { onSelect } = useParkViewContext();
+    const { onSelect, onGroupeSelect } = useParkViewContext();
 
     const CustomSubGroup = props?.customSubGroup;
     return (
@@ -68,6 +68,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                                     data={item}
                                     onClick={() => handleExpand(item)}
                                     onSelect={onSelect}
+                                    onGroupeSelect={onGroupeSelect}
                                     groupByKeys={groupByKeys}
                                 />
                             ) : (

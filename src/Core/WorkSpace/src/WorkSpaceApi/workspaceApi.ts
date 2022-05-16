@@ -11,17 +11,15 @@ import {
     TreeOptions,
     WorkflowEditorOptions,
     WorkSpaceConfig,
-    WorkSpaceState,
+    WorkSpaceState
 } from './workspaceState';
 import {
     DataSource,
     DataViewerProps,
     FactoryOptions,
     IdResolverFunc,
-    Validator,
-    ViewerOptions,
-    ViewOptions,
-    WorkSpaceApi,
+    Validator, ViewOptions,
+    WorkSpaceApi, WorkspaceOptions
 } from './WorkSpaceTypes';
 
 /**
@@ -29,14 +27,15 @@ import {
  *
  * @export
  * @template T
- * @param {ViewerOptions<T>} options
+ * @param {WorkspaceOptions<T>} options
  * @return {*}  {DataViewerApi<T>}
  */
-export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
+export function createWorkSpace<T>(options: WorkspaceOptions<T>): WorkSpaceApi<T> {
     const onSelect = (item: T) => {
-        const url = new URL(window.location.href);
-        url.hash = `${options.viewerId}/${item[options.objectIdentifier]}`;
-        window.history.pushState({}, '', url);
+        // Todo: move to openSidesheet
+        // const url = new URL(window.location.href);
+        // url.hash = `${options.viewerId}/${item[options.objectIdentifier]}`;
+        // window.history.pushState({}, '', url);
 
         options.openSidesheet(options.CustomSidesheet, item, options.viewerId);
     };
@@ -141,12 +140,21 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
         },
 
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
+            const onGroupeSelect = (item: unknown) => {
+                options.openSidesheet(
+                    options.CustomGroupeSidesheet || options.CustomSidesheet,
+                    item,
+                    options.viewerId
+                );
+            };
+
             updateState({
                 gardenOptions: {
                     //HACK if customGroupByKeys is undefined, it will break memoized variable in VGarden and cause rerender??
                     customGroupByKeys: {},
                     ...gardenOptions,
                     onSelect,
+                    onGroupeSelect,
                 } as GardenOptions<unknown>,
             });
 

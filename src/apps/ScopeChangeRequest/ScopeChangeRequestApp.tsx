@@ -47,6 +47,7 @@ export const changeSideSheetWidgetManifest: SidesheetWidgetManifest = {
     color: '#7B3A96',
     props: {
         resolverId: 'changeResolver',
+        objectIdentifier: 'id',
     },
 };
 
@@ -56,7 +57,7 @@ export const changeSideSheetWidgetComponent: SidesheetComponentManifest = {
     widget: SidesheetWrapper,
 };
 
-export const changeFunction: ResolverFunction = {
+export const changeFunction: ResolverFunction<ScopeChangeRequest> = {
     functionId: 'changeResolver',
     function: idResolver.idResolver,
     type: 'idResolver',
