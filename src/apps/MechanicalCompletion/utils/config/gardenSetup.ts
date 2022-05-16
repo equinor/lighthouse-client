@@ -60,12 +60,12 @@ export const fieldSettings: FieldSettings<McPackage, ExtendedGardenFields> = {
     },
 };
 const customGroupByKeys: CustomGroupByKeys = {
-    plannedForecast: 'Planned',
+    plannedForecast: 'Forecast',
     weeklyDaily: 'Weekly',
 };
 
 export const gardenConfig: GardenOptions<McPackage> = {
-    gardenKey: 'rfcc' as keyof McPackage,
+    gardenKey: 'rfcmc' as keyof McPackage,
     itemKey: 'mcPkgNumber',
     type: 'virtual',
     fieldSettings: fieldSettings,
