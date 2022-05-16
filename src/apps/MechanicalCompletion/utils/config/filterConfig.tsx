@@ -82,7 +82,7 @@ export const filterConfig: FilterOptions<McPackage> = [
         defaultHidden: true,
     },
     {
-        name: 'M-03 RFCC Actual Date',
+        name: 'M-04 RFCC Actual Date',
         valueFormatter: (mc) => (mc.rfccActualDate ? 'Yes' : 'No'),
         defaultHidden: true,
     },
