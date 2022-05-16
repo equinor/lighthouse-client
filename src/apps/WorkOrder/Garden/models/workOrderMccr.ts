@@ -1,14 +1,11 @@
 export type WorkOrderMccr = {
-    workOrderId: string;
-    tagNumber: string;
-    description: string;
-    tagUrl: string;
-    mccrType: string;
-    mccrStatus: string;
-    mccrResponsible: string;
-    mccrUrl: string;
-    mcpkgNumber: string;
-    commpkgId: string;
-    commpkgNumber: string;
-    commpkgUrl: string;
+    workOrderId: string | null;
+    tagNumber: string | null;
+    description: string | null;
+    mccrType: string | null;
+    mccrStatus: string | null;
+    mccrResponsible: string | null;
+    mcpkgNumber: string | null;
+    commpkgId: string | null;
+    commpkgNumber: string | null;
 };

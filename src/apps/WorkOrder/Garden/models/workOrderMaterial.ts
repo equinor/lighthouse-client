@@ -1,15 +1,14 @@
 export type WorkOrderMaterial = {
-    workOrderId: string;
-    itemNumber: string;
-    description: string;
-    information: string;
-    quantity: string;
-    unit: string;
-    unitDescription: string;
-    status: string;
-    statusDescription: string;
-    stockLocation: string;
-    stockLocationDescription: string;
-    available: string;
-    url: string;
+    workOrderId: string | null;
+    itemNumber: string | null;
+    description: string | null;
+    information: string | null;
+    quantity: string | null;
+    unit: string | null;
+    unitDescription: string | null;
+    status: string | null;
+    statusDescription: string | null;
+    stockLocation: string | null;
+    stockLocationDescription: string | null;
+    available: string | null;
 };
