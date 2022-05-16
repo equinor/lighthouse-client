@@ -27,6 +27,7 @@ export interface CustomGroupView<T> {
     data: DataSet<T>;
     onClick: () => void;
     onSelect?: (item: T) => void;
+    onGroupeSelect?: (item: any) => void;
     columnExpanded: boolean;
     groupByKeys: (keyof T)[];
 }
@@ -51,7 +52,7 @@ export interface CustomVirtualView<T> {
     customGroupByView?: React.FC;
 }
 
-export interface GardenOptions<T> {
+export interface GardenOptions<T, D = T> {
     gardenKey: keyof T;
     itemKey: keyof T;
     /**  Use virtual if garden has more than 3000 DOM elements */
@@ -77,6 +78,7 @@ export interface GardenOptions<T> {
     ) => string | undefined;
     intercepters?: GardenDataIntercepters<T>;
     onSelect?: (item: T) => void;
+    onGroupeSelect?: (item: D) => void;
     /** Function that returns the string of text that is to be displayed when a column is expanded */
     customDescription?: (item: T) => string;
 }

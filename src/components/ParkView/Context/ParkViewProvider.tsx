@@ -6,12 +6,12 @@ import {
     CustomVirtualView,
     GardenOptions,
     Options,
-    StatusView,
+    StatusView
 } from '../Models/gardenOptions';
-
 import { actions } from './ParkViewActions';
 import { ParkViewContext, ParkViewProviderProps, ParkViewState } from './ParkViewContext';
 import { GardenReducer } from './ParkViewReducer';
+
 
 export function ParkViewProvider<T>({
     children,
@@ -24,6 +24,7 @@ export function ParkViewProvider<T>({
         type: (parkViewOptions as GardenOptions<T>).type,
         groupByKeys: parkViewOptions?.groupByKeys || [],
         onSelect: parkViewOptions.onSelect as (item: unknown) => void,
+        onGroupeSelect: parkViewOptions.onSelect as (item: unknown) => void,
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey,
     };
     const [state, dispatch] = useReducer(GardenReducer, initialState);
