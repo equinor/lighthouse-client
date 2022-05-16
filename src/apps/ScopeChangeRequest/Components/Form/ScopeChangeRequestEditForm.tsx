@@ -22,6 +22,7 @@ import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext';
 import { FormBanner } from './FormBanner/FormBanner';
 import { RequestAttachmentsList } from '../Attachments/RequestAttachmentsList/RequestAttachmentsList';
+import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChangeReferences';
 
 export const ScopeChangeRequestEditForm = (): JSX.Element => {
     const request = useScopeChangeContext(({ request }) => request);
@@ -58,7 +59,7 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
 
                     <FlexColumn>
                         <Section>
-                            <SearchReferences />
+                            <ScopeChangeReferences />
                         </Section>
                         Attachments
                         <HotUpload />
