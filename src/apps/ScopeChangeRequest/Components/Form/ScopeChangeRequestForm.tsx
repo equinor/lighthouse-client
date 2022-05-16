@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { Upload } from '../Attachments/Upload';
-import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { usePreloadCaching } from '../../hooks/React-Query/usePreloadCaching';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import {
@@ -20,6 +19,7 @@ import { Button, Progress } from '@equinor/eds-core-react';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { scopeChangeCreateContext } from '../DataCreator/DataCreatorWrapper';
 import { MaterialsInput } from './Inputs/MaterialsInput/MaterialsInput';
+import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChangeReferences';
 
 export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
@@ -33,7 +33,7 @@ export const ScopeChangeRequestForm = (): JSX.Element => {
                 </FlexColumn>
                 <FlexColumn>
                     <Section>
-                        <SearchReferences />
+                        <ScopeChangeReferences />
                     </Section>
                     Attachments
                     <Upload />

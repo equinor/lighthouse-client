@@ -2,7 +2,6 @@ import { Button, Progress } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
 import { useScopeChangeMutation } from '../../hooks/React-Query/useScopechangeMutation';
-import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { HotUpload } from '../Attachments/HotUpload';
 import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
@@ -23,6 +22,7 @@ import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext
 import { FormBanner } from './FormBanner/FormBanner';
 import { RequestAttachmentsList } from '../Attachments/RequestAttachmentsList/RequestAttachmentsList';
 import { MaterialsInput } from './Inputs/MaterialsInput/MaterialsInput';
+import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChangeReferences';
 
 export const ScopeChangeRequestEditForm = (): JSX.Element => {
     const request = useScopeChangeContext(({ request }) => request);
@@ -61,7 +61,7 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
 
                     <FlexColumn>
                         <Section>
-                            <SearchReferences />
+                            <ScopeChangeReferences />
                         </Section>
                         Attachments
                         <HotUpload />
