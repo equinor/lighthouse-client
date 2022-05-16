@@ -15,7 +15,11 @@ export const YearWeekCell = <T extends TableData>(props: CellProps<T, CellRender
     const dateOrUndefined = toDate(content[currentKey]);
 
     const dateDisplay = dateOrUndefined
-        ? `${dateOrUndefined.year}-${dateOrUndefined.weekNumber}`
+        ? `${dateOrUndefined.year}-${
+              dateOrUndefined.weekNumber < 10
+                  ? '0' + dateOrUndefined.weekNumber
+                  : dateOrUndefined.weekNumber
+          }`
         : 'N/A';
 
     return <div {...attr}>{dateDisplay}</div>;
