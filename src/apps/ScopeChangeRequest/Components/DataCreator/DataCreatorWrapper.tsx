@@ -38,8 +38,9 @@ const Wrapper = styled.div`
     padding: 20px 20px;
     display: flex;
     flex-direction: column;
-    height: calc(100% - 50px);
+    height: calc(100% - 50px - 76px);
     justify-content: space-between;
+    overflow: scroll;
 `;
 
 export const scopeChangeCreateContext = createAtom<SidesheetApi>({} as SidesheetApi);

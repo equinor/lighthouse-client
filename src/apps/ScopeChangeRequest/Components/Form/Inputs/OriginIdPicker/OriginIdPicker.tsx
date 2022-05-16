@@ -1,10 +1,11 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import styled from 'styled-components';
 import { SearchOrigin } from './SearchOrigin';
 import { SelectPunch } from './SelectPunch';
 import { SelectSWCR } from './SelectSWCR';
 import { MultiSelect, TextField } from '@equinor/eds-core-react';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
+import { Case, Switch } from '@equinor/JSX-Switch';
 
 export const OriginIdPicker = (): JSX.Element => {
     const { useAtomState } = scopeChangeFormAtomApi;
@@ -30,19 +31,14 @@ export const OriginIdPicker = (): JSX.Element => {
         [handleOriginIdChange, originSource]
     );
 
-    const SelectedComponent = useMemo(() => {
-        switch (originSource) {
-            case 'NCR':
-                return (
-                    <SearchOrigin
-                        setOriginId={setOriginId}
-                        originId={originSourceId}
-                        type={'NCR'}
-                    />
-                );
-
-            case 'DCR': {
-                return (
+    return (
+        <Wrapper>
+            <Switch
+                defaultCase={
+                    <MultiSelect disabled={true} items={[]} meta="(Required)" label={'Origin ID'} />
+                }
+            >
+                <Case when={originSource === 'DCR'}>
                     <TextField
                         id="DCR"
                         value={originSourceId}
@@ -50,31 +46,30 @@ export const OriginIdPicker = (): JSX.Element => {
                             scopeChangeFormAtomApi.updateAtom({ originSourceId: e.target.value })
                         }
                     />
-                );
-            }
-
-            case 'Query':
-                return (
+                </Case>
+                <Case when={originSource === 'NCR'}>
+                    <SearchOrigin
+                        setOriginId={setOriginId}
+                        originId={originSourceId}
+                        type={'NCR'}
+                    />
+                </Case>
+                <Case when={originSource === 'Query'}>
                     <SearchOrigin
                         setOriginId={setOriginId}
                         originId={originSourceId}
                         type={'Query'}
                     />
-                );
-
-            case 'Punch':
-                return <SelectPunch setOriginId={setOriginId} originId={originSourceId} />;
-
-            case 'SWCR':
-                return <SelectSWCR setOriginId={setOriginId} originId={originSourceId} />;
-            default:
-                return (
-                    <MultiSelect disabled={true} items={[]} meta="(Required)" label={'Origin ID'} />
-                );
-        }
-    }, [originSource, originSourceId, setOriginId]);
-
-    return <Wrapper>{SelectedComponent}</Wrapper>;
+                </Case>
+                <Case when={originSource === 'Punch'}>
+                    <SelectPunch setOriginId={setOriginId} originId={originSourceId} />
+                </Case>
+                <Case when={originSource === 'SWCR'}>
+                    <SelectSWCR setOriginId={setOriginId} originId={originSourceId} />
+                </Case>
+            </Switch>
+        </Wrapper>
+    );
 };
 
 const Wrapper = styled.div`
