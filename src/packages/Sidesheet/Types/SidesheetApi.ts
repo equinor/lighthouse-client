@@ -1,3 +1,4 @@
+import { openSidesheet } from '../Functions';
 import { ToggleFunction } from '../Hooks/useInternalSidesheetFunction';
 
 export interface SidesheetApi {
@@ -17,3 +18,5 @@ export interface MenuItem {
 }
 
 export type CustomSidesheet<T> = React.FC<{ item: T; actions: SidesheetApi }>;
+
+export type OpenSidesheetFunc = typeof openSidesheet;

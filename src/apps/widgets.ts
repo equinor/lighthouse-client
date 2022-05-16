@@ -1,12 +1,22 @@
 import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
 import {
+    ReleaseControlHTSidesheetWidgetComponent,
+    ReleaseControlHTSidesheetWidgetManifest
+} from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
+import {
     changeSideSheetWidgetComponent,
     changeSideSheetWidgetManifest
 } from './ScopeChangeRequest/ScopeChangeRequestApp';
 
-const _widgets: WidgetManifest[] = [changeSideSheetWidgetManifest];
+const _widgets: WidgetManifest[] = [
+    changeSideSheetWidgetManifest,
+    ReleaseControlHTSidesheetWidgetManifest,
+];
 
-const _widgetComponents: ComponentManifest[] = [changeSideSheetWidgetComponent];
+const _widgetComponents: ComponentManifest[] = [
+    changeSideSheetWidgetComponent,
+    ReleaseControlHTSidesheetWidgetComponent,
+];
 
 export async function fetchWidgets(widgetType?: string): Promise<WidgetManifest[]> {
     return new Promise((resolve) => {

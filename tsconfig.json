@@ -48,6 +48,9 @@
             "@equinor/GroupView": [
                 "./src/Core/GroupView"
             ],
+            "@equinor/lighthouse-workspace-api": [
+                "./src/Core/WorkSpaceApi"
+            ],
             "@equinor/WorkSpace": [
                 "./src/Core/WorkSpace"
             ],

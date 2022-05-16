@@ -1,7 +1,6 @@
 import Functions from '@equinor/lighthouse-functions';
 import Widget, { WidgetManifest } from '@equinor/lighthouse-widgets';
 import React from 'react';
-import { getApps } from '../../../apps/apps';
 import { DefaultDataView } from '../Components/DefaultDataView';
 import { SuspenseSidesheet } from '../Components/SuspenseSidesheet';
 import { DEFAULT_TAB_COLOR, getSidesheetContext } from '../context/sidesheetContext';
@@ -18,10 +17,10 @@ export function openSidesheet<T>(
     if (!SidesheetContent && !props) return;
 
     // Temporary Hack for not braking old code.
-    let color =
-        getApps().find(({ shortName }) => shortName === appName)?.color ||
-        (DEFAULT_TAB_COLOR as string);
-
+    // let color =
+    //     getApps().find(({ shortName }) => shortName === appName)?.color ||
+    //     (DEFAULT_TAB_COLOR as string);
+    let color = DEFAULT_TAB_COLOR;
     if (manifest) {
         color = manifest.color || DEFAULT_TAB_COLOR;
         handleHashUrl(

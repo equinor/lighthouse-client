@@ -2,7 +2,7 @@ import { AuthenticationProvider } from '@equinor/authentication';
 import { PowerBIViewerInstance } from '@equinor/lighthouse-powerbi-viewer';
 import { PageViewerInstance } from '@equinor/PageViewer';
 import { WorkSpaceApi } from '@equinor/WorkSpace';
-import { WorkspaceOptions } from '../Service/ClientBuilder';
+import { WorkspaceViewerOptions } from '../Service/ClientBuilder';
 import { AppConfig } from './AppConfig';
 import { AppManifest } from './AppManifest';
 
@@ -23,7 +23,7 @@ export interface App {
 export interface ClientApi extends AppManifest {
     appConfig: AppConfig;
     authProvider: AuthenticationProvider;
-    createWorkSpace<T>(options: WorkspaceOptions<T>): WorkSpaceApi<T>;
+    createWorkSpace<T>(options: WorkspaceViewerOptions<T>): WorkSpaceApi<T>;
     createPageViewer(): PageViewerInstance;
     createPowerBiViewer(): PowerBIViewerInstance;
     isProduction: boolean;

@@ -18,8 +18,10 @@ import {
     DataViewerProps,
     FactoryOptions,
     IdResolverFunc,
-    Validator, ViewOptions,
-    WorkSpaceApi, WorkspaceOptions
+    Validator,
+    ViewOptions,
+    WorkSpaceApi,
+    WorkspaceOptions
 } from './WorkSpaceTypes';
 
 /**
@@ -33,11 +35,16 @@ import {
 export function createWorkSpace<T>(options: WorkspaceOptions<T>): WorkSpaceApi<T> {
     const onSelect = (item: T) => {
         // Todo: move to openSidesheet
-        // const url = new URL(window.location.href);
-        // url.hash = `${options.viewerId}/${item[options.objectIdentifier]}`;
-        // window.history.pushState({}, '', url);
+        const url = new URL(window.location.href);
+        url.hash = `${options.viewerId}/${item[options.objectIdentifier]}`;
+        window.history.pushState({}, '', url);
 
-        options.openSidesheet(options.CustomSidesheet, item, options.viewerId);
+        options.openSidesheet(
+            options.customSidesheetOptions?.widget || options.CustomSidesheet,
+            item,
+            options.viewerId,
+            options.customSidesheetOptions
+        );
     };
 
     //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
@@ -91,7 +98,7 @@ export function createWorkSpace<T>(options: WorkspaceOptions<T>): WorkSpaceApi<T
             return workspaceAPI;
         },
         registerIdResolver(idResolver: IdResolverFunc<T>) {
-            updateState({ idResolver: idResolver.idResolver });
+            updateState({ idResolver });
 
             return workspaceAPI;
         },
@@ -141,7 +148,7 @@ export function createWorkSpace<T>(options: WorkspaceOptions<T>): WorkSpaceApi<T
 
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
             const onGroupeSelect = (item: unknown) => {
-                options.openSidesheet(
+                options.openSidesheet<any>(
                     options.CustomGroupeSidesheet || options.CustomSidesheet,
                     item,
                     options.viewerId

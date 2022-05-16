@@ -1,6 +1,4 @@
 import { tokens } from '@equinor/eds-tokens';
-import { ResolverFunction } from '@equinor/lighthouse-functions';
-import { SidesheetComponentManifest, SidesheetWidgetManifest } from '@equinor/lighthouse-widgets';
 import { ClientApi } from '@equinor/portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { getGardenItemColor } from './Components/Garden/gardenFunctions';
@@ -12,7 +10,7 @@ import {
 import ReleaseControlGardenGroupView from './Components/Garden/ReleaseControlGardenGroupView';
 import ReleaseControlGardenItem from './Components/Garden/ReleaseControlGardenItem';
 import { ReleaseControlHTSidesheet } from './Components/Sidesheet/ReleaseControlHTSidesheet';
-import { GatewaySidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
+import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import { WorkflowCompact } from './Components/Workflow/Components/WorkflowCompact';
 import {
@@ -32,30 +30,6 @@ import {
 import { Monospace } from './Styles/Monospace';
 import { Pipetest } from './Types/pipetest';
 
-export const ReleaseControlHTSidesheetWidgetManifest: SidesheetWidgetManifest = {
-    widgetId: 'ht',
-    widgetType: 'sidesheet',
-    color: '#7B3A96',
-    props: {
-        resolverId: 'htResolver',
-        objectIdentifier: 'name',
-    },
-};
-
-export const ReleaseControlHTSidesheetWidgetComponent: SidesheetComponentManifest = {
-    widgetId: 'ht',
-    widgetType: 'sidesheet',
-    widget: ReleaseControlHTSidesheet,
-};
-
-export const changeFunction: ResolverFunction<{ test: string }> = {
-    functionId: 'changeResolver',
-    function: () => {
-        return { test: '' };
-    },
-    type: 'idResolver',
-};
-
 export function setup(appApi: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
         const { FAM } = httpClient();
@@ -70,7 +44,7 @@ export function setup(appApi: ClientApi): void {
 
     const request = appApi
         .createWorkSpace<Pipetest>({
-            CustomSidesheet: GatewaySidesheet,
+            CustomSidesheet: ReleaseControlSidesheet,
             CustomGroupeSidesheet: ReleaseControlHTSidesheet,
             objectIdentifier: 'name',
             defaultTab: 'garden',

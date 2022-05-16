@@ -1,7 +1,16 @@
 import { FunctionManifest } from '@equinor/lighthouse-functions';
+import {
+    htResolverFunction,
+    rcResolverFunction
+} from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { changeFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
 
-export const functions: FunctionManifest[] = [changeFunction];
+
+export const functions: FunctionManifest[] = [
+    changeFunction,
+    htResolverFunction,
+    rcResolverFunction,
+];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {
     return new Promise((resolve, reject) => {
