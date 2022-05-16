@@ -52,7 +52,7 @@ export function setup(appApi: ClientApi): void {
         })
         .registerDataCreator({
             title: 'Create',
-            accessCheck: () => Promise.resolve(true),
+            accessCheck: () => Promise.resolve(false),
             onClick: () => {
                 openSidesheet(DisciplineReleaseControlFactoryComponent, undefined, 'piping-and-ht');
             },
