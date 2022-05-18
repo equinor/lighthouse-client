@@ -13,6 +13,7 @@ export const gardenConfig: GardenOptions<Pipetest> = {
     itemKey: 'name',
     type: 'virtual',
     fieldSettings: fieldSettings,
+    collapseSubGroupsByDefault: true,
     customViews: {
         customItemView: ReleaseControlGardenItem,
         customGroupView: ReleaseControlGardenGroupView,

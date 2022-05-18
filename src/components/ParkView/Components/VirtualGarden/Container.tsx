@@ -29,6 +29,7 @@ export const VirtualContainer = <T extends unknown>({
         fieldSettings,
         customGroupByKeys,
         itemWidth,
+        collapseSubGroupsByDefault,
         intercepters,
     } = useParkViewContext<T>();
 
@@ -41,7 +42,7 @@ export const VirtualContainer = <T extends unknown>({
             createGarden({
                 dataSet: data,
                 groupingKeys: groupByKeys,
-                isExpanded: true,
+                isExpanded: !collapseSubGroupsByDefault,
                 gardenKey: gardenKey,
                 status: status,
                 groupDescriptionFunc: options?.groupDescriptionFunc,
@@ -51,7 +52,6 @@ export const VirtualContainer = <T extends unknown>({
                 preGroupFiltering: intercepters?.preGroupFiltering as PreGroupByFiltering<T>,
             })
         );
-
         onGardenReady && onGardenReady(createGardenApi());
     }, [
         /** Should maybe be empty */
