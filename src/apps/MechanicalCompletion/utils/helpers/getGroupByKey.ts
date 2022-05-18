@@ -6,7 +6,7 @@ import { ExtendedGardenFields } from '../config/gardenSetup';
 
 const getFieldKeyBasedOnPlannedForecast = (
     groupBy: ExtendedGardenFields | string,
-    plannedForecast: string,
+    plannedForecast: CustomGroupByKeys['plannedForecast'],
     mcPackage: McPackage
 ): keyof McPackage => {
     switch (groupBy) {
