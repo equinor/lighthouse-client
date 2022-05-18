@@ -20,6 +20,8 @@ import { Workflow } from '../../../Workflow/Workflow';
 import { WarrantyCaseDetailCheckbox } from '../../../WarrantyCaseDetailCheckbox/WarrantyCaseDetailCheckbox';
 import { GuesstimateDisciplineDetails } from '../../GuesstimateDisciplineDetails/GuesstimateDisciplineDetails';
 import { OriginLink } from '../../../DetailView/OriginLink';
+import { Checkbox } from '@equinor/eds-core-react';
+import { CheckboxWrapper } from '../../../WarrantyCaseDetailCheckbox/warrantyCaseDetailCheckbox.styles';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -70,6 +72,29 @@ export function RequestTab(): JSX.Element {
                                     </GuesstimatesList>
                                 )}
                             </SubSectionText>
+                        </SectionWrapper>
+                        <SectionHeading>Materials</SectionHeading>
+                        <SectionWrapper>
+                            <CheckboxWrapper>
+                                <Checkbox
+                                    readOnly
+                                    disabled
+                                    checked={request.materialsIdentifiedInStorage}
+                                />
+                                Materials identified in storage
+                            </CheckboxWrapper>
+                            <CheckboxWrapper>
+                                <Checkbox
+                                    readOnly
+                                    disabled
+                                    checked={request.materialsToBeBoughtByContractor}
+                                />{' '}
+                                Materials to be bought by contractor
+                            </CheckboxWrapper>
+                            <div>
+                                <SubSectionTitle>Material note</SubSectionTitle>
+                                <SubSectionText>{request.materialsNote}</SubSectionText>
+                            </div>
                         </SectionWrapper>
                     </InnerSection>
                 </FlexColumn>

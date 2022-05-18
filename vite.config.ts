@@ -19,6 +19,7 @@ export default defineConfig({
         alias: {
             '@equinor/lighthouse-portal-client': path.resolve(__dirname, './src/Core/Client'),
             '@equinor/atom': path.resolve(__dirname, './src/Core/Atom'),
+            '@equinor/JSX-Switch': path.resolve(__dirname, './src/components/JSXSwitch'),
             '@equinor/lighthouse-components': path.resolve(__dirname, './src/packages/Components'),
             '@equinor/lighthouse-widgets': path.resolve(__dirname, './src/Core/Widgets'),
             '@equinor/lighthouse-functions': path.resolve(__dirname, './src/Core/Functions'),

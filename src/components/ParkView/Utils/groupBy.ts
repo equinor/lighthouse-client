@@ -46,7 +46,7 @@ export function groupBy<T, K extends keyof T>({
             preGroupFiltering: preGroupFiltering,
             key: key,
             fieldSettings: fieldSettings,
-            isExpanded: isExpanded,
+            isExpanded: depth === 0 ? true : isExpanded,
         });
     } else {
         gardengroups = preGroupFiltering(arr, key).reduce((acc, item) => {
@@ -69,7 +69,7 @@ export function groupBy<T, K extends keyof T>({
                         groupKey: key as keyof T,
                         value: valueKey,
                         count: 1,
-                        isExpanded: Boolean(isExpanded),
+                        isExpanded: Boolean(depth === 0 ? true : isExpanded),
                         items: [item],
                         subGroups: [],
                         description: groupDescriptionFunc(item, key),
@@ -112,7 +112,7 @@ export function groupBy<T, K extends keyof T>({
             status: status,
             groupDescriptionFunc: groupDescriptionFunc,
             fieldSettings: fieldSettings,
-            isExpanded: true,
+            isExpanded: isExpanded,
             customGroupByKeys: customGroupByKeys,
             preGroupFiltering: preGroupFiltering,
             depth: gardengroups[index].depth + 1,

@@ -12,7 +12,7 @@ export const OriginSourceSelect = (): JSX.Element => {
             items={['NCR', 'Punch', 'Query', /**'SWCR',**/ 'NotApplicable', 'DCR']}
             label={'Change origin'}
             meta="(Required)"
-            initialSelectedItem={originSource}
+            value={originSource}
             placeholder="Select origin"
             handleSelectedItemChange={(change) =>
                 updateAtom({
