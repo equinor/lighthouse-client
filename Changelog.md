@@ -12,6 +12,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Scopechange] Added support for materials
 - [MC] Filter and table config
 - [Handover] Initial grouping set to forecast
+- [Discipline release control] Default collapse subgroups
 
 ****
 ## 1.2.0
