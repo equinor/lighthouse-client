@@ -2,6 +2,7 @@ import { Checkbox } from '@equinor/eds-core-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
 import { PowerBiFilter, PowerBiFilterItem } from '../../../Types';
+import { getActiveFilterGroupArray } from '../../../Utils';
 import { Header } from '../Header';
 import { Item } from './Item';
 import { searchFilterItems } from './searchFilterItems';
@@ -48,7 +49,10 @@ export const FilterItems = ({
     });
     if (!filterGroupVisible) return null;
 
-    if (filterGroupVisible.includes(group.type)) {
+    if (
+        filterGroupVisible.includes(group.type) ||
+        getActiveFilterGroupArray(activeFilters).includes(group.type)
+    ) {
         const allSearchedFilterValues = searchedFilterItems.map((x) => x.value);
         return (
             <FilterGroupContainer>

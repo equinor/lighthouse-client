@@ -35,13 +35,15 @@ export const PowerBIFilter = ({
         Record<string, (string | number | boolean)[]>
     >({});
     const [filterGroupVisible, setFilterGroupVisible] = useState<string[]>(
-        options?.defaultFilterGroupVisible || ['Responsible']
+        options?.defaultFilterGroupVisible || []
     );
     const [isFilterSelectActive, setIsFilterSelectActive] = useState<boolean>(true);
 
-    const handleChangeGroup = (filter: PowerBiFilter) => {
+    const handleChangeGroup = async (filter: PowerBiFilter) => {
         if (filterGroupVisible?.find((a) => a === filter.type) !== undefined) {
             setFilterGroupVisible(filterGroupVisible.filter((a) => a !== filter.type));
+            setActiveFilters((prev) => ({ ...prev, [filter.type]: [] }));
+            await filter.slicer?.setSlicerState({ filters: [] });
         } else {
             setFilterGroupVisible((prev) => [...(prev ? prev : []), filter.type]);
         }
@@ -219,6 +221,7 @@ export const PowerBIFilter = ({
                         slicerFilters={slicerFilters}
                         filterGroupVisible={filterGroupVisible}
                         handleChangeGroup={handleChangeGroup}
+                        activeFilters={activeFilters}
                     />
                 </FilterGroupWrap>
             )}
