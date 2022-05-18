@@ -65,9 +65,9 @@ export const ViewProvider = ({ children }: PropsWithChildren<unknown>): JSX.Elem
         });
     }, []);
 
-    const setActivePage = useCallback((page: Page, options?: PBIOptions) => {
+    const setActivePage = useCallback((page: Page, pbiOptions?: PBIOptions) => {
         setState((s) => {
-            return { ...s, activePage: page, options };
+            return { ...s, activePage: page, pbiOptions: pbiOptions };
         });
     }, []);
 
