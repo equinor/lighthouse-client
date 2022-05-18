@@ -29,6 +29,7 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
 
     useEffect(() => {
         const { clearState, updateAtom } = scopeChangeFormAtomApi;
+        clearState();
         updateAtom({
             ...request,
             disciplineGuesstimates: request.disciplineGuesstimates.map(

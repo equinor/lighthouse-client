@@ -30,7 +30,7 @@ export function useUnpackRelatedObjects({ request }: UseUnpackRelatedObjectsPara
 
     useEffect(() => {
         unpackRelatedObjects(request, handleReferencesChanged);
-    }, [request]);
+    }, [request.id]);
 
     function updateReferences(x: TypedSelectOption) {
         const references = readAtomValue().references ?? [];
