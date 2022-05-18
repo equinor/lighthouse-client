@@ -9,6 +9,7 @@ import {
     getFilters,
     removeVisibleFilters,
 } from '../../Utils';
+import { getActiveFilterGroupArray } from '../../Utils/getActiveFilterGroups';
 import { FilterGroup } from './FilterGroup';
 import { FilterItems } from './FilterItems';
 import { FilterGroupWrap, FilterItemsWrapper, FilterWrapper, Item, MenuItems } from './Styles';
@@ -183,15 +184,18 @@ export const PowerBIFilter = ({
     /**
      * Effect should be triggered when activeFilters has changed.
      * Some filters may not longer be applicable, therefore the need to get filters again.
+     * Dependency array needs to check for length because checking only object will not fire the effect.
      */
     useEffect(() => {
         if (report && isLoaded) {
             (async () => {
                 const filters = await getFilters(report);
                 setSlicerFilters(filters);
+                const filterGroupNames = getActiveFilterGroupArray(activeFilters);
+                setFilterGroupVisible((s) => [...s, ...filterGroupNames]);
             })();
         }
-    }, [activeFilters]);
+    }, [activeFilters, Object.entries(activeFilters).length]);
 
     if (!slicerFilters) return null;
 
@@ -221,7 +225,6 @@ export const PowerBIFilter = ({
                         slicerFilters={slicerFilters}
                         filterGroupVisible={filterGroupVisible}
                         handleChangeGroup={handleChangeGroup}
-                        activeFilters={activeFilters}
                     />
                 </FilterGroupWrap>
             )}

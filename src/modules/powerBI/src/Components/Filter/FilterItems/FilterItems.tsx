@@ -49,10 +49,7 @@ export const FilterItems = ({
     });
     if (!filterGroupVisible) return null;
 
-    if (
-        filterGroupVisible.includes(group.type) ||
-        getActiveFilterGroupArray(activeFilters).includes(group.type)
-    ) {
+    if (filterGroupVisible.includes(group.type)) {
         const allSearchedFilterValues = searchedFilterItems.map((x) => x.value);
         return (
             <FilterGroupContainer>

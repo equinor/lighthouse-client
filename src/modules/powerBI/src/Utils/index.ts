@@ -5,4 +5,3 @@ export * from './transformData';
 export * from './createPowerBiFilter';
 export * from './filterSelectionUtils';
 export * from './getActiveFilterGroups';
-export * from './isFilterGroupChecked';
