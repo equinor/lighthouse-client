@@ -27,6 +27,7 @@ export function GardenView<T>({ onGardenReady }: VirtualContainerProps): JSX.Ele
         fieldSettings,
         customView,
         customGroupByKeys,
+        collapsSubGroupsByDefault,
         intercepters,
     } = useParkViewContext<T>();
 
@@ -39,7 +40,7 @@ export function GardenView<T>({ onGardenReady }: VirtualContainerProps): JSX.Ele
             createGarden({
                 dataSet: data,
                 groupingKeys: groupByKeys,
-                isExpanded: true,
+                isExpanded: !collapsSubGroupsByDefault,
                 gardenKey: gardenKey,
                 status: status,
                 groupDescriptionFunc: options?.groupDescriptionFunc,
@@ -49,7 +50,6 @@ export function GardenView<T>({ onGardenReady }: VirtualContainerProps): JSX.Ele
                 preGroupFiltering: intercepters?.preGroupFiltering as PreGroupByFiltering<T>,
             })
         );
-
         onGardenReady && onGardenReady(createGardenApi());
     }, [
         /** Should maybe be empty */
