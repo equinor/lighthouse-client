@@ -36,11 +36,7 @@ export function useUnpackRelatedObjects({ request }: UseUnpackRelatedObjectsPara
         const references = readAtomValue().references ?? [];
 
         const index = references.findIndex(({ value }) => value === x.value);
-        if (index === -1) {
-            handleReferencesChanged([...references, x]);
-            return;
-        }
-
+        if (index === -1) return;
         handleReferencesChanged([...references.slice(0, index), x, ...references.slice(index + 1)]);
     }
 
