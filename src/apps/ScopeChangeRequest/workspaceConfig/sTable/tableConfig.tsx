@@ -74,7 +74,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'currentWorkflowStep',
         'workflowStatus',
         'state',
-        'guesstimateHours',
+        'disciplineGuesstimates',
         'estimatedChangeHours',
         'actualChangeHours',
         'changeCategory',
