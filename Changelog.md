@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+
+
+
+
+## 1.2.1
+- [Workspace] Config for default collapsing groups in workspace
+- [Scopechange] Added support for materials
+- [MC] Filter and table config
+- [Handover] Initial grouping set to forecast
+
 ****
 ## 1.2.0
 -  [Workspace] Use bookmarks manager for garden, table & pbi
