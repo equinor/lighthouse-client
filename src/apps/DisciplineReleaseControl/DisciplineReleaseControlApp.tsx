@@ -305,7 +305,7 @@ export function setup(appApi: ClientApi): void {
         itemKey: 'name',
         type: 'virtual',
         fieldSettings: fieldSettings,
-        collapsSubGroupsByDefault: true,
+        collapseSubGroupsByDefault: true,
         customViews: {
             customItemView: ReleaseControlGardenItem,
             customGroupView: ReleaseControlGardenGroupView,

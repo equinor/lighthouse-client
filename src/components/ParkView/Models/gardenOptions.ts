@@ -65,7 +65,7 @@ export interface GardenOptions<T> {
     customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
-    collapsSubGroupsByDefault?: boolean;
+    collapseSubGroupsByDefault?: boolean;
     itemWidth?: (
         garden: GardenGroups<T>,
         key: string,

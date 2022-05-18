@@ -29,7 +29,7 @@ export const VirtualContainer = <T extends unknown>({
         fieldSettings,
         customGroupByKeys,
         itemWidth,
-        collapsSubGroupsByDefault,
+        collapseSubGroupsByDefault,
         intercepters,
     } = useParkViewContext<T>();
 
@@ -42,7 +42,7 @@ export const VirtualContainer = <T extends unknown>({
             createGarden({
                 dataSet: data,
                 groupingKeys: groupByKeys,
-                isExpanded: !collapsSubGroupsByDefault,
+                isExpanded: !collapseSubGroupsByDefault,
                 gardenKey: gardenKey,
                 status: status,
                 groupDescriptionFunc: options?.groupDescriptionFunc,
