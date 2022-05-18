@@ -6,7 +6,8 @@ import { ExtendedGardenFields } from '../config/gardenSetup';
 
 const getFieldKeyBasedOnPlannedForecast = (
     groupBy: ExtendedGardenFields | string,
-    plannedForecast: string
+    plannedForecast: string,
+    mcPackage: McPackage
 ): keyof McPackage => {
     switch (groupBy) {
         case 'finalPunch':
@@ -15,10 +16,14 @@ const getFieldKeyBasedOnPlannedForecast = (
                 : 'finalPunchPlannedDate';
 
         case 'rfcmc':
-            return plannedForecast === 'Forecast' ? 'rfccForecastDate' : 'rfccPlannedDate';
+            return plannedForecast === 'Forecast' && mcPackage.rfccForecastDate
+                ? 'rfccForecastDate'
+                : 'rfccPlannedDate';
 
         case 'rfcc':
-            return plannedForecast === 'Forecast' ? 'rfccForecastDate' : 'rfccPlannedDate';
+            return plannedForecast === 'Forecast' && mcPackage.rfccForecastDate
+                ? 'rfccForecastDate'
+                : 'rfccPlannedDate';
 
         case 'punchAccepted':
             return plannedForecast === 'Forecast'
@@ -49,6 +54,6 @@ const getColumnDateKey = (
 };
 export const getDateKey: GetKeyFunction<McPackage> = (item, key, groupBy) => {
     const { plannedForecast, weeklyDaily } = groupBy as CustomGroupByKeys;
-    const mcFieldKey = getFieldKeyBasedOnPlannedForecast(key, plannedForecast);
+    const mcFieldKey = getFieldKeyBasedOnPlannedForecast(key, plannedForecast, item);
     return getColumnDateKey(mcFieldKey, weeklyDaily, item);
 };
