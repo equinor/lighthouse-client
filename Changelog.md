@@ -13,6 +13,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [MC] Filter and table config
 - [Handover] Initial grouping set to forecast
 - [Discipline release control] Default collapse subgroups
+- [Portal] - Sidesheet manifest and loader. (WIP)
 
 ****
 ## 1.2.0
