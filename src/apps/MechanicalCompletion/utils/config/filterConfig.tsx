@@ -27,30 +27,6 @@ export const filterConfig: FilterOptions<McPackage> = [
                 (a, b) => mcStatusPriority[a as McStatus] - mcStatusPriority[b as McStatus]
             ),
     },
-
-    {
-        name: 'MC Package Phase',
-        valueFormatter: (mc) => mc.phase,
-    },
-    {
-        name: 'Commissioning Priority 1',
-        valueFormatter: (mc) => mc.priority || 'N/A',
-    },
-    {
-        name: 'Area',
-        valueFormatter: (mc) => mc.area,
-    },
-
-    {
-        name: 'Subsystem',
-        valueFormatter: (mc) => mc.subsystem,
-        defaultHidden: true,
-    },
-    {
-        name: 'Remark',
-        valueFormatter: (mc) => mc.remark,
-        defaultHidden: true,
-    },
     {
         name: 'Handover Status',
         valueFormatter: (mc) => {
@@ -66,6 +42,32 @@ export const filterConfig: FilterOptions<McPackage> = [
             return <HandoverStatusFilter status={filterValue as CommissioningStatus} />;
         },
     },
+
+    {
+        name: 'MC Package Phase',
+        valueFormatter: (mc) => mc.phase,
+    },
+    {
+        name: 'Commissioning Priority 1',
+        valueFormatter: (mc) => mc.priority || 'N/A',
+    },
+    {
+        name: 'Area',
+        valueFormatter: (mc) => mc.area,
+        defaultHidden: true,
+    },
+
+    {
+        name: 'Subsystem',
+        valueFormatter: (mc) => mc.subsystem,
+        defaultHidden: true,
+    },
+    {
+        name: 'Remark',
+        valueFormatter: (mc) => mc.remark,
+        defaultHidden: true,
+    },
+
     {
         name: 'M-01 Contractor Final Punch Actual Date',
         valueFormatter: (mc) => (mc.finalPunchActualDate ? 'Yes' : 'No'),
@@ -82,7 +84,7 @@ export const filterConfig: FilterOptions<McPackage> = [
         defaultHidden: true,
     },
     {
-        name: 'M-03 RFCC Actual Date',
+        name: 'M-04 RFCC Actual Date',
         valueFormatter: (mc) => (mc.rfccActualDate ? 'Yes' : 'No'),
         defaultHidden: true,
     },

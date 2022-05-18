@@ -1,5 +1,5 @@
-import { Checkbox } from '@equinor/eds-core-react';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
+import { StyledCheckbox } from '../../StyledCheckbox/StyledCheckbox';
 
 export const IsWarrantyCaseCheckbox = (): JSX.Element => {
     const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
@@ -7,14 +7,12 @@ export const IsWarrantyCaseCheckbox = (): JSX.Element => {
     const isChecked = useAtomState((s) => s.potentialWarrantyCase);
 
     return (
-        <div>
-            <Checkbox
-                onChange={() => {
-                    updateAtom({ potentialWarrantyCase: !isChecked });
-                }}
-                checked={isChecked}
-                label="Potential warranty case"
-            />
-        </div>
+        <StyledCheckbox
+            value={isChecked}
+            onChange={() => {
+                updateAtom({ potentialWarrantyCase: !isChecked });
+            }}
+            label="Potential warranty case"
+        />
     );
 };
