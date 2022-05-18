@@ -1,10 +1,16 @@
+import { deref, swap } from '@dbeining/react-atom';
 import Functions from '@equinor/lighthouse-functions';
 import Widget, { WidgetManifest } from '@equinor/lighthouse-widgets';
 import React from 'react';
 import { getApps } from '../../../apps/apps';
+import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { DefaultDataView } from '../Components/DefaultDataView';
 import { SuspenseSidesheet } from '../Components/SuspenseSidesheet';
-import { DEFAULT_TAB_COLOR, getSidesheetContext } from '../context/sidesheetContext';
+import {
+    DEFAULT_TAB_COLOR,
+    getSidesheetContext,
+    SidesheetCoreContext,
+} from '../context/sidesheetContext';
 import { dispatch } from '../State/actions';
 import { SidesheetApi } from '../Types/SidesheetApi';
 
@@ -15,6 +21,22 @@ export function openSidesheet<T>(
     manifest?: Partial<WidgetManifest>
 ): void {
     if (!SidesheetContent && !props) return;
+
+    /**
+     * If unsaved changes, spawn confirmation dialog
+     */
+    const state = deref(SidesheetCoreContext);
+    if (state.hasUnsavedChanges) {
+        spawnConfirmationDialog(
+            'Unsaved changes, are you sure you want to abandon your changes',
+            'Warning!',
+            () => {
+                swap(SidesheetCoreContext, (s) => ({ ...s, hasUnsavedChanges: false }));
+                openSidesheet(SidesheetContent, props, appName, manifest);
+            }
+        );
+        return;
+    }
 
     // Temporary Hack for not braking old code.
     let color =
