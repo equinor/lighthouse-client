@@ -9,4 +9,5 @@ export interface SidesheetState<T> {
     width: number;
     appName?: string;
     color: string;
+    hasUnsavedChanges: boolean;
 }
