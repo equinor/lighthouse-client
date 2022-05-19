@@ -17,10 +17,6 @@ interface WorkflowStepProps {
     steps: ReleaseControlStep[];
 }
 
-const closeAll = () => {
-    return null;
-};
-
 export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element => {
     const { updateAtom } = DRCFormAtomApi;
     return (
@@ -63,10 +59,7 @@ export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element =>
                     }
                 />
             </Selections>
-            <IconMenu
-                items={getWorkflowStepMenuActions(step, steps)}
-                onMenuOpen={() => closeAll()}
-            />
+            <IconMenu items={getWorkflowStepMenuActions(step, steps)} />
             <div style={{ marginTop: '10px' }}>
                 <ClickableIcon
                     name="close"
