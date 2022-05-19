@@ -12,7 +12,7 @@ export const TitleInput = (): JSX.Element => {
         <TextField
             id={(Math.random() * 16).toString()}
             placeholder="This is a new flow"
-            label="Title /ID"
+            label="Title"
             onChange={updateTitle}
             value={title}
             meta={'(Required)'}
