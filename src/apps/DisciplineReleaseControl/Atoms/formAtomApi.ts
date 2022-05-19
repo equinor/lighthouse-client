@@ -1,6 +1,7 @@
 import { createAtom, DefaultAtomAPI } from '@equinor/atom';
 import { useState } from 'react';
 import { TypedSelectOption } from '../../ScopeChangeRequest/api/Search/searchType';
+import { ReleaseControlStep } from '../Components/Form/WorkflowEditor/WorkflowCustomEditor';
 
 interface DRCCreateModel {
     title?: string;
@@ -12,6 +13,7 @@ interface DRCCreateModel {
     areaCodes: string[];
     documentNumbers: string[];
     references?: TypedSelectOption[];
+    steps?: ReleaseControlStep[];
 }
 
 type DRCFormModel = Partial<DRCCreateModel>;
@@ -32,6 +34,7 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
             plannedStartDate: undefined,
             systemIds: [],
             tagNumbers: [],
+            steps: [],
             title: undefined,
         }),
 }));
