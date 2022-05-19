@@ -15,8 +15,8 @@ export interface ClientBuilderConfig extends AppManifest {
     isProduction: boolean;
 }
 
-export type WorkspaceViewerOptions<T> = Omit<
-    WorkspaceOptions<T>,
+export type WorkspaceViewerOptions<T, SideSheetIds extends string> = Omit<
+    WorkspaceOptions<T, SideSheetIds>,
     'viewerId' | 'initialState' | 'dataFactoryCreator' | 'openSidesheet'
 >;
 
@@ -27,7 +27,9 @@ export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
 
     return {
         ...config,
-        createWorkSpace<T>(options: WorkspaceViewerOptions<T>) {
+        createWorkSpace<T, SideSheetIds extends string = string>(
+            options: WorkspaceViewerOptions<T, SideSheetIds>
+        ) {
             return createWorkSpace({
                 ...options,
                 initialState: [],

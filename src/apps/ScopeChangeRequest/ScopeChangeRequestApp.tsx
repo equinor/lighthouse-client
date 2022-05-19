@@ -1,9 +1,9 @@
+import { ClientApi } from '@equinor/portal-client';
 import {
     ResolverFunction,
     SidesheetComponentManifest,
     SidesheetWidgetManifest
-} from '@equinor/lighthouse-workspace-api';
-import { ClientApi } from '@equinor/portal-client';
+} from '@equinor/WorkSpace';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
 import { dataCreator } from './workspaceConfig/dataCreatorConfig';
@@ -14,31 +14,31 @@ import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
 import { tableConfig } from './workspaceConfig/sTable/tableConfig';
 import { statusBarConfig } from './workspaceConfig/statusBarConfig';
 
-export const changeSideSheetWidgetManifest: SidesheetWidgetManifest = {
-    widgetId: 'change',
-    widgetType: 'sidesheet',
-    color: '#7B3A96',
-    props: {
-        resolverId: 'changeResolver',
-        objectIdentifier: 'id',
-    },
-};
+export const changeSideSheetWidgetManifest: SidesheetWidgetManifest<ScopeChangeRequest, 'change'> =
+    {
+        widgetId: 'change',
+        widgetType: 'sidesheet',
+        color: '#7B3A96',
+        props: {
+            resolverId: 'changeResolver',
+            objectIdentifier: 'id',
+        },
+    };
 
-export const changeSideSheetWidgetComponent: SidesheetComponentManifest = {
+export const changeSideSheetWidgetComponent: SidesheetComponentManifest<'change'> = {
     widgetId: 'change',
     widgetType: 'sidesheet',
     widget: SidesheetWrapper,
 };
 
-export const changeFunction: ResolverFunction<ScopeChangeRequest> = {
+export const changeFunction: ResolverFunction<ScopeChangeRequest, 'change'> = {
     functionId: 'changeResolver',
     function: idResolver,
-    type: 'idResolver',
 };
 
 export function setup(appApi: ClientApi): void {
     appApi
-        .createWorkSpace<ScopeChangeRequest>({
+        .createWorkSpace<ScopeChangeRequest, 'change'>({
             CustomSidesheet: SidesheetWrapper,
             customSidesheetOptions: {
                 ...changeSideSheetWidgetManifest,

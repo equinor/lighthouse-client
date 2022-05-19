@@ -23,7 +23,9 @@ export interface App {
 export interface ClientApi extends AppManifest {
     appConfig: AppConfig;
     authProvider: AuthenticationProvider;
-    createWorkSpace<T>(options: WorkspaceViewerOptions<T>): WorkSpaceApi<T>;
+    createWorkSpace<T, SideSheetId extends string>(
+        options: WorkspaceViewerOptions<T, SideSheetId>
+    ): WorkSpaceApi<T>;
     createPageViewer(): PageViewerInstance;
     createPowerBiViewer(): PowerBIViewerInstance;
     isProduction: boolean;

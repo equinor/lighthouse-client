@@ -1,7 +1,8 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
+import { GardenOptions } from '@equinor/ParkView';
 import { dispatch } from './CoreActions';
+import { ResolverIdFormat } from './Types/functions';
 import {
     getWorkSpaceContext,
     PowerBiOptions,
@@ -32,7 +33,11 @@ import {
  * @param {WorkspaceOptions<T>} options
  * @return {*}  {DataViewerApi<T>}
  */
-export function createWorkSpace<T>(options: WorkspaceOptions<T>): WorkSpaceApi<T> {
+export function createWorkSpace<
+    T,
+    SideSheetIds extends string,
+    ResolverIds extends ResolverIdFormat<SideSheetIds>
+>(options: WorkspaceOptions<T, SideSheetIds, ResolverIds>): WorkSpaceApi<T> {
     const onSelect = (item: T) => {
         // Todo: move to openSidesheet
         const url = new URL(window.location.href);

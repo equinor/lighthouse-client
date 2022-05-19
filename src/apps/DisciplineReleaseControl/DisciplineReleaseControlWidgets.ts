@@ -2,17 +2,18 @@ import {
     ResolverFunction,
     SidesheetComponentManifest,
     SidesheetWidgetManifest
-} from '@equinor/lighthouse-workspace-api';
+} from '@equinor/WorkSpace';
 import { ReleaseControlHTSidesheet } from './Components/Sidesheet/ReleaseControlHTSidesheet';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
+import { HeatTrace, Pipetest } from './Types/pipetest';
 
-export const ReleaseControlHTSidesheetWidgetManifest: SidesheetWidgetManifest = {
+export const ReleaseControlHTSidesheetWidgetManifest: SidesheetWidgetManifest<HeatTrace, 'ht'> = {
     widgetId: 'ht',
     widgetType: 'sidesheet',
     color: '#7B3A96',
     props: {
         resolverId: 'htResolver',
-        objectIdentifier: 'name',
+        objectIdentifier: 'tagNo',
     },
 };
 
@@ -22,15 +23,14 @@ export const ReleaseControlHTSidesheetWidgetComponent: SidesheetComponentManifes
     widget: ReleaseControlHTSidesheet,
 };
 
-export const htResolverFunction: ResolverFunction<{ name: string }> = {
+export const htResolverFunction: ResolverFunction<HeatTrace, 'ht'> = {
     functionId: 'htResolver',
     function: () => {
-        return { name: '' };
+        return { tagNo: '' } as HeatTrace;
     },
-    type: 'idResolver',
 };
 
-export const ReleaseControlSidesheetWidgetManifest: SidesheetWidgetManifest = {
+export const ReleaseControlSidesheetWidgetManifest: SidesheetWidgetManifest<Pipetest, 'rc'> = {
     widgetId: 'rc',
     widgetType: 'sidesheet',
     color: '#7B3A96',
@@ -46,10 +46,10 @@ export const ReleaseControlSidesheetWidgetComponent: SidesheetComponentManifest 
     widget: ReleaseControlSidesheet,
 };
 
-export const rcResolverFunction: ResolverFunction<{ name: string }> = {
+export const rcResolverFunction: ResolverFunction<Pipetest, 'rc'> = {
     functionId: 'rcResolver',
     function: () => {
-        return { name: '' };
+        return { name: '' } as Pipetest;
     },
     type: 'idResolver',
 };

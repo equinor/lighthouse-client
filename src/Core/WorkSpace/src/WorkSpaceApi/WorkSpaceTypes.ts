@@ -1,9 +1,9 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterGroup, FilterOptions } from '@equinor/filter';
-import { WorkSpaceSideSheet } from '@equinor/lighthouse-workspace-api';
 import { GardenOptions } from '@equinor/ParkView';
 import { OpenSidesheetFunc, SidesheetApi } from '@equinor/sidesheet';
+import { WorkSpaceSideSheet } from './Types';
 import {
     PowerBiOptions,
     PrefetchQueriesOptions,
@@ -25,7 +25,7 @@ export type Validator<T> = (data: unknown[]) => T[];
 export type FactoryOptions = Omit<Factory, 'factoryId'>;
 export type IdResolverFunc<T> = (id: string) => Promise<T | undefined>;
 
-export interface WorkspaceOptions<T> {
+export interface WorkspaceOptions<T, SideSheetId extends string = string> {
     initialState: T[];
     objectIdentifier: keyof T;
     viewerId: string;
@@ -33,7 +33,8 @@ export interface WorkspaceOptions<T> {
     dataFactoryCreator(factory: Factory): void;
     openSidesheet: OpenSidesheetFunc;
     CustomSidesheet?: React.FC<{ item: T; actions: SidesheetApi }>;
-    customSidesheetOptions?: WorkSpaceSideSheet<T>;
+    customSidesheetOptions?: WorkSpaceSideSheet<T, SideSheetId>;
+    customGroupeSidesheet?: WorkSpaceSideSheet<any, SideSheetId>;
     CustomGroupeSidesheet?: React.FC<{ item: any; actions: SidesheetApi }>;
     CustomSidesheetList?: React.FC<T[]>;
 }
