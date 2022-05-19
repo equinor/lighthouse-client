@@ -1,6 +1,6 @@
-import { deref, swap } from '@dbeining/react-atom';
 import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { getSidesheetContext, SidesheetCoreContext } from '../context/sidesheetContext';
+import { getSidesheetContext } from '../context/sidesheetContext';
+import { hasUnsavedChanges } from '../Functions/openSidesheet';
 import { dispatch } from '../State/actions';
 import { SidesheetState } from '../State/sidesheetState';
 
@@ -41,13 +41,12 @@ export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
     }
 
     function closeSidesheet(): void {
-        const state = deref(SidesheetCoreContext);
-        if (state.hasUnsavedChanges) {
+        if (hasUnsavedChanges()) {
             spawnConfirmationDialog(
                 'Unsaved changes, are you sure you want to abandon your changes',
                 'Warning!',
                 () => {
-                    swap(SidesheetCoreContext, (s) => ({ ...s, hasUnsavedChanges: false }));
+                    setHasUnsavedChanges(false);
                     closeSidesheet();
                 }
             );

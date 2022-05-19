@@ -25,8 +25,7 @@ export function openSidesheet<T>(
     /**
      * If unsaved changes, spawn confirmation dialog
      */
-    const state = deref(SidesheetCoreContext);
-    if (state.hasUnsavedChanges) {
+    if (hasUnsavedChanges()) {
         spawnConfirmationDialog(
             'Unsaved changes, are you sure you want to abandon your changes',
             'Warning!',
@@ -79,4 +78,8 @@ export async function openSidesheetById<T>(
     }
 
     openSidesheet(SuspenseSidesheet, mountAsync, id);
+}
+
+export function hasUnsavedChanges(): boolean {
+    return deref(SidesheetCoreContext).hasUnsavedChanges;
 }
