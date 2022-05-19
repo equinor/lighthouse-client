@@ -22,6 +22,7 @@ import {
 } from './packages';
 
 import {
+    sortByDate,
     sortByEstimatedManHours,
     sortByIsSafety,
     sortByLastSignedRanking,
@@ -53,16 +54,22 @@ export const fieldSettings: FieldSettings<SwcrPackage, ExtendedSwcrGardenFields>
         getColumnSort: sortByLastSignedRanking,
     },
     RFCC: { label: 'RFCC', getKey: getRfccKey },
-    RFCCDueDate: { label: 'RFCC duedate', getKey: getRfccDueDateKey },
-    startImplForecast: { label: 'Start impl. forecast', getKey: getStartImplForecastKey },
+    RFCCDueDate: { label: 'RFCC duedate', getKey: getRfccDueDateKey, getColumnSort: sortByDate },
+    startImplForecast: {
+        label: 'Start impl. forecast',
+        getKey: getStartImplForecastKey,
+        getColumnSort: sortByDate,
+    },
     RFOC: { label: 'RFOC', getKey: getRfocKey },
     closedAtDate: {
         label: 'Closed at date',
         getKey: (item) => [getYearAndWeekFromString(item.closedAtDate)],
+        getColumnSort: sortByDate,
     },
     dueAtDate: {
         label: 'Due date',
         getKey: (item) => [getYearAndWeekFromString(item.dueAtDate)],
+        getColumnSort: sortByDate,
     },
     siteCode: { label: 'Site Code' },
     projectIdentifier: { label: 'ProjectIdentifier' },
