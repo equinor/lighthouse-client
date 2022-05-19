@@ -1,4 +1,5 @@
 export * from './Components/PopoutSidesheet';
+export * from './Components/SidesheetLoader';
 export * from './Components/SuspenseSidesheet';
 export * from './Functions';
 export * from './Hooks/useInternalSidesheetFunction';

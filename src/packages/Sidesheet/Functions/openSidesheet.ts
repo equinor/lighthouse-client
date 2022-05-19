@@ -6,7 +6,7 @@ import { SuspenseSidesheet } from '../Components/SuspenseSidesheet';
 import { DEFAULT_TAB_COLOR, getSidesheetContext } from '../context/sidesheetContext';
 import { dispatch } from '../State/actions';
 import { SidesheetApi } from '../Types/SidesheetApi';
-import { handleHashUrl } from '../Utils/urlHandler';
+import { handleUpdateHashUrl } from '../Utils/urlHandler';
 
 export function openSidesheet<T>(
     SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
@@ -23,7 +23,7 @@ export function openSidesheet<T>(
     let color = DEFAULT_TAB_COLOR;
     if (manifest) {
         color = manifest.color || DEFAULT_TAB_COLOR;
-        handleHashUrl(
+        handleUpdateHashUrl(
             manifest.widgetId || '',
             (props && props[manifest.props?.objectIdentifier]) || ''
         );

@@ -28,7 +28,7 @@ export async function fetchWidgets(widgetType?: string): Promise<WidgetManifest[
 }
 export async function fetchWidget(widgetId: string): Promise<WidgetManifest> {
     return new Promise((resolve, reject) => {
-        const widget = _widgets.find((widget) => (widget.widgetId = widgetId));
+        const widget = _widgets.find((widget) => widget.widgetId === widgetId);
         if (widget) return resolve(widget);
         return reject(`No widget fount with id ${widgetId}`);
     });
@@ -36,7 +36,7 @@ export async function fetchWidget(widgetId: string): Promise<WidgetManifest> {
 
 export function fetchComponent(widgetId: string): Promise<ComponentManifest> {
     return new Promise((resolve, reject) => {
-        const component = _widgetComponents.find((component) => (component.widgetId = widgetId));
+        const component = _widgetComponents.find((component) => component.widgetId === widgetId);
         if (component) return resolve(component);
         return reject(`No component fount with id ${widgetId}`);
     });
