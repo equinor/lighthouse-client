@@ -143,6 +143,10 @@ export const sortFn =
     (objA, objB, id, _desc) => {
         const a = objA.values[id].content[key];
         const b = objB.values[id].content[key];
+
+        if (Number(a) && Number(b)) {
+            return a === b ? 0 : parseFloat(a) > parseFloat(b) ? 1 : -1;
+        }
         return a === b ? 0 : a > b ? 1 : -1;
     };
 
