@@ -4,7 +4,7 @@ import { ClickableIcon } from '@equinor/lighthouse-components';
 import styled from 'styled-components';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { IconMenu } from '../../MenuButton';
-import { ReleaseControlStep } from './WorkflowCustomEditor';
+import { DraggableHandleSelector, ReleaseControlStep } from './WorkflowCustomEditor';
 import {
     getWorkflowStepMenuActions,
     removeStep,
@@ -25,11 +25,13 @@ export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element =>
     const { updateAtom } = DRCFormAtomApi;
     return (
         <Line>
-            <Icon
-                name="reorder"
-                color={tokens.colors.interactive.primary__resting.hex}
-                style={{ cursor: 'grab' }}
-            />
+            <div className={DraggableHandleSelector}>
+                <Icon
+                    name="reorder"
+                    color={tokens.colors.interactive.primary__resting.hex}
+                    style={{ cursor: 'grab' }}
+                />
+            </div>
             <NumberCircle>{step.order}</NumberCircle>
             <Selections>
                 <SingleSelect
