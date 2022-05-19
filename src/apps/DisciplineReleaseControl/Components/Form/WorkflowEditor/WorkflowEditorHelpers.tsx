@@ -44,7 +44,7 @@ export function addStepAfter(
 ): ReleaseControlStep[] {
     const newStep = { order: currentStep.order + 1, step: '', responsible: '' };
     steps.forEach((x) => {
-        if (x.order > currentStep.order + 1) {
+        if (x.order >= currentStep.order + 1) {
             x.order++;
         }
     });
