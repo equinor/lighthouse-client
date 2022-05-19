@@ -33,6 +33,7 @@ export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element =>
                 <SingleSelect
                     items={stepNames}
                     label="Step"
+                    size={25}
                     selectedOption={step.step}
                     handleSelectedItemChange={(change) =>
                         updateAtom({
@@ -92,8 +93,9 @@ const NumberCircle = styled.div`
     text-align: center;
     border: 2px solid ${tokens.colors.ui.background__medium.hex};
     border-radius: 50%;
-    width: 23px;
+    width: 25px;
     height: 20px;
+    margin-bottom: 7px;
 `;
 
 const stepNames = [
