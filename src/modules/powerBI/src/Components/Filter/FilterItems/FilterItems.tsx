@@ -2,6 +2,7 @@ import { Checkbox } from '@equinor/eds-core-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
 import { PowerBiFilter, PowerBiFilterItem } from '../../../Types';
+import { getActiveFilterGroupArray } from '../../../Utils';
 import { Header } from '../Header';
 import { Item } from './Item';
 import { searchFilterItems } from './searchFilterItems';
