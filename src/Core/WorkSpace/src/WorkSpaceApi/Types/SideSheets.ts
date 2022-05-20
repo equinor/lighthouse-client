@@ -14,6 +14,7 @@ export interface SidesheetWidgetManifest<T, SideSheetId extends string = string>
     props: {
         resolverId: ResolverIdFormat<SideSheetId>;
         objectIdentifier: keyof T;
+        parentApp?: string;
     };
 }
 export interface CreatorWidgetManifest<T> extends WidgetManifest {

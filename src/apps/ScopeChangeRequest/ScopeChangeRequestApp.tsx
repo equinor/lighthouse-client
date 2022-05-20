@@ -22,6 +22,7 @@ export const changeSideSheetWidgetManifest: SidesheetWidgetManifest<ScopeChangeR
         props: {
             resolverId: 'changeResolver',
             objectIdentifier: 'id',
+            parentApp: 'change',
         },
     };
 

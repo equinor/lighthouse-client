@@ -1,6 +1,7 @@
 import Functions from '@equinor/lighthouse-functions';
-import Widget, { WidgetManifest } from '@equinor/lighthouse-widgets';
+import Widget from '@equinor/lighthouse-widgets';
 import React from 'react';
+import { SidesheetWidgetManifest } from '../../../Core/WorkSpace/src';
 import { DefaultDataView } from '../Components/DefaultDataView';
 import { SuspenseSidesheet } from '../Components/SuspenseSidesheet';
 import { DEFAULT_TAB_COLOR, getSidesheetContext } from '../context/sidesheetContext';
@@ -11,8 +12,7 @@ import { handleUpdateHashUrl } from '../Utils/urlHandler';
 export function openSidesheet<T>(
     SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
     props?: T,
-    appName?: string,
-    manifest?: Partial<WidgetManifest>
+    manifest?: Partial<SidesheetWidgetManifest<T>>
 ): void {
     if (!SidesheetContent && !props) return;
 
@@ -25,7 +25,7 @@ export function openSidesheet<T>(
         color = manifest.color || DEFAULT_TAB_COLOR;
         handleUpdateHashUrl(
             manifest.widgetId || '',
-            (props && props[manifest.props?.objectIdentifier]) || ''
+            (props && props[`${manifest.props?.objectIdentifier}`]) || ''
         );
     }
     dispatch(getSidesheetContext(), (state) => {
@@ -35,7 +35,7 @@ export function openSidesheet<T>(
             SidesheetComponent: (SidesheetContent as React.FC<unknown>) || DefaultDataView,
             props,
             color,
-            appName,
+            appName: manifest?.props?.parentApp,
         };
     });
 }
@@ -47,18 +47,20 @@ export async function openSidesheetById<T>(
 ): Promise<void> {
     async function mountAsync() {
         const SidesheetContent = await Widget.getWidget(sideSheetId);
-        const manifest = await Widget.getWidgetManifest(sideSheetId);
+        const manifest = (await Widget.getWidgetManifest(sideSheetId)) as Partial<
+            SidesheetWidgetManifest<any>
+        >;
 
         if (!id) {
-            openSidesheet(SidesheetContent, {}, '', manifest);
+            openSidesheet(SidesheetContent, {}, manifest);
         }
 
-        const resolver = await Functions.getFunction(manifest.props?.resolverId);
+        const resolver = await Functions.getFunction(manifest.props?.resolverId || '');
 
         if (typeof resolver === 'function') props = await resolver(id);
 
-        openSidesheet(SidesheetContent, props, undefined, manifest);
+        openSidesheet(SidesheetContent, props, manifest);
     }
 
-    openSidesheet(SuspenseSidesheet, mountAsync, id);
+    openSidesheet(SuspenseSidesheet, mountAsync);
 }
