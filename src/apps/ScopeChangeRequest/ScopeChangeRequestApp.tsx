@@ -24,6 +24,10 @@ export function setup(appApi: ClientApi): void {
         .registerStatusItems(statusBarConfig)
         .registerFilterOptions(filterConfig)
         .registerIdResolver(idResolver)
+        .registerSearchOptions([
+            { name: 'Id', valueFormatter: ({ sequenceNumber }) => sequenceNumber.toString() },
+            { name: 'Title', valueFormatter: ({ title }) => title },
+        ])
         .registerPrefetchQueries(prefetchQueriesOptions);
     // .registerPowerBIOptions({
     //     pages: [

@@ -26,8 +26,8 @@ export function setup(appApi: ClientApi): void {
             defaultTab: 'garden',
         })
         .registerDataSource({
-            responseAsync: responseAsync,
-            responseParser: responseParser,
+            responseAsync,
+            responseParser,
         })
         .registerFilterOptions(filterConfig)
         .registerTableOptions(tableConfig)
@@ -47,6 +47,7 @@ export function setup(appApi: ClientApi): void {
             highlightColumn: getHighlightedColumn,
             customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
         })
+        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ commpkgNo }) => commpkgNo }])
         .registerStatusItems(statusBarData)
         .registerPowerBIOptions({
             reportURI: 'pp-handover-analytics',

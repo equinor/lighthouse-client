@@ -46,6 +46,7 @@ export function Presets(): JSX.Element {
                         aria-selected={false}
                         onClick={() => handleClick(x.name)}
                         key={x.name}
+                        width="80px"
                     >
                         <PresetChip>{x.name}</PresetChip>
                     </TabButton>
