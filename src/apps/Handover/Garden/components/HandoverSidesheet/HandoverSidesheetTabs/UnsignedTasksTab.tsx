@@ -7,9 +7,10 @@ const columns: Column<HandoverUnsignedTask>[] = [
     {
         id: 'taskNumber',
         Header: '#',
-        accessor: ({ taskNumber, url }) => ({
-            content: taskNumber,
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            currentKey: 'taskNumber',
         }),
         Cell: CellWithLink,
     },

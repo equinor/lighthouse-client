@@ -5,11 +5,12 @@ import { HandoverQuery } from '../../../models';
 
 const columns: Column<HandoverQuery>[] = [
     {
-        id: 'QueryNo',
+        id: 'queryNumber',
         Header: 'QueryNo',
-        accessor: ({ queryNumber, url }) => ({
-            content: queryNumber,
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            currentKey: 'queryNumber',
         }),
         Cell: CellWithLink,
     },
