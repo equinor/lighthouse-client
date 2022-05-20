@@ -1,4 +1,4 @@
-import { Column, Table } from '@equinor/Table';
+import { Column, defaultGroupByFn, Table } from '@equinor/Table';
 import styled from 'styled-components';
 export const NoResourceData = styled.div`
     text-align: center;
@@ -21,5 +21,5 @@ export const TabTable = <T extends Record<string | number, unknown>>(props: TabT
     if (error || packages === undefined || packages.length === 0) {
         return <NoResourceData>{`No ${resourceName}`}</NoResourceData>;
     }
-    return <Table options={{ columns, data: packages }} />;
+    return <Table options={{ columns, data: packages, groupByFn: defaultGroupByFn }} />;
 };

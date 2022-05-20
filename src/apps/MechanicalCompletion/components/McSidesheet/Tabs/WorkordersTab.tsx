@@ -6,9 +6,10 @@ const columns: Column<McWorkOrder>[] = [
     {
         id: 'workorderNumber',
         Header: 'WO Number',
-        accessor: ({ url, workOrderNumber }) => ({
-            content: workOrderNumber,
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            currentKey: 'workorderNumber',
         }),
         Cell: CellWithLink,
         width: 130,

@@ -141,9 +141,15 @@ export const findCellFn = <T extends TableData>(
 export const sortFn =
     <T extends TableData>(key: string): SortByFn<T> =>
     (objA, objB, id, _desc) => {
+        if (objA?.isGrouped || objA?.isGrouped) {
+            return objA.groupByVal === objB.groupByVal
+                ? 0
+                : objA.groupByVal > objB.groupByVal
+                ? 1
+                : -1;
+        }
         const a = objA.values[id].content[key];
         const b = objB.values[id].content[key];
-
         if (Number(a) && Number(b)) {
             return a === b ? 0 : parseFloat(a) > parseFloat(b) ? 1 : -1;
         }
