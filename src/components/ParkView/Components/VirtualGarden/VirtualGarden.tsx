@@ -6,7 +6,7 @@ import {
     useLayoutEffect,
     useMemo,
     useRef,
-    useState
+    useState,
 } from 'react';
 import { useVirtual } from 'react-virtual';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
@@ -31,6 +31,7 @@ export const VirtualGarden = <T extends unknown>({
 }: VirtualGardenProps<T>): JSX.Element => {
     const [selectedItem, setSelectedItem] = useState<T | null>(null);
     const parentRef = useRef<HTMLDivElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     const {
         gardenKey,
@@ -130,6 +131,7 @@ export const VirtualGarden = <T extends unknown>({
             rowTotalSize={rowVirtualizer.totalSize}
             columnTotalSize={columnVirtualizer.totalSize}
             parentRef={parentRef}
+            containerRef={containerRef}
             isScrolling={isScrolling}
         >
             <HeaderContainer
@@ -162,6 +164,7 @@ export const VirtualGarden = <T extends unknown>({
                             groupByKeys={[gardenKey, ...groupByKeys]}
                             selectedItem={selectedItem}
                             handleOnClick={handleOnItemClick}
+                            parentRef={containerRef}
                         />
                     </Fragment>
                 );
