@@ -1,8 +1,7 @@
 import { Tabs } from '@equinor/eds-core-react';
 
 import { tokens } from '@equinor/eds-tokens';
-import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
-import { DataSource, IdResolverFunc } from '@equinor/WorkSpace';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { createAtom } from '../../Core/Atom/functions/createAtom';
@@ -12,6 +11,8 @@ import { BannerItem } from '../DisciplineReleaseControl/Components/Sidesheet/Rel
 import { Banner } from '../ScopeChangeRequest/Components/Sidesheet/SidesheetBanner/SidesheetBanner';
 import { CriteriaSignState } from '../ScopeChangeRequest/types/scopeChangeRequest';
 import { WorkflowCompact } from '../ScopeChangeRequest/workspaceConfig/sTable/WorkflowCompact';
+import { dataSource, idResolver } from './workspaceConfig/dataOptions';
+import { filterOptions } from './workspaceConfig/filter/filterConfig';
 
 export interface CreatedBy {
     id: string;
@@ -258,15 +259,7 @@ export function setup({ createWorkSpace }: ClientApi): void {
                 },
             ],
         })
-        .registerFilterOptions([
-            { name: 'Current step', valueFormatter: (s) => s?.currentWorkflowStep.name },
-            {
-                name: 'State',
-                valueFormatter: ({ isVoided, state }) => (isVoided ? 'Voided' : state),
-            },
-            { name: 'Phase', valueFormatter: ({ phase }) => phase },
-            { name: 'Status', valueFormatter: ({ workflowStatus }) => workflowStatus },
-        ])
+        .registerFilterOptions(filterOptions)
         .registerIdResolver(idResolver);
     // .registerPowerBIOptions({
     //     pages: [
@@ -282,31 +275,6 @@ export function setup({ createWorkSpace }: ClientApi): void {
     //     ],
     //     reportURI: 'pp-scope-change-analytics',
     // });
-}
-
-async function responseAsync(signal?: AbortSignal): Promise<Response> {
-    const { scopeChange } = httpClient();
-    return await scopeChange.fetch(`api/releasecontrol`, {
-        signal,
-    });
-}
-
-export const dataSource: DataSource<ReleaseControl> = {
-    responseAsync,
-};
-
-export const idResolver: IdResolverFunc<ReleaseControl> = {
-    idResolver: idResolverFunction,
-};
-
-async function idResolverFunction(id: string): Promise<ReleaseControl> {
-    const { scopeChange } = httpClient();
-    const res = await scopeChange.fetch(`api/releasecontrol/${id}`);
-
-    if (!res.ok) {
-        throw 'Not found';
-    }
-    return await res.json();
 }
 
 interface ReleaseControlSidesheetProps {
