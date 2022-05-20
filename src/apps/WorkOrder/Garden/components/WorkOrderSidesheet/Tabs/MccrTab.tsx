@@ -11,9 +11,10 @@ export type MccrTabProps = {
 const columns: Column<WorkOrderMccr>[] = [
     {
         id: 'tagNumber',
-        accessor: ({ tagNumber, tagUrl }) => ({
-            content: tagNumber,
-            url: isProduction() ? tagUrl : tagUrl.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            url: isProduction() ? pkg.tagUrl : pkg.tagUrl.replace('procosys', 'procosystest'),
+            currentKey: 'tagNumber',
         }),
         Header: 'TagNo.',
         Cell: CellWithLink,
@@ -42,18 +43,22 @@ const columns: Column<WorkOrderMccr>[] = [
     },
     {
         id: 'mcpkgNumber',
-        accessor: ({ mcpkgNumber, mccrUrl }) => ({
-            content: mcpkgNumber,
-            url: isProduction() ? mccrUrl : mccrUrl.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            url: isProduction() ? pkg.mccrUrl : pkg.mccrUrl.replace('procosys', 'procosystest'),
+            currentKey: 'mcpkgNumber',
         }),
         Header: 'McpkgNo.',
         Cell: CellWithLink,
     },
     {
         id: 'commpkgNumber',
-        accessor: ({ commpkgNumber, commpkgUrl }) => ({
-            content: commpkgNumber,
-            url: isProduction() ? commpkgUrl : commpkgUrl.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            url: isProduction()
+                ? pkg.commpkgUrl
+                : pkg.commpkgUrl.replace('procosys', 'procosystest'),
+            currentKey: 'commpkgNumber',
         }),
         Header: 'CommpkgNo.',
         Cell: CellWithLink,
