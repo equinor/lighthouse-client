@@ -17,6 +17,8 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         'hasComments',
         'hasPendingContributions',
         'tags',
+        'createdBy',
+        'modifiedBy',
     ],
     columnOrder: ['sequenceNumber', 'title', 'workflowSteps'],
     headers: [
@@ -55,6 +57,10 @@ export const tableConfig: TableOptions<ReleaseControl> = {
             type: customCellView((req) => (
                 <>{req.modifiedAtUtc && new Date(req.modifiedAtUtc).toLocaleDateString('en-gb')}</>
             )),
+        },
+        {
+            key: 'currentWorkflowStep',
+            type: customCellView((req) => <>{req?.currentWorkflowStep?.name}</>),
         },
     ],
 };

@@ -4,7 +4,6 @@ import { throwOnError } from '../../../functions/throwError';
 
 export async function getHistory(id: string, signal?: AbortSignal): Promise<LogEntry[]> {
     const { scopeChange } = httpClient();
-
     const res = await scopeChange.fetch(`api/releasecontrol/${id}/history`, { signal });
 
     throwOnError(res, 'Failed to get log');
