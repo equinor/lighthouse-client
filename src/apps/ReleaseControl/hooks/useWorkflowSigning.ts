@@ -1,10 +1,10 @@
 import { UseMutateFunction, useQueryClient } from 'react-query';
 import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { useReleaseControlMutation } from '../../DisciplineReleaseControl/Hooks/useReleaseControlMutation';
 import { CriteriaSignState } from '../../ScopeChangeRequest/types/scopeChangeRequest';
 import { signCriteria } from '../api/releaseControl/Workflow';
 import { releaseControlMutationKeys } from '../queries/releaseControlMutationKeys';
 import { useReleaseControlContext } from './useReleaseControlContext';
+import { useReleaseControlMutation } from './useReleaseControlMutation';
 
 export interface OnSignStepAction {
     action: CriteriaSignState;
