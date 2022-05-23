@@ -204,7 +204,6 @@ export interface Contributor {
     createdBy: Person;
     modifiedAtUtc: Date;
     modifiedBy: Person;
-    plant: string;
     id: string;
     instructionsToContributor: string;
     person: Person;
@@ -216,7 +215,6 @@ export interface Contribution {
     createdBy: Person;
     modifiedAtUtc: Date;
     modifiedBy: Person;
-    plant: string;
     id: string;
     comment: string;
     suggestion: string;

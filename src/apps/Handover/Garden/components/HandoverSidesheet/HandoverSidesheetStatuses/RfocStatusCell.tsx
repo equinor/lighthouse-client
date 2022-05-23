@@ -6,13 +6,14 @@ import { Pill, PillProps } from './PillStyle';
 import { createGradient, createGradientBackground } from './utility';
 
 export const RfocStatusCell = (
-    props: CellProps<HandoverMcpkg, { rfocStatus: HandoverPackageStatus }>
-): JSX.Element => {
-    const {
-        value: { rfocStatus },
-    } = props;
+    props: CellProps<HandoverMcpkg, HandoverPackageStatus | null>
+): JSX.Element | null => {
+    const { value } = props;
 
-    const background = createGradient(colorMap[rfocStatus]);
+    if (value === null) {
+        return null;
+    }
+    const background = createGradient(colorMap[value || 'OS']);
 
     const styling: PillProps = {
         backgroundImage: createGradientBackground(background),
@@ -23,5 +24,5 @@ export const RfocStatusCell = (
             })
             .toHexString(),
     };
-    return <Pill {...styling}>{rfocStatus.replace('RFOC ', '')}</Pill>;
+    return <Pill {...styling}>{value?.replace('RFOC ', '')}</Pill>;
 };

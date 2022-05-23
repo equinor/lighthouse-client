@@ -5,6 +5,7 @@ type LayoutProps = {
     columnTotalSize: number;
     rowTotalSize: number;
     parentRef: React.MutableRefObject<HTMLDivElement | null>;
+    containerRef: React.MutableRefObject<HTMLDivElement | null>;
     isScrolling: boolean;
 };
 /**
@@ -15,7 +16,7 @@ type LayoutProps = {
  * pointerEvents is just for optimization, turned off when user is scrolling.
  */
 export const Layout = (props: PropsWithChildren<LayoutProps>): JSX.Element => {
-    const { columnTotalSize, rowTotalSize, parentRef, isScrolling, children } = props;
+    const { columnTotalSize, rowTotalSize, parentRef, containerRef, isScrolling, children } = props;
 
     return (
         <LayoutRoot ref={parentRef}>
@@ -23,6 +24,7 @@ export const Layout = (props: PropsWithChildren<LayoutProps>): JSX.Element => {
                 width={columnTotalSize}
                 height={rowTotalSize}
                 isScrolling={isScrolling}
+                ref={containerRef}
             >
                 {children}
             </LayoutContainer>

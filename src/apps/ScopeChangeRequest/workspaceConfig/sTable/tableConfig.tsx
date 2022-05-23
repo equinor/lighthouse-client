@@ -11,6 +11,10 @@ import { EstimateBar } from '../../Components/WoProgressBars/EstimateBar';
 import { ExpendedProgressBar } from '../../Components/WoProgressBars/ExpendedProgressBar';
 import styled from 'styled-components';
 
+const customCellView = (render: (req: ScopeChangeRequest) => JSX.Element | null) => ({
+    Cell: ({ cell }: any) => <>{render(cell.value.content)}</>,
+});
+
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',
     enableSelectRows: true,
@@ -47,6 +51,25 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             Aggregated: () => null,
             aggregate: 'count',
         },
+        {
+            Header: 'Disciplines',
+            accessor: 'disciplineGuesstimates',
+            Cell: ({ cell }: any) => {
+                const request = cell.row.original as ScopeChangeRequest;
+
+                return (
+                    <div>
+                        {request.disciplineGuesstimates
+                            .map(({ discipline: { procosysCode } }) => procosysCode)
+                            .toString()}
+                    </div>
+                );
+            },
+            id: 'Disciplines',
+            width: 180,
+            Aggregated: () => null,
+            aggregate: 'count',
+        },
     ],
     hiddenColumns: [
         'id',
@@ -62,6 +85,11 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'attachments',
         'isVoided',
         'disciplines',
+        'materialsIdentifiedInStorage',
+        'materialsNote',
+        'materialsToBeBoughtByContractor',
+        'potentialWarrantyCase',
+        'workOrders',
     ],
     columnOrder: [
         'sequenceNumber',
@@ -74,7 +102,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'currentWorkflowStep',
         'workflowStatus',
         'state',
-        'guesstimateHours',
+        'disciplineGuesstimates',
         'estimatedChangeHours',
         'actualChangeHours',
         'changeCategory',
@@ -104,6 +132,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'modifiedAtUtc', title: 'Last updated' },
         { key: 'modifiedBy', title: 'Modified by' },
         { key: 'description', title: 'Description' },
+        { key: 'scope', title: 'Scope' },
         { key: 'state', title: 'State', width: 80 },
         { key: 'currentWorkflowStep', title: 'Next', width: 220 },
         {
@@ -120,37 +149,32 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
     customCellView: [
         {
+            key: 'scope',
+            type: customCellView((req) => <>{req?.scope?.name}</>),
+        },
+
+        {
             key: 'createdAtUtc',
-            type: {
-                Cell: ({ cell }: any) => {
-                    const request: ScopeChangeRequest = cell.value.content;
-                    return (
-                        <>
-                            {request.createdAtUtc &&
-                                DateTime.fromJSDate(new Date(request.createdAtUtc)).toRelative({
-                                    locale: 'en-GB',
-                                })}
-                        </>
-                    );
-                },
-            },
+            type: customCellView((req) => (
+                <>
+                    {req.createdAtUtc &&
+                        DateTime.fromJSDate(new Date(req.createdAtUtc)).toRelative({
+                            locale: 'en-GB',
+                        })}
+                </>
+            )),
         },
 
         {
             key: 'modifiedAtUtc',
-            type: {
-                Cell: ({ cell }: any) => {
-                    const request: ScopeChangeRequest = cell.value.content;
-                    return (
-                        <>
-                            {request.modifiedAtUtc &&
-                                DateTime.fromJSDate(new Date(request.modifiedAtUtc)).toRelative({
-                                    locale: 'en-GB',
-                                })}
-                        </>
-                    );
-                },
-            },
+            type: customCellView((req) => (
+                <>
+                    {req.modifiedAtUtc &&
+                        DateTime.fromJSDate(new Date(req.modifiedAtUtc)).toRelative({
+                            locale: 'en-GB',
+                        })}
+                </>
+            )),
         },
         {
             key: 'disciplineGuesstimates',
@@ -238,102 +262,60 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
         {
             key: 'changeCategory',
-            type: {
-                Cell: ({ cell }: any) => {
-                    const request: ScopeChangeRequest = cell.value.content;
-                    return <>{request.changeCategory.name}</>;
-                },
-            },
+            type: customCellView(({ changeCategory }) => <>{changeCategory.name}</>),
         },
         {
             key: 'state',
-            type: {
-                Cell: ({ cell }: any) => {
-                    const request: ScopeChangeRequest = cell.value.content;
-                    return <>{request.isVoided ? 'Voided' : request.state}</>;
-                },
-            },
+            type: customCellView(({ state, isVoided }) => <>{isVoided ? 'Voided' : state}</>),
         },
         {
             key: 'hasPendingContributions',
-            type: {
-                Cell: ({ cell }: any) => {
-                    const request: ScopeChangeRequest = cell.value.content;
-                    return (
-                        request.hasPendingContributions && (
-                            <CenterIcon>
-                                <Icon
-                                    color={tokens.colors.text.static_icons__default.hex}
-                                    name="group"
-                                />
-                            </CenterIcon>
-                        )
-                    );
-                },
-            },
+            type: customCellView(({ hasPendingContributions }) => (
+                <>
+                    {hasPendingContributions && (
+                        <CenterIcon>
+                            <Icon
+                                color={tokens.colors.text.static_icons__default.hex}
+                                name="group"
+                            />
+                        </CenterIcon>
+                    )}
+                </>
+            )),
         },
         {
             key: 'workflowSteps',
-            type: {
-                Cell: ({ cell }: any): JSX.Element => {
-                    return <WorkflowCompact steps={cell.value.content.workflowSteps} />;
-                },
-            },
+            type: customCellView((req) => <WorkflowCompact steps={req.workflowSteps} />),
         },
         {
             key: 'hasComments',
-            type: {
-                Cell: ({ cell }: any) => {
-                    if (!cell.value.content.hasComments) {
-                        return <></>;
-                    }
-
-                    return (
-                        <CenterIcon>
-                            <Icon
-                                name={'comment_chat'}
-                                color={`${tokens.colors.text.static_icons__default.hex}`}
-                            />
-                        </CenterIcon>
-                    );
-                },
-            },
+            type: customCellView((req) =>
+                req.hasComments ? (
+                    <CenterIcon>
+                        <Icon
+                            name={'comment_chat'}
+                            color={`${tokens.colors.text.static_icons__default.hex}`}
+                        />
+                    </CenterIcon>
+                ) : null
+            ),
         },
         {
             key: 'originSource',
-            type: {
-                Cell: ({ cell }: any) => {
-                    return (
-                        <>
-                            <OriginLink
-                                onlyUnderlineOnHover={true}
-                                type={cell.value.content.originSource}
-                                id={cell.value.content.originSourceId}
-                            />
-                        </>
-                    );
-                },
-            },
+            type: customCellView(({ originSource, originSourceId }) => (
+                <OriginLink onlyUnderlineOnHover={true} type={originSource} id={originSourceId} />
+            )),
         },
         {
             key: 'currentWorkflowStep',
-            type: {
-                Cell: ({ cell }: any) => {
-                    const request: ScopeChangeRequest = cell.value.content;
-
-                    if (!request.currentWorkflowStep) {
-                        return <></>;
-                    }
-
-                    return (
-                        <>
-                            {request.currentWorkflowStep?.criterias.find(
-                                (x) => x.signedAtUtc === null
-                            )?.valueDescription ?? null}
-                        </>
-                    );
-                },
-            },
+            type: customCellView((req) =>
+                req.currentWorkflowStep ? (
+                    <>
+                        {req.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
+                            ?.valueDescription ?? null}
+                    </>
+                ) : null
+            ),
         },
     ],
 };

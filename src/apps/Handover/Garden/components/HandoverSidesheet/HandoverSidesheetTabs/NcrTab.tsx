@@ -12,9 +12,10 @@ const columns: Column<HandoverNCR>[] = [
     {
         id: 'documentNumber',
         Header: 'Document No.',
-        accessor: ({ url, documentNumber }) => ({
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
-            content: documentNumber,
+        accessor: (pkg) => ({
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            content: pkg,
+            currentKey: 'documentNumber',
         }),
         Cell: CellWithLink,
     },

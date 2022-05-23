@@ -6,12 +6,13 @@ import { createGradient, createGradientBackground } from './utility';
 import { HandoverPackageStatus, HandoverMcpkg } from '../../../models';
 
 export const RfccStatusCell = (
-    props: CellProps<HandoverMcpkg, { rfccStatus: HandoverPackageStatus }>
-): JSX.Element => {
-    const {
-        value: { rfccStatus },
-    } = props;
-    const background = createGradient(colorMap[rfccStatus]);
+    props: CellProps<HandoverMcpkg, HandoverPackageStatus | null>
+): JSX.Element | null => {
+    const { value } = props;
+    if (value === null) {
+        return null;
+    }
+    const background = createGradient(colorMap[value]);
 
     const styling: PillProps = {
         backgroundImage: createGradientBackground(background),
@@ -23,5 +24,5 @@ export const RfccStatusCell = (
             .toHexString(),
     };
 
-    return <Pill {...styling}>{rfccStatus.replace('RFCC ', '')}</Pill>;
+    return <Pill {...styling}>{value?.replace('RFCC ', '')}</Pill>;
 };

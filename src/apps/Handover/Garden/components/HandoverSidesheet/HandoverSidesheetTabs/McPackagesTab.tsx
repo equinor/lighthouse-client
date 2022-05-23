@@ -9,16 +9,17 @@ import {
     getRFOCStatus,
     McStatusCell,
     RfccStatusCell,
-    RfocStatusCell
+    RfocStatusCell,
 } from '../HandoverSidesheetStatuses';
 
 const columns: Column<HandoverMcpkg>[] = [
     {
-        id: 'timcPkgNotle',
+        id: 'mcPkgNo',
         Header: 'Mc.Pkg',
-        accessor: ({ mcPkgNo, url }) => ({
-            content: mcPkgNo,
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'mcPkgNo',
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
         }),
         Cell: CellWithLink,
     },
@@ -30,21 +31,21 @@ const columns: Column<HandoverMcpkg>[] = [
     {
         id: 'Status',
         Header: 'Status',
-        accessor: ({ mcStatus }) => ({ status: mcStatus, showOk: true }),
+        accessor: (pkg) => pkg.mcStatus,
         Cell: McStatusCell,
         sortType: comparePackage('status'),
     },
     {
         id: 'RFCC',
         Header: 'RFCC',
-        accessor: (pkg) => ({ rfccStatus: getRFCCStatus(pkg) }),
+        accessor: (pkg) => getRFCCStatus(pkg),
         Cell: RfccStatusCell,
         sortType: comparePackage('rfccStatus'),
     },
     {
         id: 'RFOC',
         Header: 'RFOC',
-        accessor: (pkg) => ({ rfocStatus: getRFOCStatus(pkg) }),
+        accessor: (pkg) => getRFOCStatus(pkg),
         Cell: RfocStatusCell,
         sortType: comparePackage('rfocStatus'),
     },

@@ -3,10 +3,11 @@ import { HandoverPackage } from '../../models/handoverPackage';
 import { getDotsColor, getStatus, getTextColor, createProgressGradient } from '../../utility';
 import { CustomItemView } from '../../../../../components/ParkView/Models/gardenOptions';
 import { useParkViewContext } from '../../../../../components/ParkView/Context/ParkViewProvider';
-import { HandoverItemPopover, ItemOptions } from '../../components/HandoverItemPopover';
+import { PopoverContent, ItemOptions } from '../../components/HandoverItemPopover';
 import { FlagIcon, WarningIcon } from '../../components/Icons';
 import { Root, Sizes, ItemText, HandoverItemWrapper, StatusCircles } from './GardenItemStyles';
 import { itemSize } from './utils';
+import { PopoverWrapper } from '@equinor/GardenUtils';
 
 function HandoverGardenItem({
     data,
@@ -16,6 +17,9 @@ function HandoverGardenItem({
     depth,
     width: itemWidth = 300,
     selectedItem,
+    rowStart,
+    columnStart,
+    parentRef,
 }: CustomItemView<HandoverPackage>): JSX.Element {
     const { customState } = useParkViewContext();
     const size = itemSize(data.volume, (customState?.['maxVolume'] as number) || 0);
@@ -32,8 +36,6 @@ function HandoverGardenItem({
     const anchorRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
-    const onOpen = () => setIsOpen(true);
-    const onClose = () => setIsOpen(false);
     const width = useMemo(() => (depth ? 100 - depth * 3 : 100), [depth]);
     const maxWidth = useMemo(() => itemWidth * 0.98, [itemWidth]);
 
@@ -46,23 +48,20 @@ function HandoverGardenItem({
         commStatusColor,
         showWarningIcon,
     };
-
+    let hoverTimeout: ReturnType<typeof setTimeout> | null = null;
     return (
         <>
-            {/* {isOpen && (
-                <HandoverItemPopover
-                    data={data}
-                    itemOptions={options}
-                    anchorRef={anchorRef}
-                    setOpenState={setIsOpen}
-                    isOpen={isOpen}
-                />
-            )} */}
             <Root>
                 <HandoverItemWrapper
                     ref={anchorRef}
-                    onMouseOver={onOpen}
-                    onMouseLeave={onClose}
+                    onMouseEnter={() => {
+                        hoverTimeout && !isOpen && clearTimeout(hoverTimeout);
+                        hoverTimeout = setTimeout(() => setIsOpen(true), 700);
+                    }}
+                    onMouseLeave={() => {
+                        hoverTimeout && clearTimeout(hoverTimeout);
+                        setIsOpen(false);
+                    }}
                     backgroundColor={backgroundColor}
                     textColor={textColor}
                     onClick={onClick}
@@ -78,6 +77,19 @@ function HandoverGardenItem({
 
                 {columnExpanded && data.description}
             </Root>
+
+            {isOpen && (
+                <PopoverWrapper
+                    isOpen={isOpen}
+                    rowStart={rowStart}
+                    columnStart={columnStart}
+                    width={itemWidth}
+                    parentRef={parentRef}
+                    popoverTitle={`Comm.pkg ${data.commpkgNo}`}
+                >
+                    <PopoverContent data={data} itemOptions={options} />
+                </PopoverWrapper>
+            )}
         </>
     );
 }
