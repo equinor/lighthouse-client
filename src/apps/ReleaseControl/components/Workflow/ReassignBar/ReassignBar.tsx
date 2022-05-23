@@ -18,7 +18,6 @@ export const ReassignBar = ({ criteriaId, requestId, stepId }: ReassignBarProps)
         criteriaReassignKey(stepId, criteriaId),
         reassignCriteria
     );
-    console.log('Looking for users');
 
     return (
         <PCSPersonRoleSearch
