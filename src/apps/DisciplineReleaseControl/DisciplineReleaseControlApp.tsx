@@ -12,13 +12,7 @@ import {
 } from './DisciplineReleaseControlWidgets';
 import { chewPipetestDataFromApi } from './Functions/statusHelpers';
 import { Pipetest } from './Types/pipetest';
-import {
-    dataCreatorConfig,
-    filterConfig,
-    gardenConfig,
-    presetConfig,
-    tableConfig
-} from './WorkspaceConfig';
+import { filterConfig, gardenConfig, presetConfig, tableConfig } from './WorkspaceConfig';
 
 export function setup({ createWorkSpace }: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -47,7 +41,6 @@ export function setup({ createWorkSpace }: ClientApi): void {
         objectIdentifier: 'name',
         defaultTab: 'garden',
     })
-        .registerDataCreator(dataCreatorConfig)
         .registerDataSource({
             responseAsync: responseAsync,
             responseParser: responseParser,

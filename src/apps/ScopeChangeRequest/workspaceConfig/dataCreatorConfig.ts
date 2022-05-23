@@ -3,7 +3,7 @@ import { httpClient } from '@equinor/lighthouse-portal-client';
 import { checkOptionsRequest } from '../api/ScopeChange/Access/optionsRequestChecker';
 import { ScopeChangeCreateForm } from '../Components/DataCreator/DataCreatorWrapper';
 
-const changeCreator = setupCreator({
+const creator = setupCreator({
     widgetId: 'changeCreator',
     widgetType: 'creator',
     title: 'Scope change request',
@@ -16,11 +16,13 @@ const changeCreator = setupCreator({
             const { scopeChange } = httpClient();
             const check = () =>
                 scopeChange.fetch('api/scope-change-requests', { method: 'OPTIONS' });
-            return (await (await checkOptionsRequest(check)).canPost) || true;
+            return await (
+                await checkOptionsRequest(check)
+            ).canPost;
         },
     },
 });
 
-export const changeCreatorManifest = changeCreator('CreatorManifest');
-export const changeCreatorComponent = changeCreator('CreatorComponent');
-export const changeCreatorAccessFunction = changeCreator('AccessFunctionResult');
+export const changeCreatorManifest = creator('CreatorManifest');
+export const changeCreatorComponent = creator('CreatorComponent');
+export const changeCreatorAccessFunction = creator('AccessFunctionResult');

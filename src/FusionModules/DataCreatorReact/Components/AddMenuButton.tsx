@@ -8,5 +8,13 @@ interface AddButtonProps {
 
 export function AddMenuButton({ creator }: AddButtonProps): JSX.Element {
     const { openCreatorById } = useDataCreator();
-    return <MenuItem onClick={() => openCreatorById(creator.widgetId)}>{creator?.title}</MenuItem>;
+    return (
+        <MenuItem
+            disabled={!creator.props.hasAccess}
+            title={creator.props.hasAccess ? creator?.title : 'Contact support for access'}
+            onClick={() => openCreatorById(creator.widgetId)}
+        >
+            {creator?.title}
+        </MenuItem>
+    );
 }

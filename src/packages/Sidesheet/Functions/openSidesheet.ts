@@ -1,9 +1,9 @@
 import Functions from '@equinor/lighthouse-functions';
-import Widget from '@equinor/lighthouse-widgets';
+import Widget, { WidgetManifest } from '@equinor/lighthouse-widgets';
 import React from 'react';
 import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { SidesheetWidgetManifest } from '../../../Core/WorkSpace/src';
 import { DefaultDataView } from '../Components/DefaultDataView';
+import { NoAccess } from '../Components/NoAccessSidesheet';
 import { SuspenseSidesheet } from '../Components/SuspenseSidesheet';
 import { DEFAULT_TAB_COLOR, getSidesheetContext } from '../context/sidesheetContext';
 import { dispatch, readState } from '../State/actions';
@@ -17,10 +17,9 @@ export function hasUnsavedChanges(): boolean {
 export function openSidesheet<T>(
     SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
     props?: T,
-    manifest?: Partial<SidesheetWidgetManifest<T, string>>
+    manifest?: Partial<WidgetManifest>
 ): void {
     if (!SidesheetContent && !props) return;
-
     let appName: string | undefined;
     let color = DEFAULT_TAB_COLOR;
     /**
@@ -44,11 +43,35 @@ export function openSidesheet<T>(
     if (manifest) {
         appName = manifest.props?.parentApp;
         color = manifest.color || DEFAULT_TAB_COLOR;
+
         handleUpdateHashUrl(
             manifest.widgetId || '',
             (props && props[`${manifest.props?.objectIdentifier}`]) || ''
         );
     }
+
+    /**
+     *  Check if user has access to sidesheet
+     */
+    if (manifest?.props?.hasAccess === false) {
+        dispatch(getSidesheetContext(), (state) => {
+            manifest.color = DEFAULT_TAB_COLOR;
+            return {
+                ...state,
+                isMinimized: false,
+                SidesheetComponent: NoAccess as React.FC<unknown>,
+                props: manifest,
+                color: manifest.color,
+                appName,
+            };
+        });
+        return;
+    }
+
+    /**
+     *  Clear color on SuspenseSidesheet
+     */
+    if (SidesheetContent?.name === 'SuspenseSidesheet') color = 'none';
 
     dispatch(getSidesheetContext(), (state) => {
         return {
@@ -69,12 +92,10 @@ export async function openSidesheetById<T>(
 ): Promise<void> {
     async function mountAsync() {
         const SidesheetContent = await Widget.getWidget(sideSheetId);
-        const manifest = (await Widget.getWidgetManifest(sideSheetId)) as Partial<
-            SidesheetWidgetManifest<any, string>
-        >;
-
+        const manifest = await Widget.getWidgetManifest(sideSheetId);
+        console.log(manifest);
         if (!id) {
-            openSidesheet(SidesheetContent, {}, manifest);
+            openSidesheet(SidesheetContent, undefined, manifest);
             return;
         }
 

@@ -3,7 +3,6 @@ import { openSidesheetById } from '@equinor/sidesheet';
 import { useMemo } from 'react';
 import { useDataCreatorContext } from '../Context/DataCreatorProvider';
 
-
 export interface Creators {
     creators: CreatorManifest[];
     openCreatorById(creatorId: string): Promise<void>;
@@ -21,7 +20,7 @@ export function useDataCreator(factoryIds?: string[]): Creators {
     async function openCreatorById(creatorId: string): Promise<void> {
         const manifest = await state.getCreatorById(creatorId);
         if (manifest) {
-            openSidesheetById(manifest.widgetId);
+            openSidesheetById(manifest.widgetId, undefined, manifest);
         }
     }
 

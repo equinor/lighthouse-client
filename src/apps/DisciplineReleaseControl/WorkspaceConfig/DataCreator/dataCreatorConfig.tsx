@@ -1,11 +1,19 @@
-import { openSidesheet } from '@equinor/sidesheet';
-import { FactoryOptions } from '@equinor/WorkSpace';
+import { setupCreator } from '@equinor/lighthouse-fusion-modules';
 import { DisciplineReleaseControlFactoryComponent } from '../../Components/Factory/FactoryComponent';
 
-export const dataCreatorConfig: FactoryOptions = {
+const creator = setupCreator({
+    widgetId: 'htCreator',
+    widgetType: 'creator',
     title: 'Create release control workflow',
-    accessCheck: () => Promise.resolve(false),
-    onClick: () => {
-        openSidesheet(DisciplineReleaseControlFactoryComponent, undefined, 'piping-and-ht');
+    color: '#7B3A96',
+    widget: DisciplineReleaseControlFactoryComponent,
+    props: {
+        accessCheckFunctionId: 'htCreatorAccess',
+        parentApp: 'piping-and-ht',
+        function: async () => Promise.resolve(false),
     },
-};
+});
+
+export const htCreatorManifest = creator('CreatorManifest');
+export const htCreatorComponent = creator('CreatorComponent');
+export const htCreatorAccessFunction = creator('AccessFunctionResult');

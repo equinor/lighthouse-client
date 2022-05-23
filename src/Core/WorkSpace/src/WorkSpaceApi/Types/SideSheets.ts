@@ -13,5 +13,6 @@ export interface SidesheetWidgetManifest<T, SideSheetId extends string> extends 
         resolverId: ResolverIdFormat<SideSheetId>;
         objectIdentifier: keyof T;
         parentApp?: string;
+        hasAccess?: boolean;
     };
 }

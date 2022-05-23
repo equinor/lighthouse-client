@@ -10,6 +10,7 @@ import {
     ReleaseControlSidesheetWidgetComponent,
     ReleaseControlSidesheetWidgetManifest
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
+import { htCreatorComponent, htCreatorManifest } from './DisciplineReleaseControl/WorkspaceConfig';
 import {
     changeSideSheetWidgetComponent,
     changeSideSheetWidgetManifest
@@ -25,6 +26,7 @@ const _widgets: WidgetManifest[] = [
     ReleaseControlSidesheetWidgetManifest,
     actionCenterSidesheetWidgetManifest,
     changeCreatorManifest,
+    htCreatorManifest,
 ];
 
 const _widgetComponents: ComponentManifest[] = [
@@ -33,6 +35,7 @@ const _widgetComponents: ComponentManifest[] = [
     ReleaseControlSidesheetWidgetComponent,
     actionCenterSidesheetWidgetComponent,
     changeCreatorComponent,
+    htCreatorComponent,
 ];
 
 export async function getCreators(): Promise<CreatorManifest[]> {

@@ -17,11 +17,10 @@ const mountSidesheetFromUrl = async () => {
 
 export const SidesheetLoader = ({ children }: PropsWithChildren<any>): JSX.Element => {
     useEffect(() => {
-        window.addEventListener('hashchange', mountSidesheetFromUrl, false);
-
         if (window.location.hash.length > 0) {
             mountSidesheetFromUrl();
         }
+        window.addEventListener('hashchange', mountSidesheetFromUrl, false);
         return () => {
             window.removeEventListener('hashchange', mountSidesheetFromUrl, false);
         };

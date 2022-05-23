@@ -21,9 +21,8 @@ export class DataCreationProvider implements IDataCreationProvider {
         for await (const creator of allCreators) {
             const hasAccess = await config.getAccessFunction(creator.props.accessCheckFunctionId);
 
-            if (await hasAccess()) {
-                this.#creators.push(creator);
-            }
+            creator.props.hasAccess = await hasAccess();
+            this.#creators.push(creator);
         }
     }
 

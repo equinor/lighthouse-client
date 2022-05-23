@@ -20,7 +20,6 @@ export function ActionCenterSidesheet({
     }, [activeTab]);
 
     const handleChange = (index: number) => setActiveTab(index);
-
     return (
         <>
             <Wrapper>

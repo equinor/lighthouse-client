@@ -22,6 +22,7 @@ export interface CreatorManifest extends WidgetManifest {
     props: {
         accessCheckFunctionId: string;
         parentApp?: string;
+        hasAccess?: boolean;
     };
 }
 

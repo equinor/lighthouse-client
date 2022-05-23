@@ -3,6 +3,7 @@ import {
     htResolverFunction,
     rcResolverFunction
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
+import { htCreatorAccessFunction } from './DisciplineReleaseControl/WorkspaceConfig';
 import { changeFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 
@@ -11,6 +12,7 @@ export const functions: FunctionManifest[] = [
     htResolverFunction,
     rcResolverFunction,
     changeCreatorAccessFunction,
+    htCreatorAccessFunction,
 ];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {
