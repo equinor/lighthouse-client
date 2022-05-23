@@ -17,6 +17,13 @@ export const PopoverContainer = styled.div`
         font-size: 12px;
     }
 `;
+export const ProjectTitle = styled.p`
+    font-weight: bold;
+`;
+export const ProjectDescription = styled.p`
+    word-break: break-word;
+    white-space: break-spaces;
+`;
 
 export type CommStatusProps = {
     barColor: string;

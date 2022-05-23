@@ -9,6 +9,7 @@ import { useExpand } from './hooks';
 import { DefaultPackage, PackageRoot, SubGroup, SubGroupText } from './styles';
 import { GardenItem } from './types/gardenItem';
 import { isSubGroup } from './utils';
+import { MutableRefObject } from 'react';
 
 type VirtualHookReturn = Pick<ReturnType<typeof useVirtual>, 'virtualItems' | 'scrollToIndex'>;
 type PackageContainerProps<T> = {
@@ -26,6 +27,7 @@ type PackageContainerProps<T> = {
     groupByKeys: (keyof T)[];
     selectedItem: T | null;
     handleOnClick: (item: T) => void;
+    parentRef: MutableRefObject<HTMLDivElement | null>;
 };
 export const GardenItemContainer = <T extends unknown>(props: PackageContainerProps<T>) => {
     const {
@@ -40,6 +42,7 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
         groupByKeys,
         selectedItem,
         handleOnClick,
+        parentRef,
     } = props;
     const expand = useExpand();
     const { onSelect, onGroupeSelect } = useParkViewContext();
@@ -100,6 +103,9 @@ export const GardenItemContainer = <T extends unknown>(props: PackageContainerPr
                                 depth={item?.itemDepth}
                                 width={itemWidth}
                                 selectedItem={selectedItem}
+                                rowStart={virtualRow.start}
+                                columnStart={virtualColumn.start}
+                                parentRef={parentRef}
                             />
                         ) : (
                             <DefaultPackage onClick={() => onSelect(item)}>

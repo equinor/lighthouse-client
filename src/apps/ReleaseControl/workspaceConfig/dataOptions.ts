@@ -1,6 +1,6 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
 import { DataSource, IdResolverFunc } from '@equinor/WorkSpace';
-import { ReleaseControl } from '../ReleaseControlApp';
+import { ReleaseControl } from '../types/releaseControl';
 
 async function responseAsync(signal?: AbortSignal): Promise<Response> {
     const { scopeChange } = httpClient();

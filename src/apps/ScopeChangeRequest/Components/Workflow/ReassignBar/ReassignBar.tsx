@@ -37,6 +37,7 @@ export const ReassignBar = ({ criteriaId, requestId, stepId }: ReassignBarProps)
                 });
                 resetSigningAtom();
             }}
+            classification={'SCOPECHANGE'}
         />
     );
 };
