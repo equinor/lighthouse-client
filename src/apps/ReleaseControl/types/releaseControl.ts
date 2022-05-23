@@ -71,14 +71,14 @@ export interface DraggableReleaseControlStep {
 }
 
 export interface ReleaseControlStep {
-    id?: string;
+    id: string;
     name: string;
     order: number;
     responsible: string;
-    isCurrent?: boolean;
-    isCompleted?: boolean;
-    criterias?: Criteria[];
-    contributors?: Contributor[];
+    isCurrent: boolean;
+    isCompleted: boolean;
+    criterias: Criteria[];
+    contributors: Contributor[];
 }
 
 export interface Tag {

@@ -14,7 +14,18 @@ export interface MenuItem {
 }
 
 export function getNewWorkflowSteps(): ReleaseControlStep[] {
-    const baseReleaseControlSteps: ReleaseControlStep[] = [{ order: 1, name: '', responsible: '' }];
+    const baseReleaseControlSteps: ReleaseControlStep[] = [
+        {
+            id: '',
+            order: 1,
+            name: '',
+            responsible: '',
+            isCompleted: false,
+            isCurrent: false,
+            contributors: [],
+            criterias: [],
+        },
+    ];
     return baseReleaseControlSteps;
 }
 
@@ -42,7 +53,16 @@ export function addStepAfter(
     currentStep: ReleaseControlStep,
     steps: ReleaseControlStep[]
 ): ReleaseControlStep[] {
-    const newStep = { order: currentStep.order + 1, name: '', responsible: '' };
+    const newStep = {
+        id: '',
+        order: currentStep.order + 1,
+        name: '',
+        responsible: '',
+        isCompleted: false,
+        isCurrent: false,
+        contributors: [],
+        criterias: [],
+    };
     steps.forEach((x) => {
         if (x.order >= currentStep.order + 1) {
             x.order++;
@@ -56,7 +76,16 @@ export function addStepBefore(
     currentStep: ReleaseControlStep,
     steps: ReleaseControlStep[]
 ): ReleaseControlStep[] {
-    const newStep = { order: currentStep.order, name: '', responsible: '' };
+    const newStep = {
+        id: '',
+        order: currentStep.order,
+        name: '',
+        responsible: '',
+        isCompleted: false,
+        isCurrent: false,
+        contributors: [],
+        criterias: [],
+    };
     steps.forEach((x) => {
         if (x.order >= currentStep.order) {
             x.order++;
@@ -71,9 +100,14 @@ export function duplicateStep(
     steps: ReleaseControlStep[]
 ): ReleaseControlStep[] {
     const newStep = {
+        id: '',
         order: currentStep.order + 1,
         name: currentStep.name,
         responsible: currentStep.responsible,
+        isCompleted: false,
+        isCurrent: false,
+        contributors: [],
+        criterias: [],
     };
     steps.forEach((x) => {
         if (x.order >= newStep.order) {
