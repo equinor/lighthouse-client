@@ -19,6 +19,7 @@ export async function initiateReleaseControl({
         id: release.id,
         phase: release.phase,
         title: release.title,
+        allowContributors: true,
     };
 
     const payload = {

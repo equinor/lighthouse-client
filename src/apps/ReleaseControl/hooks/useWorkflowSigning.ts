@@ -48,8 +48,8 @@ export function useWorkflowSigning({
 
         /** Need to determine if it is the last criteria to be signed on the step */
         const unsignedCriterias = workflowSteps
-            .find((x) => x.id === stepId)
-            ?.criterias.filter((x) => x.signedAtUtc === null);
+            ?.find((x) => x.id === stepId)
+            ?.criterias?.filter((x) => x.signedAtUtc === null);
 
         if (pendingContributions && unsignedCriterias?.length === 1) {
             spawnConfirmationDialog(

@@ -1,8 +1,8 @@
 import { Icon } from '@equinor/eds-core-react';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
+import { ReleaseControlStep } from '../../../types/releaseControl';
 import { InsertAfter } from './InsertAfter';
 import { InsertBefore } from './InsertBefore';
-import { ReleaseControlStep } from './WorkflowCustomEditor';
 
 const { updateAtom } = DRCFormAtomApi;
 

@@ -10,8 +10,8 @@ export async function patchReleaseControl(
     const requestOptions = {
         method: 'PATCH',
         body: setAsOpen
-            ? JSON.stringify({ ...request, setAsOpen: setAsOpen })
-            : JSON.stringify(request),
+            ? JSON.stringify({ ...request, setAsOpen: setAsOpen, allowContibutors: true })
+            : JSON.stringify({ ...request, allowContibutors: true }),
     };
 
     const res = await scopeChange.fetch(`api/releasecontrol/${request.id}`, requestOptions);

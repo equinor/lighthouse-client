@@ -1,5 +1,6 @@
 import { ReactSortable } from 'react-sortablejs';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
+import { DraggableReleaseControlStep } from '../../../types/releaseControl';
 import { WorkflowStep } from './WorkflowStep';
 
 export const DraggableHandleSelector = 'globalDraggableHandle';
@@ -35,14 +36,3 @@ export const WorkflowCustomEditor = (): JSX.Element => {
         </ReactSortable>
     );
 };
-
-export interface DraggableReleaseControlStep {
-    id: string;
-    item: ReleaseControlStep;
-}
-
-export interface ReleaseControlStep {
-    order: number;
-    name: string;
-    responsible: string;
-}

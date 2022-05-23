@@ -11,6 +11,7 @@ export async function postReleaseControl(
     const payload = {
         ...releaseControl,
         setAsOpen: !draft,
+        allowContributors: true,
     };
 
     const requestOptions = {

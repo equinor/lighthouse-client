@@ -4,7 +4,8 @@ import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
 import styled from 'styled-components';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
-import { DraggableHandleSelector, ReleaseControlStep } from './WorkflowCustomEditor';
+import { ReleaseControlStep } from '../../../types/releaseControl';
+import { DraggableHandleSelector } from './WorkflowCustomEditor';
 import {
     getWorkflowStepMenuActions,
     removeStep,
