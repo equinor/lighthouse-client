@@ -61,15 +61,15 @@ export const filterConfig: FilterOptions<WorkOrder> = [
             const progress = parseFloat(projectProgress);
             if (progress >= 100) {
                 return '100%';
-            } else if (progress >= 95 && progress < 100) {
+            } else if (progress >= 95) {
                 return '95-99%';
-            } else if (progress >= 75 && progress < 95) {
+            } else if (progress >= 75) {
                 return '75-95%';
-            } else if (progress >= 50 && progress < 75) {
+            } else if (progress >= 50) {
                 return '50-75%';
-            } else if (progress >= 25 && progress < 50) {
+            } else if (progress >= 25) {
                 return '25-50%';
-            } else if (progress > 0 && progress < 25) {
+            } else if (progress > 0) {
                 return '0-25%';
             } else {
                 return 'Not Started';
