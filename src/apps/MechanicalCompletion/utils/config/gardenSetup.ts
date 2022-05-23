@@ -60,7 +60,7 @@ export const fieldSettings: FieldSettings<McPackage, ExtendedGardenFields> = {
     },
 };
 const customGroupByKeys: CustomGroupByKeys = {
-    plannedForecast: 'Forecast',
+    plannedForecast: 'Planned',
     weeklyDaily: 'Weekly',
 };
 
