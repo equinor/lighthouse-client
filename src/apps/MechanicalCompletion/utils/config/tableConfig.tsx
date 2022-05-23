@@ -20,7 +20,7 @@ const hiddenColumns: (keyof McPackage)[] = [
     'projectDescription',
     'mcPkgId',
     'disciplineDescription',
-    'finalPunchPlannedDate',
+    'finalPunchForecastDate',
     'punchAcceptActualDate',
     'rfocForecastDate',
     'rfocActualDate',
@@ -28,7 +28,7 @@ const hiddenColumns: (keyof McPackage)[] = [
     'rfocIsShipped',
     'rfocIsRejected',
     'rfocIsAccepted',
-    'rfccPlannedDate',
+    'rfccForecastDate',
     'rfccIsShipped',
     'rfccIsAccepted',
     'rfccIsRejected',
@@ -46,6 +46,7 @@ const hiddenColumns: (keyof McPackage)[] = [
 export const tableConfig: TableOptions<McPackage> = {
     objectIdentifierKey: 'mcPkgId',
     hiddenColumns,
+    itemSize: 32,
     columnOrder: [
         'mcPkgNumber',
         'description',
@@ -57,8 +58,9 @@ export const tableConfig: TableOptions<McPackage> = {
         'commPkgNumber',
         'system',
         'finalPunchForecastDate',
+        'finalPunchPlannedDate',
         'finalPunchActualDate',
-        'rfccForecastDate',
+        'rfccPlannedDate',
         'rfccActualDate',
         'priority',
         'priority2',
@@ -110,7 +112,7 @@ export const tableConfig: TableOptions<McPackage> = {
             width: 200,
         },
         {
-            key: 'finalPunchForecastDate',
+            key: 'finalPunchPlannedDate',
             title: 'Forecast M-01 Final Punch',
             width: 200,
         },
@@ -121,7 +123,7 @@ export const tableConfig: TableOptions<McPackage> = {
             width: 200,
         },
         {
-            key: 'rfccForecastDate',
+            key: 'rfccPlannedDate',
             title: 'Forecast M-03 RFC',
             width: 200,
         },
@@ -168,7 +170,7 @@ export const tableConfig: TableOptions<McPackage> = {
             type: 'YearAndWeek',
         },
         {
-            key: 'rfccForecastDate',
+            key: 'rfccPlannedDate',
             type: 'YearAndWeek',
         },
         {
@@ -176,7 +178,7 @@ export const tableConfig: TableOptions<McPackage> = {
             type: 'YearAndWeek',
         },
         {
-            key: 'finalPunchForecastDate',
+            key: 'finalPunchPlannedDate',
             type: 'YearAndWeek',
         },
     ],
