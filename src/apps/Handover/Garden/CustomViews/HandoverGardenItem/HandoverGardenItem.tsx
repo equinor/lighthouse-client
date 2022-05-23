@@ -35,8 +35,6 @@ function HandoverGardenItem({
 
     const anchorRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const openPopover = () => setIsOpen(true);
-    const closePopover = () => setIsOpen(false);
 
     const width = useMemo(() => (depth ? 100 - depth * 3 : 100), [depth]);
     const maxWidth = useMemo(() => itemWidth * 0.98, [itemWidth]);
@@ -50,14 +48,20 @@ function HandoverGardenItem({
         commStatusColor,
         showWarningIcon,
     };
-
+    let hoverTimeout: ReturnType<typeof setTimeout> | null = null;
     return (
         <>
             <Root>
                 <HandoverItemWrapper
                     ref={anchorRef}
-                    onMouseOver={openPopover}
-                    onMouseLeave={closePopover}
+                    onMouseEnter={() => {
+                        hoverTimeout && !isOpen && clearTimeout(hoverTimeout);
+                        hoverTimeout = setTimeout(() => setIsOpen(true), 700);
+                    }}
+                    onMouseLeave={() => {
+                        hoverTimeout && clearTimeout(hoverTimeout);
+                        setIsOpen(false);
+                    }}
                     backgroundColor={backgroundColor}
                     textColor={textColor}
                     onClick={onClick}
