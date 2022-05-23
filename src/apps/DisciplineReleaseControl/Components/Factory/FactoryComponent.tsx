@@ -13,7 +13,7 @@ export const DisciplineReleaseControlFactoryComponent = ({
 }: DisciplineReleaseControlFactoryComponentProps): JSX.Element => {
     useEffect(() => {
         disciplineReleaseControlFactoryContext.updateAtom(actions);
-        actions.setTitle('Create new DRC');
+        actions.setTitle('Create Release control workflow');
         actions.setWidth(1150);
     }, []);
 
