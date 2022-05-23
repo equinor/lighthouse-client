@@ -30,7 +30,6 @@ export interface WorkspaceOptions<T, SideSheetId extends string = string> {
     objectIdentifier: keyof T;
     viewerId: string;
     defaultTab?: WorkspaceTab;
-    dataFactoryCreator(factory: Factory): void;
     openSidesheet: OpenSidesheetFunc;
     CustomSidesheet?: React.FC<{ item: T; actions: SidesheetApi }>;
     customSidesheetOptions?: WorkSpaceSideSheet<T, SideSheetId>;
@@ -59,8 +58,6 @@ export interface WorkSpaceApi<T> {
     /** Use with caution, only cache small datasets */
     registerPrefetchQueries: (queryOptions: PrefetchQueriesOptions[]) => WorkSpaceApi<T>;
     registerDataSource: (dataSource: DataSource<T>) => WorkSpaceApi<T>;
-    registerIdResolver: (idResolver: IdResolverFunc<T>) => WorkSpaceApi<T>;
-    registerDataCreator: (factory: FactoryOptions) => WorkSpaceApi<T>;
     registerDataValidator: (validator: Validator<T>) => WorkSpaceApi<T>;
     registerCustomContentView: (
         viewComponent: React.FC<DataViewerProps<T>>,

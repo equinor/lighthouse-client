@@ -52,7 +52,6 @@ export function setup(appApi: ClientApi): void {
         .registerGardenOptions(gardenConfig)
         .registerStatusItems(statusBarConfig)
         .registerFilterOptions(filterConfig)
-        .registerIdResolver(idResolver)
         .registerPrefetchQueries(prefetchQueriesOptions);
     // .registerPowerBIOptions({
     //     pages: [

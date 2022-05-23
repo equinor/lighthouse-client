@@ -1,4 +1,3 @@
-import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { GardenOptions } from '@equinor/ParkView';
 import { dispatch } from './CoreActions';
@@ -15,10 +14,7 @@ import {
 } from './workspaceState';
 import {
     DataSource,
-    DataViewerProps,
-    FactoryOptions,
-    IdResolverFunc,
-    Validator,
+    DataViewerProps, Validator,
     ViewOptions,
     WorkSpaceApi,
     WorkspaceOptions
@@ -81,25 +77,9 @@ export function createWorkSpace<T, SideSheetIds extends string>(
 
             return workspaceAPI;
         },
-        registerDataCreator(factoryOptions: FactoryOptions) {
-            if (!options.dataFactoryCreator) {
-                // eslint-disable-next-line no-console
-                console.warn(
-                    'No data dataFactoryCreator is registered. Add when creating the data viewer.'
-                );
-                return workspaceAPI;
-            }
-            const factory: Factory = { ...factoryOptions, factoryId: options.viewerId };
-            options.dataFactoryCreator(factory);
-            return workspaceAPI;
-        },
+
         registerDataSource(dataSource: DataSource<T>) {
             updateState({ dataSource });
-
-            return workspaceAPI;
-        },
-        registerIdResolver(idResolver: IdResolverFunc<T>) {
-            updateState({ idResolver });
 
             return workspaceAPI;
         },

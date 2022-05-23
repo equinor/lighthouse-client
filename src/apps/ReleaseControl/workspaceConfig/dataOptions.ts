@@ -13,9 +13,7 @@ export const dataSource: DataSource<ReleaseControl> = {
     responseAsync,
 };
 
-export const idResolver: IdResolverFunc<ReleaseControl> = {
-    idResolver: idResolverFunction,
-};
+export const idResolver: IdResolverFunc<ReleaseControl> = idResolverFunction;
 
 async function idResolverFunction(id: string): Promise<ReleaseControl> {
     const { scopeChange } = httpClient();

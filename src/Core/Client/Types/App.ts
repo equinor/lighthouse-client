@@ -23,7 +23,7 @@ export interface App {
 export interface ClientApi extends AppManifest {
     appConfig: AppConfig;
     authProvider: AuthenticationProvider;
-    createWorkSpace<T, SideSheetId extends string>(
+    createWorkSpace<T, SideSheetId extends string = string>(
         options: WorkspaceViewerOptions<T, SideSheetId>
     ): WorkSpaceApi<T>;
     createPageViewer(): PageViewerInstance;

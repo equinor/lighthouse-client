@@ -79,7 +79,6 @@ export interface WorkSpaceConfig<T> {
     prefetchQueriesOptions?: PrefetchQueriesOptions[];
     onSelect?: (item: T) => void;
     onGroupeSelect?: (item: T) => void;
-    idResolver?: (id: string) => Promise<T | undefined>;
     dataSource?: DataSource<T>;
     validator?: (data: unknown[]) => T[];
     viewComponent?: React.FC<DataViewerProps<T>>;

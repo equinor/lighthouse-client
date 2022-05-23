@@ -1,5 +1,4 @@
 import { AuthenticationProvider } from '@equinor/authentication';
-import { Factory } from '@equinor/DataFactory';
 import { createPowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
 import { createPageViewer, PageViewerOptions as PageOptions } from '@equinor/PageViewer';
 import { createWorkSpace, WorkspaceOptions } from '@equinor/WorkSpace';
@@ -11,7 +10,6 @@ export interface ClientBuilderConfig extends AppManifest {
     appConfig: AppConfigResult;
     authProvider: AuthenticationProvider;
     openSidesheet: (SidesheetContent?: React.FC<any> | undefined, props?: any) => void;
-    createDataFactory: (factory: Factory) => void;
     isProduction: boolean;
 }
 
@@ -34,7 +32,6 @@ export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
                 ...options,
                 initialState: [],
                 viewerId: shortName,
-                dataFactoryCreator: config.createDataFactory,
                 openSidesheet: config.openSidesheet,
             });
         },

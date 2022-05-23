@@ -1,5 +1,4 @@
 import { Tabs } from '@equinor/eds-core-react';
-
 import { tokens } from '@equinor/eds-tokens';
 import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { useEffect } from 'react';
@@ -11,8 +10,9 @@ import { BannerItem } from '../DisciplineReleaseControl/Components/Sidesheet/Rel
 import { Banner } from '../ScopeChangeRequest/Components/Sidesheet/SidesheetBanner/SidesheetBanner';
 import { CriteriaSignState } from '../ScopeChangeRequest/types/scopeChangeRequest';
 import { WorkflowCompact } from '../ScopeChangeRequest/workspaceConfig/sTable/WorkflowCompact';
-import { dataSource, idResolver } from './workspaceConfig/dataOptions';
+import { dataSource } from './workspaceConfig/dataOptions';
 import { filterOptions } from './workspaceConfig/filter/filterConfig';
+
 
 export interface CreatedBy {
     id: string;
@@ -259,8 +259,8 @@ export function setup({ createWorkSpace }: ClientApi): void {
                 },
             ],
         })
-        .registerFilterOptions(filterOptions)
-        .registerIdResolver(idResolver);
+        .registerFilterOptions(filterOptions);
+
     // .registerPowerBIOptions({
     //     pages: [
     //         {
