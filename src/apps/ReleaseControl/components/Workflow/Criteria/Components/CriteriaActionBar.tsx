@@ -13,9 +13,9 @@ import { CriteriaSignState } from '../../../../../ScopeChangeRequest/types/scope
 import { actionWithCommentAtom } from '../../Atoms/signingAtom';
 import { releaseControlMutationKeys } from '../../../../queries/releaseControlMutationKeys';
 import { useWorkflowSigning } from '../../../../hooks/useWorkflowSigning';
-import { useReleaseControlMutation } from '../../../../../DisciplineReleaseControl/Hooks/useReleaseControlMutation';
 import { unsignCriteria } from '../../../../api/releaseControl/Workflow';
 import { useWorkflowCriteriaOptions } from '../../../../hooks/useWorkflowCriteriaOptions';
+import { useReleaseControlMutation } from '../../../../hooks/useReleaseControlMutation';
 
 interface CriteriaActionBarProps {
     criteriaId: string;
