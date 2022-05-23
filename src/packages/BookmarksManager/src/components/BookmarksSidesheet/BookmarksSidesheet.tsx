@@ -1,16 +1,18 @@
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import { useGetAllBookmarks } from '../..';
 import { BookmarkResponse } from '../../types';
 
 export const BookmarkSidesheet = () => {
     const { bookmarks, isLoading, error } = useGetAllBookmarks();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     if (isLoading) return <div>Loading</div>;
     if (error) return <div>{error.message}</div>;
     if (!bookmarks || bookmarks.length === 0) return <div>No bookmarks</div>;
     const bookmarksBySubsystemAppKey = groupBookmarksBySubSystemAppkey(bookmarks);
-    const navigate = useNavigate();
-    const handleClick = (bookmark: BookmarkResponse) => {};
+
     return (
         <div>
             {Object.keys(bookmarksBySubsystemAppKey).map((subSystemKey) => {
@@ -23,7 +25,27 @@ export const BookmarkSidesheet = () => {
                                     <h3>{appKey}</h3>
                                     {bookmarksBySubsystemAppKey[subSystemKey][appKey].map(
                                         (bookmark) => {
-                                            return <div id={bookmark.id}>{bookmark.name}</div>;
+                                            const appKey = bookmark.appKey
+                                                .replace('jc-', '')
+                                                .replace(' ', '-')
+                                                .toLocaleLowerCase();
+                                            const subSystem =
+                                                bookmark.sourceSystem.subSystem.replace(' ', '');
+                                            return (
+                                                // <div
+                                                //     key={bookmark.id}
+                                                //     id={bookmark.id}
+                                                //     onClick={() => handleClick(bookmark)}
+                                                // >
+                                                //     {bookmark.name}
+                                                // </div>
+                                                <Link
+                                                    key={bookmark.id}
+                                                    to={`/${subSystem}/${appKey}?bookmarkId=${bookmark.id}`}
+                                                >
+                                                    {bookmark.name}
+                                                </Link>
+                                            );
                                         }
                                     )}
                                 </div>
