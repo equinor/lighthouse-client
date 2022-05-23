@@ -14,7 +14,7 @@ export interface MenuItem {
 }
 
 export function getNewWorkflowSteps(): ReleaseControlStep[] {
-    const baseReleaseControlSteps: ReleaseControlStep[] = [{ order: 1, step: '', responsible: '' }];
+    const baseReleaseControlSteps: ReleaseControlStep[] = [{ order: 1, name: '', responsible: '' }];
     return baseReleaseControlSteps;
 }
 
@@ -24,7 +24,7 @@ export function updateStepName(
     stepName: string
 ): ReleaseControlStep[] {
     const index = steps.findIndex((x) => x.order === step.order);
-    steps[index].step = stepName;
+    steps[index].name = stepName;
     return [...steps];
 }
 
@@ -42,7 +42,7 @@ export function addStepAfter(
     currentStep: ReleaseControlStep,
     steps: ReleaseControlStep[]
 ): ReleaseControlStep[] {
-    const newStep = { order: currentStep.order + 1, step: '', responsible: '' };
+    const newStep = { order: currentStep.order + 1, name: '', responsible: '' };
     steps.forEach((x) => {
         if (x.order >= currentStep.order + 1) {
             x.order++;
@@ -56,7 +56,7 @@ export function addStepBefore(
     currentStep: ReleaseControlStep,
     steps: ReleaseControlStep[]
 ): ReleaseControlStep[] {
-    const newStep = { order: currentStep.order, step: '', responsible: '' };
+    const newStep = { order: currentStep.order, name: '', responsible: '' };
     steps.forEach((x) => {
         if (x.order >= currentStep.order) {
             x.order++;
@@ -72,7 +72,7 @@ export function duplicateStep(
 ): ReleaseControlStep[] {
     const newStep = {
         order: currentStep.order + 1,
-        step: currentStep.step,
+        name: currentStep.name,
         responsible: currentStep.responsible,
     };
     steps.forEach((x) => {
@@ -107,7 +107,7 @@ export function getWorkflowStepMenuActions(
         icon: <InsertBefore />,
         onClick: () =>
             updateAtom({
-                steps: addStepBefore(step, steps),
+                workflowSteps: addStepBefore(step, steps),
             }),
     });
 
@@ -116,7 +116,7 @@ export function getWorkflowStepMenuActions(
         icon: <InsertAfter />,
         onClick: () =>
             updateAtom({
-                steps: addStepAfter(step, steps),
+                workflowSteps: addStepAfter(step, steps),
             }),
     });
 
@@ -125,7 +125,7 @@ export function getWorkflowStepMenuActions(
         icon: <Icon name="copy" color="grey" />,
         onClick: () =>
             updateAtom({
-                steps: duplicateStep(step, steps),
+                workflowSteps: duplicateStep(step, steps),
             }),
     });
 
@@ -134,7 +134,7 @@ export function getWorkflowStepMenuActions(
         icon: <Icon name="delete_forever" color="grey" />,
         onClick: () =>
             updateAtom({
-                steps: removeStep(step, steps),
+                workflowSteps: removeStep(step, steps),
             }),
     });
 

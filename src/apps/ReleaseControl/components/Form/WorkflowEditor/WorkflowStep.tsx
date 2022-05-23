@@ -34,10 +34,10 @@ export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element =>
                     items={stepNames}
                     label="Step"
                     size={25}
-                    selectedOption={step.step}
+                    selectedOption={step.name}
                     handleSelectedItemChange={(change) =>
                         updateAtom({
-                            steps: updateStepName(
+                            workflowSteps: updateStepName(
                                 step,
                                 steps,
                                 !change.selectedItem ? '' : change.selectedItem
@@ -51,7 +51,7 @@ export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element =>
                     selectedOption={step.responsible}
                     handleSelectedItemChange={(change) =>
                         updateAtom({
-                            steps: updateStepResponsible(
+                            workflowSteps: updateStepResponsible(
                                 step,
                                 steps,
                                 !change.selectedItem ? '' : change.selectedItem
@@ -66,7 +66,7 @@ export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element =>
                     name="close"
                     onClick={() =>
                         updateAtom({
-                            steps: removeStep(step, steps),
+                            workflowSteps: removeStep(step, steps),
                         })
                     }
                 />

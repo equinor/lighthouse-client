@@ -1,9 +1,9 @@
 import { throwOnError } from '../../../functions/throwError';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { ReleaseControl } from '../../../types/releaseControl';
+import { DRCFormModel } from '../../../Atoms/formAtomApi';
 
 export async function postReleaseControl(
-    releaseControl: ReleaseControl,
+    releaseControl: DRCFormModel,
     draft: boolean
 ): Promise<string> {
     const { scopeChange: client } = httpClient();

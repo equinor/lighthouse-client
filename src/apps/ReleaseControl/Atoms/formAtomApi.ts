@@ -1,40 +1,43 @@
 import { createAtom, DefaultAtomAPI } from '@equinor/atom';
 import { useState } from 'react';
 import { TypedSelectOption } from '../../ScopeChangeRequest/api/Search/searchType';
-import { ReleaseControlStep } from '../Components/Form/WorkflowEditor/WorkflowCustomEditor';
+import { ReleaseControlStep } from '../components/Form/WorkflowEditor/WorkflowCustomEditor';
 
-interface DRCCreateModel {
+export interface DRCCreateModel {
+    id?: number;
     title?: string;
     description?: string;
-    plannedStartDate?: string;
+    plannedDueDate?: string;
     tagNumbers: string[];
     commissioningPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
     documentNumbers: string[];
     references?: TypedSelectOption[];
-    steps?: ReleaseControlStep[];
+    workflowSteps?: ReleaseControlStep[];
 }
 
-type DRCFormModel = Partial<DRCCreateModel>;
+export type DRCFormModel = Partial<DRCCreateModel>;
 
 interface FormAtomApi extends DefaultAtomAPI<DRCFormModel> {
     useIsValid: () => boolean;
     clearState: () => void;
+    prepareRequest: () => DRCFormModel;
 }
 
 export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) => ({
     useIsValid: () => useIsValid(api),
+    prepareRequest: () => prepareRequest(),
     clearState: () =>
         api.updateAtom({
             areaCodes: [],
             commissioningPackageNumbers: [],
             description: undefined,
             documentNumbers: [],
-            plannedStartDate: undefined,
+            plannedDueDate: undefined,
             systemIds: [],
             tagNumbers: [],
-            steps: [],
+            workflowSteps: [],
             title: undefined,
         }),
 }));
@@ -54,8 +57,15 @@ function checkString(value?: string) {
     return !value || value.length <= 0;
 }
 
+function prepareRequest(): DRCFormModel {
+    const { readAtomValue } = DRCFormAtomApi;
+
+    const newReq = { ...readAtomValue() };
+    return newReq as DRCFormModel;
+}
+
 function checkFormState(
-    request: Pick<DRCFormModel, 'title' | 'description' | 'plannedStartDate'>
+    request: Pick<DRCFormModel, 'title' | 'description' | 'plannedDueDate'>
 ): boolean {
     if (MANDATORY_PROPERTIES.every((k) => Object.keys(request).includes(k))) {
         /** Validate content */
@@ -65,7 +75,7 @@ function checkFormState(
 
             case checkString(request.description):
                 return false;
-            case checkString(request.plannedStartDate):
+            case checkString(request.plannedDueDate):
                 return false;
         }
 

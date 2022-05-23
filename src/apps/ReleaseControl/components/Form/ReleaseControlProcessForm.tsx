@@ -1,15 +1,21 @@
-import { Button, SingleSelect } from '@equinor/eds-core-react';
+import { Button, Progress, SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
+import { getReleaseControlById } from '../../api/releaseControl/Request';
 
 import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
-import { TitleInput, DescriptionInput, PlannedStartDateInput, ReferencesInput } from './Inputs';
+import { useRequestMutations } from '../../hooks/useRequestMutations';
+import { disciplineReleaseControlFactoryContext } from '../Factory/FactoryComponent';
+import { ReleaseControlSidesheet } from '../sidesheet/ReleaseControlSidesheet';
+import { TitleInput, DescriptionInput, PlannedDueDateInput, ReferencesInput } from './Inputs';
 import { FlexColumn, FormWrapper } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { getNewWorkflowSteps } from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { updateAtom } = DRCFormAtomApi;
+
     return (
         <>
             <div>
@@ -18,7 +24,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                         General info
                         <TitleInput />
                         <DescriptionInput />
-                        <PlannedStartDateInput />
+                        <PlannedDueDateInput />
                         <ReferencesInput />
                     </FlexColumn>
                     <FlexColumn>
@@ -40,7 +46,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                                 style={{ width: '100px', marginLeft: '20px', marginTop: '16px' }}
                                 onClick={() =>
                                     updateAtom({
-                                        steps: getNewWorkflowSteps(),
+                                        workflowSteps: getNewWorkflowSteps(),
                                     })
                                 }
                             >
@@ -57,19 +63,61 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
 };
 
 export const SubmitButtonBar = (): JSX.Element => {
-    const { useIsValid, readAtomValue } = DRCFormAtomApi;
+    const { useIsValid } = DRCFormAtomApi;
 
     const isValid = useIsValid();
+
+    const swapComponent = disciplineReleaseControlFactoryContext.useAtomState(
+        ({ swapComponent }) => swapComponent
+    );
+
+    const { createReleaseControlMutation } = useRequestMutations();
+    const queryClient = useQueryClient();
+    const redirect = async (releaseControlId: string) => {
+        if (!releaseControlId) return;
+
+        swapComponent(ReleaseControlSidesheet, await getReleaseControlById(releaseControlId));
+        queryClient.invalidateQueries();
+    };
+
+    const { mutate, isLoading } = useMutation(createReleaseControlMutation, {
+        retry: 0,
+        onSuccess: (id) => {
+            id && redirect(id);
+            if (!id) throw 'error';
+        },
+    });
+
+    const onMutate = (draft: boolean) => {
+        const { prepareRequest } = DRCFormAtomApi;
+
+        mutate({
+            draft: draft,
+            model: prepareRequest(),
+        });
+    };
 
     return (
         <ActionBar>
             <ButtonContainer>
-                <Button disabled={!isValid} onClick={() => console.log(readAtomValue())}>
-                    Submit
-                </Button>
-                <Button disabled={!isValid} variant="outlined">
-                    Save
-                </Button>
+                {isLoading ? (
+                    <Button variant="ghost_icon" disabled>
+                        <Progress.Dots color="primary" />
+                    </Button>
+                ) : (
+                    <>
+                        <Button disabled={!isValid} onClick={() => onMutate(false)}>
+                            Submit
+                        </Button>
+                        <Button
+                            disabled={!isValid}
+                            onClick={() => onMutate(true)}
+                            variant="outlined"
+                        >
+                            Save
+                        </Button>
+                    </>
+                )}
             </ButtonContainer>
         </ActionBar>
     );

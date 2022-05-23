@@ -6,30 +6,30 @@ export const DraggableHandleSelector = 'globalDraggableHandle';
 export const WorkflowCustomEditor = (): JSX.Element => {
     const { useAtomState, updateAtom } = DRCFormAtomApi;
 
-    const { steps = [] } = useAtomState(({ steps }) => ({
-        steps: steps?.map(
+    const { workflowSteps = [] } = useAtomState(({ workflowSteps }) => ({
+        workflowSteps: workflowSteps?.map(
             (v, i): DraggableReleaseControlStep => ({ id: `${i}`, item: { ...v, order: i + 1 } })
         ),
     }));
 
-    const setList = (steps: DraggableReleaseControlStep[]) =>
-        updateAtom({ steps: steps.map(({ item }) => item) });
+    const setList = (workflowSteps: DraggableReleaseControlStep[]) =>
+        updateAtom({ workflowSteps: workflowSteps.map(({ item }) => item) });
 
     return (
         <ReactSortable<DraggableReleaseControlStep>
             animation={200}
             handle={`.${DraggableHandleSelector}`}
-            list={steps}
+            list={workflowSteps}
             setList={setList}
             onEnd={() => {
-                setList(steps);
+                setList(workflowSteps);
             }}
         >
-            {steps.map((dragItem) => (
+            {workflowSteps.map((dragItem) => (
                 <WorkflowStep
                     key={dragItem.item.order}
                     step={dragItem.item}
-                    steps={steps.map(({ item }) => item)}
+                    steps={workflowSteps.map(({ item }) => item)}
                 />
             ))}
         </ReactSortable>
@@ -43,6 +43,6 @@ export interface DraggableReleaseControlStep {
 
 export interface ReleaseControlStep {
     order: number;
-    step: string;
+    name: string;
     responsible: string;
 }

@@ -1,4 +1,4 @@
 export * from './Description/Description';
 export * from './Title/Title';
-export * from './PlannedStartDate/PlannedStartDate';
+export * from './PlannedDueDate/PlannedDueDate';
 export * from './References/References';
