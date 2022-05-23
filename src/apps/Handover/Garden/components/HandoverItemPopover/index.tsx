@@ -5,6 +5,8 @@ import {
     FlagUnsignedAction,
     IconsContainer,
     PopoverContainer,
+    ProjectDescription,
+    ProjectTitle,
     Statuses,
     WarningContainer,
     WarningText,
@@ -42,11 +44,11 @@ export const PopoverContent = ({
 }: PopoverContentProps) => {
     return (
         <PopoverContainer>
-            <p style={{ fontWeight: 'bold' }}>Project (ProCoSys)</p>
+            <ProjectTitle>Project (ProCoSys)</ProjectTitle>
             <p>
                 {data.projectIdentifier}, {data.projectDescription}
             </p>
-            <p>{data.description}</p>
+            <ProjectDescription>{data.description}</ProjectDescription>
             <hr />
             <CommStatus barColor={barColor} textColor={textColor}>
                 <strong>{`Milestone: ${status}`}</strong>
