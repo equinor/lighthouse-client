@@ -42,9 +42,9 @@ export const ProCoSysQueries = {
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,
     }),
-    getFunctionalRolesQuery: (plantId: string): Options => ({
-        queryFn: () => getFunctionalRoles(plantId),
-        queryKey: [...ProCoSysBaseKey, 'FunctionalRoles'],
+    getFunctionalRolesQuery: (plantId: string, classification?: string | undefined): Options => ({
+        queryFn: () => getFunctionalRoles(plantId, classification),
+        queryKey: [...ProCoSysBaseKey, 'FunctionalRoles', classification],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,
     }),

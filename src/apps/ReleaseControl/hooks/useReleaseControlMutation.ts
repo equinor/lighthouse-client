@@ -7,9 +7,9 @@ import {
     UseMutationResult,
     useQueryClient,
 } from 'react-query';
-import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
+import { releaseControlQueries } from '../queries/queries';
 
-export function useScopeChangeMutation<
+export function useReleaseControlMutation<
     TData = unknown,
     TError = unknown,
     TVariables = void,
@@ -26,7 +26,7 @@ export function useScopeChangeMutation<
     const queryClient = useQueryClient();
     const { appName } = useSideSheet();
 
-    const { baseKey } = scopeChangeQueryKeys(requestId);
+    const baseKey = releaseControlQueries.baseQuery(requestId).queryKey;
     function invalidate() {
         queryClient.invalidateQueries(appName);
         queryClient.invalidateQueries(baseKey);
