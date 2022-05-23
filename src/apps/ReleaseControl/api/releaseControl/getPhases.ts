@@ -1,4 +1,4 @@
-import { httpClient } from '../../../../Core/Client/Functions';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { throwOnError } from '../../functions/throwError';
 
 export interface QueryContext {
@@ -15,5 +15,5 @@ export const getPhases = async ({ signal }: QueryContext): Promise<string[]> => 
 
     throwOnError(res, 'Failed to get phases');
 
-    return (await res.json()).map((x: Phase) => x.name);
+    return (await res.json()).map(({ name }: Phase) => name);
 };

@@ -1,4 +1,4 @@
-import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { throwOnError } from '../../../functions/throwError';
 import { ReleaseControl } from '../../../types/releaseControl';
 

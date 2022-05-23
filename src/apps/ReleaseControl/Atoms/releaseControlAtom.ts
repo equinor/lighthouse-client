@@ -1,5 +1,6 @@
+import { createAtom } from '@equinor/atom';
 import { SidesheetApi } from '@equinor/sidesheet';
-import { createAtom } from '../../../Core/Atom/functions/createAtom';
+
 import { OptionRequestResult } from '../api/releaseControl/Access/optionsRequestChecker';
 import { ReleaseControl } from '../types/releaseControl';
 

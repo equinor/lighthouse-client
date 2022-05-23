@@ -1,5 +1,5 @@
 import { throwOnError } from '../../../functions/throwError';
-import { httpClient } from '../../../../../Core/Client/Functions';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { ReleaseControl } from '../../../types/releaseControl';
 
 export async function postReleaseControl(
