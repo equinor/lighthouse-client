@@ -6,14 +6,12 @@ import {
 } from '@equinor/WorkSpace';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
-import { dataCreator } from './workspaceConfig/dataCreatorConfig';
 import { dataSource, idResolver } from './workspaceConfig/dataOptions';
 import { filterConfig } from './workspaceConfig/filter/filterConfig';
 import { prefetchQueriesOptions } from './workspaceConfig/prefetchQueryOptions';
 import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
 import { tableConfig } from './workspaceConfig/sTable/tableConfig';
 import { statusBarConfig } from './workspaceConfig/statusBarConfig';
-
 
 export const changeSideSheetWidgetManifest: SidesheetWidgetManifest<ScopeChangeRequest, 'change'> =
     {
@@ -50,7 +48,6 @@ export function setup(appApi: ClientApi): void {
             objectIdentifier: 'id',
         })
         .registerDataSource(dataSource)
-        .registerDataCreator(dataCreator)
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerStatusItems(statusBarConfig)

@@ -23,7 +23,6 @@ export function openSidesheet<T>(
 
     let appName: string | undefined;
     let color = DEFAULT_TAB_COLOR;
-
     /**
      * If unsaved changes, spawn confirmation dialog.
      */
@@ -76,6 +75,7 @@ export async function openSidesheetById<T>(
 
         if (!id) {
             openSidesheet(SidesheetContent, {}, manifest);
+            return;
         }
 
         const resolver = await Functions.getFunction(manifest.props?.resolverId || '');

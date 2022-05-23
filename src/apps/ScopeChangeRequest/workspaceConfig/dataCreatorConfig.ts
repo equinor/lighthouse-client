@@ -1,51 +1,26 @@
-import {
-    AccessFunctionResult,
-    CreatorComponent,
-    CreatorManifest
-} from '@equinor/lighthouse-fusion-modules';
+import { setupCreator } from '@equinor/lighthouse-fusion-modules';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { FactoryOptions } from '../../../Core/WorkSpace/src';
-import { openSidesheet } from '../../../packages/Sidesheet/Functions';
 import { checkOptionsRequest } from '../api/ScopeChange/Access/optionsRequestChecker';
 import { ScopeChangeCreateForm } from '../Components/DataCreator/DataCreatorWrapper';
 
-
-export const dataCreator: FactoryOptions = {
-    title: 'Scope change request',
-    onClick: () => openSidesheet(ScopeChangeCreateForm, undefined),
-    accessCheck: async (): Promise<boolean> => {
-        const { scopeChange } = httpClient();
-        const check = () => scopeChange.fetch('api/scope-change-requests', { method: 'OPTIONS' });
-        return await (
-            await checkOptionsRequest(check)
-        ).canPost;
-    },
-};
-
-export const changeCreatorManifest: CreatorManifest = {
+const changeCreator = setupCreator({
     widgetId: 'changeCreator',
     widgetType: 'creator',
     title: 'Scope change request',
     color: '#7B3A96',
+    widget: ScopeChangeCreateForm,
     props: {
         accessCheckFunctionId: 'changeCreatorAccess',
         parentApp: 'change',
+        function: async (): Promise<boolean> => {
+            const { scopeChange } = httpClient();
+            const check = () =>
+                scopeChange.fetch('api/scope-change-requests', { method: 'OPTIONS' });
+            return (await (await checkOptionsRequest(check)).canPost) || true;
+        },
     },
-};
+});
 
-export const changeCreatorComponent: CreatorComponent = {
-    widgetId: 'changeCreator',
-    widgetType: 'creator',
-    widget: ScopeChangeCreateForm,
-};
-
-export const changeCreatorAccessFunction: AccessFunctionResult = {
-    functionId: 'changeCreatorAccess',
-    function: async (): Promise<boolean> => {
-        const { scopeChange } = httpClient();
-        const check = () => scopeChange.fetch('api/scope-change-requests', { method: 'OPTIONS' });
-        return await (
-            await checkOptionsRequest(check)
-        ).canPost;
-    },
-};
+export const changeCreatorManifest = changeCreator('CreatorManifest');
+export const changeCreatorComponent = changeCreator('CreatorComponent');
+export const changeCreatorAccessFunction = changeCreator('AccessFunctionResult');

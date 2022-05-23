@@ -29,3 +29,17 @@ export interface AccessFunctionResult extends FunctionManifest {
     function: () => Promise<boolean>;
     functionId: string;
 }
+
+export type CreatorType = 'CreatorManifest' | 'CreatorComponent' | 'AccessFunctionResult';
+
+export interface CreatorConfig extends CreatorManifest, CreatorComponent {
+    props: {
+        accessCheckFunctionId: string;
+        parentApp: string;
+        function: () => Promise<boolean>;
+    };
+}
+
+export type Creator = (
+    type: CreatorType
+) => CreatorManifest | CreatorComponent | AccessFunctionResult;

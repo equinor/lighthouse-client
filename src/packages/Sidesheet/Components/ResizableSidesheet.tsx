@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary, ErrorFallbackSidesheet } from '@equinor/ErrorBoundary';
 import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { openSidesheet } from '../Functions';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
@@ -11,8 +11,7 @@ import { useSideSheet } from '../Hooks/useSideSheet';
 import { CustomSidesheet, SidesheetApi } from '../Types/SidesheetApi';
 
 export const ResizableSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent, props, minWidth, width, isMinimized, color, hasUnsavedChanges } =
-        useSideSheet();
+    const { SidesheetComponent, props, minWidth, width, isMinimized, color } = useSideSheet();
     const { closeSidesheet, setIsMinimized, setWidth, setHasUnsavedChanges } =
         useInternalSidesheetFunction();
 
