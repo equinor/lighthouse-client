@@ -1,8 +1,10 @@
 import styled from 'styled-components';
-import { Criteria, CriteriaSignState, WorkflowStep } from '../../../../types/scopeChangeRequest';
+import { tokens } from '@equinor/eds-tokens';
+
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
-import { tokens } from '@equinor/eds-tokens';
+import { CriteriaSignState } from '../../../../../ScopeChangeRequest/types/scopeChangeRequest';
+import { Criteria, WorkflowStep } from '../../../../types/releaseControl';
 
 interface CriteriaDetailProps {
     criteria: Criteria;

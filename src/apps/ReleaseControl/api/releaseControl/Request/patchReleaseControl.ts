@@ -1,9 +1,9 @@
 import { httpClient } from '../../../../../Core/Client/Functions/HttpClient';
 import { throwOnError } from '../../../functions/throwError';
-import { ScopeChangeCreateEditModel } from '../../../types/scopeChangeRequest';
+import { ReleaseControl } from '../../../types/releaseControl';
 
-export async function patchScopeChange(
-    request: ScopeChangeCreateEditModel,
+export async function patchReleaseControl(
+    request: ReleaseControl,
     setAsOpen?: boolean
 ): Promise<string> {
     const { scopeChange } = httpClient();
@@ -14,9 +14,9 @@ export async function patchScopeChange(
             : JSON.stringify(request),
     };
 
-    const res = await scopeChange.fetch(`api/scope-change-requests/${request.id}`, requestOptions);
+    const res = await scopeChange.fetch(`api/releasecontrol/${request.id}`, requestOptions);
 
-    await throwOnError(res, 'Failed to update scopechange');
+    await throwOnError(res, 'Failed to update release control');
 
     return await res.json();
 }

@@ -1,15 +1,15 @@
-import { ScopeChangeCreateEditModel } from '../../../types/scopeChangeRequest';
 import { throwOnError } from '../../../functions/throwError';
 import { httpClient } from '../../../../../Core/Client/Functions';
+import { ReleaseControl } from '../../../types/releaseControl';
 
-export async function postScopeChange(
-    scopeChange: ScopeChangeCreateEditModel,
+export async function postReleaseControl(
+    releaseControl: ReleaseControl,
     draft: boolean
 ): Promise<string> {
     const { scopeChange: client } = httpClient();
 
     const payload = {
-        ...scopeChange,
+        ...releaseControl,
         setAsOpen: !draft,
     };
 
@@ -18,9 +18,9 @@ export async function postScopeChange(
         body: JSON.stringify(payload),
     };
 
-    const res = await client.fetch(`api/scope-change-requests`, requestOptions);
+    const res = await client.fetch(`api/releasecontrol`, requestOptions);
 
-    await throwOnError(res, 'Failed to create scopechange');
+    await throwOnError(res, 'Failed to create release control');
 
     return await res.json();
 }

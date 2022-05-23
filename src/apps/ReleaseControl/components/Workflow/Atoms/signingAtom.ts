@@ -1,5 +1,5 @@
 import { Atom, swap } from '@dbeining/react-atom';
-import { CriteriaSignState } from '../../../types/scopeChangeRequest';
+import { CriteriaSignState } from '../../../../ScopeChangeRequest/types/scopeChangeRequest';
 
 export interface SigningAction {
     buttonText: string;
