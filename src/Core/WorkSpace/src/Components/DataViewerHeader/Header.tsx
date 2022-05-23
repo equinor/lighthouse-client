@@ -1,5 +1,4 @@
 import { BookmarkDropdown } from '@equinor/BookmarksManager';
-import { useFactory } from '@equinor/DataFactory';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
@@ -8,6 +7,7 @@ import { isProduction } from '@equinor/lighthouse-portal-client';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
+import { useDataCreator } from '../../../../../FusionModules/DataCreatorReact/Hooks/useCreator';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
 import { useDataContext } from '../../Context/DataProvider';
 import { useLocationContext } from '../../Context/LocationProvider';
@@ -25,7 +25,7 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar,
+    TitleBar
 } from './HeaderStyles';
 
 interface CompletionViewHeaderProps {
@@ -44,7 +44,7 @@ export const CompletionViewHeader = ({
     sideSheetWidth,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
-    const { factory } = useFactory(key);
+    const { openCreatorById, creator } = useDataCreator(`${key}Creator`);
     const {
         hasPowerBi,
         pages,
@@ -101,19 +101,28 @@ export const CompletionViewHeader = ({
                 </LeftSection>
                 <RightSection>
                     <Presets />
-                    {factory && (
-                        <>
+
+                    <>
+                        {creator && (
                             <TabButton
-                                onClick={factory.onClick}
+                                aria-disabled={!creator.props.hasAccess}
+                                onClick={() =>
+                                    creator.props.hasAccess !== false &&
+                                    openCreatorById(creator.widgetId)
+                                }
                                 aria-selected={false}
-                                title={factory.title}
+                                title={
+                                    creator.props.hasAccess !== false
+                                        ? creator.title
+                                        : 'Contact Support for access'
+                                }
                             >
                                 <Icon name={'add'} />
-                                {factory.title}
+                                {creator.title}
                             </TabButton>
-                            <Divider />
-                        </>
-                    )}
+                        )}
+                        <Divider />
+                    </>
 
                     {hasPowerBi && (
                         <>

@@ -5,16 +5,23 @@ import { useDataCreatorContext } from '../Context/DataCreatorProvider';
 
 export interface Creators {
     creators: CreatorManifest[];
+    creator: CreatorManifest | undefined;
     openCreatorById(creatorId: string): Promise<void>;
 }
 
-export function useDataCreator(factoryIds?: string[]): Creators {
+export function useDataCreator(factoryIds?: string[] | string): Creators {
     const state = useDataCreatorContext();
 
     const creators = useMemo(() => {
-        return factoryIds
+        return Array.isArray(factoryIds) && factoryIds
             ? state.getCreators().filter((creator) => factoryIds.includes(creator.widgetId))
             : state.getCreators();
+    }, [factoryIds, state]);
+
+    const creator = useMemo(() => {
+        return typeof factoryIds === 'string'
+            ? state.getCreators().find((creator) => factoryIds === creator.widgetId)
+            : undefined;
     }, [factoryIds, state]);
 
     async function openCreatorById(creatorId: string): Promise<void> {
@@ -24,5 +31,5 @@ export function useDataCreator(factoryIds?: string[]): Creators {
         }
     }
 
-    return { creators, openCreatorById };
+    return { creators, openCreatorById, creator };
 }

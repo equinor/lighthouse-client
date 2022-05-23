@@ -1,4 +1,3 @@
-import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterGroup, FilterOptions } from '@equinor/filter';
 import { GardenOptions } from '@equinor/ParkView';
@@ -22,7 +21,7 @@ export interface DataSource<T> {
 }
 
 export type Validator<T> = (data: unknown[]) => T[];
-export type FactoryOptions = Omit<Factory, 'factoryId'>;
+
 export type IdResolverFunc<T> = (id: string) => Promise<T | undefined>;
 
 export interface WorkspaceOptions<T, SideSheetId extends string = string> {
