@@ -17,7 +17,7 @@ export function hasUnsavedChanges(): boolean {
 export function openSidesheet<T>(
     SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
     props?: T,
-    manifest?: Partial<SidesheetWidgetManifest<T>>
+    manifest?: Partial<SidesheetWidgetManifest<T, string>>
 ): void {
     if (!SidesheetContent && !props) return;
 
@@ -71,7 +71,7 @@ export async function openSidesheetById<T>(
     async function mountAsync() {
         const SidesheetContent = await Widget.getWidget(sideSheetId);
         const manifest = (await Widget.getWidgetManifest(sideSheetId)) as Partial<
-            SidesheetWidgetManifest<any>
+            SidesheetWidgetManifest<any, string>
         >;
 
         if (!id) {

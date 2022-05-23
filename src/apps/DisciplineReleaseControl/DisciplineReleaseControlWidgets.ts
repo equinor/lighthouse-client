@@ -17,7 +17,7 @@ export const ReleaseControlHTSidesheetWidgetManifest: SidesheetWidgetManifest<He
     },
 };
 
-export const ReleaseControlHTSidesheetWidgetComponent: SidesheetComponentManifest = {
+export const ReleaseControlHTSidesheetWidgetComponent: SidesheetComponentManifest<'ht'> = {
     widgetId: 'ht',
     widgetType: 'sidesheet',
     widget: ReleaseControlHTSidesheet,
@@ -40,7 +40,7 @@ export const ReleaseControlSidesheetWidgetManifest: SidesheetWidgetManifest<Pipe
     },
 };
 
-export const ReleaseControlSidesheetWidgetComponent: SidesheetComponentManifest = {
+export const ReleaseControlSidesheetWidgetComponent: SidesheetComponentManifest<'rc'> = {
     widgetId: 'rc',
     widgetType: 'sidesheet',
     widget: ReleaseControlSidesheet,

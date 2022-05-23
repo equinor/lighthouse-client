@@ -34,7 +34,7 @@ export interface WorkspaceOptions<T, SideSheetId extends string = string> {
     openSidesheet: OpenSidesheetFunc;
     CustomSidesheet?: React.FC<{ item: T; actions: SidesheetApi }>;
     customSidesheetOptions?: WorkSpaceSideSheet<T, SideSheetId>;
-    customGroupeSidesheet?: WorkSpaceSideSheet<any, SideSheetId>;
+    customGroupeSidesheet?: WorkSpaceSideSheet<any, string>;
     CustomGroupeSidesheet?: React.FC<{ item: any; actions: SidesheetApi }>;
     CustomSidesheetList?: React.FC<T[]>;
 }
