@@ -10,11 +10,12 @@ type TabProps = {
 
 const columns: Column<HandoverPunch>[] = [
     {
-        id: 'tagnumber',
+        id: 'tagNumber',
         Header: 'Tag',
-        accessor: ({ tagNumber, url }) => ({
-            content: tagNumber,
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            currentKey: 'tagNumber',
         }),
         Cell: CellWithLink,
     },

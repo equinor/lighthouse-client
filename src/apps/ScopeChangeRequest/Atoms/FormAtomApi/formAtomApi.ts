@@ -49,6 +49,9 @@ export const scopeChangeFormAtomApi = createAtom<ScopeChangeFormModel, FormAtomA
             systemIds: [],
             tagNumbers: [],
             title: undefined,
+            materialsIdentifiedInStorage: false,
+            materialsNote: '',
+            materialsToBeBoughtByContractor: false,
         }),
 }));
 

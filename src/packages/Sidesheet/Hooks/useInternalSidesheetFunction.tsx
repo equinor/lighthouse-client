@@ -1,23 +1,25 @@
+import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { getSidesheetContext } from '../context/sidesheetContext';
+import { hasUnsavedChanges } from '../Functions/openSidesheet';
 import { dispatch } from '../State/actions';
 import { SidesheetState } from '../State/sidesheetState';
 
 export type ToggleFunction = (prev: boolean) => boolean;
 interface InternalSidesheetFunctions {
     closeSidesheet(): void;
-    togglePinned(): void;
     setWidth(width: number): void;
     setIsMinimized(isMinimized: ToggleFunction | boolean): void;
+    setHasUnsavedChanges(hasUnsaved: boolean): void;
 }
 
 export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
-    function togglePinned(): void {
-        dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {
-            return {
-                ...currentState,
-            };
-        });
+    function setHasUnsavedChanges(hasUnsaved: boolean): void {
+        dispatch(getSidesheetContext(), (s: SidesheetState<any>) => ({
+            ...s,
+            hasUnsavedChanges: hasUnsaved,
+        }));
     }
+
     function setWidth(width: number): void {
         dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {
             return {
@@ -39,6 +41,17 @@ export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
     }
 
     function closeSidesheet(): void {
+        if (hasUnsavedChanges()) {
+            spawnConfirmationDialog(
+                'Unsaved changes, are you sure you want to abandon your changes',
+                'Warning!',
+                () => {
+                    setHasUnsavedChanges(false);
+                    closeSidesheet();
+                }
+            );
+            return;
+        }
         //HACK: should somehow be handled from the workspace
         history.pushState('', document.title, window.location.pathname);
         dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {
@@ -52,7 +65,7 @@ export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
     }
 
     return {
-        togglePinned,
+        setHasUnsavedChanges,
         closeSidesheet,
         setWidth,
         setIsMinimized,

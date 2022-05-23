@@ -5,12 +5,15 @@ import { Pill, PillProps } from './PillStyle';
 import { createGradientBackground, getPunchStatusGradient } from './utility';
 
 export const McStatusCell = (
-    props: CellProps<HandoverMcpkg, { status: HandoverPackageStatus; showOk: boolean }>
-): JSX.Element => {
-    const {
-        value: { status, showOk },
-    } = props;
-    const background = getPunchStatusGradient(status);
+    props: CellProps<HandoverMcpkg, HandoverPackageStatus | null>
+): JSX.Element | null => {
+    const { value } = props;
+
+    if (value === null) {
+        return null;
+    }
+
+    const background = getPunchStatusGradient(value);
     const color = tinycolor.mostReadable(background[0], ['#333333', '#f1f1f1'], {
         level: 'AAA',
         size: 'small',
@@ -19,8 +22,7 @@ export const McStatusCell = (
     const styling: PillProps = {
         backgroundImage: createGradientBackground(background),
         color: color.toHexString(),
-        visibility: status === 'OK' && !showOk ? 'hidden' : 'visible',
     };
 
-    return <Pill {...styling}>{status}</Pill>;
+    return <Pill {...styling}>{value}</Pill>;
 };

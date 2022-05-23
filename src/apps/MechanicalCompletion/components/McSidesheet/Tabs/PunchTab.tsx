@@ -13,9 +13,10 @@ const columns: Column<McPunchItem>[] = [
     {
         id: 'tagNumber',
         Header: 'TagNo',
-        accessor: ({ url, tagNumber }) => ({
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
-            content: tagNumber,
+        accessor: (pkg) => ({
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            content: pkg,
+            currentKey: 'tagNumber',
         }),
         Cell: CellWithLink,
         width: 100,
