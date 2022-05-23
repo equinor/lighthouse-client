@@ -33,8 +33,6 @@ export const PopoverWrapper = ({
 
             // If popover is out of bounds left side
             if (clientRect.left < 0) {
-                console.log('clientRect', clientRect);
-                console.log(parentRef.current?.getBoundingClientRect());
                 setPlacement((s) => ({ x: width, y: s.y }));
             }
 
