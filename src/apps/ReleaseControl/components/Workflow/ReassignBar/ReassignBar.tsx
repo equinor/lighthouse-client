@@ -1,7 +1,7 @@
-import { reassignCriteria } from '../../../api/ScopeChange/Workflow';
-import { PCSPersonRoleSearch } from '../../PersonRoleSearch/PCSPersonRoleSearch';
-import { useScopeChangeMutation } from '../../../hooks/React-Query/useScopechangeMutation';
-import { scopeChangeMutationKeys } from '../../../keys/scopeChangeMutationKeys';
+import { PCSPersonRoleSearch } from '../../../../ScopeChangeRequest/Components/PersonRoleSearch/PCSPersonRoleSearch';
+import { reassignCriteria } from '../../../api/releaseControl/Workflow';
+import { useReleaseControlMutation } from '../../../hooks/useReleaseControlMutation';
+import { releaseControlMutationKeys } from '../../../queries/releaseControlMutationKeys';
 import { resetSigningAtom } from '../Atoms/signingAtom';
 
 interface ReassignBarProps {
@@ -11,9 +11,9 @@ interface ReassignBarProps {
 }
 
 export const ReassignBar = ({ criteriaId, requestId, stepId }: ReassignBarProps): JSX.Element => {
-    const { criteriaReassignKey } = scopeChangeMutationKeys(requestId).workflowKeys;
+    const { criteriaReassignKey } = releaseControlMutationKeys(requestId).workflowKeys;
 
-    const { mutate: reassignMutation } = useScopeChangeMutation(
+    const { mutate: reassignMutation } = useReleaseControlMutation(
         requestId,
         criteriaReassignKey(stepId, criteriaId),
         reassignCriteria
@@ -37,7 +37,7 @@ export const ReassignBar = ({ criteriaId, requestId, stepId }: ReassignBarProps)
                 });
                 resetSigningAtom();
             }}
-            classification={'SCOPECHANGE'}
+            classification="RELEASECONTROL"
         />
     );
 };
