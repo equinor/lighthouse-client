@@ -14,12 +14,12 @@ export const PopoutSidesheet = (): JSX.Element | null => {
     /**
      * Removes hash from url when closed
      */
-    useEffect(() => {
-        if (location.hash.length > 0) return;
-        if (!props) {
-            navigate(location.pathname, { replace: true });
-        }
-    }, [props, location.pathname, location.hash.length, navigate]);
+    // useEffect(() => {
+    //     if (location.hash.length > 0) return;
+    //     if (!props) {
+    //         navigate(location.pathname, { replace: true });
+    //     }
+    // }, [props, location.pathname, location.hash.length, navigate]);
 
     // if sidesheet
     if (!SidesheetComponent) {
