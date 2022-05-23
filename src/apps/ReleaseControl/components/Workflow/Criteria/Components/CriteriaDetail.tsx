@@ -4,16 +4,16 @@ import { tokens } from '@equinor/eds-tokens';
 import { convertUtcToLocalDate, dateToDateTimeFormat } from '../../Utils/dateFormatting';
 import { WorkflowIcon } from '../../Components/WorkflowIcon';
 import { CriteriaSignState } from '../../../../../ScopeChangeRequest/types/scopeChangeRequest';
-import { Criteria, WorkflowStep } from '../../../../types/releaseControl';
+import { Criteria, ReleaseControlStep } from '../../../../types/releaseControl';
 
 interface CriteriaDetailProps {
     criteria: Criteria;
-    step: WorkflowStep;
+    step: ReleaseControlStep;
 }
 
 export type CriteriaStatus = CriteriaSignState | 'Inactive' | 'Active';
 
-function statusFunc(criteria: Criteria, step: WorkflowStep): CriteriaStatus {
+function statusFunc(criteria: Criteria, step: ReleaseControlStep): CriteriaStatus {
     if (!criteria.signedState) {
         return step.isCurrent ? 'Active' : 'Inactive';
     } else {

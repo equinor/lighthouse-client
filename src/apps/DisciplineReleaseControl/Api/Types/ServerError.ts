@@ -1,6 +1,3 @@
-/**
- * Error format recieved by server
- */
 export interface ServerError {
     detail: string;
     statusCode?: number;
