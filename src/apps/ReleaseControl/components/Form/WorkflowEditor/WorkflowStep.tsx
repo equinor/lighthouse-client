@@ -1,9 +1,9 @@
 import { Icon, SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
+import { IconMenu } from '@equinor/overlay-menu';
 import styled from 'styled-components';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
-import { IconMenu } from '../../MenuButton';
 import { DraggableHandleSelector, ReleaseControlStep } from './WorkflowCustomEditor';
 import {
     getWorkflowStepMenuActions,
