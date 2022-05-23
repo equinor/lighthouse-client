@@ -17,7 +17,3 @@ export interface SidesheetWidgetManifest<T, SideSheetId extends string = string>
         parentApp?: string;
     };
 }
-export interface CreatorWidgetManifest<T> extends WidgetManifest {
-    widgetType: 'creator';
-    props: T;
-}

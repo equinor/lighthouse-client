@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { Configurator, initializeClientModules, ModulesInstance } from './modules';
-
+export * from './DataCreatorModule';
 export type { Configurator };
 
 export interface AppManifest {}
 
-export interface Client {
+export interface Lighthouse {
     /**
      * Configured services for Client
      */
-    modules: ModulesInstance;
+    lighthouseModules: ModulesInstance;
     /**
      * Create a scoped instance of services
      */
@@ -19,19 +19,19 @@ export interface Client {
     // ) => Promise<ModuleType<Modules>>;
 }
 
-export const initClient = async (init: Configurator): Promise<Client> => {
-    const modules = await initializeClientModules(init);
-    const client = {
-        modules,
+export const initLighthouse = async (init: Configurator): Promise<Lighthouse> => {
+    const lighthouseModules = await initializeClientModules(init);
+    const lighthouse = {
+        lighthouseModules,
     };
-    window.lighhouse = client;
-    return client;
+    window.Lighthouse = lighthouse;
+    return lighthouse;
 };
 
 declare global {
     interface Window {
-        lighhouse: Client;
+        Lighthouse: Lighthouse;
     }
 }
 
-export default initClient;
+export default initLighthouse;

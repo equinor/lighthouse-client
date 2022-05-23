@@ -150,9 +150,9 @@ export function createWorkSpace<T, SideSheetIds extends string>(
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
             const onGroupeSelect = (item: unknown) => {
                 options.openSidesheet<any>(
-                    options.CustomGroupeSidesheet || options.CustomSidesheet,
+                    options.customGroupeSidesheet?.widget || options.CustomGroupeSidesheet,
                     item,
-                    options.viewerId
+                    options.customGroupeSidesheet
                 );
             };
 

@@ -20,6 +20,7 @@ export default defineConfig({
             '@equinor/portal-client': path.resolve(__dirname, './src/Core/Client'),
             '@equinor/atom': path.resolve(__dirname, './src/Core/Atom'),
             '@equinor/lighthouse-components': path.resolve(__dirname, './src/packages/Components'),
+            '@equinor/lighthouse-fusion-modules': path.resolve(__dirname, './src/FusionModules'),
             '@equinor/lighthouse-widgets': path.resolve(__dirname, './src/Core/Widgets'),
             '@equinor/lighthouse-functions': path.resolve(__dirname, './src/Core/Functions'),
             '@equinor/sidesheet': path.resolve(__dirname, './src/packages/Sidesheet'),

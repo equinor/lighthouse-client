@@ -4,7 +4,7 @@ import { DataFactoryState } from '../State/dataFactoryState';
 import { Factory } from '../Types/factory';
 
 export async function createDataFactory(factory: Factory): Promise<void> {
-    const accessCheckPassed = factory.accessCheck ? await factory.accessCheck() : true;
+    const accessCheckPassed = true; //factory.accessCheck ? await factory.accessCheck() : true;
     dispatch(getFactoryContext(), (state: DataFactoryState) => {
         if (state.factories[factory.factoryId]) {
             // eslint-disable-next-line no-console

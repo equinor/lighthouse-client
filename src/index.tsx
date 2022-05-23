@@ -4,6 +4,7 @@ import { createClient } from '@equinor/portal-client';
 import { render } from 'react-dom';
 import Client from './AppClient';
 import { getAppGroups, getApps } from './apps/apps';
+import { fetchComponent, getCreators } from './apps/widgets';
 import { ClientFailed } from './Core/Client/ClientLoad/ClientFailed';
 import { ClientLoading } from './Core/Client/ClientLoad/ClientLoading';
 import { GlobalStyle } from './Core/Client/styleProvider';
@@ -22,10 +23,15 @@ const mount = (Comp: JSX.Element) => {
 
 mount(<ClientLoading />);
 
-createClient({ getApps, getAppGroups })
-    .then((authProvider) => {
-        if (authProvider && !(window !== window.parent && !window.opener)) {
-            mount(<Client authProvider={authProvider} />);
+createClient({
+    getApps,
+    getAppGroups,
+    getCreators,
+    getCreatorComponent: fetchComponent,
+})
+    .then((client) => {
+        if (client.authProvider && !(window !== window.parent && !window.opener)) {
+            mount(<Client {...client} />);
         }
     })
     .catch((e) => mount(<ClientFailed error={e} />));

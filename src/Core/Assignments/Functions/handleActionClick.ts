@@ -7,5 +7,5 @@ apps.set('ScopeChangeControl', 'change');
 export async function handleActionClick(appName: string, identifier: string): Promise<void> {
     const actualName = apps.get(appName);
     if (!actualName) throw 'App not found';
-    await openSidesheetById(identifier, identifier);
+    await openSidesheetById(actualName, identifier);
 }

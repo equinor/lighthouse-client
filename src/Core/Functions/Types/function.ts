@@ -4,4 +4,4 @@ export interface FunctionManifest {
     type?: string;
 }
 
-export type CustomFunction = (prop: any) => any;
+export type CustomFunction = (prop: any) => any | Promise<any>;

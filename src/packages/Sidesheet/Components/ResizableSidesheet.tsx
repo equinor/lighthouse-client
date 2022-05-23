@@ -27,7 +27,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
     };
 
     function swapComponent<T>(SidesheetContent?: CustomSidesheet<T>, props?: T) {
-        openSidesheet(SidesheetContent, props, '', { color });
+        openSidesheet(SidesheetContent, props, { color });
     }
 
     const actions: SidesheetApi = {

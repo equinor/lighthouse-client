@@ -16,12 +16,10 @@ export function openSidesheet<T>(
 ): void {
     if (!SidesheetContent && !props) return;
 
-    // Temporary Hack for not braking old code.
-    // let color =
-    //     getApps().find(({ shortName }) => shortName === appName)?.color ||
-    //     (DEFAULT_TAB_COLOR as string);
+    let appName: string | undefined;
     let color = DEFAULT_TAB_COLOR;
     if (manifest) {
+        appName = manifest.props?.parentApp;
         color = manifest.color || DEFAULT_TAB_COLOR;
         handleUpdateHashUrl(
             manifest.widgetId || '',
@@ -35,7 +33,7 @@ export function openSidesheet<T>(
             SidesheetComponent: (SidesheetContent as React.FC<unknown>) || DefaultDataView,
             props,
             color,
-            appName: manifest?.props?.parentApp,
+            appName,
         };
     });
 }

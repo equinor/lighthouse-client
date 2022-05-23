@@ -4,12 +4,13 @@ import {
     rcResolverFunction
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { changeFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
-
+import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 
 export const functions: FunctionManifest[] = [
     changeFunction,
     htResolverFunction,
     rcResolverFunction,
+    changeCreatorAccessFunction,
 ];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {

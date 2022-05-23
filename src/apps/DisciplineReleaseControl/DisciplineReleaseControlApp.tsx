@@ -20,6 +20,14 @@ import {
 } from './Components/Workflow/Components/WorkflowFilterDot';
 import { WorkflowWarningTriangle } from './Components/Workflow/Components/WorkflowWarningTriangle';
 import { CurrentStepContainer } from './Components/Workflow/Styles/styles';
+import {
+    htResolverFunction,
+    rcResolverFunction,
+    ReleaseControlHTSidesheetWidgetComponent,
+    ReleaseControlHTSidesheetWidgetManifest,
+    ReleaseControlSidesheetWidgetComponent,
+    ReleaseControlSidesheetWidgetManifest
+} from './DisciplineReleaseControlWidgets';
 import { chewPipetestDataFromApi, getYearAndWeekFromString } from './Functions/statusHelpers';
 import {
     checklistTagFunc,
@@ -43,9 +51,19 @@ export function setup(appApi: ClientApi): void {
     };
 
     const request = appApi
-        .createWorkSpace<Pipetest>({
+        .createWorkSpace<Pipetest, `${typeof appApi.shortName}`>({
             CustomSidesheet: ReleaseControlSidesheet,
             CustomGroupeSidesheet: ReleaseControlHTSidesheet,
+            customSidesheetOptions: {
+                ...ReleaseControlSidesheetWidgetManifest,
+                ...ReleaseControlSidesheetWidgetComponent,
+                resolver: rcResolverFunction,
+            },
+            customGroupeSidesheet: {
+                ...ReleaseControlHTSidesheetWidgetComponent,
+                ...ReleaseControlHTSidesheetWidgetManifest,
+                resolver: htResolverFunction,
+            },
             objectIdentifier: 'name',
             defaultTab: 'garden',
         })
