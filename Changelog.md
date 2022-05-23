@@ -6,7 +6,17 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 
 
-
+# 1.3.0
+- [Workorder]  Filter by progress & follow up status
+- [Workorder] Fix remaining hours on current week column
+- [Workorder] Implement popover
+- [SWCR] Sort date columns so "No Date" column appear first
+- [Mechanical Completion] Use planned dates instead of forecast dates
+- [Mechanical Completion] Implement popover
+- [Handover] Implement popover
+- [GardenUtils] Popover component for virtual garden items
+- [PowerBI] Reset filters when filter group is closed
+- [Table] Fix sorting by number
 ## 1.2.1
 - [Workspace] Config for default collapsing groups in workspace
 - [Scopechange] Added support for materials
