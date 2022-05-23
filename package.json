@@ -41,7 +41,7 @@
     "chartjs-plugin-zoom": "^1.2.0",
     "comlink": "^4.3.1",
     "d3-scale-chromatic": "^3.0.0",
-    "dexie": "^3.2.0",
+    "dexie": "^3.2.2",
     "dompurify": "^2.3.6",
     "fast-levenshtein": "^3.0.0",
     "fuse.js": "^6.5.3",
