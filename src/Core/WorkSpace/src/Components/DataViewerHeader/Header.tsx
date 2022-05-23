@@ -4,8 +4,8 @@ import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
-import { isProduction } from '@equinor/portal-client';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { PerformanceObserver } from '../../../../PerformanceObserver/PerformanceObserver';
@@ -167,9 +167,7 @@ export const CompletionViewHeader = ({
                             <ClickableIcon size={24} name="refresh" />
                         )}
                     </TabButton>
-                    {!isProduction() && (
-                        <BookmarkDropdown appKey={title} subSystem={groupe.toString()} />
-                    )}
+                    {!isProduction() && <BookmarkDropdown appKey={title} subSystem={groupe} />}
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton
@@ -192,10 +190,6 @@ export const CompletionViewHeader = ({
                             >
                                 {hasActiveFilters ? <FilterFilled /> : <Icon name={'filter_alt'} />}
                             </TabButton>
-
-                            {!isProduction() && (
-                                <BookmarkDropdown appKey={title} subSystem={groupe} />
-                            )}
                         </>
                     )}
                 </RightSection>

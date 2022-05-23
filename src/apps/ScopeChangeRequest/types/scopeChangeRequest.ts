@@ -1,13 +1,30 @@
-export interface ScopeChangeRequestFormModel extends ScopeChangeBaseModel {
+import { TypedSelectOption } from '../api/Search/searchType';
+
+export interface ScopeChangeCreateEditModel {
+    id?: string;
+    title: string;
+    description: string;
+    setAsOpen?: boolean;
+    scopeId: string;
+    scope: Scope | null;
+    disciplineGuesstimates: DisciplineGuesstimate[];
+    phase: string;
+    changeCategoryId: string;
+    changeCategory: ChangeCategory;
+    potentialWarrantyCase: boolean;
+    originSourceId?: string;
+    originSource: OriginType;
+
+    newAttachments?: File[];
+    references?: TypedSelectOption[];
     tagNumbers: string[];
     commissioningPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
     documentNumbers: string[];
-    setAsOpen?: boolean;
-    scopeId: string;
-    disciplineGuesstimates: DisciplineGuesstimate[];
-    //workflow
+    materialsIdentifiedInStorage: boolean;
+    materialsToBeBoughtByContractor: boolean;
+    materialsNote?: string;
 }
 
 export interface DisciplineGuesstimate {
@@ -43,6 +60,9 @@ export interface ScopeChangeBaseModel {
     originSource: OriginType;
     actualChangeHours: number;
     potentialWarrantyCase: boolean;
+    materialsIdentifiedInStorage: boolean;
+    materialsToBeBoughtByContractor: boolean;
+    materialsNote?: string;
 }
 
 export interface ScopeChangeDisciplineGuesstimates {
@@ -184,7 +204,6 @@ export interface Contributor {
     createdBy: Person;
     modifiedAtUtc: Date;
     modifiedBy: Person;
-    plant: string;
     id: string;
     instructionsToContributor: string;
     person: Person;
@@ -196,7 +215,6 @@ export interface Contribution {
     createdBy: Person;
     modifiedAtUtc: Date;
     modifiedBy: Person;
-    plant: string;
     id: string;
     comment: string;
     suggestion: string;

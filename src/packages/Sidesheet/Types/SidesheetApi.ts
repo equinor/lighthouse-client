@@ -8,6 +8,7 @@ export interface SidesheetApi {
     setTitle: (items: string | JSX.Element | null | undefined) => void;
     setMenuItems: (menuItems: MenuItem[]) => void;
     swapComponent: <T>(component?: CustomSidesheet<T>, props?: T) => void;
+    setHasUnsavedChanges: (hasUnsaved: boolean) => void;
 }
 
 export interface MenuItem {

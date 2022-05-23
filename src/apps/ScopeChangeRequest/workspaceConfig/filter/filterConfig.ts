@@ -73,4 +73,13 @@ export const filterConfig: FilterOptions<ScopeChangeRequest> = [
                 return aN - bN;
             }),
     },
+    {
+        name: 'Scope',
+        valueFormatter: ({ scope }) => scope?.name,
+    },
+    {
+        name: 'Potential warranty case',
+        valueFormatter: ({ potentialWarrantyCase }) => (potentialWarrantyCase ? 'Yes' : 'No'),
+        sort: (a) => a.sort((_, b) => (b === 'No' ? -1 : 1)),
+    },
 ];

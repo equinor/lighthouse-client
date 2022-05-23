@@ -1,7 +1,7 @@
 // import { AddMenu } from '@equinor/DataFactory';
 import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useClientContext } from '@equinor/portal-client';
+import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { useRef, useState } from 'react';
 import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
 import { AddMenu } from '../../FusionModules/DataCreatorReact/Components/AddMenu';

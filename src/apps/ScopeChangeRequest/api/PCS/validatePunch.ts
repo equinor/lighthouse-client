@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 
 export async function validatePunch(plNumber: string, signal?: AbortSignal): Promise<boolean> {
     const { procosys } = httpClient();

@@ -6,11 +6,16 @@ import {
 import { GardenGroups } from '../../../../components/ParkView/Models/data';
 import { WorkOrder } from '../models';
 import { getFollowUpStatus } from './statusUtils';
-const shouldCountHours = (workOrder: WorkOrder) =>
+const shouldCountHours = (workOrder: WorkOrder): boolean =>
     workOrder.plannedStartDate.length &&
     [FollowUpStatuses.MaterialAndWoOk, FollowUpStatuses.MaterialAndWoAvailable].includes(
         getFollowUpStatus(workOrder)
-    );
+    )
+        ? true
+        : false;
+
+const currentWeekAndYear = getYearAndWeekFromDate(new Date());
+
 export const getSubtitleHeader = (
     garden: GardenGroups<WorkOrder>,
     columnIndex: number,
@@ -21,7 +26,6 @@ export const getSubtitleHeader = (
         return;
     }
     const headerValue = garden[columnIndex].value;
-    const currentWeekAndYear = getYearAndWeekFromDate(new Date());
     const headerValueIsToday = headerValue.localeCompare(currentWeekAndYear, 'en', {
         numeric: true,
     });
@@ -37,13 +41,13 @@ export const getSubtitleHeader = (
     let hours: number[] = [];
     let expandedColumnHours: string = '';
     if (headerValueIsToday === 0) {
-        const currentWeekAndYearAsInt = parseInt(currentWeekAndYear.replace(/\//gi, ''), 10);
+        const currentWeekAndYearAsInt = parseInt(currentWeekAndYear.replace(/\-/gi, ''), 10);
         hours = gardenItemList
             .filter(shouldCountHours)
             .filter(
                 (wo) =>
                     parseInt(
-                        getYearAndWeekFromDate(new Date(wo.plannedStartDate)).replace(/\//gi, ''),
+                        getYearAndWeekFromDate(new Date(wo.plannedStartDate)).replace(/\-/gi, ''),
                         10
                     ) -
                         currentWeekAndYearAsInt <=

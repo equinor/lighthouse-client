@@ -1,5 +1,5 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { ClientApi } from '@equinor/portal-client';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 
 type LoopStatus = 'OK' | 'PA' | 'PB' | 'OS';
 interface Checklist {

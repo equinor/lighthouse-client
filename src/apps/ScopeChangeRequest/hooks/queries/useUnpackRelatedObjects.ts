@@ -11,47 +11,43 @@ import { proCoSysQueryKeys } from '../../keys/proCoSysQueryKeys';
 import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { useQueryCacheLookup } from '../../../../hooks/QueryCache/useQueryCacheLookup';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 
 interface UseUnpackRelatedObjectsParams {
     request: ScopeChangeRequest;
-    getReferences: () => TypedSelectOption[];
-    handleReferencesChanged: (references: TypedSelectOption[]) => void;
 }
 
-export function useUnpackRelatedObjects({
-    getReferences,
-    handleReferencesChanged,
-    request,
-}: UseUnpackRelatedObjectsParams): void {
+export function useUnpackRelatedObjects({ request }: UseUnpackRelatedObjectsParams): void {
     const { addToQueryCache } = useQueryCacheLookup();
     const referencesKeys = { ...proCoSysQueryKeys(), ...stidQueryKeys() };
     const { procosysPlantId: plantId, facilityId } = useFacility();
 
+    const { updateAtom, readAtomValue } = scopeChangeFormAtomApi;
+
+    const handleReferencesChanged = (newVals: TypedSelectOption[]) => {
+        updateAtom({ references: newVals });
+    };
+
     useEffect(() => {
-        unpackRelatedObjects(request, getReferences, handleReferencesChanged);
-    }, [request]);
+        unpackRelatedObjects(request, handleReferencesChanged);
+    }, [request.id]);
 
     function updateReferences(x: TypedSelectOption) {
-        const index = getReferences().findIndex(({ value }) => value === x.value);
-        if (index === -1) {
-            handleReferencesChanged([...getReferences(), x]);
-            return;
-        }
+        const references = readAtomValue().references ?? [];
 
-        handleReferencesChanged([
-            ...getReferences().slice(0, index),
-            x,
-            ...getReferences().slice(index + 1),
-        ]);
+        const index = references.findIndex(({ value }) => value === x.value);
+        if (index === -1) return;
+        handleReferencesChanged([...references.slice(0, index), x, ...references.slice(index + 1)]);
     }
 
     async function unpackRelatedObjects(
         request: ScopeChangeRequest,
-        getReferences: () => TypedSelectOption[],
         handleReferencesChanged: (references: TypedSelectOption[]) => void
     ) {
+        const { readAtomValue } = scopeChangeFormAtomApi;
+
         const appendRelatedObjects = (x: TypedSelectOption) =>
-            handleReferencesChanged([...getReferences(), x]);
+            handleReferencesChanged([...(readAtomValue().references ?? []), x]);
 
         request.commissioningPackages.forEach(async (x) => {
             const commPkgSelectOption: TypedSelectOption = {

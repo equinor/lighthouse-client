@@ -1,4 +1,4 @@
-import { ClientApi, getFusionContextId, httpClient } from '@equinor/portal-client';
+import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
 import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
 import { statusBarData } from './Garden/components/statusItems';
 import { HandoverGroupByView } from './Garden/CustomViews';
@@ -10,14 +10,14 @@ import {
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus
+    sortPackagesByStatus,
 } from './Garden/utility';
 import { filterConfig } from './utility/config/filterSetup';
 import { tableConfig } from './utility/config/tableConfig';
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
         weeklyDaily: 'Weekly',
-        plannedForecast: 'Planned',
+        plannedForecast: 'Forecast',
     };
     appApi
         .createWorkSpace<HandoverPackage>({

@@ -3,11 +3,12 @@ import {
     CreatorComponent,
     CreatorManifest
 } from '@equinor/lighthouse-fusion-modules';
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { FactoryOptions } from '../../../Core/WorkSpace/src';
 import { openSidesheet } from '../../../packages/Sidesheet/Functions';
 import { checkOptionsRequest } from '../api/ScopeChange/Access/optionsRequestChecker';
 import { ScopeChangeCreateForm } from '../Components/DataCreator/DataCreatorWrapper';
+
 
 export const dataCreator: FactoryOptions = {
     title: 'Scope change request',

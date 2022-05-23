@@ -32,14 +32,11 @@ import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 import styled from 'styled-components';
 
 interface SearchReferencesProps {
+    onChange: (newOptions: TypedSelectOption[]) => void;
     references: TypedSelectOption[];
-    handleReferencesChanged: (references: TypedSelectOption[]) => void;
 }
 
-export const SearchReferences = ({
-    handleReferencesChanged,
-    references,
-}: SearchReferencesProps): JSX.Element => {
+export const SearchReferences = ({ onChange, references }: SearchReferencesProps): JSX.Element => {
     const [apiErrors, setApiErrors] = useState<string[]>([]);
     const { abort, getSignal } = useCancellationToken();
     const { search: searchReferences, error } = useReferencesSearch();
@@ -56,11 +53,10 @@ export const SearchReferences = ({
         referenceTypes[0]
     );
 
-    const addRelatedObject = (value: TypedSelectOption) =>
-        handleReferencesChanged([...references, value]);
+    const addRelatedObject = (value: TypedSelectOption) => onChange([...references, value]);
 
     const removeRelatedObject = (value: string) =>
-        handleReferencesChanged(references.filter((x) => x.value !== value));
+        onChange(references.filter((x) => x.value !== value));
 
     const selectedReferences = useMemo(() => {
         return references.sort((a, b) => a.type.localeCompare(b.type));

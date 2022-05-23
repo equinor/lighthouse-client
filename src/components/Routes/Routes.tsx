@@ -1,6 +1,6 @@
 import { GroupView } from '@equinor/GroupView';
+import { ClientHome, useClientContext } from '@equinor/lighthouse-portal-client';
 import { PowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
-import { ClientHome, useClientContext } from '@equinor/portal-client';
 import { closeSidesheet } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';

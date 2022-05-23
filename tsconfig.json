@@ -39,7 +39,7 @@
             "@equinor/atom": [
                 "./src/Core/Atom"
             ],
-            "@equinor/portal-client": [
+            "@equinor/lighthouse-portal-client": [
                 "./src/Core/Client"
             ],
             "@equinor/lighthouse-components": [
@@ -128,6 +128,9 @@
             ],
             "@equinor/BookmarksManager": [
                 "./src/packages/BookmarksManager"
+            ],
+            "@equinor/JSX-Switch": [
+                "./src/components/JSXSwitch"
             ],
             "@equinor/overlay-menu": [
                 "./src/components/OverlayMenu"

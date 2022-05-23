@@ -1,66 +1,22 @@
-import { SingleSelect } from '@equinor/eds-core-react';
 import styled from 'styled-components';
 
-import { FormTextField } from '../../Inputs/FormTextField';
-import { Origin } from '../Origin';
-import { ScopeChangeFormModel } from '../../../hooks/form/useScopeChangeFormState';
-import { IsWarrantyCaseCheckbox } from '../IsWarrantyCheckbox/IsWarrantyCheckbox';
+import { OriginIdPicker } from '../Inputs/OriginIdPicker/OriginIdPicker';
+import { IsWarrantyCaseCheckbox } from '../Inputs/IsWarrantyCheckbox/IsWarrantyCheckbox';
+import { TitleInput } from '../Inputs/TitleInput/TitleInput';
+import { DescriptionInput } from '../Inputs/DescriptionInput/DescriptionInput';
+import { OriginSourceSelect } from '../Inputs/OriginSourceSelect/OriginSourceSelect';
 
-interface ScopeChangeBaseFormProps {
-    state: Partial<ScopeChangeFormModel>;
-    handleInput: (key: keyof ScopeChangeFormModel, value: unknown) => void;
-    shouldDisableCategory?: boolean;
-}
-
-export const ScopeChangeBaseForm = ({
-    handleInput,
-    state,
-}: ScopeChangeBaseFormProps): JSX.Element => {
+export const ScopeChangeBaseForm = (): JSX.Element => {
     return (
         <BaseFormContainer>
-            <FormTextField
-                label="Title"
-                initialValue={state.title}
-                required
-                placeholder="Please add a title for the request"
-                onChange={(change) => handleInput('title', change)}
-            />
-
+            <TitleInput />
             <Section>
-                <SingleSelect
-                    items={['NCR', 'Punch', 'Query', /**'SWCR',**/ 'NotApplicable', 'DCR']}
-                    label={'Change origin'}
-                    meta="(Required)"
-                    initialSelectedItem={state.originSource}
-                    placeholder="Select origin"
-                    handleSelectedItemChange={(change) => {
-                        handleInput('originSource', change.selectedItem);
-                    }}
-                />
-                <Origin
-                    originSource={{
-                        handleOriginSourceChange: (e) => handleInput('originSource', e),
-                        originSource: state.originSource,
-                    }}
-                    originId={{
-                        handleOriginIdChange: (e) => handleInput('originSourceId', e),
-                        originId: state.originSourceId,
-                    }}
-                />
+                <OriginSourceSelect />
+                <OriginIdPicker />
             </Section>
-            <FormTextField
-                multiline
-                label="Scope description"
-                placeholder="Please add description"
-                required
-                initialValue={state.description}
-                onChange={(value) => handleInput('description', value)}
-            />
+            <DescriptionInput />
             <CheckboxWrapper>
-                <IsWarrantyCaseCheckbox
-                    initialValue={state.potentialWarrantyCase}
-                    handleInput={(newVal) => handleInput('potentialWarrantyCase', newVal)}
-                />
+                <IsWarrantyCaseCheckbox />
             </CheckboxWrapper>
         </BaseFormContainer>
     );

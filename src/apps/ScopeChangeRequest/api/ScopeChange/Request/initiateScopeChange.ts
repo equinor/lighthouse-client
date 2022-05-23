@@ -1,5 +1,5 @@
 import { patchScopeChange } from './patchScopeChange';
-import { ScopeChangeRequest, ScopeChangeRequestFormModel } from '../../../types/scopeChangeRequest';
+import { ScopeChangeRequest, ScopeChangeCreateEditModel } from '../../../types/scopeChangeRequest';
 
 /**
  *
@@ -11,7 +11,7 @@ interface InitiateScopeChangeParams {
 }
 
 export async function initiateScopeChange({ request }: InitiateScopeChangeParams): Promise<void> {
-    const scopeChange: ScopeChangeRequestFormModel = {
+    const scopeChange: ScopeChangeCreateEditModel = {
         ...request,
         changeCategoryId: request.changeCategory.id,
         description: request.description,

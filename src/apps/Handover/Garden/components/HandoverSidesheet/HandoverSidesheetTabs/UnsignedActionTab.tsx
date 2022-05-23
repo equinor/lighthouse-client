@@ -1,5 +1,5 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column } from '@equinor/Table';
 import { HandoverUnsignedAction } from '../../../models';
 
@@ -7,9 +7,10 @@ const columns: Column<HandoverUnsignedAction>[] = [
     {
         id: 'actionNumber',
         Header: '#',
-        accessor: ({ actionNumber, url }) => ({
-            content: actionNumber,
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            currentKey: 'actionNumber',
         }),
         Cell: CellWithLink,
     },

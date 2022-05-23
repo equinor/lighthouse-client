@@ -7,8 +7,9 @@ import {
     createAdvancedPbiFilter,
     getActiveFilterValues,
     getFilters,
-    removeVisibleFilters
+    removeVisibleFilters,
 } from '../../Utils';
+import { getActiveFilterGroupArray } from '../../Utils/getActiveFilterGroups';
 import { FilterGroup } from './FilterGroup';
 import { FilterItems } from './FilterItems';
 import { FilterGroupWrap, FilterItemsWrapper, FilterWrapper, Item, MenuItems } from './Styles';
@@ -35,13 +36,15 @@ export const PowerBIFilter = ({
         Record<string, (string | number | boolean)[]>
     >({});
     const [filterGroupVisible, setFilterGroupVisible] = useState<string[]>(
-        options?.defaultFilterGroupVisible || ['Responsible']
+        options?.defaultFilterGroupVisible || []
     );
     const [isFilterSelectActive, setIsFilterSelectActive] = useState<boolean>(true);
 
-    const handleChangeGroup = (filter: PowerBiFilter) => {
+    const handleChangeGroup = async (filter: PowerBiFilter) => {
         if (filterGroupVisible?.find((a) => a === filter.type) !== undefined) {
             setFilterGroupVisible(filterGroupVisible.filter((a) => a !== filter.type));
+            setActiveFilters((prev) => ({ ...prev, [filter.type]: [] }));
+            await filter.slicer?.setSlicerState({ filters: [] });
         } else {
             setFilterGroupVisible((prev) => [...(prev ? prev : []), filter.type]);
         }
@@ -181,15 +184,18 @@ export const PowerBIFilter = ({
     /**
      * Effect should be triggered when activeFilters has changed.
      * Some filters may not longer be applicable, therefore the need to get filters again.
+     * Dependency array needs to check for length because checking only object will not fire the effect.
      */
     useEffect(() => {
         if (report && isLoaded) {
             (async () => {
                 const filters = await getFilters(report);
                 setSlicerFilters(filters);
+                const filterGroupNames = getActiveFilterGroupArray(activeFilters);
+                setFilterGroupVisible((s) => [...s, ...filterGroupNames]);
             })();
         }
-    }, [activeFilters]);
+    }, [activeFilters, Object.entries(activeFilters).length]);
 
     if (!slicerFilters) return null;
 

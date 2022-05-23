@@ -1,13 +1,18 @@
 import Functions from '@equinor/lighthouse-functions';
 import Widget from '@equinor/lighthouse-widgets';
 import React from 'react';
+import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { SidesheetWidgetManifest } from '../../../Core/WorkSpace/src';
 import { DefaultDataView } from '../Components/DefaultDataView';
 import { SuspenseSidesheet } from '../Components/SuspenseSidesheet';
 import { DEFAULT_TAB_COLOR, getSidesheetContext } from '../context/sidesheetContext';
-import { dispatch } from '../State/actions';
+import { dispatch, readState } from '../State/actions';
 import { SidesheetApi } from '../Types/SidesheetApi';
 import { handleUpdateHashUrl } from '../Utils/urlHandler';
+
+export function hasUnsavedChanges(): boolean {
+    return readState(getSidesheetContext(), (s) => s.hasUnsavedChanges);
+}
 
 export function openSidesheet<T>(
     SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
@@ -18,6 +23,25 @@ export function openSidesheet<T>(
 
     let appName: string | undefined;
     let color = DEFAULT_TAB_COLOR;
+
+    /**
+     * If unsaved changes, spawn confirmation dialog.
+     */
+    if (hasUnsavedChanges()) {
+        spawnConfirmationDialog(
+            'Unsaved changes, are you sure you want to abandon your changes',
+            'Warning!',
+            () => {
+                dispatch(getSidesheetContext(), (s) => ({ ...s, hasUnsavedChanges: false }));
+                openSidesheet(SidesheetContent, props, manifest);
+            }
+        );
+        return;
+    }
+
+    /**
+     *  Handles manifest extraction and url update if needed.
+     */
     if (manifest) {
         appName = manifest.props?.parentApp;
         color = manifest.color || DEFAULT_TAB_COLOR;
@@ -26,6 +50,7 @@ export function openSidesheet<T>(
             (props && props[`${manifest.props?.objectIdentifier}`]) || ''
         );
     }
+
     dispatch(getSidesheetContext(), (state) => {
         return {
             ...state,

@@ -1,4 +1,4 @@
-import { ClientApi } from '@equinor/portal-client';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
 import {
     ResolverFunction,
     SidesheetComponentManifest,
@@ -13,6 +13,7 @@ import { prefetchQueriesOptions } from './workspaceConfig/prefetchQueryOptions';
 import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
 import { tableConfig } from './workspaceConfig/sTable/tableConfig';
 import { statusBarConfig } from './workspaceConfig/statusBarConfig';
+
 
 export const changeSideSheetWidgetManifest: SidesheetWidgetManifest<ScopeChangeRequest, 'change'> =
     {

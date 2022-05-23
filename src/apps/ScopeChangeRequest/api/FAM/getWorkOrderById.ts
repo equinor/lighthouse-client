@@ -1,4 +1,4 @@
-import { httpClient } from '@equinor/portal-client';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { generateExpressions, generateFamRequest } from '../../functions/FAM/generateFAMRequest';
 import { WorkOrder } from '../../types/FAM/workOrder';
 

@@ -4,6 +4,9 @@ import { Tooltip, Icon } from '@equinor/eds-core-react';
 
 export const AvailableItemCell = (props: CellProps<WorkOrderMaterial, WorkOrderMaterial>) => {
     const { value } = props;
+    if (value === null) {
+        return null;
+    }
     const refTitle = value.available === 'Y' ? 'Available' : 'Not Available';
 
     return (

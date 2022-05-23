@@ -1,5 +1,5 @@
 import { CellWithLink, TabTable } from '@equinor/GardenUtils';
-import { isProduction } from '@equinor/portal-client';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column, DescriptionCell } from '@equinor/Table';
 import { McPunchItem } from '../types';
 
@@ -13,9 +13,10 @@ const columns: Column<McPunchItem>[] = [
     {
         id: 'tagNumber',
         Header: 'TagNo',
-        accessor: ({ url, tagNumber }) => ({
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
-            content: tagNumber,
+        accessor: (pkg) => ({
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            content: pkg,
+            currentKey: 'tagNumber',
         }),
         Cell: CellWithLink,
         width: 100,

@@ -3,6 +3,7 @@ import { Tabs } from '@equinor/eds-core-react';
 import { useEdsTabs } from '@equinor/hooks';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+
 import {
     disableEditMode,
     sideSheetEditModeAtom,
@@ -55,10 +56,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
         <Wrapper>
             <ScopeChangeErrorBanner />
             {editMode ? (
-                <ScopeChangeRequestEditForm
-                    request={getScopeChangeSnapshot().request}
-                    close={disableEditMode}
-                />
+                <ScopeChangeRequestEditForm />
             ) : (
                 <>
                     <SidesheetBanner />
