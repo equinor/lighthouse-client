@@ -5,6 +5,7 @@ export const gardenOptions: GardenOptions<ReleaseControl> = {
     gardenKey: 'Status' as keyof ReleaseControl,
     itemKey: 'sequenceNumber',
     type: 'normal',
+    collapseSubGroupsByDefault: true,
     fieldSettings: {
         CurrentStep: {
             getKey: ({ currentWorkflowStep }) => currentWorkflowStep?.name ?? '(Blank)',

@@ -28,16 +28,16 @@ export const ReassignBar = ({ criteriaId, requestId, stepId }: ReassignBarProps)
                     stepId: stepId,
                     criteriaId: criteriaId,
                     reassign: {
-                        type: `${
-                            value.type === 'functionalRole'
+                        type: `${value.type === 'functionalRole'
                                 ? 'RequireProcosysFunctionalRoleSignature'
                                 : 'RequireProcosysUserSignature'
-                        }`,
+                            }`,
                         value: value.value,
                     },
                 });
                 resetSigningAtom();
             }}
+            classification="RELEASECONTROL"
         />
     );
 };
