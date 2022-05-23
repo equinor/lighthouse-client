@@ -65,20 +65,16 @@ export interface Contributor {
     plant;
 }
 
-export interface CurrentWorkflowStep {
+export interface DraggableReleaseControlStep {
     id: string;
-    name: string;
-    order: number;
-    isCurrent: boolean;
-    isCompleted: boolean;
-    criterias: Criteria[];
-    contributors: Contributor[];
+    item: ReleaseControlStep;
 }
 
-export interface WorkflowStep {
+export interface ReleaseControlStep {
     id: string;
     name: string;
     order: number;
+    responsible: string;
     isCurrent: boolean;
     isCompleted: boolean;
     criterias: Criteria[];
@@ -107,14 +103,15 @@ export interface ReleaseControl {
     title: string;
     description: string;
     phase: string;
-    plannedDueDate: Date;
+    plannedDueDate: string;
     state: string;
     workflowStatus: string;
     isVoided: boolean;
     hasComments: boolean;
     hasPendingContributions: boolean;
-    currentWorkflowStep: CurrentWorkflowStep;
-    workflowSteps: WorkflowStep[];
+    allowContributors: boolean;
+    currentWorkflowStep: ReleaseControlStep;
+    workflowSteps: ReleaseControlStep[];
     tags: Tag[];
     areas: Area[];
 }

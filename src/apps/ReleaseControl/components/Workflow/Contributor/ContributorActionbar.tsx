@@ -6,11 +6,11 @@ import { IconMenu, MenuButton, MenuItem } from '@equinor/overlay-menu';
 import { Contributor } from '../../../types/releaseControl';
 import { useReleaseControlContext } from '../../../hooks/useReleaseControlContext';
 import { releaseControlMutationKeys } from '../../../queries/releaseControlMutationKeys';
-import { useReleaseControlMutation } from '../../../../DisciplineReleaseControl/Hooks/useReleaseControlMutation';
 import { submitContribution } from '../../../api/releaseControl/Workflow';
 import { releaseControlQueries } from '../../../queries/queries';
 import { removeContributor } from '../../../api/releaseControl/Workflow/removeContributor';
 import { ContributorActions } from '../Types/actions';
+import { useReleaseControlMutation } from '../../../hooks/useReleaseControlMutation';
 
 interface ContributorActionBarProps {
     stepId: string;
