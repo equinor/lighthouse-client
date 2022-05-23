@@ -34,7 +34,7 @@ export function useScopeChangeMutation<
 
     return useMutation(mutationKey, mutationFn, {
         ...options,
-        retry: 0,
+        retry: false,
         onSettled: invalidate,
     });
 }

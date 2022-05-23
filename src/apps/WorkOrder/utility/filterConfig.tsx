@@ -1,5 +1,9 @@
+import { FollowUpStatuses } from '@equinor/GardenUtils';
 import { FilterOptions } from '../../../packages/Filter/Types';
+import { FollowUpStatusFilter } from '../components';
 import { WorkOrder } from '../Garden/models';
+import { getFollowUpStatus, followUpStatusPriorityMap } from '../Garden/utility';
+
 type Progress = 'Not Started' | '0-25%' | '25-50%' | '50-75%' | '75-95%' | '95-99%' | '100%';
 const progressPriMap: Record<Progress, number> = {
     'Not Started': 1,
@@ -10,6 +14,7 @@ const progressPriMap: Record<Progress, number> = {
     '95-99%': 6,
     '100%': 7,
 };
+
 export const filterConfig: FilterOptions<WorkOrder> = [
     // {
     //     name: 'Work order',
@@ -24,6 +29,19 @@ export const filterConfig: FilterOptions<WorkOrder> = [
     {
         name: 'Job status',
         valueFormatter: ({ jobStatus }) => jobStatus,
+    },
+    {
+        name: 'Status',
+        valueFormatter: (workOrder) => getFollowUpStatus(workOrder),
+        sort: (filterValues) =>
+            filterValues.sort(
+                (a, b) =>
+                    followUpStatusPriorityMap[b as FollowUpStatuses] -
+                    followUpStatusPriorityMap[a as FollowUpStatuses]
+            ),
+        customValueRender: (filterValue) => {
+            return <FollowUpStatusFilter status={filterValue as FollowUpStatuses} />;
+        },
     },
     {
         name: 'Responsible',

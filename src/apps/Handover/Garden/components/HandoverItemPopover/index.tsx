@@ -1,6 +1,4 @@
 import { HandoverPackage } from '../../models/handoverPackage';
-import { FC, memo } from 'react';
-import { Popover } from '@equinor/eds-core-react';
 import { Status } from '../../utility/handoverItemMapping';
 import {
     CommStatus,
@@ -26,82 +24,65 @@ export type ItemOptions = {
     showWarningIcon: boolean;
 };
 
-type HandoverItemPopoverProps = {
+type PopoverContentProps = {
     data: HandoverPackage;
     itemOptions: ItemOptions;
-    anchorRef: React.RefObject<HTMLDivElement>;
-    setOpenState: React.Dispatch<React.SetStateAction<boolean>>;
-    isOpen: boolean;
 };
-
-const HandoverItemPopoverWrapper: FC<HandoverItemPopoverProps> = ({
+export const PopoverContent = ({
     data,
-    itemOptions,
-    anchorRef,
-    setOpenState,
-    isOpen,
-}) => {
-    const { size, status, barColor, textColor, showWarningIcon, commStatusColor, mcPackageColor } =
-        itemOptions;
-
+    itemOptions: {
+        barColor,
+        commStatusColor,
+        mcPackageColor,
+        showWarningIcon,
+        size,
+        status,
+        textColor,
+    },
+}: PopoverContentProps) => {
     return (
-        <Popover
-            id="hover-popover"
-            anchorEl={anchorRef.current}
-            onClose={() => setOpenState(false)}
-            open={isOpen}
-            placement="bottom"
-        >
-            <Popover.Title>{`Comm.pkg: ${data.commpkgNo}`} </Popover.Title>
-            <Popover.Content>
-                <PopoverContainer>
-                    <p style={{ fontWeight: 'bold' }}>Project (ProCoSys)</p>
-                    <p>
-                        {data.projectIdentifier}, {data.projectDescription}
-                    </p>
-                    <p>{data.description}</p>
-                    <hr />
-                    <CommStatus barColor={barColor} textColor={textColor}>
-                        <strong>{`Milestone: ${status}`}</strong>
-                        <span>
-                            <SizeIcons status={status} size={size} />
+        <PopoverContainer>
+            <p style={{ fontWeight: 'bold' }}>Project (ProCoSys)</p>
+            <p>
+                {data.projectIdentifier}, {data.projectDescription}
+            </p>
+            <p>{data.description}</p>
+            <hr />
+            <CommStatus barColor={barColor} textColor={textColor}>
+                <strong>{`Milestone: ${status}`}</strong>
+                <span>
+                    <SizeIcons status={status} size={size} />
 
-                            <strong> {`Volume: ${data.volume} (${size})`}</strong>
-                        </span>
-                    </CommStatus>
-                    <IconsContainer>
-                        {showWarningIcon && (
-                            <WarningContainer>
-                                <WarningIcon />
-                                <WarningText>
-                                    <strong>NB:</strong>
-                                    <p>RFCC with MC status OS</p>
-                                </WarningText>
-                            </WarningContainer>
-                        )}
-                        {data.hasUnsignedActions && (
-                            <FlagUnsignedAction>
-                                <FlagIcon color={textColor} /> <p>Unsigned actions</p>
-                            </FlagUnsignedAction>
-                        )}
-                    </IconsContainer>
-                    <Statuses>
-                        <h5>MC status</h5>
-                        <StatusStyle color={mcPackageColor}>
-                            {['OS', 'OK', 'PA'].includes(data.mcStatus) ? data.mcStatus : 'PB'}
-                        </StatusStyle>
+                    <strong> {`Volume: ${data.volume} (${size})`}</strong>
+                </span>
+            </CommStatus>
+            <IconsContainer>
+                {showWarningIcon && (
+                    <WarningContainer>
+                        <WarningIcon />
+                        <WarningText>
+                            <strong>NB:</strong>
+                            <p>RFCC with MC status OS</p>
+                        </WarningText>
+                    </WarningContainer>
+                )}
+                {data.hasUnsignedActions && (
+                    <FlagUnsignedAction>
+                        <FlagIcon color={textColor} /> <p>Unsigned actions</p>
+                    </FlagUnsignedAction>
+                )}
+            </IconsContainer>
+            <Statuses>
+                <h5>MC status</h5>
+                <StatusStyle color={mcPackageColor}>
+                    {['OS', 'OK', 'PA'].includes(data.mcStatus) ? data.mcStatus : 'PB'}
+                </StatusStyle>
 
-                        <h5>CommPkg status</h5>
-                        <StatusStyle color={commStatusColor}>
-                            {['OS', 'OK', 'PA'].includes(data.commpkgStatus)
-                                ? data.commpkgStatus
-                                : 'PB'}
-                        </StatusStyle>
-                    </Statuses>
-                </PopoverContainer>
-            </Popover.Content>
-        </Popover>
+                <h5>CommPkg status</h5>
+                <StatusStyle color={commStatusColor}>
+                    {['OS', 'OK', 'PA'].includes(data.commpkgStatus) ? data.commpkgStatus : 'PB'}
+                </StatusStyle>
+            </Statuses>
+        </PopoverContainer>
     );
 };
-
-export const HandoverItemPopover = memo(HandoverItemPopoverWrapper);
