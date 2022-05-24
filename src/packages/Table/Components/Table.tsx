@@ -163,14 +163,11 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.onSelect, row]);
 
-    //TODO: Fix styling
-    style =
-        data.selectedId === row.id
-            ? {
-                ...style,
-                backgroundColor: tokens.colors.interactive.primary__selected_highlight.hex,
-            }
-            : style;
+    data.selectedId === row.id &&
+        (style = {
+            ...style,
+            backgroundColor: tokens.colors.interactive.primary__selected_highlight.hex,
+        });
 
     return (
         <TableRow
