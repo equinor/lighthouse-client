@@ -4,6 +4,7 @@ import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
 import styled from 'styled-components';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
+import { FunctionalRole } from '../../../types/functionalRole';
 import { CreateReleaseControlStepModel } from '../../../types/releaseControl';
 import { DraggableHandleSelector } from './WorkflowCustomEditor';
 import {
@@ -16,9 +17,13 @@ import {
 interface WorkflowStepProps {
     step: CreateReleaseControlStepModel;
     steps: CreateReleaseControlStepModel[];
+    functionalRoles?: FunctionalRole[];
 }
 
-export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element => {
+export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps): JSX.Element => {
+    const functionalRoleNames = functionalRoles?.map((role) => {
+        return role.Description;
+    });
     const { updateAtom } = DRCFormAtomApi;
     return (
         <Line>
@@ -47,7 +52,7 @@ export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element =>
                     }
                 />
                 <SingleSelect
-                    items={responsibles}
+                    items={functionalRoleNames ?? []}
                     label="Responsible"
                     selectedOption={step.criteriaTemplates[0].value}
                     handleSelectedItemChange={(change) =>
@@ -100,6 +105,7 @@ const NumberCircle = styled.div`
 `;
 
 const stepNames = [
+    'Initiate',
     'Demount Insulation',
     'Electric isolation',
     'Demount HT',
@@ -107,5 +113,3 @@ const stepNames = [
     'Mount valve',
     'Bolt tensioning',
 ];
-
-const responsibles = ['Iso', 'Electrical', 'Mechanical'];

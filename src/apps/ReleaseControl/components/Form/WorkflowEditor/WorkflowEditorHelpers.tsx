@@ -17,7 +17,7 @@ export function getNewWorkflowSteps(): CreateReleaseControlStepModel[] {
     const baseReleaseControlSteps: CreateReleaseControlStepModel[] = [
         {
             order: 1,
-            name: '',
+            name: 'Initiate',
             allowContributors: true,
             criteriaTemplates: [
                 {
