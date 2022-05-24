@@ -107,6 +107,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'actualChangeHours',
         'changeCategory',
         'originSource',
+        'scope',
         'modifiedAtUtc',
         'systems',
         'areas',
