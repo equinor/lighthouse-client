@@ -1,6 +1,7 @@
-import React, { PropsWithChildren, useCallback, useLayoutEffect, useRef } from 'react';
-import { Cell, Row, TableInstance, TableOptions } from 'react-table';
+import React, { PropsWithChildren, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import { Cell, ColumnInstance, HeaderGroup, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
+
 import { useTable } from '../Hooks/useTable';
 import { CellClickHandler, TableData } from '../types';
 import { useDefaultColumn } from '../Utils/ColumnDefault';
@@ -9,11 +10,20 @@ import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
+//Feel free to extend
+export interface TableAPI {
+    toggleHideColumn: (colId: string) => void;
+    setColumnOrder: (updater: string[] | ((columnOrder: string[]) => string[])) => void;
+    getVisibleColumns: () => ColumnInstance<TableData, TableData>[];
+    getHeaderGroups: () => HeaderGroup<TableData>[];
+}
+
 interface DataTableProps<TData extends TableData> {
     options: TableOptions<TData>;
     FilterComponent?: React.FC<{ filterId: string }>;
     height?: number;
     itemSize?: number;
+    onTableReady?: (api: TableAPI) => void;
 }
 
 const DEFAULT_HEIGHT = 600;
@@ -24,6 +34,7 @@ export function Table<TData extends TableData = TableData>({
     FilterComponent,
     itemSize,
     height,
+    onTableReady,
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
     const hooks = RegisterReactTableHooks<TData>({ rowSelect: options.enableSelectRows || false });
     const ref = useRef<HTMLDivElement>(null);
@@ -32,12 +43,24 @@ export function Table<TData extends TableData = TableData>({
     const {
         prepareRow,
         rows,
+        toggleHideColumn,
+        visibleColumns,
         getTableProps,
         getTableBodyProps,
         headerGroups,
         totalColumnsWidth,
         setColumnOrder,
     } = useTable({ ...options, defaultColumn }, hooks) as TableInstance<TableData>;
+
+    useEffect(() => {
+        onTableReady &&
+            onTableReady({
+                getHeaderGroups: () => headerGroups,
+                getVisibleColumns: () => visibleColumns,
+                setColumnOrder,
+                toggleHideColumn,
+            });
+    }, []);
 
     const onCellClick: CellClickHandler<TableData> = useCallback(
         (cell, e) => {
