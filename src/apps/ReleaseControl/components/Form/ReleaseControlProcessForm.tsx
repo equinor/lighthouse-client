@@ -2,6 +2,7 @@ import { Button, Progress, SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
+import { PhaseSelect } from '../../../DisciplineReleaseControl/Components/Form/Inputs/PhaseSelect';
 import { getReleaseControlById } from '../../api/releaseControl/Request';
 
 import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
@@ -25,6 +26,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                         <TitleInput />
                         <DescriptionInput />
                         <PlannedDueDateInput />
+                        <PhaseSelect />
                         <ReferencesInput />
                     </FlexColumn>
                     <FlexColumn>

@@ -67,7 +67,7 @@ export interface Contributor {
 
 export interface DraggableReleaseControlStep {
     id: string;
-    item: ReleaseControlStep;
+    item: CreateReleaseControlStepModel;
 }
 
 export interface ReleaseControlStep {
@@ -79,6 +79,22 @@ export interface ReleaseControlStep {
     isCompleted: boolean;
     criterias: Criteria[];
     contributors: Contributor[];
+}
+
+export interface CreateReleaseControlStepModel {
+    name: string;
+    order: number;
+    allowContributors: boolean;
+    completedStatusName?: string;
+    rejectedStatusName?: string;
+    criteriaTemplates: CriteriaTemplate[];
+}
+
+export interface CriteriaTemplate {
+    type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';
+    assignToCreator: boolean;
+    //I.E functional role name or azure oid
+    value?: string;
 }
 
 export interface Tag {
