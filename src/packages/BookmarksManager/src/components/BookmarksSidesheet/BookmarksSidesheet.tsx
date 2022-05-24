@@ -12,7 +12,7 @@ export const BookmarkSidesheet = () => {
     if (error) return <div>{error.message}</div>;
     if (!bookmarks || bookmarks.length === 0) return <div>No bookmarks</div>;
     const bookmarksBySubsystemAppKey = groupBookmarksBySubSystemAppkey(bookmarks);
-
+    console.log(bookmarksBySubsystemAppKey);
     return (
         <div>
             {Object.keys(bookmarksBySubsystemAppKey).map((subSystemKey) => {
@@ -27,24 +27,18 @@ export const BookmarkSidesheet = () => {
                                         (bookmark) => {
                                             const appKey = bookmark.appKey
                                                 .replace('jc-', '')
-                                                .replace(' ', '-')
+                                                .replaceAll(' ', '-')
                                                 .toLocaleLowerCase();
                                             const subSystem =
                                                 bookmark.sourceSystem.subSystem.replace(' ', '');
                                             return (
-                                                // <div
-                                                //     key={bookmark.id}
-                                                //     id={bookmark.id}
-                                                //     onClick={() => handleClick(bookmark)}
-                                                // >
-                                                //     {bookmark.name}
-                                                // </div>
-                                                <Link
-                                                    key={bookmark.id}
-                                                    to={`/${subSystem}/${appKey}?bookmarkId=${bookmark.id}`}
-                                                >
-                                                    {bookmark.name}
-                                                </Link>
+                                                <div key={bookmark.id}>
+                                                    <Link
+                                                        to={`/${subSystem}/${appKey}?bookmarkId=${bookmark.id}`}
+                                                    >
+                                                        {bookmark.name}
+                                                    </Link>
+                                                </div>
                                             );
                                         }
                                     )}
@@ -73,7 +67,12 @@ type BookmarksBySubSystemAppKey = Record<string, Record<string, BookmarkResponse
 export const groupBookmarksBySubSystemAppkey = (bookmarks: BookmarkResponse[]) => {
     const bookmarksBySubSystem = bookmarks.reduce((acc, curr) => {
         acc[curr.sourceSystem.subSystem] = acc[curr.sourceSystem.subSystem]
-            ? { ...acc[curr.sourceSystem.subSystem], [curr.appKey]: [curr] }
+            ? {
+                  ...acc[curr.sourceSystem.subSystem],
+                  [curr.appKey]: acc[curr.sourceSystem.subSystem]?.[curr.appKey]
+                      ? [...acc[curr.sourceSystem.subSystem][curr.appKey], curr]
+                      : [curr],
+              }
             : {
                   [curr.appKey]: acc[curr.sourceSystem.subSystem]?.[curr.appKey]
                       ? [...acc[curr.sourceSystem.subSystem][curr.appKey], curr]
