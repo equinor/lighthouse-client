@@ -1,6 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
-import { ReleaseControlStep } from '../../../types/releaseControl';
+import { CreateReleaseControlStepModel } from '../../../types/releaseControl';
 import { InsertAfter } from './InsertAfter';
 import { InsertBefore } from './InsertBefore';
 
@@ -13,55 +13,57 @@ export interface MenuItem {
     isDisabled?: boolean;
 }
 
-export function getNewWorkflowSteps(): ReleaseControlStep[] {
-    const baseReleaseControlSteps: ReleaseControlStep[] = [
+export function getNewWorkflowSteps(): CreateReleaseControlStepModel[] {
+    const baseReleaseControlSteps: CreateReleaseControlStepModel[] = [
         {
-            id: '',
             order: 1,
             name: '',
-            responsible: '',
-            isCompleted: false,
-            isCurrent: false,
-            contributors: [],
-            criterias: [],
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysUserSignature',
+                    assignToCreator: true,
+                },
+            ],
         },
     ];
     return baseReleaseControlSteps;
 }
 
 export function updateStepName(
-    step: ReleaseControlStep,
-    steps: ReleaseControlStep[],
+    step: CreateReleaseControlStepModel,
+    steps: CreateReleaseControlStepModel[],
     stepName: string
-): ReleaseControlStep[] {
+): CreateReleaseControlStepModel[] {
     const index = steps.findIndex((x) => x.order === step.order);
     steps[index].name = stepName;
     return [...steps];
 }
 
 export function updateStepResponsible(
-    step: ReleaseControlStep,
-    steps: ReleaseControlStep[],
+    step: CreateReleaseControlStepModel,
+    steps: CreateReleaseControlStepModel[],
     responsible: string
-): ReleaseControlStep[] {
+): CreateReleaseControlStepModel[] {
     const index = steps.findIndex((x) => x.order === step.order);
-    steps[index].responsible = responsible;
+    steps[index].criteriaTemplates[0].value = responsible;
     return [...steps];
 }
 
 export function addStepAfter(
-    currentStep: ReleaseControlStep,
-    steps: ReleaseControlStep[]
-): ReleaseControlStep[] {
-    const newStep = {
-        id: '',
+    currentStep: CreateReleaseControlStepModel,
+    steps: CreateReleaseControlStepModel[]
+): CreateReleaseControlStepModel[] {
+    const newStep: CreateReleaseControlStepModel = {
         order: currentStep.order + 1,
         name: '',
-        responsible: '',
-        isCompleted: false,
-        isCurrent: false,
-        contributors: [],
-        criterias: [],
+        allowContributors: true,
+        criteriaTemplates: [
+            {
+                assignToCreator: true,
+                type: 'RequireProcosysUserSignature',
+            },
+        ],
     };
     steps.forEach((x) => {
         if (x.order >= currentStep.order + 1) {
@@ -73,18 +75,19 @@ export function addStepAfter(
 }
 
 export function addStepBefore(
-    currentStep: ReleaseControlStep,
-    steps: ReleaseControlStep[]
-): ReleaseControlStep[] {
-    const newStep = {
-        id: '',
+    currentStep: CreateReleaseControlStepModel,
+    steps: CreateReleaseControlStepModel[]
+): CreateReleaseControlStepModel[] {
+    const newStep: CreateReleaseControlStepModel = {
         order: currentStep.order,
         name: '',
-        responsible: '',
-        isCompleted: false,
-        isCurrent: false,
-        contributors: [],
-        criterias: [],
+        allowContributors: true,
+        criteriaTemplates: [
+            {
+                assignToCreator: true,
+                type: 'RequireProcosysUserSignature',
+            },
+        ],
     };
     steps.forEach((x) => {
         if (x.order >= currentStep.order) {
@@ -96,18 +99,12 @@ export function addStepBefore(
 }
 
 export function duplicateStep(
-    currentStep: ReleaseControlStep,
-    steps: ReleaseControlStep[]
-): ReleaseControlStep[] {
-    const newStep = {
-        id: '',
+    currentStep: CreateReleaseControlStepModel,
+    steps: CreateReleaseControlStepModel[]
+): CreateReleaseControlStepModel[] {
+    const newStep: CreateReleaseControlStepModel = {
+        ...currentStep,
         order: currentStep.order + 1,
-        name: currentStep.name,
-        responsible: currentStep.responsible,
-        isCompleted: false,
-        isCurrent: false,
-        contributors: [],
-        criterias: [],
     };
     steps.forEach((x) => {
         if (x.order >= newStep.order) {
@@ -119,9 +116,9 @@ export function duplicateStep(
 }
 
 export function removeStep(
-    step: ReleaseControlStep,
-    steps: ReleaseControlStep[]
-): ReleaseControlStep[] {
+    step: CreateReleaseControlStepModel,
+    steps: CreateReleaseControlStepModel[]
+): CreateReleaseControlStepModel[] {
     steps = steps.filter((x) => x.order !== step.order);
     steps.forEach((x) => {
         if (x.order > step.order) {
@@ -132,8 +129,8 @@ export function removeStep(
 }
 
 export function getWorkflowStepMenuActions(
-    step: ReleaseControlStep,
-    steps: ReleaseControlStep[]
+    step: CreateReleaseControlStepModel,
+    steps: CreateReleaseControlStepModel[]
 ): MenuItem[] {
     const actions: MenuItem[] = [];
     actions.push({

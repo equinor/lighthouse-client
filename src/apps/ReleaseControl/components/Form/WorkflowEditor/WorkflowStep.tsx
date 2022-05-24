@@ -4,7 +4,7 @@ import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
 import styled from 'styled-components';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
-import { ReleaseControlStep } from '../../../types/releaseControl';
+import { CreateReleaseControlStepModel } from '../../../types/releaseControl';
 import { DraggableHandleSelector } from './WorkflowCustomEditor';
 import {
     getWorkflowStepMenuActions,
@@ -14,8 +14,8 @@ import {
 } from './WorkflowEditorHelpers';
 
 interface WorkflowStepProps {
-    step: ReleaseControlStep;
-    steps: ReleaseControlStep[];
+    step: CreateReleaseControlStepModel;
+    steps: CreateReleaseControlStepModel[];
 }
 
 export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element => {
@@ -49,7 +49,7 @@ export const WorkflowStep = ({ step, steps }: WorkflowStepProps): JSX.Element =>
                 <SingleSelect
                     items={responsibles}
                     label="Responsible"
-                    selectedOption={step.responsible}
+                    selectedOption={step.criteriaTemplates[0].value}
                     handleSelectedItemChange={(change) =>
                         updateAtom({
                             workflowSteps: updateStepResponsible(
