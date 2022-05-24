@@ -7,6 +7,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 ## 1.3.1
 - [Scopechange] Form bugfixes
+- [PipingAndHeatTrace] Bugfix for calculating status on new tests
 
 # 1.3.0
 - [Workorder]  Filter by progress & follow up status
