@@ -1,5 +1,4 @@
-import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
-import { useState } from 'react';
+import { defaultGroupByFn, Table, TableData, useColumns } from '@equinor/Table';
 import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
@@ -31,14 +30,11 @@ export const ListTab = (): JSX.Element => {
     });
     const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
 
-    const [_, setApi] = useState<TableAPI | null>(null);
-
     return (
         <>
             <WorkspaceFilter />
             <Wrapper ref={ref}>
                 <Table<TableData>
-                    onTableReady={(tableApi) => setApi(tableApi)}
                     options={{
                         data,
                         columns,

@@ -1,12 +1,5 @@
-import React, {
-    PropsWithChildren,
-    useCallback,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from 'react';
-import { Cell, ColumnInstance, HeaderGroup, Row, TableInstance, TableOptions } from 'react-table';
+import React, { PropsWithChildren, useCallback, useLayoutEffect, useRef } from 'react';
+import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 
 import { useTable } from '../Hooks/useTable';
@@ -17,22 +10,11 @@ import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
-//Feel free to extend
-export interface TableAPI {
-    toggleHideColumn: (colId: string) => void;
-    setColumnOrder: (updater: string[] | ((columnOrder: string[]) => string[])) => void;
-    getVisibleColumns: () => ColumnInstance<TableData, TableData>[];
-    getHeaderGroups: () => HeaderGroup<TableData>[];
-    getSelectedRowId: () => string | null;
-    setSelectedRowId: (callback: (rows: Row<TableData>[]) => string | null) => void;
-}
-
 interface DataTableProps<TData extends TableData> {
     options: TableOptions<TData>;
     FilterComponent?: React.FC<{ filterId: string }>;
     height?: number;
     itemSize?: number;
-    onTableReady?: (api: TableAPI) => void;
 }
 
 const DEFAULT_HEIGHT = 600;
@@ -43,38 +25,20 @@ export function Table<TData extends TableData = TableData>({
     FilterComponent,
     itemSize,
     height,
-    onTableReady,
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
     const hooks = RegisterReactTableHooks<TData>({ rowSelect: options.enableSelectRows || false });
     const ref = useRef<HTMLDivElement>(null);
     const defaultColumn = useDefaultColumn(options);
 
-    const [selectedId, setSelectedId] = useState<string | null>(null);
-
     const {
         prepareRow,
         rows,
-        toggleHideColumn,
-        visibleColumns,
         getTableProps,
         getTableBodyProps,
         headerGroups,
         totalColumnsWidth,
         setColumnOrder,
     } = useTable({ ...options, defaultColumn }, hooks) as TableInstance<TableData>;
-
-    useEffect(() => {
-        onTableReady &&
-            onTableReady({
-                getHeaderGroups: () => headerGroups,
-                getVisibleColumns: () => visibleColumns,
-                setColumnOrder,
-                toggleHideColumn,
-                getSelectedRowId: () => selectedId,
-                setSelectedRowId: (callback: (rows: Row<TableData>[]) => string | null) =>
-                    setSelectedId(callback(rows)),
-            });
-    }, []);
 
     const onCellClick: CellClickHandler<TableData> = useCallback(
         (cell, e) => {
@@ -119,7 +83,6 @@ export function Table<TData extends TableData = TableData>({
                         onCellClick,
                         setSelected: options?.setSelected,
                         onSelect: options?.onSelect,
-                        selectedId: selectedId,
                     }}
                 >
                     {RenderRow}
@@ -134,7 +97,6 @@ interface RenderRowData {
     onCellClick: CellClickHandler<TableData>;
     setSelected?: (item: any) => void;
     onSelect?: (item: TableData) => void;
-    selectedId: string | null;
 }
 interface RenderRowProps {
     data: RenderRowData;
@@ -152,12 +114,6 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
         data?.onSelect && data.onSelect(row.original);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.onSelect, row]);
-
-    //TODO: Fix styling
-    style =
-        data.selectedId === row.id
-            ? { ...style, border: '0.2px solid red', boxSizing: 'border-box' }
-            : style;
 
     return (
         <TableRow
