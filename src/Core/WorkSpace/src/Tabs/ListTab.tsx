@@ -38,7 +38,7 @@ export const ListTab = (): JSX.Element => {
     const onSelect = useCallback(
         (item: any, id: string) => {
             tableOptions?.onSelect && tableOptions.onSelect(item, id);
-            getApi.current && getApi.current().setSelectedRowId(() => id);
+            getApi.current && getApi.current().setSelectedRowId(id);
         },
         [getApi, tableOptions]
     );

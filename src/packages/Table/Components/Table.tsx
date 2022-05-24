@@ -20,13 +20,15 @@ import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 import { TableConfigBar } from './TableConfigBar/TableConfigBar';
 
 //Feel free to extend
+
+export type SelectedRowCallback = (rows: Row<TableData>[]) => string | null;
 export interface TableAPI {
     toggleHideColumn: (colId: string) => void;
     setColumnOrder: (updater: string[] | ((columnOrder: string[]) => string[])) => void;
     getVisibleColumns: () => ColumnInstance<TableData, TableData>[];
     getHeaderGroups: () => HeaderGroup<TableData>[];
     getSelectedRowId: () => string | null;
-    setSelectedRowId: (callback: (rows: Row<TableData>[]) => string | null) => void;
+    setSelectedRowId: (callbackOrId: SelectedRowCallback | string) => void;
     getColumns: () => ColumnInstance<TableData, TableData>[];
 }
 
@@ -75,8 +77,8 @@ export function Table<TData extends TableData = TableData>({
         setColumnOrder,
         toggleHideColumn,
         getSelectedRowId: () => selectedId,
-        setSelectedRowId: (callback: (rows: Row<TableData>[]) => string | null) =>
-            setSelectedId(callback(rows)),
+        setSelectedRowId: (callbackOrId: SelectedRowCallback | string) =>
+            setSelectedId(typeof callbackOrId === 'string' ? callbackOrId : callbackOrId(rows)),
         getColumns: () => columns,
     });
 
