@@ -22,6 +22,10 @@ export const ScopeChangeCreateForm = ({ actions }: ScopeChangeCreateFormProps): 
         scopeChangeFormAtomApi.clearState();
         actions.setTitle('Create new scope change request');
         actions.setWidth(1150);
+
+        return () => {
+            scopeChangeFormAtomApi.clearState();
+        };
     }, []);
 
     return (
