@@ -13,9 +13,10 @@ const columns: Column<McNcr>[] = [
     {
         id: 'documentNumber',
         Header: 'Doc.no',
-        accessor: ({ url, documentNumber }) => ({
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
-            content: documentNumber,
+        accessor: (pkg) => ({
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            content: pkg,
+            currentKey: 'documentNumber',
         }),
         Cell: CellWithLink,
         width: 100,
