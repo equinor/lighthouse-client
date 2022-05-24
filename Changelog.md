@@ -17,6 +17,11 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [GardenUtils] Popover component for virtual garden items
 - [PowerBI] Reset filters when filter group is closed
 - [Table] Fix sorting by number
+- [Sidesheet] Add warning on unsaved changes
+- [ScopeChange] Discipline as column
+- [ScopeChange] Bugfixes
+
+
 ## 1.2.1
 - [Workspace] Config for default collapsing groups in workspace
 - [Scopechange] Added support for materials
