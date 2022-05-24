@@ -1,7 +1,6 @@
 import React, { PropsWithChildren, useCallback, useLayoutEffect, useRef } from 'react';
 import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
-
 import { useTable } from '../Hooks/useTable';
 import { CellClickHandler, TableData } from '../types';
 import { useDefaultColumn } from '../Utils/ColumnDefault';
@@ -116,12 +115,7 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     }, [data?.onSelect, row]);
 
     return (
-        <TableRow
-            {...row.getRowProps({
-                style,
-            })}
-            onClick={handleClick}
-        >
+        <TableRow {...row.getRowProps({ style })} onClick={handleClick}>
             {row.cells.map((cell: Cell) => {
                 return (
                     <TableCell
