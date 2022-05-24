@@ -24,8 +24,6 @@ import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChang
 export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
 
-    console.log(scopeChangeFormAtomApi.readAtomValue());
-
     return (
         <div>
             <FormWrapper>
