@@ -1,4 +1,11 @@
-import React, { PropsWithChildren, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
+import React, {
+    PropsWithChildren,
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
 import { Cell, ColumnInstance, HeaderGroup, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 
@@ -16,6 +23,8 @@ export interface TableAPI {
     setColumnOrder: (updater: string[] | ((columnOrder: string[]) => string[])) => void;
     getVisibleColumns: () => ColumnInstance<TableData, TableData>[];
     getHeaderGroups: () => HeaderGroup<TableData>[];
+    getSelectedRowId: () => string | null;
+    setSelectedRowId: (callback: (rows: Row<TableData>[]) => string | null) => void;
 }
 
 interface DataTableProps<TData extends TableData> {
@@ -40,6 +49,8 @@ export function Table<TData extends TableData = TableData>({
     const ref = useRef<HTMLDivElement>(null);
     const defaultColumn = useDefaultColumn(options);
 
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+
     const {
         prepareRow,
         rows,
@@ -59,6 +70,9 @@ export function Table<TData extends TableData = TableData>({
                 getVisibleColumns: () => visibleColumns,
                 setColumnOrder,
                 toggleHideColumn,
+                getSelectedRowId: () => selectedId,
+                setSelectedRowId: (callback: (rows: Row<TableData>[]) => string | null) =>
+                    setSelectedId(callback(rows)),
             });
     }, []);
 
@@ -105,6 +119,7 @@ export function Table<TData extends TableData = TableData>({
                         onCellClick,
                         setSelected: options?.setSelected,
                         onSelect: options?.onSelect,
+                        selectedId: selectedId,
                     }}
                 >
                     {RenderRow}
@@ -119,6 +134,7 @@ interface RenderRowData {
     onCellClick: CellClickHandler<TableData>;
     setSelected?: (item: any) => void;
     onSelect?: (item: TableData) => void;
+    selectedId: string | null;
 }
 interface RenderRowProps {
     data: RenderRowData;
@@ -137,8 +153,19 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.onSelect, row]);
 
+    //TODO: Fix styling
+    style =
+        data.selectedId === row.id
+            ? { ...style, border: '0.2px solid red', boxSizing: 'border-box' }
+            : style;
+
     return (
-        <TableRow {...row.getRowProps({ style })} onClick={handleClick}>
+        <TableRow
+            {...row.getRowProps({
+                style,
+            })}
+            onClick={handleClick}
+        >
             {row.cells.map((cell: Cell) => {
                 return (
                     <TableCell
