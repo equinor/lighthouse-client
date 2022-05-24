@@ -1,15 +1,14 @@
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { CustomItemView } from '@equinor/ParkView';
 import styled from 'styled-components';
-import { getGardenColors } from './getGardenColors';
 import { tokens } from '@equinor/eds-tokens';
+import { scopeChangeWorkflowStatusSortOrder } from '../dataOptions';
 
 export const ScopechangeGardenItem = (args: CustomItemView<ScopeChangeRequest>): JSX.Element => {
-    const color = args.data.workflowSteps
-        ? getGardenColors(args.data?.workflowSteps?.length)[
-        args?.data?.workflowSteps.findIndex(({ isCurrent }) => isCurrent)
-        ]
-        : 'green';
+    const color =
+        scopeChangeWorkflowStatusSortOrder
+            .readAtomValue()
+            .items.find(({ name }) => name === args.data.workflowStatus)?.color ?? 'red';
 
     return (
         <GardenItem onClick={args.onClick} backgroundColor={color}>

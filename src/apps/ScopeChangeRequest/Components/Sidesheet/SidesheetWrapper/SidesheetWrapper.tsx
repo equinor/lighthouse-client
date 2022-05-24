@@ -26,7 +26,6 @@ import { updateContext } from './Utils/updateContext';
 
 import { SidesheetApi } from '@equinor/sidesheet';
 import { getScopeChangeSnapshot } from '../../../hooks/context/useScopeChangeContext';
-import { scopeChangeRequestStats } from '../../../workspaceConfig/dataOptions';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
@@ -41,9 +40,6 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     useSidesheetEffects(actions, toggleEditMode, item.id);
 
     const { activeTab, handleChange } = useEdsTabs();
-    const { readAtomValue } = scopeChangeRequestStats;
-
-    console.log(readAtomValue());
 
     const editMode = useAtom(sideSheetEditModeAtom);
 

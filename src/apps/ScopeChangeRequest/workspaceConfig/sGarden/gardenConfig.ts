@@ -1,18 +1,9 @@
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
+import { scopeChangeWorkflowStatusSortOrder } from '../dataOptions';
 import { ScopechangeGardenItem } from './CustomItemView';
 
-const workflowStatusMap = new Map([
-    ['Initiate', 1],
-    ['Initiate request', 2],
-    ['Initiated', 3],
-    ['Review by coordinator', 4],
-    ['Reviewed', 5],
-    ['Approved', 6],
-    ['MC Scoping Completed', 7],
-    ['Completed', 8],
-    ['Rejected', 9],
-]);
+const statusMap = scopeChangeWorkflowStatusSortOrder.readAtomValue().items.map(({ name }) => name);
 
 export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
     gardenKey: 'Status' as keyof ScopeChangeRequest,
@@ -30,8 +21,8 @@ export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
             getKey: ({ workflowStatus }) => workflowStatus ?? '(Blank)',
             label: 'Workflow status',
             getColumnSort: (a, b) => {
-                const aN = workflowStatusMap.get(a);
-                const bN = workflowStatusMap.get(b);
+                const aN = statusMap.findIndex((name) => name === a);
+                const bN = statusMap.findIndex((name) => name === b);
                 if (!aN || !bN) return 0;
                 return aN - bN;
             },
