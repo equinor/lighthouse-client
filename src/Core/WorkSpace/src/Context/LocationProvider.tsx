@@ -6,7 +6,7 @@ import {
     useContext,
     useEffect,
     useMemo,
-    useState,
+    useState
 } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Fallback } from '../Components/FallbackSidesheet/Fallback';
@@ -24,7 +24,7 @@ const Context = createContext({} as LocationContext);
 export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
     const { id } = useParams();
     const { data, dataApi } = useDataContext();
-    const { defaultTab, onSelect, idResolver, objectIdentifier } = useWorkSpace();
+    const { defaultTab, onSelect, objectIdentifier } = useWorkSpace();
 
     const currentTabId = useMemo(() => id && `/${id}`, [id]);
 
@@ -58,26 +58,16 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
     const mountSidesheetFromUrl = useCallback(async () => {
         if (!onSelect) return;
         const id = location.hash.split('/')[1];
-        if (idResolver) {
-            try {
-                const item = await idResolver(id);
-                if (item !== undefined) {
-                    onSelect(item);
-                    return;
-                }
-            } catch (e) {
-                openSidesheet(Fallback);
-            }
-        } else {
-            await dataApi.refetch();
-            const item = findItem(id);
-            if (item) {
-                onSelect(item);
-                return;
-            }
+
+        await dataApi.refetch();
+        const item = findItem(id);
+        if (item) {
+            onSelect(item);
+            return;
         }
+
         openSidesheet(Fallback);
-    }, [data, findItem, idResolver, location.hash, onSelect]);
+    }, [data, findItem, location.hash, onSelect]);
 
     /**
      * Add default tab to url if id is undefined

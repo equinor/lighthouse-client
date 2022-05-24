@@ -4,6 +4,7 @@ import { ReleaseControl } from './types/releaseControl';
 import { dataSource, filterOptions, tableConfig } from './workspaceConfig';
 import { gardenOptions } from './workspaceConfig/garden/gardenConfig';
 
+//Update Sidesheet config
 export function setup({ createWorkSpace }: ClientApi): void {
     createWorkSpace<ReleaseControl>({
         objectIdentifier: 'id',

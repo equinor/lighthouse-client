@@ -1,6 +1,7 @@
-import { Button, Icon } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary, ErrorFallbackSidesheet } from '@equinor/ErrorBoundary';
+import { Icon } from '@equinor/lighthouse-components';
 import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';

@@ -42,6 +42,9 @@
             "@equinor/lighthouse-portal-client": [
                 "./src/Core/Client"
             ],
+            "@equinor/lighthouse-confirmation-dialog": [
+                "./src/Core/ConfirmationDialog"
+            ],
             "@equinor/lighthouse-components": [
                 "./src/packages/Components"
             ],

@@ -1,8 +1,9 @@
+import { Icon } from '@equinor/lighthouse-components';
+import { WidgetManifest } from '@equinor/lighthouse-widgets';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { WidgetManifest } from '../../../Core/Widgets/Types/widget';
-import { Icon } from '../../Components/Icon';
 import { SidesheetApi } from '../Types/SidesheetApi';
+
 
 interface NoAccessProps {
     item: WidgetManifest;

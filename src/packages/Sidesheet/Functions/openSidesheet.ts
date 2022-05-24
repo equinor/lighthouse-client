@@ -1,7 +1,7 @@
+import { spawnConfirmationDialog } from '@equinor/lighthouse-confirmation-dialog';
 import Functions from '@equinor/lighthouse-functions';
 import Widget, { WidgetManifest } from '@equinor/lighthouse-widgets';
 import React from 'react';
-import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { DefaultDataView } from '../Components/DefaultDataView';
 import { NoAccess } from '../Components/NoAccessSidesheet';
 import { SuspenseSidesheet } from '../Components/SuspenseSidesheet';

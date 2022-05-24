@@ -1,4 +1,4 @@
-import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { spawnConfirmationDialog } from '@equinor/lighthouse-confirmation-dialog';
 import { getSidesheetContext } from '../context/sidesheetContext';
 import { hasUnsavedChanges } from '../Functions/openSidesheet';
 import { dispatch } from '../State/actions';

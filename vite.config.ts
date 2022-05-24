@@ -21,6 +21,10 @@ export default defineConfig({
             '@equinor/atom': path.resolve(__dirname, './src/Core/Atom'),
             '@equinor/JSX-Switch': path.resolve(__dirname, './src/components/JSXSwitch'),
             '@equinor/lighthouse-components': path.resolve(__dirname, './src/packages/Components'),
+            '@equinor/lighthouse-confirmation-dialog': path.resolve(
+                __dirname,
+                './src/Core/ConfirmationDialog'
+            ),
             '@equinor/lighthouse-fusion-modules': path.resolve(__dirname, './src/FusionModules'),
             '@equinor/lighthouse-widgets': path.resolve(__dirname, './src/Core/Widgets'),
             '@equinor/lighthouse-functions': path.resolve(__dirname, './src/Core/Functions'),
