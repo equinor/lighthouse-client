@@ -30,6 +30,7 @@ import {
 
 interface CompletionViewHeaderProps {
     title: string;
+    shortName: string;
     groupe: string;
     tabs: TabsConfigItem[];
     sideSheetWidth: number;
@@ -39,6 +40,7 @@ const ANALYTICS = 'analytics';
 
 export const CompletionViewHeader = ({
     title,
+    shortName,
     tabs,
     groupe,
     sideSheetWidth,
@@ -167,7 +169,7 @@ export const CompletionViewHeader = ({
                             <ClickableIcon size={24} name="refresh" />
                         )}
                     </TabButton>
-                    {!isProduction() && <BookmarkDropdown appKey={title} subSystem={groupe} />}
+                    {!isProduction() && <BookmarkDropdown appKey={shortName} subSystem={groupe} />}
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton
