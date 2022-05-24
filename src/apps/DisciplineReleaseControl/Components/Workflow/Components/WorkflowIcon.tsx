@@ -60,7 +60,7 @@ const GreenCircle = styled.div`
     background: ${tokens.colors.interactive.primary__resting.hex};
 `;
 
-const GreyCircle = styled.div`
+export const GreyCircle = styled.div`
     color: grey;
     justify-content: center;
     align-items: center;

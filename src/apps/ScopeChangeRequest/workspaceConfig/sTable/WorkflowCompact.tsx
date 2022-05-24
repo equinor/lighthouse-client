@@ -30,7 +30,7 @@ export function WorkflowCompact({ steps }: WorkflowProps): JSX.Element {
     return (
         <>
             <WorkflowStepContainer>
-                {compacted.map(({ isCurrent, signedState, stepName }, i) => (
+                {compacted?.map(({ isCurrent, signedState, stepName }, i) => (
                     <CompactWorkflowDot
                         signedState={signedState}
                         isCurrent={isCurrent}

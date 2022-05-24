@@ -1343,6 +1343,11 @@
   dependencies:
     "@types/istanbul-lib-report" "*"
 
+"@types/javascript-color-gradient@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@types/javascript-color-gradient/-/javascript-color-gradient-2.4.0.tgz#8c7d7c7a270c9a0f6ffd5beb959e1c89f0e1f3c5"
+  integrity sha512-bDeTAgHvDRn40mlnGRE5nTVlfQ9KRqi9L0VC+zJwVY/XNgulIq9lZxTV9wIi6nfXu/eG4ehKmG3uCq49uYYqDA==
+
 "@types/jest@*", "@types/jest@^27.4.1":
   version "27.4.1"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-27.4.1.tgz#185cbe2926eaaf9662d340cc02e548ce9e11ab6d"
@@ -3809,6 +3814,11 @@ istanbul-reports@^3.1.3:
   dependencies:
     html-escaper "^2.0.0"
     istanbul-lib-report "^3.0.0"
+
+javascript-color-gradient@^2.4.4:
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/javascript-color-gradient/-/javascript-color-gradient-2.4.4.tgz#184dc176cd8f66d212299aa5826843b39229e299"
+  integrity sha512-kbt3Y1eltW4X789P1eQzCUEB5X7hFmLNpQT4bgDFMtj/cW2v+j8ms/rLSR7jndZUAP6yya4vyeZK6bRqh6yClA==
 
 jest-changed-files@^27.5.1:
   version "27.5.1"
