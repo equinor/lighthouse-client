@@ -78,7 +78,7 @@ const SubmitButtonBar = () => {
 
     const onMutate = (draft: boolean) => {
         const { prepareRequest } = scopeChangeFormAtomApi;
-
+        scopeChangeCreateContext.readAtomValue().setHasUnsavedChanges(false);
         mutate({
             draft: draft,
             model: prepareRequest(),
