@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import React, {
     PropsWithChildren,
     useCallback,
@@ -16,6 +17,7 @@ import { RegisterReactTableHooks } from '../Utils/registerReactTableHooks';
 import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
+import { TableConfigBar } from './TableConfigBar/TableConfigBar';
 
 //Feel free to extend
 export interface TableAPI {
@@ -25,6 +27,7 @@ export interface TableAPI {
     getHeaderGroups: () => HeaderGroup<TableData>[];
     getSelectedRowId: () => string | null;
     setSelectedRowId: (callback: (rows: Row<TableData>[]) => string | null) => void;
+    getColumns: () => ColumnInstance<TableData, TableData>[];
 }
 
 interface DataTableProps<TData extends TableData> {
@@ -32,7 +35,7 @@ interface DataTableProps<TData extends TableData> {
     FilterComponent?: React.FC<{ filterId: string }>;
     height?: number;
     itemSize?: number;
-    onTableReady?: (api: TableAPI) => void;
+    onTableReady?: (getApi: () => TableAPI) => void;
 }
 
 const DEFAULT_HEIGHT = 600;
@@ -57,23 +60,28 @@ export function Table<TData extends TableData = TableData>({
         toggleHideColumn,
         visibleColumns,
         getTableProps,
+        columns,
         getTableBodyProps,
         headerGroups,
         totalColumnsWidth,
         setColumnOrder,
     } = useTable({ ...options, defaultColumn }, hooks) as TableInstance<TableData>;
 
+    const getVisibleColumns = () => visibleColumns;
+
+    const getTableApi = (): TableAPI => ({
+        getHeaderGroups: () => headerGroups,
+        getVisibleColumns,
+        setColumnOrder,
+        toggleHideColumn,
+        getSelectedRowId: () => selectedId,
+        setSelectedRowId: (callback: (rows: Row<TableData>[]) => string | null) =>
+            setSelectedId(callback(rows)),
+        getColumns: () => columns,
+    });
+
     useEffect(() => {
-        onTableReady &&
-            onTableReady({
-                getHeaderGroups: () => headerGroups,
-                getVisibleColumns: () => visibleColumns,
-                setColumnOrder,
-                toggleHideColumn,
-                getSelectedRowId: () => selectedId,
-                setSelectedRowId: (callback: (rows: Row<TableData>[]) => string | null) =>
-                    setSelectedId(callback(rows)),
-            });
+        onTableReady && onTableReady(getTableApi);
     }, []);
 
     const onCellClick: CellClickHandler<TableData> = useCallback(
@@ -91,6 +99,7 @@ export function Table<TData extends TableData = TableData>({
 
     return (
         <TableWrapper {...getTableProps()}>
+            <TableConfigBar getTableApi={getTableApi} />
             <div>
                 {headerGroups.map((headerGroup) => (
                     <div
@@ -128,12 +137,13 @@ export function Table<TData extends TableData = TableData>({
         </TableWrapper>
     );
 }
+
 interface RenderRowData {
     rows: Row<TableData>[];
     prepareRow: (row: Row<TableData>) => void;
     onCellClick: CellClickHandler<TableData>;
     setSelected?: (item: any) => void;
-    onSelect?: (item: TableData) => void;
+    onSelect?: (item: TableData, index: string) => void;
     selectedId: string | null;
 }
 interface RenderRowProps {
@@ -149,14 +159,17 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const handleClick = useCallback(() => {
         //data.setSelected && data.setSelected(row.original);
-        data?.onSelect && data.onSelect(row.original);
+        data?.onSelect && data.onSelect(row.original, row.id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.onSelect, row]);
 
     //TODO: Fix styling
     style =
         data.selectedId === row.id
-            ? { ...style, border: '0.2px solid red', boxSizing: 'border-box' }
+            ? {
+                ...style,
+                backgroundColor: tokens.colors.interactive.primary__selected_highlight.hex,
+            }
             : style;
 
     return (
