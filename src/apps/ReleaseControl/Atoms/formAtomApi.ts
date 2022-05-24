@@ -1,13 +1,14 @@
 import { createAtom, DefaultAtomAPI } from '@equinor/atom';
 import { useState } from 'react';
 import { TypedSelectOption } from '../../ScopeChangeRequest/api/Search/searchType';
-import { ReleaseControlStep } from '../types/releaseControl';
+import { CreateReleaseControlStepModel } from '../types/releaseControl';
 
 export interface DRCCreateModel {
     id?: string;
     title?: string;
     description?: string;
     plannedDueDate?: string;
+    phase?: string;
     allowContributors?: boolean;
     tagNumbers: string[];
     commissioningPackageNumbers: string[];
@@ -15,7 +16,7 @@ export interface DRCCreateModel {
     areaCodes: string[];
     documentNumbers: string[];
     references?: TypedSelectOption[];
-    workflowSteps?: ReleaseControlStep[];
+    workflowSteps?: CreateReleaseControlStepModel[];
 }
 
 export type DRCFormModel = Partial<DRCCreateModel>;
@@ -62,12 +63,19 @@ function checkString(value?: string) {
 function prepareRequest(): DRCFormModel {
     const { readAtomValue } = DRCFormAtomApi;
 
-    const newReq = { ...readAtomValue() };
+    const newReq: DRCCreateModel = {
+        ...readAtomValue(),
+        areaCodes: [],
+        tagNumbers: [],
+        commissioningPackageNumbers: [],
+        systemIds: [],
+        documentNumbers: [],
+    };
     return newReq as DRCFormModel;
 }
 
 function checkFormState(
-    request: Pick<DRCFormModel, 'title' | 'description' | 'plannedDueDate'>
+    request: Pick<DRCFormModel, 'title' | 'description' | 'plannedDueDate' | 'phase'>
 ): boolean {
     if (MANDATORY_PROPERTIES.every((k) => Object.keys(request).includes(k))) {
         /** Validate content */

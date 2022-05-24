@@ -73,7 +73,7 @@ export const getElectroViewCompletionStatusColor = (completionStatus: string): s
 export function getElectroTestStatus(testType: string, checkLists: EleNetworkCheckList[]): string {
     if (testType === undefined) return CheckListStatus.Outstanding;
 
-    checkLists = checkLists.filter((x) => x.formularType === testType);
+    checkLists = checkLists.filter((x) => x.formularType.startsWith(testType));
 
     if (checkLists?.length === 0) {
         return CheckListStatus.Inactive;
