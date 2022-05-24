@@ -5,7 +5,7 @@ import {
     useMutation,
     UseMutationOptions,
     UseMutationResult,
-    useQueryClient
+    useQueryClient,
 } from 'react-query';
 import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
 
@@ -34,6 +34,7 @@ export function useScopeChangeMutation<
 
     return useMutation(mutationKey, mutationFn, {
         ...options,
+        retry: false,
         onSettled: invalidate,
     });
 }

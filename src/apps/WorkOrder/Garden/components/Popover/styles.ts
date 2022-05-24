@@ -1,5 +1,11 @@
 import styled from 'styled-components';
-
+export const ProjectTitle = styled.p`
+    font-weight: bold;
+`;
+export const ProjectDescription = styled.p`
+    word-break: break-word;
+    white-space: break-spaces;
+`;
 export const Statuses = styled.div`
     margin-top: 15px;
     display: flex;

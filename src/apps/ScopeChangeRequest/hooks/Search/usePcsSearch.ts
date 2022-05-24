@@ -24,12 +24,16 @@ interface PCSSearch {
     ) => Promise<TypedSelectOption[]>;
 }
 
+interface PCSOptions {
+    functionalRoleClassification?: string;
+}
+
 /**
  * Hook for searching in ProCoSys
  * Utilizes caching for some lists
  * @returns
  */
-export function usePcsSearch(): PCSSearch {
+export function usePcsSearch(options?: PCSOptions): PCSSearch {
     const { procosysPlantId } = useFacility();
 
     const { getDisciplinesQuery, getFunctionalRolesQuery, getSystemsQuery } = ProCoSysQueries;
@@ -46,7 +50,7 @@ export function usePcsSearch(): PCSSearch {
         unknown,
         unknown,
         FunctionalRole[]
-    >(getFunctionalRolesQuery(procosysPlantId));
+    >(getFunctionalRolesQuery(procosysPlantId, options?.functionalRoleClassification));
 
     const { procosys } = httpClient();
 

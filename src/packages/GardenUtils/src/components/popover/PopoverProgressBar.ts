@@ -17,6 +17,7 @@ export const PopoverProgressBar = styled.div<PopoverProgressBarProps>`
     line-height: 24px;
     text-align: center;
     justify-content: space-between;
+    gap: 1rem;
     > strong:first-child {
         margin-right: 32px;
     }

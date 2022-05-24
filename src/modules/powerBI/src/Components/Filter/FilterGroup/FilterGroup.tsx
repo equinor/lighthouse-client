@@ -8,7 +8,7 @@ import { CheckboxItem, CheckboxWrap, Container, FilterGroupContainer } from './S
 type FilterGroupProps = {
     slicerFilters: PowerBiFilter[];
     filterGroupVisible: string[] | undefined;
-    handleChangeGroup: (filter: PowerBiFilter) => void;
+    handleChangeGroup: (filter: PowerBiFilter) => Promise<void>;
 };
 export const FilterGroup = ({
     slicerFilters,
@@ -28,22 +28,24 @@ export const FilterGroup = ({
 
             <FilterGroupContainer>
                 <CheckboxWrap>
-                    {searchSlicerFilters(slicerFilters, filterSearchValue).map((filter) => {
-                        return (
-                            <CheckboxItem key={filter.type}>
-                                <Checkbox
-                                    onChange={() => {
-                                        handleChangeGroup(filter);
-                                    }}
-                                    checked={
-                                        filterGroupVisible?.find((a) => a === filter.type) !==
-                                        undefined
-                                    }
-                                />
-                                <label>{filter.type}</label>
-                            </CheckboxItem>
-                        );
-                    })}
+                    {searchSlicerFilters(slicerFilters, filterSearchValue).map(
+                        (filter: PowerBiFilter) => {
+                            return (
+                                <CheckboxItem key={filter.type}>
+                                    <Checkbox
+                                        onChange={async () => {
+                                            await handleChangeGroup(filter);
+                                        }}
+                                        checked={
+                                            filterGroupVisible?.find((a) => a === filter.type) !==
+                                            undefined
+                                        }
+                                    />
+                                    <label>{filter.type}</label>
+                                </CheckboxItem>
+                            );
+                        }
+                    )}
                 </CheckboxWrap>
             </FilterGroupContainer>
         </Container>
