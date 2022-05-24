@@ -24,6 +24,8 @@ import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChang
 export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
 
+    console.log(scopeChangeFormAtomApi.readAtomValue());
+
     return (
         <div>
             <FormWrapper>
@@ -78,7 +80,7 @@ const SubmitButtonBar = () => {
 
     const onMutate = (draft: boolean) => {
         const { prepareRequest } = scopeChangeFormAtomApi;
-
+        scopeChangeCreateContext.readAtomValue().setHasUnsavedChanges(false);
         mutate({
             draft: draft,
             model: prepareRequest(),
