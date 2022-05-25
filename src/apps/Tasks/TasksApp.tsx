@@ -1,7 +1,12 @@
 import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
+import { DateTime } from 'luxon';
 import { useEffect } from 'react';
 import { Assignment } from '../../Core/Assignments/Types/assignment';
 import { SidesheetApi } from '../../packages/Sidesheet/Types/SidesheetApi';
+
+const customCellView = (render: (req: Assignment) => JSX.Element | null) => ({
+    Cell: ({ cell }: any) => <>{render(cell.value.content)}</>,
+});
 
 export function setup(appApi: ClientApi): void {
     appApi
@@ -24,7 +29,7 @@ export function setup(appApi: ClientApi): void {
             hiddenColumns: [
                 'body',
                 'taskMode',
-                'sourceSystem',
+                // 'sourceSystem',
                 'ownerApplication',
                 'taskContexts',
                 'metadata',
@@ -33,6 +38,31 @@ export function setup(appApi: ClientApi): void {
                 'assignedTo',
                 'externalId',
                 'id',
+                'created',
+                'dueDate',
+                'modified',
+                'url',
+            ],
+            headers: [
+                { key: 'title', title: 'Title', width: 200 },
+                { key: 'category', title: 'Category' },
+                { key: 'url', title: 'URL' },
+                { key: 'state', title: 'State' },
+                { key: 'priority', title: 'Priority' },
+                { key: 'dueDate', title: 'Due at' },
+                { key: 'created', title: 'Created at' },
+                { key: 'modified', title: 'Modified at' },
+                { key: 'sourceSystem', title: 'Source system' },
+            ],
+            customCellView: [
+                {
+                    key: 'ownerApplication',
+                    type: customCellView((req) => <>{req.ownerApplication.title}</>),
+                },
+                {
+                    key: 'sourceSystem',
+                    type: customCellView((req) => <>{req?.sourceSystem.subSystem}</>),
+                },
             ],
         })
         // .registerIdResolver({
