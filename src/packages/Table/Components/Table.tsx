@@ -17,7 +17,6 @@ import { RegisterReactTableHooks } from '../Utils/registerReactTableHooks';
 import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
-import { TableConfigBar } from './TableConfigBar/TableConfigBar';
 
 //Feel free to extend
 
@@ -101,7 +100,7 @@ export function Table<TData extends TableData = TableData>({
 
     return (
         <TableWrapper {...getTableProps()}>
-            <TableConfigBar getTableApi={getTableApi} />
+            {/* <TableConfigBar getTableApi={getTableApi} /> */}
             <div>
                 {headerGroups.map((headerGroup) => (
                     <div

@@ -13,6 +13,8 @@ const Wrapper = styled.section`
     overflow-y: auto;
 `;
 
+type GetTableApi = () => TableAPI;
+
 export const ListTab = (): JSX.Element => {
     const {
         filterState: { getFilteredData },
@@ -32,9 +34,9 @@ export const ListTab = (): JSX.Element => {
     });
     const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
 
-    const getApi = useRef<(() => TableAPI) | null>(null);
+    const getApi = useRef<GetTableApi | null>(null);
 
-    const initApi = (a: () => TableAPI) => (getApi.current = a);
+    const initApi = (a: GetTableApi) => (getApi.current = a);
 
     const onSelect = useCallback(
         (item: any, id: string) => {
@@ -72,7 +74,7 @@ export const ListTab = (): JSX.Element => {
     );
 };
 
-const useClearSelectedOnSidesheetClose = (getApi: (() => TableAPI) | null): void => {
+const useClearSelectedOnSidesheetClose = (getApi: GetTableApi | null): void => {
     const { SidesheetComponent } = useSideSheet();
 
     useEffect(() => {
