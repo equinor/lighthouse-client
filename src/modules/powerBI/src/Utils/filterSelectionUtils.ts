@@ -43,7 +43,6 @@ export const createAdvancedPbiFilter = (
         //@ts-ignore null value in array does seem to work when passed to and translated by PBI
         values,
     };
-    debugger;
     /** TODO: Use this in addition if null value in values array does not work. */
     // const isBlankFilter: models.IAdvancedFilter = {
     //     $schema: 'http://powerbi.com/product/schema#advanced',
