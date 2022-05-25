@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { TableAPI } from '../Table';
-import { ColumnPicker } from './ColumnPicker';
+import { ColumnPicker } from './ColumnPicker/ColumnPicker';
 
 interface TableConfigBarProps {
     getTableApi: () => TableAPI;
