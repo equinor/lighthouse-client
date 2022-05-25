@@ -1,5 +1,6 @@
+import { useSideSheet } from '@equinor/sidesheet';
 import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
@@ -43,6 +44,8 @@ export const ListTab = (): JSX.Element => {
         [getApi, tableOptions]
     );
 
+    useClearSelectedOnSidesheetClose(getApi.current);
+
     return (
         <>
             <WorkspaceFilter />
@@ -67,4 +70,16 @@ export const ListTab = (): JSX.Element => {
             </Wrapper>
         </>
     );
+};
+
+const useClearSelectedOnSidesheetClose = (getApi: (() => TableAPI) | null): void => {
+    const { SidesheetComponent } = useSideSheet();
+
+    useEffect(() => {
+        if (!SidesheetComponent) {
+            if (getApi !== null) {
+                getApi().setSelectedRowId(() => null);
+            }
+        }
+    }, [SidesheetComponent]);
 };
