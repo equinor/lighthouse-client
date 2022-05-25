@@ -28,8 +28,9 @@ export const FilterGroup = ({
 
             <FilterGroupContainer>
                 <CheckboxWrap>
-                    {searchSlicerFilters(slicerFilters, filterSearchValue).map(
-                        (filter: PowerBiFilter) => {
+                    {searchSlicerFilters(slicerFilters, filterSearchValue)
+                        .sort((a, b) => a.type.localeCompare(b.type))
+                        .map((filter: PowerBiFilter) => {
                             return (
                                 <CheckboxItem key={filter.type}>
                                     <Checkbox
@@ -44,8 +45,7 @@ export const FilterGroup = ({
                                     <label>{filter.type}</label>
                                 </CheckboxItem>
                             );
-                        }
-                    )}
+                        })}
                 </CheckboxWrap>
             </FilterGroupContainer>
         </Container>
