@@ -108,16 +108,11 @@ export function Table<TData extends TableData = TableData>({
                         key={headerGroup.getHeaderGroupProps().key}
                     >
                         {headerGroup.headers.map((column) => (
-                            <span
+                            <HeaderCell
+                                {...column}
+                                FilterComponent={FilterComponent}
                                 key={column.getHeaderProps().key}
-                                onClick={() => column.toggleSortBy()}
-                            >
-                                <HeaderCell
-                                    {...column}
-                                    FilterComponent={FilterComponent}
-                                    key={column.getHeaderProps().key}
-                                />
-                            </span>
+                            />
                         ))}
                     </div>
                 ))}
