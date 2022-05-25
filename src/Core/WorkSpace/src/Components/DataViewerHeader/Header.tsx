@@ -15,6 +15,7 @@ import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { Presets } from '../Presets/Presets';
+import { SearchButton } from '../Search/Search';
 import { TabButton } from '../ToggleButton';
 import {
     ActionBar,
@@ -104,12 +105,13 @@ export const CompletionViewHeader = ({
                     {factory && (
                         <>
                             <TabButton
+                                width={'48px'}
                                 onClick={factory.onClick}
                                 aria-selected={false}
                                 title={factory.title}
                             >
                                 <Icon name={'add'} />
-                                {factory.title}
+                                {/* {factory.title} */}
                             </TabButton>
                             <Divider />
                         </>
@@ -145,7 +147,7 @@ export const CompletionViewHeader = ({
                         })}
                     </>
                     <Divider />
-                    {/* <SearchButton /> */}
+                    <SearchButton />
 
                     <TabButton
                         color={
