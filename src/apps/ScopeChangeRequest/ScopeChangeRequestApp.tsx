@@ -1,9 +1,5 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
-import {
-    ResolverFunction,
-    SidesheetComponentManifest,
-    SidesheetWidgetManifest
-} from '@equinor/WorkSpace';
+import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
 import { dataSource, idResolver } from './workspaceConfig/dataOptions';
@@ -13,38 +9,25 @@ import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
 import { tableConfig } from './workspaceConfig/sTable/tableConfig';
 import { statusBarConfig } from './workspaceConfig/statusBarConfig';
 
-export const changeSideSheetWidgetManifest: SidesheetWidgetManifest<ScopeChangeRequest, 'change'> =
-    {
-        widgetId: 'change',
-        widgetType: 'sidesheet',
-        color: '#7B3A96',
-        props: {
-            resolverId: 'changeResolver',
-            objectIdentifier: 'id',
-            parentApp: 'change',
-        },
-    };
+const sidesheetCreator = setupWorkspaceSidesheet<ScopeChangeRequest, 'change'>({
+    id: 'change',
+    color: '#7B3A96',
+    component: SidesheetWrapper,
+    props: {
+        objectIdentifier: 'id',
+        parentApp: 'change',
+        function: idResolver,
+    },
+});
 
-export const changeSideSheetWidgetComponent: SidesheetComponentManifest<'change'> = {
-    widgetId: 'change',
-    widgetType: 'sidesheet',
-    widget: SidesheetWrapper,
-};
-
-export const changeFunction: ResolverFunction<ScopeChangeRequest, 'change'> = {
-    functionId: 'changeResolver',
-    function: idResolver,
-};
+export const changeSideSheetWidgetManifest = sidesheetCreator('SidesheetManifest');
+export const changeSideSheetWidgetComponent = sidesheetCreator('SidesheetComponentManifest');
+export const changeResolverFunction = sidesheetCreator('ResolverFunction');
 
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<ScopeChangeRequest, 'change'>({
-            CustomSidesheet: SidesheetWrapper,
-            customSidesheetOptions: {
-                ...changeSideSheetWidgetManifest,
-                ...changeSideSheetWidgetComponent,
-                resolver: changeFunction,
-            },
+            customSidesheetOptions: sidesheetCreator('WorkspaceSideSheet'),
             objectIdentifier: 'id',
         })
         .registerDataSource(dataSource)

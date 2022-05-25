@@ -1,55 +1,40 @@
-import {
-    ResolverFunction,
-    SidesheetComponentManifest,
-    SidesheetWidgetManifest
-} from '@equinor/WorkSpace';
+import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
 import { ReleaseControlHTSidesheet } from './Components/Sidesheet/ReleaseControlHTSidesheet';
 import { ReleaseControlSidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
-import { HeatTrace, Pipetest } from './Types/pipetest';
+import { HTSidesheet, Pipetest } from './Types/pipetest';
 
-export const ReleaseControlHTSidesheetWidgetManifest: SidesheetWidgetManifest<HeatTrace, 'ht'> = {
-    widgetId: 'ht',
-    widgetType: 'sidesheet',
-    color: '#7B3A96',
+export const htSidesheetCreator = setupWorkspaceSidesheet<HTSidesheet, 'ht'>({
+    id: 'ht',
+    color: '#0084C4',
+    component: ReleaseControlHTSidesheet,
     props: {
-        resolverId: 'htResolver',
-        objectIdentifier: 'tagNo',
+        objectIdentifier: 'value',
+        parentApp: 'piping-and-ht',
+        function: (id: string) => {
+            return { value: id, items: [] } as HTSidesheet;
+        },
     },
-};
+});
 
-export const ReleaseControlHTSidesheetWidgetComponent: SidesheetComponentManifest<'ht'> = {
-    widgetId: 'ht',
-    widgetType: 'sidesheet',
-    widget: ReleaseControlHTSidesheet,
-};
-
-export const htResolverFunction: ResolverFunction<HeatTrace, 'ht'> = {
-    functionId: 'htResolver',
-    function: () => {
-        return { tagNo: '' } as HeatTrace;
-    },
-};
-
-export const ReleaseControlSidesheetWidgetManifest: SidesheetWidgetManifest<Pipetest, 'rc'> = {
-    widgetId: 'rc',
-    widgetType: 'sidesheet',
-    color: '#7B3A96',
+export const rcSidesheetCreator = setupWorkspaceSidesheet<Pipetest, 'rc'>({
+    id: 'rc',
+    color: '#0084C4',
+    component: ReleaseControlSidesheet,
     props: {
-        resolverId: 'rcResolver',
         objectIdentifier: 'name',
+        parentApp: 'piping-and-ht',
+        function: (id: string) => {
+            return { name: id } as Pipetest;
+        },
     },
-};
+});
 
-export const ReleaseControlSidesheetWidgetComponent: SidesheetComponentManifest<'rc'> = {
-    widgetId: 'rc',
-    widgetType: 'sidesheet',
-    widget: ReleaseControlSidesheet,
-};
+export const htSidesheetWidgetManifest = htSidesheetCreator('SidesheetManifest');
+export const htSidesheetWidgetComponent = htSidesheetCreator('SidesheetComponentManifest');
+export const htResolverFunction = htSidesheetCreator('ResolverFunction');
 
-export const rcResolverFunction: ResolverFunction<Pipetest, 'rc'> = {
-    functionId: 'rcResolver',
-    function: () => {
-        return { name: '' } as Pipetest;
-    },
-    type: 'idResolver',
-};
+export const ReleaseControlSidesheetWidgetManifest = rcSidesheetCreator('SidesheetManifest');
+export const ReleaseControlSidesheetWidgetComponent = rcSidesheetCreator(
+    'SidesheetComponentManifest'
+);
+export const rcResolverFunction = rcSidesheetCreator('ResolverFunction');

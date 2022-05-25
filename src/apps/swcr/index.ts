@@ -1,4 +1,5 @@
 import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
+import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
 import SwcrHeaderView from './CustomViews/SwcrGardenHeader';
 import SwcrItemView from './CustomViews/SwcrGardenItem';
 import { SwcrSideSheet } from './CustomViews/SwcrSideSheet';
@@ -14,10 +15,29 @@ import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
 import { tableConfig } from './utilities/tableSetup';
 
+const creator = setupWorkspaceSidesheet<SwcrPackage, 'swcrDetails'>({
+    id: 'swcrDetails',
+    color: '#0084C4',
+    component: SwcrSideSheet,
+    props: {
+        objectIdentifier: 'swcrNo',
+        parentApp: 'swcr',
+        function: async (id: string) => {
+            // TODO: Add Proper resolver function
+            const swcrs = await responseParser(await responseAsync());
+            return swcrs.find((swcr) => swcr.swcrNo === id);
+        },
+    },
+});
+
+export const swcrCreatorManifest = creator('SidesheetManifest');
+export const swcrCreatorComponent = creator('SidesheetComponentManifest');
+export const swcrResolverFunction = creator('ResolverFunction');
+
 export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<SwcrPackage>({
-            CustomSidesheet: SwcrSideSheet,
+            customSidesheetOptions: creator('WorkspaceSideSheet'),
             objectIdentifier: 'swcrNo',
             defaultTab: 'garden',
         })

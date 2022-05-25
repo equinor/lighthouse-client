@@ -2,14 +2,7 @@ import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { httpClient } from '../../Core/Client/Functions/HttpClient';
 import { GatewaySidesheet } from './Components/Sidesheet/ReleaseControlSidesheet';
 import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
-import {
-    htResolverFunction,
-    rcResolverFunction,
-    ReleaseControlHTSidesheetWidgetComponent,
-    ReleaseControlHTSidesheetWidgetManifest,
-    ReleaseControlSidesheetWidgetComponent,
-    ReleaseControlSidesheetWidgetManifest
-} from './DisciplineReleaseControlWidgets';
+import { htSidesheetCreator, rcSidesheetCreator } from './DisciplineReleaseControlWidgets';
 import { chewPipetestDataFromApi } from './Functions/statusHelpers';
 import { Pipetest } from './Types/pipetest';
 import { filterConfig, gardenConfig, presetConfig, tableConfig } from './WorkspaceConfig';
@@ -28,16 +21,8 @@ export function setup({ createWorkSpace }: ClientApi): void {
 
     createWorkSpace<Pipetest, 'rc'>({
         CustomSidesheet: GatewaySidesheet,
-        customSidesheetOptions: {
-            ...ReleaseControlSidesheetWidgetManifest,
-            ...ReleaseControlSidesheetWidgetComponent,
-            resolver: rcResolverFunction,
-        },
-        customGroupeSidesheet: {
-            ...ReleaseControlHTSidesheetWidgetComponent,
-            ...ReleaseControlHTSidesheetWidgetManifest,
-            resolver: htResolverFunction,
-        },
+        customSidesheetOptions: rcSidesheetCreator('WorkspaceSideSheet'),
+        customGroupeSidesheet: htSidesheetCreator('WorkspaceSideSheet'),
         objectIdentifier: 'name',
         defaultTab: 'garden',
     })

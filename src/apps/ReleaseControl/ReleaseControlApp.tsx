@@ -1,14 +1,29 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
+import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
 import { ReleaseControlSidesheet } from './components/sidesheet/ReleaseControlSidesheet/ReleaseControlSidesheet';
 import { ReleaseControl } from './types/releaseControl';
-import { dataSource, filterOptions, tableConfig } from './workspaceConfig';
+import { dataSource, filterOptions, idResolverFunction, tableConfig } from './workspaceConfig';
 import { gardenOptions } from './workspaceConfig/garden/gardenConfig';
 
-//Update Sidesheet config
+const creator = setupWorkspaceSidesheet<ReleaseControl, 'releaseDetails'>({
+    id: 'releaseDetails',
+    color: '#0084C4',
+    component: ReleaseControlSidesheet,
+    props: {
+        objectIdentifier: 'id',
+        parentApp: 'release',
+        function: idResolverFunction,
+    },
+});
+
+export const releaseCreatorManifest = creator('SidesheetManifest');
+export const releaseCreatorComponent = creator('SidesheetComponentManifest');
+export const releaseResolverFunction = creator('ResolverFunction');
+
 export function setup({ createWorkSpace }: ClientApi): void {
     createWorkSpace<ReleaseControl>({
         objectIdentifier: 'id',
-        CustomSidesheet: ReleaseControlSidesheet,
+        customSidesheetOptions: creator('WorkspaceSideSheet'),
         defaultTab: 'garden',
     })
         .registerDataSource(dataSource)

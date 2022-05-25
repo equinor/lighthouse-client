@@ -2,7 +2,7 @@ import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterGroup, FilterOptions } from '@equinor/filter';
 import { GardenOptions } from '@equinor/ParkView';
 import { OpenSidesheetFunc, SidesheetApi } from '@equinor/sidesheet';
-import { WorkSpaceSideSheet } from './Types';
+import { WorkspaceSideSheet } from './Functions/setupWorkspaceSidesheet';
 import {
     PowerBiOptions,
     PrefetchQueriesOptions,
@@ -12,6 +12,7 @@ import {
     WorkflowEditorOptions,
     WorkspaceTab
 } from './workspaceState';
+
 
 export interface DataSource<T> {
     /** Function that returns the api call promise */
@@ -31,8 +32,8 @@ export interface WorkspaceOptions<T, SideSheetId extends string = string> {
     defaultTab?: WorkspaceTab;
     openSidesheet: OpenSidesheetFunc;
     CustomSidesheet?: React.FC<{ item: T; actions: SidesheetApi }>;
-    customSidesheetOptions?: WorkSpaceSideSheet<T, SideSheetId>;
-    customGroupeSidesheet?: WorkSpaceSideSheet<any, string>;
+    customSidesheetOptions?: WorkspaceSideSheet<T, SideSheetId>;
+    customGroupeSidesheet?: WorkspaceSideSheet<any, string>;
     CustomGroupeSidesheet?: React.FC<{ item: any; actions: SidesheetApi }>;
     CustomSidesheetList?: React.FC<T[]>;
 }

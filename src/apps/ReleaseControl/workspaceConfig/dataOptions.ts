@@ -1,5 +1,5 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { DataSource, IdResolverFunc } from '@equinor/WorkSpace';
+import { DataSource } from '@equinor/WorkSpace';
 import { ReleaseControl } from '../types/releaseControl';
 
 async function responseAsync(signal?: AbortSignal): Promise<Response> {
@@ -13,12 +13,12 @@ export const dataSource: DataSource<ReleaseControl> = {
     responseAsync,
 };
 
-export const idResolver: IdResolverFunc<ReleaseControl> = idResolverFunction;
-
-async function idResolverFunction(id: string): Promise<ReleaseControl> {
+export async function idResolverFunction(id: string): Promise<ReleaseControl> {
+    console.log('here');
     const { scopeChange } = httpClient();
+    console.log('here', id);
     const res = await scopeChange.fetch(`api/releasecontrol/${id}`);
-
+    console.log('here2', res);
     if (!res.ok) {
         throw 'Not found';
     }

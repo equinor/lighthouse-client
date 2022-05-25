@@ -1,4 +1,5 @@
 import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
+import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
 import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
 import { statusBarData } from './Garden/components/statusItems';
 import { HandoverGroupByView } from './Garden/CustomViews';
@@ -10,10 +11,29 @@ import {
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus,
+    sortPackagesByStatus
 } from './Garden/utility';
 import { filterConfig } from './utility/config/filterSetup';
 import { tableConfig } from './utility/config/tableConfig';
+
+const creator = setupWorkspaceSidesheet<HandoverPackage, 'handoverDetails'>({
+    id: 'handoverDetails',
+    color: '#0084C4',
+    component: HandoverSideSheet,
+    props: {
+        objectIdentifier: 'id',
+        parentApp: 'handover',
+        function: async (id: string) => {
+            const items = await responseParser(await responseAsync());
+            return items.find((item) => item.id === id);
+        },
+    },
+});
+
+export const handoverCreatorManifest = creator('SidesheetManifest');
+export const handoverCreatorComponent = creator('SidesheetComponentManifest');
+export const handoverResolverFunction = creator('ResolverFunction');
+
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
         weeklyDaily: 'Weekly',
@@ -21,7 +41,7 @@ export function setup(appApi: ClientApi): void {
     };
     appApi
         .createWorkSpace<HandoverPackage>({
-            CustomSidesheet: HandoverSideSheet,
+            customSidesheetOptions: creator('WorkspaceSideSheet'),
             objectIdentifier: 'id',
             defaultTab: 'garden',
         })

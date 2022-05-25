@@ -4,15 +4,25 @@ import {
     rcResolverFunction
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { htCreatorAccessFunction } from './DisciplineReleaseControl/WorkspaceConfig';
-import { changeFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
+import { handoverResolverFunction } from './Handover';
+import { mcResolverFunction } from './MechanicalCompletion';
+import { releaseResolverFunction } from './ReleaseControl/ReleaseControlApp';
+import { changeResolverFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
+import { swcrResolverFunction } from './swcr';
+import { workOrderResolverFunction } from './WorkOrder';
 
 export const functions: FunctionManifest[] = [
-    changeFunction,
-    htResolverFunction,
-    rcResolverFunction,
     changeCreatorAccessFunction,
     htCreatorAccessFunction,
+    changeResolverFunction,
+    htResolverFunction,
+    rcResolverFunction,
+    swcrResolverFunction,
+    handoverResolverFunction,
+    workOrderResolverFunction,
+    mcResolverFunction,
+    releaseResolverFunction,
 ];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {

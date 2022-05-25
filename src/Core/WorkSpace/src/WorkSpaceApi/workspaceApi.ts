@@ -14,7 +14,8 @@ import {
 } from './workspaceState';
 import {
     DataSource,
-    DataViewerProps, Validator,
+    DataViewerProps,
+    Validator,
     ViewOptions,
     WorkSpaceApi,
     WorkspaceOptions
@@ -32,15 +33,13 @@ export function createWorkSpace<T, SideSheetIds extends string>(
     options: WorkspaceOptions<T, SideSheetIds>
 ): WorkSpaceApi<T> {
     const onSelect = (item: T) => {
-        // Todo: move to openSidesheet
-        const url = new URL(window.location.href);
-        url.hash = `${options.viewerId}/${item[options.objectIdentifier]}`;
-        window.history.pushState({}, '', url);
-
         options.openSidesheet(
-            options.customSidesheetOptions?.widget || options.CustomSidesheet,
+            options.customSidesheetOptions?.component || options.CustomSidesheet,
             item,
-            options.customSidesheetOptions
+            {
+                ...options.customSidesheetOptions,
+                widgetId: options.customSidesheetOptions?.id,
+            }
         );
     };
 
@@ -130,9 +129,12 @@ export function createWorkSpace<T, SideSheetIds extends string>(
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
             const onGroupeSelect = (item: unknown) => {
                 options.openSidesheet<any>(
-                    options.customGroupeSidesheet?.widget || options.CustomGroupeSidesheet,
+                    options.customGroupeSidesheet?.component || options.CustomGroupeSidesheet,
                     item,
-                    options.customGroupeSidesheet
+                    {
+                        ...options.customGroupeSidesheet,
+                        widgetId: options.customGroupeSidesheet?.id,
+                    }
                 );
             };
 

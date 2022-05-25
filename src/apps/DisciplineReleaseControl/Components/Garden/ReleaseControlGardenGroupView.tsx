@@ -19,7 +19,7 @@ const ReleaseControlGardenGroupView = ({
 }: CustomGroupView<Pipetest>) => {
     const handleSubGroupClick = () => {
         if (data.value.startsWith('HT')) {
-            onGroupeSelect && onGroupeSelect(data);
+            onGroupeSelect && onGroupeSelect({ value: data.value, items: data.items || [] });
         }
     };
     return (

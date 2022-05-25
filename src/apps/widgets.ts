@@ -5,12 +5,17 @@ import {
     actionCenterSidesheetWidgetManifest
 } from '../components/ActionCenter/ActionCenterSidesheet';
 import {
-    ReleaseControlHTSidesheetWidgetComponent,
-    ReleaseControlHTSidesheetWidgetManifest,
+    htSidesheetWidgetComponent,
+    htSidesheetWidgetManifest,
     ReleaseControlSidesheetWidgetComponent,
     ReleaseControlSidesheetWidgetManifest
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { htCreatorComponent, htCreatorManifest } from './DisciplineReleaseControl/WorkspaceConfig';
+import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
+import {
+    releaseCreatorComponent,
+    releaseCreatorManifest
+} from './ReleaseControl/ReleaseControlApp';
 import {
     changeSideSheetWidgetComponent,
     changeSideSheetWidgetManifest
@@ -19,23 +24,34 @@ import {
     changeCreatorComponent,
     changeCreatorManifest
 } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
+import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
+import { workOrderCreatorComponent, workOrderCreatorManifest } from './WorkOrder';
 
 const _widgets: WidgetManifest[] = [
     changeSideSheetWidgetManifest,
-    ReleaseControlHTSidesheetWidgetManifest,
+    htSidesheetWidgetManifest,
     ReleaseControlSidesheetWidgetManifest,
     actionCenterSidesheetWidgetManifest,
     changeCreatorManifest,
     htCreatorManifest,
+    swcrCreatorManifest,
+    handoverCreatorManifest,
+    workOrderCreatorManifest,
+    releaseCreatorManifest,
 ];
 
 const _widgetComponents: ComponentManifest[] = [
     changeSideSheetWidgetComponent,
-    ReleaseControlHTSidesheetWidgetComponent,
+    htSidesheetWidgetComponent,
     ReleaseControlSidesheetWidgetComponent,
     actionCenterSidesheetWidgetComponent,
     changeCreatorComponent,
     htCreatorComponent,
+    swcrCreatorComponent,
+    handoverCreatorComponent,
+    workOrderCreatorComponent,
+    workOrderCreatorComponent,
+    releaseCreatorComponent,
 ];
 
 export async function getCreators(): Promise<CreatorManifest[]> {

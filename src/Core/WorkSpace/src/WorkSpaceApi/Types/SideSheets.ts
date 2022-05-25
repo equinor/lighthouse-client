@@ -6,7 +6,7 @@ export interface SidesheetComponentManifest<SideSheetId extends string> extends 
     widgetType: 'sidesheet';
 }
 
-export interface SidesheetWidgetManifest<T, SideSheetId extends string> extends WidgetManifest {
+export interface SidesheetManifest<T, SideSheetId extends string> extends WidgetManifest {
     widgetId: SideSheetId;
     widgetType: 'sidesheet';
     props: {

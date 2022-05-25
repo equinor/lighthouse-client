@@ -1,13 +1,14 @@
+import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-
-import { ScopeChangeErrorBanner } from '../ErrorBanner/ErrorBanner';
-import { useOctopusErrorHandler } from '../../hooks/observers/useOctopusErrorHandler';
-import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
 import { createAtom } from '../../../../Core/Atom/functions/createAtom';
-import { FormBanner } from '../Form/FormBanner/FormBanner';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Types/SidesheetApi';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
+import { useOctopusErrorHandler } from '../../hooks/observers/useOctopusErrorHandler';
+import { ScopeChangeErrorBanner } from '../ErrorBanner/ErrorBanner';
+import { FormBanner } from '../Form/FormBanner/FormBanner';
+import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
+
+
 
 interface ScopeChangeCreateFormProps {
     actions: SidesheetApi;

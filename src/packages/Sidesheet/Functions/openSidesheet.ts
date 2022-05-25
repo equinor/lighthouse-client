@@ -93,7 +93,7 @@ export async function openSidesheetById<T>(
     async function mountAsync() {
         const SidesheetContent = await Widget.getWidget(sideSheetId);
         const manifest = await Widget.getWidgetManifest(sideSheetId);
-        console.log(manifest);
+
         if (!id) {
             openSidesheet(SidesheetContent, undefined, manifest);
             return;
