@@ -8,7 +8,7 @@ import {
     customDescription,
     fieldSettings,
     getHighlighColumn,
-    getItemWidth
+    getItemWidth,
 } from './utilities/gardenSetup';
 import { statusBarData } from './utilities/getStatusBarData';
 import { sortPackagesByStatusAndNumber } from './utilities/sortFunctions';
@@ -21,7 +21,7 @@ export function setup(appApi: ClientApi): void {
             objectIdentifier: 'swcrNo',
             defaultTab: 'garden',
         })
-        .registerDataSource({ responseAsync: responseAsync, responseParser: responseParser })
+        .registerDataSource({ responseAsync, responseParser })
         .registerFilterOptions(filterSetup)
         .registerTableOptions(tableConfig)
         .registerGardenOptions({
@@ -38,6 +38,7 @@ export function setup(appApi: ClientApi): void {
             highlightColumn: getHighlighColumn,
             customDescription: customDescription,
         })
+        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ swcrNo }) => swcrNo }])
         .registerStatusItems(statusBarData)
         .registerPowerBIOptions({
             reportURI: 'pp-swcr-analytics',
