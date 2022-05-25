@@ -106,22 +106,22 @@ declare module 'react-table' {
     //@ts-ignore
     export interface TableOptions<TData extends TableData = TableData>
         extends UseExpandedOptions<TData>,
-            UseFiltersOptions<TData>,
-            UseGlobalFiltersOptions<TData>,
-            UseGroupByOptions<TData>,
-            UsePaginationOptions<TData>,
-            UseResizeColumnsOptions<TData>,
-            UseRowSelectOptions<TData>,
-            UseRowStateOptions<TData>,
-            UseSortByOptions<TData>,
-            TableData {
+        UseFiltersOptions<TData>,
+        UseGlobalFiltersOptions<TData>,
+        UseGroupByOptions<TData>,
+        UsePaginationOptions<TData>,
+        UseResizeColumnsOptions<TData>,
+        UseRowSelectOptions<TData>,
+        UseRowStateOptions<TData>,
+        UseSortByOptions<TData>,
+        TableData {
         /** Set to true if checkboxes should be shown */
         enableSelectRows?: boolean;
         /** Click handler for cells */
         onCellClick?: CellClickHandler<TData>;
         setSelected?: (item: any) => void;
 
-        onSelect?: (item: TData) => void;
+        onSelect?: (item: TData, id: string) => void;
         /** Order columns. Has to be an array of id's (keyof T) */
         columnOrder?: string[];
     }
@@ -129,25 +129,25 @@ declare module 'react-table' {
     //@ts-ignore
     export interface ColumnInstance<TData extends TableData = TableData>
         extends UseFiltersColumnProps<TData>,
-            UseGroupByColumnProps<TData>,
-            UseResizeColumnsColumnProps<TData>,
-            UseSortByColumnProps<TData> {
+        UseGroupByColumnProps<TData>,
+        UseResizeColumnsColumnProps<TData>,
+        UseSortByColumnProps<TData> {
         align: any; // TODO : what is it used for
     }
 
     //@ts-ignore
     export interface TableInstance<D extends TableData>
         extends UsePaginationInstanceProps<D>,
-            UseColumnOrderInstanceProps<D> {
+        UseColumnOrderInstanceProps<D> {
         pageSizes?: number[];
         data: D[];
     }
     //@ts-ignore
-    export interface Row<D extends TableData> extends UseTableRowProps<D>, UseGroupByRowProps<D> {}
+    export interface Row<D extends TableData> extends UseTableRowProps<D>, UseGroupByRowProps<D> { }
     //@ts-ignore
     export interface Cell<D extends TableData>
         extends UseTableCellProps<D>,
-            UseGroupByCellProps<D> {}
+        UseGroupByCellProps<D> { }
 
     //@ts-ignore
     export type Column<TData extends TableData> = Column<TData>;
@@ -156,7 +156,7 @@ declare module 'react-table' {
     export type PluginHook<TData extends TableData> = PluginHookDefault<TData>;
 
     //@ts-ignore
-    export interface TableState<D extends TableData> extends Partial<UseGroupByState<D>> {}
+    export interface TableState<D extends TableData> extends Partial<UseGroupByState<D>> { }
 }
 
 export type { TableOptions, Cell, TableInstance, CellProps } from 'react-table';
