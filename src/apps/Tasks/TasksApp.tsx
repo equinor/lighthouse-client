@@ -1,5 +1,4 @@
 import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
-import { DateTime } from 'luxon';
 import { useEffect } from 'react';
 import { Assignment } from '../../Core/Assignments/Types/assignment';
 import { SidesheetApi } from '../../packages/Sidesheet/Types/SidesheetApi';
@@ -111,5 +110,5 @@ export function TasksSidesheet({ actions, item }: TasksSidesheetProps) {
         actions.setTitle(item.title);
     }, []);
 
-    return <div>Hello guys</div>;
+    return <div>Comning soon...</div>;
 }
