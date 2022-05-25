@@ -9,7 +9,13 @@ import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
 import { TableOptions as ReactTableOptions } from 'react-table';
 import { Page } from '../Context/ViewProvider';
-import { DataSource, DataViewerProps, PresetOption, ViewOptions } from './WorkSpaceTypes';
+import {
+    DataSource,
+    DataViewerProps,
+    PresetOption,
+    SearchOption,
+    ViewOptions,
+} from './WorkSpaceTypes';
 
 export interface WorkSpaceState {
     [key: string]: WorkSpaceConfig<unknown>;
@@ -92,6 +98,7 @@ export interface WorkSpaceConfig<T> {
     powerBiOptions?: PowerBiOptions;
     workflowEditorOptions?: WorkflowEditorOptions;
     presetOptions?: PresetOption[];
+    searchOptions?: SearchOption<T>[];
 }
 
 export interface PowerBiOptions {
