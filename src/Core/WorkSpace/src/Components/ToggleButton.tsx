@@ -14,7 +14,6 @@ const Button = styled.button<BoxProps>`
     position: relative;
     white-space: nowrap;
     text-overflow: ellipsis;
-    /* overflow-x: hidden; */
     appearance: none;
     box-sizing: border-box;
     font-family: inherit;

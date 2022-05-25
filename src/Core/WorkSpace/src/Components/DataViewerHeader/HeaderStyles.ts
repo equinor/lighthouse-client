@@ -17,11 +17,7 @@ export const TitleBar = styled.div`
 `;
 
 export const ActionBar = styled.div`
-    /* display: flex; */
     height: 48px;
-    /* flex-direction: row; */
-    /* justify-content: space-between;
-    align-items: flex-end; */
     display: grid;
     grid-template-columns: 2fr auto;
     width: -webkit-fill-available;
