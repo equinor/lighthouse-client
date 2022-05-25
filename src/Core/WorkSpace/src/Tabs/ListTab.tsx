@@ -1,4 +1,6 @@
-import { defaultGroupByFn, Table, TableData, useColumns } from '@equinor/Table';
+import { useSideSheet } from '@equinor/sidesheet';
+import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
+import { useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
@@ -10,6 +12,8 @@ const Wrapper = styled.section`
     margin: 16px;
     overflow-y: auto;
 `;
+
+type GetTableApi = () => TableAPI;
 
 export const ListTab = (): JSX.Element => {
     const {
@@ -30,11 +34,26 @@ export const ListTab = (): JSX.Element => {
     });
     const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
 
+    const getApi = useRef<GetTableApi | null>(null);
+
+    const initApi = (a: GetTableApi) => (getApi.current = a);
+
+    const onSelect = useCallback(
+        (item: any, id: string) => {
+            tableOptions?.onSelect && tableOptions.onSelect(item, id);
+            getApi.current && getApi.current().setSelectedRowId(id);
+        },
+        [getApi, tableOptions]
+    );
+
+    useClearSelectedOnSidesheetClose(getApi.current);
+
     return (
         <>
             <WorkspaceFilter />
             <Wrapper ref={ref}>
                 <Table<TableData>
+                    onTableReady={initApi}
                     options={{
                         data,
                         columns,
@@ -45,7 +64,7 @@ export const ListTab = (): JSX.Element => {
                         },
                         columnOrder: tableOptions?.columnOrder,
                         groupByFn: defaultGroupByFn,
-                        onSelect: tableOptions?.onSelect,
+                        onSelect: onSelect,
                     }}
                     height={awaitableHeight - 58}
                     itemSize={tableOptions?.itemSize}
@@ -53,4 +72,16 @@ export const ListTab = (): JSX.Element => {
             </Wrapper>
         </>
     );
+};
+
+const useClearSelectedOnSidesheetClose = (getApi: GetTableApi | null): void => {
+    const { SidesheetComponent } = useSideSheet();
+
+    useEffect(() => {
+        if (!SidesheetComponent) {
+            if (getApi !== null) {
+                getApi().setSelectedRowId(() => null);
+            }
+        }
+    }, [SidesheetComponent]);
 };
