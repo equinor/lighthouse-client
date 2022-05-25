@@ -1,4 +1,4 @@
-import { Icon, SingleSelect } from '@equinor/eds-core-react';
+import { SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { IconMenu } from '@equinor/overlay-menu';
@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { FunctionalRole } from '../../../types/functionalRole';
 import { CreateReleaseControlStepModel } from '../../../types/releaseControl';
+import { DraggableIcon } from './DraggableIcon';
 import { DraggableHandleSelector } from './WorkflowCustomEditor';
 import {
     getWorkflowStepMenuActions,
@@ -27,13 +28,9 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
     const { updateAtom } = DRCFormAtomApi;
     return (
         <Line>
-            <div className={DraggableHandleSelector}>
-                <Icon
-                    name="reorder"
-                    color={tokens.colors.interactive.primary__resting.hex}
-                    style={{ cursor: 'grab' }}
-                />
-            </div>
+            <DraggableIconWrapper className={DraggableHandleSelector}>
+                <DraggableIcon></DraggableIcon>
+            </DraggableIconWrapper>
             <NumberCircle>{step.order}</NumberCircle>
             <Selections>
                 <SingleSelect
@@ -80,6 +77,10 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
         </Line>
     );
 };
+
+const DraggableIconWrapper = styled.div`
+    cursor: grab;
+`;
 
 const Line = styled.div`
     display: flex;
