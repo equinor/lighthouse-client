@@ -39,6 +39,6 @@ export function setup({ createWorkSpace }: ClientApi): void {
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerPresets(presetConfig)
-        .registerSearchOptions([{ name: 'Id', valueFormatter: (s) => s.name }])
+        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ name }) => name }])
         .registerStatusItems(statusBarConfig);
 }

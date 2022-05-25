@@ -47,7 +47,7 @@ export function setup(appApi: ClientApi): void {
             highlightColumn: getHighlightedColumn,
             customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
         })
-        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ commpkgNo }) => commpkgNo }])
+        // .registerSearchOptions([{ name: 'Id', valueFormatter: ({ commpkgNo }) => commpkgNo }])
         .registerStatusItems(statusBarData)
         .registerPowerBIOptions({
             reportURI: 'pp-handover-analytics',
@@ -68,12 +68,10 @@ export function setup(appApi: ClientApi): void {
 
 async function responseParser(response: Response) {
     const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
-    [];
-
     return parsedResponse.sort(sortPackagesByStatus);
 }
 
-async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
+async function responseAsync(signal?: AbortSignal): Promise<Response> {
     const { fusionDataproxy } = httpClient();
     const contextId = getFusionContextId();
     return await fusionDataproxy.fetch(`/api/contexts/${contextId}/handover/`, { signal: signal });
