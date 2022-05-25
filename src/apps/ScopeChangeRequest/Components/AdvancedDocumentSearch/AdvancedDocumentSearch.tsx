@@ -3,18 +3,20 @@ import { Button, Icon, Progress, Scrim, SingleSelect, TextField } from '@equinor
 import { tokens } from '@equinor/eds-tokens';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { StidTypes } from '../../types/STID/STIDTypes';
-import { useHttpClient } from '../../../../Core/Client/Hooks/useApiClient';
-import { getDocumentsByTag } from '../../api/STID/getDocumentsByTag';
 import { Result } from './Results';
 import { SubResults } from './SubResult';
 import { AdvancedSearch, ModalHeader, Wrapper, Title, SearchField } from './advancedSearch.styles';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { useCancellationToken } from '@equinor/hooks';
+import { Switch } from '../../../../components/JSXSwitch/Components/Switch';
+import { Case } from '@equinor/JSX-Switch';
+import { httpClient } from '../../../../Core/Client/Functions';
+import { Tag } from '../../types/ProCoSys/Tag';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
-    appendItem: (item: TypedSelectOption) => void;
+    appendItem: (item: TypedSelectOption | TypedSelectOption[]) => void;
     removeItem: (value: string) => void;
 }
 
@@ -28,8 +30,6 @@ export const AdvancedDocumentSearch = ({
     documents,
     removeItem,
 }: AdvancedDocumentSearchProps): JSX.Element => {
-    const { STID } = useHttpClient();
-
     const { search } = useReferencesSearch();
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -46,24 +46,13 @@ export const AdvancedDocumentSearch = ({
         return documents.map((x) => x.value).includes(x.value);
     }
 
-    const popResult = (value: string) => {
-        setResults((prev) => prev.filter((x) => x.value !== value));
-        if (subResults) {
-            setSubResults((prev) => {
-                return {
-                    documents: prev?.documents.filter((x) => x.value !== value) || [],
-                    tagName: prev?.tagName || '',
-                };
-            });
-        }
-    };
-
     const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
         'document',
         'area',
         'commpkg',
         'tag',
         'system',
+        'batchTag',
         // 'stidtag',
     ];
 
@@ -77,11 +66,6 @@ export const AdvancedDocumentSearch = ({
     const handleReturnClick = () => setSubResults(undefined);
 
     async function handleClick(result: TypedSelectOption, action: 'Add' | 'Remove') {
-        if (result.type === 'stidtag') {
-            await handleStidTagSelected(result);
-            return;
-        }
-
         if (action === 'Add') {
             if (!checkDuplicate(result)) {
                 appendItem(result);
@@ -96,26 +80,6 @@ export const AdvancedDocumentSearch = ({
         }
     }
 
-    async function handleStidTagSelected(item: TypedSelectOption) {
-        const documents = await getDocumentsByTag('JCA', item.value, STID);
-        if (documents.length === 0) {
-            popResult(item.value);
-        } else {
-            setSubResults({
-                tagName: item.label,
-                documents: documents.map((x) => {
-                    return {
-                        label: `${x.docNo}`,
-                        searchValue: x.docNo,
-                        object: x,
-                        type: 'document',
-                        value: x.docNo,
-                    };
-                }),
-            });
-        }
-    }
-
     function resetStates() {
         setResults([]);
         setSubResults(undefined);
@@ -127,10 +91,38 @@ export const AdvancedDocumentSearch = ({
         //Aborts previous api call
         abort();
         if (!referenceType) return;
-        const data = await search(inputValue, referenceType, getSignal());
 
+        const data = await search(inputValue, referenceType, getSignal());
         setResults(data);
+
         setIsLoading(false);
+    };
+
+    const resolveBatchTags = async (tagNos: string[]) => {
+        setIsLoading(true);
+        abort();
+        const { procosys } = httpClient();
+
+        const res = await procosys.fetch(
+            `api/tag/ByTagNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${tagNos
+                .map((x) => `&tagNos=${x}`)
+                .toString()
+                .replaceAll(',', '')}`
+        );
+
+        const data: TypedSelectOption[] = (await res.json()).map(
+            (value: Tag): TypedSelectOption => ({
+                type: 'tag',
+                label: value.TagNo,
+                object: value,
+                searchValue: value.TagNo,
+                value: value.TagNo,
+                metadata: value.Description,
+            })
+        );
+
+        appendItem(data);
+        setResults(data);
     };
 
     return (
@@ -193,32 +185,55 @@ export const AdvancedDocumentSearch = ({
                                 }}
                             />
 
-                            <TextField
-                                disabled={referenceType === undefined}
-                                id={'Stid document selector'}
-                                value={searchText}
-                                inputIcon={
-                                    <>
-                                        {isLoading ? (
-                                            <Progress.Dots color="primary" />
-                                        ) : (
-                                            <Icon name="search" />
-                                        )}
-                                    </>
+                            <Switch
+                                defaultCase={
+                                    <TextField
+                                        disabled={referenceType === undefined}
+                                        id={'Stid document selector'}
+                                        value={searchText}
+                                        inputIcon={
+                                            <>
+                                                {isLoading ? (
+                                                    <Progress.Dots color="primary" />
+                                                ) : (
+                                                    <Icon name="search" />
+                                                )}
+                                            </>
+                                        }
+                                        placeholder={
+                                            referenceType
+                                                ? `Type to search ${referenceType}`
+                                                : 'Please choose a reference type'
+                                        }
+                                        onChange={(e) => {
+                                            console.log(e.target.value);
+                                            setSubResults(undefined);
+                                            setSearchText(e.target.value || undefined);
+                                            if (e.target.value && e.target.value.length > 0) {
+                                                fetchResults(e.target.value);
+                                            }
+                                        }}
+                                    />
                                 }
-                                placeholder={
-                                    referenceType
-                                        ? `Type to search ${referenceType}`
-                                        : 'Please choose a reference type'
-                                }
-                                onChange={(e) => {
-                                    setSubResults(undefined);
-                                    setSearchText(e.target.value || undefined);
-                                    if (e.target.value && e.target.value.length > 0) {
-                                        fetchResults(e.target.value);
-                                    }
-                                }}
-                            />
+                            >
+                                <Case when={!referenceType}>
+                                    <TextField
+                                        id={'disabled'}
+                                        disabled
+                                        placeholder="Select a reference type"
+                                    />
+                                </Case>
+                                <Case when={referenceType === 'batchTag'}>
+                                    <TextField
+                                        multiline
+                                        rows={1}
+                                        id="batchTags"
+                                        onChange={(e) => {
+                                            resolveBatchTags(e.target.value.split('\n'));
+                                        }}
+                                    />
+                                </Case>
+                            </Switch>
                         </SearchField>
 
                         {subResults ? (
