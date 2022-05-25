@@ -10,7 +10,7 @@ import { filterConfig, tableConfig, gardenConfig, presetConfig } from './Workspa
 export function setup({ createWorkSpace }: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
         const { FAM } = httpClient();
-        return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal: signal });
+        return await FAM.fetch(`v0.1/procosys/pipetest/JCA`, { signal: signal });
     };
 
     const responseParser = async (response: Response) => {
