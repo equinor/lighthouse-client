@@ -14,7 +14,7 @@ export const DisciplineReleaseControlFactoryComponent = ({
     useEffect(() => {
         disciplineReleaseControlFactoryContext.updateAtom(actions);
         actions.setTitle('Create Release control workflow');
-        actions.setWidth(1150);
+        actions.setWidth(1500);
     }, []);
 
     return (

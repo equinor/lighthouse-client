@@ -51,6 +51,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                 <SingleSelect
                     items={functionalRoleNames ?? []}
                     label="Responsible"
+                    size={30}
                     selectedOption={step.criteriaTemplates[0].value}
                     handleSelectedItemChange={(change) =>
                         updateAtom({
