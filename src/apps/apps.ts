@@ -32,6 +32,7 @@ import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeReque
 import { setup as SwcrSetup } from './swcr';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
+import { setup as tasksSetup } from './Tasks/TasksApp';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -122,6 +123,19 @@ export const apps: AppManifest[] = [
         tags: [],
 
         appEnv: 'test',
+    },
+    {
+        title: 'Tasks',
+        shortName: 'tasks',
+        color: '#8C1159',
+        groupe: Apps.ProjectInformation,
+        tags: [],
+        icon: '',
+        appEnv: 'dev',
+        app: {
+            appType: 'Workspace',
+            setup: tasksSetup,
+        },
     },
     {
         title: 'Business case',
