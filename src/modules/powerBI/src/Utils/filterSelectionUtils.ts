@@ -1,5 +1,7 @@
 import { models } from 'powerbi-client';
-import { PowerBiFilterItem } from '../Types';
+import { IS_BLANK } from './constants';
+import { ActiveFilter, PowerBiFilterItem } from '../Types';
+import { convertFromNullToBlank } from './transformData';
 
 /**
  * Will return true if all visible filters
@@ -8,34 +10,48 @@ import { PowerBiFilterItem } from '../Types';
  */
 export const areAllVisibleFiltersApplied = (
     allVisibleFilterValues: string[],
-    activeFilters: (string | number | boolean)[]
+    activeFilters: ActiveFilter[]
 ): boolean => {
     return allVisibleFilterValues.every((visibleValue) => activeFilters?.includes(visibleValue));
 };
 
 export const removeVisibleFilters = (
     allVisibleFilterValues: string[],
-    activeFilters: (string | number | boolean)[]
-): (string | number | boolean)[] => {
+    activeFilters: ActiveFilter[]
+): ActiveFilter[] => {
     return activeFilters?.filter(
-        (filterVal) => !allVisibleFilterValues.includes(filterVal.toString())
+        (filterVal) =>
+            !allVisibleFilterValues.includes(convertFromNullToBlank(filterVal).toString())
     );
 };
 
 export const createAdvancedPbiFilter = (
     filter: PowerBiFilterItem,
-    newFilters: (string | number | boolean)[]
-): models.IAdvancedFilter => {
-    return {
-        $schema: 'http://powerbi.com/product/schema#advanced',
+    newFilters: ActiveFilter[]
+): models.ISlicerFilter[] => {
+    const hasBlank = newFilters.includes(IS_BLANK);
+    const values: (string | number | boolean | null)[] = [];
+    newFilters.forEach((filterValue) => {
+        filterValue !== IS_BLANK && values.push(filterValue);
+    });
+    hasBlank && values.push(null);
+    const basicFilter: models.IBasicFilter = {
+        $schema: 'http://powerbi.com/product/schema#basic',
         target: filter.target!,
-        filterType: models.FilterType.Advanced,
-        logicalOperator: 'Or',
-        conditions:
-            newFilters.length < 0
-                ? undefined
-                : newFilters.map((x) =>
-                      x === '(Blank)' ? { operator: 'IsBlank' } : { operator: 'Is', value: x }
-                  ),
+        filterType: models.FilterType.Basic,
+        operator: 'In',
+        //@ts-ignore null value in array does seem to work when passed to and translated by PBI
+        values,
     };
+    debugger;
+    /** TODO: Use this in addition if null value in values array does not work. */
+    // const isBlankFilter: models.IAdvancedFilter = {
+    //     $schema: 'http://powerbi.com/product/schema#advanced',
+    //     target: filter.target!,
+    //     filterType: models.FilterType.Advanced,
+    //     logicalOperator: 'Or',
+    //     conditions: [{ operator: 'IsBlank' }],
+    // };
+
+    return [basicFilter];
 };

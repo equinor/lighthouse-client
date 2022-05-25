@@ -1,6 +1,6 @@
-export function getActiveFilterGroupArray(
-    activeFilters: Record<string, (string | number | boolean)[]>
-) {
+import { ActiveFilter } from '..';
+
+export function getActiveFilterGroupArray(activeFilters: Record<string, ActiveFilter[]>) {
     let activeFilterGroups: string[] = [];
     Object.keys(activeFilters).forEach((key) => {
         if (activeFilters[key].length !== 0) {

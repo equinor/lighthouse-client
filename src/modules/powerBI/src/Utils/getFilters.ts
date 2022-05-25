@@ -1,7 +1,6 @@
 import { Report } from 'powerbi-client';
-import { createPowerBiFilter, getSlicerData } from '.';
+import { createPowerBiFilter, getSlicerData, HIDDEN_FILTER_PREFIX } from '.';
 import { PowerBiFilter } from '../Types';
-const HIDDEN_FILTER_PREFIX = 'xx';
 /**
  * Get all slicer filters on mount and after a slicer filter is set.
  * Some filters may be removed after a slicer filter is set.

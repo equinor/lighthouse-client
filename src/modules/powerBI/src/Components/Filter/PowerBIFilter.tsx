@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/lighthouse-components';
 import { Report } from 'powerbi-client';
 import { useEffect, useState } from 'react';
-import { PowerBiFilter, PowerBiFilterItem } from '../../Types';
+import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../Types';
 import {
     areAllVisibleFiltersApplied,
     createAdvancedPbiFilter,
@@ -32,9 +32,7 @@ export const PowerBIFilter = ({
     options,
 }: PowerBIFilterProps): JSX.Element | null => {
     const [slicerFilters, setSlicerFilters] = useState<PowerBiFilter[] | null>(null);
-    const [activeFilters, setActiveFilters] = useState<
-        Record<string, (string | number | boolean)[]>
-    >({});
+    const [activeFilters, setActiveFilters] = useState<Record<string, ActiveFilter[]>>({});
     const [filterGroupVisible, setFilterGroupVisible] = useState<string[]>(
         options?.defaultFilterGroupVisible || []
     );
@@ -70,7 +68,7 @@ export const PowerBIFilter = ({
 
                 setActiveFilters((prev) => ({ ...prev, [filter.type]: newFilters }));
                 await group.slicer.setSlicerState({
-                    filters: newFilters.length !== 0 ? [slicerFilter] : [],
+                    filters: newFilters.length !== 0 ? slicerFilter : [],
                 });
             } else {
                 /**
@@ -88,7 +86,7 @@ export const PowerBIFilter = ({
                     ...prev,
                     [filter.type]: newFilter,
                 }));
-                await group.slicer?.setSlicerState({ filters: [slicerFilter] });
+                await group.slicer?.setSlicerState({ filters: slicerFilter });
             }
         } catch (errors) {
             console.error("Couldn't select all filters", errors);
@@ -106,7 +104,7 @@ export const PowerBIFilter = ({
         try {
             const change = filter.value;
 
-            let newConditions: (string | number | boolean)[] = [];
+            let newConditions: ActiveFilter[] = [];
 
             if (activeFilters) {
                 /** Either clicking on a label, only selecting this single one, deselect all others if any,
@@ -128,12 +126,13 @@ export const PowerBIFilter = ({
                     setActiveFilters((prev) => ({ ...prev, [filter.type]: newConditions }));
                 }
             }
-            const slicerFilter = createAdvancedPbiFilter(filter, newConditions);
+            const filters =
+                newConditions.length === 0 ? [] : createAdvancedPbiFilter(filter, newConditions);
 
             options?.hasFilter && options.hasFilter(newConditions.length > 0);
 
             await group.slicer?.setSlicerState({
-                filters: newConditions.length > 0 ? [slicerFilter] : [],
+                filters,
             });
         } catch (errors) {
             console.error(errors);
@@ -152,7 +151,7 @@ export const PowerBIFilter = ({
                     await filter.slicer.setSlicerState({ filters: [] });
                 }
 
-                const emptyActiveFilters: Record<string, (string | number | boolean)[]> = {};
+                const emptyActiveFilters: Record<string, ActiveFilter[]> = {};
                 for (const key in activeFilters) {
                     emptyActiveFilters[key] = [];
                 }
