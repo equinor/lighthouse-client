@@ -5,13 +5,7 @@ import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import { chewPipetestDataFromApi } from './Functions/statusHelpers';
 import { Pipetest } from './Types/pipetest';
 
-import {
-    dataCreatorConfig,
-    filterConfig,
-    tableConfig,
-    gardenConfig,
-    presetConfig,
-} from './WorkspaceConfig';
+import { filterConfig, tableConfig, gardenConfig, presetConfig } from './WorkspaceConfig';
 
 export function setup({ createWorkSpace }: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
@@ -30,7 +24,6 @@ export function setup({ createWorkSpace }: ClientApi): void {
         objectIdentifier: 'name',
         defaultTab: 'garden',
     })
-        .registerDataCreator(dataCreatorConfig)
         .registerDataSource({
             responseAsync: responseAsync,
             responseParser: responseParser,

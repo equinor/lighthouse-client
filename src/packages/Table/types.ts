@@ -142,7 +142,8 @@ declare module 'react-table' {
         pageSizes?: number[];
         data: D[];
     }
-
+    //@ts-ignore
+    export interface Row<D extends TableData> extends UseTableRowProps<D>, UseGroupByRowProps<D> {}
     //@ts-ignore
     export interface Cell<D extends TableData>
         extends UseTableCellProps<D>,

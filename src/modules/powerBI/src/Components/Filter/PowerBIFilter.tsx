@@ -195,7 +195,7 @@ export const PowerBIFilter = ({
                 setFilterGroupVisible((s) => [...s, ...filterGroupNames]);
             })();
         }
-    }, [activeFilters, Object.entries(activeFilters).length]);
+    }, [activeFilters, Object.keys(activeFilters).length]);
 
     if (!slicerFilters) return null;
 

@@ -22,7 +22,7 @@ export function chewPipetestDataFromApi(pipetests: Pipetest[]): Pipetest[] {
     pipetests.map((pipetest: Pipetest) => {
         pipetest.circuits?.forEach((circuit: Circuit) => {
             circuit.checkLists?.forEach((checkList: CheckList) => {
-                checkList.formularType = CheckListStepTag.HtCTest;
+                checkList.formularType.startsWith(CheckListStepTag.HtCTest);
                 pipetest.checkLists.push(checkList);
             });
         });
@@ -185,11 +185,11 @@ export function getChecklistSortValue(checkList: CheckList): number {
                 break;
         }
     } else {
-        if (checkList.formularType === CheckListStepTag.HtTest) {
+        if (checkList.formularType.startsWith(CheckListStepTag.HtTest)) {
             number = PipetestCheckListOrder.HtTest;
-        } else if (checkList.formularType === CheckListStepTag.HtRetest) {
+        } else if (checkList.formularType.startsWith(CheckListStepTag.HtRetest)) {
             number = PipetestCheckListOrder.HtRetest;
-        } else if (checkList.formularType === CheckListStepTag.HtCTest) {
+        } else if (checkList.formularType.startsWith(CheckListStepTag.HtCTest)) {
             number = PipetestCheckListOrder.HtCTest;
         }
     }
@@ -258,7 +258,7 @@ export function getPipetestSteps(pipetest: Pipetest): PipetestStep[] {
     if (pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Painting)) {
         pipetestSteps.push(PipetestStep.Painting);
     }
-    if (pipetest.checkLists.some((x) => x.formularType === CheckListStepTag.HtTest)) {
+    if (pipetest.checkLists.some((x) => x.formularType.startsWith(CheckListStepTag.HtTest))) {
         pipetestSteps.push(PipetestStep.HtTest);
     }
     if (pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Insulation)) {
@@ -267,10 +267,10 @@ export function getPipetestSteps(pipetest: Pipetest): PipetestStep[] {
     if (pipetest.insulationBoxes.length !== 0) {
         pipetestSteps.push(PipetestStep.BoxInsulation);
     }
-    if (pipetest.checkLists.some((x) => x.formularType === CheckListStepTag.HtRetest)) {
+    if (pipetest.checkLists.some((x) => x.formularType.startsWith(CheckListStepTag.HtRetest))) {
         pipetestSteps.push(PipetestStep.HtRetest);
     }
-    if (pipetest.checkLists.some((x) => x.formularType === CheckListStepTag.HtCTest)) {
+    if (pipetest.checkLists.some((x) => x.formularType.startsWith(CheckListStepTag.HtCTest))) {
         pipetestSteps.push(PipetestStep.HtCTest);
     }
     if (pipetest.checkLists.some((x) => x.tagNo.substring(0, 2) === CheckListStepTag.Marking)) {
@@ -411,7 +411,7 @@ export function isCheckListStepOk(checkLists: CheckList[], step: CheckListStepTa
 
 export function isCheckListTestOk(checkLists: CheckList[], type: CheckListStepTag): boolean {
     return checkLists
-        .filter((x) => x.formularType === type)
+        .filter((x) => x.formularType.startsWith(type))
         .every((x) => x.status === CheckListStatus.OK || x.status === CheckListStatus.PunchBError);
 }
 

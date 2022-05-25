@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { SidesheetApi } from '@equinor/sidesheet';
+import { deref } from '@dbeining/react-atom';
 
 import { ScopeChangeErrorBanner } from '../ErrorBanner/ErrorBanner';
 import { useOctopusErrorHandler } from '../../hooks/observers/useOctopusErrorHandler';
 import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
-import { createAtom } from '../../../../Core/Atom/functions/createAtom';
-import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { FormBanner } from '../Form/FormBanner/FormBanner';
+import { SidesheetApi } from '../../../../packages/Sidesheet/Types/SidesheetApi';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
+import { SidesheetCoreContext } from '../../../../packages/Sidesheet/context/sidesheetContext';
+import { createAtom } from '@equinor/atom';
 
 interface ScopeChangeCreateFormProps {
     actions: SidesheetApi;
@@ -18,9 +20,14 @@ export const ScopeChangeCreateForm = ({ actions }: ScopeChangeCreateFormProps): 
 
     useEffect(() => {
         scopeChangeCreateContext.updateAtom(actions);
-        scopeChangeFormAtomApi.clearState();
+        actions.setHasUnsavedChanges(true);
         actions.setTitle('Create new scope change request');
         actions.setWidth(1150);
+
+        return () => {
+            deref(SidesheetCoreContext).SidesheetComponent !== ScopeChangeCreateForm &&
+                scopeChangeFormAtomApi.clearState();
+        };
     }, []);
 
     return (

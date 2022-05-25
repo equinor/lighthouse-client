@@ -1,5 +1,5 @@
 import { SwcrPackage, SwcrStatus } from '../models/SwcrPackage';
-import { getSwcrStatusPriority } from './packages';
+import { DATE_BLANKSTRING, getSwcrStatusPriority } from './packages';
 
 export const sortPackagesByStatusAndNumber = (columnA: SwcrPackage, columnB: SwcrPackage): number =>
     getSwcrStatusPriority(columnA.status) - getSwcrStatusPriority(columnB.status) ||
@@ -23,4 +23,11 @@ export const sortByLastSignedRanking = (a: string, b: string): number => {
         aRank.localeCompare(bRank, undefined, { numeric: true, sensitivity: 'base' }) ||
         getSwcrStatusPriority(aStatus as SwcrStatus) - getSwcrStatusPriority(bStatus as SwcrStatus)
     );
+};
+export const sortByDate = (a: string, b: string) => {
+    if (a === DATE_BLANKSTRING) return -1;
+    if (b === DATE_BLANKSTRING) return 1;
+    if (a === b) return 0;
+
+    return a.localeCompare(b);
 };

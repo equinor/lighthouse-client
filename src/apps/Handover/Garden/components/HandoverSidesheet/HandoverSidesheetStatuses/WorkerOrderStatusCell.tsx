@@ -1,26 +1,16 @@
 import { CellProps } from 'react-table';
-import styled from 'styled-components';
-import { followUpColorMapRecord } from '../../../utility/handoverItemMapping';
+import { followUpColorMapRecord, FollowUpStatuses } from '../../../utility/handoverItemMapping';
 import tinycolor from 'tinycolor2';
-import { createGradient, createGradientBackground, getHandoverWorkOrderStatus } from './utility';
+import { createGradient, createGradientBackground } from './utility';
 import { HandoverWorkOrder } from '../../../models';
-
-type StyleProps = {
-    display: string;
-    padding: string;
-    fontSize: number;
-    borderRadius: number;
-    backgroundImage: string;
-    color: string;
-};
-
-const WOStatus = styled.span<StyleProps>``;
 
 export const WorkOrderStatusCell = ({
     value,
-}: CellProps<HandoverWorkOrder, HandoverWorkOrder>): JSX.Element => {
-    const status = getHandoverWorkOrderStatus(value);
-    const background = createGradient(followUpColorMapRecord[status]);
+}: CellProps<HandoverWorkOrder, FollowUpStatuses>): JSX.Element | null => {
+    if (value === null) {
+        return null;
+    }
+    const background = createGradient(followUpColorMapRecord[value]);
     const color = tinycolor.mostReadable(background[0], ['#00000', '#ffffff'], {
         level: 'AAA',
         size: 'small',
@@ -36,8 +26,8 @@ export const WorkOrderStatusCell = ({
     };
 
     return (
-        <WOStatus title={getHandoverWorkOrderStatus(value)} {...styles}>
+        <span title={value} style={styles}>
             CON
-        </WOStatus>
+        </span>
     );
 };

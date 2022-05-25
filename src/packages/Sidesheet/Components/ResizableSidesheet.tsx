@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary, ErrorFallbackSidesheet } from '@equinor/ErrorBoundary';
 import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { openSidesheet } from '../Functions';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
@@ -11,8 +11,10 @@ import { useSideSheet } from '../Hooks/useSideSheet';
 import { CustomSidesheet, SidesheetApi } from '../Types/SidesheetApi';
 
 export const ResizableSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent, props, minWidth, width, isMinimized, color } = useSideSheet();
-    const { closeSidesheet, setIsMinimized, setWidth } = useInternalSidesheetFunction();
+    const { SidesheetComponent, props, minWidth, width, isMinimized, color, hasUnsavedChanges } =
+        useSideSheet();
+    const { closeSidesheet, setIsMinimized, setWidth, setHasUnsavedChanges } =
+        useInternalSidesheetFunction();
 
     const handleMinimize = () => {
         setIsMinimized((prev) => !prev);
@@ -37,6 +39,7 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         setTitle: handleSetTitle,
         setMenuItems: setMenuItems,
         swapComponent: swapComponent,
+        setHasUnsavedChanges: setHasUnsavedChanges,
     };
 
     const sidesheetProps = { item: props, actions: actions };

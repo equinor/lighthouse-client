@@ -18,17 +18,22 @@ import { FunctionalRole } from '../../types/ProCoSys/functionalRole';
 interface PCSLinkProps {
     onSelect: (selected?: TypedSelectOption | null) => void;
     isDisabled?: boolean;
+    classification?: string;
 }
 
-export const PCSPersonRoleSearch = ({ isDisabled, onSelect }: PCSLinkProps): JSX.Element => {
+export const PCSPersonRoleSearch = ({
+    isDisabled,
+    onSelect,
+    classification,
+}: PCSLinkProps): JSX.Element => {
     const { abort, getSignal } = useCancellationToken();
     const { procosysPlantId } = useFacility();
-    const { searchPCS } = usePcsSearch();
+    const { searchPCS } = usePcsSearch({ functionalRoleClassification: classification });
 
     const { getFunctionalRolesQuery } = ProCoSysQueries;
 
     const { data, refetch } = useQuery<unknown, unknown, FunctionalRole[]>(
-        getFunctionalRolesQuery(procosysPlantId)
+        getFunctionalRolesQuery(procosysPlantId, classification)
     );
 
     const loadOptions = async (

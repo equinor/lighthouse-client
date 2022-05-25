@@ -7,9 +7,10 @@ const columns: Column<HandoverSWCR>[] = [
     {
         id: 'swcrNumber',
         Header: '#',
-        accessor: ({ swcrNumber, url }) => ({
-            content: swcrNumber,
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
+            currentKey: 'swcrNumber',
         }),
         Cell: CellWithLink,
     },

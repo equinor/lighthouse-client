@@ -51,6 +51,25 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             Aggregated: () => null,
             aggregate: 'count',
         },
+        {
+            Header: 'Disciplines',
+            accessor: 'disciplineGuesstimates',
+            Cell: ({ cell }: any) => {
+                const request = cell.row.original as ScopeChangeRequest;
+
+                return (
+                    <div>
+                        {request.disciplineGuesstimates
+                            .map(({ discipline: { procosysCode } }) => procosysCode)
+                            .toString()}
+                    </div>
+                );
+            },
+            id: 'Disciplines',
+            width: 180,
+            Aggregated: () => null,
+            aggregate: 'count',
+        },
     ],
     hiddenColumns: [
         'id',
@@ -88,6 +107,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'actualChangeHours',
         'changeCategory',
         'originSource',
+        'scope',
         'modifiedAtUtc',
         'systems',
         'areas',
