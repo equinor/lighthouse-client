@@ -19,12 +19,16 @@ export function setup(appApi: ClientApi): void {
         })
         .registerFilterOptions([
             { name: 'Application', valueFormatter: (s) => s.sourceSystem.subSystem },
-            { name: 'Type', valueFormatter: (s) => s.type },
-            { name: 'State', valueFormatter: (s) => s.state, defaultUncheckedValues: ['Closed'] },
+            { name: 'Type', valueFormatter: ({ type }) => type },
+            {
+                name: 'State',
+                valueFormatter: ({ state }) => state,
+                defaultUncheckedValues: ['Closed'],
+            },
         ])
         .registerTableOptions({
             objectIdentifierKey: 'id',
-            columnOrder: ['title', 'id', 'category', 'url'],
+            columnOrder: ['id', 'title', 'category', 'url'],
             hiddenColumns: [
                 'body',
                 'taskMode',
@@ -36,20 +40,21 @@ export function setup(appApi: ClientApi): void {
                 'modifiedBy',
                 'assignedTo',
                 'externalId',
-                'id',
-                'created',
-                'dueDate',
+                // 'id',
+                // 'created',
+                // 'dueDate',
                 'modified',
                 'url',
             ],
             headers: [
+                { key: 'id', title: 'ID' },
                 { key: 'title', title: 'Title', width: 200 },
                 { key: 'category', title: 'Category' },
                 { key: 'url', title: 'URL' },
                 { key: 'state', title: 'State' },
                 { key: 'priority', title: 'Priority' },
-                { key: 'dueDate', title: 'Due at' },
-                { key: 'created', title: 'Created at' },
+                { key: 'dueDate', title: 'Due date' },
+                { key: 'created', title: 'Days since notified' },
                 { key: 'modified', title: 'Modified at' },
                 { key: 'sourceSystem', title: 'Source system' },
             ],
@@ -61,6 +66,12 @@ export function setup(appApi: ClientApi): void {
                 {
                     key: 'sourceSystem',
                     type: customCellView((req) => <>{req?.sourceSystem.subSystem}</>),
+                },
+                {
+                    key: 'created',
+                    type: customCellView((req) => (
+                        <>{new Date(req.created.split('T')[0]).toLocaleDateString('en-gb')}</>
+                    )),
                 },
             ],
         })
@@ -79,20 +90,6 @@ export function setup(appApi: ClientApi): void {
                 Category: { label: 'Category', getKey: (s) => s.category },
             },
         });
-    // .registerPowerBIOptions({
-    //     pages: [
-    //         {
-    //             pageId: 'ReportSectionb822b2eb4fc97aef255b',
-    //             pageTitle: 'Overview',
-    //             default: true,
-    //         },
-    //         {
-    //             pageId: 'ReportSection40a8a70e6f82243888ca',
-    //             pageTitle: 'History',
-    //         },
-    //     ],
-    //     reportURI: 'pp-scope-change-analytics',
-    // });
 }
 
 export async function responseAsync(signal?: AbortSignal): Promise<Response> {
@@ -105,7 +102,7 @@ interface TasksSidesheetProps {
     item: Assignment;
     actions: SidesheetApi;
 }
-export function TasksSidesheet({ actions, item }: TasksSidesheetProps) {
+export function TasksSidesheet({ actions, item }: TasksSidesheetProps): JSX.Element {
     useEffect(() => {
         actions.setTitle(item.title);
     }, []);
