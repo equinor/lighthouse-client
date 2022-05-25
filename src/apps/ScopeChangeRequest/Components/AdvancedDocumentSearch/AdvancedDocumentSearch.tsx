@@ -38,7 +38,9 @@ export const AdvancedDocumentSearch = ({
     const [searchText, setSearchText] = useState<string | undefined>();
     const [results, setResults] = useState<TypedSelectOption[]>([]);
     const [subResults, setSubResults] = useState<SubResult | undefined>();
-    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>();
+    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>(
+        'tag'
+    );
 
     const { abort, getSignal } = useCancellationToken();
 
@@ -171,6 +173,7 @@ export const AdvancedDocumentSearch = ({
                             <SingleSelect
                                 label="Reference type"
                                 items={referenceTypes}
+                                value={referenceType}
                                 handleSelectedItemChange={(change) => {
                                     abort();
                                     setSearchText('');
