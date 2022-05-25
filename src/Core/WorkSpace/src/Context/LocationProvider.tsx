@@ -135,7 +135,9 @@ export function useLocationContext(): LocationContext {
 
 interface TabApi {
     ['garden']: GardenApi;
-    ['table']: (() => TableAPI) | null;
+    ['table']: {
+        getApi: (() => TableAPI) | null;
+    };
 }
 
 export const tabApis = createAtom<TabApi>({ table: {}, garden: {} } as TabApi);
@@ -145,8 +147,9 @@ const useClearSelectedOnSidesheetClose = (): void => {
 
     useEffect(() => {
         if (!SidesheetComponent) {
-            const getTableApi = tabApis.readAtomValue().table;
-            if (getTableApi) {
+            const getTableApi = tabApis.readAtomValue().table.getApi;
+
+            if (typeof getTableApi === 'function') {
                 getTableApi().setSelectedRowId(() => null);
             }
         }
