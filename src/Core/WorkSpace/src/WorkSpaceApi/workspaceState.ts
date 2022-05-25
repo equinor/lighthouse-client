@@ -69,7 +69,7 @@ export interface PrefetchQueriesOptions {
     options?: FetchQueryOptions<unknown, unknown, unknown, string[]> | undefined;
 }
 
-export type WorkspaceTab = 'tree' | 'table' | 'garden' | 'analytics' | 'gantt' | 'editor';
+export type WorkspaceTab = 'tree' | 'table' | 'garden' | 'analytics' | 'gantt' | 'editor' | 'grid';
 
 export interface WorkSpaceConfig<T> {
     name: string;
