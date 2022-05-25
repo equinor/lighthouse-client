@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react';
 import { useRef, useState } from 'react';
 import { HeaderGroup } from 'react-table';
-import { TableData } from '../types';
+import { TableData } from '../Types/types';
 import { HeaderCellMenu } from './HeaderCellMenu';
 import { ResizeHandle } from './ResizeHandle';
 import { HeaderActions, HeaderItem, TableHeadCell } from './Styles';

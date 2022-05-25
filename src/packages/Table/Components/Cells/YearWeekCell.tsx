@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 import { useMemo } from 'react';
-import { CellProps, CellRenderProps, TableData } from '../../types';
+import { CellProps, CellRenderProps, TableData } from '../../Types/types';
 
 export const YearWeekCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
     const {
@@ -15,11 +15,10 @@ export const YearWeekCell = <T extends TableData>(props: CellProps<T, CellRender
     const dateOrUndefined = toDate(content[currentKey]);
 
     const dateDisplay = dateOrUndefined
-        ? `${dateOrUndefined.year}-${
-              dateOrUndefined.weekNumber < 10
-                  ? '0' + dateOrUndefined.weekNumber
-                  : dateOrUndefined.weekNumber
-          }`
+        ? `${dateOrUndefined.year}-${dateOrUndefined.weekNumber < 10
+            ? '0' + dateOrUndefined.weekNumber
+            : dateOrUndefined.weekNumber
+        }`
         : 'N/A';
 
     return <div {...attr}>{dateDisplay}</div>;
