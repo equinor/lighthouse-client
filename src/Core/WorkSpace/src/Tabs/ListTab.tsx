@@ -1,11 +1,11 @@
-import { useSideSheet } from '@equinor/sidesheet';
 import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
+import { tabApis } from '../Context/LocationProvider';
 import { useWorkspaceBookmarks } from '../Util/bookmarks/hooks';
 
 const Wrapper = styled.section`
@@ -13,7 +13,7 @@ const Wrapper = styled.section`
     overflow-y: auto;
 `;
 
-type GetTableApi = () => TableAPI;
+export type GetTableApi = () => TableAPI;
 
 export const ListTab = (): JSX.Element => {
     const {
@@ -36,7 +36,10 @@ export const ListTab = (): JSX.Element => {
 
     const getApi = useRef<GetTableApi | null>(null);
 
-    const initApi = (a: GetTableApi) => (getApi.current = a);
+    const initApi = (a: GetTableApi) => {
+        getApi.current = a;
+        tabApis.updateAtom({ table: a });
+    };
 
     const onSelect = useCallback(
         (item: any, id: string) => {
@@ -45,8 +48,6 @@ export const ListTab = (): JSX.Element => {
         },
         [getApi, tableOptions]
     );
-
-    useClearSelectedOnSidesheetClose(getApi.current);
 
     return (
         <>
@@ -72,16 +73,4 @@ export const ListTab = (): JSX.Element => {
             </Wrapper>
         </>
     );
-};
-
-const useClearSelectedOnSidesheetClose = (getApi: GetTableApi | null): void => {
-    const { SidesheetComponent } = useSideSheet();
-
-    useEffect(() => {
-        if (!SidesheetComponent) {
-            if (getApi !== null) {
-                getApi().setSelectedRowId(() => null);
-            }
-        }
-    }, [SidesheetComponent]);
 };

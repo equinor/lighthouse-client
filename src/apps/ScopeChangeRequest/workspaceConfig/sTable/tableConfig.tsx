@@ -10,9 +10,12 @@ import { Atom, deref, swap } from '@dbeining/react-atom';
 import { EstimateBar } from '../../Components/WoProgressBars/EstimateBar';
 import { ExpendedProgressBar } from '../../Components/WoProgressBars/ExpendedProgressBar';
 import styled from 'styled-components';
+import { TableData, CellRenderProps, CellProps } from '@equinor/Table';
 
 const customCellView = (render: (req: ScopeChangeRequest) => JSX.Element | null) => ({
-    Cell: ({ cell }: any) => <>{render(cell.value.content)}</>,
+    Cell: (
+        cell: React.PropsWithChildren<CellProps<TableData, CellRenderProps<ScopeChangeRequest>>>
+    ) => <>{render(cell.value.content)}</>,
 });
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {

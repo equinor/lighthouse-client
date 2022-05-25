@@ -7,11 +7,12 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { Cell, ColumnInstance, HeaderGroup, Row, TableInstance, TableOptions } from 'react-table';
+import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 
 import { useTable } from '../Hooks/useTable';
-import { CellClickHandler, TableData } from '../types';
+import { SelectedRowCallback, TableAPI } from '../Types';
+import { CellClickHandler, TableData } from '../Types/types';
 import { useDefaultColumn } from '../Utils/ColumnDefault';
 import { RegisterReactTableHooks } from '../Utils/registerReactTableHooks';
 import { GroupCell } from './GoupedCell';
@@ -19,17 +20,6 @@ import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
 //Feel free to extend
-
-export type SelectedRowCallback = (rows: Row<TableData>[]) => string | null;
-export interface TableAPI {
-    toggleHideColumn: (colId: string) => void;
-    setColumnOrder: (updater: string[] | ((columnOrder: string[]) => string[])) => void;
-    getVisibleColumns: () => ColumnInstance<TableData, TableData>[];
-    getHeaderGroups: () => HeaderGroup<TableData>[];
-    getSelectedRowId: () => string | null;
-    setSelectedRowId: (callbackOrId: SelectedRowCallback | string) => void;
-    getColumns: () => ColumnInstance<TableData, TableData>[];
-}
 
 interface DataTableProps<TData extends TableData> {
     options: TableOptions<TData>;

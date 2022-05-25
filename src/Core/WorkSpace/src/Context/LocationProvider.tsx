@@ -1,4 +1,6 @@
+import { createAtom } from '@equinor/atom';
 import { openSidesheet, useSideSheet } from '@equinor/sidesheet';
+import { TableAPI } from '@equinor/Table';
 import {
     createContext,
     PropsWithChildren,
@@ -9,6 +11,7 @@ import {
     useState,
 } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { Fallback } from '../Components/FallbackSidesheet/Fallback';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
@@ -112,6 +115,8 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         }
     }, []);
 
+    useClearSelectedOnSidesheetClose();
+
     return (
         <Context.Provider
             value={{
@@ -127,3 +132,23 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
 export function useLocationContext(): LocationContext {
     return useContext(Context);
 }
+
+interface TabApi {
+    ['garden']: GardenApi;
+    ['table']: (() => TableAPI) | null;
+}
+
+export const tabApis = createAtom<TabApi>({ table: {}, garden: {} } as TabApi);
+
+const useClearSelectedOnSidesheetClose = (): void => {
+    const { SidesheetComponent } = useSideSheet();
+
+    useEffect(() => {
+        if (!SidesheetComponent) {
+            const getTableApi = tabApis.readAtomValue().table;
+            if (getTableApi) {
+                getTableApi().setSelectedRowId(() => null);
+            }
+        }
+    }, [SidesheetComponent]);
+};

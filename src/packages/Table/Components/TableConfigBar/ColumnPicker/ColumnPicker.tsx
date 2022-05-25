@@ -4,8 +4,8 @@ import { useOutsideClick } from '@equinor/hooks';
 
 import { useRefresh } from '../../../../../components/ParkView/hooks/useRefresh';
 import { ClickableIcon } from '../../../../Components/Icon';
-import { TableAPI } from '../../Table';
 import { ColumnLabel, MenuItem, WrapperDiv } from './columnPicker.styles';
+import { TableAPI } from '@equinor/Table';
 
 interface ColumnPickerProps {
     getApi: () => TableAPI;

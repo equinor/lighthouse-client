@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { TableOptions } from 'react-table';
-import { Column, TableData } from '../types';
+import { Column, TableData } from '../Types/types';
 
 export const createDefaultColumn = <T extends TableData>(
     props?: TableOptions<T>
