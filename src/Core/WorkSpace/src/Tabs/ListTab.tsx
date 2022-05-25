@@ -38,7 +38,7 @@ export const ListTab = (): JSX.Element => {
 
     const initApi = (a: GetTableApi) => {
         getApi.current = a;
-        tabApis.updateAtom({ table: a });
+        tabApis.updateAtom({ table: { getApi: a } });
     };
 
     const onSelect = useCallback(
