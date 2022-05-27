@@ -110,6 +110,7 @@ export const GardenItemContainer = <T extends unknown>(
                             />
                         ) : (
                             <DefaultGardenItem
+                                depth={item.itemDepth}
                                 isSelected={item.item[objectIdentifier] === selectedItem}
                                 onClick={() => handleOnClick(item.item)}
                                 columnExpanded={
@@ -137,6 +138,7 @@ interface DefaultGardenItemProps {
     itemKey: string;
     onClick: () => void;
     customDescription?: string | undefined;
+    depth: number;
 }
 
 export const DefaultGardenItem = ({
@@ -146,9 +148,10 @@ export const DefaultGardenItem = ({
     itemKey,
     onClick,
     customDescription,
+    depth,
 }: DefaultGardenItemProps): JSX.Element => {
     return (
-        <DefaultPackage onClick={onClick} isSelected={isSelected}>
+        <DefaultPackage onClick={onClick} isSelected={isSelected} depth={depth}>
             <div>{item?.[itemKey]}</div>
             {columnExpanded && <div>{customDescription}</div>}
         </DefaultPackage>
