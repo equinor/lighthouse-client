@@ -22,11 +22,15 @@ export interface FilterItemCount {
 
 export interface FilterApi<T> {
     filterState: FilterState<T>;
-    operations: FilterOperations;
+    operations: FilterOperations<T>;
     filterGroupState: FilterGroupState;
     search: FilterSearch;
+    listeners: Listeners;
 }
 
+interface Listeners {
+    registerOnFilterChangedCallback: (callback: () => void) => () => void;
+}
 interface FilterGroupState {
     /**Gets all the distinct values for this filter group */
     getGroupValues: GetGroupValuesFunc;
@@ -62,7 +66,7 @@ interface FilterSearch {
     clearSearch: () => void;
 }
 
-interface FilterOperations {
+interface FilterOperations<T> {
     changeFilterItem: ChangeFilterItem;
     filterAndRerender: VoidFunction;
     markAllValuesActive: RemoveFilterGroup;
@@ -71,6 +75,7 @@ interface FilterOperations {
     clearActiveFilters: RerenderVoidFunction;
     reCreateFilterValue: RerenderVoidFunction;
     init: VoidFunction;
+    doesFilterPassForItem: (item: T) => boolean;
 }
 
 export type ValueFormatterFunction<T> = (item: T) => FilterValueType | FilterValueType[];
@@ -92,6 +97,11 @@ type ChangeFilterItem = (
 ) => void;
 type RerenderVoidFunction = (preventReRender?: boolean) => void;
 
+interface OnFilterChangedCallback {
+    id: string;
+    callback: () => void;
+}
+
 export interface FilterProviderProps<T> {
     filterConfiguration: FilterOptions<T>;
     data: T[];
@@ -102,6 +112,8 @@ export function useFilterApi<T>({
 }: FilterProviderProps<T>): FilterApi<T> {
     const filteredData = useRef<T[]>(data ?? []);
     const filterState = useRef<FilterGroup[]>([]);
+
+    const onFilterChangedCallbacks = useRef<OnFilterChangedCallback[]>([]);
 
     /**
      * @internal
@@ -194,6 +206,8 @@ export function useFilterApi<T>({
      */
     function filter(preventReRender?: boolean) {
         if (!data || data.length === 0) return;
+        onFilterChangedCallbacks.current.map((s) => s.callback());
+
         setFilteredData(
             data.filter((item) => doesItemPassFilter(item, getFilterState(), getValueFormatters()))
         );
@@ -346,6 +360,23 @@ export function useFilterApi<T>({
         handleShouldReRender(preventReRender);
     }
 
+    function removeOnFilterChanged(id: string) {
+        console.log('removing subscriber from filter');
+        onFilterChangedCallbacks.current = onFilterChangedCallbacks.current.filter(
+            (s) => s.id !== id
+        );
+    }
+
+    function registerOnFilterChangedCallback(callback: () => void) {
+        const uniqueId = (Math.random() * 16).toString();
+        console.log('Adding subscriber to filter');
+        onFilterChangedCallbacks.current.push({ callback, id: uniqueId });
+        return () => removeOnFilterChanged(uniqueId);
+    }
+
+    const doesFilterPassForItem = (item: T): boolean =>
+        doesItemPassFilter(item, getFilterState(), getValueFormatters());
+
     /**
      * Will filter data on mount according to configuration parameter
      */
@@ -362,6 +393,7 @@ export function useFilterApi<T>({
             getValueFormatters: getValueFormatters,
         },
         operations: {
+            doesFilterPassForItem,
             init: init,
             changeFilterItem: changeFilterItem,
             clearActiveFilters: clearActiveFilters,
@@ -381,6 +413,9 @@ export function useFilterApi<T>({
         search: {
             clearSearch: clearSearch,
             search: search,
+        },
+        listeners: {
+            registerOnFilterChangedCallback: registerOnFilterChangedCallback,
         },
     };
 }

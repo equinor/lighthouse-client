@@ -1,61 +1,48 @@
-import { ColDef, GridOptions, SideBarDef } from 'ag-grid-enterprise';
+import { ColumnApi, GridApi, GridOptions, SideBarDef } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import { useMemo, useState } from 'react';
 import { useFilterApiContext } from '@equinor/filter';
-import { ScopeChangeRequest } from '../../../../apps/ScopeChangeRequest/types/scopeChangeRequest';
 import { useWorkSpace } from '@equinor/WorkSpace';
-
-function createColumnDef<T>(
-    title: string,
-    valueFormatter: (i: T) => string | number | boolean,
-    onSelect?: (item: T) => void,
-    options?: Omit<ColDef, 'field' | 'valueFormatter'>
-): ColDef {
-    return {
-        resizable: true,
-        onCellClicked: (s) => onSelect && onSelect(s.data),
-        minWidth: 100,
-        sortable: true,
-        enableRowGroup: true,
-        aggFunc: (s) => valueFormatter(s.data),
-        ...options,
-        field: title,
-        valueGetter: (s) => valueFormatter(s.data),
-    };
-}
+import { useDataContext } from '../Context/DataProvider';
 
 export const GridTab = (): JSX.Element => {
+    const { data } = useDataContext();
+    const { gridOptions = { columnDefs: [] } } = useWorkSpace();
+
+    const [gridApi, setGridApi] = useState<GridApi | null>(null);
+
+    const {
+        listeners: { registerOnFilterChangedCallback },
+        operations: { doesFilterPassForItem },
+    } = useFilterApiContext();
+
     return (
         <div>
             <WorkspaceFilter />
-            <WorkspaceGrid />
+            <WorkspaceGrid
+                gridOptions={{
+                    ...gridOptions,
+                    rowData: data,
+                    doesExternalFilterPass: ({ data }) => doesFilterPassForItem(data),
+                }}
+                onGridReady={(s) => {
+                    setGridApi(s);
+                    registerOnFilterChangedCallback(() => s.onFilterChanged());
+                }}
+            />
         </div>
     );
 };
 
-const makeGridOptions = (data: unknown[], onSelect: (item: unknown) => void): GridOptions => ({
-    rowData: data,
-    columnDefs: [
-        createColumnDef<ScopeChangeRequest>('ID', (s) => s?.sequenceNumber, onSelect, {
-            sortable: true,
-        }),
-        createColumnDef<ScopeChangeRequest>('Title', (s) => s.title, onSelect, {
-            sortable: true,
-        }),
-        createColumnDef<ScopeChangeRequest>('IsVoided', (s) => s.isVoided, onSelect, {
-            sortable: true,
-        }),
-    ],
-});
+interface WorkspaceGridProps {
+    gridOptions: GridOptions;
+    onGridReady?: (gridApi: GridApi, columnApi: ColumnApi) => void;
+}
 
-export const WorkspaceGrid = (): JSX.Element => {
-    const {
-        filterState: { getFilteredData },
-    } = useFilterApiContext();
-
+export const WorkspaceGrid = ({ gridOptions, onGridReady }: WorkspaceGridProps): JSX.Element => {
     const sideBar = useMemo<SideBarDef | string | string[] | boolean | null>(() => {
         return {
             toolPanels: [
@@ -78,30 +65,23 @@ export const WorkspaceGrid = (): JSX.Element => {
         };
     }, []);
 
-    const [gridApi, setGridApi] = useState<object | null>(null);
-    const [columnApi, setColumnApi] = useState<object | null>(null);
-
-    const { onSelect } = useWorkSpace();
-
-    const containerStyle = useMemo(() => ({ width: '1400px', height: '1200px' }), []);
+    const containerStyle = useMemo(() => ({ width: '97vw', height: '1000px' }), []);
     const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
-
-    if (!onSelect) {
-        return <></>;
-    }
 
     return (
         <div style={containerStyle}>
             <div style={{ height: '100%', boxSizing: 'border-box' }}>
                 <div style={gridStyle} className="ag-theme-alpine">
                     <AgGridReact
+                        paginationAutoPageSize
+                        pagination={true}
                         headerHeight={32}
+                        isExternalFilterPresent={() => true}
                         sideBar={sideBar}
-                        setGridApi={(gridApi, columnApi) => {
-                            setGridApi(gridApi);
-                            setColumnApi(columnApi);
+                        onGridReady={(ev) => {
+                            onGridReady && onGridReady(ev.api, ev.columnApi);
                         }}
-                        gridOptions={makeGridOptions(getFilteredData(), onSelect)}
+                        gridOptions={gridOptions}
                     />
                 </div>
             </div>

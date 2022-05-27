@@ -5,6 +5,7 @@ import { Filter, PBIOptions } from '@equinor/lighthouse-powerbi';
 import { StatusItem } from '@equinor/lighthouse-status-bar';
 import { CustomView, CustomVirtualView, GardenOptions, StatusView } from '@equinor/ParkView';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
+import { GridOptions } from 'ag-grid-enterprise';
 import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
 import { TableOptions as ReactTableOptions } from 'react-table';
@@ -92,6 +93,7 @@ export interface WorkSpaceConfig<T> {
     powerBiOptions?: PowerBiOptions;
     workflowEditorOptions?: WorkflowEditorOptions;
     presetOptions?: PresetOption[];
+    gridOptions?: GridOptions;
 }
 
 export interface PowerBiOptions {

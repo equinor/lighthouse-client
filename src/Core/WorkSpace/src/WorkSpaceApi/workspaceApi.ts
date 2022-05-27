@@ -1,5 +1,6 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
+import { CellClickedEvent, ColDef } from 'ag-grid-community';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { dispatch } from './CoreActions';
 import {
@@ -172,7 +173,38 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
 
             return workspaceAPI;
         },
+        registerGridOptions(gridOptions: GridConfig<T>) {
+            const processedGridOptions = gridOptions.columns.map(
+                (opt): ColDef => ({
+                    onCellClicked: opt.onClickOpensSidesheet
+                        ? (ev: CellClickedEvent) => onSelect(ev.data)
+                        : undefined,
+                    resizable: true,
+                    sortable: true,
+                    cellStyle: opt.onClickOpensSidesheet ? { cursor: 'pointer' } : undefined,
+                    enableRowGroup: true,
+                    headerName: opt.title,
+                    ...opt.options,
+                    valueGetter: (s) => opt.valueFormatter(s.data),
+                })
+            );
+
+            updateState({ gridOptions: { columnDefs: processedGridOptions } });
+
+            return workspaceAPI;
+        },
     };
 
     return workspaceAPI;
+}
+
+export interface ColumnConfig<T> {
+    title: string;
+    valueFormatter: (i: T) => string | number | boolean | undefined | null;
+    onClickOpensSidesheet?: boolean;
+    options?: ColDef;
+}
+
+export interface GridConfig<T> {
+    columns: ColumnConfig<T>[];
 }
