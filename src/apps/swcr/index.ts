@@ -27,7 +27,7 @@ export function setup(appApi: ClientApi): void {
         .registerGardenOptions({
             gardenKey: 'dueAtDate',
             itemKey: 'swcrNo',
-            type: 'virtual',
+            objectIdentifier: 'swcrNo',
             fieldSettings,
             customViews: {
                 customItemView: SwcrItemView,

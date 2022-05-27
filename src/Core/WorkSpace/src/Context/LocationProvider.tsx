@@ -115,7 +115,7 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         }
     }, []);
 
-    useClearSelectedOnSidesheetClose();
+    useClearSelectedOnSidesheetClose(activeTab);
 
     return (
         <Context.Provider
@@ -142,15 +142,28 @@ interface TabApi {
 
 export const tabApis = createAtom<TabApi>({ table: {}, garden: {} } as TabApi);
 
-const useClearSelectedOnSidesheetClose = (): void => {
+const useClearSelectedOnSidesheetClose = (activeTab: WorkspaceTab): void => {
     const { SidesheetComponent } = useSideSheet();
 
     useEffect(() => {
+        const {
+            garden,
+            table: { getApi: getTableApi },
+        } = tabApis.readAtomValue();
         if (!SidesheetComponent) {
-            const getTableApi = tabApis.readAtomValue().table.getApi;
+            switch (activeTab) {
+                case 'table': {
+                    if (typeof getTableApi === 'function') {
+                        getTableApi().setSelectedRowId(() => null);
+                    }
+                    return;
+                }
 
-            if (typeof getTableApi === 'function') {
-                getTableApi().setSelectedRowId(() => null);
+                case 'garden': {
+                    if (Object.keys(garden).length === 0) return;
+                    garden.mutations.setSelectedItem(() => null);
+                    return;
+                }
             }
         }
     }, [SidesheetComponent]);
