@@ -36,7 +36,7 @@ function SwcrItemView({
     columnExpanded,
     width: itemWidth = 300,
     depth,
-    selectedItem,
+    isSelected,
 }: CustomItemView<SwcrPackage>): JSX.Element {
     const statusColor = getSwcrStatusColor(data.status);
     const textColor = ['Closed - Rejected', 'Closed'].includes(data.status)
@@ -51,7 +51,7 @@ function SwcrItemView({
                 backgroundColor={statusColor}
                 textColor={textColor}
                 onClick={onClick}
-                isSelected={selectedItem?.swcrNo === data.swcrNo}
+                isSelected={isSelected}
             >
                 {data[itemKey]}
             </SwcrItem>

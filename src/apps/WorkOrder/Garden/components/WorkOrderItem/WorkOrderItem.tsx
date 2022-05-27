@@ -59,7 +59,7 @@ const WorkOrderItem = ({
     onClick,
     columnExpanded,
     depth,
-    selectedItem,
+    isSelected,
     columnStart,
     parentRef,
     rowStart,
@@ -106,7 +106,7 @@ const WorkOrderItem = ({
                     onClick={onClick}
                     style={{ width: `${columnExpanded ? 100 : width}%`, maxWidth }}
                     progressBackground={progressBar}
-                    isSelected={selectedItem?.workOrderNumber === data.workOrderNumber}
+                    isSelected={isSelected}
                 >
                     <Sizes size={size} color={textColor} />
                     {data.holdBy && <FlagIcon color={textColor} />}

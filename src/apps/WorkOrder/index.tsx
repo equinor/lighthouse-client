@@ -41,8 +41,7 @@ export function setup(appApi: ClientApi): void {
             gardenKey: 'fwp' as keyof WorkOrder,
             itemKey: 'workOrderNumber',
             fieldSettings: fieldSettings,
-
-            type: 'virtual',
+            objectIdentifier: 'workOrderId',
             customViews: {
                 customItemView: WorkOrderItem,
                 customHeaderView: WorkOrderHeader,

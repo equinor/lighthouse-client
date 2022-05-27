@@ -34,7 +34,7 @@ export function setup(appApi: ClientApi): void {
         .registerGardenOptions({
             gardenKey: 'RFCC' as keyof HandoverPackage, // HOW to handled this ????
             itemKey: 'commpkgNo',
-            type: 'virtual',
+            objectIdentifier: 'id',
             fieldSettings: fieldSettings,
             customGroupByKeys: initialCustomGroupByKeys,
             customViews: {
