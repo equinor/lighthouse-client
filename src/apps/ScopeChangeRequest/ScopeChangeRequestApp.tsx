@@ -1,6 +1,7 @@
 import { ResolverFunction } from '@equinor/lighthouse-functions';
-import { ClientApi } from '@equinor/lighthouse-portal-client';
+import { ClientApi, isProduction } from '@equinor/lighthouse-portal-client';
 import { SidesheetComponentManifest, SidesheetWidgetManifest } from '@equinor/lighthouse-widgets';
+import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
 import { dataCreator } from './workspaceConfig/dataCreatorConfig';
@@ -28,21 +29,25 @@ export function setup(appApi: ClientApi): void {
             { name: 'Id', valueFormatter: ({ sequenceNumber }) => sequenceNumber.toString() },
             { name: 'Title', valueFormatter: ({ title }) => title },
         ])
-        .registerPrefetchQueries(prefetchQueriesOptions);
-    // .registerPowerBIOptions({
-    //     pages: [
-    //         {
-    //             pageId: 'ReportSectionb822b2eb4fc97aef255b',
-    //             pageTitle: 'Overview',
-    //             default: true,
-    //         },
-    //         {
-    //             pageId: 'ReportSection40a8a70e6f82243888ca',
-    //             pageTitle: 'History',
-    //         },
-    //     ],
-    //     reportURI: 'pp-scope-change-analytics',
-    // });
+        .registerPrefetchQueries(prefetchQueriesOptions)
+        .registerPowerBIOptions(
+            !isProduction()
+                ? {
+                    pages: [
+                        {
+                            pageId: 'ReportSectionb822b2eb4fc97aef255b',
+                            pageTitle: 'Overview',
+                            default: true,
+                        },
+                        {
+                            pageId: 'ReportSection40a8a70e6f82243888ca',
+                            pageTitle: 'History',
+                        },
+                    ],
+                    reportURI: 'pp-scope-change-analytics',
+                }
+                : (undefined as unknown as PowerBiOptions)
+        );
 }
 
 export const changeSideSheetWidgetManifest: SidesheetWidgetManifest = {
