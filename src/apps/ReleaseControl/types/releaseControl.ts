@@ -79,15 +79,21 @@ export interface ReleaseControlStep {
     isCompleted: boolean;
     criterias: Criteria[];
     contributors: Contributor[];
+    allowContributors: boolean;
+    criteriaTemplates: CriteriaTemplate[];
 }
 
 export interface CreateReleaseControlStepModel {
+    id?: string;
     name: string;
     order: number;
     allowContributors: boolean;
     completedStatusName?: string;
     rejectedStatusName?: string;
+    isCompleted?: boolean;
+    isCurrent?: boolean;
     criteriaTemplates: CriteriaTemplate[];
+    criterias?: Criteria[];
 }
 
 export interface CriteriaTemplate {

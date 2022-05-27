@@ -1,5 +1,8 @@
+import { useAtom } from '@dbeining/react-atom';
 import styled from 'styled-components';
+import { sideSheetEditModeAtom } from '../../../../Atoms/editModeAtom';
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
+import { ReleaseControlEditForm } from '../../../Form/ReleaseControlEditForm';
 import { Workflow } from '../../../Workflow/Workflow';
 
 export const DetailsTab = (): JSX.Element => {
@@ -7,40 +10,47 @@ export const DetailsTab = (): JSX.Element => {
         dueDate: new Date(releaseControl.plannedDueDate),
         description: releaseControl.description,
     }));
+    const editMode = useAtom(sideSheetEditModeAtom);
 
     return (
         <Wrapper>
-            <FormWrapper>
-                <FlexColumn>
-                    <InnerSection>
-                        <SectionHeading>Details</SectionHeading>
+            {editMode ? (
+                <ReleaseControlEditForm />
+            ) : (
+                <FormWrapper>
+                    <FlexColumn>
+                        <InnerSection>
+                            <SectionHeading>Details</SectionHeading>
 
-                        <SectionWrapper>
-                            <SubSectionTitle>Description</SubSectionTitle>
-                            <SubSectionText>{description}</SubSectionText>
-                        </SectionWrapper>
-                        <SectionWrapper>
-                            <SubSectionTitle>Due date</SubSectionTitle>
-                            <SubSectionText>{dueDate.toLocaleDateString('en-gb')}</SubSectionText>
-                        </SectionWrapper>
+                            <SectionWrapper>
+                                <SubSectionTitle>Description</SubSectionTitle>
+                                <SubSectionText>{description}</SubSectionText>
+                            </SectionWrapper>
+                            <SectionWrapper>
+                                <SubSectionTitle>Due date</SubSectionTitle>
+                                <SubSectionText>
+                                    {dueDate.toLocaleDateString('en-gb')}
+                                </SubSectionText>
+                            </SectionWrapper>
 
-                        <SectionHeading>References</SectionHeading>
-                        <SectionWrapper>
-                            <SubSectionText>
-                                <div>No references added.</div>
-                            </SubSectionText>
-                        </SectionWrapper>
-                    </InnerSection>
-                </FlexColumn>
-                <FlexColumn>
-                    <InnerSection>
-                        <SectionHeading>Workflow</SectionHeading>
-                        <SectionWrapper>
-                            <Workflow />
-                        </SectionWrapper>
-                    </InnerSection>
-                </FlexColumn>
-            </FormWrapper>
+                            <SectionHeading>References</SectionHeading>
+                            <SectionWrapper>
+                                <SubSectionText>
+                                    <div>No references added.</div>
+                                </SubSectionText>
+                            </SectionWrapper>
+                        </InnerSection>
+                    </FlexColumn>
+                    <FlexColumn>
+                        <InnerSection>
+                            <SectionHeading>Workflow</SectionHeading>
+                            <SectionWrapper>
+                                <Workflow />
+                            </SectionWrapper>
+                        </InnerSection>
+                    </FlexColumn>
+                </FormWrapper>
+            )}
         </Wrapper>
     );
 };

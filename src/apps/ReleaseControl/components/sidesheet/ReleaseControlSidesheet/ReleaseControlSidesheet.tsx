@@ -7,6 +7,7 @@ import { useEdsTabs } from '../../../../../hooks/edsTabs/useEdsTabs';
 import { SidesheetApi } from '../../../../../packages/Sidesheet/Types/SidesheetApi';
 import { BannerItem } from '../../../../DisciplineReleaseControl/Components/Sidesheet/ReleaseControlSidesheetBanner';
 import { Banner } from '../../../../ScopeChangeRequest/Components/Sidesheet/SidesheetBanner/SidesheetBanner';
+import { toggleEditMode } from '../../../Atoms/editModeAtom';
 import { getReleaseControlSnapshot } from '../../../hooks/useReleaseControlContext';
 import { useSidesheetEffects } from '../../../hooks/useSidesheetEffects';
 import { ReleaseControl } from '../../../types/releaseControl';
@@ -21,8 +22,8 @@ export const ReleaseControlSidesheet = ({
     actions,
     item,
 }: ReleaseControlSidesheetProps): JSX.Element => {
-    useSidesheetEffects(actions, item);
     const { activeTab, handleChange } = useEdsTabs();
+    useSidesheetEffects(actions, toggleEditMode, item);
 
     if (Object.keys(getReleaseControlSnapshot().releaseControl).length < 2) {
         return <></>;

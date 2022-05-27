@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
 import { FunctionalRole } from '../../../types/functionalRole';
 import { CreateReleaseControlStepModel } from '../../../types/releaseControl';
+import { CriteriaRender } from '../../Workflow/Criteria';
+import { getCriteriaStatus } from '../../Workflow/Utils/getCriteriaStatus';
 import { DraggableIcon } from './DraggableIcon';
 import { DraggableHandleSelector } from './WorkflowCustomEditor';
 import {
@@ -28,53 +30,74 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
     const { updateAtom } = DRCFormAtomApi;
     return (
         <Line>
-            <DraggableIconWrapper className={DraggableHandleSelector}>
-                <DraggableIcon></DraggableIcon>
-            </DraggableIconWrapper>
-            <NumberCircle>{step.order}</NumberCircle>
-            <Selections>
-                <SingleSelect
-                    items={stepNames}
-                    label="Step"
-                    size={25}
-                    selectedOption={step.name}
-                    handleSelectedItemChange={(change) =>
-                        updateAtom({
-                            workflowSteps: updateStepName(
-                                step,
-                                steps,
-                                !change.selectedItem ? '' : change.selectedItem
-                            ),
-                        })
-                    }
-                />
-                <SingleSelect
-                    items={functionalRoleNames ?? []}
-                    label="Responsible"
-                    size={30}
-                    selectedOption={step.criteriaTemplates[0].value}
-                    handleSelectedItemChange={(change) =>
-                        updateAtom({
-                            workflowSteps: updateStepResponsible(
-                                step,
-                                steps,
-                                !change.selectedItem ? '' : change.selectedItem
-                            ),
-                        })
-                    }
-                />
-            </Selections>
-            <IconMenu items={getWorkflowStepMenuActions(step, steps)} />
-            <div style={{ marginTop: '10px' }}>
-                <ClickableIcon
-                    name="close"
-                    onClick={() =>
-                        updateAtom({
-                            workflowSteps: removeStep(step, steps),
-                        })
-                    }
-                />
-            </div>
+            {step.isCompleted ? (
+                step.criterias !== undefined ? (
+                    <CompletedCriteria>
+                        <CriteriaRender
+                            stepId={step.id ?? ''}
+                            key={step.id}
+                            contributors={[]}
+                            criteria={step.criterias[0] ?? []}
+                            isLastCriteria={false}
+                            name={step.name}
+                            order={step.order}
+                            stepIndex={0}
+                            stepStatus={getCriteriaStatus(step.criterias[0], false)}
+                        />
+                    </CompletedCriteria>
+                ) : null
+            ) : (
+                <>
+                    <DraggableIconWrapper className={DraggableHandleSelector}>
+                        <DraggableIcon></DraggableIcon>
+                    </DraggableIconWrapper>
+                    <NumberCircle>{step.order}</NumberCircle>
+                    <Selections>
+                        <SingleSelect
+                            items={stepNames}
+                            label="Step"
+                            size={25}
+                            selectedOption={step.name}
+                            handleSelectedItemChange={(change) =>
+                                updateAtom({
+                                    workflowSteps: updateStepName(
+                                        step,
+                                        steps,
+                                        !change.selectedItem ? '' : change.selectedItem
+                                    ),
+                                })
+                            }
+                        />
+                        <SingleSelect
+                            items={functionalRoleNames ?? []}
+                            label="Responsible"
+                            size={30}
+                            //TODO what should this be?
+                            // selectedOption={step?.criterias[0]?.value}
+                            handleSelectedItemChange={(change) =>
+                                updateAtom({
+                                    workflowSteps: updateStepResponsible(
+                                        step,
+                                        steps,
+                                        !change.selectedItem ? '' : change.selectedItem
+                                    ),
+                                })
+                            }
+                        />
+                    </Selections>
+                    <IconMenu items={getWorkflowStepMenuActions(step, steps)} />
+                    <div style={{ marginTop: '10px' }}>
+                        <ClickableIcon
+                            name="close"
+                            onClick={() =>
+                                updateAtom({
+                                    workflowSteps: removeStep(step, steps),
+                                })
+                            }
+                        />
+                    </div>
+                </>
+            )}
         </Line>
     );
 };
@@ -88,6 +111,10 @@ const Line = styled.div`
     flex-direction: row;
     gap: 0.25em;
     align-items: center;
+`;
+
+const CompletedCriteria = styled.div`
+    margin-left: 30px;
 `;
 
 const Selections = styled.div`
