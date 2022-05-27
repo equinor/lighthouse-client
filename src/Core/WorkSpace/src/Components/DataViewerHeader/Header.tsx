@@ -113,7 +113,6 @@ export const CompletionViewHeader = ({
                                 title={factory.title}
                             >
                                 <Icon name={'add'} />
-                                {factory.title}
                             </TabButton>
                             <Divider />
                         </>
