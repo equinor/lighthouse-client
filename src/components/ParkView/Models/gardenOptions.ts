@@ -18,7 +18,7 @@ export interface CustomItemView<T> {
     itemKey: string;
     onClick: () => void;
     columnExpanded: boolean;
-    selectedItem: T | null;
+    isSelected: boolean;
     rowStart: number;
     columnStart: number;
     parentRef: MutableRefObject<HTMLDivElement | null>;
@@ -41,12 +41,6 @@ export interface CustomHeaderView<T> {
     groupByKey?: string;
 }
 
-export interface CustomView<T> {
-    customItemView?: React.FC<CustomItemView<T>>;
-    customGroupView?: React.FC<CustomGroupView<T>>;
-    customHeaderView?: React.FC<CustomHeaderView<T>>;
-    customGroupByView?: React.FC;
-}
 export interface CustomVirtualView<T> {
     customItemView?: MemoExoticComponent<(args: CustomItemView<T>) => JSX.Element>;
     customGroupView?: MemoExoticComponent<(args: CustomGroupView<T>) => JSX.Element>;
@@ -57,15 +51,14 @@ export interface CustomVirtualView<T> {
 export interface GardenOptions<T> {
     gardenKey: keyof T;
     itemKey: keyof T;
-    /**  Use virtual if garden has more than 3000 DOM elements */
-    type: 'virtual' | 'normal';
+    objectIdentifier: keyof T;
     groupByKeys?: (keyof T)[];
     customGroupByKeys?: Record<string, unknown>;
     customStateFunction?: (data: T[]) => Record<string, unknown>;
     sortData?: (data: T[], ...groupByKeys: (keyof T)[]) => T[];
     fieldSettings?: FieldSettings<T, string>;
     /** Wrap custom components with memo if type: "virtual". */
-    customViews?: CustomView<T> | CustomVirtualView<T>;
+    customViews?: CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
     collapseSubGroupsByDefault?: boolean;
@@ -80,7 +73,7 @@ export interface GardenOptions<T> {
         customGroupByKeys?: Record<string, unknown>
     ) => string | undefined;
     intercepters?: GardenDataIntercepters<T>;
-    onSelect?: (item: T) => void;
+    onSelect?: (item: T) => string;
     /** Function that returns the string of text that is to be displayed when a column is expanded */
     customDescription?: (item: T) => string;
 }

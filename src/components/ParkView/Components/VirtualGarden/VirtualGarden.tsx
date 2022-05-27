@@ -1,13 +1,4 @@
-import { useSideSheet } from '@equinor/sidesheet';
-import {
-    Fragment,
-    useCallback,
-    useEffect,
-    useLayoutEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
+import { Fragment, useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 import { useVirtual } from 'react-virtual';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { useRefresh } from '../../hooks/useRefresh';
@@ -23,13 +14,16 @@ import { getGardenItems, getRowCount } from './utils';
 type VirtualGardenProps<T> = {
     garden: GardenGroups<T>;
     width?: number;
+    selectedItem: string | null;
+    handleOnItemClick: (item: T) => void;
 };
 
 export const VirtualGarden = <T extends unknown>({
     garden,
     width,
+    handleOnItemClick,
+    selectedItem,
 }: VirtualGardenProps<T>): JSX.Element => {
-    const [selectedItem, setSelectedItem] = useState<T | null>(null);
     const parentRef = useRef<HTMLDivElement | null>(null);
     const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -45,32 +39,19 @@ export const VirtualGarden = <T extends unknown>({
         groupByKeys,
         customGroupByKeys,
     } = useParkViewContext<T>();
-    const { SidesheetComponent } = useSideSheet();
     const refresh = useRefresh();
 
     const { isScrolling, scrollOffsetFn } = useVirtualScrolling(parentRef);
     const { widths: contextWidths } = useExpand();
-
-    const handleOnItemClick = useCallback(
-        (item: T) => {
-            setSelectedItem(item);
-        },
-        [setSelectedItem]
-    );
 
     const columnCount = useMemo(() => garden.length, [garden]);
     const rowCount = useMemo(() => getRowCount(garden), [garden]);
 
     const sortedColumns = useMemo(
         () =>
-            garden.sort((a, b) => {
-                const columnSort = fieldSettings?.[gardenKey]?.getColumnSort;
-                if (columnSort) {
-                    return columnSort(a.value, b.value);
-                } else {
-                    return defaultSortFunction(a.value, b.value);
-                }
-            }),
+            garden.sort((a, b) =>
+                (fieldSettings?.[gardenKey]?.getColumnSort ?? defaultSortFunction)(a.value, b.value)
+            ),
         [garden, fieldSettings, gardenKey]
     );
 
@@ -122,10 +103,6 @@ export const VirtualGarden = <T extends unknown>({
         }
     }, [sortedColumns, columnVirtualizer.scrollToIndex, highlightedColumn]);
 
-    //HACK When the sidesheet closes, set the selected item to null..
-    useEffect(() => {
-        if (!SidesheetComponent) setSelectedItem(() => null);
-    }, [SidesheetComponent]);
     return (
         <Layout
             rowTotalSize={rowVirtualizer.totalSize}
