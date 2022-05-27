@@ -10,6 +10,7 @@ import { GardenItem } from './types/gardenItem';
 import { useExpand } from './hooks';
 import { isSubGroup } from './utils';
 import { MutableRefObject } from 'react';
+import styled from 'styled-components';
 
 type VirtualHookReturn = Pick<ReturnType<typeof useVirtual>, 'virtualItems' | 'scrollToIndex'>;
 type PackageContainerProps<T> = {
@@ -47,7 +48,7 @@ export const GardenItemContainer = <T extends unknown>(
         parentRef,
     } = props;
     const expand = useExpand();
-    const { objectIdentifier } = useParkViewContext();
+    const { objectIdentifier, customDescription } = useParkViewContext();
 
     const CustomSubGroup = props?.customSubGroup;
     return (
@@ -108,16 +109,48 @@ export const GardenItemContainer = <T extends unknown>(
                                 parentRef={parentRef}
                             />
                         ) : (
-                            <DefaultPackage
+                            <DefaultGardenItem
                                 isSelected={item.item[objectIdentifier] === selectedItem}
                                 onClick={() => handleOnClick(item.item)}
-                            >
-                                {item.item[itemKey]}
-                            </DefaultPackage>
+                                columnExpanded={
+                                    expand?.expandedColumns?.[garden[virtualColumn.index].value]
+                                        ?.isExpanded ?? false
+                                }
+                                item={item.item as Record<string, string>}
+                                itemKey={itemKey as string}
+                                customDescription={
+                                    customDescription && customDescription(item.item)
+                                }
+                            />
                         )}
                     </PackageRoot>
                 );
             })}
         </>
+    );
+};
+
+interface DefaultGardenItemProps {
+    columnExpanded: boolean;
+    isSelected: boolean;
+    item: Record<string, string>;
+    itemKey: string;
+    onClick: () => void;
+    customDescription?: string | undefined;
+}
+
+export const DefaultGardenItem = ({
+    columnExpanded,
+    isSelected,
+    item,
+    itemKey,
+    onClick,
+    customDescription,
+}: DefaultGardenItemProps): JSX.Element => {
+    return (
+        <DefaultPackage onClick={onClick} isSelected={isSelected}>
+            <div>{item?.[itemKey]}</div>
+            {columnExpanded && <div>{customDescription}</div>}
+        </DefaultPackage>
     );
 };

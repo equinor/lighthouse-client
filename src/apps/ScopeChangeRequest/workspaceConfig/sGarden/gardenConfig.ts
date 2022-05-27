@@ -17,6 +17,7 @@ export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
     gardenKey: 'state',
     objectIdentifier: 'id',
     itemKey: 'sequenceNumber',
+    customDescription: (s) => s.title,
     fieldSettings: {
         CurrentStep: {
             getKey: ({ currentWorkflowStep }) => currentWorkflowStep?.name ?? '(Blank)',

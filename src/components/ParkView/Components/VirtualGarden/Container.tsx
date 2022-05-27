@@ -35,18 +35,7 @@ export const VirtualContainer = <T extends unknown>({
         onSelect,
     } = useParkViewContext<T>();
 
-    useEffect(() => {
-        console.log('Selected item', selectedItem);
-    }, [selectedItem]);
-
-    const handleOnItemClick = useCallback(
-        (item: T) => {
-            console.log('custom onselect triggered');
-            setSelectedItem(onSelect(item));
-            // setSelectedItem(item);
-        },
-        [onSelect]
-    );
+    const handleOnItemClick = useCallback((item: T) => setSelectedItem(onSelect(item)), [onSelect]);
 
     const [garden, setGarden] = useState<DataSet<T>[]>([]);
 
