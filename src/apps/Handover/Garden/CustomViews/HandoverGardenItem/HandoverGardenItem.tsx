@@ -21,6 +21,7 @@ function HandoverGardenItem({
     columnStart,
     parentRef,
 }: CustomItemView<HandoverPackage>): JSX.Element {
+    const [hoverTimeout, setHoverTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
     const { customState } = useParkViewContext();
     const size = itemSize(data.volume, (customState?.['maxVolume'] as number) || 0);
 
@@ -48,7 +49,6 @@ function HandoverGardenItem({
         commStatusColor,
         showWarningIcon,
     };
-    let hoverTimeout: ReturnType<typeof setTimeout> | null = null;
     return (
         <>
             <Root>
@@ -56,7 +56,7 @@ function HandoverGardenItem({
                     ref={anchorRef}
                     onMouseEnter={() => {
                         hoverTimeout && !isOpen && clearTimeout(hoverTimeout);
-                        hoverTimeout = setTimeout(() => setIsOpen(true), 700);
+                        setHoverTimeout(setTimeout(() => setIsOpen(true), 700));
                     }}
                     onMouseLeave={() => {
                         hoverTimeout && clearTimeout(hoverTimeout);

@@ -66,6 +66,7 @@ const WorkOrderItem = ({
     width: itemWidth = 300,
 }: CustomItemView<WorkOrder>) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [hoverTimeout, setHoverTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
     const anchorRef = useRef<HTMLDivElement>(null);
     const { groupByKeys, gardenKey } = useParkViewContext<WorkOrder>();
 
@@ -86,7 +87,6 @@ const WorkOrderItem = ({
     const width = useMemo(() => (depth ? 100 - depth * 3 : 100), [depth]);
     const maxWidth = useMemo(() => itemWidth * 0.98, [itemWidth]);
 
-    let hoverTimeout: ReturnType<typeof setTimeout> | null = null;
     return (
         <>
             <Root>
@@ -97,7 +97,7 @@ const WorkOrderItem = ({
                     ref={anchorRef}
                     onMouseEnter={() => {
                         hoverTimeout && !isOpen && clearTimeout(hoverTimeout);
-                        hoverTimeout = setTimeout(() => setIsOpen(true), 700);
+                        setHoverTimeout(setTimeout(() => setIsOpen(true), 1000));
                     }}
                     onMouseLeave={() => {
                         hoverTimeout && clearTimeout(hoverTimeout);
