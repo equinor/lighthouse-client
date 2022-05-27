@@ -1,6 +1,6 @@
-import { EventHub } from '@equinor/lighthouse-utils';
 import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
 import { getSidesheetContext } from '../context/sidesheetContext';
+import { notifyListeners } from '../Functions/notifyListeners';
 import { hasUnsavedChanges } from '../Functions/openSidesheet';
 import { dispatch } from '../State/actions';
 import { SidesheetState } from '../State/sidesheetState';
@@ -54,8 +54,7 @@ export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
             );
             return;
         }
-        const ev = new EventHub();
-        ev.publish(SidesheetEvents.SidesheetClosed, '');
+        notifyListeners(SidesheetEvents.SidesheetClosed);
         //HACK: should somehow be handled from the workspace
         history.pushState('', document.title, window.location.pathname);
         dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {
