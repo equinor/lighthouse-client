@@ -22,6 +22,8 @@ const McGardenItem = ({
     width: itemWidth = 300,
 }: CustomItemView<McPackage>) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [hoverTimeout, setHoverTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
+
     const { customState } = useParkViewContext();
 
     const size = useMemo(
@@ -43,14 +45,14 @@ const McGardenItem = ({
         mcDotColor,
         commDotColor,
     };
-    let hoverTimeout: ReturnType<typeof setTimeout> | null = null;
+
     return (
         <>
             <Root>
                 <McWrapper
                     onMouseEnter={() => {
                         hoverTimeout && !isOpen && clearTimeout(hoverTimeout);
-                        hoverTimeout = setTimeout(() => setIsOpen(true), 700);
+                        setHoverTimeout(setTimeout(() => setIsOpen(true), 700));
                     }}
                     onMouseLeave={() => {
                         hoverTimeout && clearTimeout(hoverTimeout);
