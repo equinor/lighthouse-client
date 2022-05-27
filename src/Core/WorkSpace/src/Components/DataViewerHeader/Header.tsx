@@ -85,6 +85,7 @@ export const CompletionViewHeader = ({
                             {pages.map((page) => {
                                 return (
                                     <TabButton
+                                        width={`${page.pageTitle.length * 10}px`}
                                         aria-selected={
                                             (activePage?.pageId &&
                                                 page.pageId === activePage.pageId &&
