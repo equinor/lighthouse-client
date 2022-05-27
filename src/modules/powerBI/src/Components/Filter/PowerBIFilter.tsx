@@ -175,7 +175,7 @@ export const PowerBIFilter = ({
             (async () => {
                 const filters = await getFilters(report);
                 const defaultActiveFilters = await getActiveFilterValues(filters);
-                setSlicerFilters(filters);
+                setSlicerFilters(filters.sort((a, b) => a.type.localeCompare(b.type)));
                 setActiveFilters(defaultActiveFilters);
             })();
         }
@@ -190,7 +190,7 @@ export const PowerBIFilter = ({
         if (report && isLoaded) {
             (async () => {
                 const filters = await getFilters(report);
-                setSlicerFilters(filters);
+                setSlicerFilters(filters.sort((a, b) => a.type.localeCompare(b.type)));
                 const filterGroupNames = getActiveFilterGroupArray(activeFilters);
                 setFilterGroupVisible((s) => [...s, ...filterGroupNames]);
             })();
