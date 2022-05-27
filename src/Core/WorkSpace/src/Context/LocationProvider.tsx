@@ -128,20 +128,12 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
                 table: { getApi: getTableApi },
             } = tabApis.readAtomValue();
 
-            switch (activeTab) {
-                case 'table': {
-                    if (typeof getTableApi === 'function') {
-                        getTableApi().setSelectedRowId(() => null);
-                    }
-                    return;
-                }
-
-                case 'garden': {
-                    if (Object.keys(garden).length === 0) return;
-                    garden.mutations.setSelectedItem(() => null);
-                    return;
-                }
+            if (typeof getTableApi === 'function') {
+                getTableApi()?.setSelectedRowId(() => null);
             }
+
+            if (Object.keys(garden).length === 0) return;
+            garden?.mutations?.setSelectedItem(() => null);
         });
 
         return () => {
