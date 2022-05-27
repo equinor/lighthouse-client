@@ -122,12 +122,25 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
     useEffect(() => {
         const ev = new EventHub();
 
-        const onClose = ev.registerListener(SidesheetEvents.SidesheetClosed, (id: string) => {
-            const getTableApi = tabApis.readAtomValue().table.getApi;
-            if (typeof getTableApi === 'function') {
-                getTableApi().setSelectedRowId(
-                    (s) => s.find((value) => value.original?.[objectIdentifier] === id)?.id ?? null
-                );
+        const onClose = ev.registerListener(SidesheetEvents.SidesheetClosed, () => {
+            const {
+                garden,
+                table: { getApi: getTableApi },
+            } = tabApis.readAtomValue();
+
+            switch (activeTab) {
+                case 'table': {
+                    if (typeof getTableApi === 'function') {
+                        getTableApi().setSelectedRowId(() => null);
+                    }
+                    return;
+                }
+
+                case 'garden': {
+                    if (Object.keys(garden).length === 0) return;
+                    garden.mutations.setSelectedItem(() => null);
+                    return;
+                }
             }
         });
 

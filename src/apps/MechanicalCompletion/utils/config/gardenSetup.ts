@@ -67,7 +67,7 @@ const customGroupByKeys: CustomGroupByKeys = {
 export const gardenConfig: GardenOptions<McPackage> = {
     gardenKey: 'rfcmc' as keyof McPackage,
     itemKey: 'mcPkgNumber',
-    type: 'virtual',
+    objectIdentifier: 'mcPkgId',
     fieldSettings: fieldSettings,
     customGroupByKeys,
     customViews: {
