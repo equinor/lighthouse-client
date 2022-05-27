@@ -14,7 +14,7 @@ const McGardenItem = ({
     itemKey,
     columnExpanded,
     onClick,
-    selectedItem,
+    isSelected,
     depth,
     columnStart,
     parentRef,
@@ -59,7 +59,7 @@ const McGardenItem = ({
                     onClick={onClick}
                     backgroundColor={backgroundColor}
                     textColor={contentsColor}
-                    isSelected={selectedItem?.mcPkgNumber === data.mcPkgNumber}
+                    isSelected={isSelected}
                     style={{ width: `${columnExpanded ? 100 : width}%`, maxWidth }}
                 >
                     <Sizes color={contentsColor} size={size} />

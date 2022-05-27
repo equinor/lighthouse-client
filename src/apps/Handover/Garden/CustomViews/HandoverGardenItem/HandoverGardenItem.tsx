@@ -16,7 +16,7 @@ function HandoverGardenItem({
     columnExpanded,
     depth,
     width: itemWidth = 300,
-    selectedItem,
+    isSelected,
     rowStart,
     columnStart,
     parentRef,
@@ -66,7 +66,7 @@ function HandoverGardenItem({
                     textColor={textColor}
                     onClick={onClick}
                     style={{ width: `${columnExpanded ? 100 : width}%`, maxWidth }}
-                    isSelected={selectedItem?.commpkgNo === data.commpkgNo}
+                    isSelected={isSelected}
                 >
                     <Sizes size={size} color={textColor} />
                     {data.hasUnsignedActions && <FlagIcon color={textColor} />}

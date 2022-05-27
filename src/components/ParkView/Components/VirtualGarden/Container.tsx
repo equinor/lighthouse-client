@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useParkViewContext } from '../../Context/ParkViewProvider';
-import { useGardenApi } from '../../hooks/useGardenApi';
+import { SelectedRowCallback, useGardenApi } from '../../hooks/useGardenApi';
 import { DataSet } from '../../Models/data';
 import { GardenApi } from '../../Models/gardenApi';
 import { PostGroupBySorting, PreGroupByFiltering } from '../../Models/gardenOptions';
@@ -19,6 +19,7 @@ export const VirtualContainer = <T extends unknown>({
     onGardenReady,
 }: VirtualContainerProps): JSX.Element | null => {
     const [widths, setWidths] = useState<number[]>([]);
+    const [selectedItem, setSelectedItem] = useState<string | null>(null);
 
     const {
         data,
@@ -31,11 +32,31 @@ export const VirtualContainer = <T extends unknown>({
         itemWidth,
         collapseSubGroupsByDefault,
         intercepters,
+        onSelect,
     } = useParkViewContext<T>();
+
+    useEffect(() => {
+        console.log('Selected item', selectedItem);
+    }, [selectedItem]);
+
+    const handleOnItemClick = useCallback(
+        (item: T) => {
+            console.log('custom onselect triggered');
+            setSelectedItem(onSelect(item));
+            // setSelectedItem(item);
+        },
+        [onSelect]
+    );
 
     const [garden, setGarden] = useState<DataSet<T>[]>([]);
 
-    const { createGardenApi } = useGardenApi();
+    const setSelectedCallback = useCallback(
+        (callback: SelectedRowCallback | string) =>
+            setSelectedItem(typeof callback === 'function' ? callback(garden) : callback),
+        [garden]
+    );
+
+    const { createGardenApi } = useGardenApi(selectedItem, setSelectedCallback);
 
     useEffect(() => {
         setGarden(
@@ -90,6 +111,8 @@ export const VirtualContainer = <T extends unknown>({
                 <VirtualGarden
                     garden={garden}
                     width={itemWidth && itemWidth(garden, gardenKey.toString())}
+                    handleOnItemClick={handleOnItemClick}
+                    selectedItem={selectedItem}
                 />
             </ExpandProvider>
         </Container>

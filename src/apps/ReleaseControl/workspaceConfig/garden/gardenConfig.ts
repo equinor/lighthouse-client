@@ -4,7 +4,7 @@ import { ReleaseControl } from '../../types/releaseControl';
 export const gardenOptions: GardenOptions<ReleaseControl> = {
     gardenKey: 'Status' as keyof ReleaseControl,
     itemKey: 'sequenceNumber',
-    type: 'normal',
+    objectIdentifier: 'id',
     collapseSubGroupsByDefault: true,
     fieldSettings: {
         CurrentStep: {

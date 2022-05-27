@@ -31,6 +31,7 @@ const ReleaseControlGardenItem = ({
     itemKey,
     onClick,
     columnExpanded,
+    isSelected,
 }: CustomItemView<Pipetest>) => {
     const { groupByKeys } = useParkViewContext();
     const contentColor = getGardenContentColor(data.step);
@@ -38,6 +39,7 @@ const ReleaseControlGardenItem = ({
     return (
         <>
             <ReleaseControlItem
+                isSelected={isSelected}
                 backgroundColor={getGardenItemColor(data.step)}
                 textColor={contentColor}
                 isGrouped={groupByKeys.length > 0}
