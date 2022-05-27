@@ -11,7 +11,7 @@ import { Pipetest } from '../../Types/pipetest';
 export const gardenConfig: GardenOptions<Pipetest> = {
     gardenKey: drcGardenKeys.defaultGardenKey,
     itemKey: 'name',
-    type: 'virtual',
+    objectIdentifier: 'name',
     fieldSettings: fieldSettings,
     collapseSubGroupsByDefault: true,
     customViews: {
