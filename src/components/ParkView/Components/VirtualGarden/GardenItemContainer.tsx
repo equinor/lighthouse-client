@@ -5,12 +5,12 @@ import { GardenGroups } from '../../Models/data';
 import { FieldSettings } from '../../Models/fieldSettings';
 import { CustomGroupView, CustomItemView } from '../../Models/gardenOptions';
 import { Count } from '../../Styles/common';
-import { SubGroup, PackageRoot, DefaultPackage, SubGroupText } from './styles';
+import { SubGroup, PackageRoot, SubGroupText } from './styles';
 import { GardenItem } from './types/gardenItem';
 import { useExpand } from './hooks';
 import { isSubGroup } from './utils';
 import { MutableRefObject } from 'react';
-import styled from 'styled-components';
+import { DefaultGardenItem } from './DefaultGardenItem';
 
 type VirtualHookReturn = Pick<ReturnType<typeof useVirtual>, 'virtualItems' | 'scrollToIndex'>;
 type PackageContainerProps<T> = {
@@ -128,32 +128,5 @@ export const GardenItemContainer = <T extends unknown>(
                 );
             })}
         </>
-    );
-};
-
-interface DefaultGardenItemProps {
-    columnExpanded: boolean;
-    isSelected: boolean;
-    item: Record<string, string>;
-    itemKey: string;
-    onClick: () => void;
-    customDescription?: string | undefined;
-    depth: number;
-}
-
-export const DefaultGardenItem = ({
-    columnExpanded,
-    isSelected,
-    item,
-    itemKey,
-    onClick,
-    customDescription,
-    depth,
-}: DefaultGardenItemProps): JSX.Element => {
-    return (
-        <DefaultPackage onClick={onClick} isSelected={isSelected} depth={depth}>
-            <div>{item?.[itemKey]}</div>
-            {columnExpanded && <div>{customDescription}</div>}
-        </DefaultPackage>
     );
 };
