@@ -1,8 +1,7 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
-import { PowerBiFilter, PowerBiFilterItem } from '../../../Types';
-import { getActiveFilterGroupArray } from '../../../Utils';
+import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../../Types';
 import { Header } from '../Header';
 import { Item } from './Item';
 import { searchFilterItems } from './searchFilterItems';
@@ -20,7 +19,7 @@ type FilterItemsProps = {
         filter: PowerBiFilterItem,
         allVisibleFilterValues: string[]
     ) => Promise<void>;
-    activeFilters: Record<string, (string | number | boolean)[]>;
+    activeFilters: Record<string, ActiveFilter[]>;
     group: PowerBiFilter;
 };
 
