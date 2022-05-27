@@ -1,4 +1,5 @@
 import { createAtom } from '@equinor/atom';
+import { EventHub } from '@equinor/lighthouse-utils';
 import { openSidesheet, useSideSheet } from '@equinor/sidesheet';
 import { TableAPI } from '@equinor/Table';
 import {
@@ -12,6 +13,7 @@ import {
 } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
+import { SidesheetEvents } from '../../../../packages/Sidesheet/Types/sidesheetEvents';
 import { Fallback } from '../Components/FallbackSidesheet/Fallback';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
@@ -115,7 +117,24 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         }
     }, []);
 
-    useClearSelectedOnSidesheetClose();
+    // useClearSelectedOnSidesheetClose();
+
+    useEffect(() => {
+        const ev = new EventHub();
+
+        const onClose = ev.registerListener(SidesheetEvents.SidesheetClosed, (id: string) => {
+            const getTableApi = tabApis.readAtomValue().table.getApi;
+            if (typeof getTableApi === 'function') {
+                getTableApi().setSelectedRowId(
+                    (s) => s.find((value) => value.original?.[objectIdentifier] === id)?.id ?? null
+                );
+            }
+        });
+
+        return () => {
+            onClose();
+        };
+    }, []);
 
     return (
         <Context.Provider
@@ -141,17 +160,3 @@ interface TabApi {
 }
 
 export const tabApis = createAtom<TabApi>({ table: {}, garden: {} } as TabApi);
-
-const useClearSelectedOnSidesheetClose = (): void => {
-    const { SidesheetComponent } = useSideSheet();
-
-    useEffect(() => {
-        if (!SidesheetComponent) {
-            const getTableApi = tabApis.readAtomValue().table.getApi;
-
-            if (typeof getTableApi === 'function') {
-                getTableApi().setSelectedRowId(() => null);
-            }
-        }
-    }, [SidesheetComponent]);
-};
