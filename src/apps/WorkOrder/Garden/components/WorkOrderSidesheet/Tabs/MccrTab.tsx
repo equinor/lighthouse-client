@@ -16,11 +16,11 @@ export type MccrTabProps = {
 const columns: Column<WorkOrderMccr>[] = [
     {
         id: 'tagNumber',
-        accessor: ({ tagNumber }) => ({
+        accessor: ({ tagNumber, tagId }) => ({
             content: tagNumber,
             url: isProduction()
-                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#Tag|${tagNumber}`
-                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#Tag|${tagNumber}`,
+                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#Tag|${tagId}`
+                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#Tag|${tagId}`,
         }),
         Header: 'TagNo.',
         Cell: CellWithLink,
@@ -33,8 +33,14 @@ const columns: Column<WorkOrderMccr>[] = [
     },
     {
         id: 'mccrType',
-        accessor: 'mccrType',
+        accessor: ({ mccrId, mccrType }) => ({
+            content: mccrType,
+            url: isProduction()
+                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${mccrId}`
+                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${mccrId}`,
+        }),
         Header: 'Type',
+        Cell: CellWithLink,
     },
     {
         id: 'mccrStatus',
@@ -52,8 +58,8 @@ const columns: Column<WorkOrderMccr>[] = [
         accessor: ({ mcpkgNumber }) => ({
             content: mcpkgNumber,
             url: isProduction()
-                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${mcpkgNumber}`
-                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${mcpkgNumber}`,
+                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#McPkg|${mcpkgNumber}`
+                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#McPkg|${mcpkgNumber}`,
         }),
         Header: 'McpkgNo.',
         Cell: CellWithLink,
