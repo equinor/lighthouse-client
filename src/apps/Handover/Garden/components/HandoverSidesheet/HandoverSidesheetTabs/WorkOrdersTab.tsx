@@ -2,15 +2,16 @@ import { CellWithLink, TabTable } from '@equinor/GardenUtils';
 import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column } from '@equinor/Table';
 import { HandoverWorkOrder } from '../../../models';
-import { WorkOrderStatusCell } from '../HandoverSidesheetStatuses';
+import { getHandoverWorkOrderStatus, WorkOrderStatusCell } from '../HandoverSidesheetStatuses';
 
 const columns: Column<HandoverWorkOrder>[] = [
     {
-        id: 'mcPkgnNo',
+        id: 'workOrderNumber',
         Header: '#',
-        accessor: ({ workOrderNumber, url }) => ({
-            content: workOrderNumber,
-            url: isProduction() ? url : url.replace('procosys', 'procosystest'),
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'workOrderNumber',
+            url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
         }),
         Cell: CellWithLink,
     },
@@ -20,9 +21,8 @@ const columns: Column<HandoverWorkOrder>[] = [
         accessor: (pkg) => pkg.description,
     },
     {
-        id: 'Status',
         Header: 'Status',
-        accessor: (pkg) => pkg,
+        accessor: (pkg) => getHandoverWorkOrderStatus(pkg),
         Cell: WorkOrderStatusCell,
     },
     {

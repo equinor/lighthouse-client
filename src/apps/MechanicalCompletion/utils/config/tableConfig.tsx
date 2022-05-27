@@ -18,25 +18,17 @@ const hiddenColumns: (keyof McPackage)[] = [
     'updatedDate',
     'projectIdentifier',
     'projectDescription',
-    'commPkgNumber',
     'mcPkgId',
     'disciplineDescription',
-    'priority',
-    'priority2',
-    'priority3',
-    'finalPunchActualDate',
     'finalPunchForecastDate',
-    'finalPunchPlannedDate',
     'punchAcceptActualDate',
     'rfocForecastDate',
     'rfocActualDate',
     'rfocPlannedDate',
-    'rfccActualDate',
-    'rfccForecastDate',
     'rfocIsShipped',
     'rfocIsRejected',
     'rfocIsAccepted',
-    'rfccPlannedDate',
+    'rfccForecastDate',
     'rfccIsShipped',
     'rfccIsAccepted',
     'rfccIsRejected',
@@ -49,20 +41,30 @@ const hiddenColumns: (keyof McPackage)[] = [
     'order',
     'rowKey',
     'isVoided',
-    'phase',
 ];
 
 export const tableConfig: TableOptions<McPackage> = {
     objectIdentifierKey: 'mcPkgId',
     hiddenColumns,
+    itemSize: 32,
     columnOrder: [
         'mcPkgNumber',
         'description',
-        'system',
-        ' responsible',
         'discipline',
         'mcStatus',
+        'responsible',
+        'phase',
         'area',
+        'commPkgNumber',
+        'system',
+        'finalPunchForecastDate',
+        'finalPunchPlannedDate',
+        'finalPunchActualDate',
+        'rfccPlannedDate',
+        'rfccActualDate',
+        'priority',
+        'priority2',
+        'priority3',
     ],
     headers: [
         {
@@ -86,6 +88,10 @@ export const tableConfig: TableOptions<McPackage> = {
             width: 150,
         },
         {
+            key: 'phase',
+            title: 'MC Package Phase',
+        },
+        {
             key: 'discipline',
             title: 'Discipline',
             width: 100,
@@ -97,8 +103,49 @@ export const tableConfig: TableOptions<McPackage> = {
         },
         {
             key: 'area',
-            title: 'Area',
-            width: 100,
+            title: 'MC Package Area',
+            width: 200,
+        },
+        {
+            key: 'commPkgNumber',
+            title: 'Comm. Package',
+            width: 200,
+        },
+        {
+            key: 'finalPunchPlannedDate',
+            title: 'Forecast M-01 Final Punch',
+            width: 200,
+        },
+
+        {
+            key: 'finalPunchActualDate',
+            title: 'Actual M-01 Actual Date',
+            width: 200,
+        },
+        {
+            key: 'rfccPlannedDate',
+            title: 'Forecast M-03 RFC',
+            width: 200,
+        },
+        {
+            key: 'rfccActualDate',
+            title: 'Actual M-03 RFC',
+            width: 200,
+        },
+        {
+            key: 'priority',
+            title: 'Comm Pri1',
+            width: 150,
+        },
+        {
+            key: 'priority2',
+            title: 'Comm Pri2',
+            width: 150,
+        },
+        {
+            key: 'priority3',
+            title: 'Comm Pri3',
+            width: 150,
         },
     ],
     customCellView: [
@@ -117,6 +164,22 @@ export const tableConfig: TableOptions<McPackage> = {
                     },
                 };
             },
+        },
+        {
+            key: 'rfccActualDate',
+            type: 'YearAndWeek',
+        },
+        {
+            key: 'rfccPlannedDate',
+            type: 'YearAndWeek',
+        },
+        {
+            key: 'finalPunchActualDate',
+            type: 'YearAndWeek',
+        },
+        {
+            key: 'finalPunchPlannedDate',
+            type: 'YearAndWeek',
         },
     ],
 };

@@ -11,7 +11,7 @@ import {
     useSortBy,
 } from 'react-table';
 import { useSelector } from '../Components/Cell';
-import { TableData } from '../types';
+import { TableData } from '../Types/types';
 
 interface HooksOptions {
     rowSelect: boolean;

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Column, CustomCell, CustomHeader, TableData } from '../types';
+import { Column, CustomCell, CustomHeader, TableData } from '../Types/types';
 import { findCellFn, findCustomCell, findCustomHeader, sortFn } from './utils';
 
 const Count = styled.span`

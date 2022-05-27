@@ -1,19 +1,32 @@
-import React, { PropsWithChildren, useCallback, useLayoutEffect, useRef } from 'react';
+import { tokens } from '@equinor/eds-tokens';
+import React, {
+    PropsWithChildren,
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
 import { Cell, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
+
 import { useTable } from '../Hooks/useTable';
-import { CellClickHandler, TableData } from '../types';
+import { SelectedRowCallback, TableAPI } from '../Types';
+import { CellClickHandler, TableData } from '../Types/types';
 import { useDefaultColumn } from '../Utils/ColumnDefault';
 import { RegisterReactTableHooks } from '../Utils/registerReactTableHooks';
 import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
+//Feel free to extend
+
 interface DataTableProps<TData extends TableData> {
     options: TableOptions<TData>;
     FilterComponent?: React.FC<{ filterId: string }>;
     height?: number;
     itemSize?: number;
+    onTableReady?: (getApi: () => TableAPI) => void;
 }
 
 const DEFAULT_HEIGHT = 600;
@@ -24,20 +37,43 @@ export function Table<TData extends TableData = TableData>({
     FilterComponent,
     itemSize,
     height,
+    onTableReady,
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
     const hooks = RegisterReactTableHooks<TData>({ rowSelect: options.enableSelectRows || false });
     const ref = useRef<HTMLDivElement>(null);
     const defaultColumn = useDefaultColumn(options);
 
+    const [selectedId, setSelectedId] = useState<string | null>(null);
+
     const {
         prepareRow,
         rows,
+        toggleHideColumn,
+        visibleColumns,
         getTableProps,
+        columns,
         getTableBodyProps,
         headerGroups,
         totalColumnsWidth,
         setColumnOrder,
     } = useTable({ ...options, defaultColumn }, hooks) as TableInstance<TableData>;
+
+    const getVisibleColumns = () => visibleColumns;
+
+    const getTableApi = (): TableAPI => ({
+        getHeaderGroups: () => headerGroups,
+        getVisibleColumns,
+        setColumnOrder,
+        toggleHideColumn,
+        getSelectedRowId: () => selectedId,
+        setSelectedRowId: (callbackOrId: SelectedRowCallback | string) =>
+            setSelectedId(typeof callbackOrId === 'string' ? callbackOrId : callbackOrId(rows)),
+        getColumns: () => columns,
+    });
+
+    useEffect(() => {
+        onTableReady && onTableReady(getTableApi);
+    }, []);
 
     const onCellClick: CellClickHandler<TableData> = useCallback(
         (cell, e) => {
@@ -54,6 +90,7 @@ export function Table<TData extends TableData = TableData>({
 
     return (
         <TableWrapper {...getTableProps()}>
+            {/* <TableConfigBar getTableApi={getTableApi} /> */}
             <div>
                 {headerGroups.map((headerGroup) => (
                     <div
@@ -82,6 +119,7 @@ export function Table<TData extends TableData = TableData>({
                         onCellClick,
                         setSelected: options?.setSelected,
                         onSelect: options?.onSelect,
+                        selectedId: selectedId,
                     }}
                 >
                     {RenderRow}
@@ -90,12 +128,14 @@ export function Table<TData extends TableData = TableData>({
         </TableWrapper>
     );
 }
+
 interface RenderRowData {
     rows: Row<TableData>[];
     prepareRow: (row: Row<TableData>) => void;
     onCellClick: CellClickHandler<TableData>;
     setSelected?: (item: any) => void;
-    onSelect?: (item: TableData) => void;
+    onSelect?: (item: TableData, index: string) => void;
+    selectedId: string | null;
 }
 interface RenderRowProps {
     data: RenderRowData;
@@ -110,12 +150,23 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const handleClick = useCallback(() => {
         //data.setSelected && data.setSelected(row.original);
-        data?.onSelect && data.onSelect(row.original);
+        data?.onSelect && data.onSelect(row.original, row.id);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data?.onSelect, row]);
 
+    data.selectedId === row.id &&
+        (style = {
+            ...style,
+            backgroundColor: tokens.colors.interactive.primary__selected_highlight.hex,
+        });
+
     return (
-        <TableRow {...row.getRowProps({ style })} onClick={handleClick}>
+        <TableRow
+            {...row.getRowProps({
+                style,
+            })}
+            onClick={handleClick}
+        >
             {row.cells.map((cell: Cell) => {
                 return (
                     <TableCell

@@ -10,14 +10,14 @@ import {
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus
+    sortPackagesByStatus,
 } from './Garden/utility';
 import { filterConfig } from './utility/config/filterSetup';
 import { tableConfig } from './utility/config/tableConfig';
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {
         weeklyDaily: 'Weekly',
-        plannedForecast: 'Planned',
+        plannedForecast: 'Forecast',
     };
     appApi
         .createWorkSpace<HandoverPackage>({
@@ -26,8 +26,8 @@ export function setup(appApi: ClientApi): void {
             defaultTab: 'garden',
         })
         .registerDataSource({
-            responseAsync: responseAsync,
-            responseParser: responseParser,
+            responseAsync,
+            responseParser,
         })
         .registerFilterOptions(filterConfig)
         .registerTableOptions(tableConfig)
@@ -47,6 +47,7 @@ export function setup(appApi: ClientApi): void {
             highlightColumn: getHighlightedColumn,
             customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
         })
+        // .registerSearchOptions([{ name: 'Id', valueFormatter: ({ commpkgNo }) => commpkgNo }])
         .registerStatusItems(statusBarData)
         .registerPowerBIOptions({
             reportURI: 'pp-handover-analytics',
@@ -67,12 +68,10 @@ export function setup(appApi: ClientApi): void {
 
 async function responseParser(response: Response) {
     const parsedResponse = JSON.parse(await response.text()) as HandoverPackage[];
-    [];
-
     return parsedResponse.sort(sortPackagesByStatus);
 }
 
-async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
+async function responseAsync(signal?: AbortSignal): Promise<Response> {
     const { fusionDataproxy } = httpClient();
     const contextId = getFusionContextId();
     return await fusionDataproxy.fetch(`/api/contexts/${contextId}/handover/`, { signal: signal });

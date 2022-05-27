@@ -30,6 +30,9 @@ export function setup(appApi: ClientApi): void {
             responseParser: responseParser,
         })
         .registerFilterOptions(filterConfig)
+        .registerSearchOptions([
+            { name: 'Id', valueFormatter: ({ workOrderNumber }) => workOrderNumber },
+        ])
         .registerTableOptions(tableConfig)
         .registerGardenOptions({
             gardenKey: 'fwp' as keyof WorkOrder,

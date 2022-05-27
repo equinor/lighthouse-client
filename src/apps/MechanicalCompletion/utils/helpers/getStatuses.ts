@@ -6,17 +6,17 @@ export const getCommissioningStatus = (mcPackage: McPackage): CommissioningStatu
     } else if (mcPackage.rfocIsRejected) {
         return 'RFOC Rejected';
     } else if (mcPackage.rfocIsShipped) {
-        return 'RFOC Shipped';
+        return 'RFOC Sent';
     } else if (mcPackage.tacIsAccepted) {
         return 'TAC Accepted';
     } else if (mcPackage.tacIsShipped) {
-        return 'TAC Shipped';
+        return 'TAC Sent';
     } else if (mcPackage.rfccIsAccepted) {
         return 'RFCC Accepted';
     } else if (mcPackage.rfccIsRejected) {
         return 'RFCC Rejected';
     } else if (mcPackage.rfccIsShipped) {
-        return 'RFCC Shipped';
+        return 'RFCC Sent';
     } else if (mcPackage.punchAcceptActualDate) {
         return 'Punch status accepted';
     } else if (mcPackage.finalPunchActualDate) {

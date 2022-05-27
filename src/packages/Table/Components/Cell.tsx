@@ -1,7 +1,7 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import { Hooks } from 'react-table';
 import styled from 'styled-components';
-import { TableData } from '../types';
+import { TableData } from '../Types/types';
 
 export const Div = styled.div`
     padding: 0px;

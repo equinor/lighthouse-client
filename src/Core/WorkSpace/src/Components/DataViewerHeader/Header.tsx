@@ -15,6 +15,7 @@ import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { Presets } from '../Presets/Presets';
+import { SearchButton } from '../Search/Search';
 import { TabButton } from '../ToggleButton';
 import {
     ActionBar,
@@ -30,6 +31,7 @@ import {
 
 interface CompletionViewHeaderProps {
     title: string;
+    shortName: string;
     groupe: string;
     tabs: TabsConfigItem[];
     sideSheetWidth: number;
@@ -39,6 +41,7 @@ const ANALYTICS = 'analytics';
 
 export const CompletionViewHeader = ({
     title,
+    shortName,
     tabs,
     groupe,
     sideSheetWidth,
@@ -104,6 +107,7 @@ export const CompletionViewHeader = ({
                     {factory && (
                         <>
                             <TabButton
+                                width={'48px'}
                                 onClick={factory.onClick}
                                 aria-selected={false}
                                 title={factory.title}
@@ -167,7 +171,7 @@ export const CompletionViewHeader = ({
                             <ClickableIcon size={24} name="refresh" />
                         )}
                     </TabButton>
-                    {!isProduction() && <BookmarkDropdown appKey={title} subSystem={groupe} />}
+                    {!isProduction() && <BookmarkDropdown appKey={shortName} subSystem={groupe} />}
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton

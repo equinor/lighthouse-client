@@ -1,4 +1,4 @@
-import React, { MemoExoticComponent } from 'react';
+import React, { MemoExoticComponent, MutableRefObject } from 'react';
 import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { DataSet, GardenGroups } from './data';
 import { FieldSettings } from './fieldSettings';
@@ -19,6 +19,9 @@ export interface CustomItemView<T> {
     onClick: () => void;
     columnExpanded: boolean;
     selectedItem: T | null;
+    rowStart: number;
+    columnStart: number;
+    parentRef: MutableRefObject<HTMLDivElement | null>;
     depth?: number;
     width?: number;
 }
@@ -65,6 +68,7 @@ export interface GardenOptions<T> {
     customViews?: CustomView<T> | CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
+    collapseSubGroupsByDefault?: boolean;
     itemWidth?: (
         garden: GardenGroups<T>,
         key: string,

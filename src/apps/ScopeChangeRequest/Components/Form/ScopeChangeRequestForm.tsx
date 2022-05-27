@@ -1,7 +1,8 @@
 import styled from 'styled-components';
+import { Button, Progress } from '@equinor/eds-core-react';
+import { useMutation, useQueryClient } from 'react-query';
 
 import { Upload } from '../Attachments/Upload';
-import { SearchReferences } from '../SearchReferences/SearchReferences';
 import { usePreloadCaching } from '../../hooks/React-Query/usePreloadCaching';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
 import {
@@ -11,41 +12,41 @@ import {
     FormWrapper,
     Section,
 } from './ScopeChangeForm.styles';
-import { useMutation, useQueryClient } from 'react-query';
 import { getScopeChangeById } from '../../api/ScopeChange/Request';
 import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
-import { Button, Progress } from '@equinor/eds-core-react';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { scopeChangeCreateContext } from '../DataCreator/DataCreatorWrapper';
+import { MaterialsInput } from './Inputs/MaterialsInput/MaterialsInput';
+import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChangeReferences';
 
 export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
 
     return (
-        <>
-            <div>
-                <FormWrapper>
-                    <FlexColumn>
-                        Request
-                        <ScopeChangeBaseForm />
-                    </FlexColumn>
-                    <FlexColumn>
-                        <Section>
-                            <SearchReferences />
-                        </Section>
-                        Attachments
-                        <Upload />
-                    </FlexColumn>
-                    <FlexColumn>
-                        Disciplines and guesstimates
-                        <GuesstimateDiscipline />
-                    </FlexColumn>
-                </FormWrapper>
-                <SubmitButtonBar />
-            </div>
-        </>
+        <div>
+            <FormWrapper>
+                <FlexColumn>
+                    Request
+                    <ScopeChangeBaseForm />
+                </FlexColumn>
+                <FlexColumn>
+                    <Section>
+                        <ScopeChangeReferences />
+                    </Section>
+                    Attachments
+                    <Upload />
+                </FlexColumn>
+                <FlexColumn>
+                    Disciplines and guesstimates
+                    <GuesstimateDiscipline />
+                    Materials
+                    <MaterialsInput />
+                </FlexColumn>
+            </FormWrapper>
+            <SubmitButtonBar />
+        </div>
     );
 };
 
@@ -77,7 +78,7 @@ const SubmitButtonBar = () => {
 
     const onMutate = (draft: boolean) => {
         const { prepareRequest } = scopeChangeFormAtomApi;
-
+        scopeChangeCreateContext.readAtomValue().setHasUnsavedChanges(false);
         mutate({
             draft: draft,
             model: prepareRequest(),

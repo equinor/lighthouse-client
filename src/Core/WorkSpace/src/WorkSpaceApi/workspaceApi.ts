@@ -18,6 +18,7 @@ import {
     DataViewerProps,
     FactoryOptions,
     IdResolverFunc,
+    SearchOption,
     Validator,
     ViewerOptions,
     ViewOptions,
@@ -150,6 +151,12 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
                 } as GardenOptions<unknown>,
             });
 
+            return workspaceAPI;
+        },
+        registerSearchOptions(searchOptions) {
+            updateState({
+                searchOptions: searchOptions as SearchOption<unknown>[],
+            });
             return workspaceAPI;
         },
         registerAnalyticsOptions<T>(analyticsOptions: AnalyticsOptions<T>) {

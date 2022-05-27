@@ -43,12 +43,15 @@ export const scopeChangeFormAtomApi = createAtom<ScopeChangeFormModel, FormAtomA
             phase: undefined,
             potentialWarrantyCase: false,
             references: [],
-            scope: undefined,
+            scope: null,
             scopeId: undefined,
             setAsOpen: false,
             systemIds: [],
             tagNumbers: [],
-            title: undefined,
+            title: '',
+            materialsIdentifiedInStorage: false,
+            materialsNote: '',
+            materialsToBeBoughtByContractor: false,
         }),
 }));
 

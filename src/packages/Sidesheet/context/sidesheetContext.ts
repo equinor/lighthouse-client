@@ -15,6 +15,7 @@ export const SidesheetCoreContext = createGlobalSidesheetState({
     isMinimized: false,
     width: DEFAULT_WIDTH,
     color: DEFAULT_TAB_COLOR,
+    hasUnsavedChanges: false,
 });
 
 export function getSidesheetContext(): Atom<SidesheetState<unknown>> {

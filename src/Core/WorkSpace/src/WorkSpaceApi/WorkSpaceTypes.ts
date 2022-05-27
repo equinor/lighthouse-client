@@ -74,6 +74,7 @@ export interface WorkSpaceApi<T> {
     registerPowerBIOptions: (options: PowerBiOptions) => WorkSpaceApi<T>;
     registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => WorkSpaceApi<T>;
     registerPresets: (options: PresetOption[]) => WorkSpaceApi<T>;
+    registerSearchOptions: (options: SearchOption<T>[]) => WorkSpaceApi<T>;
 }
 
 export type PresetOption = GardenPresetOption | TablePresetOption;
@@ -100,4 +101,10 @@ interface GardenPreset {
 
 interface FilterPreset {
     filterGroups: FilterGroup[];
+}
+
+export interface SearchOption<T> {
+    name: string;
+    /** Takes in an item and returns the search value */
+    valueFormatter: (item: T) => string;
 }

@@ -16,11 +16,12 @@ export type MccrTabProps = {
 const columns: Column<WorkOrderMccr>[] = [
     {
         id: 'tagNumber',
-        accessor: ({ tagNumber, tagId }) => ({
-            content: tagNumber,
+        accessor: (pkg) => ({
+            content: pkg,
             url: isProduction()
-                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#Tag|${tagId}`
-                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#Tag|${tagId}`,
+                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#Tag|${pkg.tagId}`
+                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#Tag|${pkg.tagId}`,
+            currentKey: 'tagNumber',
         }),
         Header: 'TagNo.',
         Cell: CellWithLink,
@@ -33,11 +34,12 @@ const columns: Column<WorkOrderMccr>[] = [
     },
     {
         id: 'mccrType',
-        accessor: ({ mccrId, mccrType }) => ({
-            content: mccrType,
+        accessor: (pkg) => ({
+            content: pkg,
             url: isProduction()
-                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${mccrId}`
-                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${mccrId}`,
+                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${pkg.mccrId}`
+                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion/TagCheck/Form/Main/Index?id=${pkg.mccrId}`,
+            currentKey: 'mccrType',
         }),
         Header: 'Type',
         Cell: CellWithLink,
@@ -55,22 +57,24 @@ const columns: Column<WorkOrderMccr>[] = [
     },
     {
         id: 'mcpkgNumber',
-        accessor: ({ mcpkgNumber }) => ({
-            content: mcpkgNumber,
+        accessor: (pkg) => ({
+            content: pkg,
             url: isProduction()
-                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#McPkg|${mcpkgNumber}`
-                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#McPkg|${mcpkgNumber}`,
+                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#McPkg|${pkg.mcpkgNumber}`
+                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#McPkg|${pkg.mcpkgNumber}`,
+            currentKey: 'mcpkgNumber',
         }),
         Header: 'McpkgNo.',
         Cell: CellWithLink,
     },
     {
         id: 'commpkgNumber',
-        accessor: ({ commpkgNumber }) => ({
-            content: commpkgNumber,
+        accessor: (pkg) => ({
+            content: pkg,
             url: isProduction()
-                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#CommPkg|${commpkgNumber}`
-                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#CommPkg|${commpkgNumber}`,
+                ? `${PROCOSYS_PROD_JC_BASE_URL}/Completion#CommPkg|${pkg.commpkgNumber}`
+                : `${PROCOSYS_TEST_JC_BASE_URL}/Completion#CommPkg|${pkg.commpkgNumber}`,
+            currentKey: 'commpkgNumber',
         }),
         Header: 'CommpkgNo.',
         Cell: CellWithLink,
