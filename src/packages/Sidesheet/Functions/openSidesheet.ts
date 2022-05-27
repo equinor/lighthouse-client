@@ -4,6 +4,7 @@ import Widget, { WidgetManifest } from '@equinor/lighthouse-widgets';
 import React from 'react';
 import { getApps } from '../../../apps/apps';
 import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
+import { EventHub } from '../../Utils/EventHub';
 import { DefaultDataView } from '../Components/DefaultDataView';
 import { SuspenseSidesheet } from '../Components/SuspenseSidesheet';
 import {
@@ -13,6 +14,7 @@ import {
 } from '../context/sidesheetContext';
 import { dispatch } from '../State/actions';
 import { SidesheetApi } from '../Types/SidesheetApi';
+import { SidesheetEvents } from '../Types/sidesheetEvents';
 
 export function openSidesheet<T>(
     SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
@@ -36,6 +38,9 @@ export function openSidesheet<T>(
         );
         return;
     }
+
+    const ev = new EventHub();
+    ev.publish(SidesheetEvents.SidesheetOpened, 'unknown id');
 
     // Temporary Hack for not braking old code.
     let color =
