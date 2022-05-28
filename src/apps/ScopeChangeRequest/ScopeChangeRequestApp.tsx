@@ -3,6 +3,7 @@ import { ResolverFunction } from '@equinor/lighthouse-functions';
 import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { SidesheetComponentManifest, SidesheetWidgetManifest } from '@equinor/lighthouse-widgets';
 import { forwardRef, useState, useRef, useEffect, useImperativeHandle } from 'react';
+import { GridContext } from '../../Core/WorkSpace/src/Tabs/GridTab';
 import { patchScopeChange } from './api/ScopeChange/Request';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
@@ -44,7 +45,8 @@ export function setup(appApi: ClientApi): void {
                         cellEditor: TitleEditor,
                         editable: true,
                         valueSetter: (props) => {
-                            props.newValue;
+                            const context: GridContext = props.context;
+                            props.data.title = props.newValue;
                             patchScopeChange(
                                 {
                                     ...props.data,
@@ -54,9 +56,12 @@ export function setup(appApi: ClientApi): void {
                                     systemIds: [],
                                     commissioningPackageNumbers: [],
                                     tagNumbers: [],
+                                    disciplineGuesstimates: [],
                                 },
                                 true
-                            );
+                            ).then(() => {
+                                context.refetchData();
+                            });
                             return true;
                         },
                     },
@@ -98,6 +103,15 @@ export function setup(appApi: ClientApi): void {
                     title: 'State',
                     valueFormatter: (s) => (s.isVoided ? 'Voided' : s.state),
                     onClickOpensSidesheet: false,
+                },
+                {
+                    title: 'Guesstimate mhrs',
+                    valueFormatter: (s) =>
+                        s.disciplineGuesstimates.reduce((acc, curr) => acc + curr.guesstimate, 0),
+                    options: {
+                        aggFunc: 'sum',
+                        enableValue: true,
+                    },
                 },
             ],
         });
