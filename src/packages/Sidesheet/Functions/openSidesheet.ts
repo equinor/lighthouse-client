@@ -13,6 +13,8 @@ import {
 } from '../context/sidesheetContext';
 import { dispatch } from '../State/actions';
 import { SidesheetApi } from '../Types/SidesheetApi';
+import { SidesheetEvents } from '../Types/sidesheetEvents';
+import { notifyListeners } from './notifyListeners';
 
 export function openSidesheet<T>(
     SidesheetContent?: React.FC<{ item: T; actions: SidesheetApi }>,
@@ -36,6 +38,8 @@ export function openSidesheet<T>(
         );
         return;
     }
+
+    notifyListeners(SidesheetEvents.SidesheetOpened);
 
     // Temporary Hack for not braking old code.
     let color =

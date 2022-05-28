@@ -7,7 +7,7 @@ import { ValueFormatterFilter } from '../Hooks/useFilterApi';
  * @param searchValue
  * @returns
  */
-export function searchAcrossFilterGroups<T = unknown>(
+export function searchForStartsWith<T = unknown>(
     valueFormatters: ValueFormatterFilter<T>[],
     data: T[],
     searchValue: string
@@ -15,6 +15,18 @@ export function searchAcrossFilterGroups<T = unknown>(
     return data.filter((value) =>
         valueFormatters.some(({ valueFormatter }) =>
             valueFormatter(value)?.toString().toLowerCase().startsWith(searchValue)
+        )
+    );
+}
+
+export function searchForIncludes<T = unknown>(
+    valueFormatters: ValueFormatterFilter<T>[],
+    data: T[],
+    searchValue: string
+): T[] {
+    return data.filter((value) =>
+        valueFormatters.some(({ valueFormatter }) =>
+            valueFormatter(value)?.toString().toLowerCase().includes(searchValue)
         )
     );
 }

@@ -76,6 +76,7 @@ export interface WorkSpaceApi<T> {
     registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => WorkSpaceApi<T>;
     registerPresets: (options: PresetOption[]) => WorkSpaceApi<T>;
     registerGridOptions: (gridOptions: GridConfig<T>) => WorkSpaceApi<T>;
+    registerSearchOptions: (options: SearchOption<T>[]) => WorkSpaceApi<T>;
 }
 
 export type PresetOption = GardenPresetOption | TablePresetOption;
@@ -93,7 +94,7 @@ interface TablePresetOption {
     table: TablePreset;
 }
 
-interface TablePreset { }
+interface TablePreset {}
 interface GardenPreset {
     gardenKey: string;
     groupByKeys?: string[];
@@ -102,4 +103,10 @@ interface GardenPreset {
 
 interface FilterPreset {
     filterGroups: FilterGroup[];
+}
+
+export interface SearchOption<T> {
+    name: string;
+    /** Takes in an item and returns the search value */
+    valueFormatter: (item: T) => string;
 }

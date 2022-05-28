@@ -1,6 +1,7 @@
 import { Checkbox } from '@equinor/eds-core-react';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { PowerBiFilter } from '../../../Types';
+import { searchFilterItems } from '../FilterItems/searchFilterItems';
 import { Header } from '../Header';
 import { searchSlicerFilters } from './searchSlicerFilters';
 import { CheckboxItem, CheckboxWrap, Container, FilterGroupContainer } from './Styles';
@@ -20,7 +21,10 @@ export const FilterGroup = ({
         const value = event.target.value;
         setFilterSearchValue(value);
     };
-
+    const searchedFilterGroups = useMemo(
+        () => searchSlicerFilters(slicerFilters, filterSearchValue),
+        [slicerFilters, filterSearchValue]
+    );
     //TODO: Check prefix on filter.type to see if it should render or not
     return (
         <Container>
@@ -28,24 +32,22 @@ export const FilterGroup = ({
 
             <FilterGroupContainer>
                 <CheckboxWrap>
-                    {searchSlicerFilters(slicerFilters, filterSearchValue).map(
-                        (filter: PowerBiFilter) => {
-                            return (
-                                <CheckboxItem key={filter.type}>
-                                    <Checkbox
-                                        onChange={async () => {
-                                            await handleChangeGroup(filter);
-                                        }}
-                                        checked={
-                                            filterGroupVisible?.find((a) => a === filter.type) !==
-                                            undefined
-                                        }
-                                    />
-                                    <label>{filter.type}</label>
-                                </CheckboxItem>
-                            );
-                        }
-                    )}
+                    {searchedFilterGroups.map((filter: PowerBiFilter) => {
+                        return (
+                            <CheckboxItem key={filter.type}>
+                                <Checkbox
+                                    onChange={async () => {
+                                        await handleChangeGroup(filter);
+                                    }}
+                                    checked={
+                                        filterGroupVisible?.find((a) => a === filter.type) !==
+                                        undefined
+                                    }
+                                />
+                                <label>{filter.type}</label>
+                            </CheckboxItem>
+                        );
+                    })}
                 </CheckboxWrap>
             </FilterGroupContainer>
         </Container>

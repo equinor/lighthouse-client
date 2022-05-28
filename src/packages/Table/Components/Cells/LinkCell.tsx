@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { CellProps } from 'react-table';
-import { CellRenderProps, TableData } from '../../types';
+import { CellRenderProps, TableData } from '../../Types/types';
 import { Icon } from '@equinor/eds-core-react';
 export const LinkCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
     const {

@@ -10,9 +10,12 @@ import { Atom, deref, swap } from '@dbeining/react-atom';
 import { EstimateBar } from '../../Components/WoProgressBars/EstimateBar';
 import { ExpendedProgressBar } from '../../Components/WoProgressBars/ExpendedProgressBar';
 import styled from 'styled-components';
+import { TableData, CellRenderProps, CellProps } from '@equinor/Table';
 
 const customCellView = (render: (req: ScopeChangeRequest) => JSX.Element | null) => ({
-    Cell: ({ cell }: any) => <>{render(cell.value.content)}</>,
+    Cell: (
+        cell: React.PropsWithChildren<CellProps<TableData, CellRenderProps<ScopeChangeRequest>>>
+    ) => <>{render(cell.value.content)}</>,
 });
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
@@ -121,6 +124,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'sequenceNumber', title: 'Id', width: 60 },
         { key: 'title', title: 'Title', width: 250 },
         { key: 'phase', title: 'Phase', width: 60 },
+        { key: 'id', title: 'GUID' },
         { key: 'workflowSteps', title: 'Workflow', width: 110 },
         { key: 'disciplineGuesstimates', title: 'Guess mhrs', width: 120 },
         { key: 'estimatedChangeHours', title: 'Est mhrs', width: 120 },
@@ -153,6 +157,15 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             key: 'scope',
             type: customCellView((req) => <>{req?.scope?.name}</>),
         },
+        {
+            key: 'createdBy',
+            type: customCellView(
+                (req) =>
+                    req.createdBy && (
+                        <>{`${req?.createdBy?.firstName} ${req?.createdBy?.lastName}`}</>
+                    )
+            ),
+        },
 
         {
             key: 'createdAtUtc',
@@ -180,7 +193,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         {
             key: 'disciplineGuesstimates',
             type: {
-                Cell: ({ cell }: any) => {
+                Cell: ({ cell }: any): JSX.Element => {
                     const request: ScopeChangeRequest = cell.value.content;
 
                     if (deref(guesstimateHoursMaxAtom) === -1) {
@@ -283,6 +296,24 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     )}
                 </>
             )),
+        },
+        {
+            key: 'materialsToBeBoughtByContractor',
+            type: customCellView((req) => (
+                <>{req.materialsToBeBoughtByContractor ? 'Yes' : 'No'}</>
+            )),
+        },
+        {
+            key: 'materialsIdentifiedInStorage',
+            type: customCellView((req) => <>{req.materialsIdentifiedInStorage ? 'Yes' : 'No'}</>),
+        },
+        {
+            key: 'potentialWarrantyCase',
+            type: customCellView((req) => <>{req.potentialWarrantyCase ? 'Yes' : 'No'}</>),
+        },
+        {
+            key: 'isVoided',
+            type: customCellView((req) => <>{req.isVoided ? 'Yes' : 'No'}</>),
         },
         {
             key: 'workflowSteps',

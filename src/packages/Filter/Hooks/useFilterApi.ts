@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useRefresh } from '../../../components/ParkView/hooks/useRefresh';
 import { doesItemPassFilter, doesItemPassCriteria } from '../functions/doesItemPass';
 import { generateFilterValues } from '../functions/generateFilterValues';
-import { searchAcrossFilterGroups } from '../functions/searchAcrossFilterGroups';
+import { searchForIncludes, searchForStartsWith } from '../functions/searchAcrossFilterGroups';
 import { FilterOptions, FilterValueType } from '../Types/filter';
 import { filterGroupExists } from '../Utils/filterGroupExists';
 import { shouldFilter } from '../Utils/shouldFilter';
@@ -14,6 +14,8 @@ export interface FilterGroup {
 
 type SearchDataSet = 'Data' | 'FilteredData';
 
+type SearchType = 'startsWith' | 'includes';
+
 export interface FilterItemCount {
     /** Item name */
     name: FilterValueType;
@@ -24,8 +26,8 @@ export interface FilterApi<T> {
     filterState: FilterState<T>;
     operations: FilterOperations<T>;
     filterGroupState: FilterGroupState;
-    search: FilterSearch;
     listeners: Listeners;
+    search: FilterSearch<T>;
 }
 
 interface Listeners {
@@ -56,11 +58,12 @@ interface FilterState<T> {
     getValueFormatters: () => ValueFormatterFilter<T>[];
 }
 
-interface FilterSearch {
+interface FilterSearch<T> {
     search: (
-        groupNames: string[],
         searchValue: string,
+        valueFormatters: ValueFormatterFilter<T>[],
         searchIn: SearchDataSet,
+        type: SearchType,
         preventReRender?: boolean
     ) => void;
     clearSearch: () => void;
@@ -341,22 +344,31 @@ export function useFilterApi<T>({
 
     /** Search across multiple filter groups for a value that matches at least one */
     function search(
-        groupNames: string[],
         searchValue: string,
+        valueFormatters: ValueFormatterFilter<T>[],
         searchIn: SearchDataSet,
+        type: SearchType,
         preventReRender?: boolean
     ): void {
-        if (groupNames.length === 0) return;
+        if (valueFormatters.length === 0) return;
 
-        /** Find value formatters for the groups you want to search across */
-        const valueFormatters = getValueFormatters().filter(({ name }) =>
-            groupNames.includes(name)
-        );
+        /**
+         * Search sets filtered data so searching more than once will result in searching in the search results.
+         * Re filter data to get the "actual" filtered data
+         */
+        if (searchIn === 'FilteredData') {
+            filter(true);
+        }
 
         const haystack = searchIn === 'Data' ? data : filteredData.current;
         const needle = searchValue.toLowerCase();
 
-        setFilteredData(searchAcrossFilterGroups(valueFormatters, haystack, needle));
+        const results =
+            type === 'includes'
+                ? searchForIncludes(valueFormatters, haystack, needle)
+                : searchForStartsWith(valueFormatters, haystack, needle);
+
+        setFilteredData(results);
         handleShouldReRender(preventReRender);
     }
 

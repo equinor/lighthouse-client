@@ -1,5 +1,5 @@
 import { ScopeChangeRequest } from "../../../apps/ScopeChangeRequest/types/scopeChangeRequest"
-import { searchAcrossFilterGroups } from "../functions/searchAcrossFilterGroups"
+import { searchForStartsWith } from "../functions/searchAcrossFilterGroups"
 import { FilterGroup, ValueFormatterFilter } from "../Hooks/useFilterApi"
 
 const items: ScopeChangeRequest[] =
@@ -18,7 +18,7 @@ const valueFormatter: ValueFormatterFilter<ScopeChangeRequest> = { name: "Change
 
 describe('Free text search across one filtergroup', () => {
     it("One item should pass", () => {
-        const result = searchAcrossFilterGroups([valueFormatter], items, "hidden")
+        const result = searchForStartsWith([valueFormatter], items, "hidden")
         expect(result.length).toBe(1)
     })
 })
@@ -49,7 +49,7 @@ const valueFormatters: ValueFormatterFilter<ScopeChangeRequest>[] = [
 
 describe('Free text search across multiple filtergroups', () => {
     it("Both items should pass", () => {
-        const result = searchAcrossFilterGroups(valueFormatters, mockRequests, "mock")
+        const result = searchForStartsWith(valueFormatters, mockRequests, "mock")
         expect(result.length).toBe(2)
     })
 })

@@ -19,6 +19,7 @@ import {
     DataViewerProps,
     FactoryOptions,
     IdResolverFunc,
+    SearchOption,
     Validator,
     ViewerOptions,
     ViewOptions,
@@ -40,6 +41,7 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
         window.history.pushState({}, '', url);
 
         options.openSidesheet(options.CustomSidesheet, item, options.viewerId);
+        return item[options.objectIdentifier];
     };
 
     //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
@@ -136,21 +138,32 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
             return workspaceAPI;
         },
         registerTreeOptions<T>(treeOptions: Omit<TreeOptions<T>, 'onSelect'>) {
-            updateState({ treeOptions: { ...treeOptions, onSelect } as TreeOptions<unknown> });
+            updateState({
+                treeOptions: { ...treeOptions, onSelect } as unknown as TreeOptions<unknown>,
+            });
 
             return workspaceAPI;
         },
 
-        registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
+        registerGardenOptions<T>(
+            gardenOptions: Omit<GardenOptions<T>, 'onSelect' | 'objectIdentifier'>
+        ) {
             updateState({
                 gardenOptions: {
                     //HACK if customGroupByKeys is undefined, it will break memoized variable in VGarden and cause rerender??
+                    objectIdentifier: options.objectIdentifier,
                     customGroupByKeys: {},
                     ...gardenOptions,
                     onSelect,
-                } as GardenOptions<unknown>,
+                } as unknown as GardenOptions<unknown>,
             });
 
+            return workspaceAPI;
+        },
+        registerSearchOptions(searchOptions) {
+            updateState({
+                searchOptions: searchOptions as SearchOption<unknown>[],
+            });
             return workspaceAPI;
         },
         registerAnalyticsOptions<T>(analyticsOptions: AnalyticsOptions<T>) {

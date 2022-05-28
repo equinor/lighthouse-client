@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { TableData, ColumnOptions } from '../types';
+import { TableData, ColumnOptions } from '../Types/types';
 import { generateHeaderKeys } from '../Utils/generateColumns';
 
 /**

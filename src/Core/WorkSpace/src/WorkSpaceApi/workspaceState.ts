@@ -3,14 +3,20 @@ import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
 import { Filter, PBIOptions } from '@equinor/lighthouse-powerbi';
 import { StatusItem } from '@equinor/lighthouse-status-bar';
-import { CustomView, CustomVirtualView, GardenOptions, StatusView } from '@equinor/ParkView';
+import { CustomVirtualView, GardenOptions, StatusView } from '@equinor/ParkView';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import { GridOptions } from 'ag-grid-enterprise';
 import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
 import { TableOptions as ReactTableOptions } from 'react-table';
 import { Page } from '../Context/ViewProvider';
-import { DataSource, DataViewerProps, PresetOption, ViewOptions } from './WorkSpaceTypes';
+import {
+    DataSource,
+    DataViewerProps,
+    PresetOption,
+    SearchOption,
+    ViewOptions,
+} from './WorkSpaceTypes';
 
 export interface WorkSpaceState {
     [key: string]: WorkSpaceConfig<unknown>;
@@ -49,13 +55,14 @@ interface Options<T> {
 
 //update TreeOptions;;
 export interface TreeOptions<T> {
+    objectIdentifier: keyof T;
     groupByKeys?: (keyof T)[];
     itemKey: keyof T;
     excludeKeys?: (keyof T)[];
-    customViews?: CustomView<T> | CustomVirtualView<T>;
+    customViews?: CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
-    onSelect?: (item: T) => void;
+    onSelect?: (item: T) => string;
 }
 
 export type StatusFunc<T> = (data: T[]) => StatusItem[];
@@ -94,6 +101,7 @@ export interface WorkSpaceConfig<T> {
     workflowEditorOptions?: WorkflowEditorOptions;
     presetOptions?: PresetOption[];
     gridOptions?: GridOptions;
+    searchOptions?: SearchOption<T>[];
 }
 
 export interface PowerBiOptions {
@@ -103,7 +111,7 @@ export interface PowerBiOptions {
     pages: Page[];
 }
 
-export interface TimeLineOptions { }
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

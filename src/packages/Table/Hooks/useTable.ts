@@ -1,5 +1,5 @@
 import { PluginHook, TableInstance, TableOptions, useTable as useReactTable } from 'react-table';
-import { TableData } from '../types';
+import { TableData } from '../Types/types';
 import { useDefaultColumn } from '../Utils/ColumnDefault';
 
 export const useTable = <TData extends TableData>(
