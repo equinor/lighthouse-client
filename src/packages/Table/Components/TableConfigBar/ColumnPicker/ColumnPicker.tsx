@@ -5,13 +5,13 @@ import { useOutsideClick } from '@equinor/hooks';
 import { useRefresh } from '../../../../../components/ParkView/hooks/useRefresh';
 import { ClickableIcon } from '../../../../Components/Icon';
 import { ColumnLabel, MenuItem, WrapperDiv } from './columnPicker.styles';
-import { TableAPI } from '@equinor/Table';
+import { ColumnApi } from 'ag-grid-community';
 
 interface ColumnPickerProps {
-    getApi: () => TableAPI;
+    columnApi: ColumnApi;
 }
 
-export const ColumnPicker = ({ getApi }: ColumnPickerProps): JSX.Element => {
+export const ColumnPicker = ({ columnApi }: ColumnPickerProps): JSX.Element => {
     const [showMenu, setShowMenu] = useState<boolean>(false);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
@@ -24,7 +24,7 @@ export const ColumnPicker = ({ getApi }: ColumnPickerProps): JSX.Element => {
 
             {showMenu && (
                 <ColumnMenuPicker
-                    getApi={getApi}
+                    columnApi={columnApi}
                     closeMenu={() => setShowMenu(false)}
                     containerRef={containerRef}
                 />
@@ -34,42 +34,34 @@ export const ColumnPicker = ({ getApi }: ColumnPickerProps): JSX.Element => {
 };
 
 interface ColumnMenuPickerProps {
-    getApi: () => TableAPI;
+    columnApi: ColumnApi;
     closeMenu: () => void;
     containerRef: MutableRefObject<HTMLDivElement | null>;
 }
 
-const ColumnMenuPicker = ({ getApi, closeMenu, containerRef }: ColumnMenuPickerProps) => {
+const ColumnMenuPicker = ({ columnApi, closeMenu, containerRef }: ColumnMenuPickerProps) => {
     useOutsideClick(containerRef, closeMenu);
 
     const refresh = useRefresh();
+
+    const columns = columnApi.getAllColumns() ?? [];
+
     return (
         <WrapperDiv>
-            {getApi()
-                .getColumns()
-                .sort(
-                    (a, b) => a.Header?.toString().localeCompare(b.Header?.toString() ?? 'a') ?? 0
-                )
-                .map(({ id, Header }) => {
-                    return (
-                        <MenuItem
-                            onClick={() => {
-                                getApi().toggleHideColumn(id);
-                                refresh();
-                            }}
-                            key={id}
-                        >
-                            <Checkbox
-                                readOnly
-                                checked={getApi()
-                                    .getVisibleColumns()
-                                    .map((x) => x.id)
-                                    .includes(id)}
-                            />
-                            <div>{Header?.toString()}</div>
-                        </MenuItem>
-                    );
-                })}
+            {columns.map((a) => {
+                return (
+                    <MenuItem
+                        onClick={() => {
+                            columnApi.setColumnVisible(a, !a.isVisible());
+                            refresh();
+                        }}
+                        key={a.getColId()}
+                    >
+                        <Checkbox readOnly checked={a.isVisible()} />
+                        <div>{a.getColDef().headerName}</div>
+                    </MenuItem>
+                );
+            })}
         </WrapperDiv>
     );
 };

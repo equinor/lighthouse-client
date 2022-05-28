@@ -9,6 +9,7 @@ import { useWorkSpace } from '@equinor/WorkSpace';
 import { useDataContext } from '../Context/DataProvider';
 import { QueryClient, useQueryClient } from 'react-query';
 import { Button } from '@equinor/eds-core-react';
+import { TableConfigBar } from '../../../../packages/Table/Components/TableConfigBar/TableConfigBar';
 
 export const GridTab = (): JSX.Element => {
     const { data } = useDataContext();
@@ -26,8 +27,17 @@ export const GridTab = (): JSX.Element => {
 
     return (
         <div>
-            <Button onClick={() => gridApi?.redrawRows()}>Row data changed</Button>
+            <Button
+                onClick={() => {
+                    // gridApi?.redrawRows();
+                }}
+            >
+                Row data changed
+            </Button>
             <WorkspaceFilter />
+
+            <TableConfigBar columnApi={columnApi} />
+
             <WorkspaceGrid
                 gridOptions={{
                     ...gridOptions,
