@@ -8159,8 +8159,7 @@ ag-grid, ag-grid-angular, ag-grid-ng2, ag-grid-polymer, ag-grid-aurelia {
 }
 .ag-theme-alpine .ag-checkbox-input-wrapper.ag-checked::after {
   content: "\f106";
-  color: #2196f3;
-  color: var(--ag-checkbox-checked-color, var(--ag-alpine-active-color, #2196f3));
+  color: #007079;
   position: absolute;
   top: 0;
   left: 0;

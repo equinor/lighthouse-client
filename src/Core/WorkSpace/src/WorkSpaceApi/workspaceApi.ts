@@ -1,6 +1,6 @@
 import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { CellClickedEvent, ColDef } from 'ag-grid-community';
+import { CellClickedEvent, ColDef, GridOptions, SelectionChangedEvent } from 'ag-grid-community';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
 import { dispatch } from './CoreActions';
 import {
@@ -187,22 +187,7 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
             return workspaceAPI;
         },
         registerGridOptions(gridOptions: GridConfig<T>) {
-            const processedGridOptions = gridOptions.columns.map(
-                (opt): ColDef => ({
-                    onCellClicked: opt.onClickOpensSidesheet
-                        ? (ev: CellClickedEvent) => onSelect(ev.data)
-                        : undefined,
-                    resizable: true,
-                    sortable: true,
-                    cellStyle: opt.onClickOpensSidesheet ? { cursor: 'pointer' } : undefined,
-                    enableRowGroup: true,
-                    headerName: opt.title,
-                    ...opt.options,
-                    valueGetter: (s) => opt.valueFormatter(s.data),
-                })
-            );
-
-            updateState({ gridOptions: { columnDefs: processedGridOptions } });
+            updateState({ gridOptions: prepareGridOptions(gridOptions, onSelect) });
 
             return workspaceAPI;
         },
@@ -221,3 +206,42 @@ export interface ColumnConfig<T> {
 export interface GridConfig<T> {
     columns: ColumnConfig<T>[];
 }
+
+export function prepareGridOptions<T>(
+    gridOptions: GridConfig<T>,
+    onSelect: (item: T) => T[keyof T]
+): GridOptions {
+    const processedGridOptions = gridOptions.columns.map(
+        (opt): ColDef => ({
+            onCellClicked: opt.onClickOpensSidesheet
+                ? (ev: CellClickedEvent) => onSelect(ev.data)
+                : undefined,
+            resizable: true,
+            sortable: true,
+            cellStyle: opt.onClickOpensSidesheet ? { cursor: 'pointer' } : undefined,
+            enableRowGroup: true,
+            headerName: opt.title,
+            ...opt.options,
+            valueGetter: (s) => opt.valueFormatter(s.data),
+        })
+    );
+
+    return {
+        onSelectionChanged: (e) => handleSelectionChangedEvent(e, onSelect),
+
+        columnDefs: [
+            {
+                field: '',
+                colId: 'select',
+                onCellClicked: (ev) => ev.node.setSelected(true, true),
+                checkboxSelection: true,
+            },
+            ...processedGridOptions,
+        ],
+    };
+}
+//Handles checkbox selection
+const handleSelectionChangedEvent = <T>(
+    e: SelectionChangedEvent,
+    onSelect: (item: T) => T[keyof T]
+) => e.api.getSelectedNodes().length > 0 && onSelect(e.api.getSelectedNodes()[0].data);
