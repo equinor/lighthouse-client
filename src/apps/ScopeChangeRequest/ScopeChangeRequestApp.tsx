@@ -1,11 +1,15 @@
-import { TextField } from '@equinor/eds-core-react';
+import { SingleSelect, TextField } from '@equinor/eds-core-react';
 import { ResolverFunction } from '@equinor/lighthouse-functions';
 import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { SidesheetComponentManifest, SidesheetWidgetManifest } from '@equinor/lighthouse-widgets';
+import { ColDef, Column, GridApi, RowNode } from 'ag-grid-community';
 import { forwardRef, useState, useRef, useEffect, useImperativeHandle } from 'react';
+import { useQuery } from 'react-query';
 import { GridContext } from '../../Core/WorkSpace/src/Tabs/GridTab';
-import { patchScopeChange } from './api/ScopeChange/Request';
+import { useOutsideClick } from '../../hooks/useOutsideClick';
+import { getScopeChangeById, patchScopeChange } from './api/ScopeChange/Request';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
+import { scopeChangeQueries } from './keys/queries';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
 import { dataCreator } from './workspaceConfig/dataCreatorConfig';
 import { dataSource, idResolver } from './workspaceConfig/dataOptions';
@@ -47,21 +51,11 @@ export function setup(appApi: ClientApi): void {
                         valueSetter: (props) => {
                             const context: GridContext = props.context;
                             props.data.title = props.newValue;
-                            patchScopeChange(
-                                {
-                                    ...props.data,
-                                    title: props.newValue,
-                                    areaCodes: [],
-                                    documentNumbers: [],
-                                    systemIds: [],
-                                    commissioningPackageNumbers: [],
-                                    tagNumbers: [],
-                                    disciplineGuesstimates: [],
-                                },
-                                true
-                            ).then(() => {
-                                context.refetchData();
-                            });
+                            updateFieldAsync(
+                                { ...props.data, title: props.newValue },
+                                context,
+                                props.node
+                            );
                             return true;
                         },
                     },
@@ -76,7 +70,25 @@ export function setup(appApi: ClientApi): void {
                     valueFormatter: (s) => (s.hasPendingContributions ? 'Yes' : ''),
                     onClickOpensSidesheet: false,
                 },
-                { title: 'Phase', valueFormatter: (s) => s.phase, onClickOpensSidesheet: false },
+                {
+                    title: 'Phase',
+                    valueFormatter: (s) => s.phase,
+                    options: {
+                        editable: true,
+                        cellEditor: PhaseSelector,
+                        cellEditorPopup: true,
+                        valueSetter: (props) => {
+                            const context: GridContext = props.context;
+                            props.data.phase = props.newValue;
+                            updateFieldAsync(
+                                { ...props.data, phase: props.newValue },
+                                context,
+                                props.node
+                            );
+                            return true;
+                        },
+                    },
+                },
                 {
                     title: 'Workflow',
                     valueFormatter: (s) => s?.workflowSteps?.length,
@@ -115,21 +127,30 @@ export function setup(appApi: ClientApi): void {
                 },
             ],
         });
-    // .registerPowerBIOptions({
-    //     pages: [
-    //         {
-    //             pageId: 'ReportSectionb822b2eb4fc97aef255b',
-    //             pageTitle: 'Overview',
-    //             default: true,
-    //         },
-    //         {
-    //             pageId: 'ReportSection40a8a70e6f82243888ca',
-    //             pageTitle: 'History',
-    //         },
-    //     ],
-    //     reportURI: 'pp-scope-change-analytics',
-    // });
 }
+
+const updateFieldAsync = async (
+    sc: ScopeChangeRequest,
+    context: GridContext,
+    rowNode: RowNode | null
+) => {
+    await patchScopeChange({
+        ...sc,
+        areaCodes: [],
+        documentNumbers: [],
+        systemIds: [],
+        commissioningPackageNumbers: [],
+        tagNumbers: [],
+        disciplineGuesstimates: [],
+        scopeId: sc?.scope?.id,
+    });
+
+    context.refetchData();
+
+    const updatedSc = await getScopeChangeById(sc.id);
+
+    rowNode?.setData(updatedSc);
+};
 
 export const changeSideSheetWidgetManifest: SidesheetWidgetManifest = {
     widgetId: 'change',
@@ -152,14 +173,83 @@ export const changeFunction: ResolverFunction = {
     type: 'idResolver',
 };
 
-const TitleEditor = forwardRef((props, ref) => {
-    const [value, setValue] = useState(props.value);
-    const refInput = useRef(null);
+interface EditorProps {
+    value: string;
+    rowIndex: number;
+    api: GridApi;
+    cellStartedEdit: boolean;
+    charPress: unknown | null;
+    colDef: ColDef;
+    column: Column;
+    data: unknown;
+    node: RowNode;
+    stopEditing: () => void;
+}
+
+const RawEditor = (props: EditorProps, ref) => {
+    const { refInput, setValue, value } = useDefaultAgGridEditorLogic(
+        props.value,
+        ref,
+        props.stopEditing
+    );
+
+    return (
+        <TextField
+            id="title inline edit"
+            type="text"
+            ref={refInput}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            style={{ width: '100%' }}
+        />
+    );
+};
+
+const TitleEditor = forwardRef(RawEditor);
+
+const RawPhaseSelector = (props: EditorProps, ref) => {
+    const { phaseQuery } = scopeChangeQueries;
+    const { data: phases } = useQuery(phaseQuery);
+
+    const { value, setValue, refInput } = useDefaultAgGridEditorLogic(
+        props.value,
+        ref,
+        props.stopEditing
+    );
+
+    return (
+        <SingleSelect
+            label=""
+            handleSelectedItemChange={(s) => setValue(s.selectedItem ?? undefined)}
+            value={value}
+            items={phases ?? []}
+            ref={refInput}
+        />
+    );
+};
+
+const PhaseSelector = forwardRef(RawPhaseSelector);
+
+interface DefaultGridEditorLogic<T> {
+    value: T | undefined;
+    setValue: (newVal: T | undefined) => void;
+    refInput: React.MutableRefObject<HTMLDivElement | null>;
+}
+
+export function useDefaultAgGridEditorLogic<T = (string | number) | undefined>(
+    inValue: T,
+    ref,
+    stopEditing: () => void
+): DefaultGridEditorLogic<T> {
+    const [value, setValue] = useState<T | undefined>(inValue);
+    const refInput = useRef<HTMLDivElement | null>(null);
+
+    //Press anywhere outside the text input to stop editing
+    useOutsideClick(refInput, stopEditing);
 
     useEffect(() => {
         // focus on the input
-        console.log(props);
-        refInput.current.focus();
+        refInput.current && refInput.current.focus();
     }, []);
 
     /* Component Editor Lifecycle methods */
@@ -174,26 +264,21 @@ const TitleEditor = forwardRef((props, ref) => {
             // Gets called once before editing starts, to give editor a chance to
             // cancel the editing before it even starts.
             isCancelBeforeStart() {
+                //Could possibly do access check here
                 return false;
             },
 
             // Gets called once when editing is finished (eg if Enter is pressed).
             // If you return true, then the result of the edit will be ignored.
             isCancelAfterEnd() {
-                // our editor will reject any value greater than 1000
-                return value > 1000;
+                return false;
             },
         };
     });
 
-    return (
-        <TextField
-            id="title inline edit"
-            type="text"
-            ref={refInput}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
-            style={{ width: '100%' }}
-        />
-    );
-});
+    return {
+        value: value,
+        setValue: (newVal: T | undefined) => setValue(newVal),
+        refInput: refInput,
+    };
+}

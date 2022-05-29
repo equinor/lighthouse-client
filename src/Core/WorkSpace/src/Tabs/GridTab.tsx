@@ -1,15 +1,14 @@
 import { ColumnApi, GridApi, GridOptions } from 'ag-grid-enterprise';
 import { AgGridReact } from 'ag-grid-react';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import { useMemo, useState } from 'react';
 import { useFilterApiContext } from '@equinor/filter';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import { useDataContext } from '../Context/DataProvider';
 import { QueryClient, useQueryClient } from 'react-query';
-import { Button } from '@equinor/eds-core-react';
 import { TableConfigBar } from '../../../../packages/Table/Components/TableConfigBar/TableConfigBar';
+import { agStyles } from '../../../../packages/AgGrid/styles/styles';
+import useAgGridStyles from '../../../../packages/AgGrid/hooks/useAgGridStyles';
 
 export const GridTab = (): JSX.Element => {
     const { data } = useDataContext();
@@ -27,13 +26,6 @@ export const GridTab = (): JSX.Element => {
 
     return (
         <div>
-            <Button
-                onClick={() => {
-                    // gridApi?.redrawRows();
-                }}
-            >
-                Row data changed
-            </Button>
             <WorkspaceFilter />
 
             <TableConfigBar columnApi={columnApi} />
@@ -71,11 +63,14 @@ export const WorkspaceGrid = ({
     const containerStyle = useMemo(() => ({ width: '97vw', height: '1000px' }), []);
     const gridStyle = useMemo(() => ({ height: '100%', width: '100%' }), []);
 
+    useAgGridStyles();
+
     return (
         <div style={containerStyle}>
             <div style={{ height: '100%', boxSizing: 'border-box' }}>
                 <div style={gridStyle} className="ag-theme-alpine">
                     <AgGridReact
+                        getMainMenuItems={() => ['generalMenuTab']}
                         paginationAutoPageSize
                         pagination={true}
                         headerHeight={32}

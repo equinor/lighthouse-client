@@ -37,6 +37,28 @@ export function setup(appApi: ClientApi): void {
             { name: 'Id', valueFormatter: ({ workOrderNumber }) => workOrderNumber },
         ])
         .registerTableOptions(tableConfig)
+        .registerGridOptions({
+            columns: [
+                {
+                    title: 'Id',
+                    valueFormatter: (s) => s.workOrderNumber,
+                    onClickOpensSidesheet: true,
+                },
+                {
+                    title: 'Description',
+                    valueFormatter: (s) => s.description,
+                    onClickOpensSidesheet: true,
+                },
+                { title: 'Discipline', valueFormatter: (s) => s.disciplineCode },
+                { title: 'Job status', valueFormatter: (s) => s.jobStatus },
+                { title: 'Responsible', valueFormatter: (s) => s.responsibleCode },
+                { title: 'Milestone', valueFormatter: (s) => s.milestoneCode },
+                {
+                    title: 'Planned start',
+                    valueFormatter: (s) => new Date(s.plannedStartDate).toLocaleDateString('en-gb'),
+                },
+            ],
+        })
         .registerGardenOptions({
             gardenKey: 'fwp' as keyof WorkOrder,
             itemKey: 'workOrderNumber',
