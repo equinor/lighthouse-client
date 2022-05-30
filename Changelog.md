@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.4.0
+- [Workspace] Highlight active item in garden and table
+- [Scope change] Garden config
+- [Scope change] Bugfixes
+- [Assignments] Bugfix
 
 ## 1.3.1
 - [Scopechange] Form bugfixes
