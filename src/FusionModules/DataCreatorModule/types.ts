@@ -33,7 +33,9 @@ export interface AccessFunctionResult extends FunctionManifest {
 
 export type CreatorType = 'CreatorManifest' | 'CreatorComponent' | 'AccessFunctionResult';
 
-export interface CreatorConfig extends CreatorManifest, CreatorComponent {
+export interface CreatorConfig
+    extends Omit<CreatorManifest, 'widgetType'>,
+        Omit<CreatorComponent, 'widgetType'> {
     props: {
         accessCheckFunctionId: string;
         parentApp: string;

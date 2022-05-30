@@ -3,18 +3,19 @@ import {
     htResolverFunction,
     rcResolverFunction
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
-import { htCreatorAccessFunction } from './DisciplineReleaseControl/WorkspaceConfig';
 import { handoverResolverFunction } from './Handover';
 import { mcResolverFunction } from './MechanicalCompletion';
 import { releaseResolverFunction } from './ReleaseControl/ReleaseControlApp';
+import { releaseCreatorAccessFunction } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
 import { changeResolverFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrResolverFunction } from './swcr';
 import { workOrderResolverFunction } from './WorkOrder';
 
+
 export const functions: FunctionManifest[] = [
     changeCreatorAccessFunction,
-    htCreatorAccessFunction,
+    releaseCreatorAccessFunction,
     changeResolverFunction,
     htResolverFunction,
     rcResolverFunction,

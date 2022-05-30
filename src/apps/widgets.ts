@@ -10,7 +10,6 @@ import {
     ReleaseControlSidesheetWidgetComponent,
     ReleaseControlSidesheetWidgetManifest
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
-import { htCreatorComponent, htCreatorManifest } from './DisciplineReleaseControl/WorkspaceConfig';
 import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
 import {
     releaseCreatorComponent,
@@ -27,13 +26,14 @@ import {
 import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
 import { workOrderCreatorComponent, workOrderCreatorManifest } from './WorkOrder';
 
+
 const _widgets: WidgetManifest[] = [
     changeSideSheetWidgetManifest,
     htSidesheetWidgetManifest,
     ReleaseControlSidesheetWidgetManifest,
     actionCenterSidesheetWidgetManifest,
     changeCreatorManifest,
-    htCreatorManifest,
+    releaseCreatorManifest,
     swcrCreatorManifest,
     handoverCreatorManifest,
     workOrderCreatorManifest,
@@ -46,7 +46,7 @@ const _widgetComponents: ComponentManifest[] = [
     ReleaseControlSidesheetWidgetComponent,
     actionCenterSidesheetWidgetComponent,
     changeCreatorComponent,
-    htCreatorComponent,
+    releaseCreatorComponent,
     swcrCreatorComponent,
     handoverCreatorComponent,
     workOrderCreatorComponent,

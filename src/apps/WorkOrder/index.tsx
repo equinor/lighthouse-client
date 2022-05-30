@@ -45,7 +45,6 @@ export function setup(appApi: ClientApi): void {
     appApi
         .createWorkSpace<WorkOrder>({
             objectIdentifier: 'workOrderId',
-            CustomSidesheet: WorkorderSideSheet,
             customSidesheetOptions: creator('WorkspaceSideSheet'),
             defaultTab: 'garden',
         })

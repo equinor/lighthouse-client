@@ -10,7 +10,7 @@ import {
     TreeOptions,
     WorkflowEditorOptions,
     WorkSpaceConfig,
-    WorkSpaceState,
+    WorkSpaceState
 } from './workspaceState';
 import {
     DataSource,
@@ -19,7 +19,7 @@ import {
     Validator,
     ViewOptions,
     WorkSpaceApi,
-    WorkspaceOptions,
+    WorkspaceOptions
 } from './WorkSpaceTypes';
 
 /**
@@ -34,14 +34,10 @@ export function createWorkSpace<T, SideSheetIds extends string>(
     options: WorkspaceOptions<T, SideSheetIds>
 ): WorkSpaceApi<T> {
     const onSelect = (item: T) => {
-        options.openSidesheet(
-            options.customSidesheetOptions?.component || options.CustomSidesheet,
-            item,
-            {
-                ...options.customSidesheetOptions,
-                widgetId: options.customSidesheetOptions?.id,
-            }
-        );
+        options.openSidesheet(options.customSidesheetOptions?.component, item, {
+            ...options.customSidesheetOptions,
+            widgetId: options.customSidesheetOptions?.id,
+        });
         return item[options.objectIdentifier];
     };
 
@@ -131,25 +127,19 @@ export function createWorkSpace<T, SideSheetIds extends string>(
         },
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
             const onGroupeSelect = (item: unknown) => {
-                options.openSidesheet<any>(
-                    options.customGroupeSidesheet?.component || options.CustomGroupeSidesheet,
-                    item,
-                    {
-                        ...options.customGroupeSidesheet,
-                        widgetId: options.customGroupeSidesheet?.id,
-                    }
-                );
+                options.openSidesheet<any>(options.customGroupeSidesheet?.component, item, {
+                    ...options.customGroupeSidesheet,
+                    widgetId: options.customGroupeSidesheet?.id,
+                });
             };
 
             updateState({
                 gardenOptions: {
-                    //HACK if customGroupByKeys is undefined, it will break memoized variable in VGarden and cause rerender??
-                    objectIdentifier: options.objectIdentifier,
                     customGroupByKeys: {},
                     ...gardenOptions,
                     onSelect,
                     onGroupeSelect,
-                } as GardenOptions<unknown>,
+                } as unknown as GardenOptions<unknown>,
             });
 
             return workspaceAPI;

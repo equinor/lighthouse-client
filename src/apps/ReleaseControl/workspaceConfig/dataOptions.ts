@@ -14,11 +14,8 @@ export const dataSource: DataSource<ReleaseControl> = {
 };
 
 export async function idResolverFunction(id: string): Promise<ReleaseControl> {
-    console.log('here');
     const { scopeChange } = httpClient();
-    console.log('here', id);
     const res = await scopeChange.fetch(`api/releasecontrol/${id}`);
-    console.log('here2', res);
     if (!res.ok) {
         throw 'Not found';
     }

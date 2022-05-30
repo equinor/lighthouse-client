@@ -9,10 +9,10 @@ export interface IDataCreationProvider {
 }
 
 export class DataCreationProvider implements IDataCreationProvider {
-    #creators: CreatorManifest[] = [];
-    #getComponent: GetCreatorComponent;
+    private creators: CreatorManifest[] = [];
+    private getComponent: GetCreatorComponent;
     constructor(protected _config: DataCreatorConfig) {
-        this.#getComponent = _config.getCreatorComponent;
+        this.getComponent = _config.getCreatorComponent;
     }
 
     async setup(config: DataCreatorConfig): Promise<void> {
@@ -22,20 +22,24 @@ export class DataCreationProvider implements IDataCreationProvider {
             const hasAccess = await config.getAccessFunction(creator.props.accessCheckFunctionId);
 
             creator.props.hasAccess = await hasAccess();
-            this.#creators.push(creator);
+            this.creators.push(creator);
         }
     }
 
     public getCreators(): CreatorManifest[] {
-        return this.#creators;
+        return this.creators;
     }
 
     public getCreatorById(creatorId: string): CreatorManifest | undefined {
-        return this.#creators.find((creator) => creator.widgetId === creatorId);
+        return this.creators.find((creator) => creator.widgetId === creatorId);
     }
 
     public async getCreatorComponentById(id: string): Promise<React.FC<any>> {
-        // Some error handling  here
-        return await this.#getComponent(id);
+        try {
+            return await this.getComponent(id);
+        } catch (error) {
+            console.error(error);
+            return () => null;
+        }
     }
 }

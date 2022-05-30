@@ -24,14 +24,9 @@ export class DataCreatorConfigurator implements IDataCreatorConfigurator {
     }
 }
 
-export function setupCreator({
-    widgetId,
-    widgetType,
-    title,
-    color,
-    props,
-    widget,
-}: CreatorConfig): <T extends CreatorType>(
+export function setupCreator({ widgetId, title, color, props, widget }: CreatorConfig): <
+    T extends CreatorType
+>(
     type: T
 ) => {
     CreatorManifest: CreatorManifest;
@@ -40,7 +35,7 @@ export function setupCreator({
 }[T] {
     const creatorManifest: CreatorManifest = {
         widgetId: widgetId,
-        widgetType: widgetType,
+        widgetType: 'creator',
         title: title,
         color: color,
         props: {
@@ -54,7 +49,7 @@ export function setupCreator({
             CreatorManifest: creatorManifest,
             CreatorComponent: {
                 widgetId,
-                widgetType,
+                widgetType: creatorManifest.widgetType,
                 widget,
             },
 

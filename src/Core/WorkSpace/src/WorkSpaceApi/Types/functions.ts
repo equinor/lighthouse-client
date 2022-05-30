@@ -8,7 +8,7 @@ export type IdFormat = `${string}${Resolver}`;
 
 export type ResolverIdFormat<T extends string = string> = `${T}Resolver`;
 
-export interface ResolverFunction<T, ResolverId extends string = ''> extends FunctionManifest {
+export interface ResolverFunction<T, ResolverId extends string> extends FunctionManifest {
     function: CustomResolverFunction<T>;
     functionId: ResolverIdFormat<ResolverId>;
 }

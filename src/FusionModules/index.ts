@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-interface */
 import { Configurator, initializeClientModules, ModulesInstance } from './modules';
 export * from './DataCreatorModule';
+export * from './DataCreatorReact';
 export type { Configurator };
 
 export interface AppManifest {}

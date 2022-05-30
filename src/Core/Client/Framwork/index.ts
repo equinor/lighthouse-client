@@ -24,13 +24,13 @@ export const initClient = async (init: Configurator): Promise<Client> => {
     const client = {
         modules,
     };
-    window.lighhouse = client;
+    window.lighthouse = client;
     return client;
 };
 
 declare global {
     interface Window {
-        lighhouse: Client;
+        lighthouse: Client;
     }
 }
 
