@@ -1,13 +1,7 @@
 import { useContext, useEffect, useReducer } from 'react';
 import { GardenGroups } from '../Models/data';
 import { FieldSettings } from '../Models/fieldSettings';
-import {
-    CustomView,
-    CustomVirtualView,
-    GardenOptions,
-    Options,
-    StatusView,
-} from '../Models/gardenOptions';
+import { CustomVirtualView, GardenOptions, Options, StatusView } from '../Models/gardenOptions';
 
 import { actions } from './ParkViewActions';
 import { ParkViewContext, ParkViewProviderProps, ParkViewState } from './ParkViewContext';
@@ -21,9 +15,9 @@ export function ParkViewProvider<T>({
     const initialState: ParkViewState<T> = {
         ...parkViewOptions,
         data: data,
-        type: (parkViewOptions as GardenOptions<T>).type,
+        objectIdentifier: parkViewOptions.objectIdentifier,
         groupByKeys: parkViewOptions?.groupByKeys || [],
-        onSelect: parkViewOptions.onSelect as (item: unknown) => void,
+        onSelect: parkViewOptions.onSelect as (item: unknown) => string,
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey,
     };
     const [state, dispatch] = useReducer(GardenReducer, initialState);
@@ -73,7 +67,7 @@ export function useParkViewContext<T>() {
         gardenKey: parkViewContext.gardenKey as keyof T,
         itemKey: parkViewContext.itemKey as keyof T,
         groupByKeys: parkViewContext.groupByKeys as (keyof T)[],
-        customView: parkViewContext.customViews as CustomView<T> | CustomVirtualView<T>,
+        customView: parkViewContext.customViews as CustomVirtualView<T>,
         customGroupByKeys: parkViewContext.customGroupByKeys || {},
         customState: parkViewContext.customState || {},
         status: parkViewContext.status as StatusView<T>,
@@ -81,10 +75,12 @@ export function useParkViewContext<T>() {
         data: parkViewContext.data as T[],
         fieldSettings: parkViewContext.fieldSettings as FieldSettings<T, string>,
         sortData: parkViewContext.sortData as (data: T[], ...groupByKeys: (keyof T)[]) => T[],
-        itemWidth: parkViewContext.itemWidth as (
-            gardenGroups: GardenGroups<T>,
-            groupKey: string,
-            customGroupByKeys?: Record<string, unknown>
-        ) => number,
+        itemWidth: parkViewContext.itemWidth as GetItemWidth<T>,
     };
 }
+
+type GetItemWidth<T> = (
+    gardenGroups: GardenGroups<T>,
+    groupKey: string,
+    customGroupByKeys?: Record<string, unknown>
+) => number;

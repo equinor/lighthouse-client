@@ -16,11 +16,12 @@ function HandoverGardenItem({
     columnExpanded,
     depth,
     width: itemWidth = 300,
-    selectedItem,
+    isSelected,
     rowStart,
     columnStart,
     parentRef,
 }: CustomItemView<HandoverPackage>): JSX.Element {
+    const [hoverTimeout, setHoverTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
     const { customState } = useParkViewContext();
     const size = itemSize(data.volume, (customState?.['maxVolume'] as number) || 0);
 
@@ -35,8 +36,6 @@ function HandoverGardenItem({
 
     const anchorRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const openPopover = () => setIsOpen(true);
-    const closePopover = () => setIsOpen(false);
 
     const width = useMemo(() => (depth ? 100 - depth * 3 : 100), [depth]);
     const maxWidth = useMemo(() => itemWidth * 0.98, [itemWidth]);
@@ -50,19 +49,24 @@ function HandoverGardenItem({
         commStatusColor,
         showWarningIcon,
     };
-
     return (
         <>
             <Root>
                 <HandoverItemWrapper
                     ref={anchorRef}
-                    onMouseOver={openPopover}
-                    onMouseLeave={closePopover}
+                    onMouseEnter={() => {
+                        hoverTimeout && !isOpen && clearTimeout(hoverTimeout);
+                        setHoverTimeout(setTimeout(() => setIsOpen(true), 700));
+                    }}
+                    onMouseLeave={() => {
+                        hoverTimeout && clearTimeout(hoverTimeout);
+                        setIsOpen(false);
+                    }}
                     backgroundColor={backgroundColor}
                     textColor={textColor}
                     onClick={onClick}
                     style={{ width: `${columnExpanded ? 100 : width}%`, maxWidth }}
-                    isSelected={selectedItem?.commpkgNo === data.commpkgNo}
+                    isSelected={isSelected}
                 >
                     <Sizes size={size} color={textColor} />
                     {data.hasUnsignedActions && <FlagIcon color={textColor} />}

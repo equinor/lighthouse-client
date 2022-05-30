@@ -1,10 +1,10 @@
 import { UseMutateFunction, useQueryClient } from 'react-query';
 import { spawnConfirmationDialog } from '../../../Core/ConfirmationDialog/Functions/spawnConfirmationDialog';
-import { useReleaseControlMutation } from '../../DisciplineReleaseControl/Hooks/useReleaseControlMutation';
 import { CriteriaSignState } from '../../ScopeChangeRequest/types/scopeChangeRequest';
 import { signCriteria } from '../api/releaseControl/Workflow';
 import { releaseControlMutationKeys } from '../queries/releaseControlMutationKeys';
 import { useReleaseControlContext } from './useReleaseControlContext';
+import { useReleaseControlMutation } from './useReleaseControlMutation';
 
 export interface OnSignStepAction {
     action: CriteriaSignState;
@@ -48,8 +48,8 @@ export function useWorkflowSigning({
 
         /** Need to determine if it is the last criteria to be signed on the step */
         const unsignedCriterias = workflowSteps
-            .find((x) => x.id === stepId)
-            ?.criterias.filter((x) => x.signedAtUtc === null);
+            ?.find((x) => x.id === stepId)
+            ?.criterias?.filter((x) => x.signedAtUtc === null);
 
         if (pendingContributions && unsignedCriterias?.length === 1) {
             spawnConfirmationDialog(

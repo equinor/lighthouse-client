@@ -1,10 +1,11 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import { memo, useMemo } from 'react';
-import { PowerBiFilter, PowerBiFilterItem } from '../../../Types';
+import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../../Types';
+import { IS_BLANK } from '../../../Utils';
 import { CheckboxItem } from './Styles';
 
 type ItemProps = {
-    activeFilters: (string | number | boolean)[];
+    activeFilters: ActiveFilter[];
     filter: PowerBiFilterItem;
     group: PowerBiFilter;
     handleOnChange: (
@@ -15,6 +16,10 @@ type ItemProps = {
     virtualItemStart: number;
     virtualItemSize: number;
 };
+
+const convertNullToBlank = (activeFilters: ActiveFilter[]) =>
+    activeFilters.map((activeFilter) => (activeFilter === null ? IS_BLANK : activeFilter));
+
 const FilterItem = ({
     activeFilters,
     filter,
@@ -24,9 +29,8 @@ const FilterItem = ({
     virtualItemStart,
 }: ItemProps) => {
     const isActive = useMemo(() => {
-        return activeFilters.includes(filter.value) ? true : false;
+        return convertNullToBlank(activeFilters).includes(filter.value) ? true : false;
     }, [activeFilters, filter.value]);
-
     return (
         <CheckboxItem
             style={{

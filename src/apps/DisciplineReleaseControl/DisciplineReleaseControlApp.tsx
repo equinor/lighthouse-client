@@ -5,18 +5,12 @@ import { statusBarConfig } from './Components/StatusBar/statusBarConfig';
 import { chewPipetestDataFromApi } from './Functions/statusHelpers';
 import { Pipetest } from './Types/pipetest';
 
-import {
-    dataCreatorConfig,
-    filterConfig,
-    tableConfig,
-    gardenConfig,
-    presetConfig,
-} from './WorkspaceConfig';
+import { filterConfig, tableConfig, gardenConfig, presetConfig } from './WorkspaceConfig';
 
 export function setup({ createWorkSpace }: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
         const { FAM } = httpClient();
-        return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal: signal });
+        return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal });
     };
 
     const responseParser = async (response: Response) => {
@@ -30,7 +24,6 @@ export function setup({ createWorkSpace }: ClientApi): void {
         objectIdentifier: 'name',
         defaultTab: 'garden',
     })
-        .registerDataCreator(dataCreatorConfig)
         .registerDataSource({
             responseAsync: responseAsync,
             responseParser: responseParser,
@@ -39,5 +32,6 @@ export function setup({ createWorkSpace }: ClientApi): void {
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerPresets(presetConfig)
+        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ name }) => name }])
         .registerStatusItems(statusBarConfig);
 }

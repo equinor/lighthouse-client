@@ -4,7 +4,35 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.4.0
+- [Workspace] Highlight active item in garden and table
+- [Scope change] Garden config
+- [Scope change] Bugfixes
+- [Assignments] Bugfix
+- [PowerBI] Fix filter limitation with using basic filter
+- [PowerBI] Fix rerender on filter group when filter item checked/unchecked
+- [GardenUtils] Fix popover that is stuck when page rerenders
+- [Workspace] Use shortname for bookmarks when saving
+- [PipingAndHeatTrace] Remove double slash from base url
 
+## 1.3.1
+- [Scopechange] Form bugfixes
+- [PipingAndHeatTrace] Bugfix for calculating status on new tests
+
+# 1.3.0
+- [Workorder]  Filter by progress & follow up status
+- [Workorder] Fix remaining hours on current week column
+- [Workorder] Implement popover
+- [SWCR] Sort date columns so "No Date" column appear first
+- [Mechanical Completion] Use planned dates instead of forecast dates
+- [Mechanical Completion] Implement popover
+- [Handover] Implement popover
+- [GardenUtils] Popover component for virtual garden items
+- [PowerBI] Reset filters when filter group is closed
+- [Table] Fix sorting by number
+- [Sidesheet] Add warning on unsaved changes
+- [ScopeChange] Discipline as column
+- [ScopeChange] Bugfixes
 
 
 ## 1.2.1

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { CellProps } from 'react-table';
 import styled from 'styled-components';
-import { CellRenderProps, TableData } from '../../types';
+import { CellRenderProps, TableData } from '../../Types/types';
 
 const Status = styled.div`
     width: fit-content;
