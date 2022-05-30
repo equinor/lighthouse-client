@@ -1,4 +1,4 @@
-import { TableData, Column, ColumnOptions } from '../types';
+import { TableData, Column, ColumnOptions } from '../Types/types';
 import {
     generateArrayColumn,
     generateCustomColumn,
