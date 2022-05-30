@@ -30,20 +30,20 @@ import {
 } from './HeaderStyles';
 
 interface CompletionViewHeaderProps {
-    title: string;
     shortName: string;
     groupe: string;
     tabs: TabsConfigItem[];
+    title: string;
     sideSheetWidth: number;
 }
 
 const ANALYTICS = 'analytics';
 
 export const CompletionViewHeader = ({
-    title,
     shortName,
     tabs,
     groupe,
+    title,
     sideSheetWidth,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
