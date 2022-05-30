@@ -3,6 +3,7 @@ import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/F
 import { ReleaseControlSidesheet } from './components/sidesheet/ReleaseControlSidesheet/ReleaseControlSidesheet';
 import { ReleaseControl } from './types/releaseControl';
 import { dataSource, filterOptions, idResolverFunction, tableConfig } from './workspaceConfig';
+import { dataCreatorConfig } from './workspaceConfig/DataCreator/dataCreatorConfig';
 import { gardenOptions } from './workspaceConfig/garden/gardenConfig';
 
 const creator = setupWorkspaceSidesheet<ReleaseControl, 'releaseDetails'>({
@@ -26,6 +27,7 @@ export function setup({ createWorkSpace }: ClientApi): void {
         customSidesheetOptions: creator('WorkspaceSideSheet'),
         defaultTab: 'garden',
     })
+        .registerDataCreator(dataCreatorConfig)
         .registerDataSource(dataSource)
         .registerTableOptions(tableConfig)
         .registerFilterOptions(filterOptions)

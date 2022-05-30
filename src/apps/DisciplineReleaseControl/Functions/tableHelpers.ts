@@ -101,9 +101,11 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
         } else if (
             htTestStep &&
             checkLists.some((x) => x.isHeatTrace) &&
-            checkLists.some((x) => x.formularType === formularType)
+            checkLists.some((x) => x.formularType.startsWith(formularType))
         ) {
-            const foundTestSteps = checkLists.filter((x) => x.formularType === formularType);
+            const foundTestSteps = checkLists.filter((x) =>
+                x.formularType.startsWith(formularType)
+            );
             const workflowStep: CheckList = {
                 tagNo: '',
                 responsible: '',
@@ -113,12 +115,11 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
                 isHeatTrace: true,
                 revision: '',
                 test: '',
-                workflowStepText:
-                    formularType === CheckListStepTag.HtTest
-                        ? '1'
-                        : formularType === CheckListStepTag.HtRetest
-                        ? '2'
-                        : '3',
+                workflowStepText: formularType.startsWith(CheckListStepTag.HtTest)
+                    ? '1'
+                    : formularType.startsWith(CheckListStepTag.HtRetest)
+                    ? '2'
+                    : '3',
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
             };
             workflowSteps.push(workflowStep);

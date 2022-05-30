@@ -10,15 +10,16 @@ import {
     TreeOptions,
     WorkflowEditorOptions,
     WorkSpaceConfig,
-    WorkSpaceState
+    WorkSpaceState,
 } from './workspaceState';
 import {
     DataSource,
     DataViewerProps,
+    SearchOption,
     Validator,
     ViewOptions,
     WorkSpaceApi,
-    WorkspaceOptions
+    WorkspaceOptions,
 } from './WorkSpaceTypes';
 
 /**
@@ -41,6 +42,7 @@ export function createWorkSpace<T, SideSheetIds extends string>(
                 widgetId: options.customSidesheetOptions?.id,
             }
         );
+        return item[options.objectIdentifier];
     };
 
     //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
@@ -121,11 +123,12 @@ export function createWorkSpace<T, SideSheetIds extends string>(
             return workspaceAPI;
         },
         registerTreeOptions<T>(treeOptions: Omit<TreeOptions<T>, 'onSelect'>) {
-            updateState({ treeOptions: { ...treeOptions, onSelect } as TreeOptions<unknown> });
+            updateState({
+                treeOptions: { ...treeOptions, onSelect } as unknown as TreeOptions<unknown>,
+            });
 
             return workspaceAPI;
         },
-
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
             const onGroupeSelect = (item: unknown) => {
                 options.openSidesheet<any>(
@@ -141,6 +144,7 @@ export function createWorkSpace<T, SideSheetIds extends string>(
             updateState({
                 gardenOptions: {
                     //HACK if customGroupByKeys is undefined, it will break memoized variable in VGarden and cause rerender??
+                    objectIdentifier: options.objectIdentifier,
                     customGroupByKeys: {},
                     ...gardenOptions,
                     onSelect,
@@ -148,6 +152,12 @@ export function createWorkSpace<T, SideSheetIds extends string>(
                 } as GardenOptions<unknown>,
             });
 
+            return workspaceAPI;
+        },
+        registerSearchOptions(searchOptions) {
+            updateState({
+                searchOptions: searchOptions as SearchOption<unknown>[],
+            });
             return workspaceAPI;
         },
         registerAnalyticsOptions<T>(analyticsOptions: AnalyticsOptions<T>) {

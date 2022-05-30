@@ -10,7 +10,7 @@ import { filterConfig, gardenConfig, presetConfig, tableConfig } from './Workspa
 export function setup({ createWorkSpace }: ClientApi): void {
     const responseAsync = async (signal?: AbortSignal): Promise<Response> => {
         const { FAM } = httpClient();
-        return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal: signal });
+        return await FAM.fetch(`/v0.1/procosys/pipetest/JCA`, { signal });
     };
 
     const responseParser = async (response: Response) => {
@@ -34,5 +34,6 @@ export function setup({ createWorkSpace }: ClientApi): void {
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerPresets(presetConfig)
+        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ name }) => name }])
         .registerStatusItems(statusBarConfig);
 }

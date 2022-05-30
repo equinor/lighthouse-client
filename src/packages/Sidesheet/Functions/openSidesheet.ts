@@ -8,7 +8,9 @@ import { SuspenseSidesheet } from '../Components/SuspenseSidesheet';
 import { DEFAULT_TAB_COLOR, getSidesheetContext } from '../context/sidesheetContext';
 import { dispatch, readState } from '../State/actions';
 import { SidesheetApi } from '../Types/SidesheetApi';
+import { SidesheetEvents } from '../Types/sidesheetEvents';
 import { handleUpdateHashUrl } from '../Utils/urlHandler';
+import { notifyListeners } from './notifyListeners';
 
 export function hasUnsavedChanges(): boolean {
     return readState(getSidesheetContext(), (s) => s.hasUnsavedChanges);
@@ -36,6 +38,8 @@ export function openSidesheet<T>(
         );
         return;
     }
+
+    notifyListeners(SidesheetEvents.SidesheetOpened);
 
     /**
      *  Handles manifest extraction and url update if needed.

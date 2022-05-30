@@ -19,3 +19,5 @@ export interface Filter {
     };
     operator: BasicFilterOperators;
 }
+
+export type ActiveFilter = string | number | boolean | null;

@@ -1,3 +1,6 @@
+import { ActiveFilter } from '..';
+import { IS_BLANK } from './constants';
+
 /**
  * Data that comes from powerbi containing all slicers and filters will be in csv format
  * This function cleans the data and returns type of filter and all values.
@@ -43,10 +46,14 @@ export const transformData = (data: string): { type: string; values: string[] } 
      */
     const removeTrailingComma = rawData.map((value) => value.replace(/,\s*$/, ''));
     const values = removeTrailingComma.map((value) =>
-        value === '""' || value === '' ? (value = '(Blank)') : value
+        value === '""' || value === '' ? (value = IS_BLANK) : value
     );
     return {
         type,
         values,
     };
+};
+
+export const convertFromNullToBlank = (activeFilter: ActiveFilter): string | number | boolean => {
+    return activeFilter === null ? IS_BLANK : activeFilter;
 };

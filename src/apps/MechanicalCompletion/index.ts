@@ -52,6 +52,7 @@ export function setup(addApi: ClientApi): void {
             responseParser: responseParser,
         })
         .registerFilterOptions(filterConfig)
+        .registerSearchOptions([{ name: 'Id', valueFormatter: ({ mcPkgNumber }) => mcPkgNumber }])
 
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig);

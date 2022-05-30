@@ -1,6 +1,7 @@
 import { Atom } from '@dbeining/react-atom';
 
 export interface GardenState {
+    appKey: string;
     groupByKeys: string[];
     gardenKey: string;
     customGroupByKeys: Record<string, unknown>;

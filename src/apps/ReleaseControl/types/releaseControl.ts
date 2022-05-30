@@ -65,24 +65,36 @@ export interface Contributor {
     plant;
 }
 
-export interface CurrentWorkflowStep {
+export interface DraggableReleaseControlStep {
+    id: string;
+    item: CreateReleaseControlStepModel;
+}
+
+export interface ReleaseControlStep {
     id: string;
     name: string;
     order: number;
+    responsible: string;
     isCurrent: boolean;
     isCompleted: boolean;
     criterias: Criteria[];
     contributors: Contributor[];
 }
 
-export interface WorkflowStep {
-    id: string;
+export interface CreateReleaseControlStepModel {
     name: string;
     order: number;
-    isCurrent: boolean;
-    isCompleted: boolean;
-    criterias: Criteria[];
-    contributors: Contributor[];
+    allowContributors: boolean;
+    completedStatusName?: string;
+    rejectedStatusName?: string;
+    criteriaTemplates: CriteriaTemplate[];
+}
+
+export interface CriteriaTemplate {
+    type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';
+    assignToCreator: boolean;
+    //I.E functional role name or azure oid
+    value?: string;
 }
 
 export interface Tag {
@@ -107,14 +119,15 @@ export interface ReleaseControl {
     title: string;
     description: string;
     phase: string;
-    plannedDueDate: Date;
+    plannedDueDate: string;
     state: string;
     workflowStatus: string;
     isVoided: boolean;
     hasComments: boolean;
     hasPendingContributions: boolean;
-    currentWorkflowStep: CurrentWorkflowStep;
-    workflowSteps: WorkflowStep[];
+    allowContributors: boolean;
+    currentWorkflowStep: ReleaseControlStep;
+    workflowSteps: ReleaseControlStep[];
     tags: Tag[];
     areas: Area[];
 }

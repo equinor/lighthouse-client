@@ -1,5 +1,5 @@
 import { CellProps } from 'react-table';
-import { CellRenderProps, TableData } from '../../types';
+import { CellRenderProps, TableData } from '../../Types/types';
 
 export const ArrayCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
     const {

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 export type BoxProps = {
     color?: string;
+    width?: string;
 };
 
 const Button = styled.button<BoxProps>`
@@ -13,7 +14,6 @@ const Button = styled.button<BoxProps>`
     position: relative;
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow-x: hidden;
     appearance: none;
     box-sizing: border-box;
     font-family: inherit;
@@ -21,8 +21,9 @@ const Button = styled.button<BoxProps>`
     outline: none;
     font-size: 14px;
     height: 48px;
-    padding-left: 16px;
-    padding-right: 16px;
+
+    justify-content: center;
+    width: ${(s) => s.width ?? '48px'};
     color: ${tokens.colors.text.static_icons__tertiary.rgba};
     border-bottom: ${({ 'aria-selected': selected }) =>
         selected
@@ -44,10 +45,14 @@ const Button = styled.button<BoxProps>`
     }
 `;
 
+interface TabButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+    width?: string;
+}
+
 export const TabButton = ({
     children,
     ...rest
-}: PropsWithChildren<React.HTMLAttributes<HTMLButtonElement>>): JSX.Element => {
+}: PropsWithChildren<TabButtonProps>): JSX.Element => {
     return (
         <Button aria-selected {...rest}>
             {children}

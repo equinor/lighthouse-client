@@ -1,8 +1,10 @@
 import { spawnConfirmationDialog } from '@equinor/lighthouse-confirmation-dialog';
 import { getSidesheetContext } from '../context/sidesheetContext';
+import { notifyListeners } from '../Functions/notifyListeners';
 import { hasUnsavedChanges } from '../Functions/openSidesheet';
 import { dispatch } from '../State/actions';
 import { SidesheetState } from '../State/sidesheetState';
+import { SidesheetEvents } from '../Types/sidesheetEvents';
 
 export type ToggleFunction = (prev: boolean) => boolean;
 interface InternalSidesheetFunctions {
@@ -52,6 +54,7 @@ export function useInternalSidesheetFunction(): InternalSidesheetFunctions {
             );
             return;
         }
+        notifyListeners(SidesheetEvents.SidesheetClosed);
         //HACK: should somehow be handled from the workspace
         history.pushState('', document.title, window.location.pathname);
         dispatch(getSidesheetContext(), (currentState: SidesheetState<any>) => {

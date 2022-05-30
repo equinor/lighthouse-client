@@ -1,5 +1,6 @@
 import { ClientApi } from '@equinor/lighthouse-portal-client';
 import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
+import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
 import { dataSource, idResolver } from './workspaceConfig/dataOptions';
@@ -35,19 +36,28 @@ export function setup(appApi: ClientApi): void {
         .registerGardenOptions(gardenConfig)
         .registerStatusItems(statusBarConfig)
         .registerFilterOptions(filterConfig)
-        .registerPrefetchQueries(prefetchQueriesOptions);
-    // .registerPowerBIOptions({
-    //     pages: [
-    //         {
-    //             pageId: 'ReportSectionb822b2eb4fc97aef255b',
-    //             pageTitle: 'Overview',
-    //             default: true,
-    //         },
-    //         {
-    //             pageId: 'ReportSection40a8a70e6f82243888ca',
-    //             pageTitle: 'History',
-    //         },
-    //     ],
-    //     reportURI: 'pp-scope-change-analytics',
-    // });
+        .registerPrefetchQueries(prefetchQueriesOptions)
+        .registerSearchOptions([
+            { name: 'Id', valueFormatter: ({ sequenceNumber }) => sequenceNumber.toString() },
+            { name: 'Title', valueFormatter: ({ title }) => title },
+        ])
+        .registerPrefetchQueries(prefetchQueriesOptions)
+        .registerPowerBIOptions(
+            appApi.isProduction
+                ? {
+                      pages: [
+                          {
+                              pageId: 'ReportSectionb822b2eb4fc97aef255b',
+                              pageTitle: 'Overview',
+                              default: true,
+                          },
+                          {
+                              pageId: 'ReportSection40a8a70e6f82243888ca',
+                              pageTitle: 'History',
+                          },
+                      ],
+                      reportURI: 'pp-scope-change-analytics',
+                  }
+                : (undefined as unknown as PowerBiOptions)
+        );
 }
