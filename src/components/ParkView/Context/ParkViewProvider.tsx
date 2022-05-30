@@ -1,4 +1,3 @@
-import { string } from 'prop-types';
 import { useContext, useEffect, useReducer } from 'react';
 import { GardenGroups } from '../Models/data';
 import { FieldSettings } from '../Models/fieldSettings';
