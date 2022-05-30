@@ -3,6 +3,7 @@ import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions, FilterGroup } from '@equinor/filter';
 import { GardenOptions } from '@equinor/ParkView';
 import { SidesheetApi } from '@equinor/sidesheet';
+import { GridConfig } from './workspaceApi';
 
 import {
     PowerBiOptions,
@@ -74,6 +75,7 @@ export interface WorkSpaceApi<T> {
     registerPowerBIOptions: (options: PowerBiOptions) => WorkSpaceApi<T>;
     registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => WorkSpaceApi<T>;
     registerPresets: (options: PresetOption[]) => WorkSpaceApi<T>;
+    // registerGridOptions: (gridOptions: GridConfig<T>) => WorkSpaceApi<T>;
     registerSearchOptions: (options: SearchOption<T>[]) => WorkSpaceApi<T>;
 }
 
