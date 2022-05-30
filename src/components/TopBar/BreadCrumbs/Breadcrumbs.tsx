@@ -1,4 +1,5 @@
 import { Breadcrumbs } from '@equinor/eds-core-react';
+import { useCallback } from 'react';
 import { useLocation } from 'react-router';
 import styled from 'styled-components';
 
@@ -7,7 +8,7 @@ import { readClientRegistry } from '../../../Core/Client/Functions';
 export const LocationBreadCrumbs = (): JSX.Element => {
     const location = useLocation();
 
-    const createBreadCrumbs = () => {
+    const createBreadCrumbs = useCallback(() => {
         const paths = location.pathname.split('/').filter((s) => s !== '');
         if (paths.length < 2) {
             return [];
@@ -24,7 +25,7 @@ export const LocationBreadCrumbs = (): JSX.Element => {
         if (tab) crumbs.push(tab[0].toUpperCase() + tab.substring(1));
 
         return crumbs;
-    };
+    }, [location]);
 
     return (
         <>
