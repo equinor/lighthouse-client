@@ -48,7 +48,7 @@ export const GardenItemContainer = <T extends unknown>(
         parentRef,
     } = props;
     const expand = useExpand();
-    const { objectIdentifier, customDescription } = useParkViewContext();
+    const { objectIdentifier, customDescription, customItemColor } = useParkViewContext();
 
     const CustomSubGroup = props?.customSubGroup;
     return (
@@ -112,6 +112,7 @@ export const GardenItemContainer = <T extends unknown>(
                             <DefaultGardenItem
                                 depth={item.itemDepth}
                                 isSelected={item.item[objectIdentifier] === selectedItem}
+                                backgroundColor={customItemColor(item.item)}
                                 onClick={() => handleOnClick(item.item)}
                                 columnExpanded={
                                     expand?.expandedColumns?.[garden[virtualColumn.index].value]

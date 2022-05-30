@@ -76,6 +76,8 @@ export interface GardenOptions<T> {
     onSelect?: (item: T) => string;
     /** Function that returns the string of text that is to be displayed when a column is expanded */
     customDescription?: (item: T) => string;
+    /** Function that returns the color of the item to be displayed */
+    customItemColor?: (item: T) => string;
 }
 
 export type PreGroupByFiltering<T = unknown> = (arr: T[], groupByKey: string) => T[];
