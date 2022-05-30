@@ -1,3 +1,4 @@
+import { WidgetManifest } from '@equinor/lighthouse-widgets';
 import { openSidesheet } from '../Functions';
 import { ToggleFunction } from '../Hooks/useInternalSidesheetFunction';
 
@@ -7,7 +8,11 @@ export interface SidesheetApi {
     setWidth: (width: number) => void;
     setTitle: (items: string | JSX.Element | null | undefined) => void;
     setMenuItems: (menuItems: MenuItem[]) => void;
-    swapComponent: <T>(component?: CustomSidesheet<T>, props?: T) => void;
+    swapComponent: <T>(
+        component?: CustomSidesheet<T>,
+        props?: T,
+        manifest?: Partial<WidgetManifest>
+    ) => void;
     setHasUnsavedChanges: (hasUnsaved: boolean) => void;
 }
 

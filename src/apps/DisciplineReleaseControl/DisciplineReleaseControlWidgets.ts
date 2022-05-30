@@ -33,7 +33,7 @@ export const rcSidesheetCreator = setupWorkspaceSidesheet<Pipetest, 'pt'>({
         parentApp: 'piping-and-ht',
         function: async (id: string) => {
             const items = await responseParser(await responseAsync());
-            return items.find((item) => item.id === id);
+            return items.find((item) => item.name === id);
         },
     },
 });

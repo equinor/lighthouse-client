@@ -2,6 +2,7 @@ import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary, ErrorFallbackSidesheet } from '@equinor/ErrorBoundary';
 import { Icon } from '@equinor/lighthouse-components';
+import { WidgetManifest } from '@equinor/lighthouse-widgets';
 import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
 import { useState } from 'react';
@@ -28,8 +29,12 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         setTitle(value);
     };
 
-    function swapComponent<T>(SidesheetContent?: CustomSidesheet<T>, props?: T) {
-        openSidesheet(SidesheetContent, props, { color });
+    function swapComponent<T>(
+        SidesheetContent?: CustomSidesheet<T>,
+        props?: T,
+        manifest?: Partial<WidgetManifest>
+    ) {
+        openSidesheet(SidesheetContent, props, manifest);
     }
 
     const actions: SidesheetApi = {
