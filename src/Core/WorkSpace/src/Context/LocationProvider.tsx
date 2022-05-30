@@ -45,7 +45,7 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
             navigate(
                 `${location.pathname.replace(currentTabId || '', '')}/${activeTab}${location.hash}`,
                 {
-                    replace: true,
+                    replace: false,
                 }
             );
             setActiveTab(activeTab);
@@ -89,8 +89,8 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
      */
     useEffect(() => {
         if (!id) {
-            navigate(`${location.pathname}/${defaultTab}${location.hash}`, {
-                replace: true,
+            navigate(`${location.pathname}/${defaultTab}${location.hash}` + location.search, {
+                replace: false,
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

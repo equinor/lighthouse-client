@@ -138,7 +138,7 @@ export const BookmarkContextWrapper = ({
             })();
         }
         console.log(location);
-    }, []);
+    }, [searchParams]);
     return (
         <BookmarkContext.Provider value={{ applyBookmark, saveBookmark: saveBookmark() }}>
             {children}

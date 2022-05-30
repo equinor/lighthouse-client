@@ -38,7 +38,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
     function handleFilter() {
         setIsFilterActive((s) => !s);
     }
-    const test = ({ bookmark }) => {
+    const pageManager = (bookmark: PowerBIBookmarkPayload) => {
         if (isDifferentPage(activePage, bookmark)) {
             const report = getReportByPage(
                 {
@@ -76,47 +76,8 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
     const handleApplyingBookmark = async ({ id: bookmarkId }: ApplyEventArgs) => {
         const bookmark = await handleApplyBookmark(bookmarkId);
 
-        if (isDifferentPage(activePage, bookmark)) {
-            const report = getReportByPage(
-                {
-                    pageId: bookmark?.mainPage,
-                    pageTitle: bookmark?.mainPageDisplayName,
-                },
-                reports
-            );
-            if (isDifferentReport(activeReport, report)) {
-                handleSetActivePage(
-                    {
-                        pageId: bookmark?.mainPage || '',
-                        pageTitle: bookmark?.mainPageDisplayName || '',
-                        default: true,
-                    },
-                    {
-                        bookmark: { state: bookmark.bookmarkState },
-                        defaultPage: bookmark.name,
-                    }
-                );
-                return;
-            } else {
-                handleSetActivePage({
-                    pageId: bookmark?.mainPage || '',
-                    pageTitle: bookmark?.mainPageDisplayName || '',
-                    default: true,
-                });
-                return bookmark;
-            }
-        } else {
-            // if same report & same page
-            return bookmark;
-        }
+        return pageManager(bookmark);
     };
-
-    useEffect(() => {
-        const { report, page } = getDefault(reports);
-        setActivePage(page);
-        setActiveReport(report);
-    }, [reports]);
-
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
@@ -124,10 +85,14 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
         if (bookmarkId) {
             (async () => {
                 const bookmarkPayload = await handleApplyBookmark(bookmarkId);
-                test({ bookmark: bookmarkPayload });
+                pageManager(bookmarkPayload);
             })();
+        } else {
+            const { report, page } = getDefault(reports);
+            setActivePage(page);
+            setActiveReport(report);
         }
-    }, []);
+    }, [reports, searchParams]);
 
     return (
         <Wrapper>
