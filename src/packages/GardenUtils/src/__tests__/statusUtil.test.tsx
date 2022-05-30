@@ -1,4 +1,4 @@
-import { statusColorMap } from '../statusUtils';
+import { statusColorMap } from '../utils/helpers';
 
 describe('Status util', () => {
     it('should return correct colors', () => {

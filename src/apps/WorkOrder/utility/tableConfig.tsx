@@ -1,7 +1,12 @@
 import { tokens } from '@equinor/eds-tokens';
+import { PROCOSYS_PROD_JC_BASE_URL, PROCOSYS_TEST_JC_BASE_URL } from '@equinor/GardenUtils';
+import { Cell } from 'react-table';
+import { isProduction } from '../../../Core/Client/Functions';
 import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
+import { AggregateCountTable, TextLinkCell } from '../components';
 import { WorkOrder } from '../Garden/models';
-import { getMatStatus, getMatStatusColor, getMccrStatusColor } from '../Garden/utility';
+import { getMatStatusColor, getMccrStatusColor } from '../Garden/utility';
+const url = isProduction() ? PROCOSYS_PROD_JC_BASE_URL : PROCOSYS_TEST_JC_BASE_URL;
 const hiddenColumns: (keyof WorkOrder)[] = [
     'siteCodes',
     'projectIdentifier',
@@ -32,13 +37,41 @@ const hiddenColumns: (keyof WorkOrder)[] = [
     'projectDescription',
     'date',
     'rowKey',
+    'workOrderNumber',
 ];
 export const tableConfig: TableOptions<WorkOrder> = {
     objectIdentifierKey: 'workOrderNumber',
     itemSize: 32,
     hiddenColumns,
+    customColumns: [
+        {
+            Header: 'Workorder',
+            id: 'customWorkOrderNumber',
+            accessor: (pkg) => pkg.workOrderNumber,
+            aggregate: 'count',
+            Aggregated: (table) => {
+                return (
+                    <>
+                        workorder <AggregateCountTable>({table.value})</AggregateCountTable>
+                    </>
+                );
+            },
+            width: 200,
+            Cell: (cell: Cell<WorkOrder>) => {
+                return cell.row.isGrouped ? (
+                    <>{cell.value}</>
+                ) : (
+                    <TextLinkCell
+                        cellContent={cell.row.original.workOrderNumber}
+                        url={`${url}/WorkOrders/WorkOrder#id=${cell.row.original.workOrderId}`}
+                    />
+                );
+            },
+        },
+    ],
+
     columnOrder: [
-        'workOrderNumber',
+        'customWorkOrderNumber',
         'description',
         'disciplineCode',
         'jobStatus',
@@ -56,11 +89,6 @@ export const tableConfig: TableOptions<WorkOrder> = {
         'mccrStatus',
     ] as (keyof WorkOrder)[],
     headers: [
-        {
-            key: 'workOrderNumber',
-            title: 'Workorder',
-            width: 200,
-        },
         {
             key: 'description',
             title: 'Description',
@@ -132,6 +160,7 @@ export const tableConfig: TableOptions<WorkOrder> = {
             width: 100,
         },
     ],
+
     customCellView: [
         {
             key: 'description',
