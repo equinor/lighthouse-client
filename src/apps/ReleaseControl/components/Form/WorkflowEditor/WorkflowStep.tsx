@@ -43,6 +43,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                             order={step.order}
                             stepIndex={0}
                             stepStatus={getCriteriaStatus(step.criterias[0], false)}
+                            hideOptions={true}
                         />
                     </CompletedCriteria>
                 ) : null

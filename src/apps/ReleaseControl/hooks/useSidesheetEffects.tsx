@@ -3,29 +3,23 @@ import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect } from 'react';
 import { MenuItem, SidesheetApi } from '@equinor/sidesheet';
-import { useReleaseControlContext } from './useReleaseControlContext';
 import { releaseControlMutationKeys } from '../queries/releaseControlMutationKeys';
 import { unVoidReleaseControl, voidReleaseControl } from '../api/releaseControl/Request';
 import { sideSheetEditModeAtom } from '../Atoms/editModeAtom';
 import { useReleaseControlMutation } from './useReleaseControlMutation';
-import { releaseControlQueries } from '../queries/queries';
-import { releaseControlContext } from '../Atoms/releaseControlAtom';
-import { useReleaseControlMutationWatcher } from './useReleaseControlMutationWatcher';
-import { useQuery } from 'react-query';
 import { ReleaseControl } from '../types/releaseControl';
+import { useReleaseControlContext } from './useReleaseControlContext';
 
 export function useSidesheetEffects(
     actions: SidesheetApi,
     toggleEditMode: () => void,
     releaseControl: ReleaseControl
 ): void {
-    const { baseQuery } = releaseControlQueries;
     const releaseControlId = releaseControl.id;
     const { canPatch, canVoid, canUnVoid, title, isVoided, id, sequenceNumber } =
         useReleaseControlContext((s) => ({ ...s.requestAccess, ...s.releaseControl }));
 
     const editMode = useAtom(sideSheetEditModeAtom);
-
     const { unvoidKey, voidKey } = releaseControlMutationKeys(releaseControl.id);
     const { mutate: voidRequestMutation } = useReleaseControlMutation(
         releaseControl.id,
@@ -81,22 +75,6 @@ export function useSidesheetEffects(
     useEffect(() => {
         actions.setMenuItems(makeMenuItems());
     }, [editMode, canVoid, canUnVoid, canPatch]);
-
-    useEffect(() => {
-        const { updateAtom } = releaseControlContext;
-        updateAtom({ releaseControl: releaseControl });
-    }, [releaseControl.id]);
-
-    useReleaseControlMutationWatcher(releaseControl.id);
-
-    useQuery({
-        ...baseQuery(releaseControl.id),
-        initialData: releaseControl,
-        onSuccess: (releaseControl) => {
-            const { updateAtom } = releaseControlContext;
-            updateAtom({ releaseControl });
-        },
-    });
 
     useEffect(() => {
         actions.setTitle(`RC${sequenceNumber} ${title}`);
