@@ -99,7 +99,7 @@ export function useSidesheetEffects(
     });
 
     useEffect(() => {
-        actions.setTitle(`${sequenceNumber} ${title}`);
+        actions.setTitle(`RC${sequenceNumber} ${title}`);
     }, [id]);
 
     /** Only run once */

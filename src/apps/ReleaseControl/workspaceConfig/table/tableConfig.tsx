@@ -35,32 +35,34 @@ export const tableConfig: TableOptions<ReleaseControl> = {
     ],
     customCellView: [
         {
+            key: 'sequenceNumber',
+            type: customCellView((rc) => <>{'RC' + rc.sequenceNumber}</>),
+        },
+        {
             key: 'plannedDueDate',
-            type: customCellView((req) => (
-                <>
-                    {req.plannedDueDate && new Date(req.plannedDueDate).toLocaleDateString('en-gb')}
-                </>
+            type: customCellView((rc) => (
+                <>{rc.plannedDueDate && new Date(rc.plannedDueDate).toLocaleDateString('en-gb')}</>
             )),
         },
         {
             key: 'workflowSteps',
-            type: customCellView((req) => <WorkflowCompact steps={req.workflowSteps} />),
+            type: customCellView((rc) => <WorkflowCompact steps={rc.workflowSteps} />),
         },
         {
             key: 'createdAtUtc',
-            type: customCellView((req) => (
-                <>{req.createdAtUtc && new Date(req.createdAtUtc).toLocaleDateString('en-gb')}</>
+            type: customCellView((rc) => (
+                <>{rc.createdAtUtc && new Date(rc.createdAtUtc).toLocaleDateString('en-gb')}</>
             )),
         },
         {
             key: 'modifiedAtUtc',
-            type: customCellView((req) => (
-                <>{req.modifiedAtUtc && new Date(req.modifiedAtUtc).toLocaleDateString('en-gb')}</>
+            type: customCellView((rc) => (
+                <>{rc.modifiedAtUtc && new Date(rc.modifiedAtUtc).toLocaleDateString('en-gb')}</>
             )),
         },
         {
             key: 'currentWorkflowStep',
-            type: customCellView((req) => <>{req?.currentWorkflowStep?.name}</>),
+            type: customCellView((rc) => <>{rc?.currentWorkflowStep?.name}</>),
         },
     ],
 };
