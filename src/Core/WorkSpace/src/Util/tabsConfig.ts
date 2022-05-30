@@ -2,9 +2,11 @@ import React from 'react';
 import { Analytics } from '../Icons/Analytics';
 import { Gantt } from '../Icons/Gantt';
 import { Garden } from '../Icons/Garden';
+import { HelpPageIcon } from '../Icons/Help';
 import { Table } from '../Icons/Table';
 import { Tree } from '../Icons/Tree';
 import { GardenTab } from '../Tabs/GardenTab';
+import { HelpPageTab } from '../Tabs/HelpPageTab';
 import { ListTab as TableTab } from '../Tabs/ListTab';
 import { PowerBiTab } from '../Tabs/PowerBiTab';
 import { TimelineTab } from '../Tabs/TimeLineTAb';
@@ -56,6 +58,12 @@ const tabsConfig: TabsConfigItem[] = [
         icon: Analytics,
         viewComponent: PowerBiTab,
     },
+    {
+        title: 'Help',
+        tabId: 'help',
+        icon: HelpPageIcon,
+        viewComponent: HelpPageTab,
+    },
 ];
 
 interface ActiveTabs {
@@ -71,6 +79,7 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
         timelineOptions,
         workflowEditorOptions,
         powerBiOptions,
+        helpPageOptions,
     }: WorkSpaceConfig<unknown>): ActiveTabs {
         const tabs = tabsConfig.filter((item) => {
             if (treeOptions && item.title === 'Tree') return true;
@@ -79,7 +88,7 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
             if (timelineOptions && item.title === 'Timeline') return true;
             if (workflowEditorOptions && item.title === 'Editor') return true;
             if (powerBiOptions && item.title === 'PowerBI') return true;
-            return false;
+            if (helpPageOptions && item.title === 'Help') return true;
         });
         return {
             tabs,
