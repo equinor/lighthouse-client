@@ -5,7 +5,6 @@ import { ScopeChangeCreateForm } from '../Components/DataCreator/DataCreatorWrap
 
 const creator = setupCreator({
     widgetId: 'changeCreator',
-    widgetType: 'creator',
     title: 'Scope change request',
     color: '#7B3A96',
     widget: ScopeChangeCreateForm,
