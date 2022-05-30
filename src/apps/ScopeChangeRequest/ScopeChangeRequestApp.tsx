@@ -7,6 +7,7 @@ import { forwardRef, useState, useRef, useEffect, useImperativeHandle } from 're
 import { useQuery } from 'react-query';
 import { GridContext } from '../../Core/WorkSpace/src/Tabs/GridTab';
 import { useOutsideClick } from '../../hooks/useOutsideClick';
+import { useDefaultAgGridEditorLogic } from '../../packages/AgGrid/hooks/useDefaultAgGridLogic';
 import { getScopeChangeById, patchScopeChange } from './api/ScopeChange/Request';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { scopeChangeQueries } from './keys/queries';
@@ -33,100 +34,100 @@ export function setup(appApi: ClientApi): void {
         .registerStatusItems(statusBarConfig)
         .registerFilterOptions(filterConfig)
         .registerIdResolver(idResolver)
-        .registerPrefetchQueries(prefetchQueriesOptions)
-        .registerGridOptions({
-            columns: [
-                {
-                    title: 'Id',
-                    valueFormatter: (s) => s.sequenceNumber,
-                    onClickOpensSidesheet: true,
-                },
-                {
-                    title: 'Title',
-                    valueFormatter: (s) => s.title,
-                    onClickOpensSidesheet: false,
-                    options: {
-                        cellEditor: TitleEditor,
-                        editable: true,
-                        valueSetter: (props) => {
-                            const context: GridContext = props.context;
-                            props.data.title = props.newValue;
-                            updateFieldAsync(
-                                { ...props.data, title: props.newValue },
-                                context,
-                                props.node
-                            );
-                            return true;
-                        },
-                    },
-                },
-                {
-                    title: 'Comment',
-                    valueFormatter: (s) => (s.hasComments ? 'Yes' : ''),
-                    onClickOpensSidesheet: false,
-                },
-                {
-                    title: 'Contr.',
-                    valueFormatter: (s) => (s.hasPendingContributions ? 'Yes' : ''),
-                    onClickOpensSidesheet: false,
-                },
-                {
-                    title: 'Phase',
-                    valueFormatter: (s) => s.phase,
-                    options: {
-                        editable: true,
-                        cellEditor: PhaseSelector,
-                        cellEditorPopup: true,
-                        valueSetter: (props) => {
-                            const context: GridContext = props.context;
-                            props.data.phase = props.newValue;
-                            updateFieldAsync(
-                                { ...props.data, phase: props.newValue },
-                                context,
-                                props.node
-                            );
-                            return true;
-                        },
-                    },
-                },
-                {
-                    title: 'Workflow',
-                    valueFormatter: (s) => s?.workflowSteps?.length,
-                    onClickOpensSidesheet: false,
-                    options: {
-                        cellRenderer: (props) => {
-                            const req: ScopeChangeRequest = props.data;
+        .registerPrefetchQueries(prefetchQueriesOptions);
+    // .registerGridOptions({
+    //     columns: [
+    //         {
+    //             title: 'Id',
+    //             valueFormatter: (s) => s.sequenceNumber,
+    //             onClickOpensSidesheet: true,
+    //         },
+    //         {
+    //             title: 'Title',
+    //             valueFormatter: (s) => s.title,
+    //             onClickOpensSidesheet: false,
+    //             options: {
+    //                 cellEditor: TitleEditor,
+    //                 editable: true,
+    //                 valueSetter: (props) => {
+    //                     const context: GridContext = props.context;
+    //                     props.data.title = props.newValue;
+    //                     updateFieldAsync(
+    //                         { ...props.data, title: props.newValue },
+    //                         context,
+    //                         props.node
+    //                     );
+    //                     return true;
+    //                 },
+    //             },
+    //         },
+    //         {
+    //             title: 'Comment',
+    //             valueFormatter: (s) => (s.hasComments ? 'Yes' : ''),
+    //             onClickOpensSidesheet: false,
+    //         },
+    //         {
+    //             title: 'Contr.',
+    //             valueFormatter: (s) => (s.hasPendingContributions ? 'Yes' : ''),
+    //             onClickOpensSidesheet: false,
+    //         },
+    //         {
+    //             title: 'Phase',
+    //             valueFormatter: (s) => s.phase,
+    //             options: {
+    //                 editable: true,
+    //                 cellEditor: PhaseSelector,
+    //                 cellEditorPopup: true,
+    //                 valueSetter: (props) => {
+    //                     const context: GridContext = props.context;
+    //                     props.data.phase = props.newValue;
+    //                     updateFieldAsync(
+    //                         { ...props.data, phase: props.newValue },
+    //                         context,
+    //                         props.node
+    //                     );
+    //                     return true;
+    //                 },
+    //             },
+    //         },
+    //         {
+    //             title: 'Workflow',
+    //             valueFormatter: (s) => s?.workflowSteps?.length,
+    //             onClickOpensSidesheet: false,
+    //             options: {
+    //                 cellRenderer: (props) => {
+    //                     const req: ScopeChangeRequest = props.data;
 
-                            return <WorkflowCompact steps={req?.workflowSteps ?? []} />;
-                        },
-                    },
-                },
-                {
-                    title: 'Current step',
-                    valueFormatter: (s) => s?.currentWorkflowStep?.name ?? '',
-                    onClickOpensSidesheet: false,
-                },
-                {
-                    title: 'Status',
-                    valueFormatter: (s) => s.workflowStatus,
-                    onClickOpensSidesheet: false,
-                },
-                {
-                    title: 'State',
-                    valueFormatter: (s) => (s.isVoided ? 'Voided' : s.state),
-                    onClickOpensSidesheet: false,
-                },
-                {
-                    title: 'Guesstimate mhrs',
-                    valueFormatter: (s) =>
-                        s.disciplineGuesstimates.reduce((acc, curr) => acc + curr.guesstimate, 0),
-                    options: {
-                        aggFunc: 'sum',
-                        enableValue: true,
-                    },
-                },
-            ],
-        });
+    //                     return <WorkflowCompact steps={req?.workflowSteps ?? []} />;
+    //                 },
+    //             },
+    //         },
+    //         {
+    //             title: 'Current step',
+    //             valueFormatter: (s) => s?.currentWorkflowStep?.name ?? '',
+    //             onClickOpensSidesheet: false,
+    //         },
+    //         {
+    //             title: 'Status',
+    //             valueFormatter: (s) => s.workflowStatus,
+    //             onClickOpensSidesheet: false,
+    //         },
+    //         {
+    //             title: 'State',
+    //             valueFormatter: (s) => (s.isVoided ? 'Voided' : s.state),
+    //             onClickOpensSidesheet: false,
+    //         },
+    //         {
+    //             title: 'Guesstimate mhrs',
+    //             valueFormatter: (s) =>
+    //                 s.disciplineGuesstimates.reduce((acc, curr) => acc + curr.guesstimate, 0),
+    //             options: {
+    //                 aggFunc: 'sum',
+    //                 enableValue: true,
+    //             },
+    //         },
+    //     ],
+    // });
 }
 
 const updateFieldAsync = async (
@@ -229,56 +230,3 @@ const RawPhaseSelector = (props: EditorProps, ref) => {
 };
 
 const PhaseSelector = forwardRef(RawPhaseSelector);
-
-interface DefaultGridEditorLogic<T> {
-    value: T | undefined;
-    setValue: (newVal: T | undefined) => void;
-    refInput: React.MutableRefObject<HTMLDivElement | null>;
-}
-
-export function useDefaultAgGridEditorLogic<T = (string | number) | undefined>(
-    inValue: T,
-    ref,
-    stopEditing: () => void
-): DefaultGridEditorLogic<T> {
-    const [value, setValue] = useState<T | undefined>(inValue);
-    const refInput = useRef<HTMLDivElement | null>(null);
-
-    //Press anywhere outside the text input to stop editing
-    useOutsideClick(refInput, stopEditing);
-
-    useEffect(() => {
-        // focus on the input
-        refInput.current && refInput.current.focus();
-    }, []);
-
-    /* Component Editor Lifecycle methods */
-    useImperativeHandle(ref, () => {
-        return {
-            // the final value to send to the grid, on completion of editing
-            getValue() {
-                // Send to api!
-                return value;
-            },
-
-            // Gets called once before editing starts, to give editor a chance to
-            // cancel the editing before it even starts.
-            isCancelBeforeStart() {
-                //Could possibly do access check here
-                return false;
-            },
-
-            // Gets called once when editing is finished (eg if Enter is pressed).
-            // If you return true, then the result of the edit will be ignored.
-            isCancelAfterEnd() {
-                return false;
-            },
-        };
-    });
-
-    return {
-        value: value,
-        setValue: (newVal: T | undefined) => setValue(newVal),
-        refInput: refInput,
-    };
-}

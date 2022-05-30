@@ -186,11 +186,11 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
 
             return workspaceAPI;
         },
-        registerGridOptions(gridOptions: GridConfig<T>) {
-            updateState({ gridOptions: prepareGridOptions(gridOptions, onSelect) });
+        // registerGridOptions(gridOptions: GridConfig<T>) {
+        //     updateState({ gridOptions: prepareGridOptions(gridOptions, onSelect) });
 
-            return workspaceAPI;
-        },
+        //     return workspaceAPI;
+        // },
     };
 
     return workspaceAPI;
