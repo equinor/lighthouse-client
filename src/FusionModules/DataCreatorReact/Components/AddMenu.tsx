@@ -1,6 +1,5 @@
 import { Menu } from '@equinor/eds-core-react';
-import { isAppActive, useRegistry } from '@equinor/lighthouse-portal-client';
-import { useFactories } from '../Hooks/useFactories';
+import { useDataCreator } from '../Hooks/useCreator';
 import { AddMenuButton } from './AddMenuButton';
 
 interface AddMenuProps {
@@ -18,13 +17,10 @@ export function AddMenu({
     handleClose,
     onMouseEnter,
 }: AddMenuProps): JSX.Element | null {
-    const { factories } = useFactories(factoryId);
-    const { apps } = useRegistry();
+    const { creators } = useDataCreator(factoryId);
 
-    if (!isOpen) return null;
-    const activeApps = apps
-        .filter((manifest) => isAppActive(manifest))
-        .map(({ shortName }) => shortName);
+    if (!isOpen || creators.length === 0) return null;
+
     return (
         <Menu
             anchorEl={anchorEl}
@@ -32,11 +28,9 @@ export function AddMenu({
             onMouseLeave={handleClose}
             onMouseEnter={onMouseEnter}
         >
-            {factories
-                .filter(({ factoryId }) => activeApps.includes(factoryId))
-                .map((factory) => (
-                    <AddMenuButton key={factory.factoryId} factory={factory} />
-                ))}
+            {creators.map((creator) => (
+                <AddMenuButton key={creator.widgetId} creator={creator} />
+            ))}
         </Menu>
     );
 }
