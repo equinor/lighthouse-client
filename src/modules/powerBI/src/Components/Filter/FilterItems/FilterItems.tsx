@@ -1,8 +1,7 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
-import { PowerBiFilter, PowerBiFilterItem } from '../../../Types';
-import { getActiveFilterGroupArray } from '../../../Utils';
+import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../../Types';
 import { Header } from '../Header';
 import { Item } from './Item';
 import { searchFilterItems } from './searchFilterItems';
@@ -20,7 +19,7 @@ type FilterItemsProps = {
         filter: PowerBiFilterItem,
         allVisibleFilterValues: string[]
     ) => Promise<void>;
-    activeFilters: Record<string, (string | number | boolean)[]>;
+    activeFilters: Record<string, ActiveFilter[]>;
     group: PowerBiFilter;
 };
 
@@ -39,7 +38,15 @@ export const FilterItems = ({
     const filterValues = Object.values(group.value);
     const searchedFilterItems = useMemo(
         () => searchFilterItems(filterValues, searchValue),
-        [searchFilterItems, filterValues, searchValue]
+        [filterValues, searchValue]
+    );
+    const allSearchedFilterValues = searchedFilterItems.map((x) => x.value);
+    const checked = useMemo(
+        () =>
+            allSearchedFilterValues.every((visibleFilterValue) =>
+                activeFilters[group.type]?.includes(visibleFilterValue)
+            ),
+        [allSearchedFilterValues.length, activeFilters, group.type]
     );
     const rowLength = useMemo(() => searchedFilterItems.length, [searchedFilterItems]);
     const rowVirtualizer = useVirtual({
@@ -50,7 +57,6 @@ export const FilterItems = ({
     if (!filterGroupVisible) return null;
 
     if (filterGroupVisible.includes(group.type)) {
-        const allSearchedFilterValues = searchedFilterItems.map((x) => x.value);
         return (
             <FilterGroupContainer>
                 <Header title={group.type} onSearch={handleOnSearchChange} />
@@ -59,9 +65,7 @@ export const FilterItems = ({
                         onChange={async () =>
                             await handleOnSelectAll(group, filterValues[0], allSearchedFilterValues)
                         }
-                        checked={allSearchedFilterValues.every((visibleFilterValue) =>
-                            activeFilters[group.type]?.includes(visibleFilterValue)
-                        )}
+                        checked={checked}
                         label="Select all"
                     />
                     <VirtualFilterItemWrapper style={{ height: `${rowVirtualizer.totalSize}px` }}>

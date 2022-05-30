@@ -15,8 +15,9 @@ const workflowStatusMap = new Map([
 
 export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
     gardenKey: 'state',
+    objectIdentifier: 'id',
     itemKey: 'sequenceNumber',
-    type: 'normal',
+    customDescription: ({ title }) => title,
     fieldSettings: {
         CurrentStep: {
             getKey: ({ currentWorkflowStep }) => currentWorkflowStep?.name ?? '(Blank)',

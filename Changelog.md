@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.4.0
+- [Workspace] Highlight active item in garden and table
+- [Scope change] Garden config
+- [Scope change] Bugfixes
+- [Assignments] Bugfix
+- [PowerBI] Fix filter limitation with using basic filter
+- [PowerBI] Fix rerender on filter group when filter item checked/unchecked
+- [GardenUtils] Fix popover that is stuck when page rerenders
+- [Workspace] Use shortname for bookmarks when saving
+- [PipingAndHeatTrace] Remove double slash from base url
 
 ## 1.3.1
 - [Scopechange] Form bugfixes

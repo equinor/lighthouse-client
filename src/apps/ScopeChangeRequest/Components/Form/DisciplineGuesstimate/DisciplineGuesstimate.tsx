@@ -24,10 +24,7 @@ const Guesstimate = styled.div`
 
 export const GuesstimateDiscipline = (): JSX.Element => {
     const { useAtomState, updateAtom } = scopeChangeFormAtomApi;
-    const guesstimates = useAtomState(
-        ({ disciplineGuesstimates }) =>
-            disciplineGuesstimates ?? [{ disciplineCode: '', guesstimateHours: 0 }]
-    );
+    const guesstimates = useAtomState(({ disciplineGuesstimates }) => disciplineGuesstimates ?? []);
 
     const appendGuesstimate = () =>
         updateAtom({

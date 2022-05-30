@@ -70,6 +70,9 @@ export function useSidesheetEffects(
 
     useEffect(() => {
         actions.setMenuItems(makeMenuItems());
+        return () => {
+            actions.setMenuItems([]);
+        };
     }, [editMode, canVoid, canUnVoid, canPatch]);
 
     useEffect(() => {

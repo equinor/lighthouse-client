@@ -1,4 +1,7 @@
+import { createAtom } from '@equinor/atom';
+import { EventHub } from '@equinor/lighthouse-utils';
 import { openSidesheet, useSideSheet } from '@equinor/sidesheet';
+import { TableAPI } from '@equinor/Table';
 import {
     createContext,
     PropsWithChildren,
@@ -9,6 +12,8 @@ import {
     useState,
 } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
+import { SidesheetEvents } from '../../../../packages/Sidesheet/Types/sidesheetEvents';
 import { Fallback } from '../Components/FallbackSidesheet/Fallback';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
@@ -112,6 +117,30 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         }
     }, []);
 
+    // useClearSelectedOnSidesheetClose();
+
+    useEffect(() => {
+        const ev = new EventHub();
+
+        const onClose = ev.registerListener(SidesheetEvents.SidesheetClosed, () => {
+            const {
+                garden,
+                table: { getApi: getTableApi },
+            } = tabApis.readAtomValue();
+
+            if (typeof getTableApi === 'function') {
+                getTableApi()?.setSelectedRowId(() => null);
+            }
+
+            if (Object.keys(garden).length === 0) return;
+            garden?.mutations?.setSelectedItem(() => null);
+        });
+
+        return () => {
+            onClose();
+        };
+    }, []);
+
     return (
         <Context.Provider
             value={{
@@ -127,3 +156,12 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
 export function useLocationContext(): LocationContext {
     return useContext(Context);
 }
+
+interface TabApi {
+    ['garden']: GardenApi;
+    ['table']: {
+        getApi: (() => TableAPI) | null;
+    };
+}
+
+export const tabApis = createAtom<TabApi>({ table: {}, garden: {} } as TabApi);
