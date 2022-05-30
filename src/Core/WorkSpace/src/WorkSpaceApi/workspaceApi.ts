@@ -1,5 +1,5 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { GardenOptions } from '@equinor/ParkView';
+import { DataSet, GardenOptions } from '@equinor/ParkView';
 import { dispatch } from './CoreActions';
 import {
     getWorkSpaceContext,
@@ -126,11 +126,12 @@ export function createWorkSpace<T, SideSheetIds extends string>(
             return workspaceAPI;
         },
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
-            const onGroupeSelect = (item: unknown) => {
+            const onGroupeSelect = (item: DataSet<unknown>): string => {
                 options.openSidesheet<any>(options.customGroupeSidesheet?.component, item, {
                     ...options.customGroupeSidesheet,
                     widgetId: options.customGroupeSidesheet?.id,
                 });
+                return item.value;
             };
 
             updateState({
