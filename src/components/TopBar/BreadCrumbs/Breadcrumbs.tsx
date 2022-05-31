@@ -1,6 +1,6 @@
 import { Breadcrumbs } from '@equinor/eds-core-react';
-import { useCallback } from 'react';
-import { useLocation } from 'react-router';
+import { Fragment, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 import { readClientRegistry } from '../../../Core/Client/Functions';
@@ -19,23 +19,31 @@ export const LocationBreadCrumbs = (): JSX.Element => {
         const appName = clientRegistry.apps.find((s) => s.shortName === paths[1])?.title;
         const tab = paths[2];
 
-        const crumbs: string[] = [];
-        if (groupName) crumbs.push(groupName);
-        if (appName) crumbs.push(appName);
-        if (tab) crumbs.push(tab[0].toUpperCase() + tab.substring(1));
+        const crumbs: Crumb[] = [];
+        if (groupName) crumbs.push({ displayName: groupName, pathName: paths[0] });
+        if (appName) crumbs.push({ displayName: appName, pathName: `${paths[0]}/${paths[1]}` });
+        if (tab)
+            crumbs.push({
+                displayName: tab[0].toUpperCase() + tab.substring(1),
+                pathName: location.pathname,
+            });
 
         return crumbs;
     }, [location]);
 
+    const navigate = useNavigate();
+
     return (
         <>
-            {createBreadCrumbs().map((s) => (
-                <>
+            {createBreadCrumbs().map(({ displayName, pathName }, i) => (
+                <Fragment key={pathName}>
                     <BreadcrumbStyle>/</BreadcrumbStyle>
-                    <Breadcrumbs key={s}>
-                        <BreadcrumbStyle>{s}</BreadcrumbStyle>
+                    <Breadcrumbs>
+                        <BreadcrumbStyle onClick={() => navigate(pathName)}>
+                            {displayName}
+                        </BreadcrumbStyle>
                     </Breadcrumbs>
-                </>
+                </Fragment>
             ))}
         </>
     );
@@ -47,4 +55,10 @@ const BreadcrumbStyle = styled.div`
     font-weight: 500;
     line-height: 16px;
     text-align: left;
+    cursor: pointer;
 `;
+
+interface Crumb {
+    pathName: string;
+    displayName: string;
+}
