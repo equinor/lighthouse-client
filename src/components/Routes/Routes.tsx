@@ -49,7 +49,6 @@ export function ClientRoutes(): JSX.Element {
                         hasSidesheet: true,
                         isProduction,
                     };
-                    console.log('api props', api);
                     return (
                         <Route
                             key={route.shortName + route.groupe}
