@@ -13,9 +13,7 @@ export const dataSource: DataSource<ScopeChangeRequest> = {
     responseAsync,
 };
 
-export const idResolver: IdResolverFunc<ScopeChangeRequest> = {
-    idResolver: idResolverFunction,
-};
+export const idResolver: IdResolverFunc<ScopeChangeRequest> = idResolverFunction;
 
 async function idResolverFunction(id: string): Promise<ScopeChangeRequest> {
     const { scopeChange } = httpClient();

@@ -1,4 +1,4 @@
-import { PowerBI } from '../../../../modules/powerBI';
+import { PowerBI } from '@equinor/lighthouse-powerbi';
 import { DashboardPage } from '../../../Dashboard/Components/DashboardPage/DashboardPage';
 import { PageConfig, ViewState } from '../../Types/State';
 import { Page, PageWrapper } from './PageViewerPagesStyles';
