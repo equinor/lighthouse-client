@@ -6,7 +6,6 @@ import { useRef, useState } from 'react';
 import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
 import Icon from '../Icon/Icon';
 import { useMenuContext } from '../Menu';
-import { LocationBreadCrumbs } from './BreadCrumbs/Breadcrumbs';
 import { DevBar } from './DevBar/DevBar';
 import { HelpIcon } from './Icons/Help';
 import Logo from './Logo/Logo';
@@ -35,7 +34,6 @@ const ClientTopBar = (): JSX.Element => {
                     <Icon color={tokens.colors.interactive.primary__resting.hex} name="menu" />
                 </div>
                 <Logo />
-                <LocationBreadCrumbs />
             </Header>
             <TopBar.CustomContent>
                 <DevBar env={clientEnv} />

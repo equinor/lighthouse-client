@@ -121,11 +121,6 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
                     ? '2'
                     : '3',
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
-                c01Forecast: '',
-                c01Planned: '',
-                m03Forecast: '',
-                m03Planned: '',
-                m04Actual: '',
             };
             workflowSteps.push(workflowStep);
         } else if (boxInsulationStep) {
@@ -140,11 +135,6 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
                 test: '',
                 workflowStepText: 'ZB',
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
-                c01Forecast: '',
-                c01Planned: '',
-                m03Forecast: '',
-                m03Planned: '',
-                m04Actual: '',
             };
             workflowSteps.push(workflowStep);
         } else {
@@ -166,11 +156,6 @@ export function createChecklistSteps(pipetest: Pipetest): CheckList[] {
                         ? '3'
                         : allWorkflowSteps[i].substring(1, 2),
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
-                c01Forecast: '',
-                c01Planned: '',
-                m03Forecast: '',
-                m03Planned: '',
-                m04Actual: '',
             });
         }
     }
