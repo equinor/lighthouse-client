@@ -1,8 +1,17 @@
 import { createAtom, DefaultAtomAPI } from '@equinor/atom';
 import { useState } from 'react';
 import { TypedSelectOption } from '../../ScopeChangeRequest/api/Search/searchType';
+import { ProcoSysTypes } from '../types/PCS/ProCoSysTypes';
+import { StidTypes } from '../types/PCS/STIDTypes';
 import { CreateReleaseControlStepModel } from '../types/releaseControl';
 
+interface ReleaseControlReferences {
+    tagNumbers: string[];
+    commissioningPackageNumbers: string[];
+    systemIds: number[];
+    areaCodes: string[];
+    documentNumbers: string[];
+}
 export interface DRCCreateModel {
     id?: string;
     title?: string;
@@ -22,12 +31,14 @@ export interface DRCCreateModel {
 export type DRCFormModel = Partial<DRCCreateModel>;
 
 interface FormAtomApi extends DefaultAtomAPI<DRCFormModel> {
+    unPackReferences: () => ReleaseControlReferences;
     useIsValid: () => boolean;
     clearState: () => void;
     prepareRequest: () => DRCFormModel;
 }
 
 export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) => ({
+    unPackReferences: () => unPackReferences(api),
     useIsValid: () => useIsValid(api),
     prepareRequest: () => prepareRequest(),
     clearState: () =>
@@ -60,15 +71,31 @@ function checkString(value?: string) {
     return !value || value.length <= 0;
 }
 
+function unPackReferences(api: DefaultAtomAPI<DRCFormModel>): ReleaseControlReferences {
+    const references = api.readAtomValue().references ?? [];
+
+    return {
+        areaCodes: unpackByType(references, 'area'),
+        commissioningPackageNumbers: unpackByType(references, 'commpkg'),
+        documentNumbers: unpackByType(references, 'document'),
+        systemIds: unpackByType(references, 'system') as unknown as number[],
+        tagNumbers: unpackByType(references, 'tag'),
+    };
+}
+
+function unpackByType(
+    list: TypedSelectOption[],
+    referenceType: ProcoSysTypes | StidTypes
+): string[] {
+    return list.filter(({ type }) => type === referenceType).map(({ value }) => value);
+}
+
 function prepareRequest(): DRCFormModel {
-    const { readAtomValue } = DRCFormAtomApi;
+    const { readAtomValue, unPackReferences } = DRCFormAtomApi;
 
     const newReq: DRCCreateModel = {
         ...readAtomValue(),
-        areaCodes: [],
-        commissioningPackageNumbers: [],
-        systemIds: [],
-        documentNumbers: [],
+        ...unPackReferences(),
     };
     return newReq as DRCFormModel;
 }

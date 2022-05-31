@@ -104,13 +104,13 @@ export interface CriteriaTemplate {
     value?: string;
 }
 
-export interface Tag {
+export interface ReleaseControlTag {
     id: string;
     procosysId: number;
     procosysNumber: string;
 }
 
-export interface Area {
+export interface ReleaseControlArea {
     id: string;
     procosysId: number;
     procosysCode: string;
