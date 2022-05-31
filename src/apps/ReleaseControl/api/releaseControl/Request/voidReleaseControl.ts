@@ -26,7 +26,7 @@ export async function unVoidReleaseControl({ releaseControlId }: VoidParams): Pr
         method: 'PATCH',
     };
     const res = await scopeChange.fetch(
-        `api/releasecontrols/${releaseControlId}/unvoid`,
+        `api/releasecontrol/${releaseControlId}/unvoid`,
         requestOptions
     );
 
