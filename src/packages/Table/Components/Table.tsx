@@ -179,9 +179,7 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
                             {cell.isGrouped ? (
                                 <GroupCell row={row} cell={cell} />
                             ) : cell.isAggregated &&
-                              cell.value ? // If the cell is aggregated, use the Aggregated
-                            // renderer for cell
-                            null : cell.isPlaceholder ? null : (
+                              cell.value ? null : cell.isPlaceholder ? null : ( // If the cell is aggregated, blank field expect the grouped one
                                 // For cells with repeated values, render null
                                 // Otherwise, just render the regular cell
                                 cell.render('Cell')
