@@ -11,10 +11,11 @@ import {
     ReleaseControlSidesheetWidgetManifest
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
+import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
     releaseCreatorComponent,
     releaseCreatorManifest
-} from './ReleaseControl/ReleaseControlApp';
+} from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
 import {
     changeSideSheetWidgetComponent,
     changeSideSheetWidgetManifest
@@ -26,14 +27,13 @@ import {
 import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
 import { workOrderCreatorComponent, workOrderCreatorManifest } from './WorkOrder';
 
-
 const _widgets: WidgetManifest[] = [
     changeSideSheetWidgetManifest,
     htSidesheetWidgetManifest,
     ReleaseControlSidesheetWidgetManifest,
     actionCenterSidesheetWidgetManifest,
     changeCreatorManifest,
-    releaseCreatorManifest,
+    releaseManifest,
     swcrCreatorManifest,
     handoverCreatorManifest,
     workOrderCreatorManifest,
@@ -46,7 +46,7 @@ const _widgetComponents: ComponentManifest[] = [
     ReleaseControlSidesheetWidgetComponent,
     actionCenterSidesheetWidgetComponent,
     changeCreatorComponent,
-    releaseCreatorComponent,
+    releaseComponent,
     swcrCreatorComponent,
     handoverCreatorComponent,
     workOrderCreatorComponent,

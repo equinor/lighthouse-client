@@ -8,7 +8,7 @@ const creator = setupCreator({
     color: '#7B3A96',
     widget: DisciplineReleaseControlFactoryComponent,
     props: {
-        accessCheckFunctionId: 'htCreatorAccess',
+        accessCheckFunctionId: 'releaseCreatorAccess',
         parentApp: 'release',
         function: async () => Promise.resolve(false),
     },

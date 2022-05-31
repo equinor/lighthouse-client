@@ -16,8 +16,8 @@ const creator = setupWorkspaceSidesheet<ReleaseControl, 'releaseDetails'>({
     },
 });
 
-export const releaseCreatorManifest = creator('SidesheetManifest');
-export const releaseCreatorComponent = creator('SidesheetComponentManifest');
+export const releaseManifest = creator('SidesheetManifest');
+export const releaseComponent = creator('SidesheetComponentManifest');
 export const releaseResolverFunction = creator('ResolverFunction');
 
 export function setup({ createWorkSpace }: ClientApi): void {

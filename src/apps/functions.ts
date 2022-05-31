@@ -12,7 +12,6 @@ import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfi
 import { swcrResolverFunction } from './swcr';
 import { workOrderResolverFunction } from './WorkOrder';
 
-
 export const functions: FunctionManifest[] = [
     changeCreatorAccessFunction,
     releaseCreatorAccessFunction,
