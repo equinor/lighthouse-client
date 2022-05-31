@@ -1,6 +1,7 @@
 import { ApplyEventArgs, useBookmarks } from '@equinor/BookmarksManager';
 import { PBIOptions, PowerBI, PowerBIBookmarkPayload } from '@equinor/lighthouse-powerbi';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { usePowerBiViewer } from './Api/powerBiViewerState';
 import { PowerBiViewerHeader } from './Components/PowerBiViewerHeader/PowerBiViewerHeader';
 import { ContentWrapper, Wrapper } from './PowerBiViewerStyles';
@@ -37,10 +38,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
     function handleFilter() {
         setIsFilterActive((s) => !s);
     }
-
-    const handleApplyingBookmark = async ({ id: bookmarkId }: ApplyEventArgs) => {
-        const bookmark = await handleApplyBookmark(bookmarkId);
-
+    const pageManager = (bookmark: PowerBIBookmarkPayload) => {
         if (isDifferentPage(activePage, bookmark)) {
             const report = getReportByPage(
                 {
@@ -75,12 +73,26 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
             return bookmark;
         }
     };
+    const handleApplyingBookmark = async ({ id: bookmarkId }: ApplyEventArgs) => {
+        const bookmark = await handleApplyBookmark(bookmarkId);
+
+        return pageManager(bookmark);
+    };
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
-        const { report, page } = getDefault(reports);
-        setActivePage(page);
-        setActiveReport(report);
-    }, [reports]);
+        const bookmarkId = searchParams.get('bookmarkId');
+        if (bookmarkId) {
+            (async () => {
+                const bookmarkPayload = await handleApplyBookmark(bookmarkId);
+                pageManager(bookmarkPayload);
+            })();
+        } else {
+            const { report, page } = getDefault(reports);
+            setActivePage(page);
+            setActiveReport(report);
+        }
+    }, [reports, searchParams]);
 
     return (
         <Wrapper>

@@ -1,7 +1,9 @@
+import { BookmarkSidesheet } from '@equinor/BookmarksManager';
 import { AddMenu } from '@equinor/DataFactory';
 import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useClientContext } from '@equinor/lighthouse-portal-client';
+import { openSidesheet } from '@equinor/sidesheet';
 import { useRef, useState } from 'react';
 import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
 import Icon from '../Icon/Icon';
@@ -86,6 +88,13 @@ const ClientTopBar = (): JSX.Element => {
                         }}
                     >
                         <Icon name="search" />
+                    </Action>
+                    <Action
+                        onClick={() => {
+                            openSidesheet(BookmarkSidesheet);
+                        }}
+                    >
+                        <Icon name="bookmarks" />
                     </Action>
                 </Icons>
             </TopBar.Actions>
