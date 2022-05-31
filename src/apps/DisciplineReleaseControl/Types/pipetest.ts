@@ -19,6 +19,8 @@ export interface Pipetest {
     overdue: string;
     dueDateTimePeriod: string;
     location: string;
+    lineNos: string[];
+    mcPkgId: string;
 }
 
 export interface CheckList {
@@ -32,6 +34,11 @@ export interface CheckList {
     isHeatTrace: boolean;
     workflowStepText: string | undefined;
     stepName: string;
+    c01Planned: string;
+    c01Forecast: string;
+    m03Planned: string;
+    m03Forecast: string;
+    m04Actual: string;
 }
 
 export interface InsulationBox {
