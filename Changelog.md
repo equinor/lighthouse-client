@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.4.1
+- [PipingAndHeatTrace] Null-check bug fix. Updated app after FAM update.
+- [Portal] Add version to banner
+- [Portal] Navigation breadcrumbs
+
 ## 1.4.0
 - [Workspace] Highlight active item in garden and table
 - [Scope change] Garden config
