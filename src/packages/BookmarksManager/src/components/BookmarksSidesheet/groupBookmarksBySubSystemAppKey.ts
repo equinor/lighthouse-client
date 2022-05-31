@@ -10,19 +10,6 @@ export const groupBookmarksBySubSystemAppkey = (bookmarks: BookmarkResponse[]) =
                 : [curr],
         };
 
-        // acc[curr.sourceSystem.subSystem] = acc[curr.sourceSystem.subSystem]
-        //     ? {
-        //           ...acc[curr.sourceSystem.subSystem],
-        //           [curr.appKey]: acc[curr.sourceSystem.subSystem]?.[curr.appKey]
-        //               ? [...acc[curr.sourceSystem.subSystem][curr.appKey], curr]
-        //               : [curr],
-        //       }
-        //     : {
-        //           [curr.appKey]: acc[curr.sourceSystem.subSystem]?.[curr.appKey]
-        //               ? [...acc[curr.sourceSystem.subSystem][curr.appKey], curr]
-        //               : [curr],
-        //       };
-
         return acc;
     }, {} as BookmarksBySubSystemAppKey);
 
