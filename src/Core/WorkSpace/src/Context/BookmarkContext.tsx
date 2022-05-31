@@ -14,7 +14,6 @@ import { useViewerContext } from './ViewProvider';
 import { isWorkspaceBookmark } from '../Util/bookmarks/helpers';
 import { gardenApiAtom } from '../Util/bookmarks/gardenBookmarks';
 import { useSearchParams } from 'react-router-dom';
-import { useLocation } from 'react-router';
 
 type Context<T> = {
     applyBookmark: (args: ApplyEventArgs) => Promise<ApplyBookmark<T>>;
@@ -30,6 +29,8 @@ type BookmarkContextWrapperProps = {};
 export const BookmarkContextWrapper = ({
     children,
 }: PropsWithChildren<BookmarkContextWrapperProps>): JSX.Element => {
+    const [searchParams] = useSearchParams();
+
     const {
         filterState: { getFilterState },
         operations: { setFilterState },
@@ -121,13 +122,9 @@ export const BookmarkContextWrapper = ({
             return handleWorkspaceSave;
         }
     };
-    const [searchParams] = useSearchParams();
-    const location = useLocation();
     useEffect(() => {
-        console.log(searchParams.get('a'));
         const bookmarkId = searchParams.get('bookmarkId');
         if (bookmarkId) {
-            debugger;
             (async () => {
                 const bookmark = await handleApplyBookmark(bookmarkId);
                 if (isWorkspaceBookmark(bookmark)) {
@@ -137,7 +134,6 @@ export const BookmarkContextWrapper = ({
                 }
             })();
         }
-        console.log(location);
     }, [searchParams]);
     return (
         <BookmarkContext.Provider value={{ applyBookmark, saveBookmark: saveBookmark() }}>
