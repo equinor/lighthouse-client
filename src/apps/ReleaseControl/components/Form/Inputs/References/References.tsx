@@ -3,7 +3,14 @@ import { SearchReferences } from '../../../../../ScopeChangeRequest/Components/S
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 
 const { updateAtom, useAtomState } = DRCFormAtomApi;
+
+let tags: string[] = [];
 const updateReferences = (newVals: TypedSelectOption[]) => {
+    tags = [];
+    newVals.forEach((x) => {
+        tags.push(x.value);
+    });
+    updateAtom({ tagNumbers: tags });
     updateAtom({ references: newVals });
 };
 

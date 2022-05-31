@@ -10,7 +10,7 @@ export interface DRCCreateModel {
     plannedDueDate?: string;
     phase?: string;
     allowContributors?: boolean;
-    tagNumbers: string[];
+    tagNumbers?: string[];
     commissioningPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
@@ -66,7 +66,6 @@ function prepareRequest(): DRCFormModel {
     const newReq: DRCCreateModel = {
         ...readAtomValue(),
         areaCodes: [],
-        tagNumbers: [],
         commissioningPackageNumbers: [],
         systemIds: [],
         documentNumbers: [],

@@ -92,6 +92,7 @@ export interface CreateReleaseControlStepModel {
     rejectedStatusName?: string;
     isCompleted?: boolean;
     isCurrent?: boolean;
+    tagNumbers?: string[];
     criteriaTemplates: CriteriaTemplate[];
     criterias?: Criteria[];
 }
