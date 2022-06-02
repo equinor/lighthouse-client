@@ -149,7 +149,7 @@ export const CompletionViewHeader = ({
                         })}
                     </>
                     <Divider />
-                    {/* <SearchButton /> */}
+                    <SearchButton />
 
                     <TabButton
                         color={

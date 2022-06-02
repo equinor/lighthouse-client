@@ -1,6 +1,6 @@
 import { Search } from '@equinor/eds-core-react';
-import { useTimeoutWithCancel } from '@equinor/hooks';
-import { useMemo, useState } from 'react';
+import { useOutsideClick, useTimeoutWithCancel } from '@equinor/hooks';
+import { Fragment, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { IconMenu, MenuItem } from '../../../../../components/OverlayMenu/src';
 import { ClickableIcon } from '../../../../../packages/Components/Icon';
@@ -11,19 +11,23 @@ import { TabButton } from '../ToggleButton';
 
 /** Search button for searching data in workspace */
 export function SearchButton(): JSX.Element {
-    const [selectedSearchItem, setSelectedSearchItem] = useState<string | undefined>();
+    const selectedSearchItem = useRef<string>();
+    const [isOpen, setIsOpen] = useState(false);
     const [searchText, setSearchText] = useState<string>('');
     const { searchOptions = [] } = useWorkSpace();
     const {
         search: { clearSearch, search },
     } = useFilterApiContext();
+
     const run = useTimeoutWithCancel();
 
     function doSearch(value: string) {
         if (value === '') {
             clearSearch();
         } else {
-            const valueFormatter = searchOptions.find(({ name }) => name === selectedSearchItem);
+            const valueFormatter = searchOptions.find(
+                ({ name }) => name === selectedSearchItem.current
+            );
             if (!valueFormatter) return;
             search(value, [valueFormatter], 'Data', 'includes');
         }
@@ -50,7 +54,10 @@ export function SearchButton(): JSX.Element {
             searchOptions.map(
                 ({ name }): MenuItem => ({
                     label: name,
-                    onClick: () => setSelectedSearchItem(name),
+                    onClick: () => {
+                        selectedSearchItem.current = name;
+                        setIsOpen(true);
+                    },
                 })
             ),
         [searchOptions]
@@ -63,28 +70,14 @@ export function SearchButton(): JSX.Element {
     }
 
     return (
-        <>
-            {selectedSearchItem && (
-                <TabButton aria-selected={isSelected} style={{ overflow: 'hidden' }} width="20px">
-                    <div style={{ width: '24px' }}>
-                        <ClickableIcon
-                            name="chevron_right"
-                            size={24}
-                            onClick={() => {
-                                setSelectedSearchItem(undefined);
-                                clearSearch();
-                            }}
-                        />
-                    </div>
-                </TabButton>
-            )}
+        <TestWrapper>
             <TabButton aria-selected={isSelected} width="auto" style={{ overflow: 'hidden' }}>
                 <SearchWrapper>
-                    {selectedSearchItem ? (
+                    {selectedSearchItem.current && isOpen ? (
                         <SearchInput>
                             <Search
                                 onChange={handleClear}
-                                placeholder={`Search in ${selectedSearchItem}`}
+                                placeholder={`Search in ${selectedSearchItem.current}`}
                                 onInput={handleInput}
                                 value={searchText}
                                 onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
@@ -93,7 +86,10 @@ export function SearchButton(): JSX.Element {
                     ) : (
                         <ClickableIcon
                             name="search"
-                            onClick={() => setSelectedSearchItem(searchOptions[0].name)}
+                            onClick={() => {
+                                selectedSearchItem.current = searchOptions[0].name;
+                                setIsOpen(true);
+                            }}
                         />
                     )}
                 </SearchWrapper>
@@ -102,9 +98,15 @@ export function SearchButton(): JSX.Element {
                 <IconMenu items={availableSearchItems} iconName="chevron_down" placement="bottom" />
             </TabButton>
             <Divider />
-        </>
+        </TestWrapper>
     );
 }
+
+const TestWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    height: 48px;
+`;
 
 const SearchInput = styled.div`
     display: flex;
