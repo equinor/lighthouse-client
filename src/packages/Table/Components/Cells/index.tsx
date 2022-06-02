@@ -7,3 +7,4 @@ export * from './ArrayCell';
 export * from './RelativeDateCell';
 export * from './NumberCell';
 export * from './YearWeekCell';
+export * from './Databars';
