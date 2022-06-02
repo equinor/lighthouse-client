@@ -4,7 +4,7 @@ import { getFunctionalRoles } from '../api/releaseControl/PCS/getFunctionalRoles
 import { getTagById } from '../api/releaseControl/PCS/getTagById';
 import { CacheTime } from '../Enums/cacheTimes';
 
-export const ProCoSysBaseKey = ['ProCoSys'];
+export const ProCoSysBaseKey = ['ProCoSysReleaseControl'];
 
 type Options = Pick<UseQueryOptions, 'staleTime' | 'cacheTime' | 'queryFn' | 'queryKey'>;
 

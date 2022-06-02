@@ -66,6 +66,7 @@ export const ReleaseControlEditForm = (): JSX.Element => {
                                                     name: '',
                                                     allowContributors: true,
                                                     criteriaTemplates: [],
+                                                    criterias: [],
                                                 },
                                                 steps
                                             ),

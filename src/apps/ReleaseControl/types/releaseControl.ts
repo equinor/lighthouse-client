@@ -1,4 +1,6 @@
 import { CriteriaSignState } from '../../ScopeChangeRequest/types/scopeChangeRequest';
+import { Area } from './PCS/Area';
+import { Tag } from './PCS/Tag';
 
 export interface CreatedBy {
     id: string;
@@ -94,7 +96,7 @@ export interface CreateReleaseControlStepModel {
     isCurrent?: boolean;
     tagNumbers?: string[];
     criteriaTemplates: CriteriaTemplate[];
-    criterias?: Criteria[];
+    criterias: Criteria[];
 }
 
 export interface CriteriaTemplate {

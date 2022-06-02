@@ -25,7 +25,7 @@ interface WorkflowStepProps {
 
 export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps): JSX.Element => {
     const functionalRoleNames = functionalRoles?.map((role) => {
-        return role.Description;
+        return role.Code;
     });
     const { updateAtom } = DRCFormAtomApi;
     return (
@@ -73,8 +73,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                             items={functionalRoleNames ?? []}
                             label="Responsible"
                             size={30}
-                            //TODO what should this be?
-                            // selectedOption={step?.criterias[0]?.value}
+                            selectedOption={step?.criterias[0]?.value}
                             handleSelectedItemChange={(change) =>
                                 updateAtom({
                                     workflowSteps: updateStepResponsible(

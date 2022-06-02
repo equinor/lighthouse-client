@@ -22,7 +22,7 @@ export const WorkflowCustomEditor = (): JSX.Element => {
     const { getFunctionalRolesQuery } = ProCoSysQueries;
 
     const { data: functionalRoles } = useQuery<unknown, unknown, FunctionalRole[]>(
-        getFunctionalRolesQuery('JCA')
+        getFunctionalRolesQuery('PCS$JOHAN_CASTBERG', 'RELEASECONTROL')
     );
 
     return (
