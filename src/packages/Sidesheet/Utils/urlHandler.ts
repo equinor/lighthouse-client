@@ -1,7 +1,7 @@
 export function handleUpdateHashUrl(widgetId: string, itemId: string): void {
     const url = new URL(window.location.href);
     url.hash = `${widgetId}/${itemId}`;
-    window.history.replaceState({}, '', url);
+    window.history.pushState({}, '', url);
 }
 
 export function handleExtractHashUrl(): { widgetId?: string; itemId?: string } {
