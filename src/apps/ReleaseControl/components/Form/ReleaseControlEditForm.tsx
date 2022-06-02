@@ -51,30 +51,28 @@ export const ReleaseControlEditForm = (): JSX.Element => {
                         Workflow
                         <WorkflowCustomEditor />
                         {steps.length !== 0 && (
-                            <NewStepButton>
-                                <Button
-                                    style={{
-                                        width: '100px',
-                                        marginLeft: '20px',
-                                        marginTop: '16px',
-                                    }}
-                                    onClick={() =>
-                                        updateAtom({
-                                            workflowSteps: addStepAfter(
-                                                {
-                                                    order: steps.length,
-                                                    name: '',
-                                                    allowContributors: true,
-                                                    criteriaTemplates: [],
-                                                    criterias: [],
-                                                },
-                                                steps
-                                            ),
-                                        })
-                                    }
-                                >
-                                    Add step
-                                </Button>
+                            <NewStepButton
+                                style={{
+                                    width: '100px',
+                                    marginLeft: '20px',
+                                    marginTop: '16px',
+                                }}
+                                onClick={() =>
+                                    updateAtom({
+                                        workflowSteps: addStepAfter(
+                                            {
+                                                order: steps.length,
+                                                name: '',
+                                                allowContributors: true,
+                                                criteriaTemplates: [],
+                                                criterias: [],
+                                            },
+                                            steps
+                                        ),
+                                    })
+                                }
+                            >
+                                Add step
                             </NewStepButton>
                         )}
                     </FlexColumn>
