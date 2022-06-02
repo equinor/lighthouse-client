@@ -45,6 +45,9 @@ export const AttachmentName = styled.a`
     color: ${tokens.colors.interactive.primary__resting.rgba};
     cursor: 'pointer';
     text-decoration: 'none';
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `;
 
 export const Inline = styled.span`
@@ -54,9 +57,9 @@ export const Inline = styled.span`
 
 export const AttachmentsList = styled.div`
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     margin: 0.5em 0em;
     font-size: 16px;
     align-items: center;
+    width: 100%;
 `;
