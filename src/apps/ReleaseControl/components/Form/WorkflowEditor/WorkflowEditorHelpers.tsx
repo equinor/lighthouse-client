@@ -17,7 +17,7 @@ export function getNewWorkflowSteps(): CreateReleaseControlStepModel[] {
     const baseReleaseControlSteps: CreateReleaseControlStepModel[] = [
         {
             order: 1,
-            name: '',
+            name: 'Initiate',
             allowContributors: true,
             criteriaTemplates: [
                 {
@@ -25,6 +25,7 @@ export function getNewWorkflowSteps(): CreateReleaseControlStepModel[] {
                     assignToCreator: true,
                 },
             ],
+            criterias: [],
         },
     ];
     return baseReleaseControlSteps;
@@ -47,6 +48,9 @@ export function updateStepResponsible(
 ): CreateReleaseControlStepModel[] {
     const index = steps.findIndex((x) => x.order === step.order);
     steps[index].criteriaTemplates[0].value = responsible;
+    steps[index].criteriaTemplates[0].type = 'RequireProcosysFunctionalRoleSignature';
+    steps[index].criteriaTemplates[0].assignToCreator = false;
+
     return [...steps];
 }
 
@@ -64,6 +68,7 @@ export function addStepAfter(
                 type: 'RequireProcosysUserSignature',
             },
         ],
+        criterias: [],
     };
     steps.forEach((x) => {
         if (x.order >= currentStep.order + 1) {
@@ -88,6 +93,7 @@ export function addStepBefore(
                 type: 'RequireProcosysUserSignature',
             },
         ],
+        criterias: [],
     };
     steps.forEach((x) => {
         if (x.order >= currentStep.order) {
