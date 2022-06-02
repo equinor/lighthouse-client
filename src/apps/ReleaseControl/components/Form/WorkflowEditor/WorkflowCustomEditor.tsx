@@ -1,3 +1,4 @@
+import { useFacility } from '@equinor/lighthouse-portal-client';
 import { useQuery } from 'react-query';
 import { ReactSortable } from 'react-sortablejs';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
@@ -15,14 +16,14 @@ export const WorkflowCustomEditor = (): JSX.Element => {
             (v, i): DraggableReleaseControlStep => ({ id: `${i}`, item: { ...v, order: i + 1 } })
         ),
     }));
+    const { procosysPlantId } = useFacility();
 
     const setList = (workflowSteps: DraggableReleaseControlStep[]) =>
         updateAtom({ workflowSteps: workflowSteps.map(({ item }) => item) });
 
     const { getFunctionalRolesQuery } = ProCoSysQueries;
-
     const { data: functionalRoles } = useQuery<unknown, unknown, FunctionalRole[]>(
-        getFunctionalRolesQuery('PCS$JOHAN_CASTBERG', 'RELEASECONTROL')
+        getFunctionalRolesQuery(procosysPlantId, 'RELEASECONTROL')
     );
 
     return (
