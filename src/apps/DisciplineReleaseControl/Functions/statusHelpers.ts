@@ -78,7 +78,7 @@ export function setPipingRfcUniqueHTDate(pipetests: Pipetest[]): Pipetest[] {
     const htGroupedByPipetest = heatTracesGroupedByPipetest(pipetests);
     htGroupedByPipetest.map((ht) => {
         ht.children.sort((a, b) =>
-            a.rfccPlanned.localeCompare(b.rfccPlanned, undefined, {
+            a.rfccPlanned?.localeCompare(b.rfccPlanned, undefined, {
                 numeric: true,
                 sensitivity: 'base',
             })
@@ -97,7 +97,7 @@ export function setPipingRfcUniqueHTDate(pipetests: Pipetest[]): Pipetest[] {
             }
         });
         htCableDates.sort((a, b) =>
-            a.localeCompare(b, undefined, {
+            a?.localeCompare(b, undefined, {
                 numeric: true,
                 sensitivity: 'base',
             })

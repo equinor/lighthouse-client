@@ -1,5 +1,5 @@
 import { TableOptions } from '@equinor/WorkSpace';
-import { statusColorMap } from '../../../../packages/GardenUtils/src';
+import { statusColorMap } from '@equinor/GardenUtils';
 import { McPackage } from '../../types';
 
 const hiddenColumns: (keyof McPackage)[] = [
@@ -69,8 +69,8 @@ export const tableConfig: TableOptions<McPackage> = {
     headers: [
         {
             key: 'mcPkgNumber',
-            title: 'MC Package',
-            width: 200,
+            title: 'MCpkgno',
+            width: 100,
         },
         {
             key: 'description',
@@ -89,7 +89,7 @@ export const tableConfig: TableOptions<McPackage> = {
         },
         {
             key: 'phase',
-            title: 'MC Package Phase',
+            title: 'Phase',
         },
         {
             key: 'discipline',
@@ -103,8 +103,8 @@ export const tableConfig: TableOptions<McPackage> = {
         },
         {
             key: 'area',
-            title: 'MC Package Area',
-            width: 200,
+            title: 'Area',
+            width: 150,
         },
         {
             key: 'commPkgNumber',
