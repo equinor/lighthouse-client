@@ -1,7 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
+import { EstimateBar, ExpendedProgressBar } from '@equinor/Table';
 import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { EstimateBar } from '../../ScopeChangeRequest/Components/WoProgressBars/EstimateBar';
-import { ExpendedProgressBar } from '../../ScopeChangeRequest/Components/WoProgressBars/ExpendedProgressBar';
 import { WorkOrder } from '../Garden/models';
 import { getMatStatus, getMatStatusColor, getMccrStatusColor } from '../Garden/utility';
 const hiddenColumns: (keyof WorkOrder)[] = [
