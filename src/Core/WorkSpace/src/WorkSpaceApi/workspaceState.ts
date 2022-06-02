@@ -15,7 +15,7 @@ import {
     HelpPageOptions,
     PresetOption,
     SearchOption,
-    ViewOptions,
+    ViewOptions
 } from './WorkSpaceTypes';
 
 export interface WorkSpaceState {
@@ -62,6 +62,7 @@ export interface TreeOptions<T> {
     customViews?: CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
+    onGroupeSelect?: (item: T) => string;
     onSelect?: (item: T) => string;
 }
 
@@ -85,7 +86,7 @@ export interface WorkSpaceConfig<T> {
     objectIdentifier: string;
     prefetchQueriesOptions?: PrefetchQueriesOptions[];
     onSelect?: (item: T) => void;
-    idResolver?: (id: string) => Promise<T | undefined>;
+    onGroupeSelect?: (item: T) => void;
     dataSource?: DataSource<T>;
     validator?: (data: unknown[]) => T[];
     viewComponent?: React.FC<DataViewerProps<T>>;
@@ -111,7 +112,7 @@ export interface PowerBiOptions {
     pages: Page[];
 }
 
-export interface TimeLineOptions { }
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

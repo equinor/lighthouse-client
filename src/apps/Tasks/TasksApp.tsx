@@ -12,7 +12,6 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<Assignment>({
             objectIdentifier: 'id',
             defaultTab: 'garden',
-            CustomSidesheet: TasksSidesheet,
         })
         .registerDataSource({
             responseAsync,

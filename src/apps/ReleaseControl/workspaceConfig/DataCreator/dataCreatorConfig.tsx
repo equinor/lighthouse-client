@@ -1,19 +1,26 @@
+import { setupCreator } from '@equinor/lighthouse-fusion-modules';
 import { httpClient } from '@equinor/lighthouse-portal-client';
-import { openSidesheet } from '@equinor/sidesheet';
-import { FactoryOptions } from '@equinor/WorkSpace';
 import { checkOptionsRequest } from '../../api/releaseControl/Access/optionsRequestChecker';
 import { DisciplineReleaseControlFactoryComponent } from '../../components/Factory/FactoryComponent';
 
-export const dataCreatorConfig: FactoryOptions = {
+const creator = setupCreator({
+    widgetId: 'releaseCreator',
     title: 'Create release control workflow',
-    accessCheck: async (): Promise<boolean> => {
-        const { scopeChange } = httpClient();
-        const check = () => scopeChange.fetch('api/releasecontrol', { method: 'OPTIONS' });
-        return await (
-            await checkOptionsRequest(check)
-        ).canPost;
+    color: '#7B3A96',
+    widget: DisciplineReleaseControlFactoryComponent,
+    props: {
+        accessCheckFunctionId: 'releaseCreatorAccess',
+        parentApp: 'release',
+        function: async (): Promise<boolean> => {
+            const { scopeChange } = httpClient();
+            const check = () => scopeChange.fetch('api/releasecontrol', { method: 'OPTIONS' });
+            return await (
+                await checkOptionsRequest(check)
+            ).canPost;
+        },
     },
-    onClick: () => {
-        openSidesheet(DisciplineReleaseControlFactoryComponent, undefined, 'piping-and-ht');
-    },
-};
+});
+
+export const releaseCreatorManifest = creator('CreatorManifest');
+export const releaseCreatorComponent = creator('CreatorComponent');
+export const releaseCreatorAccessFunction = creator('AccessFunctionResult');

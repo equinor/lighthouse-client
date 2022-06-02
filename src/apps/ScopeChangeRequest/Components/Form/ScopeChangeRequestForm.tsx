@@ -1,25 +1,25 @@
-import styled from 'styled-components';
 import { Button, Progress } from '@equinor/eds-core-react';
 import { useMutation, useQueryClient } from 'react-query';
-
-import { Upload } from '../Attachments/Upload';
+import styled from 'styled-components';
+import { getScopeChangeById } from '../../api/ScopeChange/Request';
+import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
+import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { usePreloadCaching } from '../../hooks/React-Query/usePreloadCaching';
+import { changeSideSheetWidgetManifest } from '../../ScopeChangeRequestApp';
+import { Upload } from '../Attachments/Upload';
+import { scopeChangeCreateContext } from '../DataCreator/DataCreatorWrapper';
+import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
+import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
+import { MaterialsInput } from './Inputs/MaterialsInput/MaterialsInput';
+import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChangeReferences';
 import {
     ActionBar,
     ButtonContainer,
     FlexColumn,
     FormWrapper,
-    Section,
+    Section
 } from './ScopeChangeForm.styles';
-import { getScopeChangeById } from '../../api/ScopeChange/Request';
-import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
-import { SidesheetWrapper } from '../Sidesheet/SidesheetWrapper/SidesheetWrapper';
-import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
-import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
-import { scopeChangeCreateContext } from '../DataCreator/DataCreatorWrapper';
-import { MaterialsInput } from './Inputs/MaterialsInput/MaterialsInput';
-import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChangeReferences';
 
 export const ScopeChangeRequestForm = (): JSX.Element => {
     usePreloadCaching();
@@ -64,7 +64,11 @@ const SubmitButtonBar = () => {
     const redirect = async (scopeChangeId: string) => {
         if (!scopeChangeId) return;
 
-        swapComponent(SidesheetWrapper, await getScopeChangeById(scopeChangeId));
+        swapComponent(
+            SidesheetWrapper,
+            await getScopeChangeById(scopeChangeId),
+            changeSideSheetWidgetManifest
+        );
         queryClient.invalidateQueries();
     };
 
