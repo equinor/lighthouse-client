@@ -14,10 +14,10 @@ export async function getWidgetById(widgetId: string): Promise<WidgetComponent> 
     const currentComponent = widgetSore[widgetId];
     if (currentComponent) return currentComponent;
 
-    const componentManifest = await fetchComponent(widgetId);
-    if (componentManifest) {
+    const component = await fetchComponent(widgetId);
+    if (component) {
         try {
-            return _addWidget(componentManifest.widgetId, componentManifest.widget);
+            return _addWidget(widgetId, component);
         } catch (error) {
             console.warn(error);
         }

@@ -1,9 +1,9 @@
 import { BookmarkDropdown } from '@equinor/BookmarksManager';
-import { useFactory } from '@equinor/DataFactory';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
+import { useDataCreator } from '@equinor/lighthouse-fusion-modules';
 import { isProduction } from '@equinor/lighthouse-portal-client';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
@@ -15,7 +15,6 @@ import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { Presets } from '../Presets/Presets';
-import { SearchButton } from '../Search/Search';
 import { TabButton } from '../ToggleButton';
 import {
     ActionBar,
@@ -26,8 +25,9 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar,
+    TitleBar
 } from './HeaderStyles';
+
 
 interface CompletionViewHeaderProps {
     shortName: string;
@@ -47,7 +47,7 @@ export const CompletionViewHeader = ({
     sideSheetWidth,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
-    const { factory } = useFactory(key);
+    const { openCreatorById, creator } = useDataCreator(`${key}Creator`);
     const {
         hasPowerBi,
         pages,
@@ -105,19 +105,30 @@ export const CompletionViewHeader = ({
                 </LeftSection>
                 <RightSection>
                     <Presets />
-                    {factory && (
-                        <>
+
+                    <>
+                        {creator && (
                             <TabButton
+                                aria-disabled={!creator.props.hasAccess}
+                                onClick={() =>
+                                    creator.props.hasAccess !== false &&
+                                    openCreatorById(creator.widgetId)
+                                }
                                 width={'48px'}
-                                onClick={factory.onClick}
                                 aria-selected={false}
-                                title={factory.title}
+                                title={
+                                    creator.props.hasAccess !== false
+                                        ? creator.title
+                                        : 'Contact Support for access'
+                                }
                             >
                                 <Icon name={'add'} />
+
+                                {creator.title}
                             </TabButton>
-                            <Divider />
-                        </>
-                    )}
+                        )}
+                        <Divider />
+                    </>
 
                     {hasPowerBi && (
                         <>

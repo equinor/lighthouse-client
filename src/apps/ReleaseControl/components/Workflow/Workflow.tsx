@@ -13,7 +13,7 @@ export const Workflow = (): JSX.Element => {
             {workflowSteps.map(
                 ({ criterias, contributors, name, order, isCurrent, id }, stepIndex) => (
                     <Fragment key={id}>
-                        {criterias.map((criteria, index) => (
+                        {criterias?.map((criteria, index) => (
                             <CriteriaRender
                                 stepId={id}
                                 key={criteria.id}

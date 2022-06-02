@@ -21,6 +21,11 @@ export default defineConfig({
             '@equinor/atom': path.resolve(__dirname, './src/Core/Atom'),
             '@equinor/JSX-Switch': path.resolve(__dirname, './src/components/JSXSwitch'),
             '@equinor/lighthouse-components': path.resolve(__dirname, './src/packages/Components'),
+            '@equinor/lighthouse-confirmation-dialog': path.resolve(
+                __dirname,
+                './src/Core/ConfirmationDialog'
+            ),
+            '@equinor/lighthouse-fusion-modules': path.resolve(__dirname, './src/FusionModules'),
             '@equinor/lighthouse-widgets': path.resolve(__dirname, './src/Core/Widgets'),
             '@equinor/lighthouse-functions': path.resolve(__dirname, './src/Core/Functions'),
             '@equinor/sidesheet': path.resolve(__dirname, './src/packages/Sidesheet'),
@@ -29,6 +34,7 @@ export default defineConfig({
             '@equinor/VisualEditor': path.resolve(__dirname, './src/packages/VisualEditor'),
             '@equinor/Form': path.resolve(__dirname, './src/packages/Form'),
             '@equinor/WorkSpace': path.resolve(__dirname, './src/Core/WorkSpace'),
+            '@equinor/lighthouse-workspace-api': path.resolve(__dirname, './src/Core/WorkSpaceApi'),
             '@equinor/PageViewer': path.resolve(__dirname, './src/Core/PageViewer'),
             '@equinor/GroupView': path.resolve(__dirname, './src/Core/GroupView'),
             '@equinor/DataFactory': path.resolve(__dirname, './src/Core/DataFactory'),

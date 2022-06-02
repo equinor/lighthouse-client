@@ -2,7 +2,6 @@ import { useContext, useEffect, useReducer } from 'react';
 import { GardenGroups } from '../Models/data';
 import { FieldSettings } from '../Models/fieldSettings';
 import { CustomVirtualView, GardenOptions, Options, StatusView } from '../Models/gardenOptions';
-
 import { actions } from './ParkViewActions';
 import { ParkViewContext, ParkViewProviderProps, ParkViewState } from './ParkViewContext';
 import { GardenReducer } from './ParkViewReducer';
@@ -18,6 +17,7 @@ export function ParkViewProvider<T>({
         objectIdentifier: parkViewOptions.objectIdentifier,
         groupByKeys: parkViewOptions?.groupByKeys || [],
         onSelect: parkViewOptions.onSelect as (item: unknown) => string,
+        onGroupeSelect: parkViewOptions.onGroupeSelect as (item: unknown) => string,
         gardenKey: (parkViewOptions as GardenOptions<T>)?.gardenKey,
     };
     const [state, dispatch] = useReducer(GardenReducer, initialState);
@@ -76,6 +76,7 @@ export function useParkViewContext<T>() {
         fieldSettings: parkViewContext.fieldSettings as FieldSettings<T, string>,
         sortData: parkViewContext.sortData as (data: T[], ...groupByKeys: (keyof T)[]) => T[],
         itemWidth: parkViewContext.itemWidth as GetItemWidth<T>,
+        customItemColor: parkViewContext.customItemColor ?? (() => '#d9e9f2'),
     };
 }
 
