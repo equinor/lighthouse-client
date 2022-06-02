@@ -10,19 +10,19 @@ type Options = Pick<UseQueryOptions, 'staleTime' | 'cacheTime' | 'queryFn' | 'qu
 
 export const ProCoSysQueries = {
     getFunctionalRolesQuery: (plantId: string, classification?: string | undefined): Options => ({
-        queryFn: () => getFunctionalRoles(plantId, classification),
+        queryFn: ({ signal }) => getFunctionalRoles(plantId, classification, signal),
         queryKey: [...ProCoSysBaseKey, 'FunctionalRoles', classification],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,
     }),
     getTagByNoQuery: (tagId: number, plantId: string): Options => ({
-        queryFn: () => getTagById(plantId, tagId),
+        queryFn: ({ signal }) => getTagById(plantId, tagId, signal),
         queryKey: [...ProCoSysBaseKey, 'tag', tagId],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,
     }),
     getAreaByCodeQuery: (areaCode: string, plantId: string): Options => ({
-        queryFn: () => getAreaByCode(plantId, areaCode),
+        queryFn: ({ signal }) => getAreaByCode(plantId, areaCode, signal),
         queryKey: [...ProCoSysBaseKey, 'Area', areaCode],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,

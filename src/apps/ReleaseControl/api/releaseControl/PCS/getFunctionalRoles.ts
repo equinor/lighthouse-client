@@ -5,7 +5,8 @@ import { FunctionalRole } from '../../../types/functionalRole';
  */
 export async function getFunctionalRoles(
     plantId: string,
-    classification?: string
+    classification?: string,
+    signal?: AbortSignal
 ): Promise<FunctionalRole[]> {
     const { procosys } = httpClient();
 
@@ -15,7 +16,7 @@ export async function getFunctionalRoles(
     }&api-version=4.1`;
     const request = `${uri}?${queryParameters}`;
 
-    const response = await procosys.fetch(request);
+    const response = await procosys.fetch(request, { signal });
 
     if (!response.ok) {
         throw 'Failed to get functional roles';
