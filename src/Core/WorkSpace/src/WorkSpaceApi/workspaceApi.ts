@@ -17,6 +17,7 @@ import {
     DataSource,
     DataViewerProps,
     FactoryOptions,
+    HelpPageOptions,
     IdResolverFunc,
     SearchOption,
     Validator,
@@ -182,6 +183,11 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
         },
         registerWorkflowEditorOptions(workflowEditorOptions: WorkflowEditorOptions) {
             updateState({ workflowEditorOptions });
+
+            return workspaceAPI;
+        },
+        registerHelpPage(helpPageOptions: HelpPageOptions) {
+            updateState({ helpPageOptions });
 
             return workspaceAPI;
         },
