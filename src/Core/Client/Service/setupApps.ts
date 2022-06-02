@@ -1,5 +1,4 @@
 import { AuthenticationProvider } from '@equinor/authentication';
-import { createDataFactory } from '@equinor/DataFactory';
 import { openSidesheet } from '@equinor/sidesheet';
 import { AppConfigResult } from '../Types/AppConfig';
 import { ClientRegistry } from '../Types/ClientRegistry';
@@ -20,7 +19,6 @@ export function setupApps(
                     appConfig,
                     authProvider,
                     openSidesheet,
-                    createDataFactory,
                 })
             );
     });
