@@ -76,6 +76,7 @@ export function useParkViewContext<T>() {
         fieldSettings: parkViewContext.fieldSettings as FieldSettings<T, string>,
         sortData: parkViewContext.sortData as (data: T[], ...groupByKeys: (keyof T)[]) => T[],
         itemWidth: parkViewContext.itemWidth as GetItemWidth<T>,
+        customItemColor: parkViewContext.customItemColor ?? (() => '#d9e9f2'),
     };
 }
 
