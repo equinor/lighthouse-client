@@ -21,7 +21,6 @@ const Button = styled.button<BoxProps>`
     outline: none;
     font-size: 14px;
     height: 48px;
-
     justify-content: center;
     width: ${(s) => s.width ?? '48px'};
     color: ${tokens.colors.text.static_icons__tertiary.rgba};
