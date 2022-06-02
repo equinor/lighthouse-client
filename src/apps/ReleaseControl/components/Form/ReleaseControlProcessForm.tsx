@@ -45,8 +45,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                                     return null;
                                 }}
                             />
-                            <Button
-                                style={{ width: '100px', marginLeft: '20px', marginTop: '16px' }}
+                            <NewFlowButton
                                 onClick={() =>
                                     updateAtom({
                                         workflowSteps: getNewWorkflowSteps(),
@@ -54,34 +53,27 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                                 }
                             >
                                 New flow
-                            </Button>
+                            </NewFlowButton>
                         </SelectionRow>
                         <WorkflowCustomEditor />
                         {steps.length !== 0 && (
-                            <NewStepButton>
-                                <Button
-                                    style={{
-                                        width: '100px',
-                                        marginLeft: '20px',
-                                        marginTop: '16px',
-                                    }}
-                                    onClick={() =>
-                                        updateAtom({
-                                            workflowSteps: addStepAfter(
-                                                {
-                                                    order: steps.length,
-                                                    name: '',
-                                                    allowContributors: true,
-                                                    criteriaTemplates: [],
-                                                    criterias: [],
-                                                },
-                                                steps
-                                            ),
-                                        })
-                                    }
-                                >
-                                    Add step
-                                </Button>
+                            <NewStepButton
+                                onClick={() =>
+                                    updateAtom({
+                                        workflowSteps: addStepAfter(
+                                            {
+                                                order: steps.length,
+                                                name: '',
+                                                allowContributors: true,
+                                                criteriaTemplates: [],
+                                                criterias: [],
+                                            },
+                                            steps
+                                        ),
+                                    })
+                                }
+                            >
+                                Add step
                             </NewStepButton>
                         )}
                     </FlexColumn>
@@ -174,9 +166,17 @@ export const SelectionRow = styled.div`
     flex-direction: row;
 `;
 
-export const NewStepButton = styled.div`
+export const NewStepButton = styled(Button)`
     margin-bottom: 20px;
-    margin-left: 40px;
+    margin-left: 60px;
+    margin-top: 16px;
+    width: 100px;
+`;
+
+export const NewFlowButton = styled(Button)`
+    width: 100px;
+    margin-left: 20px;
+    margin-top: 16px;
 `;
 
 const predefinedWorkflows = [
