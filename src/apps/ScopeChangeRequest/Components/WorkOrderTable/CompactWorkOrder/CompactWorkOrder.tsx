@@ -1,9 +1,7 @@
+import { EstimateBar, ExpendedProgressBar, ProgressBar } from '@equinor/Table';
 import { isProduction } from '../../../../../Core/Client/Functions';
 import { useFacility } from '../../../../../Core/Client/Hooks';
 import { WorkOrder } from '../../../types/FAM/workOrder';
-import { EstimateBar } from '../../WoProgressBars/EstimateBar';
-import { ExpendedProgressBar } from '../../WoProgressBars/ExpendedProgressBar';
-import { ProgressBar } from '../../WoProgressBars/ProgressBar';
 import { Columns, Column, Header, Link } from './compactWorkOrder.styles';
 
 interface CompactWorkorderProps {
@@ -38,7 +36,8 @@ export const CompactWorkorder = ({
                     onClick={() =>
                         window.open(
                             //TEMP:
-                            `https://${isProduction() ? 'procosys' : 'procosys'
+                            `https://${
+                                isProduction() ? 'procosys' : 'procosys'
                             }.equinor.com/${title.replace(
                                 ' ',
                                 '_'
