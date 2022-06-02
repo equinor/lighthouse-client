@@ -1,3 +1,4 @@
+import { MutableRefObject } from 'react';
 import { useVirtual, VirtualItem } from 'react-virtual';
 import { useParkViewContext } from '../../Context/ParkViewProvider';
 import { ChevronDown, ChevronUp } from '../../Icons/Chevron';
@@ -5,12 +6,11 @@ import { GardenGroups } from '../../Models/data';
 import { FieldSettings } from '../../Models/fieldSettings';
 import { CustomGroupView, CustomItemView } from '../../Models/gardenOptions';
 import { Count } from '../../Styles/common';
-import { SubGroup, PackageRoot, SubGroupText } from './styles';
-import { GardenItem } from './types/gardenItem';
-import { useExpand } from './hooks';
-import { isSubGroup } from './utils';
-import { MutableRefObject } from 'react';
 import { DefaultGardenItem } from './DefaultGardenItem';
+import { useExpand } from './hooks';
+import { PackageRoot, SubGroup, SubGroupText } from './styles';
+import { GardenItem } from './types/gardenItem';
+import { isSubGroup } from './utils';
 
 type VirtualHookReturn = Pick<ReturnType<typeof useVirtual>, 'virtualItems' | 'scrollToIndex'>;
 type PackageContainerProps<T> = {
@@ -48,7 +48,8 @@ export const GardenItemContainer = <T extends unknown>(
         parentRef,
     } = props;
     const expand = useExpand();
-    const { objectIdentifier, customDescription } = useParkViewContext();
+
+    const { onSelect, onGroupeSelect, objectIdentifier, customDescription } = useParkViewContext();
 
     const CustomSubGroup = props?.customSubGroup;
     return (
@@ -74,6 +75,8 @@ export const GardenItemContainer = <T extends unknown>(
                                     columnExpanded={item.isExpanded}
                                     data={item}
                                     onClick={() => handleExpand(item)}
+                                    onSelect={onSelect}
+                                    onGroupeSelect={onGroupeSelect}
                                     groupByKeys={groupByKeys}
                                 />
                             ) : (
