@@ -2,7 +2,8 @@ import { Tabs } from '@equinor/eds-core-react';
 import { SideSheetContainer, SidesheetHeaderContent } from '@equinor/GardenUtils';
 import { isProduction } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 import {
     DetailsTab,
     McPackagesTab,
@@ -13,7 +14,7 @@ import {
     SwcrTab,
     UnsignedActionTab,
     UnsignedTaskTab,
-    WorkOrderTab
+    WorkOrderTab,
 } from '.';
 import useHandoverResource from '../../hooks/useHandoverResource';
 import { HandoverPackage } from '../../models/handoverPackage';
@@ -31,7 +32,7 @@ export function HandoverSideSheet({
     const procosysUrl = isProduction()
         ? handoverPackage.url
         : handoverPackage.url.replace('procosys', 'procosystest');
-
+    const ref = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
         actions.setTitle(
             <SidesheetHeaderContent title={handoverPackage.commpkgNo} url={procosysUrl} />
@@ -40,6 +41,7 @@ export function HandoverSideSheet({
 
     const handleChange = (index: number) => {
         setActiveTab(index);
+        ref && ref.current && ref.current.scrollTo({ left: index ** index });
     };
     const { data: mcPackages, dataIsFetching: isDataFetchingMc } = useHandoverResource(
         handoverPackage.id,
@@ -85,17 +87,19 @@ export function HandoverSideSheet({
             <SidesheetHeader handoverPackage={handoverPackage} />
 
             <Tabs activeTab={activeTab} onChange={handleChange}>
-                <Tabs.List>
-                    <Tabs.Tab>Details </Tabs.Tab>
-                    <Tabs.Tab>McPackages {`(${mcPackages?.length || 0})`} </Tabs.Tab>
-                    <Tabs.Tab>Work Orders {`(${workOrderPackages?.length || 0})`} </Tabs.Tab>
-                    <Tabs.Tab>Unsigned Tasks{`(${unsignedTasks?.length || 0})`} </Tabs.Tab>
-                    <Tabs.Tab>Unsigned Actions{`(${unsignedActions?.length || 0})`} </Tabs.Tab>
-                    <Tabs.Tab>Punch{`(${punchPackages?.length || 0})`} </Tabs.Tab>
-                    <Tabs.Tab>SWCR {`(${swcrPackages?.length || 0})`}</Tabs.Tab>
-                    <Tabs.Tab>NCr{`(${ncrPackages?.length || 0})`} </Tabs.Tab>
-                    <Tabs.Tab>Query{`(${queryPackages?.length || 0})`} </Tabs.Tab>
-                </Tabs.List>
+                <TabListWrapper ref={ref}>
+                    <Tabs.List>
+                        <Tabs.Tab>Details </Tabs.Tab>
+                        <Tabs.Tab>McPackages {`(${mcPackages?.length || 0})`} </Tabs.Tab>
+                        <Tabs.Tab>Work Orders {`(${workOrderPackages?.length || 0})`} </Tabs.Tab>
+                        <Tabs.Tab>Unsigned Tasks{`(${unsignedTasks?.length || 0})`} </Tabs.Tab>
+                        <Tabs.Tab>Unsigned Actions{`(${unsignedActions?.length || 0})`} </Tabs.Tab>
+                        <Tabs.Tab>Punch{`(${punchPackages?.length || 0})`} </Tabs.Tab>
+                        <Tabs.Tab>SWCR {`(${swcrPackages?.length || 0})`}</Tabs.Tab>
+                        <Tabs.Tab>NCr{`(${ncrPackages?.length || 0})`} </Tabs.Tab>
+                        <Tabs.Tab>Query{`(${queryPackages?.length || 0})`} </Tabs.Tab>
+                    </Tabs.List>
+                </TabListWrapper>
                 <Tabs.Panels>
                     <Tabs.Panel>
                         <DetailsTab
@@ -142,3 +146,14 @@ export function HandoverSideSheet({
         </SideSheetContainer>
     );
 }
+
+export const TabListWrapper = styled.div`
+    overflow: auto;
+    width: 100%;
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    scroll-behavior: smooth;
+`;
