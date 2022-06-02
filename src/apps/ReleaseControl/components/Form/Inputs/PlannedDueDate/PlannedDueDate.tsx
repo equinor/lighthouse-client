@@ -1,4 +1,5 @@
 import { TextField } from '@equinor/eds-core-react';
+import moment from 'moment';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 
 const { updateAtom, useAtomState } = DRCFormAtomApi;
@@ -7,8 +8,7 @@ const updatePlannedDueDate = (e) => {
 };
 
 export const PlannedDueDateInput = (): JSX.Element => {
-    const plannedDueDate = useAtomState((s) => s.plannedDueDate);
-
+    const plannedDueDate = moment(useAtomState((s) => s.plannedDueDate)).format('YYYY-MM-DD');
     return (
         <TextField
             type={'date'}

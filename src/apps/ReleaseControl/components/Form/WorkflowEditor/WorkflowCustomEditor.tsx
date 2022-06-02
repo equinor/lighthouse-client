@@ -1,5 +1,8 @@
+import { useQuery } from 'react-query';
 import { ReactSortable } from 'react-sortablejs';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
+import { ProCoSysQueries } from '../../../hooks/ProCoSysQueries';
+import { FunctionalRole } from '../../../types/functionalRole';
 import { DraggableReleaseControlStep } from '../../../types/releaseControl';
 import { WorkflowStep } from './WorkflowStep';
 
@@ -16,6 +19,12 @@ export const WorkflowCustomEditor = (): JSX.Element => {
     const setList = (workflowSteps: DraggableReleaseControlStep[]) =>
         updateAtom({ workflowSteps: workflowSteps.map(({ item }) => item) });
 
+    const { getFunctionalRolesQuery } = ProCoSysQueries;
+
+    const { data: functionalRoles } = useQuery<unknown, unknown, FunctionalRole[]>(
+        getFunctionalRolesQuery('PCS$JOHAN_CASTBERG', 'RELEASECONTROL')
+    );
+
     return (
         <ReactSortable<DraggableReleaseControlStep>
             animation={200}
@@ -31,6 +40,7 @@ export const WorkflowCustomEditor = (): JSX.Element => {
                     key={dragItem.item.order}
                     step={dragItem.item}
                     steps={workflowSteps.map(({ item }) => item)}
+                    functionalRoles={functionalRoles}
                 />
             ))}
         </ReactSortable>
