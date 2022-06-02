@@ -12,7 +12,7 @@ import { ReleaseControlSidesheet } from '../sidesheet/ReleaseControlSidesheet';
 import { TitleInput, DescriptionInput, PlannedDueDateInput, ReferencesInput } from './Inputs';
 import { FlexColumn, FormWrapper } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
-import { addStepAfter, getNewWorkflowSteps } from './WorkflowEditor/WorkflowEditorHelpers';
+import { addStep, getNewWorkflowSteps } from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom } = DRCFormAtomApi;
@@ -57,24 +57,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                         </SelectionRow>
                         <WorkflowCustomEditor />
                         {steps.length !== 0 && (
-                            <NewStepButton
-                                onClick={() =>
-                                    updateAtom({
-                                        workflowSteps: addStepAfter(
-                                            {
-                                                order: steps.length,
-                                                name: '',
-                                                allowContributors: true,
-                                                criteriaTemplates: [],
-                                                criterias: [],
-                                            },
-                                            steps
-                                        ),
-                                    })
-                                }
-                            >
-                                Add step
-                            </NewStepButton>
+                            <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
                         )}
                     </FlexColumn>
                 </FormWrapper>

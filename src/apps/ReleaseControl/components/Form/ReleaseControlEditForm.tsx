@@ -18,7 +18,7 @@ import {
     FormWrapper,
 } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
-import { addStepAfter } from './WorkflowEditor/WorkflowEditorHelpers';
+import { addStep } from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlEditForm = (): JSX.Element => {
     const { useAtomState, updateAtom } = DRCFormAtomApi;
@@ -57,20 +57,7 @@ export const ReleaseControlEditForm = (): JSX.Element => {
                                     marginLeft: '20px',
                                     marginTop: '16px',
                                 }}
-                                onClick={() =>
-                                    updateAtom({
-                                        workflowSteps: addStepAfter(
-                                            {
-                                                order: steps.length,
-                                                name: '',
-                                                allowContributors: true,
-                                                criteriaTemplates: [],
-                                                criterias: [],
-                                            },
-                                            steps
-                                        ),
-                                    })
-                                }
+                                onClick={() => addStep(steps)}
                             >
                                 Add step
                             </NewStepButton>

@@ -134,6 +134,21 @@ export function removeStep(
     return steps;
 }
 
+export function addStep(steps: CreateReleaseControlStepModel[]): void {
+    updateAtom({
+        workflowSteps: addStepAfter(
+            {
+                order: steps.length,
+                name: '',
+                allowContributors: true,
+                criteriaTemplates: [],
+                criterias: [],
+            },
+            steps
+        ),
+    });
+}
+
 export function getWorkflowStepMenuActions(
     step: CreateReleaseControlStepModel,
     steps: CreateReleaseControlStepModel[]
