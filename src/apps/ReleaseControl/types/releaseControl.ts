@@ -1,7 +1,4 @@
 import { CriteriaSignState } from '../../ScopeChangeRequest/types/scopeChangeRequest';
-import { Area } from './PCS/Area';
-import { Tag } from './PCS/Tag';
-
 export interface CreatedBy {
     id: string;
     oid: string;
@@ -137,6 +134,6 @@ export interface ReleaseControl {
     allowContributors: boolean;
     currentWorkflowStep: ReleaseControlStep;
     workflowSteps: ReleaseControlStep[];
-    tags: Tag[];
-    areas: Area[];
+    tags: ReleaseControlTag[];
+    areas: ReleaseControlArea[];
 }
