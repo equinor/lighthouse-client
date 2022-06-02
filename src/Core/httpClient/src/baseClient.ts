@@ -13,7 +13,7 @@ import {
     ValidationError,
 } from './networkError';
 
-export class AuthenticationError extends BaseError { }
+export class AuthenticationError extends BaseError {}
 type ProgressCallback = (progress: number) => void;
 
 export interface HttpClient {
@@ -21,6 +21,7 @@ export interface HttpClient {
     get(url: string, init?: RequestInit | undefined): Promise<Response>;
     post(url: string, init?: RequestInit | undefined): Promise<Response>;
     put(url: string, init?: RequestInit | undefined): Promise<Response>;
+    patch(url: string, init?: RequestInit | undefined): Promise<Response>;
     delete(url: string, init?: RequestInit | undefined): Promise<Response>;
     getAccessToken(): Promise<string>;
     uploadFile(
@@ -118,6 +119,18 @@ export function baseClient(
     async function put(url: string, requestInit?: RequestInit) {
         requestInit = {
             method: 'PUT',
+            ...requestInit,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                ...requestInit?.headers,
+            },
+        };
+        return _fetch(url, requestInit);
+    }
+    async function patch(url: string, requestInit?: RequestInit) {
+        requestInit = {
+            method: 'PATCH',
             ...requestInit,
             headers: {
                 Accept: 'application/json',
@@ -228,6 +241,7 @@ export function baseClient(
         get,
         post,
         put,
+        patch,
         delete: _delete,
         uploadFile,
         fetch: _fetch,

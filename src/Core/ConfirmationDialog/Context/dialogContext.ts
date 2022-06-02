@@ -5,6 +5,7 @@ import { DialogState } from '../State/dialogState';
 export const dialogCoreContext = createGlobalDialogState({
     dialogText: '',
     dialogTitle: '',
+    dialogChildren: undefined,
     onConfirm: undefined,
 });
 

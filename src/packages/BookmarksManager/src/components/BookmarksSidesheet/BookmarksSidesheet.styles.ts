@@ -46,7 +46,11 @@ export const SidesheetContent = styled.div`
 `;
 
 export const BookmarkLinkWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0.2rem;
+    margin-right: 2rem;
     :hover {
         background-color: #f7f7f7;
     }

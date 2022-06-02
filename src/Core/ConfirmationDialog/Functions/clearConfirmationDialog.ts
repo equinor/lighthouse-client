@@ -6,6 +6,7 @@ export function clearConfirmationDialog(): void {
         return {
             dialogText: '',
             dialogTitle: '',
+            dialogChildren: undefined,
             onConfirm: undefined,
         };
     });

@@ -16,6 +16,7 @@ export const ConfirmationDialog = (): JSX.Element | null => {
                     <DialogPadding>
                         <TitleSection>{dialog.dialogTitle}</TitleSection>
                         <p>{dialog.dialogText}</p>
+                        {dialog?.dialogChildren && dialog.dialogChildren}
                         <ButtonContainer>
                             <Button
                                 onClick={() => {
