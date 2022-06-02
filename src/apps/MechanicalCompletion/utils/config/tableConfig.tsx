@@ -1,5 +1,5 @@
 import { TableOptions } from '@equinor/WorkSpace';
-import { statusColorMap } from '../../../../packages/GardenUtils/src';
+import { statusColorMap } from '@equinor/GardenUtils';
 import { McPackage } from '../../types';
 
 const hiddenColumns: (keyof McPackage)[] = [
