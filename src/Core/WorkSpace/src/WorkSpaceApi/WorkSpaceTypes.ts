@@ -75,7 +75,7 @@ export interface WorkSpaceApi<T> {
     registerPowerBIOptions: (options: PowerBiOptions) => WorkSpaceApi<T>;
     registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => WorkSpaceApi<T>;
     registerPresets: (options: PresetOption[]) => WorkSpaceApi<T>;
-    // registerGridOptions: (gridOptions: GridConfig<T>) => WorkSpaceApi<T>;
+    registerGridOptions: (gridOptions: GridConfig<T>) => WorkSpaceApi<T>;
     registerSearchOptions: (options: SearchOption<T>[]) => WorkSpaceApi<T>;
 }
 

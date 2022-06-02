@@ -34,100 +34,100 @@ export function setup(appApi: ClientApi): void {
         .registerStatusItems(statusBarConfig)
         .registerFilterOptions(filterConfig)
         .registerIdResolver(idResolver)
-        .registerPrefetchQueries(prefetchQueriesOptions);
-    // .registerGridOptions({
-    //     columns: [
-    //         {
-    //             title: 'Id',
-    //             valueFormatter: (s) => s.sequenceNumber,
-    //             onClickOpensSidesheet: true,
-    //         },
-    //         {
-    //             title: 'Title',
-    //             valueFormatter: (s) => s.title,
-    //             onClickOpensSidesheet: false,
-    //             options: {
-    //                 cellEditor: TitleEditor,
-    //                 editable: true,
-    //                 valueSetter: (props) => {
-    //                     const context: GridContext = props.context;
-    //                     props.data.title = props.newValue;
-    //                     updateFieldAsync(
-    //                         { ...props.data, title: props.newValue },
-    //                         context,
-    //                         props.node
-    //                     );
-    //                     return true;
-    //                 },
-    //             },
-    //         },
-    //         {
-    //             title: 'Comment',
-    //             valueFormatter: (s) => (s.hasComments ? 'Yes' : ''),
-    //             onClickOpensSidesheet: false,
-    //         },
-    //         {
-    //             title: 'Contr.',
-    //             valueFormatter: (s) => (s.hasPendingContributions ? 'Yes' : ''),
-    //             onClickOpensSidesheet: false,
-    //         },
-    //         {
-    //             title: 'Phase',
-    //             valueFormatter: (s) => s.phase,
-    //             options: {
-    //                 editable: true,
-    //                 cellEditor: PhaseSelector,
-    //                 cellEditorPopup: true,
-    //                 valueSetter: (props) => {
-    //                     const context: GridContext = props.context;
-    //                     props.data.phase = props.newValue;
-    //                     updateFieldAsync(
-    //                         { ...props.data, phase: props.newValue },
-    //                         context,
-    //                         props.node
-    //                     );
-    //                     return true;
-    //                 },
-    //             },
-    //         },
-    //         {
-    //             title: 'Workflow',
-    //             valueFormatter: (s) => s?.workflowSteps?.length,
-    //             onClickOpensSidesheet: false,
-    //             options: {
-    //                 cellRenderer: (props) => {
-    //                     const req: ScopeChangeRequest = props.data;
+        .registerPrefetchQueries(prefetchQueriesOptions)
+        .registerGridOptions({
+            columns: [
+                {
+                    title: 'Id',
+                    valueFormatter: (s) => s.sequenceNumber,
+                    onClickOpensSidesheet: true,
+                },
+                {
+                    title: 'Title',
+                    valueFormatter: (s) => s.title,
+                    onClickOpensSidesheet: false,
+                    options: {
+                        cellEditor: TitleEditor,
+                        editable: true,
+                        valueSetter: (props) => {
+                            const context: GridContext = props.context;
+                            props.data.title = props.newValue;
+                            updateFieldAsync(
+                                { ...props.data, title: props.newValue },
+                                context,
+                                props.node
+                            );
+                            return true;
+                        },
+                    },
+                },
+                {
+                    title: 'Comment',
+                    valueFormatter: (s) => (s.hasComments ? 'Yes' : ''),
+                    onClickOpensSidesheet: false,
+                },
+                {
+                    title: 'Contr.',
+                    valueFormatter: (s) => (s.hasPendingContributions ? 'Yes' : ''),
+                    onClickOpensSidesheet: false,
+                },
+                {
+                    title: 'Phase',
+                    valueFormatter: (s) => s.phase,
+                    options: {
+                        editable: true,
+                        cellEditor: PhaseSelector,
+                        cellEditorPopup: true,
+                        valueSetter: (props) => {
+                            const context: GridContext = props.context;
+                            props.data.phase = props.newValue;
+                            updateFieldAsync(
+                                { ...props.data, phase: props.newValue },
+                                context,
+                                props.node
+                            );
+                            return true;
+                        },
+                    },
+                },
+                {
+                    title: 'Workflow',
+                    valueFormatter: (s) => s?.workflowSteps?.length,
+                    onClickOpensSidesheet: false,
+                    options: {
+                        cellRenderer: (props) => {
+                            const req: ScopeChangeRequest = props.data;
 
-    //                     return <WorkflowCompact steps={req?.workflowSteps ?? []} />;
-    //                 },
-    //             },
-    //         },
-    //         {
-    //             title: 'Current step',
-    //             valueFormatter: (s) => s?.currentWorkflowStep?.name ?? '',
-    //             onClickOpensSidesheet: false,
-    //         },
-    //         {
-    //             title: 'Status',
-    //             valueFormatter: (s) => s.workflowStatus,
-    //             onClickOpensSidesheet: false,
-    //         },
-    //         {
-    //             title: 'State',
-    //             valueFormatter: (s) => (s.isVoided ? 'Voided' : s.state),
-    //             onClickOpensSidesheet: false,
-    //         },
-    //         {
-    //             title: 'Guesstimate mhrs',
-    //             valueFormatter: (s) =>
-    //                 s.disciplineGuesstimates.reduce((acc, curr) => acc + curr.guesstimate, 0),
-    //             options: {
-    //                 aggFunc: 'sum',
-    //                 enableValue: true,
-    //             },
-    //         },
-    //     ],
-    // });
+                            return <WorkflowCompact steps={req?.workflowSteps ?? []} />;
+                        },
+                    },
+                },
+                {
+                    title: 'Current step',
+                    valueFormatter: (s) => s?.currentWorkflowStep?.name ?? '',
+                    onClickOpensSidesheet: false,
+                },
+                {
+                    title: 'Status',
+                    valueFormatter: (s) => s.workflowStatus,
+                    onClickOpensSidesheet: false,
+                },
+                {
+                    title: 'State',
+                    valueFormatter: (s) => (s.isVoided ? 'Voided' : s.state),
+                    onClickOpensSidesheet: false,
+                },
+                {
+                    title: 'Guesstimate mhrs',
+                    valueFormatter: (s) =>
+                        s.disciplineGuesstimates.reduce((acc, curr) => acc + curr.guesstimate, 0),
+                    options: {
+                        aggFunc: 'sum',
+                        enableValue: true,
+                    },
+                },
+            ],
+        });
 }
 
 const updateFieldAsync = async (

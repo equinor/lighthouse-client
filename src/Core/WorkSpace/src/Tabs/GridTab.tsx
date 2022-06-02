@@ -6,9 +6,8 @@ import { useFilterApiContext } from '@equinor/filter';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import { useDataContext } from '../Context/DataProvider';
 import { QueryClient, useQueryClient } from 'react-query';
+import { useAgGridStyles } from '@equinor/fusion-react-ag-grid-addons';
 import { TableConfigBar } from '../../../../packages/Table/Components/TableConfigBar/TableConfigBar';
-import { agStyles } from '../../../../packages/AgGrid/styles/styles';
-import useAgGridStyles from '../../../../packages/AgGrid/hooks/useAgGridStyles';
 
 export const GridTab = (): JSX.Element => {
     const { data } = useDataContext();
