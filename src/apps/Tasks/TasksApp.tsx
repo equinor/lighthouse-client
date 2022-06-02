@@ -82,9 +82,9 @@ export function setup(appApi: ClientApi): void {
         //     },
         // })
         .registerGardenOptions({
+            objectIdentifier: 'id',
             gardenKey: 'state',
             itemKey: 'id',
-            objectIdentifier: 'id',
             fieldSettings: {
                 Category: { label: 'Category', getKey: (s) => s.category },
             },

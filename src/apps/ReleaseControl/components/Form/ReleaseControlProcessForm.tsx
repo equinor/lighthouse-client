@@ -12,11 +12,12 @@ import { ReleaseControlSidesheet } from '../sidesheet/ReleaseControlSidesheet';
 import { DescriptionInput, PlannedDueDateInput, ReferencesInput, TitleInput } from './Inputs';
 import { FlexColumn, FormWrapper } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
-import { getNewWorkflowSteps } from './WorkflowEditor/WorkflowEditorHelpers';
+import { addStep, getNewWorkflowSteps } from './WorkflowEditor/WorkflowEditorHelpers';
 
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
-    const { updateAtom } = DRCFormAtomApi;
+    const { useAtomState, updateAtom } = DRCFormAtomApi;
+    const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
 
     return (
         <>
@@ -45,8 +46,7 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                                     return null;
                                 }}
                             />
-                            <Button
-                                style={{ width: '100px', marginLeft: '20px', marginTop: '16px' }}
+                            <NewFlowButton
                                 onClick={() =>
                                     updateAtom({
                                         workflowSteps: getNewWorkflowSteps(),
@@ -54,9 +54,12 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                                 }
                             >
                                 New flow
-                            </Button>
+                            </NewFlowButton>
                         </SelectionRow>
                         <WorkflowCustomEditor />
+                        {steps.length !== 0 && (
+                            <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
+                        )}
                     </FlexColumn>
                 </FormWrapper>
                 <SubmitButtonBar />
@@ -149,6 +152,19 @@ export const ActionBar = styled.div`
 export const SelectionRow = styled.div`
     display: flex;
     flex-direction: row;
+`;
+
+export const NewStepButton = styled(Button)`
+    margin-bottom: 20px;
+    margin-left: 60px;
+    margin-top: 16px;
+    width: 100px;
+`;
+
+export const NewFlowButton = styled(Button)`
+    width: 100px;
+    margin-left: 20px;
+    margin-top: 16px;
 `;
 
 const predefinedWorkflows = [
