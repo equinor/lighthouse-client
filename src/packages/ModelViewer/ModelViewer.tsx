@@ -1,4 +1,4 @@
-import { NodeAppearance } from '@cognite/reveal';
+import { DefaultNodeAppearance } from '@cognite/reveal';
 import { RendererConfiguration, setupEcho3dWeb } from '@equinor/echo3dweb-viewer';
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -9,7 +9,14 @@ import { ModelViewerContextProvider, useModelViewerContext } from './context/mod
 import { useModel } from './hooks/useLoadModel';
 import { T5602_M02 } from './mocTags/5602-M02';
 import { AP300 } from './mocTags/AP300';
-import { Menu, Message, MessageWrapper, Wrapper, WrapperMenu } from './ModelViewerStyles';
+import {
+    Menu,
+    Message,
+    MessageWrapper,
+    Selections,
+    Wrapper,
+    WrapperMenu
+} from './ModelViewerStyles';
 import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
 export interface ModelViewerProps {
     tags?: string[];
@@ -48,6 +55,8 @@ export const Viewer: React.FC<ViewerProps> = ({
         selection,
         message,
         setMessage,
+        toggleClipping,
+        isCropped,
     } = useModelViewerContext();
     useModel(loadFullModel);
 
@@ -126,8 +135,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                     )}
                 </MessageWrapper>
             )}
-
-            <WrapperMenu>
+            <Selections>
                 <Menu>
                     <Button
                         variant="ghost_icon"
@@ -145,25 +153,30 @@ export const Viewer: React.FC<ViewerProps> = ({
                     >
                         T2
                     </Button>
+                </Menu>
+            </Selections>
+
+            <WrapperMenu>
+                <Menu>
                     <Button
                         variant="ghost_icon"
                         onClick={() => {
-                            selectTags(['this will fail'], padding);
+                            toggleClipping();
                         }}
                     >
-                        T3
+                        <Icon
+                            name={'crop'}
+                            color={
+                                isCropped
+                                    ? tokens.colors.interactive.primary__selected_highlight.rgba
+                                    : undefined
+                            }
+                        />
                     </Button>
                     <Button
                         variant="ghost_icon"
                         onClick={() => {
-                            const style: NodeAppearance = {
-                                color: [255, 0, 0] as [number, number, number],
-                                outlineColor: 4,
-                                renderGhosted: false,
-                                renderInFront: true,
-                                visible: true,
-                            };
-                            selection?.setSelectedColor(style);
+                            selection?.setSelectedColor(DefaultNodeAppearance.Default);
                         }}
                     >
                         <Icon name={'invert_colors'} />
@@ -172,7 +185,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                         title="Hidden"
                         variant="ghost_icon"
                         onClick={() => {
-                            selection?.setHideMode('Default');
+                            selection?.setHideMode('White');
                         }}
                     >
                         <Icon name={'visibility'} />

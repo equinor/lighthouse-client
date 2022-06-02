@@ -7,7 +7,7 @@ import {
 import { Message } from './message';
 
 export interface ModelViewerState {
-    model: Cognite3DModel | undefined;
+    cognite3DModel: Cognite3DModel | undefined;
     echo3DClient: EchoSetupObject | undefined;
     plants: AssetMetadataSimpleDto[];
     currentPlant: AssetMetadataSimpleDto | undefined;
@@ -16,4 +16,7 @@ export interface ModelViewerState {
     tags?: string[];
     selection?: Echo3dMultiSelectionActions;
     padding?: number;
+    isCropped: boolean;
+    isHidden: boolean;
+    hasDefaultColor: boolean;
 }
