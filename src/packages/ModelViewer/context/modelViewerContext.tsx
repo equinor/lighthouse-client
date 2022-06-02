@@ -14,6 +14,7 @@ interface ModelViewerContext extends ModelViewerState {
     setMessage(message?: Message): void;
     toggleClipping(): void;
     toggleHidden(): void;
+    toggleDefaultColor(): void;
 }
 
 export const Context = createContext({} as ModelViewerContext);
@@ -38,7 +39,8 @@ export const ModelViewerContextProvider = ({
         selection: undefined,
         isCropped: false,
         hasDefaultColor: false,
-        isHidden: false,
+        modelIsVisible: false,
+        tagsIsVisible: false,
     });
     function setPlantState(plantState: Partial<ModelViewerState>) {
         setState((s) => ({ ...s, ...plantState }));
@@ -58,9 +60,6 @@ export const ModelViewerContextProvider = ({
     function setSelection(selection?: Echo3dMultiSelectionActions) {
         setState((s) => ({ ...s, selection }));
     }
-    function toggleHidden() {
-        setState((s) => ({ ...s, isHidden: !s.isHidden }));
-    }
 
     function selectTags(tags?: string[], padding?: number) {
         setState((s) => ({ ...s, tags, padding: padding || s.padding }));
@@ -70,6 +69,22 @@ export const ModelViewerContextProvider = ({
         setState((s) => {
             s.selection?.clipSelection(!s.isCropped, s.padding);
             return { ...s, isCropped: !s.isCropped };
+        });
+    }
+    function toggleDefaultColor() {
+        setState((s) => {
+            s.selection?.setHideMode(!s.hasDefaultColor ? 'White' : 'Default');
+            return { ...s, hasDefaultColor: !s.hasDefaultColor };
+        });
+    }
+    function toggleHidden() {
+        setState((s) => {
+            if (s.modelIsVisible) {
+                s.selection?.setHideMode('Hidden');
+            } else {
+                s.selection?.setHideMode(s.hasDefaultColor ? 'White' : 'Default');
+            }
+            return { ...s, modelIsVisible: !s.modelIsVisible };
         });
     }
 
@@ -122,6 +137,7 @@ export const ModelViewerContextProvider = ({
                 setMessage,
                 toggleClipping,
                 toggleHidden,
+                toggleDefaultColor,
             }}
         >
             {children}

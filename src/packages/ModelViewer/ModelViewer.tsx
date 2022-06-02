@@ -1,4 +1,3 @@
-import { DefaultNodeAppearance } from '@cognite/reveal';
 import { RendererConfiguration, setupEcho3dWeb } from '@equinor/echo3dweb-viewer';
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
@@ -7,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import Icon from '../../components/Icon/Icon';
 import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
+import { ElectroIcon } from './icons/ElectroIcon';
 import { T5602_M02 } from './mocTags/5602-M02';
 import { AP300 } from './mocTags/AP300';
 import {
@@ -18,6 +18,7 @@ import {
     WrapperMenu
 } from './ModelViewerStyles';
 import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
+
 export interface ModelViewerProps {
     tags?: string[];
     loadFullModel?: boolean;
@@ -56,7 +57,11 @@ export const Viewer: React.FC<ViewerProps> = ({
         message,
         setMessage,
         toggleClipping,
+        toggleDefaultColor,
+        hasDefaultColor,
         isCropped,
+        tagsIsVisible,
+        toggleHidden,
     } = useModelViewerContext();
     useModel(loadFullModel);
 
@@ -176,16 +181,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                     <Button
                         variant="ghost_icon"
                         onClick={() => {
-                            selection?.setSelectedColor(DefaultNodeAppearance.Default);
-                        }}
-                    >
-                        <Icon name={'invert_colors'} />
-                    </Button>
-                    <Button
-                        title="Hidden"
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('White');
+                            toggleHidden();
                         }}
                     >
                         <Icon name={'visibility'} />
@@ -197,25 +193,47 @@ export const Viewer: React.FC<ViewerProps> = ({
                             selection?.setHideMode('Hidden');
                         }}
                     >
-                        <Icon name={'visibility_off'} />
+                        <ElectroIcon color={tokens.colors.interactive.primary__resting.rgba} />
                     </Button>
 
                     <Button
                         variant="ghost_icon"
                         onClick={() => {
-                            selection?.setHideMode('Outlined');
+                            console.log('tag');
                         }}
                     >
-                        <Icon name={'puzzle'} />
+                        <Icon
+                            name={'tag'}
+                            color={
+                                tagsIsVisible
+                                    ? tokens.colors.interactive.primary__selected_highlight.rgba
+                                    : undefined
+                            }
+                        />
                     </Button>
                     <Button
+                        variant="ghost_icon"
+                        onClick={() => {
+                            toggleDefaultColor();
+                        }}
+                    >
+                        <Icon
+                            name={'color_palette'}
+                            color={
+                                hasDefaultColor
+                                    ? tokens.colors.interactive.primary__selected_highlight.rgba
+                                    : undefined
+                            }
+                        />
+                    </Button>
+                    {/* <Button
                         variant="ghost_icon"
                         onClick={() => {
                             selection?.setHideMode('InFront');
                         }}
                     >
                         <Icon name={'puzzle_filled'} />
-                    </Button>
+                    </Button> */}
                 </Menu>
             </WrapperMenu>
         </>

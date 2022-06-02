@@ -17,6 +17,7 @@ export interface ModelViewerState {
     selection?: Echo3dMultiSelectionActions;
     padding?: number;
     isCropped: boolean;
-    isHidden: boolean;
+    modelIsVisible: boolean;
+    tagsIsVisible: boolean;
     hasDefaultColor: boolean;
 }
