@@ -6,7 +6,7 @@ export const Container = styled.div`
     height: 100%;
     gap: 1em;
     overflow: hidden;
-    padding-top: 5px;
+    padding-top: 8px;
 `;
 
 export const LayoutRoot = styled.div`
