@@ -3,7 +3,7 @@ import { SidesheetState } from './sidesheetState';
 
 export function dispatch(
     globalState: Atom<SidesheetState<unknown>>,
-    update: <T>(state: SidesheetState<T>) => SidesheetState<unknown>
+    update: (state: SidesheetState<unknown>) => SidesheetState<unknown>
 ): void {
     swap(globalState, update);
 }
