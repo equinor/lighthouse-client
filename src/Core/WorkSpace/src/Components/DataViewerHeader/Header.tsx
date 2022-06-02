@@ -125,6 +125,11 @@ export const CompletionViewHeader = ({
                                 onClick={() => handleSetActiveTab(ANALYTICS)}
                                 aria-selected={activeTab === ANALYTICS}
                                 title={'Power Bi analytics'}
+                                color={
+                                    activeTab === ANALYTICS
+                                        ? tokens.colors.interactive.primary__resting.hex
+                                        : undefined
+                                }
                             >
                                 <Icon name={'bar_chart'} />
                             </TabButton>
@@ -136,12 +141,20 @@ export const CompletionViewHeader = ({
                         {tabs.map((tab) => {
                             if (tab.tabId === ANALYTICS) return;
                             const Icon = tab.icon;
+
+                            const isActiveTab = activeTab === tab.tabId;
+
                             return (
                                 <TabButton
                                     onClick={() => handleSetActiveTab(tab.tabId)}
                                     key={`tab-${tab.icon}`}
-                                    aria-selected={activeTab === tab.tabId}
+                                    aria-selected={isActiveTab}
                                     title={tab.title}
+                                    color={
+                                        isActiveTab
+                                            ? tokens.colors.interactive.primary__resting.hex
+                                            : undefined
+                                    }
                                 >
                                     <Icon />
                                 </TabButton>
