@@ -1,10 +1,10 @@
 import { Tabs } from '@equinor/eds-core-react';
+import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AssignmentsTab } from '../../Core/Assignments/Components/AssignmentsTab';
 import { NotificationsTab } from './NotificationsTab';
-
 
 interface ActionCenterSidesheetProps {
     actions: SidesheetApi;
@@ -20,7 +20,6 @@ export function ActionCenterSidesheet({
     }, [activeTab]);
 
     const handleChange = (index: number) => setActiveTab(index);
-
     return (
         <>
             <Wrapper>
@@ -42,6 +41,17 @@ export function ActionCenterSidesheet({
         </>
     );
 }
+
+export const actionCenterSidesheetWidgetManifest: WidgetManifest = {
+    widgetId: 'actionCenter',
+    widgetType: 'sidesheet',
+};
+
+export const actionCenterSidesheetWidgetComponent: ComponentManifest = {
+    widgetId: 'actionCenter',
+    widgetType: 'sidesheet',
+    widget: ActionCenterSidesheet,
+};
 
 const TabsList = styled(Tabs.List)`
     grid-template-columns: 1fr 1fr;

@@ -6,7 +6,7 @@ import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 import { Fallback } from '../FallbackSidesheet/Fallback';
 
 export const WorkspaceSidesheet = (): JSX.Element => {
-    const { onSelect, idResolver, objectIdentifier } = useWorkSpace();
+    const { onSelect, objectIdentifier } = useWorkSpace();
     const { data, dataApi } = useDataContext();
 
     const navigate = useNavigate();
@@ -27,13 +27,6 @@ export const WorkspaceSidesheet = (): JSX.Element => {
                 onSelect(item);
                 return;
             }
-        }
-        if (idResolver) {
-            const item = await idResolver(id);
-            if (item) {
-                onSelect(item);
-                return;
-            }
         } else {
             await dataApi.refetch();
             const item = findItem(id);
@@ -43,7 +36,7 @@ export const WorkspaceSidesheet = (): JSX.Element => {
             }
         }
         openSidesheet(Fallback);
-    }, [data, findItem, idResolver, location.hash, onSelect]);
+    }, [data, findItem, location.hash, onSelect]);
 
     /**
      * Removes hash from url when closed
