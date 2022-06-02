@@ -111,13 +111,14 @@ export const AdvancedDocumentSearch = ({
             `api/tag/ByTagNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${tagNos
                 .map((x) => `&tagNos=${x}`)
                 .toString()
-                .replaceAll(',', '')}`
+                .replaceAll(',', '')}`,
+            { signal: getSignal() }
         );
 
         const data: TypedSelectOption[] = (await res.json()).map(
             (value: Tag): TypedSelectOption => ({
                 type: 'tag',
-                label: value.TagNo,
+                label: `${value.TagNo} - ${value.Description}`,
                 object: value,
                 searchValue: value.TagNo,
                 value: value.TagNo,
@@ -127,6 +128,7 @@ export const AdvancedDocumentSearch = ({
 
         appendItem(data);
         setResults(data);
+        setIsLoading(false);
     };
 
     const resolveBatchCommPkgs = async (commPkgNo: string[]) => {
@@ -138,13 +140,14 @@ export const AdvancedDocumentSearch = ({
             `api/commpkg/BycommpkgNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${commPkgNo
                 .map((x) => `&commPkgNos=${x}`)
                 .toString()
-                .replaceAll(',', '')}`
+                .replaceAll(',', '')}`,
+            { signal: getSignal() }
         );
 
         const data: TypedSelectOption[] = (await res.json()).map(
             (value: CommissioningPackage): TypedSelectOption => ({
                 type: 'commpkg',
-                label: value.CommPkgNo,
+                label: `${value.CommPkgNo} - ${value.Description}`,
                 object: value,
                 searchValue: value.CommPkgNo,
                 value: value.CommPkgNo,
@@ -154,6 +157,7 @@ export const AdvancedDocumentSearch = ({
 
         appendItem(data);
         setResults(data);
+        setIsLoading(false);
     };
 
     return (
@@ -216,7 +220,6 @@ export const AdvancedDocumentSearch = ({
                                     setResults([]);
                                 }}
                             />
-
                             <Switch
                                 defaultCase={
                                     <TextField
@@ -295,6 +298,7 @@ export const AdvancedDocumentSearch = ({
                                 </Case>
                             </Switch>
                         </SearchField>
+                        <div> {!isLoading && `Showing ${results.length} results`}</div>
 
                         {subResults ? (
                             <SubResults
