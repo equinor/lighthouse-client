@@ -7,6 +7,7 @@ import { WorkOrder } from './Garden/models';
 import { fieldSettings, getHighlightedColumn, getItemWidth } from './Garden/utility/gardenSetup';
 import { sortPackages } from './Garden/utility/sortPackages';
 import { filterConfig } from './utility/filterConfig';
+import { statusBarConfig } from './utility/statusBarConfig';
 import { tableConfig } from './utility/tableConfig';
 
 async function responseParser(response: Response) {
@@ -53,6 +54,7 @@ export function setup(appApi: ClientApi): void {
             responseParser: responseParser,
         })
         .registerFilterOptions(filterConfig)
+        .registerStatusItems(statusBarConfig)
         .registerSearchOptions([
             { name: 'Id', valueFormatter: ({ workOrderNumber }) => workOrderNumber },
         ])

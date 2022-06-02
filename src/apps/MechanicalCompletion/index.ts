@@ -12,7 +12,7 @@ async function responseAsync(signal?: AbortSignal | undefined): Promise<Response
     const { fusionDataproxy } = httpClient();
 
     return await fusionDataproxy.fetch(`api/contexts/${contextId}/mc-pkgs?api-version=2.0`, {
-        signal: signal,
+        signal,
     });
 }
 

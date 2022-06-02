@@ -69,6 +69,7 @@ export interface WorkSpaceApi<T> {
     registerWorkflowEditorOptions: (options: WorkflowEditorOptions) => WorkSpaceApi<T>;
     registerPresets: (options: PresetOption[]) => WorkSpaceApi<T>;
     registerSearchOptions: (options: SearchOption<T>[]) => WorkSpaceApi<T>;
+    registerHelpPage: (options: HelpPageOptions) => WorkSpaceApi<T>;
 }
 
 export type PresetOption = GardenPresetOption | TablePresetOption;
@@ -101,4 +102,8 @@ export interface SearchOption<T> {
     name: string;
     /** Takes in an item and returns the search value */
     valueFormatter: (item: T) => string;
+}
+
+export interface HelpPageOptions {
+    Component: () => JSX.Element;
 }

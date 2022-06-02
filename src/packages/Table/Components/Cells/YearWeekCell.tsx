@@ -9,17 +9,18 @@ export const YearWeekCell = <T extends TableData>(props: CellProps<T, CellRender
 
     const attr = useMemo(
         () => (cellAttributeFn ? cellAttributeFn(content) : undefined),
-        [cellAttributeFn]
+        [cellAttributeFn, content]
     );
 
     const dateOrUndefined = toDate(content[currentKey]);
 
     const dateDisplay = dateOrUndefined
-        ? `${dateOrUndefined.year}-${dateOrUndefined.weekNumber < 10
-            ? '0' + dateOrUndefined.weekNumber
-            : dateOrUndefined.weekNumber
-        }`
-        : 'N/A';
+        ? `${dateOrUndefined.year}-${
+              dateOrUndefined.weekNumber < 10
+                  ? '0' + dateOrUndefined.weekNumber
+                  : dateOrUndefined.weekNumber
+          }`
+        : '';
 
     return <div {...attr}>{dateDisplay}</div>;
 };

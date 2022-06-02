@@ -15,6 +15,7 @@ import {
 import {
     DataSource,
     DataViewerProps,
+    HelpPageOptions,
     SearchOption,
     Validator,
     ViewOptions,
@@ -168,6 +169,11 @@ export function createWorkSpace<T, SideSheetIds extends string>(
         },
         registerWorkflowEditorOptions(workflowEditorOptions: WorkflowEditorOptions) {
             updateState({ workflowEditorOptions });
+
+            return workspaceAPI;
+        },
+        registerHelpPage(helpPageOptions: HelpPageOptions) {
+            updateState({ helpPageOptions });
 
             return workspaceAPI;
         },

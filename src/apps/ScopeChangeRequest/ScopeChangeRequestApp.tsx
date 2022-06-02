@@ -1,4 +1,6 @@
+import { tokens } from '@equinor/eds-tokens';
 import { ClientApi } from '@equinor/lighthouse-portal-client';
+import styled from 'styled-components';
 import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
 import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
@@ -37,6 +39,7 @@ export function setup(appApi: ClientApi): void {
         .registerStatusItems(statusBarConfig)
         .registerFilterOptions(filterConfig)
         .registerPrefetchQueries(prefetchQueriesOptions)
+        // .registerHelpPage({ Component: ScopeChangeRequestHelpPage })
         .registerSearchOptions([
             { name: 'Id', valueFormatter: ({ sequenceNumber }) => sequenceNumber.toString() },
             { name: 'Title', valueFormatter: ({ title }) => title },
@@ -61,3 +64,18 @@ export function setup(appApi: ClientApi): void {
                 : (undefined as unknown as PowerBiOptions)
         );
 }
+
+export const ScopeChangeRequestHelpPage = () => {
+    return (
+        <div style={{ maxWidth: '30%' }}>
+            <HelpPageHeader>Scope change request</HelpPageHeader>
+            <p></p>
+        </div>
+    );
+};
+
+const HelpPageHeader = styled.h2`
+    font-size: 28px;
+    font-weight: 500;
+    color: ${tokens.colors.text.static_icons__secondary.hex};
+`;

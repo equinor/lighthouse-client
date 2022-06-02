@@ -1,8 +1,5 @@
-import { Column, Table } from '@equinor/Table';
+import { Column, EstimateBar, ExpendedProgressBar, ProgressBar, Table } from '@equinor/Table';
 import { WorkOrder } from '../../Types/workOrder';
-import { EstimateBar } from '../WoProgressBars/EstimateBar';
-import { ExpendedProgressBar } from '../WoProgressBars/ExpendedProgressBar';
-import { ProgressBar } from '../WoProgressBars/ProgressBar';
 import { generateColumn, highestEstimate, highestExpended } from './workOrderHelpers';
 
 interface WorkOrderTableProps {

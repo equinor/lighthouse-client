@@ -87,7 +87,7 @@ export const tableConfig: TableOptions<HandoverPackage> = {
         {
             key: 'commpkgNo',
             title: 'Commpkgno',
-            width: 140,
+            width: 100,
         },
         {
             key: 'description',
@@ -100,12 +100,12 @@ export const tableConfig: TableOptions<HandoverPackage> = {
         },
         {
             key: 'mcStatus',
-            title: 'MC Status',
+            title: 'MC status',
             width: 120,
         },
         {
             key: 'commpkgStatus',
-            title: 'Comm Status',
+            title: 'Comm status',
             width: 120,
         },
         {
