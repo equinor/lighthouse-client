@@ -4,15 +4,16 @@ import { useMutation, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { PhaseSelect } from '../../../DisciplineReleaseControl/Components/Form/Inputs/PhaseSelect';
 import { getReleaseControlById } from '../../api/releaseControl/Request';
-
 import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
 import { useRequestMutations } from '../../hooks/useRequestMutations';
+import { releaseManifest } from '../../ReleaseControlApp';
 import { disciplineReleaseControlFactoryContext } from '../Factory/FactoryComponent';
 import { ReleaseControlSidesheet } from '../sidesheet/ReleaseControlSidesheet';
-import { TitleInput, DescriptionInput, PlannedDueDateInput, ReferencesInput } from './Inputs';
+import { DescriptionInput, PlannedDueDateInput, ReferencesInput, TitleInput } from './Inputs';
 import { FlexColumn, FormWrapper } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep, getNewWorkflowSteps } from './WorkflowEditor/WorkflowEditorHelpers';
+
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom } = DRCFormAtomApi;
@@ -81,7 +82,11 @@ export const SubmitButtonBar = (): JSX.Element => {
     const redirect = async (releaseControlId: string) => {
         if (!releaseControlId) return;
 
-        swapComponent(ReleaseControlSidesheet, await getReleaseControlById(releaseControlId));
+        swapComponent(
+            ReleaseControlSidesheet,
+            await getReleaseControlById(releaseControlId),
+            releaseManifest
+        );
         queryClient.invalidateQueries();
     };
 

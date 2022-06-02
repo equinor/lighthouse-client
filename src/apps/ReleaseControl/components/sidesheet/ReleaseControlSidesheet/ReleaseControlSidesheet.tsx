@@ -2,17 +2,16 @@ import { useAtom } from '@dbeining/react-atom';
 import { createAtom } from '@equinor/atom';
 import { Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-
 import { useEdsTabs } from '../../../../../hooks/edsTabs/useEdsTabs';
-import { SidesheetApi } from '../../../../../packages/Sidesheet/Types/SidesheetApi';
 import { BannerItem } from '../../../../DisciplineReleaseControl/Components/Sidesheet/ReleaseControlSidesheetBanner';
 import { Banner } from '../../../../ScopeChangeRequest/Components/Sidesheet/SidesheetBanner/SidesheetBanner';
 import {
     disableEditMode,
     sideSheetEditModeAtom,
-    toggleEditMode,
+    toggleEditMode
 } from '../../../Atoms/editModeAtom';
 import { useGetReleaseControl } from '../../../hooks/useGetReleaseControl';
 import { useReleaseControlAccess } from '../../../hooks/useReleaseControlAccess';
