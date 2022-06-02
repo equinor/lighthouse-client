@@ -7,7 +7,6 @@ import { Tree } from '../Icons/Tree';
 import { GardenTab } from '../Tabs/GardenTab';
 import { ListTab as TableTab } from '../Tabs/ListTab';
 import { PowerBiTab } from '../Tabs/PowerBiTab';
-import { TimelineTab } from '../Tabs/TimeLineTAb';
 import { TreeTab } from '../Tabs/TreeTab';
 import { VisualEditorTab } from '../Tabs/VisualEditorTab';
 import { WorkSpaceConfig, WorkspaceTab } from '../WorkSpaceApi/workspaceState';
@@ -39,12 +38,6 @@ const tabsConfig: TabsConfigItem[] = [
         viewComponent: GardenTab,
     },
     {
-        title: 'Timeline',
-        tabId: 'gantt',
-        icon: Gantt,
-        viewComponent: TimelineTab,
-    },
-    {
         title: 'Editor',
         tabId: 'editor',
         icon: Gantt,
@@ -68,18 +61,35 @@ function getTabConfig(tabsConfig: TabsConfigItem[]) {
         treeOptions,
         tableOptions,
         gardenOptions,
-        timelineOptions,
         workflowEditorOptions,
         powerBiOptions,
     }: WorkSpaceConfig<unknown>): ActiveTabs {
         const tabs = tabsConfig.filter((item) => {
-            if (treeOptions && item.title === 'Tree') return true;
-            if (tableOptions && item.title === 'Table') return true;
-            if (gardenOptions && item.title === 'Garden') return true;
-            if (timelineOptions && item.title === 'Timeline') return true;
-            if (workflowEditorOptions && item.title === 'Editor') return true;
-            if (powerBiOptions && item.title === 'PowerBI') return true;
-            return false;
+            switch (item.tabId) {
+                case 'tree': {
+                    return Boolean(treeOptions);
+                }
+
+                case 'table': {
+                    return Boolean(tableOptions);
+                }
+
+                case 'garden': {
+                    return Boolean(gardenOptions);
+                }
+
+                case 'editor': {
+                    return Boolean(workflowEditorOptions);
+                }
+
+                case 'analytics': {
+                    return Boolean(powerBiOptions);
+                }
+
+                default: {
+                    return false;
+                }
+            }
         });
         return {
             tabs,

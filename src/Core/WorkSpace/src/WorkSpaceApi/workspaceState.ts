@@ -5,6 +5,7 @@ import { Filter, PBIOptions } from '@equinor/lighthouse-powerbi';
 import { StatusItem } from '@equinor/lighthouse-status-bar';
 import { CustomVirtualView, GardenOptions, StatusView } from '@equinor/ParkView';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
+import { GridOptions } from 'ag-grid-enterprise';
 import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
 import { TableOptions as ReactTableOptions } from 'react-table';
@@ -76,7 +77,7 @@ export interface PrefetchQueriesOptions {
     options?: FetchQueryOptions<unknown, unknown, unknown, string[]> | undefined;
 }
 
-export type WorkspaceTab = 'tree' | 'table' | 'garden' | 'analytics' | 'gantt' | 'editor';
+export type WorkspaceTab = 'tree' | 'table' | 'garden' | 'analytics' | 'gantt' | 'editor' | 'grid';
 
 export interface WorkSpaceConfig<T> {
     name: string;
@@ -99,6 +100,7 @@ export interface WorkSpaceConfig<T> {
     powerBiOptions?: PowerBiOptions;
     workflowEditorOptions?: WorkflowEditorOptions;
     presetOptions?: PresetOption[];
+    gridOptions?: GridOptions;
     searchOptions?: SearchOption<T>[];
 }
 
@@ -109,7 +111,7 @@ export interface PowerBiOptions {
     pages: Page[];
 }
 
-export interface TimeLineOptions { }
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

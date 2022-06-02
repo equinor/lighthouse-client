@@ -1,15 +1,15 @@
-import { TableAPI } from '@equinor/Table';
+import { ColumnApi } from 'ag-grid-community';
 import styled from 'styled-components';
 import { ColumnPicker } from './ColumnPicker/ColumnPicker';
 
 interface TableConfigBarProps {
-    getTableApi: () => TableAPI;
+    columnApi: ColumnApi | null;
 }
 
-export const TableConfigBar = ({ getTableApi }: TableConfigBarProps): JSX.Element => {
+export const TableConfigBar = ({ columnApi }: TableConfigBarProps): JSX.Element => {
     return (
         <TableConfigBarWrapper>
-            {getTableApi && <ColumnPicker getApi={getTableApi} />}
+            {columnApi && <ColumnPicker columnApi={columnApi} />}
         </TableConfigBarWrapper>
     );
 };
