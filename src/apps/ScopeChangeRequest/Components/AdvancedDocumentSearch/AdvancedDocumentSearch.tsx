@@ -13,6 +13,7 @@ import { Switch } from '../../../../components/JSXSwitch/Components/Switch';
 import { Case } from '@equinor/JSX-Switch';
 import { httpClient } from '../../../../Core/Client/Functions';
 import { Tag } from '../../types/ProCoSys/Tag';
+import { CommissioningPackage } from '../../types/ProCoSys/CommissioningPackage';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -55,6 +56,7 @@ export const AdvancedDocumentSearch = ({
         'tag',
         'system',
         'batchTag',
+        'batchCommPkg',
         // 'stidtag',
     ];
 
@@ -119,6 +121,33 @@ export const AdvancedDocumentSearch = ({
                 object: value,
                 searchValue: value.TagNo,
                 value: value.TagNo,
+                metadata: value.Description,
+            })
+        );
+
+        appendItem(data);
+        setResults(data);
+    };
+
+    const resolveBatchCommPkgs = async (commPkgNo: string[]) => {
+        setIsLoading(true);
+        abort();
+        const { procosys } = httpClient();
+
+        const res = await procosys.fetch(
+            `api/commpkg/BycommpkgNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${commPkgNo
+                .map((x) => `&commPkgNos=${x}`)
+                .toString()
+                .replaceAll(',', '')}`
+        );
+
+        const data: TypedSelectOption[] = (await res.json()).map(
+            (value: CommissioningPackage): TypedSelectOption => ({
+                type: 'commpkg',
+                label: value.CommPkgNo,
+                object: value,
+                searchValue: value.CommPkgNo,
+                value: value.CommPkgNo,
                 metadata: value.Description,
             })
         );
@@ -209,7 +238,6 @@ export const AdvancedDocumentSearch = ({
                                                 : 'Please choose a reference type'
                                         }
                                         onChange={(e) => {
-                                            console.log(e.target.value);
                                             setSubResults(undefined);
                                             setSearchText(e.target.value || undefined);
                                             if (e.target.value && e.target.value.length > 0) {
@@ -231,8 +259,37 @@ export const AdvancedDocumentSearch = ({
                                         multiline
                                         rows={1}
                                         id="batchTags"
+                                        inputIcon={
+                                            <>
+                                                {isLoading ? (
+                                                    <Progress.Dots color="primary" />
+                                                ) : (
+                                                    <Icon name="search" />
+                                                )}
+                                            </>
+                                        }
                                         onChange={(e) => {
                                             resolveBatchTags(e.target.value.split('\n'));
+                                        }}
+                                    />
+                                </Case>
+
+                                <Case when={referenceType === 'batchCommPkg'}>
+                                    <TextField
+                                        multiline
+                                        rows={1}
+                                        id="batchComm"
+                                        inputIcon={
+                                            <>
+                                                {isLoading ? (
+                                                    <Progress.Dots color="primary" />
+                                                ) : (
+                                                    <Icon name="search" />
+                                                )}
+                                            </>
+                                        }
+                                        onChange={(e) => {
+                                            resolveBatchCommPkgs(e.target.value.split('\n'));
                                         }}
                                     />
                                 </Case>
