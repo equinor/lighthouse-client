@@ -7,7 +7,7 @@ import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilter
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
 import { tabApis } from '../Context/LocationProvider';
-import { useMasterApiContext } from '../Context/TabApiProvider';
+import { useMasterApiContext } from '../Context/MasterApiProvider';
 import {
     gardenApiAtom,
     gardenStateSnapshotAtom,

@@ -15,7 +15,7 @@ import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { SidesheetEvents } from '../../../../packages/Sidesheet/Types/sidesheetEvents';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
-import { useMasterApiContext } from './TabApiProvider';
+import { useMasterApiContext } from './MasterApiProvider';
 
 export interface LocationApi {
     activeTab: WorkspaceTab;

@@ -5,7 +5,7 @@ import { WorkSpaceConfig } from '../WorkSpaceApi/workspaceState';
 import { BookmarkContextWrapper } from './BookmarkContext';
 import { DataProvider } from './DataProvider';
 import { LocationProvider } from './LocationProvider';
-import { MasterApiProvider } from './TabApiProvider';
+import { MasterApiProvider } from './MasterApiProvider';
 import { ViewProvider } from './ViewProvider';
 import { WorkspaceFilterWrapper } from './WorkspaceFilterWrapper';
 

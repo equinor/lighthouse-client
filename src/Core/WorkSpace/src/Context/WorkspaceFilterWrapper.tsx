@@ -1,7 +1,7 @@
 import { FilterApiContext, FilterOptions, useFilterApi } from '@equinor/filter';
 import { useEffect } from 'react';
 import { useDataContext } from './DataProvider';
-import { useMasterApiContext } from './TabApiProvider';
+import { useMasterApiContext } from './MasterApiProvider';
 
 interface WorkspaceFilterWrapperProps {
     children: React.ReactNode;

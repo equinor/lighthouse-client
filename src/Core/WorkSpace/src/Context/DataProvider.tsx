@@ -18,7 +18,7 @@ import {
     WorkflowEditorOptions,
 } from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
-import { useMasterApiContext } from './TabApiProvider';
+import { useMasterApiContext } from './MasterApiProvider';
 
 interface DataState {
     key: string;
