@@ -1,10 +1,16 @@
 import React, { MemoExoticComponent, MutableRefObject } from 'react';
-import { Status } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { DataSet, GardenGroups } from './data';
 import { FieldSettings } from './fieldSettings';
 
+
 export interface Options<T> {
     groupDescriptionFunc?: (data: T, groupingKey: string) => string;
+}
+
+export interface Status {
+    rating: number;
+    statusElement?: JSX.Element;
+    status?: string;
 }
 
 export interface StatusView<T> {
@@ -30,6 +36,7 @@ export interface CustomGroupView<T> {
     data: DataSet<T>;
     onClick: () => void;
     onSelect?: (item: T) => void;
+    onGroupeSelect?: (item: any) => void;
     columnExpanded: boolean;
     groupByKeys: (keyof T)[];
 }
@@ -48,7 +55,7 @@ export interface CustomVirtualView<T> {
     customGroupByView?: React.FC;
 }
 
-export interface GardenOptions<T> {
+export interface GardenOptions<T, D = T> {
     gardenKey: keyof T;
     itemKey: keyof T;
     objectIdentifier: keyof T;
@@ -74,6 +81,7 @@ export interface GardenOptions<T> {
     ) => string | undefined;
     intercepters?: GardenDataIntercepters<T>;
     onSelect?: (item: T) => string;
+    onGroupeSelect?: (item: D) => string;
     /** Function that returns the string of text that is to be displayed when a column is expanded */
     customDescription?: (item: T) => string;
     /** Function that returns the color of the item to be displayed */

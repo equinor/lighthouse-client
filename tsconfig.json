@@ -33,11 +33,17 @@
             "@equinor/lighthouse-functions": [
                 "./src/Core/Functions"
             ],
+            "@equinor/lighthouse-fusion-modules": [
+                "./src/FusionModules"
+            ],
             "@equinor/atom": [
                 "./src/Core/Atom"
             ],
             "@equinor/lighthouse-portal-client": [
                 "./src/Core/Client"
+            ],
+            "@equinor/lighthouse-confirmation-dialog": [
+                "./src/Core/ConfirmationDialog"
             ],
             "@equinor/lighthouse-components": [
                 "./src/packages/Components"
@@ -47,6 +53,9 @@
             ],
             "@equinor/GroupView": [
                 "./src/Core/GroupView"
+            ],
+            "@equinor/lighthouse-workspace-api": [
+                "./src/Core/WorkSpaceApi"
             ],
             "@equinor/WorkSpace": [
                 "./src/Core/WorkSpace"

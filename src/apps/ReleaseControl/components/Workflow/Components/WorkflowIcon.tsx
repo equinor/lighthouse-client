@@ -25,8 +25,8 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
                 <FixedIconContainer>
                     <Icon
                         name="check_circle_outlined"
-                        height={'24'}
-                        width={'24'}
+                        height={'20'}
+                        width={'25'}
                         color={tokens.colors.interactive.primary__resting.hex}
                     />
                 </FixedIconContainer>
@@ -45,8 +45,8 @@ export function WorkflowIcon({ status, number }: WorkflowIconProps): JSX.Element
                 <FixedIconContainer>
                     <Icon
                         name="close_circle_outlined"
-                        height={'24'}
-                        width={'24'}
+                        height={'20'}
+                        width={'25'}
                         color={tokens.colors.infographic.primary__energy_red_100.hex}
                     />
                 </FixedIconContainer>
@@ -81,7 +81,7 @@ const GreenCircle = styled.div`
     align-items: center;
     display: flex;
     border-radius: 50%;
-    width: 20px;
+    width: 25px;
     height: 20px;
     color: white;
     font-size: 14px;
@@ -94,7 +94,7 @@ const GreyCircle = styled.div`
     align-items: center;
     display: flex;
     border-radius: 50%;
-    width: 16px;
+    width: 21px;
     height: 16px;
     font-size: 14px;
     border: 2px solid #6f6f6f;
@@ -102,8 +102,8 @@ const GreyCircle = styled.div`
 `;
 
 const FixedIconContainer = styled.div`
-    width: 24px;
-    height: 24px;
+    width: 25px;
+    height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;

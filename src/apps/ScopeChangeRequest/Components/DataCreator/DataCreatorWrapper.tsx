@@ -1,15 +1,15 @@
+import { deref } from '@dbeining/react-atom';
+import { createAtom } from '@equinor/atom';
+import { getSidesheetContext, SidesheetApi } from '@equinor/sidesheet';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { deref } from '@dbeining/react-atom';
-
-import { ScopeChangeErrorBanner } from '../ErrorBanner/ErrorBanner';
-import { useOctopusErrorHandler } from '../../hooks/observers/useOctopusErrorHandler';
-import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
-import { FormBanner } from '../Form/FormBanner/FormBanner';
-import { SidesheetApi } from '../../../../packages/Sidesheet/Types/SidesheetApi';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
-import { SidesheetCoreContext } from '../../../../packages/Sidesheet/context/sidesheetContext';
-import { createAtom } from '@equinor/atom';
+import { useOctopusErrorHandler } from '../../hooks/observers/useOctopusErrorHandler';
+import { ScopeChangeErrorBanner } from '../ErrorBanner/ErrorBanner';
+import { FormBanner } from '../Form/FormBanner/FormBanner';
+import { ScopeChangeRequestForm } from '../Form/ScopeChangeRequestForm';
+
+
 
 interface ScopeChangeCreateFormProps {
     actions: SidesheetApi;
@@ -25,7 +25,7 @@ export const ScopeChangeCreateForm = ({ actions }: ScopeChangeCreateFormProps): 
         actions.setWidth(1150);
 
         return () => {
-            deref(SidesheetCoreContext).SidesheetComponent !== ScopeChangeCreateForm &&
+            deref(getSidesheetContext()).SidesheetComponent !== ScopeChangeCreateForm &&
                 scopeChangeFormAtomApi.clearState();
         };
     }, []);
