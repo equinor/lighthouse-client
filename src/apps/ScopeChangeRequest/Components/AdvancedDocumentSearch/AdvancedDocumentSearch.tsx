@@ -116,7 +116,11 @@ export const AdvancedDocumentSearch = ({
     const resolveBatchTags = async (tagNos: string[]) => {
         startNewSearch();
         const results = await fetchBatchTags(tagNos, getSignal());
-        setNotFound(tagNos.filter((s) => !results.map((s) => s.value).includes(s)));
+        setNotFound(
+            tagNos
+                .filter((s) => !results.map((s) => s.value).includes(s))
+                .filter((s) => Boolean(s.length))
+        );
         appendItem(results);
         setSearchResults(results);
     };
@@ -124,7 +128,11 @@ export const AdvancedDocumentSearch = ({
     const resolveBatchCommPkgs = async (commPkgNo: string[]) => {
         startNewSearch();
         const results = await fetchBatchCommPkg(commPkgNo, getSignal());
-        setNotFound(commPkgNo.filter((s) => !results.map((s) => s.value).includes(s)));
+        setNotFound(
+            commPkgNo
+                .filter((s) => !results.map((s) => s.value).includes(s))
+                .filter((s) => Boolean(s.length))
+        );
         appendItem(results);
         setSearchResults(results);
     };
@@ -195,13 +203,14 @@ export const AdvancedDocumentSearch = ({
                                         id={'Stid document selector'}
                                         value={searchText}
                                         inputIcon={
-                                            <>
-                                                {isLoading ? (
+                                            <Switch>
+                                                <Case when={isLoading}>
                                                     <Progress.Dots color="primary" />
-                                                ) : (
+                                                </Case>
+                                                <Case when={!isLoading}>
                                                     <Icon name="search" />
-                                                )}
-                                            </>
+                                                </Case>
+                                            </Switch>
                                         }
                                         placeholder={
                                             referenceType

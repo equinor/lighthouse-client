@@ -1,4 +1,4 @@
-import { httpClient } from '../../../../../Core/Client/Functions';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { Tag } from '../../../types/ProCoSys/Tag';
 import { TypedSelectOption } from '../../Search/searchType';
 

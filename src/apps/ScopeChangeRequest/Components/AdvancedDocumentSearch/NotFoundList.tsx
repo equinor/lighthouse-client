@@ -41,7 +41,6 @@ export const ErrorContainer = styled.div`
     background-color: ${tokens.colors.ui.background__danger.hex};
     display: flex;
     padding: 0.5em 0.5em;
-    display: flex;
     text-align: left;
     flex-direction: column;
     gap: 0.7em;
