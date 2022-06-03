@@ -19,10 +19,8 @@ import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { useCancellationToken } from '@equinor/hooks';
 import { Switch } from '../../../../components/JSXSwitch/Components/Switch';
 import { Case } from '@equinor/JSX-Switch';
-import { httpClient } from '../../../../Core/Client/Functions';
-import { Tag } from '../../types/ProCoSys/Tag';
-import { CommissioningPackage } from '../../types/ProCoSys/CommissioningPackage';
-import styled from 'styled-components';
+import { NotFoundList } from './NotFoundList';
+import { fetchBatchCommPkg, fetchBatchTags } from '../../api/PCS/Batch';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -314,97 +312,3 @@ export const AdvancedDocumentSearch = ({
         </Fragment>
     );
 };
-
-interface NotFoundListProps {
-    type: string | undefined;
-    notFound: string[];
-}
-export function NotFoundList({ notFound, type }: NotFoundListProps): JSX.Element | null {
-    if (notFound.length === 0 || !type) {
-        return null;
-    }
-
-    return (
-        <ErrorContainer>
-            <div>
-                {notFound.length} {`${type}s`} were not found:
-            </div>
-            <ErrorDetails>
-                {notFound.map((s) => (
-                    <div key={s}>{s}</div>
-                ))}
-            </ErrorDetails>
-        </ErrorContainer>
-    );
-}
-
-export const ErrorDetails = styled.div`
-    flex-direction: column;
-    gap: 0em;
-    display: flex;
-    text-align: left;
-    width: 100%;
-`;
-
-export const ErrorContainer = styled.div`
-    min-width: 250px;
-    min-height: 15px;
-    width: -webkit-fill-available;
-    height: auto;
-    border-radius: 5px;
-    background-color: ${tokens.colors.ui.background__danger.hex};
-    display: flex;
-    padding: 0.5em 0.5em;
-    display: flex;
-    text-align: left;
-    flex-direction: column;
-    gap: 0.7em;
-`;
-
-async function fetchBatchCommPkg(commPkgNo: string[], signal: AbortSignal) {
-    const { procosys } = httpClient();
-
-    const res = await procosys.fetch(
-        `api/commpkg/BycommpkgNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${commPkgNo
-            .map((x) => `&commPkgNos=${x}`)
-            .toString()
-            .replaceAll(',', '')}`,
-        { signal }
-    );
-
-    const data: TypedSelectOption[] = (await res.json()).map(
-        (value: CommissioningPackage): TypedSelectOption => ({
-            type: 'commpkg',
-            label: `${value.CommPkgNo} - ${value.Description}`,
-            object: value,
-            searchValue: value.CommPkgNo,
-            value: value.CommPkgNo,
-            metadata: value.Description,
-        })
-    );
-    return data;
-}
-
-async function fetchBatchTags(tagNos: string[], signal: AbortSignal) {
-    const { procosys } = httpClient();
-
-    const res = await procosys.fetch(
-        `api/tag/ByTagNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${tagNos
-            .map((x) => `&tagNos=${x}`)
-            .toString()
-            .replaceAll(',', '')}`,
-        { signal }
-    );
-
-    const data: TypedSelectOption[] = (await res.json()).map(
-        (value: Tag): TypedSelectOption => ({
-            type: 'tag',
-            label: `${value.TagNo} - ${value.Description}`,
-            object: value,
-            searchValue: value.TagNo,
-            value: value.TagNo,
-            metadata: value.Description,
-        })
-    );
-    return data;
-}
