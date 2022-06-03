@@ -1,8 +1,7 @@
 import { AuthenticationProvider } from '@equinor/authentication';
-import { Factory } from '@equinor/DataFactory';
 import { createPowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
 import { createPageViewer, PageViewerOptions as PageOptions } from '@equinor/PageViewer';
-import { createWorkSpace, ViewerOptions } from '@equinor/WorkSpace';
+import { createWorkSpace, WorkspaceOptions } from '@equinor/WorkSpace';
 import { AppConfigResult } from '../../Client/Types/AppConfig';
 import { ClientApi } from '../Types/App';
 import { AppManifest } from '../Types/AppManifest';
@@ -11,12 +10,11 @@ export interface ClientBuilderConfig extends AppManifest {
     appConfig: AppConfigResult;
     authProvider: AuthenticationProvider;
     openSidesheet: (SidesheetContent?: React.FC<any> | undefined, props?: any) => void;
-    createDataFactory: (factory: Factory) => void;
     isProduction: boolean;
 }
 
-export type WorkspaceOptions<T> = Omit<
-    ViewerOptions<T>,
+export type WorkspaceViewerOptions<T, SideSheetIds extends string> = Omit<
+    WorkspaceOptions<T, SideSheetIds>,
     'viewerId' | 'initialState' | 'dataFactoryCreator' | 'openSidesheet'
 >;
 
@@ -27,12 +25,13 @@ export function clientApiBuilder(config: ClientBuilderConfig): ClientApi {
 
     return {
         ...config,
-        createWorkSpace<T>(options: WorkspaceOptions<T>) {
+        createWorkSpace<T, SideSheetIds extends string = string>(
+            options: WorkspaceViewerOptions<T, SideSheetIds>
+        ) {
             return createWorkSpace({
                 ...options,
                 initialState: [],
                 viewerId: shortName,
-                dataFactoryCreator: config.createDataFactory,
                 openSidesheet: config.openSidesheet,
             });
         },

@@ -1,13 +1,7 @@
-import { createAtom } from '@equinor/atom';
+import { Atom } from '@dbeining/react-atom';
 import { SidesheetApi } from '@equinor/sidesheet';
-
-import { OptionRequestResult } from '../api/releaseControl/Access/optionsRequestChecker';
+import { ReleaseControlAccess } from '../hooks/useReleaseControlAccess';
 import { ReleaseControl } from '../types/releaseControl';
-
-export interface ReleaseControlAccess extends OptionRequestResult {
-    canVoid: boolean;
-    canUnVoid: boolean;
-}
 
 export interface ReleaseControlAtom {
     releaseControl: ReleaseControl;
@@ -15,7 +9,7 @@ export interface ReleaseControlAtom {
     actions: SidesheetApi;
 }
 
-export const releaseControlContext = createAtom<ReleaseControlAtom>({
+export const releaseControlAtom = Atom.of<ReleaseControlAtom>({
     requestAccess: {
         canDelete: false,
         canGet: false,

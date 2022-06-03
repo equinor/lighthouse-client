@@ -4,8 +4,7 @@ import { deleteAttachment } from '../../../api/ScopeChange/Request';
 import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
 import { useScopeChangeMutation } from '../../../hooks/React-Query/useScopechangeMutation';
 import { scopeChangeMutationKeys } from '../../../keys/scopeChangeMutationKeys';
-import { Inline } from '../../ErrorBanner/ErrorBanner.styles';
-import { AttachmentsList, AttachmentName } from '../../Form/ScopeChangeForm.styles';
+import { AttachmentsList, AttachmentName, Inline } from '../../Form/ScopeChangeForm.styles';
 
 export const RequestAttachmentsList = (): JSX.Element => {
     const { attachments, id } = useScopeChangeContext((s) => ({

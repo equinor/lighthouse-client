@@ -15,6 +15,14 @@ export const WrapperMenu = styled.div`
     width: 100%;
 `;
 
+export const Selections = styled.div`
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    top: 50px;
+    left: 50px;
+`;
+
 export const Menu = styled.div`
     display: flex;
     bottom: 50px;

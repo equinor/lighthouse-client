@@ -7,19 +7,19 @@ import {
     Chevron,
     HTGardenSubGroup,
     HTSubGroupText,
-    SubGroupWrapper,
     SubGroupText,
+    SubGroupWrapper
 } from './GardenItemStyles';
 
 const ReleaseControlGardenGroupView = ({
     data,
     columnExpanded,
     onClick,
-    onSelect,
+    onGroupeSelect,
 }: CustomGroupView<Pipetest>) => {
     const handleSubGroupClick = () => {
         if (data.value.startsWith('HT')) {
-            onSelect && onSelect(data as any);
+            onGroupeSelect && onGroupeSelect({ value: data.value, items: data.items || [] });
         }
     };
     return (
