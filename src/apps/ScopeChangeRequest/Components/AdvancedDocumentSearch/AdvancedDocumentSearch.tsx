@@ -9,6 +9,8 @@ import {
     TextField,
     Tooltip,
 } from '@equinor/eds-core-react';
+import { Case, Switch } from '@equinor/JSX-Switch';
+import { useCancellationToken } from '@equinor/hooks';
 import { tokens } from '@equinor/eds-tokens';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { StidTypes } from '../../types/STID/STIDTypes';
@@ -16,11 +18,9 @@ import { Result } from './Results';
 import { AdvancedSearch, ModalHeader, Wrapper, Title, SearchField } from './advancedSearch.styles';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
-import { useCancellationToken } from '@equinor/hooks';
-import { Switch } from '../../../../components/JSXSwitch/Components/Switch';
-import { Case } from '@equinor/JSX-Switch';
 import { NotFoundList } from './NotFoundList';
 import { fetchBatchCommPkg, fetchBatchTags } from '../../api/PCS/Batch';
+import styled from 'styled-components';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -267,28 +267,13 @@ export const AdvancedDocumentSearch = ({
                             </Switch>
                         </SearchField>
                         <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                            <Tooltip title="Gives you a bigger search field and lets you paste a list">
-                                <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    {referenceType === 'tag' && (
-                                        <div>
-                                            <Checkbox
-                                                checked={isBatchTag}
-                                                onChange={flipBatchTag}
-                                            />
-                                            Batch search
-                                        </div>
-                                    )}
-                                    {referenceType === 'commpkg' && (
-                                        <div>
-                                            <Checkbox
-                                                checked={isBatchCommPkg}
-                                                onChange={flipBatchCommPkg}
-                                            />
-                                            Batch search
-                                        </div>
-                                    )}
-                                </div>
-                            </Tooltip>
+                            <BatchCheckboxes
+                                flipBatchCommPkg={flipBatchCommPkg}
+                                flipBatchTag={flipBatchTag}
+                                isBatchCommPkg={isBatchCommPkg}
+                                isBatchTag={isBatchTag}
+                                referenceType={referenceType}
+                            />
                         </div>
 
                         <NotFoundList notFound={notFound} type={referenceType} />
@@ -312,3 +297,43 @@ export const AdvancedDocumentSearch = ({
         </Fragment>
     );
 };
+
+interface BatchCheckboxesProps {
+    referenceType: (ProcoSysTypes | StidTypes) | undefined;
+    isBatchTag: boolean;
+    flipBatchTag: () => void;
+    isBatchCommPkg: boolean;
+    flipBatchCommPkg: () => void;
+}
+
+const BatchCheckboxes = ({
+    flipBatchCommPkg,
+    flipBatchTag,
+    isBatchCommPkg,
+    isBatchTag,
+    referenceType,
+}: BatchCheckboxesProps) => {
+    return (
+        <Tooltip title="Gives you a bigger search field and lets you paste a list">
+            <CheckboxWrapper>
+                {referenceType === 'tag' && (
+                    <div>
+                        <Checkbox checked={isBatchTag} onChange={flipBatchTag} />
+                        Batch search
+                    </div>
+                )}
+                {referenceType === 'commpkg' && (
+                    <div>
+                        <Checkbox checked={isBatchCommPkg} onChange={flipBatchCommPkg} />
+                        Batch search
+                    </div>
+                )}
+            </CheckboxWrapper>
+        </Tooltip>
+    );
+};
+
+const CheckboxWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`;
