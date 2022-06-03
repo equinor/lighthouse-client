@@ -1,6 +1,5 @@
 import { createAtom } from '@equinor/atom';
 import { EventHub } from '@equinor/lighthouse-utils';
-import { openSidesheet, useSideSheet } from '@equinor/sidesheet';
 import { TableAPI } from '@equinor/Table';
 import {
     createContext,
@@ -14,10 +13,8 @@ import {
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { SidesheetEvents } from '../../../../packages/Sidesheet/Types/sidesheetEvents';
-import { Fallback } from '../Components/FallbackSidesheet/Fallback';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
-import { useDataContext } from './DataProvider';
 import { useMasterApiContext } from './TabApiProvider';
 
 export interface LocationApi {
@@ -29,8 +26,8 @@ const Context = createContext({} as LocationApi);
 
 export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
     const { id } = useParams();
-    const { data, dataApi } = useDataContext();
-    const { defaultTab, onSelect, idResolver, objectIdentifier } = useWorkSpace();
+
+    const { defaultTab } = useWorkSpace();
 
     const currentTabId = useMemo(() => id && `/${id}`, [id]);
 
@@ -54,37 +51,6 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         [currentTabId, location, navigate]
     );
 
-    const findItem = useCallback(
-        (id: string): unknown | undefined => {
-            return data.find((x) => x[objectIdentifier] === id);
-        },
-        [data, objectIdentifier]
-    );
-
-    const mountSidesheetFromUrl = useCallback(async () => {
-        if (!onSelect) return;
-        const id = location.hash.split('/')[1];
-        if (idResolver) {
-            try {
-                const item = await idResolver(id);
-                if (item !== undefined) {
-                    onSelect(item);
-                    return;
-                }
-            } catch (e) {
-                openSidesheet(Fallback);
-            }
-        } else {
-            await dataApi.refetch();
-            const item = findItem(id);
-            if (item) {
-                onSelect(item);
-                return;
-            }
-        }
-        openSidesheet(Fallback);
-    }, [data, findItem, idResolver, location.hash, onSelect]);
-
     /**
      * Add default tab to url if id is undefined
      */
@@ -96,29 +62,6 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
-
-    /**
-     * Removes hash from url when closed
-     */
-    const { props: sidesheetProps, SidesheetComponent } = useSideSheet();
-    // useEffect(() => {
-    //     if (location.hash.length > 0) return;
-    //     if (!sidesheetProps && !SidesheetComponent) {
-    //         navigate(location.pathname, { replace: true });
-    //     }
-    // }, [sidesheetProps, SidesheetComponent, location.pathname]);
-
-    /**
-     * Store sidesheet state in url
-     */
-    useEffect(() => {
-        if (sidesheetProps || SidesheetComponent) return;
-        if (location.hash.length > 0 && onSelect) {
-            mountSidesheetFromUrl();
-        }
-    }, []);
-
-    // useClearSelectedOnSidesheetClose();
 
     useEffect(() => {
         const ev = new EventHub();

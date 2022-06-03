@@ -1,9 +1,11 @@
-import { Button, Icon } from '@equinor/eds-core-react';
+import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { ErrorBoundary, ErrorFallbackSidesheet } from '@equinor/ErrorBoundary';
+import { Icon } from '@equinor/lighthouse-components';
+import { WidgetManifest } from '@equinor/lighthouse-widgets';
 import { IconMenu, MenuItem } from '@equinor/overlay-menu';
 import { Resizable } from 're-resizable';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { openSidesheet } from '../Functions';
 import { useInternalSidesheetFunction } from '../Hooks/useInternalSidesheetFunction';
@@ -11,8 +13,7 @@ import { useSideSheet } from '../Hooks/useSideSheet';
 import { CustomSidesheet, SidesheetApi } from '../Types/SidesheetApi';
 
 export const ResizableSidesheet = (): JSX.Element | null => {
-    const { SidesheetComponent, props, minWidth, width, isMinimized, color, hasUnsavedChanges } =
-        useSideSheet();
+    const { SidesheetComponent, props, minWidth, width, isMinimized, color } = useSideSheet();
     const { closeSidesheet, setIsMinimized, setWidth, setHasUnsavedChanges } =
         useInternalSidesheetFunction();
 
@@ -28,8 +29,12 @@ export const ResizableSidesheet = (): JSX.Element | null => {
         setTitle(value);
     };
 
-    function swapComponent<T>(SidesheetContent?: CustomSidesheet<T>, props?: T) {
-        openSidesheet(SidesheetContent, props, '', { color });
+    function swapComponent<T>(
+        SidesheetContent?: CustomSidesheet<T>,
+        props?: T,
+        manifest?: Partial<WidgetManifest>
+    ) {
+        openSidesheet(SidesheetContent, props, manifest);
     }
 
     const actions: SidesheetApi = {

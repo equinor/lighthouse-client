@@ -1,9 +1,8 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { openSidesheet } from '@equinor/sidesheet';
+import { openSidesheetById } from '@equinor/sidesheet';
 import { useQueryClient } from 'react-query';
 import styled from 'styled-components';
-import { ActionCenterSidesheet } from '../../../components/ActionCenter/ActionCenterSidesheet';
 import { useNotificationCenter } from '../Hooks/useNotificationCenter';
 import { notificationQueries } from '../queries/notificationQueries';
 
@@ -28,7 +27,7 @@ export function NotificationBell(): JSX.Element {
             <div
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
-                    openSidesheet(ActionCenterSidesheet);
+                    openSidesheetById('actionCenter');
                 }}
             >
                 {notificationCenter.unreadNotificationsCount > 0 ? (
