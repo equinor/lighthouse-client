@@ -3,13 +3,13 @@ import initLighthouse, {
     GetAccessFunction,
     GetCreatorComponent,
     GetCreatorFunction,
-    IDataCreationProvider
+    IDataCreationProvider,
 } from '@equinor/lighthouse-fusion-modules';
 import { fetchFunction } from '../../../apps/functions';
 import {
     registerAppConfig,
     registerClientRegistry,
-    registerInternalState
+    registerInternalState,
 } from '../Functions/RegisterActions';
 import { setClientEnv } from '../Functions/Settings';
 import { AppConfigSettings } from '../Types/AppConfig';
@@ -53,7 +53,7 @@ export async function createClient(clientOptions: ClientOptions): Promise<Client
             getCreators: clientOptions.getCreators,
         });
         continuator.onAfterInit(async ({ dataCreator }) => {
-            await dataCreator.setup(continuator.dataCreator.configuration);
+            dataCreator.setup(continuator.dataCreator.configuration);
         });
     });
 
