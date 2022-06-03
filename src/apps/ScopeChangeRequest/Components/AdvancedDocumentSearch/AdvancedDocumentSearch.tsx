@@ -1,10 +1,18 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Button, Icon, Progress, Scrim, SingleSelect, TextField } from '@equinor/eds-core-react';
+import { Fragment, useState } from 'react';
+import {
+    Button,
+    Checkbox,
+    Icon,
+    Progress,
+    Scrim,
+    SingleSelect,
+    TextField,
+    Tooltip,
+} from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { StidTypes } from '../../types/STID/STIDTypes';
 import { Result } from './Results';
-import { SubResults } from './SubResult';
 import { AdvancedSearch, ModalHeader, Wrapper, Title, SearchField } from './advancedSearch.styles';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
@@ -14,16 +22,12 @@ import { Case } from '@equinor/JSX-Switch';
 import { httpClient } from '../../../../Core/Client/Functions';
 import { Tag } from '../../types/ProCoSys/Tag';
 import { CommissioningPackage } from '../../types/ProCoSys/CommissioningPackage';
+import styled from 'styled-components';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
     appendItem: (item: TypedSelectOption | TypedSelectOption[]) => void;
     removeItem: (value: string) => void;
-}
-
-export interface SubResult {
-    tagName: string;
-    documents: TypedSelectOption[];
 }
 
 export const AdvancedDocumentSearch = ({
@@ -38,10 +42,28 @@ export const AdvancedDocumentSearch = ({
     const [isOpen, setIsOpen] = useState(false);
     const [searchText, setSearchText] = useState<string | undefined>();
     const [results, setResults] = useState<TypedSelectOption[]>([]);
-    const [subResults, setSubResults] = useState<SubResult | undefined>();
+
     const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>(
         'tag'
     );
+
+    const setSearchResults = (results) => {
+        setResults(results);
+        setIsLoading(false);
+    };
+
+    const [isBatchTag, setIsBatchTag] = useState(false);
+    const [isBatchCommPkg, setIsBatchCommPkg] = useState(false);
+    const flipBatchCommPkg = () => {
+        setResults([]);
+        setIsBatchCommPkg((s) => !s);
+    };
+    const flipBatchTag = () => {
+        setResults([]);
+        setIsBatchTag((s) => !s);
+    };
+
+    const [notFound, setNotFound] = useState<string[]>([]);
 
     const { abort, getSignal } = useCancellationToken();
 
@@ -55,19 +77,8 @@ export const AdvancedDocumentSearch = ({
         'commpkg',
         'tag',
         'system',
-        'batchTag',
-        'batchCommPkg',
         // 'stidtag',
     ];
-
-    useEffect(() => {
-        if (!searchText || searchText.length === 0) {
-            setResults([]);
-            setSubResults(undefined);
-        }
-    }, [searchText]);
-
-    const handleReturnClick = () => setSubResults(undefined);
 
     async function handleClick(result: TypedSelectOption, action: 'Add' | 'Remove') {
         if (action === 'Add') {
@@ -86,78 +97,38 @@ export const AdvancedDocumentSearch = ({
 
     function resetStates() {
         setResults([]);
-        setSubResults(undefined);
         setSearchText(undefined);
+        setNotFound([]);
     }
 
-    const fetchResults = async (inputValue: string) => {
+    const startNewSearch = () => {
         setIsLoading(true);
-        //Aborts previous api call
         abort();
+        setNotFound([]);
+    };
+
+    const fetchResults = async (inputValue: string) => {
+        startNewSearch();
         if (!referenceType) return;
 
         const data = await search(inputValue, referenceType, getSignal());
-        setResults(data);
-
-        setIsLoading(false);
+        setSearchResults(data);
     };
 
     const resolveBatchTags = async (tagNos: string[]) => {
-        setIsLoading(true);
-        abort();
-        const { procosys } = httpClient();
-
-        const res = await procosys.fetch(
-            `api/tag/ByTagNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${tagNos
-                .map((x) => `&tagNos=${x}`)
-                .toString()
-                .replaceAll(',', '')}`,
-            { signal: getSignal() }
-        );
-
-        const data: TypedSelectOption[] = (await res.json()).map(
-            (value: Tag): TypedSelectOption => ({
-                type: 'tag',
-                label: `${value.TagNo} - ${value.Description}`,
-                object: value,
-                searchValue: value.TagNo,
-                value: value.TagNo,
-                metadata: value.Description,
-            })
-        );
-
-        appendItem(data);
-        setResults(data);
-        setIsLoading(false);
+        startNewSearch();
+        const results = await fetchBatchTags(tagNos, getSignal());
+        setNotFound(tagNos.filter((s) => !results.map((s) => s.value).includes(s)));
+        appendItem(results);
+        setSearchResults(results);
     };
 
     const resolveBatchCommPkgs = async (commPkgNo: string[]) => {
-        setIsLoading(true);
-        abort();
-        const { procosys } = httpClient();
-
-        const res = await procosys.fetch(
-            `api/commpkg/BycommpkgNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${commPkgNo
-                .map((x) => `&commPkgNos=${x}`)
-                .toString()
-                .replaceAll(',', '')}`,
-            { signal: getSignal() }
-        );
-
-        const data: TypedSelectOption[] = (await res.json()).map(
-            (value: CommissioningPackage): TypedSelectOption => ({
-                type: 'commpkg',
-                label: `${value.CommPkgNo} - ${value.Description}`,
-                object: value,
-                searchValue: value.CommPkgNo,
-                value: value.CommPkgNo,
-                metadata: value.Description,
-            })
-        );
-
-        appendItem(data);
-        setResults(data);
-        setIsLoading(false);
+        startNewSearch();
+        const results = await fetchBatchCommPkg(commPkgNo, getSignal());
+        setNotFound(commPkgNo.filter((s) => !results.map((s) => s.value).includes(s)));
+        appendItem(results);
+        setSearchResults(results);
     };
 
     return (
@@ -223,7 +194,6 @@ export const AdvancedDocumentSearch = ({
                             <Switch
                                 defaultCase={
                                     <TextField
-                                        disabled={referenceType === undefined}
                                         id={'Stid document selector'}
                                         value={searchText}
                                         inputIcon={
@@ -241,7 +211,6 @@ export const AdvancedDocumentSearch = ({
                                                 : 'Please choose a reference type'
                                         }
                                         onChange={(e) => {
-                                            setSubResults(undefined);
                                             setSearchText(e.target.value || undefined);
                                             if (e.target.value && e.target.value.length > 0) {
                                                 fetchResults(e.target.value);
@@ -257,10 +226,10 @@ export const AdvancedDocumentSearch = ({
                                         placeholder="Select a reference type"
                                     />
                                 </Case>
-                                <Case when={referenceType === 'batchTag'}>
+                                <Case when={referenceType === 'tag' && isBatchTag}>
                                     <TextField
                                         multiline
-                                        rows={1}
+                                        rows={4}
                                         id="batchTags"
                                         inputIcon={
                                             <>
@@ -277,10 +246,11 @@ export const AdvancedDocumentSearch = ({
                                     />
                                 </Case>
 
-                                <Case when={referenceType === 'batchCommPkg'}>
+                                <Case when={referenceType === 'commpkg' && isBatchCommPkg}>
                                     <TextField
                                         multiline
-                                        rows={1}
+                                        rows={4}
+                                        placeholder="Input multiple commPkg numbers"
                                         id="batchComm"
                                         inputIcon={
                                             <>
@@ -298,27 +268,44 @@ export const AdvancedDocumentSearch = ({
                                 </Case>
                             </Switch>
                         </SearchField>
-                        <div> {!isLoading && `Showing ${results.length} results`}</div>
+                        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                            <Tooltip title="Gives you a bigger search field and lets you paste a list">
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    {referenceType === 'tag' && (
+                                        <div>
+                                            <Checkbox
+                                                checked={isBatchTag}
+                                                onChange={flipBatchTag}
+                                            />
+                                            Batch search
+                                        </div>
+                                    )}
+                                    {referenceType === 'commpkg' && (
+                                        <div>
+                                            <Checkbox
+                                                checked={isBatchCommPkg}
+                                                onChange={flipBatchCommPkg}
+                                            />
+                                            Batch search
+                                        </div>
+                                    )}
+                                </div>
+                            </Tooltip>
+                        </div>
 
-                        {subResults ? (
-                            <SubResults
-                                subResults={subResults}
-                                handleReturnClick={handleReturnClick}
-                                handleClick={handleClick}
-                            />
-                        ) : (
-                            <>
-                                {results &&
-                                    results.map((result) => (
-                                        <Result
-                                            key={result.value}
-                                            handleClick={handleClick}
-                                            result={result}
-                                            isSelected={checkDuplicate}
-                                        />
-                                    ))}
-                            </>
-                        )}
+                        <NotFoundList notFound={notFound} type={referenceType} />
+
+                        <>
+                            {results &&
+                                results.map((result) => (
+                                    <Result
+                                        key={result.value}
+                                        handleClick={handleClick}
+                                        result={result}
+                                        isSelected={checkDuplicate}
+                                    />
+                                ))}
+                        </>
 
                         <br />
                     </Wrapper>
@@ -327,3 +314,97 @@ export const AdvancedDocumentSearch = ({
         </Fragment>
     );
 };
+
+interface NotFoundListProps {
+    type: string | undefined;
+    notFound: string[];
+}
+export function NotFoundList({ notFound, type }: NotFoundListProps): JSX.Element | null {
+    if (notFound.length === 0 || !type) {
+        return null;
+    }
+
+    return (
+        <ErrorContainer>
+            <div>
+                {notFound.length} {`${type}s`} were not found:
+            </div>
+            <ErrorDetails>
+                {notFound.map((s) => (
+                    <div key={s}>{s}</div>
+                ))}
+            </ErrorDetails>
+        </ErrorContainer>
+    );
+}
+
+export const ErrorDetails = styled.div`
+    flex-direction: column;
+    gap: 0em;
+    display: flex;
+    text-align: left;
+    width: 100%;
+`;
+
+export const ErrorContainer = styled.div`
+    min-width: 250px;
+    min-height: 15px;
+    width: -webkit-fill-available;
+    height: auto;
+    border-radius: 5px;
+    background-color: ${tokens.colors.ui.background__danger.hex};
+    display: flex;
+    padding: 0.5em 0.5em;
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+    gap: 0.7em;
+`;
+
+async function fetchBatchCommPkg(commPkgNo: string[], signal: AbortSignal) {
+    const { procosys } = httpClient();
+
+    const res = await procosys.fetch(
+        `api/commpkg/BycommpkgNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${commPkgNo
+            .map((x) => `&commPkgNos=${x}`)
+            .toString()
+            .replaceAll(',', '')}`,
+        { signal }
+    );
+
+    const data: TypedSelectOption[] = (await res.json()).map(
+        (value: CommissioningPackage): TypedSelectOption => ({
+            type: 'commpkg',
+            label: `${value.CommPkgNo} - ${value.Description}`,
+            object: value,
+            searchValue: value.CommPkgNo,
+            value: value.CommPkgNo,
+            metadata: value.Description,
+        })
+    );
+    return data;
+}
+
+async function fetchBatchTags(tagNos: string[], signal: AbortSignal) {
+    const { procosys } = httpClient();
+
+    const res = await procosys.fetch(
+        `api/tag/ByTagNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${tagNos
+            .map((x) => `&tagNos=${x}`)
+            .toString()
+            .replaceAll(',', '')}`,
+        { signal }
+    );
+
+    const data: TypedSelectOption[] = (await res.json()).map(
+        (value: Tag): TypedSelectOption => ({
+            type: 'tag',
+            label: `${value.TagNo} - ${value.Description}`,
+            object: value,
+            searchValue: value.TagNo,
+            value: value.TagNo,
+            metadata: value.Description,
+        })
+    );
+    return data;
+}
