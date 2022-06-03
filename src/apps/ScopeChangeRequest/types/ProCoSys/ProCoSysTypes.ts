@@ -6,6 +6,7 @@ export type ProcoSysTypes =
     | 'person'
     | 'area'
     | 'discipline'
-    | 'functionalRole';
+    | 'functionalRole'
+    | 'batchTag';
 
 export type PCSOrigins = 'Query' | 'NCR' | 'SWCR';
