@@ -1,10 +1,10 @@
-import { ResolverFunction } from '@equinor/lighthouse-functions';
-import { ClientApi, isProduction } from '@equinor/lighthouse-portal-client';
-import { SidesheetComponentManifest, SidesheetWidgetManifest } from '@equinor/lighthouse-widgets';
+import { tokens } from '@equinor/eds-tokens';
+import { ClientApi } from '@equinor/lighthouse-portal-client';
+import styled from 'styled-components';
+import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
 import { PowerBiOptions } from '../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { SidesheetWrapper } from './Components/Sidesheet/SidesheetWrapper/SidesheetWrapper';
 import { ScopeChangeRequest } from './types/scopeChangeRequest';
-import { dataCreator } from './workspaceConfig/dataCreatorConfig';
 import { dataSource, idResolver } from './workspaceConfig/dataOptions';
 import { filterConfig } from './workspaceConfig/filter/filterConfig';
 import { prefetchQueriesOptions } from './workspaceConfig/prefetchQueryOptions';
@@ -12,61 +12,70 @@ import { gardenConfig } from './workspaceConfig/sGarden/gardenConfig';
 import { tableConfig } from './workspaceConfig/sTable/tableConfig';
 import { statusBarConfig } from './workspaceConfig/statusBarConfig';
 
+const sidesheetCreator = setupWorkspaceSidesheet<ScopeChangeRequest, 'change'>({
+    id: 'change',
+    color: '#7B3A96',
+    component: SidesheetWrapper,
+    props: {
+        objectIdentifier: 'id',
+        parentApp: 'change',
+        function: idResolver,
+    },
+});
+
+export const changeSideSheetWidgetManifest = sidesheetCreator('SidesheetManifest');
+export const changeSideSheetWidgetComponent = sidesheetCreator('SidesheetComponentManifest');
+export const changeResolverFunction = sidesheetCreator('ResolverFunction');
+
 export function setup(appApi: ClientApi): void {
     appApi
-        .createWorkSpace<ScopeChangeRequest>({
-            CustomSidesheet: SidesheetWrapper,
+        .createWorkSpace<ScopeChangeRequest, 'change'>({
+            customSidesheetOptions: sidesheetCreator('WorkspaceSideSheet'),
             objectIdentifier: 'id',
         })
         .registerDataSource(dataSource)
-        .registerDataCreator(dataCreator)
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerStatusItems(statusBarConfig)
         .registerFilterOptions(filterConfig)
-        .registerIdResolver(idResolver)
+        .registerPrefetchQueries(prefetchQueriesOptions)
+        // .registerHelpPage({ Component: ScopeChangeRequestHelpPage })
         .registerSearchOptions([
             { name: 'Id', valueFormatter: ({ sequenceNumber }) => sequenceNumber.toString() },
             { name: 'Title', valueFormatter: ({ title }) => title },
         ])
         .registerPrefetchQueries(prefetchQueriesOptions)
         .registerPowerBIOptions(
-            !isProduction()
+            appApi.isProduction
                 ? {
-                    pages: [
-                        {
-                            pageId: 'ReportSectionb822b2eb4fc97aef255b',
-                            pageTitle: 'Overview',
-                            default: true,
-                        },
-                        {
-                            pageId: 'ReportSection40a8a70e6f82243888ca',
-                            pageTitle: 'History',
-                        },
-                    ],
-                    reportURI: 'pp-scope-change-analytics',
-                }
+                      pages: [
+                          {
+                              pageId: 'ReportSectionb822b2eb4fc97aef255b',
+                              pageTitle: 'Overview',
+                              default: true,
+                          },
+                          {
+                              pageId: 'ReportSection40a8a70e6f82243888ca',
+                              pageTitle: 'History',
+                          },
+                      ],
+                      reportURI: 'pp-scope-change-analytics',
+                  }
                 : (undefined as unknown as PowerBiOptions)
         );
 }
 
-export const changeSideSheetWidgetManifest: SidesheetWidgetManifest = {
-    widgetId: 'change',
-    widgetType: 'sidesheet',
-    color: '#7B3A96',
-    props: {
-        resolverId: 'changeResolver',
-    },
+export const ScopeChangeRequestHelpPage = () => {
+    return (
+        <div style={{ maxWidth: '30%' }}>
+            <HelpPageHeader>Scope change request</HelpPageHeader>
+            <p></p>
+        </div>
+    );
 };
 
-export const changeSideSheetWidgetComponent: SidesheetComponentManifest = {
-    widgetId: 'change',
-    widgetType: 'sidesheet',
-    widget: SidesheetWrapper,
-};
-
-export const changeFunction: ResolverFunction = {
-    functionId: 'changeResolver',
-    function: idResolver.idResolver,
-    type: 'idResolver',
-};
+const HelpPageHeader = styled.h2`
+    font-size: 28px;
+    font-weight: 500;
+    color: ${tokens.colors.text.static_icons__secondary.hex};
+`;

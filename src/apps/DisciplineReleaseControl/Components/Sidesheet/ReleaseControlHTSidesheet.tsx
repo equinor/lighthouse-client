@@ -1,17 +1,17 @@
-import { useEffect, useState } from 'react';
-import { ServerError } from '../../Api/Types/ServerError';
-import { Wrapper } from '../../Styles/SidesheetWrapper';
-import { ReleaseControlErrorBanner } from './ErrorBanner';
-import { HTSidesheet } from '../../Types/pipetest';
 import { Tabs } from '@equinor/eds-core-react';
-import { CheckListTable } from './CheckListTable';
-import { SidesheetTabList } from './SidesheetTabs';
-import { ElectroView } from '../Electro/ElectroView';
-import { useQuery } from 'react-query';
-import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
-import { TablesTab } from './styles';
-import { SidesheetApi } from '@equinor/sidesheet';
 import { useLocationKey } from '@equinor/filter';
+import { SidesheetApi } from '@equinor/sidesheet';
+import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { ServerError } from '../../Api/Types/ServerError';
+import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
+import { Wrapper } from '../../Styles/SidesheetWrapper';
+import { HTSidesheet } from '../../Types/pipetest';
+import { ElectroView } from '../Electro/ElectroView';
+import { CheckListTable } from './CheckListTable';
+import { ReleaseControlErrorBanner } from './ErrorBanner';
+import { SidesheetTabList } from './SidesheetTabs';
+import { TablesTab } from './styles';
 
 interface ReleaseControlHTSidesheetProps {
     item: HTSidesheet;

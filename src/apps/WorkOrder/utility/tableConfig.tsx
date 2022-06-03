@@ -1,4 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
+import { EstimateBar, ExpendedProgressBar } from '@equinor/Table';
 import { TableOptions } from '../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
 import { WorkOrder } from '../Garden/models';
 import { getMatStatus, getMatStatusColor, getMccrStatusColor } from '../Garden/utility';
@@ -148,15 +149,59 @@ export const tableConfig: TableOptions<WorkOrder> = {
         },
         {
             key: 'estimatedHours',
-            type: 'Number',
+            type: {
+                Cell: (table) => {
+                    const maxCount = Math.max(
+                        ...table.cell.column.filteredRows.map((val) =>
+                            Number(val.original?.estimatedHours)
+                        )
+                    );
+                    return (
+                        <EstimateBar
+                            current={Number(table.value.content.estimatedHours)}
+                            max={maxCount}
+                        />
+                    );
+                },
+            },
         },
         {
             key: 'expendedHours',
-            type: 'Number',
+            type: {
+                Cell: (table) => {
+                    const maxCount = Math.max(
+                        ...table.cell.column.filteredRows.map((val) =>
+                            Number(val.original?.expendedHours)
+                        )
+                    );
+
+                    return (
+                        <ExpendedProgressBar
+                            actual={Number(table.value.content.expendedHours)}
+                            estimate={Number(table.value.content.estimatedHours)}
+                            highestExpended={maxCount}
+                        />
+                    );
+                },
+            },
         },
         {
             key: 'remainingHours',
-            type: 'Number',
+            type: {
+                Cell: (table) => {
+                    const maxCount = Math.max(
+                        ...table.cell.column.filteredRows.map((val) =>
+                            Number(val.original?.remainingHours)
+                        )
+                    );
+                    return (
+                        <EstimateBar
+                            current={Number(table.value.content.remainingHours)}
+                            max={maxCount}
+                        />
+                    );
+                },
+            },
         },
         {
             key: 'projectProgress',

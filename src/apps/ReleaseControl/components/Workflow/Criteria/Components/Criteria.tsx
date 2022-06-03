@@ -24,6 +24,7 @@ interface CriteriaRenderProps {
     order: number;
     isLastCriteria: boolean;
     stepId: string;
+    hideOptions?: boolean;
 }
 
 export const CriteriaRender = ({
@@ -35,6 +36,7 @@ export const CriteriaRender = ({
     stepStatus,
     order,
     stepId,
+    hideOptions,
 }: CriteriaRenderProps): JSX.Element => {
     const { workflowStepsLength, isPast } = useReleaseControlContext(
         ({ releaseControl: { id, workflowSteps, currentWorkflowStep } }) => ({
@@ -52,7 +54,6 @@ export const CriteriaRender = ({
     const formattedDate = dateToDateTimeFormat(date);
 
     const [showAddContributor, setShowAddContributor] = useState(false);
-
     return (
         <WorkflowWrapper key={criteria.id}>
             <WorklowIconAndLine>
@@ -77,12 +78,14 @@ export const CriteriaRender = ({
                                     <DetailText>{criteria.valueDescription}</DetailText>
                                 )}
                             </span>
-                            <CriteriaActionBar
-                                stepId={stepId}
-                                criteriaId={criteria.id}
-                                stepOrder={order}
-                                setShowAddContributor={() => setShowAddContributor(true)}
-                            />
+                            {!hideOptions && (
+                                <CriteriaActionBar
+                                    stepId={stepId}
+                                    criteriaId={criteria.id}
+                                    stepOrder={order}
+                                    setShowAddContributor={() => setShowAddContributor(true)}
+                                />
+                            )}
                         </>
                     )}
                 </RowContent>

@@ -14,7 +14,7 @@ const workflowStatusMap = new Map([
 ]);
 
 export const gardenConfig: GardenOptions<ScopeChangeRequest> = {
-    gardenKey: 'state',
+    gardenKey: 'ChangeCategory' as keyof ScopeChangeRequest,
     objectIdentifier: 'id',
     itemKey: 'sequenceNumber',
     customDescription: ({ title }) => title,

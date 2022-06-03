@@ -7,10 +7,14 @@ import { getLastSigned } from './getLastSigned';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { DateTime } from 'luxon';
 import { Atom, deref, swap } from '@dbeining/react-atom';
-import { EstimateBar } from '../../Components/WoProgressBars/EstimateBar';
-import { ExpendedProgressBar } from '../../Components/WoProgressBars/ExpendedProgressBar';
 import styled from 'styled-components';
-import { TableData, CellRenderProps, CellProps } from '@equinor/Table';
+import {
+    TableData,
+    CellRenderProps,
+    CellProps,
+    EstimateBar,
+    ExpendedProgressBar,
+} from '@equinor/Table';
 
 const customCellView = (render: (req: ScopeChangeRequest) => JSX.Element | null) => ({
     Cell: (

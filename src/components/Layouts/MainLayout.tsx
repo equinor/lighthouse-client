@@ -1,4 +1,4 @@
-import { PopoutSidesheet } from '@equinor/sidesheet';
+import { PopoutSidesheet, SidesheetLoader } from '@equinor/sidesheet';
 import { Menu } from '../Menu';
 import { ChildrenWrapper, SidesheetWrapper, Wrapper } from './MainLayoutStyles';
 
@@ -13,7 +13,9 @@ export const MainLayout = ({ children, serviceMessageActive }: MainLayoutProps):
             <Menu>
                 <ChildrenWrapper>{children}</ChildrenWrapper>
                 <SidesheetWrapper>
-                    <PopoutSidesheet />
+                    <SidesheetLoader>
+                        <PopoutSidesheet />
+                    </SidesheetLoader>
                 </SidesheetWrapper>
             </Menu>
         </Wrapper>

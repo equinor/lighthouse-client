@@ -12,8 +12,9 @@ import { ClientRoutes } from './components/Routes/Routes';
 import ClientTopBar from './components/TopBar/TopBar';
 import { ConfirmationDialog } from './Core/ConfirmationDialog/Components/ConfirmationDialog';
 import ErrorFallback from './Core/ErrorBoundary/Components/ErrorFallback';
+import { DataCreatorProvider } from './FusionModules/DataCreatorReact/Context/DataCreatorProvider';
 
-const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Element => {
+const Client: React.FC<ClientProps> = ({ authProvider, dataCreator }: ClientProps): JSX.Element => {
     const isAuthenticated = useAuthenticate(authProvider);
     const queryClient = new QueryClient({
         defaultOptions: {
@@ -41,11 +42,13 @@ const Client: React.FC<ClientProps> = ({ authProvider }: ClientProps): JSX.Eleme
                     {messageData.isActive && <ServiceMessageBanner {...messageData} />}
                     <MenuProvider>
                         <BrowserRouter>
-                            <ClientTopBar />
+                            <DataCreatorProvider dataCreator={dataCreator}>
+                                <ClientTopBar />
 
-                            <MainLayout serviceMessageActive={messageData.isActive}>
-                                <ClientRoutes />
-                            </MainLayout>
+                                <MainLayout serviceMessageActive={messageData.isActive}>
+                                    <ClientRoutes />
+                                </MainLayout>
+                            </DataCreatorProvider>
                         </BrowserRouter>
                     </MenuProvider>
                 </ClientContextProvider>

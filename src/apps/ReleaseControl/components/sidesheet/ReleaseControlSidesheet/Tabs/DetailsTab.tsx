@@ -1,12 +1,17 @@
 import styled from 'styled-components';
 import { useReleaseControlContext } from '../../../../hooks/useReleaseControlContext';
+import { ReferencesList } from '../../../RelatedObjects/ReferencesList';
 import { Workflow } from '../../../Workflow/Workflow';
 
 export const DetailsTab = (): JSX.Element => {
-    const { description, dueDate } = useReleaseControlContext(({ releaseControl }) => ({
-        dueDate: new Date(releaseControl.plannedDueDate),
-        description: releaseControl.description,
-    }));
+    const { description, dueDate, tags, areas } = useReleaseControlContext(
+        ({ releaseControl }) => ({
+            dueDate: new Date(releaseControl.plannedDueDate),
+            description: releaseControl.description,
+            tags: releaseControl.tags,
+            areas: releaseControl.areas,
+        })
+    );
 
     return (
         <Wrapper>
@@ -27,7 +32,7 @@ export const DetailsTab = (): JSX.Element => {
                         <SectionHeading>References</SectionHeading>
                         <SectionWrapper>
                             <SubSectionText>
-                                <div>No references added.</div>
+                                <ReferencesList areas={areas} tags={tags} />{' '}
                             </SubSectionText>
                         </SectionWrapper>
                     </InnerSection>

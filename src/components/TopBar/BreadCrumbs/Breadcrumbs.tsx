@@ -10,7 +10,7 @@ export const LocationBreadCrumbs = (): JSX.Element => {
 
     const createBreadCrumbs = useCallback(() => {
         const paths = location.pathname.split('/').filter((s) => s !== '');
-        if (paths.length < 2) {
+        if (paths.length === 0) {
             return [];
         }
 
