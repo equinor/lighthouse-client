@@ -11,6 +11,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Workspace] Workspace configuration
 - [Work order] Added KPI's
 - [Workspace] Small ui adjustments
+- [Workspace] Added support for help pages
 
 
 ## 1.4.1
