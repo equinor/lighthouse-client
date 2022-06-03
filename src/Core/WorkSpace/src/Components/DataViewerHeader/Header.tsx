@@ -25,9 +25,8 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar
+    TitleBar,
 } from './HeaderStyles';
-
 
 interface CompletionViewHeaderProps {
     title: string;
@@ -182,7 +181,7 @@ export const CompletionViewHeader = ({
                             <ClickableIcon size={24} name="refresh" />
                         )}
                     </TabButton>
-                    {!isProduction() && <BookmarkDropdown appKey={shortName} subSystem={groupe} />}
+                    <BookmarkDropdown appKey={shortName} subSystem={groupe} />
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton
