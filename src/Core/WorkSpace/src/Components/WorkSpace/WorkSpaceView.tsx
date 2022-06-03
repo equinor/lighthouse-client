@@ -10,6 +10,7 @@ import { TableAPI } from '../../../../../packages/Table/Types';
 import { App, AppEnvironment } from '../../../../Client/Types';
 import { AppConfig } from '../../../../Client/Types/AppConfig';
 import { DataApi, useDataContext } from '../../Context/DataProvider';
+import { MasterApi } from '../../Context/MasterApiProvider';
 import { WorkspaceProviders } from '../../Context/WorkspaceProviders';
 import { useConfiguredTabs } from '../../Util/tabsConfig';
 import { WorkSpaceConfig } from '../../WorkSpaceApi/workspaceState';
@@ -21,6 +22,7 @@ import { WorkspaceErrorPage } from './WorkspaceErrorPage';
 import { DataViewWrapper, Loading, WorkspaceWrapper } from './WorkSpaceViewStyles';
 
 export interface WorkspaceEvents {
+    onMasterApiReady?: (api: MasterApi) => void;
     //Will fire when filter is ready // re-initialized
     onFilterReady?: (api: FilterApi<unknown>) => void;
     /**

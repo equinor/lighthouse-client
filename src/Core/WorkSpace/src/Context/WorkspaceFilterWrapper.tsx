@@ -26,7 +26,7 @@ export function WorkspaceFilterWrapper({
         filterApi.operations.filterAndRerender();
     }, [data]);
 
-    const setFilterApi = useMasterApiContext(({ setters }) => setters.setFilterApi);
+    const setFilterApi = useMasterApiContext((s) => s?.setters?.setFilterApi);
     useEffect(() => {
         setFilterApi(filterApi);
     }, []);

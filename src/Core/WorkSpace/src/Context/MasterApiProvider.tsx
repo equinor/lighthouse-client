@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useCallback } from 'react';
+import { createContext, useState, useContext, useCallback, useEffect } from 'react';
 
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { FilterApi } from '../../../../packages/Filter/Hooks/useFilterApi';
@@ -12,14 +12,17 @@ interface MasterApiProviderProps {
     children: React.ReactNode;
 }
 
-interface MasterApi {
+export interface MasterApi {
     garden?: GardenApi;
     table?: TableAPI;
     filter?: FilterApi<unknown>;
     dataApi?: DataApi;
-    setters: MasterApiSetters;
+    locationApi?: LocationApi;
 }
 
+export interface MasterApiWithSetters extends MasterApi {
+    setters: MasterApiSetters;
+}
 interface MasterApiSetters {
     setGardenApi: (api: GardenApi) => void;
     setTableApi: (api: TableAPI) => void;
@@ -28,66 +31,92 @@ interface MasterApiSetters {
     setLocationApi: (api: LocationApi) => void;
 }
 
-const MasterApiContext = createContext<MasterApi>({} as MasterApi);
+const MasterApiContext = createContext<MasterApiWithSetters>({} as MasterApiWithSetters);
 
 /**
  * Root datastore for all Workspace apis
  * @returns
  */
 export const MasterApiProvider = ({ children, events }: MasterApiProviderProps): JSX.Element => {
-    const updateTabApi = useCallback(
-        (newState: Partial<MasterApi>) => setMasterApi((s) => ({ ...s, ...newState })),
+    const updateMasterApi = useCallback(
+        (newState: Partial<MasterApiWithSetters>): void =>
+            setMasterApi((s) => ({ ...s, ...newState })),
         []
     );
 
     const setGardenApi = useCallback(
         (api: GardenApi) => {
             events.onGardenTabReady && events.onGardenTabReady(api);
-            updateTabApi({ garden: api });
+            updateMasterApi({ garden: api });
         },
-        [events, updateTabApi]
+        [events, updateMasterApi]
     );
     const setTableApi = useCallback(
         (api: TableAPI) => {
             events.onTableTabReady && events.onTableTabReady(api);
-            updateTabApi({ table: api });
+            updateMasterApi({ table: api });
         },
-        [events, updateTabApi]
+        [events, updateMasterApi]
     );
     const setFilterApi = useCallback(
         (api: FilterApi<unknown>) => {
             events.onFilterReady && events.onFilterReady(api);
-            updateTabApi({ filter: api });
+            updateMasterApi({ filter: api });
         },
-        [events, updateTabApi]
+        [events, updateMasterApi]
     );
 
     const setDataApi = useCallback(
         (api: DataApi) => {
             events.onDataApiReady && events.onDataApiReady(api);
-            updateTabApi({ dataApi: api });
+            updateMasterApi({ dataApi: api });
         },
-        [events, updateTabApi]
+        [events, updateMasterApi]
     );
 
     const setLocationApi = useCallback(
         (api) => {
             //TODO: Event?
-            updateTabApi({ location: api });
+            updateMasterApi({ locationApi: api });
         },
-        [updateTabApi]
+        [updateMasterApi]
     );
 
-    const [masterApi, setMasterApi] = useState<MasterApi>({
+    const [masterApi, setMasterApi] = useState<MasterApiWithSetters>({
         setters: { setFilterApi, setGardenApi, setTableApi, setDataApi, setLocationApi },
     });
+    useEffect(() => {
+        if (isMasterApiReady(masterApi)) {
+            //Dont expose setters
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { setters, ...api } = masterApi;
+            events.onMasterApiReady && events.onMasterApiReady(api);
+        }
+    }, [masterApi]);
 
     return <MasterApiContext.Provider value={masterApi}>{children}</MasterApiContext.Provider>;
 };
 
 type SelectorFunction<T, R> = (s: T) => R;
 // Context for tab apis, and filter
-export function useMasterApiContext<R = MasterApi>(selector?: SelectorFunction<MasterApi, R>): R {
-    const select = (selector ? selector : (s: MasterApi) => s) as (s: MasterApi) => R;
+export function useMasterApiContext<R = MasterApiWithSetters>(
+    selector?: SelectorFunction<MasterApiWithSetters, R>
+): R {
+    const select = (selector ? selector : (s: MasterApiWithSetters) => s) as (
+        s: MasterApiWithSetters
+    ) => R;
     return select(useContext(MasterApiContext));
+}
+
+/**
+ * Check if the right amount of Api's has been initialized
+ */
+export function isMasterApiReady(api: MasterApi): boolean {
+    if (!api.dataApi) return false;
+
+    if (!api.locationApi) return false;
+
+    if (!api.filter) return false;
+
+    return true;
 }
