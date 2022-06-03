@@ -13,37 +13,37 @@ type Options = Pick<UseQueryOptions, 'staleTime' | 'cacheTime' | 'queryFn' | 'qu
 
 export const ProCoSysQueries = {
     getAreaByCodeQuery: (areaCode: string, plantId: string): Options => ({
-        queryFn: () => getAreaByCode(plantId, areaCode),
+        queryFn: ({ signal }) => getAreaByCode(plantId, areaCode, signal),
         queryKey: [...ProCoSysBaseKey, 'Area', areaCode],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,
     }),
     getDisciplinesQuery: (plantId: string): Options => ({
-        queryFn: () => getDisciplines(plantId),
+        queryFn: ({ signal }) => getDisciplines(plantId, signal),
         queryKey: [...ProCoSysBaseKey, 'Disciplines'],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,
     }),
     getCommPkgByCodeQuery: (commPkgId: number, plantId: string): Options => ({
-        queryFn: () => getCommPkgById(plantId, commPkgId),
+        queryFn: ({ signal }) => getCommPkgById(plantId, commPkgId, signal),
         queryKey: [...ProCoSysBaseKey, 'CommPkg', commPkgId],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,
     }),
     getTagByNoQuery: (tagId: number, plantId: string): Options => ({
-        queryFn: () => getTagById(plantId, tagId),
+        queryFn: ({ signal }) => getTagById(plantId, tagId, signal),
         queryKey: [...ProCoSysBaseKey, 'tag', tagId],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,
     }),
     getSystemsQuery: (plantId: string): Options => ({
-        queryFn: () => getSystems(plantId),
+        queryFn: ({ signal }) => getSystems(plantId, signal),
         queryKey: [...ProCoSysBaseKey, 'systems'],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,
     }),
     getFunctionalRolesQuery: (plantId: string, classification?: string | undefined): Options => ({
-        queryFn: () => getFunctionalRoles(plantId, classification),
+        queryFn: ({ signal }) => getFunctionalRoles(plantId, classification, signal),
         queryKey: [...ProCoSysBaseKey, 'FunctionalRoles', classification],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,
