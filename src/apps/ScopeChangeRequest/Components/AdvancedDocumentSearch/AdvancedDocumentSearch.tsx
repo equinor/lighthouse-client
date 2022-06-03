@@ -238,6 +238,7 @@ export const AdvancedDocumentSearch = ({
                                         multiline
                                         rows={4}
                                         id="batchTags"
+                                        placeholder="Input multiple tag numbers"
                                         inputIcon={
                                             <>
                                                 {isLoading ? (
