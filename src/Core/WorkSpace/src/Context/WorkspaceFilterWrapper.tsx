@@ -1,6 +1,7 @@
 import { FilterApiContext, FilterOptions, useFilterApi } from '@equinor/filter';
 import { useEffect } from 'react';
 import { useDataContext } from './DataProvider';
+import { useMasterApiContext } from './TabApiProvider';
 
 interface WorkspaceFilterWrapperProps {
     children: React.ReactNode;
@@ -24,6 +25,11 @@ export function WorkspaceFilterWrapper({
     useEffect(() => {
         filterApi.operations.filterAndRerender();
     }, [data]);
+
+    const setFilterApi = useMasterApiContext(({ setters }) => setters.setFilterApi);
+    useEffect(() => {
+        setFilterApi(filterApi);
+    }, []);
 
     return <FilterApiContext.Provider value={filterApi}>{children}</FilterApiContext.Provider>;
 }

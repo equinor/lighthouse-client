@@ -7,6 +7,7 @@ import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilter
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
 import { tabApis } from '../Context/LocationProvider';
+import { useMasterApiContext } from '../Context/TabApiProvider';
 import {
     gardenApiAtom,
     gardenStateSnapshotAtom,
@@ -38,6 +39,7 @@ export const GardenTab = (): JSX.Element => {
         },
         []
     );
+    const setGardenApi = useMasterApiContext(({ setters }) => setters.setGardenApi);
 
     if (!gardenOptions) return <></>;
     return (
@@ -47,6 +49,7 @@ export const GardenTab = (): JSX.Element => {
                 data={data}
                 gardenOptions={interceptGardenOptions(gardenOptions, name)}
                 onGardenReady={(api) => {
+                    setGardenApi(api);
                     tabApis.updateAtom({ garden: api });
                     swap(gardenApiAtom, () => api);
                 }}
