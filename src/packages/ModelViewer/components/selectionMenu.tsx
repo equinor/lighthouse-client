@@ -11,7 +11,6 @@ export const SelectionMenu = (): JSX.Element | null => {
         toggleDefaultColor,
         hasDefaultColor,
         isCropped,
-        tagsIsVisible,
         toggleHide,
         modelIsVisible,
     } = useModelViewerContext();
