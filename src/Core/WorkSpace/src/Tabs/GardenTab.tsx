@@ -18,6 +18,7 @@ import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 const GardenTabWrapper = styled.div`
     display: grid;
     grid-template-rows: auto 1fr;
+    gap: 8px;
     height: 100%;
     width: 100%;
 `;
