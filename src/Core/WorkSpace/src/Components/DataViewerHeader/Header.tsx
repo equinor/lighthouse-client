@@ -25,9 +25,8 @@ import {
     RightSection,
     TabTitle,
     Title,
-    TitleBar
+    TitleBar,
 } from './HeaderStyles';
-
 
 interface CompletionViewHeaderProps {
     title: string;
@@ -123,8 +122,6 @@ export const CompletionViewHeader = ({
                                 }
                             >
                                 <Icon name={'add'} />
-
-                                {creator.title}
                             </TabButton>
                         )}
                         <Divider />
