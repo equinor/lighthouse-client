@@ -18,12 +18,20 @@ export class DataCreationProvider implements IDataCreationProvider {
     async setup(config: DataCreatorConfig): Promise<void> {
         const allCreators = await config.getCreators();
 
-        for await (const creator of allCreators) {
-            const hasAccess = await config.getAccessFunction(creator.props.accessCheckFunctionId);
-
-            creator.props.hasAccess = await hasAccess();
-            this.creators.push(creator);
+        for (const creator of allCreators) {
+            this.checkAccess(creator, config);
         }
+    }
+
+    private async checkAccess(creator: CreatorManifest, config: DataCreatorConfig): Promise<void> {
+        const hasAccess = await config.getAccessFunction(creator.props.accessCheckFunctionId);
+
+        this.creators.push(creator);
+        hasAccess()
+            .then((v) => {
+                creator.props.hasAccess = v;
+            })
+            .catch((s) => console.warn(s));
     }
 
     public getCreators(): CreatorManifest[] {
