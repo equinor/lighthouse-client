@@ -6,6 +6,7 @@ import { useElementData } from '../../../../packages/Utils/Hooks/useElementData'
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
 import { tabApis } from '../Context/LocationProvider';
+import { useMasterApiContext } from '../Context/MasterApiProvider';
 import { useWorkspaceBookmarks } from '../Util/bookmarks/hooks';
 
 const Wrapper = styled.section`
@@ -37,6 +38,7 @@ export const ListTab = (): JSX.Element => {
     const getApi = useRef<GetTableApi | null>(null);
 
     const initApi = (a: GetTableApi) => {
+        setTableApi(a());
         getApi.current = a;
         tabApis.updateAtom({ table: { getApi: a } });
     };
@@ -48,6 +50,8 @@ export const ListTab = (): JSX.Element => {
         },
         [getApi, tableOptions]
     );
+
+    const setTableApi = useMasterApiContext(({ setters }) => setters.setTableApi);
 
     return (
         <>

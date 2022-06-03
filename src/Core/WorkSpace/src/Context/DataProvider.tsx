@@ -1,5 +1,5 @@
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { createContext, useContext, useEffect, useReducer } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer } from 'react';
 import { useQuery, useQueryClient, UseQueryResult } from 'react-query';
 import { ActionType, createCustomAction, getType } from 'typesafe-actions';
 import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
@@ -15,9 +15,10 @@ import {
     StatusFunc,
     TableOptions,
     TreeOptions,
-    WorkflowEditorOptions
+    WorkflowEditorOptions,
 } from '../WorkSpaceApi/workspaceState';
 import { DataViewerProps, ViewOptions } from '../WorkSpaceApi/WorkSpaceTypes';
+import { useMasterApiContext } from './MasterApiProvider';
 
 interface DataState {
     key: string;
@@ -41,7 +42,9 @@ interface DataContextState extends DataState {
     dataApi: DataApi;
 }
 
-type DataApi = DataOperations & UseQueryResult<unknown[] | undefined, unknown> & QueryInformation;
+export type DataApi = DataOperations &
+    UseQueryResult<unknown[] | undefined, unknown> &
+    QueryInformation;
 
 interface QueryInformation {
     queryKey: string;
@@ -101,6 +104,8 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
     const key = useWorkSpaceKey();
     const currentWorkspace = useWorkSpace();
 
+    const setDataApi = useMasterApiContext(({ setters }) => setters.setDataApi);
+
     const { dataSource, objectIdentifier, prefetchQueriesOptions } = currentWorkspace;
 
     const queryClient = useQueryClient();
@@ -152,40 +157,51 @@ export const DataProvider = ({ children }: DataProviderProps): JSX.Element => {
         queryApi.refetch();
     }, [dataSource]);
 
-    const workspaceInternalApi: QueryCacheArgs<unknown> = {
-        key,
-        objectIdentifier,
-        queryApi,
-        queryClient,
-    };
+    const workspaceInternalApi = useMemo(
+        (): QueryCacheArgs<unknown> => ({ key, objectIdentifier, queryApi, queryClient }),
+        [key, objectIdentifier, queryApi, queryClient]
+    );
 
     /** Patches a record in the queryCache */
-    const patchRecord = (id: string, item: unknown, identifier?: string) =>
-        queryCacheOperations.patchRecord({ id, item, identifier }, workspaceInternalApi);
+    const patchRecord = useCallback(
+        (id: string, item: unknown, identifier?: string) =>
+            queryCacheOperations.patchRecord({ id, item, identifier }, workspaceInternalApi),
+        [workspaceInternalApi]
+    );
 
     /** Patches a record in the queryCache */
-    const deleteRecord = (id: string, identifier?: string) =>
-        queryCacheOperations.deleteRecord({ id, identifier }, workspaceInternalApi);
+    const deleteRecord = useCallback(
+        (id: string, identifier?: string) =>
+            queryCacheOperations.deleteRecord({ id, identifier }, workspaceInternalApi),
+        [workspaceInternalApi]
+    );
 
-    const getRecord = (id: string, identifier?: string) =>
-        queryCacheOperations.getRecord({ id, identifier }, workspaceInternalApi);
+    const getRecord = useCallback(
+        (id: string, identifier?: string) =>
+            queryCacheOperations.getRecord({ id, identifier }, workspaceInternalApi),
+        [workspaceInternalApi]
+    );
 
-    const insertRecord = (item: unknown) =>
-        queryCacheOperations.insertRecord({ item }, workspaceInternalApi);
+    const insertRecord = useCallback(
+        (item: unknown) => queryCacheOperations.insertRecord({ item }, workspaceInternalApi),
+        [workspaceInternalApi]
+    );
+
+    const api = useMemo(
+        () => ({ ...queryApi, queryKey: key, insertRecord, getRecord, deleteRecord, patchRecord }),
+        [deleteRecord, getRecord, insertRecord, key, patchRecord, queryApi]
+    );
+
+    useEffect(() => {
+        setDataApi(api);
+    }, []);
 
     return (
         <DataContext.Provider
             value={{
                 ...state,
                 data: queryApi.data || [],
-                dataApi: {
-                    ...queryApi,
-                    queryKey: key,
-                    insertRecord,
-                    getRecord,
-                    deleteRecord,
-                    patchRecord,
-                },
+                dataApi: api,
             }}
         >
             {children}

@@ -8,20 +8,21 @@ import {
     useContext,
     useEffect,
     useMemo,
-    useState
+    useState,
 } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { SidesheetEvents } from '../../../../packages/Sidesheet/Types/sidesheetEvents';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
+import { useMasterApiContext } from './MasterApiProvider';
 
-interface LocationContext {
+export interface LocationApi {
     activeTab: WorkspaceTab;
     handleSetActiveTab: (activeTab: WorkspaceTab) => void;
 }
 
-const Context = createContext({} as LocationContext);
+const Context = createContext({} as LocationApi);
 
 export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
     const { id } = useParams();
@@ -84,19 +85,20 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         };
     }, []);
 
-    return (
-        <Context.Provider
-            value={{
-                activeTab,
-                handleSetActiveTab,
-            }}
-        >
-            {children}
-        </Context.Provider>
+    const locationApi = useMemo(
+        (): LocationApi => ({ activeTab, handleSetActiveTab }),
+        [activeTab, handleSetActiveTab]
     );
+
+    const setLocationApi = useMasterApiContext(({ setters }) => setters.setLocationApi);
+    useEffect(() => {
+        setLocationApi(locationApi);
+    }, []);
+
+    return <Context.Provider value={locationApi}>{children}</Context.Provider>;
 };
 
-export function useLocationContext(): LocationContext {
+export function useLocationContext(): LocationApi {
     return useContext(Context);
 }
 

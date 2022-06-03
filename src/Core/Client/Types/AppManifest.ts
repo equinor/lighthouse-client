@@ -2,7 +2,7 @@ import { App } from './App';
 
 type HEXColor = `#${string}`;
 
-type AppEnvironment = 'dev' | 'test' | 'prod';
+export type AppEnvironment = 'dev' | 'test' | 'prod';
 
 export interface AppManifest {
     title: string;
