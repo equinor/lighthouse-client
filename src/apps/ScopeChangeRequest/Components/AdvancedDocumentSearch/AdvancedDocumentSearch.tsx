@@ -137,6 +137,17 @@ export const AdvancedDocumentSearch = ({
         setSearchResults(results);
     };
 
+    const InputIcon = () => (
+        <Switch>
+            <Case when={isLoading}>
+                <Progress.Dots color="primary" />
+            </Case>
+            <Case when={!isLoading}>
+                <Icon name="search" />
+            </Case>
+        </Switch>
+    );
+
     return (
         <Fragment>
             <AdvancedSearch
@@ -202,16 +213,7 @@ export const AdvancedDocumentSearch = ({
                                     <TextField
                                         id={'Stid document selector'}
                                         value={searchText}
-                                        inputIcon={
-                                            <Switch>
-                                                <Case when={isLoading}>
-                                                    <Progress.Dots color="primary" />
-                                                </Case>
-                                                <Case when={!isLoading}>
-                                                    <Icon name="search" />
-                                                </Case>
-                                            </Switch>
-                                        }
+                                        inputIcon={<InputIcon />}
                                         placeholder={
                                             referenceType
                                                 ? `Type to search ${referenceType}`
@@ -238,16 +240,8 @@ export const AdvancedDocumentSearch = ({
                                         multiline
                                         rows={4}
                                         id="batchTags"
-                                        placeholder="Input multiple tag numbers"
-                                        inputIcon={
-                                            <>
-                                                {isLoading ? (
-                                                    <Progress.Dots color="primary" />
-                                                ) : (
-                                                    <Icon name="search" />
-                                                )}
-                                            </>
-                                        }
+                                        placeholder={`Paste a column from excel here`}
+                                        inputIcon={<InputIcon />}
                                         onChange={(e) => {
                                             resolveBatchTags(e.target.value.split('\n'));
                                         }}
@@ -258,17 +252,9 @@ export const AdvancedDocumentSearch = ({
                                     <TextField
                                         multiline
                                         rows={4}
-                                        placeholder="Input multiple commPkg numbers"
+                                        placeholder={`Paste a column from excel here`}
                                         id="batchComm"
-                                        inputIcon={
-                                            <>
-                                                {isLoading ? (
-                                                    <Progress.Dots color="primary" />
-                                                ) : (
-                                                    <Icon name="search" />
-                                                )}
-                                            </>
-                                        }
+                                        inputIcon={<InputIcon />}
                                         onChange={(e) => {
                                             resolveBatchCommPkgs(e.target.value.split('\n'));
                                         }}
