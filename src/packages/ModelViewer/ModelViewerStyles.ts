@@ -19,7 +19,7 @@ export const Selections = styled.div`
     position: absolute;
     display: flex;
     justify-content: center;
-    bottom: 50px;
+    top: 50px;
     left: 50px;
 `;
 

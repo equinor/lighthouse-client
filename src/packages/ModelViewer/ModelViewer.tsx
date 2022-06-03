@@ -3,20 +3,12 @@ import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useAppConfig, useAuthProvider, useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useRef } from 'react';
-import Icon from '../../components/Icon/Icon';
+import { SelectionMenu } from './components/selectionMenu';
 import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
-import { ElectroIcon } from './icons/ElectroIcon';
 import { T5602_M02 } from './mocTags/5602-M02';
 import { AP300 } from './mocTags/AP300';
-import {
-    Menu,
-    Message,
-    MessageWrapper,
-    Selections,
-    Wrapper,
-    WrapperMenu
-} from './ModelViewerStyles';
+import { Menu, Message, MessageWrapper, Selections, Wrapper } from './ModelViewerStyles';
 import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
 
 export interface ModelViewerProps {
@@ -53,15 +45,9 @@ export const Viewer: React.FC<ViewerProps> = ({
         setPlantState,
         isLoading,
         selectTags,
-        selection,
+
         message,
         setMessage,
-        toggleClipping,
-        toggleDefaultColor,
-        hasDefaultColor,
-        isCropped,
-        tagsIsVisible,
-        toggleHidden,
     } = useModelViewerContext();
     useModel(loadFullModel);
 
@@ -160,82 +146,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                     </Button>
                 </Menu>
             </Selections>
-
-            <WrapperMenu>
-                <Menu>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            toggleClipping();
-                        }}
-                    >
-                        <Icon
-                            name={'crop'}
-                            color={
-                                isCropped
-                                    ? tokens.colors.interactive.primary__selected_highlight.rgba
-                                    : undefined
-                            }
-                        />
-                    </Button>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            toggleHidden();
-                        }}
-                    >
-                        <Icon name={'visibility'} />
-                    </Button>
-                    <Button
-                        title="Hidden"
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('Hidden');
-                        }}
-                    >
-                        <ElectroIcon color={tokens.colors.interactive.primary__resting.rgba} />
-                    </Button>
-
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            console.log('tag');
-                        }}
-                    >
-                        <Icon
-                            name={'tag'}
-                            color={
-                                tagsIsVisible
-                                    ? tokens.colors.interactive.primary__selected_highlight.rgba
-                                    : undefined
-                            }
-                        />
-                    </Button>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            toggleDefaultColor();
-                        }}
-                    >
-                        <Icon
-                            name={'color_palette'}
-                            color={
-                                hasDefaultColor
-                                    ? tokens.colors.interactive.primary__selected_highlight.rgba
-                                    : undefined
-                            }
-                        />
-                    </Button>
-                    {/* <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('InFront');
-                        }}
-                    >
-                        <Icon name={'puzzle_filled'} />
-                    </Button> */}
-                </Menu>
-            </WrapperMenu>
+            <SelectionMenu />
         </>
     );
 };

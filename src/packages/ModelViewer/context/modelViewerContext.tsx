@@ -13,7 +13,7 @@ interface ModelViewerContext extends ModelViewerState {
     selectTags(tags?: string[] | undefined, padding?: number | undefined): void;
     setMessage(message?: Message): void;
     toggleClipping(): void;
-    toggleHidden(): void;
+    toggleHide(): void;
     toggleDefaultColor(): void;
 }
 
@@ -73,18 +73,21 @@ export const ModelViewerContextProvider = ({
     }
     function toggleDefaultColor() {
         setState((s) => {
-            s.selection?.setHideMode(!s.hasDefaultColor ? 'White' : 'Default');
-            return { ...s, hasDefaultColor: !s.hasDefaultColor };
+            const hasDefaultColor = !s.hasDefaultColor;
+            s.selection?.setHideMode(hasDefaultColor ? 'Default' : 'White');
+            return { ...s, hasDefaultColor };
         });
     }
-    function toggleHidden() {
+    function toggleHide() {
         setState((s) => {
-            if (s.modelIsVisible) {
+            const modelIsVisible = !s.modelIsVisible;
+
+            if (modelIsVisible) {
                 s.selection?.setHideMode('Hidden');
             } else {
-                s.selection?.setHideMode(s.hasDefaultColor ? 'White' : 'Default');
+                s.selection?.setHideMode(s.hasDefaultColor ? 'Default' : 'White');
             }
-            return { ...s, modelIsVisible: !s.modelIsVisible };
+            return { ...s, modelIsVisible };
         });
     }
 
@@ -107,7 +110,12 @@ export const ModelViewerContextProvider = ({
                 if (!plantState.tags) return;
                 await selection.setSelectionBasedOnE3dTagNos(plantState.tags);
 
-                setState((s) => ({ ...s, isCropped: true }));
+                setState((s) => ({
+                    ...s,
+                    isCropped: true,
+                    hasDefaultColor: false,
+                    modelIsVisible: false,
+                }));
                 selection.clipSelection(true, plantState.padding);
                 selection.fitCameraToCurrentBoundingBox();
                 selection.setWhiteAppearance();
@@ -136,7 +144,7 @@ export const ModelViewerContextProvider = ({
                 selectTags,
                 setMessage,
                 toggleClipping,
-                toggleHidden,
+                toggleHide,
                 toggleDefaultColor,
             }}
         >
