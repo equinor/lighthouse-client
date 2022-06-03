@@ -23,7 +23,13 @@ const Chevron = styled.span`
 export const GroupCell = ({ row, cell }) => {
     return (
         <Wrapper>
-            <Chevron {...row.getToggleRowExpandedProps()}>
+            <Chevron
+                {...row.getToggleRowExpandedProps()}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    row.getToggleRowExpandedProps().onClick();
+                }}
+            >
                 {row.isExpanded ? (
                     <Icon
                         name={'chevron_down'}
