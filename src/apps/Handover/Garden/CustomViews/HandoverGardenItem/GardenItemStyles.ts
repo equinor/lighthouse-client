@@ -83,3 +83,9 @@ export const StatusCircles = styled.div<StatusCirclesProps>`
         content: ' ';
     }
 `;
+export const WarningIconWrapper = styled.div`
+    position: absolute;
+    top: -6px;
+    left: -10px;
+    z-index: 1;
+`;

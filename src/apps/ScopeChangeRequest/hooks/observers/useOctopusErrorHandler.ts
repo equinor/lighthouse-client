@@ -99,7 +99,7 @@ function resolveErrorObject(error: object): Partial<ErrorMessageFormat> {
 
     return {
         title: 'title' in error ? error['title'] : FALLBACK_ERROR_MESSAGE,
-        description: 'description' in error ? error['description'] : 'unknown error',
+        description: 'description' in error ? error['description'] : '',
     };
 }
 

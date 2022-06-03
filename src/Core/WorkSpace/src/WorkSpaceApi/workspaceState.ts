@@ -12,9 +12,10 @@ import { Page } from '../Context/ViewProvider';
 import {
     DataSource,
     DataViewerProps,
+    HelpPageOptions,
     PresetOption,
     SearchOption,
-    ViewOptions,
+    ViewOptions
 } from './WorkSpaceTypes';
 
 export interface WorkSpaceState {
@@ -61,6 +62,7 @@ export interface TreeOptions<T> {
     customViews?: CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
+    onGroupeSelect?: (item: T) => string;
     onSelect?: (item: T) => string;
 }
 
@@ -76,7 +78,7 @@ export interface PrefetchQueriesOptions {
     options?: FetchQueryOptions<unknown, unknown, unknown, string[]> | undefined;
 }
 
-export type WorkspaceTab = 'tree' | 'table' | 'garden' | 'analytics' | 'gantt' | 'editor';
+export type WorkspaceTab = 'tree' | 'table' | 'garden' | 'analytics' | 'gantt' | 'editor' | 'help';
 
 export interface WorkSpaceConfig<T> {
     name: string;
@@ -84,7 +86,7 @@ export interface WorkSpaceConfig<T> {
     objectIdentifier: string;
     prefetchQueriesOptions?: PrefetchQueriesOptions[];
     onSelect?: (item: T) => void;
-    idResolver?: (id: string) => Promise<T | undefined>;
+    onGroupeSelect?: (item: T) => void;
     dataSource?: DataSource<T>;
     validator?: (data: unknown[]) => T[];
     viewComponent?: React.FC<DataViewerProps<T>>;
@@ -100,6 +102,7 @@ export interface WorkSpaceConfig<T> {
     workflowEditorOptions?: WorkflowEditorOptions;
     presetOptions?: PresetOption[];
     searchOptions?: SearchOption<T>[];
+    helpPageOptions?: HelpPageOptions;
 }
 
 export interface PowerBiOptions {
@@ -109,7 +112,7 @@ export interface PowerBiOptions {
     pages: Page[];
 }
 
-export interface TimeLineOptions { }
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

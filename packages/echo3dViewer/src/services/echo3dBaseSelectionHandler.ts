@@ -17,6 +17,13 @@ const defaultHighlightedStyle: NodeAppearance = {
     renderInFront: true,
     visible: true
 };
+const whiteStyle: NodeAppearance = {
+    color: [255, 255, 255] as [number, number, number],
+    outlineColor: 0,
+    renderGhosted: false,
+    renderInFront: false,
+    visible: true
+};
 
 /**
  *
@@ -42,6 +49,7 @@ export class Echo3dBaseSelectionHandler {
         this.model = model;
         this.siblingNodes = new TreeIndexNodeCollection();
         this.selectedNodes = new TreeIndexNodeCollection();
+   
     }
 
     /**
@@ -59,18 +67,31 @@ export class Echo3dBaseSelectionHandler {
      *
      * @param {NodeAppearance} selectedStyle the style to apply. Default is dark blue
      */
-    setSelectedColor(selectedStyle: NodeAppearance = defaultHighlightedStyle): void {
+    setSelectedColor(selectedStyle: NodeAppearance = defaultSelectedStyle): void {
         this.model.removeAllStyledNodeCollections();
         this.model.assignStyledNodeCollection(this.selectedNodes, selectedStyle);
     }
 
+    /**
+     * Apply a style to the "Selected" node
+     *
+     * @param {NodeAppearance} selectedStyle the style to apply. Default is dark blue
+     */
+    setSelectedToDefaultColor(): void {
+        this.model.removeAllStyledNodeCollections();
+        this.model.assignStyledNodeCollection(this.selectedNodes, DefaultNodeAppearance.Default);
+    }
+
+    setWhiteAppearance(): void {
+        this.model.setDefaultNodeAppearance(whiteStyle);
+    }
 
     /**
      * Apply a predefined node style to the selection
      *
      * @param {'Hidden' | 'Ghosted' | 'Outlined' | 'InFront' | 'Default'} styleMode the style modes to choose from
      */
-    setHideMode(styleMode: 'Hidden' | 'Ghosted' | 'Outlined' | 'InFront' | 'Default'): void {
+    setHideMode(styleMode: 'Hidden' | 'Ghosted' | 'Outlined' | 'InFront' | 'Default' | 'White'): void {
         switch (styleMode) {
             case 'Hidden':
                 this.model.setDefaultNodeAppearance(DefaultNodeAppearance.Hidden);
@@ -86,6 +107,9 @@ export class Echo3dBaseSelectionHandler {
                 break;
             case 'Default':
                 this.model.setDefaultNodeAppearance(DefaultNodeAppearance.Default);
+                break;
+            case 'White':
+                this.model.setDefaultNodeAppearance(whiteStyle);
                 break;
             default:
                 assertNever(styleMode); // Will error if new case is not implemented
