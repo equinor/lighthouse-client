@@ -62,6 +62,7 @@ export const ModelViewerContextProvider = ({
     }
 
     function selectTags(tags?: string[], padding?: number) {
+        setMessage(undefined);
         setState((s) => ({ ...s, tags, padding: padding || s.padding }));
     }
 
@@ -123,7 +124,6 @@ export const ModelViewerContextProvider = ({
                 setSelection(selection);
             } catch (error: any) {
                 setMessage(createMessage(error.message, 'NoTags'));
-                setSelection();
             }
         })();
     }, [
@@ -133,6 +133,14 @@ export const ModelViewerContextProvider = ({
         plantState.padding,
         plantState.tags,
     ]);
+
+    useEffect(() => {
+        return () => {
+            plantState.cognite3DModel?.dispose();
+            plantState.selection = undefined;
+            plantState.echo3DClient?.viewer.disposeAll();
+        };
+    }, []);
 
     return (
         <Context.Provider

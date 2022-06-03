@@ -3,20 +3,18 @@ import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useAppConfig, useAuthProvider, useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useRef } from 'react';
-import { SelectionMenu } from './components/selectionMenu';
+import { SelectionAction, SelectionMenu } from './components/selectionMenu';
 import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
-import { T5602_M02 } from './mocTags/5602-M02';
-import { AP300 } from './mocTags/AP300';
-import { Menu, Message, MessageWrapper, Selections, Wrapper } from './ModelViewerStyles';
+import { Message, MessageWrapper, Wrapper } from './ModelViewerStyles';
 import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
 
 export interface ModelViewerProps {
     tags?: string[];
     loadFullModel?: boolean;
     padding?: number;
+    selectionActions?: SelectionAction[];
 }
-
 export interface ViewerProps extends ModelViewerProps {
     echoPlantId: string;
 }
@@ -36,19 +34,13 @@ export const Viewer: React.FC<ViewerProps> = ({
     loadFullModel,
     padding = 1,
     echoPlantId,
+    selectionActions,
 }: ViewerProps): JSX.Element => {
     const viewerRef = useRef<HTMLCanvasElement>(null);
     const authProvider = useAuthProvider();
     const { urls, scope } = useAppConfig();
-    const {
-        setEcho3DClient,
-        setPlantState,
-        isLoading,
-        selectTags,
-
-        message,
-        setMessage,
-    } = useModelViewerContext();
+    const { setEcho3DClient, setPlantState, isLoading, selectTags, message, setMessage } =
+        useModelViewerContext();
     useModel(loadFullModel);
 
     /**
@@ -126,7 +118,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                     )}
                 </MessageWrapper>
             )}
-            <Selections>
+            {/* <Selections>
                 <Menu>
                     <Button
                         variant="ghost_icon"
@@ -145,8 +137,8 @@ export const Viewer: React.FC<ViewerProps> = ({
                         T2
                     </Button>
                 </Menu>
-            </Selections>
-            <SelectionMenu />
+            </Selections> */}
+            <SelectionMenu selectionActions={selectionActions} />
         </>
     );
 };
