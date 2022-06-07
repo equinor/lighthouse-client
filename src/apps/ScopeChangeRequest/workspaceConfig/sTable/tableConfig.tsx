@@ -321,7 +321,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         },
         {
             key: 'workflowSteps',
-            type: customCellView((req) => <WorkflowCompact steps={req.workflowSteps} />),
+            type: customCellView(
+                (req) => req.workflowSteps && <WorkflowCompact steps={req.workflowSteps} />
+            ),
         },
         {
             key: 'hasComments',
