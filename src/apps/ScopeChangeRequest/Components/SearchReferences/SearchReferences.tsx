@@ -3,9 +3,9 @@ import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
+import styled from 'styled-components';
+
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { StidTypes } from '../../types/STID/STIDTypes';
 import { useCancellationToken } from '../../../../hooks/cancellationToken/useCancellationToken';
 import { AdvancedDocumentSearch } from '../AdvancedDocumentSearch';
 import {
@@ -26,10 +26,9 @@ import {
     TitleBar,
     SelectedItemLabel,
 } from './searchReferences.styles';
-import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
+import { ReferenceType, useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { CommPkgIcon } from '../DetailView/RelatedObjects/CommPkg/commPkgIcon';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
-import styled from 'styled-components';
 
 interface SearchReferencesProps {
     onChange: (newOptions: TypedSelectOption[]) => void;
@@ -41,15 +40,16 @@ export const SearchReferences = ({ onChange, references }: SearchReferencesProps
     const { abort, getSignal } = useCancellationToken();
     const { search: searchReferences, error } = useReferencesSearch();
 
-    const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
+    const referenceTypes: ReferenceType[] = [
         'document',
         'area',
         'commpkg',
         'tag',
         'system',
+        'punch',
     ];
 
-    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>(
+    const [referenceType, setReferenceType] = useState<ReferenceType | undefined>(
         referenceTypes[0]
     );
 
@@ -116,9 +116,7 @@ export const SearchReferences = ({ onChange, references }: SearchReferencesProps
                                     if (!change.selectedItem) {
                                         setReferenceType(undefined);
                                     } else {
-                                        setReferenceType(
-                                            change.selectedItem as ProcoSysTypes | StidTypes
-                                        );
+                                        setReferenceType(change.selectedItem as ReferenceType);
                                     }
                                 }}
                             />
