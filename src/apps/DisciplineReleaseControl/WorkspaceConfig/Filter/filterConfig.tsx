@@ -2,8 +2,8 @@ import { FilterOptions } from '@equinor/filter';
 import { getGardenItemColor } from '../../Components/Garden/gardenFunctions';
 import {
     StepFilterContainer,
-    WorkflowFilterDot,
     StepFilterText,
+    WorkflowFilterDot
 } from '../../Components/Workflow/Components/WorkflowFilterDot';
 import { getStatusLetterFromStatus } from '../../Functions/tableHelpers';
 import { PipetestStep } from '../../Types/drcEnums';
@@ -135,5 +135,9 @@ export const filterConfig: FilterOptions<Pipetest> = [
                     circuitAndStarterTagNo !== '' ? circuitAndStarterTagNo : null
                 )
                 .filter((v, i, a) => a.indexOf(v) === i),
+    },
+    {
+        name: 'Lines tags',
+        valueFormatter: ({ lineNos }) => (lineNos.length === 0 ? 'No Line Tags' : 'Has Line Tags'),
     },
 ];
