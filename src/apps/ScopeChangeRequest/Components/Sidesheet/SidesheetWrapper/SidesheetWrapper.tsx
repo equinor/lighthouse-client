@@ -1,5 +1,5 @@
 import { useAtom } from '@dbeining/react-atom';
-import { Tabs } from '@equinor/eds-core-react';
+import { Button, Tabs } from '@equinor/eds-core-react';
 import { useEdsTabs } from '@equinor/hooks';
 import { useEffect } from 'react';
 import styled from 'styled-components';
@@ -26,6 +26,7 @@ import { updateContext } from './Utils/updateContext';
 
 import { SidesheetApi } from '@equinor/sidesheet';
 import { getScopeChangeSnapshot } from '../../../hooks/context/useScopeChangeContext';
+import { searchPunchListItems } from '../../../api/FAM/searchPunchListItems';
 
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;

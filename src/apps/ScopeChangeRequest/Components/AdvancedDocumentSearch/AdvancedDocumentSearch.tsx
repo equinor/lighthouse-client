@@ -12,15 +12,14 @@ import {
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { useCancellationToken } from '@equinor/hooks';
 import { tokens } from '@equinor/eds-tokens';
+import styled from 'styled-components';
+
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { StidTypes } from '../../types/STID/STIDTypes';
 import { Result } from './Results';
 import { AdvancedSearch, ModalHeader, Wrapper, Title, SearchField } from './advancedSearch.styles';
-import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
-import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
+import { ReferenceType, useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { NotFoundList } from './NotFoundList';
 import { fetchBatchCommPkg, fetchBatchTags } from '../../api/PCS/Batch';
-import styled from 'styled-components';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -41,9 +40,7 @@ export const AdvancedDocumentSearch = ({
     const [searchText, setSearchText] = useState<string | undefined>();
     const [results, setResults] = useState<TypedSelectOption[]>([]);
 
-    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>(
-        'tag'
-    );
+    const [referenceType, setReferenceType] = useState<ReferenceType | undefined>('tag');
 
     const setSearchResults = (results) => {
         setResults(results);
@@ -69,12 +66,13 @@ export const AdvancedDocumentSearch = ({
         return documents.map((x) => x.value).includes(x.value);
     }
 
-    const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
+    const referenceTypes: ReferenceType[] = [
         'document',
         'area',
         'commpkg',
         'tag',
         'system',
+        'punch',
         // 'stidtag',
     ];
 
@@ -201,9 +199,7 @@ export const AdvancedDocumentSearch = ({
                                     if (!change.selectedItem) {
                                         setReferenceType(undefined);
                                     } else {
-                                        setReferenceType(
-                                            change.selectedItem as ProcoSysTypes | StidTypes
-                                        );
+                                        setReferenceType(change.selectedItem as ReferenceType);
                                     }
                                     setResults([]);
                                 }}
@@ -295,7 +291,7 @@ export const AdvancedDocumentSearch = ({
 };
 
 interface BatchCheckboxesProps {
-    referenceType: (ProcoSysTypes | StidTypes) | undefined;
+    referenceType: ReferenceType | undefined;
     isBatchTag: boolean;
     flipBatchTag: () => void;
     isBatchCommPkg: boolean;
