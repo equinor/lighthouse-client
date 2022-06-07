@@ -53,7 +53,10 @@ export const SearchReferences = ({ onChange, references }: SearchReferencesProps
         referenceTypes[0]
     );
 
-    const addRelatedObject = (value: TypedSelectOption) => onChange([...references, value]);
+    const addRelatedObject = (value: TypedSelectOption | TypedSelectOption[]) => {
+        const newValues = Array.isArray(value) ? value : [value];
+        onChange([...references, ...newValues]);
+    };
 
     const removeRelatedObject = (value: string) =>
         onChange(references.filter((x) => x.value !== value));
@@ -69,7 +72,6 @@ export const SearchReferences = ({ onChange, references }: SearchReferencesProps
         ) => void
     ) => {
         abort();
-
         if (!referenceType) return;
 
         const results = await searchReferences(inputValue, referenceType, getSignal());

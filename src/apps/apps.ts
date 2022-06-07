@@ -23,7 +23,7 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport
+    SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
 import { setup as releaseControlSetup } from './ReleaseControl/ReleaseControlApp';
@@ -300,7 +300,7 @@ export const apps: AppManifest[] = [
             setup: McSetup,
         },
         tags: ['Job'],
-        appEnv: 'test',
+        appEnv: 'prod',
     },
 
     {

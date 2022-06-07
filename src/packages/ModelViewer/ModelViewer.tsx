@@ -1,16 +1,16 @@
-import { NodeAppearance } from '@cognite/reveal';
 import { RendererConfiguration, setupEcho3dWeb } from '@equinor/echo3dweb-viewer';
 import { Button } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useAppConfig, useAuthProvider, useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useRef } from 'react';
-import Icon from '../../components/Icon/Icon';
+import { SelectionMenu } from './components/selectionMenu';
 import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
 import { T5602_M02 } from './mocTags/5602-M02';
 import { AP300 } from './mocTags/AP300';
-import { Menu, Message, MessageWrapper, Wrapper, WrapperMenu } from './ModelViewerStyles';
+import { Menu, Message, MessageWrapper, Selections, Wrapper } from './ModelViewerStyles';
 import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
+
 export interface ModelViewerProps {
     tags?: string[];
     loadFullModel?: boolean;
@@ -45,7 +45,7 @@ export const Viewer: React.FC<ViewerProps> = ({
         setPlantState,
         isLoading,
         selectTags,
-        selection,
+
         message,
         setMessage,
     } = useModelViewerContext();
@@ -126,8 +126,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                     )}
                 </MessageWrapper>
             )}
-
-            <WrapperMenu>
+            <Selections>
                 <Menu>
                     <Button
                         variant="ghost_icon"
@@ -145,66 +144,9 @@ export const Viewer: React.FC<ViewerProps> = ({
                     >
                         T2
                     </Button>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selectTags(['this will fail'], padding);
-                        }}
-                    >
-                        T3
-                    </Button>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            const style: NodeAppearance = {
-                                color: [255, 0, 0] as [number, number, number],
-                                outlineColor: 4,
-                                renderGhosted: false,
-                                renderInFront: true,
-                                visible: true,
-                            };
-                            selection?.setSelectedColor(style);
-                        }}
-                    >
-                        <Icon name={'invert_colors'} />
-                    </Button>
-                    <Button
-                        title="Hidden"
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('Default');
-                        }}
-                    >
-                        <Icon name={'visibility'} />
-                    </Button>
-                    <Button
-                        title="Hidden"
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('Hidden');
-                        }}
-                    >
-                        <Icon name={'visibility_off'} />
-                    </Button>
-
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('Outlined');
-                        }}
-                    >
-                        <Icon name={'puzzle'} />
-                    </Button>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('InFront');
-                        }}
-                    >
-                        <Icon name={'puzzle_filled'} />
-                    </Button>
                 </Menu>
-            </WrapperMenu>
+            </Selections>
+            <SelectionMenu />
         </>
     );
 };
