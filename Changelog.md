@@ -7,8 +7,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 ## 1.4.4
 - [MC] Analytics tab
 - [Garden] Fix horizontal scroll
-- [Scope change] Abort signal PCS queries
-- [Sope change] Growing description field
+
 ## 1.4.3
 - [Portal] Access check hotfix
 - [MC] Now in production
