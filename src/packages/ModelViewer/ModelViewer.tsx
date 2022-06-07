@@ -101,50 +101,50 @@ export const Viewer: React.FC<ViewerProps> = ({
         <>
             <Wrapper>
                 <canvas ref={viewerRef} />
-                {(message || (isLoading && !selection)) && (
+                {isLoading && selection === undefined && (
                     <MessageWrapper>
-                        {isLoading && (
-                            <Message>
-                                <CircularProgress />
-                            </Message>
-                        )}
-                        {message && (
-                            <Switch defaultCase={<h2>{message.message}</h2>}>
-                                <Case when={message.type === 'NoPlant'}>
-                                    <Message
-                                        onClick={() => {
-                                            setMessage();
-                                        }}
-                                    >
-                                        <h2>{message.message}</h2>
+                        <Message>
+                            <CircularProgress />
+                        </Message>
+                    </MessageWrapper>
+                )}
+                {message && (
+                    <MessageWrapper>
+                        <Switch defaultCase={<h2>{message.message}</h2>}>
+                            <Case when={message.type === 'NoPlant'}>
+                                <Message
+                                    onClick={() => {
+                                        setMessage();
+                                    }}
+                                >
+                                    <h2>{message.message}</h2>
 
-                                        <Button
-                                            onClick={() => {
-                                                window.open(
-                                                    `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
-                                                );
-                                            }}
-                                        >
-                                            Apply for access
-                                        </Button>
-                                    </Message>
-                                </Case>
-                                <Case when={message.type === 'NoTags'}>
-                                    <Message
+                                    <Button
                                         onClick={() => {
-                                            setMessage();
+                                            window.open(
+                                                `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
+                                            );
                                         }}
                                     >
-                                        <Icon
-                                            name={'warning_outlined'}
-                                            color={tokens.colors.interactive.warning__resting.rgba}
-                                            size={48}
-                                        />
-                                        <h2>{message.message}</h2>
-                                    </Message>
-                                </Case>
-                            </Switch>
-                        )}
+                                        Apply for access
+                                    </Button>
+                                </Message>
+                            </Case>
+                            <Case when={message.type === 'NoTags'}>
+                                <Message
+                                    onClick={() => {
+                                        setMessage();
+                                    }}
+                                >
+                                    <Icon
+                                        name={'warning_outlined'}
+                                        color={tokens.colors.interactive.warning__resting.rgba}
+                                        size={48}
+                                    />
+                                    <h2>{message.message}</h2>
+                                </Message>
+                            </Case>
+                        </Switch>
                     </MessageWrapper>
                 )}
             </Wrapper>

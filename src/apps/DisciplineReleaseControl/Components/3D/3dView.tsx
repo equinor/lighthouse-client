@@ -4,11 +4,11 @@ import { useModelViewerContext, Viewer } from '@equinor/lighthouse-model-viewer'
 import { useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
-import { ElectroIcon } from '../../../../packages/ModelViewer/icons/ElectroIcon';
 import { EleNetwork } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
 import { getEleNetworks } from '../Electro/getEleNetworks';
 import { MessageWrapper, ThreeDModel } from './3dViewStyles';
+import { ElectroIcon } from './icons/ElectroIcon';
 
 interface I3DViewProp {
     pipetest: Pipetest;

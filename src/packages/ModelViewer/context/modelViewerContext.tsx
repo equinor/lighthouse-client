@@ -65,6 +65,8 @@ export const ModelViewerContextProvider = ({
         setState((s) => ({
             ...s,
             message: undefined,
+            selection: options?.clearSelection === true ? undefined : s.selection,
+            isLoading: true,
             tags,
             padding: options?.padding || s.padding,
         }));
@@ -98,11 +100,6 @@ export const ModelViewerContextProvider = ({
 
     useEffect(() => {
         (async () => {
-            setState((s) => ({
-                ...s,
-                isLoading: true,
-                message: undefined,
-            }));
             if (
                 !plantState.echo3DClient ||
                 !plantState.cognite3DModel ||
@@ -119,12 +116,6 @@ export const ModelViewerContextProvider = ({
                 if (!plantState.tags) return;
                 await selection.setSelectionBasedOnE3dTagNos(plantState.tags);
 
-                // setState((s) => ({
-                //     ...s,
-                //     isCropped: true,
-                //     hasDefaultColor: false,
-                //     modelIsVisible: false,
-                // }));
                 selection.clipSelection(true, plantState.padding);
                 selection.fitCameraToCurrentBoundingBox();
                 selection.setWhiteAppearance();
