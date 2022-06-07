@@ -1,5 +1,6 @@
-import { Icon, Input, Menu } from '@equinor/eds-core-react';
-import React, { useCallback, useState } from 'react';
+import { Button, Dialog, Icon, Input, Menu, Scrim, TextField } from '@equinor/eds-core-react';
+import React, { Component, useCallback, useState } from 'react';
+import styled from 'styled-components';
 import { useEditBookmark } from '../..';
 import { IconMenu } from '../../../../../components/OverlayMenu/src';
 import { useRegistry } from '../../../../../Core/Client/Hooks';
@@ -45,12 +46,11 @@ export const AppBookmarks = ({ appBookmarks, appKey }: AppBookmarkProps) => {
                         const subSystem = bookmark.sourceSystem.subSystem.replace(' ', '');
                         return (
                             <BookmarkLinkWrapper key={bookmark.id}>
-                                <BookmarkLink
-                                    to={`/${subSystem}/${appKey}?bookmarkId=${bookmark.id}`}
-                                >
-                                    {bookmark.name}
-                                </BookmarkLink>
-                                <BookmarkMenu bookmark={bookmark} />
+                                <BookmarkEntry
+                                    appKey={appKey}
+                                    subSystem={subSystem}
+                                    bookmark={bookmark}
+                                />
                             </BookmarkLinkWrapper>
                         );
                     })}
@@ -59,6 +59,24 @@ export const AppBookmarks = ({ appBookmarks, appKey }: AppBookmarkProps) => {
         </AppBookmarksContainer>
     );
 };
+type BookmarkEntryProps = {
+    subSystem: string;
+    appKey: string;
+    bookmark: BookmarkResponse;
+};
+const BookmarkEntry = ({ appKey, bookmark, subSystem }: BookmarkEntryProps) => {
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    return (
+        <>
+            <BookmarkLink to={`/${subSystem}/${appKey}?bookmarkId=${bookmark.id}`}>
+                {bookmark.name}
+            </BookmarkLink>
+            <div onClick={() => setIsModalOpen(true)}>Click</div>
+            {isModalOpen && <Modal title={'title'} content={<>Test</>} />}
+        </>
+    );
+};
+
 type BookmarkMenuProps = {
     bookmark: BookmarkResponse;
 };
@@ -129,19 +147,63 @@ const EditBookmark = ({
 }: EditBookmarkProps) => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2em' }}>
-            <Input
-                type="text"
+            <TextField
+                variant="default"
+                id="title"
+                label="Title"
                 placeholder={originalBookmarkTitle}
-                title="Title"
                 value={newTitle}
                 onChange={onTitleChange}
             />
-            <Input
-                type="text"
-                title="Description"
+            <TextField
+                variant="default"
+                id="description"
+                label="Description"
                 value={newDescription}
                 onChange={onDescriptionChange}
             />
         </div>
+    );
+};
+const DialogContainer = styled(Dialog)`
+    width: 100%;
+    padding: 0.8rem 0.8rem;
+    min-width: 350px;
+`;
+
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding: 0.5em;
+    align-items: center;
+`;
+
+const HorizontalDivider = styled.div`
+    padding-left: 1.5em;
+`;
+
+const DialogPadding = styled.div`
+    padding-left: 1em;
+    padding-right: 1em;
+`;
+
+const TitleSection = styled.h2`
+    width: 100%;
+`;
+type ModalProps = {
+    title: string;
+    content: React.ReactNode;
+};
+const Modal = ({ title, content }: ModalProps) => {
+    return (
+        <Scrim isDismissable={false} style={{ zIndex: 1000 }}>
+            <DialogContainer>
+                <DialogPadding>
+                    <TitleSection>{title}</TitleSection>
+                    {content}
+                </DialogPadding>
+            </DialogContainer>
+        </Scrim>
     );
 };
