@@ -1,6 +1,5 @@
-import { Factory } from '@equinor/DataFactory';
 import { AnalyticsOptions } from '@equinor/Diagrams';
-import { GardenOptions } from '../../../../components/ParkView/Models/gardenOptions';
+import { DataSet, GardenOptions } from '@equinor/ParkView';
 import { dispatch } from './CoreActions';
 import {
     getWorkSpaceContext,
@@ -11,18 +10,17 @@ import {
     TreeOptions,
     WorkflowEditorOptions,
     WorkSpaceConfig,
-    WorkSpaceState,
+    WorkSpaceState
 } from './workspaceState';
 import {
     DataSource,
     DataViewerProps,
-    FactoryOptions,
-    IdResolverFunc,
+    HelpPageOptions,
     SearchOption,
     Validator,
-    ViewerOptions,
     ViewOptions,
     WorkSpaceApi,
+    WorkspaceOptions
 } from './WorkSpaceTypes';
 
 /**
@@ -30,16 +28,18 @@ import {
  *
  * @export
  * @template T
- * @param {ViewerOptions<T>} options
+ * @param {WorkspaceOptions<T>} options
  * @return {*}  {DataViewerApi<T>}
  */
-export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
+export function createWorkSpace<T, SideSheetIds extends string>(
+    options: WorkspaceOptions<T, SideSheetIds>
+): WorkSpaceApi<T> {
     const onSelect = (item: T) => {
-        const url = new URL(window.location.href);
-        url.hash = `${options.viewerId}/${item[options.objectIdentifier]}`;
-        window.history.pushState({}, '', url);
-
-        options.openSidesheet(options.CustomSidesheet, item, options.viewerId);
+        options.openSidesheet(options.customSidesheetOptions?.component, item, {
+            ...options.customSidesheetOptions,
+            widgetId: options.customSidesheetOptions?.id,
+        });
+        return item[options.objectIdentifier];
     };
 
     //const onMultiSelect = (items: T[]) => options.openSidesheet(options.CustomSidesheetList, items);
@@ -75,25 +75,9 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
 
             return workspaceAPI;
         },
-        registerDataCreator(factoryOptions: FactoryOptions) {
-            if (!options.dataFactoryCreator) {
-                // eslint-disable-next-line no-console
-                console.warn(
-                    'No data dataFactoryCreator is registered. Add when creating the data viewer.'
-                );
-                return workspaceAPI;
-            }
-            const factory: Factory = { ...factoryOptions, factoryId: options.viewerId };
-            options.dataFactoryCreator(factory);
-            return workspaceAPI;
-        },
+
         registerDataSource(dataSource: DataSource<T>) {
             updateState({ dataSource });
-
-            return workspaceAPI;
-        },
-        registerIdResolver(idResolver: IdResolverFunc<T>) {
-            updateState({ idResolver: idResolver.idResolver });
 
             return workspaceAPI;
         },
@@ -136,19 +120,28 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
             return workspaceAPI;
         },
         registerTreeOptions<T>(treeOptions: Omit<TreeOptions<T>, 'onSelect'>) {
-            updateState({ treeOptions: { ...treeOptions, onSelect } as TreeOptions<unknown> });
+            updateState({
+                treeOptions: { ...treeOptions, onSelect } as unknown as TreeOptions<unknown>,
+            });
 
             return workspaceAPI;
         },
-
         registerGardenOptions<T>(gardenOptions: Omit<GardenOptions<T>, 'onSelect'>) {
+            const onGroupeSelect = (item: DataSet<unknown>): string => {
+                options.openSidesheet<any>(options.customGroupeSidesheet?.component, item, {
+                    ...options.customGroupeSidesheet,
+                    widgetId: options.customGroupeSidesheet?.id,
+                });
+                return item.value;
+            };
+
             updateState({
                 gardenOptions: {
-                    //HACK if customGroupByKeys is undefined, it will break memoized variable in VGarden and cause rerender??
                     customGroupByKeys: {},
                     ...gardenOptions,
                     onSelect,
-                } as GardenOptions<unknown>,
+                    onGroupeSelect,
+                } as unknown as GardenOptions<unknown>,
             });
 
             return workspaceAPI;
@@ -176,6 +169,11 @@ export function createWorkSpace<T>(options: ViewerOptions<T>): WorkSpaceApi<T> {
         },
         registerWorkflowEditorOptions(workflowEditorOptions: WorkflowEditorOptions) {
             updateState({ workflowEditorOptions });
+
+            return workspaceAPI;
+        },
+        registerHelpPage(helpPageOptions: HelpPageOptions) {
+            updateState({ helpPageOptions });
 
             return workspaceAPI;
         },

@@ -1,4 +1,5 @@
 import { TextField } from '@equinor/eds-core-react';
+import { useCallback } from 'react';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 
 export const DescriptionInput = (): JSX.Element => {
@@ -6,11 +7,15 @@ export const DescriptionInput = (): JSX.Element => {
 
     const description = useAtomState((s) => s.description ?? '');
 
+    const calculateRowLength = useCallback((): number => {
+        return description.split('\n').length > 5 ? description.split('\n').length : 5;
+    }, [description]);
+
     return (
         <TextField
             id={Math.random().toString()}
             value={description}
-            rows={5}
+            rows={calculateRowLength()}
             label={'Description'}
             multiline
             placeholder={'Please enter scope description'}

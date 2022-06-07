@@ -14,11 +14,13 @@ interface MenuItemProps {
     onClick?: () => void;
 }
 
-export const MenuItem = ({ manifest, groupId, onClick }: MenuItemProps): JSX.Element => {
+export const MenuItem = ({ manifest, groupId, onClick }: MenuItemProps): JSX.Element | null => {
     const { toggleFavorite, hasFavorite } = useFavoritesContext();
     const navigate = useNavigate();
     const [showIcon, setShowIcon] = useState(false);
     const isActive = useMemo(() => isAppActive(manifest), [manifest]);
+
+    if (!isActive) return null;
 
     return (
         <Item

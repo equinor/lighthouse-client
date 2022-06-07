@@ -34,6 +34,8 @@ export const TopBarWrapper = styled(TopBar)`
 `;
 export const Header = styled(TopBar.Header)`
     gap: 0.75rem;
+    display: flex;
+    flex-direction: row;
 `;
 
 export const ActionWrapper = styled.div``;

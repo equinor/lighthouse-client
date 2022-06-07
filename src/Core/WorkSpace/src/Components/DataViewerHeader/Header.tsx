@@ -1,9 +1,9 @@
 import { BookmarkDropdown } from '@equinor/BookmarksManager';
-import { useFactory } from '@equinor/DataFactory';
 import { CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
+import { useDataCreator } from '@equinor/lighthouse-fusion-modules';
 import { isProduction } from '@equinor/lighthouse-portal-client';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
@@ -15,7 +15,6 @@ import { useViewerContext } from '../../Context/ViewProvider';
 import { useIntervalTimestamp } from '../../Hooks/useIntervalTimestamp';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { Presets } from '../Presets/Presets';
-import { SearchButton } from '../Search/Search';
 import { TabButton } from '../ToggleButton';
 import {
     ActionBar,
@@ -47,7 +46,7 @@ export const CompletionViewHeader = ({
     sideSheetWidth,
 }: CompletionViewHeaderProps): JSX.Element => {
     const { statusFunc, key, dataApi } = useDataContext();
-    const { factory } = useFactory(key);
+    const { openCreatorById, creator } = useDataCreator(`${key}Creator`);
     const {
         hasPowerBi,
         pages,
@@ -85,6 +84,7 @@ export const CompletionViewHeader = ({
                             {pages.map((page) => {
                                 return (
                                     <TabButton
+                                        width={`${page.pageTitle.length * 10}px`}
                                         aria-selected={
                                             (activePage?.pageId &&
                                                 page.pageId === activePage.pageId &&
@@ -104,20 +104,28 @@ export const CompletionViewHeader = ({
                 </LeftSection>
                 <RightSection>
                     <Presets />
-                    {factory && (
-                        <>
+
+                    <>
+                        {creator && (
                             <TabButton
+                                aria-disabled={!creator.props.hasAccess}
+                                onClick={() =>
+                                    creator.props.hasAccess !== false &&
+                                    openCreatorById(creator.widgetId)
+                                }
                                 width={'48px'}
-                                onClick={factory.onClick}
                                 aria-selected={false}
-                                title={factory.title}
+                                title={
+                                    creator.props.hasAccess !== false
+                                        ? creator.title
+                                        : 'Contact Support for access'
+                                }
                             >
                                 <Icon name={'add'} />
-                                {factory.title}
                             </TabButton>
-                            <Divider />
-                        </>
-                    )}
+                        )}
+                        <Divider />
+                    </>
 
                     {hasPowerBi && (
                         <>
@@ -125,6 +133,11 @@ export const CompletionViewHeader = ({
                                 onClick={() => handleSetActiveTab(ANALYTICS)}
                                 aria-selected={activeTab === ANALYTICS}
                                 title={'Power Bi analytics'}
+                                color={
+                                    activeTab === ANALYTICS
+                                        ? tokens.colors.interactive.primary__resting.hex
+                                        : undefined
+                                }
                             >
                                 <Icon name={'bar_chart'} />
                             </TabButton>
@@ -136,12 +149,20 @@ export const CompletionViewHeader = ({
                         {tabs.map((tab) => {
                             if (tab.tabId === ANALYTICS) return;
                             const Icon = tab.icon;
+
+                            const isActiveTab = activeTab === tab.tabId;
+
                             return (
                                 <TabButton
                                     onClick={() => handleSetActiveTab(tab.tabId)}
                                     key={`tab-${tab.icon}`}
-                                    aria-selected={activeTab === tab.tabId}
+                                    aria-selected={isActiveTab}
                                     title={tab.title}
+                                    color={
+                                        isActiveTab
+                                            ? tokens.colors.interactive.primary__resting.hex
+                                            : undefined
+                                    }
                                 >
                                     <Icon />
                                 </TabButton>

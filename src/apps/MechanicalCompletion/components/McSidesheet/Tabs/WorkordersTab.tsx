@@ -4,12 +4,12 @@ import { Column, DescriptionCell, ProgressCell } from '@equinor/Table';
 import { McWorkOrder } from '../types/mcWorkOrder';
 const columns: Column<McWorkOrder>[] = [
     {
-        id: 'workorderNumber',
+        id: 'workOrderNumber',
         Header: 'WO Number',
         accessor: (pkg) => ({
             content: pkg,
             url: isProduction() ? pkg.url : pkg.url.replace('procosys', 'procosystest'),
-            currentKey: 'workorderNumber',
+            currentKey: 'workOrderNumber',
         }),
         Cell: CellWithLink,
         width: 130,

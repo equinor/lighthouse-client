@@ -3,7 +3,7 @@ import { AnalyticsOptions } from '@equinor/Diagrams';
 import { FilterOptions } from '@equinor/filter';
 import { Filter, PBIOptions } from '@equinor/lighthouse-powerbi';
 import { StatusItem } from '@equinor/lighthouse-status-bar';
-import { CustomView, CustomVirtualView, GardenOptions, StatusView } from '@equinor/ParkView';
+import { CustomVirtualView, GardenOptions, StatusView } from '@equinor/ParkView';
 import { CustomCell, CustomColumn, CustomHeader } from '@equinor/Table';
 import React from 'react';
 import { FetchQueryOptions, QueryFunction } from 'react-query';
@@ -12,9 +12,10 @@ import { Page } from '../Context/ViewProvider';
 import {
     DataSource,
     DataViewerProps,
+    HelpPageOptions,
     PresetOption,
     SearchOption,
-    ViewOptions,
+    ViewOptions
 } from './WorkSpaceTypes';
 
 export interface WorkSpaceState {
@@ -54,13 +55,15 @@ interface Options<T> {
 
 //update TreeOptions;;
 export interface TreeOptions<T> {
+    objectIdentifier: keyof T;
     groupByKeys?: (keyof T)[];
     itemKey: keyof T;
     excludeKeys?: (keyof T)[];
-    customViews?: CustomView<T> | CustomVirtualView<T>;
+    customViews?: CustomVirtualView<T>;
     options?: Options<T>;
     status?: StatusView<T>;
-    onSelect?: (item: T) => void;
+    onGroupeSelect?: (item: T) => string;
+    onSelect?: (item: T) => string;
 }
 
 export type StatusFunc<T> = (data: T[]) => StatusItem[];
@@ -75,7 +78,7 @@ export interface PrefetchQueriesOptions {
     options?: FetchQueryOptions<unknown, unknown, unknown, string[]> | undefined;
 }
 
-export type WorkspaceTab = 'tree' | 'table' | 'garden' | 'analytics' | 'gantt' | 'editor';
+export type WorkspaceTab = 'tree' | 'table' | 'garden' | 'analytics' | 'gantt' | 'editor' | 'help';
 
 export interface WorkSpaceConfig<T> {
     name: string;
@@ -83,7 +86,7 @@ export interface WorkSpaceConfig<T> {
     objectIdentifier: string;
     prefetchQueriesOptions?: PrefetchQueriesOptions[];
     onSelect?: (item: T) => void;
-    idResolver?: (id: string) => Promise<T | undefined>;
+    onGroupeSelect?: (item: T) => void;
     dataSource?: DataSource<T>;
     validator?: (data: unknown[]) => T[];
     viewComponent?: React.FC<DataViewerProps<T>>;
@@ -99,6 +102,7 @@ export interface WorkSpaceConfig<T> {
     workflowEditorOptions?: WorkflowEditorOptions;
     presetOptions?: PresetOption[];
     searchOptions?: SearchOption<T>[];
+    helpPageOptions?: HelpPageOptions;
 }
 
 export interface PowerBiOptions {
@@ -108,7 +112,7 @@ export interface PowerBiOptions {
     pages: Page[];
 }
 
-export interface TimeLineOptions { }
+export interface TimeLineOptions {}
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);

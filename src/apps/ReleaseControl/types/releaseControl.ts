@@ -1,5 +1,4 @@
 import { CriteriaSignState } from '../../ScopeChangeRequest/types/scopeChangeRequest';
-
 export interface CreatedBy {
     id: string;
     oid: string;
@@ -79,15 +78,22 @@ export interface ReleaseControlStep {
     isCompleted: boolean;
     criterias: Criteria[];
     contributors: Contributor[];
+    allowContributors: boolean;
+    criteriaTemplates: CriteriaTemplate[];
 }
 
 export interface CreateReleaseControlStepModel {
+    id?: string;
     name: string;
     order: number;
     allowContributors: boolean;
     completedStatusName?: string;
     rejectedStatusName?: string;
+    isCompleted?: boolean;
+    isCurrent?: boolean;
+    tagNumbers?: string[];
     criteriaTemplates: CriteriaTemplate[];
+    criterias: Criteria[];
 }
 
 export interface CriteriaTemplate {
@@ -97,13 +103,13 @@ export interface CriteriaTemplate {
     value?: string;
 }
 
-export interface Tag {
+export interface ReleaseControlTag {
     id: string;
     procosysId: number;
     procosysNumber: string;
 }
 
-export interface Area {
+export interface ReleaseControlArea {
     id: string;
     procosysId: number;
     procosysCode: string;
@@ -128,6 +134,6 @@ export interface ReleaseControl {
     allowContributors: boolean;
     currentWorkflowStep: ReleaseControlStep;
     workflowSteps: ReleaseControlStep[];
-    tags: Tag[];
-    areas: Area[];
+    tags: ReleaseControlTag[];
+    areas: ReleaseControlArea[];
 }

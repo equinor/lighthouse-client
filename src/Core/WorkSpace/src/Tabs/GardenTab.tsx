@@ -6,6 +6,7 @@ import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
+import { tabApis } from '../Context/LocationProvider';
 import {
     gardenApiAtom,
     gardenStateSnapshotAtom,
@@ -13,9 +14,11 @@ import {
     interceptGardenOptions,
 } from '../Util/bookmarks/gardenBookmarks';
 import { useWorkspaceBookmarks } from '../Util/bookmarks/hooks';
+import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 const GardenTabWrapper = styled.div`
     display: grid;
     grid-template-rows: auto 1fr;
+    gap: 8px;
     height: 100%;
     width: 100%;
 `;
@@ -27,11 +30,12 @@ export const GardenTab = (): JSX.Element => {
     useWorkspaceBookmarks();
     const { gardenOptions } = useDataContext();
 
+    const { name } = useWorkSpace();
     useEffect(
         () => () => {
             const api = deref(gardenApiAtom);
             if (!api) return;
-            saveGardenSnapshot(api);
+            saveGardenSnapshot(api, name);
         },
         []
     );
@@ -42,8 +46,9 @@ export const GardenTab = (): JSX.Element => {
             <WorkspaceFilter />
             <Garden
                 data={data}
-                gardenOptions={interceptGardenOptions(gardenOptions)}
+                gardenOptions={interceptGardenOptions(gardenOptions, name)}
                 onGardenReady={(api) => {
+                    tabApis.updateAtom({ garden: api });
                     swap(gardenApiAtom, () => api);
                 }}
             />
@@ -51,6 +56,6 @@ export const GardenTab = (): JSX.Element => {
     );
 };
 
-function saveGardenSnapshot(api: GardenApi) {
-    swap(gardenStateSnapshotAtom, () => generateGardenSnapshot(api));
+function saveGardenSnapshot(api: GardenApi, name: string) {
+    swap(gardenStateSnapshotAtom, () => generateGardenSnapshot(api, name));
 }

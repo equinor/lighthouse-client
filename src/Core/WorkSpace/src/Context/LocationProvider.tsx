@@ -1,5 +1,5 @@
 import { createAtom } from '@equinor/atom';
-import { openSidesheet, useSideSheet } from '@equinor/sidesheet';
+import { EventHub } from '@equinor/lighthouse-utils';
 import { TableAPI } from '@equinor/Table';
 import {
     createContext,
@@ -8,14 +8,13 @@ import {
     useContext,
     useEffect,
     useMemo,
-    useState,
+    useState
 } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GardenApi } from '../../../../components/ParkView/Models/gardenApi';
-import { Fallback } from '../Components/FallbackSidesheet/Fallback';
+import { SidesheetEvents } from '../../../../packages/Sidesheet/Types/sidesheetEvents';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
 import { WorkspaceTab } from '../WorkSpaceApi/workspaceState';
-import { useDataContext } from './DataProvider';
 
 interface LocationContext {
     activeTab: WorkspaceTab;
@@ -26,8 +25,8 @@ const Context = createContext({} as LocationContext);
 
 export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.Element => {
     const { id } = useParams();
-    const { data, dataApi } = useDataContext();
-    const { defaultTab, onSelect, idResolver, objectIdentifier } = useWorkSpace();
+
+    const { defaultTab } = useWorkSpace();
 
     const currentTabId = useMemo(() => id && `/${id}`, [id]);
 
@@ -51,37 +50,6 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         [currentTabId, location, navigate]
     );
 
-    const findItem = useCallback(
-        (id: string): unknown | undefined => {
-            return data.find((x) => x[objectIdentifier] === id);
-        },
-        [data, objectIdentifier]
-    );
-
-    const mountSidesheetFromUrl = useCallback(async () => {
-        if (!onSelect) return;
-        const id = location.hash.split('/')[1];
-        if (idResolver) {
-            try {
-                const item = await idResolver(id);
-                if (item !== undefined) {
-                    onSelect(item);
-                    return;
-                }
-            } catch (e) {
-                openSidesheet(Fallback);
-            }
-        } else {
-            await dataApi.refetch();
-            const item = findItem(id);
-            if (item) {
-                onSelect(item);
-                return;
-            }
-        }
-        openSidesheet(Fallback);
-    }, [data, findItem, idResolver, location.hash, onSelect]);
-
     /**
      * Add default tab to url if id is undefined
      */
@@ -94,28 +62,27 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
-    /**
-     * Removes hash from url when closed
-     */
-    const { props: sidesheetProps, SidesheetComponent } = useSideSheet();
-    // useEffect(() => {
-    //     if (location.hash.length > 0) return;
-    //     if (!sidesheetProps && !SidesheetComponent) {
-    //         navigate(location.pathname, { replace: true });
-    //     }
-    // }, [sidesheetProps, SidesheetComponent, location.pathname]);
-
-    /**
-     * Store sidesheet state in url
-     */
     useEffect(() => {
-        if (sidesheetProps || SidesheetComponent) return;
-        if (location.hash.length > 0 && onSelect) {
-            mountSidesheetFromUrl();
-        }
-    }, []);
+        const ev = new EventHub();
 
-    useClearSelectedOnSidesheetClose();
+        const onClose = ev.registerListener(SidesheetEvents.SidesheetClosed, () => {
+            const {
+                garden,
+                table: { getApi: getTableApi },
+            } = tabApis.readAtomValue();
+
+            if (typeof getTableApi === 'function') {
+                getTableApi()?.setSelectedRowId(() => null);
+            }
+
+            if (Object.keys(garden).length === 0) return;
+            garden?.mutations?.setSelectedItem(() => null);
+        });
+
+        return () => {
+            onClose();
+        };
+    }, []);
 
     return (
         <Context.Provider
@@ -141,17 +108,3 @@ interface TabApi {
 }
 
 export const tabApis = createAtom<TabApi>({ table: {}, garden: {} } as TabApi);
-
-const useClearSelectedOnSidesheetClose = (): void => {
-    const { SidesheetComponent } = useSideSheet();
-
-    useEffect(() => {
-        if (!SidesheetComponent) {
-            const getTableApi = tabApis.readAtomValue().table.getApi;
-
-            if (typeof getTableApi === 'function') {
-                getTableApi().setSelectedRowId(() => null);
-            }
-        }
-    }, [SidesheetComponent]);
-};

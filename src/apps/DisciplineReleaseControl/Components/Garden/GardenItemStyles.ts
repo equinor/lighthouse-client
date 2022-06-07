@@ -7,9 +7,10 @@ export type ReleaseControlItemProps = {
     textColor: string;
     isGrouped: boolean;
     isExpanded: boolean;
+    isSelected: boolean;
 };
 
-export const ReleaseControlItem = styled(Item)<ReleaseControlItemProps>`
+export const ReleaseControlItem = styled(Item) <ReleaseControlItemProps>`
     display: flex;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
@@ -19,8 +20,8 @@ export const ReleaseControlItem = styled(Item)<ReleaseControlItemProps>`
     box-sizing: border-box;
     white-space: nowrap;
     justify-content: space-between;
-    border: 1px solid #dcdcdc;
     padding: 0.18rem 0.5rem;
+    border: ${({ isSelected }) => (isSelected ? '2px dashed green' : '1px solid #dcdcdc ')};
 `;
 
 export const MidSection = styled.div<{ expanded: boolean }>`

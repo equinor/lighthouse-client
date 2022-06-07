@@ -4,6 +4,40 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.4.4
+- [MC] Analytics tab
+- [Garden] Fix horizontal scroll
+
+## 1.4.3
+- [Portal] Access check hotfix
+- [MC] Now in production
+- [Table] Bugfixes
+
+## 1.4.2
+- [Scope change] Batch import tags and commPkgs
+- [Sidesheet] Sidesheet configuration
+- [Workspace] Workspace configuration
+- [Work order] Added KPI's
+- [Workspace] Small ui adjustments
+- [Workspace] Added support for help pages
+- [ModuleViewer] Possibility to turn on/off the rest of the 3D model
+
+
+## 1.4.1
+- [PipingAndHeatTrace] Null-check bug fix. Updated app after FAM update.
+- [Portal] Add version to banner
+- [Portal] Navigation breadcrumbs
+
+## 1.4.0
+- [Workspace] Highlight active item in garden and table
+- [Scope change] Garden config
+- [Scope change] Bugfixes
+- [Assignments] Bugfix
+- [PowerBI] Fix filter limitation with using basic filter
+- [PowerBI] Fix rerender on filter group when filter item checked/unchecked
+- [GardenUtils] Fix popover that is stuck when page rerenders
+- [Workspace] Use shortname for bookmarks when saving
+- [PipingAndHeatTrace] Remove double slash from base url
 
 ## 1.3.1
 - [Scopechange] Form bugfixes

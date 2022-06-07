@@ -4,10 +4,18 @@ import { getDotsColor, getStatus, getTextColor, createProgressGradient } from '.
 import { CustomItemView } from '../../../../../components/ParkView/Models/gardenOptions';
 import { useParkViewContext } from '../../../../../components/ParkView/Context/ParkViewProvider';
 import { PopoverContent, ItemOptions } from '../../components/HandoverItemPopover';
-import { FlagIcon, WarningIcon } from '../../components/Icons';
-import { Root, Sizes, ItemText, HandoverItemWrapper, StatusCircles } from './GardenItemStyles';
+import { FlagIcon } from '../../components/Icons';
+import {
+    Root,
+    Sizes,
+    ItemText,
+    HandoverItemWrapper,
+    StatusCircles,
+    WarningIconWrapper,
+} from './GardenItemStyles';
 import { itemSize } from './utils';
 import { PopoverWrapper } from '@equinor/GardenUtils';
+import { WarningIcon } from '../../components/Icons/WarningIcon';
 
 function HandoverGardenItem({
     data,
@@ -16,11 +24,12 @@ function HandoverGardenItem({
     columnExpanded,
     depth,
     width: itemWidth = 300,
-    selectedItem,
+    isSelected,
     rowStart,
     columnStart,
     parentRef,
 }: CustomItemView<HandoverPackage>): JSX.Element {
+    const [hoverTimeout, setHoverTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
     const { customState } = useParkViewContext();
     const size = itemSize(data.volume, (customState?.['maxVolume'] as number) || 0);
 
@@ -31,7 +40,7 @@ function HandoverGardenItem({
     const mcPackageColor = getDotsColor(data.mcStatus);
     const commStatusColor = getDotsColor(data.commpkgStatus);
 
-    const showWarningIcon = false; // data.mcStatus === 'OS' && status === 'RFCC Accepted';
+    const showWarningIcon = data.mcStatus === 'OS' && status === 'RFCC Accepted';
 
     const anchorRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -48,7 +57,6 @@ function HandoverGardenItem({
         commStatusColor,
         showWarningIcon,
     };
-    let hoverTimeout: ReturnType<typeof setTimeout> | null = null;
     return (
         <>
             <Root>
@@ -56,7 +64,7 @@ function HandoverGardenItem({
                     ref={anchorRef}
                     onMouseEnter={() => {
                         hoverTimeout && !isOpen && clearTimeout(hoverTimeout);
-                        hoverTimeout = setTimeout(() => setIsOpen(true), 700);
+                        setHoverTimeout(setTimeout(() => setIsOpen(true), 700));
                     }}
                     onMouseLeave={() => {
                         hoverTimeout && clearTimeout(hoverTimeout);
@@ -66,13 +74,17 @@ function HandoverGardenItem({
                     textColor={textColor}
                     onClick={onClick}
                     style={{ width: `${columnExpanded ? 100 : width}%`, maxWidth }}
-                    isSelected={selectedItem?.commpkgNo === data.commpkgNo}
+                    isSelected={isSelected}
                 >
+                    {showWarningIcon && (
+                        <WarningIconWrapper>
+                            <WarningIcon />
+                        </WarningIconWrapper>
+                    )}
                     <Sizes size={size} color={textColor} />
                     {data.hasUnsignedActions && <FlagIcon color={textColor} />}
                     <ItemText>{data[itemKey]}</ItemText>
                     <StatusCircles mcColor={mcPackageColor} commColor={commStatusColor} />
-                    {showWarningIcon && <WarningIcon />}
                 </HandoverItemWrapper>
 
                 {columnExpanded && data.description}

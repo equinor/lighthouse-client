@@ -21,7 +21,6 @@ const Button = styled.button<BoxProps>`
     outline: none;
     font-size: 14px;
     height: 48px;
-
     justify-content: center;
     width: ${(s) => s.width ?? '48px'};
     color: ${tokens.colors.text.static_icons__tertiary.rgba};
@@ -29,7 +28,7 @@ const Button = styled.button<BoxProps>`
         selected
             ? `2px solid ${tokens.colors.interactive.primary__resting.rgba}`
             : `2px solid ${tokens.colors.ui.background__medium.rgba}`};
-    cursor: pointer;
+    cursor: ${({ 'aria-disabled': disabled }) => (disabled ? 'not-allowed' : 'pointer')};
 
     > svg > path {
         fill: ${(props) => (props.color ? props.color : '150, 150, 150')};
