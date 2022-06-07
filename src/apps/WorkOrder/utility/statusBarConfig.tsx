@@ -22,27 +22,27 @@ const getKpis = (workOrders: WorkOrder[]) => {
             const followUpStatus = getFollowUpStatus(curr);
 
             // Mhrs total
-            acc.estMhrs += curr.estimatedHours;
+            acc.estMhrs += Number(curr.estimatedHours);
 
             // Mhrs not available
             if (followUpStatus === FollowUpStatuses.MaterialAndOrWoNotAvailable) {
-                acc.remMhrsNotAvailable += curr.remainingHours;
+                acc.remMhrsNotAvailable += Number(curr.remainingHours);
             }
 
             // Mhrs available
             if (followUpStatus === FollowUpStatuses.MaterialAndWoAvailable) {
-                acc.remMhrsAvailable += curr.remainingHours;
+                acc.remMhrsAvailable += Number(curr.remainingHours);
             }
             // Mhrs ready for execution
             if (followUpStatus === FollowUpStatuses.MaterialAndWoOk) {
-                acc.remMhrsWoOk += curr.remainingHours;
+                acc.remMhrsWoOk += Number(curr.remainingHours);
             }
 
             // Mhrs completed
-            acc.expMhrsCompleted += curr.expendedHours;
+            acc.expMhrsCompleted += Number(curr.expendedHours);
 
             // Mhrs remaining
-            acc.remMhrs += curr.remainingHours;
+            acc.remMhrs += Number(curr.remainingHours);
             return acc;
         },
         {

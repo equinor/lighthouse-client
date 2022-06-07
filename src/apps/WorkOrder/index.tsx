@@ -12,6 +12,7 @@ import { tableConfig } from './utility/tableConfig';
 
 async function responseParser(response: Response) {
     const parsedResponse = JSON.parse(await response.text()) as WorkOrder[];
+    console.log('parsed', parsedResponse);
     return parsedResponse;
 }
 
