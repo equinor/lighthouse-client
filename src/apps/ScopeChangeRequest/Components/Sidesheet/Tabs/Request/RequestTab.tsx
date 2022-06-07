@@ -111,6 +111,7 @@ export function RequestTab(): JSX.Element {
                         <SectionHeading>References</SectionHeading>
                         <SectionWrapper>
                             <RelatedObjects
+                                punch={request?.punchListItems}
                                 systems={request.systems}
                                 commPkgs={request.commissioningPackages}
                                 documents={request.documents}
