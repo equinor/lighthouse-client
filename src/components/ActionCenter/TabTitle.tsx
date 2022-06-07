@@ -6,7 +6,6 @@ interface TabTitleProps {
     count: number;
 }
 export const TabTitle = ({ count, titleName }: TabTitleProps): JSX.Element => {
-    count = 88;
     return (
         <Header>
             {titleName}
