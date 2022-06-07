@@ -94,19 +94,32 @@ const Header = styled.div`
 const Notifications = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 1em;
-    padding: 1em 0em;
+    gap: 0em;
+    padding: 0em 1em;
+
+    height: 100%;
 `;
 
 const ActiveOrigins = styled.div`
     display: flex;
     flex-direction: row;
-    gap: 1em;
+    gap: 0.5em;
     padding: 0em 1em;
+    padding-bottom: 5px;
 `;
 const NotificationsList = styled.div`
     display: flex;
     flex-direction: column;
+    overflow: scroll;
+    padding-bottom: 2rem;
+    padding-right: 1em;
     height: 100%;
-    margin: 1em;
+
+    ::-webkit-scrollbar {
+        height: 0.2rem;
+        width: 0.3rem;
+    }
+    &:last-child {
+        border-bottom: 1px ${tokens.colors.interactive.disabled__border.hex} solid;
+    }
 `;
