@@ -46,21 +46,21 @@ export function setup(appApi: ClientApi): void {
         ])
         .registerPrefetchQueries(prefetchQueriesOptions)
         .registerPowerBIOptions(
-            appApi.isProduction
+            !appApi.isProduction
                 ? {
-                      pages: [
-                          {
-                              pageId: 'ReportSectionb822b2eb4fc97aef255b',
-                              pageTitle: 'Overview',
-                              default: true,
-                          },
-                          {
-                              pageId: 'ReportSection40a8a70e6f82243888ca',
-                              pageTitle: 'History',
-                          },
-                      ],
-                      reportURI: 'pp-scope-change-analytics',
-                  }
+                    pages: [
+                        {
+                            pageId: 'ReportSectionb822b2eb4fc97aef255b',
+                            pageTitle: 'Overview',
+                            default: true,
+                        },
+                        {
+                            pageId: 'ReportSection40a8a70e6f82243888ca',
+                            pageTitle: 'History',
+                        },
+                    ],
+                    reportURI: 'pp-scope-change-analytics',
+                }
                 : (undefined as unknown as PowerBiOptions)
         );
 }
