@@ -1,6 +1,8 @@
 import { RendererConfiguration, setupEcho3dWeb } from '@equinor/echo3dweb-viewer';
-import { Button } from '@equinor/eds-core-react';
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { Case, Switch } from '@equinor/JSX-Switch';
+import { Icon } from '@equinor/lighthouse-components';
 import { useAppConfig, useAuthProvider, useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useRef } from 'react';
 import { SelectionAction, SelectionMenu } from './components/selectionMenu';
@@ -39,8 +41,15 @@ export const Viewer: React.FC<ViewerProps> = ({
     const viewerRef = useRef<HTMLCanvasElement>(null);
     const authProvider = useAuthProvider();
     const { urls, scope } = useAppConfig();
-    const { setEcho3DClient, setPlantState, isLoading, selectTags, message, setMessage } =
-        useModelViewerContext();
+    const {
+        setEcho3DClient,
+        setPlantState,
+        isLoading,
+        selectTags,
+        message,
+        setMessage,
+        selection,
+    } = useModelViewerContext();
     useModel(loadFullModel);
 
     /**
@@ -60,7 +69,7 @@ export const Viewer: React.FC<ViewerProps> = ({
             getAccessToken: getHierarchyToken,
         };
         const renderConfig: RendererConfiguration = {
-            loadingCallback: () => console.log('loading...'),
+            // loadingCallback: () => console.log('loading...'),
             clearColor: tokens.colors.ui.background__info.hex,
         };
 
@@ -78,7 +87,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                 setPlantState(selectPlantByContext(plants, echoPlantId));
                 setEcho3DClient(client);
                 if (tags) {
-                    selectTags(tags, padding);
+                    selectTags(tags, { padding });
                 }
             } catch (ex) {
                 console.log(ex);
@@ -92,52 +101,53 @@ export const Viewer: React.FC<ViewerProps> = ({
         <>
             <Wrapper>
                 <canvas ref={viewerRef} />
+                {(message || (isLoading && !selection)) && (
+                    <MessageWrapper>
+                        {isLoading && (
+                            <Message>
+                                <CircularProgress />
+                            </Message>
+                        )}
+                        {message && (
+                            <Switch defaultCase={<h2>{message.message}</h2>}>
+                                <Case when={message.type === 'NoPlant'}>
+                                    <Message
+                                        onClick={() => {
+                                            setMessage();
+                                        }}
+                                    >
+                                        <h2>{message.message}</h2>
+
+                                        <Button
+                                            onClick={() => {
+                                                window.open(
+                                                    `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
+                                                );
+                                            }}
+                                        >
+                                            Apply for access
+                                        </Button>
+                                    </Message>
+                                </Case>
+                                <Case when={message.type === 'NoTags'}>
+                                    <Message
+                                        onClick={() => {
+                                            setMessage();
+                                        }}
+                                    >
+                                        <Icon
+                                            name={'warning_outlined'}
+                                            color={tokens.colors.interactive.warning__resting.rgba}
+                                            size={48}
+                                        />
+                                        <h2>{message.message}</h2>
+                                    </Message>
+                                </Case>
+                            </Switch>
+                        )}
+                    </MessageWrapper>
+                )}
             </Wrapper>
-            {(message || isLoading) && (
-                <MessageWrapper>
-                    {isLoading && <Message>Loading...</Message>}
-                    {message && (
-                        <Message
-                            onClick={() => {
-                                setMessage();
-                            }}
-                        >
-                            <h2>{message.message}</h2>
-                            {message.type === 'NoPlant' && (
-                                <Button
-                                    onClick={() => {
-                                        window.open(
-                                            `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
-                                        );
-                                    }}
-                                >
-                                    Apply for access
-                                </Button>
-                            )}
-                        </Message>
-                    )}
-                </MessageWrapper>
-            )}
-            {/* <Selections>
-                <Menu>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selectTags(AP300, padding);
-                        }}
-                    >
-                        T1
-                    </Button>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selectTags(T5602_M02, padding);
-                        }}
-                    >
-                        T2
-                    </Button>
-                </Menu>
-            </Selections> */}
             <SelectionMenu selectionActions={selectionActions} />
         </>
     );

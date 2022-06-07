@@ -1,4 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
+import { Icon } from '@equinor/lighthouse-components';
 import { useModelViewerContext, Viewer } from '@equinor/lighthouse-model-viewer';
 import { useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useMemo, useState } from 'react';
@@ -7,7 +8,7 @@ import { ElectroIcon } from '../../../../packages/ModelViewer/icons/ElectroIcon'
 import { EleNetwork } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
 import { getEleNetworks } from '../Electro/getEleNetworks';
-import { ThreeDModel, WarningBanner, WarningBannerText } from '../Sidesheet/styles';
+import { MessageWrapper, ThreeDModel } from './3dViewStyles';
 
 interface I3DViewProp {
     pipetest: Pipetest;
@@ -33,14 +34,19 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
     const { selectTags } = useModelViewerContext();
 
     useEffect(() => {
-        selectTags(pipetest.lineNos);
-    }, []);
+        selectTags(pipetest.lineNos, { clearSelection: true });
+    }, [pipetest.name]);
 
-    if (pipetest.lineNos.length > 0 && electroTags.length === 0)
+    if (pipetest.lineNos.length === 0 && electroTags.length === 0)
         return (
-            <WarningBanner>
-                <WarningBannerText>No tags to display</WarningBannerText>
-            </WarningBanner>
+            <MessageWrapper>
+                <Icon
+                    name={'warning_outlined'}
+                    color={tokens.colors.interactive.warning__resting.rgba}
+                    size={48}
+                />
+                <h2>No tags found for this pipetest</h2>
+            </MessageWrapper>
         );
 
     return (

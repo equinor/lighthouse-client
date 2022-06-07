@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.div`
     height: 100%;
     > div {
-        /* display: none; */
+        display: none;
     }
 `;
 
@@ -37,8 +37,10 @@ export const Menu = styled.div`
 export const MessageWrapper = styled.div`
     position: absolute;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #fff;
     width: 100%;
     top: 0px;
     height: 100%;
@@ -49,6 +51,6 @@ export const Message = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
+
     padding: 0.5rem;
 `;

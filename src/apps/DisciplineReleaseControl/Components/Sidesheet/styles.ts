@@ -1,10 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
-export const ThreeDModel = styled.div`
-    height: ${() => window.innerHeight - 150 + 'px'};
-`;
-
 export const TablesTab = styled.div`
     padding-left: 8px;
     overflow: auto;
