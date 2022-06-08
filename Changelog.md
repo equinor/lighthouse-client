@@ -6,7 +6,8 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 # 1.4.5
 - [MC] Production flag for analytics tab
 - [Portal] Change nginx version to fix dynatrace
-- 
+- [PipingAndHeatTrace] - 3D for tags
+
 ## 1.4.4
 - [MC] Analytics tab
 - [Garden] Fix horizontal scroll
@@ -15,7 +16,7 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Portal] Access check hotfix
 - [MC] Now in production
 - [Table] Bugfixes
-- [PipingAndHeatTrace] 3D for tags
+
 
 ## 1.4.2
 - [Scope change] Batch import tags and commPkgs
