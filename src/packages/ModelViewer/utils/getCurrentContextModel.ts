@@ -21,7 +21,10 @@ export function selectPlantByContext(
     const plants = assetsMetaData.filter((asset) => asset.plantCode === context);
     let message: Message | undefined = undefined;
     if (plants.length === 0) {
-        message = createMessage(`No plats awaitable in the current context ${context}}`, 'NoPlant');
+        message = createMessage(
+            `No plants awaitable in the current context ${context}}`,
+            'NoPlant'
+        );
     }
 
     const currentPlant = plants[0];

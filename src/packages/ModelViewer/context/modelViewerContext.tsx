@@ -1,5 +1,5 @@
 import { Cognite3DModel } from '@cognite/reveal';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Echo3dMultiSelectionActions } from '../../../../packages/echo3dViewer/src/services/echo3dMultiSelectionActions';
 import { EchoSetupObject } from '../../../../packages/echo3dViewer/src/types/echoSetupObject';
 import { Message } from '../types/message';
@@ -44,7 +44,71 @@ export const ModelViewerContextProvider = ({
         hasDefaultColor: false,
         modelIsVisible: false,
         tagsIsVisible: false,
+        viewerSelection: [],
     });
+
+    const selectTags = useCallback(
+        (tags?: string[], options?: { padding?: number; clearSelection?: boolean }) => {
+            setState((s) => ({
+                ...s,
+                viewerSelection: [],
+                message: undefined,
+                selection: options?.clearSelection === true ? undefined : s.selection,
+                isLoading: true,
+            }));
+
+            (async () => {
+                if (
+                    !plantState.echo3DClient ||
+                    !plantState.cognite3DModel ||
+                    !plantState.currentPlant
+                ) {
+                    return;
+                }
+                try {
+                    const selection = new Echo3dMultiSelectionActions(
+                        plantState.echo3DClient.viewer,
+                        plantState.cognite3DModel,
+                        plantState.currentPlant.hierarchyId
+                    );
+                    if (!tags) return;
+                    await selection.setSelectionBasedOnE3dTagNos(tags);
+
+                    selection.clipSelection(true, plantState.padding);
+                    selection.fitCameraToCurrentBoundingBox();
+                    selection.setWhiteAppearance();
+                    selection.setSelectedColor();
+                    console.log('selection', selection.viewerSelection);
+                    setState((s) => ({
+                        ...s,
+                        selection,
+                        viewerSelection: selection.viewerSelection,
+                        isLoading: false,
+                        isCropped: true,
+                        hasDefaultColor: false,
+                        modelIsVisible: false,
+                        message: undefined,
+                        padding: options?.padding || s.padding,
+                        tags,
+                    }));
+                } catch (error: any) {
+                    setState((s) => ({
+                        ...s,
+                        viewerSelection: [],
+                        selection: undefined,
+                        isLoading: false,
+                        message: createMessage(error.message, 'NoTags'),
+                    }));
+                }
+            })();
+        },
+        [
+            plantState.cognite3DModel,
+            plantState.currentPlant,
+            plantState.echo3DClient,
+            plantState.padding,
+        ]
+    );
 
     function setPlantState(plantState: Partial<ModelViewerState>) {
         setState((s) => ({ ...s, ...plantState }));
@@ -59,17 +123,6 @@ export const ModelViewerContextProvider = ({
 
     function setMessage(message?: Message) {
         setState((s) => ({ ...s, message, isLoading: false }));
-    }
-
-    function selectTags(tags?: string[], options?: { padding?: number; clearSelection?: boolean }) {
-        setState((s) => ({
-            ...s,
-            message: undefined,
-            selection: options?.clearSelection === true ? undefined : s.selection,
-            isLoading: true,
-            tags,
-            padding: options?.padding || s.padding,
-        }));
     }
 
     function toggleClipping() {
@@ -99,52 +152,8 @@ export const ModelViewerContextProvider = ({
     }
 
     useEffect(() => {
-        (async () => {
-            if (
-                !plantState.echo3DClient ||
-                !plantState.cognite3DModel ||
-                !plantState.currentPlant
-            ) {
-                return;
-            }
-            try {
-                const selection = new Echo3dMultiSelectionActions(
-                    plantState.echo3DClient.viewer,
-                    plantState.cognite3DModel,
-                    plantState.currentPlant.hierarchyId
-                );
-                if (!plantState.tags) return;
-                await selection.setSelectionBasedOnE3dTagNos(plantState.tags);
-
-                selection.clipSelection(true, plantState.padding);
-                selection.fitCameraToCurrentBoundingBox();
-                selection.setWhiteAppearance();
-                selection.setSelectedColor();
-                setState((s) => ({
-                    ...s,
-                    selection,
-                    isLoading: false,
-                    isCropped: true,
-                    hasDefaultColor: false,
-                    modelIsVisible: false,
-                    message: undefined,
-                }));
-            } catch (error: any) {
-                setState((s) => ({
-                    ...s,
-                    selection: undefined,
-                    isLoading: false,
-                    message: createMessage(error.message, 'NoTags'),
-                }));
-            }
-        })();
-    }, [
-        plantState.currentPlant,
-        plantState.echo3DClient,
-        plantState.cognite3DModel,
-        plantState.tags,
-        plantState.padding,
-    ]);
+        selectTags(plantState.tags);
+    }, [plantState.tags, selectTags]);
 
     useEffect(() => {
         return () => {

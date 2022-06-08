@@ -6,6 +6,7 @@ import { Icon } from '@equinor/lighthouse-components';
 import { useAppConfig, useAuthProvider, useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useRef } from 'react';
 import { SelectionAction, SelectionMenu } from './components/selectionMenu';
+import { TagOverlay } from './components/tagOverlay';
 import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
 import { Message, MessageWrapper, Wrapper } from './ModelViewerStyles';
@@ -101,6 +102,7 @@ export const Viewer: React.FC<ViewerProps> = ({
         <>
             <Wrapper>
                 <canvas ref={viewerRef} />
+                <TagOverlay />
                 {isLoading && selection === undefined && (
                     <MessageWrapper>
                         <Message>
