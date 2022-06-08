@@ -10,7 +10,7 @@ import { searchPerson } from '../../api/Search/PCS/searchPerson';
 import { searchNCR } from '../../api/Search/PCS/searchNcr';
 import Fuse from 'fuse.js';
 import { useFacility } from '../../../../Core/Client/Hooks';
-import { ProCoSysQueries } from '../../keys/ProCoSysQueries';
+import { proCoSysQueries } from '../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { FunctionalRole } from '../../types/ProCoSys/functionalRole';
 import { System } from '../../types/ProCoSys/system';
@@ -36,7 +36,7 @@ interface PCSOptions {
 export function usePcsSearch(options?: PCSOptions): PCSSearch {
     const { procosysPlantId } = useFacility();
 
-    const { getDisciplinesQuery, getFunctionalRolesQuery, getSystemsQuery } = ProCoSysQueries;
+    const { getDisciplinesQuery, getFunctionalRolesQuery, getSystemsQuery } = proCoSysQueries;
 
     const { data: disciplines, refetch: refetchDisciplines } = useQuery<
         unknown,
