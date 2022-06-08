@@ -15,12 +15,15 @@ export interface ScopeChangeCreateEditModel {
     originSourceId?: string;
     originSource: OriginType;
 
+    //internal placeholder not sent to backend
     newAttachments?: File[];
+    //internal placeholder not sent to backend
     references?: TypedSelectOption[];
     tagNumbers: string[];
     commissioningPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
+    punchListIds: number[];
     documentNumbers: string[];
     materialsIdentifiedInStorage: boolean;
     materialsToBeBoughtByContractor: boolean;
@@ -117,6 +120,7 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     attachments: Attachment[];
     documents: ScopeChangeDocument[];
     disciplines: ScopeChangeDiscipline[];
+    punchListItems: ScopeChangePunch[];
     areas: ScopeChangeArea[];
     hasComments: boolean;
     sequenceNumber: number;
@@ -140,6 +144,11 @@ export interface ScopeChangeDocument {
     id: string;
     stidDocumentNumber: string;
     stidDocumentRevisionNumber: string;
+}
+
+export interface ScopeChangePunch {
+    id: string;
+    procosysId: number;
 }
 
 export interface Attachment {
