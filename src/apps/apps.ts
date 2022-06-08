@@ -16,13 +16,13 @@ import { setup as disciplineReleaseControlSetup } from './DisciplineReleaseContr
 import { setup as handoverSetup } from './Handover';
 import { setup as installationSetup } from './Installation';
 import { setup as McSetup } from './MechanicalCompletion';
+import { setup as querySetup } from './Query';
 import {
     BusinessCaseReport,
     LCIReport,
     MDRReport,
     NonConformityReport,
     QualityDeviationReport,
-    QueryReport,
     SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
@@ -574,8 +574,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.Collaboration,
         icon: '',
         app: {
-            appType: 'PowerBI',
-            component: QueryReport,
+            appType: 'PowerBIViewer',
+            setup: querySetup,
         },
         tags: ['PowerBI'],
         appEnv: 'prod',
