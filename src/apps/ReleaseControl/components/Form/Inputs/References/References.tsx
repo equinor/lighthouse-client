@@ -3,6 +3,7 @@ import { SearchReferences } from '../../../../../ScopeChangeRequest/Components/S
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 
 const { updateAtom, useAtomState } = DRCFormAtomApi;
+
 const updateReferences = (newVals: TypedSelectOption[]) => {
     updateAtom({ references: newVals });
 };

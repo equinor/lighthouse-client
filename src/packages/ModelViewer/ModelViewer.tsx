@@ -1,22 +1,22 @@
-import { NodeAppearance } from '@cognite/reveal';
 import { RendererConfiguration, setupEcho3dWeb } from '@equinor/echo3dweb-viewer';
-import { Button } from '@equinor/eds-core-react';
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { Case, Switch } from '@equinor/JSX-Switch';
+import { Icon } from '@equinor/lighthouse-components';
 import { useAppConfig, useAuthProvider, useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useRef } from 'react';
-import Icon from '../../components/Icon/Icon';
+import { SelectionAction, SelectionMenu } from './components/selectionMenu';
 import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
-import { T5602_M02 } from './mocTags/5602-M02';
-import { AP300 } from './mocTags/AP300';
-import { Menu, Message, MessageWrapper, Wrapper, WrapperMenu } from './ModelViewerStyles';
+import { Message, MessageWrapper, Wrapper } from './ModelViewerStyles';
 import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
+
 export interface ModelViewerProps {
     tags?: string[];
     loadFullModel?: boolean;
     padding?: number;
+    selectionActions?: SelectionAction[];
 }
-
 export interface ViewerProps extends ModelViewerProps {
     echoPlantId: string;
 }
@@ -36,6 +36,7 @@ export const Viewer: React.FC<ViewerProps> = ({
     loadFullModel,
     padding = 1,
     echoPlantId,
+    selectionActions,
 }: ViewerProps): JSX.Element => {
     const viewerRef = useRef<HTMLCanvasElement>(null);
     const authProvider = useAuthProvider();
@@ -45,9 +46,9 @@ export const Viewer: React.FC<ViewerProps> = ({
         setPlantState,
         isLoading,
         selectTags,
-        selection,
         message,
         setMessage,
+        selection,
     } = useModelViewerContext();
     useModel(loadFullModel);
 
@@ -68,7 +69,7 @@ export const Viewer: React.FC<ViewerProps> = ({
             getAccessToken: getHierarchyToken,
         };
         const renderConfig: RendererConfiguration = {
-            loadingCallback: () => console.log('loading...'),
+            // loadingCallback: () => console.log('loading...'),
             clearColor: tokens.colors.ui.background__info.hex,
         };
 
@@ -86,7 +87,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                 setPlantState(selectPlantByContext(plants, echoPlantId));
                 setEcho3DClient(client);
                 if (tags) {
-                    selectTags(tags, padding);
+                    selectTags(tags, { padding });
                 }
             } catch (ex) {
                 console.log(ex);
@@ -100,111 +101,54 @@ export const Viewer: React.FC<ViewerProps> = ({
         <>
             <Wrapper>
                 <canvas ref={viewerRef} />
-            </Wrapper>
-            {(message || isLoading) && (
-                <MessageWrapper>
-                    {isLoading && <Message>Loading...</Message>}
-                    {message && (
-                        <Message
-                            onClick={() => {
-                                setMessage();
-                            }}
-                        >
-                            <h2>{message.message}</h2>
-                            {message.type === 'NoPlant' && (
-                                <Button
+                {isLoading && selection === undefined && (
+                    <MessageWrapper>
+                        <Message>
+                            <CircularProgress />
+                        </Message>
+                    </MessageWrapper>
+                )}
+                {message && (
+                    <MessageWrapper>
+                        <Switch defaultCase={<h2>{message.message}</h2>}>
+                            <Case when={message.type === 'NoPlant'}>
+                                <Message
                                     onClick={() => {
-                                        window.open(
-                                            `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
-                                        );
+                                        setMessage();
                                     }}
                                 >
-                                    Apply for access
-                                </Button>
-                            )}
-                        </Message>
-                    )}
-                </MessageWrapper>
-            )}
+                                    <h2>{message.message}</h2>
 
-            <WrapperMenu>
-                <Menu>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selectTags(AP300, padding);
-                        }}
-                    >
-                        T1
-                    </Button>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selectTags(T5602_M02, padding);
-                        }}
-                    >
-                        T2
-                    </Button>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selectTags(['this will fail'], padding);
-                        }}
-                    >
-                        T3
-                    </Button>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            const style: NodeAppearance = {
-                                color: [255, 0, 0] as [number, number, number],
-                                outlineColor: 4,
-                                renderGhosted: false,
-                                renderInFront: true,
-                                visible: true,
-                            };
-                            selection?.setSelectedColor(style);
-                        }}
-                    >
-                        <Icon name={'invert_colors'} />
-                    </Button>
-                    <Button
-                        title="Hidden"
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('Default');
-                        }}
-                    >
-                        <Icon name={'visibility'} />
-                    </Button>
-                    <Button
-                        title="Hidden"
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('Hidden');
-                        }}
-                    >
-                        <Icon name={'visibility_off'} />
-                    </Button>
-
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('Outlined');
-                        }}
-                    >
-                        <Icon name={'puzzle'} />
-                    </Button>
-                    <Button
-                        variant="ghost_icon"
-                        onClick={() => {
-                            selection?.setHideMode('InFront');
-                        }}
-                    >
-                        <Icon name={'puzzle_filled'} />
-                    </Button>
-                </Menu>
-            </WrapperMenu>
+                                    <Button
+                                        onClick={() => {
+                                            window.open(
+                                                `https://accessit.equinor.com/Search/Search?term=echo+${echoPlantId}`
+                                            );
+                                        }}
+                                    >
+                                        Apply for access
+                                    </Button>
+                                </Message>
+                            </Case>
+                            <Case when={message.type === 'NoTags'}>
+                                <Message
+                                    onClick={() => {
+                                        setMessage();
+                                    }}
+                                >
+                                    <Icon
+                                        name={'warning_outlined'}
+                                        color={tokens.colors.interactive.warning__resting.rgba}
+                                        size={48}
+                                    />
+                                    <h2>{message.message}</h2>
+                                </Message>
+                            </Case>
+                        </Switch>
+                    </MessageWrapper>
+                )}
+            </Wrapper>
+            <SelectionMenu selectionActions={selectionActions} />
         </>
     );
 };

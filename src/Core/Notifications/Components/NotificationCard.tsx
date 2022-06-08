@@ -1,11 +1,6 @@
 import { DateTime } from 'luxon';
 import { useMutation, useQueryClient } from 'react-query';
 import { handleActionClick } from '../../../components/ActionCenter/handleActionClick';
-import { ClickableIcon } from '../../../components/Icon/ClickableIcon';
-import { readNotificationAsync } from '../API/readNotification';
-import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
-import { notificationsBaseKey } from '../queries/notificationQueries';
-import { Notification } from '../Types/Notification';
 import {
     DetailText,
     LeftSection,
@@ -13,7 +8,11 @@ import {
     RightSection,
     TimeStamp,
     Wrapper,
-} from './NotificationCardStyles';
+} from '../../Assignments/Components/assignmentCard.styles';
+import { readNotificationAsync } from '../API/readNotification';
+import { useNotificationMutationKeys } from '../Hooks/useNotificationMutationKeys';
+import { notificationsBaseKey } from '../queries/notificationQueries';
+import { Notification } from '../Types/Notification';
 
 interface NotificationCardProps {
     notification: Notification;
@@ -32,9 +31,23 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
 
     const isExternalApp = notification.actionType === 'URL';
 
+    const handleClick = () => {
+        isExternalApp
+            ? window.open(
+                notification.card?.actions?.find(({ type }) => type === 'Action.OpenUrl')?.url,
+                '_blank'
+            )
+            : handleActionClick(
+                notification.sourceSystem.subSystem,
+                notification.sourceSystem.identifier
+            );
+
+        markAsRead({ notificationId: notification?.id });
+    };
+
     return (
         <>
-            <Wrapper>
+            <Wrapper onClick={handleClick}>
                 <LeftSection>
                     <svg
                         width={15}
@@ -52,38 +65,14 @@ export const NotificationCardNew = ({ notification }: NotificationCardProps): JS
                     </svg>
                     <DetailText>
                         <NotificationTitle>{notification.title}</NotificationTitle>
-                        <TimeStamp>
-                            {DateTime.fromJSDate(new Date(notification.created)).toRelative({
-                                locale: 'en-GB',
-                            })}
-                        </TimeStamp>
                     </DetailText>
                 </LeftSection>
-                <RightSection>
-                    <a
-                        onClick={() => {
-                            isExternalApp
-                                ? window.open(
-                                    notification.card?.actions?.find(
-                                        ({ type }) => type === 'Action.OpenUrl'
-                                    )?.url,
-                                    '_blank'
-                                )
-                                : handleActionClick(
-                                    notification.sourceSystem.subSystem,
-                                    notification.sourceSystem.identifier
-                                );
-
-                            markAsRead({ notificationId: notification.id });
-                        }}
-                    >
-                        {isExternalApp ? (
-                            <ClickableIcon name="external_link" />
-                        ) : (
-                            <ClickableIcon name="chevron_right" />
-                        )}
-                    </a>
-                </RightSection>
+                <RightSection></RightSection>
+                <TimeStamp>
+                    {DateTime.fromJSDate(new Date(notification.created)).toRelative({
+                        locale: 'en-GB',
+                    })}
+                </TimeStamp>
             </Wrapper>
         </>
     );

@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
     height: 100%;
-    > div {
-        /* display: none; */
+    > .reveal-viewer-spinner {
+        display: none;
     }
 `;
 
@@ -13,6 +13,14 @@ export const WrapperMenu = styled.div`
     justify-content: center;
     bottom: 50px;
     width: 100%;
+`;
+
+export const Selections = styled.div`
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    top: 50px;
+    left: 50px;
 `;
 
 export const Menu = styled.div`
@@ -29,8 +37,10 @@ export const Menu = styled.div`
 export const MessageWrapper = styled.div`
     position: absolute;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: #fff;
     width: 100%;
     top: 0px;
     height: 100%;
@@ -41,6 +51,6 @@ export const Message = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: #fff;
+
     padding: 0.5rem;
 `;

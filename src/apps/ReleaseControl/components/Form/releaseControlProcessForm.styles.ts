@@ -37,7 +37,7 @@ export const Section = styled.div`
 export const FormWrapper = styled.form`
     display: grid;
     grid-column: 2;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(675px, 1fr));
     gap: 2em;
 `;
 

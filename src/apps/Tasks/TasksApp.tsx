@@ -12,7 +12,6 @@ export function setup(appApi: ClientApi): void {
         .createWorkSpace<Assignment>({
             objectIdentifier: 'id',
             defaultTab: 'garden',
-            CustomSidesheet: TasksSidesheet,
         })
         .registerDataSource({
             responseAsync,
@@ -83,9 +82,9 @@ export function setup(appApi: ClientApi): void {
         //     },
         // })
         .registerGardenOptions({
+            objectIdentifier: 'id',
             gardenKey: 'state',
             itemKey: 'id',
-            objectIdentifier: 'id',
             fieldSettings: {
                 Category: { label: 'Category', getKey: (s) => s.category },
             },
