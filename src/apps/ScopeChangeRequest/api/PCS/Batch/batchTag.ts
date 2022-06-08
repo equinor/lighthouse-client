@@ -9,8 +9,8 @@ export async function fetchBatchTags(
     const { procosys } = httpClient();
 
     const res = await procosys.fetch(
-        `api/tag/ByTagNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${tagNos
-            .map((x) => `&tagNos=${x}`)
+        `api/tag/bytagnos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${tagNos
+            .map((x) => `&tagNos=${encodeURIComponent(x)}`)
             .toString()
             .replaceAll(',', '')}`,
         { signal }

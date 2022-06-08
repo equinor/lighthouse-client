@@ -10,7 +10,7 @@ export async function fetchBatchCommPkg(
 
     const res = await procosys.fetch(
         `api/commpkg/BycommpkgNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${commPkgNo
-            .map((x) => `&commPkgNos=${x}`)
+            .map((x) => `&commPkgNos=${encodeURIComponent(x)}`)
             .toString()
             .replaceAll(',', '')}`,
         { signal }
