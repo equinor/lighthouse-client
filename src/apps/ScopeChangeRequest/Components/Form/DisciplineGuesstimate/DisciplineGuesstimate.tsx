@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { ClickableIcon } from '../../../../../packages/Components/Icon';
 import { scopeChangeFormAtomApi } from '../../../Atoms/FormAtomApi/formAtomApi';
-import { ProCoSysQueries } from '../../../keys/ProCoSysQueries';
+import { proCoSysQueries } from '../../../keys/ProCoSysQueries';
 import { Discipline } from '../../../types/ProCoSys/discipline';
 import { DisciplineGuesstimate } from '../../../types/scopeChangeRequest';
 import { ButtonContainer } from '../ScopeChangeForm.styles';
@@ -86,7 +86,7 @@ export const GuesstimateGuesser = ({
     allGuesstimates,
 }: GuesstimateGuesserProps): JSX.Element => {
     const { procosysPlantId } = useFacility();
-    const { getDisciplinesQuery } = ProCoSysQueries;
+    const { getDisciplinesQuery } = proCoSysQueries;
     const { data: disciplines } = useQuery<unknown, unknown, Discipline[]>(
         getDisciplinesQuery(procosysPlantId)
     );
