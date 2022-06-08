@@ -1,7 +1,15 @@
-import { ApplyEventArgs, useBookmarks } from '@equinor/BookmarksManager';
+import {
+    ApplyEventArgs,
+    favouriteBookmark,
+    headBookmark,
+    useBookmarkMutations,
+    useBookmarks,
+} from '@equinor/BookmarksManager';
 import { PBIOptions, PowerBI, PowerBIBookmarkPayload } from '@equinor/lighthouse-powerbi';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { getBookmarkById } from '../../../packages/BookmarksManager/src/utils/api/getBookmarkById';
+import { useCurrentUser } from '../../Client/Hooks';
 import { usePowerBiViewer } from './Api/powerBiViewerState';
 import { PowerBiViewerHeader } from './Components/PowerBiViewerHeader/PowerBiViewerHeader';
 import { ContentWrapper, Wrapper } from './PowerBiViewerStyles';
@@ -79,13 +87,23 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
         return pageManager(bookmark);
     };
     const [searchParams] = useSearchParams();
-
+    const user = useCurrentUser();
+    const favourite = useBookmarkMutations(favouriteBookmark);
     useEffect(() => {
         const bookmarkId = searchParams.get('bookmarkId');
         if (bookmarkId) {
             (async () => {
-                const bookmarkPayload = await handleApplyBookmark(bookmarkId);
-                pageManager(bookmarkPayload);
+                const bookmarkRes = await getBookmarkById(bookmarkId);
+                if (bookmarkRes) {
+                    if (bookmarkRes.createdBy.azureUniqueId !== user?.id) {
+                        const head = await headBookmark(bookmarkId);
+                        if (!head) {
+                            favourite(bookmarkId);
+                        }
+                    }
+                    const bookmarkPayload = await handleApplyBookmark(bookmarkId);
+                    pageManager(bookmarkPayload);
+                }
             })();
         } else {
             const { report, page } = getDefault(reports);

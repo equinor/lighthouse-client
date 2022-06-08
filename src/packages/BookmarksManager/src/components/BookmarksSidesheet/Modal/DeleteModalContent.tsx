@@ -11,7 +11,11 @@ export const DeleteModalContent = ({ bookmark, closeModal }: DeleteModalContentP
     const deleteBookmark = useDeleteBookmark('my-bookmarks');
     return (
         <>
-            <div>Are you sure you want to delete this bookmark? </div>
+            <div>
+                {bookmark.isShared
+                    ? 'By deleting this bookmark, it will also be removed from the people you have shared it with'
+                    : 'Are you sure you want to delete this bookmark?'}
+            </div>
 
             <ButtonContainer>
                 <Button

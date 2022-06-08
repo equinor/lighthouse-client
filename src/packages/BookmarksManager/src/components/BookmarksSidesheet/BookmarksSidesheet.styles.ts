@@ -48,6 +48,7 @@ export const SidesheetContent = styled.div`
 export const BookmarkLinkWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+    height: 20px;
     align-items: center;
     padding: 0.2rem;
     margin-right: 2rem;
@@ -61,4 +62,7 @@ export const BookmarkLink = styled(Link)`
     color: inherit;
     font-weight: 500;
     font-size: 14px;
+    :hover {
+        text-decoration: underline;
+    }
 `;

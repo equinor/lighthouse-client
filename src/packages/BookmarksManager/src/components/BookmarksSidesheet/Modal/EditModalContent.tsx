@@ -38,8 +38,10 @@ export const EditModalContent = ({ bookmark, closeModal }: EditModalContentProps
                     placeholder={bookmark?.description}
                     value={description}
                     onChange={onDescriptionChange}
+                    multiline
                 />
             </InputContainer>
+
             <ButtonContainer>
                 <Button
                     variant="contained"
@@ -47,7 +49,7 @@ export const EditModalContent = ({ bookmark, closeModal }: EditModalContentProps
                         editBookmark({
                             bookmarkId: bookmark.id,
                             name: title || bookmark.name,
-                            description: description,
+                            description: description || bookmark?.description,
                         });
                         closeModal();
                     }}

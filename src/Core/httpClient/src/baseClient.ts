@@ -23,6 +23,7 @@ export interface HttpClient {
     put(url: string, init?: RequestInit | undefined): Promise<Response>;
     patch(url: string, init?: RequestInit | undefined): Promise<Response>;
     delete(url: string, init?: RequestInit | undefined): Promise<Response>;
+    head(url: string, init?: RequestInit | undefined): Promise<Response>;
     getAccessToken(): Promise<string>;
     uploadFile(
         url: string,
@@ -154,6 +155,19 @@ export function baseClient(
         return _fetch(url, requestInit);
     }
 
+    async function head(url: string, requestInit?: RequestInit) {
+        requestInit = {
+            method: 'HEAD',
+            ...requestInit,
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                ...requestInit?.headers,
+            },
+        };
+        return _fetch(url, requestInit);
+    }
+
     async function uploadFile(endpoint: string, formData: FormData) {
         const token = await getAccessToken();
         const url = _baseUrl + endpoint;
@@ -243,6 +257,7 @@ export function baseClient(
         put,
         patch,
         delete: _delete,
+        head,
         uploadFile,
         fetch: _fetch,
         fetchWithToken,
