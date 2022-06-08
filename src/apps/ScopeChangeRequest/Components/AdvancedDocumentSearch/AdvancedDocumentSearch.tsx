@@ -62,77 +62,21 @@ export const AdvancedDocumentSearch = ({
 
         if (isBatch) {
             const numbers = searchText.split('\n');
+            const results: TypedSelectOption[] = await getResultsFromBatch(
+                referenceType,
+                numbers,
+                systems,
+                signal
+            );
 
-            switch (referenceType) {
-                case 'punch': {
-                    const results = (await getBatchPunch(numbers, signal)).map(
-                        (s): TypedSelectOption => ({
-                            label: `${s.punchItemNo} - ${s.description}`,
-                            object: s,
-                            searchValue: s.punchItemNo.toString(),
-                            type: 'punch',
-                            value: s.punchItemNo.toString(),
-                        })
-                    );
-                    setNotFound(
-                        numbers
-                            .filter(
-                                (punchNo) =>
-                                    results.findIndex(({ value }) => value === punchNo) === -1
-                            )
-                            .filter((x) => Boolean(x.length))
-                    );
+            setNotFound(
+                numbers
+                    .filter((punchNo) => results.findIndex(({ value }) => value === punchNo) === -1)
+                    .filter((x) => Boolean(x.length))
+            );
 
-                    appendItem(results);
-                    return results;
-                }
-
-                case 'tag': {
-                    const results = await fetchBatchTags(numbers, signal);
-                    setNotFound(
-                        numbers
-                            .filter((s) => !results.map((s) => s.value).includes(s))
-                            .filter((s) => Boolean(s.length))
-                    );
-                    appendItem(results);
-                    return results;
-                }
-
-                case 'commpkg': {
-                    const results = await fetchBatchCommPkg(numbers, signal);
-                    setNotFound(
-                        numbers
-                            .filter((s) => !results.map((s) => s.value).includes(s))
-                            .filter((s) => Boolean(s.length))
-                    );
-                    appendItem(results);
-                    return results;
-                }
-
-                case 'system': {
-                    if (!systems) return [];
-
-                    const results = systems
-                        .filter((s) => numbers.includes(s.Code))
-                        .map(
-                            (s): TypedSelectOption => ({
-                                label: `${s.Code} - ${s.Description}`,
-                                object: s,
-                                searchValue: s.Code,
-                                type: 'system',
-                                value: s.Code,
-                            })
-                        );
-                    setNotFound(
-                        numbers
-                            .filter((s) => !results.map((s) => s.value).includes(s))
-                            .filter((s) => Boolean(s.length))
-                    );
-
-                    appendItem(results);
-                    return results;
-                }
-            }
+            appendItem(results);
+            return results;
         }
 
         return await search(searchText, referenceType, signal);
@@ -302,3 +246,43 @@ export const AdvancedDocumentSearch = ({
         </Fragment>
     );
 };
+
+async function getResultsFromBatch(
+    referenceType: ReferenceType,
+    numbers: string[],
+    systems: System[] | undefined,
+    signal?: AbortSignal
+) {
+    switch (referenceType) {
+        case 'punch': {
+            return await getBatchPunch(numbers, signal);
+        }
+
+        case 'tag': {
+            return await fetchBatchTags(numbers, signal);
+        }
+
+        case 'commpkg': {
+            return await fetchBatchCommPkg(numbers, signal);
+        }
+
+        case 'system': {
+            if (!systems) return [];
+
+            return systems
+                .filter((s) => numbers.includes(s.Code))
+                .map(
+                    (s): TypedSelectOption => ({
+                        label: `${s.Code} - ${s.Description}`,
+                        object: s,
+                        searchValue: s.Code,
+                        type: 'system',
+                        value: s.Code,
+                    })
+                );
+        }
+
+        default:
+            return [];
+    }
+}

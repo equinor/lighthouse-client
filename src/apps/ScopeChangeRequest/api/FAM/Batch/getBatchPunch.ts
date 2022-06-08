@@ -2,11 +2,12 @@ import { httpClient } from '@equinor/lighthouse-portal-client';
 import { generateExpressions, generateFamRequest } from '../../../functions/FAM/generateFAMRequest';
 import { throwOnError } from '../../../functions/throwError';
 import { PunchListItem } from '../../../types/FAM/punchListItem';
+import { TypedSelectOption } from '../../Search/searchType';
 
 export async function getBatchPunch(
     punchIds: string[],
     signal?: AbortSignal
-): Promise<PunchListItem[]> {
+): Promise<TypedSelectOption[]> {
     const { FAM } = httpClient();
 
     const columnNames: string[] = ['PunchItemNo', 'Description'];
@@ -28,5 +29,11 @@ export async function getBatchPunch(
         throw 'Invalid response';
     }
 
-    return punchListItems;
+    return punchListItems.map((s) => ({
+        label: `${s.punchItemNo} - ${s.description}`,
+        object: s,
+        searchValue: s.punchItemNo.toString(),
+        type: 'punch',
+        value: s.punchItemNo.toString(),
+    }));
 }
