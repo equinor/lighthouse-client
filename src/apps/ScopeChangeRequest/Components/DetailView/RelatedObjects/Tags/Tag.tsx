@@ -1,11 +1,10 @@
-import { Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { ScopeChangeTag } from '../../../../types/scopeChangeRequest';
 import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { Link, Wrapper, TextWrapper, MainText, MetaData } from '../WrapperStyles';
 import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { Tag as TagInterface } from '../../../../types/ProCoSys/Tag';
+import { getReferenceIcon } from '../../../SearchReferences/getReferenceIcon';
 
 interface TagProps {
     tag: ScopeChangeTag;
@@ -15,9 +14,9 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
     const { procosysPlantId } = useFacility();
     const { getTagByNoQuery } = proCoSysQueries;
 
-    const { data } = useQuery<unknown, unknown, TagInterface>({
-        ...getTagByNoQuery(tag.procosysId, procosysPlantId),
-    });
+    const { data } = useQuery<unknown, unknown, TagInterface>(
+        getTagByNoQuery(tag.procosysId, procosysPlantId)
+    );
 
     return (
         <Wrapper
@@ -30,7 +29,7 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
             }
             key={tag.id}
         >
-            <Icon color={tokens.colors.interactive.primary__resting.hex} name="tag" />
+            {getReferenceIcon('tag')}
             <TextWrapper>
                 <MainText>
                     <Link>{tag.procosysNumber}</Link>- <div>{data?.Description}</div>

@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 
 import { ScopeChangePunch } from '../../../../types/scopeChangeRequest';
-import { isProduction } from '../../../../../../Core/Client';
 import { Link, TextWrapper, Wrapper, MainText } from '../WrapperStyles';
 import { FAMQueries } from '../../../../keys/FamQueries';
 import { PunchListItem } from '../../../../types/FAM/punchListItem';
@@ -26,8 +26,6 @@ export const Punch = ({ punch: { procosysId } }: PunchProps): JSX.Element => {
             }
             key={procosysId}
         >
-            <div></div>
-            {/* <Icon color={tokens.colors.interactive.primary__resting.hex} name="placeholder" /> */}
             <TextWrapper>
                 <MainText>
                     <Link>{procosysId}</Link>- <div>{data?.description}</div>

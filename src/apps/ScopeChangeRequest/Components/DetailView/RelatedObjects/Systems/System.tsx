@@ -1,11 +1,11 @@
 import { ScopeChangeSystem } from '../../../../types/scopeChangeRequest';
 import { isProduction, useFacility } from '../../../../../../Core/Client';
-import { Icon } from '@equinor/eds-core-react';
 import { useEffect, useState } from 'react';
 import { System as PCSSystem } from '../../../../types/ProCoSys/system';
 import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { Link, Wrapper, TextWrapper } from '../WrapperStyles';
+import { getReferenceIcon } from '../../../SearchReferences/getReferenceIcon';
 
 interface SystemProps {
     system: ScopeChangeSystem;
@@ -37,7 +37,7 @@ export const System = ({ system }: SystemProps): JSX.Element => {
             }
             key={system.id}
         >
-            <Icon name="placeholder_icon" />
+            {getReferenceIcon('system')}
             <TextWrapper>
                 <Link>
                     {system.procosysCode} - {foundSystem?.Description}
