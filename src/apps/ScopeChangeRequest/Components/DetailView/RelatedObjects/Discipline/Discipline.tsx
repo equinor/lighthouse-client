@@ -4,7 +4,7 @@ import { ScopeChangeDiscipline } from '../../../../types/scopeChangeRequest';
 import { useEffect, useState } from 'react';
 import { Discipline as PCSDiscipline } from '../../../../types/ProCoSys/discipline';
 import { useFacility } from '../../../../../../Core/Client/Hooks';
-import { ProCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { Link, Wrapper, TextWrapper } from '../WrapperStyles';
 
@@ -15,7 +15,7 @@ interface DisciplineProps {
 export const Discipline = ({ discipline }: DisciplineProps): JSX.Element => {
     const { procosysPlantId } = useFacility();
 
-    const { getDisciplinesQuery } = ProCoSysQueries;
+    const { getDisciplinesQuery } = proCoSysQueries;
 
     const { data } = useQuery<unknown, unknown, PCSDiscipline[]>(
         getDisciplinesQuery(procosysPlantId)

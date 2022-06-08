@@ -19,6 +19,9 @@ import { fetchBatchCommPkg, fetchBatchTags } from '../../api/PCS/Batch';
 import { getBatchPunch } from '../../api/FAM/Batch/getBatchPunch';
 import { BatchCheckbox } from './BatchCheckbox';
 import { QueryFunctionContext, useQuery } from 'react-query';
+import { proCoSysQueries } from '../../keys/ProCoSysQueries';
+import { useFacility } from '../../../../Core/Client/Hooks';
+import { System } from '../../types/ProCoSys/system';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -43,6 +46,11 @@ export const AdvancedDocumentSearch = ({
     );
     const [isBatch, setIsBatch] = useState(false);
     const [notFound, setNotFound] = useState<string[]>([]);
+
+    const { procosysPlantId } = useFacility();
+    const { data: systems } = useQuery<unknown, unknown, System[]>(
+        proCoSysQueries.getSystemsQuery(procosysPlantId)
+    );
 
     const flipBatch = () => {
         setIsBatch((s) => !s);
@@ -97,6 +105,30 @@ export const AdvancedDocumentSearch = ({
                             .filter((s) => !results.map((s) => s.value).includes(s))
                             .filter((s) => Boolean(s.length))
                     );
+                    appendItem(results);
+                    return results;
+                }
+
+                case 'system': {
+                    if (!systems) return [];
+
+                    const results = systems
+                        .filter((s) => numbers.includes(s.Code))
+                        .map(
+                            (s): TypedSelectOption => ({
+                                label: `${s.Code} - ${s.Description}`,
+                                object: s,
+                                searchValue: s.Code,
+                                type: 'system',
+                                value: s.Code,
+                            })
+                        );
+                    setNotFound(
+                        numbers
+                            .filter((s) => !results.map((s) => s.value).includes(s))
+                            .filter((s) => Boolean(s.length))
+                    );
+
                     appendItem(results);
                     return results;
                 }
@@ -160,7 +192,10 @@ export const AdvancedDocumentSearch = ({
     };
 
     const referenceIsBatchType =
-        referenceType === 'tag' || referenceType === 'punch' || referenceType === 'commpkg';
+        referenceType === 'tag' ||
+        referenceType === 'punch' ||
+        referenceType === 'commpkg' ||
+        referenceType === 'system';
 
     function getPlaceholderText() {
         switch (true) {

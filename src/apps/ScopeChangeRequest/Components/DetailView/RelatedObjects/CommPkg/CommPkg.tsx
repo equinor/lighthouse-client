@@ -1,7 +1,7 @@
 import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { ScopeChangeCommissioningPackage } from '../../../../types/scopeChangeRequest';
 import { CommPkgIcon } from './commPkgIcon';
-import { ProCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { CommissioningPackage } from '../../../../types/ProCoSys/CommissioningPackage';
 import { Link, Wrapper, TextWrapper, MainText } from '../WrapperStyles';
@@ -12,7 +12,7 @@ interface CommPkgProps {
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     const { procosysPlantId } = useFacility();
 
-    const { getCommPkgByCodeQuery } = ProCoSysQueries;
+    const { getCommPkgByCodeQuery } = proCoSysQueries;
 
     const { data } = useQuery<unknown, unknown, CommissioningPackage>(
         getCommPkgByCodeQuery(commPkg.procosysId, procosysPlantId)

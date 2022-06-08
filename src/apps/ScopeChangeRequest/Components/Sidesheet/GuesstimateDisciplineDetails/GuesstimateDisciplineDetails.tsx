@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { useFacility } from '../../../../../Core/Client/Hooks';
-import { ProCoSysQueries } from '../../../keys/ProCoSysQueries';
+import { proCoSysQueries } from '../../../keys/ProCoSysQueries';
 import { Discipline } from '../../../types/ProCoSys/discipline';
 import { ScopeChangeDisciplineGuesstimates } from '../../../types/scopeChangeRequest';
 
@@ -10,7 +10,7 @@ export function GuesstimateDisciplineDetails({
     discipline,
     guesstimate,
 }: ScopeChangeDisciplineGuesstimates): JSX.Element {
-    const { getDisciplinesQuery } = ProCoSysQueries;
+    const { getDisciplinesQuery } = proCoSysQueries;
     const { procosysPlantId } = useFacility();
     const { data: disciplines } = useQuery<unknown, unknown, Discipline[]>(
         getDisciplinesQuery(procosysPlantId)

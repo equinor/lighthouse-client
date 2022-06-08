@@ -3,7 +3,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { ScopeChangeTag } from '../../../../types/scopeChangeRequest';
 import { isProduction, useFacility } from '../../../../../../Core/Client';
 import { Link, Wrapper, TextWrapper, MainText, MetaData } from '../WrapperStyles';
-import { ProCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { Tag as TagInterface } from '../../../../types/ProCoSys/Tag';
 
@@ -13,7 +13,7 @@ interface TagProps {
 
 export const Tag = ({ tag }: TagProps): JSX.Element => {
     const { procosysPlantId } = useFacility();
-    const { getTagByNoQuery } = ProCoSysQueries;
+    const { getTagByNoQuery } = proCoSysQueries;
 
     const { data } = useQuery<unknown, unknown, TagInterface>({
         ...getTagByNoQuery(tag.procosysId, procosysPlantId),

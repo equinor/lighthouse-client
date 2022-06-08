@@ -1,5 +1,5 @@
 import { useFacility } from '../../../../Core/Client/Hooks';
-import { ProCoSysQueries } from '../../keys/ProCoSysQueries';
+import { proCoSysQueries } from '../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 
 /**
@@ -7,7 +7,7 @@ import { useQuery } from 'react-query';
  */
 export function usePreloadCaching(): void {
     const { procosysPlantId } = useFacility();
-    const { getSystemsQuery, getFunctionalRolesQuery, getDisciplinesQuery } = ProCoSysQueries;
+    const { getSystemsQuery, getFunctionalRolesQuery, getDisciplinesQuery } = proCoSysQueries;
 
     useQuery(getSystemsQuery(procosysPlantId));
     useQuery(getFunctionalRolesQuery(procosysPlantId));
