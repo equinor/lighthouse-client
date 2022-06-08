@@ -9,7 +9,6 @@ export const useConfirmationDialog = (): DialogState | undefined => {
     return {
         dialogText: state.dialogText || '',
         dialogTitle: state.dialogTitle || '',
-        dialogChildren: state.dialogChildren,
         onConfirm: state.onConfirm,
     };
 };
