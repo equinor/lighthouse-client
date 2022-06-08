@@ -58,18 +58,22 @@ export function setup(addApi: ClientApi): void {
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerStatusItems(statusBarConfig)
-        .registerPowerBIOptions({
-            reportURI: 'pp-mc-analytics',
-            pages: [
-                {
-                    pageTitle: 'RFC overview',
-                    pageId: 'ReportSection',
-                    default: true,
-                },
-                {
-                    pageTitle: 'RFO overview',
-                    pageId: 'ReportSection694be20a69e6e527702c',
-                },
-            ],
-        });
+        .registerPowerBIOptions(
+            !addApi.isProduction
+                ? {
+                      reportURI: 'pp-mc-analytics',
+                      pages: [
+                          {
+                              pageTitle: 'RFC overview',
+                              pageId: 'ReportSection',
+                              default: true,
+                          },
+                          {
+                              pageTitle: 'RFO overview',
+                              pageId: 'ReportSection694be20a69e6e527702c',
+                          },
+                      ],
+                  }
+                : (undefined as any)
+        );
 }
