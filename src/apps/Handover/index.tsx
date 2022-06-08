@@ -1,7 +1,6 @@
 import { ClientApi, getFusionContextId, httpClient } from '@equinor/lighthouse-portal-client';
 import { setupWorkspaceSidesheet } from '../../Core/WorkSpace/src/WorkSpaceApi/Functions/setupWorkspaceSidesheet';
 import { HandoverSideSheet } from './Garden/components/HandoverSidesheet';
-import { statusBarData } from './Garden/components/statusItems';
 import { HandoverGroupByView } from './Garden/CustomViews';
 import HandoverGardenHeader from './Garden/CustomViews/HandoverGardenHeader';
 import HandoverGardenItem from './Garden/CustomViews/HandoverGardenItem/HandoverGardenItem';
@@ -11,9 +10,10 @@ import {
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus
+    sortPackagesByStatus,
 } from './Garden/utility';
 import { filterConfig } from './utility/config/filterSetup';
+import { statusBarConfig } from './utility/config/statusBarConfig';
 import { tableConfig } from './utility/config/tableConfig';
 
 const creator = setupWorkspaceSidesheet<HandoverPackage, 'handoverDetails'>({
@@ -68,7 +68,7 @@ export function setup(appApi: ClientApi): void {
             customStateFunction: (data) => ({ maxVolume: getMaxVolumeFromData(data) }),
         })
         // .registerSearchOptions([{ name: 'Id', valueFormatter: ({ commpkgNo }) => commpkgNo }])
-        .registerStatusItems(statusBarData)
+        .registerStatusItems(statusBarConfig)
         .registerPowerBIOptions({
             reportURI: 'pp-handover-analytics',
             pages: [
