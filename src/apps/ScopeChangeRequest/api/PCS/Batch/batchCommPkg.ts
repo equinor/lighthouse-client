@@ -4,7 +4,7 @@ import { TypedSelectOption } from '../../Search/searchType';
 
 export async function fetchBatchCommPkg(
     commPkgNo: string[],
-    signal: AbortSignal
+    signal?: AbortSignal
 ): Promise<TypedSelectOption[]> {
     const { procosys } = httpClient();
 

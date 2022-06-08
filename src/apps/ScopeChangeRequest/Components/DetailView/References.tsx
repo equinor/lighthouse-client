@@ -7,6 +7,7 @@ import {
     ScopeChangeTag,
     ScopeChangeSystem,
     ScopeChangeCommissioningPackage,
+    ScopeChangePunch,
 } from '../../types/scopeChangeRequest';
 import { ChevronList } from './ChevronList/ChevronList';
 import { Tag as TagComp } from './RelatedObjects/Tags/Tag';
@@ -15,6 +16,7 @@ import { Discipline as DisciplineComp } from './RelatedObjects/Discipline/Discip
 import { CommPkg } from './RelatedObjects/CommPkg/CommPkg';
 import { System as SystemComp } from './RelatedObjects/Systems/System';
 import { StidDocument } from '../StidDocument/StidDocument';
+import { Punch } from './RelatedObjects/Punch/Punch';
 
 interface RelatedObjectsProps {
     systems: ScopeChangeSystem[];
@@ -23,6 +25,7 @@ interface RelatedObjectsProps {
     areas: ScopeChangeArea[];
     disciplines: ScopeChangeDiscipline[];
     documents: ScopeChangeDocument[];
+    punch: ScopeChangePunch[];
 }
 
 export const RelatedObjects = ({
@@ -32,6 +35,7 @@ export const RelatedObjects = ({
     documents = [],
     disciplines = [],
     areas = [],
+    punch = [],
 }: RelatedObjectsProps): JSX.Element => {
     return (
         <Wrapper>
@@ -40,6 +44,7 @@ export const RelatedObjects = ({
                 systems.length === 0 &&
                 documents.length === 0 &&
                 disciplines.length === 0 &&
+                punch.length === 0 &&
                 areas.length === 0 && <NoReferences>No references has been linked.</NoReferences>}
             {tags && tags.length > 0 && (
                 <ChevronList title={`Tags (${tags?.length})`}>
@@ -94,6 +99,16 @@ export const RelatedObjects = ({
                     <>
                         {areas.map((x) => (
                             <AreaComp key={x.id} area={x} />
+                        ))}
+                    </>
+                </ChevronList>
+            )}
+
+            {punch && punch.length > 0 && (
+                <ChevronList title={`Punch list items (${punch.length})`}>
+                    <>
+                        {punch.map((x) => (
+                            <Punch punch={x} key={x.id} />
                         ))}
                     </>
                 </ChevronList>
