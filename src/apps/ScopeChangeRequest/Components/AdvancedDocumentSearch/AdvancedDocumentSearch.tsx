@@ -1,18 +1,8 @@
 import { Fragment, useCallback, useState } from 'react';
-import {
-    Button,
-    Checkbox,
-    Icon,
-    Progress,
-    Scrim,
-    SingleSelect,
-    TextField,
-    Tooltip,
-} from '@equinor/eds-core-react';
+import { Button, Icon, Progress, Scrim, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { useCancellationToken } from '@equinor/hooks';
 import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
 
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { Result } from './Results';
@@ -21,6 +11,8 @@ import { ReferenceType, useReferencesSearch } from '../../hooks/Search/useRefere
 import { NotFoundList } from './NotFoundList';
 import { fetchBatchCommPkg, fetchBatchTags } from '../../api/PCS/Batch';
 import { getBatchPunch } from '../../api/FAM/Batch/getBatchPunch';
+import { BatchCheckbox } from './BatchCheckbox';
+import styled from 'styled-components';
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -145,7 +137,9 @@ export const AdvancedDocumentSearch = ({
             })
         );
         setNotFound(
-            punchNos.filter((punchNo) => results.findIndex(({ value }) => value === punchNo) === -1)
+            punchNos
+                .filter((punchNo) => results.findIndex(({ value }) => value === punchNo) === -1)
+                .filter((x) => Boolean(x.length))
         );
 
         appendItem(results);
@@ -164,6 +158,7 @@ export const AdvancedDocumentSearch = ({
     );
 
     const getOnChangeForBatch = useCallback((): ((e) => Promise<void>) => {
+        if (!referenceIsBatchType) throw `${referenceType} does not support batch`;
         switch (referenceType) {
             case 'tag': {
                 return (e) => resolveBatchTags(e.target.value.split('\n'));
@@ -176,12 +171,24 @@ export const AdvancedDocumentSearch = ({
             case 'commpkg': {
                 return (e) => resolveBatchCommPkgs(e.target.value.split('\n'));
             }
-
-            default: {
-                throw `${referenceType} does not support batch`;
-            }
         }
     }, [referenceType]);
+
+    const handleReferenceTypeChanged = (change) => {
+        abort();
+        setSearchText('');
+        setIsBatch(false);
+        setNotFound([]);
+        if (!change.selectedItem) {
+            setReferenceType(undefined);
+        } else {
+            setReferenceType(change.selectedItem as ReferenceType);
+        }
+        setResults([]);
+    };
+
+    const referenceIsBatchType =
+        referenceType === 'tag' || referenceType === 'punch' || referenceType === 'commpkg';
 
     return (
         <Fragment>
@@ -230,18 +237,7 @@ export const AdvancedDocumentSearch = ({
                                 label="Reference type"
                                 items={referenceTypes}
                                 value={referenceType}
-                                handleSelectedItemChange={(change) => {
-                                    abort();
-                                    setSearchText('');
-                                    setIsBatch(false);
-                                    setNotFound([]);
-                                    if (!change.selectedItem) {
-                                        setReferenceType(undefined);
-                                    } else {
-                                        setReferenceType(change.selectedItem as ReferenceType);
-                                    }
-                                    setResults([]);
-                                }}
+                                handleSelectedItemChange={handleReferenceTypeChanged}
                             />
                             <Switch
                                 defaultCase={
@@ -271,28 +267,24 @@ export const AdvancedDocumentSearch = ({
                                     />
                                 </Case>
                                 <Case when={isBatch}>
-                                    {(referenceType === 'tag' ||
-                                        referenceType === 'commpkg' ||
-                                        referenceType === 'punch') && (
-                                            <TextField
-                                                multiline
-                                                rows={4}
-                                                placeholder={`Paste a column from excel here`}
-                                                id="batchPunch"
-                                                inputIcon={<InputIcon />}
-                                                onChange={getOnChangeForBatch()}
-                                            />
-                                        )}
+                                    {referenceIsBatchType && (
+                                        <TextField
+                                            multiline
+                                            rows={4}
+                                            placeholder={`Paste a column from excel here`}
+                                            id="batchPunch"
+                                            inputIcon={<InputIcon />}
+                                            onChange={getOnChangeForBatch()}
+                                        />
+                                    )}
                                 </Case>
                             </Switch>
                         </SearchField>
-                        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                            {(referenceType === 'tag' ||
-                                referenceType === 'commpkg' ||
-                                referenceType === 'punch') && (
-                                    <BatchCheckbox flipChecked={flipBatch} isChecked={isBatch} />
-                                )}
-                        </div>
+                        <BatchCheckboxWrapper>
+                            {referenceIsBatchType && (
+                                <BatchCheckbox flipChecked={flipBatch} isChecked={isBatch} />
+                            )}
+                        </BatchCheckboxWrapper>
 
                         <NotFoundList notFound={notFound} type={referenceType} />
 
@@ -316,25 +308,7 @@ export const AdvancedDocumentSearch = ({
     );
 };
 
-interface BatchCheckboxesProps {
-    isChecked: boolean;
-    flipChecked: () => void;
-}
-
-const BatchCheckbox = ({ flipChecked, isChecked }: BatchCheckboxesProps) => {
-    return (
-        <Tooltip title="Gives you a bigger search field and lets you paste a list">
-            <CheckboxWrapper>
-                <div>
-                    <Checkbox checked={isChecked} onChange={flipChecked} />
-                    Batch search
-                </div>
-            </CheckboxWrapper>
-        </Tooltip>
-    );
-};
-
-const CheckboxWrapper = styled.div`
+const BatchCheckboxWrapper = styled.div`
     display: flex;
-    align-items: center;
+    justify-content: flex-start;
 `;
