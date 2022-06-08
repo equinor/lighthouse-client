@@ -8,7 +8,7 @@ export type ExtendedGardenFields = 'system' | 'dueAtDate' | 'priority';
 
 export const drcGardenKeys = {
     defaultGardenKey: 'dueAtDate' as keyof Pipetest,
-    electroGardenKey: 'pipingRfcUniqueHT' as keyof Pipetest,
+    electroGardenKey: 'htCableRfc' as keyof Pipetest,
 };
 
 export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
@@ -29,9 +29,10 @@ export const fieldSettings: FieldSettings<Pipetest, ExtendedGardenFields> = {
     },
     priority: { label: 'Priority', getKey: (item) => item.commPkPriority1 },
     dueDateTimePeriod: { label: 'Time period', getKey: (item) => item.dueDateTimePeriod },
-    pipingRfcUniqueHT: {
-        label: 'Piping RFC (Unique HT)',
-        getKey: (item) => getYearAndWeekFromString(item.pipingRfcUniqueHT),
+    htCableRfc: {
+        label: 'HT cable RFC',
+        getKey: (item) => getYearAndWeekFromString(item.htCableRfc),
+        getColumnSort: sortByNumber,
     },
 };
 
