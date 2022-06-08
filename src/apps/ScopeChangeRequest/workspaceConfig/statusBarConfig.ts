@@ -82,8 +82,10 @@ const accPendingMhr = (requests: ScopeChangeRequest[]) =>
 const filterApprovedRequests = (requests: ScopeChangeRequest[]) =>
     requests
         .filter(({ workflowSteps }) => workflowSteps !== null)
-        .filter(({ workflowSteps }) =>
-            workflowSteps[workflowSteps.length - 1].criterias.every(
-                ({ signedState }) => signedState === 'Approved'
-            )
+        .filter(
+            ({ workflowSteps }) =>
+                workflowSteps &&
+                workflowSteps[workflowSteps.length - 1].criterias.every(
+                    ({ signedState }) => signedState === 'Approved'
+                )
         );

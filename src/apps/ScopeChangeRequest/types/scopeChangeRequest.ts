@@ -110,7 +110,7 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     state: ScopeChangeRequestState;
     isVoided: boolean;
     currentWorkflowStep?: WorkflowStep;
-    workflowSteps: WorkflowStep[];
+    workflowSteps: WorkflowStep[] | null;
     tags: ScopeChangeTag[];
     commissioningPackages: ScopeChangeCommissioningPackage[];
     systems: ScopeChangeSystem[];
