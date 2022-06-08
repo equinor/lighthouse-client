@@ -20,25 +20,27 @@ import { getBatchPunch } from '../../api/FAM/Batch/getBatchPunch';
 import { BatchCheckbox } from './BatchCheckbox';
 import { QueryFunctionContext, useQuery } from 'react-query';
 
-const REFERENCE_TYPES: ReferenceType[] = ['document', 'area', 'commpkg', 'tag', 'system', 'punch'];
-
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
     appendItem: (item: TypedSelectOption | TypedSelectOption[]) => void;
     removeItem: (value: string) => void;
+    advancedReferenceTypes: ReferenceType[];
 }
 
 export const AdvancedDocumentSearch = ({
     appendItem,
     documents,
     removeItem,
+    advancedReferenceTypes,
 }: AdvancedDocumentSearchProps): JSX.Element => {
     const { search } = useReferencesSearch();
 
     //controls
     const [isOpen, setIsOpen] = useState(false);
     const [searchText, setSearchText] = useState<string | undefined>();
-    const [referenceType, setReferenceType] = useState<ReferenceType | undefined>('tag');
+    const [referenceType, setReferenceType] = useState<ReferenceType | undefined>(
+        advancedReferenceTypes[0]
+    );
     const [isBatch, setIsBatch] = useState(false);
     const [notFound, setNotFound] = useState<string[]>([]);
 
@@ -220,7 +222,7 @@ export const AdvancedDocumentSearch = ({
                         <SearchField>
                             <SingleSelect
                                 label="Reference type"
-                                items={REFERENCE_TYPES}
+                                items={advancedReferenceTypes}
                                 value={referenceType}
                                 handleSelectedItemChange={handleReferenceTypeChanged}
                             />
