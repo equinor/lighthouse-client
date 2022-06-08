@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { Fields, patchBookmark } from '..';
+import { Fields, patchBookmark } from '../utils/api/patchBookmark';
 type Bla = Fields & {
     bookmarkId: string;
 };

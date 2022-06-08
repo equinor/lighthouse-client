@@ -1,0 +1,70 @@
+import { Button, TextField } from '@equinor/eds-core-react';
+import { useState } from 'react';
+import { useEditBookmark } from '../../../hooks';
+import { BookmarkResponse } from '../../../types';
+import { ButtonContainer, InputContainer } from './modal.styles';
+
+type EditModalContentProps = {
+    bookmark: BookmarkResponse;
+    closeModal: () => void;
+};
+export const EditModalContent = ({ bookmark, closeModal }: EditModalContentProps) => {
+    const [title, setTitle] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const editBookmark = useEditBookmark();
+
+    const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value);
+    };
+
+    const onDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDescription(e.target.value);
+    };
+    return (
+        <>
+            <InputContainer>
+                <TextField
+                    variant="default"
+                    id="title"
+                    label="Title"
+                    placeholder={bookmark.name}
+                    value={title}
+                    onChange={onTitleChange}
+                />
+                <TextField
+                    variant="default"
+                    id="description"
+                    label="Description"
+                    placeholder={bookmark?.description}
+                    value={description}
+                    onChange={onDescriptionChange}
+                />
+            </InputContainer>
+            <ButtonContainer>
+                <Button
+                    variant="contained"
+                    onClick={() => {
+                        editBookmark({
+                            bookmarkId: bookmark.id,
+                            name: title || bookmark.name,
+                            description: description,
+                        });
+                        closeModal();
+                    }}
+                >
+                    Save
+                </Button>
+                <Button
+                    variant="outlined"
+                    onClick={() => {
+                        closeModal();
+                        setTitle('');
+                        setDescription('');
+                    }}
+                >
+                    Close
+                </Button>
+            </ButtonContainer>
+        </>
+    );
+};
