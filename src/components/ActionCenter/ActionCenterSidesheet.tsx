@@ -43,11 +43,11 @@ export function ActionCenterSidesheet({
                     </TabsList>
                     <Tabs.Panels>
                         <Tabs.Panel>
-                            <NotificationsTab onClickNotification={closeSidesheet} />
+                            {activeTab === 0 && (
+                                <NotificationsTab onClickNotification={closeSidesheet} />
+                            )}
                         </Tabs.Panel>
-                        <Tabs.Panel>
-                            <AssignmentsTab />
-                        </Tabs.Panel>
+                        <Tabs.Panel>{activeTab === 1 && <AssignmentsTab />}</Tabs.Panel>
                     </Tabs.Panels>
                 </Tabs>
             </Wrapper>
