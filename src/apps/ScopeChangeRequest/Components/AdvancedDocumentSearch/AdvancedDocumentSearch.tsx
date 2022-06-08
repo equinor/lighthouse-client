@@ -1,18 +1,26 @@
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { Button, Icon, Progress, Scrim, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { Case, Switch } from '@equinor/JSX-Switch';
-import { useCancellationToken } from '@equinor/hooks';
 import { tokens } from '@equinor/eds-tokens';
 
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { Result } from './Results';
-import { AdvancedSearch, ModalHeader, Wrapper, Title, SearchField } from './advancedSearch.styles';
+import {
+    AdvancedSearch,
+    ModalHeader,
+    Wrapper,
+    Title,
+    SearchField,
+    BatchCheckboxWrapper,
+} from './advancedSearch.styles';
 import { ReferenceType, useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { NotFoundList } from './NotFoundList';
 import { fetchBatchCommPkg, fetchBatchTags } from '../../api/PCS/Batch';
 import { getBatchPunch } from '../../api/FAM/Batch/getBatchPunch';
 import { BatchCheckbox } from './BatchCheckbox';
-import styled from 'styled-components';
+import { QueryFunctionContext, useQuery } from 'react-query';
+
+const REFERENCE_TYPES: ReferenceType[] = ['document', 'area', 'commpkg', 'tag', 'system', 'punch'];
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -27,43 +35,84 @@ export const AdvancedDocumentSearch = ({
 }: AdvancedDocumentSearchProps): JSX.Element => {
     const { search } = useReferencesSearch();
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     //controls
     const [isOpen, setIsOpen] = useState(false);
     const [searchText, setSearchText] = useState<string | undefined>();
-    const [results, setResults] = useState<TypedSelectOption[]>([]);
-
     const [referenceType, setReferenceType] = useState<ReferenceType | undefined>('tag');
-
-    const setSearchResults = (results: TypedSelectOption[]) => {
-        setResults(results);
-        setIsLoading(false);
-    };
-
     const [isBatch, setIsBatch] = useState(false);
+    const [notFound, setNotFound] = useState<string[]>([]);
 
     const flipBatch = () => {
-        setResults([]);
         setIsBatch((s) => !s);
     };
 
-    const [notFound, setNotFound] = useState<string[]>([]);
+    async function getSearchFunction(context: QueryFunctionContext): Promise<TypedSelectOption[]> {
+        if (!searchText || !referenceType) return [];
+        const { signal } = context;
 
-    const { abort, getSignal } = useCancellationToken();
+        if (isBatch) {
+            const numbers = searchText.split('\n');
+
+            switch (referenceType) {
+                case 'punch': {
+                    const results = (await getBatchPunch(numbers, signal)).map(
+                        (s): TypedSelectOption => ({
+                            label: `${s.punchItemNo} - ${s.description}`,
+                            object: s,
+                            searchValue: s.punchItemNo.toString(),
+                            type: 'punch',
+                            value: s.punchItemNo.toString(),
+                        })
+                    );
+                    setNotFound(
+                        numbers
+                            .filter(
+                                (punchNo) =>
+                                    results.findIndex(({ value }) => value === punchNo) === -1
+                            )
+                            .filter((x) => Boolean(x.length))
+                    );
+
+                    appendItem(results);
+                    return results;
+                }
+
+                case 'tag': {
+                    const results = await fetchBatchTags(numbers, signal);
+                    setNotFound(
+                        numbers
+                            .filter((s) => !results.map((s) => s.value).includes(s))
+                            .filter((s) => Boolean(s.length))
+                    );
+                    appendItem(results);
+                    return results;
+                }
+
+                case 'commpkg': {
+                    const results = await fetchBatchCommPkg(numbers, signal);
+                    setNotFound(
+                        numbers
+                            .filter((s) => !results.map((s) => s.value).includes(s))
+                            .filter((s) => Boolean(s.length))
+                    );
+                    appendItem(results);
+                    return results;
+                }
+            }
+        }
+
+        return await search(searchText, referenceType, signal);
+    }
+
+    const { data, isFetching } = useQuery(
+        ['references', referenceType, isBatch, searchText],
+        getSearchFunction,
+        { staleTime: 0, cacheTime: 0 }
+    );
 
     function checkDuplicate(x: TypedSelectOption): boolean {
         return documents.map((x) => x.value).includes(x.value);
     }
-
-    const referenceTypes: ReferenceType[] = [
-        'document',
-        'area',
-        'commpkg',
-        'tag',
-        'system',
-        'punch',
-        // 'stidtag',
-    ];
 
     async function handleClick(result: TypedSelectOption, action: 'Add' | 'Remove') {
         if (action === 'Add') {
@@ -81,101 +130,23 @@ export const AdvancedDocumentSearch = ({
     }
 
     function resetStates() {
-        setResults([]);
         setSearchText(undefined);
         setNotFound([]);
         setIsBatch(false);
     }
 
-    const startNewSearch = () => {
-        setIsLoading(true);
-        abort();
-        setNotFound([]);
-    };
-
-    const fetchResults = async (inputValue: string) => {
-        startNewSearch();
-        if (!referenceType) return;
-
-        const data = await search(inputValue, referenceType, getSignal());
-        setSearchResults(data);
-    };
-
-    const resolveBatchTags = async (tagNos: string[]) => {
-        startNewSearch();
-        const results = await fetchBatchTags(tagNos, getSignal());
-        setNotFound(
-            tagNos
-                .filter((s) => !results.map((s) => s.value).includes(s))
-                .filter((s) => Boolean(s.length))
-        );
-        appendItem(results);
-        setSearchResults(results);
-    };
-
-    const resolveBatchCommPkgs = async (commPkgNo: string[]) => {
-        startNewSearch();
-        const results = await fetchBatchCommPkg(commPkgNo, getSignal());
-        setNotFound(
-            commPkgNo
-                .filter((s) => !results.map((s) => s.value).includes(s))
-                .filter((s) => Boolean(s.length))
-        );
-        appendItem(results);
-        setSearchResults(results);
-    };
-
-    const resolveBatchPunch = async (punchNos: string[]) => {
-        startNewSearch();
-        const results = (await getBatchPunch(punchNos, getSignal())).map(
-            (s): TypedSelectOption => ({
-                label: `${s.punchItemNo} - ${s.description}`,
-                object: s,
-                searchValue: s.punchItemNo.toString(),
-                type: 'punch',
-                value: s.punchItemNo.toString(),
-            })
-        );
-        setNotFound(
-            punchNos
-                .filter((punchNo) => results.findIndex(({ value }) => value === punchNo) === -1)
-                .filter((x) => Boolean(x.length))
-        );
-
-        appendItem(results);
-        setSearchResults(results);
-    };
-
     const InputIcon = () => (
         <Switch>
-            <Case when={isLoading}>
+            <Case when={isFetching}>
                 <Progress.Dots color="primary" />
             </Case>
-            <Case when={!isLoading}>
+            <Case when={!isFetching}>
                 <Icon name="search" />
             </Case>
         </Switch>
     );
 
-    const getOnChangeForBatch = useCallback((): ((e) => Promise<void>) => {
-        if (!referenceIsBatchType) throw `${referenceType} does not support batch`;
-        switch (referenceType) {
-            case 'tag': {
-                return (e) => resolveBatchTags(e.target.value.split('\n'));
-            }
-
-            case 'punch': {
-                return (e) => resolveBatchPunch(e.target.value.split('\n'));
-            }
-
-            case 'commpkg': {
-                return (e) => resolveBatchCommPkgs(e.target.value.split('\n'));
-            }
-        }
-    }, [referenceType]);
-
     const handleReferenceTypeChanged = (change) => {
-        abort();
         setSearchText('');
         setIsBatch(false);
         setNotFound([]);
@@ -184,17 +155,31 @@ export const AdvancedDocumentSearch = ({
         } else {
             setReferenceType(change.selectedItem as ReferenceType);
         }
-        setResults([]);
     };
 
     const referenceIsBatchType =
         referenceType === 'tag' || referenceType === 'punch' || referenceType === 'commpkg';
 
+    function getPlaceholderText() {
+        switch (true) {
+            case referenceType && isBatch: {
+                return `Paste a column from excel here`;
+            }
+
+            case Boolean(referenceType): {
+                return `Type to search ${referenceType}`;
+            }
+
+            case !referenceType: {
+                return 'Please choose a reference type';
+            }
+        }
+    }
+
     return (
         <Fragment>
             <AdvancedSearch
                 onClick={() => {
-                    setResults([]);
                     setIsOpen((prev) => !prev);
                 }}
             >
@@ -235,43 +220,23 @@ export const AdvancedDocumentSearch = ({
                         <SearchField>
                             <SingleSelect
                                 label="Reference type"
-                                items={referenceTypes}
+                                items={REFERENCE_TYPES}
                                 value={referenceType}
                                 handleSelectedItemChange={handleReferenceTypeChanged}
                             />
-                            <Switch>
-                                <Case when={isBatch}>
-                                    {referenceIsBatchType && (
-                                        <TextField
-                                            multiline
-                                            rows={4}
-                                            placeholder={`Paste a column from excel here`}
-                                            id="batchPunch"
-                                            inputIcon={<InputIcon />}
-                                            onChange={getOnChangeForBatch()}
-                                        />
-                                    )}
-                                </Case>
-                                <Case when={true}>
-                                    <TextField
-                                        disabled={!referenceType}
-                                        id={'Stid document selector'}
-                                        value={searchText}
-                                        inputIcon={<InputIcon />}
-                                        placeholder={
-                                            referenceType
-                                                ? `Type to search ${referenceType}`
-                                                : 'Please choose a reference type'
-                                        }
-                                        onChange={(e) => {
-                                            setSearchText(e.target.value || undefined);
-                                            if (e.target.value && e.target.value.length > 0) {
-                                                fetchResults(e.target.value);
-                                            }
-                                        }}
-                                    />
-                                </Case>
-                            </Switch>
+
+                            <TextField
+                                disabled={!referenceType}
+                                id={'SearchField'}
+                                multiline={isBatch}
+                                rows={4}
+                                value={searchText}
+                                inputIcon={<InputIcon />}
+                                placeholder={getPlaceholderText()}
+                                onChange={(e) => {
+                                    setSearchText(e.target.value || undefined);
+                                }}
+                            />
                         </SearchField>
                         <BatchCheckboxWrapper>
                             {referenceIsBatchType && (
@@ -282,8 +247,8 @@ export const AdvancedDocumentSearch = ({
                         <NotFoundList notFound={notFound} type={referenceType} />
 
                         <>
-                            {results &&
-                                results.map((result) => (
+                            {data &&
+                                data.map((result) => (
                                     <Result
                                         key={result.value}
                                         handleClick={handleClick}
@@ -300,8 +265,3 @@ export const AdvancedDocumentSearch = ({
         </Fragment>
     );
 };
-
-const BatchCheckboxWrapper = styled.div`
-    display: flex;
-    justify-content: flex-start;
-`;
