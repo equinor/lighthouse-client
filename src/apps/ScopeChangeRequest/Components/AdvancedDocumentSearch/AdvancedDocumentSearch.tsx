@@ -1,26 +1,26 @@
 import { Fragment, useState } from 'react';
-import {
-    Button,
-    Checkbox,
-    Icon,
-    Progress,
-    Scrim,
-    SingleSelect,
-    TextField,
-    Tooltip,
-} from '@equinor/eds-core-react';
+import { Button, Icon, Progress, Scrim, SingleSelect, TextField } from '@equinor/eds-core-react';
 import { Case, Switch } from '@equinor/JSX-Switch';
-import { useCancellationToken } from '@equinor/hooks';
 import { tokens } from '@equinor/eds-tokens';
+
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { StidTypes } from '../../types/STID/STIDTypes';
 import { Result } from './Results';
-import { AdvancedSearch, ModalHeader, Wrapper, Title, SearchField } from './advancedSearch.styles';
-import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
-import { useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
+import {
+    AdvancedSearch,
+    ModalHeader,
+    Wrapper,
+    Title,
+    SearchField,
+    BatchCheckboxWrapper,
+} from './advancedSearch.styles';
+import { ReferenceType, useReferencesSearch } from '../../hooks/Search/useReferencesSearch';
 import { NotFoundList } from './NotFoundList';
 import { fetchBatchCommPkg, fetchBatchTags } from '../../api/PCS/Batch';
-import styled from 'styled-components';
+import { getBatchPunch } from '../../api/FAM/Batch/getBatchPunch';
+import { BatchCheckbox } from './BatchCheckbox';
+import { QueryFunctionContext, useQuery } from 'react-query';
+
+const REFERENCE_TYPES: ReferenceType[] = ['document', 'area', 'commpkg', 'tag', 'system', 'punch'];
 
 interface AdvancedDocumentSearchProps {
     documents: TypedSelectOption[];
@@ -35,48 +35,84 @@ export const AdvancedDocumentSearch = ({
 }: AdvancedDocumentSearchProps): JSX.Element => {
     const { search } = useReferencesSearch();
 
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     //controls
     const [isOpen, setIsOpen] = useState(false);
     const [searchText, setSearchText] = useState<string | undefined>();
-    const [results, setResults] = useState<TypedSelectOption[]>([]);
-
-    const [referenceType, setReferenceType] = useState<(ProcoSysTypes | StidTypes) | undefined>(
-        'tag'
-    );
-
-    const setSearchResults = (results) => {
-        setResults(results);
-        setIsLoading(false);
-    };
-
-    const [isBatchTag, setIsBatchTag] = useState(false);
-    const [isBatchCommPkg, setIsBatchCommPkg] = useState(false);
-    const flipBatchCommPkg = () => {
-        setResults([]);
-        setIsBatchCommPkg((s) => !s);
-    };
-    const flipBatchTag = () => {
-        setResults([]);
-        setIsBatchTag((s) => !s);
-    };
-
+    const [referenceType, setReferenceType] = useState<ReferenceType | undefined>('tag');
+    const [isBatch, setIsBatch] = useState(false);
     const [notFound, setNotFound] = useState<string[]>([]);
 
-    const { abort, getSignal } = useCancellationToken();
+    const flipBatch = () => {
+        setIsBatch((s) => !s);
+    };
+
+    async function getSearchFunction(context: QueryFunctionContext): Promise<TypedSelectOption[]> {
+        if (!searchText || !referenceType) return [];
+        const { signal } = context;
+
+        if (isBatch) {
+            const numbers = searchText.split('\n');
+
+            switch (referenceType) {
+                case 'punch': {
+                    const results = (await getBatchPunch(numbers, signal)).map(
+                        (s): TypedSelectOption => ({
+                            label: `${s.punchItemNo} - ${s.description}`,
+                            object: s,
+                            searchValue: s.punchItemNo.toString(),
+                            type: 'punch',
+                            value: s.punchItemNo.toString(),
+                        })
+                    );
+                    setNotFound(
+                        numbers
+                            .filter(
+                                (punchNo) =>
+                                    results.findIndex(({ value }) => value === punchNo) === -1
+                            )
+                            .filter((x) => Boolean(x.length))
+                    );
+
+                    appendItem(results);
+                    return results;
+                }
+
+                case 'tag': {
+                    const results = await fetchBatchTags(numbers, signal);
+                    setNotFound(
+                        numbers
+                            .filter((s) => !results.map((s) => s.value).includes(s))
+                            .filter((s) => Boolean(s.length))
+                    );
+                    appendItem(results);
+                    return results;
+                }
+
+                case 'commpkg': {
+                    const results = await fetchBatchCommPkg(numbers, signal);
+                    setNotFound(
+                        numbers
+                            .filter((s) => !results.map((s) => s.value).includes(s))
+                            .filter((s) => Boolean(s.length))
+                    );
+                    appendItem(results);
+                    return results;
+                }
+            }
+        }
+
+        return await search(searchText, referenceType, signal);
+    }
+
+    const { data, isFetching } = useQuery(
+        ['references', referenceType, isBatch, searchText],
+        getSearchFunction,
+        { staleTime: 0, cacheTime: 0 }
+    );
 
     function checkDuplicate(x: TypedSelectOption): boolean {
         return documents.map((x) => x.value).includes(x.value);
     }
-
-    const referenceTypes: (ProcoSysTypes | StidTypes)[] = [
-        'document',
-        'area',
-        'commpkg',
-        'tag',
-        'system',
-        // 'stidtag',
-    ];
 
     async function handleClick(result: TypedSelectOption, action: 'Add' | 'Remove') {
         if (action === 'Add') {
@@ -94,65 +130,56 @@ export const AdvancedDocumentSearch = ({
     }
 
     function resetStates() {
-        setResults([]);
         setSearchText(undefined);
         setNotFound([]);
+        setIsBatch(false);
     }
-
-    const startNewSearch = () => {
-        setIsLoading(true);
-        abort();
-        setNotFound([]);
-    };
-
-    const fetchResults = async (inputValue: string) => {
-        startNewSearch();
-        if (!referenceType) return;
-
-        const data = await search(inputValue, referenceType, getSignal());
-        setSearchResults(data);
-    };
-
-    const resolveBatchTags = async (tagNos: string[]) => {
-        startNewSearch();
-        const results = await fetchBatchTags(tagNos, getSignal());
-        setNotFound(
-            tagNos
-                .filter((s) => !results.map((s) => s.value).includes(s))
-                .filter((s) => Boolean(s.length))
-        );
-        appendItem(results);
-        setSearchResults(results);
-    };
-
-    const resolveBatchCommPkgs = async (commPkgNo: string[]) => {
-        startNewSearch();
-        const results = await fetchBatchCommPkg(commPkgNo, getSignal());
-        setNotFound(
-            commPkgNo
-                .filter((s) => !results.map((s) => s.value).includes(s))
-                .filter((s) => Boolean(s.length))
-        );
-        appendItem(results);
-        setSearchResults(results);
-    };
 
     const InputIcon = () => (
         <Switch>
-            <Case when={isLoading}>
+            <Case when={isFetching}>
                 <Progress.Dots color="primary" />
             </Case>
-            <Case when={!isLoading}>
+            <Case when={!isFetching}>
                 <Icon name="search" />
             </Case>
         </Switch>
     );
 
+    const handleReferenceTypeChanged = (change) => {
+        setSearchText('');
+        setIsBatch(false);
+        setNotFound([]);
+        if (!change.selectedItem) {
+            setReferenceType(undefined);
+        } else {
+            setReferenceType(change.selectedItem as ReferenceType);
+        }
+    };
+
+    const referenceIsBatchType =
+        referenceType === 'tag' || referenceType === 'punch' || referenceType === 'commpkg';
+
+    function getPlaceholderText() {
+        switch (true) {
+            case referenceType && isBatch: {
+                return `Paste a column from excel here`;
+            }
+
+            case Boolean(referenceType): {
+                return `Type to search ${referenceType}`;
+            }
+
+            case !referenceType: {
+                return 'Please choose a reference type';
+            }
+        }
+    }
+
     return (
         <Fragment>
             <AdvancedSearch
                 onClick={() => {
-                    setResults([]);
                     setIsOpen((prev) => !prev);
                 }}
             >
@@ -193,90 +220,35 @@ export const AdvancedDocumentSearch = ({
                         <SearchField>
                             <SingleSelect
                                 label="Reference type"
-                                items={referenceTypes}
+                                items={REFERENCE_TYPES}
                                 value={referenceType}
-                                handleSelectedItemChange={(change) => {
-                                    abort();
-                                    setSearchText('');
-                                    if (!change.selectedItem) {
-                                        setReferenceType(undefined);
-                                    } else {
-                                        setReferenceType(
-                                            change.selectedItem as ProcoSysTypes | StidTypes
-                                        );
-                                    }
-                                    setResults([]);
+                                handleSelectedItemChange={handleReferenceTypeChanged}
+                            />
+
+                            <TextField
+                                disabled={!referenceType}
+                                id={'SearchField'}
+                                multiline={isBatch}
+                                rows={4}
+                                value={searchText}
+                                inputIcon={<InputIcon />}
+                                placeholder={getPlaceholderText()}
+                                onChange={(e) => {
+                                    setSearchText(e.target.value || undefined);
                                 }}
                             />
-                            <Switch
-                                defaultCase={
-                                    <TextField
-                                        id={'Stid document selector'}
-                                        value={searchText}
-                                        inputIcon={<InputIcon />}
-                                        placeholder={
-                                            referenceType
-                                                ? `Type to search ${referenceType}`
-                                                : 'Please choose a reference type'
-                                        }
-                                        onChange={(e) => {
-                                            setSearchText(e.target.value || undefined);
-                                            if (e.target.value && e.target.value.length > 0) {
-                                                fetchResults(e.target.value);
-                                            }
-                                        }}
-                                    />
-                                }
-                            >
-                                <Case when={!referenceType}>
-                                    <TextField
-                                        id={'disabled'}
-                                        disabled
-                                        placeholder="Select a reference type"
-                                    />
-                                </Case>
-                                <Case when={referenceType === 'tag' && isBatchTag}>
-                                    <TextField
-                                        multiline
-                                        rows={4}
-                                        id="batchTags"
-                                        placeholder={`Paste a column from excel here`}
-                                        inputIcon={<InputIcon />}
-                                        onChange={(e) => {
-                                            resolveBatchTags(e.target.value.split('\n'));
-                                        }}
-                                    />
-                                </Case>
-
-                                <Case when={referenceType === 'commpkg' && isBatchCommPkg}>
-                                    <TextField
-                                        multiline
-                                        rows={4}
-                                        placeholder={`Paste a column from excel here`}
-                                        id="batchComm"
-                                        inputIcon={<InputIcon />}
-                                        onChange={(e) => {
-                                            resolveBatchCommPkgs(e.target.value.split('\n'));
-                                        }}
-                                    />
-                                </Case>
-                            </Switch>
                         </SearchField>
-                        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                            <BatchCheckboxes
-                                flipBatchCommPkg={flipBatchCommPkg}
-                                flipBatchTag={flipBatchTag}
-                                isBatchCommPkg={isBatchCommPkg}
-                                isBatchTag={isBatchTag}
-                                referenceType={referenceType}
-                            />
-                        </div>
+                        <BatchCheckboxWrapper>
+                            {referenceIsBatchType && (
+                                <BatchCheckbox flipChecked={flipBatch} isChecked={isBatch} />
+                            )}
+                        </BatchCheckboxWrapper>
 
                         <NotFoundList notFound={notFound} type={referenceType} />
 
                         <>
-                            {results &&
-                                results.map((result) => (
+                            {data &&
+                                data.map((result) => (
                                     <Result
                                         key={result.value}
                                         handleClick={handleClick}
@@ -293,43 +265,3 @@ export const AdvancedDocumentSearch = ({
         </Fragment>
     );
 };
-
-interface BatchCheckboxesProps {
-    referenceType: (ProcoSysTypes | StidTypes) | undefined;
-    isBatchTag: boolean;
-    flipBatchTag: () => void;
-    isBatchCommPkg: boolean;
-    flipBatchCommPkg: () => void;
-}
-
-const BatchCheckboxes = ({
-    flipBatchCommPkg,
-    flipBatchTag,
-    isBatchCommPkg,
-    isBatchTag,
-    referenceType,
-}: BatchCheckboxesProps) => {
-    return (
-        <Tooltip title="Gives you a bigger search field and lets you paste a list">
-            <CheckboxWrapper>
-                {referenceType === 'tag' && (
-                    <div>
-                        <Checkbox checked={isBatchTag} onChange={flipBatchTag} />
-                        Batch search
-                    </div>
-                )}
-                {referenceType === 'commpkg' && (
-                    <div>
-                        <Checkbox checked={isBatchCommPkg} onChange={flipBatchCommPkg} />
-                        Batch search
-                    </div>
-                )}
-            </CheckboxWrapper>
-        </Tooltip>
-    );
-};
-
-const CheckboxWrapper = styled.div`
-    display: flex;
-    align-items: center;
-`;

@@ -35,6 +35,10 @@ export const Wrapper = styled.div`
     max-width: 650px;
     padding: 0.2em 0em;
     gap: 0.5em;
+    :hover {
+        text-decoration: 1px ${tokens.colors.interactive.primary__resting.hex} underline;
+        cursor: pointer;
+    }
 `;
 
 export const Link = styled.span`
