@@ -10,7 +10,7 @@ RUN yarn install
 RUN yarn build 
 
 # Production environment
-FROM nginx:stable-alpine
+FROM nginx:1.20.2-alpine
 
 ## Install
 RUN apk add python3
