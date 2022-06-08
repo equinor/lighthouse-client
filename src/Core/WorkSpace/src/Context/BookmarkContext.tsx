@@ -1,8 +1,17 @@
 import { deref } from '@dbeining/react-atom';
-import { ApplyEventArgs, SaveEventArgs, useBookmarks } from '@equinor/BookmarksManager';
+import {
+    ApplyEventArgs,
+    favouriteBookmark,
+    getBookmarkById,
+    headBookmark,
+    SaveEventArgs,
+    useBookmarkMutations,
+    useBookmarks,
+    useGetBookmarkById,
+} from '@equinor/BookmarksManager';
 import { useFilterApiContext } from '@equinor/filter';
 import { PowerBIBookmarkPayload } from '@equinor/lighthouse-powerbi';
-import { createContext, PropsWithChildren, useContext } from 'react';
+import { createContext, PropsWithChildren, useContext, useEffect } from 'react';
 import {
     ApplyBookmark,
     GardenPayload,
@@ -13,6 +22,8 @@ import { useLocationContext } from './LocationProvider';
 import { useViewerContext } from './ViewProvider';
 import { isWorkspaceBookmark } from '../Util/bookmarks/helpers';
 import { gardenApiAtom } from '../Util/bookmarks/gardenBookmarks';
+import { useSearchParams } from 'react-router-dom';
+import { useCurrentUser } from '@equinor/lighthouse-portal-client';
 
 type Context<T> = {
     applyBookmark: (args: ApplyEventArgs) => Promise<ApplyBookmark<T>>;
@@ -28,6 +39,8 @@ type BookmarkContextWrapperProps = {};
 export const BookmarkContextWrapper = ({
     children,
 }: PropsWithChildren<BookmarkContextWrapperProps>): JSX.Element => {
+    const [searchParams] = useSearchParams();
+
     const {
         filterState: { getFilterState },
         operations: { setFilterState },
@@ -38,7 +51,7 @@ export const BookmarkContextWrapper = ({
     const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<
         PowerBIBookmarkPayload | WorkspaceBookmarkPayload
     >();
-
+    const favourite = useBookmarkMutations(favouriteBookmark);
     const handlePowerBiApply = (
         bookmark: PowerBIBookmarkPayload
     ): PowerBIBookmarkPayload | void => {
@@ -119,6 +132,30 @@ export const BookmarkContextWrapper = ({
             return handleWorkspaceSave;
         }
     };
+    const user = useCurrentUser();
+    useEffect(() => {
+        const bookmarkId = searchParams.get('bookmarkId');
+        if (bookmarkId) {
+            (async () => {
+                const bookmarkRes = await getBookmarkById(bookmarkId);
+                if (bookmarkRes) {
+                    if (bookmarkRes.createdBy.azureUniqueId !== user?.id) {
+                        const head = await headBookmark(bookmarkId);
+                        if (!head) {
+                            favourite(bookmarkId);
+                        }
+                    }
+                    const bookmark = await handleApplyBookmark(bookmarkId);
+
+                    if (isWorkspaceBookmark(bookmark)) {
+                        handleWorkspaceApply(bookmark);
+                    } else {
+                        return handlePowerBiApply(bookmark);
+                    }
+                }
+            })();
+        }
+    }, [searchParams]);
     return (
         <BookmarkContext.Provider value={{ applyBookmark, saveBookmark: saveBookmark() }}>
             {children}

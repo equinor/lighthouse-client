@@ -9,4 +9,5 @@ export type BookmarkResponse = {
     isShared: boolean;
     name: string;
     sourceSystem: SourceSystem;
+    description?: string;
 };
