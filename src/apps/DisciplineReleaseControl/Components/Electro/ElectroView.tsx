@@ -12,7 +12,7 @@ import {
     ElectroViewNodeText,
     ElectroViewRow,
     SwitchBoardBorderContainer,
-    SwitchBoardContainer,
+    SwitchBoardContainer
 } from './styles';
 
 interface ElectroViewProps {
@@ -29,24 +29,8 @@ export const ElectroView = ({
     width,
     htCable,
 }: ElectroViewProps): JSX.Element => {
-    //Find circuit starter tags from circuits on pipetest
-    let circuitStarterTagNos = '';
-    const circuitStarterTagNosArray: string[] = [];
-    if (pipetest.circuits.length === 0) {
-        circuitStarterTagNos = '';
-    } else if (pipetest.circuits.length === 1) {
-        circuitStarterTagNos = pipetest.circuits[0].circuitAndStarterTagNo;
-        circuitStarterTagNosArray.push(pipetest.circuits[0].circuitAndStarterTagNo);
-    } else {
-        circuitStarterTagNos = pipetest.circuits[0].circuitAndStarterTagNo;
-        circuitStarterTagNosArray.push(pipetest.circuits[0].circuitAndStarterTagNo);
-        for (let i = 1; i < pipetest.circuits.length; i++) {
-            circuitStarterTagNos = circuitStarterTagNos.concat(
-                ',' + pipetest.circuits[i].circuitAndStarterTagNo
-            );
-            circuitStarterTagNosArray.push(pipetest.circuits[i].circuitAndStarterTagNo);
-        }
-    }
+    const circuitStarterTagNosArray = pipetest.circuits?.map((c) => c.circuitAndStarterTagNo);
+    const circuitStarterTagNos = circuitStarterTagNosArray.toString();
 
     let { data } = useQuery([circuitStarterTagNos], () => getEleNetworks(circuitStarterTagNos), {
         staleTime: Infinity,
@@ -65,14 +49,14 @@ export const ElectroView = ({
         }
 
         //Alphabetical sorting
-        data.map((x) => {
+        data?.map((x) => {
             x.circuits.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
             x.cables.sort((a, b) => a.tagNo?.localeCompare(b?.tagNo));
             return x;
         });
         //Group by switchboard. One array of EleNetwork to one switchboard.
         switchboardArray = Object.values(
-            data.reduce((acc, item) => {
+            data?.reduce((acc, item) => {
                 const switchboardTagNo = item.switchBoardTagNo.split('-'); //split to find common switchboard tagNo
                 acc[switchboardTagNo[0]] = [...(acc[switchboardTagNo[0]] || []), item];
                 return acc;

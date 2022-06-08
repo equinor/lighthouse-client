@@ -4,7 +4,17 @@ import { Icon } from '@equinor/lighthouse-components';
 import { useModelViewerContext } from '../context/modelViewerContext';
 import { Menu, WrapperMenu } from '../ModelViewerStyles';
 
-export const SelectionMenu = (): JSX.Element | null => {
+export interface SelectionAction {
+    icon: React.FC;
+    disabled?: boolean;
+    title: string;
+    onClick: () => void;
+}
+interface SelectionMenuProps {
+    selectionActions?: SelectionAction[];
+}
+
+export const SelectionMenu = ({ selectionActions }: SelectionMenuProps): JSX.Element | null => {
     const {
         selection,
         toggleClipping,
@@ -49,6 +59,19 @@ export const SelectionMenu = (): JSX.Element | null => {
                     />
                 </Button>
                 {/* todo add dynamic buttons */}
+                {selectionActions?.map((action, index) => (
+                    <Button
+                        key={index}
+                        title={action.title}
+                        variant="ghost_icon"
+                        disabled={action.disabled}
+                        onClick={() => {
+                            action.onClick();
+                        }}
+                    >
+                        <action.icon />
+                    </Button>
+                ))}
                 {/* <Button
                     title="Hidden"
                     variant="ghost_icon"
