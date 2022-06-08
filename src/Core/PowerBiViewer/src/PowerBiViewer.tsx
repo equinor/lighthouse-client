@@ -1,6 +1,7 @@
 import {
     ApplyEventArgs,
     favouriteBookmark,
+    getBookmarkById,
     headBookmark,
     useBookmarkMutations,
     useBookmarks,
@@ -8,7 +9,6 @@ import {
 import { PBIOptions, PowerBI, PowerBIBookmarkPayload } from '@equinor/lighthouse-powerbi';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { getBookmarkById } from '../../../packages/BookmarksManager/src/utils/api/getBookmarkById';
 import { useCurrentUser } from '../../Client/Hooks';
 import { usePowerBiViewer } from './Api/powerBiViewerState';
 import { PowerBiViewerHeader } from './Components/PowerBiViewerHeader/PowerBiViewerHeader';

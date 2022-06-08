@@ -6,3 +6,4 @@ export * from './getAllBookmarks';
 export * from './patchBookmark';
 export * from './favouriteBookmark';
 export * from './headBookmark';
+export * from './getBookmarkById';

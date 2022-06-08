@@ -2,6 +2,7 @@ import { deref } from '@dbeining/react-atom';
 import {
     ApplyEventArgs,
     favouriteBookmark,
+    getBookmarkById,
     headBookmark,
     SaveEventArgs,
     useBookmarkMutations,
@@ -22,7 +23,6 @@ import { useViewerContext } from './ViewProvider';
 import { isWorkspaceBookmark } from '../Util/bookmarks/helpers';
 import { gardenApiAtom } from '../Util/bookmarks/gardenBookmarks';
 import { useSearchParams } from 'react-router-dom';
-import { getBookmarkById } from '../../../../packages/BookmarksManager/src/utils/api/getBookmarkById';
 import { useCurrentUser } from '@equinor/lighthouse-portal-client';
 
 type Context<T> = {
