@@ -17,7 +17,7 @@ export const searchAreas = async (
 
     const uri = 'api/Search';
     const queryParameters = `plantId=${encodeURIComponent(plantId)}&savedSearchId=${isProduction() ? searchIdProd : searchIdDev
-        }&currentPage=0&itemsPerPage=7&paging=true&sortColumns=false&api-version=4.1`;
+        }&currentPage=0&itemsPerPage=20&paging=true&sortColumns=false&api-version=4.1`;
 
     const url = `${uri}?${queryParameters}`;
 
