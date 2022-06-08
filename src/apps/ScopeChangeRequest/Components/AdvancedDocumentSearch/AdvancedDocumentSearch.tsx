@@ -239,9 +239,22 @@ export const AdvancedDocumentSearch = ({
                                 value={referenceType}
                                 handleSelectedItemChange={handleReferenceTypeChanged}
                             />
-                            <Switch
-                                defaultCase={
+                            <Switch>
+                                <Case when={isBatch}>
+                                    {referenceIsBatchType && (
+                                        <TextField
+                                            multiline
+                                            rows={4}
+                                            placeholder={`Paste a column from excel here`}
+                                            id="batchPunch"
+                                            inputIcon={<InputIcon />}
+                                            onChange={getOnChangeForBatch()}
+                                        />
+                                    )}
+                                </Case>
+                                <Case when={true}>
                                     <TextField
+                                        disabled={!referenceType}
                                         id={'Stid document selector'}
                                         value={searchText}
                                         inputIcon={<InputIcon />}
@@ -257,26 +270,6 @@ export const AdvancedDocumentSearch = ({
                                             }
                                         }}
                                     />
-                                }
-                            >
-                                <Case when={!referenceType}>
-                                    <TextField
-                                        id={'disabled'}
-                                        disabled
-                                        placeholder="Select a reference type"
-                                    />
-                                </Case>
-                                <Case when={isBatch}>
-                                    {referenceIsBatchType && (
-                                        <TextField
-                                            multiline
-                                            rows={4}
-                                            placeholder={`Paste a column from excel here`}
-                                            id="batchPunch"
-                                            inputIcon={<InputIcon />}
-                                            onChange={getOnChangeForBatch()}
-                                        />
-                                    )}
                                 </Case>
                             </Switch>
                         </SearchField>
