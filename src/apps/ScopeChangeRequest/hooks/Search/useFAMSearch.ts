@@ -12,9 +12,7 @@ interface FAMSearch {
 }
 
 /**
- * Hook for searching in ProCoSys
- * Utilizes caching for some lists
- * @returns
+ * Hook for searching in FAM
  */
 export function useFAMSearch(): FAMSearch {
     async function search(
