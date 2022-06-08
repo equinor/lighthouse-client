@@ -94,7 +94,6 @@ const Header = styled.div`
 const Notifications = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 0em;
     padding: 0em 1em;
 
     height: 100%;

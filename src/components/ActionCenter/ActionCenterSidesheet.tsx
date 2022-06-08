@@ -22,7 +22,7 @@ export function ActionCenterSidesheet({
         activeTab === 0 ? setTitle('Notifications') : setTitle('Tasks');
     }, [activeTab]);
 
-    const { unreadNotificationCards } = useNotificationCenter(() => void 0);
+    const { unreadNotificationCards } = useNotificationCenter();
     const { assignments } = useAssignments();
 
     const handleChange = (index: number) => setActiveTab(index);
