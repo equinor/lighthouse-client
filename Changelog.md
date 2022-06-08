@@ -3,7 +3,8 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
-
+# 1.4.5
+- [MC] Production flag for analytics tab
 ## 1.4.4
 - [MC] Analytics tab
 - [Garden] Fix horizontal scroll
