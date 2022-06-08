@@ -2,9 +2,8 @@ import { createAtom } from '@equinor/atom';
 import { useState } from 'react';
 import { DefaultAtomAPI } from '../../../../Core/Atom/types/atom';
 import { TypedSelectOption } from '../../api/Search/searchType';
-import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
+import { ReferenceType } from '../../hooks/Search/useReferencesSearch';
 import { ScopeChangeCreateEditModel } from '../../types/scopeChangeRequest';
-import { StidTypes } from '../../types/STID/STIDTypes';
 
 type ScopeChangeFormModel = Partial<ScopeChangeCreateEditModel>;
 
@@ -14,6 +13,7 @@ interface ScopeChangeReferences {
     systemIds: number[];
     areaCodes: string[];
     documentNumbers: string[];
+    punchListIds: number[];
 }
 
 interface FormAtomApi extends DefaultAtomAPI<ScopeChangeFormModel> {
@@ -73,13 +73,11 @@ function unPackReferences(api: DefaultAtomAPI<ScopeChangeFormModel>): ScopeChang
         documentNumbers: unpackByType(references, 'document'),
         systemIds: unpackByType(references, 'system') as unknown as number[],
         tagNumbers: unpackByType(references, 'tag'),
+        punchListIds: unpackByType(references, 'punch').map((s): number => Number(s)),
     };
 }
 
-function unpackByType(
-    list: TypedSelectOption[],
-    referenceType: ProcoSysTypes | StidTypes
-): string[] {
+function unpackByType(list: TypedSelectOption[], referenceType: ReferenceType): string[] {
     return list.filter(({ type }) => type === referenceType).map(({ value }) => value);
 }
 

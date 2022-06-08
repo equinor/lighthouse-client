@@ -28,7 +28,7 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
     const { data } = useInfiniteCachedQuery(document(docNo), () => getDocumentById(docNo, 'JCA'));
 
     return (
-        <Wrapper>
+        <Wrapper onClick={() => handleRedirect(docNo)}>
             <IconWrapper>
                 <Icon name="file_copy" color={tokens.colors.interactive.primary__resting.rgba} />
             </IconWrapper>
@@ -39,7 +39,7 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
                         color: `${tokens.colors.interactive.primary__resting.rgba}`,
                     }}
                 >
-                    <Link onClick={() => handleRedirect(docNo)}>
+                    <Link>
                         <Details>
                             {docNo} - {data?.docTitle}
                         </Details>
