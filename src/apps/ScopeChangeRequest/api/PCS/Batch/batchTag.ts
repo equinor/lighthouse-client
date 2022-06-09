@@ -4,13 +4,13 @@ import { TypedSelectOption } from '../../Search/searchType';
 
 export async function fetchBatchTags(
     tagNos: string[],
-    signal: AbortSignal
+    signal?: AbortSignal
 ): Promise<TypedSelectOption[]> {
     const { procosys } = httpClient();
 
     const res = await procosys.fetch(
-        `api/tag/ByTagNos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${tagNos
-            .map((x) => `&tagNos=${x}`)
+        `api/tag/bytagnos?plantId=PCS%24JOHAN_CASTBERG&projectName=L.O532C.002&api-version=4.1${tagNos
+            .map((x) => `&tagNos=${encodeURIComponent(x)}`)
             .toString()
             .replaceAll(',', '')}`,
         { signal }

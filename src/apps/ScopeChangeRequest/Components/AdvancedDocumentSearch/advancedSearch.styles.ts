@@ -55,3 +55,8 @@ export const SearchField = styled.div`
     align-items: flex-end;
     gap: 1em;
 `;
+
+export const BatchCheckboxWrapper = styled.div`
+    display: flex;
+    justify-content: flex-start;
+`;

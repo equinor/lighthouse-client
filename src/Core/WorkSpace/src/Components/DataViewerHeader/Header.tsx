@@ -4,7 +4,6 @@ import { tokens } from '@equinor/eds-tokens';
 import { useFilterApiContext } from '@equinor/filter';
 import { ClickableIcon, Icon } from '@equinor/lighthouse-components';
 import { useDataCreator } from '@equinor/lighthouse-fusion-modules';
-import { isProduction } from '@equinor/lighthouse-portal-client';
 import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useMemo } from 'react';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
@@ -192,7 +191,7 @@ export const CompletionViewHeader = ({
                             <ClickableIcon size={24} name="refresh" />
                         )}
                     </TabButton>
-                    {!isProduction() && <BookmarkDropdown appKey={shortName} subSystem={groupe} />}
+                    <BookmarkDropdown appKey={shortName} subSystem={groupe} />
 
                     {activeTab !== ANALYTICS ? (
                         <TabButton

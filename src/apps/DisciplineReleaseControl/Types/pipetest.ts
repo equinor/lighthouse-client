@@ -15,7 +15,7 @@ export interface Pipetest {
     description: string;
     commPkPriority1: string;
     rfccPlanned: string;
-    pipingRfcUniqueHT: string;
+    htCableRfc: string;
     overdue: string;
     dueDateTimePeriod: string;
     location: string;

@@ -9,6 +9,7 @@ export function setup(appApi: ClientApi): void {
             { pageTitle: 'Browser', pageId: 'ReportSection08bd3cdd956d8e1b1065' },
             { pageTitle: 'History', pageId: 'ReportSection1d9ec2a98c07f646086b' },
             { pageTitle: 'Countdown', pageId: 'ReportSection72f67800d1e526e323bb' },
+            { pageTitle: 'CPCL Countdown', pageId: 'ReportSection07dada5680324ba28168' },
         ],
     });
 }

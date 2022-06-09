@@ -11,7 +11,7 @@ import { sort } from '../../functions/sort';
 import { useCancellationToken } from '../../../../hooks/cancellationToken/useCancellationToken';
 import { usePcsSearch } from '../../hooks/Search/usePcsSearch';
 import { useFacility } from '../../../../Core/Client/Hooks';
-import { ProCoSysQueries } from '../../keys/ProCoSysQueries';
+import { proCoSysQueries } from '../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { FunctionalRole } from '../../types/ProCoSys/functionalRole';
 
@@ -30,7 +30,7 @@ export const PCSPersonRoleSearch = ({
     const { procosysPlantId } = useFacility();
     const { searchPCS } = usePcsSearch({ functionalRoleClassification: classification });
 
-    const { getFunctionalRolesQuery } = ProCoSysQueries;
+    const { getFunctionalRolesQuery } = proCoSysQueries;
 
     const { data, refetch } = useQuery<unknown, unknown, FunctionalRole[]>(
         getFunctionalRolesQuery(procosysPlantId, classification)

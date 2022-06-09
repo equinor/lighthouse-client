@@ -4,7 +4,10 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AssignmentsTab } from '../../Core/Assignments/Components/AssignmentsTab';
+import { useAssignments } from '../../Core/Assignments/Hooks/useAssignments';
+import { useNotificationCenter } from '../../Core/Notifications/Hooks/useNotificationCenter';
 import { NotificationsTab } from './NotificationsTab';
+import { TabTitle } from './TabTitle';
 
 interface ActionCenterSidesheetProps {
     actions: SidesheetApi;
@@ -19,22 +22,32 @@ export function ActionCenterSidesheet({
         activeTab === 0 ? setTitle('Notifications') : setTitle('Tasks');
     }, [activeTab]);
 
+    const { unreadNotificationCards } = useNotificationCenter();
+    const { assignments } = useAssignments();
+
     const handleChange = (index: number) => setActiveTab(index);
     return (
         <>
             <Wrapper>
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <TabsList>
-                        <Tabs.Tab>Notifications </Tabs.Tab>
-                        <Tabs.Tab>Tasks </Tabs.Tab>
+                        <Tabs.Tab>
+                            <TabTitle
+                                count={unreadNotificationCards.length ?? 0}
+                                titleName={'Notifications'}
+                            />
+                        </Tabs.Tab>
+                        <Tabs.Tab>
+                            <TabTitle count={assignments.length} titleName={'Tasks'} />
+                        </Tabs.Tab>
                     </TabsList>
                     <Tabs.Panels>
                         <Tabs.Panel>
-                            <NotificationsTab onClickNotification={closeSidesheet} />
+                            {activeTab === 0 && (
+                                <NotificationsTab onClickNotification={closeSidesheet} />
+                            )}
                         </Tabs.Panel>
-                        <Tabs.Panel>
-                            <AssignmentsTab />
-                        </Tabs.Panel>
+                        <Tabs.Panel>{activeTab === 1 && <AssignmentsTab />}</Tabs.Panel>
                     </Tabs.Panels>
                 </Tabs>
             </Wrapper>
