@@ -35,5 +35,5 @@ export interface WorkOrder {
     jobStatus: string;
     facility: string;
     actualStartupDate: Date;
-    actualCompletionDate: Date;
+    actualCompletionDate: Date | null;
 }
