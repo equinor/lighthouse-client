@@ -5,7 +5,6 @@ import { System as PCSSystem } from '../../../../types/ProCoSys/system';
 import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { Link, Wrapper, TextWrapper } from '../WrapperStyles';
-import { getReferenceIcon } from '../../../SearchReferences/getReferenceIcon';
 
 interface SystemProps {
     system: ScopeChangeSystem;
@@ -37,7 +36,6 @@ export const System = ({ system }: SystemProps): JSX.Element => {
             }
             key={system.id}
         >
-            {getReferenceIcon('system')}
             <TextWrapper>
                 <Link>
                     {system.procosysCode} - {foundSystem?.Description}
