@@ -10,7 +10,7 @@ export type ReleaseControlItemProps = {
     isSelected: boolean;
 };
 
-export const ReleaseControlItem = styled(Item) <ReleaseControlItemProps>`
+export const ReleaseControlItem = styled(Item)<ReleaseControlItemProps>`
     display: flex;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
@@ -55,7 +55,6 @@ export const ReleaseControlExpandedTitle = styled.div`
 
 export const SubGroupWrapper = styled.div`
     display: flex;
-    justify-content: space-between;
     margin: 0;
     align-items: center;
     margin-bottom: 4px;
@@ -80,11 +79,12 @@ export const HTSubGroupText = styled.div`
     margin-left: 4px;
     margin-top: 2px;
     font-variant-numeric: tabular-nums;
+    width: 80px;
     cursor: pointer;
-    text-decoration: underline;
 
     :hover {
         opacity: 0.5;
+        text-decoration: underline;
     }
 `;
 

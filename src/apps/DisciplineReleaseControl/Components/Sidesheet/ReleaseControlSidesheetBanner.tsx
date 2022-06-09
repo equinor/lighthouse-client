@@ -41,7 +41,7 @@ export function ReleaseControlSidesheetBanner(
                         steps={createChecklistSteps(props.pipetest)}
                         statusDotFunc={checklistTagFunc}
                         spanDirection={'horizontal'}
-                        dotSize={22}
+                        dotSize={16}
                     />
                 }
             />
