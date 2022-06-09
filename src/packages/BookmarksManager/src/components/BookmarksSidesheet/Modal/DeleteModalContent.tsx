@@ -1,5 +1,5 @@
 import { Button } from '@equinor/eds-core-react';
-import { useDeleteBookmark } from '../../../hooks/useDeleteBookmark';
+import { deleteBookmark as deleteBookmarkFunc, useBookmarkMutations } from '../../..';
 import { BookmarkResponse } from '../../../types';
 import { ButtonContainer } from './modal.styles';
 
@@ -8,7 +8,7 @@ type DeleteModalContentProps = {
     closeModal: () => void;
 };
 export const DeleteModalContent = ({ bookmark, closeModal }: DeleteModalContentProps) => {
-    const deleteBookmark = useDeleteBookmark('my-bookmarks');
+    const deleteBookmark = useBookmarkMutations(deleteBookmarkFunc, ['my-bookmarks']);
     return (
         <>
             <div>

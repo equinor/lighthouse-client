@@ -1,13 +1,13 @@
 import { useMutation, useQueryClient } from 'react-query';
 
-export const useBookmarkMutations = (
-    mutation: (arg: string) => Promise<void>,
-    cacheKey = 'my-bookmarks'
+export const useBookmarkMutations = <TArgs extends unknown, TReturn extends unknown>(
+    mutation: (args: TArgs) => Promise<TReturn>,
+    cacheKeys = ['my-bookmarks']
 ) => {
     const queryClient = useQueryClient();
 
     const { mutate } = useMutation(mutation, {
-        onSuccess: () => queryClient.invalidateQueries(cacheKey),
+        onSuccess: () => queryClient.invalidateQueries(cacheKeys),
     });
 
     return mutate;

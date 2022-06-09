@@ -1,6 +1,7 @@
 import { Button, TextField } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { useEditBookmark } from '../../../hooks';
+import { patchBookmark } from '../../..';
+import { useBookmarkMutations } from '../../../hooks';
 import { BookmarkResponse } from '../../../types';
 import { ButtonContainer, InputContainer } from './modal.styles';
 
@@ -11,7 +12,7 @@ type EditModalContentProps = {
 export const EditModalContent = ({ bookmark, closeModal }: EditModalContentProps) => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const editBookmark = useEditBookmark();
+    const editBookmark = useBookmarkMutations(patchBookmark, ['my-bookmarks']);
 
     const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);

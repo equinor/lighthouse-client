@@ -30,6 +30,10 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
 
     const { reports } = usePowerBiViewer(props.shortName);
     const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<PowerBIBookmarkPayload>();
+    const favourite = useBookmarkMutations(favouriteBookmark);
+    const user = useCurrentUser();
+
+    const [searchParams] = useSearchParams();
 
     const handleSetActivePage = (page: Page, options?: PBIOptions) => {
         setActivePage(page);
@@ -86,9 +90,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
 
         return pageManager(bookmark);
     };
-    const [searchParams] = useSearchParams();
-    const user = useCurrentUser();
-    const favourite = useBookmarkMutations(favouriteBookmark);
+
     useEffect(() => {
         const bookmarkId = searchParams.get('bookmarkId');
         if (bookmarkId) {
@@ -96,10 +98,8 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
                 const bookmarkRes = await getBookmarkById(bookmarkId);
                 if (bookmarkRes) {
                     if (bookmarkRes.createdBy.azureUniqueId !== user?.id) {
-                        const head = await headBookmark(bookmarkId);
-                        if (!head) {
-                            favourite(bookmarkId);
-                        }
+                        //Check if bookmark is not already favourited by user
+                        !(await headBookmark(bookmarkId)) && favourite(bookmarkId);
                     }
                     const bookmarkPayload = await handleApplyBookmark(bookmarkId);
                     pageManager(bookmarkPayload);

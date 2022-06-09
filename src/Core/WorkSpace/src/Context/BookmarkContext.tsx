@@ -7,7 +7,6 @@ import {
     SaveEventArgs,
     useBookmarkMutations,
     useBookmarks,
-    useGetBookmarkById,
 } from '@equinor/BookmarksManager';
 import { useFilterApiContext } from '@equinor/filter';
 import { PowerBIBookmarkPayload } from '@equinor/lighthouse-powerbi';
@@ -48,10 +47,13 @@ export const BookmarkContextWrapper = ({
 
     const { activeTab, handleSetActiveTab } = useLocationContext();
     const { setActivePage } = useViewerContext();
+    const user = useCurrentUser();
+
     const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<
         PowerBIBookmarkPayload | WorkspaceBookmarkPayload
     >();
     const favourite = useBookmarkMutations(favouriteBookmark);
+
     const handlePowerBiApply = (
         bookmark: PowerBIBookmarkPayload
     ): PowerBIBookmarkPayload | void => {
@@ -132,7 +134,6 @@ export const BookmarkContextWrapper = ({
             return handleWorkspaceSave;
         }
     };
-    const user = useCurrentUser();
     useEffect(() => {
         const bookmarkId = searchParams.get('bookmarkId');
         if (bookmarkId) {
@@ -140,10 +141,8 @@ export const BookmarkContextWrapper = ({
                 const bookmarkRes = await getBookmarkById(bookmarkId);
                 if (bookmarkRes) {
                     if (bookmarkRes.createdBy.azureUniqueId !== user?.id) {
-                        const head = await headBookmark(bookmarkId);
-                        if (!head) {
-                            favourite(bookmarkId);
-                        }
+                        // Check if bookmark is not already favourited by user
+                        !(await headBookmark(bookmarkId)) && favourite(bookmarkId);
                     }
                     const bookmark = await handleApplyBookmark(bookmarkId);
 

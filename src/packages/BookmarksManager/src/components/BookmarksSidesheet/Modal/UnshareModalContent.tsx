@@ -1,5 +1,6 @@
 import { Button } from '@equinor/eds-core-react';
-import { useEditBookmark } from '../../../hooks';
+import { patchBookmark } from '../../..';
+import { useBookmarkMutations } from '../../../hooks';
 import { BookmarkResponse } from '../../../types';
 import { ButtonContainer } from './modal.styles';
 type UnshareModalContentProps = {
@@ -7,7 +8,7 @@ type UnshareModalContentProps = {
     closeModal: () => void;
 };
 export const UnshareModalContent = ({ bookmark, closeModal }: UnshareModalContentProps) => {
-    const editBookmark = useEditBookmark();
+    const editBookmark = useBookmarkMutations(patchBookmark, ['my-bookmarks']);
 
     return (
         <>

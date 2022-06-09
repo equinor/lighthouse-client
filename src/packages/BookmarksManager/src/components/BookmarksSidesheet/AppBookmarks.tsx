@@ -1,6 +1,6 @@
 import { Icon } from '@equinor/eds-core-react';
+import { useRegistry } from '@equinor/lighthouse-portal-client';
 import { useState } from 'react';
-import { useRegistry } from '../../../../../Core/Client/Hooks';
 import { BookmarkResponse } from '../../types';
 import { BookmarkEntry } from './BookmarkEntry';
 import {
@@ -18,7 +18,7 @@ export const AppBookmarks = ({ appBookmarks, appKey }: AppBookmarkProps) => {
     const [isOpen, setIsOpen] = useState<boolean>(true);
 
     const { apps } = useRegistry();
-    const t = apps.find((app) => app.shortName === appKey.replace('jc-', ''));
+    const app = apps.find((app) => app.shortName === appKey.replace('jc-', ''));
 
     return (
         <AppBookmarksContainer>
@@ -29,7 +29,7 @@ export const AppBookmarks = ({ appBookmarks, appKey }: AppBookmarkProps) => {
                         onClick={() => setIsOpen((s) => !s)}
                     />
                 </div>
-                <h4>{t?.title ? t.title : appKey.replace('jc-', '')}</h4>
+                <h4>{app?.title ? app.title : appKey.replace('jc-', '')}</h4>
             </Header>
             {isOpen && (
                 <Bookmarks>
