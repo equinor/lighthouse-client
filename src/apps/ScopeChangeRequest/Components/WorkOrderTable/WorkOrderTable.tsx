@@ -73,7 +73,8 @@ const makeColumns = (highestExpended: number, highestEstimate: number, title: st
     ),
     generateColumn(
         'Act. finish',
-        ({ actualCompletionDate }) => new Date(actualCompletionDate).toLocaleDateString('EN-GB'),
+        ({ actualCompletionDate }) =>
+            actualCompletionDate ? new Date(actualCompletionDate).toLocaleDateString('EN-GB') : '',
         100
     ),
     generateColumn(
