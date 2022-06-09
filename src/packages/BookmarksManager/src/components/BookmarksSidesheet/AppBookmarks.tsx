@@ -1,6 +1,7 @@
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useRegistry } from '@equinor/lighthouse-portal-client';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { BookmarkResponse } from '../../types';
 import { BookmarkEntry } from './BookmarkEntry';
 import {
@@ -9,7 +10,9 @@ import {
     Bookmarks,
     BookmarkLinkWrapper,
 } from './BookmarksSidesheet.styles';
-
+const AppNameHeader = styled.h4`
+    margin: 0;
+`;
 type AppBookmarkProps = {
     appKey: string;
     appBookmarks: BookmarkResponse[];
@@ -30,7 +33,7 @@ export const AppBookmarks = ({ appBookmarks, appKey }: AppBookmarkProps) => {
                         color="black"
                     />
                 </div>
-                <h4>{app?.title ? app.title : appKey.replace('jc-', '')}</h4>
+                <AppNameHeader>{app?.title ? app.title : appKey.replace('jc-', '')}</AppNameHeader>
             </Header>
             {isOpen && (
                 <Bookmarks>

@@ -17,6 +17,7 @@ export const Header = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-bottom: 0.5em;
 `;
 export const Bookmarks = styled.div`
     margin-left: 20px;
@@ -40,7 +41,8 @@ export const AppBookmarksContainer = styled.div`
 `;
 export const SidesheetContent = styled.div`
     height: -webkit-fill-available;
-    margin-left: 2rem;
+    margin-left: 24px;
+    margin-top: 26px;
     margin-bottom: 2rem;
     overflow: scroll;
 `;
@@ -50,8 +52,7 @@ export const BookmarkLinkWrapper = styled.div`
     justify-content: space-between;
     height: 20px;
     align-items: center;
-    padding: 0.2rem;
-    margin-right: 2rem;
+    margin-left: 15px;
     :hover {
         background-color: #f7f7f7;
     }

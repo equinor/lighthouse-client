@@ -1,9 +1,13 @@
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useState } from 'react';
+import styled from 'styled-components';
 import { BookmarkResponse } from '../../types';
 import { AppBookmarks } from './AppBookmarks';
 import { AppBookmarksWrapper, Header } from './BookmarksSidesheet.styles';
 
+const AppGroupHeader = styled.h3`
+    margin: 0;
+`;
 type AppGroupProps = {
     appGroupName: string;
     appGroupBookmarks: Record<string, BookmarkResponse[]>;
@@ -19,7 +23,7 @@ export const AppGroup = ({ appGroupBookmarks, appGroupName }: AppGroupProps) => 
                     onClick={() => setIsOpen((s) => !s)}
                     color="black"
                 />
-                <h3>{appGroupName}</h3>
+                <AppGroupHeader>{appGroupName}</AppGroupHeader>
             </Header>
 
             {isOpen && (

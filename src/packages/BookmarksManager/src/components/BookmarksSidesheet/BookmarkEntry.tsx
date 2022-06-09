@@ -12,7 +12,10 @@ type BookmarkEntryProps = {
 export const BookmarkEntry = ({ appKey, bookmark, subSystem }: BookmarkEntryProps) => {
     return (
         <>
-            <BookmarkLink to={`/${subSystem}/${appKey}?bookmarkId=${bookmark.id}`}>
+            <BookmarkLink
+                to={`/${subSystem}/${appKey}?bookmarkId=${bookmark.id}`}
+                title={bookmark?.description}
+            >
                 {bookmark.name}
             </BookmarkLink>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', alignItems: 'center' }}>

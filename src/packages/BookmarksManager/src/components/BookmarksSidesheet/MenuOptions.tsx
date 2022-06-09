@@ -72,6 +72,7 @@ export const MenuOptions = ({ bookmark }: MenuOptionsProps) => {
                         ? ownerOptions
                         : nonOwnerOptions
                 }
+                placement="bottom"
             />
             <Switch defaultCase={<></>}>
                 <Case when={openedModal === 'Edit'}>
