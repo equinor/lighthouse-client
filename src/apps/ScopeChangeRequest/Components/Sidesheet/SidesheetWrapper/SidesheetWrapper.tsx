@@ -50,7 +50,6 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     if (Object.keys(getScopeChangeSnapshot().request).length < 2) {
         return <></>;
     }
-
     return (
         <Wrapper>
             <ScopeChangeErrorBanner />
