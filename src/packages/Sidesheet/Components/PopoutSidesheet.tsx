@@ -17,7 +17,7 @@ export const PopoutSidesheet = (): JSX.Element | null => {
     useEffect(() => {
         if (window.location.hash.length > 0) return;
         if (!props) {
-            navigate(location.pathname, { replace: true });
+            navigate(location.pathname + location.search, { replace: true });
         }
     }, [props, location.pathname, location.hash.length, navigate]);
 
