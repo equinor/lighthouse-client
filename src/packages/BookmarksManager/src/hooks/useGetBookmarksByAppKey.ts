@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { getBookmarks } from '..';
 import { BookmarkError, BookmarkResponse } from '../types';
 
-export const useGetBookmarks = (appKey: string) => {
+export const useGetBookmarksByAppKey = (appKey: string) => {
     const { data, isFetching, isError, isLoading, error } = useQuery<
         BookmarkResponse[],
         BookmarkError
