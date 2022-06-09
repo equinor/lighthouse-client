@@ -26,10 +26,11 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
         {
             title: 'Pending requests',
             value: () => {
-                const pendingRequests = data.reduce(
-                    (count, { state }) => (state === 'Open' ? count + 1 : count),
-                    0
-                );
+                const approvedIDS = filterApprovedRequests(data).map((s) => s.id);
+
+                const pendingRequests = data
+                    .filter((s) => !approvedIDS.includes(s.id))
+                    .reduce((count, { state }) => (state === 'Open' ? count + 1 : count), 0);
                 return numberFormat(pendingRequests);
             },
         },
