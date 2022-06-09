@@ -15,6 +15,7 @@ interface WorkflowDotProps {
     circleText: string;
     popoverText: string;
     active: boolean;
+    popoverDisabled?: boolean;
 }
 
 interface dotStyling {
@@ -27,10 +28,13 @@ interface dotStyling {
 }
 
 export const WorkflowDot = ({
+    height,
+    width,
     state,
     circleText,
     popoverText,
     active,
+    popoverDisabled,
 }: WorkflowDotProps): JSX.Element => {
     const anchorRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -117,9 +121,11 @@ export const WorkflowDot = ({
             color={dotProps.color}
             active={dotProps.active}
             status={dotProps.status}
+            height={height}
+            width={width}
         >
             {circleText}
-            {isOpen && (
+            {isOpen && !popoverDisabled && (
                 <WorkflowPopover>
                     {popoverText}, {!active ? 'N/A' : getShortformCompletionStatusName(state)}
                 </WorkflowPopover>
@@ -132,11 +138,13 @@ type StepCircleProps = {
     color: string;
     active: boolean;
     status: string;
+    height?: number;
+    width?: number;
 };
 
 export const StepCircle = styled.div<StepCircleProps>`
-    width: 16px;
-    height: 16px;
+    height: ${(p) => (p.height ? p.height + 'px' : '16px')};
+    width: ${(p) => (p.width ? p.width + 'px' : '16px')};
     border-radius: 17px;
     font-size: 11px;
     color: ${(p) =>

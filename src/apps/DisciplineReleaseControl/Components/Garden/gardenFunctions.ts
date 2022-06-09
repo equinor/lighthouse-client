@@ -1,10 +1,19 @@
 import { tokens } from '@equinor/eds-tokens';
 import { DateTime } from 'luxon';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
-import { getPipetestStatusEnumByValue } from '../../Functions/statusHelpers';
+import {
+    getChecklistStepName,
+    getPipetestStatusEnumByValue,
+    getPipetestStatusForStep,
+} from '../../Functions/statusHelpers';
 import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
-import { PipetestStep, PipetestStatusOrder, PipetestCompletionStatus } from '../../Types/drcEnums';
-import { Pipetest } from '../../Types/pipetest';
+import {
+    PipetestStep,
+    PipetestStatusOrder,
+    PipetestCompletionStatus,
+    CheckListStepTag,
+} from '../../Types/drcEnums';
+import { CheckList, Pipetest } from '../../Types/pipetest';
 
 export const sortByPipetestStatus = (a: string, b: string): number => {
     return PipetestStatusOrder[getPipetestStatusEnumByValue(a)]
@@ -168,4 +177,48 @@ export function getGardenContentColor(step: string): string {
     }
 
     return color;
+}
+
+export function createChecklistTestSteps(pipetest: Pipetest, htCable: string): CheckList[] {
+    const allWorkflowSteps = [
+        CheckListStepTag.HtTest,
+        CheckListStepTag.HtRetest,
+        CheckListStepTag.HtCTest,
+    ];
+    const checkLists = pipetest.checkLists.filter((x) => x.tagNo === htCable);
+    const workflowSteps: CheckList[] = [];
+    for (let i = 0; i < allWorkflowSteps.length; i++) {
+        const formularType =
+            allWorkflowSteps[i] === CheckListStepTag.HtTest
+                ? CheckListStepTag.HtTest
+                : allWorkflowSteps[i] === CheckListStepTag.HtRetest
+                ? CheckListStepTag.HtRetest
+                : CheckListStepTag.HtCTest;
+
+        const foundTestSteps = checkLists.filter((x) => x.formularType.startsWith(formularType));
+        const workflowStep: CheckList = {
+            tagNo: '',
+            responsible: '',
+            formularGroup: '',
+            formularType: '',
+            status: getPipetestStatusForStep(foundTestSteps),
+            isHeatTrace: true,
+            revision: '',
+            test: '',
+            workflowStepText: formularType.startsWith(CheckListStepTag.HtTest)
+                ? 'A'
+                : formularType.startsWith(CheckListStepTag.HtRetest)
+                ? 'B'
+                : 'C',
+            stepName: getChecklistStepName(allWorkflowSteps[i]),
+            c01Forecast: '',
+            c01Planned: '',
+            m03Forecast: '',
+            m03Planned: '',
+            m04Actual: '',
+        };
+        workflowSteps.push(workflowStep);
+    }
+
+    return workflowSteps;
 }
