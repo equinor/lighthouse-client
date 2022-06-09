@@ -10,7 +10,9 @@ interface WorkOrderTableProps {
 }
 
 export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element {
-    const highestEstimate = Math.max(...workOrders.map(({ estimatedHours }) => estimatedHours));
+    const highestEstimate = Math.max(
+        ...workOrders.map(({ estimatedHours }) => estimatedHours ?? 0)
+    );
     const highestExpended = Math.max(
         ...workOrders.map(({ expendedHours }) => Number(expendedHours) ?? 0)
     );
@@ -68,22 +70,24 @@ const makeColumns = (highestExpended: number, highestEstimate: number, title: st
     generateColumn('Status', ({ jobStatus }) => jobStatus, 80),
     generateColumn(
         'Plan. finish',
-        ({ plannedFinishDate }) => new Date(plannedFinishDate).toLocaleDateString('EN-GB'),
+        ({ plannedFinishDate }) =>
+            plannedFinishDate ? new Date(plannedFinishDate).toLocaleDateString('EN-GB') : '',
         100
     ),
     generateColumn(
         'Act. finish',
-        ({ actualCompletionDate }) => new Date(actualCompletionDate).toLocaleDateString('EN-GB'),
+        ({ actualCompletionDate }) =>
+            actualCompletionDate ? new Date(actualCompletionDate).toLocaleDateString('EN-GB') : '',
         100
     ),
     generateColumn(
         'Progress',
-        ({ projectProgress }) => <ProgressBar percentWidth={projectProgress} />,
+        ({ projectProgress }) => <ProgressBar percentWidth={projectProgress ?? 0} />,
         100
     ),
     generateColumn(
         'Estimated',
-        ({ estimatedHours }) => <EstimateBar current={estimatedHours} max={highestEstimate} />,
+        ({ estimatedHours }) => <EstimateBar current={estimatedHours ?? 0} max={highestEstimate} />,
         100
     ),
     generateColumn(
@@ -91,7 +95,7 @@ const makeColumns = (highestExpended: number, highestEstimate: number, title: st
         ({ expendedHours, estimatedHours }) => (
             <ExpendedProgressBar
                 actual={Number(expendedHours) ?? 0}
-                estimate={estimatedHours}
+                estimate={estimatedHours ?? 0}
                 highestExpended={highestExpended}
             />
         ),

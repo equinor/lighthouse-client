@@ -8,6 +8,9 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Portal] Change nginx version to fix dynatrace
 - [PipingAndHeatTrace] - 3D for tags
 
+# 1.4.7
+- [Scope change] Fix null dates
+
 # 1.4.6
 - [Scope change] Hotfix production work orders failing to load
 - [PipingAndHeatTrace] Changed Piping RFC (Unique HT) to HT cable RFC. Used new HT cable dates to group by

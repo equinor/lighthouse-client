@@ -36,8 +36,7 @@ export const CompactWorkorder = ({
                     onClick={() =>
                         window.open(
                             //TEMP:
-                            `https://${
-                                isProduction() ? 'procosys' : 'procosys'
+                            `https://${isProduction() ? 'procosys' : 'procosys'
                             }.equinor.com/${title.replace(
                                 ' ',
                                 '_'
@@ -62,7 +61,11 @@ export const CompactWorkorder = ({
                 </Column>
                 <Column>
                     <div>Plan. finish.</div>
-                    <div>{new Date(plannedFinishDate).toLocaleDateString('EN-GB')}</div>
+                    <div>
+                        {plannedFinishDate
+                            ? new Date(plannedFinishDate).toLocaleDateString('EN-GB')
+                            : ''}
+                    </div>
                 </Column>
                 <Column>
                     <div>Act. finish.</div>
@@ -73,18 +76,18 @@ export const CompactWorkorder = ({
                 </Column>
                 <Column>
                     <div>Progress</div>
-                    <ProgressBar percentWidth={projectProgress} />
+                    <ProgressBar percentWidth={projectProgress ?? 0} />
                 </Column>
                 <Column>
                     <div>Estimate</div>
-                    <EstimateBar current={estimatedHours} max={highestEstimate} />
+                    <EstimateBar current={estimatedHours ?? 0} max={highestEstimate} />
                 </Column>
                 <Column>
                     <div>Expended</div>
                     <div>
                         <ExpendedProgressBar
                             actual={Number(expendedHours) ?? 0}
-                            estimate={estimatedHours}
+                            estimate={estimatedHours ?? 0}
                             highestExpended={highestExpended}
                         />
                     </div>
