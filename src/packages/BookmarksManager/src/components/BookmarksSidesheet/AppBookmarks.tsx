@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useRegistry } from '@equinor/lighthouse-portal-client';
 import { useState } from 'react';
 import { BookmarkResponse } from '../../types';
@@ -24,9 +24,10 @@ export const AppBookmarks = ({ appBookmarks, appKey }: AppBookmarkProps) => {
         <AppBookmarksContainer>
             <Header>
                 <div>
-                    <Icon
+                    <ClickableIcon
                         name={isOpen ? 'chevron_down' : 'chevron_right'}
                         onClick={() => setIsOpen((s) => !s)}
+                        color="black"
                     />
                 </div>
                 <h4>{app?.title ? app.title : appKey.replace('jc-', '')}</h4>

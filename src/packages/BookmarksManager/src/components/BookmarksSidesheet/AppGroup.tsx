@@ -1,4 +1,4 @@
-import { Icon } from '@equinor/eds-core-react';
+import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useState } from 'react';
 import { BookmarkResponse } from '../../types';
 import { AppBookmarks } from './AppBookmarks';
@@ -14,9 +14,10 @@ export const AppGroup = ({ appGroupBookmarks, appGroupName }: AppGroupProps) => 
     return (
         <div>
             <Header>
-                <Icon
+                <ClickableIcon
                     name={isOpen ? 'chevron_down' : 'chevron_right'}
                     onClick={() => setIsOpen((s) => !s)}
+                    color="black"
                 />
                 <h3>{appGroupName}</h3>
             </Header>
