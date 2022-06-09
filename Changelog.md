@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+# 1.4.7
+- [Scope change] Fix null dates
+
 # 1.4.6
 - [Scope change] Hotfix production work orders failing to load
 - [PipingAndHeatTrace] Changed Piping RFC (Unique HT) to HT cable RFC. Used new HT cable dates to group by
