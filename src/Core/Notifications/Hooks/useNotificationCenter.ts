@@ -18,7 +18,7 @@ interface NotificationCenter {
 
 export type ConnectionState = 'Connected' | 'Reconnecting' | 'Disconnected';
 export function useNotificationCenter(
-    onNotification: (notification: Notification) => void
+    onNotification?: (notification: Notification) => void
 ): NotificationCenter {
     const { fusion } = useHttpClient();
     const queryClient = useQueryClient();

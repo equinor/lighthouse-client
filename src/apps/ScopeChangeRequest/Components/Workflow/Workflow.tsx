@@ -8,25 +8,26 @@ export const Workflow = (): JSX.Element => {
 
     return (
         <div>
-            {request.workflowSteps.map(
-                ({ criterias, contributors, name, order, isCurrent, id }, stepIndex) => (
-                    <Fragment key={id}>
-                        {criterias.map((criteria, index) => (
-                            <CriteriaRender
-                                stepId={id}
-                                key={criteria.id}
-                                contributors={contributors}
-                                criteria={criteria}
-                                isLastCriteria={criterias.length - 1 === index}
-                                name={name}
-                                order={order}
-                                stepIndex={stepIndex}
-                                stepStatus={getCriteriaStatus(criteria, isCurrent)}
-                            />
-                        ))}
-                    </Fragment>
-                )
-            )}
+            {request.workflowSteps &&
+                request?.workflowSteps.map(
+                    ({ criterias, contributors, name, order, isCurrent, id }, stepIndex) => (
+                        <Fragment key={id}>
+                            {criterias.map((criteria, index) => (
+                                <CriteriaRender
+                                    stepId={id}
+                                    key={criteria.id}
+                                    contributors={contributors}
+                                    criteria={criteria}
+                                    isLastCriteria={criterias.length - 1 === index}
+                                    name={name}
+                                    order={order}
+                                    stepIndex={stepIndex}
+                                    stepStatus={getCriteriaStatus(criteria, isCurrent)}
+                                />
+                            ))}
+                        </Fragment>
+                    )
+                )}
         </div>
     );
 };

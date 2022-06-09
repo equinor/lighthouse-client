@@ -38,7 +38,7 @@ export const CriteriaRender = ({
     const { workflowStepsLength, isPast } = useScopeChangeContext(
         ({ request: { id, workflowSteps, currentWorkflowStep } }) => ({
             requestId: id,
-            workflowStepsLength: workflowSteps.length,
+            workflowStepsLength: workflowSteps?.length ?? 0,
             isPast:
                 (currentWorkflowStep?.order ?? 0) >
                 (workflowSteps?.find(({ id }) => id === stepId)?.order ?? 0),

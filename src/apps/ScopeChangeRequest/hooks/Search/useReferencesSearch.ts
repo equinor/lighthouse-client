@@ -4,11 +4,14 @@ import { StidTypes } from '../../types/STID/STIDTypes';
 import { ProcoSysTypes } from '../../types/ProCoSys/ProCoSysTypes';
 import { TypedSelectOption } from '../../api/Search/searchType';
 import { useState } from 'react';
+import { FAMTypes, useFAMSearch } from './useFAMSearch';
+
+export type ReferenceType = ProcoSysTypes | StidTypes | FAMTypes;
 
 interface ReferenceSearch {
     search: (
         searchValue: string,
-        type: ProcoSysTypes | StidTypes,
+        type: ReferenceType,
         signal?: AbortSignal
     ) => Promise<TypedSelectOption[]>;
     error: string | null;
@@ -17,11 +20,12 @@ interface ReferenceSearch {
 export function useReferencesSearch(): ReferenceSearch {
     const { searchPCS } = usePcsSearch();
     const { searchSTID } = useSTIDSearch();
+    const { searchFAM } = useFAMSearch();
     const [error, setError] = useState<string | null>(null);
 
     async function search(
         searchValue: string,
-        type: ProcoSysTypes | StidTypes,
+        type: ReferenceType,
         signal?: AbortSignal
     ): Promise<TypedSelectOption[]> {
         try {
@@ -32,6 +36,10 @@ export function useReferencesSearch(): ReferenceSearch {
 
                 case 'stidtag': {
                     return await searchSTID(searchValue, type, signal);
+                }
+
+                case 'punch': {
+                    return await searchFAM(searchValue, type, signal);
                 }
 
                 default: {

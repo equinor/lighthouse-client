@@ -1,13 +1,10 @@
-import { tokens } from '@equinor/eds-tokens';
-import styled from 'styled-components';
 import { isProduction, useFacility } from '../../../../../../Core/Client';
-import { Wrapper } from '../WrapperStyles';
 import { ScopeChangeCommissioningPackage } from '../../../../types/scopeChangeRequest';
-import { CommPkgIcon } from './commPkgIcon';
-import { ProCoSysQueries } from '../../../../keys/ProCoSysQueries';
+import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { CommissioningPackage } from '../../../../types/ProCoSys/CommissioningPackage';
-
+import { Link, Wrapper, TextWrapper, MainText } from '../WrapperStyles';
+import { getReferenceIcon } from '../../../SearchReferences/getReferenceIcon';
 interface CommPkgProps {
     commPkg: ScopeChangeCommissioningPackage;
 }
@@ -15,43 +12,29 @@ interface CommPkgProps {
 export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
     const { procosysPlantId } = useFacility();
 
-    const { getCommPkgByCodeQuery } = ProCoSysQueries;
+    const { getCommPkgByCodeQuery } = proCoSysQueries;
 
     const { data } = useQuery<unknown, unknown, CommissioningPackage>(
         getCommPkgByCodeQuery(commPkg.procosysId, procosysPlantId)
     );
 
     return (
-        <Wrapper key={commPkg.procosysId}>
-            <CommPkgIcon />
-            <CommPkgText>
-                <Link
-                    href={`https://${isProduction() ? 'procosys' : 'procosystest'
-                        }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`}
-                    target="_blank"
-                >
-                    {commPkg.procosysNumber}
-                </Link>
-                -
-                <div>
-                    {data?.Description} {data?.CommPkgNo}
-                </div>
-            </CommPkgText>
+        <Wrapper
+            onClick={() =>
+                window.open(
+                    `https://${isProduction() ? 'procosys' : 'procosystest'
+                    }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`,
+                    '_blank'
+                )
+            }
+            key={commPkg.procosysId}
+        >
+            {getReferenceIcon('commpkg')}
+            <TextWrapper>
+                <MainText>
+                    <Link>{commPkg.procosysNumber}</Link>-<div>{data?.Description}</div>
+                </MainText>
+            </TextWrapper>
         </Wrapper>
     );
 };
-
-const CommPkgText = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 0.2em;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-`;
-
-const Link = styled.a`
-    font-size: 16px;
-    text-decoration: underline;
-    color: ${tokens.colors.interactive.primary__resting.hex};
-`;

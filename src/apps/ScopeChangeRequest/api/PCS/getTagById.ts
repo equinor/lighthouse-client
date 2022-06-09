@@ -1,4 +1,4 @@
-import { httpClient } from '../../../../Core/Client/Functions/HttpClient';
+import { httpClient } from '@equinor/lighthouse-portal-client';
 import { Tag, TagWrapper } from '../../types/ProCoSys/Tag';
 
 export async function getTagById(
