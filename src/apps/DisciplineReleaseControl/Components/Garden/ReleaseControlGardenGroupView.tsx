@@ -33,7 +33,7 @@ const ReleaseControlGardenGroupView = ({
                 <HTGardenSubGroup>
                     <HTSubGroupText onClick={handleSubGroupClick}>{data.value}</HTSubGroupText>
                     <WorkflowCompact
-                        steps={createChecklistTestSteps(data.items[0], data.value)}
+                        steps={createChecklistTestSteps(data.items, data.value)}
                         statusDotFunc={checklistTagFunc}
                         spanDirection={'horizontal'}
                         dotSize={14}
