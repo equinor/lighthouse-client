@@ -1,5 +1,5 @@
-import { Status } from '.';
-import { HandoverPackage } from '../models';
+import { Status } from '../../Garden/utility';
+import { HandoverPackage } from '../../Garden/models';
 
 type KPIStatus = Extract<Status, 'RFOC Accepted' | 'RFOC Sent' | 'OS'> | 'RFOC Partly';
 type KPI = Partial<KPIStatus> | 'overdue' | 'targetSum';

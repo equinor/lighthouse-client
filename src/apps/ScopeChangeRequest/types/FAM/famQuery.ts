@@ -1,5 +1,19 @@
 export type Connective = 'And' | 'Or';
-export type Operator = 'Equals' | 'Like';
+export type Operator =
+    | 'Equals'
+    | 'Like'
+    | 'NotEquals'
+    | 'GreaterThan'
+    | 'LessThan'
+    | 'GreaterThanOrEquals'
+    | 'LessThanOrEquals'
+    | 'StartsWith'
+    | 'EndsWith'
+    | 'NotLike'
+    | 'DoesNotStartWith'
+    | 'DoesNotEndWith'
+    | 'IsNull'
+    | 'IsNotNull ';
 
 export interface Select {
     columnNames: string[];

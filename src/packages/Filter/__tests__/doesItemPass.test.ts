@@ -45,7 +45,7 @@ const arrayFilterWithMultiple: FilterGroup = {
 const arrayItemWithMultiple: ScopeChangeRequest = {
     workflowSteps: [{ name: "step1" }, { name: "step2" }]
 } as ScopeChangeRequest
-const valueFormatterArrayWithMultiple: ValueFormatterFilter<ScopeChangeRequest> = { name: "WorkflowSteps", valueFormatter: ({ workflowSteps }) => workflowSteps.map(({ name }) => name) }
+const valueFormatterArrayWithMultiple: ValueFormatterFilter<ScopeChangeRequest> = { name: "WorkflowSteps", valueFormatter: ({ workflowSteps }) => workflowSteps && workflowSteps.map(({ name }) => name) }
 
 describe("Array items with multiple", () => {
     it("Should pass", () => {

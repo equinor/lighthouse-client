@@ -26,7 +26,6 @@ import { updateContext } from './Utils/updateContext';
 
 import { SidesheetApi } from '@equinor/sidesheet';
 import { getScopeChangeSnapshot } from '../../../hooks/context/useScopeChangeContext';
-
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
     actions: SidesheetApi;
@@ -51,7 +50,6 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     if (Object.keys(getScopeChangeSnapshot().request).length < 2) {
         return <></>;
     }
-
     return (
         <Wrapper>
             <ScopeChangeErrorBanner />
