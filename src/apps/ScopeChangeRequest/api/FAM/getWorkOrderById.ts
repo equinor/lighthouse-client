@@ -2,7 +2,7 @@ import { httpClient } from '@equinor/lighthouse-portal-client';
 import { generateExpressions, generateFamRequest } from '../../functions/FAM/generateFAMRequest';
 import { WorkOrder } from '../../types/FAM/workOrder';
 
-export async function getWorkOrderByIds(ids: number[]): Promise<WorkOrder[]> {
+export async function getWorkOrderByIds(ids: string[]): Promise<WorkOrder[]> {
     if (ids.length === 0) return [];
     const { FAM } = httpClient();
 
@@ -20,11 +20,7 @@ export async function getWorkOrderByIds(ids: number[]): Promise<WorkOrder[]> {
         'WorkOrderId',
     ];
 
-    const expressions = generateExpressions(
-        'WorkOrderNumber',
-        'Equals',
-        ids.map((v) => v.toString())
-    );
+    const expressions = generateExpressions('WorkOrderNumber', 'Equals', ids);
 
     const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
 
@@ -41,8 +37,6 @@ export async function getWorkOrderByIds(ids: number[]): Promise<WorkOrder[]> {
     if (workOrders.length !== ids.length) {
         throw 'Failed to load some work orders';
     }
-
-    workOrders.sort((a, b) => Number(a.workOrderNumber) - Number(b.workOrderNumber));
 
     return workOrders;
 }
