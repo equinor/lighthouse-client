@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+
+# 1.4.6
+- [Scope change] Hotfix production work orders failing to load
+
 # 1.4.5
 - [MC] Production flag for analytics tab
 - [Portal] Change nginx version to fix dynatrace
