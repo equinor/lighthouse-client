@@ -81,14 +81,6 @@ const accPendingMhr = (requests: ScopeChangeRequest[]) =>
  */
 const filterApprovedRequests = (requests: ScopeChangeRequest[]) =>
     requests.filter(
+        //Magic string
         ({ workflowSteps }) => workflowSteps?.find((s) => s.name === 'Approval')?.isCompleted
     );
-// requests
-//     .filter(({ workflowSteps }) => workflowSteps !== null)
-//     .filter(
-//         ({ workflowSteps }) =>
-//             workflowSteps &&
-//             workflowSteps[workflowSteps.length - 1].criterias.every(
-//                 ({ signedState }) => signedState === 'Approved'
-//             )
-//     );
