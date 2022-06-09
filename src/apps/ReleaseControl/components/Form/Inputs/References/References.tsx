@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import { isProduction } from '@equinor/lighthouse-portal-client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GroupBase, OptionsOrGroups } from 'react-select';
 import styled from 'styled-components';
 import { Table } from '../../../../../../packages/Table/Components/Table';
@@ -9,6 +9,7 @@ import { SearchableSingleSelect } from '../../../../../ScopeChangeRequest/Compon
 import { SearchReferences } from '../../../../../ScopeChangeRequest/Components/SearchReferences/SearchReferences';
 import { generateColumn } from '../../../../../ScopeChangeRequest/Components/WorkOrderTable/Utils/generateColumn';
 import { FamTag, useFAMSearch } from '../../../../../ScopeChangeRequest/hooks/Search/useFAMSearch';
+import { ReferenceType } from '../../../../../ScopeChangeRequest/hooks/Search/useReferencesSearch';
 import { DRCFormAtomApi } from '../../../../Atoms/formAtomApi';
 
 const { updateAtom, useAtomState } = DRCFormAtomApi;
@@ -25,6 +26,7 @@ export const ReferencesInput = (): JSX.Element => {
     const { searchFAM } = useFAMSearch();
 
     async function loadOptions(
+        type: ReferenceType,
         inputValue: string,
         signal: AbortSignal,
         callback: (
@@ -36,17 +38,54 @@ export const ReferencesInput = (): JSX.Element => {
         callback(items);
     }
 
+    const htCableLoadOptions = (
+        inputValue: string,
+        signal: AbortSignal,
+        callback: (
+            options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
+        ) => void
+    ) => loadOptions('ht cable', inputValue, signal, callback);
+
+    const tagLoadOptions = (
+        inputValue: string,
+        signal: AbortSignal,
+        callback: (
+            options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
+        ) => void
+    ) => loadOptions('tag', inputValue, signal, callback);
+
+    useEffect(() => {
+        console.log(scope);
+    }, [scope]);
+
     return (
         <div>
+            <div>
+                <SearchableSingleSelect
+                    loadOptions={htCableLoadOptions}
+                    onChange={(a) => {
+                        setScope((old) => [
+                            ...old.filter((v, i, a) => a.indexOf(v) === i),
+                            a as TypedSelectOption,
+                        ]);
+                    }}
+                />
+
+                <HtCableTable
+                    tags={
+                        scope.filter((s) => s.type === 'ht cable').map((s) => s.object) as FamTag[]
+                    }
+                />
+            </div>
             <SearchReferences onChange={updateReferences} references={references} />
             <div>
                 <SearchableSingleSelect
-                    loadOptions={loadOptions}
+                    loadOptions={tagLoadOptions}
                     onChange={(a) => {
                         setScope((old) => [...old, a as TypedSelectOption]);
                     }}
                 />
-                {scope.length}
+
                 <TagTable
                     tags={scope.filter((s) => s.type === 'famtag').map((s) => s.object) as FamTag[]}
                 />
@@ -60,6 +99,8 @@ interface TagTableProps {
 }
 
 export const TagTable = ({ tags }: TagTableProps): JSX.Element => {
+    return null;
+
     return (
         <Table
             options={{
@@ -117,6 +158,7 @@ interface HtCableTableProps {
 }
 
 export const HtCableTable = ({ tags }: HtCableTableProps): JSX.Element => {
+    if (tags.length === 0) return <></>;
     return (
         <Table
             options={{
@@ -146,20 +188,24 @@ const makeHtCableColumns = () => [
         ),
         90
     ),
-    generateColumn<FamTag>('Tag description', ({ description }) => description, 200),
-    generateColumn<FamTag>('Switch board', ({ actualCompletionDate }) => tagCategory, 110),
+    generateColumn<FamTag>('Tag description', ({ description }) => 'description', 200),
+    generateColumn<FamTag>(
+        'Switch board',
+        ({ actualCompletionDate }) => 'actualCompletionDate',
+        110
+    ),
     generateColumn<FamTag>('Circuit', ({ actualCompletionDate }) => '???', 90),
     generateColumn<FamTag>('Cable length (m)', ({ description }) => 'Insufficient data', 200),
     generateColumn<FamTag>(
         'Tag heated',
-        ({ commissioningPackageNo }) => commissioningPackageNo,
+        ({ commissioningPackageNo }) => 'commissioningPackageNo',
         90
     ),
     generateColumn<FamTag>(
         'Comm',
-        ({ mechanicalCompletionPackageNo }) => mechanicalCompletionPackageNo,
+        ({ mechanicalCompletionPackageNo }) => 'mechanicalCompletionPackageNo',
         90
     ),
-    generateColumn<FamTag>('MC', ({ workOrders }) => workOrders, 90),
-    generateColumn<FamTag>('WO (open)', ({ workOrders }) => workOrders, 90),
+    generateColumn<FamTag>('MC', ({ workOrders }) => 'workOrders', 90),
+    generateColumn<FamTag>('WO (open)', ({ workOrders }) => 'workOrders', 90),
 ];

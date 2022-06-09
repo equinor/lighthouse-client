@@ -187,7 +187,7 @@ async function searchHtCables(
         label: `${s.tagNo} - ${s.description}`,
         object: s,
         searchValue: s.tagNo,
-        type: 'famtag',
+        type: 'ht cable',
         value: s.tagNo,
     }));
 }
