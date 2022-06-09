@@ -35,7 +35,8 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
         },
         {
             title: 'Pending mhrs',
-            value: () => numberFormat(accPendingMhr(data)),
+            value: () =>
+                numberFormat(accPendingMhr(data) - accPendingMhr(filterApprovedRequests(data))),
         },
         {
             title: 'Approved requests',
@@ -80,12 +81,7 @@ const accPendingMhr = (requests: ScopeChangeRequest[]) =>
  * @returns
  */
 const filterApprovedRequests = (requests: ScopeChangeRequest[]) =>
-    requests
-        .filter(({ workflowSteps }) => workflowSteps !== null)
-        .filter(
-            ({ workflowSteps }) =>
-                workflowSteps &&
-                workflowSteps[workflowSteps.length - 1].criterias.every(
-                    ({ signedState }) => signedState === 'Approved'
-                )
-        );
+    requests.filter(
+        //Magic string
+        ({ workflowSteps }) => workflowSteps?.find((s) => s.name === 'Approval')?.isCompleted
+    );
