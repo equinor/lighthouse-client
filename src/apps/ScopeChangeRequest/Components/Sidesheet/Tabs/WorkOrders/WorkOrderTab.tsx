@@ -9,9 +9,7 @@ import { useScopeChangeContext } from '../../../../hooks/context/useScopeChangeC
 
 export function WorkOrderTab(): JSX.Element {
     const woNumbers =
-        useScopeChangeContext((s) =>
-            s.request.workOrders?.map(({ jobNumber }) => Number(jobNumber))
-        ) ?? [];
+        useScopeChangeContext((s) => s.request.workOrders?.map(({ jobNumber }) => jobNumber)) ?? [];
 
     const { data, error } = useQuery(['WO', ...woNumbers], () => getWorkOrderByIds(woNumbers), {
         cacheTime: 5 * 1000 * 60,
