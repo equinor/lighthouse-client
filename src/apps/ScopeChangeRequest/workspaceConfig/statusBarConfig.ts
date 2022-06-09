@@ -35,7 +35,8 @@ export function statusBarConfig(data: ScopeChangeRequest[]): StatusItem[] {
         },
         {
             title: 'Pending mhrs',
-            value: () => numberFormat(accPendingMhr(data)),
+            value: () =>
+                numberFormat(accPendingMhr(data) - accPendingMhr(filterApprovedRequests(data))),
         },
         {
             title: 'Approved requests',
