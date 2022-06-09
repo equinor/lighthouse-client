@@ -42,6 +42,14 @@ export function useReferencesSearch(): ReferenceSearch {
                     return await searchFAM(searchValue, type, signal);
                 }
 
+                case 'famtag': {
+                    return await searchFAM(searchValue, type, signal);
+                }
+
+                case 'ht cable': {
+                    return await searchFAM(searchValue, type, signal);
+                }
+
                 default: {
                     return await searchPCS(searchValue, type, signal);
                 }

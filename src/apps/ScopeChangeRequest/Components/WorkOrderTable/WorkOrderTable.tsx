@@ -42,7 +42,7 @@ const Link = styled.div`
 `;
 
 const makeColumns = (highestExpended: number, highestEstimate: number, title: string) => [
-    generateColumn(
+    generateColumn<WorkOrder>(
         'WO',
         ({ workOrderNumber, workOrderId }) => (
             <Link
@@ -63,30 +63,30 @@ const makeColumns = (highestExpended: number, highestEstimate: number, title: st
         ),
         90
     ),
-    generateColumn('Title', ({ description }) => description, 310),
-    generateColumn('Discipline', ({ disciplineCode }) => disciplineCode, 80),
-    generateColumn('Status', ({ jobStatus }) => jobStatus, 80),
-    generateColumn(
+    generateColumn<WorkOrder>('Title', ({ description }) => description, 310),
+    generateColumn<WorkOrder>('Discipline', ({ disciplineCode }) => disciplineCode, 80),
+    generateColumn<WorkOrder>('Status', ({ jobStatus }) => jobStatus, 80),
+    generateColumn<WorkOrder>(
         'Plan. finish',
         ({ plannedFinishDate }) => new Date(plannedFinishDate).toLocaleDateString('EN-GB'),
         100
     ),
-    generateColumn(
+    generateColumn<WorkOrder>(
         'Act. finish',
         ({ actualCompletionDate }) => new Date(actualCompletionDate).toLocaleDateString('EN-GB'),
         100
     ),
-    generateColumn(
+    generateColumn<WorkOrder>(
         'Progress',
         ({ projectProgress }) => <ProgressBar percentWidth={projectProgress} />,
         100
     ),
-    generateColumn(
+    generateColumn<WorkOrder>(
         'Estimated',
         ({ estimatedHours }) => <EstimateBar current={estimatedHours} max={highestEstimate} />,
         100
     ),
-    generateColumn(
+    generateColumn<WorkOrder>(
         'Expended',
         ({ expendedHours, estimatedHours }) => (
             <ExpendedProgressBar

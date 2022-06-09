@@ -42,6 +42,7 @@ const DEFAULT_REFERENCE_TYPES: ReferenceType[] = [
     'commpkg',
     'tag',
     'system',
+    'famtag',
     // 'punch',
 ];
 
