@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
 import { isProduction } from '@equinor/lighthouse-portal-client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ActionMeta, GroupBase, MultiValue, OptionsOrGroups, Theme } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import styled from 'styled-components';
@@ -57,10 +57,6 @@ export const ReferencesInput = (): JSX.Element => {
             options: OptionsOrGroups<TypedSelectOption, GroupBase<TypedSelectOption>>
         ) => void
     ) => loadOptions('famtag', inputValue, callback);
-
-    useEffect(() => {
-        console.log(scope);
-    }, [scope]);
 
     return (
         <div style={{ height: '700px' }}>
