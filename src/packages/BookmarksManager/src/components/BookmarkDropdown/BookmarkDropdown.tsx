@@ -1,5 +1,6 @@
 import { Popover } from '@equinor/eds-core-react';
 import { ClickableIcon } from '@equinor/lighthouse-components';
+import { useRegistry } from '@equinor/lighthouse-portal-client';
 import { useRef, useState } from 'react';
 import { BookmarkList } from './BookmarkList';
 import { CreateNewBookmark } from './CreateNewBookmark';
@@ -22,7 +23,8 @@ export const BookmarkDropdown = ({
     const [isPopoverOpen, setIsPopoverOpen] = useState<boolean>(false);
 
     const anchorRef = useRef<HTMLDivElement>(null);
-
+    const { apps } = useRegistry();
+    const app = apps.find((app) => appKey === app.shortName);
     return (
         <div style={style}>
             <div ref={anchorRef}>
@@ -40,7 +42,7 @@ export const BookmarkDropdown = ({
                 placement="auto-end"
                 onClose={() => setIsPopoverOpen(false)}
             >
-                <Popover.Title>My Bookmarks</Popover.Title>
+                <Popover.Title>My {app?.title} Bookmarks</Popover.Title>
                 <Popover.Content>
                     <CreateNewBookmark appKey={appKey} subSystem={subSystem} />
                     <hr />
