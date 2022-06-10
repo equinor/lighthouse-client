@@ -23,15 +23,15 @@ import {
     NonConformityReport,
     QualityDeviationReport,
     QueryReport,
-    SafetyPerformanceReport,
+    SafetyPerformanceReport
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
 import { setup as releaseControlSetup } from './ReleaseControl/ReleaseControlApp';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
+import { setup as tasksSetup } from './Tasks/TasksApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
-import { setup as tasksSetup } from './Tasks/TasksApp';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -602,6 +602,16 @@ export const apps: AppManifest[] = [
         uri: () =>
             'https://akersolutions.sharepoint.com/sites/CastbergEquinor/Governing%20Documents/Forms/Procedures%20Work%20Instructions%20and%20guidelines.aspx',
         tags: ['akso', 'link', 'external'],
+        appEnv: 'prod',
+    },
+    {
+        title: 'Project Sharepoint',
+        shortName: 'project-sharepoin',
+        color: '#0364B8',
+        groupe: Apps.Collaboration,
+        icon: 'tag',
+        uri: () => 'https://statoilsrm.sharepoint.com/sites/DM-PM050/SitePages/Homepage.aspx',
+        tags: ['project', 'sharepoin', 'link', 'external'],
         appEnv: 'prod',
     },
     // Asset Data
