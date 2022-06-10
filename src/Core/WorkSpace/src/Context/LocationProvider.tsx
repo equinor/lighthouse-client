@@ -40,14 +40,16 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
     const handleSetActiveTab = useCallback(
         (activeTab: WorkspaceTab) => {
             navigate(
-                `${location.pathname.replace(currentTabId || '', '')}/${activeTab}${location.hash}`,
+                `${location.pathname.replace(currentTabId || '', '')}/${activeTab}${
+                    location.hash
+                }` + location.search,
                 {
                     replace: true,
                 }
             );
             setActiveTab(activeTab);
         },
-        [currentTabId, location, navigate]
+        [currentTabId, location.hash, location.pathname, location.search, navigate]
     );
 
     /**
@@ -55,7 +57,7 @@ export const LocationProvider = ({ children }: PropsWithChildren<unknown>): JSX.
      */
     useEffect(() => {
         if (!id) {
-            navigate(`${location.pathname}/${defaultTab}${location.hash}`, {
+            navigate(`${location.pathname}/${defaultTab}${location.hash}` + location.search, {
                 replace: true,
             });
         }
