@@ -1,16 +1,12 @@
-import { TableAPI } from '@equinor/Table';
 import styled from 'styled-components';
+import { tabApis } from '../../../../Core/WorkSpace/src/Context/LocationProvider';
 import { ColumnPicker } from './ColumnPicker/ColumnPicker';
 
-interface TableConfigBarProps {
-    getTableApi: () => TableAPI;
-}
+export const TableConfigBar = (): JSX.Element => {
+    const getApi = tabApis.useAtomState((s) => s.table.getApi);
 
-export const TableConfigBar = ({ getTableApi }: TableConfigBarProps): JSX.Element => {
     return (
-        <TableConfigBarWrapper>
-            {getTableApi && <ColumnPicker getApi={getTableApi} />}
-        </TableConfigBarWrapper>
+        <TableConfigBarWrapper>{getApi && <ColumnPicker getApi={getApi} />}</TableConfigBarWrapper>
     );
 };
 

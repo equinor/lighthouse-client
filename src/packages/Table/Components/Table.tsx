@@ -73,7 +73,7 @@ export function Table<TData extends TableData = TableData>({
 
     useEffect(() => {
         onTableReady && onTableReady(getTableApi);
-    }, []);
+    }, [getTableApi, onTableReady]);
 
     const onCellClick: CellClickHandler<TableData> = useCallback(
         (cell, e) => {
@@ -90,7 +90,6 @@ export function Table<TData extends TableData = TableData>({
 
     return (
         <TableWrapper {...getTableProps()}>
-            {/* <TableConfigBar getTableApi={getTableApi} /> */}
             <div>
                 {headerGroups.map((headerGroup) => (
                     <div
@@ -179,11 +178,11 @@ const RenderRow = ({ data, index, style }: RenderRowProps): JSX.Element | null =
                             {cell.isGrouped ? (
                                 <GroupCell row={row} cell={cell} />
                             ) : cell.isAggregated &&
-                              cell.value ? null : cell.isPlaceholder ? null : ( // If the cell is aggregated, blank field expect the grouped one
-                                // For cells with repeated values, render null
-                                // Otherwise, just render the regular cell
-                                cell.render('Cell')
-                            )}
+                                cell.value ? null : cell.isPlaceholder ? null : ( // If the cell is aggregated, blank field expect the grouped one
+                                    // For cells with repeated values, render null
+                                    // Otherwise, just render the regular cell
+                                    cell.render('Cell')
+                                )}
                         </span>
                     </TableCell>
                 );
