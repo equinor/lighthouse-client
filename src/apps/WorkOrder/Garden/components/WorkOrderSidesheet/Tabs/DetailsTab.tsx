@@ -128,6 +128,22 @@ export const DetailsTab = ({ workOrder }: DetailsTabProps) => {
                         <td key={'24'}>Construction Comments</td>
                         <td key={'25'}>{workOrder.constructionComments}</td>
                     </tr>
+                    <tr>
+                        <td>Actual start date</td>
+                        <td>{workOrder.actualStartupDate}</td>
+                    </tr>
+                    <tr>
+                        <td>Planned start date</td>
+                        <td>{workOrder.plannedStartupDate}</td>
+                    </tr>
+                    <tr>
+                        <td>Actual finish date</td>
+                        <td>{workOrder.actualFinishDate}</td>
+                    </tr>
+                    <tr>
+                        <td>Planned finish date</td>
+                        <td>{workOrder.actualFinishDate}</td>
+                    </tr>
                 </tbody>
             </Table>
         </TabContent>

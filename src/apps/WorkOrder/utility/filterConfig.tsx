@@ -1,5 +1,7 @@
 import { FollowUpStatuses } from '@equinor/GardenUtils';
 import { FilterOptions } from '../../../packages/Filter/Types';
+import { daysDiff } from '../../Handover/utility/helpers/daysDiff';
+import { getFilterDateValues } from '../../Handover/utility/helpers/getFilterDateValues';
 import { FollowUpStatusFilter } from '../components';
 import { WorkOrder } from '../Garden/models';
 import { getFollowUpStatus, followUpStatusPriorityMap } from '../Garden/utility';
@@ -61,6 +63,48 @@ export const filterConfig: FilterOptions<WorkOrder> = [
     //     valueFormatter: ({ plannedFinishDate }) => plannedFinishDate,
     // },
     {
+        name: 'Start date',
+        valueFormatter: ({ plannedStartupDate, actualStartupDate }) => {
+            const plannedDate = new Date(plannedStartupDate || '');
+            const actualDate = new Date(actualStartupDate || '');
+            const dateDiffs = daysDiff(plannedDate);
+
+            // If planned start date is a date that has already been
+            // and the actual date happened later than the planned or that there is no actual date
+            if (
+                dateDiffs.days <= 0 &&
+                (actualDate.getTime() > plannedDate.getTime() || !actualStartupDate)
+            ) {
+                return 'Overdue';
+            }
+            //If actual start date happened before planned start date
+            else if (actualDate.getTime() < plannedDate.getTime()) {
+                return 'Other';
+            } else {
+                return getFilterDateValues(dateDiffs.days);
+            }
+        },
+    },
+    {
+        name: 'Finish date',
+        valueFormatter: ({ plannedFinishDate, actualFinishDate }) => {
+            const plannedDate = new Date(plannedFinishDate || '');
+            const actualDate = new Date(actualFinishDate || '');
+            const dateDiffs = daysDiff(plannedDate);
+
+            if (
+                dateDiffs.days <= 0 &&
+                (actualDate.getTime() > plannedDate.getDate() || !actualFinishDate)
+            ) {
+                return 'Overdue';
+            } else if (actualDate.getTime() < plannedDate.getTime()) {
+                return 'Other';
+            } else {
+                return getFilterDateValues(dateDiffs.days);
+            }
+        },
+    },
+    {
         name: 'Material',
         valueFormatter: ({ materialStatus }) => materialStatus,
     },
@@ -76,7 +120,7 @@ export const filterConfig: FilterOptions<WorkOrder> = [
     {
         name: 'Progress',
         valueFormatter: ({ projectProgress }): Progress => {
-            const progress = parseFloat(projectProgress);
+            const progress = parseFloat(projectProgress || '');
             if (progress >= 100) {
                 return '100%';
             } else if (progress >= 95) {

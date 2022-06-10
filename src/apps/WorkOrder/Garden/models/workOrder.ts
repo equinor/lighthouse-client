@@ -46,7 +46,10 @@
 // };
 
 export type WorkOrder = {
+    actualFinishDate: string | null;
+    actualStartupDate: string | null;
     commpkgNumber: string | null;
+    commpkgId: string | null;
     constructionComments: string | null;
     description: string | null;
     discipline: string | null;
