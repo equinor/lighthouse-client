@@ -1,9 +1,14 @@
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import styled from 'styled-components';
 import { BookmarkResponse } from '../../types';
 import { BookmarkLink } from './BookmarksSidesheet.styles';
 import { MenuOptions } from './MenuOptions';
-
+const Icons = styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+`;
 type BookmarkEntryProps = {
     subSystem: string;
     appKey: string;
@@ -18,7 +23,7 @@ export const BookmarkEntry = ({ appKey, bookmark, subSystem }: BookmarkEntryProp
             >
                 {bookmark.name}
             </BookmarkLink>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', alignItems: 'center' }}>
+            <Icons>
                 <MenuOptions bookmark={bookmark} />
                 {bookmark.isShared && (
                     <Icon
@@ -27,7 +32,7 @@ export const BookmarkEntry = ({ appKey, bookmark, subSystem }: BookmarkEntryProp
                         color={tokens.colors.interactive.primary__resting.hsla}
                     />
                 )}
-            </div>
+            </Icons>
         </>
     );
 };
