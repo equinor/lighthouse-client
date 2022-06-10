@@ -11,8 +11,8 @@ export const ConfirmationDialog = (): JSX.Element | null => {
 
     return (
         <>
-            <Scrim isDismissable={false} style={{ zIndex: 1000 }}>
-                <DialogContainer>
+            <Scrim isDismissable={false} style={{ zIndex: 1000 }} open>
+                <DialogContainer open>
                     <DialogPadding>
                         <TitleSection>{dialog.dialogTitle}</TitleSection>
                         <p>{dialog.dialogText}</p>

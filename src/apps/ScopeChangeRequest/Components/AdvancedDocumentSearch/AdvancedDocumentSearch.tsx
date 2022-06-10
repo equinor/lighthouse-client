@@ -179,6 +179,7 @@ export const AdvancedDocumentSearch = ({
                         height: '100vh',
                         width: '100vw',
                     }}
+                    open
                 >
                     <Wrapper>
                         <ModalHeader>
