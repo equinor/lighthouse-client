@@ -21,7 +21,8 @@ export const ReleaseControlItem = styled(Item)<ReleaseControlItemProps>`
     white-space: nowrap;
     justify-content: space-between;
     padding: 0.18rem 0.5rem;
-    border: ${({ isSelected }) => (isSelected ? '2px dashed green' : '1px solid #dcdcdc ')};
+    border: ${({ isSelected }) =>
+        isSelected ? '2px dashed green' : `1px solid ${tokens.colors.ui.background__medium.hex}`};
 `;
 
 export const MidSection = styled.div<{ expanded: boolean }>`
@@ -58,7 +59,7 @@ export const SubGroupWrapper = styled.div`
     margin: 0;
     align-items: center;
     margin-bottom: 4px;
-    border: 1px solid ${tokens.colors.text.static_icons__tertiary.rgba};
+    border: 1px solid ${tokens.colors.ui.background__medium.hex};
     border-radius: 5px;
     color: ${tokens.colors.text.static_icons__default.rgba};
     width: 98%;

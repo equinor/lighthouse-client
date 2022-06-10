@@ -3,7 +3,7 @@ import { memo } from 'react';
 import { checklistTagFunc } from '../../Functions/tableHelpers';
 import { Pipetest } from '../../Types/pipetest';
 import { WorkflowCompact } from '../Workflow/Components/WorkflowCompact';
-import { createChecklistTestSteps } from './gardenFunctions';
+import { createChecklistTestSteps, getPipetestStatusValueForHTCable } from './gardenFunctions';
 import {
     Chevron,
     HTGardenSubGroup,
@@ -33,7 +33,11 @@ const ReleaseControlGardenGroupView = ({
                 <HTGardenSubGroup>
                     <HTSubGroupText onClick={handleSubGroupClick}>{data.value}</HTSubGroupText>
                     <WorkflowCompact
-                        steps={createChecklistTestSteps(data.items, data.value)}
+                        steps={createChecklistTestSteps(
+                            data.items,
+                            data.value,
+                            getPipetestStatusValueForHTCable(data.items)
+                        )}
                         statusDotFunc={checklistTagFunc}
                         spanDirection={'horizontal'}
                         dotSize={14}
