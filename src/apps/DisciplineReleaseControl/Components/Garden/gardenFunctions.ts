@@ -5,6 +5,7 @@ import {
     getChecklistStepName,
     getPipetestStatusEnumByValue,
     getPipetestStatusForStep,
+    getPipetestStatusSortValue,
 } from '../../Functions/statusHelpers';
 import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
 import {
@@ -180,7 +181,11 @@ export function getGardenContentColor(step: string): string {
     return color;
 }
 
-export function createChecklistTestSteps(pipetests: Pipetest[], htCable: string): CheckList[] {
+export function createChecklistTestSteps(
+    pipetests: Pipetest[],
+    htCable: string,
+    statusValue: PipetestStatusOrder
+): CheckList[] {
     const allWorkflowSteps = [
         CheckListStepTag.HtTest,
         CheckListStepTag.HtRetest,
@@ -201,6 +206,8 @@ export function createChecklistTestSteps(pipetests: Pipetest[], htCable: string)
                 ? CheckListStepTag.HtRetest
                 : CheckListStepTag.HtCTest;
 
+        const underline = shouldHaveUnderline(statusValue, allWorkflowSteps[i]);
+
         const foundTestSteps = checkLists.filter((x) => x.formularType.startsWith(formularType));
         if (formularType === CheckListStepTag.HtCTest && cTestChecklists.length !== 0) {
             const workflowStep: CheckList = {
@@ -219,6 +226,7 @@ export function createChecklistTestSteps(pipetests: Pipetest[], htCable: string)
                 m03Forecast: '',
                 m03Planned: '',
                 m04Actual: '',
+                underline: underline,
             };
             workflowSteps.push(workflowStep);
         } else if (foundTestSteps.length !== 0 && formularType !== CheckListStepTag.HtCTest) {
@@ -242,6 +250,7 @@ export function createChecklistTestSteps(pipetests: Pipetest[], htCable: string)
                 m03Forecast: '',
                 m03Planned: '',
                 m04Actual: '',
+                underline: underline,
             };
             workflowSteps.push(workflowStep);
         } else {
@@ -266,9 +275,49 @@ export function createChecklistTestSteps(pipetests: Pipetest[], htCable: string)
                 m03Forecast: '',
                 m03Planned: '',
                 m04Actual: '',
+                underline: underline,
             });
         }
     }
 
     return workflowSteps;
+}
+
+export function getPipetestStatusValueForHTCable(pipetests: Pipetest[]): PipetestStatusOrder {
+    const statusValues = pipetests.map((x) => getPipetestStatusSortValue(x));
+    return statusValues.reduce((a, b) => Math.min(a, b));
+}
+
+export function shouldHaveUnderline(
+    statusValue: PipetestStatusOrder,
+    step: CheckListStepTag
+): string {
+    if (step === CheckListStepTag.HtTest) {
+        if (statusValue < PipetestStatusOrder.HtTest) {
+            return 'Before';
+        } else if (statusValue === PipetestStatusOrder.HtTest) {
+            return 'Underline';
+        } else if (
+            statusValue > PipetestStatusOrder.HtTest &&
+            statusValue < PipetestStatusOrder.HtRetest
+        ) {
+            return 'After';
+        }
+    }
+    if (step === CheckListStepTag.HtRetest) {
+        if (statusValue === PipetestStatusOrder.HtRetest) {
+            return 'Underline';
+        } else if (
+            statusValue > PipetestStatusOrder.HtRetest &&
+            statusValue < PipetestStatusOrder.HtCTest
+        ) {
+            return 'After';
+        }
+    }
+    if (step === CheckListStepTag.HtCTest) {
+        if (statusValue === PipetestStatusOrder.HtCTest) {
+            return 'Underline';
+        }
+    }
+    return '';
 }

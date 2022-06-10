@@ -33,6 +33,7 @@ export function WorkflowCompact<T>({
                                     popoverText={(x as any).stepName}
                                     active={statusDotFunc(x) !== 'Inactive'}
                                     popoverDisabled={popoverDisabled}
+                                    underline={(x as any).underline}
                                 />
                             </WorkflowStep>
                         </div>

@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { getShortformCompletionStatusName } from '../../../Functions/statusHelpers';
@@ -6,6 +7,7 @@ import {
     PipetestCompletionStatusHoverColors,
 } from '../../../Styles/ReleaseControlColors';
 import { PipetestCompletionStatus } from '../../../Types/drcEnums';
+import { WorkflowDotUnderLine } from './WorkflowDotUnderline';
 import { WorkflowPopover } from './WorkflowPopover';
 
 interface WorkflowDotProps {
@@ -16,6 +18,7 @@ interface WorkflowDotProps {
     popoverText: string;
     active: boolean;
     popoverDisabled?: boolean;
+    underline?: 'Before' | 'Underline' | 'After' | '';
 }
 
 interface dotStyling {
@@ -35,10 +38,10 @@ export const WorkflowDot = ({
     popoverText,
     active,
     popoverDisabled,
+    underline,
 }: WorkflowDotProps): JSX.Element => {
     const anchorRef = useRef<HTMLDivElement>(null);
     const [isOpen, setIsOpen] = useState<boolean>(false);
-
     const onOpen = () => setIsOpen(true);
     const onClose = () => setIsOpen(false);
     const dotProps: dotStyling = useMemo(() => {
@@ -112,25 +115,31 @@ export const WorkflowDot = ({
                 };
         }
     }, [active, state, circleText, popoverText, isOpen]);
-
     return (
-        <StepCircle
-            ref={anchorRef}
-            onMouseOver={onOpen}
-            onMouseLeave={onClose}
-            color={dotProps.color}
-            active={dotProps.active}
-            status={dotProps.status}
-            height={height}
-            width={width}
-        >
-            {circleText}
-            {isOpen && !popoverDisabled && (
-                <WorkflowPopover>
-                    {popoverText}, {!active ? 'N/A' : getShortformCompletionStatusName(state)}
-                </WorkflowPopover>
+        <StepCircleWrapper>
+            <StepCircle
+                ref={anchorRef}
+                onMouseOver={onOpen}
+                onMouseLeave={onClose}
+                color={dotProps.color}
+                active={dotProps.active}
+                status={dotProps.status}
+                height={height}
+                width={width}
+            >
+                {circleText}
+                {isOpen && !popoverDisabled && (
+                    <WorkflowPopover>
+                        {popoverText}, {!active ? 'N/A' : getShortformCompletionStatusName(state)}
+                    </WorkflowPopover>
+                )}
+            </StepCircle>
+            {underline !== undefined && underline !== '' && (
+                <UnderlineWrapper position={underline ?? ''}>
+                    <WorkflowDotUnderLine />
+                </UnderlineWrapper>
             )}
-        </StepCircle>
+        </StepCircleWrapper>
     );
 };
 
@@ -142,6 +151,18 @@ type StepCircleProps = {
     width?: number;
 };
 
+export const StepCircleWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+export const UnderlineWrapper = styled.div<{ position: string }>`
+    display: flex;
+    position: relative;
+    left: ${(p) => (p.position === 'Underline' ? '3.5px' : p.position === 'After' ? '12px' : null)};
+    right: ${(p) => (p.position === 'Before' ? '5.5px' : null)};
+`;
+
 export const StepCircle = styled.div<StepCircleProps>`
     height: ${(p) => (p.height ? p.height + 'px' : '16px')};
     width: ${(p) => (p.width ? p.width + 'px' : '16px')};
@@ -150,13 +171,13 @@ export const StepCircle = styled.div<StepCircleProps>`
     color: ${(p) =>
         p.status === PipetestCompletionStatus.Complete ||
         p.status === PipetestCompletionStatus.PunchAError
-            ? '#fff'
+            ? `${tokens.colors.text.static_icons__primary_white.hex}`
             : p.status === PipetestCompletionStatus.Inactive
-            ? '#DCDCDC'
-            : '#000'};
+            ? `${tokens.colors.ui.background__medium.hex}`
+            : `${tokens.colors.text.static_icons__default.hex}`};
     line-height: 18px;
     text-align: center;
     background: ${(p) => p.color};
-    outline: ${(p) => (!p.active ? '1px dashed #DCDCDC' : null)};
+    outline: ${(p) => (!p.active ? `1px dashed ${tokens.colors.ui.background__medium.hex}` : null)};
     cursor: ${(p) => (!p.active ? 'not-allowed' : 'pointer')};
 `;
