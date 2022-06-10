@@ -4,7 +4,6 @@ import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { CommissioningPackage } from '../../../../types/ProCoSys/CommissioningPackage';
 import { Link, Wrapper, TextWrapper, MainText } from '../WrapperStyles';
-import { getReferenceIcon } from '../../../SearchReferences/getReferenceIcon';
 interface CommPkgProps {
     commPkg: ScopeChangeCommissioningPackage;
 }
@@ -29,7 +28,6 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
             }
             key={commPkg.procosysId}
         >
-            {getReferenceIcon('commpkg')}
             <TextWrapper>
                 <MainText>
                     <Link>{commPkg.procosysNumber}</Link>-<div>{data?.Description}</div>

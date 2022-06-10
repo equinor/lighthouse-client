@@ -1,19 +1,10 @@
 import { tokens } from '@equinor/eds-tokens';
-import { Icon } from '@equinor/eds-core-react';
 
 import { getDocumentById } from '../../api/STID/getDocumentById';
 import { transformIsoDate } from '../Workflow/Utils/dateFormatting';
 import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { useInfiniteCachedQuery } from '@equinor/hooks';
-import {
-    Wrapper,
-    IconWrapper,
-    Inline,
-    LineBreaks,
-    Details,
-    MetaData,
-    Link,
-} from './stidDocument.styles';
+import { Wrapper, Inline, LineBreaks, Details, MetaData, Link } from './stidDocument.styles';
 
 interface StidDocumentProps {
     docNo: string;
@@ -29,9 +20,6 @@ export const StidDocument = ({ docNo }: StidDocumentProps): JSX.Element => {
 
     return (
         <Wrapper onClick={() => handleRedirect(docNo)}>
-            <IconWrapper>
-                <Icon name="file_copy" color={tokens.colors.interactive.primary__resting.rgba} />
-            </IconWrapper>
             <Inline>
                 <LineBreaks
                     style={{
