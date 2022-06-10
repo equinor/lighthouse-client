@@ -2,6 +2,7 @@ import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equin
 import { useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
+import { TableConfigBar } from '../../../../packages/Table/Components/TableConfigBar/TableConfigBar';
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
@@ -32,7 +33,8 @@ export const ListTab = (): JSX.Element => {
         customColumns: tableOptions?.customColumns,
         hiddenColumnsCount: tableOptions?.hiddenColumns?.length,
     });
-    const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
+    const hiddenCols: string[] =
+        tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
 
     const getApi = useRef<GetTableApi | null>(null);
 
@@ -52,12 +54,13 @@ export const ListTab = (): JSX.Element => {
     return (
         <>
             <WorkspaceFilter />
+            <TableConfigBar />
             <Wrapper ref={ref}>
                 <Table<TableData>
                     onTableReady={initApi}
                     options={{
                         data,
-                        columns,
+                        columns: columns.filter((s) => !hiddenCols.includes(s.id ?? '')),
                         enableSelectRow: tableOptions?.enableSelectRows,
                         onCellClick: tableOptions?.onCellClick,
                         initialState: {
