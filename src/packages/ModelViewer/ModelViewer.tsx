@@ -6,7 +6,6 @@ import { Icon } from '@equinor/lighthouse-components';
 import { useAppConfig, useAuthProvider, useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useRef } from 'react';
 import { SelectionAction, SelectionMenu } from './components/selectionMenu';
-import { TagOverlay } from './components/tagOverlay';
 import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
 import { Message, MessageWrapper, Wrapper } from './ModelViewerStyles';
@@ -20,6 +19,7 @@ export interface ModelViewerProps {
 }
 export interface ViewerProps extends ModelViewerProps {
     echoPlantId: string;
+    children?: React.ReactNode;
 }
 
 export const ModelViewer: React.FC<ModelViewerProps> = (props: ModelViewerProps): JSX.Element => {
@@ -38,19 +38,13 @@ export const Viewer: React.FC<ViewerProps> = ({
     padding = 1,
     echoPlantId,
     selectionActions,
+    children,
 }: ViewerProps): JSX.Element => {
     const viewerRef = useRef<HTMLCanvasElement>(null);
     const authProvider = useAuthProvider();
     const { urls, scope } = useAppConfig();
-    const {
-        setEcho3DClient,
-        setPlantState,
-        isLoading,
-        selectTags,
-        message,
-        setMessage,
-        selection,
-    } = useModelViewerContext();
+    const { setEcho3DClient, setPlantState, isLoading, selectTags, message, setMessage } =
+        useModelViewerContext();
     useModel(loadFullModel);
 
     /**
@@ -88,7 +82,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                 setPlantState(selectPlantByContext(plants, echoPlantId));
                 setEcho3DClient(client);
                 if (tags) {
-                    selectTags(tags, { padding });
+                    selectTags(tags, { padding, clearSelection: true });
                 }
             } catch (ex) {
                 console.log(ex);
@@ -102,8 +96,9 @@ export const Viewer: React.FC<ViewerProps> = ({
         <>
             <Wrapper>
                 <canvas ref={viewerRef} />
-                <TagOverlay />
-                {isLoading && selection === undefined && (
+                {children && children}
+
+                {isLoading && (
                     <MessageWrapper>
                         <Message>
                             <CircularProgress />

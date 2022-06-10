@@ -6,14 +6,16 @@ import { Message } from '../types/message';
 import { ModelViewerState } from '../types/plants';
 import { createMessage } from '../utils/getCurrentContextModel';
 
+interface SelectTagOptions {
+    padding?: number;
+    clearSelection?: boolean;
+    skipLoadingUi?: boolean;
+}
 interface ModelViewerContext extends ModelViewerState {
     setPlantState(plantState: Partial<ModelViewerState>): void;
     setEcho3DClient(echo3DClient: EchoSetupObject): void;
     setModel(model: Cognite3DModel): void;
-    selectTags(
-        tags?: string[] | undefined,
-        options?: { padding?: number; clearSelection?: boolean }
-    ): void;
+    selectTags(tags?: string[] | undefined, options?: SelectTagOptions): void;
     setMessage(message?: Message): void;
     toggleClipping(): void;
     toggleHide(): void;
@@ -48,15 +50,14 @@ export const ModelViewerContextProvider = ({
     });
 
     const selectTags = useCallback(
-        (tags?: string[], options?: { padding?: number; clearSelection?: boolean }) => {
+        (tags?: string[], options?: SelectTagOptions) => {
             setState((s) => ({
                 ...s,
                 viewerSelection: [],
                 message: undefined,
                 selection: options?.clearSelection === true ? undefined : s.selection,
-                isLoading: true,
+                isLoading: options?.skipLoadingUi || true,
             }));
-
             (async () => {
                 if (
                     !plantState.echo3DClient ||
@@ -71,14 +72,22 @@ export const ModelViewerContextProvider = ({
                         plantState.cognite3DModel,
                         plantState.currentPlant.hierarchyId
                     );
-                    if (!tags) return;
+                    if (!tags) {
+                        setState((s) => ({
+                            ...s,
+                            viewerSelection: [],
+                            message: undefined,
+                            isLoading: false,
+                        }));
+                        return;
+                    }
                     await selection.setSelectionBasedOnE3dTagNos(tags);
 
                     selection.clipSelection(true, plantState.padding);
                     selection.fitCameraToCurrentBoundingBox();
                     selection.setWhiteAppearance();
                     selection.setSelectedColor();
-                    console.log('selection', selection.viewerSelection);
+
                     setState((s) => ({
                         ...s,
                         selection,
@@ -91,6 +100,7 @@ export const ModelViewerContextProvider = ({
                         padding: options?.padding || s.padding,
                         tags,
                     }));
+                    console.log('select tag done');
                 } catch (error: any) {
                     setState((s) => ({
                         ...s,
@@ -150,10 +160,6 @@ export const ModelViewerContextProvider = ({
             return { ...s, modelIsVisible };
         });
     }
-
-    useEffect(() => {
-        selectTags(plantState.tags);
-    }, [plantState.tags, selectTags]);
 
     useEffect(() => {
         return () => {

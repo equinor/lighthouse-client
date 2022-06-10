@@ -90,7 +90,7 @@ export const getDomPositionFor3DPosition = (
     if (y > 0  && x > 0 && x < renderSize.width && y < renderSize.height) {
         return new THREE.Vector2(
             x,
-           y
+            y
         );
     }
 };

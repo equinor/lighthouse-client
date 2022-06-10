@@ -206,9 +206,10 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
         const selection: {position: THREE.Vector3, tagNo: string}[] = []
             
         if (hierarchyNodeModel) {
-                 hierarchyNodeModel.forEach((nodeResult) => {
+                hierarchyNodeModel.forEach((nodeResult) => {
         
                     if (nodeResult.aabb && nodeResult.tag ) {
+                      
                         selection.push({ position: get3dPositionFromAabbMinMaxValues(nodeResult.aabb), tagNo: nodeResult.tag}
                         );
                     }
