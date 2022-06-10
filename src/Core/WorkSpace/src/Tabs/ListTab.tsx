@@ -60,7 +60,7 @@ export const ListTab = (): JSX.Element => {
                     onTableReady={initApi}
                     options={{
                         data,
-                        columns: columns.filter((s) => !hiddenCols.includes(s.id ?? '')),
+                        columns: columns,
                         enableSelectRow: tableOptions?.enableSelectRows,
                         onCellClick: tableOptions?.onCellClick,
                         initialState: {
