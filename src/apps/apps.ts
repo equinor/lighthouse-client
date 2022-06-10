@@ -22,10 +22,10 @@ import {
     MDRReport,
     NonConformityReport,
     QualityDeviationReport,
-    QueryReport,
     SafetyPerformanceReport
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
+import { setup as querySetup } from './Query';
 import { setup as releaseControlSetup } from './ReleaseControl/ReleaseControlApp';
 import { setup as scopeChangeSetup } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { setup as SwcrSetup } from './swcr';
@@ -574,8 +574,8 @@ export const apps: AppManifest[] = [
         groupe: Apps.Collaboration,
         icon: '',
         app: {
-            appType: 'PowerBI',
-            component: QueryReport,
+            appType: 'PowerBIViewer',
+            setup: querySetup,
         },
         tags: ['PowerBI'],
         appEnv: 'prod',
