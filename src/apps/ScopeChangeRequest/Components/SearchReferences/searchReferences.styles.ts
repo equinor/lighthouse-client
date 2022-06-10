@@ -61,3 +61,17 @@ export const TitleBar = styled.div`
     align-items: flex-start;
     justify-content: space-between;
 `;
+
+export const MetaData = styled.div`
+    font-size: 12px;
+    color: ${tokens.colors.text.static_icons__default.hex};
+`;
+
+export const SearchLineWrapper = styled.div`
+    width: -webkit-fill-available;
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin: 0.2em 0em;
+`;

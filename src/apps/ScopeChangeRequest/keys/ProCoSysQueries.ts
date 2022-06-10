@@ -6,12 +6,13 @@ import { getFunctionalRoles } from '../api/PCS/getFunctionalRoles';
 import { getSystems } from '../api/PCS/getSystems';
 import { getTagById } from '../api/PCS/getTagById';
 import { CacheTime } from '../enum/cacheTimes';
+import { System } from '../types/ProCoSys/system';
 
 export const ProCoSysBaseKey = ['ProCoSys'];
 
 type Options = Pick<UseQueryOptions, 'staleTime' | 'cacheTime' | 'queryFn' | 'queryKey'>;
 
-export const ProCoSysQueries = {
+export const proCoSysQueries = {
     getAreaByCodeQuery: (areaCode: string, plantId: string): Options => ({
         queryFn: ({ signal }) => getAreaByCode(plantId, areaCode, signal),
         queryKey: [...ProCoSysBaseKey, 'Area', areaCode],
@@ -37,7 +38,7 @@ export const ProCoSysQueries = {
         staleTime: CacheTime.FiveMinutes,
     }),
     getSystemsQuery: (plantId: string): Options => ({
-        queryFn: ({ signal }) => getSystems(plantId, signal),
+        queryFn: ({ signal }): Promise<System[]> => getSystems(plantId, signal),
         queryKey: [...ProCoSysBaseKey, 'systems'],
         cacheTime: CacheTime.TenHours,
         staleTime: CacheTime.FiveMinutes,

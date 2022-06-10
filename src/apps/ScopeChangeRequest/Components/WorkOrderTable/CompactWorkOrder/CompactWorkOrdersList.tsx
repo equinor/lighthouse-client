@@ -7,7 +7,9 @@ interface CompactWorkOrderListProps {
 }
 
 export const CompactWorkOrderList = ({ workOrders }: CompactWorkOrderListProps): JSX.Element => {
-    const highestEstimate = Math.max(...workOrders.map(({ estimatedHours }) => estimatedHours));
+    const highestEstimate = Math.max(
+        ...workOrders.map(({ estimatedHours }) => estimatedHours ?? 0)
+    );
     const highestExpended = Math.max(
         ...workOrders.map(({ expendedHours }) => Number(expendedHours) ?? 0)
     );
