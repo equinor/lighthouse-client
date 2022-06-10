@@ -8,7 +8,7 @@ type UnshareModalContentProps = {
     closeModal: () => void;
 };
 export const UnshareModalContent = ({ bookmark, closeModal }: UnshareModalContentProps) => {
-    const editBookmark = useBookmarkMutations(patchBookmark, ['my-bookmarks']);
+    const editBookmark = useBookmarkMutations(patchBookmark);
 
     return (
         <>

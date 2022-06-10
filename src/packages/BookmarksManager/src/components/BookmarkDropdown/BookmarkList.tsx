@@ -9,7 +9,7 @@ type BookmarkListProps = {
 
 export const BookmarkList = ({ appKey }: BookmarkListProps): JSX.Element => {
     const { bookmarks, isLoading, error } = useGetBookmarksByAppKey(appKey);
-    const deleteBookmark = useBookmarkMutations(deleteBookmarkFunc, ['bookmarks']);
+    const deleteBookmark = useBookmarkMutations(deleteBookmarkFunc);
 
     if (isLoading) return <div>Fetching bookmarks</div>;
 

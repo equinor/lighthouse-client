@@ -12,7 +12,7 @@ type EditModalContentProps = {
 export const EditModalContent = ({ bookmark, closeModal }: EditModalContentProps) => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const editBookmark = useBookmarkMutations(patchBookmark, ['my-bookmarks']);
+    const editBookmark = useBookmarkMutations(patchBookmark);
 
     const onTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);

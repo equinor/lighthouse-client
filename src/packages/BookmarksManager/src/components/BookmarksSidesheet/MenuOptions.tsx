@@ -21,7 +21,7 @@ type MenuOptionsProps = {
 export const MenuOptions = ({ bookmark }: MenuOptionsProps) => {
     const [openedModal, setOpenedModal] = useState<Modals | null>(null);
     const currentUser = useCurrentUser();
-    const editBookmark = useBookmarkMutations(patchBookmark, ['my-bookmarks']);
+    const editBookmark = useBookmarkMutations(patchBookmark);
     const ownerOptions = [
         {
             label: 'Edit',

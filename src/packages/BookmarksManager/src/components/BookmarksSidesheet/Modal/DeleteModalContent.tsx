@@ -8,7 +8,7 @@ type DeleteModalContentProps = {
     closeModal: () => void;
 };
 export const DeleteModalContent = ({ bookmark, closeModal }: DeleteModalContentProps) => {
-    const deleteBookmark = useBookmarkMutations(deleteBookmarkFunc, ['my-bookmarks']);
+    const deleteBookmark = useBookmarkMutations(deleteBookmarkFunc);
     return (
         <>
             <div>
