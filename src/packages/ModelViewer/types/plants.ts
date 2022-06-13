@@ -20,4 +20,5 @@ export interface ModelViewerState {
     modelIsVisible: boolean;
     tagsIsVisible: boolean;
     hasDefaultColor: boolean;
+    viewerSelection: { position: THREE.Vector3; tagNo: string }[];
 }
