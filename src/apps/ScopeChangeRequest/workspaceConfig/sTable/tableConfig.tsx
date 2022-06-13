@@ -130,7 +130,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 );
             },
             width: 180,
-            Aggregated: () => <div>Im aggregated</div>,
+            Aggregated: () => null,
             aggregate: 'count',
         },
         {
