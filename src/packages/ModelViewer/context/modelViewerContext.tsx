@@ -143,8 +143,10 @@ export const ModelViewerContextProvider = ({
 
     function toggleClipping() {
         setState((s) => {
-            s.selection?.clipSelection(!s.isCropped, s.padding);
-            return { ...s, isCropped: !s.isCropped };
+            const isCropped = !s.isCropped;
+            isCropped && s.selection?.fitCameraToCurrentBoundingBox();
+            s.selection?.clipSelection(isCropped, s.padding);
+            return { ...s, isCropped };
         });
     }
     function toggleDefaultColor() {

@@ -9,6 +9,7 @@ import { EleNetwork } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
 import { getEleNetworks } from '../Electro/getEleNetworks';
 import { MessageWrapper, ThreeDModel } from './3dViewStyles';
+import { getIconName, getStatusColor, getTagOverlay as getElectroTagOverlay } from './Helpers';
 import { ElectroIcon } from './icons/ElectroIcon';
 
 interface I3DViewProp {
@@ -38,25 +39,7 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
         setIsElectro(false);
     }, [pipetest.name]);
 
-    const tagOverlay: TagMap = useMemo(() => {
-        const overlay: TagMap = {};
-
-        data?.forEach((eleNetwork: EleNetwork) => {
-            eleNetwork.checkLists.forEach((checkList) => {
-                overlay[checkList.tagNo] = {
-                    tagNo: checkList.tagNo,
-                    type:
-                        checkList.tagNo === eleNetwork.switchBoardTagNo
-                            ? 'LINE'
-                            : eleNetwork.circuits.find((i) => i.tagNo === checkList.tagNo)
-                                  ?.eleSymbolCode || 'unknown',
-                    status: checkList.status,
-                };
-            });
-        });
-
-        return overlay;
-    }, [data]);
+    const tagOverlay: TagMap = useMemo(() => getElectroTagOverlay(data), [data]);
 
     if (pipetest.lineNos.length === 0 && electroTags.length === 0)
         return (
@@ -115,32 +98,3 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
         </ThreeDModel>
     );
 };
-function getIconName(type: string) {
-    switch (type) {
-        case 'K_BOX':
-            return 'circuit';
-        case 'TAVLE':
-            return 'junction_box';
-        case 'LINE':
-            return 'cable';
-        case 'HT_KAB':
-            return 'heat_trace';
-        default:
-            return 'tag';
-    }
-}
-
-function getStatusColor(status: string) {
-    switch (status) {
-        case 'OK':
-            return tokens.colors.interactive.secondary__resting.rgba;
-        case 'OS':
-            return tokens.colors.ui.background__medium.rgba;
-        case 'PA':
-            return tokens.colors.interactive.danger__resting.rgba;
-        case 'PB':
-            return tokens.colors.interactive.warning__resting.rgba;
-        default:
-            return tokens.colors.interactive.primary__resting.rgba;
-    }
-}
