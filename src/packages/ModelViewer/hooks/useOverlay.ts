@@ -1,6 +1,7 @@
+import { getDomPositionFor3DPosition } from '@equinor/echo3dweb-viewer';
 import { useCallback, useEffect, useState } from 'react';
-import { getDomPositionFor3DPosition } from '../../../../packages/echo3dViewer/src/utils/cameraUtils';
 import { useModelViewerContext } from '../context/modelViewerContext';
+
 
 interface DomPosition {
     left: string;
