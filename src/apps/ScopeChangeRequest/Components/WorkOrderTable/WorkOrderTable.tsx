@@ -23,10 +23,9 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
         <div>
             {workOrders && (
                 <Table
-                    options={{
-                        data: workOrders,
-                        columns: makeColumns(highestExpended, highestEstimate, title),
-                    }}
+                    columns={makeColumns(highestExpended, highestEstimate, title)}
+                    data={workOrders}
+                    options={{}}
                 />
             )}
         </div>

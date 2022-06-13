@@ -42,9 +42,11 @@ export const CheckListTable = ({ checkLists }: TableProps): JSX.Element => {
         <>
             <h4>Pipetest checklists:</h4>
             <Table
-                options={{ columns: columns, data: checkLists }}
+                data={checkLists}
+                columns={columns}
+                options={{}}
                 height={rowHeight + checkLists?.length * rowHeight}
-            ></Table>
+            />
         </>
     );
 };
