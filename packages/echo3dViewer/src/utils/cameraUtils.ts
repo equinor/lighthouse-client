@@ -82,8 +82,15 @@ export const getDomPositionFor3DPosition = (
     renderer.getSize(renderSize);
     const pixelRatio = renderer.getPixelRatio();
 
-    return new THREE.Vector2(
-        Math.round((normalizedViewportCoordinates.x * renderSize.width) / pixelRatio),
-        Math.round((normalizedViewportCoordinates.y * renderSize.height) / pixelRatio)
-    );
+
+    const x = Math.round((normalizedViewportCoordinates.x * renderSize.width) / pixelRatio);
+    const y = Math.round((normalizedViewportCoordinates.y * renderSize.height) / pixelRatio);
+
+    
+    if (y > 0  && x > 0 && x < renderSize.width && y < renderSize.height) {
+        return new THREE.Vector2(
+            x,
+            y
+        );
+    }
 };
