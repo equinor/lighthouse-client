@@ -20,7 +20,6 @@ import { SidesheetTabList } from './SidesheetTabs';
 import { TablesTab, WarningBanner, WarningBannerText } from './styles';
 import { WorkOrderTab } from './WorkOrderTab';
 
-
 interface GatewaySidesheetProps {
     item: Pipetest | HTSidesheet;
     actions: SidesheetApi;
@@ -88,7 +87,7 @@ export const ReleaseControlSidesheet = ({
                         <Tabs.Tab>Work orders</Tabs.Tab>
                         <Tabs.Tab>Insulation</Tabs.Tab>
                         <Tabs.Tab>Checklists</Tabs.Tab>
-                        {!isProduction() && <Tabs.Tab>3D-visualisation</Tabs.Tab>}
+                        {/* {!isProduction() && <Tabs.Tab>3D-visualisation</Tabs.Tab>} */}
                     </SidesheetTabList>
                     <Tabs.Panels>
                         <Tabs.Panel>
@@ -138,9 +137,9 @@ export const ReleaseControlSidesheet = ({
                                 <CheckListTable checkLists={item.checkLists} />
                             </TablesTab>
                         </Tabs.Panel>
-                        {!isProduction() && (
+                        {/* {!isProduction() && (
                             <Panel>{activeTab === 4 && <ThreeDView pipetest={item} />}</Panel>
-                        )}
+                        )} */}
                     </Tabs.Panels>
                 </Tabs>
             </ModelViewerContextProvider>
