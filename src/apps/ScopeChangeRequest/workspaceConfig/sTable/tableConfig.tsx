@@ -28,15 +28,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     customColumns: [
         {
             Header: 'Current step',
-            accessor: 'currentWorkflowStep',
-            Cell: ({ cell }: any) => {
-                return (
-                    <>
-                        {cell.row.original.currentWorkflowStep && (
-                            <>{cell.row.original.currentWorkflowStep.name}</>
-                        )}
-                    </>
-                );
+            accessor: (s) => s?.currentWorkflowStep?.name,
+            Cell: ({ cell }: any): JSX.Element => {
+                return <>{cell.value}</>;
             },
             id: 'CurrentStep',
             width: 180,
@@ -45,13 +39,10 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         },
         {
             Header: 'Last signed',
-            accessor: 'workflowSteps',
-            Cell: ({ cell }: any) => {
-                const request = cell.row.original as ScopeChangeRequest;
-
-                const lastSigned = getLastSigned(request);
-                if (!lastSigned) return <></>;
-                return <div>{lastSigned.toRelative({ locale: 'en-GB' })}</div>;
+            accessor: getLastSigned,
+            Cell: ({ cell }: any): JSX.Element | null => {
+                if (!cell.value) return null;
+                return <div>{cell.value.toRelative({ locale: 'en-GB' })}</div>;
             },
             id: 'LastSigned',
             width: 180,
@@ -60,17 +51,12 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         },
         {
             Header: 'Disciplines',
-            accessor: 'disciplineGuesstimates',
-            Cell: ({ cell }: any) => {
-                const request = cell.row.original as ScopeChangeRequest;
-
-                return (
-                    <div>
-                        {request.disciplineGuesstimates
-                            .map(({ discipline: { procosysCode } }) => procosysCode)
-                            .toString()}
-                    </div>
-                );
+            accessor: (s) =>
+                s.disciplineGuesstimates
+                    .map(({ discipline: { procosysCode } }) => procosysCode)
+                    .toString(),
+            Cell: ({ cell }: any): JSX.Element => {
+                return <div>{cell.value}</div>;
             },
             id: 'Disciplines',
             width: 180,
