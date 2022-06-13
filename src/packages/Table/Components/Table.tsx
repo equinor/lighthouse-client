@@ -19,11 +19,9 @@ import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
-//Feel free to extend
-
 interface DataTableProps<TData extends TableData> {
     options: TableOptions<TData>;
-    FilterComponent?: React.FC<{ filterId: string }>;
+    data: TData[];
     height?: number;
     itemSize?: number;
     onTableReady?: (getApi: () => TableAPI) => void;
@@ -34,7 +32,7 @@ const DEFAULT_ITEM_SIZE = 35;
 
 export function Table<TData extends TableData = TableData>({
     options,
-    FilterComponent,
+    data,
     itemSize,
     height,
     onTableReady,
@@ -44,6 +42,8 @@ export function Table<TData extends TableData = TableData>({
     const defaultColumn = useDefaultColumn(options);
 
     const [selectedId, setSelectedId] = useState<string | null>(null);
+
+    const { dataColumns, ...tableOptions } = options;
 
     const {
         prepareRow,
@@ -56,7 +56,10 @@ export function Table<TData extends TableData = TableData>({
         headerGroups,
         totalColumnsWidth,
         setColumnOrder,
-    } = useTable({ ...options, defaultColumn }, hooks) as TableInstance<TableData>;
+    } = useTable(
+        { ...tableOptions, dataColumns, defaultColumn, data },
+        hooks
+    ) as TableInstance<TableData>;
 
     const getVisibleColumns = () => visibleColumns;
 
@@ -97,11 +100,7 @@ export function Table<TData extends TableData = TableData>({
                         key={headerGroup.getHeaderGroupProps().key}
                     >
                         {headerGroup.headers.map((column) => (
-                            <HeaderCell
-                                {...column}
-                                FilterComponent={FilterComponent}
-                                key={column.getHeaderProps().key}
-                            />
+                            <HeaderCell {...column} key={column.getHeaderProps().key} />
                         ))}
                     </div>
                 ))}

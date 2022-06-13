@@ -1,7 +1,13 @@
-import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
+import {
+    defaultGroupByFn,
+    Table,
+    TableAPI,
+    TableData,
+    TableOptions,
+    useColumns,
+} from '@equinor/Table';
 import { useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
-import { TableOptions } from 'react-table';
 
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 import { TableConfigBar } from '../../../../packages/Table/Components/TableConfigBar/TableConfigBar';
@@ -51,9 +57,8 @@ export const ListTab = (): JSX.Element => {
         [getApi, tableOptions?.onSelect]
     );
 
-    const options: TableOptions<TableData> = useMemo(
+    const options = useMemo(
         () => ({
-            data,
             columns,
             enableSelectRow: tableOptions?.enableSelectRows,
             onCellClick: tableOptions?.onCellClick,
@@ -66,7 +71,6 @@ export const ListTab = (): JSX.Element => {
         }),
         [
             // columns,
-            data,
             onSelect,
             tableOptions?.columnOrder,
             tableOptions?.enableSelectRows,
@@ -80,8 +84,9 @@ export const ListTab = (): JSX.Element => {
             <TableConfigBar />
             <Wrapper ref={ref}>
                 <Table<TableData>
+                    data={data}
                     onTableReady={initApi}
-                    options={options}
+                    options={options as unknown as TableOptions<TableData>}
                     height={awaitableHeight - 58}
                     itemSize={tableOptions?.itemSize}
                 />
