@@ -48,7 +48,7 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
 
     return (
         <>
-            <FormBanner />
+            <FormBanner state={request.isVoided ? 'Voided' : request.state} />
             <Wrapper>
                 <FormWrapper>
                     <FlexColumn>
