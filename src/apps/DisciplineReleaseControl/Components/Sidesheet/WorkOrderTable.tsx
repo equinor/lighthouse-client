@@ -57,6 +57,6 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
     ];
 
     return (
-        <div>{workOrders && <Table options={{ data: workOrders, columns: someColumns }} />}</div>
+        <div>{workOrders && <Table data={workOrders} columns={someColumns} options={{}} />}</div>
     );
 }
