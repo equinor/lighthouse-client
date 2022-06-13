@@ -1,11 +1,4 @@
-import {
-    defaultGroupByFn,
-    Table,
-    TableAPI,
-    TableData,
-    TableOptions,
-    useColumns,
-} from '@equinor/Table';
+import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
 import { useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 
@@ -87,7 +80,7 @@ export const ListTab = (): JSX.Element => {
                     data={data}
                     columns={options.columns}
                     onTableReady={initApi}
-                    options={options as unknown as TableOptions<TableData>}
+                    options={options}
                     height={awaitableHeight - 58}
                     itemSize={tableOptions?.itemSize}
                 />
