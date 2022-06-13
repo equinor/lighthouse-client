@@ -48,7 +48,6 @@ export function setup(appApi: ClientApi): void {
         .registerPowerBIOptions(
             !appApi.isProduction
                 ? {
-                    options: { pageLoad: true },
                     pages: [
                         {
                             pageId: 'ReportSection4a8a96cf641d50747a13',
