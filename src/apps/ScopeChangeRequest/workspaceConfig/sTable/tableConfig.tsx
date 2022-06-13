@@ -95,6 +95,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'materialsIdentifiedInStorage',
         'materialsNote',
         'materialsToBeBoughtByContractor',
+        'punchListItems',
         'potentialWarrantyCase',
         'workOrders',
     ],
