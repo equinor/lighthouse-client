@@ -130,13 +130,44 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 s.disciplineGuesstimates
                     .map(({ discipline: { procosysCode } }) => procosysCode)
                     .toString(),
-            Cell: ({ cell }: any): JSX.Element => {
-                return <div>{cell.value}</div>;
-            },
             id: 'Disciplines',
             width: 180,
             Aggregated: () => null,
             aggregate: 'count',
+        },
+        {
+            Header: 'Change category',
+            id: 'change Category',
+            width: 150,
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (s) => s?.changeCategory.name,
+        },
+        {
+            Header: 'Scope',
+            id: 'scopeC',
+            width: 150,
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (s) => s?.scope?.name,
+        },
+        {
+            Header: 'State',
+            id: 'stateC',
+            width: 80,
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (s) => (s.isVoided ? 'Voided' : s.state),
+        },
+        {
+            Header: 'Next',
+            id: 'nextC',
+            width: 220,
+            Aggregated: () => null,
+            aggregate: 'count',
+            accessor: (s) =>
+                s.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
+                    ?.valueDescription ?? null,
         },
     ],
     hiddenColumns: [
@@ -153,15 +184,19 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'attachments',
         'isVoided',
         'disciplines',
+        'state',
         'materialsIdentifiedInStorage',
         'materialsNote',
         'materialsToBeBoughtByContractor',
+        'changeCategory',
         'punchListItems',
         'potentialWarrantyCase',
         'workOrders',
         'estimatedChangeHours',
         'disciplineGuesstimates',
         'actualChangeHours',
+        'scope',
+        'currentWorkflowStep',
     ],
     columnOrder: [
         'sequenceNumber',
@@ -171,15 +206,15 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'phase',
         'workflowSteps',
         'CurrentStep',
-        'currentWorkflowStep',
+        'nextC',
         'workflowStatus',
-        'state',
+        'stateC',
         'guessMhr',
         'est mhrs',
         'exp mhrs',
-        'changeCategory',
+        'change Category',
         'originSource',
-        'scope',
+        'scopeC',
         'modifiedAtUtc',
         'systems',
         'areas',
@@ -188,6 +223,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'disciplines',
         'documents',
         'attachments',
+        'created By',
     ],
     headers: [
         { key: 'sequenceNumber', title: 'Id', width: 60 },
@@ -198,16 +234,14 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         { key: 'disciplineGuesstimates', title: 'Guess mhrs', width: 120 },
         { key: 'estimatedChangeHours', title: 'Est mhrs', width: 120 },
         { key: 'actualChangeHours', title: 'Exp mhrs', width: 120 },
-        { key: 'changeCategory', title: 'Change category' },
-        { key: 'originSource', title: 'Change origin' },
-        { key: 'createdAtUtc', title: 'Created at' },
-        { key: 'workflowStatus', title: 'Status' },
+        { key: 'originSource', title: 'Change origin', width: 120 },
+        { key: 'createdAtUtc', title: 'Created at', width: 120 },
+        { key: 'workflowStatus', title: 'Status', width: 120 },
         { key: 'createdBy', title: 'Created by' },
-        { key: 'modifiedAtUtc', title: 'Last updated' },
+        { key: 'modifiedAtUtc', title: 'Last updated', width: 120 },
         { key: 'modifiedBy', title: 'Modified by' },
         { key: 'description', title: 'Description' },
-        { key: 'scope', title: 'Scope' },
-        { key: 'state', title: 'State', width: 80 },
+
         { key: 'currentWorkflowStep', title: 'Next', width: 220 },
         {
             key: 'hasComments',
@@ -222,10 +256,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     ],
 
     customCellView: [
-        {
-            key: 'scope',
-            type: customCellView((req) => <>{req?.scope?.name}</>),
-        },
         {
             key: 'createdBy',
             type: customCellView(
@@ -260,10 +290,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             )),
         },
 
-        {
-            key: 'changeCategory',
-            type: customCellView(({ changeCategory }) => <>{changeCategory.name}</>),
-        },
         {
             key: 'state',
             type: customCellView(({ state, isVoided }) => <>{isVoided ? 'Voided' : state}</>),
@@ -325,17 +351,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             type: customCellView(({ originSource, originSourceId }) => (
                 <OriginLink onlyUnderlineOnHover={true} type={originSource} id={originSourceId} />
             )),
-        },
-        {
-            key: 'currentWorkflowStep',
-            type: customCellView((req) =>
-                req.currentWorkflowStep ? (
-                    <>
-                        {req.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
-                            ?.valueDescription ?? null}
-                    </>
-                ) : null
-            ),
         },
     ],
 };
