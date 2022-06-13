@@ -2,28 +2,28 @@ import { useCallback, useEffect, useState } from 'react';
 import { getDomPositionFor3DPosition } from '../../../../packages/echo3dViewer/src/utils/cameraUtils';
 import { useModelViewerContext } from '../context/modelViewerContext';
 
-export function useOverlay() {
-    const { viewerSelection, echo3DClient } = useModelViewerContext();
+interface DomPosition {
+    left: string;
+    top: string;
+}
 
-    const [overlayTags, setOverlayTags] = useState<
-        {
-            key: string;
-            tagNo: string;
-            domPosition: { left: string; top: string };
-            position: THREE.Vector2 | undefined;
-        }[]
-    >([]);
+interface OverlayTags {
+    key: string;
+    tagNo: string;
+    domPosition: DomPosition;
+    position: THREE.Vector2 | undefined;
+}
+
+export function useOverlay(): OverlayTags[] {
+    const { viewerNodeSelection: viewerSelection, echo3DClient } = useModelViewerContext();
+
+    const [overlayTags, setOverlayTags] = useState<OverlayTags[]>([]);
     const handleOnCameraChange = useCallback(() => {
         if (echo3DClient) {
             const camera = echo3DClient.viewer.getCamera();
             const renderer = echo3DClient.viewer.renderer;
 
-            const s: {
-                tagNo: string;
-                key: string;
-                domPosition: { left: string; top: string };
-                position: THREE.Vector2 | undefined;
-            }[] = [];
+            const s: OverlayTags[] = [];
 
             viewerSelection.forEach((vs, i) => {
                 if (camera && renderer) {

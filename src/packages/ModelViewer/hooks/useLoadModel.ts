@@ -2,9 +2,11 @@ import { Echo3dMultiSelectionActions } from '@equinor/echo3dweb-viewer';
 import { useEffect, useRef } from 'react';
 import { useModelViewerContext } from '../context/modelViewerContext';
 import { geometryFilter } from '../utils/geometryFilter';
+import { createMessage } from '../utils/getCurrentContextModel';
+import { selectTagsByTagNos } from '../utils/selectTags';
 
 export function useModel(loadFullModel?: boolean, tags?: string[], padding?: number): void {
-    const { echo3DClient, currentPlant, setModelWithSelection, selection } =
+    const { echo3DClient, currentPlant, setModelWithSelection, selection, setMessage } =
         useModelViewerContext();
     const initialSetupDone = useRef(false);
 
@@ -32,17 +34,16 @@ export function useModel(loadFullModel?: boolean, tags?: string[], padding?: num
                 );
 
                 if (tags) {
-                    await selection.setSelectionBasedOnE3dTagNos(tags);
-
-                    selection.clipSelection(true, padding);
-                    selection.fitCameraToCurrentBoundingBox();
-                    selection.setWhiteAppearance();
-                    selection.setSelectedColor();
+                    try {
+                        await selectTagsByTagNos(selection, tags, padding);
+                    } catch (error: any) {
+                        setMessage(createMessage(error.message, 'NoTags'));
+                    }
 
                     setModelWithSelection({
                         cognite3DModel,
                         selection,
-                        viewerSelection: selection.viewerSelection,
+                        viewerNodeSelection: selection.viewerNodeSelection,
                         ...selectionOptions,
                     });
                 } else {
@@ -58,16 +59,15 @@ export function useModel(loadFullModel?: boolean, tags?: string[], padding?: num
         if (selection && tags && initialSetupDone.current) {
             (async () => {
                 selection.clearSelection();
-                await selection.setSelectionBasedOnE3dTagNos(tags);
-
-                selection.clipSelection(true, padding);
-                selection.fitCameraToCurrentBoundingBox();
-                selection.setWhiteAppearance();
-                selection.setSelectedColor();
+                try {
+                    await selectTagsByTagNos(selection, tags, padding);
+                } catch (error: any) {
+                    setMessage(createMessage(error.message, 'NoTags'));
+                }
 
                 setModelWithSelection({
                     ...selectionOptions,
-                    viewerSelection: selection.viewerSelection,
+                    viewerNodeSelection: selection.viewerNodeSelection,
                 });
             })();
         }

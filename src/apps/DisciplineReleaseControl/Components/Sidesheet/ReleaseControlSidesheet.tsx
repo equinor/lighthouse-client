@@ -1,7 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { useLocationKey } from '@equinor/filter';
 import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
-import { isProduction } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -86,7 +85,7 @@ export const ReleaseControlSidesheet = ({
                     <Tabs.Tab>Work orders</Tabs.Tab>
                     <Tabs.Tab>Insulation</Tabs.Tab>
                     <Tabs.Tab>Checklists</Tabs.Tab>
-                    {!isProduction() && <Tabs.Tab>3D-visualisation</Tabs.Tab>}
+                    <Tabs.Tab>3D-visualisation</Tabs.Tab>
                 </SidesheetTabList>
                 <Tabs.Panels>
                     <Tabs.Panel>
@@ -136,15 +135,15 @@ export const ReleaseControlSidesheet = ({
                             <CheckListTable checkLists={item.checkLists} />
                         </TablesTab>
                     </Tabs.Panel>
-                    {!isProduction() && (
-                        <Panel>
+                    <Panel>
+                        <>
                             {activeTab === 4 && (
                                 <ModelViewerContextProvider>
                                     <ThreeDView pipetest={item} />
                                 </ModelViewerContextProvider>
                             )}
-                        </Panel>
-                    )}
+                        </>
+                    </Panel>
                 </Tabs.Panels>
             </Tabs>
             \

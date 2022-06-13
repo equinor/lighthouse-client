@@ -1,5 +1,6 @@
 import { Cognite3DModel, IndexSet, THREE } from '@cognite/reveal';
 import { CancelToken } from '@esfx/async-canceltoken';
+import { ViewerNodeSelection } from '../types/selectedNodeInformation';
 import { get3dPositionFromAabbMinMaxValues } from '../utils/calculationUtils';
 import { moveToAndLookAt } from '../utils/cameraUtils';
 import { convertCancelTokenToAbort } from '../utils/cancelTokenUtils';
@@ -27,7 +28,7 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
 
     private selectionE3dTagNos: string[];
 
-    public viewerSelection: {position: THREE.Vector3, tagNo: string}[]
+    public viewerNodeSelection: ViewerNodeSelection[]
 
     /**
      * Setup a Echo3dMultiSelectionHandler.
@@ -41,7 +42,7 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
         this.hierarchyClient = hierarchyClient || getHierarchyClient();
         this.hierarchyId = hierarchyId;
         this.selectionE3dTagNos = [];
-        this.viewerSelection = []
+        this.viewerNodeSelection = []
     }
 
     /**
@@ -190,7 +191,6 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
     private addSelectedNodes(hierarchyNodeModel?: HierarchyNodeModel[]): void {
         if (hierarchyNodeModel) {
             this.selectedNodes.updateSet(new IndexSet(hierarchyNodeModel.map((nodeResult) => nodeResult.id )));
-    
         }
     }
 
@@ -207,15 +207,14 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
             
         if (hierarchyNodeModel) {
                 hierarchyNodeModel.forEach((nodeResult) => {
-        
+
                     if (nodeResult.aabb && nodeResult.tag ) {
-                      
                         selection.push({ position: get3dPositionFromAabbMinMaxValues(nodeResult.aabb), tagNo: nodeResult.tag}
                         );
                     }
                 });
             }
 
-        this.viewerSelection = selection;
+        this.viewerNodeSelection = selection;
     }
 }

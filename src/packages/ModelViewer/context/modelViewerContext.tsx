@@ -1,13 +1,15 @@
 import {
     ApiServiceConfiguration,
     RendererConfiguration,
-    setupEcho3dWeb
+    setupEcho3dWeb,
+    ViewerNodeSelection
 } from '@equinor/echo3dweb-viewer';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { EchoSetupObject } from '../../../../packages/echo3dViewer/src/types/echoSetupObject';
 import { Message } from '../types/message';
 import { ModelViewerState } from '../types/plants';
 import { createMessage, getModels, selectPlantByContext } from '../utils/getCurrentContextModel';
+import { selectTagsByTagNos } from '../utils/selectTags';
+
 
 interface SelectTagOptions {
     padding?: number;
@@ -24,7 +26,7 @@ interface ModelViewerContext extends ModelViewerState {
         renderConfig?: RendererConfiguration,
         platformSectionId?: string
     ): Promise<void>;
-    setEcho3DClient(echo3DClient: EchoSetupObject): void;
+
     setModelWithSelection(plantState: Partial<ModelViewerState>): void;
     selectTags(tags?: string[] | undefined, options?: SelectTagOptions): Promise<void>;
     setMessage(message?: Message): void;
@@ -57,7 +59,7 @@ export const ModelViewerContextProvider = ({
         hasDefaultColor: false,
         modelIsVisible: false,
         tagsIsVisible: false,
-        viewerSelection: [],
+        viewerNodeSelection: [],
     });
 
     const selectTags = useCallback(
@@ -66,7 +68,7 @@ export const ModelViewerContextProvider = ({
                 if (!tags) {
                     setState((s) => ({
                         ...s,
-                        viewerSelection: [],
+                        viewerNodeSelection: [],
                         message: undefined,
                         isLoading: false,
                     }));
@@ -79,36 +81,34 @@ export const ModelViewerContextProvider = ({
                         selection?.clearSelection();
                     }
 
-                    await selection.setSelectionBasedOnE3dTagNos(tags);
+                    await selectTagsByTagNos(selection, tags, options?.padding);
 
-                    selection.clipSelection(true, plantState.padding);
-                    selection.fitCameraToCurrentBoundingBox();
-                    selection.setWhiteAppearance();
-                    selection.setSelectedColor();
-
-                    setState((s) => ({
-                        ...s,
-                        viewerSelection: selection.viewerSelection,
-                        isLoading: false,
-                        isCropped: true,
-                        hasDefaultColor: false,
-                        modelIsVisible: false,
-                        message: undefined,
-                        padding: options?.padding || s.padding,
-                        tags,
-                    }));
+                    updateSelectionState(selection.viewerNodeSelection, tags, options?.padding);
                 }
             } catch (error: any) {
-                setState((s) => ({
-                    ...s,
-                    viewerSelection: [],
-                    isLoading: false,
-                    message: createMessage(error.message, 'NoTags'),
-                }));
+                setMessage(createMessage(error.message, 'NoTags'));
             }
         },
         [plantState]
     );
+
+    function updateSelectionState(
+        viewerNodeSelection: ViewerNodeSelection[],
+        tags: string[] | undefined,
+        padding?: number | undefined
+    ) {
+        setState((s) => ({
+            ...s,
+            viewerNodeSelection,
+            isLoading: false,
+            isCropped: true,
+            hasDefaultColor: false,
+            modelIsVisible: false,
+            message: undefined,
+            padding: padding || s.padding,
+            tags,
+        }));
+    }
 
     async function setup(
         echoPlantId: string,
@@ -131,16 +131,12 @@ export const ModelViewerContextProvider = ({
         setState((s) => ({ ...s, ...selectedPlant, echo3DClient }));
     }
 
-    function setEcho3DClient(echo3DClient: EchoSetupObject) {
-        setState((s) => ({ ...s, echo3DClient }));
-    }
-
     function setModelWithSelection(plantState: Partial<ModelViewerState>) {
         setState((s) => ({ ...s, ...plantState }));
     }
 
     function setMessage(message?: Message) {
-        setState((s) => ({ ...s, message, isLoading: false }));
+        setState((s) => ({ ...s, message, isLoading: false, viewerNodeSelection: [] }));
     }
 
     function toggleClipping() {
@@ -183,7 +179,6 @@ export const ModelViewerContextProvider = ({
         <Context.Provider
             value={{
                 ...plantState,
-                setEcho3DClient,
                 setModelWithSelection,
                 selectTags,
                 setMessage,
