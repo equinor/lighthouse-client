@@ -7,7 +7,7 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { Cell, Row, TableInstance, TableOptions } from 'react-table';
+import { Cell, Column, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 
 import { useTable } from '../Hooks/useTable';
@@ -20,8 +20,9 @@ import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
 interface DataTableProps<TData extends TableData> {
-    options: TableOptions<TData>;
+    options: Partial<TableOptions<TData>>;
     data: TData[];
+    columns: Column<TData>[];
     height?: number;
     itemSize?: number;
     onTableReady?: (getApi: () => TableAPI) => void;
@@ -33,17 +34,16 @@ const DEFAULT_ITEM_SIZE = 35;
 export function Table<TData extends TableData = TableData>({
     options,
     data,
+    columns: dataColumns,
     itemSize,
     height,
     onTableReady,
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
     const hooks = RegisterReactTableHooks<TData>({ rowSelect: options.enableSelectRows || false });
     const ref = useRef<HTMLDivElement>(null);
-    const defaultColumn = useDefaultColumn(options);
+    const defaultColumn = useDefaultColumn({ data, columns: dataColumns, ...options });
 
     const [selectedId, setSelectedId] = useState<string | null>(null);
-
-    const { dataColumns, ...tableOptions } = options;
 
     const {
         prepareRow,
@@ -57,7 +57,7 @@ export function Table<TData extends TableData = TableData>({
         totalColumnsWidth,
         setColumnOrder,
     } = useTable(
-        { ...tableOptions, dataColumns, defaultColumn, data },
+        { ...options, columns: dataColumns, defaultColumn, data },
         hooks
     ) as TableInstance<TableData>;
 
