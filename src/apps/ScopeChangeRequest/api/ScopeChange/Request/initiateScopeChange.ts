@@ -27,7 +27,7 @@ export async function initiateScopeChange({ request }: InitiateScopeChangeParams
         originSourceId: request.originSourceId,
         phase: request.phase,
         title: request.title,
-        punchListIds: request.punchListItems.map(({ procosysId }) => procosysId) || [],
+        punchListItemIds: request.punchListItems.map(({ procosysId }) => procosysId) || [],
         commissioningPackageNumbers:
             request.commissioningPackages.map(({ procosysNumber }) => procosysNumber) || [],
         systemIds: request.systems.map(({ procosysId }) => procosysId) || [],

@@ -1,5 +1,3 @@
-import { Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { ScopeChangeArea as AreaInterface } from '../../../../types/scopeChangeRequest';
 import { Link, Wrapper } from '../WrapperStyles';
 import { useFacility } from '../../../../../../Core/Client/Hooks';
@@ -21,8 +19,6 @@ export const Area = ({ area }: AreaProps): JSX.Element => {
 
     return (
         <Wrapper key={area.id}>
-            <Icon color={tokens.colors.interactive.primary__resting.hex} name="pin_drop" />
-
             <Link>
                 {area.procosysCode} - {data?.Description}
             </Link>

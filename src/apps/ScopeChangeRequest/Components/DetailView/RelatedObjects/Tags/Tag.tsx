@@ -4,7 +4,6 @@ import { Link, Wrapper, TextWrapper, MainText, MetaData } from '../WrapperStyles
 import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { Tag as TagInterface } from '../../../../types/ProCoSys/Tag';
-import { getReferenceIcon } from '../../../SearchReferences/getReferenceIcon';
 
 interface TagProps {
     tag: ScopeChangeTag;
@@ -29,7 +28,6 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
             }
             key={tag.id}
         >
-            {getReferenceIcon('tag')}
             <TextWrapper>
                 <MainText>
                     <Link>{tag.procosysNumber}</Link>- <div>{data?.Description}</div>
