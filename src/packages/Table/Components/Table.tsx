@@ -52,6 +52,7 @@ export function Table<TData extends TableData = TableData>({
         visibleColumns,
         getTableProps,
         columns,
+        allColumns,
         getTableBodyProps,
         headerGroups,
         totalColumnsWidth,
@@ -68,7 +69,7 @@ export function Table<TData extends TableData = TableData>({
         getSelectedRowId: () => selectedId,
         setSelectedRowId: (callbackOrId: SelectedRowCallback | string) =>
             setSelectedId(typeof callbackOrId === 'string' ? callbackOrId : callbackOrId(rows)),
-        getColumns: () => columns,
+        getColumns: () => allColumns,
     });
 
     useEffect(() => {
