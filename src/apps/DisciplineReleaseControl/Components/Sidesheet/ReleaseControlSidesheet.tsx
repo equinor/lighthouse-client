@@ -146,7 +146,6 @@ export const ReleaseControlSidesheet = ({
                     </Panel>
                 </Tabs.Panels>
             </Tabs>
-            \
         </Wrapper>
     );
 };
