@@ -17,11 +17,14 @@ export function createMessage(message: string, type: MessageType): Message {
 export function selectPlantByContext(
     assetsMetaData: AssetMetadataSimpleDto[],
     context: string
-): Partial<ModelViewerState> {
+): Pick<ModelViewerState, 'plants' | 'currentPlant' | 'message' | 'isLoading'> {
     const plants = assetsMetaData.filter((asset) => asset.plantCode === context);
     let message: Message | undefined = undefined;
     if (plants.length === 0) {
-        message = createMessage(`No plats awaitable in the current context ${context}}`, 'NoPlant');
+        message = createMessage(
+            `No plants awaitable in the current context ${context}}`,
+            'NoPlant'
+        );
     }
 
     const currentPlant = plants[0];
