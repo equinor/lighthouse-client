@@ -4,24 +4,25 @@ import { useOverlay } from '../hooks/useOverlay';
 import TagIcon from './TagIcon';
 import TagIconShadowWrapper from './TagIconShadow';
 
-export type TagMap = Record<
-    string,
-    {
-        tagNo: string;
-        status: string;
-        type: string;
-    }
->;
+export interface Overlay {
+    tagNo: string;
+    status: string;
+    type: string;
+}
+
+export type TagMap = Record<string, Overlay>;
 interface TagOverlayProps {
     tagOverlay: TagMap;
     iconResolver: (type: string) => string;
     statusResolver: (status: string) => string;
+    titleResolver?: (overlay: Overlay) => string;
 }
 
 export const TagOverlay = ({
     tagOverlay,
     iconResolver,
     statusResolver,
+    titleResolver,
 }: TagOverlayProps): JSX.Element => {
     const filter = useMemo(() => Object.values(tagOverlay).map((t) => t.tagNo), [tagOverlay]);
     const tags = useOverlay().filter((tag) => (filter ? filter.includes(tag.tagNo) : true));
@@ -31,7 +32,11 @@ export const TagOverlay = ({
             {tags.map((t, i) => (
                 <div
                     key={`${t.tagNo}_${i}`}
-                    title={tagOverlay[t.tagNo].tagNo}
+                    title={
+                        titleResolver
+                            ? titleResolver(tagOverlay[t.tagNo])
+                            : tagOverlay[t.tagNo].tagNo
+                    }
                     style={{
                         ...t.domPosition,
                         width: '28px',

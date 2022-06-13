@@ -20,7 +20,7 @@ export function getIconName(type: string): string {
 export function getStatusColor(status: string): string {
     switch (status) {
         case 'OK':
-            return tokens.colors.interactive.secondary__resting.rgba;
+            return tokens.colors.interactive.success__resting.rgba;
         case 'OS':
             return tokens.colors.ui.background__medium.rgba;
         case 'PA':

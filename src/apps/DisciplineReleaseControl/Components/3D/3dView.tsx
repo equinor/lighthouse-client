@@ -93,6 +93,7 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
                     tagOverlay={tagOverlay}
                     iconResolver={getIconName}
                     statusResolver={getStatusColor}
+                    titleResolver={(item) => `${item.tagNo} - ${item.status}`}
                 />
             </Viewer>
         </ThreeDModel>
