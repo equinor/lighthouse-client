@@ -4,10 +4,12 @@ import { useModelViewerContext, Viewer } from '@equinor/lighthouse-model-viewer'
 import { useFacility } from '@equinor/lighthouse-portal-client';
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
+import { TagMap, TagOverlay } from '../../../../packages/ModelViewer/components/tagOverlay';
 import { EleNetwork } from '../../Types/eleNetwork';
 import { Pipetest } from '../../Types/pipetest';
 import { getEleNetworks } from '../Electro/getEleNetworks';
 import { MessageWrapper, ThreeDModel } from './3dViewStyles';
+import { getIconName, getStatusColor, getTagOverlay as getElectroTagOverlay } from './Helpers';
 import { ElectroIcon } from './icons/ElectroIcon';
 
 interface I3DViewProp {
@@ -34,8 +36,10 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
     const { selectTags } = useModelViewerContext();
 
     useEffect(() => {
-        selectTags(pipetest.lineNos, { clearSelection: true });
+        setIsElectro(false);
     }, [pipetest.name]);
+
+    const tagOverlay: TagMap = useMemo(() => getElectroTagOverlay(data), [data]);
 
     if (pipetest.lineNos.length === 0 && electroTags.length === 0)
         return (
@@ -52,8 +56,10 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
     return (
         <ThreeDModel>
             <Viewer
+                tags={pipetest.lineNos}
                 echoPlantId={echoPlantId}
                 padding={1}
+                platformSectionId="pro-full"
                 selectionActions={[
                     {
                         title: 'Toggle Electro',
@@ -73,14 +79,24 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
                                 selectTags(
                                     isElectro
                                         ? [...electroTags, ...pipetest.lineNos]
-                                        : pipetest.lineNos
+                                        : pipetest.lineNos,
+                                    {
+                                        skipLoadingUi: true,
+                                    }
                                 );
                                 return isElectro;
                             });
                         },
                     },
                 ]}
-            />
+            >
+                <TagOverlay
+                    tagOverlay={tagOverlay}
+                    iconResolver={getIconName}
+                    statusResolver={getStatusColor}
+                    titleResolver={(item) => `${item.tagNo} - ${item.status}`}
+                />
+            </Viewer>
         </ThreeDModel>
     );
 };
