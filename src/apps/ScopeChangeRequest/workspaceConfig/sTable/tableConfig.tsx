@@ -85,7 +85,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             id: 'est mhrs',
             accessor: (s) => s.estimatedChangeHours,
             Cell: ({ cell }: any) => {
-                console.log(cell);
                 if (deref(estimateHoursMaxAtom) === -1) {
                     const maxCount = Math.max(
                         ...cell.column.filteredRows.map((val) => val.original.estimatedChangeHours)
