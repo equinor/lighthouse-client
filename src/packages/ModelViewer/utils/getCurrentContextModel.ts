@@ -17,7 +17,7 @@ export function createMessage(message: string, type: MessageType): Message {
 export function selectPlantByContext(
     assetsMetaData: AssetMetadataSimpleDto[],
     context: string
-): Partial<ModelViewerState> {
+): Pick<ModelViewerState, 'plants' | 'currentPlant' | 'message' | 'isLoading'> {
     const plants = assetsMetaData.filter((asset) => asset.plantCode === context);
     let message: Message | undefined = undefined;
     if (plants.length === 0) {

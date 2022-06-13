@@ -1,21 +1,31 @@
-import { Cognite3DModel } from '@cognite/reveal';
+import {
+    ApiServiceConfiguration,
+    RendererConfiguration,
+    setupEcho3dWeb
+} from '@equinor/echo3dweb-viewer';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { Echo3dMultiSelectionActions } from '../../../../packages/echo3dViewer/src/services/echo3dMultiSelectionActions';
 import { EchoSetupObject } from '../../../../packages/echo3dViewer/src/types/echoSetupObject';
 import { Message } from '../types/message';
 import { ModelViewerState } from '../types/plants';
-import { createMessage } from '../utils/getCurrentContextModel';
+import { createMessage, getModels, selectPlantByContext } from '../utils/getCurrentContextModel';
 
 interface SelectTagOptions {
     padding?: number;
     clearSelection?: boolean;
     skipLoadingUi?: boolean;
 }
+
 interface ModelViewerContext extends ModelViewerState {
-    setPlantState(plantState: Partial<ModelViewerState>): void;
+    setup(
+        echoPlantId: string,
+        canvas: HTMLCanvasElement,
+        modelDistributionConfig: ApiServiceConfiguration,
+        hierarchyConfig: ApiServiceConfiguration,
+        renderConfig?: RendererConfiguration
+    ): Promise<void>;
     setEcho3DClient(echo3DClient: EchoSetupObject): void;
-    setModel(model: Cognite3DModel): void;
-    selectTags(tags?: string[] | undefined, options?: SelectTagOptions): void;
+    setModelWithSelection(plantState: Partial<ModelViewerState>): void;
+    selectTags(tags?: string[] | undefined, options?: SelectTagOptions): Promise<void>;
     setMessage(message?: Message): void;
     toggleClipping(): void;
     toggleHide(): void;
@@ -50,37 +60,24 @@ export const ModelViewerContextProvider = ({
     });
 
     const selectTags = useCallback(
-        (tags?: string[], options?: SelectTagOptions) => {
-            setState((s) => ({
-                ...s,
-                viewerSelection: [],
-                message: undefined,
-                selection: options?.clearSelection === true ? undefined : s.selection,
-                isLoading: options?.skipLoadingUi || true,
-            }));
-            (async () => {
-                if (
-                    !plantState.echo3DClient ||
-                    !plantState.cognite3DModel ||
-                    !plantState.currentPlant
-                ) {
+        async (tags?: string[], options?: SelectTagOptions) => {
+            try {
+                if (!tags) {
+                    setState((s) => ({
+                        ...s,
+                        viewerSelection: [],
+                        message: undefined,
+                        isLoading: false,
+                    }));
                     return;
                 }
-                try {
-                    const selection = new Echo3dMultiSelectionActions(
-                        plantState.echo3DClient.viewer,
-                        plantState.cognite3DModel,
-                        plantState.currentPlant.hierarchyId
-                    );
-                    if (!tags) {
-                        setState((s) => ({
-                            ...s,
-                            viewerSelection: [],
-                            message: undefined,
-                            isLoading: false,
-                        }));
-                        return;
+
+                if (plantState.selection) {
+                    const selection = plantState.selection;
+                    if (options?.clearSelection === true) {
+                        selection?.clearSelection();
                     }
+
                     await selection.setSelectionBasedOnE3dTagNos(tags);
 
                     selection.clipSelection(true, plantState.padding);
@@ -90,7 +87,6 @@ export const ModelViewerContextProvider = ({
 
                     setState((s) => ({
                         ...s,
-                        selection,
                         viewerSelection: selection.viewerSelection,
                         isLoading: false,
                         isCropped: true,
@@ -100,35 +96,45 @@ export const ModelViewerContextProvider = ({
                         padding: options?.padding || s.padding,
                         tags,
                     }));
-                    console.log('select tag done');
-                } catch (error: any) {
-                    setState((s) => ({
-                        ...s,
-                        viewerSelection: [],
-                        selection: undefined,
-                        isLoading: false,
-                        message: createMessage(error.message, 'NoTags'),
-                    }));
                 }
-            })();
+            } catch (error: any) {
+                setState((s) => ({
+                    ...s,
+                    viewerSelection: [],
+                    isLoading: false,
+                    message: createMessage(error.message, 'NoTags'),
+                }));
+            }
         },
-        [
-            plantState.cognite3DModel,
-            plantState.currentPlant,
-            plantState.echo3DClient,
-            plantState.padding,
-        ]
+        [plantState]
     );
 
-    function setPlantState(plantState: Partial<ModelViewerState>) {
-        setState((s) => ({ ...s, ...plantState }));
+    async function setup(
+        echoPlantId: string,
+        canvas: HTMLCanvasElement,
+        modelDistributionConfig: ApiServiceConfiguration,
+        hierarchyConfig: ApiServiceConfiguration,
+        renderConfig?: RendererConfiguration
+    ) {
+        const echo3DClient = await setupEcho3dWeb(
+            canvas,
+            modelDistributionConfig,
+            hierarchyConfig,
+            renderConfig
+        );
+        echo3DClient.viewer.cameraControlsEnabled = true;
+        const plants = await getModels(echo3DClient.modelApiClient);
+        const selectedPlant = selectPlantByContext(plants, echoPlantId);
+
+        setState((s) => ({ ...s, ...selectedPlant, echo3DClient }));
     }
+
     function setEcho3DClient(echo3DClient: EchoSetupObject) {
         setState((s) => ({ ...s, echo3DClient }));
     }
 
-    function setModel(model: Cognite3DModel) {
-        setState((s) => ({ ...s, cognite3DModel: model }));
+    function setModelWithSelection(plantState: Partial<ModelViewerState>) {
+        setState((s) => ({ ...s, ...plantState }));
     }
 
     function setMessage(message?: Message) {
@@ -164,7 +170,7 @@ export const ModelViewerContextProvider = ({
     useEffect(() => {
         return () => {
             plantState.cognite3DModel?.dispose();
-            plantState.selection = undefined;
+            plantState.selection?.clearSelection();
             plantState.echo3DClient?.viewer.disposeAll();
         };
     }, []);
@@ -173,14 +179,14 @@ export const ModelViewerContextProvider = ({
         <Context.Provider
             value={{
                 ...plantState,
-                setPlantState,
                 setEcho3DClient,
-                setModel,
+                setModelWithSelection,
                 selectTags,
                 setMessage,
                 toggleClipping,
                 toggleHide,
                 toggleDefaultColor,
+                setup,
             }}
         >
             {children}

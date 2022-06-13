@@ -1,4 +1,4 @@
-import { RendererConfiguration, setupEcho3dWeb } from '@equinor/echo3dweb-viewer';
+import { RendererConfiguration } from '@equinor/echo3dweb-viewer';
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { Case, Switch } from '@equinor/JSX-Switch';
@@ -9,7 +9,6 @@ import { SelectionAction, SelectionMenu } from './components/selectionMenu';
 import { ModelViewerContextProvider, useModelViewerContext } from './context/modelViewerContext';
 import { useModel } from './hooks/useLoadModel';
 import { Message, MessageWrapper, Wrapper } from './ModelViewerStyles';
-import { getModels, selectPlantByContext } from './utils/getCurrentContextModel';
 
 export interface ModelViewerProps {
     tags?: string[];
@@ -43,9 +42,8 @@ export const Viewer: React.FC<ViewerProps> = ({
     const viewerRef = useRef<HTMLCanvasElement>(null);
     const authProvider = useAuthProvider();
     const { urls, scope } = useAppConfig();
-    const { setEcho3DClient, setPlantState, isLoading, selectTags, message, setMessage } =
-        useModelViewerContext();
-    useModel(loadFullModel);
+    const { isLoading, message, setMessage, setup } = useModelViewerContext();
+    useModel(loadFullModel, tags, padding);
 
     /**
      * Setup the Echo3DClient
@@ -64,26 +62,19 @@ export const Viewer: React.FC<ViewerProps> = ({
             getAccessToken: getHierarchyToken,
         };
         const renderConfig: RendererConfiguration = {
-            // loadingCallback: () => console.log('loading...'),
             clearColor: tokens.colors.ui.background__info.hex,
         };
 
         (async () => {
             if (!viewerRef.current) return;
             try {
-                const client = await setupEcho3dWeb(
+                setup(
+                    echoPlantId,
                     viewerRef.current,
                     modelDistributionConfig,
                     hierarchyConfig,
                     renderConfig
                 );
-                client.viewer.cameraControlsEnabled = true;
-                const plants = await getModels(client.modelApiClient);
-                setPlantState(selectPlantByContext(plants, echoPlantId));
-                setEcho3DClient(client);
-                if (tags) {
-                    selectTags(tags, { padding, clearSelection: true });
-                }
             } catch (ex) {
                 console.log(ex);
                 setMessage({ message: 'Failed to setup Echo 3D web client', type: 'NoPlant' });

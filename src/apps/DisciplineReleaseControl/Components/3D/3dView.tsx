@@ -35,9 +35,7 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
     const { selectTags } = useModelViewerContext();
 
     useEffect(() => {
-        console.log(pipetest.lineNos);
-        selectTags(pipetest.lineNos, { clearSelection: true });
-        // setIsElectro(false);
+        setIsElectro(false);
     }, [pipetest.name]);
 
     const tagOverlay: TagMap = useMemo(() => {
@@ -75,6 +73,7 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
     return (
         <ThreeDModel>
             <Viewer
+                tags={pipetest.lineNos}
                 echoPlantId={echoPlantId}
                 padding={1}
                 selectionActions={[
