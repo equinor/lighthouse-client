@@ -152,7 +152,7 @@ interface ReferenceWrapperProps {
     children: React.ReactNode;
 }
 const ReferenceWrapper = ({ count, icon, text, children }: ReferenceWrapperProps) => {
-    const [isExpanded, setIsExpanded] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     return (
         <Container>
@@ -176,6 +176,9 @@ const ListWrapper = styled.div`
     flex-direction: column;
     align-items: flex-start;
     margin-left: 45px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 const Container = styled.div`

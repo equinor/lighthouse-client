@@ -1,7 +1,8 @@
-import { FilterOptions } from '../../../../packages/Filter/Types';
 import { HandoverPackage } from '../../Garden/models';
 import { getFilterDateValues } from '../helpers/getFilterDateValues';
 import { daysDiff } from '../helpers/daysDiff';
+import { getStatus } from '../../Garden/utility';
+import { FilterOptions } from '@equinor/filter';
 
 export const filterConfig: FilterOptions<HandoverPackage> = [
     {
@@ -16,7 +17,7 @@ export const filterConfig: FilterOptions<HandoverPackage> = [
 
     {
         name: 'Comm pkg status',
-        valueFormatter: ({ commpkgStatus }) => commpkgStatus,
+        valueFormatter: (pkg) => getStatus(pkg),
     },
     {
         name: 'MC status',

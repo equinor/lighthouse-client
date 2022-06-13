@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+
+# 1.4.8
+- [Scope change] Add punch list items as reference
+- [Scope change] Update table config, fix some crashes
+- [Portal] Bookmarks sidesheet
+
+
 # 1.4.7
 - [Scope change] Fix null dates
 
