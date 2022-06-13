@@ -161,6 +161,7 @@ export const UnderlineWrapper = styled.div<{ position: string }>`
     position: relative;
     left: ${(p) => (p.position === 'Underline' ? '3.5px' : p.position === 'After' ? '12px' : null)};
     right: ${(p) => (p.position === 'Before' ? '5.5px' : null)};
+    margin-top: 2px;
 `;
 
 export const StepCircle = styled.div<StepCircleProps>`
@@ -175,7 +176,7 @@ export const StepCircle = styled.div<StepCircleProps>`
             : p.status === PipetestCompletionStatus.Inactive
             ? `${tokens.colors.ui.background__medium.hex}`
             : `${tokens.colors.text.static_icons__default.hex}`};
-    line-height: 18px;
+    line-height: ${(p) => (p.height ? p.height + 2 + 'px' : '18px')};
     text-align: center;
     background: ${(p) => p.color};
     outline: ${(p) => (!p.active ? `1px dashed ${tokens.colors.ui.background__medium.hex}` : null)};

@@ -63,7 +63,7 @@ export const SubGroupWrapper = styled.div`
     border-radius: 5px;
     color: ${tokens.colors.text.static_icons__default.rgba};
     width: 98%;
-    height: 85%;
+    height: 95%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -78,7 +78,7 @@ export const SubGroupText = styled.div`
 export const HTSubGroupText = styled.div`
     display: flex;
     margin-left: 4px;
-    margin-top: 2px;
+    margin-top: 4.5px;
     font-variant-numeric: tabular-nums;
     width: 80px;
     cursor: pointer;
