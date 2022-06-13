@@ -152,7 +152,7 @@ interface ReferenceWrapperProps {
     children: React.ReactNode;
 }
 const ReferenceWrapper = ({ count, icon, text, children }: ReferenceWrapperProps) => {
-    const [isExpanded, setIsExpanded] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
 
     return (
         <Container>
