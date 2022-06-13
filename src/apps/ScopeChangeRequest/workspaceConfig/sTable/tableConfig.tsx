@@ -79,6 +79,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                 return <EstimateBar current={cell.value} max={count} />;
             },
+            width: 180,
+            Aggregated: () => null,
+            aggregate: 'count',
         },
         {
             Header: 'Est mhrs',
@@ -96,6 +99,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                 return <EstimateBar current={cell.value} max={highestEstimateHours} />;
             },
+            width: 180,
+            Aggregated: () => null,
+            aggregate: 'count',
         },
         {
             Header: 'Exp mhrs',
@@ -119,6 +125,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     />
                 );
             },
+            width: 180,
+            Aggregated: () => null,
+            aggregate: 'count',
         },
         {
             Header: 'Disciplines',
