@@ -59,6 +59,69 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             aggregate: 'count',
         },
         {
+            Header: 'Guess Mhrs',
+            id: 'guessMhr',
+            accessor: (s) => s?.disciplineGuesstimates.reduce((s, a) => s + a.guesstimate, 0),
+            Cell: ({ cell }: any): JSX.Element => {
+                if (deref(guesstimateHoursMaxAtom) === -1) {
+                    const maxCount = Math.max(
+                        ...cell.column.filteredRows.map((val) =>
+                            val.original.disciplineGuesstimates.reduce(
+                                (count, curr) => curr.guesstimate + count,
+                                0
+                            )
+                        )
+                    );
+                    swap(guesstimateHoursMaxAtom, () => maxCount);
+                }
+
+                const count = deref(guesstimateHoursMaxAtom);
+
+                return <EstimateBar current={cell.value} max={count} />;
+            },
+        },
+        {
+            Header: 'Est mhrs',
+            id: 'est mhrs',
+            accessor: (s) => s.estimatedChangeHours,
+            Cell: ({ cell }: any) => {
+                console.log(cell);
+                if (deref(estimateHoursMaxAtom) === -1) {
+                    const maxCount = Math.max(
+                        ...cell.column.filteredRows.map((val) => val.original.estimatedChangeHours)
+                    );
+                    swap(estimateHoursMaxAtom, () => maxCount);
+                }
+
+                const highestEstimateHours = deref(estimateHoursMaxAtom);
+
+                return <EstimateBar current={cell.value} max={highestEstimateHours} />;
+            },
+        },
+        {
+            Header: 'Exp mhrs',
+            id: 'exp mhrs',
+            accessor: (s) => s?.actualChangeHours ?? 0,
+            Cell: ({ cell }: any) => {
+                if (deref(actualHoursMaxAtom) === -1) {
+                    const maxCount = Math.max(
+                        ...cell.column.filteredRows.map((val) => val.original.actualChangeHours)
+                    );
+                    swap(actualHoursMaxAtom, () => maxCount);
+                }
+
+                const highestExpendedHours = deref(actualHoursMaxAtom);
+
+                return (
+                    <ExpendedProgressBar
+                        actual={cell.value}
+                        estimate={cell.row.original.estimatedChangeHours}
+                        highestExpended={highestExpendedHours}
+                    />
+                );
+            },
+        },
+        {
             Header: 'Disciplines',
             accessor: 'disciplineGuesstimates',
             Cell: ({ cell }: any) => {
@@ -97,6 +160,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'materialsToBeBoughtByContractor',
         'potentialWarrantyCase',
         'workOrders',
+        'estimatedChangeHours',
+        'disciplineGuesstimates',
+        'actualChangeHours',
     ],
     columnOrder: [
         'sequenceNumber',
@@ -109,9 +175,9 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         'currentWorkflowStep',
         'workflowStatus',
         'state',
-        'disciplineGuesstimates',
-        'estimatedChangeHours',
-        'actualChangeHours',
+        'guessMhr',
+        'est mhrs',
+        'exp mhrs',
         'changeCategory',
         'originSource',
         'scope',
@@ -193,89 +259,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                         })}
                 </>
             )),
-        },
-        {
-            key: 'disciplineGuesstimates',
-            type: {
-                Cell: ({ cell }: any): JSX.Element => {
-                    const request: ScopeChangeRequest = cell.value.content;
-
-                    if (deref(guesstimateHoursMaxAtom) === -1) {
-                        const maxCount = Math.max(
-                            ...cell.column.filteredRows.map((val) =>
-                                val.original.disciplineGuesstimates.reduce(
-                                    (count, curr) => curr.guesstimate + count,
-                                    0
-                                )
-                            )
-                        );
-                        swap(guesstimateHoursMaxAtom, () => maxCount);
-                    }
-
-                    const count = deref(guesstimateHoursMaxAtom);
-
-                    return (
-                        <EstimateBar
-                            current={request.disciplineGuesstimates.reduce(
-                                (count, curr) => curr.guesstimate + count,
-                                0
-                            )}
-                            max={count}
-                        />
-                    );
-                },
-            },
-        },
-        {
-            key: 'actualChangeHours',
-            type: {
-                Cell: ({ cell }: any) => {
-                    const request: ScopeChangeRequest = cell.value.content;
-
-                    if (deref(actualHoursMaxAtom) === -1) {
-                        const maxCount = Math.max(
-                            ...cell.column.filteredRows.map((val) => val.original.actualChangeHours)
-                        );
-                        swap(actualHoursMaxAtom, () => maxCount);
-                    }
-
-                    const highestExpendedHours = deref(actualHoursMaxAtom);
-
-                    return (
-                        <ExpendedProgressBar
-                            actual={request.actualChangeHours}
-                            estimate={request.estimatedChangeHours}
-                            highestExpended={highestExpendedHours}
-                        />
-                    );
-                },
-            },
-        },
-        {
-            key: 'estimatedChangeHours',
-            type: {
-                Cell: ({ cell }: any) => {
-                    const request: ScopeChangeRequest = cell.value.content;
-
-                    if (deref(estimateHoursMaxAtom) === -1) {
-                        const maxCount = Math.max(
-                            ...cell.column.filteredRows.map(
-                                (val) => val.original.estimatedChangeHours
-                            )
-                        );
-                        swap(estimateHoursMaxAtom, () => maxCount);
-                    }
-
-                    const highestEstimateHours = deref(estimateHoursMaxAtom);
-
-                    return (
-                        <EstimateBar
-                            current={request.estimatedChangeHours}
-                            max={highestEstimateHours}
-                        />
-                    );
-                },
-            },
         },
 
         {
