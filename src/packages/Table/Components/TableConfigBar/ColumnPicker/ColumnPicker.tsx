@@ -6,6 +6,7 @@ import { useRefresh } from '../../../../../components/ParkView/hooks/useRefresh'
 import { ClickableIcon } from '../../../../Components/Icon';
 import { ColumnLabel, MenuItem, WrapperDiv } from './columnPicker.styles';
 import { TableAPI } from '@equinor/Table';
+import { useWorkSpace } from '../../../../../Core/WorkSpace/src';
 
 interface ColumnPickerProps {
     getApi: () => TableAPI;
@@ -43,10 +44,18 @@ const ColumnMenuPicker = ({ getApi, closeMenu, containerRef }: ColumnMenuPickerP
     useOutsideClick(containerRef, closeMenu);
 
     const refresh = useRefresh();
+
+    const { tableOptions } = useWorkSpace();
+
+    if (!tableOptions) return null;
+
+    const hiddenColumns = tableOptions.hiddenColumns as string[];
+
     return (
         <WrapperDiv>
             {getApi()
                 .getColumns()
+                .filter((s) => !hiddenColumns?.includes(s.id ?? ''))
                 .sort(
                     (a, b) => a.Header?.toString().localeCompare(b.Header?.toString() ?? 'a') ?? 0
                 )
@@ -63,6 +72,7 @@ const ColumnMenuPicker = ({ getApi, closeMenu, containerRef }: ColumnMenuPickerP
                                 readOnly
                                 checked={getApi()
                                     .getVisibleColumns()
+
                                     .map((x) => x.id)
                                     .includes(id)}
                             />

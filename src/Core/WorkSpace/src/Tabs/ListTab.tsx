@@ -1,7 +1,10 @@
 import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
+import { TableOptions } from 'react-table';
+
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
+import { TableConfigBar } from '../../../../packages/Table/Components/TableConfigBar/TableConfigBar';
 import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
 import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../Context/DataProvider';
@@ -32,7 +35,6 @@ export const ListTab = (): JSX.Element => {
         customColumns: tableOptions?.customColumns,
         hiddenColumnsCount: tableOptions?.hiddenColumns?.length,
     });
-    const hiddenCols = tableOptions?.hiddenColumns === undefined ? [] : tableOptions.hiddenColumns;
 
     const getApi = useRef<GetTableApi | null>(null);
 
@@ -46,27 +48,40 @@ export const ListTab = (): JSX.Element => {
             tableOptions?.onSelect && tableOptions.onSelect(item, id);
             getApi.current && getApi.current().setSelectedRowId(id);
         },
-        [getApi, tableOptions]
+        [getApi, tableOptions?.onSelect]
+    );
+
+    const options: TableOptions<TableData> = useMemo(
+        () => ({
+            data,
+            columns,
+            enableSelectRow: tableOptions?.enableSelectRows,
+            onCellClick: tableOptions?.onCellClick,
+            initialState: {
+                hiddenColumns: tableOptions?.hiddenColumns ?? [],
+            },
+            columnOrder: tableOptions?.columnOrder,
+            groupByFn: defaultGroupByFn,
+            onSelect: onSelect,
+        }),
+        [
+            // columns,
+            data,
+            onSelect,
+            tableOptions?.columnOrder,
+            tableOptions?.enableSelectRows,
+            tableOptions?.onCellClick,
+        ]
     );
 
     return (
         <>
             <WorkspaceFilter />
+            <TableConfigBar />
             <Wrapper ref={ref}>
                 <Table<TableData>
                     onTableReady={initApi}
-                    options={{
-                        data,
-                        columns,
-                        enableSelectRow: tableOptions?.enableSelectRows,
-                        onCellClick: tableOptions?.onCellClick,
-                        initialState: {
-                            hiddenColumns: hiddenCols,
-                        },
-                        columnOrder: tableOptions?.columnOrder,
-                        groupByFn: defaultGroupByFn,
-                        onSelect: onSelect,
-                    }}
+                    options={options}
                     height={awaitableHeight - 58}
                     itemSize={tableOptions?.itemSize}
                 />

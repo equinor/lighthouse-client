@@ -8,6 +8,13 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Portal] Change nginx version to fix dynatrace
 - [PipingAndHeatTrace] - 3D for tags
 
+
+# 1.4.8
+- [Scope change] Add punch list items as reference
+- [Scope change] Update table config, fix some crashes
+- [Portal] Bookmarks sidesheet
+
+
 # 1.4.7
 - [Scope change] Fix null dates
 

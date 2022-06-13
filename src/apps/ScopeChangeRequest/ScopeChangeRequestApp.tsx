@@ -50,7 +50,7 @@ export function setup(appApi: ClientApi): void {
                 ? {
                     pages: [
                         {
-                            pageId: 'ReportSectionb822b2eb4fc97aef255b',
+                            pageId: 'ReportSection4a8a96cf641d50747a13',
                             pageTitle: 'Overview',
                             default: true,
                         },

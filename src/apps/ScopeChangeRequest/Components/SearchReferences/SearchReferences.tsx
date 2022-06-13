@@ -42,7 +42,7 @@ const DEFAULT_REFERENCE_TYPES: ReferenceType[] = [
     'commpkg',
     'tag',
     'system',
-    // 'punch',
+    'punch',
 ];
 
 export const SearchReferences = ({
