@@ -1,10 +1,21 @@
 import { tokens } from '@equinor/eds-tokens';
 import { DateTime } from 'luxon';
 import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
-import { getPipetestStatusEnumByValue } from '../../Functions/statusHelpers';
+import {
+    getChecklistStepName,
+    getPipetestStatusEnumByValue,
+    getPipetestStatusForStep,
+    getPipetestStatusSortValue,
+} from '../../Functions/statusHelpers';
 import { PipetestCompletionStatusColors } from '../../Styles/ReleaseControlColors';
-import { PipetestStep, PipetestStatusOrder, PipetestCompletionStatus } from '../../Types/drcEnums';
-import { Pipetest } from '../../Types/pipetest';
+import {
+    PipetestStep,
+    PipetestStatusOrder,
+    PipetestCompletionStatus,
+    CheckListStepTag,
+    CheckListStatus,
+} from '../../Types/drcEnums';
+import { CheckList, Pipetest } from '../../Types/pipetest';
 
 export const sortByPipetestStatus = (a: string, b: string): number => {
     return PipetestStatusOrder[getPipetestStatusEnumByValue(a)]
@@ -168,4 +179,145 @@ export function getGardenContentColor(step: string): string {
     }
 
     return color;
+}
+
+export function createChecklistTestSteps(
+    pipetests: Pipetest[],
+    htCable: string,
+    statusValue: PipetestStatusOrder
+): CheckList[] {
+    const allWorkflowSteps = [
+        CheckListStepTag.HtTest,
+        CheckListStepTag.HtRetest,
+        CheckListStepTag.HtCTest,
+    ];
+    const checkLists = pipetests[0].checkLists.filter((x) => x.tagNo === htCable);
+    const cChecklists = pipetests.map((x) => {
+        return x.checkLists.filter((y) => y.formularType.startsWith(CheckListStepTag.HtCTest));
+    });
+    const cTestChecklists = Array.prototype.concat.apply([], cChecklists);
+
+    const workflowSteps: CheckList[] = [];
+    for (let i = 0; i < allWorkflowSteps.length; i++) {
+        const formularType =
+            allWorkflowSteps[i] === CheckListStepTag.HtTest
+                ? CheckListStepTag.HtTest
+                : allWorkflowSteps[i] === CheckListStepTag.HtRetest
+                ? CheckListStepTag.HtRetest
+                : CheckListStepTag.HtCTest;
+
+        const underline = shouldHaveUnderline(statusValue, allWorkflowSteps[i]);
+
+        const foundTestSteps = checkLists.filter((x) => x.formularType.startsWith(formularType));
+        if (formularType === CheckListStepTag.HtCTest && cTestChecklists.length !== 0) {
+            const workflowStep: CheckList = {
+                tagNo: '',
+                responsible: '',
+                formularGroup: '',
+                formularType: '',
+                status: getPipetestStatusForStep(cTestChecklists),
+                isHeatTrace: true,
+                revision: '',
+                test: '',
+                workflowStepText: 'C',
+                stepName: getChecklistStepName(allWorkflowSteps[i]),
+                c01Forecast: '',
+                c01Planned: '',
+                m03Forecast: '',
+                m03Planned: '',
+                m04Actual: '',
+                underline: underline,
+            };
+            workflowSteps.push(workflowStep);
+        } else if (foundTestSteps.length !== 0 && formularType !== CheckListStepTag.HtCTest) {
+            const workflowStep: CheckList = {
+                tagNo: '',
+                responsible: '',
+                formularGroup: '',
+                formularType: '',
+                status: getPipetestStatusForStep(foundTestSteps),
+                isHeatTrace: true,
+                revision: '',
+                test: '',
+                workflowStepText: formularType.startsWith(CheckListStepTag.HtTest)
+                    ? 'A'
+                    : formularType.startsWith(CheckListStepTag.HtRetest)
+                    ? 'B'
+                    : 'C',
+                stepName: getChecklistStepName(allWorkflowSteps[i]),
+                c01Forecast: '',
+                c01Planned: '',
+                m03Forecast: '',
+                m03Planned: '',
+                m04Actual: '',
+                underline: underline,
+            };
+            workflowSteps.push(workflowStep);
+        } else {
+            workflowSteps.push({
+                tagNo: allWorkflowSteps[i],
+                responsible: '',
+                formularType: '',
+                formularGroup: '',
+                status: CheckListStatus.Inactive,
+                revision: '',
+                test: '',
+                isHeatTrace: false,
+                workflowStepText:
+                    allWorkflowSteps[i] === CheckListStepTag.HtTest
+                        ? 'A'
+                        : allWorkflowSteps[i] === CheckListStepTag.HtRetest
+                        ? 'B'
+                        : 'C',
+                stepName: getChecklistStepName(allWorkflowSteps[i]),
+                c01Forecast: '',
+                c01Planned: '',
+                m03Forecast: '',
+                m03Planned: '',
+                m04Actual: '',
+                underline: underline,
+            });
+        }
+    }
+
+    return workflowSteps;
+}
+
+export function getPipetestStatusValueForHTCable(pipetests: Pipetest[]): PipetestStatusOrder {
+    const statusValues = pipetests.map((x) => getPipetestStatusSortValue(x));
+    return statusValues.reduce((a, b) => Math.min(a, b));
+}
+
+export function shouldHaveUnderline(
+    statusValue: PipetestStatusOrder,
+    step: CheckListStepTag
+): string {
+    if (step === CheckListStepTag.HtTest) {
+        if (statusValue < PipetestStatusOrder.HtTest) {
+            return 'Before';
+        } else if (statusValue === PipetestStatusOrder.HtTest) {
+            return 'Underline';
+        } else if (
+            statusValue > PipetestStatusOrder.HtTest &&
+            statusValue < PipetestStatusOrder.HtRetest
+        ) {
+            return 'After';
+        }
+    }
+    if (step === CheckListStepTag.HtRetest) {
+        if (statusValue === PipetestStatusOrder.HtRetest) {
+            return 'Underline';
+        } else if (
+            statusValue > PipetestStatusOrder.HtRetest &&
+            statusValue < PipetestStatusOrder.HtCTest
+        ) {
+            return 'After';
+        }
+    }
+    if (step === CheckListStepTag.HtCTest) {
+        if (statusValue === PipetestStatusOrder.HtCTest) {
+            return 'Underline';
+        }
+    }
+    return '';
 }

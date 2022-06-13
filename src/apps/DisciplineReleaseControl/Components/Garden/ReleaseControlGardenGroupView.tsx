@@ -1,14 +1,15 @@
-import { Icon } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
-import { ChevronDown, ChevronUp, CustomGroupView } from '@equinor/ParkView';
+import { ChevronDown, ChevronRight, CustomGroupView } from '@equinor/ParkView';
 import { memo } from 'react';
+import { checklistTagFunc } from '../../Functions/tableHelpers';
 import { Pipetest } from '../../Types/pipetest';
+import { WorkflowCompact } from '../Workflow/Components/WorkflowCompact';
+import { createChecklistTestSteps, getPipetestStatusValueForHTCable } from './gardenFunctions';
 import {
     Chevron,
     HTGardenSubGroup,
     HTSubGroupText,
     SubGroupText,
-    SubGroupWrapper
+    SubGroupWrapper,
 } from './GardenItemStyles';
 
 const ReleaseControlGardenGroupView = ({
@@ -24,21 +25,28 @@ const ReleaseControlGardenGroupView = ({
     };
     return (
         <SubGroupWrapper>
+            <Chevron onClick={onClick}>
+                {columnExpanded ? <ChevronDown /> : <ChevronRight />}
+            </Chevron>
+
             {data.value.startsWith('HT') ? (
                 <HTGardenSubGroup>
-                    <Icon
-                        size={16}
-                        style={{ marginLeft: '4px' }}
-                        color={tokens.colors.text.static_icons__default.hex}
-                        name="heat_trace"
-                    />
                     <HTSubGroupText onClick={handleSubGroupClick}>{data.value}</HTSubGroupText>
+                    <WorkflowCompact
+                        steps={createChecklistTestSteps(
+                            data.items,
+                            data.value,
+                            getPipetestStatusValueForHTCable(data.items)
+                        )}
+                        statusDotFunc={checklistTagFunc}
+                        spanDirection={'horizontal'}
+                        dotSize={14}
+                        popoverDisabled={true}
+                    />
                 </HTGardenSubGroup>
             ) : (
                 <SubGroupText>{data.value}</SubGroupText>
             )}
-
-            <Chevron onClick={onClick}>{columnExpanded ? <ChevronUp /> : <ChevronDown />}</Chevron>
         </SubGroupWrapper>
     );
 };
