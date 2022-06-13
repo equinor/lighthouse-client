@@ -1,6 +1,11 @@
 import { Icon } from '@equinor/eds-core-react';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
-import { CreateReleaseControlStepModel } from '../../../types/releaseControl';
+import {
+    CreateReleaseControlStepModel,
+    Criteria,
+    CriteriaTemplate,
+    ReleaseControl,
+} from '../../../types/releaseControl';
 import { InsertAfter } from './InsertAfter';
 import { InsertBefore } from './InsertBefore';
 
@@ -191,4 +196,27 @@ export function getWorkflowStepMenuActions(
     });
 
     return actions;
+}
+
+export function setCriteriaTemplates(
+    releaseControl: ReleaseControl | undefined
+): ReleaseControl | undefined {
+    if (releaseControl === undefined) {
+        return undefined;
+    }
+    const editedSteps = releaseControl.workflowSteps;
+    editedSteps.forEach((x) => (x.criteriaTemplates = packCriterias(x.criterias)));
+    return releaseControl;
+}
+
+export function packCriterias(criterias: Criteria[]): CriteriaTemplate[] {
+    const criteriaTemplates = criterias.map((c: Criteria) => {
+        const criteriaTemplate: CriteriaTemplate = {
+            assignToCreator: false,
+            value: c.valueDescription,
+            type: 'RequireProcosysFunctionalRoleSignature',
+        };
+        return criteriaTemplate;
+    });
+    return criteriaTemplates;
 }

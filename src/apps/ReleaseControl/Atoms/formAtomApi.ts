@@ -12,6 +12,10 @@ interface ReleaseControlReferences {
     areaCodes: string[];
     documentNumbers: string[];
 }
+
+interface ReleaseControlEditedSteps {
+    editedWorkflowSteps?: CreateReleaseControlStepModel[];
+}
 export interface DRCCreateModel {
     id?: string;
     title?: string;
@@ -26,6 +30,7 @@ export interface DRCCreateModel {
     documentNumbers: string[];
     references?: TypedSelectOption[];
     workflowSteps?: CreateReleaseControlStepModel[];
+    editedWorkflowSteps?: CreateReleaseControlStepModel[];
 }
 
 export type DRCFormModel = Partial<DRCCreateModel>;
@@ -73,13 +78,19 @@ function checkString(value?: string) {
 
 function unPackReferences(api: DefaultAtomAPI<DRCFormModel>): ReleaseControlReferences {
     const references = api.readAtomValue().references ?? [];
-
     return {
         areaCodes: unpackByType(references, 'area'),
         commissioningPackageNumbers: unpackByType(references, 'commpkg'),
         documentNumbers: unpackByType(references, 'document'),
         systemIds: unpackByType(references, 'system') as unknown as number[],
         tagNumbers: unpackByType(references, 'tag'),
+    };
+}
+
+function addEditedWorkflowSteps(api: DefaultAtomAPI<DRCFormModel>): ReleaseControlEditedSteps {
+    const editedSteps = api.readAtomValue().workflowSteps?.filter((x) => !x.isCompleted) ?? [];
+    return {
+        editedWorkflowSteps: editedSteps,
     };
 }
 
@@ -96,6 +107,7 @@ function prepareRequest(): DRCFormModel {
     const newReq: DRCCreateModel = {
         ...readAtomValue(),
         ...unPackReferences(),
+        ...addEditedWorkflowSteps(DRCFormAtomApi),
     };
     return newReq as DRCFormModel;
 }
