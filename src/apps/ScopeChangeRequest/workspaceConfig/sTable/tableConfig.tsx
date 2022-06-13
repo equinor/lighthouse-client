@@ -117,6 +117,10 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                 const highestExpendedHours = deref(actualHoursMaxAtom);
 
+                if (cell.isGrouped) {
+                    return cell.value;
+                }
+
                 return (
                     <ExpendedProgressBar
                         actual={cell.value}
@@ -126,7 +130,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                 );
             },
             width: 180,
-            Aggregated: () => null,
+            Aggregated: () => <div>Im aggregated</div>,
             aggregate: 'count',
         },
         {
