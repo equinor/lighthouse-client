@@ -72,26 +72,7 @@ export const SelectionMenu = ({ selectionActions }: SelectionMenuProps): JSX.Ele
                         <action.icon />
                     </Button>
                 ))}
-                {/* <Button
-                    title="Hidden"
-                    variant="ghost_icon"
-                    onClick={() => {
-                        selection?.setHideMode('Hidden');
-                    }}
-                >
-                    <ElectroIcon color={tokens.colors.interactive.primary__resting.rgba} />
-                </Button>
 
-                <Button variant="ghost_icon" onClick={() => {}}>
-                    <Icon
-                        name={'tag'}
-                        color={
-                            tagsIsVisible
-                                ? tokens.colors.interactive.primary__selected_highlight.rgba
-                                : undefined
-                        }
-                    />
-                </Button> */}
                 <Button
                     variant="ghost_icon"
                     onClick={() => {
