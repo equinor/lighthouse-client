@@ -176,6 +176,9 @@ const ListWrapper = styled.div`
     flex-direction: column;
     align-items: flex-start;
     margin-left: 45px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 const Container = styled.div`
