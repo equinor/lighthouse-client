@@ -59,6 +59,7 @@ export const ThreeDView = ({ pipetest }: I3DViewProp): JSX.Element => {
                 tags={pipetest.lineNos}
                 echoPlantId={echoPlantId}
                 padding={1}
+                platformSectionId="pro-full"
                 selectionActions={[
                     {
                         title: 'Toggle Electro',

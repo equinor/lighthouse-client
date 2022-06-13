@@ -15,6 +15,7 @@ export interface ModelViewerProps {
     loadFullModel?: boolean;
     padding?: number;
     selectionActions?: SelectionAction[];
+    platformSectionId?: string;
 }
 export interface ViewerProps extends ModelViewerProps {
     echoPlantId: string;
@@ -38,6 +39,7 @@ export const Viewer: React.FC<ViewerProps> = ({
     echoPlantId,
     selectionActions,
     children,
+    platformSectionId,
 }: ViewerProps): JSX.Element => {
     const viewerRef = useRef<HTMLCanvasElement>(null);
     const authProvider = useAuthProvider();
@@ -73,7 +75,8 @@ export const Viewer: React.FC<ViewerProps> = ({
                     viewerRef.current,
                     modelDistributionConfig,
                     hierarchyConfig,
-                    renderConfig
+                    renderConfig,
+                    platformSectionId
                 );
             } catch (ex) {
                 console.log(ex);

@@ -21,7 +21,8 @@ interface ModelViewerContext extends ModelViewerState {
         canvas: HTMLCanvasElement,
         modelDistributionConfig: ApiServiceConfiguration,
         hierarchyConfig: ApiServiceConfiguration,
-        renderConfig?: RendererConfiguration
+        renderConfig?: RendererConfiguration,
+        platformSectionId?: string
     ): Promise<void>;
     setEcho3DClient(echo3DClient: EchoSetupObject): void;
     setModelWithSelection(plantState: Partial<ModelViewerState>): void;
@@ -114,7 +115,8 @@ export const ModelViewerContextProvider = ({
         canvas: HTMLCanvasElement,
         modelDistributionConfig: ApiServiceConfiguration,
         hierarchyConfig: ApiServiceConfiguration,
-        renderConfig?: RendererConfiguration
+        renderConfig?: RendererConfiguration,
+        platformSectionId?: string
     ) {
         const echo3DClient = await setupEcho3dWeb(
             canvas,
@@ -124,7 +126,7 @@ export const ModelViewerContextProvider = ({
         );
         echo3DClient.viewer.cameraControlsEnabled = true;
         const plants = await getModels(echo3DClient.modelApiClient);
-        const selectedPlant = selectPlantByContext(plants, echoPlantId);
+        const selectedPlant = selectPlantByContext(plants, echoPlantId, platformSectionId);
 
         setState((s) => ({ ...s, ...selectedPlant, echo3DClient }));
     }

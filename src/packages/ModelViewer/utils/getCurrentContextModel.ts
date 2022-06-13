@@ -16,7 +16,8 @@ export function createMessage(message: string, type: MessageType): Message {
 
 export function selectPlantByContext(
     assetsMetaData: AssetMetadataSimpleDto[],
-    context: string
+    context: string,
+    platformSectionId?: string
 ): Pick<ModelViewerState, 'plants' | 'currentPlant' | 'message' | 'isLoading'> {
     const plants = assetsMetaData.filter((asset) => asset.plantCode === context);
     let message: Message | undefined = undefined;
@@ -27,7 +28,13 @@ export function selectPlantByContext(
         );
     }
 
-    const currentPlant = plants[0];
+    const currentPlant = platformSectionId
+        ? plants.find((p) =>
+              p.platformSectionId
+                  .toLocaleLowerCase()
+                  .includes(platformSectionId.toLocaleLowerCase())
+          ) || plants[0]
+        : plants[0];
 
     return {
         plants,
