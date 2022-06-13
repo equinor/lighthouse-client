@@ -25,6 +25,10 @@ export function SidesheetContent<T>({ actions, item }: SidesheetContentProps) {
     };
     columns.push(customCol);
     return (
-        <div>{data && <Table options={{ data, columns, columnOrder: ['procosyslink'] }} />}</div>
+        <div>
+            {data && (
+                <Table data={data} columns={columns} options={{ columnOrder: ['procosyslink'] }} />
+            )}
+        </div>
     );
 }
