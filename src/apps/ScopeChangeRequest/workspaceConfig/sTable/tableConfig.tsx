@@ -290,10 +290,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             )),
         },
 
-        // {
-        //     key: 'changeCategory',
-        //     type: customCellView(({ changeCategory }) => <>{changeCategory.name}</>),
-        // },
         {
             key: 'state',
             type: customCellView(({ state, isVoided }) => <>{isVoided ? 'Voided' : state}</>),
