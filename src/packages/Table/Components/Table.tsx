@@ -20,7 +20,7 @@ import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
 interface DataTableProps<TData extends TableData> {
-    options: Partial<TableOptions<TData>>;
+    options?: Partial<TableOptions<TData>>;
     data: TData[];
     columns: Column<TData>[];
     height?: number;
@@ -39,7 +39,9 @@ export function Table<TData extends TableData = TableData>({
     height,
     onTableReady,
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
-    const hooks = RegisterReactTableHooks<TData>({ rowSelect: options.enableSelectRows || false });
+    const hooks = RegisterReactTableHooks<TData>({
+        rowSelect: (options && options.enableSelectRows) || false,
+    });
     const ref = useRef<HTMLDivElement>(null);
     const defaultColumn = useDefaultColumn({ data: data, columns: dataColumns, ...options });
 
@@ -83,7 +85,7 @@ export function Table<TData extends TableData = TableData>({
             options?.onCellClick && options.onCellClick(cell, e);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [options.onCellClick]
+        [options?.onCellClick]
     );
 
     useLayoutEffect(() => {
