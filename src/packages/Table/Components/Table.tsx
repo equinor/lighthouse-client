@@ -43,7 +43,11 @@ export function Table<TData extends TableData = TableData>({
         rowSelect: (options && options.enableSelectRows) || false,
     });
     const ref = useRef<HTMLDivElement>(null);
-    const defaultColumn = useDefaultColumn({ data: data, columns: dataColumns, ...options });
+    const defaultColumn = useDefaultColumn({
+        data: data,
+        columns: dataColumns,
+        ...(options ?? {}),
+    });
 
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -59,7 +63,7 @@ export function Table<TData extends TableData = TableData>({
         totalColumnsWidth,
         setColumnOrder,
     } = useTable(
-        { ...options, columns: dataColumns, defaultColumn, data },
+        { ...(options ?? {}), columns: dataColumns, defaultColumn, data },
         hooks
     ) as TableInstance<TableData>;
 
