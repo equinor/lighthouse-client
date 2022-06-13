@@ -59,6 +59,7 @@ export const ListTab = (): JSX.Element => {
 
     const options = useMemo(
         () => ({
+            columns: columns,
             enableSelectRow: tableOptions?.enableSelectRows,
             onCellClick: tableOptions?.onCellClick,
             initialState: {
@@ -84,7 +85,7 @@ export const ListTab = (): JSX.Element => {
             <Wrapper ref={ref}>
                 <Table<TableData>
                     data={data}
-                    columns={columns}
+                    columns={options.columns}
                     onTableReady={initApi}
                     options={options as unknown as TableOptions<TableData>}
                     height={awaitableHeight - 58}

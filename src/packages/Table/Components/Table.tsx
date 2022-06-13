@@ -41,7 +41,7 @@ export function Table<TData extends TableData = TableData>({
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
     const hooks = RegisterReactTableHooks<TData>({ rowSelect: options.enableSelectRows || false });
     const ref = useRef<HTMLDivElement>(null);
-    const defaultColumn = useDefaultColumn({ data, columns: dataColumns, ...options });
+    const defaultColumn = useDefaultColumn({ data: data, columns: dataColumns, ...options });
 
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
