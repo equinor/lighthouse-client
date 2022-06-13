@@ -1,6 +1,4 @@
-import { swap } from '@dbeining/react-atom';
 import { useQuery } from 'react-query';
-import { scopeChangeAtom } from '../../Atoms/scopeChangeAtom';
 import { updateContext } from '../../Components/Sidesheet/SidesheetWrapper/Utils/updateContext';
 import { scopeChangeQueries } from '../../keys/queries';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
