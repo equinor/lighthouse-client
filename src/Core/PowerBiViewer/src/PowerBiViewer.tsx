@@ -1,6 +1,15 @@
-import { ApplyEventArgs, useBookmarks } from '@equinor/BookmarksManager';
+import {
+    ApplyEventArgs,
+    favouriteBookmark,
+    getBookmarkById,
+    headBookmark,
+    useBookmarkMutations,
+    useBookmarks,
+} from '@equinor/BookmarksManager';
 import { PBIOptions, PowerBI, PowerBIBookmarkPayload } from '@equinor/lighthouse-powerbi';
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useCurrentUser } from '../../Client/Hooks';
 import { usePowerBiViewer } from './Api/powerBiViewerState';
 import { PowerBiViewerHeader } from './Components/PowerBiViewerHeader/PowerBiViewerHeader';
 import { ContentWrapper, Wrapper } from './PowerBiViewerStyles';
@@ -21,6 +30,10 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
 
     const { reports } = usePowerBiViewer(props.shortName);
     const { handleApplyBookmark, handleSaveBookmarks } = useBookmarks<PowerBIBookmarkPayload>();
+    const favourite = useBookmarkMutations(favouriteBookmark);
+    const user = useCurrentUser();
+
+    const [searchParams] = useSearchParams();
 
     const handleSetActivePage = (page: Page, options?: PBIOptions) => {
         setActivePage(page);
@@ -37,10 +50,7 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
     function handleFilter() {
         setIsFilterActive((s) => !s);
     }
-
-    const handleApplyingBookmark = async ({ id: bookmarkId }: ApplyEventArgs) => {
-        const bookmark = await handleApplyBookmark(bookmarkId);
-
+    const pageManager = (bookmark: PowerBIBookmarkPayload) => {
         if (isDifferentPage(activePage, bookmark)) {
             const report = getReportByPage(
                 {
@@ -75,12 +85,32 @@ export function PowerBiViewer(props: PowerBiViewerProps): JSX.Element {
             return bookmark;
         }
     };
+    const handleApplyingBookmark = async ({ id: bookmarkId }: ApplyEventArgs) => {
+        const bookmark = await handleApplyBookmark(bookmarkId);
+
+        return pageManager(bookmark);
+    };
 
     useEffect(() => {
-        const { report, page } = getDefault(reports);
-        setActivePage(page);
-        setActiveReport(report);
-    }, [reports]);
+        const bookmarkId = searchParams.get('bookmarkId');
+        if (bookmarkId) {
+            (async () => {
+                const bookmarkRes = await getBookmarkById(bookmarkId);
+                if (bookmarkRes) {
+                    if (bookmarkRes.createdBy.azureUniqueId !== user?.id) {
+                        //Check if bookmark is not already favourited by user
+                        !(await headBookmark(bookmarkId)) && favourite(bookmarkId);
+                    }
+                    const bookmarkPayload = await handleApplyBookmark(bookmarkId);
+                    pageManager(bookmarkPayload);
+                }
+            })();
+        } else {
+            const { report, page } = getDefault(reports);
+            setActivePage(page);
+            setActiveReport(report);
+        }
+    }, [reports, searchParams]);
 
     return (
         <Wrapper>
