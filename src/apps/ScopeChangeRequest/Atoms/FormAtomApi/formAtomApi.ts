@@ -13,7 +13,7 @@ interface ScopeChangeReferences {
     systemIds: number[];
     areaCodes: string[];
     documentNumbers: string[];
-    punchListIds: number[];
+    punchListItemIds: number[];
 }
 
 interface FormAtomApi extends DefaultAtomAPI<ScopeChangeFormModel> {
@@ -73,7 +73,7 @@ function unPackReferences(api: DefaultAtomAPI<ScopeChangeFormModel>): ScopeChang
         documentNumbers: unpackByType(references, 'document'),
         systemIds: unpackByType(references, 'system') as unknown as number[],
         tagNumbers: unpackByType(references, 'tag'),
-        punchListIds: unpackByType(references, 'punch').map((s): number => Number(s)),
+        punchListItemIds: unpackByType(references, 'punch').map((s): number => Number(s)),
     };
 }
 

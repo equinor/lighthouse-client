@@ -23,7 +23,7 @@ export interface ScopeChangeCreateEditModel {
     commissioningPackageNumbers: string[];
     systemIds: number[];
     areaCodes: string[];
-    punchListIds: number[];
+    punchListItemIds: number[];
     documentNumbers: string[];
     materialsIdentifiedInStorage: boolean;
     materialsToBeBoughtByContractor: boolean;
