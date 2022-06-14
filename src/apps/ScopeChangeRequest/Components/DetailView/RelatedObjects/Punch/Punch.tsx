@@ -1,10 +1,10 @@
 import { useQuery } from 'react-query';
-import { isProduction } from '@equinor/lighthouse-portal-client';
 
 import { ScopeChangePunch } from '../../../../types/scopeChangeRequest';
 import { Link, TextWrapper, Wrapper, MainText } from '../WrapperStyles';
 import { FAMQueries } from '../../../../keys/FamQueries';
 import { PunchListItem } from '../../../../types/FAM/punchListItem';
+import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
 
 interface PunchProps {
     punch: ScopeChangePunch;
@@ -17,13 +17,7 @@ export const Punch = ({ punch: { procosysId } }: PunchProps): JSX.Element => {
 
     return (
         <Wrapper
-            onClick={() =>
-                window.open(
-                    `https://${isProduction() ? 'procosys' : 'procosystest'
-                    }.equinor.com/JOHAN_CASTBERG/Completion#PunchListItem|${procosysId}`,
-                    '_blank'
-                )
-            }
+            onClick={() => window.open(proCoSysUrls.getPunchUrl(procosysId), '_blank')}
             key={procosysId}
         >
             <TextWrapper>
