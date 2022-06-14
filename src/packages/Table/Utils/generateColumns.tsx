@@ -14,6 +14,7 @@ export interface HeaderData {
 
 export const generateHeaderKeys = <D extends TableData>(
     headerItem: D,
+    preventAutoGenerateColumns: boolean,
     options?: ColumnOptions<D>
 ): Array<Column<D>> => {
     if (!headerItem) return [];
@@ -29,7 +30,21 @@ export const generateHeaderKeys = <D extends TableData>(
         return column;
     });
 
-    const defaultColumns: Column<D>[] = Object.keys(headerItem).map((key): Column<D> => {
+    const defaultColumns: Column<D>[] = preventAutoGenerateColumns
+        ? []
+        : autoGenerateColumns(headerItem, totalCustomColumnWidth, options);
+
+    return options?.customColumns
+        ? defaultColumns.concat(options.customColumns as unknown as Column<D>)
+        : defaultColumns;
+};
+
+const autoGenerateColumns = <T extends TableData>(
+    headerItem: T,
+    totalCustomColumnWidth: number,
+    options?: ColumnOptions<T>
+) =>
+    Object.keys(headerItem).map((key): Column<T> => {
         const columnsWithCustomWidth = options?.headers?.filter(
             (header) => header?.width !== undefined
         ).length;
@@ -40,6 +55,7 @@ export const generateHeaderKeys = <D extends TableData>(
             (columnsWithCustomWidth !== undefined ? columnsWithCustomWidth : 0) -
             (options?.customColumns?.length !== undefined ? options?.customColumns.length : 0);
         const customWidth = findCustomColumnWidth(key, options?.headers);
+
         if (hasCustomCell(key, options?.customCellView)) {
             return generateCustomColumn({
                 headers: options?.headers,
@@ -86,8 +102,3 @@ export const generateHeaderKeys = <D extends TableData>(
             customWidth,
         });
     });
-
-    return options?.customColumns
-        ? defaultColumns.concat(options.customColumns as unknown as Column<D>)
-        : defaultColumns;
-};

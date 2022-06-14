@@ -15,7 +15,7 @@ import {
     HelpPageOptions,
     PresetOption,
     SearchOption,
-    ViewOptions
+    ViewOptions,
 } from './WorkSpaceTypes';
 
 export interface WorkSpaceState {
@@ -28,6 +28,7 @@ export type TableOptions<T> = Pick<
     ReactTableOptions<T>,
     'enableSelectRows' | 'onCellClick' | 'setSelected' | 'columnOrder' | 'onSelect'
 > & {
+    preventAutoGenerateColumns?: boolean;
     objectIdentifierKey: string;
     /** Hide certain columns based on key */
     hiddenColumns?: (keyof T)[];
@@ -112,7 +113,7 @@ export interface PowerBiOptions {
     pages: Page[];
 }
 
-export interface TimeLineOptions {}
+export interface TimeLineOptions { }
 
 export function createWorkSpaceGlobalState(defaultState: WorkSpaceState): Atom<WorkSpaceState> {
     return Atom.of(defaultState);
