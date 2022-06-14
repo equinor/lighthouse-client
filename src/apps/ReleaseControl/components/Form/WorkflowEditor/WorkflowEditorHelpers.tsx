@@ -156,17 +156,21 @@ export function addStep(steps: CreateReleaseControlStepModel[]): void {
 
 export function getWorkflowStepMenuActions(
     step: CreateReleaseControlStepModel,
-    steps: CreateReleaseControlStepModel[]
+    steps: CreateReleaseControlStepModel[],
+    initiateStep?: boolean
 ): MenuItem[] {
     const actions: MenuItem[] = [];
-    actions.push({
-        label: 'Add step before',
-        icon: <InsertBefore />,
-        onClick: () =>
-            updateAtom({
-                workflowSteps: addStepBefore(step, steps),
-            }),
-    });
+    {
+        !initiateStep &&
+            actions.push({
+                label: 'Add step before',
+                icon: <InsertBefore />,
+                onClick: () =>
+                    updateAtom({
+                        workflowSteps: addStepBefore(step, steps),
+                    }),
+            });
+    }
 
     actions.push({
         label: 'Add step after',
@@ -177,23 +181,28 @@ export function getWorkflowStepMenuActions(
             }),
     });
 
-    actions.push({
-        label: 'Duplicate step',
-        icon: <Icon name="copy" color="grey" />,
-        onClick: () =>
-            updateAtom({
-                workflowSteps: duplicateStep(step, steps),
-            }),
-    });
-
-    actions.push({
-        label: 'Delete',
-        icon: <Icon name="delete_forever" color="grey" />,
-        onClick: () =>
-            updateAtom({
-                workflowSteps: removeStep(step, steps),
-            }),
-    });
+    {
+        !initiateStep &&
+            actions.push({
+                label: 'Duplicate step',
+                icon: <Icon name="copy" color="grey" />,
+                onClick: () =>
+                    updateAtom({
+                        workflowSteps: duplicateStep(step, steps),
+                    }),
+            });
+    }
+    {
+        !initiateStep &&
+            actions.push({
+                label: 'Delete',
+                icon: <Icon name="delete_forever" color="grey" />,
+                onClick: () =>
+                    updateAtom({
+                        workflowSteps: removeStep(step, steps),
+                    }),
+            });
+    }
 
     return actions;
 }

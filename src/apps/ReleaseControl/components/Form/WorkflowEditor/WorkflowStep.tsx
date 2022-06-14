@@ -47,6 +47,45 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                         />
                     </CompletedCriteria>
                 ) : null
+            ) : step.name === 'Initiate' ? (
+                <>
+                    <HiddenDragIcon />
+                    <NumberCircle>{step.order}</NumberCircle>
+                    <Selections>
+                        <SingleSelect
+                            items={stepNames}
+                            label="Step"
+                            size={25}
+                            selectedOption={step.name}
+                            readOnly={true}
+                            handleSelectedItemChange={(change) =>
+                                updateAtom({
+                                    workflowSteps: updateStepName(
+                                        step,
+                                        steps,
+                                        !change.selectedItem ? '' : change.selectedItem
+                                    ),
+                                })
+                            }
+                        />
+                        <SingleSelect
+                            items={functionalRoleNames ?? []}
+                            label="Responsible"
+                            size={30}
+                            selectedOption={step?.criteriaTemplates[0]?.value}
+                            handleSelectedItemChange={(change) =>
+                                updateAtom({
+                                    workflowSteps: updateStepResponsible(
+                                        step,
+                                        steps,
+                                        !change.selectedItem ? '' : change.selectedItem
+                                    ),
+                                })
+                            }
+                        />
+                    </Selections>
+                    <IconMenu items={getWorkflowStepMenuActions(step, steps, true)} />
+                </>
             ) : (
                 <>
                     <DraggableIconWrapper className={DraggableHandleSelector}>
@@ -133,8 +172,12 @@ const NumberCircle = styled.div`
     margin-bottom: 7px;
 `;
 
+const HiddenDragIcon = styled.div`
+    width: 24px;
+    height: 24px;
+`;
+
 const stepNames = [
-    'Initiate',
     'Demount Insulation',
     'Electric isolation',
     'Demount HT',
