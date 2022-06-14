@@ -29,9 +29,6 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         {
             Header: 'Current step',
             accessor: (s) => s?.currentWorkflowStep?.name,
-            Cell: ({ cell }: any): JSX.Element => {
-                return <>{cell.value}</>;
-            },
             id: 'CurrentStep',
             width: 180,
             Aggregated: () => null,
@@ -70,7 +67,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                 return <EstimateBar current={cell.value} max={count} />;
             },
-            width: 180,
+            width: 120,
             Aggregated: () => null,
             aggregate: 'count',
         },
@@ -90,7 +87,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
 
                 return <EstimateBar current={cell.value} max={highestEstimateHours} />;
             },
-            width: 180,
+            width: 120,
             Aggregated: () => null,
             aggregate: 'count',
         },
@@ -120,7 +117,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
                     />
                 );
             },
-            width: 180,
+            width: 120,
             Aggregated: () => null,
             aggregate: 'count',
         },
