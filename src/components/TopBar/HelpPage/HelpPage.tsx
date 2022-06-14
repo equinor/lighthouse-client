@@ -1,5 +1,5 @@
+import { useLocationKey } from '@equinor/hooks';
 import { useMemo } from 'react';
-import { useLocationKey } from '@equinor/filter';
 
 import { getApps } from '../../../apps/apps';
 import { ClickableIcon } from '../../Icon/ClickableIcon';
