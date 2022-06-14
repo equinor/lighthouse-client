@@ -28,6 +28,7 @@ export function getNewWorkflowSteps(): CreateReleaseControlStepModel[] {
                 {
                     type: 'RequireProcosysUserSignature',
                     assignToCreator: true,
+                    value: '',
                 },
             ],
             criterias: [],
@@ -71,6 +72,7 @@ export function addStepAfter(
             {
                 assignToCreator: true,
                 type: 'RequireProcosysUserSignature',
+                value: '',
             },
         ],
         criterias: [],
@@ -96,6 +98,7 @@ export function addStepBefore(
             {
                 assignToCreator: true,
                 type: 'RequireProcosysUserSignature',
+                value: '',
             },
         ],
         criterias: [],
@@ -228,4 +231,102 @@ export function packCriterias(criterias: Criteria[]): CriteriaTemplate[] {
         return criteriaTemplate;
     });
     return criteriaTemplates;
+}
+
+export function getFullWorkflowTemplate(): CreateReleaseControlStepModel[] {
+    const fullReleaseControlTemplate: CreateReleaseControlStepModel[] = [
+        {
+            order: 1,
+            name: 'Initiate',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysUserSignature',
+                    assignToCreator: true,
+                    value: '',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 2,
+            name: 'Demount valve',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Mechanical',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 3,
+            name: 'Demount Insulation',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Insulation',
+                },
+            ],
+            criterias: [],
+        },
+
+        {
+            order: 4,
+            name: 'Demount HT',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Electrical',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 5,
+            name: 'Mount valve',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Mechanical',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 6,
+            name: 'Bolt tensioning',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Mechanical',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 7,
+            name: 'Electric isolation',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Insulation',
+                },
+            ],
+            criterias: [],
+        },
+    ];
+    return fullReleaseControlTemplate;
 }

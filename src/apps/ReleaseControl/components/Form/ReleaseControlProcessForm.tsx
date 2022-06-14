@@ -12,8 +12,11 @@ import { ReleaseControlSidesheet } from '../sidesheet/ReleaseControlSidesheet';
 import { DescriptionInput, PlannedDueDateInput, ReferencesInput, TitleInput } from './Inputs';
 import { FlexColumn, FormWrapper } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
-import { addStep, getNewWorkflowSteps } from './WorkflowEditor/WorkflowEditorHelpers';
-
+import {
+    addStep,
+    getFullWorkflowTemplate,
+    getNewWorkflowSteps,
+} from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom } = DRCFormAtomApi;
@@ -42,19 +45,19 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                                 label="Workflow"
                                 placeholder="Select predefined workflow"
                                 size={30}
-                                handleSelectedItemChange={() => {
-                                    return null;
+                                handleSelectedItemChange={(change) => {
+                                    if (change.inputValue === 'New flow') {
+                                        updateAtom({
+                                            workflowSteps: getNewWorkflowSteps(),
+                                        });
+                                    }
+                                    if (change.inputValue === 'All steps') {
+                                        updateAtom({
+                                            workflowSteps: getFullWorkflowTemplate(),
+                                        });
+                                    }
                                 }}
                             />
-                            <NewFlowButton
-                                onClick={() =>
-                                    updateAtom({
-                                        workflowSteps: getNewWorkflowSteps(),
-                                    })
-                                }
-                            >
-                                New flow
-                            </NewFlowButton>
                         </SelectionRow>
                         <WorkflowCustomEditor />
                         {steps.length !== 0 && (
@@ -161,15 +164,4 @@ export const NewStepButton = styled(Button)`
     width: 100px;
 `;
 
-export const NewFlowButton = styled(Button)`
-    width: 100px;
-    margin-left: 20px;
-    margin-top: 16px;
-`;
-
-const predefinedWorkflows = [
-    'Commissioning - With HT',
-    'Commissioning - No HT',
-    'Operation - With HT',
-    'Operation - No HT',
-];
+const predefinedWorkflows = ['New flow', 'All steps'];

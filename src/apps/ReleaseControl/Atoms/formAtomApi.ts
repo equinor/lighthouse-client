@@ -13,8 +13,9 @@ interface ReleaseControlReferences {
     documentNumbers: string[];
 }
 
-interface ReleaseControlEditedSteps {
+interface ReleaseControlPackedSteps {
     editedWorkflowSteps?: CreateReleaseControlStepModel[];
+    signedWorkflowSteps?: CreateReleaseControlStepModel[];
 }
 export interface DRCCreateModel {
     id?: string;
@@ -31,6 +32,7 @@ export interface DRCCreateModel {
     references?: TypedSelectOption[];
     workflowSteps?: CreateReleaseControlStepModel[];
     editedWorkflowSteps?: CreateReleaseControlStepModel[];
+    signedWorkflowSteps?: CreateReleaseControlStepModel[];
 }
 
 export type DRCFormModel = Partial<DRCCreateModel>;
@@ -87,10 +89,12 @@ function unPackReferences(api: DefaultAtomAPI<DRCFormModel>): ReleaseControlRefe
     };
 }
 
-function addEditedWorkflowSteps(api: DefaultAtomAPI<DRCFormModel>): ReleaseControlEditedSteps {
+function packWorkflowSteps(api: DefaultAtomAPI<DRCFormModel>): ReleaseControlPackedSteps {
     const editedSteps = api.readAtomValue().workflowSteps?.filter((x) => !x.isCompleted) ?? [];
+    const signedSteps = api.readAtomValue().workflowSteps?.filter((x) => x.isCompleted) ?? [];
     return {
         editedWorkflowSteps: editedSteps,
+        signedWorkflowSteps: signedSteps,
     };
 }
 
@@ -107,13 +111,16 @@ function prepareRequest(): DRCFormModel {
     const newReq: DRCCreateModel = {
         ...readAtomValue(),
         ...unPackReferences(),
-        ...addEditedWorkflowSteps(DRCFormAtomApi),
+        ...packWorkflowSteps(DRCFormAtomApi),
     };
     return newReq as DRCFormModel;
 }
 
 function checkFormState(
-    request: Pick<DRCFormModel, 'title' | 'description' | 'plannedDueDate' | 'phase'>
+    request: Pick<
+        DRCFormModel,
+        'title' | 'description' | 'plannedDueDate' | 'phase' | 'workflowSteps'
+    >
 ): boolean {
     if (MANDATORY_PROPERTIES.every((k) => Object.keys(request).includes(k))) {
         /** Validate content */
@@ -125,6 +132,24 @@ function checkFormState(
                 return false;
             case checkString(request.plannedDueDate):
                 return false;
+        }
+        //Do not allow empty workflowSteps
+        if (request.workflowSteps === undefined || request.workflowSteps.length === 0) {
+            return false;
+        }
+        //Do not allow empty steps
+        if (request.workflowSteps?.some((step) => step.name === null || step.name === '')) {
+            return false;
+        }
+        //Do not allow empty responsible
+        if (
+            request.workflowSteps?.some((step) =>
+                step.criteriaTemplates.some(
+                    (criteria) => criteria.value === null || criteria.value === ''
+                )
+            )
+        ) {
+            return false;
         }
 
         return true;
