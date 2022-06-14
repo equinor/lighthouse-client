@@ -256,7 +256,7 @@ export function getFullWorkflowTemplate(): CreateReleaseControlStepModel[] {
                 {
                     type: 'RequireProcosysFunctionalRoleSignature',
                     assignToCreator: false,
-                    value: 'RC - Coordinator',
+                    value: 'HTISO - Coordinator',
                 },
             ],
             criterias: [],
