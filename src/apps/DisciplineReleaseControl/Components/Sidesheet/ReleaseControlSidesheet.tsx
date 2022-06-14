@@ -85,7 +85,7 @@ export const ReleaseControlSidesheet = ({
                     <Tabs.Tab>Work orders</Tabs.Tab>
                     <Tabs.Tab>Insulation</Tabs.Tab>
                     <Tabs.Tab>Checklists</Tabs.Tab>
-                    <Tabs.Tab>3D-visualisation</Tabs.Tab>
+                    <Tabs.Tab>3D</Tabs.Tab>
                 </SidesheetTabList>
                 <Tabs.Panels>
                     <Tabs.Panel>
