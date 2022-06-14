@@ -9,14 +9,14 @@ interface WorkflowProps<T> {
     ) => 'Complete' | 'Inactive' | 'Outstanding' | 'PunchAError' | 'PunchBError';
     spanDirection?: 'vertical' | 'horizontal';
     dotSize?: number;
-    popoverDisabled?: boolean;
+    isPopoverDisabled?: boolean;
 }
 
 export function WorkflowCompact<T>({
     steps,
     statusDotFunc,
     dotSize,
-    popoverDisabled,
+    isPopoverDisabled,
 }: WorkflowProps<T>): JSX.Element {
     return (
         <>
@@ -32,7 +32,7 @@ export function WorkflowCompact<T>({
                                     circleText={(x as any).workflowStepText}
                                     popoverText={(x as any).stepName}
                                     active={statusDotFunc(x) !== 'Inactive'}
-                                    popoverDisabled={popoverDisabled}
+                                    isPopoverDisabled={isPopoverDisabled}
                                     underline={(x as any).underline}
                                 />
                             </WorkflowStep>

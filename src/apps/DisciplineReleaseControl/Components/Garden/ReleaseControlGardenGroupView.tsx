@@ -41,7 +41,7 @@ const ReleaseControlGardenGroupView = ({
                         statusDotFunc={checklistTagFunc}
                         spanDirection={'horizontal'}
                         dotSize={14}
-                        popoverDisabled={true}
+                        isPopoverDisabled={true}
                     />
                 </HTGardenSubGroup>
             ) : (

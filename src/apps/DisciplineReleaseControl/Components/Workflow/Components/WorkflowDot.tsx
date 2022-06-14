@@ -17,7 +17,7 @@ interface WorkflowDotProps {
     circleText: string;
     popoverText: string;
     active: boolean;
-    popoverDisabled?: boolean;
+    isPopoverDisabled?: boolean;
     underline?: 'Before' | 'Underline' | 'After' | '';
 }
 
@@ -37,7 +37,7 @@ export const WorkflowDot = ({
     circleText,
     popoverText,
     active,
-    popoverDisabled,
+    isPopoverDisabled,
     underline,
 }: WorkflowDotProps): JSX.Element => {
     const anchorRef = useRef<HTMLDivElement>(null);
@@ -128,7 +128,7 @@ export const WorkflowDot = ({
                 width={width}
             >
                 {circleText}
-                {isOpen && !popoverDisabled && (
+                {isOpen && !isPopoverDisabled && (
                     <WorkflowPopover>
                         {popoverText}, {!active ? 'N/A' : getShortformCompletionStatusName(state)}
                     </WorkflowPopover>
