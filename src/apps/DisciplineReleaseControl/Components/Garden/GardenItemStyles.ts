@@ -10,7 +10,7 @@ export type ReleaseControlItemProps = {
     isSelected: boolean;
 };
 
-export const ReleaseControlItem = styled(Item) <ReleaseControlItemProps>`
+export const ReleaseControlItem = styled(Item)<ReleaseControlItemProps>`
     display: flex;
     background: ${(props) => props.backgroundColor};
     color: ${(props) => props.textColor};
@@ -21,7 +21,8 @@ export const ReleaseControlItem = styled(Item) <ReleaseControlItemProps>`
     white-space: nowrap;
     justify-content: space-between;
     padding: 0.18rem 0.5rem;
-    border: ${({ isSelected }) => (isSelected ? '2px dashed green' : '1px solid #dcdcdc ')};
+    border: ${({ isSelected }) =>
+        isSelected ? '2px dashed green' : `1px solid ${tokens.colors.ui.background__medium.hex}`};
 `;
 
 export const MidSection = styled.div<{ expanded: boolean }>`
@@ -55,15 +56,14 @@ export const ReleaseControlExpandedTitle = styled.div`
 
 export const SubGroupWrapper = styled.div`
     display: flex;
-    justify-content: space-between;
     margin: 0;
     align-items: center;
     margin-bottom: 4px;
-    border: 1px solid ${tokens.colors.text.static_icons__tertiary.rgba};
+    border: 1px solid ${tokens.colors.ui.background__medium.hex};
     border-radius: 5px;
     color: ${tokens.colors.text.static_icons__default.rgba};
     width: 98%;
-    height: 85%;
+    height: 95%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -78,13 +78,14 @@ export const SubGroupText = styled.div`
 export const HTSubGroupText = styled.div`
     display: flex;
     margin-left: 4px;
-    margin-top: 2px;
+    margin-top: 4.5px;
     font-variant-numeric: tabular-nums;
+    width: 80px;
     cursor: pointer;
-    text-decoration: underline;
 
     :hover {
         opacity: 0.5;
+        text-decoration: underline;
     }
 `;
 
