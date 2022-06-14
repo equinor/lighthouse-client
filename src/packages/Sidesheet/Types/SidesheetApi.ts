@@ -1,4 +1,5 @@
 import { WidgetManifest } from '@equinor/lighthouse-widgets';
+import { MenuItem } from '@equinor/overlay-menu';
 import { openSidesheet } from '../Functions';
 import { ToggleFunction } from '../Hooks/useInternalSidesheetFunction';
 
@@ -14,13 +15,6 @@ export interface SidesheetApi {
         manifest?: Partial<WidgetManifest>
     ) => void;
     setHasUnsavedChanges: (hasUnsaved: boolean) => void;
-}
-
-export interface MenuItem {
-    label: string;
-    onClick?: () => void;
-    icon?: JSX.Element;
-    isDisabled?: boolean;
 }
 
 export type CustomSidesheet<T> = React.FC<{ item: T; actions: SidesheetApi }>;
