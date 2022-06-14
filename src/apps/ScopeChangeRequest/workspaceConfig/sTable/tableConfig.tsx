@@ -121,19 +121,19 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         defineColumn({
             header: 'Guess Mhrs',
             accessor: (s) => s?.disciplineGuesstimates.reduce((s, a) => s + a.guesstimate, 0),
-            width: 180,
+            width: 120,
             render: (_, u, cell) => GuessMhrsRender({ cell }),
         }),
         defineColumn({
             header: 'Est mhrs',
             accessor: (s) => s.estimatedChangeHours,
-            width: 180,
+            width: 120,
             render: (s, u, cell) => EstMhrsRender({ cell }),
         }),
         defineColumn({
             header: 'Exp mhrs',
             accessor: (s) => s.actualChangeHours ?? 0,
-            width: 180,
+            width: 120,
             render: (s, u, cell) => ExpMhrsRender({ cell }),
         }),
         defineColumn({
