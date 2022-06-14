@@ -8,9 +8,9 @@ const getFieldKeyBasedOnPlannedForecast = (
     plannedForecast: string
 ): keyof Loop => {
     switch (groupBy) {
-        case 'c01':
+        case 'RFC':
             return plannedForecast === 'Forecast' ? 'c01ForecastDate' : 'c01PlannedDate';
-        case 'c07':
+        case 'RFO':
             return plannedForecast === 'Forecast' ? 'c07ForecastDate' : 'c07PlannedDate';
 
         default:
@@ -20,7 +20,6 @@ const getFieldKeyBasedOnPlannedForecast = (
 
 const getKeyData = (item: Loop, groupBy: keyof Loop): string => {
     const value = item[groupBy]?.toString();
-
     if (value) return value;
 
     const groupByPlanned = groupBy.replace('forecast', 'planned').replace('Forecast', 'Planned');
@@ -29,8 +28,8 @@ const getKeyData = (item: Loop, groupBy: keyof Loop): string => {
 const getColumnDateKey = (fieldKey: keyof Loop, weeklyDaily: 'Weekly' | 'Daily', item: Loop) => {
     const date = getKeyData(item, fieldKey);
     return weeklyDaily === 'Weekly'
-        ? getYearAndWeekFromString(date)
-        : getYearAndWeekAndDayFromString(date);
+        ? getYearAndWeekFromString(date ?? '')
+        : getYearAndWeekAndDayFromString(date ?? '');
 };
 export const getDateKey: GetKeyFunction<Loop> = (item, key, groupBy) => {
     const { plannedForecast, weeklyDaily } = groupBy as CustomGroupByKeys;

@@ -4,7 +4,7 @@ import { LoopGroupBySelect } from '../../components';
 import { CustomGroupByKeys } from '../../types';
 import { Loop } from '../../types/loop';
 import { getDateKey } from '../helpers/getGroupByKey';
-export type ExtendedGardenFields = 'c01' | 'c07';
+export type ExtendedGardenFields = 'RFC' | 'RFO';
 export const fieldSettings: FieldSettings<Loop, ExtendedGardenFields> = {
     responsible: {
         label: 'Reponsible',
@@ -12,13 +12,13 @@ export const fieldSettings: FieldSettings<Loop, ExtendedGardenFields> = {
     functionalSystem: {
         label: 'Functional system',
     },
-    c01: {
-        label: 'C01',
+    RFC: {
+        label: 'RFC',
         getKey: getDateKey,
         getColumnSort: sortByNumber,
     },
-    c07: {
-        label: 'C07',
+    RFO: {
+        label: 'RFO',
         getKey: getDateKey,
         getColumnSort: sortByNumber,
     },
@@ -28,7 +28,7 @@ const customGroupByKeys: CustomGroupByKeys = {
     weeklyDaily: 'Weekly',
 };
 export const gardenConfig: GardenOptions<Loop> = {
-    gardenKey: 'responsible',
+    gardenKey: 'RFC' as keyof Loop,
     itemKey: 'loopNo',
     objectIdentifier: 'sourceIdentity',
     customGroupByKeys,
