@@ -207,61 +207,36 @@ export function createChecklistTestSteps(
                 : CheckListStepTag.HtCTest;
 
         const underline = shouldHaveUnderline(statusValue, allWorkflowSteps[i]);
-
+        const emptyWorkflowStep = {} as CheckList;
         const foundTestSteps = checkLists.filter((x) => x.formularType.startsWith(formularType));
         if (formularType === CheckListStepTag.HtCTest && cTestChecklists.length !== 0) {
             const workflowStep: CheckList = {
-                tagNo: '',
-                responsible: '',
-                formularGroup: '',
-                formularType: '',
+                ...emptyWorkflowStep,
                 status: getPipetestStatusForStep(cTestChecklists),
                 isHeatTrace: true,
-                revision: '',
-                test: '',
-                workflowStepText: 'C',
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
-                c01Forecast: '',
-                c01Planned: '',
-                m03Forecast: '',
-                m03Planned: '',
-                m04Actual: '',
                 underline: underline,
             };
             workflowSteps.push(workflowStep);
         } else if (foundTestSteps.length !== 0 && formularType !== CheckListStepTag.HtCTest) {
             const workflowStep: CheckList = {
-                tagNo: '',
-                responsible: '',
-                formularGroup: '',
-                formularType: '',
+                ...emptyWorkflowStep,
                 status: getPipetestStatusForStep(foundTestSteps),
                 isHeatTrace: true,
-                revision: '',
-                test: '',
                 workflowStepText: formularType.startsWith(CheckListStepTag.HtTest)
                     ? 'A'
                     : formularType.startsWith(CheckListStepTag.HtRetest)
                     ? 'B'
                     : 'C',
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
-                c01Forecast: '',
-                c01Planned: '',
-                m03Forecast: '',
-                m03Planned: '',
-                m04Actual: '',
                 underline: underline,
             };
             workflowSteps.push(workflowStep);
         } else {
             workflowSteps.push({
+                ...emptyWorkflowStep,
                 tagNo: allWorkflowSteps[i],
-                responsible: '',
-                formularType: '',
-                formularGroup: '',
                 status: CheckListStatus.Inactive,
-                revision: '',
-                test: '',
                 isHeatTrace: false,
                 workflowStepText:
                     allWorkflowSteps[i] === CheckListStepTag.HtTest
@@ -270,11 +245,6 @@ export function createChecklistTestSteps(
                         ? 'B'
                         : 'C',
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
-                c01Forecast: '',
-                c01Planned: '',
-                m03Forecast: '',
-                m03Planned: '',
-                m04Actual: '',
                 underline: underline,
             });
         }
