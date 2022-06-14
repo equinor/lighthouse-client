@@ -26,7 +26,6 @@ export const ListTab = (): JSX.Element => {
     const data = getFilteredData() as TableData[];
     const { tableOptions } = useDataContext();
 
-    console.log(tableOptions?.preventAutoGenerateColumns);
     useWorkspaceBookmarks();
 
     const [ref, { awaitableHeight }] = useElementData();
