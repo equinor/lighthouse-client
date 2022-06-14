@@ -1,6 +1,6 @@
 import { tokens } from '@equinor/eds-tokens';
+import { GetKeyFunction } from '@equinor/ParkView';
 import { DateTime } from 'luxon';
-import { GetKeyFunction } from '../../../../components/ParkView/Models/fieldSettings';
 import {
     getChecklistStepName,
     getPipetestStatusEnumByValue,
