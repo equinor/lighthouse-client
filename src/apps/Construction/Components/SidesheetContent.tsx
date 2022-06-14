@@ -11,9 +11,9 @@ interface SidesheetContentProps {
     actions: SidesheetApi;
 }
 
-export function SidesheetContent<T>({ actions, item }: SidesheetContentProps) {
+export function SidesheetContent<T>({ actions, item }: SidesheetContentProps): JSX.Element {
     const data = item.data as TableData[];
-    const columns = useColumns(data[0] as any);
+    const columns = useColumns(data[0] as any, false);
     const customCol: Column<WorkOrder> = {
         id: 'procosyslink',
         accessor: (row) => ({
