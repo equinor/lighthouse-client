@@ -395,20 +395,9 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: loopSetup,
         },
-    },
-    {
-        title: 'Loop test',
-        shortName: 'looptest',
-        color: '#0364B8',
-        groupe: Apps.ConstructionAndCommissioning,
-        icon: '',
-        tags: [],
-        app: {
-            appType: 'Workspace',
-            setup: loopSetup,
-        },
         appEnv: 'dev',
     },
+
     {
         title: 'N2He',
         shortName: 'N2He',
