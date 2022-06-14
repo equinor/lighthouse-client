@@ -250,20 +250,47 @@ export function getFullWorkflowTemplate(): CreateReleaseControlStepModel[] {
         },
         {
             order: 2,
-            name: 'Demount valve',
+            name: 'Coordinator',
             allowContributors: true,
             criteriaTemplates: [
                 {
                     type: 'RequireProcosysFunctionalRoleSignature',
                     assignToCreator: false,
-                    value: 'RC - Mechanical',
+                    value: 'RC - Coordinator',
                 },
             ],
             criterias: [],
         },
         {
             order: 3,
-            name: 'Demount Insulation',
+            name: 'Work prep',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Work prep.',
+                },
+            ],
+            criterias: [],
+        },
+
+        {
+            order: 4,
+            name: 'Circuit isolation',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Comm. Electro',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 5,
+            name: 'Demount ISO',
             allowContributors: true,
             criteriaTemplates: [
                 {
@@ -274,10 +301,9 @@ export function getFullWorkflowTemplate(): CreateReleaseControlStepModel[] {
             ],
             criterias: [],
         },
-
         {
-            order: 4,
-            name: 'Demount HT',
+            order: 6,
+            name: 'Check/demount HT',
             allowContributors: true,
             criteriaTemplates: [
                 {
@@ -289,40 +315,66 @@ export function getFullWorkflowTemplate(): CreateReleaseControlStepModel[] {
             criterias: [],
         },
         {
-            order: 5,
-            name: 'Mount valve',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Mechanical',
-                },
-            ],
-            criterias: [],
-        },
-        {
-            order: 6,
-            name: 'Bolt tensioning',
-            allowContributors: true,
-            criteriaTemplates: [
-                {
-                    type: 'RequireProcosysFunctionalRoleSignature',
-                    assignToCreator: false,
-                    value: 'RC - Mechanical',
-                },
-            ],
-            criterias: [],
-        },
-        {
             order: 7,
-            name: 'Electric isolation',
+            name: 'Remount (or new) HT/A-test',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Electrical',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 8,
+            name: 'Remount (or new) ISO',
             allowContributors: true,
             criteriaTemplates: [
                 {
                     type: 'RequireProcosysFunctionalRoleSignature',
                     assignToCreator: false,
                     value: 'RC - Insulation',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 9,
+            name: 'Remount (or new) HT/B-test',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Electrical',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 10,
+            name: 'Circuit power-up',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Comm. Electro',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 11,
+            name: 'Remount (or new) HT/C-test',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Electrical',
                 },
             ],
             criterias: [],

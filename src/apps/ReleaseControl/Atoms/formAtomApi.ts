@@ -141,11 +141,13 @@ function checkFormState(
         if (request.workflowSteps?.some((step) => step.name === null || step.name === '')) {
             return false;
         }
-        //Do not allow empty responsible
+        //Do not allow empty responsible (except initiate)
         if (
             request.workflowSteps?.some((step) =>
                 step.criteriaTemplates.some(
-                    (criteria) => criteria.value === null || criteria.value === ''
+                    (criteria) =>
+                        criteria.value !== 'Initiate' &&
+                        (criteria.value === null || criteria.value === '')
                 )
             )
         ) {

@@ -178,10 +178,18 @@ const HiddenDragIcon = styled.div`
 `;
 
 const stepNames = [
-    'Demount Insulation',
-    'Electric isolation',
-    'Demount HT',
-    'Demount valve',
-    'Mount valve',
-    'Bolt tensioning',
+    'Coordinator',
+    'Engineering',
+    'Material',
+    'Work prep',
+    'Scaffolding',
+    'Circuit isolation',
+    'Demount ISO',
+    'Check/demount HT',
+    'Demount Mech./Piping',
+    'Remount (or new) HT/A-test',
+    'Remount (or new) ISO',
+    'Recheck (or new) HT/B-test',
+    'Circuit power-up',
+    'Recheck (or new) HT/C-test',
 ];
