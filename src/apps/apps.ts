@@ -22,7 +22,7 @@ import {
     MDRReport,
     NonConformityReport,
     QualityDeviationReport,
-    SafetyPerformanceReport
+    SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
 import { setup as querySetup } from './Query';
@@ -32,6 +32,7 @@ import { setup as SwcrSetup } from './swcr';
 import { setup as tasksSetup } from './Tasks/TasksApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
+import { setup as loopSetup } from './Loop';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -392,7 +393,21 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'Workspace',
+            setup: loopSetup,
         },
+    },
+    {
+        title: 'Loop test',
+        shortName: 'looptest',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: [],
+        app: {
+            appType: 'Workspace',
+            setup: loopSetup,
+        },
+        appEnv: 'dev',
     },
     {
         title: 'N2He',
