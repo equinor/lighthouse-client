@@ -6,6 +6,7 @@ interface ProCoSysUrls {
     getSystemUrl: (systemId: string | number) => string;
     getPunchUrl: (punchId: string | number) => string;
     getDocumentUrl: (documentId: string | number) => string;
+    getWorkOrderUrl: (workOrderId: string | number) => string;
 }
 
 const getProCoSysUrl = () =>
@@ -17,4 +18,5 @@ export const proCoSysUrls: ProCoSysUrls = {
     getPunchUrl: (punchId) => `${getProCoSysUrl()}/Completion#PunchListItem|${punchId}`,
     getCommPkgUrl: (commPkgId) => `${getProCoSysUrl()}/Completion#CommPkg|${commPkgId}`,
     getDocumentUrl: (documentId) => `${getProCoSysUrl()}/Documents/Document#id=${documentId}`,
+    getWorkOrderUrl: (workOrderId) => `${getProCoSysUrl()}/WorkOrders/WorkOrder#id=${workOrderId}`,
 };

@@ -1,5 +1,6 @@
 import { SidesheetApi } from '@equinor/sidesheet';
 import { Column, LinkCell, Table, TableData, useColumns } from '@equinor/Table';
+import { proCoSysUrls } from '../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../Types';
 
 interface Data<T> {
@@ -17,7 +18,7 @@ export function SidesheetContent<T>({ actions, item }: SidesheetContentProps): J
     const customCol: Column<WorkOrder> = {
         id: 'procosyslink',
         accessor: (row) => ({
-            content: `https://procosys.equinor.com/JOHAN_CASTBERG/WorkOrders/WorkOrder#id=${row['sourceIdentity']}`,
+            content: proCoSysUrls.getWorkOrderUrl(row['sourceIdentity']),
         }),
         Header: '',
         Cell: LinkCell,
