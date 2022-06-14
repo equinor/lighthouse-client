@@ -8,10 +8,11 @@ export const TabsWrapper = styled.div`
     width: -webkit-fill-available;
     height: -webkit-fill-available;
 `;
-export const Tab = styled.div`
+export const Tab = styled.div<{ isActive: boolean }>`
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
+    display: ${(p) => (p.isActive ? 'block' : 'none')};
 `;

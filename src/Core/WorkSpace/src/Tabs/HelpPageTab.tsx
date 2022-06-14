@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
+import { TabProps } from './tabProps';
 
-export const HelpPageTab = (): JSX.Element | null => {
+export const HelpPageTab = ({ isActive }: TabProps): JSX.Element | null => {
     const { helpPageOptions } = useWorkSpace();
 
     if (!helpPageOptions) return null;

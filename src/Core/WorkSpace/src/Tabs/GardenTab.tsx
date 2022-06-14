@@ -15,6 +15,7 @@ import {
 } from '../Util/bookmarks/gardenBookmarks';
 import { useWorkspaceBookmarks } from '../Util/bookmarks/hooks';
 import { useWorkSpace } from '../WorkSpaceApi/useWorkSpace';
+import { TabProps } from './tabProps';
 const GardenTabWrapper = styled.div`
     display: grid;
     grid-template-rows: auto 1fr;
@@ -22,7 +23,7 @@ const GardenTabWrapper = styled.div`
     height: 100%;
     width: 100%;
 `;
-export const GardenTab = (): JSX.Element => {
+export const GardenTab = ({ isActive }: TabProps): JSX.Element => {
     const {
         filterState: { getFilteredData },
     } = useFilterApiContext();

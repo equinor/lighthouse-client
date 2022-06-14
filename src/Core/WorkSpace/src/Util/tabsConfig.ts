@@ -18,7 +18,7 @@ export interface TabsConfigItem {
     title: string;
     tabId: WorkspaceTab;
     icon: React.FC;
-    viewComponent: React.FC;
+    viewComponent: React.FC<{ isActive: boolean }>;
 }
 
 const tabsConfig: TabsConfigItem[] = [
