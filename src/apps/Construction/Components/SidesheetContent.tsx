@@ -18,7 +18,7 @@ export function SidesheetContent<T>({ actions, item }: SidesheetContentProps): J
     const customCol: Column<WorkOrder> = {
         id: 'procosyslink',
         accessor: (row) => ({
-            content: proCoSysUrls.getWorkOrderUrl(row['sourceIdentity']),
+            content: proCoSysUrls.getWorkOrderUrl(row['sourceIdentity'] ?? ''),
         }),
         Header: '',
         Cell: LinkCell,
