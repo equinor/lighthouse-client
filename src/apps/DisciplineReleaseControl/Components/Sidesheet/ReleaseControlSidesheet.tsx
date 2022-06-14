@@ -1,5 +1,5 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { useLocationKey } from '@equinor/filter';
+import { useLocationKey } from '@equinor/hooks';
 import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
