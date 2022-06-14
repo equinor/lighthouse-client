@@ -59,34 +59,14 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             header: 'Comment',
             accessor: (s) => s.hasComments,
             width: 80,
-            render: (s) => (
-                <>
-                    {s.hasComments && (
-                        <CenterIcon>
-                            <Icon
-                                name={'comment_chat'}
-                                color={`${tokens.colors.text.static_icons__default.hex}`}
-                            />
-                        </CenterIcon>
-                    )}
-                </>
-            ),
+            render: ({ hasComments }) => <Comments hasComments={hasComments} />,
         }),
         defineColumn({
             header: 'Contr.',
             accessor: (s) => s.hasPendingContributions,
             width: 70,
-            render: (s) => (
-                <>
-                    {s.hasPendingContributions && (
-                        <CenterIcon>
-                            <Icon
-                                color={tokens.colors.text.static_icons__default.hex}
-                                name="group"
-                            />
-                        </CenterIcon>
-                    )}
-                </>
+            render: ({ hasPendingContributions }) => (
+                <PendingContributions hasPending={hasPendingContributions} />
             ),
         }),
         defineColumn({
@@ -107,9 +87,7 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
         }),
         defineColumn({
             header: 'Next',
-            accessor: (s) =>
-                s.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
-                    ?.valueDescription ?? null,
+            accessor: findNextToSign,
             width: 220,
         }),
         defineColumn({ header: 'Status', accessor: (s) => s.workflowStatus, width: 120 }),
@@ -154,27 +132,13 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
             header: 'Last updated',
             accessor: (s) => s.modifiedAtUtc,
             width: 120,
-            render: (s) => (
-                <>
-                    {s.modifiedAtUtc &&
-                        DateTime.fromJSDate(new Date(s.modifiedAtUtc)).toRelative({
-                            locale: 'en-GB',
-                        })}
-                </>
-            ),
+            render: (s) => <MakeDateCell date={s.modifiedAtUtc} />,
         }),
         defineColumn({
             header: 'Created at',
             accessor: (s) => s.createdAtUtc,
             width: 120,
-            render: (s) => (
-                <>
-                    {s.createdAtUtc &&
-                        DateTime.fromJSDate(new Date(s.createdAtUtc)).toRelative({
-                            locale: 'en-GB',
-                        })}
-                </>
-            ),
+            render: (s) => <MakeDateCell date={s.createdAtUtc} />,
         }),
         defineColumn({
             header: 'Last signed',
@@ -299,3 +263,53 @@ const ExpMhrsRender = ({ cell }: GuessMhrsRenderProps) => {
         />
     );
 };
+
+interface PendingContributionsProps {
+    hasPending: boolean;
+}
+const PendingContributions = ({ hasPending }: PendingContributionsProps) => (
+    <>
+        {hasPending && (
+            <CenterIcon>
+                <Icon color={tokens.colors.text.static_icons__default.hex} name="group" />
+            </CenterIcon>
+        )}
+    </>
+);
+
+interface CommentsProps {
+    hasComments: boolean;
+}
+const Comments = ({ hasComments }: CommentsProps) => (
+    <>
+        {hasComments && (
+            <CenterIcon>
+                <Icon
+                    name={'comment_chat'}
+                    color={`${tokens.colors.text.static_icons__default.hex}`}
+                />
+            </CenterIcon>
+        )}
+    </>
+);
+
+function findNextToSign(sc: ScopeChangeRequest) {
+    return (
+        sc.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)?.valueDescription ??
+        null
+    );
+}
+
+interface MakeDateCellProps {
+    date: string | null;
+}
+function MakeDateCell({ date }: MakeDateCellProps) {
+    return (
+        <>
+            {date &&
+                DateTime.fromJSDate(new Date(date)).toRelative({
+                    locale: 'en-GB',
+                })}
+        </>
+    );
+}
