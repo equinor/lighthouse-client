@@ -1,10 +1,11 @@
-import { Icon, Divider } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useLocationContext } from '../../../Context/LocationProvider';
 import { useViewerContext } from '../../../Context/ViewProvider';
 import { TabsConfigItem } from '../../../Util/tabsConfig';
 import { TabButton } from '../../ToggleButton';
 import { ANALYTICS } from '../Header';
+import { Divider } from '../HeaderStyles';
 
 interface HeaderTabButtonsProps {
     tabs: TabsConfigItem[];

@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Icon, Divider } from '@equinor/eds-core-react';
+import { Icon } from '@equinor/eds-core-react';
 
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { BookmarkDropdown } from '../../../../../packages/BookmarksManager/src';
@@ -12,7 +12,7 @@ import { Presets } from '../Presets/Presets';
 import { SearchButton } from '../Search/Search';
 import { TabButton } from '../ToggleButton';
 import { CreatorButton } from './CreatorButton/CreatorButton';
-import { LeftSection, FillSection, RightSection } from './HeaderStyles';
+import { LeftSection, FillSection, RightSection, Divider } from './HeaderStyles';
 import { HeaderTabButtons } from './HeaderTabButtons/HeaderTabButtons';
 import { RefreshButton } from './RefreshButton/RefreshButton';
 
