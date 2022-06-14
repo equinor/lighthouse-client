@@ -8,10 +8,15 @@ export type Loop = {
     commissioningPackageNo: string | null;
     mechanicalCompletionPackageNo: string | null;
     priority1: null;
+    /** RFC */
     c01PlannedDate: Date | null;
+    /** RFC */
     c01ForecastDate: Date | null;
+    /** RFO */
     c07PlannedDate: Date | null;
+    /** RFO */
     c07ForecastDate: Date | null;
+    /** Checklist status (?) */
     status: string | null;
     responsible: string | null;
     signedDate: Date | null;
