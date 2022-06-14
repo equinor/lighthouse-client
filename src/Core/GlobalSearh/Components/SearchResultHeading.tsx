@@ -11,8 +11,8 @@ export const SearchResultHeading = ({
 }: SearchResultHeadingProps): JSX.Element => {
     return (
         <Wrapper>
-            <Color style={{ background: color }}></Color>
-            <Title>{typeTitle}</Title>
+            <Color color={color}></Color>
+            <Title variant="h5">{typeTitle}</Title>
         </Wrapper>
     );
 };

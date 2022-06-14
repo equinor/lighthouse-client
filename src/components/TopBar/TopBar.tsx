@@ -5,6 +5,7 @@ import { tokens } from '@equinor/eds-tokens';
 import { isProduction, useClientContext } from '@equinor/lighthouse-portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 import { useRef, useState } from 'react';
+import { GlobalSearch } from '../../Core/GlobalSearh/Components/GlobalSearch';
 import { NotificationBell } from '../../Core/Notifications/Components/NotificationBell';
 import { AddMenu } from '../../FusionModules/DataCreatorReact/Components/AddMenu';
 import { useDataCreator } from '../../FusionModules/DataCreatorReact/Hooks/useCreator';
@@ -105,6 +106,7 @@ const ClientTopBar = (): JSX.Element => {
                             <Icon name="bookmarks" />
                         </Action>
                     )}
+                    <GlobalSearch />
                 </Icons>
             </TopBar.Actions>
             {/* <SupportButton /> */}

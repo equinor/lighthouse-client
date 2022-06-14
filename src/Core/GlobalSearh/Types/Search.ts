@@ -1,3 +1,10 @@
+export interface SearchItem {
+    type: string;
+    title: string;
+    color: string;
+    count: number;
+    items: any[];
+}
 export interface SearchResponse {
     hits: number;
     totalHits: number;
@@ -5,11 +12,11 @@ export interface SearchResponse {
     totalMcPkgHits: number;
     totalTagHits: number;
     totalPunchItemHits: number;
-    items: SearchItem[];
+    items: SearchItems[];
     debugInfo: string;
 }
 
-export interface SearchItem {
+export interface SearchItems {
     key: string;
     lastUpdated: string;
     plant: string;
