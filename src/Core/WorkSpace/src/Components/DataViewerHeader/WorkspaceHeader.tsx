@@ -1,10 +1,6 @@
 import { useMemo } from 'react';
 import { Icon } from '@equinor/eds-core-react';
 
-import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
-import { BookmarkDropdown } from '../../../../../packages/BookmarksManager/src';
-import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
-import { StatusBar } from '../../../../../packages/StatusBar/src';
 import { useDataContext } from '../../Context/DataProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
 import { TabsConfigItem } from '../../Util/tabsConfig';
@@ -12,9 +8,13 @@ import { Presets } from '../Presets/Presets';
 import { SearchButton } from '../Search/Search';
 import { TabButton } from '../ToggleButton';
 import { CreatorButton } from './CreatorButton/CreatorButton';
-import { LeftSection, FillSection, RightSection, Divider } from './HeaderStyles';
+import { LeftSection, FillSection, RightSection } from './HeaderStyles';
 import { HeaderTabButtons } from './HeaderTabButtons/HeaderTabButtons';
 import { RefreshButton } from './RefreshButton/RefreshButton';
+import { StatusBar } from '@equinor/lighthouse-status-bar';
+import { useFilterApiContext } from '@equinor/filter';
+import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
+import { BookmarkDropdown } from '@equinor/BookmarksManager';
 
 interface WorkspaceHeaderProps {
     tabs: TabsConfigItem[];
@@ -44,7 +44,6 @@ export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps
                 <CreatorButton />
 
                 <HeaderTabButtons tabs={tabs} />
-                <Divider />
 
                 <SearchButton />
                 <RefreshButton />

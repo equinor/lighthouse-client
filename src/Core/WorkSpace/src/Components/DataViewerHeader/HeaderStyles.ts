@@ -20,7 +20,6 @@ export const ActionBar = styled.div`
     height: 48px;
     display: grid;
     grid-template-columns: 2fr auto;
-    grid-template-rows: 1fr 1fr;
     width: -webkit-fill-available;
 `;
 

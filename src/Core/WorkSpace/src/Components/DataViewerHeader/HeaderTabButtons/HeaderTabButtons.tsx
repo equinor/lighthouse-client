@@ -54,6 +54,7 @@ export const HeaderTabButtons = ({ tabs }: HeaderTabButtonsProps): JSX.Element =
                     </TabButton>
                 );
             })}
+            <Divider />
         </>
     );
 };

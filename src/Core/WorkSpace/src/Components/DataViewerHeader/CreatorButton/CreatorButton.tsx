@@ -1,7 +1,8 @@
-import { Icon, Divider } from '@equinor/eds-core-react';
-import { useDataCreator } from '../../../../../../FusionModules/DataCreatorReact';
+import { Icon } from '@equinor/eds-core-react';
+import { useDataCreator } from '@equinor/lighthouse-fusion-modules';
 import { useDataContext } from '../../../Context/DataProvider';
 import { TabButton } from '../../ToggleButton';
+import { Divider } from '../HeaderStyles';
 
 export const CreatorButton = (): JSX.Element => {
     const { key } = useDataContext();
