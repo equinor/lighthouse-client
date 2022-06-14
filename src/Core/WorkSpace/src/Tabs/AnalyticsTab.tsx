@@ -3,8 +3,9 @@ import { AnalyticsView } from '@equinor/Diagrams';
 import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
 
 import { useDataContext } from '../Context/DataProvider';
+import { TabProps } from './tabProps';
 
-export const AnalyticsTab = (): JSX.Element => {
+export const AnalyticsTab = ({ isActive }: TabProps): JSX.Element => {
     const {
         filterState: { getFilteredData },
     } = useFilterApiContext();

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useBookmarkContext } from '../Context/BookmarkContext';
 import { useDataContext } from '../Context/DataProvider';
 import { useViewerContext } from '../Context/ViewProvider';
+import { TabProps } from './tabProps';
 
 export const Wrapper = styled.div`
     position: absolute;
@@ -13,10 +14,11 @@ export const Wrapper = styled.div`
     background-color: #f7f7f7;
 `;
 
-export const PowerBiTab = (): JSX.Element | null => {
+export const PowerBiTab = ({ isActive }: TabProps): JSX.Element | null => {
     const { powerBiOptions } = useDataContext();
     const { activePage, isFilterActive, setActivePage, pbiOptions } = useViewerContext();
     const { applyBookmark, saveBookmark } = useBookmarkContext<PowerBIBookmarkPayload>();
+    if (!isActive) return null;
     if (powerBiOptions) {
         return (
             <Wrapper>
