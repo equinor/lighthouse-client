@@ -1,11 +1,12 @@
+import { useState } from 'react';
 import { tokens } from '@equinor/eds-tokens';
 import { useWorkSpace } from '@equinor/WorkSpace';
-import { useState } from 'react';
 import styled from 'styled-components';
+
 import { ClickableIcon } from '../../../../../packages/Components/Icon';
 import { FilterView } from '../../../../../packages/Filter/Components/FilterView/FilterView';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
-import { FilterGroup } from './FilterGroup';
+import { FilterGroup } from './FilterGroup/FilterGroup';
 import { FilterQuickSearch } from './FilterQuickSearch';
 
 export const QuickFilter = (): JSX.Element => {
