@@ -14,6 +14,7 @@ export const filterSetup: FilterOptions<SwcrPackage> = [
     {
         name: 'Status',
         valueFormatter: ({ status }) => status,
+        isQuickFilter: true,
         sort: (filterValues) =>
             filterValues.sort((a, b) => sortBySwcrStatusPriority(a as string, b as string)),
         customValueRender: (value) => {
@@ -32,14 +33,17 @@ export const filterSetup: FilterOptions<SwcrPackage> = [
     {
         name: 'Supplier',
         valueFormatter: ({ supplier }) => supplier,
+        isQuickFilter: true,
     },
     {
         name: 'System',
         valueFormatter: ({ system }) => system,
+        isQuickFilter: true,
     },
     {
         name: 'Types',
         valueFormatter: ({ types }) => (types.length > 0 ? types.split(',') : []),
+        isQuickFilter: true,
     },
     {
         name: 'Plant',
@@ -59,6 +63,7 @@ export const filterSetup: FilterOptions<SwcrPackage> = [
     {
         name: 'Next signature by',
         valueFormatter: (swcr) => getNextToSignKeys(swcr, ''),
+        isQuickFilter: true,
     },
     {
         name: 'Next signature role',

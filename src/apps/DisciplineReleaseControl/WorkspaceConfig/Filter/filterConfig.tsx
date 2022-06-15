@@ -3,7 +3,7 @@ import { getGardenItemColor } from '../../Components/Garden/gardenFunctions';
 import {
     StepFilterContainer,
     StepFilterText,
-    WorkflowFilterDot
+    WorkflowFilterDot,
 } from '../../Components/Workflow/Components/WorkflowFilterDot';
 import { getStatusLetterFromStatus } from '../../Functions/tableHelpers';
 import { PipetestStep } from '../../Types/drcEnums';
@@ -49,12 +49,13 @@ export const filterConfig: FilterOptions<Pipetest> = [
             });
             return values;
         },
+        isQuickFilter: true,
     },
 
     {
         name: 'Step name',
         valueFormatter: ({ steps }) => steps.filter((v, i, a) => a.indexOf(v) === i),
-        defaultHidden: true,
+
         customValueRender: (value) => {
             return (
                 <StepFilterContainer>
@@ -95,15 +96,18 @@ export const filterConfig: FilterOptions<Pipetest> = [
     {
         name: 'System',
         valueFormatter: ({ name }) => name.substring(0, 2),
+        isQuickFilter: true,
     },
     {
         name: 'Priority',
         valueFormatter: ({ commPkPriority1 }) =>
             commPkPriority1 !== '' ? commPkPriority1 : 'Unknown',
+        isQuickFilter: true,
     },
     {
         name: 'Location',
         valueFormatter: ({ location }) => location,
+        isQuickFilter: true,
     },
     {
         name: 'Due date time period',
@@ -112,12 +116,10 @@ export const filterConfig: FilterOptions<Pipetest> = [
     {
         name: 'Overdue',
         valueFormatter: ({ overdue }) => overdue,
-        defaultHidden: true,
     },
     {
         name: 'Completion status',
         valueFormatter: ({ shortformCompletionStatus }) => shortformCompletionStatus,
-        defaultHidden: true,
     },
     {
         name: 'Switchboard',

@@ -5,7 +5,6 @@ import { useDataContext } from '../../Context/DataProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { Presets } from '../Presets/Presets';
-import { SearchButton } from '../Search/Search';
 import { TabButton } from '../ToggleButton';
 import { CreatorButton } from './CreatorButton/CreatorButton';
 import { LeftSection, FillSection, RightSection } from './HeaderStyles';
@@ -45,7 +44,7 @@ export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps
 
                 <HeaderTabButtons tabs={tabs} />
 
-                <SearchButton />
+                {/* <SearchButton /> */}
                 <RefreshButton />
                 <BookmarkDropdown appKey={shortName} subSystem={group} />
 
