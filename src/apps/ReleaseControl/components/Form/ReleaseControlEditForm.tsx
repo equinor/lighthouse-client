@@ -111,11 +111,6 @@ const SubmitActionBar = (): JSX.Element => {
                             <Button disabled={!isValid} onClick={() => handleSave(false)}>
                                 Save
                             </Button>
-                            {releaseControl.state === 'Draft' && (
-                                <Button disabled={!isValid} onClick={() => handleSave(true)}>
-                                    Submit
-                                </Button>
-                            )}
                         </>
                     )}
                 </>
