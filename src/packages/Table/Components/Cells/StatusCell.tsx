@@ -1,18 +1,20 @@
 import { useMemo } from 'react';
 import { CellProps } from 'react-table';
 import styled from 'styled-components';
-import { CellRenderProps, TableData } from '../../Types/types';
-
-const Status = styled.div`
-    width: fit-content;
-    background-color: green;
-    font-weight: 400;
-    font-size: 13px;
-    border-radius: 0.8em;
-    padding: 4px;
+import { CellRenderProps, TableData } from '../../Types';
+const Wrapper = styled.div`
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 5px;
+    width: fit-content;
+    font-weight: 400;
+    font-size: 13px;
+`;
+const Status = styled.div`
+    background-color: green;
+    height: 12px;
+    width: 12px;
+    border-radius: 50%;
 `;
 
 export const StatusCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
@@ -24,5 +26,10 @@ export const StatusCell = <T extends TableData>(props: CellProps<T, CellRenderPr
         () => (cellAttributeFn ? cellAttributeFn(content) : undefined),
         [cellAttributeFn, content]
     );
-    return <Status {...attr}>{content[currentKey] as string}</Status>;
+    return (
+        <Wrapper>
+            <Status {...attr}></Status>
+            {content[currentKey] as string}
+        </Wrapper>
+    );
 };
