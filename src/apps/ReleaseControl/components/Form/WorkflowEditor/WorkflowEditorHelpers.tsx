@@ -226,13 +226,17 @@ export function packCriterias(criterias: Criteria[]): CriteriaTemplate[] {
         const criteriaTemplate: CriteriaTemplate = {
             assignToCreator: false,
             value: c.valueDescription,
-            type: 'RequireProcosysFunctionalRoleSignature',
+            type:
+                c.type === 'RequireProcosysFunctionalRoleSignature'
+                    ? 'RequireProcosysFunctionalRoleSignature'
+                    : 'RequireProcosysUserSignature',
         };
         return criteriaTemplate;
     });
     return criteriaTemplates;
 }
 
+//TODO - get from backend
 export function getFullWorkflowTemplate(): CreateReleaseControlStepModel[] {
     const fullReleaseControlTemplate: CreateReleaseControlStepModel[] = [
         {
