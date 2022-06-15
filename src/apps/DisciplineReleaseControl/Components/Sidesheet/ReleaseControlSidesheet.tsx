@@ -1,5 +1,5 @@
 import { Tabs } from '@equinor/eds-core-react';
-import { useLocationKey } from '@equinor/filter';
+import { useLocationKey } from '@equinor/hooks';
 import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
@@ -85,7 +85,7 @@ export const ReleaseControlSidesheet = ({
                     <Tabs.Tab>Work orders</Tabs.Tab>
                     <Tabs.Tab>Insulation</Tabs.Tab>
                     <Tabs.Tab>Checklists</Tabs.Tab>
-                    <Tabs.Tab>3D-visualisation</Tabs.Tab>
+                    <Tabs.Tab>3D</Tabs.Tab>
                 </SidesheetTabList>
                 <Tabs.Panels>
                     <Tabs.Panel>
@@ -146,7 +146,6 @@ export const ReleaseControlSidesheet = ({
                     </Panel>
                 </Tabs.Panels>
             </Tabs>
-            \
         </Wrapper>
     );
 };

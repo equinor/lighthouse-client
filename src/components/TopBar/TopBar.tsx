@@ -12,6 +12,7 @@ import Icon from '../Icon/Icon';
 import { useMenuContext } from '../Menu';
 import { LocationBreadCrumbs } from './BreadCrumbs/Breadcrumbs';
 import { DevBar } from './DevBar/DevBar';
+import { HelpPage } from './HelpPage/HelpPage';
 import { HelpIcon } from './Icons/Help';
 import Logo from './Logo/Logo';
 import { Action, ActionWrapper, Header, Icons, TopBarWrapper } from './TopBarStyle';
@@ -85,6 +86,8 @@ const ClientTopBar = (): JSX.Element => {
                             />
                         </ActionWrapper>
                     )}
+                    <HelpPage />
+
                     <Action
                         disabled
                         onClick={() => {

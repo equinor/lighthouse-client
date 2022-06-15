@@ -1,13 +1,22 @@
 import { useErrorMessageListener } from '../../functions/ErrorMessage/useErrorMessageListener';
 import { ClickableIcon } from '../../../../components/Icon/ClickableIcon';
 import { ErrorContainer, Inline, ErrorDetails } from './ErrorBanner.styles';
+import { useEffect } from 'react';
+
+interface ScopeChangeErrorBanner {
+    clearOnPropChange?: any;
+}
 
 /**
  * Provides a uniform banner for error messages in the sidesheet
  * @returns
  */
-export function ScopeChangeErrorBanner(): JSX.Element {
+export function ScopeChangeErrorBanner({ clearOnPropChange }: ScopeChangeErrorBanner): JSX.Element {
     const { errors, removeErrors } = useErrorMessageListener();
+
+    useEffect(() => {
+        errors.forEach((s) => removeErrors(s));
+    }, [clearOnPropChange]);
 
     return (
         <>

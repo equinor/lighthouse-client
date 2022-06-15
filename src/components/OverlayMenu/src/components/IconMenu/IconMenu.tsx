@@ -65,7 +65,7 @@ export const IconMenu = ({
                         return (
                             <Menu.Item
                                 disabled={x.isDisabled}
-                                onClick={() => x.onClick && x.onClick()}
+                                onClick={(e) => x.onClick && x.onClick(e)}
                                 key={x.label + i}
                             >
                                 <Icon />

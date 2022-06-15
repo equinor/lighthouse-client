@@ -23,17 +23,6 @@ export interface SignedBy {
     email: string;
 }
 
-export interface Criteria {
-    id: string;
-    type: string;
-    value: string;
-    valueDescription: string;
-    signedAtUtc: string;
-    signedBy: SignedBy;
-    signedComment: string;
-    signedState: CriteriaSignState | null;
-}
-
 export interface Person {
     id: string;
     oid: string;
@@ -96,6 +85,16 @@ export interface CreateReleaseControlStepModel {
     criterias: Criteria[];
 }
 
+export interface Criteria {
+    id: string;
+    type: string;
+    value: string;
+    valueDescription: string;
+    signedAtUtc: string;
+    signedBy: SignedBy;
+    signedComment: string;
+    signedState: CriteriaSignState | null;
+}
 export interface CriteriaTemplate {
     type: 'RequireProcosysUserSignature' | 'RequireProcosysFunctionalRoleSignature';
     assignToCreator: boolean;
@@ -134,6 +133,7 @@ export interface ReleaseControl {
     allowContributors: boolean;
     currentWorkflowStep: ReleaseControlStep;
     workflowSteps: ReleaseControlStep[];
+    editedWorkflowSteps: ReleaseControlStep[];
     tags: ReleaseControlTag[];
     areas: ReleaseControlArea[];
 }

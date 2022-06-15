@@ -24,11 +24,12 @@ export const ListTab = (): JSX.Element => {
 
     const data = getFilteredData() as TableData[];
     const { tableOptions } = useDataContext();
+
     useWorkspaceBookmarks();
 
     const [ref, { awaitableHeight }] = useElementData();
 
-    const columns = useColumns(data[0], {
+    const columns = useColumns(data[0], Boolean(tableOptions?.preventAutoGenerateColumns), {
         customCellView: tableOptions?.customCellView,
         headers: tableOptions?.headers,
         customColumns: tableOptions?.customColumns,

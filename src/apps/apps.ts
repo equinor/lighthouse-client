@@ -22,7 +22,7 @@ import {
     MDRReport,
     NonConformityReport,
     QualityDeviationReport,
-    SafetyPerformanceReport
+    SafetyPerformanceReport,
 } from './PowerBI';
 import { setup as punchSetup } from './Punch';
 import { setup as querySetup } from './Query';
@@ -32,6 +32,7 @@ import { setup as SwcrSetup } from './swcr';
 import { setup as tasksSetup } from './Tasks/TasksApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
+import { setup as loopSetup } from './Loop';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -275,6 +276,7 @@ export const apps: AppManifest[] = [
             setup: handoverSetup,
         },
         appEnv: 'prod',
+        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Handover.aspx',
     },
     {
         title: 'Work order',
@@ -288,6 +290,7 @@ export const apps: AppManifest[] = [
         },
         tags: ['Job'],
         appEnv: 'prod',
+        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Work-order.aspx',
     },
     {
         title: 'Mechanical Completion',
@@ -329,6 +332,7 @@ export const apps: AppManifest[] = [
             setup: installationSetup,
         },
         appEnv: 'prod',
+        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Installation.aspx',
     },
     {
         title: 'Piping and Heat trace',
@@ -342,6 +346,8 @@ export const apps: AppManifest[] = [
             setup: disciplineReleaseControlSetup,
         },
         appEnv: 'prod',
+        helpPageUrl:
+            'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Piping-and-heat-trace.aspx',
     },
     {
         title: 'Release control',
@@ -354,7 +360,9 @@ export const apps: AppManifest[] = [
             appType: 'Workspace',
             setup: releaseControlSetup,
         },
-        appEnv: 'dev',
+        appEnv: 'test',
+        helpPageUrl:
+            'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Release-control.aspx',
     },
     {
         title: 'Preservation',
@@ -392,8 +400,11 @@ export const apps: AppManifest[] = [
         tags: [],
         app: {
             appType: 'Workspace',
+            setup: loopSetup,
         },
+        appEnv: 'dev',
     },
+
     {
         title: 'N2He',
         shortName: 'N2He',
@@ -430,6 +441,7 @@ export const apps: AppManifest[] = [
             setup: SwcrSetup,
         },
         appEnv: 'prod',
+        helpPageUrl: 'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/SWCR.aspx',
     },
     {
         title: 'Invitation for punch out ',
@@ -478,6 +490,8 @@ export const apps: AppManifest[] = [
         },
         tags: [],
         appEnv: 'prod',
+        helpPageUrl:
+            'https://statoilsrm.sharepoint.com/sites/Portal/SitePages/Scope-change-request.aspx',
     },
     {
         title: 'Management of change',

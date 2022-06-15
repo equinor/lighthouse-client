@@ -14,4 +14,5 @@ export interface AppManifest {
     uri?: (isProduction: boolean) => string;
     appEnv?: AppEnvironment;
     app?: App;
+    helpPageUrl?: string;
 }
