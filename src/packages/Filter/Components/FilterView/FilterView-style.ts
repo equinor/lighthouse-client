@@ -5,11 +5,10 @@ import styled from 'styled-components';
 export const Wrapper = styled.section`
     display: flex;
     flex-direction: row;
-    height: ${({ isActive }: { isActive: boolean }) => (isActive ? `200px` : '0px')};
+    height: 200px;
 
     background-color: ${tokens.colors.ui.background__light.rgba};
-    border-bottom: ${({ isActive }: { isActive: boolean }) =>
-        isActive ? `1.5px solid ${tokens.colors.ui.background__medium.rgba}` : 'none'};
+    border-bottom: 1.5px solid ${tokens.colors.ui.background__medium.rgba};
     transition: height 0.35s ease;
     width: 100%;
     overflow-x: scroll;
@@ -23,7 +22,7 @@ export const Wrapper = styled.section`
         }
     }
     animation-duration: 0.5s;
-    animation-name: ${({ isActive }: { isActive: boolean }) => (isActive ? 'fadeIn' : '')};
+    animation-name: fadeIn;
 `;
 
 export const FilterSelect = styled.div`
