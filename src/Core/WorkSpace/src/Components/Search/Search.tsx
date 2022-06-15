@@ -1,6 +1,6 @@
 import { Search } from '@equinor/eds-core-react';
-import { useTimeoutWithCancel } from '@equinor/hooks';
-import { useMemo, useState } from 'react';
+import { useOutsideClick, useTimeoutWithCancel } from '@equinor/hooks';
+import { useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { IconMenu, MenuItem } from '../../../../../components/OverlayMenu/src';
 import { ClickableIcon } from '../../../../../packages/Components/Icon';
@@ -14,6 +14,9 @@ export function SearchButton(): JSX.Element {
     const [selectedSearchItem, setSelectedSearchItem] = useState<string | undefined>();
     const [searchText, setSearchText] = useState<string>('');
     const { searchOptions = [] } = useWorkSpace();
+
+    const ref = useRef<HTMLDivElement>(null);
+
     const {
         search: { clearSearch, search },
     } = useFilterApiContext();
@@ -28,6 +31,8 @@ export function SearchButton(): JSX.Element {
             search(value, [valueFormatter], 'Data', 'includes');
         }
     }
+
+    useOutsideClick(ref, () => setSelectedSearchItem(undefined));
 
     function handleInput(e) {
         const value = e.target.value;
@@ -50,7 +55,11 @@ export function SearchButton(): JSX.Element {
             searchOptions.map(
                 ({ name }): MenuItem => ({
                     label: name,
-                    onClick: () => setSelectedSearchItem(name),
+                    onClick: (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setSelectedSearchItem(name);
+                    },
                 })
             ),
         [searchOptions]
@@ -64,44 +73,39 @@ export function SearchButton(): JSX.Element {
 
     return (
         <>
-            {selectedSearchItem && (
-                <TabButton aria-selected={isSelected} style={{ overflow: 'hidden' }} width="20px">
-                    <div style={{ width: '24px' }}>
-                        <ClickableIcon
-                            name="chevron_right"
-                            size={24}
-                            onClick={() => {
-                                setSelectedSearchItem(undefined);
-                                clearSearch();
-                            }}
-                        />
-                    </div>
-                </TabButton>
-            )}
-            <TabButton aria-selected={isSelected} width="auto" style={{ overflow: 'hidden' }}>
-                <SearchWrapper>
-                    {selectedSearchItem ? (
-                        <SearchInput>
-                            <Search
-                                onChange={handleClear}
-                                placeholder={`Search in ${selectedSearchItem}`}
-                                onInput={handleInput}
-                                value={searchText}
-                                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+            <div style={{ display: 'flex' }} ref={ref}>
+                <TabButton aria-selected={isSelected} width="auto" style={{ overflow: 'hidden' }}>
+                    <SearchWrapper>
+                        {selectedSearchItem ? (
+                            <SearchInput>
+                                <Search
+                                    onChange={handleClear}
+                                    placeholder={`Search in ${selectedSearchItem}`}
+                                    onInput={handleInput}
+                                    value={searchText}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                                />
+                            </SearchInput>
+                        ) : (
+                            <ClickableIcon
+                                name="search"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedSearchItem(searchOptions[0].name);
+                                }}
                             />
-                        </SearchInput>
-                    ) : (
-                        <ClickableIcon
-                            name="search"
-                            onClick={() => setSelectedSearchItem(searchOptions[0].name)}
-                        />
-                    )}
-                </SearchWrapper>
-            </TabButton>
-            <TabButton aria-selected={isSelected} style={{ overflow: 'hidden' }} width="20px">
-                <IconMenu items={availableSearchItems} iconName="chevron_down" placement="bottom" />
-            </TabButton>
-            <Divider />
+                        )}
+                    </SearchWrapper>
+                </TabButton>
+                <TabButton aria-selected={isSelected} style={{ overflow: 'hidden' }} width="20px">
+                    <IconMenu
+                        items={availableSearchItems}
+                        iconName="chevron_down"
+                        placement="bottom"
+                    />
+                </TabButton>
+                <Divider />
+            </div>
         </>
     );
 }

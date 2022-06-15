@@ -47,6 +47,45 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                         />
                     </CompletedCriteria>
                 ) : null
+            ) : step.name === 'Initiate' ? (
+                <>
+                    <HiddenDragIcon />
+                    <NumberCircle>{step.order}</NumberCircle>
+                    <Selections>
+                        <SingleSelect
+                            items={stepNames}
+                            label="Step"
+                            size={30}
+                            selectedOption={step.name}
+                            readOnly={true}
+                            handleSelectedItemChange={(change) =>
+                                updateAtom({
+                                    workflowSteps: updateStepName(
+                                        step,
+                                        steps,
+                                        !change.selectedItem ? '' : change.selectedItem
+                                    ),
+                                })
+                            }
+                        />
+                        <SingleSelect
+                            items={functionalRoleNames ?? []}
+                            label="Responsible"
+                            size={25}
+                            selectedOption={step?.criteriaTemplates[0]?.value}
+                            handleSelectedItemChange={(change) =>
+                                updateAtom({
+                                    workflowSteps: updateStepResponsible(
+                                        step,
+                                        steps,
+                                        !change.selectedItem ? '' : change.selectedItem
+                                    ),
+                                })
+                            }
+                        />
+                    </Selections>
+                    <IconMenu items={getWorkflowStepMenuActions(step, steps, true)} />
+                </>
             ) : (
                 <>
                     <DraggableIconWrapper className={DraggableHandleSelector}>
@@ -57,7 +96,7 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                         <SingleSelect
                             items={stepNames}
                             label="Step"
-                            size={25}
+                            size={30}
                             selectedOption={step.name}
                             handleSelectedItemChange={(change) =>
                                 updateAtom({
@@ -72,8 +111,8 @@ export const WorkflowStep = ({ step, steps, functionalRoles }: WorkflowStepProps
                         <SingleSelect
                             items={functionalRoleNames ?? []}
                             label="Responsible"
-                            size={30}
-                            selectedOption={step?.criterias[0]?.value}
+                            size={25}
+                            selectedOption={step?.criteriaTemplates[0]?.value}
                             handleSelectedItemChange={(change) =>
                                 updateAtom({
                                     workflowSteps: updateStepResponsible(
@@ -133,12 +172,24 @@ const NumberCircle = styled.div`
     margin-bottom: 7px;
 `;
 
+const HiddenDragIcon = styled.div`
+    width: 24px;
+    height: 24px;
+`;
+
 const stepNames = [
-    'Initiate',
-    'Demount Insulation',
-    'Electric isolation',
-    'Demount HT',
-    'Demount valve',
-    'Mount valve',
-    'Bolt tensioning',
+    'Coordinator',
+    'Engineering',
+    'Material',
+    'Work prep',
+    'Scaffolding',
+    'Circuit isolation',
+    'Demount ISO',
+    'Check/demount HT',
+    'Demount Mech./Piping',
+    'Remount (or new) HT/A-test',
+    'Remount (or new) ISO',
+    'Recheck (or new) HT/B-test',
+    'Circuit power-up',
+    'Recheck (or new) HT/C-test',
 ];
