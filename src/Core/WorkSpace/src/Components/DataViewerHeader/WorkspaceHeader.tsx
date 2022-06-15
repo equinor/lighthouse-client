@@ -44,7 +44,6 @@ export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps
 
                 <HeaderTabButtons tabs={tabs} />
 
-                {/* <SearchButton /> */}
                 <RefreshButton />
                 <BookmarkDropdown appKey={shortName} subSystem={group} />
 

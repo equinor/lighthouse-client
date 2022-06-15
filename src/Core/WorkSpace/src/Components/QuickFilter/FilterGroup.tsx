@@ -1,4 +1,4 @@
-import { Button, EdsProvider, Menu, Search } from '@equinor/eds-core-react';
+import { Button, Menu, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { FilterValueType, useFilterApiContext } from '@equinor/filter';
 import { useRef, useState } from 'react';
@@ -82,6 +82,7 @@ const FilterGroupPopoverMenu = ({
 }: FilterGroupPopoverMenuProps) => {
     const [searchText, setSearchText] = useState<string>('');
 
+    const handleInput = (e) => setSearchText(e.target.value.toString().toLowerCase());
     return (
         <Menu
             id="menu-complex"
@@ -95,13 +96,7 @@ const FilterGroupPopoverMenu = ({
                 {values.length > 7 && (
                     <>
                         <SearchHolder>
-                            <Search
-                                value={searchText}
-                                placeholder="Search"
-                                onInput={(e) =>
-                                    setSearchText(e.target.value.toString().toLowerCase())
-                                }
-                            />
+                            <Search value={searchText} placeholder="Search" onInput={handleInput} />
                         </SearchHolder>
                         <VerticalLine />
                     </>
