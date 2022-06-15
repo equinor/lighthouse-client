@@ -146,7 +146,7 @@ function checkFormState(
             request.workflowSteps?.some((step) =>
                 step.criteriaTemplates.some(
                     (criteria) =>
-                        criteria.value !== 'Initiate' &&
+                        step.name !== 'Initiate' &&
                         (criteria.value === null || criteria.value === '')
                 )
             )
