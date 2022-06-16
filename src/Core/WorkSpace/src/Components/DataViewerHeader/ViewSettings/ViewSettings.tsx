@@ -1,6 +1,6 @@
 import { Icon, Popover } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo } from 'react';
 
 import { useLocationContext } from '../../../Context/LocationProvider';
 import { TabsConfigItem } from '../../../Util/tabsConfig';
@@ -14,7 +14,10 @@ export const ViewSettings = ({ tabs }: ViewSettingsProps): JSX.Element | null =>
     const { activeTab } = useLocationContext();
     const ref = useRef<HTMLDivElement>(null);
     /** Find viewSettings for the current tab */
-    const ViewComp = tabs.find((s) => s.tabId === activeTab)?.viewSettings;
+    const ViewComp = useMemo(
+        () => tabs.find((s) => s.tabId === activeTab)?.viewSettings,
+        [activeTab, tabs]
+    );
 
     if (!ViewComp) return null;
 
