@@ -2,18 +2,10 @@ import { statusColorMap } from '@equinor/GardenUtils';
 import { EstimateBar } from '@equinor/Table';
 import { TableOptions } from '@equinor/WorkSpace';
 import { Loop } from '../../types/loop';
-const hiddenColumns: (keyof Loop)[] = [
-    'c01PlannedDate',
-    'c01ForecastDate',
-    'c07ForecastDate',
-    'c07PlannedDate',
-    'sourceIdentity',
-    'facility',
-    'project',
-];
+const hiddenColumns: (keyof Loop)[] = [];
 
 const columnOrder: (keyof Loop | string)[] = [
-    'loopNo',
+    'tagNo',
     'description',
     'functionalSystem',
     'commissioningPackageNo',
@@ -23,21 +15,19 @@ const columnOrder: (keyof Loop | string)[] = [
     'rfoDate',
 ];
 export const tableConfig: TableOptions<Loop> = {
-    objectIdentifierKey: 'loopNo',
+    objectIdentifierKey: 'checklistId',
     itemSize: 32,
-    hiddenColumns,
-    columnOrder,
     headers: [
         {
-            key: 'loopNo',
+            key: 'tagNo',
             title: 'Loop tag',
             width: 200,
         },
-        {
-            key: 'description',
-            title: 'Description',
-            width: 350,
-        },
+        // {
+        //     key: 'description',
+        //     title: 'Description',
+        //     width: 350,
+        // },
         {
             key: 'functionalSystem',
             title: 'System',
@@ -75,21 +65,21 @@ export const tableConfig: TableOptions<Loop> = {
             title: 'Verified',
         },
         {
-            key: 'firstMechanicalCompletionStatus',
+            key: 'loopContentStatus',
             title: 'Content MC status',
         },
-        {
-            key: 'lastPlannedCompletionDate',
-            title: 'Planned MC complete',
-        },
-        {
-            key: 'lastActualCompletionDate',
-            title: 'Actual MC complete',
-        },
-        {
-            key: 'sumRemainingManHours',
-            title: 'Rem mhrs',
-        },
+        // {
+        //     key: 'mechanicalCompletionPackageNo',
+        //     title: 'Planned MC complete',
+        // },
+        // {
+        //     key: 'lastActualCompletionDate',
+        //     title: 'Actual MC complete',
+        // },
+        // {
+        //     key: 'sumRemainingManHours',
+        //     title: 'Rem mhrs',
+        // },
     ],
     customCellView: [
         {
@@ -100,18 +90,18 @@ export const tableConfig: TableOptions<Loop> = {
             key: 'verifiedDate',
             type: 'Date',
         },
-        {
-            key: 'lastActualCompletionDate',
-            type: 'Date',
-        },
-        {
-            key: 'lastPlannedCompletionDate',
-            type: 'Date',
-        },
-        {
-            key: 'description',
-            type: 'Description',
-        },
+        // {
+        //     key: 'lastActualCompletionDate',
+        //     type: 'Date',
+        // },
+        // {
+        //     key: 'plan',
+        //     type: 'Date',
+        // },
+        // {
+        //     key: 'description',
+        //     type: 'Description',
+        // },
         {
             key: 'status',
             type: 'Status',
@@ -124,60 +114,60 @@ export const tableConfig: TableOptions<Loop> = {
             },
         },
         {
-            key: 'firstMechanicalCompletionStatus',
+            key: 'loopContentStatus',
             type: 'Status',
             cellAttributeFn: (pkg) => {
                 return {
                     style: {
-                        backgroundColor: pkg.firstMechanicalCompletionStatus
-                            ? statusColorMap[pkg.firstMechanicalCompletionStatus]
+                        backgroundColor: pkg.loopContentStatus
+                            ? statusColorMap[pkg.loopContentStatus]
                             : 'transparent',
                     },
                 };
             },
         },
-        {
-            key: 'sumRemainingManHours',
-            type: {
-                Cell: (table) => {
-                    const maxCount = Math.max(
-                        ...table.cell.column.filteredRows.map((val) =>
-                            Number(val.original?.sumRemainingManHours)
-                        )
-                    );
-                    return (
-                        <EstimateBar
-                            current={Number(table.value.content.sumRemainingManHours)}
-                            max={maxCount}
-                        />
-                    );
-                },
-            },
-        },
+        // {
+        //     key: 'sumRemainingManHours',
+        //     type: {
+        //         Cell: (table) => {
+        //             const maxCount = Math.max(
+        //                 ...table.cell.column.filteredRows.map((val) =>
+        //                     Number(val.original?.sumRemainingManHours)
+        //                 )
+        //             );
+        //             return (
+        //                 <EstimateBar
+        //                     current={Number(table.value.content.sumRemainingManHours)}
+        //                     max={maxCount}
+        //                 />
+        //             );
+        //         },
+        //     },
+        // },
     ],
 
-    customColumns: [
-        {
-            Header: 'RFC Planned/Forecast',
-            id: 'rfcDate',
-            accessor: (pkg) => (pkg.c01ForecastDate ? pkg.c01ForecastDate : pkg.c01PlannedDate),
-            Cell: (table) => {
-                return <div>{table.value ? new Date(table.value).toLocaleDateString() : ''}</div>;
-            },
-            Aggregated: () => null,
-            aggregate: 'count',
-            width: 160,
-        },
-        {
-            Header: 'RFC Planned/Forecast',
-            id: 'rfoDate',
-            accessor: (pkg) => (pkg.c07ForecastDate ? pkg.c07ForecastDate : pkg.c07PlannedDate),
-            Cell: (table) => {
-                return <>{table.value ? new Date(table.value).toLocaleDateString() : ''}</>;
-            },
-            Aggregated: () => null,
-            aggregate: 'count',
-            width: 160,
-        },
-    ],
+    // customColumns: [
+    //     {
+    //         Header: 'RFC Planned/Forecast',
+    //         id: 'rfcDate',
+    //         accessor: (pkg) => (pkg.c01ForecastDate ? pkg.c01ForecastDate : pkg.c01PlannedDate),
+    //         Cell: (table) => {
+    //             return <div>{table.value ? new Date(table.value).toLocaleDateString() : ''}</div>;
+    //         },
+    //         Aggregated: () => null,
+    //         aggregate: 'count',
+    //         width: 160,
+    //     },
+    //     {
+    //         Header: 'RFC Planned/Forecast',
+    //         id: 'rfoDate',
+    //         accessor: (pkg) => (pkg.c07ForecastDate ? pkg.c07ForecastDate : pkg.c07PlannedDate),
+    //         Cell: (table) => {
+    //             return <>{table.value ? new Date(table.value).toLocaleDateString() : ''}</>;
+    //         },
+    //         Aggregated: () => null,
+    //         aggregate: 'count',
+    //         width: 160,
+    //     },
+    // ],
 };

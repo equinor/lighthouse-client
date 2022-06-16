@@ -31,9 +31,9 @@ const columnNames: string[] = [
 ];
 const idResolverFunction = async (id: string): Promise<Loop> => {
     const { FAM } = httpClient();
-    const expressions = generateExpressions('LoopNo', 'Equals', [id]);
+    const expressions = generateExpressions('checklistId', 'Equals', [id]);
     const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
-    const res = await FAM.post('v0.1/dynamic/completion/custom_loopready/JCA', {
+    const res = await FAM.post('v0.1/dynamic/completion/custom_loopmccr/JCA', {
         body: JSON.stringify(requestArgs),
     });
 
@@ -53,7 +53,7 @@ export const sidesheetConfig = setupWorkspaceSidesheet<Loop, 'loop'>({
     color: '#7B3A96',
     component: LoopSidesheet,
     props: {
-        objectIdentifier: 'loopNo',
+        objectIdentifier: 'checklistId',
         parentApp: 'loop',
         function: idResolver,
     },

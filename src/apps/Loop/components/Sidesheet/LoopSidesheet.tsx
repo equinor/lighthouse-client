@@ -19,16 +19,13 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
     };
 
     useEffect(() => {
-        actions.setTitle('Loop test');
+        actions.setTitle(`${item.tagNo}, ${item.checklistId}`);
     }, []);
     console.log('item', item);
     return (
         <div>
             <Banner padding="0 0.5em">
-                <BannerItem
-                    title="MC Status"
-                    value={item.firstMechanicalCompletionStatus || 'N/A'}
-                ></BannerItem>
+                <BannerItem title="MC Status" value={item.loopContentStatus || 'N/A'}></BannerItem>
                 <BannerItem title="Cmpkg" value={item.commissioningPackageNo || 'N/A'} />
                 <BannerItem title="Mcpkg" value={item.mechanicalCompletionPackageNo || 'N/A'} />
                 <BannerItem title="Milestone" value={item.priority1 || 'N/A'} />
@@ -45,7 +42,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                         <Tabs.Panel>
                             <h2>Details</h2>
                             <div>
-                                <p>Loop: {item.loopNo}</p>
+                                <p>Loop: {item.tagNo}</p>
                                 <p>Cmpkg: {item.commissioningPackageNo}</p>
                                 <p>Mcpkg: {item.mechanicalCompletionPackageNo}</p>
                             </div>

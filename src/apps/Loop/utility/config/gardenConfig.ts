@@ -29,8 +29,8 @@ const customGroupByKeys: CustomGroupByKeys = {
 };
 export const gardenConfig: GardenOptions<Loop> = {
     gardenKey: 'RFC' as keyof Loop,
-    itemKey: 'loopNo',
-    objectIdentifier: 'sourceIdentity',
+    itemKey: 'tagNo',
+    objectIdentifier: 'checklistId',
     customGroupByKeys,
     fieldSettings,
     customViews: {
