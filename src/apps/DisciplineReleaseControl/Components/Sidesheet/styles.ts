@@ -9,15 +9,17 @@ export const TablesTab = styled.div`
 `;
 
 export const WarningBanner = styled.div`
-    width: 100%;
+    max-width: 1060px;
     height: 30px;
-    background: ${tokens.colors.interactive.danger__resting.hex};
-    color: ${tokens.colors.text.static_icons__primary_white.hex};
+    background: ${tokens.colors.ui.background__danger.hex};
+    color: ${tokens.colors.text.static_icons__default.hex};
     font-size: 14px;
     font-weight: 400, regular;
+    margin-left: 8px;
+    border-radius: 4px;
 `;
 
 export const WarningBannerText = styled.div`
     padding-top: 8px;
-    padding-left: 8px;
+    padding-left: 10px;
 `;

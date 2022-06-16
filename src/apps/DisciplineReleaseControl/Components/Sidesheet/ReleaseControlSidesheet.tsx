@@ -104,15 +104,15 @@ export const ReleaseControlSidesheet = ({
                             (missingInsulationCheckListsCount === 1 ? (
                                 <WarningBanner>
                                     <WarningBannerText>
-                                        ! Warning: {missingInsulationCheckListsCount} insulation box
+                                        Warning: {missingInsulationCheckListsCount} insulation box
                                         missing checklists in ProCoSys.
                                     </WarningBannerText>
                                 </WarningBanner>
                             ) : (
                                 <WarningBanner>
                                     <WarningBannerText>
-                                        ! Warning: {missingInsulationCheckListsCount} insulation
-                                        boxes missing checklists in ProCoSys.
+                                        Warning: {missingInsulationCheckListsCount} insulation boxes
+                                        missing checklists in ProCoSys.
                                     </WarningBannerText>
                                 </WarningBanner>
                             ))}
