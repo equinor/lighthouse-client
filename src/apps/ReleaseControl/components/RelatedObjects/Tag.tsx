@@ -3,11 +3,11 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { ProCoSysQueries } from '../../hooks/ProCoSysQueries';
-import { isProduction } from '../../../../Core/Client/Functions';
 import { useFacility } from '../../../../Core/Client/Hooks';
 import { ReleaseControlTag } from '../../types/releaseControl';
 import { Tag as TagInterface } from '../../types/PCS/Tag';
 import { Wrapper } from '../../Styles/WrapperStyles';
+import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 
 interface TagProps {
     tag: ReleaseControlTag;
@@ -26,12 +26,7 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
             <Icon color={tokens.colors.interactive.primary__resting.hex} name="tag" />
             <TextWrapper>
                 <TagText>
-                    <Link
-                        href={`https://${
-                            isProduction() ? 'procosys' : 'procosystest'
-                        }.equinor.com/JOHAN_CASTBERG/Completion#Tag|${tag.procosysId}`}
-                        target="_blank"
-                    >
+                    <Link href={proCoSysUrls.getTagUrl(tag.procosysId)} target="_blank">
                         {tag.procosysNumber}
                     </Link>
                     - <div>{data?.Description}</div>

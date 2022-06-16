@@ -9,14 +9,17 @@ export const filterConfig: FilterOptions<McPackage> = [
     {
         name: 'System',
         valueFormatter: (mc) => mc.system,
+        isQuickFilter: true,
     },
     {
         name: 'Responsible',
         valueFormatter: (mc) => mc.responsible,
+        isQuickFilter: true,
     },
     {
         name: 'Discipline',
         valueFormatter: (mc) => mc.discipline,
+        isQuickFilter: true,
     },
     {
         name: 'MC status',
@@ -26,6 +29,7 @@ export const filterConfig: FilterOptions<McPackage> = [
             filterValues.sort(
                 (a, b) => mcStatusPriority[a as McStatus] - mcStatusPriority[b as McStatus]
             ),
+        isQuickFilter: true,
     },
     {
         name: 'Handover Status',
@@ -41,6 +45,7 @@ export const filterConfig: FilterOptions<McPackage> = [
         customValueRender: (filterValue) => {
             return <HandoverStatusFilter status={filterValue as CommissioningStatus} />;
         },
+        isQuickFilter: true,
     },
 
     {
@@ -54,49 +59,40 @@ export const filterConfig: FilterOptions<McPackage> = [
     {
         name: 'Area',
         valueFormatter: (mc) => mc.area,
-        defaultHidden: true,
     },
 
     {
         name: 'Subsystem',
         valueFormatter: (mc) => mc.subsystem,
-        defaultHidden: true,
     },
     {
         name: 'Remark',
         valueFormatter: (mc) => mc.remark,
-        defaultHidden: true,
     },
 
     {
         name: 'M-01 Contractor Final Punch Actual Date',
         valueFormatter: (mc) => (mc.finalPunchActualDate ? 'Yes' : 'No'),
-        defaultHidden: true,
     },
     {
         name: 'M-02 Punch Status Accepted Actual Date',
         valueFormatter: (mc) => (mc.punchAcceptActualDate ? 'Yes' : 'No'),
-        defaultHidden: true,
     },
     {
         name: 'M-03 RFC MC to Commissioning Actual Date',
         valueFormatter: (mc) => (mc.rfccForecastDate || mc.rfccPlannedDate ? 'Yes' : 'No'),
-        defaultHidden: true,
     },
     {
         name: 'M-04 RFCC Actual Date',
         valueFormatter: (mc) => (mc.rfccActualDate ? 'Yes' : 'No'),
-        defaultHidden: true,
     },
 
     {
         name: 'Commissioning Priority 2',
         valueFormatter: (mc) => mc.priority2 || 'N/A',
-        defaultHidden: true,
     },
     {
         name: 'Commissioning Priority 3',
         valueFormatter: (mc) => mc.priority3 || 'N/A',
-        defaultHidden: true,
     },
 ];

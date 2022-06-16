@@ -20,3 +20,9 @@ export interface SelectedNodeInformation {
     diagnosticInfo?: string;
     point?: THREE.Vector3;
 }
+
+
+export interface ViewerNodeSelection {
+    position: THREE.Vector3; 
+    tagNo: string;
+}

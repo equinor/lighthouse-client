@@ -5,10 +5,10 @@ interface DefaultTableViewProps {
 }
 
 export const DefaultTableView = ({ data }: DefaultTableViewProps): JSX.Element => {
-    const columns = useColumns(data[0]);
+    const columns = useColumns(data[0], false);
     return (
         <>
-            <Table options={{ data, columns }} />
+            <Table columns={columns} data={data} options={{}} />
         </>
     );
 };

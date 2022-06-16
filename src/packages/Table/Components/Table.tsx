@@ -7,7 +7,7 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { Cell, Row, TableInstance, TableOptions } from 'react-table';
+import { Cell, Column, Row, TableInstance, TableOptions } from 'react-table';
 import { FixedSizeList as List } from 'react-window';
 
 import { useTable } from '../Hooks/useTable';
@@ -19,11 +19,10 @@ import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
-//Feel free to extend
-
 interface DataTableProps<TData extends TableData> {
-    options: TableOptions<TData>;
-    FilterComponent?: React.FC<{ filterId: string }>;
+    options?: Partial<TableOptions<TData>>;
+    data: TData[];
+    columns: Column<TData>[];
     height?: number;
     itemSize?: number;
     onTableReady?: (getApi: () => TableAPI) => void;
@@ -34,14 +33,21 @@ const DEFAULT_ITEM_SIZE = 35;
 
 export function Table<TData extends TableData = TableData>({
     options,
-    FilterComponent,
+    data,
+    columns: dataColumns,
     itemSize,
     height,
     onTableReady,
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
-    const hooks = RegisterReactTableHooks<TData>({ rowSelect: options.enableSelectRows || false });
+    const hooks = RegisterReactTableHooks<TData>({
+        rowSelect: (options && options.enableSelectRows) || false,
+    });
     const ref = useRef<HTMLDivElement>(null);
-    const defaultColumn = useDefaultColumn(options);
+    const defaultColumn = useDefaultColumn({
+        data: data,
+        columns: dataColumns,
+        ...(options ?? {}),
+    });
 
     const [selectedId, setSelectedId] = useState<string | null>(null);
 
@@ -57,7 +63,10 @@ export function Table<TData extends TableData = TableData>({
         headerGroups,
         totalColumnsWidth,
         setColumnOrder,
-    } = useTable({ ...options, defaultColumn }, hooks) as TableInstance<TableData>;
+    } = useTable(
+        { ...(options ?? {}), columns: dataColumns, defaultColumn, data },
+        hooks
+    ) as TableInstance<TableData>;
 
     const getVisibleColumns = () => visibleColumns;
 
@@ -81,7 +90,7 @@ export function Table<TData extends TableData = TableData>({
             options?.onCellClick && options.onCellClick(cell, e);
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [options.onCellClick]
+        [options?.onCellClick]
     );
 
     useLayoutEffect(() => {
@@ -98,11 +107,7 @@ export function Table<TData extends TableData = TableData>({
                         key={headerGroup.getHeaderGroupProps().key}
                     >
                         {headerGroup.headers.map((column) => (
-                            <HeaderCell
-                                {...column}
-                                FilterComponent={FilterComponent}
-                                key={column.getHeaderProps().key}
-                            />
+                            <HeaderCell {...column} key={column.getHeaderProps().key} />
                         ))}
                     </div>
                 ))}

@@ -8,335 +8,153 @@ import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { DateTime } from 'luxon';
 import { Atom, deref, swap } from '@dbeining/react-atom';
 import styled from 'styled-components';
-import {
-    TableData,
-    CellRenderProps,
-    CellProps,
-    EstimateBar,
-    ExpendedProgressBar,
-} from '@equinor/Table';
+import { CellProps, EstimateBar, ExpendedProgressBar, CustomColumn } from '@equinor/Table';
 
-const customCellView = (render: (req: ScopeChangeRequest) => JSX.Element | null) => ({
-    Cell: (
-        cell: React.PropsWithChildren<CellProps<TableData, CellRenderProps<ScopeChangeRequest>>>
-    ) => <>{render(cell.value.content)}</>,
+const DEFAULT_TABLE_AGGREGATED = { Aggregated: () => null, aggregate: 'count' };
+
+interface CustomCellOptions {
+    header: string;
+    accessor: AccessorFunction<ScopeChangeRequest>;
+    width: number;
+    id?: string;
+    aggregated?: (s: React.PropsWithChildren<CellProps<ScopeChangeRequest, any>>) => null;
+    aggregate?: 'sum' | 'count';
+    render?: (item: ScopeChangeRequest, value: any, cell: any) => JSX.Element;
+}
+
+type AccessorFunction<T> = (it: T) => string | number | boolean | null | undefined | DateTime;
+
+const defineColumn = ({
+    header,
+    accessor,
+    width,
+    ...options
+}: CustomCellOptions): CustomColumn<ScopeChangeRequest> => ({
+    Header: header,
+    id: header,
+    accessor: accessor,
+    width: width,
+    ...DEFAULT_TABLE_AGGREGATED,
+    Aggregated: options?.aggregated ?? DEFAULT_TABLE_AGGREGATED.Aggregated,
+    aggregate: options?.aggregate ?? 'count',
+    [options?.render ? 'Cell' : 0]: ({ cell }: any) =>
+        options?.render && options?.render(cell.row.original, cell.value, cell),
 });
 
 export const tableConfig: TableOptions<ScopeChangeRequest> = {
     objectIdentifierKey: 'id',
+    preventAutoGenerateColumns: true,
     enableSelectRows: true,
     customColumns: [
-        {
-            Header: 'Current step',
+        defineColumn({
+            header: 'Id',
+            accessor: (s) => s.sequenceNumber,
+            width: 60,
+        }),
+        defineColumn({
+            header: 'Title',
+            accessor: (s) => s.title,
+            width: 250,
+        }),
+        defineColumn({
+            header: 'Comment',
+            accessor: (s) => s.hasComments,
+            width: 80,
+            render: ({ hasComments }) => <Comments hasComments={hasComments} />,
+        }),
+        defineColumn({
+            header: 'Contr.',
+            accessor: (s) => s.hasPendingContributions,
+            width: 70,
+            render: ({ hasPendingContributions }) => (
+                <PendingContributions hasPending={hasPendingContributions} />
+            ),
+        }),
+        defineColumn({
+            header: 'Phase',
+            accessor: (s) => s.phase,
+            width: 60,
+        }),
+        defineColumn({
+            header: 'Workflow',
+            accessor: (s) => s.workflowSteps?.map((s) => s.name).toString(),
+            render: (s) => <>{s.workflowSteps && <WorkflowCompact steps={s.workflowSteps} />}</>,
+            width: 110,
+        }),
+        defineColumn({
+            header: 'Current step',
             accessor: (s) => s?.currentWorkflowStep?.name,
-            Cell: ({ cell }: any): JSX.Element => {
-                return <>{cell.value}</>;
-            },
-            id: 'CurrentStep',
             width: 180,
-            Aggregated: () => null,
-            aggregate: 'count',
-        },
-        {
-            Header: 'Last signed',
-            accessor: getLastSigned,
-            Cell: ({ cell }: any): JSX.Element | null => {
-                if (!cell.value) return null;
-                return <div>{cell.value.toRelative({ locale: 'en-GB' })}</div>;
-            },
-            id: 'LastSigned',
-            width: 180,
-            Aggregated: () => null,
-            aggregate: 'count',
-        },
-        {
-            Header: 'Guess Mhrs',
-            id: 'guessMhr',
+        }),
+        defineColumn({
+            header: 'Next',
+            accessor: findNextToSign,
+            width: 220,
+        }),
+        defineColumn({ header: 'Status', accessor: (s) => s.workflowStatus, width: 120 }),
+        defineColumn({
+            header: 'State',
+            accessor: (s) => (s.isVoided ? 'Voided' : s.state),
+            width: 80,
+        }),
+        defineColumn({
+            header: 'Guess Mhrs',
             accessor: (s) => s?.disciplineGuesstimates.reduce((s, a) => s + a.guesstimate, 0),
-            Cell: ({ cell }: any): JSX.Element => {
-                if (deref(guesstimateHoursMaxAtom) === -1) {
-                    const maxCount = Math.max(
-                        ...cell.column.filteredRows.map((val) =>
-                            val.original.disciplineGuesstimates.reduce(
-                                (count, curr) => curr.guesstimate + count,
-                                0
-                            )
-                        )
-                    );
-                    swap(guesstimateHoursMaxAtom, () => maxCount);
-                }
-
-                const count = deref(guesstimateHoursMaxAtom);
-
-                return <EstimateBar current={cell.value} max={count} />;
-            },
-            width: 180,
-            Aggregated: () => null,
-            aggregate: 'count',
-        },
-        {
-            Header: 'Est mhrs',
-            id: 'est mhrs',
+            width: 120,
+            render: (_, u, cell) => GuessMhrsRender({ cell }),
+        }),
+        defineColumn({
+            header: 'Est mhrs',
             accessor: (s) => s.estimatedChangeHours,
-            Cell: ({ cell }: any) => {
-                if (deref(estimateHoursMaxAtom) === -1) {
-                    const maxCount = Math.max(
-                        ...cell.column.filteredRows.map((val) => val.original.estimatedChangeHours)
-                    );
-                    swap(estimateHoursMaxAtom, () => maxCount);
-                }
-
-                const highestEstimateHours = deref(estimateHoursMaxAtom);
-
-                return <EstimateBar current={cell.value} max={highestEstimateHours} />;
-            },
+            width: 120,
+            render: (s, u, cell) => EstMhrsRender({ cell }),
+        }),
+        defineColumn({
+            header: 'Exp mhrs',
+            accessor: (s) => s.actualChangeHours ?? 0,
+            width: 120,
+            render: (s, u, cell) => ExpMhrsRender({ cell }),
+        }),
+        defineColumn({
+            header: 'Change cateogry',
+            accessor: (s) => s?.changeCategory?.name,
+            width: 150,
+        }),
+        defineColumn({
+            header: 'Change origin',
+            accessor: (s) => `${s.originSource} - ${s.originSourceId}`,
+            render: ({ originSource, originSourceId }) => (
+                <OriginLink onlyUnderlineOnHover={true} type={originSource} id={originSourceId} />
+            ),
+            width: 120,
+        }),
+        defineColumn({ header: 'Scope', accessor: (s) => s.scope?.name, width: 150 }),
+        defineColumn({
+            header: 'Last updated',
+            accessor: (s) => s.modifiedAtUtc,
+            width: 120,
+            render: (s) => <MakeDateCell date={s.modifiedAtUtc} />,
+        }),
+        defineColumn({
+            header: 'Created at',
+            accessor: (s) => s.createdAtUtc,
+            width: 120,
+            render: (s) => <MakeDateCell date={s.createdAtUtc} />,
+        }),
+        defineColumn({
+            header: 'Last signed',
+            accessor: getLastSigned,
             width: 180,
-            Aggregated: () => null,
-            aggregate: 'count',
-        },
-        {
-            Header: 'Exp mhrs',
-            id: 'exp mhrs',
-            accessor: (s) => s?.actualChangeHours ?? 0,
-            Cell: ({ cell }: any) => {
-                if (deref(actualHoursMaxAtom) === -1) {
-                    const maxCount = Math.max(
-                        ...cell.column.filteredRows.map((val) => val.original.actualChangeHours)
-                    );
-                    swap(actualHoursMaxAtom, () => maxCount);
-                }
-
-                const highestExpendedHours = deref(actualHoursMaxAtom);
-
-                if (cell.isGrouped) {
-                    return cell.value;
-                }
-
-                return (
-                    <ExpendedProgressBar
-                        actual={cell.value}
-                        estimate={cell.row.original.estimatedChangeHours}
-                        highestExpended={highestExpendedHours}
-                    />
-                );
-            },
-            width: 180,
-            Aggregated: () => null,
-            aggregate: 'count',
-        },
-        {
-            Header: 'Disciplines',
+            render: (s, v) => <>{v && <div>{v.toRelative({ locale: 'en-GB' })}</div>}</>,
+        }),
+        defineColumn({
+            header: 'Disciplines',
             accessor: (s) =>
                 s.disciplineGuesstimates
                     .map(({ discipline: { procosysCode } }) => procosysCode)
                     .toString(),
-            Cell: ({ cell }: any): JSX.Element => {
-                return <div>{cell.value}</div>;
-            },
-            id: 'Disciplines',
             width: 180,
-            Aggregated: () => null,
-            aggregate: 'count',
-        },
-    ],
-    hiddenColumns: [
-        'id',
-        'description',
-        'createdBy',
-        'modifiedBy',
-        'originSourceId',
-        'tags',
-        'systems',
-        'commissioningPackages',
-        'areas',
-        'documents',
-        'attachments',
-        'isVoided',
-        'disciplines',
-        'materialsIdentifiedInStorage',
-        'materialsNote',
-        'materialsToBeBoughtByContractor',
-        'punchListItems',
-        'potentialWarrantyCase',
-        'workOrders',
-        'estimatedChangeHours',
-        'disciplineGuesstimates',
-        'actualChangeHours',
-    ],
-    columnOrder: [
-        'sequenceNumber',
-        'title',
-        'hasComments',
-        'hasPendingContributions',
-        'phase',
-        'workflowSteps',
-        'CurrentStep',
-        'currentWorkflowStep',
-        'workflowStatus',
-        'state',
-        'guessMhr',
-        'est mhrs',
-        'exp mhrs',
-        'changeCategory',
-        'originSource',
-        'scope',
-        'modifiedAtUtc',
-        'systems',
-        'areas',
-        'commissioningPackages',
-        'tags',
-        'disciplines',
-        'documents',
-        'attachments',
-    ],
-    headers: [
-        { key: 'sequenceNumber', title: 'Id', width: 60 },
-        { key: 'title', title: 'Title', width: 250 },
-        { key: 'phase', title: 'Phase', width: 60 },
-        { key: 'id', title: 'GUID' },
-        { key: 'workflowSteps', title: 'Workflow', width: 110 },
-        { key: 'disciplineGuesstimates', title: 'Guess mhrs', width: 120 },
-        { key: 'estimatedChangeHours', title: 'Est mhrs', width: 120 },
-        { key: 'actualChangeHours', title: 'Exp mhrs', width: 120 },
-        { key: 'changeCategory', title: 'Change category' },
-        { key: 'originSource', title: 'Change origin' },
-        { key: 'createdAtUtc', title: 'Created at' },
-        { key: 'workflowStatus', title: 'Status' },
-        { key: 'createdBy', title: 'Created by' },
-        { key: 'modifiedAtUtc', title: 'Last updated' },
-        { key: 'modifiedBy', title: 'Modified by' },
-        { key: 'description', title: 'Description' },
-        { key: 'scope', title: 'Scope' },
-        { key: 'state', title: 'State', width: 80 },
-        { key: 'currentWorkflowStep', title: 'Next', width: 220 },
-        {
-            key: 'hasComments',
-            title: 'Comment',
-            width: 80,
-        },
-        {
-            key: 'hasPendingContributions',
-            width: 70,
-            title: 'Contr.',
-        },
-    ],
-
-    customCellView: [
-        {
-            key: 'scope',
-            type: customCellView((req) => <>{req?.scope?.name}</>),
-        },
-        {
-            key: 'createdBy',
-            type: customCellView(
-                (req) =>
-                    req.createdBy && (
-                        <>{`${req?.createdBy?.firstName} ${req?.createdBy?.lastName}`}</>
-                    )
-            ),
-        },
-
-        {
-            key: 'createdAtUtc',
-            type: customCellView((req) => (
-                <>
-                    {req.createdAtUtc &&
-                        DateTime.fromJSDate(new Date(req.createdAtUtc)).toRelative({
-                            locale: 'en-GB',
-                        })}
-                </>
-            )),
-        },
-
-        {
-            key: 'modifiedAtUtc',
-            type: customCellView((req) => (
-                <>
-                    {req.modifiedAtUtc &&
-                        DateTime.fromJSDate(new Date(req.modifiedAtUtc)).toRelative({
-                            locale: 'en-GB',
-                        })}
-                </>
-            )),
-        },
-
-        {
-            key: 'changeCategory',
-            type: customCellView(({ changeCategory }) => <>{changeCategory.name}</>),
-        },
-        {
-            key: 'state',
-            type: customCellView(({ state, isVoided }) => <>{isVoided ? 'Voided' : state}</>),
-        },
-        {
-            key: 'hasPendingContributions',
-            type: customCellView(({ hasPendingContributions }) => (
-                <>
-                    {hasPendingContributions && (
-                        <CenterIcon>
-                            <Icon
-                                color={tokens.colors.text.static_icons__default.hex}
-                                name="group"
-                            />
-                        </CenterIcon>
-                    )}
-                </>
-            )),
-        },
-        {
-            key: 'materialsToBeBoughtByContractor',
-            type: customCellView((req) => (
-                <>{req.materialsToBeBoughtByContractor ? 'Yes' : 'No'}</>
-            )),
-        },
-        {
-            key: 'materialsIdentifiedInStorage',
-            type: customCellView((req) => <>{req.materialsIdentifiedInStorage ? 'Yes' : 'No'}</>),
-        },
-        {
-            key: 'potentialWarrantyCase',
-            type: customCellView((req) => <>{req.potentialWarrantyCase ? 'Yes' : 'No'}</>),
-        },
-        {
-            key: 'isVoided',
-            type: customCellView((req) => <>{req.isVoided ? 'Yes' : 'No'}</>),
-        },
-        {
-            key: 'workflowSteps',
-            type: customCellView(
-                (req) => req.workflowSteps && <WorkflowCompact steps={req.workflowSteps} />
-            ),
-        },
-        {
-            key: 'hasComments',
-            type: customCellView((req) =>
-                req.hasComments ? (
-                    <CenterIcon>
-                        <Icon
-                            name={'comment_chat'}
-                            color={`${tokens.colors.text.static_icons__default.hex}`}
-                        />
-                    </CenterIcon>
-                ) : null
-            ),
-        },
-        {
-            key: 'originSource',
-            type: customCellView(({ originSource, originSourceId }) => (
-                <OriginLink onlyUnderlineOnHover={true} type={originSource} id={originSourceId} />
-            )),
-        },
-        {
-            key: 'currentWorkflowStep',
-            type: customCellView((req) =>
-                req.currentWorkflowStep ? (
-                    <>
-                        {req.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)
-                            ?.valueDescription ?? null}
-                    </>
-                ) : null
-            ),
-        },
+        }),
     ],
 };
 
@@ -351,3 +169,110 @@ const CenterIcon = styled.div`
     height: 100%;
     width: 100%;
 `;
+
+interface GuessMhrsRenderProps {
+    cell: any;
+}
+const GuessMhrsRender = ({ cell }: GuessMhrsRenderProps) => {
+    if (deref(guesstimateHoursMaxAtom) === -1) {
+        const maxCount = Math.max(
+            ...cell.column.filteredRows.map((val) =>
+                val.original.disciplineGuesstimates.reduce(
+                    (count, curr) => curr.guesstimate + count,
+                    0
+                )
+            )
+        );
+        swap(guesstimateHoursMaxAtom, () => maxCount);
+    }
+
+    const count = deref(guesstimateHoursMaxAtom);
+
+    return <EstimateBar current={cell.value} max={count} />;
+};
+
+const EstMhrsRender = ({ cell }: GuessMhrsRenderProps) => {
+    if (deref(estimateHoursMaxAtom) === -1) {
+        const maxCount = Math.max(
+            ...cell.column.filteredRows.map((val) => val.original.estimatedChangeHours)
+        );
+        swap(estimateHoursMaxAtom, () => maxCount);
+    }
+
+    const highestEstimateHours = deref(estimateHoursMaxAtom);
+
+    return <EstimateBar current={cell.value} max={highestEstimateHours} />;
+};
+
+const ExpMhrsRender = ({ cell }: GuessMhrsRenderProps) => {
+    if (deref(actualHoursMaxAtom) === -1) {
+        const maxCount = Math.max(
+            ...cell.column.filteredRows.map((val) => val.original.actualChangeHours)
+        );
+        swap(actualHoursMaxAtom, () => maxCount);
+    }
+
+    const highestExpendedHours = deref(actualHoursMaxAtom);
+
+    if (cell.isGrouped) {
+        return cell.value;
+    }
+
+    return (
+        <ExpendedProgressBar
+            actual={cell.value}
+            estimate={cell.row.original.estimatedChangeHours}
+            highestExpended={highestExpendedHours}
+        />
+    );
+};
+
+interface PendingContributionsProps {
+    hasPending: boolean;
+}
+const PendingContributions = ({ hasPending }: PendingContributionsProps) => (
+    <>
+        {hasPending && (
+            <CenterIcon>
+                <Icon color={tokens.colors.text.static_icons__default.hex} name="group" />
+            </CenterIcon>
+        )}
+    </>
+);
+
+interface CommentsProps {
+    hasComments: boolean;
+}
+const Comments = ({ hasComments }: CommentsProps) => (
+    <>
+        {hasComments && (
+            <CenterIcon>
+                <Icon
+                    name={'comment_chat'}
+                    color={`${tokens.colors.text.static_icons__default.hex}`}
+                />
+            </CenterIcon>
+        )}
+    </>
+);
+
+function findNextToSign(sc: ScopeChangeRequest) {
+    return (
+        sc.currentWorkflowStep?.criterias.find((x) => x.signedAtUtc === null)?.valueDescription ??
+        null
+    );
+}
+
+interface MakeDateCellProps {
+    date: string | null;
+}
+function MakeDateCell({ date }: MakeDateCellProps) {
+    return (
+        <>
+            {date &&
+                DateTime.fromJSDate(new Date(date)).toRelative({
+                    locale: 'en-GB',
+                })}
+        </>
+    );
+}

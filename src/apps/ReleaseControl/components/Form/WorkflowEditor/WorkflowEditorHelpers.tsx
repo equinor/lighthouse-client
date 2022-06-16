@@ -1,6 +1,11 @@
 import { Icon } from '@equinor/eds-core-react';
 import { DRCFormAtomApi } from '../../../Atoms/formAtomApi';
-import { CreateReleaseControlStepModel } from '../../../types/releaseControl';
+import {
+    CreateReleaseControlStepModel,
+    Criteria,
+    CriteriaTemplate,
+    ReleaseControl,
+} from '../../../types/releaseControl';
 import { InsertAfter } from './InsertAfter';
 import { InsertBefore } from './InsertBefore';
 
@@ -23,6 +28,7 @@ export function getNewWorkflowSteps(): CreateReleaseControlStepModel[] {
                 {
                     type: 'RequireProcosysUserSignature',
                     assignToCreator: true,
+                    value: '',
                 },
             ],
             criterias: [],
@@ -66,6 +72,7 @@ export function addStepAfter(
             {
                 assignToCreator: true,
                 type: 'RequireProcosysUserSignature',
+                value: '',
             },
         ],
         criterias: [],
@@ -91,6 +98,7 @@ export function addStepBefore(
             {
                 assignToCreator: true,
                 type: 'RequireProcosysUserSignature',
+                value: '',
             },
         ],
         criterias: [],
@@ -151,17 +159,21 @@ export function addStep(steps: CreateReleaseControlStepModel[]): void {
 
 export function getWorkflowStepMenuActions(
     step: CreateReleaseControlStepModel,
-    steps: CreateReleaseControlStepModel[]
+    steps: CreateReleaseControlStepModel[],
+    initiateStep?: boolean
 ): MenuItem[] {
     const actions: MenuItem[] = [];
-    actions.push({
-        label: 'Add step before',
-        icon: <InsertBefore />,
-        onClick: () =>
-            updateAtom({
-                workflowSteps: addStepBefore(step, steps),
-            }),
-    });
+    {
+        !initiateStep &&
+            actions.push({
+                label: 'Add step before',
+                icon: <InsertBefore />,
+                onClick: () =>
+                    updateAtom({
+                        workflowSteps: addStepBefore(step, steps),
+                    }),
+            });
+    }
 
     actions.push({
         label: 'Add step after',
@@ -172,23 +184,205 @@ export function getWorkflowStepMenuActions(
             }),
     });
 
-    actions.push({
-        label: 'Duplicate step',
-        icon: <Icon name="copy" color="grey" />,
-        onClick: () =>
-            updateAtom({
-                workflowSteps: duplicateStep(step, steps),
-            }),
-    });
-
-    actions.push({
-        label: 'Delete',
-        icon: <Icon name="delete_forever" color="grey" />,
-        onClick: () =>
-            updateAtom({
-                workflowSteps: removeStep(step, steps),
-            }),
-    });
+    {
+        !initiateStep &&
+            actions.push({
+                label: 'Duplicate step',
+                icon: <Icon name="copy" color="grey" />,
+                onClick: () =>
+                    updateAtom({
+                        workflowSteps: duplicateStep(step, steps),
+                    }),
+            });
+    }
+    {
+        !initiateStep &&
+            actions.push({
+                label: 'Delete',
+                icon: <Icon name="delete_forever" color="grey" />,
+                onClick: () =>
+                    updateAtom({
+                        workflowSteps: removeStep(step, steps),
+                    }),
+            });
+    }
 
     return actions;
+}
+
+export function setCriteriaTemplates(
+    releaseControl: ReleaseControl | undefined
+): ReleaseControl | undefined {
+    if (releaseControl === undefined) {
+        return undefined;
+    }
+    const editedSteps = releaseControl.workflowSteps;
+    editedSteps.forEach((x) => (x.criteriaTemplates = packCriterias(x.criterias)));
+    return releaseControl;
+}
+
+export function packCriterias(criterias: Criteria[]): CriteriaTemplate[] {
+    const criteriaTemplates = criterias.map((c: Criteria) => {
+        const criteriaTemplate: CriteriaTemplate = {
+            assignToCreator: false,
+            value: c.valueDescription,
+            type:
+                c.type === 'RequireProcosysFunctionalRoleSignature'
+                    ? 'RequireProcosysFunctionalRoleSignature'
+                    : 'RequireProcosysUserSignature',
+        };
+        return criteriaTemplate;
+    });
+    return criteriaTemplates;
+}
+
+//TODO - get from backend
+export function getFullWorkflowTemplate(): CreateReleaseControlStepModel[] {
+    const fullReleaseControlTemplate: CreateReleaseControlStepModel[] = [
+        {
+            order: 1,
+            name: 'Initiate',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysUserSignature',
+                    assignToCreator: true,
+                    value: '',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 2,
+            name: 'Coordinator',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'HTISO - Coordinator',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 3,
+            name: 'Work prep',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Work prep.',
+                },
+            ],
+            criterias: [],
+        },
+
+        {
+            order: 4,
+            name: 'Circuit isolation',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Comm. Electro',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 5,
+            name: 'Demount ISO',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Insulation',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 6,
+            name: 'Check/demount HT',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Electrical',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 7,
+            name: 'Remount (or new) HT/A-test',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Electrical',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 8,
+            name: 'Remount (or new) ISO',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Insulation',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 9,
+            name: 'Remount (or new) HT/B-test',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Electrical',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 10,
+            name: 'Circuit power-up',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Comm. Electro',
+                },
+            ],
+            criterias: [],
+        },
+        {
+            order: 11,
+            name: 'Remount (or new) HT/C-test',
+            allowContributors: true,
+            criteriaTemplates: [
+                {
+                    type: 'RequireProcosysFunctionalRoleSignature',
+                    assignToCreator: false,
+                    value: 'RC - Electrical',
+                },
+            ],
+            criterias: [],
+        },
+    ];
+    return fullReleaseControlTemplate;
 }

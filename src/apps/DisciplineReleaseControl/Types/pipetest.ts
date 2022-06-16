@@ -39,6 +39,7 @@ export interface CheckList {
     m03Planned: string;
     m03Forecast: string;
     m04Actual: string;
+    underline?: string;
 }
 
 export interface InsulationBox {

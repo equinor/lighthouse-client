@@ -1,6 +1,5 @@
 import { EstimateBar, ExpendedProgressBar, ProgressBar } from '@equinor/Table';
-import { isProduction } from '../../../../../Core/Client/Functions';
-import { useFacility } from '../../../../../Core/Client/Hooks';
+import { proCoSysUrls } from '../../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../../../types/FAM/workOrder';
 import { Columns, Column, Header, Link } from './compactWorkOrder.styles';
 
@@ -15,7 +14,6 @@ export const CompactWorkorder = ({
     highestEstimate,
     highestExpended,
 }: CompactWorkorderProps): JSX.Element => {
-    const { title } = useFacility();
     const {
         workOrderNumber,
         workOrderId,
@@ -33,17 +31,7 @@ export const CompactWorkorder = ({
         <div style={{ height: '72px' }}>
             <Header>
                 <Link
-                    onClick={() =>
-                        window.open(
-                            //TEMP:
-                            `https://${isProduction() ? 'procosys' : 'procosys'
-                            }.equinor.com/${title.replace(
-                                ' ',
-                                '_'
-                            )}/WorkOrders/WorkOrder#id=${workOrderId}`,
-                            '_blank'
-                        )
-                    }
+                    onClick={() => window.open(proCoSysUrls.getWorkOrderUrl(workOrderId), '_blank')}
                 >
                     {workOrderNumber}
                 </Link>

@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { isProduction } from '../../../../Core/Client/Functions';
+import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { getDocumentIdByNo } from '../../api/PCS/getDocumentIdByNo';
 import { OriginType } from '../../types/scopeChangeRequest';
 
@@ -18,10 +18,7 @@ export const OriginLink = ({
 }: OriginLinkProps): JSX.Element => {
     async function onClickRedirectOrigin(id: string) {
         const pcsId = await getDocumentIdByNo(id);
-        window.open(
-            `https://${isProduction() ? 'procosys' : 'procosystest'
-            }.equinor.com/JOHAN_CASTBERG/Documents/Document#id=${pcsId}`
-        );
+        window.open(proCoSysUrls.getDocumentUrl(pcsId), '_blank');
     }
 
     const Component = useMemo(() => {
@@ -61,12 +58,7 @@ export const OriginLink = ({
                 return (
                     <Link
                         hideUnderline={onlyUnderlineOnHover}
-                        onClick={() =>
-                            window.open(
-                                `https://${isProduction() ? 'procosys' : 'procosystest'
-                                }.equinor.com/JOHAN_CASTBERG/Completion#PunchListItem|${id}`
-                            )
-                        }
+                        onClick={() => window.open(proCoSysUrls.getPunchUrl(id), '_blank')}
                     >
                         {type} - {id}
                     </Link>
