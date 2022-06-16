@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
+# 1.4.5
+- [MC] Production flag for analytics tab
+- [Portal] Change nginx version to fix dynatrace
+- [PipingAndHeatTrace] - 3D for tags
 
 ## 1.5.0
 - [PipingAndHeatTrace] New custom group header for HT cables
