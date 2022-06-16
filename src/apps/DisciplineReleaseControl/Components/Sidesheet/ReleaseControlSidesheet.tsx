@@ -1,12 +1,16 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { useLocationKey } from '@equinor/hooks';
+import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
+
 import { ServerError } from '../../Api/Types/ServerError';
 import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet, Pipetest } from '../../Types/pipetest';
+import { Panel, ThreeDView } from '../3D';
 import { ElectroView } from '../Electro/ElectroView';
 import { CheckListTable } from './CheckListTable';
 import { ReleaseControlErrorBanner } from './ErrorBanner';
@@ -83,7 +87,7 @@ export const ReleaseControlSidesheet = ({
                     <Tabs.Tab>Work orders</Tabs.Tab>
                     <Tabs.Tab>Insulation</Tabs.Tab>
                     <Tabs.Tab>Checklists</Tabs.Tab>
-                    {/* <Tabs.Tab>3D</Tabs.Tab> */}
+                    <>{!isProduction() && <Tabs.Tab>3D</Tabs.Tab>}</>
                 </SidesheetTabList>
                 <Tabs.Panels>
                     <Tabs.Panel>
@@ -133,15 +137,17 @@ export const ReleaseControlSidesheet = ({
                             <CheckListTable checkLists={item.checkLists} />
                         </TablesTab>
                     </Tabs.Panel>
-                    {/* <Panel>
-                        <>
-                            {activeTab === 4 && (
-                                <ModelViewerContextProvider>
-                                    <ThreeDView pipetest={item} />
-                                </ModelViewerContextProvider>
-                            )}
-                        </>
-                    </Panel> */}
+                    <>
+                        {!isProduction() && (
+                            <Panel>
+                                {activeTab === 4 && (
+                                    <ModelViewerContextProvider>
+                                        <ThreeDView pipetest={item} />
+                                    </ModelViewerContextProvider>
+                                )}
+                            </Panel>
+                        )}
+                    </>
                 </Tabs.Panels>
             </Tabs>
         </Wrapper>
