@@ -6,7 +6,7 @@ export const MenuItem = styled.div`
     height: 48px;
     text-overflow: ellipsis;
     white-space: nowrap;
-    grid-template-columns: 2fr 8fr;
+    grid-template-columns: 2fr 4fr 8fr;
     margin: -5px -5px;
     align-items: center;
     cursor: pointer;
