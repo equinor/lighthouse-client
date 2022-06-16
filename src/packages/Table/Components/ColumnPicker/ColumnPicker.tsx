@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ReactSortable } from 'react-sortablejs';
 import styled from 'styled-components';
-import { Checkbox } from '@equinor/eds-core-react';
+import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { TableAPI, TableData } from '@equinor/Table';
 import { ColumnInstance } from 'react-table';
 
@@ -44,7 +44,7 @@ export const ColumnMenuPicker = ({ getApi }: ColumnMenuPickerProps): JSX.Element
                     return (
                         <MenuItem key={id}>
                             <DraggableIconWrapper className={DraggableHandleSelector}>
-                                <DraggableIcon />
+                                <Icon name="drag_handle" />
                             </DraggableIconWrapper>
 
                             <div style={{ height: '48px', width: '20px' }}>
