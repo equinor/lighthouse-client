@@ -38,6 +38,11 @@ export function useSidesheetEffects(
                 isDisabled: !canPatch,
                 onClick: toggleEditMode,
             });
+            menuItems.push({
+                icon: <Icon name="copy" />,
+                label: 'Create new revision',
+                isDisabled: !canPatch,
+            });
         }
 
         menuItems.push(
