@@ -33,15 +33,6 @@ const Button = styled.button<BoxProps>`
     > svg > path {
         fill: ${(props) => (props.color ? props.color : '150, 150, 150')};
     }
-
-    :hover {
-        color: ${tokens.colors.text.static_icons__secondary.rgba};
-        background: ${tokens.colors.interactive.primary__hover_alt.rgba};
-
-        > svg > path {
-            fill: ${tokens.colors.text.static_icons__secondary.rgba};
-        }
-    }
 `;
 
 interface TabButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
