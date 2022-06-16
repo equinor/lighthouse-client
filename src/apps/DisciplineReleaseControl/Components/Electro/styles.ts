@@ -59,20 +59,20 @@ export const ElectroViewNodeGroupRow = styled.div`
 export const ElectroViewNodeText = styled.div`
     display: flex;
     flex-direction: horizontal;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500, Medium;
     margin-left: 4px;
 `;
 
 export const ElectroViewNodeValueText = styled.div<{ clickable?: boolean }>`
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400, regular;
     margin-left: 5px;
     cursor: ${(p) => (p.clickable ? 'pointer' : 'default')};
 `;
 
 export const ElectroViewHTHighlight = styled.div`
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400, regular;
     margin-left: 5px;
     cursor: pointer;
