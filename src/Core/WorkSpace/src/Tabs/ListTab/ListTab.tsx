@@ -1,5 +1,5 @@
 import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equinor/Table';
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
@@ -7,7 +7,9 @@ import { useElementData } from '../../../../../packages/Utils/Hooks/useElementDa
 import { WorkspaceFilter } from '../../Components/WorkspaceFilter/WorkspaceFilter';
 import { useDataContext } from '../../Context/DataProvider';
 import { tabApis } from '../../Context/LocationProvider';
+import { TableStore } from '../../Database/Table/tableStore';
 import { useWorkspaceBookmarks } from '../../Util/bookmarks/hooks';
+import { useWorkSpace } from '../../WorkSpaceApi/useWorkSpace';
 
 const Wrapper = styled.section`
     margin: 16px;
@@ -16,7 +18,19 @@ const Wrapper = styled.section`
 
 export type GetTableApi = () => TableAPI;
 
-export const ListTab = (): JSX.Element => {
+export const ListTabWrapper = (): JSX.Element | null => {
+    const { isLoading, columnOrder } = usePreviousSessionColumnOrder();
+
+    const { tableOptions } = useWorkSpace();
+    if (isLoading) return null;
+    return <ListTab columnOrder={columnOrder ?? tableOptions?.columnOrder ?? []} />;
+};
+
+interface SessionData {
+    columnOrder: string[];
+}
+
+export const ListTab = ({ columnOrder }: SessionData): JSX.Element => {
     const {
         filterState: { getFilteredData },
     } = useFilterApiContext();
@@ -58,18 +72,24 @@ export const ListTab = (): JSX.Element => {
             initialState: {
                 hiddenColumns: tableOptions?.hiddenColumns ?? [],
             },
-            columnOrder: tableOptions?.columnOrder,
+            columnOrder,
             groupByFn: defaultGroupByFn,
             onSelect: onSelect,
         }),
         [
             // columns,
             onSelect,
-            tableOptions?.columnOrder,
+            columnOrder,
             tableOptions?.enableSelectRows,
             tableOptions?.onCellClick,
         ]
     );
+
+    const onColumnOrderChanged = useCallback((newColumnOrder: string[]) => {
+        if (newColumnOrder.length > 0) {
+            TableStore.updateColumnOrder(newColumnOrder);
+        }
+    }, []);
 
     return (
         <>
@@ -83,8 +103,29 @@ export const ListTab = (): JSX.Element => {
                     options={options}
                     height={awaitableHeight - 58}
                     itemSize={tableOptions?.itemSize}
+                    onColumnOrderChanged={onColumnOrderChanged}
                 />
             </Wrapper>
         </>
     );
 };
+
+function usePreviousSessionColumnOrder() {
+    useEffect(() => {
+        async function getColumnOrderAsync() {
+            const persistedColumnOrder = await TableStore.getColumnOrder();
+            if (persistedColumnOrder.length > 0) {
+                setColumnOrder(persistedColumnOrder);
+            }
+            setIsLoading(false);
+        }
+        getColumnOrderAsync();
+    }, []);
+    const [columnOrder, setColumnOrder] = useState<string[] | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    return {
+        columnOrder,
+        isLoading,
+    };
+}

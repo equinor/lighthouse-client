@@ -7,7 +7,7 @@ import { Table } from '../Icons/Table';
 import { Tree } from '../Icons/Tree';
 import { GardenTab } from '../Tabs/GardenTab';
 import { HelpPageTab } from '../Tabs/HelpPageTab';
-import { ListTab as TableTab } from '../Tabs/ListTab/ListTab';
+import { ListTabWrapper } from '../Tabs/ListTab/ListTab';
 import { ListTabPopover } from '../Tabs/ListTab/ListTabPopover';
 import { PowerBiTab } from '../Tabs/PowerBiTab';
 import { TimelineTab } from '../Tabs/TimeLineTAb';
@@ -34,7 +34,7 @@ const tabsConfig: TabsConfigItem[] = [
         title: 'Table',
         tabId: 'table',
         icon: Table,
-        viewComponent: TableTab,
+        viewComponent: ListTabWrapper,
         viewSettings: ListTabPopover,
     },
     {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { tokens } from '@equinor/eds-tokens';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
@@ -10,8 +10,34 @@ import { FilterQuickSearch } from './FilterQuickSearch';
 import { FilterCollapseIcon } from './Icons/FilterCollapsIcon';
 import { FilterExpandIcon } from './Icons/FilterExpandIcon';
 import { FilterClearIcon } from './Icons/FilterClear';
+import { FilterStore } from '../../Database/Filter/filterStore';
 
-export const QuickFilter = (): JSX.Element => {
+export const WorkspaceQuickFilter = (): JSX.Element | null => {
+    useEffect(() => {
+        async function getUserConfig() {
+            setValue(await FilterStore.getIsExpanded());
+        }
+        getUserConfig();
+    }, []);
+
+    const [value, setValue] = useState<boolean | null>(null);
+
+    const handleExpandedChanged = (val: boolean) => {
+        FilterStore.updateIsExpanded(val);
+    };
+    if (value === null) return null;
+
+    return <QuickFilter isDefaultExpanded={value} onExpandedChanges={handleExpandedChanged} />;
+};
+interface QuickFilterProps {
+    isDefaultExpanded?: boolean;
+    onExpandedChanges?: (val: boolean) => void;
+}
+
+export const QuickFilter = ({
+    isDefaultExpanded,
+    onExpandedChanges = () => void 0,
+}: QuickFilterProps): JSX.Element => {
     const [filterGroupOpen, setFilterGroupOpen] = useState<string | null>(null);
 
     const handleExpandFilterGroup = (groupName: string) =>
@@ -31,7 +57,12 @@ export const QuickFilter = (): JSX.Element => {
         ?.filter(({ isQuickFilter }) => !isQuickFilter)
         .map(({ name }) => name);
 
-    const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+    const [isFilterExpanded, setIsFilterExpanded] = useState(isDefaultExpanded);
+
+    const toggleFilterExpand = () => {
+        onExpandedChanges(!isFilterExpanded);
+        setIsFilterExpanded((s) => !s);
+    };
 
     return (
         <>
@@ -58,7 +89,7 @@ export const QuickFilter = (): JSX.Element => {
                             <FilterClearIcon onClick={() => clearActiveFilters()} />
                         )}
 
-                        <div onClick={() => setIsFilterExpanded((s) => !s)}>
+                        <div onClick={toggleFilterExpand}>
                             {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
                         </div>
                     </RightSection>
