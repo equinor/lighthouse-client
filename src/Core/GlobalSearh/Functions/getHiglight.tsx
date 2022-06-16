@@ -1,31 +1,21 @@
+import { tokens } from '@equinor/eds-tokens';
 import Highlighter from 'react-highlight-words';
+import styled from 'styled-components';
 
-// export function getHighlightedText(text = '', higlights?: string) {
-//     if (!higlights) return text;
-//     // Split text on higlight term, include term itself into parts, ignore case
-//     return higlights.split(' ').map((higlight) => {
-//         const parts = text.split(new RegExp(`(${higlight})`, 'gi'));
-//         return parts.map((part, index) => (
-//             <React.Fragment key={index}>
-//                 {part.toLowerCase() === higlight.toLowerCase() ? (
-//                     <b style={{ backgroundColor: tokens.colors.interactive.text_highlight.hex }}>
-//                         {part}
-//                     </b>
-//                 ) : (
-//                     part
-//                 )}
-//             </React.Fragment>
-//         ));
-//     });
-// }
+const Highlight = styled(Highlighter)`
+    .highlight {
+        background-color: ${tokens.colors.interactive.text_highlight.hex};
+    }
+`;
 
 export const getHighlightedText = (text: string, searchValue: string): JSX.Element => {
     text = text.replaceAll('"', '');
 
     return (
-        <Highlighter
+        <Highlight
             searchWords={searchValue.replaceAll('"', '').split(' ')}
             autoEscape={true}
+            highlightClassName="highlight"
             textToHighlight={text}
         />
     );

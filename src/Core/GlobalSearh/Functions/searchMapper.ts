@@ -1,6 +1,7 @@
-import { SearchItem, SearchItems, SearchResponse } from '../Types/Search';
+import { SearchItems, SearchResponse } from '../Types/ProcoSysSearch';
+import { SearchData } from '../Types/Search';
 
-export function searchMapper(response?: SearchResponse): SearchItem[] {
+export function searchMapper(response?: SearchResponse): SearchData[] {
     if (!response) return [];
 
     return response.items.reduce((acc, item) => {
@@ -17,11 +18,11 @@ export function searchMapper(response?: SearchResponse): SearchItem[] {
             return searchPushItem(acc, item, 'punchItem', 'PunchItem', 'red');
         }
         return acc;
-    }, [] as SearchItem[]);
+    }, [] as SearchData[]);
 }
 
 function searchPushItem(
-    acc: SearchItem[],
+    acc: SearchData[],
     item: SearchItems,
     type: string,
     title: string,

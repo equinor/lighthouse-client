@@ -86,17 +86,7 @@ const ClientTopBar = (): JSX.Element => {
                             />
                         </ActionWrapper>
                     )}
-                    <Action
-                        disabled
-                        onClick={() => {
-                            // Search
-                        }}
-                        onMouseOver={() => {
-                            setIsAddMenuOpen(false);
-                        }}
-                    >
-                        <Icon name="search" />
-                    </Action>
+
                     {!isProduction() && (
                         <Action
                             onClick={() => {
@@ -106,6 +96,17 @@ const ClientTopBar = (): JSX.Element => {
                             <Icon name="bookmarks" />
                         </Action>
                     )}
+                    {/* <Action
+                        disabled
+                        onClick={() => {
+                            // Search
+                        }}
+                        onMouseOver={() => {
+                            setIsAddMenuOpen(false);
+                        }}
+                    >
+                        <Icon name="search" />
+                    </Action> */}
                     <GlobalSearch />
                 </Icons>
             </TopBar.Actions>

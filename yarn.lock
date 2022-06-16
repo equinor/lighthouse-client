@@ -5216,6 +5216,11 @@ react-apexcharts@^1.3.9:
   dependencies:
     prop-types "^15.5.7"
 
+react-arrow-navigation@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-arrow-navigation/-/react-arrow-navigation-1.0.1.tgz#c6bf91c35b146d1b07c60fa733bc1440898af449"
+  integrity sha512-UiGPpRRKceyZbYgyX7p7gtlya+MjvV3l+HrF17oy5aupAEouks96Tpq82+AIeGjYv3+PpAflbOT5Z8DyPgupVA==
+
 react-chartjs-2@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/react-chartjs-2/-/react-chartjs-2-4.0.1.tgz#38ed1d5b6e2f789408450c981e9e8e1d78b2e015"

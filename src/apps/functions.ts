@@ -3,7 +3,7 @@ import {
     htResolverFunction,
     rcResolverFunction
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
-import { handoverResolverFunction } from './Handover';
+import { comPkgResolverFunction, handoverResolverFunction } from './Handover';
 import { mcResolverFunction } from './MechanicalCompletion';
 import { releaseResolverFunction } from './ReleaseControl/ReleaseControlApp';
 import { releaseCreatorAccessFunction } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
@@ -23,6 +23,7 @@ export const functions: FunctionManifest[] = [
     workOrderResolverFunction,
     mcResolverFunction,
     releaseResolverFunction,
+    comPkgResolverFunction,
 ];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {

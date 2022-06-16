@@ -10,7 +10,10 @@ import {
     ReleaseControlSidesheetWidgetComponent,
     ReleaseControlSidesheetWidgetManifest
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
-import { handoverCreatorComponent, handoverCreatorManifest } from './Handover';
+import {
+    comPkgComponent, comPkgManifest, handoverCreatorComponent,
+    handoverCreatorManifest
+} from './Handover';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
     releaseCreatorComponent,
@@ -38,6 +41,7 @@ const _widgets: WidgetManifest[] = [
     handoverCreatorManifest,
     workOrderCreatorManifest,
     releaseCreatorManifest,
+    comPkgManifest,
 ];
 
 const _widgetComponents: ComponentManifest[] = [
@@ -52,6 +56,7 @@ const _widgetComponents: ComponentManifest[] = [
     workOrderCreatorComponent,
     workOrderCreatorComponent,
     releaseCreatorComponent,
+    comPkgComponent,
 ];
 
 export async function getCreators(): Promise<CreatorManifest[]> {

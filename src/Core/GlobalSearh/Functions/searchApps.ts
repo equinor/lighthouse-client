@@ -1,4 +1,4 @@
-import { AppManifest } from '@equinor/lighthouse-portal-client';
+import { AppManifest, isProduction } from '@equinor/lighthouse-portal-client';
 
 export function searchApps(apps: AppManifest[], searchString: string) {
     if (searchString.length === 0) return [];
@@ -15,5 +15,7 @@ export function searchApps(apps: AppManifest[], searchString: string) {
             title: app.title,
             description: app.tags.length > 0 ? `Tags: ${app.tags.toString()}` : '',
             id: app.shortName,
+            uri: app.uri && app.uri(isProduction()),
+            group: app.groupe,
         }));
 }

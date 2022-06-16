@@ -8,6 +8,7 @@ export const mapper = {
         title: 'commPkgNo',
         id: 'commPkgNo',
         description: 'description',
+        sideSheet: 'handoverDetails',
     },
     mcPkg: {
         title: 'mcPkgNo',
