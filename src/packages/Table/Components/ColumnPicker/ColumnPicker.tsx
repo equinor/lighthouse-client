@@ -1,55 +1,20 @@
-import { useState, useRef, MutableRefObject, useEffect } from 'react';
-import { useOutsideClick } from '@equinor/hooks';
-
-import { useRefresh } from '../../../../../components/ParkView/hooks/useRefresh';
-import { ClickableIcon } from '../../../../Components/Icon';
-import { ColumnLabel, MenuItem, WrapperDiv } from './columnPicker.styles';
-import { TableAPI, TableData } from '@equinor/Table';
-import { useWorkSpace } from '../../../../../Core/WorkSpace/src';
+import { useState } from 'react';
 import { ReactSortable } from 'react-sortablejs';
 import styled from 'styled-components';
-import { ColumnInstance } from 'react-table';
 import { Checkbox } from '@equinor/eds-core-react';
+import { TableAPI, TableData } from '@equinor/Table';
+import { ColumnInstance } from 'react-table';
 
-interface ColumnPickerProps {
-    getApi: () => TableAPI;
-}
+import { MenuItem } from './columnPicker.styles';
+import { useWorkSpace } from '@equinor/WorkSpace';
 
 export const DraggableHandleSelector = 'globalDraggableHandle';
 
-export const ColumnPicker = ({ getApi }: ColumnPickerProps): JSX.Element => {
-    const [showMenu, setShowMenu] = useState<boolean>(false);
-
-    const containerRef = useRef<HTMLDivElement | null>(null);
-
-    return (
-        <div ref={containerRef}>
-            <ColumnLabel onClick={() => setShowMenu((s) => !s)}>
-                Columns <ClickableIcon name="chevron_down" />
-            </ColumnLabel>
-
-            {showMenu && (
-                <ColumnMenuPicker
-                    getApi={getApi}
-                    closeMenu={() => setShowMenu(false)}
-                    containerRef={containerRef}
-                />
-            )}
-        </div>
-    );
-};
-
 interface ColumnMenuPickerProps {
     getApi: () => TableAPI;
-    closeMenu: () => void;
-    containerRef: MutableRefObject<HTMLDivElement | null>;
 }
 
-const ColumnMenuPicker = ({ getApi, closeMenu, containerRef }: ColumnMenuPickerProps) => {
-    useOutsideClick(containerRef, closeMenu);
-
-    const refresh = useRefresh();
-
+export const ColumnMenuPicker = ({ getApi }: ColumnMenuPickerProps): JSX.Element | null => {
     const { tableOptions } = useWorkSpace();
 
     const tableApi = getApi();
@@ -65,7 +30,7 @@ const ColumnMenuPicker = ({ getApi, closeMenu, containerRef }: ColumnMenuPickerP
     if (!tableOptions) return null;
 
     return (
-        <WrapperDiv>
+        <>
             <ReactSortable
                 animation={200}
                 handle={`.${DraggableHandleSelector}`}
@@ -87,9 +52,9 @@ const ColumnMenuPicker = ({ getApi, closeMenu, containerRef }: ColumnMenuPickerP
                                     readOnly
                                     checked={getApi()
                                         .getVisibleColumns()
-
                                         .map((x) => x.id)
                                         .includes(id)}
+                                    onChange={() => getApi().toggleHideColumn(id)}
                                 />
                             </div>
                             <div>{Header?.toString()}</div>
@@ -97,7 +62,7 @@ const ColumnMenuPicker = ({ getApi, closeMenu, containerRef }: ColumnMenuPickerP
                     );
                 })}
             </ReactSortable>
-        </WrapperDiv>
+        </>
     );
 };
 

@@ -57,7 +57,6 @@ export function Table<TData extends TableData = TableData>({
         toggleHideColumn,
         visibleColumns,
         getTableProps,
-        columns,
         allColumns,
         getTableBodyProps,
         headerGroups,
