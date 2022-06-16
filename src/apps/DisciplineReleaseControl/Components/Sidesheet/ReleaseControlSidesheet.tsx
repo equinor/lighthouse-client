@@ -60,7 +60,7 @@ export const ReleaseControlSidesheet = ({
     }, [width]);
 
     useEffect(() => {
-        actions.setTitle(`Pipetest ${item.name}`);
+        actions.setTitle(`Pipetest ${item.name} - ${item.description}`);
     }, [item.name]);
 
     const locationKey = useLocationKey();
@@ -131,7 +131,6 @@ export const ReleaseControlSidesheet = ({
                     </Tabs.Panel>
                     <Tabs.Panel>
                         <TablesTab>
-                            <h4>{item.description}</h4>
                             <CheckListTable checkLists={item.checkLists} />
                         </TablesTab>
                     </Tabs.Panel>
