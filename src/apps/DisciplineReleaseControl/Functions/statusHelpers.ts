@@ -618,3 +618,28 @@ export function getChecklistStepName(step: CheckListStepTag): string {
     }
     return stepName;
 }
+
+export function getCheckListStatusSortValue(checkList: CheckList): number {
+    let number = 5;
+    switch (checkList.status) {
+        case CheckListStatus.Outstanding:
+            number = 1;
+            break;
+        case CheckListStatus.PunchAError:
+            number = 2;
+            break;
+        case CheckListStatus.PunchBError:
+            number = 3;
+            break;
+        case CheckListStatus.OK:
+            number = 4;
+            break;
+    }
+
+    return number;
+}
+
+export function sortCheckListsForTable(checkLists: CheckList[]): CheckList[] {
+    checkLists.sort((a, b) => getCheckListStatusSortValue(a) - getCheckListStatusSortValue(b));
+    return checkLists;
+}

@@ -1,5 +1,6 @@
 import { Column, Table } from '@equinor/Table';
 import { CheckListType } from '../../Types/pipetest';
+import { CheckListStatusCell } from './CheckListStatusCell';
 
 type TableProps = {
     checkLists: CheckListType[];
@@ -19,7 +20,8 @@ export const CheckListTable = ({ checkLists }: TableProps): JSX.Element => {
         {
             id: 'status',
             Header: 'Status',
-            accessor: (item) => item.status,
+            accessor: (item) => item,
+            Cell: CheckListStatusCell,
         },
         {
             id: 'revision',

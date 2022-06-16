@@ -5,7 +5,10 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { ServerError } from '../../Api/Types/ServerError';
-import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
+import {
+    fetchAndChewPipetestDataFromApi,
+    sortCheckListsForTable,
+} from '../../Functions/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet, Pipetest } from '../../Types/pipetest';
 import { Panel, ThreeDView } from '../3D';
@@ -131,7 +134,7 @@ export const ReleaseControlSidesheet = ({
                     </Tabs.Panel>
                     <Tabs.Panel>
                         <TablesTab>
-                            <CheckListTable checkLists={item.checkLists} />
+                            <CheckListTable checkLists={sortCheckListsForTable(item.checkLists)} />
                         </TablesTab>
                     </Tabs.Panel>
                     <Panel>

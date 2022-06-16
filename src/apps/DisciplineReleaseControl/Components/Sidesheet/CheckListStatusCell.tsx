@@ -1,19 +1,17 @@
 import { CellProps } from '@equinor/Table';
 import styled from 'styled-components';
 import { StatusCircle } from '../../../../packages/GardenUtils/src';
-import { InsulationBoxType } from '../../Types/pipetest';
+import { CheckListType } from '../../Types/pipetest';
 import { getElectroViewCompletionStatusColor } from '../Electro/electroViewHelpers';
 
-export const InsulationStatusTableCell = ({
+export const CheckListStatusCell = ({
     value,
-}: CellProps<InsulationBoxType, InsulationBoxType>): JSX.Element => {
+}: CellProps<CheckListType, CheckListType>): JSX.Element => {
     return (
         <StatusItem>
-            <StatusText>{value.procosysStatus}</StatusText>
-            {value.procosysStatus && (
-                <StatusCircle
-                    statusColor={getElectroViewCompletionStatusColor(value.procosysStatus)}
-                />
+            <StatusText>{value.status}</StatusText>
+            {value.status && (
+                <StatusCircle statusColor={getElectroViewCompletionStatusColor(value.status)} />
             )}
         </StatusItem>
     );
