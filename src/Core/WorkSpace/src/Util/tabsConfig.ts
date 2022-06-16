@@ -5,7 +5,8 @@ import { Garden } from '../Icons/Garden';
 import { HelpPageIcon } from '../Icons/Help';
 import { Table } from '../Icons/Table';
 import { Tree } from '../Icons/Tree';
-import { GardenTab } from '../Tabs/GardenTab';
+import { GardenTab } from '../Tabs/GardenTab/GardenTab';
+import { GardenTabPopover } from '../Tabs/GardenTab/GardenTabPopover';
 import { HelpPageTab } from '../Tabs/HelpPageTab';
 import { ListTab as TableTab } from '../Tabs/ListTab/ListTab';
 import { ListTabPopover } from '../Tabs/ListTab/ListTabPopover';
@@ -42,6 +43,7 @@ const tabsConfig: TabsConfigItem[] = [
         tabId: 'garden',
         icon: Garden,
         viewComponent: GardenTab,
+        viewSettings: GardenTabPopover,
     },
     {
         title: 'Timeline',

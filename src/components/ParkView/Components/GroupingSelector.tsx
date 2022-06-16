@@ -36,12 +36,10 @@ export function FilterSelector<T>(): JSX.Element | null {
 
     const groupingOptions = useMemo(
         (): string[] =>
-            data.length
-                ? allOptions
-                      .filter(filterGroupKey)
-                      .map((groupKey) => fieldSettings?.[groupKey]?.label || groupKey)
-                      .sort()
-                : [],
+            allOptions
+                .filter(filterGroupKey)
+                .map((groupKey) => fieldSettings?.[groupKey]?.label || groupKey)
+                .sort() ?? [],
 
         [data, fieldSettings, filterGroupKey, allOptions]
     );
@@ -52,7 +50,7 @@ export function FilterSelector<T>(): JSX.Element | null {
             newValue == null
                 ? newGroupByKeys.splice(index, 1)
                 : (newGroupByKeys[index] =
-                      getFieldSettingsKeyFromLabel(newValue, fieldSettings) || newValue);
+                    getFieldSettingsKeyFromLabel(newValue, fieldSettings) || newValue);
 
             setGroupKeys(newGroupByKeys);
         },
