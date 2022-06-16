@@ -6,8 +6,9 @@ import { FilterValueType } from '../../../../../packages/Filter/Types';
 
 interface FilterItemCheckboxProps {
     filterValue: FilterValueType;
-    handleFilterItemClick: (item: FilterValueType) => void;
-    isChecked: (val: FilterValueType) => boolean;
+    handleFilterItemClick: () => void;
+    handleFilterItemLabelClick: () => void;
+    isChecked: boolean;
     ValueRender: () => JSX.Element;
 }
 
@@ -15,23 +16,22 @@ export const FilterItemCheckbox = ({
     filterValue,
     handleFilterItemClick,
     isChecked,
+    handleFilterItemLabelClick,
     ValueRender,
 }: FilterItemCheckboxProps): JSX.Element => {
     return (
         <FilterItemWrap key={filterValue}>
-            <Checkbox
-                onChange={() => {
-                    handleFilterItemClick(filterValue);
-                }}
-                size={12}
-                checked={!isChecked(filterValue)}
-            />
-            <div>
+            <Checkbox onChange={handleFilterItemClick} size={12} checked={!isChecked} />
+            <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
                 <ValueRender />
-            </div>
+            </FilterLabelWrapper>
         </FilterItemWrap>
     );
 };
+
+const FilterLabelWrapper = styled.div`
+    cursor: pointer;
+`;
 
 export const FilterItemWrap = styled.div`
     grid-template-columns: auto 1fr auto;

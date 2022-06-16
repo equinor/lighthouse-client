@@ -1,12 +1,15 @@
+import { useState } from 'react';
 import { tokens } from '@equinor/eds-tokens';
 import { useWorkSpace } from '@equinor/WorkSpace';
-import { useState } from 'react';
 import styled from 'styled-components';
-import { ClickableIcon } from '../../../../../packages/Components/Icon';
+
 import { FilterView } from '../../../../../packages/Filter/Components/FilterView/FilterView';
 import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
-import { FilterGroup } from './FilterGroup';
+import { FilterGroup } from './FilterGroup/FilterGroup';
 import { FilterQuickSearch } from './FilterQuickSearch';
+import { FilterCollapseIcon } from './Icons/FilterCollapsIcon';
+import { FilterExpandIcon } from './Icons/FilterExpandIcon';
+import { FilterClearIcon } from './Icons/FilterClear';
 
 export const QuickFilter = (): JSX.Element => {
     const [filterGroupOpen, setFilterGroupOpen] = useState<string | null>(null);
@@ -52,13 +55,12 @@ export const QuickFilter = (): JSX.Element => {
                         )}
 
                         {checkHasActiveFilters() && (
-                            <ClickableIcon name="clear" onClick={() => clearActiveFilters()} />
+                            <FilterClearIcon onClick={() => clearActiveFilters()} />
                         )}
 
-                        <ClickableIcon
-                            name={isFilterExpanded ? 'fullscreen_exit' : 'fullscreen'}
-                            onClick={() => setIsFilterExpanded((s) => !s)}
-                        />
+                        <div onClick={() => setIsFilterExpanded((s) => !s)}>
+                            {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
+                        </div>
                     </RightSection>
                 </SearchLine>
             </CompactFilterWrapper>
