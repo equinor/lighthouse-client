@@ -20,8 +20,8 @@ export const FilterQuickSearch = (): JSX.Element => {
     }
     function handleInput(e) {
         const value = e.target.value;
+        if (!value) clearSearch();
         setSearchText(value);
-        doSearch(value);
     }
     function doSearch(value: string) {
         if (value === '') {
@@ -41,6 +41,11 @@ export const FilterQuickSearch = (): JSX.Element => {
             placeholder={`Search`}
             onInput={handleInput}
             value={searchText}
+            onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                    searchText && doSearch(searchText);
+                }
+            }}
         />
     );
 };
