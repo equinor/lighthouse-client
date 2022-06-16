@@ -116,7 +116,6 @@ export function RequestTab(): JSX.Element {
                                 commPkgs={request.commissioningPackages}
                                 documents={request.documents}
                                 areas={request.areas}
-                                disciplines={request.disciplines}
                                 tags={request.tags}
                             />
                         </SectionWrapper>
