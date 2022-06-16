@@ -13,6 +13,7 @@ export const ViewSettings = ({ tabs }: ViewSettingsProps): JSX.Element | null =>
     const [isOpen, setIsOpen] = useState(false);
     const { activeTab } = useLocationContext();
     const ref = useRef<HTMLDivElement>(null);
+    /** Find viewSettings for the current tab */
     const ViewComp = tabs.find((s) => s.tabId === activeTab)?.viewSettings;
 
     if (!ViewComp) return null;

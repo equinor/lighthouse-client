@@ -9,7 +9,9 @@ export const ListTabPopover = (): JSX.Element | null => {
     return (
         <>
             <Popover.Title>Table settings</Popover.Title>
-            <Popover.Content style={{ maxHeight: '70vh', overflowY: 'scroll' }}>
+            <Popover.Content
+                style={{ maxHeight: '70vh', paddingBottom: '10px', overflowY: 'scroll' }}
+            >
                 <ColumnMenuPicker getApi={getApi} />
             </Popover.Content>
         </>
