@@ -2,13 +2,12 @@ import { defaultGroupByFn, Table, TableAPI, TableData, useColumns } from '@equin
 import { useCallback, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 
-import { useFilterApiContext } from '../../../../packages/Filter/Hooks/useFilterApiContext';
-import { TableConfigBar } from '../../../../packages/Table/Components/TableConfigBar/TableConfigBar';
-import { useElementData } from '../../../../packages/Utils/Hooks/useElementData';
-import { WorkspaceFilter } from '../Components/WorkspaceFilter/WorkspaceFilter';
-import { useDataContext } from '../Context/DataProvider';
-import { tabApis } from '../Context/LocationProvider';
-import { useWorkspaceBookmarks } from '../Util/bookmarks/hooks';
+import { useFilterApiContext } from '../../../../../packages/Filter/Hooks/useFilterApiContext';
+import { useElementData } from '../../../../../packages/Utils/Hooks/useElementData';
+import { WorkspaceFilter } from '../../Components/WorkspaceFilter/WorkspaceFilter';
+import { useDataContext } from '../../Context/DataProvider';
+import { tabApis } from '../../Context/LocationProvider';
+import { useWorkspaceBookmarks } from '../../Util/bookmarks/hooks';
 
 const Wrapper = styled.section`
     margin: 16px;
@@ -75,7 +74,7 @@ export const ListTab = (): JSX.Element => {
     return (
         <>
             <WorkspaceFilter />
-            <TableConfigBar />
+
             <Wrapper ref={ref}>
                 <Table<TableData>
                     data={data}
