@@ -82,6 +82,7 @@ export interface CreateReleaseControlStepModel {
     isCompleted?: boolean;
     isCurrent?: boolean;
     tagNumbers?: string[];
+    contributors?: Contributor[];
     criteriaTemplates: CriteriaTemplate[];
     criterias: Criteria[];
     workflowStepCriteriaTemplates?: CriteriaTemplate[];
