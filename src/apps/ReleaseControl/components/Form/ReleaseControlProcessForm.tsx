@@ -33,7 +33,6 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
 
     return (
         <>
-            <Button onClick={() => console.log(readAtomValue())}>Test</Button>
             <div>
                 <FormWrapper>
                     <FlexColumn>
