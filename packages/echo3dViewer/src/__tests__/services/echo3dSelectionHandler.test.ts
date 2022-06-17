@@ -82,7 +82,8 @@ describe('Echo3dSelectionHandler - Selection by e3d tag', () => {
         expect(tagInformation).toStrictEqual({
             e3dTagNo,
             referenceNo: hierarchyNodeModelListResult.results[0].pdmsData.RefNo,
-            ...hierarchyNodeModelListResult.results[0]
+            ...hierarchyNodeModelListResult.results[0],
+            tagNodeAabb: hierarchyNodeModelListResult.results[0].aabb
         });
     });
 
@@ -130,12 +131,14 @@ describe('Echo3dSelectionHandler - Selection by e3d tag', () => {
         expect(tagInformation).toStrictEqual({
             e3dTagNo,
             referenceNo: hierarchyNodeModelListResult.results[0].pdmsData.RefNo,
-            ...hierarchyNodeModelListResult.results[0]
+            ...hierarchyNodeModelListResult.results[0],
+            tagNodeAabb: hierarchyNodeModelListResult.results[0].aabb
         });
         expect(secondCallTagInformation).toStrictEqual({
             e3dTagNo,
             referenceNo: hierarchyNodeModelListResult.results[0].pdmsData.RefNo,
-            ...hierarchyNodeModelListResult.results[0]
+            ...hierarchyNodeModelListResult.results[0],
+            tagNodeAabb: hierarchyNodeModelListResult.results[0].aabb
         });
     });
 
@@ -174,12 +177,14 @@ describe('Echo3dSelectionHandler - Selection by tree index', () => {
             'hierarchyId'
         );
 
+        const aabb = new AabbModel({
+            min: new Vector3Model({ x: 83, y: 277, z: 41 }),
+            max: new Vector3Model({ x: 92, y: 282, z: 56 })
+        });
+
         const getTagNodeByNodeIdSpy = jest.spyOn(getHierarchyClient(), 'getTagNodeByNodeId');
         const getTagNodeByNodeIdListResult = new HierarchyNodeModel({
-            aabb: new AabbModel({
-                min: new Vector3Model({ x: 83, y: 277, z: 41 }),
-                max: new Vector3Model({ x: 92, y: 282, z: 56 })
-            }),
+            aabb,
             childrenIds: [114372, 114374, 114378],
             discipline: 'MECH',
             id: 114371,
@@ -205,10 +210,7 @@ describe('Echo3dSelectionHandler - Selection by tree index', () => {
 
         const getNodeByNodeIdSpy = jest.spyOn(getHierarchyClient(), 'getNodeByNodeId');
         const getNodeByNodeIdListResult = new HierarchyNodeModel({
-            aabb: new AabbModel({
-                min: new Vector3Model({ x: 88, y: 277, z: 41 }),
-                max: new Vector3Model({ x: 91, y: 281, z: 42 })
-            }),
+            aabb,
             childrenIds: [],
             discipline: 'MECH',
             id: 114498,
@@ -246,6 +248,8 @@ describe('Echo3dSelectionHandler - Selection by tree index', () => {
         const tagInformation = await selectionHandler.setSelectionBasedOnTreeIndex(114498);
 
         expect(tagInformation).toStrictEqual({
+            tagNodeAabb: aabb,
+            nodeAabb: aabb,
             e3dTagNo: getTagNodeByNodeIdListResult.tag,
             point: undefined,
             referenceNo: getNodeByNodeIdListResult.pdmsData.RefNo,
@@ -259,12 +263,14 @@ describe('Echo3dSelectionHandler - Selection by tree index', () => {
             'hierarchyId'
         );
 
+        const aabb = new AabbModel({
+            min: new Vector3Model({ x: 83, y: 277, z: 41 }),
+            max: new Vector3Model({ x: 92, y: 282, z: 56 })
+        });
+
         const getTagNodeByNodeIdSpy = jest.spyOn(getHierarchyClient(), 'getTagNodeByNodeId');
         const getTagNodeByNodeIdListResult = new HierarchyNodeModel({
-            aabb: new AabbModel({
-                min: new Vector3Model({ x: 83, y: 277, z: 41 }),
-                max: new Vector3Model({ x: 92, y: 282, z: 56 })
-            }),
+            aabb,
             childrenIds: [114372, 114374, 114378],
             discipline: 'MECH',
             id: 114371,
@@ -290,10 +296,7 @@ describe('Echo3dSelectionHandler - Selection by tree index', () => {
 
         const getNodeByNodeIdSpy = jest.spyOn(getHierarchyClient(), 'getNodeByNodeId');
         const getNodeByNodeIdListResult = new HierarchyNodeModel({
-            aabb: new AabbModel({
-                min: new Vector3Model({ x: 88, y: 277, z: 41 }),
-                max: new Vector3Model({ x: 91, y: 281, z: 42 })
-            }),
+            aabb,
             childrenIds: [],
             discipline: 'MECH',
             id: 114498,
@@ -332,6 +335,8 @@ describe('Echo3dSelectionHandler - Selection by tree index', () => {
         const tagInformationSecond = await selectionHandler.setSelectionBasedOnTreeIndex(114498);
 
         expect(tagInformationFirst).toStrictEqual({
+            nodeAabb: aabb,
+            tagNodeAabb: aabb,
             e3dTagNo: getTagNodeByNodeIdListResult.tag,
             referenceNo: getNodeByNodeIdListResult.pdmsData.RefNo,
             point: undefined,
@@ -501,7 +506,17 @@ describe('Echo3dSelectionHandler - update Node appearance', () => {
         ['Ghosted', { renderGhosted: true, visible: true }],
         ['Outlined', { outlineColor: 1, visible: true }],
         ['InFront', { renderInFront: true, visible: true }],
-        ['Default', { color: [0, 0, 0], outlineColor: 0, renderGhosted: false, renderInFront: false, visible: true }]
+        [
+            'Default',
+            {
+                color: [0, 0, 0],
+                prioritizedForLoadingHint: 0,
+                outlineColor: 0,
+                renderGhosted: false,
+                renderInFront: false,
+                visible: true
+            }
+        ]
     ];
 
     test.each(testOptions)('Apply %p default node appearance', (option, result) => {

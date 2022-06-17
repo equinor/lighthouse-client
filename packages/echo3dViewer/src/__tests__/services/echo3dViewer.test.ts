@@ -1,4 +1,4 @@
-import { Cognite3DModel, THREE } from '@cognite/reveal';
+import { Cognite3DModel, Cognite3DViewerOptions, THREE } from '@cognite/reveal';
 import { CogniteClient } from '@cognite/sdk';
 import { CancelToken } from '@esfx/async-canceltoken';
 // eslint-disable-next-line testing-library/no-dom-import -- react is not in this project
@@ -7,6 +7,7 @@ import CameraControls from 'camera-controls';
 import { initializeHierarchyClient, SelectedNodeInformation } from '../..';
 import { CameraControlsExtended } from '../../controls/CameraControlsExtended';
 import { FirstPersonCameraControls } from '../../controls/FirstPersonCameraControls';
+import { Echo3dCameraManager } from '../../services/echo3dCameraManager';
 import { Echo3dViewer } from '../../services/echo3DViewer';
 import { AssetDownloadDto, AssetMetadataSimpleDto } from '../../services/generated/EchoModelDistributionApiClient';
 import { getModelsClient, initializeModelClient } from '../../services/modelsClient';
@@ -16,14 +17,17 @@ const getEcho3dViewerMock = (): Echo3dViewer => {
     const renderer = new THREE.WebGLRenderer({ canvas: canvasElementMock });
     const client = new CogniteClient({
         appId: '',
-        baseUrl: ''
+        baseUrl: '',
+        project: '',
+        getToken: jest.fn()
     });
 
-    const options = {
+    const options: Cognite3DViewerOptions = {
         sdk: client,
         renderer,
         domElement: renderer.domElement,
-        logMetrics: false
+        logMetrics: false,
+        cameraManager: new Echo3dCameraManager(renderer.domElement)
     };
 
     return new Echo3dViewer(options);
@@ -165,6 +169,20 @@ describe('Echo3dViewer - initialize controls', () => {
         expect(controls instanceof FirstPersonCameraControls).toBeTruthy();
 
         expect(controls.getPosition()).toEqual(inPosition);
+    });
+
+    test('Should successfully initialize first person camera controls with model bounding box', () => {
+        const viewer = getEcho3dViewerMock();
+        const position = new THREE.Vector3(2.5, 0, 3);
+        const getModelBoundingBox = jest
+            .fn()
+            .mockReturnValue(new THREE.Box3(new THREE.Vector3(1), new THREE.Vector3(4)));
+        const model = { getModelBoundingBox } as unknown as Cognite3DModel;
+        const controls = viewer.initializeFirstPersonControlsUsingModelAsBoundingBox(model);
+
+        expect(controls instanceof FirstPersonCameraControls).toBeTruthy();
+
+        expect(controls.getPosition()).toEqual(position);
     });
 });
 

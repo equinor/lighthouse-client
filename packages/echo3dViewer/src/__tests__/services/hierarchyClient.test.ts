@@ -93,10 +93,14 @@ describe('HierarchyClient', () => {
         jest.spyOn(hierarchyClient, 'getNodeByNodeId').mockRejectedValue(
             new ApiException('Not Found', 404, 'response', {}, {})
         );
-        const { e3dTagNo: pdmsTagNo, referenceNo, aabb } = await getTagNoRefNoAndAabbByNodeId(123, 'hierarchyId');
+        const {
+            e3dTagNo: pdmsTagNo,
+            referenceNo,
+            tagNodeAabb
+        } = await getTagNoRefNoAndAabbByNodeId(123, 'hierarchyId');
 
         expect(pdmsTagNo).toBeUndefined();
         expect(referenceNo).toBeUndefined();
-        expect(aabb).toBeUndefined();
+        expect(tagNodeAabb).toBeUndefined();
     });
 });

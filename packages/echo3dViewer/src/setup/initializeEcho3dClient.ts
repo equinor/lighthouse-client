@@ -28,7 +28,7 @@ const initializeClient = async (baseUrl: string, getAccessToken: () => Promise<s
  * Method that initializes the echo3d client
  *
  * @param {string} baseUrl the model distribution services base Url for the given environment
- * @param {() => Promise<string | undefined>} getAccessToken callback that is invoked when the code needs an accessToken towards the ModelDistribution service. Return the accessToken here.
+ * @param {() => Promise<string>} getAccessToken callback that is invoked when the code needs an accessToken towards the ModelDistribution service. Return the accessToken here.
  * @returns {Promise<Echo3dClient>} the initialized echo3DClient
  */
 export const initializeEcho3dClient = async (

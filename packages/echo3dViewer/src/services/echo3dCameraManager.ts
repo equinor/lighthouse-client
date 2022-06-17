@@ -341,7 +341,7 @@ export class Echo3dCameraManager implements CameraManager {
         this.isDisposed = true;
         if (this.controls) {
             this.unsubscribeEventListenersFromActiveControls();
-            this.controls.disposeAll();
+  
             this.controls = undefined;
         }
         if (this.cameraFrustumHelper) {

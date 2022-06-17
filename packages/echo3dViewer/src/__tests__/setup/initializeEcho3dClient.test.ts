@@ -10,17 +10,8 @@ describe('initializeEcho3dClient', () => {
     });
 
     test('should throw error when unable to create a echo 3d client', async () => {
-        const getAccessToken = jest.fn().mockResolvedValue(undefined);
+        const getAccessToken = jest.fn().mockRejectedValue(undefined);
         await expect(initializeEcho3dClient('baseUrl', getAccessToken)).rejects.toThrow();
-    });
-
-    test('should throw error when authenticate is called on a create echo 3d client', async () => {
-        const getAccessToken = jest.fn().mockResolvedValueOnce('accessToken').mockResolvedValueOnce(undefined);
-        const client = await initializeEcho3dClient('baseUrl', getAccessToken);
-
-        expect(client instanceof Echo3dClient).toBeTruthy();
-
-        await expect(client.authenticate()).rejects.toThrow();
     });
 
     test('should successfully re-authenticate is using a created echo 3d client', async () => {
@@ -30,6 +21,6 @@ describe('initializeEcho3dClient', () => {
         expect(client instanceof Echo3dClient).toBeTruthy();
 
         const loginSuccess = client.authenticate();
-        expect(await loginSuccess).toBe(true);
+        expect(await loginSuccess).toBe('Bearer accessToken');
     });
 });

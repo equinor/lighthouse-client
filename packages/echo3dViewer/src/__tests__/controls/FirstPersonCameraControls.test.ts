@@ -4,6 +4,10 @@ import { degreesToRads } from '../../utils/calculationUtils';
 
 const lookSpeed = Math.PI / 15; // from FirstPersonCameraControls settings
 
+// Maps the pointer.button to the corresponding pointer.buttons value by index in this array.
+// see: https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events#determining_button_states
+const mouseButton2Buttons = [1, 4, 2, 8, 16, 32];
+
 const setupSimpleCameraForTest = (): FirstPersonCameraControls => {
     const camera = new THREE.PerspectiveCamera();
     const canvas = document.createElement('canvas');
@@ -27,7 +31,13 @@ const setupSimpleCameraForTest = (): FirstPersonCameraControls => {
     return new FirstPersonCameraControls(camera, canvas);
 };
 
-const pushPositionKey = (scc: FirstPersonCameraControls, movementSpeed: number, key: string, checkPosition = true) => {
+const pushPositionKey = (
+    scc: FirstPersonCameraControls,
+    movementSpeed: number,
+    key: string,
+    checkPosition = true,
+    disabled = false
+) => {
     const keydown = new KeyboardEvent('keydown', { key });
     document.dispatchEvent(keydown);
     scc.setMovementSpeed(movementSpeed);
@@ -35,9 +45,13 @@ const pushPositionKey = (scc: FirstPersonCameraControls, movementSpeed: number, 
     const beforeUpdate = scc.getCamera().position.clone();
     scc.update(deltaTime);
     const afterUpdate = scc.getCamera().position.clone();
-    if (checkPosition) {
+    if (checkPosition && !disabled) {
         expect(afterUpdate).not.toEqual(beforeUpdate);
     }
+    if (disabled) {
+        expect(afterUpdate).toEqual(beforeUpdate);
+    }
+
     return afterUpdate;
 };
 
@@ -50,7 +64,7 @@ const releasePositionKey = (scc: FirstPersonCameraControls, afterUpdate: THREE.V
     expect(scc.getCamera().position.clone()).toEqual(afterUpdate); // We released W (and disabled velocity).
 };
 
-const pushRotationKey = (scc: FirstPersonCameraControls, key: string) => {
+const pushRotationKey = (scc: FirstPersonCameraControls, key: string, disabled = false) => {
     const keydown = new KeyboardEvent('keydown', { key });
     document.dispatchEvent(keydown);
     const deltaTime = 1;
@@ -61,7 +75,11 @@ const pushRotationKey = (scc: FirstPersonCameraControls, key: string) => {
     const afterUpdateRotation = scc.getRotation().clone();
     const afterUpdateQuaternion = scc.getQuaternion().clone();
 
-    expect(beforeUpdateRotation).not.toEqual(afterUpdateRotation);
+    if (disabled) {
+        expect(beforeUpdateRotation).toEqual(afterUpdateRotation);
+    } else {
+        expect(beforeUpdateRotation).not.toEqual(afterUpdateRotation);
+    }
 
     return { afterUpdateRotation, afterUpdateQuaternion };
 };
@@ -99,7 +117,7 @@ describe('FirstPersonCameraControls dom test', () => {
         if (container) document.body.removeChild(container);
     });
 
-    test('W dows not move forward if active element is not body or canvas element', () => {
+    test('W moves forward even if active element is not body or canvas element', () => {
         container.focus();
         const scc = setupSimpleCameraForTest();
         const movementSpeed = 500;
@@ -110,7 +128,26 @@ describe('FirstPersonCameraControls dom test', () => {
         const beforeUpdate = scc.getCamera().position.clone();
         scc.update(deltaTime);
         const afterUpdate = scc.getCamera().position.clone();
-        expect(afterUpdate).toEqual(beforeUpdate);
+        expect(afterUpdate.z).toBeLessThan(beforeUpdate.z); // -Z is forward
+
+        releasePositionKey(scc, afterUpdate, 'W');
+    });
+
+    test('W does not move forward when disabled (active element is not body or canvas element)', () => {
+        container.focus();
+        const scc = setupSimpleCameraForTest();
+        scc.setIsDisabled(true);
+
+        const movementSpeed = 500;
+
+        const keydown = new KeyboardEvent('keydown', { key: 'W' });
+        document.dispatchEvent(keydown);
+        scc.setMovementSpeed(movementSpeed);
+        const deltaTime = 1;
+        const beforeUpdate = scc.getCamera().position.clone();
+        scc.update(deltaTime);
+        const afterUpdate = scc.getCamera().position.clone();
+        expect(afterUpdate.z).toEqual(beforeUpdate.z); // -Z is forward
 
         releasePositionKey(scc, afterUpdate, 'W');
     });
@@ -156,6 +193,28 @@ describe('FirstPersonCameraControls keyboard controls test', () => {
         }
     );
 
+    test.each(wasdMovementCases)('%p(%p) does not move the camera %p, %p, %p when disabled', (key, modifierKey) => {
+        const scc = setupSimpleCameraForTest();
+        scc.setIsDisabled(true);
+        if (modifierKey !== null) {
+            const keydown = new KeyboardEvent('keydown', { key: modifierKey });
+            document.dispatchEvent(keydown);
+            window.dispatchEvent(keydown);
+        }
+
+        const checkPositionAfterUpdate = !(
+            modifierKey === 'Control' ||
+            modifierKey === 'Alt' ||
+            modifierKey === 'Meta'
+        );
+
+        const afterUpdate = pushPositionKey(scc, movementSpeed, key, checkPositionAfterUpdate, true);
+
+        expect(afterUpdate).toEqual(new THREE.Vector3(0, 0, 0));
+
+        releasePositionKey(scc, afterUpdate, key);
+    });
+
     const arrowKeyRotationCases: Array<[string, number, number]> = [
         ['ArrowUp', lookSpeed, 0],
         ['ArrowDown', -lookSpeed, 0],
@@ -168,6 +227,17 @@ describe('FirstPersonCameraControls keyboard controls test', () => {
 
         expect(afterUpdateQuaternion.x).toBeCloseTo(expectedX, 2);
         expect(afterUpdateQuaternion.y).toBeCloseTo(expectedY, 2);
+
+        releaseRotationKey(scc, afterUpdateRotation, afterUpdateQuaternion, key, 0);
+    });
+
+    test.each(arrowKeyRotationCases)('%p does not rotate camera to %p, %p when disabled', (key) => {
+        const scc = setupSimpleCameraForTest();
+        scc.setIsDisabled(true);
+        const { afterUpdateRotation, afterUpdateQuaternion } = pushRotationKey(scc, key, true);
+
+        expect(afterUpdateQuaternion.x).toEqual(0);
+        expect(afterUpdateQuaternion.y).toEqual(0);
 
         releaseRotationKey(scc, afterUpdateRotation, afterUpdateQuaternion, key, 0);
     });
@@ -185,6 +255,7 @@ describe('FirstPersonCameraControls PointerEvent tests', () => {
                     this.pointerId = params.pointerId;
                 }
             }
+
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any -- This is just a continuation of the Fake PointerEvent.
             global.PointerEvent = PointerEvent as any;
         }
@@ -204,46 +275,128 @@ describe('FirstPersonCameraControls PointerEvent tests', () => {
         expect(mouseButton).toBeGreaterThanOrEqual(0);
         expect(mouseButton).toBeLessThanOrEqual(2);
 
+        const buttonsState = mouseButton2Buttons[mouseButton];
+        const monitorCenter = { x: 110, y: 110 };
+
         const scc = setupSimpleCameraForTest();
         scc.getDomElement().setPointerCapture = jest.fn(); // Ignore this
+
         const initialRotation = scc.getCamera().rotation.clone();
-        const monitorCenter = { x: 110, y: 110 };
+        const initialPosition = scc.getCamera().position.clone();
 
         const pointer1 = new PointerEvent('pointerdown', {
             clientX: monitorCenter.x + 10,
             clientY: monitorCenter.y,
             pointerId: 1,
-            button: mouseButton
+            button: mouseButton,
+            buttons: buttonsState
         });
 
+        expect(scc.getDomElement().style.cursor).not.toBe('grabbing');
         scc.getDomElement().dispatchEvent(pointer1);
-        expect(scc.getPointerCache().activePointerCount()).toEqual(mouseButton === 0 || mouseButton === 2 ? 1 : 0);
+        expect(scc.getPointerCache().activePointerCount()).toEqual(
+            mouseButton === 0 || mouseButton === 1 || mouseButton === 2 ? 1 : 0
+        );
 
         const pointer1Move = new PointerEvent('pointermove', {
             clientX: monitorCenter.x + 50,
             clientY: monitorCenter.y + 20,
-            pointerId: 1
+            pointerId: 1,
+            buttons: buttonsState
         });
 
         document.dispatchEvent(pointer1Move);
 
-        const afterUpdate = scc.getCamera().rotation.clone();
+        expect(scc.getDomElement().style.cursor).toBe('grabbing');
+        const afterUpdateRotation = scc.getCamera().rotation.clone();
+        const afterUpdatePosition = scc.getCamera().position.clone();
 
         if (mouseButton === 0 || mouseButton === 2) {
-            // Primary or Right-Click button
-            expect(afterUpdate.x).toBeGreaterThan(initialRotation.x);
-            expect(afterUpdate.y).toBeGreaterThan(initialRotation.y);
+            // Primary or Right-Click button: rotation
+            expect(afterUpdateRotation.x).toBeGreaterThan(initialRotation.x);
+            expect(afterUpdateRotation.y).toBeGreaterThan(initialRotation.y);
+
+            expect(afterUpdatePosition.x).toEqual(initialPosition.x);
+            expect(afterUpdatePosition.y).toEqual(initialPosition.y);
+            expect(afterUpdatePosition.z).toEqual(initialPosition.z);
         } else {
-            // middle or secondary button
-            expect(afterUpdate.x).toEqual(initialRotation.x);
-            expect(afterUpdate.y).toEqual(initialRotation.y);
+            // middle button: panning
+            expect(afterUpdateRotation.x).toEqual(initialRotation.x);
+            expect(afterUpdateRotation.y).toEqual(initialRotation.y);
+            expect(afterUpdateRotation.z).toEqual(initialRotation.z);
+
+            expect(afterUpdatePosition.x).toBeLessThan(initialPosition.x);
+            expect(afterUpdatePosition.y).toBeGreaterThan(initialPosition.y);
+            expect(afterUpdatePosition.z).toEqual(initialPosition.z);
         }
 
         if (expected) {
-            expect(afterUpdate.x).toBeCloseTo(expected.x, 5);
-            expect(afterUpdate.y).toBeCloseTo(expected.y, 5);
+            expect(afterUpdateRotation.x).toBeCloseTo(expected.x, 5);
+            expect(afterUpdateRotation.y).toBeCloseTo(expected.y, 5);
         }
+
+        const pointer1Up = new PointerEvent('pointerup', {
+            clientX: monitorCenter.x + 50,
+            clientY: monitorCenter.y + 20,
+            pointerId: 1,
+            buttons: buttonsState
+        });
+
+        document.dispatchEvent(pointer1Up);
+        expect(scc.getDomElement().style.cursor).not.toBe('grabbing');
     };
+
+    const performClickAndMoveWhenDisabledTest = (mouseButton: number): void => {
+        // First, verify the input button to the test
+        expect(mouseButton).toBeGreaterThanOrEqual(0);
+        expect(mouseButton).toBeLessThanOrEqual(2);
+
+        const buttonsState = mouseButton2Buttons[mouseButton];
+        const monitorCenter = { x: 110, y: 110 };
+
+        const scc = setupSimpleCameraForTest();
+        scc.setIsDisabled(true);
+        scc.getDomElement().setPointerCapture = jest.fn(); // Ignore this
+
+        const initialRotation = scc.getCamera().rotation.clone();
+        const initialPosition = scc.getCamera().position.clone();
+
+        const pointer1 = new PointerEvent('pointerdown', {
+            clientX: monitorCenter.x + 10,
+            clientY: monitorCenter.y,
+            pointerId: 1,
+            button: mouseButton,
+            buttons: buttonsState
+        });
+
+        scc.getDomElement().dispatchEvent(pointer1);
+        expect(scc.getPointerCache().activePointerCount()).toEqual(0);
+
+        const pointer1Move = new PointerEvent('pointermove', {
+            clientX: monitorCenter.x + 50,
+            clientY: monitorCenter.y + 20,
+            pointerId: 1,
+            buttons: buttonsState
+        });
+
+        document.dispatchEvent(pointer1Move);
+
+        const afterUpdateRotation = scc.getCamera().rotation.clone();
+        const afterUpdatePosition = scc.getCamera().position.clone();
+
+        expect(afterUpdatePosition).toEqual(initialPosition);
+        expect(afterUpdateRotation).toEqual(initialRotation);
+    };
+
+    // eslint-disable-next-line jest/expect-expect --- Tests are performed within containing function
+    test('left-click and move does not rotate the camera when disabled', () => {
+        performClickAndMoveWhenDisabledTest(0);
+    });
+
+    // eslint-disable-next-line jest/expect-expect --- Tests are performed within containing function
+    test('right-click and move does not rotate the camera when disabled', () => {
+        performClickAndMoveWhenDisabledTest(2);
+    });
 
     // eslint-disable-next-line jest/expect-expect -- assertions found in performClickAndMoveTest()
     test('left-click and move rotates the camera', () => {
@@ -273,7 +426,7 @@ describe('FirstPersonCameraControls PointerEvent tests', () => {
     });
 
     // eslint-disable-next-line jest/expect-expect -- assertions found in performClickAndMoveTest()
-    test('middle-click and move does not rotate the camera', () => {
+    test('middle-click and move does not rotate but pan the camera', () => {
         const middleButton = 1; // Primary button
         performClickAndMoveTest(middleButton);
     });
@@ -284,22 +437,36 @@ describe('FirstPersonCameraControls PointerEvent tests', () => {
         performClickAndMoveTest(secondaryButton);
     });
 
-    test('two_finger_pinch_moves_forward_when_distance_expands', () => {
+    test('two_finger_pinch_moves_forward_when_distance_expands, but not if disabled', () => {
         const scc = setupSimpleCameraForTest();
+
         scc.getDomElement().setPointerCapture = jest.fn(); // Ignore this
+
         const initialPosition = scc.getCamera().position.clone();
         const monitorCenter = { x: 110, y: 110 };
+
+        scc.setIsDisabled(true);
 
         const pointer1 = new PointerEvent('pointerdown', {
             clientX: monitorCenter.x + 10,
             clientY: monitorCenter.y,
-            pointerId: 1
+            pointerId: 1,
+            buttons: 1
         });
         const pointer2 = new PointerEvent('pointerdown', {
             clientX: monitorCenter.x - 50,
             clientY: monitorCenter.y,
-            pointerId: 2
+            pointerId: 2,
+            buttons: 1
         });
+        scc.getDomElement().dispatchEvent(pointer1);
+        scc.getDomElement().dispatchEvent(pointer2);
+
+        // No active pointers when disabled
+        expect(scc.getPointerCache().activePointerCount()).toEqual(0);
+
+        scc.setIsDisabled(false);
+
         scc.getDomElement().dispatchEvent(pointer1);
         scc.getDomElement().dispatchEvent(pointer2);
         expect(scc.getPointerCache().activePointerCount()).toEqual(2);
@@ -307,12 +474,25 @@ describe('FirstPersonCameraControls PointerEvent tests', () => {
         const pointer1Move = new PointerEvent('pointermove', {
             clientX: monitorCenter.x + 50,
             clientY: monitorCenter.y,
-            pointerId: 1
+            pointerId: 1,
+            buttons: 1
         });
+
+        scc.setIsDisabled(true);
 
         document.dispatchEvent(pointer1Move);
 
-        const afterUpdate = scc.getCamera().position.clone();
+        let afterUpdate = scc.getCamera().position.clone();
+
+        /* No movement if disabled */
+        expect(afterUpdate).toEqual(initialPosition);
+
+        scc.setIsDisabled(false);
+
+        document.dispatchEvent(pointer1Move);
+
+        afterUpdate = scc.getCamera().position.clone();
+
         expect(afterUpdate).not.toEqual(initialPosition);
         expect(afterUpdate.x).toEqual(0);
         expect(afterUpdate.y).toEqual(0);
@@ -337,9 +517,21 @@ test('scroll_center_moves_forward_even_when_rotated', () => {
         clientY: monitorCenter.y,
         deltaY: -1
     });
+
+    scc.setIsDisabled(true);
     scc.getDomElement().dispatchEvent(wheel);
     scc.update(deltaTime);
-    const afterUpdate = scc.getCamera().position.clone();
+
+    let afterUpdate = scc.getCamera().position.clone();
+    /* No movement if disabled */
+    expect(afterUpdate).toEqual(initialPosition);
+
+    /* Set enabled and movement should work again */
+    scc.setIsDisabled(false);
+    scc.getDomElement().dispatchEvent(wheel);
+    scc.update(deltaTime);
+
+    afterUpdate = scc.getCamera().position.clone();
     expect(afterUpdate).not.toEqual(initialPosition);
     expect(afterUpdate.x).toEqual(0);
     expect(afterUpdate.y).toEqual(0);
@@ -361,7 +553,8 @@ test('set lookAt', () => {
     const scc = setupSimpleCameraForTest();
     const target = new THREE.Vector3(1, 0, -1); // Left forward (45 degrees)
     scc.lookAt(target);
-    const updatedRotation = scc.getCamera().rotation.toVector3().clone();
+    const updatedRotation = new THREE.Vector3();
+    updatedRotation.setFromEuler(scc.getCamera().rotation);
     expect(updatedRotation.x).toBeCloseTo(0);
     expect(updatedRotation.y).toBeCloseTo(-degreesToRads(45));
     expect(updatedRotation.z).toBeCloseTo(0);
@@ -406,12 +599,12 @@ test('successfully dispose of first person camera controls', () => {
 
     expect(canvasAddEventListenerSpy).toBeCalledTimes(2);
 
-    fpsC.dispose();
+    fpsC.disposeAll();
 
     expect(canvasRemoveEventListenerSpy).toBeCalledTimes(2);
 });
 
-test('Joystick - expect movement up when move up i called', () => {
+test('Joystick - expect movement up when move up i called, but not if disabled', () => {
     const camera = new THREE.PerspectiveCamera();
     const canvas = document.createElement('canvas');
 
@@ -439,9 +632,15 @@ test('Joystick - expect movement up when move up i called', () => {
 
     expect(afterUpdate).not.toEqual(beforeUpdate);
     expect(afterUpdate).toEqual(new THREE.Vector3(0, 3, 0));
+
+    /* Dont move if disabled */
+    fpsC.setIsDisabled(true);
+    fpsC.update(deltaTime);
+    const updated = fpsC.getCamera().position.clone();
+    expect(updated).toEqual(afterUpdate);
 });
 
-test('Joystick - expect movement down when move down i called', () => {
+test('Joystick - expect movement down when move down i called, but not if disabled', () => {
     const camera = new THREE.PerspectiveCamera();
     const canvas = document.createElement('canvas');
 
@@ -468,7 +667,14 @@ test('Joystick - expect movement down when move down i called', () => {
     const afterUpdate = fpsC.getCamera().position.clone();
 
     expect(afterUpdate).not.toEqual(beforeUpdate);
+
     expect(afterUpdate).toEqual(new THREE.Vector3(0, -3, 0));
+
+    /* Dont move if disabled */
+    fpsC.setIsDisabled(true);
+    fpsC.update(deltaTime);
+    const updated = fpsC.getCamera().position.clone();
+    expect(updated).toEqual(afterUpdate);
 });
 
 test('Joystick - expect movement when joystick dragged', () => {
@@ -502,4 +708,38 @@ test('Joystick - expect movement when joystick dragged', () => {
 
     expect(afterUpdate).not.toEqual(beforeUpdate);
     expect(afterUpdate).toEqual(new THREE.Vector3(-0.749064305784856, 0, -1.6367353682862273));
+});
+
+test('Joystick - expect no movement when disabled and joystick is dragged', () => {
+    const camera = new THREE.PerspectiveCamera();
+    const canvas = document.createElement('canvas');
+
+    // We cannot set canvas size in the tests, so we replace it with a mock result.
+    canvas.getBoundingClientRect = jest.fn(
+        () =>
+            ({
+                top: 10,
+                left: 10,
+                height: 200,
+                width: 200,
+                bottom: 0,
+                right: 0
+            } as DOMRect)
+    );
+
+    const fpsC = new FirstPersonCameraControls(camera, canvas);
+    fpsC.setIsDisabled(true);
+
+    const moveVector = new THREE.Vector3(1, 0, 0);
+    const radian = 2;
+    const force = 3;
+    moveVector.applyAxisAngle(new THREE.Vector3(0, 1, 0), radian);
+    fpsC.setMoveDirection(moveVector, force > 10 ? 10 : force / 10);
+
+    const deltaTime = 1;
+    const beforeUpdate = fpsC.getCamera().position.clone();
+    fpsC.update(deltaTime);
+    const afterUpdate = fpsC.getCamera().position.clone();
+
+    expect(afterUpdate).toEqual(beforeUpdate);
 });

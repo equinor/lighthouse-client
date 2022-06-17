@@ -13,9 +13,12 @@ describe('CameraControlsExtended', () => {
             class PointerEvent extends Event {
                 public pointerType?: string;
 
+                public buttons?: number;
+
                 constructor(type: string, params: PointerEventInit = {}) {
                     super(type, params);
                     this.pointerType = params.pointerType;
+                    this.buttons = params.buttons;
                 }
             }
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any -- needed for test
@@ -47,6 +50,32 @@ describe('CameraControlsExtended', () => {
 
         expect(controls).toBeDefined();
         expect(trackEventBy).toBeCalledWith('Navigation', 'Moved', { control: 'orbit', value: 'touch' });
+    });
+
+    test('Should change cursor while dragging', () => {
+        const domElement = document.createElement('canvas');
+        const camera = new THREE.PerspectiveCamera();
+        const trackEventBy = jest.fn();
+        const controls = new CameraControlsExtended(camera, domElement, trackEventBy);
+        expect(domElement.style.cursor).not.toBe('grabbing');
+
+        domElement.dispatchEvent(new PointerEvent('pointerdown', { buttons: 1 }));
+        expect(domElement.style.cursor).not.toBe('grabbing');
+        document.dispatchEvent(new PointerEvent('pointermove', { buttons: 1 }));
+        expect(domElement.style.cursor).toBe('grabbing');
+        document.dispatchEvent(new PointerEvent('pointerup', { buttons: 1 }));
+        expect(domElement.style.cursor).not.toBe('grabbing');
+
+        domElement.dispatchEvent(new PointerEvent('pointerdown', { buttons: 1 }));
+        expect(domElement.style.cursor).not.toBe('grabbing');
+        document.dispatchEvent(new PointerEvent('pointermove', { buttons: 1 }));
+        expect(domElement.style.cursor).toBe('grabbing');
+        // Ensure pointercancel is also listened to
+        document.dispatchEvent(new PointerEvent('pointercancel'));
+        expect(domElement.style.cursor).not.toBe('grabbing');
+
+        // Need controls active to listen to events
+        expect(controls).toBeDefined();
     });
 
     test('Should log mouse pen navigation', () => {
