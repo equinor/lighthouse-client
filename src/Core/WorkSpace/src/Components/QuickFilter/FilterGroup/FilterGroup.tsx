@@ -1,3 +1,5 @@
+import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { FilterValueType, useFilterApiContext } from '@equinor/filter';
 import { useRef } from 'react';
 import { useWorkSpace } from '../../../WorkSpaceApi/useWorkSpace';
@@ -44,7 +46,8 @@ export const FilterGroup = ({ name, isOpen, onClick }: FilterGroupProps): JSX.El
     return (
         <div>
             <FilterGroupWrapper ref={ref} onClick={onClick}>
-                {getFilterHeaderText(isAllChecked, name, checkedValues)}
+                <div>{getFilterHeaderText(isAllChecked, name, checkedValues)}</div>
+                <Icon color={tokens.colors.text.static_icons__tertiary.hex} name="chevron_down" />
             </FilterGroupWrapper>
             {isOpen && (
                 <FilterGroupPopoverMenu
@@ -56,6 +59,7 @@ export const FilterGroup = ({ name, isOpen, onClick }: FilterGroupProps): JSX.El
                     anchorEl={ref.current}
                     values={values}
                     CustomRender={customRender}
+                    groupName={name}
                 />
             )}
         </div>
@@ -69,7 +73,11 @@ function getFilterHeaderText(
 ): string | JSX.Element {
     if (isAllChecked || checkedValues.length === 0) return <NormalText>{name}</NormalText>;
 
-    return checkedValues.length - 1 > 0
-        ? `${checkedValues[0] ?? '(Blank)'}(+${checkedValues.length - 1})`
-        : `${checkedValues[0]}`;
+    return (
+        <div style={{ color: tokens.colors.interactive.primary__resting.hex }}>
+            {checkedValues.length - 1 > 0
+                ? `${checkedValues[0] ?? '(Blank)'}(+${checkedValues.length - 1})`
+                : `${checkedValues[0]}`}{' '}
+        </div>
+    );
 }
