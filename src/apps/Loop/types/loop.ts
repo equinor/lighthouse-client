@@ -1,29 +1,9 @@
 export type Loop = {
-    // sourceIdentity: string;
-    // facility: string;
-    // project: string | null;
-    // loopNo: string | null;
-    // description: string | null;
-    // functionalSystem: string | null;
-    // commissioningPackageNo: string | null;
-    // mechanicalCompletionPackageNo: string | null;
-    // priority1: null;
-    // c01PlannedDate: Date | null;
-    // c01ForecastDate: Date | null;
-    // c07PlannedDate: Date | null;
-    // c07ForecastDate: Date | null;
-    // status: string | null;
-    // responsible: string | null;
-    // signedDate: Date | null;
-    // verifiedDate: Date | null;
-    // firstMechanicalCompletionStatus: string | null;
-    // lastPlannedCompletionDate: Date | null;
-    // lastActualCompletionDate: Date | null;
-    // sumRemainingManHours: string | null;
     callOffNo: string | null;
     checklistId: string | null;
     commissioningPackageNo: string | null;
     commissioningPackage_ID: string | null;
+    description: string | null;
     facility: string | null;
     formularGroup: string | null;
     formularType: string | null;
@@ -35,12 +15,15 @@ export type Loop = {
     loopId: string | null;
     mcpkgId: string | null;
     mechanicalCompletionPackageNo: string | null;
+    //TODO
+    mechanicalCompletionPackage_ID: string | null;
     packageNo: string | null;
     priority1: string | null;
     priority2: string | null;
     priority3: string | null;
     project: string | null;
     register: string | null;
+    remainingManHours: number | null;
     responsible: string | null;
     revision: string | null;
     rfC_Planned_Forecast_Date: Date | null;
@@ -51,4 +34,5 @@ export type Loop = {
     tagNo: string | null;
     verifiedDate: Date | null;
     woPlannedCompletionDate: Date | null;
+    woActualCompletionDate: Date | null;
 };

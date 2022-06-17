@@ -7,27 +7,34 @@ import { Loop } from '../../types';
 import { generateExpressions, generateFamRequest } from '../helpers/fam';
 
 const columnNames: string[] = [
-    'SourceIdentity',
+    'ChecklistId',
     'Facility',
     'Project',
-    'LoopNo',
-    'Description',
-    'FunctionalSystem',
-    'CommissioningPackageNo',
+    'TagNo',
     'MechanicalCompletionPackageNo',
-    'Priority1',
-    'C01PlannedDate',
-    'C01ForecastDate',
-    'C07PlannedDate',
-    'C07ForecastDate',
-    'Status',
+    'CommissioningPackageNo',
+    'FormularType',
+    'FormularGroup',
     'Responsible',
+    'Status',
+    'Revision',
     'SignedDate',
     'VerifiedDate',
-    'FirstMechanicalCompletionStatus',
-    'LastPlannedCompletionDate',
-    'LastActualCompletionDate',
-    'SumRemainingManHours',
+    'RFC_Planned_Forecast_Date',
+    'RFO_Planned_Forecast_Date',
+    'WOPlannedCompletionDate',
+    'System',
+    'FunctionalSystem',
+    'Priority1',
+    'Priority2',
+    'Priority3',
+    'Location',
+    'IsVoided',
+    'PackageNo',
+    'CallOffNo',
+    'Register',
+    'Function',
+    'LoopContentStatus',
 ];
 const idResolverFunction = async (id: string): Promise<Loop> => {
     const { FAM } = httpClient();
@@ -62,3 +69,20 @@ export const sidesheetConfig = setupWorkspaceSidesheet<Loop, 'loop'>({
 export const loopSidesheetWidgetManifest = sidesheetConfig('SidesheetManifest');
 export const loopSidesheetWidgetComponent = sidesheetConfig('SidesheetComponentManifest');
 export const loopResolverFunction = sidesheetConfig('ResolverFunction');
+
+export type LoopMCCR = {
+    checklistId: string;
+    facility: string;
+    project: string;
+    tagId: string;
+    tagNo: string;
+    mechanicalCompletionPackageNo: string;
+    commissioningPackageNo: string;
+    formularType: string;
+    formularGroup: string;
+    responsible: string;
+    status: string;
+    revision: string;
+    loopContentStatus: string;
+    priority1: string;
+};

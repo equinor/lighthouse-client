@@ -4,6 +4,7 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Loop } from '../../types';
+import { LoopMCCR } from '../../utility/config';
 import { Banner } from './Banner';
 import { BannerItem } from './BannerItem';
 
