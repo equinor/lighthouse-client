@@ -69,20 +69,3 @@ export const sidesheetConfig = setupWorkspaceSidesheet<Loop, 'loop'>({
 export const loopSidesheetWidgetManifest = sidesheetConfig('SidesheetManifest');
 export const loopSidesheetWidgetComponent = sidesheetConfig('SidesheetComponentManifest');
 export const loopResolverFunction = sidesheetConfig('ResolverFunction');
-
-export type LoopMCCR = {
-    checklistId: string;
-    facility: string;
-    project: string;
-    tagId: string;
-    tagNo: string;
-    mechanicalCompletionPackageNo: string;
-    commissioningPackageNo: string;
-    formularType: string;
-    formularGroup: string;
-    responsible: string;
-    status: string;
-    revision: string;
-    loopContentStatus: string;
-    priority1: string;
-};

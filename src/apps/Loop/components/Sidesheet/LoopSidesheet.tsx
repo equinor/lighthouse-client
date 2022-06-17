@@ -4,9 +4,9 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Loop } from '../../types';
-import { LoopMCCR } from '../../utility/config';
 import { Banner } from './Banner';
 import { BannerItem } from './BannerItem';
+import { LoopContentTable } from './LoopContentTable';
 
 type LoopSidesheetProps = {
     item: Loop;
@@ -14,15 +14,13 @@ type LoopSidesheetProps = {
 };
 export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
     const [activeTab, setActiveTab] = useState<number>(0);
-
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
-
     useEffect(() => {
         actions.setTitle(`${item.tagNo}, ${item.checklistId}`);
     }, []);
-    console.log('item', item);
+
     return (
         <div>
             <Banner padding="0 0.5em">
@@ -48,7 +46,10 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                                 <p>Mcpkg: {item.mechanicalCompletionPackageNo}</p>
                             </div>
 
-                            <h2>Content</h2>
+                            <div>
+                                <h2>Content</h2>
+                                <LoopContentTable loop={item} />
+                            </div>
                         </Tabs.Panel>
                         <Tabs.Panel>Work order</Tabs.Panel>
                         <Tabs.Panel>Checklists</Tabs.Panel>
