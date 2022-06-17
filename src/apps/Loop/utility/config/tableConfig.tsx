@@ -210,10 +210,12 @@ const customColumns: CustomColumn<Loop>[] = [
         accessor: (pkg) => pkg.remainingManHours,
         Cell: (cellProps) => {
             const maxCount = Math.max(
-                ...cellProps.cell.column.filteredRows.map((val) =>
-                    Number(val.original?.sumRemainingManHours)
-                )
+                ...cellProps.cell.column.filteredRows.map((val) => {
+                    debugger;
+                    return Number(val.original?.remainingManHours);
+                })
             );
+            console.log('maxcount', maxCount);
             return <EstimateBar current={Number(cellProps.value)} max={maxCount} />;
         },
 
