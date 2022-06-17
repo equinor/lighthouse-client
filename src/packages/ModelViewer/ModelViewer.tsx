@@ -44,7 +44,8 @@ export const Viewer: React.FC<ViewerProps> = ({
     const viewerRef = useRef<HTMLCanvasElement>(null);
     const authProvider = useAuthProvider();
     const { urls, scope } = useAppConfig();
-    const { isLoading, message, setMessage, setup } = useModelViewerContext();
+    const { isLoading, message, setMessage, setup, selection, echo3DClient } =
+        useModelViewerContext();
     useModel(loadFullModel, tags, padding);
 
     /**
@@ -86,13 +87,19 @@ export const Viewer: React.FC<ViewerProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [authProvider]);
 
+    useEffect(() => {
+        return () => {
+            echo3DClient?.viewer.disposeAll();
+        };
+    }, []);
+
     return (
         <>
             <Wrapper>
                 <canvas ref={viewerRef} />
                 {children && children}
 
-                {isLoading && (
+                {isLoading && !selection && (
                     <MessageWrapper>
                         <Message>
                             <CircularProgress />
