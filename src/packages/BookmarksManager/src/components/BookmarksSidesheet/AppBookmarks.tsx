@@ -1,3 +1,4 @@
+import { tokens } from '@equinor/eds-tokens';
 import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useRegistry } from '@equinor/lighthouse-portal-client';
 import { useState } from 'react';
@@ -10,8 +11,10 @@ import {
     Bookmarks,
     BookmarkLinkWrapper,
 } from './BookmarksSidesheet.styles';
-const AppNameHeader = styled.h4`
-    margin: 0;
+const AppNameHeader = styled.div`
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: 500;
 `;
 type AppBookmarkProps = {
     appKey: string;
@@ -30,7 +33,7 @@ export const AppBookmarks = ({ appBookmarks, appKey }: AppBookmarkProps) => {
                     <ClickableIcon
                         name={isOpen ? 'chevron_down' : 'chevron_right'}
                         onClick={() => setIsOpen((s) => !s)}
-                        color="black"
+                        color={tokens.colors.interactive.primary__resting.hsla}
                     />
                 </div>
                 <AppNameHeader>{app?.title ? app.title : appKey.replace('jc-', '')}</AppNameHeader>
