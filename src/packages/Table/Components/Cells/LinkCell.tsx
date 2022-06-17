@@ -51,7 +51,6 @@ const CustomLinkCellWithTextDecoration = <T extends string | number | boolean | 
         },
         [url]
     );
-    console.log('url', url);
     return (
         <LinkStyle onClick={handleOnClick} href={url} target={'_blank'}>
             {contentToBeDisplayed}
