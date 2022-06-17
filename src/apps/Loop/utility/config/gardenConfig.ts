@@ -33,7 +33,7 @@ export const gardenConfig: GardenOptions<Loop> = {
     objectIdentifier: 'checklistId',
     customGroupByKeys,
     fieldSettings,
-    customViews: {
-        customGroupByView: LoopGroupBySelect,
-    },
+    // customViews: {
+    //     customGroupByView: LoopGroupBySelect,
+    // },
 };
