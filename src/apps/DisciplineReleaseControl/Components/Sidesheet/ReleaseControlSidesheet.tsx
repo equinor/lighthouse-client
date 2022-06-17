@@ -2,10 +2,13 @@ import { Tabs } from '@equinor/eds-core-react';
 import { useLocationKey } from '@equinor/hooks';
 import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
 import { SidesheetApi } from '@equinor/sidesheet';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { ServerError } from '../../Api/Types/ServerError';
-import { fetchAndChewPipetestDataFromApi } from '../../Functions/statusHelpers';
+import {
+    fetchAndChewPipetestDataFromApi,
+    sortCheckListsForTable,
+} from '../../Functions/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet, Pipetest } from '../../Types/pipetest';
 import { Panel, ThreeDView } from '../3D';
@@ -17,6 +20,7 @@ import { ReleaseControlHTSidesheet } from './ReleaseControlHTSidesheet';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { SidesheetTabList } from './SidesheetTabs';
 import { TablesTab, WarningBanner, WarningBannerText } from './styles';
+import { useSidesheetEffects } from './useSidesheetEffects';
 import { WorkOrderTab } from './WorkOrderTab';
 
 interface GatewaySidesheetProps {
@@ -49,19 +53,13 @@ export function ReleaseControlSidesheet({
 
     const [activeTab, setActiveTab] = useState<number>(0);
 
+    const width = window.innerWidth / 2;
+
+    useSidesheetEffects(actions, item);
+
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
-
-    const width = window.innerWidth / 2;
-
-    useEffect(() => {
-        actions.setWidth(width);
-    }, [width]);
-
-    useEffect(() => {
-        actions.setTitle(`Pipetest ${item.name}`);
-    }, [item.name]);
 
     const locationKey = useLocationKey();
 
@@ -104,15 +102,15 @@ export function ReleaseControlSidesheet({
                             (missingInsulationCheckListsCount === 1 ? (
                                 <WarningBanner>
                                     <WarningBannerText>
-                                        ! Warning: {missingInsulationCheckListsCount} insulation box
+                                        Warning: {missingInsulationCheckListsCount} insulation box
                                         missing checklists in ProCoSys.
                                     </WarningBannerText>
                                 </WarningBanner>
                             ) : (
                                 <WarningBanner>
                                     <WarningBannerText>
-                                        ! Warning: {missingInsulationCheckListsCount} insulation
-                                        boxes missing checklists in ProCoSys.
+                                        Warning: {missingInsulationCheckListsCount} insulation boxes
+                                        missing checklists in ProCoSys.
                                     </WarningBannerText>
                                 </WarningBanner>
                             ))}
@@ -131,8 +129,7 @@ export function ReleaseControlSidesheet({
                     </Tabs.Panel>
                     <Tabs.Panel>
                         <TablesTab>
-                            <h4>{item.description}</h4>
-                            <CheckListTable checkLists={item.checkLists} />
+                            <CheckListTable checkLists={sortCheckListsForTable(item.checkLists)} />
                         </TablesTab>
                     </Tabs.Panel>
                     <Panel>
