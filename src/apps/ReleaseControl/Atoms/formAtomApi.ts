@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { TypedSelectOption } from '../../ScopeChangeRequest/api/Search/searchType';
 import { ProcoSysTypes } from '../types/PCS/ProCoSysTypes';
 import { StidTypes } from '../types/PCS/STIDTypes';
-import { CreateReleaseControlStepModel } from '../types/releaseControl';
+import { CreateReleaseControlStepModel, ReleaseControlWorkflow } from '../types/releaseControl';
 
 interface ReleaseControlReferences {
     tagNumbers: string[];
@@ -33,6 +33,7 @@ export interface DRCCreateModel {
     workflowSteps?: CreateReleaseControlStepModel[];
     editedWorkflowSteps?: CreateReleaseControlStepModel[];
     signedWorkflowSteps?: CreateReleaseControlStepModel[];
+    workflow?: ReleaseControlWorkflow;
 }
 
 export type DRCFormModel = Partial<DRCCreateModel>;
@@ -55,11 +56,17 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
             description: undefined,
             allowContributors: true,
             documentNumbers: [],
-            plannedDueDate: undefined,
+            plannedDueDate: '',
             systemIds: [],
             tagNumbers: [],
             workflowSteps: [],
             title: undefined,
+            phase: undefined,
+            references: [],
+            id: undefined,
+            editedWorkflowSteps: [],
+            signedWorkflowSteps: [],
+            workflow: undefined,
         }),
 }));
 

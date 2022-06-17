@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import { SidesheetApi } from '@equinor/sidesheet';
+import { SidesheetApi, getSidesheetContext } from '@equinor/sidesheet';
 import { createAtom } from '@equinor/atom';
 import { ReleaseControlProcessForm } from '../Form/ReleaseControlProcessForm';
+import { deref } from '@dbeining/react-atom';
+import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
 
 interface DisciplineReleaseControlFactoryComponentProps {
     actions: SidesheetApi;
@@ -13,8 +15,14 @@ export const DisciplineReleaseControlFactoryComponent = ({
 }: DisciplineReleaseControlFactoryComponentProps): JSX.Element => {
     useEffect(() => {
         disciplineReleaseControlFactoryContext.updateAtom(actions);
+        actions.setHasUnsavedChanges(true);
         actions.setTitle('Create Release control workflow');
         actions.setWidth(1550);
+
+        return () => {
+            deref(getSidesheetContext()).SidesheetComponent !== ReleaseControlProcessForm &&
+                DRCFormAtomApi.clearState();
+        };
     }, []);
 
     return (

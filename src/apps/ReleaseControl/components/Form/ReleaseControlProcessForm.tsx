@@ -1,27 +1,37 @@
 import { Button, Progress, SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useMutation, useQueryClient } from 'react-query';
+import { useEffect, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { PhaseSelect } from '../../../DisciplineReleaseControl/Components/Form/Inputs/PhaseSelect';
 import { getReleaseControlById } from '../../api/releaseControl/Request';
 import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
 import { useRequestMutations } from '../../hooks/useRequestMutations';
+import { releaseControlQueries } from '../../queries/queries';
 import { releaseManifest } from '../../ReleaseControlApp';
 import { disciplineReleaseControlFactoryContext } from '../Factory/FactoryComponent';
 import { ReleaseControlSidesheet } from '../sidesheet/ReleaseControlSidesheet';
 import { DescriptionInput, PlannedDueDateInput, ReferencesInput, TitleInput } from './Inputs';
 import { FlexColumn, FormWrapper } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
-import {
-    addStep,
-    getFullWorkflowTemplate,
-    getNewWorkflowSteps,
-} from './WorkflowEditor/WorkflowEditorHelpers';
+import { addStep } from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
     const { useAtomState, updateAtom } = DRCFormAtomApi;
     const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
+    console.log(steps);
 
+    const { workflowsQuery, workflowTemplateQuery } = releaseControlQueries;
+
+    const [value, setValue] = useState<string | null>(null);
+    const { data: workflows } = useQuery(workflowsQuery);
+    const { data } = useQuery([value], {
+        queryFn: workflowTemplateQuery(value).queryFn,
+    });
+    useEffect(() => {
+        console.log(data);
+        updateAtom({ workflowSteps: data?.workflowStepTemplates });
+    }, [data]);
     return (
         <>
             <div>
@@ -41,21 +51,15 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
                         </div>
                         <SelectionRow>
                             <SingleSelect
-                                items={predefinedWorkflows}
+                                items={workflows?.map((x) => x.name) ?? []}
                                 label="Workflow"
-                                placeholder="Select predefined workflow"
-                                size={30}
+                                placeholder="Select new or predefined workflow"
+                                size={35}
                                 handleSelectedItemChange={(change) => {
-                                    if (change.inputValue === 'New flow') {
-                                        updateAtom({
-                                            workflowSteps: getNewWorkflowSteps(),
-                                        });
-                                    }
-                                    if (change.inputValue === 'All steps') {
-                                        updateAtom({
-                                            workflowSteps: getFullWorkflowTemplate(),
-                                        });
-                                    }
+                                    const id = workflows?.find(
+                                        (x) => x.name === change.selectedItem
+                                    )?.id;
+                                    setValue(id ?? null);
                                 }}
                             />
                         </SelectionRow>
@@ -103,7 +107,7 @@ export const SubmitButtonBar = (): JSX.Element => {
 
     const onMutate = (draft: boolean) => {
         const { prepareRequest } = DRCFormAtomApi;
-
+        disciplineReleaseControlFactoryContext.readAtomValue().setHasUnsavedChanges(false);
         mutate({
             draft: draft,
             model: prepareRequest(),
@@ -164,5 +168,3 @@ export const NewStepButton = styled(Button)`
     margin-top: 16px;
     width: 100px;
 `;
-
-const predefinedWorkflows = ['New flow', 'All steps'];

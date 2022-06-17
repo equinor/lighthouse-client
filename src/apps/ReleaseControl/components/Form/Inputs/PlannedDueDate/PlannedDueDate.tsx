@@ -17,6 +17,7 @@ export const PlannedDueDateInput = (): JSX.Element => {
             label="Planned due date"
             onChange={updatePlannedDueDate}
             value={plannedDueDate}
+            defaultValue={''}
         />
     );
 };
