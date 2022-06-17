@@ -58,6 +58,8 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
      * Clear the current selection tags information, selected nodes and sibling nodes
      */
     clearSelection(): void {
+        this.selectionE3dTagNos = [];
+        this.viewerNodeSelection = []
         this.selectedNodes.clear();
     }
 
@@ -97,18 +99,20 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
                 e3dTagNos,
                 convertCancelTokenToAbort(localCancellationToken)
             );
+                
+                
             if (nodesByTagList.results.length === 0) throw Error("No nodes found with the current tag selection");
-        
+       
+            this.addSelectedNodesToViewerSelection(nodesByTagList.results);
             this.createSelectionAaBB(nodesByTagList.results);
-            this.addSelectedNodesToViewerSelection(nodesByTagList.results)
-
+            
             this.addSelectedNodes(nodesByTagList.results);
-            const leafNodes = await this.hierarchyClient.findLeafNodesByTagList(
-                this.hierarchyId,
-                e3dTagNos,
-                convertCancelTokenToAbort(localCancellationToken)
-            );
-
+            
+ 
+            const leafNodes = await this.hierarchyClient.findLeafNodesByTagList(this.hierarchyId, e3dTagNos, convertCancelTokenToAbort(localCancellationToken));
+            
+     
+                    
             this.addSelectedLeafNodes(leafNodes.results);
         } catch (error: unknown) {
             if (isIntentionallyCancelled(error) && !cancellationToken.signaled) {
@@ -206,9 +210,18 @@ export class Echo3dMultiSelectionHandler extends Echo3dBaseSelectionHandler {
                   
         if (hierarchyNodeModel) {
 
-            this.viewerNodeSelection = hierarchyNodeModel.filter((nodeResult) => nodeResult.aabb && nodeResult.tag).map(nodeResult => (
-             { position: get3dPositionFromAabbMinMaxValues(nodeResult.aabb!), tagNo: nodeResult.tag!}
-            ));
+            this.viewerNodeSelection = hierarchyNodeModel.filter((nodeResult) => nodeResult.aabb && nodeResult.tag).map(nodeResult => {
+
+                const { min, max } = nodeResult.aabb!;
+
+                const boundingBox = new THREE.Box3(
+                    new THREE.Vector3(min.x, min.z, -max.y),
+                    new THREE.Vector3(max.x, max.z, -min.y)
+                );
+                return { position: get3dPositionFromAabbMinMaxValues(nodeResult.aabb!), tagNo: nodeResult.tag!, aabb: nodeResult.aabb!, boundingBox}
+                
+            }
+            );
 
        }
 
