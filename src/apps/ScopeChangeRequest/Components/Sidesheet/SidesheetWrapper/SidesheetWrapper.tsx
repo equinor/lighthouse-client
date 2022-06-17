@@ -1,7 +1,7 @@
 import { useAtom } from '@dbeining/react-atom';
 import { Tabs } from '@equinor/eds-core-react';
 import { useEdsTabs } from '@equinor/hooks';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -26,17 +26,20 @@ import { updateContext } from './Utils/updateContext';
 
 import { SidesheetApi } from '@equinor/sidesheet';
 import { getScopeChangeSnapshot } from '../../../hooks/context/useScopeChangeContext';
+import { Case, Switch } from '@equinor/JSX-Switch';
+import { RevisionForm } from './RevisionForm';
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
     actions: SidesheetApi;
 }
 
 export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.Element {
+    const [revisionMode, setRevisionMode] = useState(false);
     useScopeChangeMutationWatcher(item.id);
     useOctopusErrorHandler();
     useGetScopeChangeRequest(item.id, item);
     useScopeChangeAccess(item.id);
-    useSidesheetEffects(actions, toggleEditMode, item.id);
+    useSidesheetEffects(actions, toggleEditMode, item.id, () => setRevisionMode(true));
 
     const { activeTab, handleChange } = useEdsTabs();
 
@@ -53,10 +56,16 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     return (
         <Wrapper>
             <ScopeChangeErrorBanner clearOnPropChange={item.id} />
-            {editMode ? (
-                <ScopeChangeRequestEditForm />
-            ) : (
-                <>
+
+            <Switch>
+                <Case when={editMode}>
+                    <ScopeChangeRequestEditForm />
+                </Case>
+
+                <Case when={revisionMode}>
+                    <RevisionForm cancel={() => setRevisionMode(false)} />
+                </Case>
+                <Case when={true}>
                     <SidesheetBanner />
                     <Tabs activeTab={activeTab} onChange={handleChange}>
                         <SidesheetTabList>
@@ -78,8 +87,8 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
                             <Tab>{activeTab === 2 && <LogTab />}</Tab>
                         </TabList>
                     </Tabs>
-                </>
-            )}
+                </Case>
+            </Switch>
         </Wrapper>
     );
 }
