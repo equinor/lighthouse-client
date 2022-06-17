@@ -24,12 +24,11 @@ export const QuickFilter = (): JSX.Element => {
 
     const { filterOptions = [] } = useWorkSpace();
 
-    const groups = filterOptions
+    const quickFilterGroups = filterOptions
         ?.filter(({ isQuickFilter }) => isQuickFilter)
         .map(({ name }) => name);
-    const expandedFilterGroups = filterOptions
-        ?.filter(({ isQuickFilter }) => !isQuickFilter)
-        .map(({ name }) => name);
+
+    const filterGroups = filterOptions.map(({ name }) => name);
 
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
@@ -42,21 +41,26 @@ export const QuickFilter = (): JSX.Element => {
                         <VerticalDivider />
                     </LeftSection>
                     <RightSection>
-                        {groups.map(
-                            (group, i) =>
-                                i < 5 && (
-                                    <FilterGroup
-                                        onClick={() => handleExpandFilterGroup(group)}
-                                        key={group}
-                                        isOpen={filterGroupOpen === group}
-                                        name={group}
-                                    />
-                                )
+                        {!isFilterExpanded && (
+                            <>
+                                {quickFilterGroups.map(
+                                    (group, i) =>
+                                        i < 5 && (
+                                            <FilterGroup
+                                                onClick={() => handleExpandFilterGroup(group)}
+                                                key={group}
+                                                isOpen={filterGroupOpen === group}
+                                                name={group}
+                                            />
+                                        )
+                                )}
+                            </>
                         )}
 
-                        {checkHasActiveFilters() && (
-                            <FilterClearIcon onClick={() => clearActiveFilters()} />
-                        )}
+                        <FilterClearIcon
+                            isDisabled={!checkHasActiveFilters()}
+                            onClick={() => clearActiveFilters()}
+                        />
 
                         <div onClick={() => setIsFilterExpanded((s) => !s)}>
                             {isFilterExpanded ? <FilterCollapseIcon /> : <FilterExpandIcon />}
@@ -64,7 +68,7 @@ export const QuickFilter = (): JSX.Element => {
                     </RightSection>
                 </SearchLine>
             </CompactFilterWrapper>
-            {isFilterExpanded && <FilterView groups={expandedFilterGroups} />}
+            {isFilterExpanded && <FilterView groups={filterGroups} />}
         </>
     );
 };
