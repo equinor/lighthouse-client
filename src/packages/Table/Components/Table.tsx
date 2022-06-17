@@ -19,6 +19,8 @@ import { GroupCell } from './GoupedCell';
 import { HeaderCell } from './HeaderCell';
 import { Table as TableWrapper, TableCell, TableRow } from './Styles';
 
+type ColumnOrderChangedCallback = (newColumnOrder: string[]) => void;
+
 interface DataTableProps<TData extends TableData> {
     options?: Partial<TableOptions<TData>>;
     data: TData[];
@@ -26,6 +28,7 @@ interface DataTableProps<TData extends TableData> {
     height?: number;
     itemSize?: number;
     onTableReady?: (getApi: () => TableAPI) => void;
+    onColumnOrderChanged?: ColumnOrderChangedCallback;
 }
 
 const DEFAULT_HEIGHT = 600;
@@ -38,6 +41,7 @@ export function Table<TData extends TableData = TableData>({
     itemSize,
     height,
     onTableReady,
+    onColumnOrderChanged,
 }: PropsWithChildren<DataTableProps<TData>>): JSX.Element {
     const hooks = RegisterReactTableHooks<TData>({
         rowSelect: (options && options.enableSelectRows) || false,
@@ -66,6 +70,10 @@ export function Table<TData extends TableData = TableData>({
         { ...(options ?? {}), columns: dataColumns, defaultColumn, data },
         hooks
     ) as TableInstance<TableData>;
+
+    useEffect(() => {
+        onColumnOrderChanged && onColumnOrderChanged(allColumns.map((s) => s.id));
+    }, [allColumns, onColumnOrderChanged]);
 
     const getVisibleColumns = () => visibleColumns;
 
