@@ -59,6 +59,7 @@ export const FilterGroup = ({ name, isOpen, onClick }: FilterGroupProps): JSX.El
                     anchorEl={ref.current}
                     values={values}
                     CustomRender={customRender}
+                    groupName={name}
                 />
             )}
         </div>
