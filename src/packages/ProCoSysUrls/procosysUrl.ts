@@ -1,4 +1,4 @@
-import { isProduction } from '@equinor/lighthouse-portal-client';
+import { getClientContext, isProduction } from '@equinor/lighthouse-portal-client';
 
 interface ProCoSysUrls {
     getCommPkgUrl: (commPkgId: string | number) => string;
@@ -10,7 +10,9 @@ interface ProCoSysUrls {
 }
 
 const getProCoSysUrl = () =>
-    `https://${isProduction() ? 'procosys' : 'procosystest'}.equinor.com/JOHAN_CASTBERG`;
+    `https://${isProduction() ? 'procosys' : 'procosystest'}.equinor.com/${
+        getClientContext().procosysPlantId
+    }`;
 
 export const proCoSysUrls: ProCoSysUrls = {
     getTagUrl: (tagId) => `${getProCoSysUrl()}/Completion#Tag|${tagId}`,

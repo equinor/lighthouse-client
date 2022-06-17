@@ -88,6 +88,18 @@ export const SelectionMenu = ({ selectionActions }: SelectionMenuProps): JSX.Ele
                         }
                     />
                 </Button>
+                <Button
+                    title="View selection"
+                    variant="ghost_icon"
+                    onClick={() => {
+                        selection.fitCameraToCurrentBoundingBox();
+                    }}
+                >
+                    <Icon
+                        name={'fullscreen'}
+                        color={tokens.colors.text.static_icons__secondary.rgba}
+                    />
+                </Button>
             </Menu>
         </WrapperMenu>
     );
