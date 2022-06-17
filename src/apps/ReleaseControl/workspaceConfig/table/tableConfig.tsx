@@ -46,7 +46,7 @@ export const tableConfig: TableOptions<ReleaseControl> = {
         },
         {
             key: 'workflowSteps',
-            type: customCellView((rc) => <WorkflowCompact steps={rc.workflowSteps} />),
+            type: customCellView((rc) => <WorkflowCompact steps={rc.workflowSteps as any[]} />),
         },
         {
             key: 'createdAtUtc',

@@ -9,15 +9,16 @@ import { DRCFormAtomApi } from '../../Atoms/formAtomApi';
 import { useRequestMutations } from '../../hooks/useRequestMutations';
 import { releaseControlQueries } from '../../queries/queries';
 import { releaseManifest } from '../../ReleaseControlApp';
+import { CreateReleaseControlStepModel } from '../../types/releaseControl';
 import { disciplineReleaseControlFactoryContext } from '../Factory/FactoryComponent';
 import { ReleaseControlSidesheet } from '../sidesheet/ReleaseControlSidesheet';
 import { DescriptionInput, PlannedDueDateInput, ReferencesInput, TitleInput } from './Inputs';
-import { FlexColumn, FormWrapper } from './releaseControlProcessForm.styles';
+import { FlexColumn, FormWrapper, Wrapper } from './releaseControlProcessForm.styles';
 import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep } from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
-    const { useAtomState, updateAtom, readAtomValue } = DRCFormAtomApi;
+    const { useAtomState, updateAtom } = DRCFormAtomApi;
     const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
 
     const { workflowsQuery, workflowTemplateQuery } = releaseControlQueries;
@@ -27,50 +28,58 @@ export const ReleaseControlProcessForm = (): JSX.Element => {
     useQuery([value], {
         queryFn: workflowTemplateQuery(value).queryFn,
         onSuccess: (data) => {
-            updateAtom({ workflowSteps: data[0].workflowStepTemplates ?? [] });
+            if (!data) {
+                return;
+            }
+            updateAtom({
+                workflowSteps:
+                    (data as any)[0].workflowStepTemplates.map(
+                        (x: CreateReleaseControlStepModel) => {
+                            x.criteriaTemplates = x.workflowStepCriteriaTemplates;
+                            return x;
+                        }
+                    ) ?? [],
+            });
         },
     });
-
     return (
-        <>
-            <div>
-                <FormWrapper>
-                    <FlexColumn>
-                        General info
-                        <TitleInput />
-                        <DescriptionInput />
-                        <PlannedDueDateInput />
-                        <PhaseSelect />
-                        <ReferencesInput />
-                    </FlexColumn>
-                    <FlexColumn>
-                        Workflow
-                        <div style={{ fontWeight: 400, fontSize: '16px' }}>
-                            Select a workflow to start with or create a complete custom flow.
-                        </div>
-                        <SelectionRow>
-                            <SingleSelect
-                                items={workflows?.map((x) => x.name) ?? []}
-                                label="Workflow"
-                                placeholder="Select new or predefined workflow"
-                                size={35}
-                                handleSelectedItemChange={(change) => {
-                                    const id = workflows?.find(
-                                        (x) => x.name === change.selectedItem
-                                    )?.id;
-                                    setValue(id ?? null);
-                                }}
-                            />
-                        </SelectionRow>
-                        <WorkflowCustomEditor />
-                        {steps.length !== 0 && (
-                            <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
-                        )}
-                    </FlexColumn>
-                </FormWrapper>
-                <SubmitButtonBar />
-            </div>
-        </>
+        <Wrapper>
+            <FormWrapper>
+                <FlexColumn>
+                    General info
+                    <TitleInput />
+                    <DescriptionInput />
+                    <PlannedDueDateInput />
+                    <PhaseSelect />
+                    <ReferencesInput />
+                </FlexColumn>
+                <FlexColumn>
+                    Workflow
+                    <div style={{ fontWeight: 400, fontSize: '16px' }}>
+                        Select a workflow to start with or create a complete custom flow.
+                    </div>
+                    <SelectionRow>
+                        <SingleSelect
+                            items={workflows?.map((x) => x.name) ?? []}
+                            label="Workflow"
+                            placeholder="Select new or predefined workflow"
+                            size={35}
+                            handleSelectedItemChange={(change) => {
+                                const id = workflows?.find(
+                                    (x) => x.name === change.selectedItem
+                                )?.id;
+                                setValue(id ?? null);
+                            }}
+                        />
+                    </SelectionRow>
+                    <WorkflowCustomEditor />
+                    {steps.length !== 0 && (
+                        <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
+                    )}
+                </FlexColumn>
+            </FormWrapper>
+            <SubmitButtonBar />
+        </Wrapper>
     );
 };
 

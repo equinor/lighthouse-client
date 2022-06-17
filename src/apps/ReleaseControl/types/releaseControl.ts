@@ -83,6 +83,7 @@ export interface CreateReleaseControlStepModel {
     tagNumbers?: string[];
     criteriaTemplates: CriteriaTemplate[];
     criterias: Criteria[];
+    workflowStepCriteriaTemplates: CriteriaTemplate[];
 }
 
 export interface Criteria {
