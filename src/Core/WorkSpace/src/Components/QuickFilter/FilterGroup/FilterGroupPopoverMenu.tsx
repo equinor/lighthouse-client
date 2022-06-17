@@ -40,7 +40,7 @@ export const FilterGroupPopoverMenu = ({
             open={true}
             anchorEl={anchorEl}
             onClose={onClick}
-            placement={'bottom-start'}
+            placement={'bottom-end'}
         >
             <MenuWrapper>
                 {values.length > 7 && (

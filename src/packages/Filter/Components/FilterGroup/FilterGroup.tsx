@@ -1,4 +1,5 @@
 import { Checkbox, Search } from '@equinor/eds-core-react';
+import { Case, Switch } from '@equinor/JSX-Switch';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
 import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
@@ -37,23 +38,30 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
         setSearchActive((isActive) => !isActive);
     }
 
+    const isSearchable = filterGroup.values.length > 10;
+
     return (
         <Wrapper>
             <FilterHeaderGroup>
-                {searchActive ? (
-                    <Search
-                        autoFocus={searchActive}
-                        aria-label="in filter group"
-                        id="search-normal"
-                        placeholder="Search"
-                        onChange={handleOnChange}
-                    />
-                ) : (
-                    <Title>{filterGroup.name}</Title>
+                <Switch>
+                    <Case when={searchActive}>
+                        <Search
+                            autoFocus={searchActive}
+                            aria-label="in filter group"
+                            id="search-normal"
+                            placeholder="Search"
+                            onChange={handleOnChange}
+                        />
+                    </Case>
+                    <Case when={true}>
+                        <Title>{filterGroup.name}</Title>
+                    </Case>
+                </Switch>
+                {isSearchable && (
+                    <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
+                        <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
+                    </SearchButton>
                 )}
-                <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
-                    <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
-                </SearchButton>
             </FilterHeaderGroup>
             <VirtualContainer filterGroup={filterGroup} filterSearchValue={filterSearchValue} />
         </Wrapper>
