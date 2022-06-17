@@ -41,10 +41,10 @@ interface ReleaseControlSidesheetProps {
     actions: SidesheetApi;
 }
 
-export const ReleaseControlSidesheet = ({
+export function ReleaseControlSidesheet({
     actions,
     item,
-}: ReleaseControlSidesheetProps): JSX.Element => {
+}: ReleaseControlSidesheetProps): JSX.Element {
     const [errorMessage] = useState<ServerError | undefined>();
 
     const [activeTab, setActiveTab] = useState<number>(0);
@@ -148,4 +148,4 @@ export const ReleaseControlSidesheet = ({
             </Tabs>
         </Wrapper>
     );
-};
+}
