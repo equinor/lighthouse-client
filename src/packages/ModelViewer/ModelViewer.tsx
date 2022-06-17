@@ -99,7 +99,7 @@ export const Viewer: React.FC<ViewerProps> = ({
                 <canvas ref={viewerRef} />
                 {children && children}
 
-                {isLoading && !selection && (
+                {(isLoading || !selection) && (
                     <MessageWrapper>
                         <Message>
                             <CircularProgress />
