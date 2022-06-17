@@ -1,6 +1,6 @@
 import { Button, Progress, SingleSelect } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components';
 import { PhaseSelect } from '../../../DisciplineReleaseControl/Components/Form/Inputs/PhaseSelect';
@@ -17,23 +17,23 @@ import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep } from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlProcessForm = (): JSX.Element => {
-    const { useAtomState, updateAtom } = DRCFormAtomApi;
+    const { useAtomState, updateAtom, readAtomValue } = DRCFormAtomApi;
     const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
-    console.log(steps);
 
     const { workflowsQuery, workflowTemplateQuery } = releaseControlQueries;
 
     const [value, setValue] = useState<string | null>(null);
     const { data: workflows } = useQuery(workflowsQuery);
-    const { data } = useQuery([value], {
+    useQuery([value], {
         queryFn: workflowTemplateQuery(value).queryFn,
+        onSuccess: (data) => {
+            updateAtom({ workflowSteps: data[0].workflowStepTemplates ?? [] });
+        },
     });
-    useEffect(() => {
-        console.log(data);
-        updateAtom({ workflowSteps: data?.workflowStepTemplates });
-    }, [data]);
+
     return (
         <>
+            <Button onClick={() => console.log(readAtomValue())}>Test</Button>
             <div>
                 <FormWrapper>
                     <FlexColumn>
