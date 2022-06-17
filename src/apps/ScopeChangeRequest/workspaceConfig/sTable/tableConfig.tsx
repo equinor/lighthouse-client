@@ -48,8 +48,8 @@ export const tableConfig: TableOptions<ScopeChangeRequest> = {
     customColumns: [
         defineColumn({
             header: 'Id',
-            accessor: (s) => s.sequenceNumber,
-            width: 60,
+            accessor: (s) => s.serialNumber,
+            width: 90,
         }),
         defineColumn({
             header: 'Title',
