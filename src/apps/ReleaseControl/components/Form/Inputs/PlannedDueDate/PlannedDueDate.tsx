@@ -8,7 +8,9 @@ const updatePlannedDueDate = (e) => {
 };
 
 export const PlannedDueDateInput = (): JSX.Element => {
-    const plannedDueDate = moment(useAtomState((s) => s.plannedDueDate)).format('YYYY-MM-DD');
+    const dueDate = useAtomState((s) => s.plannedDueDate);
+    const plannedDueDate =
+        dueDate !== undefined && dueDate !== '' ? moment(dueDate).format('YYYY-MM-DD') : undefined;
     return (
         <TextField
             type={'date'}
@@ -17,7 +19,6 @@ export const PlannedDueDateInput = (): JSX.Element => {
             label="Due date"
             onChange={updatePlannedDueDate}
             value={plannedDueDate}
-            defaultValue={''}
         />
     );
 };
