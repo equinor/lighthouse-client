@@ -37,13 +37,27 @@ export const FilterGroupPopoverMenu = ({
 
     const {
         filterGroupState: { getCountForFilterValue },
-        filterState: { getValueFormatters },
+        filterState: { getValueFormatters, getFilterState },
+        operations: { setFilterState },
     } = useFilterApiContext();
     const valueFormatter = getValueFormatters().find(
         ({ name }) => name === groupName
     )?.valueFormatter;
 
     const handleInput = (e) => setSearchText(e.target.value.toString().toLowerCase());
+
+    const getValuesMatchingSearchText = () =>
+        values.filter((s) => !searchText || s?.toString().toLowerCase().startsWith(searchText));
+
+    const setFilterStateFromSearch = () => {
+        setFilterState([
+            ...getFilterState().filter((s) => s.name !== groupName),
+            {
+                name: groupName,
+                values: values.filter((s) => !getValuesMatchingSearchText().includes(s)),
+            },
+        ]);
+    };
 
     return (
         <Menu
@@ -58,32 +72,37 @@ export const FilterGroupPopoverMenu = ({
                 {values.length > 7 && (
                     <>
                         <SearchHolder>
-                            <Search value={searchText} placeholder="Search" onInput={handleInput} />
+                            <Search
+                                value={searchText}
+                                placeholder="Search"
+                                onInput={handleInput}
+                                onKeyPress={(e) => {
+                                    if (e.key === 'Enter') {
+                                        setFilterStateFromSearch();
+                                    }
+                                }}
+                            />
                         </SearchHolder>
                         <VerticalLine />
                     </>
                 )}
 
                 <FilterItemList>
-                    {values
-                        .filter(
-                            (s) => !searchText || s?.toString().toLowerCase().startsWith(searchText)
-                        )
-                        .map((value) => (
-                            <FilterItemCheckbox
-                                ValueRender={() => CustomRender(value)}
-                                handleFilterItemLabelClick={() => handleFilterItemLabelClick(value)}
-                                key={value}
-                                filterValue={value}
-                                handleFilterItemClick={() => handleFilterItemClick(value)}
-                                isChecked={isChecked(value)}
-                                count={getCountForFilterValue(
-                                    { name: groupName, values },
-                                    value,
-                                    valueFormatter
-                                )}
-                            />
-                        ))}
+                    {getValuesMatchingSearchText().map((value) => (
+                        <FilterItemCheckbox
+                            ValueRender={() => CustomRender(value)}
+                            handleFilterItemLabelClick={() => handleFilterItemLabelClick(value)}
+                            key={value}
+                            filterValue={value}
+                            handleFilterItemClick={() => handleFilterItemClick(value)}
+                            isChecked={isChecked(value)}
+                            count={getCountForFilterValue(
+                                { name: groupName, values },
+                                value,
+                                valueFormatter
+                            )}
+                        />
+                    ))}
                 </FilterItemList>
                 <VerticalLine />
                 <ClearButtonWrapper>
