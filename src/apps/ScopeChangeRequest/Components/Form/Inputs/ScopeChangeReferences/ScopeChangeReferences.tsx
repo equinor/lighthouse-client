@@ -2,8 +2,8 @@ import { TypedSelectOption } from '../../../../api/Search/searchType';
 import { scopeChangeFormAtomApi } from '../../../../Atoms/FormAtomApi/formAtomApi';
 import { SearchReferences } from '../../../SearchReferences/SearchReferences';
 
-const CommPkgProperty = 'McPkgsThroughScope__CommPkg__CommPkgNo';
-const CommPkgDescriptionFromTag = 'McPkgsThroughScope__CommPkg__Description';
+export const CommPkgProperty = 'McPkgsThroughScope__CommPkg__CommPkgNo';
+export const CommPkgDescriptionFromTag = 'McPkgsThroughScope__CommPkg__Description';
 
 export const ScopeChangeReferences = (): JSX.Element => {
     const { updateAtom, useAtomState } = scopeChangeFormAtomApi;
@@ -30,7 +30,7 @@ function extractCommPkgFromTags(references: TypedSelectOption[]): TypedSelectOpt
         .filter((s) => s.type === 'tag' && s.object[CommPkgProperty])
         .map((s): TypedSelectOption => {
             const commPkgNo = s.object[CommPkgProperty];
-            const commPkgDesc = s.object[CommPkgDescriptionFromTag];
+            const commPkgDesc = s.object[CommPkgDescriptionFromTag] ?? '';
 
             return {
                 label: `${commPkgNo} - ${commPkgDesc}`,
