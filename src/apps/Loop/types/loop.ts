@@ -1,6 +1,6 @@
 export type Loop = {
     callOffNo: string | null;
-    checklistId: string | null;
+    checklistId: string;
     commissioningPackageNo: string | null;
     commissioningPackage_ID: string | null;
     description: string | null;
@@ -31,7 +31,7 @@ export type Loop = {
     signedDate: string | null;
     status: string | null;
     system: string | null;
-    tagNo: string | null;
+    tagNo: string;
     verifiedDate: Date | null;
     woPlannedCompletionDate: Date | null;
     woActualCompletionDate: Date | null;

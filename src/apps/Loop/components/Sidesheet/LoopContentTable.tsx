@@ -2,23 +2,9 @@ import { TabTable } from '@equinor/GardenUtils';
 import { Column } from '@equinor/Table';
 import { useQuery } from 'react-query';
 import { Loop, LoopContent } from '../../types';
-import { getLoopContent } from '../../utility/api/getLoopContent';
+import { columnNames, getLoopContent } from '../../utility/api/getLoopContent';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
-const columnNames = [
-    'Facility',
-    'LoopId',
-    'ContentId',
-    'Register',
-    'MechanicalCompletionStatus',
-    'MechanicalCompletionStatusOrder',
-    'MechanicalCompletionPackageNo',
-    'CommissioningPackageNo',
-    'Description',
-    'PlannedCompletionDate',
-    'ActualCompletionDate',
-    'RemainingManHours',
-    'ChecklistID',
-];
+
 const columns: Column<LoopContent>[] = [
     {
         id: 'checklistID',
@@ -47,15 +33,15 @@ type LoopContentProps = {
 export const LoopContentTable = ({ loop }: LoopContentProps) => {
     const expressions = generateExpressions('checklistID', 'Equals', [loop.checklistId || '']);
     const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
-    const { data, isLoading, error } = useQuery(['loopcontent', loop.checklistId], () =>
-        getLoopContent(requestArgs)
+    const { data, isLoading, error } = useQuery(['loopcontent', loop.checklistId], ({ signal }) =>
+        getLoopContent(requestArgs, signal)
     );
 
     return (
         <TabTable
             columns={columns}
             packages={data}
-            error={error as any}
+            error={error instanceof Error ? error : null}
             isFetching={isLoading}
             resourceName="Loop content"
         />
