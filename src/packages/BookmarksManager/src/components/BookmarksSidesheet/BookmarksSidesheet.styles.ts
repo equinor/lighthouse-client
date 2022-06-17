@@ -6,9 +6,9 @@ export const AppBookmarksWrapper = styled.div`
     ::before {
         content: ' ';
         position: absolute;
-        width: 2px;
-        top: -7px;
-        left: 10px;
+        width: 1px;
+        top: 0px;
+        left: 11px;
         bottom: 0px;
         background-color: #dcdcdc;
     }
@@ -17,7 +17,6 @@ export const Header = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 0.5em;
 `;
 export const Bookmarks = styled.div`
     margin-left: 20px;
@@ -28,8 +27,8 @@ export const Bookmarks = styled.div`
     ::before {
         content: ' ';
         position: absolute;
-        width: 2px;
-        top: -14px;
+        width: 1px;
+        top: 0px;
         left: -9px;
         bottom: 0px;
         background-color: #dcdcdc;
@@ -38,6 +37,8 @@ export const Bookmarks = styled.div`
 export const AppBookmarksContainer = styled.div`
     position: relative;
     margin-left: 15px;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
 `;
 export const SidesheetContent = styled.div`
     height: -webkit-fill-available;
