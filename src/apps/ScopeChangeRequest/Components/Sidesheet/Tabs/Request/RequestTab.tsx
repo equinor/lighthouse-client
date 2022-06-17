@@ -22,6 +22,7 @@ import { GuesstimateDisciplineDetails } from '../../GuesstimateDisciplineDetails
 import { OriginLink } from '../../../DetailView/OriginLink';
 import { Checkbox } from '@equinor/eds-core-react';
 import { CheckboxWrapper } from '../../../WarrantyCaseDetailCheckbox/warrantyCaseDetailCheckbox.styles';
+import { RevisionsList } from './RevisionList/RevisionList';
 
 export function RequestTab(): JSX.Element {
     const { request, requestAccess } = useScopeChangeContext();
@@ -88,7 +89,7 @@ export function RequestTab(): JSX.Element {
                                     readOnly
                                     disabled
                                     checked={request.materialsToBeBoughtByContractor}
-                                />{' '}
+                                />
                                 Materials to be bought by contractor
                             </CheckboxWrapper>
                             <div>
@@ -107,6 +108,12 @@ export function RequestTab(): JSX.Element {
                 </FlexColumn>
 
                 <FlexColumn>
+                    <InnerSection>
+                        <SectionHeading>Revisions</SectionHeading>
+                        <SectionWrapper>
+                            <RevisionsList />
+                        </SectionWrapper>
+                    </InnerSection>
                     <InnerSection>
                         <SectionHeading>References</SectionHeading>
                         <SectionWrapper>

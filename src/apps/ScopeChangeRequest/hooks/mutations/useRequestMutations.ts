@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from 'react-query';
 import { patchScopeChange, postScopeChange, uploadAttachment } from '../../api/ScopeChange/Request';
+import { openNewScopeChange } from '../../functions/openNewScopeChange';
 import { scopeChangeQueryKeys } from '../../keys/scopeChangeQueryKeys';
 import { ScopeChangeCreateEditModel } from '../../types/scopeChangeRequest';
 
@@ -49,6 +50,7 @@ export function useRequestMutations(): RequestMutations {
             });
 
             queryClient.invalidateQueries(baseKey);
+            openNewScopeChange(scID);
             return scID;
         }
     };
