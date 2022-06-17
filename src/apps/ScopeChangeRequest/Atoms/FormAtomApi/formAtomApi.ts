@@ -52,6 +52,8 @@ export const scopeChangeFormAtomApi = createAtom<ScopeChangeFormModel, FormAtomA
             materialsIdentifiedInStorage: false,
             materialsNote: '',
             materialsToBeBoughtByContractor: false,
+            originatorId: null,
+            punchListItemIds: [],
         }),
 }));
 

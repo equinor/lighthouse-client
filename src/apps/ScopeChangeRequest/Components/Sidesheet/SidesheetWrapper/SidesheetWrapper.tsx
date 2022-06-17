@@ -47,6 +47,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
 
     useEffect(() => {
         disableEditMode();
+        setRevisionMode(false);
         updateContext(item, actions);
     }, [item?.id]);
 
@@ -56,12 +57,10 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     return (
         <Wrapper>
             <ScopeChangeErrorBanner clearOnPropChange={item.id} />
-
             <Switch>
                 <Case when={editMode}>
                     <ScopeChangeRequestEditForm />
                 </Case>
-
                 <Case when={revisionMode}>
                     <RevisionForm cancel={() => setRevisionMode(false)} />
                 </Case>
