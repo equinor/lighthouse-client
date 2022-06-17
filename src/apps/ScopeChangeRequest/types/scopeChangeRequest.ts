@@ -15,6 +15,8 @@ export interface ScopeChangeCreateEditModel {
     originSourceId?: string;
     originSource: OriginType;
 
+    //Revision id
+    originatorId?: string | null;
     //internal placeholder not sent to backend
     newAttachments?: File[];
     //internal placeholder not sent to backend
@@ -127,6 +129,27 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     workOrders: ScopeChangeWorkOrder[];
     scope: Scope;
     disciplineGuesstimates: ScopeChangeDisciplineGuesstimates[];
+    revisions: Revision[];
+    revisionNumber: number;
+    originator: Originator;
+    serialNumber: string;
+}
+
+export interface Originator {
+    id: string;
+    sequenceNumber: number;
+    revisionNumber: number;
+    title: string;
+    state: string;
+    isVoided: boolean;
+}
+export interface Revision {
+    id: string;
+    sequenceNumber: number;
+    revisionNumber: number;
+    title: string;
+    state: string;
+    isVoided: boolean;
 }
 
 export interface ScopeChangeWorkOrder {
