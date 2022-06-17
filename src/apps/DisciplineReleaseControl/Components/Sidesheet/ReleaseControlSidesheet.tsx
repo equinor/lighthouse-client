@@ -2,7 +2,7 @@ import { Tabs } from '@equinor/eds-core-react';
 import { useLocationKey } from '@equinor/hooks';
 import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
 import { SidesheetApi } from '@equinor/sidesheet';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { ServerError } from '../../Api/Types/ServerError';
 import {
@@ -20,6 +20,7 @@ import { ReleaseControlHTSidesheet } from './ReleaseControlHTSidesheet';
 import { ReleaseControlSidesheetBanner } from './ReleaseControlSidesheetBanner';
 import { SidesheetTabList } from './SidesheetTabs';
 import { TablesTab, WarningBanner, WarningBannerText } from './styles';
+import { useSidesheetEffects } from './useSidesheetEffects';
 import { WorkOrderTab } from './WorkOrderTab';
 
 interface GatewaySidesheetProps {
@@ -52,19 +53,13 @@ export const ReleaseControlSidesheet = ({
 
     const [activeTab, setActiveTab] = useState<number>(0);
 
+    const width = window.innerWidth / 2;
+
+    useSidesheetEffects(actions, item);
+
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
-
-    const width = window.innerWidth / 2;
-
-    useEffect(() => {
-        actions.setWidth(width);
-    }, [width]);
-
-    useEffect(() => {
-        actions.setTitle(`Pipetest ${item.name} - ${item.description}`);
-    }, [item.name]);
 
     const locationKey = useLocationKey();
 
