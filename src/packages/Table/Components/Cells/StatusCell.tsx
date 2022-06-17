@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { HTMLAttributes, useMemo } from 'react';
 import { CellProps } from 'react-table';
 import styled from 'styled-components';
 import { CellRenderProps, TableData } from '../../Types';
@@ -17,7 +17,7 @@ const Status = styled.div`
     border-radius: 50%;
 `;
 
-export const StatusCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
+const StatusCell = <T extends TableData>(props: CellProps<T, CellRenderProps<T>>) => {
     const {
         value: { content, currentKey, cellAttributeFn },
     } = props;
@@ -33,3 +33,21 @@ export const StatusCell = <T extends TableData>(props: CellProps<T, CellRenderPr
         </Wrapper>
     );
 };
+type StatusCustomCellProps<T extends string | number | boolean | null> = {
+    contentToBeDisplayed: T;
+    cellAttributeFunction?: (content: T) => HTMLAttributes<HTMLElement>;
+};
+const StatusCustomCell = <T extends string | number | boolean | null>({
+    contentToBeDisplayed,
+    cellAttributeFunction,
+}: StatusCustomCellProps<T>) => {
+    const attr = cellAttributeFunction ? cellAttributeFunction(contentToBeDisplayed) : undefined;
+    return (
+        <Wrapper>
+            <Status {...attr}></Status>
+            {contentToBeDisplayed}
+        </Wrapper>
+    );
+};
+
+export { StatusCell, StatusCustomCell };
