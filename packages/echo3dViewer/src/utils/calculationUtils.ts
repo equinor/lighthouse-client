@@ -21,6 +21,28 @@ export function radsToDegrees(rad: number): number {
 }
 
 /**
+ * Method for getting the vertical field of view (fov) and in radians
+ *
+ * @param {THREE.PerspectiveCamera | { fov: number }} camera the camera or the camera frustum vertical field of view
+ * @returns {*}  {number} the vertical fov in radians
+ */
+export function verticalFovRad(camera: THREE.PerspectiveCamera | { fov: number }): number {
+    return degreesToRads(camera.fov);
+}
+
+/**
+ * Method for getting the horizontal field of view (fov) and in radians
+ *
+ * @param {THREE.PerspectiveCamera | { fov: number; aspect: number }} camera the camera or
+ * the camera frustum vertical field of view and the camera frustum aspect ratio
+ * @returns {*}  {number} the vertical fov in radians
+ */
+export function horizontalFovRad(camera: THREE.PerspectiveCamera | { fov: number; aspect: number }): number {
+    const verticalFovInRad = verticalFovRad(camera);
+    return 2 * Math.atan(Math.tan(verticalFovInRad / 2) * camera.aspect);
+}
+
+/**
  *  Method for turing a screen point position into an angle in radian
  *
  * @param {number} screenPos the screen position
