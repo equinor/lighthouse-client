@@ -69,7 +69,7 @@ export interface ReleaseControlStep {
     contributors: Contributor[];
     allowContributors: boolean;
     criteriaTemplates: CriteriaTemplate[];
-    workflowStepCriteriaTemplates: CriteriaTemplate[];
+    workflowStepCriteriaTemplates?: CriteriaTemplate[];
 }
 
 export interface CreateReleaseControlStepModel {
@@ -84,7 +84,7 @@ export interface CreateReleaseControlStepModel {
     tagNumbers?: string[];
     criteriaTemplates: CriteriaTemplate[];
     criterias: Criteria[];
-    workflowStepCriteriaTemplates: CriteriaTemplate[];
+    workflowStepCriteriaTemplates?: CriteriaTemplate[];
 }
 
 export interface Criteria {
