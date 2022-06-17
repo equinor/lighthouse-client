@@ -45,6 +45,7 @@
     "fast-levenshtein": "^3.0.0",
     "fuse.js": "^6.5.3",
     "hold-event": "^0.1.0",
+    "idb": "^7.0.1",
     "install": "^0.13.0",
     "json-fn": "^1.1.1",
     "lodash": "^4.17.21",
