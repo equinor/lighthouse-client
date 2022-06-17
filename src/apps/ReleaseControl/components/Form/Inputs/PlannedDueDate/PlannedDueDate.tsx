@@ -14,7 +14,7 @@ export const PlannedDueDateInput = (): JSX.Element => {
             type={'date'}
             id="Planned due date"
             meta={'(Required)'}
-            label="Planned due date"
+            label="Due date"
             onChange={updatePlannedDueDate}
             value={plannedDueDate}
             defaultValue={''}
