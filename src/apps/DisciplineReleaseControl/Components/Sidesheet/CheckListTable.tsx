@@ -14,14 +14,8 @@ export const CheckListTable = ({ checkLists }: TableProps): JSX.Element => {
     const columns: Column<CheckListType>[] = [
         {
             id: 'tagNo',
-            Header: 'Checklist',
+            Header: 'Tag',
             accessor: (item) => item.tagNo,
-        },
-        {
-            id: 'status',
-            Header: 'Status',
-            accessor: (item) => item,
-            Cell: CheckListStatusCell,
         },
         {
             id: 'revision',
@@ -37,6 +31,12 @@ export const CheckListTable = ({ checkLists }: TableProps): JSX.Element => {
             id: 'responsible',
             Header: 'Responsible',
             accessor: (item) => item.responsible,
+        },
+        {
+            id: 'status',
+            Header: 'Status',
+            accessor: (item) => item,
+            Cell: CheckListStatusCell,
         },
     ];
 
