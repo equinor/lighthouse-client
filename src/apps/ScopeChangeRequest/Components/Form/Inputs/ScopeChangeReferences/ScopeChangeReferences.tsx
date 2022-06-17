@@ -27,10 +27,10 @@ export const ScopeChangeReferences = (): JSX.Element => {
 
 function extractCommPkgFromTags(references: TypedSelectOption[]): TypedSelectOption[] {
     return references
-        .filter((s) => s.type === 'tag' && s.object[CommPkgProperty])
+        .filter((s) => s.type === 'tag' && (s.object as any)[CommPkgProperty])
         .map((s): TypedSelectOption => {
-            const commPkgNo = s.object[CommPkgProperty];
-            const commPkgDesc = s.object[CommPkgDescriptionFromTag] ?? '';
+            const commPkgNo = (s.object as any)[CommPkgProperty];
+            const commPkgDesc = (s.object as any)[CommPkgDescriptionFromTag] ?? '';
 
             return {
                 label: `${commPkgNo} - ${commPkgDesc}`,
