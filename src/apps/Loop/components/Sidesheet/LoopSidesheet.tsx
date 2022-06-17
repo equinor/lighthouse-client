@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Loop } from '../../types';
 import { Banner } from './Banner';
 import { BannerItem } from './BannerItem';
+import { LoopContentTable } from './LoopContentTable';
 
 type LoopSidesheetProps = {
     item: Loop;
@@ -13,22 +14,17 @@ type LoopSidesheetProps = {
 };
 export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
     const [activeTab, setActiveTab] = useState<number>(0);
-
     const handleChange = (index: number) => {
         setActiveTab(index);
     };
-
     useEffect(() => {
-        actions.setTitle('Loop test');
+        actions.setTitle(`${item.tagNo}, ${item.checklistId}`);
     }, []);
-    console.log('item', item);
+
     return (
         <div>
             <Banner padding="0 0.5em">
-                <BannerItem
-                    title="MC Status"
-                    value={item.firstMechanicalCompletionStatus || 'N/A'}
-                ></BannerItem>
+                <BannerItem title="MC Status" value={item.loopContentStatus || 'N/A'}></BannerItem>
                 <BannerItem title="Cmpkg" value={item.commissioningPackageNo || 'N/A'} />
                 <BannerItem title="Mcpkg" value={item.mechanicalCompletionPackageNo || 'N/A'} />
                 <BannerItem title="Milestone" value={item.priority1 || 'N/A'} />
@@ -45,12 +41,15 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                         <Tabs.Panel>
                             <h2>Details</h2>
                             <div>
-                                <p>Loop: {item.loopNo}</p>
+                                <p>Loop: {item.tagNo}</p>
                                 <p>Cmpkg: {item.commissioningPackageNo}</p>
                                 <p>Mcpkg: {item.mechanicalCompletionPackageNo}</p>
                             </div>
 
-                            <h2>Content</h2>
+                            <div>
+                                <h2>Content</h2>
+                                <LoopContentTable loop={item} />
+                            </div>
                         </Tabs.Panel>
                         <Tabs.Panel>Work order</Tabs.Panel>
                         <Tabs.Panel>Checklists</Tabs.Panel>
