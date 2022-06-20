@@ -1,4 +1,8 @@
-import { getYearAndWeekFromDate, sortByNumber } from '@equinor/GardenUtils';
+import {
+    getYearAndWeekAndDayFromString,
+    getYearAndWeekFromDate,
+    sortByNumber,
+} from '@equinor/GardenUtils';
 import { FieldSettings, GardenOptions } from '@equinor/ParkView';
 import { PunchGroupBySelect } from '../../components';
 import { CustomGroupByKeys } from '../../types';
@@ -46,7 +50,7 @@ const getHighlightedColumn = (groupByKey, customGroupByKeys) => {
         case 'RFO':
         case 'RFC':
             return weeklyDaily === 'Daily'
-                ? new Date().toString()
+                ? getYearAndWeekAndDayFromString(new Date().toString())
                 : getYearAndWeekFromDate(new Date());
 
         default:
