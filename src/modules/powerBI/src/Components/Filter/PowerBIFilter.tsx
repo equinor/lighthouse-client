@@ -189,7 +189,7 @@ export const PowerBIFilter = ({
                 const filters = await getFilters(report);
 
                 setSlicerFilters(filters.sort((a, b) => a.type.localeCompare(b.type)));
-                const filterGroupNames = getActiveFilterGroupArray(activeFilters);
+
                 // setFilterGroupVisible((s) => [...s, ...filterGroupNames]);
             };
             reCreateFilters();

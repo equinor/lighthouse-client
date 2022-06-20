@@ -1,4 +1,4 @@
-import { FilterTypeSelector } from '../../../../modules/powerBI/src/Components/Filter/ExpandedFilter/ExpandedFilter';
+import { FilterTypeSelector } from '../../../../modules/powerBI/src/Components/Filter/FilterTypeSelector/FilterTypeSelector';
 import { FilterGroup } from '../../Hooks/useFilterApi';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterGroupeComponent } from '../FilterGroup/FilterGroup';
