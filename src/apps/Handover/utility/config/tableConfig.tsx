@@ -1,5 +1,4 @@
 import { TableOptions } from '../../../../Core/WorkSpace/src/WorkSpaceApi/workspaceState';
-import { Status } from '../../Garden/components/commonStyles';
 import { HandoverPackage } from '../../Garden/models';
 import { getDotsColor } from '../../Garden/utility';
 export const hiddenColumns: (keyof HandoverPackage)[] = [
@@ -163,24 +162,31 @@ export const tableConfig: TableOptions<HandoverPackage> = {
     customCellView: [
         {
             key: 'commpkgStatus',
-            type: {
-                Cell: ({ cell }) => {
-                    const commStatus = cell.value.content.commpkgStatus;
-                    const commStatusColor = getDotsColor(commStatus);
-                    return <Status color={commStatusColor}>{commStatus}</Status>;
-                },
+            type: 'Status',
+            cellAttributeFn: (item) => {
+                return {
+                    style: {
+                        backgroundColor: item.commpkgStatus
+                            ? getDotsColor(item.commpkgStatus)
+                            : 'transparent',
+                    },
+                };
             },
         },
         {
             key: 'mcStatus',
-            type: {
-                Cell: ({ cell }) => {
-                    const mcStatus = cell.value.content.mcStatus;
-                    const mcStatusColor = getDotsColor(mcStatus);
-                    return <Status color={mcStatusColor}>{mcStatus}</Status>;
-                },
+            type: 'Status',
+            cellAttributeFn: (item) => {
+                return {
+                    style: {
+                        backgroundColor: item.mcStatus
+                            ? getDotsColor(item.mcStatus)
+                            : 'transparent',
+                    },
+                };
             },
         },
+
         {
             key: 'description',
             type: 'Description',
