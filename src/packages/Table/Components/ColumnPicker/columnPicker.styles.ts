@@ -6,6 +6,7 @@ export const MenuItem = styled.div`
     grid-template-columns: 1fr 2fr;
     width: 200px;
     display: grid;
+    font-size: 13px;
     align-items: center;
 
     > span {

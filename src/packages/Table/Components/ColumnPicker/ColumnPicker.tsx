@@ -44,7 +44,6 @@ export const ColumnMenuPicker = ({ getApi }: ColumnMenuPickerProps): JSX.Element
                         <MenuItem className={DraggableHandleSelector} key={id}>
                             <div style={{ height: '48px', width: '20px' }}>
                                 <Checkbox
-                                    size={12}
                                     readOnly
                                     checked={getApi()
                                         .getVisibleColumns()
@@ -53,7 +52,7 @@ export const ColumnMenuPicker = ({ getApi }: ColumnMenuPickerProps): JSX.Element
                                     onChange={() => getApi().toggleHideColumn(id)}
                                 />
                             </div>
-                            <div style={{ fontSize: '13px' }}>{Header?.toString()}</div>
+                            <div>{Header?.toString()}</div>
                         </MenuItem>
                     );
                 })}
