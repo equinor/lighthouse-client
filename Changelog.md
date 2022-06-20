@@ -3,7 +3,17 @@
 All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
-
+## 1.6.0
+- [Filter]  V2 compact filter
+- [Portal] Central URL object for PCS
+- [Table] Redesign of status cell & better typing for custom cell props
+- [Loop] Loop workspace for dev environment
+- [PunchDev] Punch workpsace for dev environment
+- [Bookmarks] Fix invalidate bug
+- [Bookmarks] Fix styling of sidesheet and remove prod check
+- [ScopeChange] Automatically add tag from comm pkg
+- [3D] Update echo 3d and fix bug
+  
 ## 1.5.0
 - [PipingAndHeatTrace] New custom group header for HT cables
 - [ReleaseControl] Initial release to test
