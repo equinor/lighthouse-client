@@ -22,7 +22,7 @@ export function ExpandedFilter({ controller }: ExpandedFilterProps): JSX.Element
             {visibleFilters.map((groupName) => (
                 <FilterItems
                     handleOnChange={handleOnChange}
-                    handleOnSelectAll={() => Promise.resolve(void 0)}
+                    handleOnSelectAll={controller.handleOnSelectAll}
                     activeFilters={activeFilters}
                     group={slicerFilters.find((s) => s.type === groupName) as PowerBiFilter}
                     key={groupName}
