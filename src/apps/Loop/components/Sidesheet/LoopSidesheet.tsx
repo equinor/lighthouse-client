@@ -4,6 +4,7 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import styled from 'styled-components';
+import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types';
 import { getWorkorders, workorderColumnNames } from '../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
@@ -12,6 +13,7 @@ import { BannerItem } from './BannerItem';
 import { LoopContentTable } from './LoopContentTable';
 import { LoopDetails } from './LoopDetails';
 import { LoopWorkOrderTab } from './LoopWorkorderTable';
+import { ItemLink } from './sidesheet-styles';
 
 type LoopSidesheetProps = {
     item: Loop;
@@ -42,10 +44,40 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
     );
     return (
         <div>
-            <Banner padding="0 0.5em">
-                <BannerItem title="MC Status" value={item.loopContentStatus || 'N/A'}></BannerItem>
-                <BannerItem title="Cmpkg" value={item.commissioningPackageNo || 'N/A'} />
-                <BannerItem title="Mcpkg" value={item.mechanicalCompletionPackageNo || 'N/A'} />
+            <Banner padding="0 1.2em">
+                <BannerItem title="MC Status" value={item.loopContentStatus ?? 'N/A'}></BannerItem>
+                <BannerItem
+                    title="Cmpkg"
+                    value={
+                        item.commissioningPackageNo ? (
+                            <ItemLink
+                                target="_blank"
+                                href={proCoSysUrls.getCommPkgUrl(
+                                    item.commissioningPackage_ID ?? ''
+                                )}
+                            >
+                                {item.commissioningPackageNo}
+                            </ItemLink>
+                        ) : (
+                            'N/A'
+                        )
+                    }
+                />
+                <BannerItem
+                    title="Mcpkg"
+                    value={
+                        item.mechanicalCompletionPackageNo ? (
+                            <ItemLink
+                                target="_blank"
+                                href={proCoSysUrls.getMcUrl(item.mcpkgId ?? '')}
+                            >
+                                {item.mechanicalCompletionPackageNo}
+                            </ItemLink>
+                        ) : (
+                            'N/A'
+                        )
+                    }
+                />
                 <BannerItem title="Milestone" value={item.priority1 || 'N/A'} />
             </Banner>
             <div>
