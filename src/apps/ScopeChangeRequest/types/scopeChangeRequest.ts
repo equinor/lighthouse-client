@@ -17,6 +17,9 @@ export interface ScopeChangeCreateEditModel {
 
     //Revision id
     originatorId?: string | null;
+    /**Attachments id to duplicate */
+    attachmentsToDuplicate: string[] | null;
+
     //internal placeholder not sent to backend
     newAttachments?: File[];
     //internal placeholder not sent to backend
@@ -111,6 +114,8 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     createdAtUtc: string;
     createdBy: Person;
     modifiedAtUtc: string;
+    /** Null in list view */
+    isLatestRevision: boolean | null;
     modifiedBy: Person;
     state: ScopeChangeRequestState;
     isVoided: boolean;

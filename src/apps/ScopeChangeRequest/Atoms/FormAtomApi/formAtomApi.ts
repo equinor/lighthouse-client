@@ -54,6 +54,7 @@ export const scopeChangeFormAtomApi = createAtom<ScopeChangeFormModel, FormAtomA
             materialsToBeBoughtByContractor: false,
             originatorId: null,
             punchListItemIds: [],
+            attachmentsToDuplicate: [],
         }),
 }));
 
@@ -86,7 +87,11 @@ function unpackByType(list: TypedSelectOption[], referenceType: ReferenceType): 
 function prepareRequest(): ScopeChangeCreateEditModel {
     const { readAtomValue, unPackReferences } = scopeChangeFormAtomApi;
 
-    const newReq = { ...readAtomValue(), ...unPackReferences() };
+    const newReq = {
+        attachmentsToDuplicate: [],
+        ...readAtomValue(),
+        ...unPackReferences(),
+    };
     newReq.scopeId = newReq?.scope?.id;
     newReq.changeCategoryId = newReq?.changeCategory?.id;
     newReq.disciplineGuesstimates =

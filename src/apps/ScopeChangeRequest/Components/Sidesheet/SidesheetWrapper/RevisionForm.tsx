@@ -96,7 +96,14 @@ export const SubmitActionBar = ({ cancel }: SubmitActionBarProps): JSX.Element =
     const { isLoading, mutate } = useMutation(createScopeChangeMutation);
 
     const createRevision = () =>
-        mutate({ draft: false, model: { ...prepareRequest(), originatorId: request.id } });
+        mutate({
+            draft: false,
+            model: {
+                ...prepareRequest(),
+                attachmentsToDuplicate: request.attachments.map((s) => s.id),
+                originatorId: request.id,
+            },
+        });
 
     return (
         <ActionBar>
