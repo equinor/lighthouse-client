@@ -35,6 +35,7 @@ export function useServiceMessage(): Return {
     useEffect(() => {
         (async () => {
             const response = await appConfig.get('api/serviceMessage');
+            if (!response.ok) return;
             const data = localMessage(await response.json());
             if (data && data.id) {
                 setMessage(data);
