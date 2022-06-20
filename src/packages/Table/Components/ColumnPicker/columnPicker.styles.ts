@@ -2,9 +2,9 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const MenuItem = styled.div`
-    display: grid;
+    /* display: grid; */
     height: 48px;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis;
     white-space: nowrap;
     grid-template-columns: 2fr 4fr 8fr;
     margin: -5px -5px;
@@ -13,7 +13,7 @@ export const MenuItem = styled.div`
     font-size: 16px;
     font-weight: 400;
     line-height: 16px;
-    text-align: left;
+    text-align: left; */
 `;
 
 export const WrapperDiv = styled.div`
