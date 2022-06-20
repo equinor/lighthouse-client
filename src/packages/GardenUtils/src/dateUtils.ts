@@ -10,7 +10,8 @@ export const getYearAndWeekFromString = (dateString: string): string => {
     const date = new Date(dateString);
     return DateTime.fromJSDate(date).isValid ? getYearAndWeekFromDate(date) : 'N/A';
 };
-export const formatDateString = (dateString: string): string => {
+export const formatDateString = (dateString: string | null): string => {
+    if (!dateString) return 'N/A';
     const date = new Date(dateString);
     if (date.toString() === 'Invalid Date') return 'N/A';
     const dateParts = new Intl.DateTimeFormat(undefined).formatToParts(date);
