@@ -7,12 +7,11 @@ interface ProCoSysUrls {
     getPunchUrl: (punchId: string | number) => string;
     getDocumentUrl: (documentId: string | number) => string;
     getWorkOrderUrl: (workOrderId: string | number) => string;
+    getMcUrl: (mcId: string | number) => string;
 }
 
 const getProCoSysUrl = () =>
-    `https://${isProduction() ? 'procosys' : 'procosystest'}.equinor.com/${
-        getClientContext().procosysPlantId
-    }`;
+    `https://${isProduction() ? 'procosys' : 'procosystest'}.equinor.com/JOHAN_CASTBERG`;
 
 export const proCoSysUrls: ProCoSysUrls = {
     getTagUrl: (tagId) => `${getProCoSysUrl()}/Completion#Tag|${tagId}`,
@@ -21,4 +20,5 @@ export const proCoSysUrls: ProCoSysUrls = {
     getCommPkgUrl: (commPkgId) => `${getProCoSysUrl()}/Completion#CommPkg|${commPkgId}`,
     getDocumentUrl: (documentId) => `${getProCoSysUrl()}/Documents/Document#id=${documentId}`,
     getWorkOrderUrl: (workOrderId) => `${getProCoSysUrl()}/WorkOrders/WorkOrder#id=${workOrderId}`,
+    getMcUrl: (mcId) => `${getProCoSysUrl()}/Completion#McPkg|${mcId}`,
 };
