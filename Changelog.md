@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.5.1
+- [PipingAndHeatTrace] 3D Viewe 
+- [3D] Show icon on electro tags
+- [3D] Update to new reveal / echo version
+
+
 ## 1.5.0
 - [PipingAndHeatTrace] New custom group header for HT cables
 - [ReleaseControl] Initial release to test
