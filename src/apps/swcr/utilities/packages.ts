@@ -70,7 +70,7 @@ export const getHoursGroupKey: GetKeyFunction<SwcrPackage> = (item) => {
 export const getYearAndWeekFromDate = (date: Date): string => {
     const dateTime = DateTime.local(date.getFullYear(), date.getMonth() + 1, date.getDate());
     const weekNumber = dateTime.weekNumber < 10 ? `0${dateTime.weekNumber}` : dateTime.weekNumber;
-    return `${dateTime.weekYear}-${weekNumber}`;
+    return `${dateTime.year}-${weekNumber}`;
 };
 
 export const getYearAndWeekFromString = (dateString: string, removeDays = 0): string => {

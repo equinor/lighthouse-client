@@ -1,4 +1,4 @@
-import { getYearAndWeekFromDate } from '@equinor/GardenUtils';
+import { getYearAndWeekAndDayFromString, getYearAndWeekFromDate } from '@equinor/GardenUtils';
 import { CustomGroupByKeys } from '../../types';
 
 export const getHighlightedColumn = (
@@ -13,7 +13,9 @@ export const getHighlightedColumn = (
         groupByKey === 'rfcc' ||
         groupByKey === 'punchAccepted'
     ) {
-        return weeklyDaily === 'Daily' ? new Date().toString() : getYearAndWeekFromDate(new Date());
+        return weeklyDaily === 'Daily'
+            ? getYearAndWeekAndDayFromString(new Date().toString())
+            : getYearAndWeekFromDate(new Date());
     } else {
         return undefined;
     }
