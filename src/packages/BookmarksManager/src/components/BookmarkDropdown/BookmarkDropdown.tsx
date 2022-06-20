@@ -43,6 +43,7 @@ export const BookmarkDropdown = ({
                 anchorEl={anchorRef.current}
                 placement="auto-end"
                 onClose={() => setIsPopoverOpen(false)}
+                id="bookmark-workspace-dropdown"
             >
                 <Popover.Title>My {app?.title} Bookmarks</Popover.Title>
                 <Popover.Content>
