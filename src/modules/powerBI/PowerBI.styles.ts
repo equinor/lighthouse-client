@@ -6,11 +6,11 @@ export const Wrapper = styled.div`
     height: 100%;
 `;
 
-export const TopBar = styled.div`
+export const TopBar = styled.div<{ height: number }>`
     position: relative;
     display: flex;
     flex-direction: column;
-    height: fit-content;
+    height: ${(props) => props.height}px;
 `;
 
 export const PBIWrapper = styled.div<{ height: number }>`
