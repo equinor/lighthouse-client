@@ -73,7 +73,7 @@ export function FilterTypeSelector({
 }
 
 const FilterTypeSelectorWrapper = styled.div`
-    padding: 1px 12px;
+    padding: 1px 16px;
     background-color: white;
     min-width: 300px;
     overflow: scroll;
@@ -97,6 +97,7 @@ const Header = styled.div`
     align-items: center;
     height: 48px;
     background-color: #f7f7f7;
+    border-bottom: 2px solid #dcdcdc;
 `;
 
 interface FilterTypeOptionProps {
