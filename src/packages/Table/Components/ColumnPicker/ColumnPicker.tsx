@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { ReactSortable } from 'react-sortablejs';
-import styled from 'styled-components';
 import { Checkbox } from '@equinor/eds-core-react';
 import { TableAPI, TableData } from '@equinor/Table';
 import { ColumnInstance } from 'react-table';
 
 import { MenuItem } from './columnPicker.styles';
 import { useWorkSpace } from '@equinor/WorkSpace';
-import { tokens } from '@equinor/eds-tokens';
 
 export const DraggableHandleSelector = 'globalDraggableHandle';
 
@@ -43,21 +41,19 @@ export const ColumnMenuPicker = ({ getApi }: ColumnMenuPickerProps): JSX.Element
             >
                 {list.map(({ id, Header }) => {
                     return (
-                        <MenuItem key={id}>
-                            <FilterItemWrap className={DraggableHandleSelector}>
-                                <div style={{ height: '48px', width: '20px' }}>
-                                    <Checkbox
-                                        size={12}
-                                        readOnly
-                                        checked={getApi()
-                                            .getVisibleColumns()
-                                            .map((x) => x.id)
-                                            .includes(id)}
-                                        onChange={() => getApi().toggleHideColumn(id)}
-                                    />
-                                </div>
-                                <div style={{ fontSize: '13px' }}>{Header?.toString()}</div>
-                            </FilterItemWrap>
+                        <MenuItem className={DraggableHandleSelector} key={id}>
+                            <div style={{ height: '48px', width: '20px' }}>
+                                <Checkbox
+                                    size={12}
+                                    readOnly
+                                    checked={getApi()
+                                        .getVisibleColumns()
+                                        .map((x) => x.id)
+                                        .includes(id)}
+                                    onChange={() => getApi().toggleHideColumn(id)}
+                                />
+                            </div>
+                            <div style={{ fontSize: '13px' }}>{Header?.toString()}</div>
                         </MenuItem>
                     );
                 })}
@@ -65,28 +61,3 @@ export const ColumnMenuPicker = ({ getApi }: ColumnMenuPickerProps): JSX.Element
         </>
     );
 };
-
-export const FilterItemWrap = styled.div`
-    grid-template-columns: 1fr 2fr;
-    width: 200px;
-    display: grid;
-    align-items: center;
-    /* padding-top: 2px;
-    padding-bottom: 2px; */
-    > span {
-        padding: 0px;
-
-        > svg {
-            width: 18px;
-            height: 18px;
-        }
-
-        :first-child {
-            padding-right: 2px;
-        }
-    }
-    :hover {
-        cursor: grab;
-        background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
-    }
-`;
