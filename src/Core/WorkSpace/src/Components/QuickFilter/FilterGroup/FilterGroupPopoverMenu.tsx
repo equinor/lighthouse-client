@@ -50,11 +50,15 @@ export const FilterGroupPopoverMenu = ({
         values.filter((s) => !searchText || s?.toString().toLowerCase().startsWith(searchText));
 
     const setFilterStateFromSearch = () => {
+        const valuesMatchingSearch = values.filter(
+            (s) => !getValuesMatchingSearchText().includes(s)
+        );
+
         setFilterState([
             ...getFilterState().filter((s) => s.name !== groupName),
             {
                 name: groupName,
-                values: values.filter((s) => !getValuesMatchingSearchText().includes(s)),
+                values: valuesMatchingSearch,
             },
         ]);
     };
