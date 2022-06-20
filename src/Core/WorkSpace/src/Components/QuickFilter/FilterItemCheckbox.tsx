@@ -11,7 +11,7 @@ interface FilterItemCheckboxProps {
     handleFilterItemLabelClick: () => void;
     isChecked: boolean;
     ValueRender: () => JSX.Element;
-    count: number;
+    count?: number;
 }
 
 export const FilterItemCheckbox = ({
@@ -28,7 +28,7 @@ export const FilterItemCheckbox = ({
             <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
                 <ValueRender />
             </FilterLabelWrapper>
-            <Count>({count})</Count>
+            {typeof count === 'number' && <Count>({count})</Count>}
         </FilterItemWrap>
     );
 };
