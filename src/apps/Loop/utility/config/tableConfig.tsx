@@ -215,7 +215,6 @@ const customColumns: CustomColumn<Loop>[] = [
                     return Number(val.original?.remainingManHours);
                 })
             );
-            console.log('maxcount', maxCount);
             return <EstimateBar current={Number(cellProps.value)} max={maxCount} />;
         },
 
