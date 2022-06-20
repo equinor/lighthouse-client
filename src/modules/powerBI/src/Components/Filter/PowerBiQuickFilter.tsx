@@ -178,9 +178,10 @@ export const PowerBiGroupPopoverMenu = ({
         setSearchText(value.toString().toLowerCase());
     };
 
-    const setFilterStateFromSearch = () => {
-        const values = getValuesMatchingSearchText();
-        //TODO: Set filter state from what is in current search
+    const setFilterStateFromSearch = async () => {
+        const searchResults = getValuesMatchingSearchText().map((s) => s.value);
+
+        await controller.handleOnSelectAll(group, values[0], searchResults);
     };
 
     const getValuesMatchingSearchText = () =>
