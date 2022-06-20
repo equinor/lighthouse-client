@@ -12,7 +12,9 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 - [Bookmarks] Fix invalidate bug
 - [Bookmarks] Fix styling of sidesheet and remove prod check
 - [ScopeChange] Automatically add tag from comm pkg
-- [3D] Update echo 3d and fix bug
+- [PipingAndHeatTrace] 3D Viewer
+- [3D] Show icon on electro tags
+- [3D] Update to new reveal/echo version
   
 ## 1.5.0
 - [PipingAndHeatTrace] New custom group header for HT cables
