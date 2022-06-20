@@ -10,7 +10,6 @@ import { ModelViewerState } from '../types/plants';
 import { createMessage, getModels, selectPlantByContext } from '../utils/getCurrentContextModel';
 import { selectTagsByTagNos } from '../utils/selectTags';
 
-
 interface SelectTagOptions {
     padding?: number;
     clearSelection?: boolean;
@@ -124,7 +123,7 @@ export const ModelViewerContextProvider = ({
             hierarchyConfig,
             renderConfig
         );
-        echo3DClient.viewer.cameraControlsEnabled = true;
+
         const plants = await getModels(echo3DClient.modelApiClient);
         const selectedPlant = selectPlantByContext(plants, echoPlantId, platformSectionId);
 

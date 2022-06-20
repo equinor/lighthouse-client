@@ -148,7 +148,8 @@
         "node_modules"
     ],
     "include": [
-        "./src"
+        "./src",
+        "./packages"
     ],
     "typedocOptions": {
         "entryPoints": [

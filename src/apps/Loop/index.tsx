@@ -4,7 +4,7 @@ import { filterConfig, gardenConfig, sidesheetConfig, tableConfig } from './util
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
     const { FAM } = httpClient();
-    return await FAM.post('v0.1/dynamic/completion/custom_loopready/JCA', {
+    return await FAM.post('v0.1/dynamic/completion/custom_loopmccr/JCA', {
         body: JSON.stringify({}),
         signal,
     });
@@ -14,9 +14,10 @@ export function setup(addApi: ClientApi): void {
     addApi
         .createWorkSpace<Loop>({
             customSidesheetOptions: sidesheetConfig('WorkspaceSideSheet'),
-            objectIdentifier: 'loopNo',
+            objectIdentifier: 'checklistId',
         })
         .registerDataSource({ responseAsync: responseAsync })
+        .registerSearchOptions([{ name: 'Checklist ID', valueFormatter: (pkg) => pkg.checklistId }])
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerFilterOptions(filterConfig)
