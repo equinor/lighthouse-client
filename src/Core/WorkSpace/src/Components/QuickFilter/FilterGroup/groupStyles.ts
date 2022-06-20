@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 export const FilterGroupWrapper = styled.div`
     height: auto;
-    border-bottom: ${tokens.colors.ui.background__medium.hex} 2px solid;
-    width: 200px;
+    /* border-bottom: ${tokens.colors.ui.background__medium.hex} 2px solid; */
+    width: auto;
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -44,7 +44,7 @@ export const MenuWrapper = styled.div`
 export const FilterItemList = styled.div`
     max-height: 250px;
     overflow: scroll;
-    padding: 8px 3px;
+    padding: 8px 8px;
 
     ::-webkit-scrollbar-thumb {
         background: ${tokens.colors.ui.background__medium.hex};

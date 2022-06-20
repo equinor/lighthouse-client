@@ -1,6 +1,7 @@
 import { Checkbox } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
+import { Count } from '../../../../../packages/Filter/Components/FilterItem/FilterItem-Styles';
 
 import { FilterValueType } from '../../../../../packages/Filter/Types';
 
@@ -10,9 +11,11 @@ interface FilterItemCheckboxProps {
     handleFilterItemLabelClick: () => void;
     isChecked: boolean;
     ValueRender: () => JSX.Element;
+    count: number;
 }
 
 export const FilterItemCheckbox = ({
+    count,
     filterValue,
     handleFilterItemClick,
     isChecked,
@@ -25,20 +28,21 @@ export const FilterItemCheckbox = ({
             <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
                 <ValueRender />
             </FilterLabelWrapper>
+            <Count>({count})</Count>
         </FilterItemWrap>
     );
 };
 
 const FilterLabelWrapper = styled.div`
     cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 export const FilterItemWrap = styled.div`
     grid-template-columns: auto 1fr auto;
     display: grid;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     align-items: center;
     padding-top: 2px;
     padding-bottom: 2px;
