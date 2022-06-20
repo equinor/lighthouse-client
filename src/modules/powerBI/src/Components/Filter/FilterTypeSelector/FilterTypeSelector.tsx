@@ -4,6 +4,9 @@ import { Case } from '@equinor/JSX-Switch';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Switch } from '../../../../../../components/JSXSwitch/Components/Switch';
+export const SHOW_ON_HOVER = 'add';
+
+const HIDE_ON_HOVER = 'Selected';
 
 interface FilterTypeSelectorProps {
     visibleFilters: string[];
@@ -114,7 +117,7 @@ const FilterTypeOption = ({ isSelected, name, toggleSelected }: FilterTypeOption
             {isSelected && (
                 <Icon
                     name="check"
-                    id="selected"
+                    id={HIDE_ON_HOVER}
                     color={tokens.colors.interactive.primary__resting.hex}
                 />
             )}
@@ -122,7 +125,7 @@ const FilterTypeOption = ({ isSelected, name, toggleSelected }: FilterTypeOption
                 <Icon
                     onClick={() => toggleSelected(name)}
                     name={isSelected ? 'remove' : 'add_circle_filled'}
-                    id={'add'}
+                    id={SHOW_ON_HOVER}
                     color={tokens.colors.interactive.primary__resting.hex}
                 />
             </ToggleButton>
@@ -143,19 +146,19 @@ const FilterTypeOptionWrapper = styled.div`
     &:hover {
         background-color: #f7f7f7;
     }
-    #add {
+    #${SHOW_ON_HOVER} {
         display: none;
     }
 
-    &:hover #add {
+    &:hover #${SHOW_ON_HOVER} {
         display: initial;
     }
 
-    #selected {
+    #${HIDE_ON_HOVER} {
         display: initial;
     }
 
-    &:hover #selected {
+    &:hover #${HIDE_ON_HOVER} {
         display: none;
     }
 `;
