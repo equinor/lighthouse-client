@@ -1,9 +1,10 @@
 import { ScopeChangeTag } from '../../../../types/scopeChangeRequest';
-import { isProduction, useFacility } from '../../../../../../Core/Client';
+import { useFacility } from '../../../../../../Core/Client';
 import { Link, Wrapper, TextWrapper, MainText, MetaData } from '../WrapperStyles';
 import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { Tag as TagInterface } from '../../../../types/ProCoSys/Tag';
+import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
 
 interface TagProps {
     tag: ScopeChangeTag;
@@ -19,13 +20,7 @@ export const Tag = ({ tag }: TagProps): JSX.Element => {
 
     return (
         <Wrapper
-            onClick={() =>
-                window.open(
-                    `https://${isProduction() ? 'procosys' : 'procosystest'
-                    }.equinor.com/JOHAN_CASTBERG/Completion#Tag|${tag.procosysId}`,
-                    '_blank'
-                )
-            }
+            onClick={() => window.open(proCoSysUrls.getTagUrl(tag.procosysId), '_blank')}
             key={tag.id}
         >
             <TextWrapper>

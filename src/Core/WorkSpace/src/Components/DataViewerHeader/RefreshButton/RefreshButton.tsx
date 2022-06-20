@@ -13,7 +13,9 @@ export const RefreshButton = (): JSX.Element => {
     return (
         <TabButton
             color={
-                dataApi?.isStale ? tokens.colors.infographic.primary__energy_red_100.hex : 'grey'
+                dataApi?.isStale
+                    ? tokens.colors.infographic.primary__energy_red_100.hex
+                    : tokens.colors.interactive.primary__resting.hex
             }
             aria-selected={false}
             title={

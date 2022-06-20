@@ -55,11 +55,16 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
             description: undefined,
             allowContributors: true,
             documentNumbers: [],
-            plannedDueDate: undefined,
+            plannedDueDate: '',
             systemIds: [],
             tagNumbers: [],
             workflowSteps: [],
             title: undefined,
+            phase: undefined,
+            references: [],
+            id: undefined,
+            editedWorkflowSteps: [],
+            signedWorkflowSteps: [],
         }),
 }));
 

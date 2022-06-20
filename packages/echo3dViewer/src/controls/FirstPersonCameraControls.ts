@@ -1,8 +1,23 @@
 import { THREE } from '@cognite/reveal';
+import { PixelIntersectionQuery } from '../types/pixelIntersectionQuery';
 import { TrackEventBySignature } from '../types/trackEventBySignature';
-import { clampAngle, screenPointToAngleXInRad, screenPointToAngleYInRad } from '../utils/calculationUtils';
+import {
+    clampAngle,
+    screenPointToAngleXInRad,
+    screenPointToAngleYInRad,
+    verticalFovRad
+} from '../utils/calculationUtils';
+import { isInputEvent } from '../utils/keyboardEventUtils';
 import { normalizeCursorCoordinatesForThreeScreen } from '../utils/mouseEventOffset';
 import { MultiPointerCache } from './MultiPointerCache';
+
+// the following interaction states are mutually exclusive
+enum InteractionMode {
+    NONE,
+    ROTATE,
+    PAN,
+    PINCH_TO_MOVE
+}
 
 const halfPI = Math.PI / 2;
 
@@ -31,6 +46,8 @@ const MOVE_RIGHT = 'D';
  */
 export class FirstPersonCameraControls extends THREE.EventDispatcher {
     private camera: THREE.PerspectiveCamera;
+
+    private pointQueryFunc: PixelIntersectionQuery | undefined;
 
     private forceUpdateNextUpdate = false;
 
@@ -88,6 +105,10 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
 
     private fingerDownScreenPosAngles = new THREE.Vector2();
 
+    private fingerDownScreenPos = new THREE.Vector2();
+
+    private distanceToScene = -1;
+
     private startRotation = new THREE.Vector2();
 
     private pointerCache = new MultiPointerCache();
@@ -112,17 +133,30 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
 
     private trackEventBy;
 
+    private interactionMode: InteractionMode;
+
+    private isDisabled = false;
+
     /**
      * Constructor for creating first person camera controls
      *
      * @param {THREE.PerspectiveCamera} camera the camera that the control will control
      * @param {HTMLCanvasElement} domElement this is the element where we are listening for navigation inputs
+     * @param {PixelIntersectionQuery} pointQueryFunc this is a function that
+     * returns the distance to the 1st object intersected by a viewing ray shot through the given pixel (cx, cy)
      * @param {TrackEventBySignature} trackEventBy optional parameter for providing a method that
      * will be called when certain control actions are preformed:
      * Keyboard navigation used, mouse navigation used, touch navigation used and pen navigation used
      */
-    constructor(camera: THREE.PerspectiveCamera, domElement: HTMLCanvasElement, trackEventBy?: TrackEventBySignature) {
+    constructor(
+        camera: THREE.PerspectiveCamera,
+        domElement: HTMLCanvasElement,
+        pointQueryFunc?: PixelIntersectionQuery,
+        trackEventBy?: TrackEventBySignature
+    ) {
         super();
+
+        this.interactionMode = InteractionMode.NONE;
         this.camera = camera;
         this.movementSpeed = 6.0;
         this.movementSpeedBoostFactor = 4;
@@ -131,6 +165,7 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
         this.lookSpeedBoostFactor = 3;
         this.domElement = domElement;
         this.trackEventBy = trackEventBy;
+        this.pointQueryFunc = pointQueryFunc;
 
         this.moveForward = 0;
         this.moveBackward = 0;
@@ -149,12 +184,12 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
         this.accelerationAccumulator = 0;
 
         this.domElement.style.touchAction = 'none'; // disable touch scrolling / zooming
+        this.domElement.addEventListener('pointerdown', this.handlePointerDown, false);
         this.domElement.addEventListener('wheel', this.handleWheel, {
             passive: true
         }); // Added passive here based on chrome devtools recommendation.
         document.addEventListener('keyup', this.handleKeyUp, false);
         document.addEventListener('keydown', this.handleKeyDown, false);
-        this.domElement.addEventListener('pointerdown', this.handlePointerDown, false);
     }
 
     /**
@@ -171,14 +206,29 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @param {boolean} isMoving flag indicating whether the controls are moving or not
      */
     private handleIsMovingByKeyboard(isMoving: boolean) {
+        if (this.isDisabled) {
+            return;
+        }
+
+        /* Only dispatch event when user starts moving */
+        if (isMoving && !this.isMovingByKeyboard) {
+            this.dispatchEvent({ type: 'controlstart' });
+        }
+
         if (isMoving) {
             if (this.wheelTimeout) clearTimeout(this.wheelTimeout);
             this.isMovingByKeyboard = true;
-            this.dispatchEvent({ type: 'controlstart' });
         } else {
             this.isMovingByKeyboard = false;
             if (!this.isMovingByPointer) this.dispatchEvent({ type: 'controlend' });
         }
+    }
+
+    /**
+     * @param {boolean} disable -- disable controls
+     */
+    setIsDisabled(disable: boolean) {
+        this.isDisabled = disable;
     }
 
     /**
@@ -187,11 +237,14 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @param {WheelEvent} ev the wheel event triggered
      */
     handleWheel = (ev: WheelEvent): void => {
+        if (this.isDisabled) {
+            return;
+        }
+
         if (!this.hasUsedMouseToNavigate) {
             this.hasUsedMouseToNavigate = true;
             if (this.trackEventBy) this.trackEventBy('Navigation', 'Moved', { value: 'mouse', control: 'FPC' });
         }
-
         if (ev.deltaY !== 0) {
             this.dispatchEvent({ type: 'controlstart' });
             if (this.wheelTimeout) clearTimeout(this.wheelTimeout);
@@ -217,6 +270,10 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @param {number} distance the distance to move
      */
     moveTowardsScreenPosition(clientPos: { clientX: number; clientY: number }, distance: number): void {
+        if (this.isDisabled) {
+            return;
+        }
+
         const normalizedScreenPos = normalizeCursorCoordinatesForThreeScreen(
             clientPos,
             this.domElement.getBoundingClientRect()
@@ -234,6 +291,10 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @param {number} distance the distance to move
      */
     moveTowards(direction: THREE.Vector3, distance: number): void {
+        if (this.isDisabled) {
+            return;
+        }
+
         this.camera.position.add(direction.clone().multiplyScalar(distance));
         this.forceUpdateNextUpdate = true;
     }
@@ -249,17 +310,21 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
         this.pointerCache.clearEventCache();
         this.domElement.ownerDocument.removeEventListener('pointermove', this.handlePointerMove, false);
         this.domElement.ownerDocument.removeEventListener('pointerup', this.handlePointerUp, false);
+        this.domElement.ownerDocument.removeEventListener('pointercancel', this.handlePointerUp, false);
         this.previousActivePointerCount = 0;
+        this.interactionMode = InteractionMode.NONE;
     };
 
     /**
      *  Cleanup method used to clean up event listeners attached and reset the class properties
      */
-    dispose(): void {
+    disposeAll(): void {
         document.removeEventListener('keyup', this.handleKeyUp, false);
         document.removeEventListener('keydown', this.handleKeyDown, false);
+
         this.domElement.removeEventListener('pointerdown', this.handlePointerDown, false);
         this.domElement.removeEventListener('wheel', this.handleWheel, false);
+
         this.resetPointerEvents();
     }
 
@@ -315,11 +380,13 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @param { PointerEvent} event the pointer event performed
      */
     onPointerUp = (event: PointerEvent): void => {
-        if (event.button && event.button !== 0 && event.button !== 2) {
+        this.pointerCache.removePointer(event);
+        this.domElement.style.cursor = 'auto';
+
+        if (event.button !== 0 && event.button !== 1 && event.button !== 2) {
             event.preventDefault(); // Ignore the mouse event
             return;
         }
-        this.pointerCache.removePointer(event);
         if (this.getActivePointerCount() === 0) {
             this.resetPointerEvents();
         }
@@ -335,6 +402,12 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @param {PointerEvent} event the pointer event performed
      */
     startPointerRotate = (event: PointerEvent): void => {
+        if (this.isDisabled) {
+            return;
+        }
+
+        this.interactionMode = InteractionMode.ROTATE;
+
         const worldDirection: THREE.Vector3 = new THREE.Vector3();
         this.camera.getWorldDirection(worldDirection); // Copies into worldDirection
         const oldX = clampAngle(
@@ -365,7 +438,13 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @param {PointerEvent} event the pointer event performed
      */
     updatePointerRotate = (event: PointerEvent): void => {
+        if (this.isDisabled) {
+            return;
+        }
+
         this.mouseMoving = true;
+        // We want to change the cursor only after we actually drag, so we have this in the update instead of startPointerRotate
+        if (this.domElement.style.cursor !== 'grabbing') this.domElement.style.cursor = 'grabbing';
 
         const screenPosition = new THREE.Vector2(event.clientX, event.clientY);
         const screenSize = new THREE.Vector2(this.domElement.clientWidth, this.domElement.clientHeight);
@@ -387,33 +466,107 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
     };
 
     /**
+     * Method that will start the process for panning the camera on pointer event
+     *
+     * @param {PointerEvent} event the pointer event performed
+     */
+    startPointerPan = (event: PointerEvent): void => {
+        if (this.isDisabled) {
+            return;
+        }
+
+        this.interactionMode = InteractionMode.PAN;
+        this.domElement.style.cursor = 'grabbing';
+        const screenX = event.clientX / this.domElement.clientWidth;
+        const screenY = event.clientY / this.domElement.clientHeight;
+        this.fingerDownScreenPos = new THREE.Vector2(screenX, screenY);
+    };
+
+    /**
+     * Method that will update the process for panning the camera on pointer event
+     *
+     * @param {PointerEvent} event the pointer event performed
+     */
+    updatePointerPan = (event: PointerEvent): void => {
+        if (this.isDisabled) {
+            return;
+        }
+
+        this.mouseMoving = true;
+
+        const screenX = event.clientX / this.domElement.clientWidth;
+        const screenY = event.clientY / this.domElement.clientHeight;
+        const currentPos = new THREE.Vector2(screenX, screenY);
+
+        const delta = new THREE.Vector2().subVectors(this.fingerDownScreenPos, currentPos);
+
+        const vFovRad = verticalFovRad(this.camera);
+
+        const screenSize = new THREE.Vector2(this.domElement.clientWidth, this.domElement.clientHeight);
+        const screenAspect = screenSize.x / screenSize.y;
+
+        const heightViewport = 2.0 * Math.tan(vFovRad / 2.0) * this.camera.near;
+        const widthViewport = heightViewport * screenAspect;
+
+        const deltaViewportC = new THREE.Vector2(delta.x * widthViewport, delta.y * heightViewport);
+
+        const minimumDistance = 1.0; // Makes the camera move a minimum speed when very close, this makes panning through walls and floors easier
+        const defaultDistance = 10.0; // Makes the camera move at a comparable speed to this distance when the ray did not hit anything.
+        // distanceToScene = -1 if the ray does not intersect anything
+        const distanceClamped =
+            this.distanceToScene > 0
+                ? Math.max(Math.min(this.distanceToScene, this.camera.far), minimumDistance)
+                : defaultDistance;
+        const scaling = distanceClamped / this.camera.near;
+
+        // adapt camera matrix w delta
+        this.camera.translateX(deltaViewportC.x * scaling);
+        this.camera.translateY(-deltaViewportC.y * scaling);
+
+        this.fingerDownScreenPos = currentPos;
+    };
+
+    /**
      * Internal method for handling the event pointer down
      * Navigation is identical for right and left button. Disabled for middle / other.
      *
      * @param { PointerEvent} ev the pointer event performed
+     * @returns  {boolean} indicate if the event should be bubbled (this might have no effect, but may in safari so we keep it.)
      */
-    onPointerDown(ev: PointerEvent): void {
-        if (ev.button && ev.button !== 0 && ev.button !== 2) {
-            ev.preventDefault(); // Ignore the mouse event
-            return;
+    async onPointerDown(ev: PointerEvent): Promise<boolean> {
+        if (this.isDisabled) {
+            return false;
         }
+
+        this.pointerCache.addOrUpdatePointer(ev);
+
+        if (ev.button !== 0 && ev.button !== 2 && ev.button !== 1) {
+            // Ignore the mouse event
+            return true;
+        }
+        const result = this.pointQueryFunc ? await this.pointQueryFunc(ev.offsetX, ev.offsetY) : null;
+
         if (this.wheelTimeout) clearTimeout(this.wheelTimeout);
         this.isMovingByPointer = true;
         this.dispatchEvent({ type: 'controlstart' });
-        this.pointerCache.addOrUpdatePointer(ev);
         const activePointers = this.pointerCache.activePointersSnapshot();
+
+        this.distanceToScene = result ? result.distanceToCamera : -1;
 
         if (this.getActivePointerCount() === 1) {
             // Start listening to pointer move updates on first event
             this.domElement.ownerDocument.addEventListener('pointermove', this.handlePointerMove);
             this.domElement.ownerDocument.addEventListener('pointerup', this.handlePointerUp);
-        }
+            this.domElement.ownerDocument.addEventListener('pointercancel', this.handlePointerUp);
 
-        if (this.getActivePointerCount() === 1) {
-            this.previousActivePointerCount = 1;
-            this.startPointerRotate(ev);
+            if (ev.button === 0 || ev.button === 2) {
+                this.previousActivePointerCount = 1;
+                this.startPointerRotate(ev);
+            } else if (ev.button === 1) {
+                this.previousActivePointerCount = 1;
+                this.startPointerPan(ev);
+            }
         } else if (this.getActivePointerCount() === 2) {
-            this.domElement.ownerDocument.removeEventListener('pointermove', this.updatePointerRotate, false);
             this.startPinchToMove(activePointers[0], activePointers[1]);
         } else {
             // We do not handle 3 fingers (yet)
@@ -434,6 +587,8 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
             this.hasUsedPenToNavigate = true;
             if (this.trackEventBy) this.trackEventBy('Navigation', 'Moved', { value: 'touch', control: 'FPC' });
         }
+
+        return false;
     }
 
     handlePointerDown = this.onPointerDown.bind(this) as (ev: PointerEvent) => void;
@@ -443,9 +598,17 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * Three or more touch points are not handled
      *
      * @param { PointerEvent} ev the pointer event performed
+     * @returns { boolean } false (Always. To "preventDefault" handling of the event.)
      */
-    onPointerMove(ev: PointerEvent): void {
+    onPointerMove(ev: PointerEvent): boolean {
+        if (this.isDisabled) {
+            return false;
+        }
+
         this.pointerCache.addOrUpdatePointer(ev);
+
+        // beware definition of button vs buttons
+        if (ev.buttons === 0) return true; // Not pressed any buttons
         const activePointers = this.pointerCache.activePointersSnapshot();
         if (this.getActivePointerCount() === 1) {
             // If we reduce from N fingers to 1, we reset.
@@ -453,14 +616,22 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
                 this.startPointerRotate(ev);
                 this.prevPinchDiff = -1;
             }
-            this.updatePointerRotate(ev);
-        } else if (this.getActivePointerCount() === 2) {
+            if (this.interactionMode === InteractionMode.ROTATE) {
+                this.updatePointerRotate(ev);
+            } else if (this.interactionMode === InteractionMode.PAN) {
+                this.updatePointerPan(ev);
+            }
+        } else if (this.interactionMode === InteractionMode.PINCH_TO_MOVE) {
             this.updatePinchToMove(activePointers[0], activePointers[1]);
         } else {
             // Three Or More touch points are not handled (yet).
         }
         // Update pointerCount
         this.previousActivePointerCount = this.getActivePointerCount();
+
+        // Avoid browser select when dragging
+        ev.preventDefault();
+        return false;
     }
 
     handlePointerMove = this.onPointerMove.bind(this) as (ev: PointerEvent) => void;
@@ -472,6 +643,11 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @param {PointerEvent} evB the second touch point
      */
     startPinchToMove(evA: PointerEvent, evB: PointerEvent): void {
+        if (this.isDisabled) {
+            return;
+        }
+
+        this.interactionMode = InteractionMode.PINCH_TO_MOVE;
         this.updatePinchToMove(evA, evB);
     }
 
@@ -482,6 +658,10 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @param {PointerEvent} evB the second touch point
      */
     updatePinchToMove(evA: PointerEvent, evB: PointerEvent): void {
+        if (this.isDisabled) {
+            return;
+        }
+
         const evAPosition = new THREE.Vector2(evA.clientX, evA.clientY);
         const evBPosition = new THREE.Vector2(evB.clientX, evB.clientY);
         const centerPos = evAPosition.clone().add(evBPosition).divideScalar(2);
@@ -536,11 +716,12 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @param {KeyboardEvent} e the keyboard action performed
      */
     handleKeyDown = (e: KeyboardEvent): void => {
-        if (!(document.activeElement === document.body || document.activeElement === this.domElement)) {
-            return;
+        // Ensure the navigation is not triggered from input or content editable.
+        if (isInputEvent(e)) {
+            return; // Ignore events from input fields
         }
 
-        // CTRL or ALT skips navigation
+        // CTRL or ALT or Meta (Windows/Cmd key) skips navigation
         if (e.ctrlKey || e.altKey || e.metaKey || this.ctrlKey || this.altKey || this.metaKey) {
             this.skipNavigation();
             return;
@@ -723,7 +904,9 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @returns {THREE.Vector3} cameras rotation
      */
     getRotation(): THREE.Vector3 {
-        return this.camera.rotation.toVector3();
+        const rotation = new THREE.Vector3();
+        rotation.setFromEuler(this.camera.rotation);
+        return rotation;
     }
 
     /**
@@ -814,6 +997,10 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
      * @returns {boolean} a flag indication if navigation has happened or not
      */
     update(delta: number): boolean {
+        if (this.isDisabled) {
+            return false;
+        }
+
         const movementSpeed = this.shiftKey ? this.movementSpeed * this.movementSpeedBoostFactor : this.movementSpeed;
         const verticalMovementSpeed = movementSpeed * this.verticalMovementSpeedModifier;
         const lookSpeed = this.shiftKey ? this.lookSpeed * this.lookSpeedBoostFactor : this.lookSpeed;
@@ -880,7 +1067,6 @@ export class FirstPersonCameraControls extends THREE.EventDispatcher {
                 this.accelerationAccumulator = 0.0001;
             }
             const acceleratorMultiplier = this.accelerationAccumulator / reachMaxSpeedAt;
-
             // Apply delta and acceleration
             this.velocity.multiplyScalar(acceleratorMultiplier).multiplyScalar(delta);
             this.angularVelocity.multiplyScalar(delta);

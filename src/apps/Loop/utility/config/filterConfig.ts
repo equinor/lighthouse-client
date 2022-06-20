@@ -12,7 +12,7 @@ export const filterConfig: FilterOptions<Loop> = [
     },
     {
         name: 'MC status',
-        valueFormatter: (pkg) => pkg.firstMechanicalCompletionStatus,
+        valueFormatter: (pkg) => pkg.loopContentStatus,
     },
     {
         name: 'Functional System',

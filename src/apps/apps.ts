@@ -33,6 +33,7 @@ import { setup as tasksSetup } from './Tasks/TasksApp';
 import { setup as WorkOrderSetup } from './WorkOrder';
 import { setup as workPreparationSetup } from './workPreparation';
 import { setup as loopSetup } from './Loop';
+import { setup as punchDevSetup } from './Punch_Dev';
 export function getApps(): AppManifest[] {
     return apps;
 }
@@ -428,6 +429,19 @@ export const apps: AppManifest[] = [
             setup: punchSetup,
         },
         appEnv: 'prod',
+    },
+    {
+        title: 'Dev punch',
+        shortName: '_punch_dev',
+        color: '#0364B8',
+        groupe: Apps.ConstructionAndCommissioning,
+        icon: '',
+        tags: [],
+        app: {
+            appType: 'Workspace',
+            setup: punchDevSetup,
+        },
+        appEnv: 'dev',
     },
     {
         title: 'SWCR',

@@ -1,11 +1,6 @@
 import { Menu, Typography } from '@equinor/eds-core-react';
-import styled from 'styled-components';
 import { HeaderCellProps } from './HeaderCell';
 
-const ContentWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
 interface HeaderCellMenuProps extends HeaderCellProps {
     anchorEl: HTMLDivElement | null;
     isOpen: boolean;
@@ -23,8 +18,9 @@ export function HeaderCellMenu({
     getSortByToggleProps,
     canSort,
     id,
+    toggleHidden,
     FilterComponent,
-}: HeaderCellMenuProps) {
+}: HeaderCellMenuProps): JSX.Element {
     return (
         <Menu
             open={isOpen}
@@ -50,6 +46,14 @@ export function HeaderCellMenu({
                     </Typography>
                 </Menu.Item>
             )}
+
+            <Menu.Section>
+                <Menu.Item onClick={() => toggleHidden()}>
+                    <Typography group="navigation" variant="menu_title" as="span">
+                        Hide
+                    </Typography>
+                </Menu.Item>
+            </Menu.Section>
             {FilterComponent ? (
                 <Menu.Section title="Filter">
                     <FilterComponent filterId={id} />

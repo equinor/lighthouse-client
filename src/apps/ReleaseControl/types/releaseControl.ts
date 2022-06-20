@@ -69,6 +69,7 @@ export interface ReleaseControlStep {
     contributors: Contributor[];
     allowContributors: boolean;
     criteriaTemplates: CriteriaTemplate[];
+    workflowStepCriteriaTemplates?: CriteriaTemplate[];
 }
 
 export interface CreateReleaseControlStepModel {
@@ -81,8 +82,10 @@ export interface CreateReleaseControlStepModel {
     isCompleted?: boolean;
     isCurrent?: boolean;
     tagNumbers?: string[];
+    contributors?: Contributor[];
     criteriaTemplates: CriteriaTemplate[];
     criterias: Criteria[];
+    workflowStepCriteriaTemplates?: CriteriaTemplate[];
 }
 
 export interface Criteria {
@@ -132,8 +135,19 @@ export interface ReleaseControl {
     hasPendingContributions: boolean;
     allowContributors: boolean;
     currentWorkflowStep: ReleaseControlStep;
-    workflowSteps: ReleaseControlStep[];
+    workflowSteps: CreateReleaseControlStepModel[];
     editedWorkflowSteps: ReleaseControlStep[];
     tags: ReleaseControlTag[];
     areas: ReleaseControlArea[];
+}
+
+export interface ReleaseControlWorkflow {
+    id: string;
+    name: string;
+}
+
+export interface ReleaseControlWorkflowTemplate {
+    id: string;
+    isPublished: boolean;
+    workflowStepTemplates: CreateReleaseControlStepModel[];
 }
