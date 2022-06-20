@@ -1,9 +1,12 @@
 import { TableOptions } from '@equinor/WorkSpace';
 import { statusColorMap } from '@equinor/GardenUtils';
 import { McPackage } from '../../types';
+import { CustomLinkCellWithTextDecoration } from '@equinor/Table';
+import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 
 const hiddenColumns: (keyof McPackage)[] = [
     'commPkgId',
+    'commPkgNumber',
     'commPkgStatus',
     'remark',
     'subsystem',
@@ -18,6 +21,7 @@ const hiddenColumns: (keyof McPackage)[] = [
     'updatedDate',
     'projectIdentifier',
     'projectDescription',
+    'mcPkgNumber',
     'mcPkgId',
     'disciplineDescription',
     'finalPunchForecastDate',
@@ -47,15 +51,16 @@ export const tableConfig: TableOptions<McPackage> = {
     objectIdentifierKey: 'mcPkgId',
     hiddenColumns,
     itemSize: 32,
+
     columnOrder: [
-        'mcPkgNumber',
+        'mcPkgNumberUrl',
         'description',
         'discipline',
         'mcStatus',
         'responsible',
         'phase',
         'area',
-        'commPkgNumber',
+        'commPkgNoUrl',
         'system',
         'finalPunchForecastDate',
         'finalPunchPlannedDate',
@@ -67,11 +72,6 @@ export const tableConfig: TableOptions<McPackage> = {
         'priority3',
     ],
     headers: [
-        {
-            key: 'mcPkgNumber',
-            title: 'MCpkgno',
-            width: 100,
-        },
         {
             key: 'description',
             title: 'Description',
@@ -106,11 +106,7 @@ export const tableConfig: TableOptions<McPackage> = {
             title: 'Area',
             width: 150,
         },
-        {
-            key: 'commPkgNumber',
-            title: 'Comm. Package',
-            width: 200,
-        },
+
         {
             key: 'finalPunchPlannedDate',
             title: 'Forecast M-01 Final Punch',
@@ -125,27 +121,27 @@ export const tableConfig: TableOptions<McPackage> = {
         {
             key: 'rfccPlannedDate',
             title: 'Forecast M-03 RFC',
-            width: 200,
+            width: 150,
         },
         {
             key: 'rfccActualDate',
             title: 'Actual M-03 RFC',
-            width: 200,
+            width: 150,
         },
         {
             key: 'priority',
             title: 'Comm Pri1',
-            width: 150,
+            width: 100,
         },
         {
             key: 'priority2',
             title: 'Comm Pri2',
-            width: 150,
+            width: 100,
         },
         {
             key: 'priority3',
             title: 'Comm Pri3',
-            width: 150,
+            width: 100,
         },
     ],
     customCellView: [
@@ -180,6 +176,48 @@ export const tableConfig: TableOptions<McPackage> = {
         {
             key: 'finalPunchPlannedDate',
             type: 'YearAndWeek',
+        },
+    ],
+    customColumns: [
+        {
+            id: 'mcPkgNumberUrl',
+            Header: 'MCpkgno',
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 100,
+            accessor: (pkg) => ({
+                content: pkg,
+                currentKey: 'mcPkgNumber',
+                url: proCoSysUrls.getMcUrl(pkg.mcPkgId),
+            }),
+            Cell: (cellProps) => {
+                return (
+                    <CustomLinkCellWithTextDecoration
+                        contentToBeDisplayed={cellProps.value.content.mcPkgNumber}
+                        url={cellProps.value.url}
+                    />
+                );
+            },
+        },
+        {
+            id: 'commPkgNoUrl',
+            Header: 'Comm. package',
+            Aggregated: () => null,
+            aggregate: 'count',
+            width: 120,
+            accessor: (pkg) => ({
+                content: pkg,
+                currentKey: 'commPkgNumber',
+                url: proCoSysUrls.getCommPkgUrl(pkg.commPkgId),
+            }),
+            Cell: (cellProps) => {
+                return (
+                    <CustomLinkCellWithTextDecoration
+                        contentToBeDisplayed={cellProps.value.content.commPkgNumber}
+                        url={cellProps.value.url}
+                    />
+                );
+            },
         },
     ],
 };
