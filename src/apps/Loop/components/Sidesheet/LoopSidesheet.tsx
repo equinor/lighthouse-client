@@ -1,12 +1,16 @@
-import { Tabs } from '@equinor/eds-core-react';
+import { Progress, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { Loop } from '../../types';
+import { getWorkorders, workorderColumnNames } from '../../utility/api';
+import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
 import { Banner } from './Banner';
 import { BannerItem } from './BannerItem';
 import { LoopContentTable } from './LoopContentTable';
+import { LoopWorkOrderTab } from './LoopWorkorderTable';
 
 type LoopSidesheetProps = {
     item: Loop;
@@ -20,7 +24,21 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
     useEffect(() => {
         actions.setTitle(`${item.tagNo}, ${item.checklistId}`);
     }, []);
-
+    const workorderExpressions = generateExpressions('checklistID', 'Equals', [
+        item.checklistId || '',
+    ]);
+    const workorderRequestArgs = generateFamRequest(
+        workorderColumnNames,
+        'Or',
+        workorderExpressions
+    );
+    const {
+        data: workorders,
+        isLoading: isLoadingWorkorders,
+        error: workorderError,
+    } = useQuery(['workorder', item.checklistId], ({ signal }) =>
+        getWorkorders(workorderRequestArgs, signal)
+    );
     return (
         <div>
             <Banner padding="0 0.5em">
@@ -33,7 +51,16 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <SidesheetTabList>
                         <Tabs.Tab>Overview</Tabs.Tab>
-                        <Tabs.Tab>Work orders</Tabs.Tab>
+                        <Tabs.Tab>
+                            Work orders{' '}
+                            {isLoadingWorkorders ? (
+                                <Progress.Dots color="primary" />
+                            ) : workorders ? (
+                                `(${workorders.length})`
+                            ) : (
+                                `(${0})`
+                            )}
+                        </Tabs.Tab>
                         <Tabs.Tab>Checklists</Tabs.Tab>
                         <Tabs.Tab>3D</Tabs.Tab>
                     </SidesheetTabList>
@@ -51,7 +78,13 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                                 <LoopContentTable loop={item} />
                             </div>
                         </Tabs.Panel>
-                        <Tabs.Panel>Work order</Tabs.Panel>
+                        <Tabs.Panel>
+                            <LoopWorkOrderTab
+                                workorders={workorders}
+                                isLoading={isLoadingWorkorders}
+                                error={workorderError instanceof Error ? workorderError : null}
+                            />
+                        </Tabs.Panel>
                         <Tabs.Panel>Checklists</Tabs.Panel>
                         <Tabs.Panel>3D</Tabs.Panel>
                     </Tabs.Panels>
