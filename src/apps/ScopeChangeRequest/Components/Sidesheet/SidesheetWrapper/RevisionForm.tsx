@@ -43,7 +43,7 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
 
     useUnpackRelatedObjects({ request });
     return (
-        <>
+        <RevisionFormStyledWrapper>
             <FormBanner />
             <WarningRevisionBanner />
             <Wrapper>
@@ -66,15 +66,22 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
                         <RequestAttachmentsList />
                     </FlexColumn>
                 </FormWrapper>
-                <SubmitActionBar cancel={cancel} />
             </Wrapper>
-        </>
+            <SubmitActionBar cancel={cancel} />
+        </RevisionFormStyledWrapper>
     );
 };
 
+const RevisionFormStyledWrapper = styled.div`
+    display: grid;
+    grid-template-rows: 1fr 1fr auto 1fr;
+    overflow: hidden;
+    height: 100%;
+`;
+
 const Wrapper = styled.div`
-    margin: 24px 32px;
-    height: 90%;
+    margin: px 24px;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;

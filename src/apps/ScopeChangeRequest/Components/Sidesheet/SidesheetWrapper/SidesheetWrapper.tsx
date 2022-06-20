@@ -28,6 +28,7 @@ import { SidesheetApi } from '@equinor/sidesheet';
 import { getScopeChangeSnapshot } from '../../../hooks/context/useScopeChangeContext';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { RevisionForm } from './RevisionForm';
+import { NotLatestRevisionWarningBanner } from './NotLatestRevisionBanner';
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
     actions: SidesheetApi;
@@ -56,7 +57,9 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     }
     return (
         <Wrapper>
-            <ScopeChangeErrorBanner clearOnPropChange={item.id} />
+            <div>
+                <ScopeChangeErrorBanner clearOnPropChange={item.id} />
+            </div>
             <Switch>
                 <Case when={editMode}>
                     <ScopeChangeRequestEditForm />
@@ -65,27 +68,30 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
                     <RevisionForm cancel={() => setRevisionMode(false)} />
                 </Case>
                 <Case when={true}>
-                    <SidesheetBanner />
-                    <Tabs activeTab={activeTab} onChange={handleChange}>
-                        <SidesheetTabList>
-                            <HeaderTab>
-                                <RequestTabTitle />
-                            </HeaderTab>
-                            <HeaderTab>
-                                <WorkOrderTabTitle />
-                            </HeaderTab>
-                            <HeaderTab>
-                                <LogTabTitle />
-                            </HeaderTab>
-                        </SidesheetTabList>
-                        <TabList>
-                            <Tab>
-                                <RequestTab />
-                            </Tab>
-                            <Tab>{activeTab === 1 && <WorkOrderTab />}</Tab>
-                            <Tab>{activeTab === 2 && <LogTab />}</Tab>
-                        </TabList>
-                    </Tabs>
+                    <div>
+                        {/* <NotLatestRevisionWarningBanner /> */}
+                        <SidesheetBanner />
+                        <Tabs activeTab={activeTab} onChange={handleChange}>
+                            <SidesheetTabList>
+                                <HeaderTab>
+                                    <RequestTabTitle />
+                                </HeaderTab>
+                                <HeaderTab>
+                                    <WorkOrderTabTitle />
+                                </HeaderTab>
+                                <HeaderTab>
+                                    <LogTabTitle />
+                                </HeaderTab>
+                            </SidesheetTabList>
+                            <TabList>
+                                <Tab>
+                                    <RequestTab />
+                                </Tab>
+                                <Tab>{activeTab === 1 && <WorkOrderTab />}</Tab>
+                                <Tab>{activeTab === 2 && <LogTab />}</Tab>
+                            </TabList>
+                        </Tabs>
+                    </div>
                 </Case>
             </Switch>
         </Wrapper>
@@ -106,7 +112,8 @@ const TabList = styled(Tabs.Panels)`
 `;
 
 const Wrapper = styled.div`
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: 90%;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: scroll;
+    height: 100%;
 `;

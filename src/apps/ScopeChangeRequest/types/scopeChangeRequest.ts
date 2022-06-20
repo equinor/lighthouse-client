@@ -146,6 +146,7 @@ export interface Originator {
     revisionNumber: number;
     title: string;
     state: string;
+    revisions: Revision[];
     isVoided: boolean;
 }
 export interface Revision {
