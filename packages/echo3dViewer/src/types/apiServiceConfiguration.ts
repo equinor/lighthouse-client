@@ -1,4 +1,4 @@
 export interface ApiServiceConfiguration {
     baseUrl: string;
-    getAccessToken: () => Promise<string | undefined>;
+    getAccessToken: () => Promise<string>;
 }

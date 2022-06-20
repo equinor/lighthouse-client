@@ -1,11 +1,9 @@
 import { useMemo } from 'react';
-import { Icon } from '@equinor/eds-core-react';
 
 import { useDataContext } from '../../Context/DataProvider';
 import { useViewerContext } from '../../Context/ViewProvider';
 import { TabsConfigItem } from '../../Util/tabsConfig';
 import { Presets } from '../Presets/Presets';
-import { SearchButton } from '../Search/Search';
 import { TabButton } from '../ToggleButton';
 import { CreatorButton } from './CreatorButton/CreatorButton';
 import { LeftSection, FillSection, RightSection } from './HeaderStyles';
@@ -15,6 +13,7 @@ import { StatusBar } from '@equinor/lighthouse-status-bar';
 import { useFilterApiContext } from '@equinor/filter';
 import { FilterFilled } from '../../../../../components/Icon/FilterIconFilled';
 import { BookmarkDropdown } from '@equinor/BookmarksManager';
+import { ViewSettings } from './ViewSettings/ViewSettings';
 
 interface WorkspaceHeaderProps {
     tabs: TabsConfigItem[];
@@ -26,11 +25,12 @@ export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps
     const { isFilterActive, toggleFilter } = useViewerContext();
 
     const {
-        filterState: { getFilteredData, checkHasActiveFilters },
+        filterState: { getFilteredData },
     } = useFilterApiContext();
 
     const data = getFilteredData();
     const { statusFunc, key } = useDataContext();
+
     const statusItems = useMemo(() => statusFunc && statusFunc(data), [data, statusFunc, key]);
     return (
         <>
@@ -45,12 +45,11 @@ export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps
 
                 <HeaderTabButtons tabs={tabs} />
 
-                <SearchButton />
                 <RefreshButton />
                 <BookmarkDropdown appKey={shortName} subSystem={group} />
-
+                <ViewSettings tabs={tabs} />
                 <TabButton onClick={toggleFilter} aria-selected={isFilterActive} title="Filter">
-                    {checkHasActiveFilters() ? <FilterFilled /> : <Icon name="filter_alt" />}
+                    <FilterFilled />
                 </TabButton>
             </RightSection>
         </>

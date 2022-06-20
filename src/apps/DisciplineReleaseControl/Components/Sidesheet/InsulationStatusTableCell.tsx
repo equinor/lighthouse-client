@@ -9,7 +9,7 @@ export const InsulationStatusTableCell = ({
 }: CellProps<InsulationBoxType, InsulationBoxType>): JSX.Element => {
     return (
         <StatusItem>
-            {value.procosysStatus}
+            <StatusText>{value.procosysStatus}</StatusText>
             {value.procosysStatus && (
                 <StatusCircle
                     statusColor={getElectroViewCompletionStatusColor(value.procosysStatus)}
@@ -22,4 +22,8 @@ export const InsulationStatusTableCell = ({
 export const StatusItem = styled.div`
     display: flex;
     flex-direction: horizontal;
+`;
+
+export const StatusText = styled.div`
+    width: 20px;
 `;

@@ -5,6 +5,7 @@ import { FirstPersonCameraControls } from '../controls/FirstPersonCameraControls
 import { TrackEventBySignature } from '../types/trackEventBySignature';
 import { isIntentionallyCancelled } from '../utils/errorHandingUtils';
 import { isPrimaryClick } from '../utils/pointerUtils';
+import { Echo3dCameraManager } from './echo3dCameraManager';
 import { Echo3dSelectionHandler } from './echo3dSelectionHandler';
 import { AssetMetadataSimpleDto } from './generated/EchoModelDistributionApiClient';
 import { getModelsClient } from './modelsClient';
@@ -43,8 +44,6 @@ export class Echo3dViewer extends Cognite3DViewer {
      */
     constructor(options: Cognite3DViewerOptions, trackEventBy?: TrackEventBySignature) {
         super(options);
-        this.disableKeyboardNavigation();
-        this.cameraControlsEnabled = false;
         this.trackEventBy = trackEventBy;
     }
 
@@ -301,11 +300,19 @@ export class Echo3dViewer extends Cognite3DViewer {
     public unloadModelAndSelectionHandler = (modelId: string | number, revisionId: string | number) => {
         const selectionHandler = this.getSingleSelectionHandler(modelId, revisionId);
         if (selectionHandler) {
-            selectionHandler.clearSelection();
             const modelToRemove = selectionHandler.getModel();
             this.removeModel(modelToRemove);
             this.removeSingleSelectionHandler(modelId, revisionId);
         }
+    };
+
+    /**
+     * Method for returning the camera manager as an echo3dCameraManager
+     *
+     * @returns {Echo3dCameraManager} The camera manager
+     */
+    public getCameraManager = (): Echo3dCameraManager => {
+        return this.cameraManager as Echo3dCameraManager;
     };
 
     /**
@@ -314,20 +321,13 @@ export class Echo3dViewer extends Cognite3DViewer {
      *
      * @param {THREE.Vector3} position the position of the camera
      * @param {THREE.Vector3} target the orbit target, if not provided will be set to (0,0,0)
-     * @returns {CameraControlsExtended} the created orbit camera control
+     * @returns {CameraControlsExtended} the controls created
      */
     initializeOrbitControls = (
         position: THREE.Vector3,
         target: THREE.Vector3 = new THREE.Vector3(0)
     ): CameraControlsExtended => {
-        const controls = new CameraControlsExtended(this.getCamera(), this.renderer.domElement, this.trackEventBy);
-        controls.setLookAt(position.x, position.y, position.z, target.x, target.y, target.z);
-
-        controls.saveState();
-        controls.update(0.0);
-        controls.dampingFactor = 1;
-
-        return controls;
+        return this.getCameraManager().initializeOrbitControls(position, target);
     };
 
     /**
@@ -335,21 +335,19 @@ export class Echo3dViewer extends Cognite3DViewer {
      *
      * @param {THREE.Vector3} position the position the camera should have
      * @param {THREE.Vector3} rotation the rotation the camera should have, if not provided will be set to (0,0,0)
-     * @returns {FirstPersonCameraControls} the created first person camera control
+     * @returns {FirstPersonCameraControls} the controls created
      */
     initializeFirstPersonControlsUsingRotation = (
         position: THREE.Vector3,
         rotation: THREE.Vector3 = new THREE.Vector3(0)
     ): FirstPersonCameraControls => {
-        const fpsCameraControls = new FirstPersonCameraControls(
-            this.getCamera(),
-            this.renderer.domElement,
-            this.trackEventBy
+        return this.getCameraManager().initializeFirstPersonControlsUsingRotation(
+            position,
+            rotation,
+            (cx: number, cy: number) => {
+                return this.getIntersectionFromPixel(cx, cy);
+            }
         );
-        fpsCameraControls.setPosition(position);
-        fpsCameraControls.setRotation(rotation);
-
-        return fpsCameraControls;
     };
 
     /**
@@ -357,20 +355,34 @@ export class Echo3dViewer extends Cognite3DViewer {
      *
      * @param {THREE.Vector3} position the position the camera should have
      * @param {THREE.Vector3} target the target to look at in world space
-     * @returns {FirstPersonCameraControls} the created first person camera control
+     * @returns {FirstPersonCameraControls} the controls created
      */
     initializeFirstPersonControlsUsingTarget = (
         position: THREE.Vector3,
         target: THREE.Vector3
     ): FirstPersonCameraControls => {
-        const fpsCameraControls = new FirstPersonCameraControls(
-            this.getCamera(),
-            this.renderer.domElement,
-            this.trackEventBy
+        return this.getCameraManager().initializeFirstPersonControlsUsingTarget(
+            position,
+            target,
+            (cx: number, cy: number) => {
+                return this.getIntersectionFromPixel(cx, cy);
+            }
         );
-        fpsCameraControls.setPosition(position);
-        fpsCameraControls.lookAt(target);
+    };
 
+    /**
+     * Initialize the first person camera controls using model bounding area
+     *
+     * @param {Cognite3DModel} model the model to center controls on
+     * @returns {FirstPersonCameraControls} the controls created
+     */
+    initializeFirstPersonControlsUsingModelAsBoundingBox = (model: Cognite3DModel): FirstPersonCameraControls => {
+        const fpsCameraControls = new FirstPersonCameraControls(
+            this.getCameraManager().getCamera(),
+            this.getCameraManager().domElement
+        );
+        this.getCameraManager().setControls(fpsCameraControls);
+        this.fitCameraToModel(model, 0);
         return fpsCameraControls;
     };
 }

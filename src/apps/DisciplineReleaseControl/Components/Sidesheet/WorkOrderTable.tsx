@@ -1,4 +1,7 @@
+import { Button } from '@equinor/eds-core-react';
+import { isProduction } from '@equinor/lighthouse-portal-client';
 import { Column, EstimateBar, ExpendedProgressBar, ProgressBar, Table } from '@equinor/Table';
+import styled from 'styled-components';
 import { WorkOrder } from '../../Types/workOrder';
 import { generateColumn, highestEstimate, highestExpended } from './workOrderHelpers';
 
@@ -6,9 +9,34 @@ interface WorkOrderTableProps {
     workOrders: WorkOrder[];
 }
 
+const LinkContent = styled.a`
+    text-decoration: none;
+`;
+
 export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element {
+    const getProcosysUrl = (id: string): string => {
+        const url = `https://procosys.equinor.com/JOHAN_CASTBERG/WorkOrders/WorkOrder#id=${id}`;
+        return isProduction() ? url : url.replace('procosys', 'procosystest');
+    };
+
     const someColumns: Column<any>[] = [
-        generateColumn('WO', ({ workOrderNo }) => workOrderNo, 170),
+        generateColumn(
+            'WO',
+            ({ workOrderNo, sourceIdentity }) => {
+                return (
+                    <LinkContent
+                        target="_BLANK"
+                        href={getProcosysUrl(sourceIdentity)}
+                        rel="noreferrer"
+                    >
+                        <Button key="linkToProcosys" variant="ghost">
+                            {workOrderNo}
+                        </Button>
+                    </LinkContent>
+                );
+            },
+            170
+        ),
         generateColumn('Title', ({ title }) => title, 310),
         generateColumn('Discipline', ({ discipline }) => discipline, 80),
         generateColumn('Status', ({ jobStatus }) => jobStatus, 80),

@@ -1,183 +1,230 @@
 import { statusColorMap } from '@equinor/GardenUtils';
-import { EstimateBar } from '@equinor/Table';
+import {
+    CustomColumn,
+    CustomLinkCellWithTextDecoration,
+    EstimateBar,
+    StatusCustomCell,
+} from '@equinor/Table';
 import { TableOptions } from '@equinor/WorkSpace';
+import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types/loop';
-const hiddenColumns: (keyof Loop)[] = [
-    'c01PlannedDate',
-    'c01ForecastDate',
-    'c07ForecastDate',
-    'c07PlannedDate',
-    'sourceIdentity',
-    'facility',
-    'project',
-];
 
-const columnOrder: (keyof Loop | string)[] = [
-    'loopNo',
-    'description',
-    'functionalSystem',
-    'commissioningPackageNo',
-    'mechanicalCompletionPackageNo',
-    'priority1',
-    'rfcDate',
-    'rfoDate',
+const customColumns: CustomColumn<Loop>[] = [
+    {
+        id: 'loopTag',
+        Header: 'Loop tag',
+        accessor: (pkg) => pkg.tagNo,
+        width: 200,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'description',
+        Header: 'Description',
+        accessor: (pkg) => pkg.description,
+        width: 350,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'functionalSystem',
+        Header: 'System',
+        accessor: (pkg) => pkg.functionalSystem,
+        width: 80,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'commissioningPackageNo',
+        Header: 'Comm pkg',
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'commissioningPackageNo',
+            url: proCoSysUrls.getCommPkgUrl(pkg.commissioningPackage_ID || ''),
+        }),
+        Cell: (cellProps) => {
+            return (
+                <CustomLinkCellWithTextDecoration
+                    contentToBeDisplayed={cellProps.value.content.commissioningPackageNo}
+                    url={cellProps.value.url}
+                />
+            );
+        },
+        width: 90,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'mechanicalCompletionPackageNo',
+        Header: 'MC pkg',
+        accessor: (pkg) => ({
+            content: pkg,
+            currentKey: 'mechanicalCompletionPackageNo',
+            url: proCoSysUrls.getMcUrl(pkg.mcpkgId || ''),
+        }),
+        Cell: (cellProps) => {
+            return (
+                <CustomLinkCellWithTextDecoration
+                    contentToBeDisplayed={cellProps.value.content.mechanicalCompletionPackageNo}
+                    url={cellProps.value.url}
+                />
+            );
+        },
+        width: 80,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'priority1',
+        Header: 'Priority',
+        accessor: (pkg) => pkg.priority1,
+        width: 80,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'rfC_Planned_Forecast_Date',
+        Header: 'Planned/Forecast RFC',
+        accessor: (pkg) => pkg.rfC_Planned_Forecast_Date,
+        Cell: (cellProps) => (
+            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
+        ),
+        width: 160,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'rfO_Planned_Forecast_Date',
+        Header: 'Planned/Forecast RFO',
+        accessor: (pkg) => pkg.rfO_Planned_Forecast_Date,
+        Cell: (cellProps) => (
+            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
+        ),
+        width: 160,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'status',
+        Header: 'Checklist status',
+        accessor: (pkg) => pkg.status,
+        Cell: (cellProps) => (
+            <StatusCustomCell
+                contentToBeDisplayed={cellProps.value}
+                cellAttributeFunction={() => ({
+                    style: { backgroundColor: statusColorMap?.[cellProps.value] || 'transparent' },
+                })}
+            />
+        ),
+        width: 120,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'responsible',
+        Header: 'Responsible',
+        accessor: (pkg) => pkg.responsible,
+        width: 100,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'location',
+        Header: 'Location',
+        accessor: (pkg) => pkg.location,
+        width: 100,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'formularType',
+        Header: 'Form type',
+        accessor: (pkg) => pkg.formularType,
+        width: 100,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'signedDate',
+        Header: 'Signed',
+        accessor: (pkg) => pkg.signedDate,
+        Cell: (cellProps) => (
+            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
+        ),
+        width: 100,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'verifiedDate',
+        Header: 'Verified',
+        accessor: (pkg) => pkg.verifiedDate,
+        Cell: (cellProps) => (
+            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
+        ),
+        width: 100,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'loopContentStatus',
+        Header: 'Content MC status',
+        accessor: (pkg) => pkg.loopContentStatus,
+        Cell: (cellProps) => (
+            <StatusCustomCell
+                contentToBeDisplayed={cellProps.value}
+                cellAttributeFunction={() => ({
+                    style: { backgroundColor: statusColorMap?.[cellProps.value] || 'transparent' },
+                })}
+            />
+        ),
+        width: 150,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'plannedCompletionDate',
+        Header: 'Planned MC complete',
+        accessor: (pkg) => pkg.woPlannedCompletionDate,
+        Cell: (cellProps) => (
+            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
+        ),
+        width: 150,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'actualCompletionDate',
+        Header: 'Actual MC complete',
+        accessor: (pkg) => pkg.woActualCompletionDate,
+        Cell: (cellProps) => (
+            <>{cellProps.value ? new Date(cellProps.value).toLocaleDateString() : ''}</>
+        ),
+        width: 150,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
+    {
+        id: 'remaningManHours',
+        Header: 'Rem mhrs',
+        accessor: (pkg) => pkg.remainingManHours,
+        Cell: (cellProps) => {
+            const maxCount = Math.max(
+                ...cellProps.cell.column.filteredRows.map((val) => {
+                    return Number(val.original?.remainingManHours);
+                })
+            );
+            return <EstimateBar current={Number(cellProps.value)} max={maxCount} />;
+        },
+
+        width: 100,
+        Aggregated: () => null,
+        aggregate: 'count',
+    },
 ];
 export const tableConfig: TableOptions<Loop> = {
-    objectIdentifierKey: 'loopNo',
+    objectIdentifierKey: 'checklistId',
     itemSize: 32,
-    hiddenColumns,
-    columnOrder,
-    headers: [
-        {
-            key: 'loopNo',
-            title: 'Loop tag',
-            width: 200,
-        },
-        {
-            key: 'description',
-            title: 'Description',
-            width: 350,
-        },
-        {
-            key: 'functionalSystem',
-            title: 'System',
-            width: 80,
-        },
-        {
-            key: 'commissioningPackageNo',
-            title: 'Comm pkg',
-        },
-        {
-            key: 'mechanicalCompletionPackageNo',
-            title: 'MC pkg',
-        },
-        {
-            key: 'priority1',
-            title: 'Priority 1',
-            width: 100,
-        },
-        {
-            key: 'status',
-            title: 'Checklist status',
-            width: 120,
-        },
-        {
-            key: 'responsible',
-            title: 'Responsible',
-            width: 100,
-        },
-        {
-            key: 'signedDate',
-            title: 'Signed',
-        },
-        {
-            key: 'verifiedDate',
-            title: 'Verified',
-        },
-        {
-            key: 'firstMechanicalCompletionStatus',
-            title: 'Content MC status',
-        },
-        {
-            key: 'lastPlannedCompletionDate',
-            title: 'Planned MC complete',
-        },
-        {
-            key: 'lastActualCompletionDate',
-            title: 'Actual MC complete',
-        },
-        {
-            key: 'sumRemainingManHours',
-            title: 'Rem mhrs',
-        },
-    ],
-    customCellView: [
-        {
-            key: 'signedDate',
-            type: 'Date',
-        },
-        {
-            key: 'verifiedDate',
-            type: 'Date',
-        },
-        {
-            key: 'lastActualCompletionDate',
-            type: 'Date',
-        },
-        {
-            key: 'lastPlannedCompletionDate',
-            type: 'Date',
-        },
-        {
-            key: 'description',
-            type: 'Description',
-        },
-        {
-            key: 'status',
-            type: 'Status',
-            cellAttributeFn: (pkg) => {
-                return {
-                    style: {
-                        backgroundColor: pkg.status ? statusColorMap[pkg.status] : 'transparent',
-                    },
-                };
-            },
-        },
-        {
-            key: 'firstMechanicalCompletionStatus',
-            type: 'Status',
-            cellAttributeFn: (pkg) => {
-                return {
-                    style: {
-                        backgroundColor: pkg.firstMechanicalCompletionStatus
-                            ? statusColorMap[pkg.firstMechanicalCompletionStatus]
-                            : 'transparent',
-                    },
-                };
-            },
-        },
-        {
-            key: 'sumRemainingManHours',
-            type: {
-                Cell: (table) => {
-                    const maxCount = Math.max(
-                        ...table.cell.column.filteredRows.map((val) =>
-                            Number(val.original?.sumRemainingManHours)
-                        )
-                    );
-                    return (
-                        <EstimateBar
-                            current={Number(table.value.content.sumRemainingManHours)}
-                            max={maxCount}
-                        />
-                    );
-                },
-            },
-        },
-    ],
-
-    customColumns: [
-        {
-            Header: 'RFC Planned/Forecast',
-            id: 'rfcDate',
-            accessor: (pkg) => (pkg.c01ForecastDate ? pkg.c01ForecastDate : pkg.c01PlannedDate),
-            Cell: (table) => {
-                return <div>{table.value ? new Date(table.value).toLocaleDateString() : ''}</div>;
-            },
-            Aggregated: () => null,
-            aggregate: 'count',
-            width: 160,
-        },
-        {
-            Header: 'RFC Planned/Forecast',
-            id: 'rfoDate',
-            accessor: (pkg) => (pkg.c07ForecastDate ? pkg.c07ForecastDate : pkg.c07PlannedDate),
-            Cell: (table) => {
-                return <>{table.value ? new Date(table.value).toLocaleDateString() : ''}</>;
-            },
-            Aggregated: () => null,
-            aggregate: 'count',
-            width: 160,
-        },
-    ],
+    customColumns,
+    preventAutoGenerateColumns: true,
 };
