@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 export const FilterGroupWrapper = styled.div`
     height: auto;
-    /* border-bottom: ${tokens.colors.ui.background__medium.hex} 2px solid; */
     width: auto;
     display: flex;
     align-items: center;
