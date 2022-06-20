@@ -15,7 +15,13 @@ import { OptionRequestResult } from '../api/releaseControl/Access/optionsRequest
 import { getPhases } from '../api/releaseControl/getPhases';
 import { getReleaseControlById } from '../api/releaseControl/Request';
 import { getHistory } from '../api/releaseControl/Request/getHistory';
-import { ReleaseControl } from '../types/releaseControl';
+import { getWorkflows } from '../api/releaseControl/Workflow/getWorkflows';
+import { getWorkflowTemplate } from '../api/releaseControl/Workflow/getWorkflowTemplate';
+import {
+    ReleaseControl,
+    ReleaseControlWorkflow,
+    ReleaseControlWorkflowTemplate,
+} from '../types/releaseControl';
 
 export interface QueryContext {
     signal?: AbortSignal;
@@ -37,6 +43,8 @@ const criteriaKey = (requestId: string, stepId: string, criteraiId: string) => [
     criteraiId,
 ];
 const permissionsKey = (requestId: string) => [...releaseControlBaseKey(requestId), 'permissions'];
+const phasesKey = ['phases'];
+const workflowsKey = ['workflows'];
 
 export const releaseControlWorkflowQueries: WorkflowQueries = {
     canSignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs) => ({
@@ -86,7 +94,9 @@ interface WorkflowQueries {
 
 interface ReleaseControlQueries {
     phaseQuery: QueryFunction<string[]>;
+    workflowsQuery: QueryFunction<ReleaseControlWorkflow[]>;
     baseQuery: (id: string) => QueryFunction<ReleaseControl>;
+    workflowTemplateQuery: (id: string | null) => QueryFunction<ReleaseControlWorkflowTemplate>;
     historyQuery: (id: string) => QueryFunction<LogEntry[]>;
     permissionQueries: PermissionQueries;
     workflowQueries: WorkflowQueries;
@@ -95,13 +105,23 @@ interface ReleaseControlQueries {
 export const releaseControlQueries: ReleaseControlQueries = {
     phaseQuery: {
         queryFn: getPhases,
-        queryKey: ['phases'],
+        queryKey: phasesKey,
+        staleTime: CacheTime.TenHours,
+        cacheTime: CacheTime.TenHours,
+    },
+    workflowsQuery: {
+        queryFn: getWorkflows,
+        queryKey: workflowsKey,
         staleTime: CacheTime.TenHours,
         cacheTime: CacheTime.TenHours,
     },
     baseQuery: (id: string) => ({
         queryFn: ({ signal }): Promise<ReleaseControl> => getReleaseControlById(id, signal),
         queryKey: releaseControlBaseKey(id),
+    }),
+    workflowTemplateQuery: (id: string | null) => ({
+        queryFn: ({ signal }): Promise<ReleaseControlWorkflowTemplate | null> =>
+            id ? getWorkflowTemplate(id, signal) : Promise.resolve(null),
     }),
     historyQuery: (id: string) => ({
         queryFn: ({ signal }) => getHistory(id, signal),
