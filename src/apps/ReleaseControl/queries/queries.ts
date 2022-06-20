@@ -43,6 +43,8 @@ const criteriaKey = (requestId: string, stepId: string, criteraiId: string) => [
     criteraiId,
 ];
 const permissionsKey = (requestId: string) => [...releaseControlBaseKey(requestId), 'permissions'];
+const phasesKey = ['phases'];
+const workflowsKey = ['workflows'];
 
 export const releaseControlWorkflowQueries: WorkflowQueries = {
     canSignQuery: ([requestId, stepId, criteriaId]: CriteriaArgs) => ({
@@ -103,13 +105,13 @@ interface ReleaseControlQueries {
 export const releaseControlQueries: ReleaseControlQueries = {
     phaseQuery: {
         queryFn: getPhases,
-        queryKey: ['phases'],
+        queryKey: phasesKey,
         staleTime: CacheTime.TenHours,
         cacheTime: CacheTime.TenHours,
     },
     workflowsQuery: {
         queryFn: getWorkflows,
-        queryKey: ['workflows'],
+        queryKey: workflowsKey,
         staleTime: CacheTime.TenHours,
         cacheTime: CacheTime.TenHours,
     },
