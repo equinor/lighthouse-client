@@ -60,7 +60,7 @@ const customColumns: CustomColumn<Loop>[] = [
         accessor: (pkg) => ({
             content: pkg,
             currentKey: 'mechanicalCompletionPackageNo',
-            url: proCoSysUrls.getCommPkgUrl(pkg.mechanicalCompletionPackage_ID || ''),
+            url: proCoSysUrls.getMcUrl(pkg.mcpkgId || ''),
         }),
         Cell: (cellProps) => {
             return (
@@ -211,7 +211,6 @@ const customColumns: CustomColumn<Loop>[] = [
         Cell: (cellProps) => {
             const maxCount = Math.max(
                 ...cellProps.cell.column.filteredRows.map((val) => {
-                    debugger;
                     return Number(val.original?.remainingManHours);
                 })
             );
