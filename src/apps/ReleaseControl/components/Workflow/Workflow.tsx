@@ -15,15 +15,15 @@ export const Workflow = (): JSX.Element => {
                     <Fragment key={id}>
                         {criterias?.map((criteria, index) => (
                             <CriteriaRender
-                                stepId={id}
+                                stepId={id ?? ''}
                                 key={criteria.id}
-                                contributors={contributors}
+                                contributors={contributors ?? []}
                                 criteria={criteria}
                                 isLastCriteria={criterias.length - 1 === index}
                                 name={name}
                                 order={order}
                                 stepIndex={stepIndex}
-                                stepStatus={getCriteriaStatus(criteria, isCurrent)}
+                                stepStatus={getCriteriaStatus(criteria, isCurrent ?? false)}
                             />
                         ))}
                     </Fragment>
