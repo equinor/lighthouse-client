@@ -8,7 +8,6 @@ import { searchFilterItems } from './searchFilterItems';
 import { CheckboxWrap, FilterGroupContainer, VirtualFilterItemWrapper } from './Styles';
 
 type FilterItemsProps = {
-    filterGroupVisible: string[] | undefined;
     handleOnChange: (
         group: PowerBiFilter,
         filter: PowerBiFilterItem,
@@ -24,7 +23,6 @@ type FilterItemsProps = {
 };
 
 export const FilterItems = ({
-    filterGroupVisible,
     handleOnChange,
     handleOnSelectAll,
     activeFilters,
@@ -54,38 +52,39 @@ export const FilterItems = ({
         estimateSize: useCallback(() => 25, []),
         parentRef,
     });
-    if (!filterGroupVisible) return null;
 
-    if (filterGroupVisible.includes(group.type)) {
-        return (
-            <FilterGroupContainer>
-                <Header title={group.type} onSearch={handleOnSearchChange} />
-                <CheckboxWrap ref={parentRef}>
-                    <Checkbox
-                        onChange={async () =>
-                            await handleOnSelectAll(group, filterValues[0], allSearchedFilterValues)
-                        }
-                        checked={checked}
-                        label="Select all"
-                    />
-                    <VirtualFilterItemWrapper style={{ height: `${rowVirtualizer.totalSize}px` }}>
-                        {rowVirtualizer.virtualItems.map((virtualItem) => {
-                            const filter = searchedFilterItems[virtualItem.index];
-                            return (
-                                <Item
-                                    activeFilters={activeFilters[filter.type] || []}
-                                    filter={filter}
-                                    group={group}
-                                    handleOnChange={handleOnChange}
-                                    key={filter.value}
-                                    virtualItemSize={virtualItem.size}
-                                    virtualItemStart={virtualItem.start}
-                                />
-                            );
-                        })}
-                    </VirtualFilterItemWrapper>
-                </CheckboxWrap>
-            </FilterGroupContainer>
-        );
-    } else return null;
+    return (
+        <FilterGroupContainer>
+            <Header
+                title={group.type}
+                onSearch={handleOnSearchChange}
+                searchEnabled={group.filterVals.length > 7}
+            />
+            <CheckboxWrap ref={parentRef}>
+                <Checkbox
+                    onChange={async () =>
+                        await handleOnSelectAll(group, filterValues[0], allSearchedFilterValues)
+                    }
+                    checked={checked}
+                    label="Select all"
+                />
+                <VirtualFilterItemWrapper style={{ height: `${rowVirtualizer.totalSize}px` }}>
+                    {rowVirtualizer.virtualItems.map((virtualItem) => {
+                        const filter = searchedFilterItems[virtualItem.index];
+                        return (
+                            <Item
+                                activeFilters={activeFilters[filter.type] || []}
+                                filter={filter}
+                                group={group}
+                                handleOnChange={handleOnChange}
+                                key={filter.value}
+                                virtualItemSize={virtualItem.size}
+                                virtualItemStart={virtualItem.start}
+                            />
+                        );
+                    })}
+                </VirtualFilterItemWrapper>
+            </CheckboxWrap>
+        </FilterGroupContainer>
+    );
 };

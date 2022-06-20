@@ -148,6 +148,8 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
         ],
     ]);
 
+    const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+
     return (
         <>
             {error ? (
@@ -158,15 +160,16 @@ export const PowerBI = (props: PowerBiProps): JSX.Element => {
                 />
             ) : (
                 <Wrapper ref={ref}>
-                    <TopBar>
-                        <PowerBIFilter
-                            report={report}
-                            isLoaded={isLoaded}
-                            isFilterActive={isFilterActive}
-                            options={{ hasFilter: options?.hasFilter }}
-                        />
-                    </TopBar>
-                    <PBIWrapper height={isFilterActive ? TOP_BAR_FILTER_HEIGHT : 0}>
+                    {/* <TopBar> */}
+                    <PowerBIFilter
+                        report={report}
+                        isLoaded={isLoaded}
+                        isFilterExpanded={isFilterExpanded}
+                        setIsFilterExpanded={setIsFilterExpanded}
+                        options={{ hasFilter: options?.hasFilter }}
+                    />
+                    {/* </TopBar> */}
+                    <PBIWrapper height={isFilterExpanded ? 350 : 48}>
                         <div style={{ height: `${width * aspectRatio}px` }}>
                             <PowerBIEmbed
                                 embedConfig={config}

@@ -8,6 +8,7 @@ export const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     white-space: nowrap;
+    height: 36px;
 `;
 
 export const Title = styled.div`
