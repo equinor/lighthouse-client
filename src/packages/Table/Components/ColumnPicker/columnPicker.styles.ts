@@ -2,18 +2,29 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 
 export const MenuItem = styled.div`
-    display: grid;
     height: 48px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    grid-template-columns: 2fr 4fr 8fr;
-    margin: -5px -5px;
+    grid-template-columns: 1fr 2fr;
+    width: 200px;
+    display: grid;
+    font-size: 13px;
     align-items: center;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 16px;
-    text-align: left;
+
+    > span {
+        padding: 0px;
+
+        > svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        :first-child {
+            padding-right: 2px;
+        }
+    }
+    :hover {
+        cursor: grab;
+        background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
+    }
 `;
 
 export const WrapperDiv = styled.div`
