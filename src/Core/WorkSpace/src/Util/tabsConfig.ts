@@ -7,7 +7,8 @@ import { Table } from '../Icons/Table';
 import { Tree } from '../Icons/Tree';
 import { GardenTab } from '../Tabs/GardenTab';
 import { HelpPageTab } from '../Tabs/HelpPageTab';
-import { ListTab as TableTab } from '../Tabs/ListTab';
+import { ListTab as TableTab } from '../Tabs/ListTab/ListTab';
+import { ListTabPopover } from '../Tabs/ListTab/ListTabPopover';
 import { PowerBiTab } from '../Tabs/PowerBiTab';
 import { TimelineTab } from '../Tabs/TimeLineTAb';
 import { TreeTab } from '../Tabs/TreeTab';
@@ -19,6 +20,7 @@ export interface TabsConfigItem {
     tabId: WorkspaceTab;
     icon: React.FC;
     viewComponent: React.FC;
+    viewSettings?: React.FC;
 }
 
 const tabsConfig: TabsConfigItem[] = [
@@ -33,6 +35,7 @@ const tabsConfig: TabsConfigItem[] = [
         tabId: 'table',
         icon: Table,
         viewComponent: TableTab,
+        viewSettings: ListTabPopover,
     },
     {
         title: 'Garden',

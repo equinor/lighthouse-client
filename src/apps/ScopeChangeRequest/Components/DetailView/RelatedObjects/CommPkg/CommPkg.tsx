@@ -1,9 +1,10 @@
-import { isProduction, useFacility } from '../../../../../../Core/Client';
+import { useFacility } from '../../../../../../Core/Client';
 import { ScopeChangeCommissioningPackage } from '../../../../types/scopeChangeRequest';
 import { proCoSysQueries } from '../../../../keys/ProCoSysQueries';
 import { useQuery } from 'react-query';
 import { CommissioningPackage } from '../../../../types/ProCoSys/CommissioningPackage';
 import { Link, Wrapper, TextWrapper, MainText } from '../WrapperStyles';
+import { proCoSysUrls } from '../../../../../../packages/ProCoSysUrls/procosysUrl';
 interface CommPkgProps {
     commPkg: ScopeChangeCommissioningPackage;
 }
@@ -19,13 +20,7 @@ export const CommPkg = ({ commPkg }: CommPkgProps): JSX.Element => {
 
     return (
         <Wrapper
-            onClick={() =>
-                window.open(
-                    `https://${isProduction() ? 'procosys' : 'procosystest'
-                    }.equinor.com/JOHAN_CASTBERG/Completion#CommPkg|${commPkg.procosysId}`,
-                    '_blank'
-                )
-            }
+            onClick={() => window.open(proCoSysUrls.getCommPkgUrl(commPkg.procosysId), '_blank')}
             key={commPkg.procosysId}
         >
             <TextWrapper>

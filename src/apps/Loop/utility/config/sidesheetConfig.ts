@@ -7,33 +7,40 @@ import { Loop } from '../../types';
 import { generateExpressions, generateFamRequest } from '../helpers/fam';
 
 const columnNames: string[] = [
-    'SourceIdentity',
+    'ChecklistId',
     'Facility',
     'Project',
-    'LoopNo',
-    'Description',
-    'FunctionalSystem',
-    'CommissioningPackageNo',
+    'TagNo',
     'MechanicalCompletionPackageNo',
-    'Priority1',
-    'C01PlannedDate',
-    'C01ForecastDate',
-    'C07PlannedDate',
-    'C07ForecastDate',
-    'Status',
+    'CommissioningPackageNo',
+    'FormularType',
+    'FormularGroup',
     'Responsible',
+    'Status',
+    'Revision',
     'SignedDate',
     'VerifiedDate',
-    'FirstMechanicalCompletionStatus',
-    'LastPlannedCompletionDate',
-    'LastActualCompletionDate',
-    'SumRemainingManHours',
+    'RFC_Planned_Forecast_Date',
+    'RFO_Planned_Forecast_Date',
+    'WOPlannedCompletionDate',
+    'System',
+    'FunctionalSystem',
+    'Priority1',
+    'Priority2',
+    'Priority3',
+    'Location',
+    'IsVoided',
+    'PackageNo',
+    'CallOffNo',
+    'Register',
+    'Function',
+    'LoopContentStatus',
 ];
 const idResolverFunction = async (id: string): Promise<Loop> => {
     const { FAM } = httpClient();
-    const expressions = generateExpressions('LoopNo', 'Equals', [id]);
+    const expressions = generateExpressions('checklistId', 'Equals', [id]);
     const requestArgs = generateFamRequest(columnNames, 'Or', expressions);
-    const res = await FAM.post('v0.1/dynamic/completion/custom_loopready/JCA', {
+    const res = await FAM.post('v0.1/dynamic/completion/custom_loopmccr/JCA', {
         body: JSON.stringify(requestArgs),
     });
 
@@ -53,7 +60,7 @@ export const sidesheetConfig = setupWorkspaceSidesheet<Loop, 'loop'>({
     color: '#7B3A96',
     component: LoopSidesheet,
     props: {
-        objectIdentifier: 'loopNo',
+        objectIdentifier: 'checklistId',
         parentApp: 'loop',
         function: idResolver,
     },

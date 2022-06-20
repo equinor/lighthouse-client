@@ -3,18 +3,19 @@ import { GetKeyFunction } from '@equinor/ParkView';
 import { CustomGroupByKeys } from '../../types';
 import { Loop } from '../../types/loop';
 import { ExtendedGardenFields } from '../config';
+//TODO: Might need to split dates into two properties from API
 const getFieldKeyBasedOnPlannedForecast = (
     groupBy: ExtendedGardenFields | string,
     plannedForecast: string
 ): keyof Loop => {
     switch (groupBy) {
         case 'RFC':
-            return plannedForecast === 'Forecast' ? 'c01ForecastDate' : 'c01PlannedDate';
+            return 'rfC_Planned_Forecast_Date';
         case 'RFO':
-            return plannedForecast === 'Forecast' ? 'c07ForecastDate' : 'c07PlannedDate';
+            return 'rfO_Planned_Forecast_Date';
 
         default:
-            return 'c01ForecastDate';
+            return 'rfC_Planned_Forecast_Date';
     }
 };
 

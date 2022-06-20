@@ -1,4 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
+import { tokens } from '@equinor/eds-tokens';
 import { useDataCreator } from '@equinor/lighthouse-fusion-modules';
 import { useDataContext } from '../../../Context/DataProvider';
 import { TabButton } from '../../ToggleButton';
@@ -12,6 +13,7 @@ export const CreatorButton = (): JSX.Element => {
         <>
             {creator && (
                 <TabButton
+                    color={tokens.colors.interactive.primary__resting.hex}
                     aria-disabled={!creator.props.hasAccess}
                     onClick={() =>
                         creator.props.hasAccess !== false && openCreatorById(creator.widgetId)
