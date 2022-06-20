@@ -19,9 +19,8 @@ import { FilterCollapseIcon } from '../../../../../Core/WorkSpace/src/Components
 import { FilterExpandIcon } from '../../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterExpandIcon';
 import { CompactFilterWrapper } from '../../../../../Core/WorkSpace/src/Components/QuickFilter/QuickFilter';
 import { PowerBiFilterItem, PowerBiFilter, ActiveFilter } from '../../Types';
-import { FilterItems } from './FilterItems';
+import { ExpandedFilter } from './ExpandedFilter/ExpandedFilter';
 import { FilterController } from './PowerBIFilter';
-import { FilterItemsWrapper } from './Styles';
 
 interface PowerBIQuickFilterProps {
     controller: FilterController;
@@ -80,19 +79,7 @@ export const PowerBIQuickFilter = ({ controller }: PowerBIQuickFilterProps): JSX
                     </div>
                 </FilterBar>
             </CompactFilterWrapper>
-            {isFilterExpanded && (
-                <FilterItemsWrapper>
-                    {slicerFilters.map((group) => (
-                        <FilterItems
-                            handleOnChange={handleOnChange}
-                            handleOnSelectAll={() => Promise.resolve(void 0)}
-                            activeFilters={activeFilters}
-                            group={group}
-                            key={group.type}
-                        />
-                    ))}
-                </FilterItemsWrapper>
-            )}
+            {isFilterExpanded && <ExpandedFilter controller={controller} />}
         </>
     );
 };

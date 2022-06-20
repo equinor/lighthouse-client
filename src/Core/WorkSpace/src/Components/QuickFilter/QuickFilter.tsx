@@ -30,6 +30,10 @@ export const QuickFilter = (): JSX.Element => {
 
     const filterGroups = filterOptions.map(({ name }) => name);
 
+    const [visibleFilterGroups, setVisibleFilterGroups] = useState<string[]>(
+        filterOptions.map((s) => s.name)
+    );
+
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
     return (
@@ -68,7 +72,13 @@ export const QuickFilter = (): JSX.Element => {
                     </RightSection>
                 </SearchLine>
             </CompactFilterWrapper>
-            {isFilterExpanded && <FilterView groups={filterGroups} />}
+            {isFilterExpanded && (
+                <FilterView
+                    setVisibleFilterGroups={setVisibleFilterGroups}
+                    visibleFilterGroups={visibleFilterGroups}
+                    groups={filterGroups}
+                />
+            )}
         </>
     );
 };
