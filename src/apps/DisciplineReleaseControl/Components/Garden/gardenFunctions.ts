@@ -250,7 +250,6 @@ export function createChecklistTestSteps(
             });
         }
     }
-    console.log(workflowSteps);
     return workflowSteps;
 }
 
