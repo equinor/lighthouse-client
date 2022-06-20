@@ -5,8 +5,9 @@ import { Container, SearchButton, Title } from './Styles';
 type HeaderProps = {
     title: string;
     onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    searchEnabled: boolean;
 };
-export const Header = ({ title, onSearch }: HeaderProps) => {
+export const Header = ({ title, onSearch, searchEnabled }: HeaderProps): JSX.Element => {
     const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
     return (
         <Container>
@@ -20,9 +21,14 @@ export const Header = ({ title, onSearch }: HeaderProps) => {
                     onChange={onSearch}
                 />
             )}
-            <SearchButton variant="ghost_icon" onClick={() => setIsSearchActive(!isSearchActive)}>
-                <Icon name={isSearchActive ? 'chevron_right' : 'search'} size={24} />
-            </SearchButton>
+            {searchEnabled && (
+                <SearchButton
+                    variant="ghost_icon"
+                    onClick={() => setIsSearchActive(!isSearchActive)}
+                >
+                    <Icon name={isSearchActive ? 'chevron_right' : 'search'} size={24} />
+                </SearchButton>
+            )}
         </Container>
     );
 };
