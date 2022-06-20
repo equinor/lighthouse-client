@@ -36,6 +36,7 @@ export const ViewSettings = ({ tabs }: ViewSettingsProps): JSX.Element | null =>
                     anchorEl={ref.current}
                     placement="bottom"
                     onClose={() => setIsOpen(false)}
+                    id="viewsettings-workspace-dropdown"
                 >
                     {/* Decision, what styling should go where, strict or loose parent? */}
                     <div style={{ overflow: 'hidden' }}>
