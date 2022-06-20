@@ -15,8 +15,6 @@ export type Loop = {
     loopId: string | null;
     mcpkgId: string | null;
     mechanicalCompletionPackageNo: string | null;
-    //TODO
-    mechanicalCompletionPackage_ID: string | null;
     packageNo: string | null;
     priority1: string | null;
     priority2: string | null;

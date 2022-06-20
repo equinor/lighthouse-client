@@ -10,6 +10,7 @@ import { generateExpressions, generateFamRequest } from '../../utility/helpers/f
 import { Banner } from './Banner';
 import { BannerItem } from './BannerItem';
 import { LoopContentTable } from './LoopContentTable';
+import { LoopDetails } from './LoopDetails';
 import { LoopWorkOrderTab } from './LoopWorkorderTable';
 
 type LoopSidesheetProps = {
@@ -66,17 +67,9 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                     </SidesheetTabList>
                     <Tabs.Panels style={{ padding: '1em' }}>
                         <Tabs.Panel>
-                            <h2>Details</h2>
-                            <div>
-                                <p>Loop: {item.tagNo}</p>
-                                <p>Cmpkg: {item.commissioningPackageNo}</p>
-                                <p>Mcpkg: {item.mechanicalCompletionPackageNo}</p>
-                            </div>
-
-                            <div>
-                                <h2>Content</h2>
-                                <LoopContentTable loop={item} />
-                            </div>
+                            <LoopDetails loop={item} />
+                            <h3>Content</h3>
+                            <LoopContentTable loop={item} />
                         </Tabs.Panel>
                         <Tabs.Panel>
                             <LoopWorkOrderTab
