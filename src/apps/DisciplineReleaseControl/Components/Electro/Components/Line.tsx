@@ -40,4 +40,5 @@ const LineNode = styled.div<{ currentPipetest: boolean; htCable: string | undefi
     cursor: pointer;
     margin-left: 5px;
     margin-top: 4px;
+    font-size: 14px;
 `;
