@@ -4,10 +4,9 @@ import { Case } from '@equinor/JSX-Switch';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Switch } from '../../../../../../components/JSXSwitch/Components/Switch';
-export const SHOW_ON_HOVER = 'add';
 
-const HIDE_ON_HOVER = 'Selected';
-
+const SHOW_ON_HOVER = 'add';
+const HIDE_ON_HOVER = 'selected';
 interface FilterTypeSelectorProps {
     visibleFilters: string[];
     setVisibleFilters: (visibleFilters: string[]) => void;
