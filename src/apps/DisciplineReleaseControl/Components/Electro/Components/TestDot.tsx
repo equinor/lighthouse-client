@@ -64,7 +64,7 @@ const TestDotCircle = styled.div<{ color: string }>`
 `;
 
 export const TestDotCircleText = styled.div`
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400, regular;
     cursor: default;
 `;
