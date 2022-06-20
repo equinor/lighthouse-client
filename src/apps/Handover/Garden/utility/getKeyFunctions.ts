@@ -46,7 +46,7 @@ export const getYearAndWeekAndDayFromString = (dateString: string) => {
     const date = new Date(dateString);
     const dateTime = DateTime.fromJSDate(date);
     if (!dateTime.isValid) return 'N/A';
-    return `${dateTime.year}-${dateTime.month}-${dateTime.weekday}`;
+    return `${dateTime.year}-${dateTime.month}-${dateTime.day}`;
 };
 
 export const getYearAndWeekFromDate = (date: Date): string => {
