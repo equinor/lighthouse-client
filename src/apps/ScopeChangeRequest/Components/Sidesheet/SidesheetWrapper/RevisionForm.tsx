@@ -74,13 +74,14 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
 
 const RevisionFormStyledWrapper = styled.div`
     display: grid;
-    grid-template-rows: 1fr 1fr auto 1fr;
+    grid-template-rows: auto 1fr auto;
     overflow: hidden;
     height: 100%;
+    font-size: 14px;
 `;
 
 const Wrapper = styled.div`
-    margin: px 24px;
+    margin: 24px 32px;
     height: 100%;
     display: flex;
     flex-direction: column;
