@@ -43,26 +43,24 @@ export const ColumnMenuPicker = ({ getApi }: ColumnMenuPickerProps): JSX.Element
             >
                 {list.map(({ id, Header }) => {
                     return (
-                        <MenuItem className={DraggableHandleSelector} key={id}>
-                            <WrapperDiv>
-                                <div>
-                                    <Checkbox
-                                        readOnly
-                                        checked={getApi()
-                                            .getVisibleColumns()
-                                            .map((x) => x.id)
-                                            .includes(id)}
-                                        onChange={() => getApi().toggleHideColumn(id)}
-                                    />
-                                </div>
-                                <div>{Header?.toString()}</div>
-                                <Icon
-                                    id={'dragIcon'}
-                                    name="drag_handle"
-                                    color={tokens.colors.interactive.primary__resting.hex}
+                        <WrapperDiv className={DraggableHandleSelector} key={id}>
+                            <div>
+                                <Checkbox
+                                    readOnly
+                                    checked={getApi()
+                                        .getVisibleColumns()
+                                        .map((x) => x.id)
+                                        .includes(id)}
+                                    onChange={() => getApi().toggleHideColumn(id)}
                                 />
-                            </WrapperDiv>
-                        </MenuItem>
+                            </div>
+                            <div>{Header?.toString()}</div>
+                            <Icon
+                                id={'dragIcon'}
+                                name="drag_handle"
+                                color={tokens.colors.interactive.primary__resting.hex}
+                            />
+                        </WrapperDiv>
                     );
                 })}
             </ReactSortable>
@@ -76,7 +74,7 @@ const WrapperDiv = styled.div`
     align-items: center;
     height: 48px;
     width: 200px;
-
+    cursor: grab;
     #dragIcon {
         visibility: hidden;
     }
