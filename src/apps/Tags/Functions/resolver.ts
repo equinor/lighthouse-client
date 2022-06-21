@@ -2,26 +2,21 @@ import { getClientContext, httpClient } from '@equinor/lighthouse-portal-client'
 import { Tag } from '../Types/tag';
 
 export async function tagResolver(tagNo: string): Promise<Tag> {
-    const { procosysPlantId, facilityId } = getClientContext();
-    const { procosys, STID } = httpClient();
+    const { procosysPlantId } = getClientContext();
+    const { procosys } = httpClient();
 
-    const stidUri = `${facilityId}/tag`;
-    const queryParametersStid = `tagNo=${encodeURI(tagNo)}`;
-    const stidRepsonse = await STID.fetch(`/${stidUri}?${queryParametersStid}`);
+    const projectName = window.location.search;
 
-    if (stidRepsonse.ok) {
-        return stidRepsonse.json();
-    }
-
-    const uri = `api/Tag`;
-    const queryParameters = `plantId=${procosysPlantId}&tagId=${encodeURI(
-        tagNo.replace('#', '')
-    )}&api-version=4.1`;
-
-    console.log(`${uri}?${queryParameters}`);
-    const response = await procosys.fetch(`${uri}?${queryParameters}`);
+    const uri = `api/Tag/ByTagNos`;
+    const queryParameters =
+        `${projectName}&plantId=${procosysPlantId}&tagNos=${tagNo}&&api-version=4.1`.replace(
+            '#',
+            '%23'
+        );
+    const response = await procosys.fetch(`${uri}${queryParameters}`);
     if (response.ok) {
-        return response.json();
+        const tags: Tag[] = await response.json();
+        return tags[0];
     }
 
     throw 'no tags found';

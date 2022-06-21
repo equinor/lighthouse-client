@@ -27,12 +27,16 @@ interface BannerItemProps {
 
 export function BannerItem({ title, value }: BannerItemProps): JSX.Element {
     return (
-        <div>
+        <Wrapper>
             <BannerItemTitle>{title}</BannerItemTitle>
             <BannerItemValue>{value}</BannerItemValue>
-        </div>
+        </Wrapper>
     );
 }
+
+const Wrapper = styled.div`
+    padding: 0.5rem 0;
+`;
 
 const BannerItemTitle = styled.div`
     font-size: 12px;

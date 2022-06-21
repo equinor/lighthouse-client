@@ -9,7 +9,7 @@ const sidesheetCreator = setupWorkspaceSidesheet<Tag, 'tagDetails'>({
     color: '#7B3A96',
     component: TagDetail,
     props: {
-        objectIdentifier: 'tagNo',
+        objectIdentifier: 'TagNo',
         function: tagResolver,
     },
 });

@@ -1,9 +1,12 @@
 import { Typography } from '@equinor/eds-core-react';
+import { useFacility } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+
 import { Tag } from '../Types/tag';
 import { BannerItem, SidesheetBanner } from './Banner';
+import { SidesheetHeaderContent } from './Header';
 
 interface SidesheetWrapperProps {
     item: Tag;
@@ -12,17 +15,33 @@ interface SidesheetWrapperProps {
 
 export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element {
     const ref = useRef<HTMLDivElement>(null);
+
+    const { procosysPlantId } = useFacility();
+
     useEffect(() => {
-        actions.setTitle(`${item.tagNo}, ${item.tagCategoryDescription}`);
+        actions.setTitle(
+            <SidesheetHeaderContent
+                title={
+                    item.TagFunctionDescription
+                        ? `${item.TagNo}, ${item.TagFunctionDescription}`
+                        : item.TagNo
+                }
+                url={item.Id + procosysPlantId}
+            />
+        );
     }, []);
 
     return (
         <Wrapper>
             <SidesheetBanner>
-                <BannerItem title="System" value={item.system} />
-                <BannerItem title="Type" value={item.tagType} />
-                <BannerItem title="Area" value={item.locationCode} />
-                <BannerItem title="Discipline" value={item.disciplineCode} />
+                {item.SystemCode && <BannerItem title="System" value={item.SystemCode} />}
+                {item.AreaDescription && <BannerItem title="Area" value={item.AreaDescription} />}
+                {item.DisciplineCode && (
+                    <BannerItem title="Discipline" value={item.DisciplineCode} />
+                )}
+
+                {item.TagFunctionCode && <BannerItem title="Code" value={item.TagFunctionCode} />}
+                {item.StatusCode && <BannerItem title="Status" value={item.StatusCode} />}
             </SidesheetBanner>
             <ContentWrapper
                 ref={ref}
@@ -33,17 +52,13 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
             >
                 <div>
                     <Heading variant="h5">Tag Data</Heading>
-                    <BannerItem title="Description" value={item.description} />
+                    {item.description && (
+                        <BannerItem title="Description" value={item.description} />
+                    )}
+                    {item['StatusDescription'] && (
+                        <BannerItem title="Status Description" value={item['StatusDescription']} />
+                    )}
                 </div>
-                <div>
-                    <Heading variant="h5">Tag Data</Heading>
-                    <BannerItem title="Valve size" value={item.valveSize || ''} />
-                </div>
-                {/* {Object.keys(item).map((key) => {
-                    return typeof item[key] !== 'object' ? (
-                        <BannerItem key={key} title={key} value={item[key]} />
-                    ) : null;
-                })} */}
             </ContentWrapper>
         </Wrapper>
     );

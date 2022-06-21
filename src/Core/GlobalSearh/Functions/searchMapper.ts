@@ -11,6 +11,9 @@ export function searchMapper(response?: SearchResponse): SearchResult[] {
                 title: 'Tags',
                 color: '#0084C4',
                 action: (id: string) => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('projectName', item.project);
+                    window.history.replaceState({}, '', url);
                     window.location.hash = `tagDetails/${id}`;
                 },
                 mapper: (item) => {
@@ -112,7 +115,7 @@ function searchPushItem(
             color: config.color,
             action: config.action,
             count: 0,
-            items: [],
+            items: [config.mapper(item)],
         });
     }
     return acc;
