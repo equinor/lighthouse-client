@@ -6,6 +6,9 @@ The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
 ## 1.6.2
 - [3D]  Loading model Full-Pro
+## 1.6.1
+- [3D]  Production hot fix
+- [ReleaseControl] Missing "C" in dot in garden group header
 
 ## 1.6.0
 - [Filter]  V2 compact filter
