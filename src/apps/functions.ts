@@ -10,6 +10,7 @@ import { releaseCreatorAccessFunction } from './ReleaseControl/workspaceConfig/D
 import { changeResolverFunction } from './ScopeChangeRequest/ScopeChangeRequestApp';
 import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrResolverFunction } from './swcr';
+import { tagResolverFunction } from './Tags';
 import { workOrderResolverFunction } from './WorkOrder';
 
 export const functions: FunctionManifest[] = [
@@ -24,6 +25,8 @@ export const functions: FunctionManifest[] = [
     mcResolverFunction,
     releaseResolverFunction,
     comPkgResolverFunction,
+    mcResolverFunction,
+    tagResolverFunction,
 ];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {

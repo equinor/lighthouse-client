@@ -20,16 +20,17 @@ export interface SearchResult {
     title: string;
     color: string;
     count?: number;
+    action(id: string, item: SearchItem): void;
     items: SearchItem[];
 }
 
 /* Search Request Function, can be a async call to an api or call to localDB/ indexDB */
-export type SearchRequest<T> = (searchText: string) => Promise<T[] | undefined>;
+export type SearchRequest<T> = (searchText: string) => Promise<T[] | undefined> | T[] | undefined;
 
 /*The item used to register a search*/
 export interface SearchConfig<T> {
     type: string;
-    searchMapper: (data: T) => SearchResult[] | SearchResult;
+    searchMapper: (data: T[] | T) => SearchResult[] | SearchResult;
     searchRequest: SearchRequest<T>;
 }
 
@@ -41,8 +42,8 @@ export interface Subscriber {
 }
 
 export class Search {
-    private searchResults: SearchResult[] = [];
-    private searchTypes: Record<string, string> = {};
+    private searchResults: SearchResult[];
+    private searchTypes: Record<string, string>;
     private searchItems: Map<string, SearchConfig<unknown>> = new Map();
     private subscribers: Subscriber[] = [];
     private subscriberId = 0;
@@ -50,11 +51,12 @@ export class Search {
     private searchId = 0;
     private searchText = '';
 
-    static create(): Search {
-        return new Search();
+    constructor() {
+        this.searchResults = [];
+        this.searchTypes = {};
     }
 
-    registerSearchItem<T>(searchItem: SearchConfig<T>): void {
+    public registerSearchItem = <T>(searchItem: SearchConfig<T>): (() => void) => {
         if (this.searchTypes[searchItem.type.toLowerCase()]) {
             console.warn(
                 `The type ${searchItem.type} is already registered \n place provide new type name.`
@@ -62,9 +64,12 @@ export class Search {
         }
         this.searchTypes[searchItem.type.toLowerCase()] = searchItem.type.toLowerCase();
         this.searchItems.set(searchItem.type.toLowerCase(), searchItem as SearchConfig<unknown>);
-    }
+        return () => {
+            this.searchItems.delete(searchItem.type.toLowerCase());
+        };
+    };
 
-    registerSubscriber(subscriber: SearchSubscriber): () => void {
+    public registerSubscriber = (subscriber: SearchSubscriber): (() => void) => {
         this.subscriberId++;
 
         this.subscribers = [
@@ -73,40 +78,42 @@ export class Search {
         ];
 
         return this.unsubscribeCreator(this.subscriberId);
-    }
+    };
 
-    async search(searchText?: string): Promise<void> {
+    search = async (searchText?: string): Promise<void> => {
         this.searchInit();
-        this.searchText = searchText || '';
-        this.searchItems.forEach((searchItem) => {
-            this.dispatchSearch(this.searchId, searchItem);
-        });
-    }
+        if (searchText && searchText.length > 0) {
+            this.searchText = searchText || '';
+            this.searchItems.forEach((searchItem) => {
+                this.dispatchSearch(this.searchId, searchItem);
+            });
+        }
+    };
 
-    private searchInit() {
+    private searchInit = () => {
         this.searchId++;
         this.resetSearchResult();
-    }
+    };
 
-    private async dispatchSearch(
+    private dispatchSearch = async (
         searchId: number,
         searchItem: SearchConfig<unknown>
-    ): Promise<void> {
+    ): Promise<void> => {
         const results = searchItem.searchMapper(await searchItem.searchRequest(this.searchText));
         if (searchId === this.searchId)
             this.updateSearchResult(Array.isArray(results) ? results : [results]);
-    }
+    };
 
-    private updateSearchResult(searchResults: SearchResult[]) {
+    private updateSearchResult = (searchResults: SearchResult[]) => {
         const result = [...this.searchResults, ...searchResults];
         this.subscribers.forEach((subscriber) => {
             subscriber.callBack(this.sortGroupeType(result));
         });
 
         this.searchResults = result;
-    }
+    };
 
-    private sortGroupeType(searchResults: SearchResult[]) {
+    private sortGroupeType = (searchResults: SearchResult[]) => {
         return searchResults.sort(function (a, b) {
             if (a.type < b.type) {
                 return -1;
@@ -116,17 +123,17 @@ export class Search {
             }
             return 0;
         });
-    }
+    };
 
-    private async resetSearchResult() {
+    private resetSearchResult = () => {
         this.searchResults = [];
 
         this.subscribers.forEach((subscriber) => {
             subscriber.callBack([]);
         });
-    }
+    };
 
-    private unsubscribeCreator(subscriberId: number) {
+    private unsubscribeCreator = (subscriberId: number) => {
         return (): void => {
             const subscriberIndex = this.subscribers.findIndex(
                 (subscriber) => subscriber[`##id`] === subscriberId
@@ -134,5 +141,5 @@ export class Search {
 
             this.subscribers.splice(subscriberIndex, 1);
         };
-    }
+    };
 }

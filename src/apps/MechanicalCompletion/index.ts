@@ -32,7 +32,7 @@ const creator = setupWorkspaceSidesheet<McPackage, 'mcDetails'>({
         function: async (id: string) => {
             // TODO: Add Proper resolver function
             const items = await responseParser(await responseAsync());
-            return items.find((item) => item.mcPkgId === id);
+            return items.find((item) => item.mcPkgId === id || item.mcPkgNumber === id);
         },
     },
 });

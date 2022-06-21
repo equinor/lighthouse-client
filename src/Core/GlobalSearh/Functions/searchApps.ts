@@ -1,6 +1,14 @@
 import { AppManifest, isProduction } from '@equinor/lighthouse-portal-client';
+export interface AppSearchItem {
+    key: string;
+    title: string;
+    description: string;
+    id: string;
+    uri: string | undefined;
+    group: string;
+}
 
-export function searchApps(apps: AppManifest[], searchString: string) {
+export function searchApps(apps: AppManifest[], searchString: string): AppSearchItem[] {
     if (searchString.length === 0) return [];
     return apps
         .sort((a, b) => a.title.localeCompare(b.title))
@@ -12,6 +20,7 @@ export function searchApps(apps: AppManifest[], searchString: string) {
         )
         .slice(0, 5)
         .map((app) => ({
+            key: app.shortName,
             title: app.title,
             description: app.tags.length > 0 ? `Tags: ${app.tags.toString()}` : '',
             id: app.shortName,

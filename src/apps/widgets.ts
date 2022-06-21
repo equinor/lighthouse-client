@@ -11,9 +11,12 @@ import {
     ReleaseControlSidesheetWidgetManifest
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import {
-    comPkgComponent, comPkgManifest, handoverCreatorComponent,
+    comPkgComponent,
+    comPkgManifest,
+    handoverCreatorComponent,
     handoverCreatorManifest
 } from './Handover';
+import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
     releaseCreatorComponent,
@@ -28,6 +31,7 @@ import {
     changeCreatorManifest
 } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
+import { tagWidgetComponent, tagWidgetManifest } from './Tags';
 import { workOrderCreatorComponent, workOrderCreatorManifest } from './WorkOrder';
 
 const _widgets: WidgetManifest[] = [
@@ -42,6 +46,8 @@ const _widgets: WidgetManifest[] = [
     workOrderCreatorManifest,
     releaseCreatorManifest,
     comPkgManifest,
+    mcCreatorManifest,
+    tagWidgetManifest,
 ];
 
 const _widgetComponents: ComponentManifest[] = [
@@ -57,6 +63,8 @@ const _widgetComponents: ComponentManifest[] = [
     workOrderCreatorComponent,
     releaseCreatorComponent,
     comPkgComponent,
+    mcCreatorComponent,
+    tagWidgetComponent,
 ];
 
 export async function getCreators(): Promise<CreatorManifest[]> {

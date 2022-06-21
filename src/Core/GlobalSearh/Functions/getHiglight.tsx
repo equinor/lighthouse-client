@@ -9,7 +9,7 @@ const Highlight = styled(Highlighter)`
 `;
 
 export const getHighlightedText = (text: string, searchValue: string): JSX.Element => {
-    text = text.replaceAll('"', '');
+    text = text?.replaceAll('"', '');
 
     return (
         <Highlight

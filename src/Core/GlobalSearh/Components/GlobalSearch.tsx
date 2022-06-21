@@ -1,50 +1,86 @@
 import { Search } from '@equinor/eds-core-react';
-import { httpClient, useFacility, useRegistry } from '@equinor/lighthouse-portal-client';
+import { getClientContext, httpClient, useRegistry } from '@equinor/lighthouse-portal-client';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { searchApps } from '../Functions/searchApps';
+import { AppSearchItem, searchApps } from '../Functions/searchApps';
 import { searchMapper } from '../Functions/searchMapper';
 
+import { tokens } from '@equinor/eds-tokens';
 import { ArrowNavigation } from 'react-arrow-navigation';
-import { mapper } from '../Types/Mapper';
-import { SearchItems } from '../Types/ProcoSysSearch';
-import { SearchData } from '../Types/Search';
+import { useNavigate } from 'react-router';
+import { useGlobalSearch } from '../Service/GlobalSearch';
+import { SearchItem } from '../Service/SearchApi';
+import { SearchResponse } from '../Types/ProcoSysSearch';
 import { SearchResult, Wrapper } from './GlobalSearchStyles';
 import { SearchResultHeading } from './SearchResultHeading';
 import { SearchResultItem } from './SearchResultItem';
+
 export const GlobalSearch = (): JSX.Element => {
     const [searchInput, setSearchInput] = useState('');
     const searchRef = useRef<HTMLInputElement>(null);
     const { apps } = useRegistry();
     const navigate = useNavigate();
-    const [search, setSearch] = useState<SearchData[]>([]);
-    const [appResult, setAppResult] = useState<
-        { id: string; title: string; description: string; uri?: string; group: string }[]
-    >([]);
+
     const { customHttpClient } = httpClient({
         scope: 'api://195ed58a-9cb8-4d93-9e37-9ad315032baf/ReadWrite',
     });
-    const { procosysPlantId } = useFacility();
+    // const { procosysPlantId } = useFacility();
+    const { searchResult, search, registerSearchItem } = useGlobalSearch();
 
     useEffect(() => {
-        if (searchInput.length > 0) {
-            customHttpClient
-                .fetch(
-                    `https://search-test.pcs-dev.net/Search?query=${searchInput}&preview=true&plant=${procosysPlantId}`
-                )
-                .then((result) => {
+        const procosysSearchRegistration = registerSearchItem<SearchResponse>({
+            type: 'procosys',
+            searchRequest: async (searchText: string) => {
+                const { procosysPlantId } = getClientContext();
+                try {
+                    const result = await customHttpClient.fetch(
+                        `https://search-test.pcs-dev.net/Search?query=${searchText}&preview=true&plant=${procosysPlantId}`
+                    );
                     if (result.ok) {
-                        result.json().then((data) => {
-                            setSearch(searchMapper(data));
-                        });
+                        return result.json();
                     }
-                })
-                .catch((e) => console.log(e));
-            setAppResult(searchApps(apps, searchInput));
-        } else {
-            setAppResult([]);
-            setSearch([]);
-        }
+                    throw 'No content';
+                } catch (error) {
+                    console.error(error);
+                }
+            },
+            searchMapper: (data) => {
+                if (!Array.isArray(data)) {
+                    return searchMapper(data);
+                }
+                return [];
+            },
+        });
+
+        const appsRegistration = registerSearchItem<AppSearchItem>({
+            type: 'apps',
+            searchRequest: (searchText: string) => searchApps(apps, searchText),
+            searchMapper: (data) =>
+                Array.isArray(data) && data.length > 0
+                    ? {
+                          type: 'apps',
+                          title: 'Application',
+                          color: tokens.colors.interactive.success__resting.rgba,
+                          action: (id: string, item: SearchItem) => {
+                              if (item.uri) {
+                                  window.open(item.uri, '_blank');
+                                  setSearchInput('');
+                                  return;
+                              }
+                              navigate(`${item.group}/${id}`);
+                          },
+                          items: data,
+                      }
+                    : [],
+        });
+
+        return () => {
+            procosysSearchRegistration();
+            appsRegistration();
+        };
+    }, []);
+
+    useEffect(() => {
+        search(searchInput);
     }, [searchInput]);
 
     useEffect(() => {
@@ -70,61 +106,27 @@ export const GlobalSearch = (): JSX.Element => {
                         setSearchInput(e.currentTarget.value);
                     }}
                 ></Search>
-                {(search.length > 0 || appResult.length > 0) && (
+                {search.length > 0 && (
                     <SearchResult>
                         <>
-                            {appResult.length > 0 && (
-                                <>
-                                    <SearchResultHeading typeTitle="App" color="blue" />
-                                    {appResult.map((item) => {
-                                        index++;
-                                        return (
-                                            <SearchResultItem
-                                                index={index}
-                                                key={item.id}
-                                                title={item.title}
-                                                id={item.id}
-                                                description={item.description}
-                                                searchText={searchInput}
-                                                action={(id: string) => {
-                                                    if (item.uri) {
-                                                        window.open(item.uri, '_blank');
-                                                        setSearchInput('');
-                                                        return;
-                                                    }
-                                                    navigate(`${item.group}/${id}`);
-                                                    setSearchInput('');
-                                                }}
-                                            />
-                                        );
-                                    })}
-                                </>
-                            )}
-
-                            {search.map((searchType) => (
+                            {searchResult.map((searchType) => (
                                 <div key={searchType.type}>
                                     <SearchResultHeading
                                         typeTitle={searchType.title}
                                         color={searchType.color}
                                     />
-                                    {searchType.items.map((item: SearchItems) => {
+                                    {searchType.items.map((item) => {
                                         index++;
                                         return (
                                             <SearchResultItem
                                                 index={index}
                                                 key={item.key}
-                                                title={item[mapper[searchType.type].title]}
-                                                id={item[mapper[searchType.type].id]}
-                                                description={
-                                                    item[mapper[searchType.type].description]
-                                                }
+                                                title={item.title}
+                                                id={item.id}
+                                                description={item.description}
                                                 searchText={searchInput}
                                                 action={(id: string) => {
-                                                    if (mapper[searchType.type].sideSheet) {
-                                                        window.location.hash = `${
-                                                            mapper[searchType.type].sideSheet
-                                                        }/${id}`;
-                                                    }
+                                                    searchType.action(id, item);
                                                     setSearchInput('');
                                                 }}
                                             />
