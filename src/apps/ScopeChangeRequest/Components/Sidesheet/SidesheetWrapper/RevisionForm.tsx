@@ -1,5 +1,4 @@
 import { Button, Progress } from '@equinor/eds-core-react';
-import { tokens } from '@equinor/eds-tokens';
 import { useEffect } from 'react';
 import { useMutation } from 'react-query';
 import styled from 'styled-components';
@@ -15,6 +14,7 @@ import { MaterialsInput } from '../../Form/Inputs/MaterialsInput/MaterialsInput'
 import { ScopeChangeReferences } from '../../Form/Inputs/ScopeChangeReferences/ScopeChangeReferences';
 import { ActionBar, ButtonContainer, Section } from '../../Form/ScopeChangeForm.styles';
 import { FormWrapper, FlexColumn } from './SidesheetWrapper.styles';
+import { WarningRevisionBanner } from './WarningCreateRevisionBanner';
 
 interface RevisionFormProps {
     cancel: () => void;
@@ -135,27 +135,3 @@ export const SubmitActionBar = ({ cancel }: SubmitActionBarProps): JSX.Element =
         </ActionBar>
     );
 };
-
-const WarningRevisionBanner = () => {
-    return (
-        <WarningRevisionBannerWrapper>
-            <InformationBanner>
-                Creating the new revision will void the current revision of this request
-            </InformationBanner>
-        </WarningRevisionBannerWrapper>
-    );
-};
-
-const WarningRevisionBannerWrapper = styled.div`
-    padding: 20px;
-`;
-
-const InformationBanner = styled.div`
-    background-color: ${tokens.colors.ui.background__info.hex};
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    height: 36px;
-    width: 100%;
-`;

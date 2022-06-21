@@ -114,8 +114,6 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     createdAtUtc: string;
     createdBy: Person;
     modifiedAtUtc: string;
-    /** Null in list view */
-    isLatestRevision: boolean | null;
     modifiedBy: Person;
     state: ScopeChangeRequestState;
     isVoided: boolean;
@@ -137,24 +135,6 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     disciplineGuesstimates: ScopeChangeDisciplineGuesstimates[];
     revisionNumber: number;
     serialNumber: string;
-}
-
-export interface Originator {
-    id: string;
-    sequenceNumber: number;
-    revisionNumber: number;
-    title: string;
-    state: string;
-    revisions: Revision[];
-    isVoided: boolean;
-}
-export interface Revision {
-    id: string;
-    sequenceNumber: number;
-    revisionNumber: number;
-    title: string;
-    state: string;
-    isVoided: boolean;
 }
 
 export interface ScopeChangeWorkOrder {
