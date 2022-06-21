@@ -99,7 +99,7 @@ export const RightSection = styled.div`
     display: flex;
     gap: 2em;
     align-items: center;
-    padding-right: 12px;
+    padding-right: 2px;
 `;
 
 export const SearchLine = styled.div`

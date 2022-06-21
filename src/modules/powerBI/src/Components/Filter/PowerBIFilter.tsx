@@ -1,7 +1,12 @@
 import { Report } from 'powerbi-client';
 import { useEffect, useState } from 'react';
 import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../Types';
-import { createAdvancedPbiFilter, getActiveFilterValues, getFilters } from '../../Utils';
+import {
+    createAdvancedPbiFilter,
+    getActiveFilterGroupArray,
+    getActiveFilterValues,
+    getFilters,
+} from '../../Utils';
 import { PowerBIQuickFilter } from './PowerBiQuickFilter';
 
 export interface FilterController {
@@ -189,7 +194,10 @@ export const PowerBIFilter = ({
 
                 setSlicerFilters(filters.sort((a, b) => a.type.localeCompare(b.type)));
 
-                // setFilterGroupVisible((s) => [...s, ...filterGroupNames]);
+                const filterGroupNames = getActiveFilterGroupArray(activeFilters);
+                setFilterGroupVisible((s) =>
+                    [...s, ...filterGroupNames].filter((v, i, a) => a.indexOf(v) === i)
+                );
             };
             reCreateFilters();
         }

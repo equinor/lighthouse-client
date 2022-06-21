@@ -1,6 +1,7 @@
 import { Icon, Menu, Button, Search } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { useState, useRef } from 'react';
+import { useState, useRef, useMemo, useCallback, memo } from 'react';
+import { useVirtual } from 'react-virtual';
 import styled from 'styled-components';
 import { Case } from '../../../../../components/JSXSwitch/Components/Case';
 import { Switch } from '../../../../../components/JSXSwitch/Components/Switch';
@@ -171,10 +172,18 @@ export const PowerBiGroupPopoverMenu = ({
         await controller.handleOnSelectAll(group, values[0], searchResults);
     };
 
-    const getValuesMatchingSearchText = () =>
-        values.filter(
-            (s) => !searchText || s.value?.toString().toLowerCase().startsWith(searchText)
-        );
+    const getValuesMatchingSearchText = useCallback(
+        () =>
+            values.filter(
+                (s) => !searchText || s.value?.toString().toLowerCase().startsWith(searchText)
+            ),
+        [searchText, values]
+    );
+
+    const rowLength = useMemo(
+        () => getValuesMatchingSearchText().length,
+        [getValuesMatchingSearchText]
+    );
 
     return (
         <Menu
@@ -211,16 +220,12 @@ export const PowerBiGroupPopoverMenu = ({
                             )}
 
                             <FilterItemList>
-                                {getValuesMatchingSearchText().map((item) => (
-                                    <FilterItemCheckbox
-                                        ValueRender={() => <div>{item.value}</div>}
-                                        handleFilterItemLabelClick={() => onClickFilter(item, true)}
-                                        key={item.type + item.value}
-                                        filterValue={item.value}
-                                        handleFilterItemClick={() => onClickFilter(item, false)}
-                                        isChecked={!checkedValues.includes(item.value)}
-                                    />
-                                ))}
+                                <VirtualList
+                                    checkedValues={checkedValues}
+                                    items={getValuesMatchingSearchText()}
+                                    onClickFilter={onClickFilter}
+                                    rowLength={rowLength}
+                                />
                             </FilterItemList>
                             <VerticalLine />
                             <ClearButtonWrapper>
@@ -242,3 +247,59 @@ export const PowerBiGroupPopoverMenu = ({
 const MenuWrapper = styled.div`
     width: 200px;
 `;
+
+interface VirtualListProps {
+    items: PowerBiFilterItem[];
+    rowLength: number;
+    checkedValues: ActiveFilter[];
+    onClickFilter: (filter: PowerBiFilterItem, singleClick?: boolean) => Promise<void>;
+}
+
+export function VirtualList({
+    items,
+    rowLength,
+    checkedValues,
+    onClickFilter,
+}: VirtualListProps): JSX.Element {
+    const ref = useRef<HTMLDivElement>(null);
+
+    const rowVirtualizer = useVirtual({
+        parentRef: ref,
+        size: rowLength,
+        estimateSize: useCallback(() => 22, []),
+    });
+
+    return (
+        <div ref={ref}>
+            <VirtualRowWrapper
+                style={{
+                    height: `${rowVirtualizer.totalSize}px`,
+                }}
+            >
+                {rowVirtualizer.virtualItems.map((virtualRow) => {
+                    const item = items[virtualRow.index];
+                    return (
+                        <FilterItemValue
+                            key={item.value}
+                            virtualItemSize={virtualRow.size}
+                            virtualItemStart={virtualRow.start}
+                            ValueRender={() => <div>{item.value}</div>}
+                            handleFilterItemLabelClick={() => onClickFilter(item, true)}
+                            filterValue={item.value}
+                            handleFilterItemClick={() => onClickFilter(item, false)}
+                            isChecked={!checkedValues.includes(item.value)}
+                        />
+                    );
+                })}
+            </VirtualRowWrapper>
+        </div>
+    );
+}
+
+const VirtualRowWrapper = styled.div`
+    width: auto;
+    min-width: 200px;
+    position: relative;
+`;
+
+export const FilterItemValue = memo(FilterItemCheckbox);

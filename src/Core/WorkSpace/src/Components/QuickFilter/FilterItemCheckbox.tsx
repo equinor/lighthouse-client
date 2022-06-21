@@ -12,6 +12,8 @@ interface FilterItemCheckboxProps {
     isChecked: boolean;
     ValueRender: () => JSX.Element;
     count?: number;
+    virtualItemStart: number;
+    virtualItemSize: number;
 }
 
 export const FilterItemCheckbox = ({
@@ -21,9 +23,17 @@ export const FilterItemCheckbox = ({
     isChecked,
     handleFilterItemLabelClick,
     ValueRender,
+    virtualItemSize,
+    virtualItemStart,
 }: FilterItemCheckboxProps): JSX.Element => {
     return (
-        <FilterItemWrap key={filterValue}>
+        <FilterItemWrap
+            style={{
+                transform: `translateY(${virtualItemStart}px)`,
+                height: `${virtualItemSize}px`,
+            }}
+            key={filterValue}
+        >
             <Checkbox onChange={handleFilterItemClick} size={12} checked={!isChecked} />
             <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
                 <ValueRender />
@@ -41,6 +51,9 @@ const FilterLabelWrapper = styled.div`
 `;
 
 export const FilterItemWrap = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
     grid-template-columns: auto 1fr auto;
     display: grid;
     align-items: center;

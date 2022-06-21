@@ -115,6 +115,7 @@ export const VirtualContainer = ({
                 }}
             >
                 {rowVirtualizer.virtualItems.map((virtualRow) => {
+                    console.log('Test');
                     return (
                         <FilterItemValue
                             valueFormatter={valueFormatter}
