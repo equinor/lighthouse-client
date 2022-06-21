@@ -56,7 +56,7 @@ export const tableConfig: TableOptions<Pipetest> = {
                             steps={createChecklistSteps(cell.value.content)}
                             statusDotFunc={checklistTagFunc}
                             spanDirection={'horizontal'}
-                            dotSize={22}
+                            dotSize={16}
                         />
                     );
                 },

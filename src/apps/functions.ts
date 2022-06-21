@@ -4,6 +4,7 @@ import {
     rcResolverFunction
 } from './DisciplineReleaseControl/DisciplineReleaseControlWidgets';
 import { comPkgResolverFunction, handoverResolverFunction } from './Handover';
+import { loopResolverFunction } from './Loop/utility/config';
 import { mcResolverFunction } from './MechanicalCompletion';
 import { releaseResolverFunction } from './ReleaseControl/ReleaseControlApp';
 import { releaseCreatorAccessFunction } from './ReleaseControl/workspaceConfig/DataCreator/dataCreatorConfig';
@@ -12,7 +13,6 @@ import { changeCreatorAccessFunction } from './ScopeChangeRequest/workspaceConfi
 import { swcrResolverFunction } from './swcr';
 import { tagResolverFunction } from './Tags';
 import { workOrderResolverFunction } from './WorkOrder';
-
 export const functions: FunctionManifest[] = [
     changeCreatorAccessFunction,
     releaseCreatorAccessFunction,
@@ -27,6 +27,7 @@ export const functions: FunctionManifest[] = [
     comPkgResolverFunction,
     mcResolverFunction,
     tagResolverFunction,
+    loopResolverFunction,
 ];
 
 export async function fetchFunction(functionId?: string): Promise<FunctionManifest> {

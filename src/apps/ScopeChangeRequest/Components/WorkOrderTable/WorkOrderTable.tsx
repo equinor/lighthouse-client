@@ -1,7 +1,7 @@
 import { tokens } from '@equinor/eds-tokens';
-import { useFacility } from '@equinor/lighthouse-portal-client';
 import { EstimateBar, ExpendedProgressBar, ProgressBar, Table } from '@equinor/Table';
 import styled from 'styled-components';
+import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { WorkOrder } from '../../types/FAM/workOrder';
 import { generateColumn } from './Utils/generateColumn';
 
@@ -17,16 +17,10 @@ export function WorkOrderTable({ workOrders }: WorkOrderTableProps): JSX.Element
         ...workOrders.map(({ expendedHours }) => Number(expendedHours) ?? 0)
     );
 
-    const { title } = useFacility();
-
     return (
         <div>
             {workOrders && (
-                <Table
-                    columns={makeColumns(highestExpended, highestEstimate, title)}
-                    data={workOrders}
-                    options={{}}
-                />
+                <Table columns={makeColumns(highestExpended, highestEstimate)} data={workOrders} />
             )}
         </div>
     );
@@ -42,21 +36,14 @@ const Link = styled.div`
     }
 `;
 
-const makeColumns = (highestExpended: number, highestEstimate: number, title: string) => [
+const makeColumns = (highestExpended: number, highestEstimate: number) => [
     generateColumn(
         'WO',
         ({ workOrderNumber, workOrderId }) => (
             <Link
                 hideUnderline
                 onClick={() => {
-                    window.open(
-                        //TODO:
-                        `https://procosys.equinor.com/${title.replace(
-                            ' ',
-                            '_'
-                        )}/WorkOrders/WorkOrder#id=${workOrderId}`,
-                        '_blank'
-                    );
+                    window.open(proCoSysUrls.getWorkOrderUrl(workOrderId), '_blank');
                 }}
             >
                 {workOrderNumber}

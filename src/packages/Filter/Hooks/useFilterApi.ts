@@ -55,13 +55,7 @@ interface FilterState<T> {
 }
 
 interface FilterSearch<T> {
-    search: (
-        searchValue: string,
-        valueFormatters: ValueFormatterFilter<T>[],
-        searchIn: SearchDataSet,
-        type: SearchType,
-        preventReRender?: boolean
-    ) => void;
+    search: (args: FilterSearchActive<T>, preventReRender?: boolean) => void;
     clearSearch: () => void;
 }
 
@@ -74,6 +68,13 @@ interface FilterOperations {
     clearActiveFilters: RerenderVoidFunction;
     reCreateFilterValue: RerenderVoidFunction;
     init: VoidFunction;
+}
+
+interface FilterSearchActive<T> {
+    searchValue: string;
+    valueFormatters: ValueFormatterFilter<T>[];
+    searchIn: SearchDataSet;
+    type: SearchType;
 }
 
 export type ValueFormatterFunction<T> = (item: T) => FilterValueType | FilterValueType[];
@@ -105,6 +106,8 @@ export function useFilterApi<T>({
 }: FilterProviderProps<T>): FilterApi<T> {
     const filteredData = useRef<T[]>(data ?? []);
     const filterState = useRef<FilterGroup[]>([]);
+
+    const filterSearch = useRef<FilterSearchActive<T> | null>(null);
 
     /**
      * @internal
@@ -200,7 +203,9 @@ export function useFilterApi<T>({
         setFilteredData(
             data.filter((item) => doesItemPassFilter(item, getFilterState(), getValueFormatters()))
         );
-
+        if (filterSearch.current !== null) {
+            handleSearch(true);
+        }
         handleShouldReRender(preventReRender);
     }
 
@@ -325,27 +330,13 @@ export function useFilterApi<T>({
 
     /** Clears the search and filters the data using the current filterstate */
     function clearSearch(): void {
+        filterSearch.current = null;
         filter();
     }
 
-    /** Search across multiple filter groups for a value that matches at least one */
-    function search(
-        searchValue: string,
-        valueFormatters: ValueFormatterFilter<T>[],
-        searchIn: SearchDataSet,
-        type: SearchType,
-        preventReRender?: boolean
-    ): void {
-        if (valueFormatters.length === 0) return;
-
-        /**
-         * Search sets filtered data so searching more than once will result in searching in the search results.
-         * Re filter data to get the "actual" filtered data
-         */
-        if (searchIn === 'FilteredData') {
-            filter(true);
-        }
-
+    function handleSearch(preventReRender?: boolean) {
+        if (filterSearch.current === null) return;
+        const { searchIn, searchValue, type, valueFormatters } = filterSearch.current;
         const haystack = searchIn === 'Data' ? data : filteredData.current;
         const needle = searchValue.toLowerCase();
 
@@ -356,6 +347,21 @@ export function useFilterApi<T>({
 
         setFilteredData(results);
         handleShouldReRender(preventReRender);
+    }
+
+    /** Search across multiple filter groups for a value that matches at least one */
+    function search(searchArgs: FilterSearchActive<T>, preventReRender?: boolean): void {
+        if (searchArgs.valueFormatters.length === 0) return;
+        filterSearch.current = searchArgs;
+        /**
+         * Search sets filtered data so searching more than once will result in searching in the search results.
+         * Re filter data to get the "actual" filtered data
+         */
+        // if (searchIn === 'FilteredData') {
+        //     filter(true);
+        // }
+
+        filter(preventReRender);
     }
 
     /**

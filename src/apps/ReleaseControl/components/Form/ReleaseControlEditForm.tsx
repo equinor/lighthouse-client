@@ -21,7 +21,7 @@ import { WorkflowCustomEditor } from './WorkflowEditor/WorkflowCustomEditor';
 import { addStep } from './WorkflowEditor/WorkflowEditorHelpers';
 
 export const ReleaseControlEditForm = (): JSX.Element => {
-    const { useAtomState, updateAtom } = DRCFormAtomApi;
+    const { useAtomState } = DRCFormAtomApi;
     const releaseControl = useReleaseControlContext(({ releaseControl }) => releaseControl);
     const steps = useAtomState(({ workflowSteps }) => workflowSteps ?? []);
 
@@ -51,16 +51,7 @@ export const ReleaseControlEditForm = (): JSX.Element => {
                         Workflow
                         <WorkflowCustomEditor />
                         {steps.length !== 0 && (
-                            <NewStepButton
-                                style={{
-                                    width: '100px',
-                                    marginLeft: '20px',
-                                    marginTop: '16px',
-                                }}
-                                onClick={() => addStep(steps)}
-                            >
-                                Add step
-                            </NewStepButton>
+                            <NewStepButton onClick={() => addStep(steps)}>Add step</NewStepButton>
                         )}
                     </FlexColumn>
                 </FormWrapper>
@@ -120,11 +111,6 @@ const SubmitActionBar = (): JSX.Element => {
                             <Button disabled={!isValid} onClick={() => handleSave(false)}>
                                 Save
                             </Button>
-                            {releaseControl.state === 'Draft' && (
-                                <Button disabled={!isValid} onClick={() => handleSave(true)}>
-                                    Submit
-                                </Button>
-                            )}
                         </>
                     )}
                 </>

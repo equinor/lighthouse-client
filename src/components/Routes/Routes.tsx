@@ -1,4 +1,5 @@
 import { GroupView } from '@equinor/GroupView';
+import { useLocationKey } from '@equinor/hooks';
 import { ClientHome, useClientContext } from '@equinor/lighthouse-portal-client';
 import { PowerBiViewer } from '@equinor/lighthouse-powerbi-viewer';
 import { closeSidesheet } from '@equinor/sidesheet';
@@ -7,7 +8,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Apps } from '../../apps/apps';
 import PageView from '../../Core/PageViewer';
 import { WorkSpace } from '../../Core/WorkSpace/src/WorkSpace';
-import { useLocationKey } from '../../packages/Filter/Hooks/useLocationKey';
+
 import { ComponentWrapper } from './ComponentWrapper';
 
 export function ClientRoutes(): JSX.Element {

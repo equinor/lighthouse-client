@@ -13,8 +13,12 @@ import { generateHeaderKeys } from '../Utils/generateColumns';
  */
 export function useColumns<TData extends TableData>(
     dataObject: TData,
+    preventAutoGenerateColumns: boolean,
     options?: ColumnOptions<TData>
 ): Column<TData>[] {
-    const columns = useMemo(() => generateHeaderKeys(dataObject, options), [dataObject, options]);
+    const columns = useMemo(
+        () => generateHeaderKeys(dataObject, preventAutoGenerateColumns, options),
+        [dataObject, options, preventAutoGenerateColumns]
+    );
     return columns;
 }

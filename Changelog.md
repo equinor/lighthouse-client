@@ -4,6 +4,47 @@ All notable changes to this project will be documented in this file.
 
 The changelog is valid starting with Castberg Project Portal v0.1.0-alpha.
 
+## 1.6.2
+- [3D]  Loading model Full-Pro
+- [WorkPreparation] - New page title for STR/HUPR
+- [Apps] - Date fix, use year instead of weekYear
+- [Handover] - Update status cell in table
+- [Table] - Update column picker styling
+## 1.6.1
+- [3D]  Production hot fix
+- [ReleaseControl] Missing "C" in dot in garden group header
+
+## 1.6.0
+- [Filter]  V2 compact filter
+- [Portal] Central URL object for PCS
+- [Table] Redesign of status cell & better typing for custom cell props
+- [Loop] Loop workspace for dev environment
+- [PunchDev] Punch workpsace for dev environment
+- [Bookmarks] Fix invalidate bug
+- [Bookmarks] Fix styling of sidesheet and remove prod check
+- [ScopeChange] Automatically add tag from comm pkg
+- [PipingAndHeatTrace] Pipetest PowerBI analytics
+- [PipingAndHeatTrace] Sidesheet dropdown with link to PCS
+- [PipingAndHeatTrace] Clickable workorders in table
+- [PipingAndHeatTrace] Checklist table fixes
+- [PipingAndHeatTrace] Pipetest PowerBI analytics
+- [PipingAndHeatTrace] Pipetest description in sidesheet title
+- [PipingAndHeatTrace] Styling adjustments
+- [PipingAndHeatTrace] 3D Viewer
+- [3D] Show icon on electro tags
+- [3D] Update to new reveal/echo version
+- [ReleaseControl] Scrollbar in sidesheet
+- [ReleaseControl] Due date selection bug fix
+- [ReleaseControl] Fetch workflows/templates from API
+- [ReleaseControl] Warning dialogue when exiting sidesheet create form with unsaved changes
+- [ReleaseControl] Improved state management
+  
+## 1.5.0
+- [PipingAndHeatTrace] New custom group header for HT cables
+- [ReleaseControl] Initial release to test
+- [Workspace] Search in workspace
+- [Scope change] Bugfix
+- [Portal] Help pages
 
 ## 1.4.9 
 - [Workspace] Fix column picker resetting when filtering

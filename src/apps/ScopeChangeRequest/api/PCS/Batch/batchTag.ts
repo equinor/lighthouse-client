@@ -1,4 +1,5 @@
 import { httpClient } from '@equinor/lighthouse-portal-client';
+import { CommPkgProperty } from '../../../Components/Form/Inputs/ScopeChangeReferences/ScopeChangeReferences';
 import { Tag } from '../../../types/ProCoSys/Tag';
 import { TypedSelectOption } from '../../Search/searchType';
 
@@ -20,7 +21,7 @@ export async function fetchBatchTags(
         (value: Tag): TypedSelectOption => ({
             type: 'tag',
             label: `${value.TagNo} - ${value.Description}`,
-            object: value,
+            object: { ...value, [CommPkgProperty]: value.CommPkgNo },
             searchValue: value.TagNo,
             value: value.TagNo,
             metadata: value.Description,

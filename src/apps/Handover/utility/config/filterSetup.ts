@@ -8,39 +8,41 @@ export const filterConfig: FilterOptions<HandoverPackage> = [
     {
         name: 'Commpkgno',
         valueFormatter: ({ commpkgNo }) => commpkgNo,
-        defaultHidden: true,
     },
     {
         name: 'Discipline',
         valueFormatter: ({ mcDisciplineCodes }) => mcDisciplineCodes,
+        isQuickFilter: true,
     },
 
     {
         name: 'Comm pkg status',
         valueFormatter: (pkg) => getStatus(pkg),
+        isQuickFilter: true,
     },
     {
         name: 'MC status',
         valueFormatter: ({ mcStatus }) => mcStatus,
+        isQuickFilter: true,
     },
     {
         name: 'Responsible',
         valueFormatter: ({ responsible }) => responsible,
+        isQuickFilter: true,
     },
     {
         name: 'Area',
         valueFormatter: ({ area }) => area,
-        defaultHidden: true,
     },
     {
         name: 'Phase',
         valueFormatter: ({ phase }) => phase,
-        defaultHidden: true,
     },
 
     {
         name: 'System',
         valueFormatter: ({ system }) => system,
+        isQuickFilter: true,
     },
 
     {
@@ -50,7 +52,6 @@ export const filterConfig: FilterOptions<HandoverPackage> = [
     {
         name: 'Priority 2',
         valueFormatter: ({ priority2 }) => priority2,
-        defaultHidden: true,
     },
     {
         name: 'Priority 3',
@@ -87,7 +88,6 @@ export const filterConfig: FilterOptions<HandoverPackage> = [
                 return getFilterDateValues(dateDiffs.days);
             }
         },
-        defaultHidden: true,
     },
     {
         name: 'Planned RFO',

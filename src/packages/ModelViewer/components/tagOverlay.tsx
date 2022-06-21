@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
+
 import { Icon } from '../../Components/Icon';
+import { useModelViewerContext } from '../context/modelViewerContext';
 import { useOverlay } from '../hooks/useOverlay';
 import TagIcon from './TagIcon';
 import TagIconShadowWrapper from './TagIconShadow';
@@ -26,7 +28,7 @@ export const TagOverlay = ({
 }: TagOverlayProps): JSX.Element => {
     const filter = useMemo(() => Object.values(tagOverlay).map((t) => t.tagNo), [tagOverlay]);
     const tags = useOverlay().filter((tag) => (filter ? filter.includes(tag.tagNo) : true));
-
+    const { echo3DClient } = useModelViewerContext();
     return (
         <div style={{ position: 'absolute' }}>
             {tags.map((t, i) => (
@@ -42,6 +44,10 @@ export const TagOverlay = ({
                         width: '28px',
                         height: '28px',
                         position: 'absolute',
+                        cursor: 'pointer',
+                    }}
+                    onClick={() => {
+                        echo3DClient?.viewer.cameraManager.fitCameraToBoundingBox(t.boundingBox);
                     }}
                 >
                     <TagIconShadowWrapper>

@@ -24,7 +24,7 @@ export function DashboardViewer({ isFilterActive }: DashboardViewerProps): JSX.E
 
     return (
         <FilterApiContext.Provider value={filterApi}>
-            <FilterView isActive={isFilterActive} />
+            {/* <FilterView isActive={isFilterActive} /> */}
             <Dashboard {...instance} />
         </FilterApiContext.Provider>
     );

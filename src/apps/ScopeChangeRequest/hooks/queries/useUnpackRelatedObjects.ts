@@ -12,6 +12,7 @@ import { stidQueryKeys } from '../../keys/STIDQueryKeys';
 import { ScopeChangeRequest } from '../../types/scopeChangeRequest';
 import { useQueryCacheLookup } from '../../../../hooks/QueryCache/useQueryCacheLookup';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
+import { getPunchListItemByNo } from '../../api/FAM/getPunchListItemByNo';
 
 interface UseUnpackRelatedObjectsParams {
     request: ScopeChangeRequest;
@@ -67,6 +68,28 @@ export function useUnpackRelatedObjects({ request }: UseUnpackRelatedObjectsPara
                 ...commPkgSelectOption,
                 label: `${x.procosysNumber} ${commPkg.Description}`,
                 object: commPkg,
+            });
+        });
+
+        request.punchListItems.forEach(async (x) => {
+            const punchSelectedOption: TypedSelectOption = {
+                label: `${x.procosysId}`,
+                object: x,
+                searchValue: x.procosysId.toString(),
+                type: 'punch',
+                value: x.procosysId.toString(),
+            };
+
+            appendRelatedObjects(punchSelectedOption);
+
+            const punch = await addToQueryCache(['Punch', punchSelectedOption.value], () =>
+                getPunchListItemByNo(x.procosysId)
+            );
+
+            updateReferences({
+                ...punchSelectedOption,
+                label: `${punch.punchItemNo} ${punch.description}`,
+                object: punch,
             });
         });
 

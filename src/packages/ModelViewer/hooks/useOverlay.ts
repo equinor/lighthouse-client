@@ -1,7 +1,6 @@
-import { getDomPositionFor3DPosition } from '@equinor/echo3dweb-viewer';
+import { AabbModel, getDomPositionFor3DPosition } from '@equinor/echo3dweb-viewer';
 import { useCallback, useEffect, useState } from 'react';
 import { useModelViewerContext } from '../context/modelViewerContext';
-
 
 interface DomPosition {
     left: string;
@@ -12,7 +11,9 @@ interface OverlayTags {
     key: string;
     tagNo: string;
     domPosition: DomPosition;
-    position: THREE.Vector2 | undefined;
+    position: THREE.Vector2;
+    aabb: AabbModel;
+    boundingBox: THREE.Box3;
 }
 
 export function useOverlay(): OverlayTags[] {
@@ -24,27 +25,43 @@ export function useOverlay(): OverlayTags[] {
             const camera = echo3DClient.viewer.getCamera();
             const renderer = echo3DClient.viewer.renderer;
 
-            const s: OverlayTags[] = [];
+            const newOverlayTags: OverlayTags[] = [];
 
             viewerSelection.forEach((vs, i) => {
                 if (camera && renderer) {
                     const position = getDomPositionFor3DPosition(camera, renderer, vs.position);
+
                     if (position) {
                         position.x += renderer.domElement.offsetLeft;
                         position.y += renderer.domElement.offsetTop;
-                        s.push({
+
+                        const hasOverlayingTags = newOverlayTags.filter((overlayTag) =>
+                            position.x < overlayTag.position.x + 100 &&
+                            position.x > overlayTag.position.x - 100
+                                ? true
+                                : false
+                        );
+
+                        hasOverlayingTags &&
+                            position.set(position.x - 50 * hasOverlayingTags.length, position.y);
+
+                        newOverlayTags.push({
                             key: `${vs.tagNo}_${i}`,
                             tagNo: vs.tagNo,
                             domPosition: {
                                 top: `${position.y}px`,
                                 left: `${position.x}px`,
                             },
+
                             position,
+                            aabb: vs.aabb,
+                            boundingBox: vs.boundingBox,
                         });
                     }
                 }
             });
-            setOverlayTags(s);
+
+            setOverlayTags(newOverlayTags);
         }
     }, [echo3DClient, viewerSelection]);
 

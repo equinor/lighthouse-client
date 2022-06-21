@@ -52,7 +52,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     }
     return (
         <Wrapper>
-            <ScopeChangeErrorBanner />
+            <ScopeChangeErrorBanner clearOnPropChange={item.id} />
             {editMode ? (
                 <ScopeChangeRequestEditForm />
             ) : (

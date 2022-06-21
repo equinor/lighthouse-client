@@ -34,6 +34,12 @@ export const Section = styled.div`
     align-items: flex-end;
 `;
 
+export const Wrapper = styled.div`
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100%;
+`;
+
 export const FormWrapper = styled.form`
     display: grid;
     grid-column: 2;

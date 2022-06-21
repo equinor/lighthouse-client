@@ -2,7 +2,7 @@
 import { BookmarkSidesheet } from '@equinor/BookmarksManager';
 import { Avatar, TopBar } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
-import { isProduction, useClientContext } from '@equinor/lighthouse-portal-client';
+import { useClientContext } from '@equinor/lighthouse-portal-client';
 import { openSidesheet } from '@equinor/sidesheet';
 import { useRef, useState } from 'react';
 import { GlobalSearch } from '../../Core/GlobalSearh/Components/GlobalSearch';
@@ -13,6 +13,7 @@ import Icon from '../Icon/Icon';
 import { useMenuContext } from '../Menu';
 import { LocationBreadCrumbs } from './BreadCrumbs/Breadcrumbs';
 import { DevBar } from './DevBar/DevBar';
+import { HelpPage } from './HelpPage/HelpPage';
 import { HelpIcon } from './Icons/Help';
 import Logo from './Logo/Logo';
 import { Action, ActionWrapper, Header, Icons, TopBarWrapper } from './TopBarStyle';
@@ -86,27 +87,15 @@ const ClientTopBar = (): JSX.Element => {
                             />
                         </ActionWrapper>
                     )}
+                    <HelpPage />
 
-                    {!isProduction() && (
-                        <Action
-                            onClick={() => {
-                                openSidesheet(BookmarkSidesheet);
-                            }}
-                        >
-                            <Icon name="bookmarks" />
-                        </Action>
-                    )}
-                    {/* <Action
-                        disabled
+                    <Action
                         onClick={() => {
-                            // Search
-                        }}
-                        onMouseOver={() => {
-                            setIsAddMenuOpen(false);
+                            openSidesheet(BookmarkSidesheet);
                         }}
                     >
-                        <Icon name="search" />
-                    </Action> */}
+                        <Icon name="bookmarks" />
+                    </Action>
                     <GlobalSearch />
                 </Icons>
             </TopBar.Actions>

@@ -69,6 +69,9 @@
             "@equinor/VisualEditor": [
                 "./src/packages/VisualEditor"
             ],
+            "@equinor/procosys-urls": [
+                "./src/packages/ProCoSysUrls"
+            ],
             "@equinor/worker": [
                 "./src/packages/WebWorkers"
             ],
@@ -145,7 +148,8 @@
         "node_modules"
     ],
     "include": [
-        "./src"
+        "./src",
+        "./packages"
     ],
     "typedocOptions": {
         "entryPoints": [

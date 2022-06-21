@@ -2,7 +2,6 @@ import styled from 'styled-components';
 
 import {
     ScopeChangeArea,
-    ScopeChangeDiscipline,
     ScopeChangeDocument,
     ScopeChangeTag,
     ScopeChangeSystem,
@@ -11,7 +10,6 @@ import {
 } from '../../types/scopeChangeRequest';
 import { Tag as TagComp } from './RelatedObjects/Tags/Tag';
 import { Area as AreaComp } from './RelatedObjects/Area/Area';
-import { Discipline as DisciplineComp } from './RelatedObjects/Discipline/Discipline';
 import { CommPkg } from './RelatedObjects/CommPkg/CommPkg';
 import { System as SystemComp } from './RelatedObjects/Systems/System';
 import { StidDocument } from '../StidDocument/StidDocument';
@@ -26,7 +24,6 @@ interface RelatedObjectsProps {
     commPkgs: ScopeChangeCommissioningPackage[];
     tags: ScopeChangeTag[];
     areas: ScopeChangeArea[];
-    disciplines: ScopeChangeDiscipline[];
     documents: ScopeChangeDocument[];
     punch: ScopeChangePunch[];
 }
@@ -36,7 +33,6 @@ export const RelatedObjects = ({
     systems = [],
     tags = [],
     documents = [],
-    disciplines = [],
     areas = [],
     punch = [],
 }: RelatedObjectsProps): JSX.Element => {
@@ -46,7 +42,6 @@ export const RelatedObjects = ({
                 commPkgs.length === 0 &&
                 systems.length === 0 &&
                 documents.length === 0 &&
-                disciplines.length === 0 &&
                 punch.length === 0 &&
                 areas.length === 0 && <NoReferences>No references has been linked.</NoReferences>}
             {tags && tags.length > 0 && (
@@ -91,18 +86,6 @@ export const RelatedObjects = ({
                 >
                     {documents.map((x) => (
                         <StidDocument key={x.stidDocumentNumber} docNo={x.stidDocumentNumber} />
-                    ))}
-                </ReferenceWrapper>
-            )}
-
-            {disciplines && disciplines.length > 0 && (
-                <ReferenceWrapper
-                    count={disciplines.length}
-                    text={'Discipline'}
-                    icon={getReferenceIcon('discipline') ?? <></>}
-                >
-                    {disciplines.map((x) => (
-                        <DisciplineComp key={x.id} discipline={x} />
                     ))}
                 </ReferenceWrapper>
             )}

@@ -2,13 +2,14 @@ import { deref, useAtom } from '@dbeining/react-atom';
 import { Icon } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { useEffect } from 'react';
-import { MenuItem, SidesheetApi } from '@equinor/sidesheet';
+import { SidesheetApi } from '@equinor/sidesheet';
 import { releaseControlMutationKeys } from '../queries/releaseControlMutationKeys';
 import { unVoidReleaseControl, voidReleaseControl } from '../api/releaseControl/Request';
 import { sideSheetEditModeAtom } from '../Atoms/editModeAtom';
 import { useReleaseControlMutation } from './useReleaseControlMutation';
 import { ReleaseControl } from '../types/releaseControl';
 import { useReleaseControlContext } from './useReleaseControlContext';
+import { MenuItem } from '@equinor/overlay-menu';
 
 export function useSidesheetEffects(
     actions: SidesheetApi,
@@ -47,27 +48,27 @@ export function useSidesheetEffects(
         menuItems.push(
             isVoided
                 ? {
-                      label: 'Unvoid',
-                      onClick: () => unVoidRequestMutation({ releaseControlId }),
-                      isDisabled: !canUnVoid,
-                      icon: (
-                          <Icon
-                              name="restore_from_trash"
-                              color={tokens.colors.interactive.primary__resting.hex}
-                          />
-                      ),
-                  }
+                    label: 'Unvoid',
+                    onClick: () => unVoidRequestMutation({ releaseControlId }),
+                    isDisabled: !canUnVoid,
+                    icon: (
+                        <Icon
+                            name="restore_from_trash"
+                            color={tokens.colors.interactive.primary__resting.hex}
+                        />
+                    ),
+                }
                 : {
-                      label: 'Void',
-                      onClick: () => voidRequestMutation({ releaseControlId }),
-                      isDisabled: !canVoid,
-                      icon: (
-                          <Icon
-                              name="delete_to_trash"
-                              color={tokens.colors.interactive.primary__resting.hex}
-                          />
-                      ),
-                  }
+                    label: 'Void',
+                    onClick: () => voidRequestMutation({ releaseControlId }),
+                    isDisabled: !canVoid,
+                    icon: (
+                        <Icon
+                            name="delete_to_trash"
+                            color={tokens.colors.interactive.primary__resting.hex}
+                        />
+                    ),
+                }
         );
         return menuItems;
     };

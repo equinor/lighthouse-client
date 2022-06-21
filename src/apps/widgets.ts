@@ -1,5 +1,5 @@
 import { CreatorManifest } from '@equinor/lighthouse-fusion-modules';
-import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
+import { WidgetManifest } from '@equinor/lighthouse-widgets';
 import {
     actionCenterSidesheetWidgetComponent,
     actionCenterSidesheetWidgetManifest
@@ -16,6 +16,7 @@ import {
     handoverCreatorComponent,
     handoverCreatorManifest
 } from './Handover';
+import { loopSidesheetWidgetComponent, loopSidesheetWidgetManifest } from './Loop/utility/config';
 import { mcCreatorComponent, mcCreatorManifest } from './MechanicalCompletion';
 import { releaseComponent, releaseManifest } from './ReleaseControl/ReleaseControlApp';
 import {
@@ -31,7 +32,7 @@ import {
     changeCreatorManifest
 } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
-import { tagWidgetComponent, tagWidgetManifest } from './Tags';
+import { tagWidgetComponent } from './Tags';
 import { workOrderCreatorComponent, workOrderCreatorManifest } from './WorkOrder';
 
 const _widgets: WidgetManifest[] = [
@@ -47,10 +48,8 @@ const _widgets: WidgetManifest[] = [
     releaseCreatorManifest,
     comPkgManifest,
     mcCreatorManifest,
-    tagWidgetManifest,
-];
+    loopSidesheetWidgetManifest,
 
-const _widgetComponents: ComponentManifest[] = [
     changeSideSheetWidgetComponent,
     htSidesheetWidgetComponent,
     ReleaseControlSidesheetWidgetComponent,
@@ -65,6 +64,7 @@ const _widgetComponents: ComponentManifest[] = [
     comPkgComponent,
     mcCreatorComponent,
     tagWidgetComponent,
+    loopSidesheetWidgetComponent,
 ];
 
 export async function getCreators(): Promise<CreatorManifest[]> {

@@ -19,6 +19,6 @@ export const gardenConfig: GardenOptions<Pipetest> = {
         customGroupView: ReleaseControlGardenGroupView,
     },
     highlightColumn: getHighlightedColumn,
-    itemWidth: () => 150,
+    itemWidth: () => 170,
     rowHeight: 25,
 };
