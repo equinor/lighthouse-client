@@ -7,6 +7,9 @@ type HeaderProps = {
     onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
     searchEnabled: boolean;
 };
+
+export const SEARCH_ID = 'search';
+
 export const Header = ({ title, onSearch, searchEnabled }: HeaderProps): JSX.Element => {
     const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
     return (
@@ -22,11 +25,12 @@ export const Header = ({ title, onSearch, searchEnabled }: HeaderProps): JSX.Ele
                 />
             )}
             {searchEnabled && (
-                <SearchButton
-                    variant="ghost_icon"
-                    onClick={() => setIsSearchActive(!isSearchActive)}
-                >
-                    <Icon name={isSearchActive ? 'chevron_right' : 'search'} size={24} />
+                <SearchButton onClick={() => setIsSearchActive((s) => !s)} variant={'ghost_icon'}>
+                    {isSearchActive ? (
+                        <Icon name="chevron_left" />
+                    ) : (
+                        <Icon id={SEARCH_ID} name="search" />
+                    )}
                 </SearchButton>
             )}
         </Container>
