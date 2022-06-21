@@ -43,10 +43,10 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     }
 
     const isSearchable = filterGroup.values.length > 10;
-
+    const hasAnyActiveFilters = Boolean(getInactiveGroupValues(filterGroup.name).length);
     return (
         <Wrapper>
-            <FilterHeaderGroup>
+            <FilterHeaderGroup isActive={hasAnyActiveFilters}>
                 <Switch>
                     <Case when={searchActive}>
                         <Search
@@ -61,7 +61,7 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                         <Title>{filterGroup.name}</Title>
                         <FilterClearIcon
                             onClick={() => markAllValuesActive(filterGroup.name)}
-                            isDisabled={!getInactiveGroupValues(filterGroup.name).length}
+                            isDisabled={!hasAnyActiveFilters}
                         />
                     </Case>
                 </Switch>
