@@ -1,7 +1,6 @@
 import { Tabs } from '@equinor/eds-core-react';
 import { useLocationKey } from '@equinor/hooks';
 import { ModelViewerContextProvider } from '@equinor/lighthouse-model-viewer';
-import { isProduction } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useState } from 'react';
 import { useQuery } from 'react-query';
@@ -9,7 +8,7 @@ import { useQuery } from 'react-query';
 import { ServerError } from '../../Api/Types/ServerError';
 import {
     fetchAndChewPipetestDataFromApi,
-    sortCheckListsForTable,
+    sortCheckListsForTable
 } from '../../Functions/statusHelpers';
 import { Wrapper } from '../../Styles/SidesheetWrapper';
 import { HTSidesheet, Pipetest } from '../../Types/pipetest';
@@ -85,7 +84,7 @@ export function ReleaseControlSidesheet({
                     <Tabs.Tab>Work orders</Tabs.Tab>
                     <Tabs.Tab>Insulation</Tabs.Tab>
                     <Tabs.Tab>Checklists</Tabs.Tab>
-                    <>{!isProduction() && <Tabs.Tab>3D</Tabs.Tab>}</>
+                    <Tabs.Tab>3D</Tabs.Tab>
                 </SidesheetTabList>
                 <Tabs.Panels>
                     <Tabs.Panel>
@@ -135,15 +134,13 @@ export function ReleaseControlSidesheet({
                         </TablesTab>
                     </Tabs.Panel>
                     <>
-                        {!isProduction() && (
-                            <Panel>
-                                {activeTab === 4 && (
-                                    <ModelViewerContextProvider>
-                                        <ThreeDView pipetest={item} />
-                                    </ModelViewerContextProvider>
-                                )}
-                            </Panel>
-                        )}
+                        <Panel>
+                            {activeTab === 4 && (
+                                <ModelViewerContextProvider>
+                                    <ThreeDView pipetest={item} />
+                                </ModelViewerContextProvider>
+                            )}
+                        </Panel>
                     </>
                 </Tabs.Panels>
             </Tabs>
