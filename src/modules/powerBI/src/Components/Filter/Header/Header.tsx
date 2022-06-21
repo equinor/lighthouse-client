@@ -6,11 +6,15 @@ type HeaderProps = {
     title: string;
     onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
     searchEnabled: boolean;
+    handleEnterPress: () => void;
 };
 
-export const SEARCH_ID = 'search';
-
-export const Header = ({ title, onSearch, searchEnabled }: HeaderProps): JSX.Element => {
+export const Header = ({
+    title,
+    onSearch,
+    searchEnabled,
+    handleEnterPress,
+}: HeaderProps): JSX.Element => {
     const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
     return (
         <Container>
@@ -21,6 +25,7 @@ export const Header = ({ title, onSearch, searchEnabled }: HeaderProps): JSX.Ele
                     id="search-normal"
                     placeholder="Search"
                     aria-label="filter group"
+                    onKeyPress={(e) => e.key === 'Enter' && handleEnterPress()}
                     onChange={onSearch}
                 />
             )}
@@ -29,7 +34,7 @@ export const Header = ({ title, onSearch, searchEnabled }: HeaderProps): JSX.Ele
                     {isSearchActive ? (
                         <Icon name="chevron_left" />
                     ) : (
-                        <Icon id={SEARCH_ID} name="search" />
+                        <Icon id="search" name="search" />
                     )}
                 </SearchButton>
             )}

@@ -2,7 +2,6 @@ import { Report } from 'powerbi-client';
 import { useEffect, useState } from 'react';
 import { ActiveFilter, PowerBiFilter, PowerBiFilterItem } from '../../Types';
 import { createAdvancedPbiFilter, getActiveFilterValues, getFilters } from '../../Utils';
-import { getActiveFilterGroupArray } from '../../Utils/getActiveFilterGroups';
 import { PowerBIQuickFilter } from './PowerBiQuickFilter';
 
 export interface FilterController {

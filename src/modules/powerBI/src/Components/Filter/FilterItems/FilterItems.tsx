@@ -33,11 +33,19 @@ export const FilterItems = ({
     const handleOnSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchValue(e.target.value);
     };
+
     const filterValues = Object.values(group.value);
     const searchedFilterItems = useMemo(
         () => searchFilterItems(filterValues, searchValue),
         [filterValues, searchValue]
     );
+    const handleEnterPress = () => {
+        handleOnSelectAll(
+            group,
+            filterValues[0],
+            searchedFilterItems.map((s) => s.value)
+        );
+    };
     const allSearchedFilterValues = searchedFilterItems.map((x) => x.value);
     const checked = useMemo(
         () =>
@@ -56,6 +64,7 @@ export const FilterItems = ({
     return (
         <FilterGroupContainer>
             <Header
+                handleEnterPress={handleEnterPress}
                 title={group.type}
                 onSearch={handleOnSearchChange}
                 searchEnabled={group.filterVals.length > 7}
