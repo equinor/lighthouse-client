@@ -64,6 +64,14 @@ export const FilterHeaderGroup = styled.div`
     justify-content: space-between;
     align-items: center;
     height: 48px;
+
+    #search {
+        visibility: hidden;
+    }
+
+    &:hover #search {
+        visibility: visible;
+    }
 `;
 
 export const SearchButton = styled(Button)`
