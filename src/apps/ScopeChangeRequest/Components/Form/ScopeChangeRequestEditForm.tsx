@@ -47,7 +47,7 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
     useUnpackRelatedObjects({ request });
 
     return (
-        <>
+        <EditFormWrapper>
             <FormBanner />
             <Wrapper>
                 <FormWrapper>
@@ -69,11 +69,18 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
                         <RequestAttachmentsList />
                     </FlexColumn>
                 </FormWrapper>
-                <SubmitActionBar />
             </Wrapper>
-        </>
+            <SubmitActionBar />
+        </EditFormWrapper>
     );
 };
+
+const EditFormWrapper = styled.div`
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    overflow: hidden;
+    height: 100%;
+`;
 
 const Wrapper = styled.div`
     margin: 24px 32px;
