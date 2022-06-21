@@ -4,7 +4,6 @@ import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { TableAPI, TableData } from '@equinor/Table';
 import { ColumnInstance } from 'react-table';
 
-import { MenuItem } from './columnPicker.styles';
 import { useWorkSpace } from '@equinor/WorkSpace';
 import styled from 'styled-components';
 import { tokens } from '@equinor/eds-tokens';
