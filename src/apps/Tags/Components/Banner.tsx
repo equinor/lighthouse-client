@@ -20,17 +20,21 @@ const Banner = styled.div`
     align-items: center;
 `;
 
-interface BannerItemProps {
+interface TextItemProps {
     title: string;
     value?: string | number | JSX.Element;
     onClick?: () => void;
 }
 
-export function BannerItem({ title, value, onClick }: BannerItemProps): JSX.Element {
+export function TextItem({ title, value, onClick }: TextItemProps): JSX.Element {
     return (
         <Wrapper>
             <BannerItemTitle>{title}</BannerItemTitle>
-            <BannerItemValue action={!!onClick} onClick={() => onClick && onClick()}>
+            <BannerItemValue
+                title={value?.toString() || ''}
+                action={!!onClick}
+                onClick={() => onClick && onClick()}
+            >
                 {value}
             </BannerItemValue>
         </Wrapper>
@@ -56,4 +60,8 @@ const BannerItemValue = styled.div<{ action }>`
     min-height: 24px;
     cursor: ${({ action }) => (action ? 'pointer' : 'default')};
     text-decoration-line: ${({ action }) => (action ? 'underline' : 'none')};
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 400px;
+    text-overflow: ellipsis;
 `;

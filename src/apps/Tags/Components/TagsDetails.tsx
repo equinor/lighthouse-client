@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { proCoSysUrls } from '../../../packages/ProCoSysUrls/procosysUrl';
 
 import { Tag } from '../Types/tag';
-import { BannerItem, SidesheetBanner } from './Banner';
+import { SidesheetBanner, TextItem } from './Banner';
 import { SidesheetHeaderContent } from './Header';
 
 interface SidesheetWrapperProps {
@@ -32,7 +32,7 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
     return (
         <Wrapper>
             <SidesheetBanner>
-                <BannerItem
+                <TextItem
                     title="System"
                     value={
                         item.SystemCode
@@ -41,7 +41,7 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
                     }
                 />
 
-                <BannerItem
+                <TextItem
                     title="Status"
                     value={
                         item.StatusCode
@@ -60,8 +60,8 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
                 <div>
                     <Heading variant="h5">Tag Details</Heading>
 
-                    <BannerItem title="Description" value={item.Description} />
-                    <BannerItem
+                    <TextItem title="Description" value={item.Description} />
+                    <TextItem
                         title="Tag Function"
                         value={
                             item.TagFunctionCode
@@ -71,7 +71,7 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
                                 : ''
                         }
                     />
-                    <BannerItem
+                    <TextItem
                         title="Register"
                         value={
                             item.RegisterCode
@@ -80,31 +80,45 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
                         }
                     />
 
-                    <BannerItem
+                    <TextItem
                         title="Discipline"
                         value={
-                            item.RegisterCode
+                            item.DisciplineCode
                                 ? `${item.DisciplineCode || ''}, ${
                                       item.DisciplineDescription || ''
                                   }`
                                 : ''
                         }
                     />
-                    <BannerItem
-                        title="PurchaseOrderNo"
+                    <TextItem
+                        title="
+                        Project"
                         value={
-                            item.PurchaseOrderNo
-                                ? `${item.PurchaseOrderNo || ''}, ${item.PurchaseOrderTitle || ''}`
+                            item.ProjectDescription
+                                ? `${window.location.search.split('=')[1]}, ${
+                                      item.ProjectDescription || ''
+                                  }`
                                 : ''
                         }
                     />
-                    <BannerItem
+                    <TextItem
                         title="MC Pkg"
                         value={item.McPkgNo}
                         onClick={
                             item.McPkgNo
                                 ? () => {
                                       window.location.hash = `mcDetails/${item.McPkgNo}`;
+                                  }
+                                : undefined
+                        }
+                    />
+                    <TextItem
+                        title="Comm Pkg"
+                        value={item.CommPkgNo}
+                        onClick={
+                            item.CommPkgNo
+                                ? () => {
+                                      window.location.hash = `handoverDetails/${item.CommPkgNo}`;
                                   }
                                 : undefined
                         }
