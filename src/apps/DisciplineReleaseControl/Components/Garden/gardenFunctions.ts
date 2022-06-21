@@ -216,6 +216,7 @@ export function createChecklistTestSteps(
                 isHeatTrace: true,
                 stepName: getChecklistStepName(allWorkflowSteps[i]),
                 underline: underline,
+                workflowStepText: 'C',
             };
             workflowSteps.push(workflowStep);
         } else if (foundTestSteps.length !== 0 && formularType !== CheckListStepTag.HtCTest) {
@@ -249,7 +250,6 @@ export function createChecklistTestSteps(
             });
         }
     }
-
     return workflowSteps;
 }
 
