@@ -12,8 +12,6 @@ interface FilterItemCheckboxProps {
     isChecked: boolean;
     ValueRender: () => JSX.Element;
     count?: number;
-    virtualItemStart: number;
-    virtualItemSize: number;
 }
 
 export const FilterItemCheckbox = ({

@@ -37,8 +37,6 @@ export function VirtualList({
                     return (
                         <FilterItemValue
                             key={item.value}
-                            virtualItemSize={virtualRow.size}
-                            virtualItemStart={virtualRow.start}
                             ValueRender={() => <div>{item.value}</div>}
                             handleFilterItemLabelClick={() => onClickFilter(item, true)}
                             filterValue={item.value}
