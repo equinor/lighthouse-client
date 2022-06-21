@@ -36,7 +36,7 @@ export const QuickFilter = (): JSX.Element => {
     const filterGroups = filterOptions.map(({ name }) => name);
 
     const [visibleFilterGroups, setVisibleFilterGroups] = useState<string[]>(
-        filterOptions.map((s) => s.name)
+        filterOptions.filter((s) => !s.defaultHidden).map((s) => s.name)
     );
 
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);

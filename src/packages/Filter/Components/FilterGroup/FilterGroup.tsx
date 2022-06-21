@@ -2,6 +2,7 @@ import { Icon, Search } from '@equinor/eds-core-react';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
+import { FilterClearIcon } from '../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterClear';
 import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWorkSpace';
 import { FilterGroup } from '../../Hooks/useFilterApi';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
@@ -24,6 +25,11 @@ interface FilterGroupeComponentProps {
 export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
     filterGroup,
 }: FilterGroupeComponentProps) => {
+    const {
+        filterGroupState: { getInactiveGroupValues },
+        operations: { markAllValuesActive },
+    } = useFilterApiContext();
+
     const [filterSearchValue, setFilterSearchValue] = useState('');
     const [searchActive, setSearchActive] = useState(false);
 
@@ -53,6 +59,10 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                     </Case>
                     <Case when={true}>
                         <Title>{filterGroup.name}</Title>
+                        <FilterClearIcon
+                            onClick={() => markAllValuesActive(filterGroup.name)}
+                            isDisabled={!getInactiveGroupValues(filterGroup.name).length}
+                        />
                     </Case>
                 </Switch>
                 {isSearchable && (

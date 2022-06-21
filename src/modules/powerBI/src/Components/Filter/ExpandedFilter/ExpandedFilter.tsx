@@ -21,6 +21,7 @@ export function ExpandedFilter({ controller }: ExpandedFilterProps): JSX.Element
             />
             {visibleFilters.map((groupName) => (
                 <FilterItems
+                    controller={controller}
                     handleOnChange={handleOnChange}
                     handleOnSelectAll={controller.handleOnSelectAll}
                     activeFilters={activeFilters}
