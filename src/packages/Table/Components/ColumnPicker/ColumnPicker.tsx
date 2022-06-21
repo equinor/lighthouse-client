@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { ReactSortable } from 'react-sortablejs';
-import { Checkbox } from '@equinor/eds-core-react';
+import { Checkbox, Icon } from '@equinor/eds-core-react';
 import { TableAPI, TableData } from '@equinor/Table';
 import { ColumnInstance } from 'react-table';
 
 import { MenuItem } from './columnPicker.styles';
 import { useWorkSpace } from '@equinor/WorkSpace';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 export const DraggableHandleSelector = 'globalDraggableHandle';
 
@@ -42,17 +44,24 @@ export const ColumnMenuPicker = ({ getApi }: ColumnMenuPickerProps): JSX.Element
                 {list.map(({ id, Header }) => {
                     return (
                         <MenuItem className={DraggableHandleSelector} key={id}>
-                            <div style={{ height: '48px', width: '20px' }}>
-                                <Checkbox
-                                    readOnly
-                                    checked={getApi()
-                                        .getVisibleColumns()
-                                        .map((x) => x.id)
-                                        .includes(id)}
-                                    onChange={() => getApi().toggleHideColumn(id)}
+                            <WrapperDiv>
+                                <div>
+                                    <Checkbox
+                                        readOnly
+                                        checked={getApi()
+                                            .getVisibleColumns()
+                                            .map((x) => x.id)
+                                            .includes(id)}
+                                        onChange={() => getApi().toggleHideColumn(id)}
+                                    />
+                                </div>
+                                <div>{Header?.toString()}</div>
+                                <Icon
+                                    id={'dragIcon'}
+                                    name="drag_handle"
+                                    color={tokens.colors.interactive.primary__resting.hex}
                                 />
-                            </div>
-                            <div>{Header?.toString()}</div>
+                            </WrapperDiv>
                         </MenuItem>
                     );
                 })}
@@ -60,3 +69,19 @@ export const ColumnMenuPicker = ({ getApi }: ColumnMenuPickerProps): JSX.Element
         </>
     );
 };
+
+const WrapperDiv = styled.div`
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    height: 48px;
+    width: 200px;
+
+    #dragIcon {
+        visibility: hidden;
+    }
+
+    &:hover #dragIcon {
+        visibility: visible;
+    }
+`;
