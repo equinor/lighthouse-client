@@ -76,13 +76,13 @@ export const FilterItems = ({
                 searchEnabled={group.filterVals.length > 7}
             />
             <CheckboxWrap ref={parentRef}>
-                <Checkbox
+                {/* <Checkbox
                     onChange={async () =>
                         await handleOnSelectAll(group, filterValues[0], allSearchedFilterValues)
                     }
                     checked={checked}
                     label="Select all"
-                />
+                /> */}
                 <VirtualFilterItemWrapper style={{ height: `${rowVirtualizer.totalSize}px` }}>
                     {rowVirtualizer.virtualItems.map((virtualItem) => {
                         const filter = searchedFilterItems[virtualItem.index];
