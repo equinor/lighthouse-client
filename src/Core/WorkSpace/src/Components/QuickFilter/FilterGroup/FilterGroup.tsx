@@ -66,7 +66,7 @@ export const FilterGroup = ({ name, isOpen, onClick }: FilterGroupProps): JSX.El
     );
 };
 
-function getFilterHeaderText(
+export function getFilterHeaderText(
     isAllChecked: boolean,
     name: string,
     checkedValues: FilterValueType[]

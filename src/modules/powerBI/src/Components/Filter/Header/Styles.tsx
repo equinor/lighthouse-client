@@ -1,5 +1,6 @@
 import { Button } from '@equinor/eds-core-react';
 import styled from 'styled-components';
+import { SEARCH_ID } from './Header';
 
 export const Container = styled.div`
     width: 100%;
@@ -8,6 +9,13 @@ export const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     white-space: nowrap;
+    min-height: 36px;
+    #${SEARCH_ID} {
+        visibility: hidden;
+    }
+    &:hover #${SEARCH_ID} {
+        visibility: visible;
+    }
 `;
 
 export const Title = styled.div`
