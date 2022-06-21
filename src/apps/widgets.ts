@@ -1,5 +1,5 @@
 import { CreatorManifest } from '@equinor/lighthouse-fusion-modules';
-import { WidgetManifest } from '@equinor/lighthouse-widgets';
+import { ComponentManifest, WidgetManifest } from '@equinor/lighthouse-widgets';
 import {
     actionCenterSidesheetWidgetComponent,
     actionCenterSidesheetWidgetManifest
@@ -32,7 +32,7 @@ import {
     changeCreatorManifest
 } from './ScopeChangeRequest/workspaceConfig/dataCreatorConfig';
 import { swcrCreatorComponent, swcrCreatorManifest } from './swcr';
-import { tagWidgetComponent } from './Tags';
+import { tagWidgetComponent, tagWidgetManifest } from './Tags';
 import { workOrderCreatorComponent, workOrderCreatorManifest } from './WorkOrder';
 
 const _widgets: WidgetManifest[] = [
@@ -49,7 +49,10 @@ const _widgets: WidgetManifest[] = [
     comPkgManifest,
     mcCreatorManifest,
     loopSidesheetWidgetManifest,
+    tagWidgetManifest,
+];
 
+const _widgetComponents: ComponentManifest[] = [
     changeSideSheetWidgetComponent,
     htSidesheetWidgetComponent,
     ReleaseControlSidesheetWidgetComponent,

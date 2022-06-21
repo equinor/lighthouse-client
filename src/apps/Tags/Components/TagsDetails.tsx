@@ -1,8 +1,8 @@
 import { Typography } from '@equinor/eds-core-react';
-import { useFacility } from '@equinor/lighthouse-portal-client';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { proCoSysUrls } from '../../../packages/ProCoSysUrls/procosysUrl';
 
 import { Tag } from '../Types/tag';
 import { BannerItem, SidesheetBanner } from './Banner';
@@ -16,8 +16,6 @@ interface SidesheetWrapperProps {
 export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element {
     const ref = useRef<HTMLDivElement>(null);
 
-    const { procosysPlantId } = useFacility();
-
     useEffect(() => {
         actions.setTitle(
             <SidesheetHeaderContent
@@ -26,7 +24,7 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
                         ? `${item.TagNo}, ${item.TagFunctionDescription}`
                         : item.TagNo
                 }
-                url={item.Id + procosysPlantId}
+                url={proCoSysUrls.getTagUrl(item.Id)}
             />
         );
     }, []);
@@ -34,14 +32,23 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
     return (
         <Wrapper>
             <SidesheetBanner>
-                {item.SystemCode && <BannerItem title="System" value={item.SystemCode} />}
-                {item.AreaDescription && <BannerItem title="Area" value={item.AreaDescription} />}
-                {item.DisciplineCode && (
-                    <BannerItem title="Discipline" value={item.DisciplineCode} />
-                )}
+                <BannerItem
+                    title="System"
+                    value={
+                        item.SystemCode
+                            ? `${item.SystemCode || ''}, ${item.SystemDescription || ''}`
+                            : ''
+                    }
+                />
 
-                {item.TagFunctionCode && <BannerItem title="Code" value={item.TagFunctionCode} />}
-                {item.StatusCode && <BannerItem title="Status" value={item.StatusCode} />}
+                <BannerItem
+                    title="Status"
+                    value={
+                        item.StatusCode
+                            ? `${item.StatusCode || ''}, ${item.StatusDescription || ''}`
+                            : ''
+                    }
+                />
             </SidesheetBanner>
             <ContentWrapper
                 ref={ref}
@@ -51,13 +58,57 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
                 }
             >
                 <div>
-                    <Heading variant="h5">Tag Data</Heading>
-                    {item.description && (
-                        <BannerItem title="Description" value={item.description} />
-                    )}
-                    {item['StatusDescription'] && (
-                        <BannerItem title="Status Description" value={item['StatusDescription']} />
-                    )}
+                    <Heading variant="h5">Tag Details</Heading>
+
+                    <BannerItem title="Description" value={item.Description} />
+                    <BannerItem
+                        title="Tag Function"
+                        value={
+                            item.TagFunctionCode
+                                ? `${item.TagFunctionCode || ''}, ${
+                                      item.TagFunctionDescription || ''
+                                  }`
+                                : ''
+                        }
+                    />
+                    <BannerItem
+                        title="Register"
+                        value={
+                            item.RegisterCode
+                                ? `${item.RegisterCode || ''}, ${item.RegisterDescription || ''}`
+                                : ''
+                        }
+                    />
+
+                    <BannerItem
+                        title="Discipline"
+                        value={
+                            item.RegisterCode
+                                ? `${item.DisciplineCode || ''}, ${
+                                      item.DisciplineDescription || ''
+                                  }`
+                                : ''
+                        }
+                    />
+                    <BannerItem
+                        title="PurchaseOrderNo"
+                        value={
+                            item.PurchaseOrderNo
+                                ? `${item.PurchaseOrderNo || ''}, ${item.PurchaseOrderTitle || ''}`
+                                : ''
+                        }
+                    />
+                    <BannerItem
+                        title="MC Pkg"
+                        value={item.McPkgNo}
+                        onClick={
+                            item.McPkgNo
+                                ? () => {
+                                      window.location.hash = `mcDetails/${item.McPkgNo}`;
+                                  }
+                                : undefined
+                        }
+                    />
                 </div>
             </ContentWrapper>
         </Wrapper>

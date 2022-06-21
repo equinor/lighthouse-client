@@ -23,13 +23,16 @@ const Banner = styled.div`
 interface BannerItemProps {
     title: string;
     value?: string | number | JSX.Element;
+    onClick?: () => void;
 }
 
-export function BannerItem({ title, value }: BannerItemProps): JSX.Element {
+export function BannerItem({ title, value, onClick }: BannerItemProps): JSX.Element {
     return (
         <Wrapper>
             <BannerItemTitle>{title}</BannerItemTitle>
-            <BannerItemValue>{value}</BannerItemValue>
+            <BannerItemValue action={!!onClick} onClick={() => onClick && onClick()}>
+                {value}
+            </BannerItemValue>
         </Wrapper>
     );
 }
@@ -45,10 +48,12 @@ const BannerItemTitle = styled.div`
     color: ${tokens.colors.text.static_icons__tertiary.hex};
 `;
 
-const BannerItemValue = styled.div`
+const BannerItemValue = styled.div<{ action }>`
     font-size: 16px;
     line-height: 24px;
     font-weight: 400;
     color: ${tokens.colors.text.static_icons__default.hex};
     min-height: 24px;
+    cursor: ${({ action }) => (action ? 'pointer' : 'default')};
+    text-decoration-line: ${({ action }) => (action ? 'underline' : 'none')};
 `;
