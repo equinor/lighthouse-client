@@ -16,7 +16,7 @@ export const FilterTypeOption = ({
     toggleSelected,
 }: FilterTypeOptionProps): JSX.Element => {
     return (
-        <FilterTypeOptionWrapper>
+        <FilterTypeOptionWrapper onClick={() => toggleSelected(name)}>
             {name}
 
             {isSelected && (
@@ -28,7 +28,6 @@ export const FilterTypeOption = ({
             )}
             <ToggleButton>
                 <Icon
-                    onClick={() => toggleSelected(name)}
                     name={isSelected ? 'remove' : 'add_circle_filled'}
                     id={SHOW_ON_HOVER}
                     color={tokens.colors.interactive.primary__resting.hex}
@@ -47,6 +46,7 @@ const FilterTypeOptionWrapper = styled.div`
     grid-template-columns: 1fr auto auto;
     align-items: center;
     height: 24px;
+    cursor: pointer;
 
     &:hover {
         background-color: #f7f7f7;

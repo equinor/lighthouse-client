@@ -1,5 +1,7 @@
 import { Icon, Search } from '@equinor/eds-core-react';
 import React, { useState } from 'react';
+import { FilterClearIcon } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/Icons/FilterClear';
+import { FilterController } from '../PowerBIFilter';
 import { Container, SearchButton, Title } from './Styles';
 
 type HeaderProps = {
@@ -7,6 +9,9 @@ type HeaderProps = {
     onSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
     searchEnabled: boolean;
     handleEnterPress: () => void;
+    controller: FilterController;
+    deselectAllValues: () => Promise<void>;
+    hasActiveFilters: boolean;
 };
 
 export const Header = ({
@@ -14,11 +19,18 @@ export const Header = ({
     onSearch,
     searchEnabled,
     handleEnterPress,
+    hasActiveFilters,
+    deselectAllValues,
 }: HeaderProps): JSX.Element => {
     const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
     return (
         <Container>
-            {!isSearchActive && <Title>{title}</Title>}
+            {!isSearchActive && (
+                <>
+                    <Title>{title}</Title>
+                    <FilterClearIcon isDisabled={!hasActiveFilters} onClick={deselectAllValues} />
+                </>
+            )}
 
             {isSearchActive && (
                 <Search
@@ -29,6 +41,7 @@ export const Header = ({
                     onChange={onSearch}
                 />
             )}
+
             {searchEnabled && (
                 <SearchButton onClick={() => setIsSearchActive((s) => !s)} variant={'ghost_icon'}>
                     {isSearchActive ? (
