@@ -15,6 +15,9 @@ import {
     VerticalDivider,
     RightSection,
 } from './quickFilterStyles';
+import { Chip } from '@equinor/eds-core-react';
+import styled from 'styled-components';
+import { tokens } from '@equinor/eds-tokens';
 
 export const QuickFilter = (): JSX.Element => {
     const [filterGroupOpen, setFilterGroupOpen] = useState<string | null>(null);
@@ -25,6 +28,7 @@ export const QuickFilter = (): JSX.Element => {
     const {
         operations: { clearActiveFilters },
         filterState: { checkHasActiveFilters },
+        filterGroupState: { getInactiveGroupValues },
     } = useFilterApiContext();
 
     const { filterOptions = [] } = useWorkSpace();
@@ -40,6 +44,13 @@ export const QuickFilter = (): JSX.Element => {
     );
 
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
+
+    const calculateHiddenFiltersApplied = () =>
+        filterOptions.reduce(
+            (acc, curr) =>
+                !curr.isQuickFilter && getInactiveGroupValues(curr.name).length > 0 ? acc + 1 : acc,
+            0
+        );
 
     return (
         <>
@@ -63,6 +74,9 @@ export const QuickFilter = (): JSX.Element => {
                                             />
                                         )
                                 )}
+                                <OtherFiltersAppliedInfo
+                                    activeFilters={calculateHiddenFiltersApplied()}
+                                />
                             </>
                         )}
 
@@ -87,3 +101,22 @@ export const QuickFilter = (): JSX.Element => {
         </>
     );
 };
+
+interface OtherFiltersAppliedInfoProps {
+    activeFilters: number;
+}
+
+export function OtherFiltersAppliedInfo({
+    activeFilters,
+}: OtherFiltersAppliedInfoProps): JSX.Element | null {
+    if (activeFilters <= 0) return null;
+
+    return <InfoChip>+{activeFilters} other filters applied</InfoChip>;
+}
+
+const InfoChip = styled(Chip)`
+    background-color: ${tokens.colors.ui.background__info.hex};
+    color: ${tokens.colors.text.static_icons__default.hex};
+    font-weight: 500;
+    font-size: 12px;
+`;
