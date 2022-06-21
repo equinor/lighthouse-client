@@ -7,8 +7,7 @@ import { scopeChangeFormAtomApi } from '../../../Atoms/FormAtomApi/formAtomApi';
 import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
 import { useRequestMutations } from '../../../hooks/mutations/useRequestMutations';
 import { useUnpackRelatedObjects } from '../../../hooks/queries/useUnpackRelatedObjects';
-import { HotUpload } from '../../Attachments/HotUpload';
-import { RequestAttachmentsList } from '../../Attachments/RequestAttachmentsList/RequestAttachmentsList';
+import { RevisionAttachments } from '../../Attachments/RevisionAttachments';
 import { ScopeChangeBaseForm } from '../../Form/BaseForm/ScopeChangeBaseForm';
 import { GuesstimateDiscipline } from '../../Form/DisciplineGuesstimate/DisciplineGuesstimate';
 import { FormBanner } from '../../Form/FormBanner/FormBanner';
@@ -29,6 +28,8 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
         clearState();
         updateAtom({
             ...request,
+            revisionAttachments: request.attachments,
+            attachmentsToDuplicate: request.attachments.map((s) => s.id),
             disciplineGuesstimates: request.disciplineGuesstimates.map(
                 ({ discipline: { procosysCode }, guesstimate }) => ({
                     disciplineCode: procosysCode,
@@ -62,8 +63,7 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
                             <ScopeChangeReferences />
                         </Section>
                         Attachments
-                        <HotUpload />
-                        <RequestAttachmentsList />
+                        <RevisionAttachments />
                     </FlexColumn>
                 </FormWrapper>
             </Wrapper>

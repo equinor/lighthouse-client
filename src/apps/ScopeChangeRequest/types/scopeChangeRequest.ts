@@ -19,7 +19,7 @@ export interface ScopeChangeCreateEditModel {
     originatorId?: string | null;
     /**Attachments id to duplicate */
     attachmentsToDuplicate: string[] | null;
-
+    revisionAttachments: Attachment[] | null;
     //internal placeholder not sent to backend
     newAttachments?: File[];
     //internal placeholder not sent to backend

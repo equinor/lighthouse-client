@@ -55,6 +55,7 @@ export const scopeChangeFormAtomApi = createAtom<ScopeChangeFormModel, FormAtomA
             originatorId: null,
             punchListItemIds: [],
             attachmentsToDuplicate: [],
+            revisionAttachments: [],
         }),
 }));
 

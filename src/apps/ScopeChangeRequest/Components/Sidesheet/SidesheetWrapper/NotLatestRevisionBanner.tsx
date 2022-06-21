@@ -2,17 +2,13 @@ import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
 import { openNewScopeChange } from '../../../functions/openNewScopeChange';
 import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
+import { Revision, ScopeChangeRequest } from '../../../types/scopeChangeRequest';
 
 export const NotLatestRevisionWarningBanner = (): JSX.Element | null => {
-    const { isLatest, latestId } = useScopeChangeContext(
-        ({ request: { isLatestRevision, originator } }) => ({
-            isLatest: isLatestRevision === null ? true : isLatestRevision,
-            latestId: originator?.revisions[originator?.revisions.length - 1]?.id,
-        })
-    );
+    const request = useScopeChangeContext((s) => s.request);
 
-    if (isLatest) return null;
-    const onClickLatest = () => openNewScopeChange(latestId);
+    if (checkIfIsLatestRevision(request)) return null;
+    const onClickLatest = () => openNewScopeChange(getLatestRevision(request).id);
     return (
         <WarningRevisionBannerWrapper>
             <InformationBanner>
@@ -44,3 +40,16 @@ const InformationBanner = styled.div`
     height: 36px;
     width: 100%;
 `;
+
+function checkIfIsLatestRevision(req: ScopeChangeRequest) {
+    return req.isLatestRevision;
+}
+
+function getLatestRevision(req: ScopeChangeRequest): Revision {
+    if (req.isLatestRevision === null) {
+        //Is an original
+        return req.revisions[req.revisions.length - 1];
+    } else {
+        return req.originator.revisions[req.originator.revisions.length - 1];
+    }
+}

@@ -69,7 +69,7 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
                 </Case>
                 <Case when={true}>
                     <div>
-                        {/* <NotLatestRevisionWarningBanner /> */}
+                        <NotLatestRevisionWarningBanner />
                         <SidesheetBanner />
                         <Tabs activeTab={activeTab} onChange={handleChange}>
                             <SidesheetTabList>
