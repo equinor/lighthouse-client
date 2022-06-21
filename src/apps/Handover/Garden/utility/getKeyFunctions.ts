@@ -46,12 +46,12 @@ export const getYearAndWeekAndDayFromString = (dateString: string) => {
     const date = new Date(dateString);
     const dateTime = DateTime.fromJSDate(date);
     if (!dateTime.isValid) return 'N/A';
-    return `${dateTime.weekYear}-${dateTime.month}-${dateTime.weekday}`;
+    return `${dateTime.year}-${dateTime.month}-${dateTime.day}`;
 };
 
 export const getYearAndWeekFromDate = (date: Date): string => {
     const dateTime = DateTime.fromJSDate(date);
-    return `${dateTime.weekYear}-${dateTime.weekNumber}`;
+    return `${dateTime.year}-${dateTime.weekNumber}`;
 };
 
 export const getYearAndWeekFromString = (dateString: string): string => {
