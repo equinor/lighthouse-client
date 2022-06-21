@@ -4,7 +4,7 @@ import { filterConfig, gardenConfig, statusBarConfig, tableConfig } from './util
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
     const { FAM } = httpClient();
-    return await FAM.post('v0.1/dynamic/completion/completionpunchitem/JCA', {
+    return await FAM.post('v0.1/dynamic/completion/custom_completionpunchitemextended/JCA', {
         body: JSON.stringify({}),
         signal,
     });
