@@ -1,25 +1,42 @@
 import { tokens } from '@equinor/eds-tokens';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { openNewScopeChange } from '../../../../../functions/openNewScopeChange';
 import { useScopeChangeContext } from '../../../../../hooks/context/useScopeChangeContext';
+import { scopeChangeQueries } from '../../../../../keys/queries';
 import { MetaData } from '../../../../SearchReferences/searchReferences.styles';
 
-export const RevisionsList = (): JSX.Element => {
-    const revisions = useScopeChangeContext((s) => s.request.revisions);
+export const RevisionsList = (): JSX.Element | null => {
+    const id = useScopeChangeContext((s) => s.request.id);
+    const { data } = useQuery(scopeChangeQueries.revisionsQuery(id));
+
+    if (!data) {
+        return null;
+    }
 
     return (
         <RevisionWrapper>
-            {revisions.map(({ id, isVoided, revisionNumber, sequenceNumber, state, title }) => (
-                <RevisionText key={sequenceNumber}>
-                    <Link onClick={() => openNewScopeChange(id)}>
-                        {sequenceNumber}
-                        {revisionNumber && `-${revisionNumber}`}, {title}
-                    </Link>
-                    <MetaData>
-                        {state}, {isVoided ? 'Voided' : 'Not voided'}
-                    </MetaData>
-                </RevisionText>
-            ))}
+            {data.map(
+                ({
+                    id,
+                    isVoided,
+                    revisionNumber,
+                    sequenceNumber,
+                    state,
+                    title,
+                    workflowStatus,
+                }) => (
+                    <RevisionText key={sequenceNumber}>
+                        <Link onClick={() => openNewScopeChange(id)}>
+                            {sequenceNumber}
+                            {revisionNumber && `-${revisionNumber}`}, {title}
+                        </Link>
+                        <MetaData>
+                            {state}, {workflowStatus}, {isVoided ? 'Voided' : 'Not voided'}
+                        </MetaData>
+                    </RevisionText>
+                )
+            )}
         </RevisionWrapper>
     );
 };

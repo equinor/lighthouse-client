@@ -1,22 +1,33 @@
 import { tokens } from '@equinor/eds-tokens';
+import { useMemo } from 'react';
+import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { openNewScopeChange } from '../../../functions/openNewScopeChange';
 import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
-import { Revision, ScopeChangeRequest } from '../../../types/scopeChangeRequest';
+import { scopeChangeQueries } from '../../../keys/queries';
 
 export const NotLatestRevisionWarningBanner = (): JSX.Element | null => {
-    const request = useScopeChangeContext((s) => s.request);
+    const id = useScopeChangeContext((s) => s.request.id);
+    const { data: revisions } = useQuery(scopeChangeQueries.revisionsQuery(id));
 
-    if (checkIfIsLatestRevision(request)) return null;
-    const onClickLatest = () => openNewScopeChange(getLatestRevision(request).id);
-    return (
-        <WarningRevisionBannerWrapper>
-            <InformationBanner>
-                This is not the latest revision of this request.{' '}
-                <Link onClick={onClickLatest}>Click here to see the latest.</Link>
-            </InformationBanner>
-        </WarningRevisionBannerWrapper>
-    );
+    const lastRevision = useMemo(() => revisions?.[0], [revisions]);
+    if (!revisions || !lastRevision) return null;
+
+    if (lastRevision?.id !== id) {
+        return (
+            <WarningRevisionBannerWrapper>
+                <InformationBanner>
+                    This is not the latest revision of this request.{' '}
+                    {lastRevision && lastRevision.id && (
+                        <Link onClick={() => openNewScopeChange(lastRevision?.id)}>
+                            Click here to see the latest.
+                        </Link>
+                    )}
+                </InformationBanner>
+            </WarningRevisionBannerWrapper>
+        );
+    }
+    return null;
 };
 
 const Link = styled.div`
@@ -40,16 +51,3 @@ const InformationBanner = styled.div`
     height: 36px;
     width: 100%;
 `;
-
-function checkIfIsLatestRevision(req: ScopeChangeRequest) {
-    return req.isLatestRevision;
-}
-
-function getLatestRevision(req: ScopeChangeRequest): Revision {
-    if (req.isLatestRevision === null) {
-        //Is an original
-        return req.revisions[req.revisions.length - 1];
-    } else {
-        return req.originator.revisions[req.originator.revisions.length - 1];
-    }
-}

@@ -133,10 +133,9 @@ export interface ScopeChangeRequest extends ScopeChangeBaseModel {
     sequenceNumber: number;
     workOrders: ScopeChangeWorkOrder[];
     scope: Scope;
+    originatorId: string;
     disciplineGuesstimates: ScopeChangeDisciplineGuesstimates[];
-    revisions: Revision[];
     revisionNumber: number;
-    originator: Originator;
     serialNumber: string;
 }
 
