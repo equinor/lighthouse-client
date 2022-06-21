@@ -1,4 +1,4 @@
-import { Search } from '@equinor/eds-core-react';
+import { Icon, Search } from '@equinor/eds-core-react';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useVirtual } from 'react-virtual';
@@ -6,7 +6,6 @@ import { useWorkSpace } from '../../../../Core/WorkSpace/src/WorkSpaceApi/useWor
 import { FilterGroup } from '../../Hooks/useFilterApi';
 import { useFilterApiContext } from '../../Hooks/useFilterApiContext';
 import { FilterItemValue } from '../FilterItem/FilterItem';
-import Icon from '../Icon/Icon';
 import {
     FilterHeaderGroup,
     SearchButton,
@@ -58,7 +57,11 @@ export const FilterGroupeComponent: React.FC<FilterGroupeComponentProps> = ({
                 </Switch>
                 {isSearchable && (
                     <SearchButton variant="ghost_icon" onClick={handleSearchButtonClick}>
-                        <Icon name={searchActive ? 'chevron_right' : 'search'} size={24} />
+                        {searchActive ? (
+                            <Icon name={'chevron_right'} />
+                        ) : (
+                            <Icon name={'search'} id={'search'} />
+                        )}
                     </SearchButton>
                 )}
             </FilterHeaderGroup>

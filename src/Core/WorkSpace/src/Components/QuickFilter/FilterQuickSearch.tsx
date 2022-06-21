@@ -37,6 +37,7 @@ export const FilterQuickSearch = (): JSX.Element => {
     }
     return (
         <Search
+            size={50}
             onChange={handleClear}
             placeholder={`Search`}
             onInput={handleInput}

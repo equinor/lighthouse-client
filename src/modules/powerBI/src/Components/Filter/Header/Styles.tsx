@@ -8,6 +8,13 @@ export const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     white-space: nowrap;
+    min-height: 36px;
+    #search {
+        visibility: hidden;
+    }
+    &:hover #search {
+        visibility: visible;
+    }
 `;
 
 export const Title = styled.div`
