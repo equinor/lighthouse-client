@@ -11,9 +11,6 @@ export const columnNames = [
     'MechanicalCompletionPackageNo',
     'CommissioningPackageNo',
     'Description',
-    'PlannedCompletionDate',
-    'ActualCompletionDate',
-    'RemainingManHours',
     'ChecklistID',
 ];
 export const getLoopContent = async (
