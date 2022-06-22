@@ -1,4 +1,5 @@
 import { StatusItem } from '@equinor/lighthouse-status-bar';
+import { KpiBar } from '../../../../packages/KPI/src';
 import { Loop } from '../../types';
 
 type Kpi = {
@@ -10,7 +11,10 @@ type Kpi = {
     overdueChecklists: number;
     complete: number;
 };
-
+type PartialKpi = Pick<
+    Kpi,
+    'ready' | 'overdueChecklists' | 'checklistsSigned' | 'checklistsNotSigned' | 'complete'
+>;
 const getKpis = (loops: Loop[]): Kpi => {
     const uniqueLoops = new Set();
     const counts = loops.reduce(
@@ -31,50 +35,51 @@ const getKpis = (loops: Loop[]): Kpi => {
             return acc;
         },
         {
-            uniqueLoopTags: 0,
-            uniqueChecklists: 0,
             checklistsSigned: 0,
             checklistsNotSigned: 0,
             ready: 0,
-            complete: 0,
             overdueChecklists: 0,
-        } as Kpi
+            complete: 0,
+        } as PartialKpi
     );
 
     return {
         ...counts,
         uniqueChecklists: loops.length,
         uniqueLoopTags: uniqueLoops.size,
-        complete: (counts.complete / counts.uniqueChecklists) * 100,
+        complete: Number(((counts.complete / loops.length) * 100).toFixed(2)),
     };
 };
+function numberFormat(number: number): string {
+    return parseFloat(Math.round(number).toString()).toLocaleString('no');
+}
 export const statusBarConfig = (data: Loop[]): StatusItem[] => {
     const kpis = getKpis(data);
 
     return [
         {
             title: 'Loop tags',
-            value: () => kpis.uniqueLoopTags.toString(),
+            value: () => numberFormat(kpis.uniqueLoopTags),
         },
         {
             title: 'Checklists',
-            value: () => kpis.uniqueChecklists.toString(),
+            value: () => numberFormat(kpis.uniqueChecklists),
         },
         {
             title: 'Checklist signed',
-            value: () => kpis.checklistsSigned.toString(),
+            value: () => numberFormat(kpis.checklistsSigned),
         },
         {
             title: 'Checklist not signed',
-            value: () => kpis.checklistsNotSigned.toString(),
+            value: () => numberFormat(kpis.checklistsNotSigned),
         },
         {
             title: 'Ready',
-            value: () => kpis.ready.toString(),
+            value: () => numberFormat(kpis.ready),
         },
         {
             title: 'Overdue checklists',
-            value: () => kpis.overdueChecklists.toString(),
+            value: () => numberFormat(kpis.overdueChecklists),
         },
         {
             title: '% complete',
