@@ -48,7 +48,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
         <div>
             <Banner padding="0 1.2em">
                 <BannerItem
-                    title="MC Status"
+                    title="Checklist status"
                     value={
                         item.loopContentStatus ? (
                             <Status
@@ -98,16 +98,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                 <Tabs activeTab={activeTab} onChange={handleChange}>
                     <SidesheetTabList>
                         <Tabs.Tab>Overview</Tabs.Tab>
-                        <Tabs.Tab>
-                            Work orders{' '}
-                            {isLoadingWorkorders ? (
-                                <Progress.Dots color="primary" />
-                            ) : workorders ? (
-                                `(${workorders.length})`
-                            ) : (
-                                `(${0})`
-                            )}
-                        </Tabs.Tab>
+
                         <Tabs.Tab>3D</Tabs.Tab>
                     </SidesheetTabList>
                     <Tabs.Panels style={{ padding: '1em' }}>
@@ -116,13 +107,7 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                             <h3>Content</h3>
                             <LoopContentTable loop={item} />
                         </Tabs.Panel>
-                        <Tabs.Panel>
-                            <LoopWorkOrderTab
-                                workorders={workorders}
-                                isLoading={isLoadingWorkorders}
-                                error={workorderError instanceof Error ? workorderError : null}
-                            />
-                        </Tabs.Panel>
+
                         <Tabs.Panel>3D</Tabs.Panel>
                     </Tabs.Panels>
                 </Tabs>
