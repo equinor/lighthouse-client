@@ -93,7 +93,7 @@ export const FilterGroupPopoverMenu = ({
                     </>
                 )}
 
-                <FilterItemList items={getValuesMatchingSearchText().length}>
+                <List>
                     <VirtualList
                         items={getValuesMatchingSearchText()}
                         rowLength={getValuesMatchingSearchText().length}
@@ -109,7 +109,7 @@ export const FilterGroupPopoverMenu = ({
                             )
                         }
                     />
-                </FilterItemList>
+                </List>
                 <VerticalLine />
                 <ClearButtonWrapper>
                     <Button onClick={markAllValuesActive} variant="ghost">
@@ -120,6 +120,13 @@ export const FilterGroupPopoverMenu = ({
         </Menu>
     );
 };
+
+const List = styled.div`
+    max-height: 250px;
+    padding: 8px 8px;
+    overflow: scroll;
+    height: auto;
+`;
 
 interface VirtualListProps {
     items: FilterValueType[];
@@ -132,52 +139,25 @@ interface VirtualListProps {
 }
 const VirtualList = ({
     items,
-    rowLength,
     handleFilterItemClick,
     handleFilterItemLabelClick,
     isChecked,
     count,
     valueRender,
 }: VirtualListProps) => {
-    const ref = useRef<HTMLDivElement>(null);
-
-    const rowVirtualizer = useVirtual({
-        parentRef: ref,
-        size: rowLength,
-        estimateSize: useCallback(() => 22, []),
-    });
-
     return (
-        <div style={{ height: '100%', overflowY: 'scroll', overflowX: 'hidden' }} ref={ref}>
-            <VirtualRowWrapper
-                style={{
-                    height: `${rowVirtualizer.totalSize}px`,
-                }}
-            >
-                {rowVirtualizer.virtualItems.map((virtualRow) => {
-                    const item = items[virtualRow.index];
-                    return (
-                        <FilterItemValue
-                            virtualItem={virtualRow}
-                            key={item}
-                            ValueRender={() => valueRender(item)}
-                            handleFilterItemLabelClick={() => handleFilterItemLabelClick(item)}
-                            filterValue={item}
-                            handleFilterItemClick={() => handleFilterItemClick(item)}
-                            isChecked={isChecked(item)}
-                            count={count(item)}
-                        />
-                    );
-                })}
-            </VirtualRowWrapper>
-        </div>
+        <>
+            {items.map((s) => (
+                <FilterItemCheckbox
+                    key={s}
+                    ValueRender={() => valueRender(s)}
+                    filterValue={s}
+                    handleFilterItemClick={() => handleFilterItemClick(s)}
+                    handleFilterItemLabelClick={() => handleFilterItemLabelClick(s)}
+                    isChecked={isChecked(s)}
+                    count={count(s)}
+                />
+            ))}
+        </>
     );
 };
-
-const VirtualRowWrapper = styled.div`
-    width: auto;
-    min-width: 180px;
-    position: relative;
-`;
-
-export const FilterItemValue = memo(FilterItemCheckbox);

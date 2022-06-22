@@ -46,16 +46,6 @@ export const MenuWrapper = styled.div`
 export const FilterItemList = styled.div<{ items: number }>`
     height: ${({ items }) => (items > 10 ? '300px' : `${items * 22 + 16}px`)};
     padding: 8px 8px;
-
-    ::-webkit-scrollbar-thumb {
-        background: ${tokens.colors.ui.background__medium.hex};
-        border-radius: 5px;
-    }
-
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-        background: ${tokens.colors.ui.background__medium.hex};
-    }
 `;
 
 export const ClearButtonWrapper = styled.div`

@@ -13,10 +13,13 @@ interface FilterItemCheckboxProps {
     isChecked: boolean;
     ValueRender: () => JSX.Element;
     count?: number;
+}
+
+interface VirtualFilterItemCheckboxProps extends FilterItemCheckboxProps {
     virtualItem: VirtualItem;
 }
 
-export const FilterItemCheckbox = ({
+export const VirtualFilterItemCheckbox = ({
     count,
     filterValue,
     handleFilterItemClick,
@@ -24,12 +27,15 @@ export const FilterItemCheckbox = ({
     handleFilterItemLabelClick,
     ValueRender,
     virtualItem,
-}: FilterItemCheckboxProps): JSX.Element => {
+}: VirtualFilterItemCheckboxProps): JSX.Element => {
     return (
         <FilterItemWrap
             style={{
                 transform: `translateY(${virtualItem.start}px)`,
                 height: `${virtualItem.size}px`,
+                position: 'absolute',
+                top: 0,
+                left: 0,
             }}
             key={filterValue}
         >
@@ -54,9 +60,7 @@ export const FilterItemWrap = styled.div`
     display: grid;
     align-items: center;
     padding-top: 2px;
-    position: absolute;
-    top: 0;
-    left: 0;
+
     width: 100%;
     padding-bottom: 2px;
     > span {
@@ -75,3 +79,22 @@ export const FilterItemWrap = styled.div`
         background-color: ${tokens.colors.interactive.primary__selected_hover.rgba};
     }
 `;
+
+export const FilterItemCheckbox = ({
+    count,
+    filterValue,
+    handleFilterItemClick,
+    isChecked,
+    handleFilterItemLabelClick,
+    ValueRender,
+}: FilterItemCheckboxProps): JSX.Element => {
+    return (
+        <FilterItemWrap key={filterValue}>
+            <Checkbox onChange={handleFilterItemClick} size={12} checked={!isChecked} />
+            <FilterLabelWrapper onClick={handleFilterItemLabelClick}>
+                <ValueRender />
+            </FilterLabelWrapper>
+            {typeof count === 'number' && <Count>({count})</Count>}
+        </FilterItemWrap>
+    );
+};

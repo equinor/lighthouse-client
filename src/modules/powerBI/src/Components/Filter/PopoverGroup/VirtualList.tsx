@@ -1,7 +1,8 @@
+import { tokens } from '@equinor/eds-tokens';
 import { useRef, useCallback, memo } from 'react';
 import { useVirtual } from 'react-virtual';
 import styled from 'styled-components';
-import { FilterItemCheckbox } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/FilterItemCheckbox';
+import { VirtualFilterItemCheckbox } from '../../../../../../Core/WorkSpace/src/Components/QuickFilter/FilterItemCheckbox';
 import { PowerBiFilterItem, ActiveFilter } from '../../../Types';
 
 interface VirtualListProps {
@@ -26,7 +27,7 @@ export function VirtualList({
     });
 
     return (
-        <div style={{ height: '100%', overflowY: 'scroll', overflowX: 'hidden' }} ref={ref}>
+        <Parent ref={ref}>
             <VirtualRowWrapper
                 style={{
                     height: `${rowVirtualizer.totalSize}px`,
@@ -47,7 +48,7 @@ export function VirtualList({
                     );
                 })}
             </VirtualRowWrapper>
-        </div>
+        </Parent>
     );
 }
 
@@ -57,4 +58,19 @@ const VirtualRowWrapper = styled.div`
     position: relative;
 `;
 
-export const FilterItemValue = memo(FilterItemCheckbox);
+export const FilterItemValue = memo(VirtualFilterItemCheckbox);
+
+const Parent = styled.div`
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    ::-webkit-scrollbar-thumb {
+        background: ${tokens.colors.ui.background__medium.hex};
+        border-radius: 5px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: ${tokens.colors.ui.background__medium.hex};
+    }
+`;
