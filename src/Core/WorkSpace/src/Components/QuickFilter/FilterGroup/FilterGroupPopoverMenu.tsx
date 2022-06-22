@@ -1,5 +1,7 @@
 import { Menu, Button, Search } from '@equinor/eds-core-react';
-import { useState } from 'react';
+import { memo, useCallback, useRef, useState } from 'react';
+import { useVirtual } from 'react-virtual';
+import styled from 'styled-components';
 import { useFilterApiContext } from '../../../../../../packages/Filter/Hooks/useFilterApiContext';
 import { FilterValueType } from '../../../../../../packages/Filter/Types';
 import { FilterItemCheckbox } from '../FilterItemCheckbox';
@@ -91,23 +93,23 @@ export const FilterGroupPopoverMenu = ({
                     </>
                 )}
 
-                <FilterItemList>
-                    {getValuesMatchingSearchText().map((value) => (
-                        <FilterItemCheckbox
-                            ValueRender={() => CustomRender(value)}
-                            handleFilterItemLabelClick={() => handleFilterItemLabelClick(value)}
-                            key={value}
-                            filterValue={value}
-                            handleFilterItemClick={() => handleFilterItemClick(value)}
-                            isChecked={isChecked(value)}
-                            count={getCountForFilterValue(
+                <List>
+                    <VirtualList
+                        items={getValuesMatchingSearchText()}
+                        rowLength={getValuesMatchingSearchText().length}
+                        isChecked={isChecked}
+                        handleFilterItemLabelClick={(value) => handleFilterItemLabelClick(value)}
+                        handleFilterItemClick={(value) => handleFilterItemClick(value)}
+                        valueRender={(value) => CustomRender(value)}
+                        count={(value) =>
+                            getCountForFilterValue(
                                 { name: groupName, values },
                                 value,
                                 valueFormatter
-                            )}
-                        />
-                    ))}
-                </FilterItemList>
+                            )
+                        }
+                    />
+                </List>
                 <VerticalLine />
                 <ClearButtonWrapper>
                     <Button onClick={markAllValuesActive} variant="ghost">
@@ -116,5 +118,46 @@ export const FilterGroupPopoverMenu = ({
                 </ClearButtonWrapper>
             </MenuWrapper>
         </Menu>
+    );
+};
+
+const List = styled.div`
+    max-height: 250px;
+    padding: 8px 8px;
+    overflow: scroll;
+    height: auto;
+`;
+
+interface VirtualListProps {
+    items: FilterValueType[];
+    rowLength: number;
+    isChecked: (value: FilterValueType) => boolean;
+    handleFilterItemLabelClick: (value: FilterValueType) => void;
+    handleFilterItemClick: (value: FilterValueType) => void;
+    count: (value: FilterValueType) => number;
+    valueRender: (value: FilterValueType) => JSX.Element;
+}
+const VirtualList = ({
+    items,
+    handleFilterItemClick,
+    handleFilterItemLabelClick,
+    isChecked,
+    count,
+    valueRender,
+}: VirtualListProps) => {
+    return (
+        <>
+            {items.map((s) => (
+                <FilterItemCheckbox
+                    key={s}
+                    ValueRender={() => valueRender(s)}
+                    filterValue={s}
+                    handleFilterItemClick={() => handleFilterItemClick(s)}
+                    handleFilterItemLabelClick={() => handleFilterItemLabelClick(s)}
+                    isChecked={isChecked(s)}
+                    count={count(s)}
+                />
+            ))}
+        </>
     );
 };
