@@ -4,7 +4,7 @@ import { CustomGroupByKeys } from '../../types';
 import { Loop } from '../../types/loop';
 import { ExtendedGardenFields } from '../config';
 //TODO: Might need to split dates into two properties from API
-const getFieldKeyBasedOnPlannedForecast = (
+export const getFieldKeyBasedOnPlannedForecast = (
     groupBy: ExtendedGardenFields | string,
     plannedForecast: string
 ): keyof Loop => {
@@ -13,7 +13,8 @@ const getFieldKeyBasedOnPlannedForecast = (
             return 'rfC_Planned_Forecast_Date';
         case 'RFO':
             return 'rfO_Planned_Forecast_Date';
-
+        case 'MCComplete':
+            return 'woPlannedCompletionDate';
         default:
             return 'rfC_Planned_Forecast_Date';
     }
