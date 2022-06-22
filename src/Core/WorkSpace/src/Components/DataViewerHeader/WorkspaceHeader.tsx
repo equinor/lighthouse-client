@@ -40,7 +40,6 @@ export const WorkspaceHeader = ({ tabs, group, shortName }: WorkspaceHeaderProps
 
                 <HeaderTabButtons tabs={tabs} />
 
-                <RefreshButton />
                 <BookmarkDropdown appKey={shortName} subSystem={group} />
                 <ViewSettings tabs={tabs} />
             </RightSection>
