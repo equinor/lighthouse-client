@@ -6,7 +6,7 @@ import { Description, Title, Wrapper } from './SearchResultItemStyles';
 interface SearchResultItemProps {
     id: string;
     title: string;
-    description: string;
+    description?: string;
     searchText: string;
     action: (id: string) => void;
     index: number;
@@ -25,13 +25,14 @@ export const SearchResultItem = ({
         focusProps: { ref, tabIndex, onClick },
     } = useArrowNavigationWithFocusState(0, index);
 
-    function handleOnClick(): void {
+    function handleOnMouseClick(): void {
         action(id);
         onClick();
     }
-    const handleOnKeyPress: KeyboardEventHandler<HTMLDivElement> = (ev) => {
-        if (ev.keyCode === 13) {
-            ev.preventDefault();
+
+    const handleOnEnterKeyPress: KeyboardEventHandler<HTMLDivElement> = (event) => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
             action(id);
             onClick();
         }
@@ -39,9 +40,9 @@ export const SearchResultItem = ({
 
     return (
         <Wrapper
-            onClick={handleOnClick}
+            onClick={handleOnMouseClick}
             selected={selected}
-            onKeyDown={handleOnKeyPress}
+            onKeyDown={handleOnEnterKeyPress}
             ref={ref}
             tabIndex={tabIndex}
         >
@@ -49,7 +50,7 @@ export const SearchResultItem = ({
                 {getHighlightedText(title, searchText)}
             </Title>
             <Description title={description}>
-                Description: {getHighlightedText(description, searchText)}
+                {description ? `Description: ${getHighlightedText(description, searchText)}` : ''}
             </Description>
         </Wrapper>
     );

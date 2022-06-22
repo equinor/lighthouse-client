@@ -1,14 +1,7 @@
 import { isProduction, readClientRegistry } from '@equinor/lighthouse-portal-client';
-export interface AppSearchItem {
-    key: string;
-    title: string;
-    description: string;
-    id: string;
-    uri: string | undefined;
-    group: string;
-}
+import { SearchItem } from '../../Service/SearchApi';
 
-export function appsSearchRequest(searchString: string): AppSearchItem[] {
+export function appsSearchRequest(searchString: string): SearchItem[] {
     const { apps } = readClientRegistry();
 
     if (searchString.length === 0) return [];
@@ -24,7 +17,7 @@ export function appsSearchRequest(searchString: string): AppSearchItem[] {
         .map((app) => ({
             key: app.shortName,
             title: app.title,
-            description: app.tags.length > 0 ? `Tags: ${app.tags.toString()}` : '',
+            description: app.tags.length > 0 ? `Tags: ${app.tags.toString()}` : undefined,
             id: app.shortName,
             uri: app.uri && app.uri(isProduction()),
             group: app.groupe,

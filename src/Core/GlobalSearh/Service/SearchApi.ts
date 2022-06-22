@@ -2,7 +2,7 @@ export interface SearchItem {
     key: string;
     id: string;
     title: string;
-    description: string;
+    description?: string;
     uri?: string;
     group?: string;
     objects?: any;
