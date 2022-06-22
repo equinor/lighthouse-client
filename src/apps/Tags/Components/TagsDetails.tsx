@@ -33,20 +33,25 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
         <Wrapper>
             <SidesheetBanner>
                 <TextItem
-                    title="System"
-                    value={
-                        item.SystemCode
-                            ? `${item.SystemCode || ''}, ${item.SystemDescription || ''}`
-                            : ''
+                    title="MC Pkg"
+                    value={item.McPkgNo}
+                    onClick={
+                        item.McPkgNo
+                            ? () => {
+                                  window.location.hash = `mcDetails/${item.McPkgNo}`;
+                              }
+                            : undefined
                     }
                 />
-
                 <TextItem
-                    title="Status"
-                    value={
-                        item.StatusCode
-                            ? `${item.StatusCode || ''}, ${item.StatusDescription || ''}`
-                            : ''
+                    title="Comm Pkg"
+                    value={item.CommPkgNo}
+                    onClick={
+                        item.CommPkgNo
+                            ? () => {
+                                  window.location.hash = `handoverDetails/${item.CommPkgNo}`;
+                              }
+                            : undefined
                     }
                 />
             </SidesheetBanner>
@@ -61,6 +66,23 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
                     <Heading variant="h5">Tag Details</Heading>
 
                     <TextItem title="Description" value={item.Description} />
+                    <TextItem
+                        title="System"
+                        value={
+                            item.SystemCode
+                                ? `${item.SystemCode || ''}, ${item.SystemDescription || ''}`
+                                : ''
+                        }
+                    />
+
+                    <TextItem
+                        title="Status"
+                        value={
+                            item.StatusCode
+                                ? `${item.StatusCode || ''}, ${item.StatusDescription || ''}`
+                                : ''
+                        }
+                    />
                     <TextItem
                         title="Tag Function"
                         value={
@@ -99,28 +121,6 @@ export function TagDetail({ item, actions }: SidesheetWrapperProps): JSX.Element
                                       item.ProjectDescription || ''
                                   }`
                                 : ''
-                        }
-                    />
-                    <TextItem
-                        title="MC Pkg"
-                        value={item.McPkgNo}
-                        onClick={
-                            item.McPkgNo
-                                ? () => {
-                                      window.location.hash = `mcDetails/${item.McPkgNo}`;
-                                  }
-                                : undefined
-                        }
-                    />
-                    <TextItem
-                        title="Comm Pkg"
-                        value={item.CommPkgNo}
-                        onClick={
-                            item.CommPkgNo
-                                ? () => {
-                                      window.location.hash = `handoverDetails/${item.CommPkgNo}`;
-                                  }
-                                : undefined
                         }
                     />
                 </div>

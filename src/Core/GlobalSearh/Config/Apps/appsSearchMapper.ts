@@ -7,17 +7,21 @@ function navigate(uri: string) {
     window.history.pushState({}, '', url);
 }
 
-export const appsSearchMapper = (data?: SearchItem[]): SearchResult => ({
-    type: 'apps',
-    title: 'Applications',
-    color: tokens.colors.interactive.success__resting.rgba,
-    action: (id: string, item: SearchItem) => {
-        if (item.uri) {
-            window.open(item.uri, '_blank');
-            return;
-        }
+export const appsSearchMapper = (data?: SearchItem[]): SearchResult | undefined => {
+    return data && data.length > 0
+        ? {
+              type: 'apps',
+              title: 'Applications',
+              color: tokens.colors.interactive.success__resting.rgba,
+              action: (id: string, item: SearchItem) => {
+                  if (item.uri) {
+                      window.open(item.uri, '_blank');
+                      return;
+                  }
 
-        navigate(`${item.group}/${id}`);
-    },
-    items: data || [],
-});
+                  navigate(`${item.group}/${id}`);
+              },
+              items: data,
+          }
+        : undefined;
+};

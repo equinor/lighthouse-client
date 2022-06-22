@@ -50,7 +50,11 @@ export const SearchResultItem = ({
                 {getHighlightedText(title, searchText)}
             </Title>
             <Description title={description}>
-                {description ? `Description: ${getHighlightedText(description, searchText)}` : '-'}
+                {description ? (
+                    <> Description: {getHighlightedText(description, searchText)}</>
+                ) : (
+                    '-'
+                )}
             </Description>
         </Wrapper>
     );

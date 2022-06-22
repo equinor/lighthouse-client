@@ -33,8 +33,8 @@ export type SearchRequest<T> = (
 export interface SearchConfig<T> {
     type: string;
     searchMapper:
-        | ((data?: T[]) => SearchResult[] | SearchResult)
-        | ((data?: T) => SearchResult[] | SearchResult);
+        | ((data?: T[]) => SearchResult[] | SearchResult | undefined)
+        | ((data?: T) => SearchResult[] | SearchResult | undefined);
     searchRequest: SearchRequest<T>;
 }
 
@@ -104,7 +104,7 @@ export class Search {
         searchItem: SearchConfig<any>
     ): Promise<void> => {
         const results = searchItem.searchMapper(await searchItem.searchRequest(this.searchText));
-        if (searchId === this.searchId)
+        if (searchId === this.searchId && results)
             this.updateSearchResult(Array.isArray(results) ? results : [results]);
     };
 

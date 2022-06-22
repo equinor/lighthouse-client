@@ -23,7 +23,7 @@ export function proCoSysSearchMapper(response?: SearchResponse): SearchResult[] 
                         key: item.key,
                         id: tagNo,
                         title: tagNo,
-                        description,
+                        description: description,
                         objects: item.tag,
                     };
                 },
