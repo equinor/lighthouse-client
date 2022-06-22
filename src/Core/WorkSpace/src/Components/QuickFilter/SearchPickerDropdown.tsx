@@ -1,7 +1,7 @@
 import { Menu } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { ClickableIcon } from '@equinor/lighthouse-components';
 import { useRef, useState } from 'react';
-import { ClickableIcon } from '../../../../../packages/Components/Icon';
 
 interface MenuItem {
     title: string;
