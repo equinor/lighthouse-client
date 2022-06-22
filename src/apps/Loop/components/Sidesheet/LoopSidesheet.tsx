@@ -1,5 +1,6 @@
 import { Progress, Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
+import { statusColorMap } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
@@ -8,6 +9,7 @@ import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types';
 import { getWorkorders, workorderColumnNames } from '../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
+import { Status } from '../Status';
 import { Banner } from './Banner';
 import { BannerItem } from './BannerItem';
 import { LoopContentTable } from './LoopContentTable';
@@ -25,8 +27,8 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
         setActiveTab(index);
     };
     useEffect(() => {
-        actions.setTitle(`${item.tagNo}, ${item.checklistId}`);
-    }, []);
+        actions.setTitle(`${item.tagNo}, ${item.description}`);
+    }, [item.tagNo, item.description]);
     const workorderExpressions = generateExpressions('checklistID', 'Equals', [
         item.checklistId || '',
     ]);
@@ -45,7 +47,19 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
     return (
         <div>
             <Banner padding="0 1.2em">
-                <BannerItem title="MC Status" value={item.loopContentStatus ?? 'N/A'}></BannerItem>
+                <BannerItem
+                    title="MC Status"
+                    value={
+                        item.loopContentStatus ? (
+                            <Status
+                                content={item.loopContentStatus}
+                                statusColor={statusColorMap[item.loopContentStatus]}
+                            />
+                        ) : (
+                            'N/A'
+                        )
+                    }
+                ></BannerItem>
                 <BannerItem
                     title="Cmpkg"
                     value={
@@ -94,7 +108,6 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                                 `(${0})`
                             )}
                         </Tabs.Tab>
-                        <Tabs.Tab>Checklists</Tabs.Tab>
                         <Tabs.Tab>3D</Tabs.Tab>
                     </SidesheetTabList>
                     <Tabs.Panels style={{ padding: '1em' }}>
@@ -110,7 +123,6 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                                 error={workorderError instanceof Error ? workorderError : null}
                             />
                         </Tabs.Panel>
-                        <Tabs.Panel>Checklists</Tabs.Panel>
                         <Tabs.Panel>3D</Tabs.Panel>
                     </Tabs.Panels>
                 </Tabs>
