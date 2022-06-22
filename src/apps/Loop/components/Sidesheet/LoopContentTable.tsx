@@ -65,6 +65,7 @@ export const LoopContentTable = ({ loop }: LoopContentProps) => {
             error={error instanceof Error ? error : null}
             isFetching={isLoading}
             resourceName="Loop content"
+            height={300}
         />
     );
 };

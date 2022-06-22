@@ -11,6 +11,9 @@ export const fieldSettings: FieldSettings<Loop, ExtendedGardenFields> = {
     functionalSystem: {
         label: 'Functional system',
     },
+    tagNo: {
+        label: 'Loop',
+    },
     RFC: {
         label: 'RFC',
         getKey: getDateKey,

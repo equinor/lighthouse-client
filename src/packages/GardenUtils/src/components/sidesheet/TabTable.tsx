@@ -11,6 +11,7 @@ type TabTableProps<T extends Record<string | number, unknown>> = {
     isFetching: boolean;
     error: Error | null;
     resourceName: string;
+    height?: number;
 };
 /**
  * Component for displaying data in tabular format inside the Garden's package sidesheet.
@@ -18,10 +19,17 @@ type TabTableProps<T extends Record<string | number, unknown>> = {
 export const TabTable = <T extends Record<string | number, unknown>>(
     props: TabTableProps<T>
 ): JSX.Element => {
-    const { packages, columns, error, isFetching, resourceName } = props;
+    const { packages, columns, error, isFetching, resourceName, height } = props;
     if (isFetching) return <NoResourceData>{`Fetching ${resourceName}`}</NoResourceData>;
     if (error || packages === undefined || packages.length === 0) {
         return <NoResourceData>{`No ${resourceName}`}</NoResourceData>;
     }
-    return <Table columns={columns} data={packages} options={{ groupByFn: defaultGroupByFn }} />;
+    return (
+        <Table
+            columns={columns}
+            data={packages}
+            options={{ groupByFn: defaultGroupByFn }}
+            height={height}
+        />
+    );
 };

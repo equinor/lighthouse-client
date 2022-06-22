@@ -1,20 +1,19 @@
-import { Progress, Tabs } from '@equinor/eds-core-react';
+import { Tabs } from '@equinor/eds-core-react';
 import { tokens } from '@equinor/eds-tokens';
 import { statusColorMap } from '@equinor/GardenUtils';
 import { SidesheetApi } from '@equinor/sidesheet';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
 import styled from 'styled-components';
 import { proCoSysUrls } from '../../../../packages/ProCoSysUrls/procosysUrl';
 import { Loop } from '../../types';
-import { getWorkorders, workorderColumnNames } from '../../utility/api';
+import { workorderColumnNames } from '../../utility/api';
 import { generateExpressions, generateFamRequest } from '../../utility/helpers/fam';
 import { Status } from '../Status';
 import { Banner } from './Banner';
 import { BannerItem } from './BannerItem';
-import { LoopContentTable } from './LoopContentTable';
+import { Checklists } from './Checklists';
+import { LoopContentDetails } from './LoopContentDetails';
 import { LoopDetails } from './LoopDetails';
-import { LoopWorkOrderTab } from './LoopWorkorderTable';
 import { ItemLink } from './sidesheet-styles';
 
 type LoopSidesheetProps = {
@@ -37,23 +36,23 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
         'Or',
         workorderExpressions
     );
-    const {
-        data: workorders,
-        isLoading: isLoadingWorkorders,
-        error: workorderError,
-    } = useQuery(['workorder', item.checklistId], ({ signal }) =>
-        getWorkorders(workorderRequestArgs, signal)
-    );
+    // const {
+    //     data: workorders,
+    //     isLoading: isLoadingWorkorders,
+    //     error: workorderError,
+    // } = useQuery(['workorder', item.checklistId], ({ signal }) =>
+    //     getWorkorders(workorderRequestArgs, signal)
+    // );
     return (
-        <div>
+        <div style={{ height: '100%' }}>
             <Banner padding="0 1.2em">
                 <BannerItem
                     title="Checklist status"
                     value={
-                        item.loopContentStatus ? (
+                        item.status ? (
                             <Status
-                                content={item.loopContentStatus}
-                                statusColor={statusColorMap[item.loopContentStatus]}
+                                content={item.status}
+                                statusColor={statusColorMap[item.status]}
                             />
                         ) : (
                             'N/A'
@@ -94,27 +93,45 @@ export const LoopSidesheet = ({ item, actions }: LoopSidesheetProps) => {
                 />
                 <BannerItem title="Milestone" value={item.priority1 || 'N/A'} />
             </Banner>
-            <div>
-                <Tabs activeTab={activeTab} onChange={handleChange}>
+            <div style={{ height: '100%', gridTemplateRows: 'auto 1fr' }}>
+                <SidesheetTabs activeTab={activeTab} onChange={handleChange}>
                     <SidesheetTabList>
                         <Tabs.Tab>Overview</Tabs.Tab>
-
                         <Tabs.Tab>3D</Tabs.Tab>
                     </SidesheetTabList>
-                    <Tabs.Panels style={{ padding: '1em' }}>
+                    <Tabs.Panels
+                        style={{
+                            padding: '1em',
+                            height: '83%',
+                            overflowY: 'auto',
+                            overflowX: 'hidden',
+                        }}
+                    >
                         <Tabs.Panel>
-                            <LoopDetails loop={item} />
-                            <h3>Content</h3>
-                            <LoopContentTable loop={item} />
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                }}
+                            >
+                                <LoopDetails loop={item} />
+                                <Checklists tagNo={item.loopId!} />
+                                <LoopContentDetails item={item} />
+                            </div>
                         </Tabs.Panel>
 
                         <Tabs.Panel>3D</Tabs.Panel>
                     </Tabs.Panels>
-                </Tabs>
+                </SidesheetTabs>
             </div>
         </div>
     );
 };
+const SidesheetTabs = styled(Tabs)`
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+`;
 export const SidesheetTabList = styled(Tabs.List)`
     background-color: ${tokens.colors.ui.background__light.hex};
 `;

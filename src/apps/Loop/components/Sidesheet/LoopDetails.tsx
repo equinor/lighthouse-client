@@ -1,15 +1,12 @@
-import { formatDateString, statusColorMap, StringCell, Table } from '@equinor/GardenUtils';
-import { Case, Switch } from '@equinor/JSX-Switch';
+import { StringCell, Table } from '@equinor/GardenUtils';
 import { Loop } from '../../types';
-import { Status } from '../Status';
 
 type LoopDetailsProps = {
     loop: Loop;
 };
 export const LoopDetails = ({ loop }: LoopDetailsProps) => {
-    console.log('loop', loop);
     return (
-        <div>
+        <div style={{ height: 'fit-content' }}>
             <h3>Details</h3>
             <Table>
                 <tbody>
