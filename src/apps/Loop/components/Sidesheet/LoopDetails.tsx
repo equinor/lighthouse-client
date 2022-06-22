@@ -7,11 +7,18 @@ type LoopDetailsProps = {
     loop: Loop;
 };
 export const LoopDetails = ({ loop }: LoopDetailsProps) => {
+    console.log('loop', loop);
     return (
         <div>
             <h3>Details</h3>
             <Table>
                 <tbody>
+                    <tr>
+                        <td>System</td>
+                        <td>
+                            <StringCell value={loop.functionalSystem} />
+                        </td>
+                    </tr>
                     <tr>
                         <td>Project</td>
                         <td>
@@ -25,56 +32,17 @@ export const LoopDetails = ({ loop }: LoopDetailsProps) => {
                         </td>
                     </tr>
                     <tr>
-                        <td>Form type</td>
+                        <td>Status</td>
+
                         <td>
-                            <StringCell value={loop.formularType} />
+                            <StringCell value={loop.status} />
                         </td>
                     </tr>
                     <tr>
-                        <td>Responsible</td>
+                        <td>Contractor</td>
+
                         <td>
                             <StringCell value={loop.responsible} />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>MC status of content</td>
-                        <td>
-                            {loop.loopContentStatus ? (
-                                <Status
-                                    content={loop.loopContentStatus}
-                                    statusColor={statusColorMap[loop.loopContentStatus]}
-                                />
-                            ) : (
-                                '-'
-                            )}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Planned MC complete of content</td>
-                        <td>
-                            {loop.woPlannedCompletionDate ? (
-                                <StringCell
-                                    value={formatDateString(
-                                        loop.woPlannedCompletionDate.toString()
-                                    )}
-                                />
-                            ) : (
-                                '-'
-                            )}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Actual MC complete</td>
-                        <td>
-                            {loop.woActualCompletionDate ? (
-                                <StringCell
-                                    value={formatDateString(loop.woActualCompletionDate.toString())}
-                                />
-                            ) : (
-                                '-'
-                            )}
                         </td>
                     </tr>
                 </tbody>
