@@ -10,7 +10,7 @@ import {
     getHighlightedColumn,
     getItemWidth,
     getMaxVolumeFromData,
-    sortPackagesByStatus,
+    sortPackagesByStatus
 } from './Garden/utility';
 import { filterConfig } from './utility/config/filterSetup';
 import { statusBarConfig } from './utility/config/statusBarConfig';
@@ -25,7 +25,8 @@ const creator = setupWorkspaceSidesheet<HandoverPackage, 'handoverDetails'>({
         parentApp: 'handover',
         function: async (id: string) => {
             const items = await responseParser(await responseAsync());
-            return items.find((item) => item.id === id);
+            const result = items.find((item) => item.id === id);
+            return result ? result : items.find((item) => item.commpkgNo === id);
         },
     },
 });
@@ -33,6 +34,24 @@ const creator = setupWorkspaceSidesheet<HandoverPackage, 'handoverDetails'>({
 export const handoverCreatorManifest = creator('SidesheetManifest');
 export const handoverCreatorComponent = creator('SidesheetComponentManifest');
 export const handoverResolverFunction = creator('ResolverFunction');
+
+const creatorComPkg = setupWorkspaceSidesheet<HandoverPackage, 'comPkg'>({
+    id: 'comPkg',
+    color: '#0084C4',
+    component: HandoverSideSheet,
+    props: {
+        objectIdentifier: 'commpkgNo',
+        parentApp: 'handover',
+        function: async (id: string) => {
+            const items = await responseParser(await responseAsync());
+            return items.find((item) => item.commpkgNo === id);
+        },
+    },
+});
+
+export const comPkgManifest = creatorComPkg('SidesheetManifest');
+export const comPkgComponent = creatorComPkg('SidesheetComponentManifest');
+export const comPkgResolverFunction = creatorComPkg('ResolverFunction');
 
 export function setup(appApi: ClientApi): void {
     const initialCustomGroupByKeys: HandoverCustomGroupByKeys = {

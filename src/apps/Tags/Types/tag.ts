@@ -1,0 +1,32 @@
+export interface Tag {
+    Id: number;
+    TagNo: string;
+    Description: string;
+    RegisterCode: string;
+    RegisterDescription: string;
+    StatusCode: string;
+    StatusDescription: string;
+    TagFunctionCode: string;
+    TagFunctionDescription: string;
+    CommPkgNo: string;
+    McPkgNo: string;
+    PurchaseOrderNo: string;
+    CallOffNo: string;
+    PurchaseOrderTitle: string;
+    ProjectDescription: string;
+    Sequence: string;
+    MountedOnTagNo: string;
+    Remark: string;
+    SystemCode: string;
+    SystemDescription: string;
+    DisciplineCode: string;
+    DisciplineDescription: string;
+    AreaCode: string;
+    AreaDescription: string;
+    EngineeringCodeCode: string;
+    EngineeringCodeDescription: string;
+    ContractorCode: string;
+    ContractorDescription: string;
+    HasPreservation: boolean;
+    PreservationMigrated: boolean;
+}
