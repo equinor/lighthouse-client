@@ -1,20 +1,24 @@
 import { useEffect } from 'react';
-
-import { HotUpload } from '../Attachments/HotUpload';
-import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
-import { FlexColumn, FormWrapper, Section } from './ScopeChangeForm.styles';
 import styled from 'styled-components';
-import { useUnpackRelatedObjects } from '../../hooks/queries/useUnpackRelatedObjects';
-import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
-import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
-import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext';
-import { FormBanner } from './FormBanner/FormBanner';
-import { RequestAttachmentsList } from '../Attachments/RequestAttachmentsList/RequestAttachmentsList';
-import { MaterialsInput } from './Inputs/MaterialsInput/MaterialsInput';
-import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChangeReferences';
-import { EditFormActionBar } from './EditFormActionBar';
+import { scopeChangeFormAtomApi } from '../../../Atoms/FormAtomApi/formAtomApi';
+import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
+import { useUnpackRelatedObjects } from '../../../hooks/queries/useUnpackRelatedObjects';
+import { RevisionAttachments } from '../../Attachments/RevisionAttachments';
+import { ScopeChangeBaseForm } from '../../Form/BaseForm/ScopeChangeBaseForm';
+import { GuesstimateDiscipline } from '../../Form/DisciplineGuesstimate/DisciplineGuesstimate';
+import { FormBanner } from '../../Form/FormBanner/FormBanner';
+import { MaterialsInput } from '../../Form/Inputs/MaterialsInput/MaterialsInput';
+import { ScopeChangeReferences } from '../../Form/Inputs/ScopeChangeReferences/ScopeChangeReferences';
+import { Section } from '../../Form/ScopeChangeForm.styles';
+import { RevisionSubmitBar } from './RevisionSubmitBar';
+import { FormWrapper, FlexColumn } from './SidesheetWrapper.styles';
+import { WarningRevisionBanner } from './WarningCreateRevisionBanner';
 
-export const ScopeChangeRequestEditForm = (): JSX.Element => {
+interface RevisionFormProps {
+    cancel: () => void;
+}
+
+export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
     const request = useScopeChangeContext(({ request }) => request);
 
     useEffect(() => {
@@ -22,6 +26,8 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
         clearState();
         updateAtom({
             ...request,
+            revisionAttachments: request.attachments,
+            attachmentsToDuplicate: request.attachments.map((s) => s.id),
             disciplineGuesstimates: request.disciplineGuesstimates.map(
                 ({ discipline: { procosysCode }, guesstimate }) => ({
                     disciplineCode: procosysCode,
@@ -35,10 +41,10 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
     }, []);
 
     useUnpackRelatedObjects({ request });
-
     return (
-        <EditFormWrapper>
+        <RevisionFormStyledWrapper>
             <FormBanner />
+            <WarningRevisionBanner />
             <Wrapper>
                 <FormWrapper>
                     <FlexColumn>
@@ -55,26 +61,26 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
                             <ScopeChangeReferences />
                         </Section>
                         Attachments
-                        <HotUpload />
-                        <RequestAttachmentsList />
+                        <RevisionAttachments />
                     </FlexColumn>
                 </FormWrapper>
             </Wrapper>
-            <EditFormActionBar />
-        </EditFormWrapper>
+            <RevisionSubmitBar cancel={cancel} />
+        </RevisionFormStyledWrapper>
     );
 };
 
-const EditFormWrapper = styled.div`
+const RevisionFormStyledWrapper = styled.div`
     display: grid;
     grid-template-rows: auto 1fr auto;
     overflow: hidden;
     height: 100%;
+    font-size: 14px;
 `;
 
 const Wrapper = styled.div`
     margin: 24px 32px;
-    height: 90%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
