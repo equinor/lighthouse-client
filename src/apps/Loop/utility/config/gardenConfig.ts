@@ -42,6 +42,9 @@ export const fieldSettings: FieldSettings<Loop, ExtendedGardenFields> = {
         getKey: getDateKey,
         getColumnSort: sortByNumber,
     },
+    tagNo: {
+        label: '@LOOP tag',
+    },
 };
 const customGroupByKeys: CustomGroupByKeys = {
     plannedForecast: 'Planned',
