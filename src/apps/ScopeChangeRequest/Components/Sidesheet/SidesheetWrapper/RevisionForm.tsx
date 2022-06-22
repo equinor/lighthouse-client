@@ -1,10 +1,7 @@
-import { Button, Progress } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
-import { useMutation } from 'react-query';
 import styled from 'styled-components';
 import { scopeChangeFormAtomApi } from '../../../Atoms/FormAtomApi/formAtomApi';
 import { useScopeChangeContext } from '../../../hooks/context/useScopeChangeContext';
-import { useRequestMutations } from '../../../hooks/mutations/useRequestMutations';
 import { useUnpackRelatedObjects } from '../../../hooks/queries/useUnpackRelatedObjects';
 import { RevisionAttachments } from '../../Attachments/RevisionAttachments';
 import { ScopeChangeBaseForm } from '../../Form/BaseForm/ScopeChangeBaseForm';
@@ -12,7 +9,8 @@ import { GuesstimateDiscipline } from '../../Form/DisciplineGuesstimate/Discipli
 import { FormBanner } from '../../Form/FormBanner/FormBanner';
 import { MaterialsInput } from '../../Form/Inputs/MaterialsInput/MaterialsInput';
 import { ScopeChangeReferences } from '../../Form/Inputs/ScopeChangeReferences/ScopeChangeReferences';
-import { ActionBar, ButtonContainer, Section } from '../../Form/ScopeChangeForm.styles';
+import { Section } from '../../Form/ScopeChangeForm.styles';
+import { RevisionSubmitBar } from './RevisionSubmitBar';
 import { FormWrapper, FlexColumn } from './SidesheetWrapper.styles';
 import { WarningRevisionBanner } from './WarningCreateRevisionBanner';
 
@@ -67,7 +65,7 @@ export const RevisionForm = ({ cancel }: RevisionFormProps): JSX.Element => {
                     </FlexColumn>
                 </FormWrapper>
             </Wrapper>
-            <SubmitActionBar cancel={cancel} />
+            <RevisionSubmitBar cancel={cancel} />
         </RevisionFormStyledWrapper>
     );
 };
@@ -88,51 +86,3 @@ const Wrapper = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
 `;
-
-interface SubmitActionBarProps {
-    cancel: () => void;
-}
-
-export const SubmitActionBar = ({ cancel }: SubmitActionBarProps): JSX.Element => {
-    const request = useScopeChangeContext(({ request }) => request);
-
-    const { createScopeChangeMutation } = useRequestMutations();
-
-    const { prepareRequest } = scopeChangeFormAtomApi;
-    const isValid = scopeChangeFormAtomApi.useIsValid();
-
-    const { isLoading, mutate } = useMutation(createScopeChangeMutation);
-
-    const createRevision = () =>
-        mutate({
-            draft: false,
-            model: {
-                ...prepareRequest(),
-                attachmentsToDuplicate: request.attachments.map((s) => s.id),
-                originatorId: request.id,
-            },
-        });
-
-    return (
-        <ActionBar>
-            <ButtonContainer>
-                <>
-                    {isLoading ? (
-                        <Button variant="ghost_icon" disabled>
-                            <Progress.Dots color="primary" />
-                        </Button>
-                    ) : (
-                        <>
-                            <Button variant="outlined" onClick={cancel}>
-                                Cancel
-                            </Button>
-                            <Button disabled={!isValid} onClick={createRevision}>
-                                Create revision
-                            </Button>
-                        </>
-                    )}
-                </>
-            </ButtonContainer>
-        </ActionBar>
-    );
-};

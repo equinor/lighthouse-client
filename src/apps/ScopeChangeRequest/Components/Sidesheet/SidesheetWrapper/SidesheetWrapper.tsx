@@ -1,6 +1,4 @@
 import { useAtom } from '@dbeining/react-atom';
-import { Tabs } from '@equinor/eds-core-react';
-import { useEdsTabs } from '@equinor/hooks';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -17,18 +15,13 @@ import { useSidesheetEffects } from '../../../hooks/sidesheet/useSidesheetEffect
 import { ScopeChangeRequest } from '../../../types/scopeChangeRequest';
 import { ScopeChangeErrorBanner } from '../../ErrorBanner/ErrorBanner';
 import { ScopeChangeRequestEditForm } from '../../Form/ScopeChangeRequestEditForm';
-import { SidesheetBanner } from '../SidesheetBanner/SidesheetBanner';
-import { LogTab, LogTabTitle } from '../Tabs/Log';
-import { RequestTab, RequestTabTitle } from '../Tabs/Request';
-import { WorkOrderTab, WorkOrderTabTitle } from '../Tabs/WorkOrders';
-import { SidesheetTabList } from './SidesheetWrapper.styles';
 import { updateContext } from './Utils/updateContext';
 
 import { SidesheetApi } from '@equinor/sidesheet';
 import { getScopeChangeSnapshot } from '../../../hooks/context/useScopeChangeContext';
 import { Case, Switch } from '@equinor/JSX-Switch';
 import { RevisionForm } from './RevisionForm';
-import { NotLatestRevisionWarningBanner } from './NotLatestRevisionBanner';
+import { ScopeChangeDetailView } from './ScopeChangeDetailView';
 interface SidesheetWrapperProps {
     item: ScopeChangeRequest;
     actions: SidesheetApi;
@@ -41,8 +34,6 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
     useGetScopeChangeRequest(item.id, item);
     useScopeChangeAccess(item.id);
     useSidesheetEffects(actions, toggleEditMode, item.id, () => setRevisionMode(true));
-
-    const { activeTab, handleChange } = useEdsTabs();
 
     const editMode = useAtom(sideSheetEditModeAtom);
 
@@ -68,48 +59,12 @@ export function SidesheetWrapper({ item, actions }: SidesheetWrapperProps): JSX.
                     <RevisionForm cancel={() => setRevisionMode(false)} />
                 </Case>
                 <Case when={true}>
-                    <div>
-                        <NotLatestRevisionWarningBanner />
-                        <SidesheetBanner />
-                        <Tabs activeTab={activeTab} onChange={handleChange}>
-                            <SidesheetTabList>
-                                <HeaderTab>
-                                    <RequestTabTitle />
-                                </HeaderTab>
-                                <HeaderTab>
-                                    <WorkOrderTabTitle />
-                                </HeaderTab>
-                                <HeaderTab>
-                                    <LogTabTitle />
-                                </HeaderTab>
-                            </SidesheetTabList>
-                            <TabList>
-                                <Tab>
-                                    <RequestTab />
-                                </Tab>
-                                <Tab>{activeTab === 1 && <WorkOrderTab />}</Tab>
-                                <Tab>{activeTab === 2 && <LogTab />}</Tab>
-                            </TabList>
-                        </Tabs>
-                    </div>
+                    <ScopeChangeDetailView />
                 </Case>
             </Switch>
         </Wrapper>
     );
 }
-
-const HeaderTab = styled(Tabs.Tab)``;
-
-const Tab = styled(Tabs.Panel)`
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: 100%;
-    padding-bottom: 50px;
-`;
-
-const TabList = styled(Tabs.Panels)`
-    margin: 24px 32px;
-`;
 
 const Wrapper = styled.div`
     display: grid;
