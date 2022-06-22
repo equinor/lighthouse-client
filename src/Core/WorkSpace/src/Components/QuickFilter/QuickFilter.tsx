@@ -14,6 +14,7 @@ import {
     LeftSection,
     VerticalDivider,
     RightSection,
+    FiltersWrapper,
 } from './quickFilterStyles';
 
 export const QuickFilter = (): JSX.Element => {
@@ -42,7 +43,7 @@ export const QuickFilter = (): JSX.Element => {
     const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
     return (
-        <>
+        <FiltersWrapper>
             <CompactFilterWrapper>
                 <SearchLine>
                     <LeftSection>
@@ -84,6 +85,6 @@ export const QuickFilter = (): JSX.Element => {
                     groups={filterGroups}
                 />
             )}
-        </>
+        </FiltersWrapper>
     );
 };

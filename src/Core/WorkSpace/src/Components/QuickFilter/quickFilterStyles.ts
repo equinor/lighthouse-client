@@ -1,6 +1,8 @@
 import { tokens } from '@equinor/eds-tokens';
 import styled from 'styled-components';
-
+export const FiltersWrapper = styled.div`
+    overflow: hidden;
+`;
 export const CompactFilterWrapper = styled.div`
     height: 50px;
     width: 100%;
