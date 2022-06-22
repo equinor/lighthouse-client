@@ -62,6 +62,7 @@ export function ExpandedFilter({ controller }: ExpandedFilterProps): JSX.Element
 const ExpandedFilterWrapper = styled.div`
     display: flex;
     height: 250px;
+    overflow: hidden;
     border-bottom: 1px solid ${tokens.colors.ui.background__medium.hex};
 `;
 
@@ -70,4 +71,5 @@ const Sidebar = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
+    box-shadow: -2px 0px 5px 0px rgba(0, 0, 0, 0.24);
 `;
