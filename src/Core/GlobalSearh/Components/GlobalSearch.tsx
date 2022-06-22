@@ -1,11 +1,9 @@
 import { Search } from '@equinor/eds-core-react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowNavigation } from 'react-arrow-navigation';
 import { useNavigate } from 'react-router';
-import { appsSearchMapper } from '../Config/Apps/appsSearchMapper';
-import { appsSearchRequest } from '../Config/Apps/appsSearchRequest';
-import { proCoSysSearchMapper } from '../Config/ProCoSys/proCoSysSearchMapper';
-import { proCoSysSearchRequest } from '../Config/ProCoSys/proCoSysSearchRequest';
+import { appsConfig } from '../Config/Apps';
+import { procosysConfig } from '../Config/ProCoSys';
 import { SearchResponse } from '../Config/ProCoSys/types';
 import { useGlobalSearch } from '../Service/GlobalSearch';
 import { SearchItem } from '../Service/SearchApi';
@@ -25,18 +23,8 @@ export const GlobalSearch = (): JSX.Element => {
     const { searchResult, search, registerSearchItem } = useGlobalSearch();
 
     useEffect(() => {
-        const procosysSearchRegistration = registerSearchItem<SearchResponse>({
-            type: 'procosys',
-            searchRequest: proCoSysSearchRequest,
-            searchMapper: proCoSysSearchMapper,
-        });
-
-        const appsRegistration = registerSearchItem<SearchItem>({
-            type: 'apps',
-            searchRequest: appsSearchRequest,
-            searchMapper: appsSearchMapper,
-        });
-
+        const procosysSearchRegistration = registerSearchItem<SearchResponse>(procosysConfig);
+        const appsRegistration = registerSearchItem<SearchItem>(appsConfig);
         return () => {
             procosysSearchRegistration();
             appsRegistration();
@@ -47,13 +35,18 @@ export const GlobalSearch = (): JSX.Element => {
         search(searchInput);
     }, [searchInput]);
 
+    const f1KeyDownEvent = useCallback((ev: KeyboardEvent) => {
+        if (ev.keyCode === 112) {
+            ev.preventDefault();
+            searchRef.current?.focus();
+            setSearchInput('');
+        }
+    }, []);
+
     useEffect(() => {
-        window.onkeydown = (ev: KeyboardEvent) => {
-            if (ev.keyCode === 112) {
-                ev.preventDefault();
-                searchRef.current?.focus();
-                setSearchInput('');
-            }
+        window.addEventListener('keydown', f1KeyDownEvent);
+        return () => {
+            window.removeEventListener('keydown', f1KeyDownEvent);
         };
     }, []);
 

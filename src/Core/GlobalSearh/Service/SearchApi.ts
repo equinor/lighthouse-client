@@ -141,11 +141,7 @@ export class Search {
 
     private unsubscribeCreator = (subscriberId: number) => {
         return (): void => {
-            const subscriberIndex = this.subscribers.findIndex(
-                (subscriber) => subscriber[`##id`] === subscriberId
-            );
-
-            this.subscribers.splice(subscriberIndex, 1);
+            this.subscribers = this.subscribers.filter((s) => s['##id'] !== subscriberId);
         };
     };
 }
