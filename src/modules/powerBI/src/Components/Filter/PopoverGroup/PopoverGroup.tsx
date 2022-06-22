@@ -32,11 +32,7 @@ export const PowerBiGroupPopoverMenu = ({
     onCloseMenu,
 }: PowerBiGroupPopoverMenuProps): JSX.Element => {
     const markAllValuesActive = (filter: PowerBiFilterItem) =>
-        controller.handleOnSelectAll(
-            group,
-            filter,
-            values.map((s) => s.value)
-        );
+        controller.deselectAllValues(group, filter);
 
     const [searchText, setSearchText] = useState('');
 
@@ -98,7 +94,7 @@ export const PowerBiGroupPopoverMenu = ({
                                 </>
                             )}
 
-                            <FilterItemList>
+                            <FilterItemList items={getValuesMatchingSearchText().length}>
                                 <VirtualList
                                     checkedValues={checkedValues}
                                     items={getValuesMatchingSearchText()}
