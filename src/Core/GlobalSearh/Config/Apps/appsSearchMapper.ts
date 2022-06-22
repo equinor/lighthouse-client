@@ -1,6 +1,5 @@
 import { tokens } from '@equinor/eds-tokens';
 import { SearchItem, SearchResult } from '../../Service/SearchApi';
-import { AppSearchItem } from './appsSearchRequest';
 
 function navigate(uri: string) {
     const url = new URL(window.location.href);
@@ -8,7 +7,7 @@ function navigate(uri: string) {
     window.history.pushState({}, '', url);
 }
 
-export const appsSearchMapper = (data?: AppSearchItem[]): SearchResult => ({
+export const appsSearchMapper = (data?: SearchItem[]): SearchResult => ({
     type: 'apps',
     title: 'Applications',
     color: tokens.colors.interactive.success__resting.rgba,

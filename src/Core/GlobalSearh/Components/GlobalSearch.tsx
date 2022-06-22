@@ -2,11 +2,12 @@ import { Search } from '@equinor/eds-core-react';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowNavigation } from 'react-arrow-navigation';
 import { appsSearchMapper } from '../Config/Apps/appsSearchMapper';
-import { AppSearchItem, appsSearchRequest } from '../Config/Apps/appsSearchRequest';
+import { appsSearchRequest } from '../Config/Apps/appsSearchRequest';
 import { proCoSysSearchMapper } from '../Config/ProCoSys/proCoSysSearchMapper';
 import { proCoSysSearchRequest } from '../Config/ProCoSys/proCoSysSearchRequest';
 import { SearchResponse } from '../Config/ProCoSys/types';
 import { useGlobalSearch } from '../Service/GlobalSearch';
+import { SearchItem } from '../Service/SearchApi';
 import { SearchResult, Wrapper } from './GlobalSearchStyles';
 import { SearchResultHeading } from './SearchResultHeading';
 import { SearchResultItem } from './SearchResultItem';
@@ -24,7 +25,7 @@ export const GlobalSearch = (): JSX.Element => {
             searchMapper: proCoSysSearchMapper,
         });
 
-        const appsRegistration = registerSearchItem<AppSearchItem>({
+        const appsRegistration = registerSearchItem<SearchItem>({
             type: 'apps',
             searchRequest: appsSearchRequest,
             searchMapper: appsSearchMapper,
