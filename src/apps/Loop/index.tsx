@@ -1,6 +1,12 @@
 import { ClientApi, httpClient } from '@equinor/lighthouse-portal-client';
 import { Loop } from './types/loop';
-import { filterConfig, gardenConfig, sidesheetConfig, tableConfig } from './utility/config';
+import {
+    filterConfig,
+    gardenConfig,
+    sidesheetConfig,
+    statusBarConfig,
+    tableConfig,
+} from './utility/config';
 
 async function responseAsync(signal?: AbortSignal | undefined): Promise<Response> {
     const { FAM } = httpClient();
@@ -21,6 +27,7 @@ export function setup(addApi: ClientApi): void {
         .registerTableOptions(tableConfig)
         .registerGardenOptions(gardenConfig)
         .registerFilterOptions(filterConfig)
+        .registerStatusItems(statusBarConfig)
         .registerPowerBIOptions({
             reportURI: 'pp-loop-analytics',
             pages: [
