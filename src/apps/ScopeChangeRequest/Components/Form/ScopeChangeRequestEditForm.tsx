@@ -1,21 +1,10 @@
-import { Button, Progress } from '@equinor/eds-core-react';
 import { useEffect } from 'react';
 
-import { useScopeChangeMutation } from '../../hooks/React-Query/useScopechangeMutation';
 import { HotUpload } from '../Attachments/HotUpload';
-import { scopeChangeMutationKeys } from '../../keys/scopeChangeMutationKeys';
 import { ScopeChangeBaseForm } from './BaseForm/ScopeChangeBaseForm';
-import {
-    ActionBar,
-    ButtonContainer,
-    FlexColumn,
-    FormWrapper,
-    Section,
-} from './ScopeChangeForm.styles';
+import { FlexColumn, FormWrapper, Section } from './ScopeChangeForm.styles';
 import styled from 'styled-components';
-import { useRequestMutations } from '../../hooks/mutations/useRequestMutations';
 import { useUnpackRelatedObjects } from '../../hooks/queries/useUnpackRelatedObjects';
-import { disableEditMode } from '../../Atoms/editModeAtom';
 import { GuesstimateDiscipline } from './DisciplineGuesstimate/DisciplineGuesstimate';
 import { scopeChangeFormAtomApi } from '../../Atoms/FormAtomApi/formAtomApi';
 import { useScopeChangeContext } from '../../hooks/context/useScopeChangeContext';
@@ -23,6 +12,7 @@ import { FormBanner } from './FormBanner/FormBanner';
 import { RequestAttachmentsList } from '../Attachments/RequestAttachmentsList/RequestAttachmentsList';
 import { MaterialsInput } from './Inputs/MaterialsInput/MaterialsInput';
 import { ScopeChangeReferences } from './Inputs/ScopeChangeReferences/ScopeChangeReferences';
+import { EditFormActionBar } from './EditFormActionBar';
 
 export const ScopeChangeRequestEditForm = (): JSX.Element => {
     const request = useScopeChangeContext(({ request }) => request);
@@ -70,7 +60,7 @@ export const ScopeChangeRequestEditForm = (): JSX.Element => {
                     </FlexColumn>
                 </FormWrapper>
             </Wrapper>
-            <SubmitActionBar />
+            <EditFormActionBar />
         </EditFormWrapper>
     );
 };
@@ -90,57 +80,3 @@ const Wrapper = styled.div`
     overflow-y: scroll;
     overflow-x: hidden;
 `;
-
-const SubmitActionBar = (): JSX.Element => {
-    const request = useScopeChangeContext(({ request }) => request);
-    const { patchKey } = scopeChangeMutationKeys(request.id);
-
-    const isValid = scopeChangeFormAtomApi.useIsValid();
-
-    const { editScopeChangeMutation } = useRequestMutations();
-
-    const { isLoading, mutate } = useScopeChangeMutation(
-        request.id,
-        patchKey,
-        editScopeChangeMutation,
-        {
-            onSuccess: disableEditMode,
-        }
-    );
-
-    const handleSave = (setAsOpen: boolean) => {
-        const { prepareRequest } = scopeChangeFormAtomApi;
-        mutate({
-            model: prepareRequest(),
-            setAsOpen: setAsOpen,
-        });
-    };
-
-    return (
-        <ActionBar>
-            <ButtonContainer>
-                <>
-                    {isLoading ? (
-                        <Button variant="ghost_icon" disabled>
-                            <Progress.Dots color="primary" />
-                        </Button>
-                    ) : (
-                        <>
-                            <Button variant="outlined" onClick={disableEditMode}>
-                                Cancel
-                            </Button>
-                            <Button disabled={!isValid} onClick={() => handleSave(false)}>
-                                Save
-                            </Button>
-                            {request.state === 'Draft' && (
-                                <Button disabled={!isValid} onClick={() => handleSave(true)}>
-                                    Submit
-                                </Button>
-                            )}
-                        </>
-                    )}
-                </>
-            </ButtonContainer>
-        </ActionBar>
-    );
-};
