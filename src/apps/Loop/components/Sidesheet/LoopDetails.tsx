@@ -1,5 +1,7 @@
-import { formatDateString, StringCell, Table } from '@equinor/GardenUtils';
+import { formatDateString, statusColorMap, StringCell, Table } from '@equinor/GardenUtils';
+import { Case, Switch } from '@equinor/JSX-Switch';
 import { Loop } from '../../types';
+import { Status } from '../Status';
 
 type LoopDetailsProps = {
     loop: Loop;
@@ -17,55 +19,62 @@ export const LoopDetails = ({ loop }: LoopDetailsProps) => {
                         </td>
                     </tr>
                     <tr>
-                        <td>Loop</td>
-                        <td>
-                            <StringCell value={loop.tagNo} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Comm pkg</td>
-                        <td>
-                            <StringCell value={loop.commissioningPackageNo} />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Mc pkg</td>
-                        <td>
-                            <StringCell value={loop.mechanicalCompletionPackageNo} />
-                        </td>
-                    </tr>
-                    <tr>
                         <td>Area</td>
                         <td>
                             <StringCell value={loop.location} />
                         </td>
                     </tr>
                     <tr>
-                        <td>Aggregated MC status</td>
+                        <td>Form type</td>
                         <td>
-                            <StringCell value={loop.loopContentStatus} />
+                            <StringCell value={loop.formularType} />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Responsible</td>
+                        <td>
+                            <StringCell value={loop.responsible} />
                         </td>
                     </tr>
 
                     <tr>
-                        <td>Planned/Actual MC complete</td>
+                        <td>MC status of content</td>
                         <td>
-                            <StringCell
-                                value={formatDateString(
-                                    loop.woActualCompletionDate
-                                        ? loop.woActualCompletionDate.toString()
-                                        : null
-                                )}
-                            />
+                            {loop.loopContentStatus ? (
+                                <Status
+                                    content={loop.loopContentStatus}
+                                    statusColor={statusColorMap[loop.loopContentStatus]}
+                                />
+                            ) : (
+                                '-'
+                            )}
                         </td>
                     </tr>
 
                     <tr>
-                        <td>Remaning hours</td>
+                        <td>Planned MC complete of content</td>
                         <td>
-                            <StringCell
-                                value={loop.remainingManHours ? `${loop.remainingManHours}` : 'N/A'}
-                            />
+                            {loop.woPlannedCompletionDate ? (
+                                <StringCell
+                                    value={formatDateString(
+                                        loop.woPlannedCompletionDate.toString()
+                                    )}
+                                />
+                            ) : (
+                                '-'
+                            )}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Actual MC complete</td>
+                        <td>
+                            {loop.woActualCompletionDate ? (
+                                <StringCell
+                                    value={formatDateString(loop.woActualCompletionDate.toString())}
+                                />
+                            ) : (
+                                '-'
+                            )}
                         </td>
                     </tr>
                 </tbody>
