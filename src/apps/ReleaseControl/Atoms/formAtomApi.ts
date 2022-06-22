@@ -19,6 +19,7 @@ interface ReleaseControlPackedSteps {
 }
 export interface DRCCreateModel {
     id?: string;
+    step?: 'scope' | 'workflow';
     title?: string;
     description?: string;
     plannedDueDate?: string;
@@ -63,6 +64,7 @@ export const DRCFormAtomApi = createAtom<DRCFormModel, FormAtomApi>({}, (api) =>
             phase: undefined,
             references: [],
             id: undefined,
+            step: 'scope',
             editedWorkflowSteps: [],
             signedWorkflowSteps: [],
         }),
