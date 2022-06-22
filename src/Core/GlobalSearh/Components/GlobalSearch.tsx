@@ -12,8 +12,12 @@ import { SearchResult, Wrapper } from './GlobalSearchStyles';
 import { SearchResultHeading } from './SearchResultHeading';
 import { SearchResultItem } from './SearchResultItem';
 
+const SEARCH_FOCUS = 'Type to search...';
+const SEARCH_BLUR = 'Press F1 to search';
+
 export const GlobalSearch = (): JSX.Element => {
     const [searchInput, setSearchInput] = useState('');
+    const [placeHolderText, setPlaceholderText] = useState(SEARCH_BLUR);
     const searchRef = useRef<HTMLInputElement>(null);
 
     const { searchResult, search, registerSearchItem } = useGlobalSearch();
@@ -60,7 +64,9 @@ export const GlobalSearch = (): JSX.Element => {
                 <Search
                     ref={searchRef}
                     value={searchInput}
-                    placeholder={'Press F1 to search..'}
+                    placeholder={placeHolderText}
+                    onFocus={() => setPlaceholderText(SEARCH_FOCUS)}
+                    onBlur={() => setPlaceholderText(SEARCH_BLUR)}
                     onChange={(e) => {
                         setSearchInput(e.currentTarget.value);
                     }}

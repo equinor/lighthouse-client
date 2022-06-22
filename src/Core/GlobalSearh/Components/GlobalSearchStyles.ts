@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
     position: relative;
+    min-width: 250px;
+    width: 30vw;
+    max-width: 500px;
 `;
 export const SearchResult = styled.div`
     position: absolute;
